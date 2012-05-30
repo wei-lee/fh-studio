@@ -7,7 +7,7 @@
          session="false"%>
 <jsp:useBean id="ide" scope="request" class="com.feedhenry.studio.IDEWebBean"></jsp:useBean>
 <%!
-  Logger errlog = Common.selog;
+  //Logger errlog = Common.selog;
 %>
 <%
 ide.init( application );
@@ -42,7 +42,7 @@ try {
     }
   }
 } catch( Exception e ) {
-  errlog.error("ide",e);
+  //errlog.error("ide",e);
   ide.addExplainError(e);
 }
 finally {
