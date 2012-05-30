@@ -5,13 +5,13 @@
                 "
          pageEncoding="UTF-8"
          session="false"%>
-<jsp:useBean id="ide" scope="request" class="org.tssg.millicore.web.ide.IDEWebBean"></jsp:useBean>
+<jsp:useBean id="ide" scope="request" class="com.feedhenry.studio.IDEWebBean"></jsp:useBean>
 <%!
   Logger errlog = Common.selog;
 %>
 <%
 ide.init( application );
-String pageName = org.tssg.millicore.web.ide.IDEWebBean.IDE_INDEX;
+String pageName = com.feedhenry.studio.IDEWebBean.IDE_INDEX;
 try {
   if( ide.initreq( request, response, pageName ) ) {
     if( ide.canProceed( request, response, pageName ) ) {

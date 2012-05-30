@@ -5,13 +5,13 @@
   <span><%=ide.getEmail()%> (<%=ide.getAccountType()%>)</span>
 <% } %>
 
-<% if ( ide.getProperty("studio.landing.auth").equals(org.tssg.millicore.web.ide.IDEWebBean.IDE_LANDING) || ide.getProperty("studio.landing.noauth").equals(org.tssg.millicore.web.ide.IDEWebBean.IDE_LANDING) ) { %>
-  <a href="/?a=<%=org.tssg.millicore.web.ide.IDEWebBean.IDE_LANDING%>" class="<%=pageName.equals(org.tssg.millicore.web.ide.IDEWebBean.IDE_LANDING) ? "active" : ""%>">Home</a>
+<% if ( ide.getProperty("studio.landing.auth").equals(com.feedhenry.studio.IDEWebBean.IDE_LANDING) || ide.getProperty("studio.landing.noauth").equals(com.feedhenry.studio.IDEWebBean.IDE_LANDING) ) { %>
+  <a href="/?a=<%=com.feedhenry.studio.IDEWebBean.IDE_LANDING%>" class="<%=pageName.equals(com.feedhenry.studio.IDEWebBean.IDE_LANDING) ? "active" : ""%>">Home</a>
 <% } %>
 
 <% if (ide.isLoggedIn()) { %>
   <!--  only show studio if logged in -->
-  <a href="/?a=<%=org.tssg.millicore.web.ide.IDEWebBean.IDE_INDEX%>" class="<%=pageName.equals(org.tssg.millicore.web.ide.IDEWebBean.IDE_INDEX) ? "active" : ""%>">Studio</a>
+  <a href="/?a=<%=com.feedhenry.studio.IDEWebBean.IDE_INDEX%>" class="<%=pageName.equals(com.feedhenry.studio.IDEWebBean.IDE_INDEX) ? "active" : ""%>">Studio</a>
 <% } %>
 
   <a target="_blank" href="<%=ide.getProperty("studio-js-docs-url")%>">Docs</a>
@@ -34,7 +34,7 @@
   </script>
   <a onclick="signOut();">Sign Out</a>
 <% } else { %>
-  <a href="/?a=<%=org.tssg.millicore.web.ide.IDEWebBean.IDE_LOGIN%>" class="<%=pageName.equals(org.tssg.millicore.web.ide.IDEWebBean.IDE_LOGIN) ? "active" : ""%>">Login/Register</a>
+  <a href="/?a=<%=com.feedhenry.studio.IDEWebBean.IDE_LOGIN%>" class="<%=pageName.equals(com.feedhenry.studio.IDEWebBean.IDE_LOGIN) ? "active" : ""%>">Login/Register</a>
 <% } %>
   
 

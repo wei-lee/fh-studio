@@ -8,14 +8,14 @@
                 "
          pageEncoding="UTF-8"
          session="false"
-%><jsp:useBean id="ide" scope="request" class="org.tssg.millicore.web.ide.IDEWebBean"></jsp:useBean>
+%><jsp:useBean id="ide" scope="request" class="com.feedhenry.studio.IDEWebBean"></jsp:useBean>
 <%!
   Logger errlog = Common.selog;
 %>
 <%
 ide.init( application );
 try {
-  if ( ide.initreq( request, response, org.tssg.millicore.web.ide.IDEWebBean.IDE_LANDING ) ) {
+  if ( ide.initreq( request, response, com.feedhenry.studio.IDEWebBean.IDE_LANDING ) ) {
 %>
 <!DOCTYPE html>
 <html lang="en">
