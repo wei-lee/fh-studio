@@ -17,7 +17,6 @@ import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.time.FastDateFormat;
 import org.apache.log4j.Logger;
-import org.ft4j.FT;
 import org.tssg.millicore.core.PropSet;
 import org.tssg.millicore.http.RequestUtil;
 import org.tssg.millicore.secure.UserContext;
@@ -27,7 +26,6 @@ public final class Explain implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
-  private static final FT ft = Common.ft;
   private static final Logger log = Common.explainlog;
 
   // Use FastDateFormat instead of SimpleDateFormat as it is thread safe and
