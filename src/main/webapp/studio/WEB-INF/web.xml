@@ -11,14 +11,14 @@
   </session-config>
 
   <!--servlet>
-    <servlet-name>srv</servlet-name>
-    <servlet-class>org.tssg.millicore.web.ide.ProxyIDEServlet</servlet-class>
+    <servlet-name>idewebbean</servlet-name>
+    <servlet-class>com.feedhenry.studio.IDEWebBean</servlet-class>
     <load-on-startup>200</load-on-startup>
   </servlet-->
   
   <!--servlet-mapping>
-    <servlet-name>srv</servlet-name>
-    <url-pattern>/srv/*</url-pattern>
+    <servlet-name>idewebbean</servlet-name>
+    <url-pattern>/</url-pattern>
   </servlet-mapping-->
   
   <!--context-param>
