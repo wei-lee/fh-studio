@@ -613,19 +613,19 @@ public class IDEWebBean {
 
   public void addExplainError(Exception pException) {
     if (null != pException) {
-      Explain.add(mExplain, pException.getMessage());
+//      Explain.add(mExplain, pException.getMessage());
     }
   }
 
   public String outputExplain() {
     StringBuilder sb = new StringBuilder();
-    Explain.endRequest(mExplain);
+//    Explain.endRequest(mExplain);
 
-    if (null != mExplain) {
-      sb.append("<!--\n");
-      sb.append(mExplain.toJSONObject().toString(2));
-      sb.append("\n!-->");
-    }
+//    if (null != mExplain) {
+//      sb.append("<!--\n");
+//      sb.append(mExplain.toJSONObject().toString(2));
+//      sb.append("\n!-->");
+//    }
 
     return sb.toString();
   }
