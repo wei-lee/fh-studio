@@ -52,13 +52,13 @@ public class IDEWebBean {
 
   public static final String DEFAULT_URL = "/box/studio";
   public static final String IDE_LOGIN = "login";
-  public static final String IDE_LANDING= "landing";
+  public static final String IDE_LANDING = "landing";
   public static final String IDE_INDEX = "index";
   public static final String IDE_RESET = "reset";
   public static final String IDE_ACTIVATE = "activate";
   public static final String IDE_DEFAULT_FILE = "/ide/%file%";
   public static final String IDE_THEMES_FILE = "/ide/themes/%theme%/%file%";
-  
+
   public static final String STUDIO_PAGES_GROUP_COOKIE = "feedhenry-studio-pages-group";
   public static final String LOGIN = "studio.login";
   public static final String LOGIN_PAGES = "studio.login.pages";
@@ -67,23 +67,23 @@ public class IDEWebBean {
   public static final String AUTH_LANDING_PAGES = "studio.landing.auth.pages";
   public static final String NOAUTH_LANDING_PAGES = "studio.landing.noauth.pages";
 
-  public static final String[] GROUP_REPORTING = new String[]{AccessManager.ROLE_ANALYTICS};
-  public static final String[] GROUP_ARM = new String[]{AccessManager.ROLE_PORTALADMIN};
-  public static final String[] GROUP_DEVELOPER = new String[]{AccessManager.ROLE_DEV, AccessManager.ROLE_DEVADMIN};
+  public static final String[] GROUP_REPORTING = new String[] { AccessManager.ROLE_ANALYTICS };
+  public static final String[] GROUP_ARM = new String[] { AccessManager.ROLE_PORTALADMIN };
+  public static final String[] GROUP_DEVELOPER = new String[] { AccessManager.ROLE_DEV, AccessManager.ROLE_DEVADMIN };
 
   public static final String THEME_DEFAULT = "default";
   public static final String THEME_ENTERPRISE = "enterprise";
-  
+
   public static final String PROTOCOL_PROPERTY = PropertyConstants.STUDIO_NAMESPACE + PropertyConstants.PROTOCOL;
 
   public static final List<String> mAllowedActionRequest = new ArrayList<String>();
-  
+
   static {
     mAllowedActionRequest.add(IDE_LOGIN);
     mAllowedActionRequest.add(IDE_LANDING);
     mAllowedActionRequest.add(IDE_INDEX);
   }
-  
+
   private BeanHandler mBeanHandler;
   private AssetLocatorManager mALM;
   private ServletContext mServletContext;
@@ -108,41 +108,40 @@ public class IDEWebBean {
   }
 
   public boolean initreq(HttpServletRequest pRequest, HttpServletResponse pResponse, String pPageName) throws Exception {
-    
+
     String redirectUrl = null;
     boolean proceed = true;
-    
-    // Allow explain bean to be forwarded with request from index page 
-    if( null != pRequest.getAttribute("Explain") ) {
+
+    // Allow explain bean to be forwarded with request from index page
+    if (null != pRequest.getAttribute("Explain")) {
       mExplain = (Explain) pRequest.getAttribute("Explain");
-    }
-    else {
+    } else {
       mExplain = Explain.newRequest(pRequest);
     }
 
-    // Allow mDomain to be forwarded with request 
-    if( null != pRequest.getAttribute("Domain") ) {
+    // Allow mDomain to be forwarded with request
+    if (null != pRequest.getAttribute("Domain")) {
       mDomain = (String) pRequest.getAttribute("Domain");
       Explain.add(mExplain, "received domain from request : " + mDomain);
     }
 
-    // Allow mDomainProps to be forwarded with request 
-    if( null != pRequest.getAttribute("DomainProps") ) {
+    // Allow mDomainProps to be forwarded with request
+    if (null != pRequest.getAttribute("DomainProps")) {
       mDomainProps = (PropertySet) pRequest.getAttribute("DomainProps");
       Explain.add(mExplain, "received domain props from request");
     }
-    
-    // Allow mTheme to be forwarded with request 
-    if( null != pRequest.getAttribute("Theme") ) {
+
+    // Allow mTheme to be forwarded with request
+    if (null != pRequest.getAttribute("Theme")) {
       mTheme = (String) pRequest.getAttribute("Theme");
       Explain.add(mExplain, "received theme from request : " + mTheme);
     }
-    
+
     Explain.add(mExplain, "Request Url = " + pRequest.getRequestURL());
     Explain.add(mExplain, "Requested Page = " + pPageName);
-    
+
     // Allow for domain being passed in request
-    if( null == mDomain ) {
+    if (null == mDomain) {
       // Resolve the domain based on the host
       try {
         mDomain = ResolveTenantUtil.resolveRequestDomain(pRequest);
@@ -153,130 +152,121 @@ public class IDEWebBean {
         proceed = false;
       }
     }
-    
-    if( proceed ) {
-      
+
+    if (proceed) {
+
       // Allow for domain props being passed in request
-      if( null == mDomainProps ) {
+      if (null == mDomainProps) {
         // no user context available at this time, so use system user context
         mDomainProps = PropsManager.getDomainPropSet(UserContext.SYSTEM_USERCONTEXT, mDomain);
       }
       String requiredProtocol = mDomainProps.get(PROTOCOL_PROPERTY);
-  
+
       String selectedProtocol = RequestUtil.resolveScheme(pRequest);
-  
+
       // Ensure that we are using the correct protocol (https by default);
       if (!requiredProtocol.equals(selectedProtocol)) {
         String serverName = pRequest.getServerName();
         String redirect = requiredProtocol + "://" + serverName;
-        Explain.add(mExplain, "Mismatched request scheme (required = " + requiredProtocol + " ~ received = " + selectedProtocol +"). Redirecting to " + redirect);
+        Explain.add(mExplain, "Mismatched request scheme (required = " + requiredProtocol + " ~ received = " + selectedProtocol + "). Redirecting to " + redirect);
         redirectUrl = redirect;
         proceed = false;
       }
     }
 
-    if(null != redirectUrl ) {
+    if (null != redirectUrl) {
       // If a redirect url has been set, send the redirect.
       pResponse.sendRedirect(redirectUrl);
-    }
-    else {
+    } else {
       setNoCacheHeaders(pResponse);
       mInput = ResponseBeanBase.receiveJSON(pRequest);
-      Explain.add(mExplain, "Input Params = " + mInput);      
+      Explain.add(mExplain, "Input Params = " + mInput);
     }
-    
+
     return proceed;
   }
-  
+
   public boolean canProceed(HttpServletRequest pRequest, HttpServletResponse pResponse, String pPageName) throws Exception {
     boolean canProceed = false;
-    
+
     UserContext uc = new ExplainUserContext(mExplain);
     // check permissions
     this.mLoggedIn = checkAuthenticatedUser(pRequest, uc);
 
-    JSONObject reqJson = JsonResponseBean.receiveJSON(pRequest);    
-    String reqUri = pRequest.getRequestURI();    
+    JSONObject reqJson = JsonResponseBean.receiveJSON(pRequest);
+    String reqUri = pRequest.getRequestURI();
     String reqPage = reqJson.optString("a", null);
     boolean checkPage = DEFAULT_URL.equals(reqUri);
-    
+
     Explain.add(mExplain, "loggedIn = " + mLoggedIn + "; reqUri = " + reqUri + "; pPageName = " + pPageName + "; reqPage = " + reqPage + "; checkPage = " + checkPage);
-    
-    if( checkPage ) {
-      if( null != reqPage && mAllowedActionRequest.contains(reqPage) )  {
-        if( mLoggedIn ) {
+
+    if (checkPage) {
+      if (null != reqPage && mAllowedActionRequest.contains(reqPage)) {
+        if (mLoggedIn) {
           if (reqPage.equals(IDE_LANDING)) {
             reqPage = getPropPage(pRequest, pResponse, AUTH_LANDING_PAGES);
           } else if (reqPage.equals(IDE_LOGIN)) {
             reqPage = getPropPage(pRequest, pResponse, LOGIN_PAGES);
           }
           dispatchTo(pRequest, pResponse, reqPage);
-        }
-        else {
-          if( reqPage.equals(IDE_LOGIN) ) {
+        } else {
+          if (reqPage.equals(IDE_LOGIN)) {
             dispatchToProp(pRequest, pResponse, LOGIN_PAGES);
-          }
-          else {
+          } else {
             dispatchToProp(pRequest, pResponse, NOAUTH_LANDING_PAGES);
           }
         }
-      }
-      else {
-        if( mLoggedIn ) {
+      } else {
+        if (mLoggedIn) {
           dispatchToProp(pRequest, pResponse, AUTH_LANDING_PAGES);
-        }
-        else {
+        } else {
           dispatchToProp(pRequest, pResponse, NOAUTH_LANDING_PAGES);
         }
       }
-    }
-    else {
-      if( mLoggedIn ) {
+    } else {
+      if (mLoggedIn) {
         canProceed = true;
-      }
-      else {
+      } else {
         ArrayList<String> noAuthFiles = new ArrayList<String>(Arrays.asList(mDomainProps.get(NOAUTH_LANDING_PAGES).split(",")));
         ArrayList<String> loginFiles = new ArrayList<String>(Arrays.asList(mDomainProps.get(LOGIN_PAGES).split(",")));
-        if( noAuthFiles.contains(pPageName) || loginFiles.contains(pPageName)) {
+        if (noAuthFiles.contains(pPageName) || loginFiles.contains(pPageName)) {
           canProceed = true;
-        }
-        else {
+        } else {
           String requiredProtocol = mDomainProps.get(PROTOCOL_PROPERTY);
           String serverName = pRequest.getServerName();
           String noAuthFile = mDomainProps.get(LOGIN);
           String redirect = requiredProtocol + "://" + serverName + "?a=" + noAuthFile;
-  
+
           pResponse.sendRedirect(redirect);
         }
       }
     }
-    
+
     return canProceed;
   }
 
   /**
    * TODO This method updates member field mUC
    */
-  private boolean checkAuthenticatedUser(HttpServletRequest pRequest, UserContext uc)
-    throws Exception {
-  boolean loggedIn = false;
-  
-  AccessManager am = (AccessManager) AppContextUtil.getBean("internal-AccessManager");
+  private boolean checkAuthenticatedUser(HttpServletRequest pRequest, UserContext uc) throws Exception {
+    boolean loggedIn = false;
 
-  PropMakerManager pmm = ServletInit.makeHttpPropMakerManager();
+    AccessManager am = (AccessManager) AppContextUtil.getBean("internal-AccessManager");
+
+    PropMakerManager pmm = ServletInit.makeHttpPropMakerManager();
     PropSet ps = new PropSet(pRequest, pmm);
-    
-    mUC = am.resolveUserContext(ps, pRequest, uc);  // TODO method updating field
 
-  String loginStatus = ps.get("login-status");
+    mUC = am.resolveUserContext(ps, pRequest, uc); // TODO method updating field
+
+    String loginStatus = ps.get("login-status");
     Explain.add(mExplain, "login-status = " + (null == loginStatus ? " <null>" : loginStatus));
     if (null != loginStatus && "active".equals(loginStatus) && null != mUC.getSub()) {
       loggedIn = mIdeUserManager.isAuthorised(mUC);
       Explain.add(mExplain, "Logged In = " + loggedIn);
-        if (!loggedIn) {
-          Explain.add(mExplain, "Error: Login failed, please try again. Code DEV100");
-          pRequest.setAttribute("error_message", "Error: Login failed, please try again. Code DEV100");
-        }
+      if (!loggedIn) {
+        Explain.add(mExplain, "Error: Login failed, please try again. Code DEV100");
+        pRequest.setAttribute("error_message", "Error: Login failed, please try again. Code DEV100");
+      }
     } else {
       Explain.add(mExplain, "Error: Login failed, please try again. Code DEV101");
       pRequest.setAttribute("error_message", "Error: Login failed, please try again. Code DEV101");
@@ -285,35 +275,34 @@ public class IDEWebBean {
     return loggedIn;
   }
 
-
   public boolean isLoggedIn() {
     return mLoggedIn;
   }
-  
+
   public String getEmail() {
     return mUC.getEmail();
   }
-  
+
   public String getAccountType() {
     return mUC.getAccountType();
   }
-  
+
   private void dispatchToProp(HttpServletRequest pRequest, HttpServletResponse pResponse, String pPageProp) throws Exception {
     String dispatchFile = getPropPage(pRequest, pResponse, pPageProp);
-    
+
     dispatchTo(pRequest, pResponse, dispatchFile);
   }
-    
+
   private String getPropPage(HttpServletRequest pRequest, HttpServletResponse pResponse, String pPageProp) {
     String dispatchFile = null;
-    
+
     String dispatchFileProp = mDomainProps.get(pPageProp);
     String[] dispatchFiles = dispatchFileProp.split(",");
     // don't check array has at least one entry to ensure property is always set
     // i.e. if property isn't set, exception is thrown
     int pageNum = 0;
     int numPages = dispatchFiles.length;
-    
+
     // only kick in page num logic if we have more than 1 possible page
     if (numPages > 1) {
       // check if we have a cookie that dictates page to use
@@ -328,12 +317,12 @@ public class IDEWebBean {
           pageNum = Integer.parseInt(landingVal);
         } catch (NumberFormatException nFE) {
           // log issue, generate new page num and continue
-          pageNum = generatePageNum(numPages, pPageProp); 
+          pageNum = generatePageNum(numPages, pPageProp);
         }
       } else {
         pageNum = generatePageNum(numPages, pPageProp);
       }
-      
+
       if (numPages < pageNum + 1) {
         // somehow got a dud page num, generate new page num and continue
         pageNum = generatePageNum(numPages, pPageProp);
@@ -344,17 +333,17 @@ public class IDEWebBean {
           pageNum = 0;
         }
       }
-      
+
       // store pagenum in cookie
       Cookie pageNumCookie = new Cookie(STUDIO_PAGES_GROUP_COOKIE, Integer.toString(pageNum));
       pResponse.addCookie(pageNumCookie);
     }
-    
+
     dispatchFile = dispatchFiles[pageNum];
-    
+
     return dispatchFile;
   }
-  
+
   private int generatePageNum(int numPages, String pPageProp) {
     int pageNum = 0;
 
@@ -362,19 +351,19 @@ public class IDEWebBean {
     if (numPages > 1) {
       // generate a page num based on num pages and weights
       String dispatchFileWeight = mDomainProps.get(pPageProp + ".weights");
-      
+
       String[] weights = null;
       if (null != dispatchFileWeight && !"".equals(dispatchFileWeight)) {
         weights = dispatchFileWeight.split(",");
       } else {
         // use even distribution
         weights = new String[numPages];
-        float dist = 1f/numPages;
+        float dist = 1f / numPages;
         for (int wi = 0, wl = weights.length; wi < wl; wi++) {
-          weights[wi] = Float.toString(dist); 
+          weights[wi] = Float.toString(dist);
         }
       }
-      
+
       // have an array of weights, lets randomly generate a page num
       double randNum = Math.random();
       double total = 0;
@@ -387,13 +376,13 @@ public class IDEWebBean {
         }
       }
     }
-    
+
     return pageNum;
   }
-    
+
   private void dispatchTo(HttpServletRequest pRequest, HttpServletResponse pResponse, String pPageName) throws Exception {
     String pPageUrl = resolveUrl(mDomain, pPageName);
-    if( null != pPageUrl ) {
+    if (null != pPageUrl) {
       Explain.add(mExplain, "displatchTo... " + pPageName);
       pRequest.setAttribute("result", "fail");
       pRequest.setAttribute("orginal_URI", pRequest.getRequestURI());
@@ -403,24 +392,23 @@ public class IDEWebBean {
       pRequest.setAttribute("Theme", mTheme);
       RequestDispatcher dispatcher = pRequest.getRequestDispatcher(pPageUrl);
       dispatcher.forward(pRequest, pResponse);
-    }
-    else {
+    } else {
       Explain.add(mExplain, "dispatchTo() - could not resolve url for page " + pPageName);
       pResponse.sendError(404);
     }
   }
-    
+
   private String resolveUrl(String pDomain, String pPage) throws Exception {
     String resolvedUrl = null;
     String themeName = getThemeName();
-    
-    if( ! pPage.endsWith(".html") ) {
+
+    if (!pPage.endsWith(".html")) {
       pPage += ".html";
     }
-    
+
     String themeUrl = IDEWebBean.IDE_THEMES_FILE.replace("%theme%", themeName).replace("%file%", pPage);
     String defaultUrl = IDEWebBean.IDE_DEFAULT_FILE.replace("%file%", pPage);
-    
+
     File fTheme = new File(mServletContext.getRealPath(themeUrl));
     File fDefault = new File(mServletContext.getRealPath(defaultUrl));
     if (fTheme.exists()) {
@@ -430,7 +418,7 @@ public class IDEWebBean {
     }
     return resolvedUrl;
   }
-  
+
   /**
    * Set Headers for no caching of the response
    */
@@ -454,23 +442,24 @@ public class IDEWebBean {
   public String getIdeThemeUrl() throws Exception {
     return mPropsBean.getThemeUrl(mDomain, getThemeName());
   }
-  
+
   private String getThemeName() throws Exception {
-    
+
     // Default to using the "default" theme
     String theme = "default";
     boolean resolved = false;
-    
+
     // 1. Check if a theme has been specified in the URL
     if (null != mInput && mInput.has("theme")) {
       theme = mInput.getString("theme");
       resolved = true;
-    }  
-    
-    // 2. Check if a theme has been assigned at the domain / customer / reseller level
-    if( ! resolved ) {
-      if( null == mTheme ) {
-        mTheme = ResolveTenantUtil.resolveTheme(mDomain); 
+    }
+
+    // 2. Check if a theme has been assigned at the domain / customer / reseller
+    // level
+    if (!resolved) {
+      if (null == mTheme) {
+        mTheme = ResolveTenantUtil.resolveTheme(mDomain);
       }
 
       if (!"".equals(mTheme)) {
@@ -480,16 +469,16 @@ public class IDEWebBean {
     }
 
     // 3. Check if the requesting user is an "enterprise" user
-    if( ! resolved ) {
-      if (null != mUC && (null != mUC.getAccountType()  && mUC.getAccountType().equals(UserPrefs.ACCOUNT_TYPE_ENTERPRISE_USER))){
+    if (!resolved) {
+      if (null != mUC && (null != mUC.getAccountType() && mUC.getAccountType().equals(UserPrefs.ACCOUNT_TYPE_ENTERPRISE_USER))) {
         theme = IDEWebBean.THEME_ENTERPRISE;
         resolved = true;
       }
     }
-    
+
     return theme;
   }
-  
+
   public String getLanguage() {
     return "en";
   }
@@ -501,7 +490,7 @@ public class IDEWebBean {
   public String getResetToken() {
     return mInput.optString("t");
   }
-  
+
   public String getActivateToken() {
     return mInput.optString("t");
   }
@@ -509,11 +498,11 @@ public class IDEWebBean {
   public JSONObject getProps() throws Exception {
     return mPropsBean.buildClientProps(mDomain, mUC);
   }
-  
+
   public String getProperty(String pPropName) throws Exception {
     return mDomainProps.get(pPropName);
   }
-  
+
   public String getJsonProperty(String pPropName) throws Exception {
     String[] parts = pPropName.split("\\.");
     JSONObject propJson = new JSONObject();
@@ -521,38 +510,38 @@ public class IDEWebBean {
     boolean isJSON = true;
     try {
       propJson = new JSONObject(propValue);
-    } catch(Exception e){
+    } catch (Exception e) {
       isJSON = false;
     }
     String val = propValue;
-    if(parts.length > 1 && isJSON){
-      try{
-        for(int i=1;i<parts.length;i++){
-          if(i == parts.length - 1){
+    if (parts.length > 1 && isJSON) {
+      try {
+        for (int i = 1; i < parts.length; i++) {
+          if (i == parts.length - 1) {
             val = propJson.getString(parts[i]);
           } else {
             propJson = new JSONObject(propJson.getString(parts[i]));
           }
         }
-      } catch(Exception ex){
-          
+      } catch (Exception ex) {
+
       }
     }
     return val;
   }
-  
+
   public Map<String, String> getDocsLinks() throws Exception {
     Map<String, String> links = new HashMap<String, String>();
 
     String linksStr = null;
     String nodeEnabled = getProperty("nodejs.enabled");
-    
+
     if ("true".equals(nodeEnabled)) {
       linksStr = getProperty("studio-js-landing-docs-v2");
     } else {
       linksStr = getProperty("studio-js-landing-docs-default");
     }
-    
+
     try {
       JSONObject linksJson = new JSONObject(linksStr);
       Iterator it = linksJson.keys();
@@ -560,11 +549,11 @@ public class IDEWebBean {
         String key = (String) it.next();
         String val = linksJson.getString(key);
         links.put(key, val);
-      }      
-    }catch(Exception e) {
+      }
+    } catch (Exception e) {
       Explain.add(mExplain, "Error parsing json docs property :", e.getMessage());
     }
-    
+
     return links;
   }
 
@@ -591,9 +580,9 @@ public class IDEWebBean {
   public String getThemeStaticAssetPath(String pPath) throws Exception {
     String fullPath = "ide/themes/" + getThemeName() + pPath;
     String staticPath = "/static/c/" + getStaticAssetPath(fullPath);
-    return staticPath;    
+    return staticPath;
   }
-  
+
   public IdeUserManager getIdeUserManager() {
     return mIdeUserManager;
   }
@@ -610,35 +599,34 @@ public class IDEWebBean {
     // Make sure we're logged in
     if (null != mUC) {
 
-      for(int pI=0;pI<groups.length;pI++){
+      for (int pI = 0; pI < groups.length; pI++) {
         String group = groups[pI];
-        if( mUC.hasRole(group) ) {
+        if (mUC.hasRole(group)) {
           inGroup = true;
           break;
         }
       }
-      
+
     }
     return inGroup;
   }
-  
+
   public void addExplainError(Exception pException) {
-    if( null != pException ) {
+    if (null != pException) {
       Explain.add(mExplain, pException.getMessage());
     }
   }
-  
+
   public String outputExplain() {
     StringBuilder sb = new StringBuilder();
     Explain.endRequest(mExplain);
-    
-    if( null != mExplain ) {
+
+    if (null != mExplain) {
       sb.append("<!--\n");
       sb.append(mExplain.toJSONObject().toString(2));
       sb.append("\n!-->");
     }
-    
+
     return sb.toString();
   }
 }
-
