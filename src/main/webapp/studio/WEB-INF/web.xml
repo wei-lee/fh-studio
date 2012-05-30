@@ -1,0 +1,70 @@
+<!DOCTYPE web-app
+  PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+  "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+  <display-name>fh-studio</display-name>
+  <description>fh-studio</description>
+
+  <session-config>
+    <session-timeout>30</session-timeout>
+  </session-config>
+
+  <!--servlet>
+    <servlet-name>srv</servlet-name>
+    <servlet-class>org.tssg.millicore.web.ide.ProxyIDEServlet</servlet-class>
+    <load-on-startup>200</load-on-startup>
+  </servlet-->
+  
+  <!--servlet-mapping>
+    <servlet-name>srv</servlet-name>
+    <url-pattern>/srv/*</url-pattern>
+  </servlet-mapping-->
+  
+  <!--context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>/WEB-INF/beans.xml</param-value>
+  </context-param-->
+
+  <!--context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>/WEB-INF/beans.xml</param-value>
+  </context-param-->
+  
+  <!--servlet>
+    <servlet-name>srv</servlet-name>
+    <servlet-class>org.tssg.millicore.server.servlet.http.HttpServiceServlet</servlet-class>
+    <load-on-startup>200</load-on-startup>
+  </servlet-->
+
+  <!--servlet>
+    <servlet-name>static</servlet-name>
+    <servlet-class>org.tssg.millicore.servlet.StaticServlet</servlet-class>
+    <load-on-startup>900</load-on-startup>
+  </servlet-->  
+  
+  <!--servlet-mapping>
+    <servlet-name>srv</servlet-name>
+    <url-pattern>/srv/*</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>static</servlet-name>
+    <url-pattern>/static/*</url-pattern>
+  </servlet-mapping-->
+
+  <!--servlet>
+    <servlet-name>studio</servlet-name>
+    <jsp-file>/ide/index-dev.html</jsp-file> 
+  </servlet-->
+  <servlet-mapping>
+    <servlet-name>jsp</servlet-name>
+    <url-pattern>*.htm</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>jsp</servlet-name>
+    <url-pattern>*.html</url-pattern>
+  </servlet-mapping>
+
+</web-app>
