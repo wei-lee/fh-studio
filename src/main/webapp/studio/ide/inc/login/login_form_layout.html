@@ -1,0 +1,17 @@
+<div id="login_center_layout_center_inner">
+  <%@ include file="login_form.html"%>
+  
+  <%@ include file="forgot_form.html"%>
+ 
+  <% if("true".equals(ide.getProperty("account.registration.free"))){ %>
+    <%@ include file="register_form.html"%>  
+  <% } %>
+  
+  <div id="login_devices"></div>
+  <div id="login_device_logos_wrapper">
+    <h2>Login to Create Apps for:</h2>
+    <div id="login_device_logos"></div>
+  </div>
+  
+  <div class="login-footer" style="display:none;"><p class="login-footer-text"></p></div>
+</div>

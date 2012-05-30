@@ -1,0 +1,107 @@
+<div id="create_app_dialog" class="dialog">
+  <form id="create_app_form">
+    <div id="create_app_type">    
+      <div id="create_app_type_text" class="insert-lang-block"></div>
+      <div class="form-field ui-helper-reset ui-helper-clearfix">
+        <input type="radio" name="create_app_type_radio" id="create_app_scratch" next="create_app_details" checked="checked"/><label for="create_app_scratch" id="create_app_type_opt1" class="insert-lang insert-help-icon"></label>
+      </div>
+      <div class="form-field ui-helper-reset ui-helper-clearfix">
+        <input type="radio" name="create_app_type_radio" id="create_app_template" next="create_app_from_template" /><label for="create_app_template" id="create_app_type_opt2" class="insert-lang insert-help-icon"></label>
+      </div>
+      <% if("true".equals(ide.getProperty("scm.ext.git.enabled"))){ %>
+      <div class="form-field ui-helper-reset ui-helper-clearfix">
+        <input type="radio" name="create_app_type_radio" id="create_app_scm" next="create_app_from_scm" /><label for="create_app_scm" id="create_app_type_opt3" class="insert-lang insert-help-icon"></label>
+      </div>    
+      <% } %>
+      <div class="form-field ui-helper-reset ui-helper-clearfix" id="create_app_generator_container">
+        <input type="radio" name="create_app_type_radio" id="create_app_generator" next="generate_app" /><label for="create_app_generator" id="create_app_type_opt4" class="insert-lang insert-help-icon"></label>
+      </div>  
+    </div>
+    
+    <div id="create_app_from_template" next="create_app_clone">
+      <!-- div id="template_carousel_container"></div -->
+      <table id="template_info" border="0">
+        <tr class="template_info_item">
+          <td id="template_selection_label" for="template_selection" class="insert-lang template_info_item_label">
+          </td>
+          <td>
+            <select id="template_select"></select>
+          </td>
+        </tr>
+        <tr class="template_info_item">
+          <td id="template_title_label" for="template_title" class="insert-lang template_info_item_label">
+          </td>
+          <td>
+            <span id="template_title" class=""></span>
+          </td>
+        </tr>
+        <tr class="template_info_item template_info_item_icon">
+          <td id="template_icon_label" for="template_icon" class="insert-lang template_info_item_label">
+          </td>
+          <td>
+            <span id="template_icon" class=""></span>
+          </td>
+        </tr>
+        <tr class="template_info_item">
+          <td id="template_description_label" for="template_description" class="insert-lang template_info_item_label">
+          </td>
+          <td>
+            <span id="template_description" class=""></span>
+          </td>
+        </tr>
+        <tr class="template_info_item">
+          <td>
+            <button id="template_preview_button" class="insert-lang"></button>
+          </td>
+          <td>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div id="create_app_clone">
+      <!-- should close and jump to clone wizard now with w3cid pre-filled -->
+    </div>
+    
+    <fieldset id="create_app_from_scm" class="app-details" next="create_app_progress">
+      <%@ include file="../app/basic_app_details.html"%>
+      <div class="fh-form-field fh-form-text-field ui-helper-reset ui-helper-clearfix">
+        <label id="new_app_scmurl_label" class="insert-lang insert-help-icon" for="new_app_scmurl"></label>
+        <input id="new_app_scmurl" name="scmurl" type="text">
+      </div>
+      <div class="fh-form-field fh-form-text-field ui-helper-reset ui-helper-clearfix">
+        <label id="new_app_scmbranch_label" class="insert-lang insert-help-icon" for="new_app_scmbranch"></label>
+        <input id="new_app_scmbranch" name="scmbranch" type="text">
+      </div>
+    </fieldset>  
+    
+    <fieldset id="create_app_details" class="app-details" next="create_app_frameworks">
+      <%@ include file="../app/basic_app_details.html"%>
+    </fieldset>
+    
+    <fieldset id="create_app_frameworks" next="create_app_progress">
+      <div id="create_app_frameworks_text" class="insert-lang-block"></div>
+    </fieldset>
+    
+    <div id="create_app_progress" class="progress-step" next="create_app_next" track="no"></div>
+    
+    <div id="create_app_publickeysetup" next="create_app_scmprogress">
+      <div id="create_app_publickeysetup_text" class="insert-lang-block"></div>
+       <div class="fh-form-field fh-form-textarea-field fh-form-field-fullwidth ui-helper-reset ui-helper-clearfix">
+        <textarea id="scmpublickey" readonly="true"></textarea>
+      </div>
+    </div>
+    
+    <div id="create_app_scmprogress" class="progress-step" next="create_app_next" track="no"></div>
+    
+    <fieldset id="create_app_next" class="">
+      <div class="form-field ui-helper-clearfix">
+        <input type="radio" name="create_app_next_radio" id="create_app_wiz_publish" checked="checked" value="publish"/><label for="create_app_wiz_publish" id="create_app_next_radio_publish_label" class="insert-lang insert-help-icon"></label>
+      </div>
+      <div class="form-field ui-helper-clearfix">
+        <input type="radio" name="create_app_next_radio" id="create_app_wiz_edit" value="edit"/><label for="create_app_wiz_edit" id="create_app_next_radio_edit_label" class="insert-lang insert-help-icon"></label>
+      </div>
+    </fieldset>
+    
+  </form>
+</div>

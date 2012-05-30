@@ -1,0 +1,36 @@
+    <div class="container login">
+
+      <div class="row">
+          <div class="span7 hero-unit" id="hero-register">
+            <div>
+              <h3>No CloudFoundry account?</h3>
+              <p>If you don't already have a CloudFoundy account, head on over to <span><a target="_blank" href="http://www.cloudfoundry.com">www.cloudfoundry.com</a></span> and register with the promo code <span class="promo">"feedhenry"</span> to gain access now</p>
+
+              <div class="span7 register_button_container">
+                <a href="https://my.cloudfoundry.com/signup" class="btn primary large" target="_blank">Register</a>
+              </div><!-- / -->
+           </div><!-- /hero-unit -->
+         </div> <!-- /span8 -->
+
+         <div class="span7 hero-unit" id="hero-login">
+            <form id="login_form">
+              <div id="login" class="row active">
+                <div class="span7 clearfix">
+                  <h3>Have a CloudFoundry&trade; account?</h3>
+                  <fieldset>
+                    <input class="span7" placeholder="CloudFoundry Username" name="u" id="u" type="text"><br /><br />
+                    <input class="span7" placeholder="CloudFoundry Password" name="p" id="p" type="password"><br /><br />
+                    <input id="login_domain" type="hidden" name="d" value="<%= ide.getLoginDomain() %>">
+                  </fieldset>
+                </div>
+              </div> <!-- /login -->
+            </form>
+            <div class="span7 login_button_container">
+              <p class="forgot-password"><a id="forgot" class="large">Forgot your password...</a></p>
+              <div id="login_button" class="btn primary large">Login</div>
+              <label id="login_form_error" class="input-form-error input-form-text error"></label>
+            </div><!-- /span7 -->
+         </div> <!-- /hero-unit -->
+      </div>
+
+    </div> <!-- /container -->

@@ -1,0 +1,27 @@
+<div id="snippets_mine_container" class="community-container section-container">
+  <div id="snippets_mine_body" class="section-body ui-layout-content">
+
+    <div id="snippets_mine_snippets" class="snippets-mine-container">
+      <%@ include file="snippets_grid.html" %>
+      <div id="snippets_mine_snippets_footer" class="snippet-footer"><button id="snippets_mine_snippets_new_button" class="insert-lang action-button"></button></div>
+    </div>
+    
+    <div id="snippets_mine_snippet_view" class="snippets-mine-container">
+      <div id="snippets_mine_snippet_view_header" class="snippet-header"><button id="snippets_mine_snippet_view_back_button" class="insert-lang nav-button"></button></div>
+      <form id="snippet_update_form">
+        <%@ include file="snippet_details.html" %>
+      </form>
+      <div id="snippets_mine_snippet_view_footer" class="snippet-footer"><button id="snippets_mine_snippet_view_save_update_button" class="insert-lang action-button"></button></div>
+    </div>
+    
+    <div id="snippets_mine_snippet_create" class="snippets-mine-container">
+      <div id="snippets_mine_snippet_create_header" class="snippet-header"><button id="snippets_mine_snippet_create_back_button" class="insert-lang nav-button"></button></div>
+      <form id="snippet_create_form">
+        <%@ include file="snippet_details.html" %>
+      </form>
+      <div id="snippets_mine_snippet_create_footer" class="snippet-footer"><button id="snippets_mine_snippet_view_save_create_button" class="insert-lang action-button"></button></div>
+    </div>
+  
+  </div>
+  
+</div>

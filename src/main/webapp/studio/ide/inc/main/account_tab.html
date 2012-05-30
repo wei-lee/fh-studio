@@ -1,0 +1,72 @@
+<div id="tabs-3">  
+  <div id="account_layout" class="inner-layout">
+    <!-- account_layout north -->
+    <div id="account_north" class="ui-layout-north">
+      <div class="container-header">
+        <div class="container-header-content">
+          <h1 class="container-title"></h1>
+        </div>
+        <div class="container-header-bottom"></div>
+      </div>
+    </div>
+    <!-- end account_layout north -->
+    <!-- account_layout west -->
+    <div id="account_west" class="ui-layout-west">
+      
+      <div id="account_accordion" class="">
+         <!--  have to manually add ui-accordion-header-first class here as accordion plugin doesn't have a first tab class -->
+        <h3 id="accordion_item_profile"><a>My Profile</a></h3>
+        <div>
+          <ul class="ui-menu">
+            <li id="profile_details" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>Manage My Profile</a></li>
+            <li id="keys_manage" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>API Keys</a></li>
+          </ul>
+        </div>
+        <h3 id="accordion_item_destinations" class="ui-accordion-header-last"><a>Destinations</a></h3>
+        <div>
+          <ul class="ui-menu">
+            <li id="destinations_apple" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>Apple</a></li>
+            <li id="destinations_android" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>Android</a></li>
+           <% if (ide.getProps().optBoolean("blackberry-binary-enabled", false)){%>
+            <li id="destinations_blackberry" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>Blackberry</a></li>
+           <% } %>          
+          </ul>
+        </div>
+      </div>
+      
+    </div>
+    <!-- end account_layout west -->
+    <!-- account_layout center -->
+    <div id="account_center" class="ui-layout-center">
+
+    	<div id="account_header">
+    	  <!-- Generic header for standard sections with plain text header -->
+    	  <div id="account_header_text" class="account-header section-header"></div>
+    	</div>    
+      
+      <!-- Hide this initially and let javascript show it when its ready -->
+      <div id="account_content" class="ui-layout-content ui-widget ui-widget-content" style="display:none;">
+      
+        <%@ include file="../profile/profile_details.html" %>
+      
+        <%@ include file="../destinations/destinations_apple_content.html" %>
+        
+        <%@ include file="../destinations/destinations_android_content.html" %>
+       
+        <%@ include file="../destinations/destinations_blackberry_content.html" %>
+
+        <%@ include file="../profile/api_keys.html" %>
+      
+      </div>
+      
+    </div>
+    <!-- end account_layout center -->
+
+    <!-- account_layout east -->
+    <div id="account_east" class="ui-layout-east"></div>
+    <!-- end account_layout east -->
+    <!-- account_layout south -->
+    <div id="account_south" class="ui-layout-south"></div>
+    <!-- end account_layout south -->
+  </div>
+</div>

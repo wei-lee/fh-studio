@@ -1,0 +1,62 @@
+<div id="main_layout_wrapper">
+
+<!-- main_layout north -->
+      
+  <div id="main_layout_north" class="ui-layout-north nonmain-layout">
+  </div>
+  
+  <!-- end main_layout north -->
+  
+  <!-- main_layout west -->
+  
+  <div id="main_layout_west" class="ui-layout-west nonmain-layout"></div>
+  
+  <!-- end main_layout west -->
+  
+  <!-- main_layout center -->
+  
+  <div id="main_layout_center" class="ui-layout-center ui-no-corner-bottom nonmain-layout">
+		<div class="topbar">
+		  <div class="topbar-inner">
+		    <div class="container-fluid">
+		      <div class="user_info_container">
+		        <%@ include file="../../../../inc/header_links.html"%>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+
+     <div class="container">
+      <a href="/"><img class="logoWest" src="/static/c/<%= ide.getStaticAssetPath("ide/themes/enterprise/img/feedhenry_logo.png")%>" /></a>
+      <img class="logoEast" src="<%= ide.getThemeStaticAssetPath("/img/hpcloud_logo.png")%>" />
+  
+      <%@ include file="login_center_layout.html"%>
+  
+		  <footer>
+		    <p style="float: left">&copy; Feedhenry 2012</p>
+		    <p class="tab-footer" style="float:right"><%=ide.getProperty("studio.landing.legaltext")%></p>
+		  </footer>    
+     </div>
+   </div>
+        
+  <!-- end main_layout center -->
+  
+  <!-- main_layout east -->
+  
+  <div id="main_layout_east" class="ui-layout-east nonmain-layout"></div>
+  
+  <!-- end main_layout east -->
+  
+  <!-- main_layout south -->
+  
+  <div id="main_layout_south" class="ui-layout-south nonmain-layout">
+
+  </div>
+  
+  <!-- end main_layout south -->
+
+
+
+
+
+</div>

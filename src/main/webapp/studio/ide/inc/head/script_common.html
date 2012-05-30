@@ -1,0 +1,29 @@
+<script>
+  var DOMAIN = "<%= ide.getLoginDomain()%>";
+  // Script locations for ace workers
+  var aceWorkerJsUrl = "/static/c/<%= ide.getStaticAssetPath("common/js/ui/thirdparty/ace/worker-javascript.js") %>";
+  var aceWorkerCssUrl = "/static/c/<%= ide.getStaticAssetPath("common/js/ui/thirdparty/ace/worker-css.js") %>";
+  
+  var workerMappings = {
+      "worker-javascript.js" : aceWorkerJsUrl,
+      "worker-css.js" : aceWorkerCssUrl
+    };
+<%-- NOTE: See /src/main/webapp/box/static/common/js/ui/thirdparty/ace/README.txt for info on modified files for worker support --%>
+</script>
+
+<!-- Framework javascript -->
+<script src="/static/f/script/<%= ide.getLanguage()%>/<%= ide.getAssetCtrlVal() %>-scripts.js" type="text/javascript"></script>
+
+<!-- Studio Specific properties -->
+<script type="text/javascript">
+  $fw_manager.setClientProps(<%=ide.getProps().toString()%>);  
+  $fw_manager.initFramework();
+</script> 
+
+  
+<!-- Very small subset of ide javascript required for all pages -->
+<script src="/static/c/<%= ide.getStaticAssetPath("ide/js/application/Properties.js") %>" type="text/javascript"></script>
+<script src="/static/c/<%= ide.getStaticAssetPath("ide/js/prototype/log.js") %>" type="text/javascript"></script>
+<script src="/static/c/<%= ide.getStaticAssetPath("ide/js/application/lang/Lang.js") %>" type="text/javascript"></script>
+<script src="/static/c/<%= ide.getStaticAssetPath("ide/js/application/lang/LangManager.js") %>" type="text/javascript"></script>
+<script src="/static/c/<%= ide.getStaticAssetPath("ide/js/init/Init.js") %>" type="text/javascript"></script> 

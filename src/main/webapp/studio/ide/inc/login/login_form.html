@@ -1,0 +1,27 @@
+
+<% 
+String loginFormClass = "input-form";
+if("false".equals(ide.getProperty("account.registration.free"))){ 
+  loginFormClass = "input-form center-form";
+}
+%>
+
+<form id="login_form" class="<%=loginFormClass%>">
+  <div class="input-form-header"></div>
+  <fieldset class="input-form-element">
+    <legend class="input-form-text">Login Here for existing Users!</legend>
+    <div class="form-field ui-helper-clearfix">
+       <label class="input-form-text" for="u">Email:</label><input name="u" type="text">
+    </div>
+    <div class="form-field ui-helper-clearfix">
+       <label class="input-form-text" for="p">Password:</label><input name="p" type="password">
+    </div>
+    <input id="login_domain" type="hidden" name="d" value="<%= ide.getLoginDomain() %>">
+    <div class="form-field submit-field ui-helper-clearfix">
+      <label id="login_form_error" class="input-form-error input-form-text error"></label>
+      <input type="button" id="login_button" class="btn btn-primary right" value="Login">
+    </div>
+  </fieldset>
+  <p class="forgot-password input-form-element"><a class="input-form-text">Forgot your password?</a></p>
+  <p class="input-form-footer input-form-element input-form-text">By entering this site, you are agreeing to the FeedHenry <a class="tandc_Link input-form-text" href="http://www.feedhenry.com/terms" target="_blank" alt="Terms & Conditions">terms and conditions</a></p>
+</form>
