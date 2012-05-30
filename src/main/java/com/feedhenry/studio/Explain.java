@@ -17,16 +17,12 @@ import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.time.FastDateFormat;
 import org.apache.log4j.Logger;
-import org.tssg.millicore.core.PropSet;
-import org.tssg.millicore.http.RequestUtil;
-import org.tssg.millicore.secure.UserContext;
-import org.tssg.millicore.server.Common;
 
 public final class Explain implements Serializable {
 
   private static final long serialVersionUID = 1L;
-
-  private static final Logger log = Common.explainlog;
+  
+  public static final Logger log = Logger.getLogger("millicore.explain");
 
   // Use FastDateFormat instead of SimpleDateFormat as it is thread safe and
   // will not block
@@ -114,8 +110,8 @@ public final class Explain implements Serializable {
     Explain ex = null;
     String headerval = pRequest.getHeader("X-FeedHenry-Explain");
 
-    if (null != headerval && headerval.startsWith("active")) {
-      ex = new Explain(RequestUtil.resolveIP(pRequest), headerval);
+    if (null != headerval && headerval.startsWith("active")) {      
+      ex = new Explain(pRequest.getRemoteAddr(), headerval);
       Explain.startTimer(ex, "request");
       pRequest.setAttribute("explain", ex);
     }
@@ -359,17 +355,7 @@ public final class Explain implements Serializable {
   }
 
   public static void endExplain(Explain pExplain) {
-    endExplain(pExplain, null, null);
-  }
-
-  public static void endExplain(Explain pExplain, PropSet pPropSet) {
-    endExplain(pExplain, pPropSet, null);
-  }
-
-  public static void endExplain(Explain pExplain, PropSet pPropSet, UserContext pUC) {
     if (canProceed(pExplain)) {
-      Explain.add(pExplain, null == pUC ? "" : "resources used: " + pUC.getResourceListener());
-      Explain.add(pExplain, null == pPropSet ? "" : "partial propset: " + pPropSet.getCurrentProps());
       Explain.add(pExplain, "~~~~~~~~ END EXPLAIN ~~~~~~~~");
       Date end = new Date();
       Explain.add(pExplain, "duration: " + (end.getTime() - pExplain.mStartDate.getTime()));
