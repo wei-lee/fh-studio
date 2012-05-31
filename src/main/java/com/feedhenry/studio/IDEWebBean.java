@@ -3,11 +3,15 @@ package com.feedhenry.studio;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -113,10 +117,28 @@ public class IDEWebBean{
       // call studio props endpoint to get all properties
       HttpClient client = new DefaultHttpClient();
       
-      int port = pRequest.getRemotePort();
+      
+      String referer = pRequest.getHeader("referer");
+      String scheme = pRequest.getScheme();
+      String host = pRequest.getLocalName();
       String endpoint = PROPS_ENDPOINT.replace("<domain>", "apps");
-      String uri = pRequest.getScheme() + "//" + pRequest.getRemoteHost() + ((port == 80 || port == 443) ? "" : ":" + port) + endpoint;
+      int port = pRequest.getLocalPort();
+      if (null != referer) {
+        try {
+          URL url = new URL(referer);
+          scheme = url.getProtocol();
+          host = url.getHost();
+          port = url.getPort();
+          
+        } catch (MalformedURLException e) {
+          // fail silently and use defaults above
+        }
+      }
+      // keytool -import -alias localcert -file ./server.crt -keystore /usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/security/cacerts -storepass changeit
+      String uri = scheme + "://" +host + ((port < 0 || port == 80 || port == 443) ? "" : ":" + port) + endpoint;
       System.out.println("Props endpoint: " + uri);
+      
+      
       HttpPost post = new HttpPost(uri);
       StringEntity entity = new StringEntity("{\"domain\":\"apps\"}");
       post.setEntity(entity);
