@@ -10,6 +10,11 @@
     <session-timeout>30</session-timeout>
   </session-config>
 
+
+  <listener>
+    <listener-class>com.feedhenry.studio.StudioServletContextListener</listener-class>
+  </listener>
+  
   <!--servlet>
     <servlet-name>idewebbean</servlet-name>
     <servlet-class>com.feedhenry.studio.IDEWebBean</servlet-class>

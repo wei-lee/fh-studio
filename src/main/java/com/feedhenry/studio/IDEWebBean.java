@@ -112,7 +112,12 @@ public class IDEWebBean{
     if( null == mDomain ) {
       // call studio props endpoint to get all properties
       HttpClient client = new DefaultHttpClient();
-      HttpPost post = new HttpPost("http://127.0.0.1" + PROPS_ENDPOINT.replace("<domain>", "apps"));
+      
+      int port = pRequest.getRemotePort();
+      String endpoint = PROPS_ENDPOINT.replace("<domain>", "apps");
+      String uri = pRequest.getScheme() + "//" + pRequest.getRemoteHost() + ((port == 80 || port == 443) ? "" : ":" + port) + endpoint;
+      System.out.println("Props endpoint: " + uri);
+      HttpPost post = new HttpPost(uri);
       StringEntity entity = new StringEntity("{\"domain\":\"apps\"}");
       post.setEntity(entity);
       
