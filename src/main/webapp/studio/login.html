@@ -1,13 +1,9 @@
 <%@ page contentType="text/html"
-         import="java.util.*
-                ,org.tssg.millicore.server.*
-                ,org.apache.log4j.*
-                "
          pageEncoding="UTF-8"
          session="false"
 %><jsp:useBean id="ide" scope="request" class="com.feedhenry.studio.IDEWebBean"></jsp:useBean>
 <%!
-  Logger errlog = Common.selog;
+  //Logger errlog = Common.selog;
 %>
 <%
 String pageName = com.feedhenry.studio.IDEWebBean.IDE_LOGIN;
@@ -42,8 +38,9 @@ try {
     }
   }
 } catch( Exception e ) {
-  errlog.error("ide",e);
   ide.addExplainError(e);
+  out.println(e);
+  e.printStackTrace();
 }
 finally {
   out.println(ide.outputExplain());

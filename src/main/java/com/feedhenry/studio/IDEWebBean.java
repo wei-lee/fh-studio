@@ -12,7 +12,6 @@ import java.util.Map;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -220,8 +219,8 @@ public class IDEWebBean{
         canProceed = true;
       }
       else {
-        JSONArray noAuthFiles = mServerProps.getJSONArray(NOAUTH_LANDING_PAGES);
-        JSONArray loginFiles = mServerProps.getJSONArray(LOGIN_PAGES);        
+        JSONArray noAuthFiles = JSONArray.fromObject(mServerProps.getString(NOAUTH_LANDING_PAGES).split(","));
+        JSONArray loginFiles = JSONArray.fromObject(mServerProps.getString(LOGIN_PAGES).split(","));        
         
         if( noAuthFiles.contains(pPageName) || loginFiles.contains(pPageName)) {
           canProceed = true;
@@ -244,9 +243,10 @@ public class IDEWebBean{
    * TODO This method updates member field mUC
    */
   private boolean checkAuthenticatedUser(HttpServletRequest pRequest, JSONObject uc)throws Exception {
-    // TODO: acually check if user is logged in. maybe from mStuidoProps
+    // TODO: check mMillicoreProps/mUserProps/mUC to see if user is logged in
+    Cookie cookie = getCookie("feedhenry", pRequest);
     
-    return true;
+    return cookie != null;
   }
 
   public boolean isLoggedIn() {
@@ -270,7 +270,7 @@ public class IDEWebBean{
   private String getPropPage(HttpServletRequest pRequest, HttpServletResponse pResponse, String pPageProp) {
     String dispatchFile = null;
     
-    String dispatchFileProp = "index.html";// TODO: mStudioProps.get(pPageProp);
+    String dispatchFileProp = mServerProps.getString(pPageProp);
 
     String[] dispatchFiles = dispatchFileProp.split(",");
     // don't check array has at least one entry to ensure property is always set
@@ -281,7 +281,7 @@ public class IDEWebBean{
     // only kick in page num logic if we have more than 1 possible page
     if (numPages > 1) {
       // check if we have a cookie that dictates page to use
-      Cookie landing = null; // TODO: ServletUtil.getCookie(STUDIO_PAGES_GROUP_COOKIE, pRequest);
+      Cookie landing = getCookie(STUDIO_PAGES_GROUP_COOKIE, pRequest);
       String landingVal = null;
       if (null != landing) {
         landingVal = landing.getValue();
@@ -576,5 +576,20 @@ public class IDEWebBean{
 //    }
 
     return sb.toString();
+  }
+  
+  public static Cookie getCookie( String pName, HttpServletRequest pRequest ) {
+    Cookie cookie = null;
+    if( null != pName ) {
+      Cookie[] cookies = pRequest.getCookies();
+      if( null != cookies ) {
+        for( int cI = 0; cI < cookies.length; cI++ ) {
+          if( pName.equals( cookies[cI].getName() ) ) {
+            cookie = cookies[cI];
+          }
+        }
+      }
+    }
+    return cookie;
   }
 }
