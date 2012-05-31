@@ -120,7 +120,6 @@ public class IDEWebBean{
       String scheme = pRequest.getScheme();
       String host = pRequest.getLocalName();
       String endpoint = PROPS_ENDPOINT.replace("<domain>", "apps");
-<<<<<<< HEAD
       int port = pRequest.getLocalPort();
       if (null != referer) {
         try {
