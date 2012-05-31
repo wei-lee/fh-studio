@@ -21,14 +21,14 @@
   </path>
 
   <target name="compile">
-    <mkdir dir="${basedir}/src/main/webapp/WEB-INF/classes"/>
-    <mkdir dir="${basedir}/src/main/webapp//WEB-INF/lib"/>
-    <javac destdir="${basedir}/src/main/webapp/WEB-INF/classes" 
+    <mkdir dir="${basedir}/src/main/webapp/studio/WEB-INF/classes"/>
+    <mkdir dir="${basedir}/src/main/webapp/studio/WEB-INF/lib"/>
+    <javac destdir="${basedir}/src/main/webapp/studio/WEB-INF/classes" 
       debug="on" 
       srcdir="${src}" 
       includeantruntime="false">
       <classpath>
-        <pathelement location="${basedir}/src/main/webapp/WEB-INF/classes"/>
+        <pathelement location="${basedir}/src/main/webapp/studio/WEB-INF/classes"/>
         <fileset dir="${basedir}/lib">
           <include name="*.jar"/>
         </fileset>
@@ -36,11 +36,11 @@
       <include name="**"/>
       <exclude name="tags/**"/>
     </javac>
-    <copy todir="${basedir}/src/main/webapp/WEB-INF/classes" 
+    <copy todir="${basedir}/src/main/webapp/studio/WEB-INF/classes" 
       verbose="true" overwrite="true">
       <fileset dir="bin"/>
     </copy>
-    <copy todir="${basedir}/src/main/webapp/WEB-INF/lib" 
+    <copy todir="${basedir}/src/main/webapp/studio/WEB-INF/lib" 
       verbose="true" overwrite="true">
       <fileset dir="lib"/>
     </copy>
