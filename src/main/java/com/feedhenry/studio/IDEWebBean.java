@@ -16,6 +16,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -59,6 +62,8 @@ public class IDEWebBean{
 
   public static final String THEME_DEFAULT = "default";
   public static final String THEME_ENTERPRISE = "enterprise";
+  
+  public static final Log log = LogFactory.getLog("IDEWebBean");
 
   // public static final String PROTOCOL_PROPERTY = PropertyConstants.STUDIO_NAMESPACE + PropertyConstants.PROTOCOL;
 
@@ -80,10 +85,10 @@ public class IDEWebBean{
 
   public void init(ServletContext pServletContext) throws Exception {
     mServletContext = pServletContext;
+    System.out.println('');
   }
 
   public boolean initreq(HttpServletRequest pRequest, HttpServletResponse pResponse, String pPageName) throws Exception {
-
     String redirectUrl = null;
     boolean proceed = true;
 

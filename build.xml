@@ -1,0 +1,49 @@
+<?xml version="1.0" standalone="yes"?>
+<project name="fh-studio" default="compile" basedir="./">
+  <property name="src" value="${basedir}/src/main/java"/>
+  <property name="test" value="${basedir}/src/test/java"/>
+
+  <!-- Allow access to environment variables through 'env' -->
+  <property environment="env"/>
+
+  <!-- If build no. isn't passed in (by build server), default to dev version -->
+  <property name="env.BUILD_NUMBER" value="DEV-VERSION"/>
+
+  <available file="${basedir}/target-eclipse" type="dir" 
+    property="eclipse.target.exists"/>
+
+  <path id="compile.classpath">
+    <pathelement location="${out}"/>
+    <pathelement location="${main-res}"/>
+    <fileset dir="${lib}">
+      <include name="*.jar"/>
+    </fileset>
+  </path>
+
+  <target name="compile">
+    <mkdir dir="${basedir}/src/main/webapp/WEB-INF/classes"/>
+    <mkdir dir="${basedir}/src/main/webapp//WEB-INF/lib"/>
+    <javac destdir="${basedir}/src/main/webapp/WEB-INF/classes" 
+      debug="on" 
+      srcdir="${src}" 
+      includeantruntime="false">
+      <classpath>
+        <pathelement location="${basedir}/src/main/webapp/WEB-INF/classes"/>
+        <fileset dir="${basedir}/lib">
+          <include name="*.jar"/>
+        </fileset>
+      </classpath>
+      <include name="**"/>
+      <exclude name="tags/**"/>
+    </javac>
+    <copy todir="${basedir}/src/main/webapp/WEB-INF/classes" 
+      verbose="true" overwrite="true">
+      <fileset dir="bin"/>
+    </copy>
+    <copy todir="${basedir}/src/main/webapp/WEB-INF/lib" 
+      verbose="true" overwrite="true">
+      <fileset dir="lib"/>
+    </copy>
+  </target>
+
+</project>
