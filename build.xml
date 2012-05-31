@@ -56,7 +56,7 @@
     <touch file="${basedir}/src/main/webapp/studio/WEB-INF/web.xml" />
 	</target>
 	
-	<target name="make-studio-war" depends="dist-version-info, save-git-info, compile">
+	<target name="make-studio-war" depends="dist-version-info, save-git-info, deploy">
 		<delete file="${dist}/studio*.war" failonerror="false">
       <fileset dir="${dist}" includes="studio*.war"/>
     </delete>
