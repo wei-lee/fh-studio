@@ -32,8 +32,6 @@ public class IDEWebBean{
   
   // studio props endpoint
   private static final String PROPS_ENDPOINT = "/box/srv/1.1/ide/<domain>/props/list";
-  
-  
 
   public static final String ALREADY_ACTIVATED = "already-activated";
   public static final String NO_SUCH_ACTIVATION = "no-such-activation";
@@ -115,7 +113,7 @@ public class IDEWebBean{
       
       int port = pRequest.getRemotePort();
       String endpoint = PROPS_ENDPOINT.replace("<domain>", "apps");
-      String uri = pRequest.getScheme() + "//" + pRequest.getRemoteHost() + ((port == 80 || port == 443) ? "" : ":" + port) + endpoint;
+      String uri = "http://" + pRequest.getRemoteHost() + endpoint;
       System.out.println("Props endpoint: " + uri);
       HttpPost post = new HttpPost(uri);
       StringEntity entity = new StringEntity("{\"domain\":\"apps\"}");
@@ -263,13 +261,28 @@ public class IDEWebBean{
   public boolean isLoggedIn() {
     return mLoggedIn;
   }
+  
+  public JSONObject getUserProps() {
+    JSONObject userProps = null;
+    
+    try {
+      userProps = (JSONObject) mStudioProps.get("user");
+    } catch (Exception e) {
+      userProps = null;
+    }
+    return userProps; 
+  }
 
   public String getEmail() {
-    return "TODO@example.com"; // TODO: mUC.getEmail();
+    JSONObject userProps = getUserProps();
+    String email = userProps.getString("email");
+    return email;
   }
 
   public String getAccountType() {
-    return "TODO-ACCOUNT-TYPE"; // mUC.getAccountType();
+    JSONObject userProps = getUserProps();
+    String accountType = userProps.getString("accountType");
+    return accountType;
   }
 
   private void dispatchToProp(HttpServletRequest pRequest, HttpServletResponse pResponse, String pPageProp) throws Exception {

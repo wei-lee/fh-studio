@@ -36,14 +36,16 @@
       <include name="**"/>
       <exclude name="tags/**"/>
     </javac>
-    <copy todir="${basedir}/src/main/webapp/studio/WEB-INF/classes" 
-      verbose="true" overwrite="true">
+    <sync todir="${basedir}/src/main/webapp/studio/WEB-INF/classes" 
+      verbose="true" overwrite="true" failonerror="true">
       <fileset dir="bin"/>
-    </copy>
-    <copy todir="${basedir}/src/main/webapp/studio/WEB-INF/lib" 
-      verbose="true" overwrite="true">
-      <fileset dir="lib"/>
-    </copy>
+    </sync>
+    <sync todir="${basedir}/src/main/webapp/studio/WEB-INF/lib" 
+      verbose="true" overwrite="true" failonerror="true">
+      <fileset dir="lib">
+        <exclude name="servletapi-2.4.jar"/>
+      </fileset>
+    </sync>
     <touch file="${basedir}/src/main/webapp/studio/WEB-INF/web.xml" />
   </target>
 
