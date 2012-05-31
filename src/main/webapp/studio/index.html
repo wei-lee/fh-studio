@@ -40,6 +40,8 @@ try {
 } catch( Exception e ) {
   //errlog.error("ide",e);
   ide.addExplainError(e);
+  out.println(e);
+  e.printStackTrace();
 }
 finally {
   out.println(ide.outputExplain());
