@@ -1,2 +1,7 @@
-src/main/webapp/studio/WEB-INF/lib/
+src/main/webapp/studio/WEB-INF/classes
+src/main/webapp/studio/WEB-INF/lib
 *.class
+dist
+src/main/resources/git-info.txt
+src/main/resources/git-branch-info.txt
+src/main/resources/VERSION.txt

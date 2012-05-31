@@ -1,7 +1,11 @@
 <?xml version="1.0" standalone="yes"?>
 <project name="fh-studio" default="compile" basedir="./">
-  <property name="src" value="${basedir}/src/main/java"/>
+  <property name="src"  value="${basedir}/src/main/java"/>
   <property name="test" value="${basedir}/src/test/java"/>
+  <property name="lib"  value="${basedir}/lib" />
+  <property name="dist" value="${basedir}/dist" />
+  <property name="out"  value="${basedir}/bin"/>
+  <property name="main-res" value="${basedir}/src/main/resources" />
 
   <!-- Allow access to environment variables through 'env' -->
   <property environment="env"/>
@@ -36,6 +40,9 @@
       <include name="**"/>
       <exclude name="tags/**"/>
     </javac>
+  </target>
+	
+	<target name="deploy" depends="save-version-info, save-git-info, compile">
     <sync todir="${basedir}/src/main/webapp/studio/WEB-INF/classes" 
       verbose="true" overwrite="true" failonerror="true">
       <fileset dir="bin"/>
@@ -47,6 +54,56 @@
       </fileset>
     </sync>
     <touch file="${basedir}/src/main/webapp/studio/WEB-INF/web.xml" />
+	</target>
+	
+	<target name="make-studio-war" depends="dist-version-info, save-git-info, compile">
+		<delete file="${dist}/studio*.war" failonerror="false">
+      <fileset dir="${dist}" includes="studio*.war"/>
+    </delete>
+    <exec executable="${basedir}/build/recordGitRev.sh" dir="${basedir}/build" outputproperty="gitbuildrev" failonerror="true" />
+    <echo message="Git revision: ${gitbuildrev}" />
+    <echo message="Build Version: ${VERSION}" />
+
+    <zip destfile="${dist}/studio-${VERSION}.war">
+      <zipfileset dir="${basedir}/src/main/webapp/studio/WEB-INF/lib" prefix="WEB-INF/lib" >
+        <include name="*.jar" />
+      </zipfileset>
+
+      <zipfileset dir="${basedir}/src/main/webapp/studio/WEB-INF/classes" prefix="WEB-INF/classes" >
+        <include name="**/*.class" />
+      </zipfileset>
+
+      <zipfileset dir="${basedir}/src/main/webapp/studio/WEB-INF" prefix="WEB-INF">
+        <include name="web.xml" />
+      </zipfileset>
+
+      <zipfileset dir="${basedir}/src/main/resources" prefix="WEB-INF/classes">
+        <include name="**/*.txt" />
+      </zipfileset>
+    	
+    </zip>
+	</target>
+	
+  
+  <target name="save-git-info" depends="">
+    <exec executable="${basedir}/build/recordGitRev.sh" dir="${basedir}/build" failonerror="true" output="${main-res}/git-info.txt"/>
+    <exec executable="${basedir}/build/get_git_branch.sh" dir="${basedir}/build" failonerror="true" output="${main-res}/git-branch-info.txt"/>
+  </target>
+  
+  <target name="save-version-info" depends="generate-version">
+    <echo message="${VERSION}" file="${main-res}/VERSION.txt"/>
+  </target>
+  
+  <target name="dist-version-info" depends="save-version-info">
+    <echo message="${VERSION}" file="${dist}/VERSION.txt"/>
+  </target>
+  
+  <target name="generate-version">
+    <exec executable="sed" dir="${basedir}" failonerror="true" outputproperty="VERSION">
+      <arg value="s/BUILD-NUMBER/${env.BUILD_NUMBER}/"/>
+      <arg value="VERSION.txt"/>
+    </exec>
+    <echo message="VERSION = ${VERSION}"/>
   </target>
 
 </project>

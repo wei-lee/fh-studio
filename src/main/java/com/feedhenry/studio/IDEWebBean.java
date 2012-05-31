@@ -133,15 +133,16 @@ public class IDEWebBean{
           // fail silently and use defaults above
         }
       }
-      scheme = "http";
+      
+      // TODO: allow self-signed cert in development
+      scheme = "http";      
       // keytool -import -alias localcert -file ./server.crt -keystore /usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/security/cacerts -storepass changeit
+      
       String uri = scheme + "://" +host + ((port < 0 || port == 80 || port == 443) ? "" : ":" + port) + endpoint;
       System.out.println("Props endpoint: " + uri);
       
       
       HttpPost post = new HttpPost(uri);
-      StringEntity entity = new StringEntity("{\"domain\":\"apps\"}");
-      post.setEntity(entity);
       
       // Send requestor's cookie if available
       Cookie cookie = getCookie("feedhenry", pRequest);
@@ -495,8 +496,7 @@ public class IDEWebBean{
     }
 
     // 3. Check if the requesting user is an "enterprise" user
-    /* TODO:
-    if( ! resolved ) {
+    /*if( ! resolved ) {
       if (null != mUC && (null != mUC.getAccountType()  && mUC.getAccountType().equals(UserPrefs.ACCOUNT_TYPE_ENTERPRISE_USER))){
         theme = IDEWebBean.THEME_ENTERPRISE;
         resolved = true;
@@ -526,14 +526,7 @@ public class IDEWebBean{
   }
 
   public String getProperty(String pPropName) throws Exception {
-    String props = null;
-    try {
-      props = mServerProps.getString(pPropName);
-    } catch (Exception e) {
-      System.out.println(e);
-      e.printStackTrace();
-    }
-    return props;
+    return mServerProps.optString(pPropName);
   }
 
   public Map<String, String> getDocsLinks() throws Exception {
