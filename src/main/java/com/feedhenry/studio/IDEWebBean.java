@@ -64,7 +64,7 @@ public class IDEWebBean{
   
   public static final Log log = LogFactory.getLog("IDEWebBean");
 
-  // public static final String PROTOCOL_PROPERTY = PropertyConstants.STUDIO_NAMESPACE + PropertyConstants.PROTOCOL;
+  public static final String PROTOCOL_PROPERTY = "studio-protocol";
 
   public static final List<String> mAllowedActionRequest = new ArrayList<String>();
 
@@ -153,9 +153,9 @@ public class IDEWebBean{
 //        // no user context available at this time, so use system user context
 //        mStudioProps = PropsManager.getDomainPropSet(JSONObject.SYSTEM_USERCONTEXT, mDomain);
 //      }
-      String requiredProtocol = "https";// mStudioProps.getString(PROTOCOL_PROPERTY);
-  
-      String selectedProtocol = "https";// RequestUtil.resolveScheme(pRequest);
+      
+      String requiredProtocol = mServerProps.getString(PROTOCOL_PROPERTY);
+      String selectedProtocol = pRequest.getScheme();
   
       // Ensure that we are using the correct protocol (https by default);
       if (!requiredProtocol.equals(selectedProtocol)) {
@@ -475,7 +475,14 @@ public class IDEWebBean{
   }
 
   public String getProperty(String pPropName) throws Exception {
-    return mServerProps.getString(pPropName);
+    String props = null;
+    try {
+      props = mServerProps.getString(pPropName);
+    } catch (Exception e) {
+      System.out.println(e);
+      e.printStackTrace();
+    }
+    return props;
   }
 
   public Map<String, String> getDocsLinks() throws Exception {
