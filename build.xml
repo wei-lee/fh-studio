@@ -27,7 +27,7 @@
   <target name="compile">
     <mkdir dir="${basedir}/src/main/webapp/studio/WEB-INF/classes"/>
     <mkdir dir="${basedir}/src/main/webapp/studio/WEB-INF/lib"/>
-    <javac destdir="${basedir}/src/main/webapp/studio/WEB-INF/classes" 
+    <javac destdir="bin" 
       debug="on" 
       srcdir="${src}" 
       includeantruntime="false">
