@@ -116,6 +116,12 @@ public class IDEWebBean{
       StringEntity entity = new StringEntity("{\"domain\":\"apps\"}");
       post.setEntity(entity);
       
+      // Send requestor's cookie if available
+      Cookie cookie = getCookie("feedhenry", pRequest);
+      if (null != cookie) {
+        post.addHeader("Cookie", "feedhenry="+ cookie.getValue());
+      }
+      
       HttpResponse response = client.execute(post);
       HttpEntity resEntity = response.getEntity();
       if (resEntity != null) {
