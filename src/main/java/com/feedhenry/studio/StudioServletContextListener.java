@@ -15,7 +15,7 @@ public class StudioServletContextListener implements ServletContextListener {
     try {
       System.out.println("===============STUDIO STOPPING================");
       System.out.println(format.format(new Date()));
-      System.out.println("=============================================");
+      System.out.println("==============================================");
     } catch (Exception e) {
       System.out.println(e);
       e.printStackTrace();
