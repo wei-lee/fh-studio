@@ -12,16 +12,30 @@ public class StudioServletContextListener implements ServletContextListener {
 
   @Override
   public void contextDestroyed(ServletContextEvent arg0) {
-    System.out.println("=============================================");
-    System.out.println("Studio stopped (" + format.format(new Date()) + ")");
-    System.out.println("=============================================");
+    try {
+      System.out.println("===============STUDIO STOPPING================");
+      System.out.println(format.format(new Date()));
+      System.out.println("=============================================");
+    } catch (Exception e) {
+      System.out.println(e);
+      e.printStackTrace();
+      System.exit(1);
+    }
   }
 
   @Override
   public void contextInitialized(ServletContextEvent arg0) {
-    System.out.println("=============================================");
-    System.out.println("Studio started (" + format.format(new Date()) + ")");
-    System.out.println("=============================================");
+    try {
+      VersionBean vb = new VersionBean();
+      System.out.println("===============STUDIO STARTING================");
+      System.out.println(format.format(new Date()));
+      System.out.println(vb.getReleaseInfo().toString(2));
+      System.out.println("==============================================");
+    } catch (Exception e) {
+      System.out.println(e);
+      e.printStackTrace();
+      System.exit(1);
+    }
   }
 
 }

@@ -62,6 +62,25 @@
     <servlet-name>studio</servlet-name>
     <jsp-file>/ide/index-dev.html</jsp-file> 
   </servlet-->
+  
+  <servlet>
+     <servlet-name>version</servlet-name>
+     <jsp-file>/sys/info/version.jsp</jsp-file>
+  </servlet>  
+  <servlet-mapping>
+    <servlet-name>version</servlet-name>
+    <url-pattern>/sys/info/version</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+     <servlet-name>ping</servlet-name>
+     <jsp-file>/sys/info/ping.jsp</jsp-file>
+  </servlet>  
+  <servlet-mapping>
+    <servlet-name>ping</servlet-name>
+    <url-pattern>/sys/info/ping</url-pattern>
+  </servlet-mapping>
+  
   <servlet-mapping>
     <servlet-name>jsp</servlet-name>
     <url-pattern>*.htm</url-pattern>

@@ -5,9 +5,9 @@
   <property name="lib"  value="${basedir}/lib" />
   <property name="dist" value="${basedir}/dist" />
   <property name="out"  value="${basedir}/bin"/>
-  <property name="webinf"  value="${basedir}/src/main/webapp/studio/WEB-INF"/>
-  <property name="dep-classes"  value="${webinf}/classes"/>
-  <property name="dep-lib"  value="${webinf}/lib"/>
+  <property name="web-inf"  value="${basedir}/src/main/webapp/studio/WEB-INF"/>
+  <property name="dep-classes"  value="${web-inf}/classes"/>
+  <property name="dep-lib"  value="${web-inf}/lib"/>
   <property name="main-res" value="${basedir}/src/main/resources" />
 
   <!-- Allow access to environment variables through 'env' -->
@@ -16,9 +16,6 @@
   <!-- If build no. isn't passed in (by build server), default to dev version -->
   <property name="env.BUILD_NUMBER" value="DEV-VERSION"/>
 
-  <available file="${basedir}/target-eclipse" type="dir" 
-    property="eclipse.target.exists"/>
-
   <path id="compile.classpath">
     <pathelement location="${out}"/>
     <pathelement location="${main-res}"/>
@@ -26,42 +23,60 @@
       <include name="*.jar"/>
     </fileset>
   </path>
+	
+	<target name="clean">
+    <delete quiet="true" includeEmptyDirs="yes">
+      <fileset dir="${out}" includes="**/*.class"/>
+      <fileset dir="${dist}"/>
+      <fileset dir="${dep-lib}" includes="**/*.jar"/>
+      <fileset dir="${dep-classes}" includes="**/*.*"/>
+    </delete>
+  </target>
 
   <target name="compile">
-    <mkdir dir="${dep-classes}"/>
-    <mkdir dir="${dep-lib}"/>
-  	<mkdir dir="${dist}" />
     <mkdir dir="${out}" />
+  	
     <javac destdir="${out}" 
       debug="on" 
       srcdir="${src}" 
       includeantruntime="false">
       <classpath>
         <pathelement location="${out}"/>
-        <fileset dir="${basedir}/lib">
+        <fileset dir="${lib}">
           <include name="*.jar"/>
         </fileset>
       </classpath>
       <include name="**"/>
       <exclude name="tags/**"/>
     </javac>
+  	
   </target>
 	
 	<target name="deploy" depends="save-version-info, save-git-info, compile">
-    <sync todir="${dep-classes}" 
-      verbose="true" overwrite="true" failonerror="true">
+    <mkdir dir="${dep-classes}"/>
+    <mkdir dir="${dep-lib}"/>
+
+    <sync todir="${dep-classes}" verbose="true" overwrite="true" failonerror="true">
       <fileset dir="${out}"/>
     </sync>
-    <sync todir="${dep-lib}" 
-      verbose="true" overwrite="true" failonerror="true">
+
+    <copy todir="${dep-classes}" verbose="true" overwrite="true" failonerror="true">
+    	<fileset dir="${main-res}">
+    		<include name="**.txt"/>
+    	</fileset>
+    </copy>
+		
+    <sync todir="${dep-lib}" verbose="true" overwrite="true" failonerror="true">
       <fileset dir="lib">
         <exclude name="servletapi-2.4.jar"/>
       </fileset>
     </sync>
-    <touch file="${webinf}/web.xml" />
+    <touch file="${web-inf}/web.xml" />
 	</target>
 	
 	<target name="make-studio-war" depends="dist-version-info, save-git-info, deploy">
+    <mkdir dir="${dist}" />
+		
 		<delete file="${dist}/studio*.war" failonerror="false">
       <fileset dir="${dist}" includes="studio*.war"/>
     </delete>
@@ -78,7 +93,7 @@
         <include name="**/*.class" />
       </zipfileset>
 
-      <zipfileset dir="${webinf}" prefix="WEB-INF">
+      <zipfileset dir="${web-inf}" prefix="WEB-INF">
         <include name="web.xml" />
       </zipfileset>
 
