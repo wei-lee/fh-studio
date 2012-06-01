@@ -5,6 +5,9 @@
   <property name="lib"  value="${basedir}/lib" />
   <property name="dist" value="${basedir}/dist" />
   <property name="out"  value="${basedir}/bin"/>
+  <property name="webinf"  value="${basedir}/src/main/webapp/studio/WEB-INF"/>
+  <property name="dep-classes"  value="${webinf}/classes"/>
+  <property name="dep-lib"  value="${webinf}/lib"/>
   <property name="main-res" value="${basedir}/src/main/resources" />
 
   <!-- Allow access to environment variables through 'env' -->
@@ -25,8 +28,8 @@
   </path>
 
   <target name="compile">
-    <mkdir dir="${basedir}/src/main/webapp/studio/WEB-INF/classes"/>
-    <mkdir dir="${basedir}/src/main/webapp/studio/WEB-INF/lib"/>
+    <mkdir dir="${dep-classes}"/>
+    <mkdir dir="${dep-lib}"/>
   	<mkdir dir="${dist}" />
     <mkdir dir="${out}" />
     <javac destdir="${out}" 
@@ -45,17 +48,17 @@
   </target>
 	
 	<target name="deploy" depends="save-version-info, save-git-info, compile">
-    <sync todir="${basedir}/src/main/webapp/studio/WEB-INF/classes" 
+    <sync todir="${dep-classes}" 
       verbose="true" overwrite="true" failonerror="true">
       <fileset dir="${out}"/>
     </sync>
-    <sync todir="${basedir}/src/main/webapp/studio/WEB-INF/lib" 
+    <sync todir="${dep-lib}" 
       verbose="true" overwrite="true" failonerror="true">
       <fileset dir="lib">
         <exclude name="servletapi-2.4.jar"/>
       </fileset>
     </sync>
-    <touch file="${basedir}/src/main/webapp/studio/WEB-INF/web.xml" />
+    <touch file="${webinf}/web.xml" />
 	</target>
 	
 	<target name="make-studio-war" depends="dist-version-info, save-git-info, deploy">
@@ -67,19 +70,19 @@
     <echo message="Build Version: ${VERSION}" />
 
     <zip destfile="${dist}/studio-${VERSION}.war">
-      <zipfileset dir="${basedir}/src/main/webapp/studio/WEB-INF/lib" prefix="WEB-INF/lib" >
+      <zipfileset dir="${dep-lib}" prefix="WEB-INF/lib" >
         <include name="*.jar" />
       </zipfileset>
 
-      <zipfileset dir="${basedir}/src/main/webapp/studio/WEB-INF/classes" prefix="WEB-INF/classes" >
+      <zipfileset dir="${dep-classes}" prefix="WEB-INF/classes" >
         <include name="**/*.class" />
       </zipfileset>
 
-      <zipfileset dir="${basedir}/src/main/webapp/studio/WEB-INF" prefix="WEB-INF">
+      <zipfileset dir="${webinf}" prefix="WEB-INF">
         <include name="web.xml" />
       </zipfileset>
 
-      <zipfileset dir="${basedir}/src/main/resources" prefix="WEB-INF/classes">
+      <zipfileset dir="${main-res}" prefix="WEB-INF/classes">
         <include name="**/*.txt" />
       </zipfileset>
     	
