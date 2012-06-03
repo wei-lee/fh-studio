@@ -31,7 +31,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 public class StudioBean {
 
   // studio props endpoint
-  private static final String PROPS_ENDPOINT = "/box/srv/1.1/ide/<domain>/props/list";
+  private static final String PROPS_ENDPOINT = "/box/srv/1.1/studio/props";
 
   public static final String ALREADY_ACTIVATED = "already-activated";
   public static final String NO_SUCH_ACTIVATION = "no-such-activation";
@@ -125,8 +125,8 @@ public class StudioBean {
       
       String referer = pRequest.getHeader("referer");
       String scheme = pRequest.getScheme();
-      String host = pRequest.getLocalName();
-      String endpoint = PROPS_ENDPOINT.replace("<domain>", "apps");
+      String host = "127.0.0.1";//pRequest.getLocalName();
+      String endpoint = PROPS_ENDPOINT;
       int port = pRequest.getLocalPort();
       if (null != referer) {
         try {
@@ -138,6 +138,8 @@ public class StudioBean {
         } catch (MalformedURLException e) {
           // fail silently and use defaults above
         }
+      } else {
+        referer = scheme + "://" + pRequest.getLocalName();
       }
 
       // TODO: allow self-signed cert in development
@@ -152,6 +154,7 @@ public class StudioBean {
       // call studio props endpoint to get all properties
       HttpClient client = new DefaultHttpClient();
       HttpPost post = new HttpPost(uri);
+      post.setHeader("referer", referer);
 
       // Send requestor's cookie if available
       Cookie cookie = getCookie("feedhenry", pRequest);
@@ -171,6 +174,7 @@ public class StudioBean {
             sb.append(read);
             read = br.readLine();
           }
+          System.out.println("sb: " + sb.toString());
           mCoreProps = JSONObject.fromObject(sb.toString());
           if (null != mCoreProps && !"error".equals(mCoreProps.optString("status"))) {
             mStudioProps = mCoreProps.getJSONObject("clientProps");
