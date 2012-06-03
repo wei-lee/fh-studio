@@ -14,7 +14,7 @@
         <label id="postreceiveurl_label" class="insert-lang insert-help-icon" for="postreceiveurl"></label>
         <input id="postreceiveurl" name="postreceiveurl" type="text" readonly="true">
       </div>
-      <% if("true".equals(ide.getProperty("scm.ext.git.private.enabled"))){ %>
+      <% if("true".equals(studio.getProperty(studio.PROP_GITPRIVATEENABLED))){ %>
         <div class="fh-form-field fh-form-textarea-field ui-helper-reset ui-helper-clearfix">
           <label id="new_app_scmkey_label" class="insert-lang insert-help-icon" for="new_app_scmkey"></label>
           <textarea id="new_app_scmkey" name="scmkey" type="text"></textarea>

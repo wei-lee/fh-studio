@@ -2,4 +2,4 @@
 
 1.0.0
 ------------------------------------------------------------------------------
-* Make studio war artifact
+* Ant targets for compile, deploy (dev), and make-studio-war artifact

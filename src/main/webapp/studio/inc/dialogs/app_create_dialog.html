@@ -8,7 +8,7 @@
       <div class="form-field ui-helper-reset ui-helper-clearfix">
         <input type="radio" name="create_app_type_radio" id="create_app_template" next="create_app_from_template" /><label for="create_app_template" id="create_app_type_opt2" class="insert-lang insert-help-icon"></label>
       </div>
-      <% if("true".equals(ide.getProperty("scm.ext.git.enabled"))){ %>
+      <% if("true".equals(studio.getProperty(studio.PROP_GITENABLED))){ %>
       <div class="form-field ui-helper-reset ui-helper-clearfix">
         <input type="radio" name="create_app_type_radio" id="create_app_scm" next="create_app_from_scm" /><label for="create_app_scm" id="create_app_type_opt3" class="insert-lang insert-help-icon"></label>
       </div>    

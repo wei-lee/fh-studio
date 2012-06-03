@@ -7,7 +7,7 @@
     <div id="profile_view_account_label" class="view_label">Account Type: <span class="profile_view_account"></span></div>
     </div>                                                  
 
-    <% if("local".equals(ide.getProperty("auth.type"))){ %>
+    <% if("local".equals(studio.getProperty(studio.PROP_AUTHTYPE))){ %>
   	<div id="profile_edit_details">
       <form id="profile_changepassword">
   	    <fieldset>

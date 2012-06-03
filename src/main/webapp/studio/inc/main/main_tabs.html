@@ -3,25 +3,25 @@
   <%@ include file="../dialogs/connectivity_dialog.html"%>
 </div>
 <ul id="main_tabs_buttons" class="ui-no-corner-bottom">
- <% if (ide.inGroup(com.feedhenry.studio.IDEWebBean.GROUP_DEVELOPER)) { %>
+ <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER)) { %>
  <li class="home-tab inactive_home"><a id="home_tab" href="#tabs-4">Dashboard</a></li>
  <li class="apps-tab inactive_apps"><a id="apps_tab" href="#tabs-1">Apps</a></li>
  <li class="community-tab inactive_community"><a id="community_tab" href="#tabs-2">Community</a></li>
  <%}%>
   
-  <% if (ide.inGroup(com.feedhenry.studio.IDEWebBean.GROUP_REPORTING)) { %>
+  <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_REPORTING)) { %>
     <li class="reporting-tab"><a id="reporting_tab" href="#tabs-5">Reporting</a></li>
   <% } %>
   
-  <% if (ide.inGroup(com.feedhenry.studio.IDEWebBean.GROUP_ARM)) { %>
+  <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_ARM)) { %>
     <li class="arm-tab"><a id="arm_tab" href="#tabs-6">Admin</a></li>
   <% } %>
-  <% if (ide.inGroup(com.feedhenry.studio.IDEWebBean.GROUP_DEVELOPER)) { %>
+  <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER)) { %>
   <li class="account-tab inactive_account"><a id="account_tab" href="#tabs-3">My Account</a></li>
   <%}%>
 </ul>
 <div id="main_tabs_panels" class="ui-layout-content">
- <% if (ide.inGroup(com.feedhenry.studio.IDEWebBean.GROUP_DEVELOPER)) { %>
+ <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER)) { %>
   <%@ include file="home_tab.html" %>
   
   <%@ include file="apps_tab.html" %>
@@ -29,15 +29,15 @@
   <%@ include file="community_tab.html" %>
  <%}%>
   
-  <% if (ide.inGroup(com.feedhenry.studio.IDEWebBean.GROUP_REPORTING)) { %>
+  <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_REPORTING)) { %>
     <%@ include file="reporting_tab.html" %>
   <% } %>
   
-  <% if (ide.inGroup(com.feedhenry.studio.IDEWebBean.GROUP_ARM)) { %>
+  <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_ARM)) { %>
     <%@ include file="arm_tab.html" %>
   <% } %>
   
- <% if (ide.inGroup(com.feedhenry.studio.IDEWebBean.GROUP_DEVELOPER)) { %>
+ <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER)) { %>
   <%@ include file="account_tab.html" %>
  <%}%>
   

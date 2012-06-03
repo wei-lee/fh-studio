@@ -28,7 +28,7 @@
       <li id="configuration_embed" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default ui-state-active"><a>Embed</a></li>
       <li id="configuration_iphone" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>iPhone</a></li>
       <li id="configuration_ipad" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>iPad</a></li>
-      <% if(ide.getProps().optBoolean("ios-universal-enabled")){%>
+      <% if(studio.getProps().optBoolean("ios-universal-enabled")){%>
        <li id="configuration_ios" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>iOS Universal</a></li>
       <%}%>
       <li id="configuration_android" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>Android</a></li>
@@ -43,7 +43,7 @@
   <div>
     <ul class="ui-menu">
       <li id="debug_logging" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default ui-state-active"><a>Logging</a></li>
-      <% if(ide.getProps().optBoolean("stats-enabled")){ %>
+      <% if(studio.getProps().optBoolean("stats-enabled")){ %>
        <li id="status" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default ui-state-active"><a>Status</a></li>
       <%}%>
       <li id="staging" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default ui-state-active"><a>Staging</a></li>
@@ -51,7 +51,7 @@
     </ul>
   </div>
  
-  <% if(ide.getProps().optBoolean("enable-per-app-metrics")){ %>
+  <% if(studio.getProps().optBoolean("enable-per-app-metrics")){ %>
   <h3 id="accordion_item_report" class="ui-accordion-header-last"><a href="#">Reporting</a></h3>
   <div>
     <ul class="ui-menu">
@@ -65,7 +65,7 @@
   </div>
   <%}%>
   
-  <% if(ide.getProps().optBoolean("enable-push-notification")){ %>
+  <% if(studio.getProps().optBoolean("enable-push-notification")){ %>
   <h3 id="accordion_item_push" class="ui-accordion-header-last"><a href="#">Push Notification</a></h3>
   <div>
     <ul class="ui-menu">

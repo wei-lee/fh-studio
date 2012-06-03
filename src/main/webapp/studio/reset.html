@@ -1,34 +1,22 @@
-
-
-<%@ page contentType="text/html"
-         import="java.util.*
-                ,org.tssg.millicore.server.*
-                ,org.apache.log4j.*
-                "
-         pageEncoding="UTF-8"
-         session="false"
-%><jsp:useBean id="ide" scope="request" class="com.feedhenry.studio.IDEWebBean"></jsp:useBean>
-<%!
-  Logger errlog = Common.selog;
-%>
+<%@ page contentType="text/html" pageEncoding="UTF-8" session="false" trimDirectiveWhitespaces="true"%>
+<jsp:useBean id="studio" scope="request" class="com.feedhenry.studio.StudioBean"></jsp:useBean>
 <%
-String pageName = com.feedhenry.studio.IDEWebBean.IDE_RESET;
-ide.init( application );
+String pageName = com.feedhenry.studio.StudioBean.IDE_RESET;
+studio.init(application);
 try {
-  ide.initreq( request, response, pageName );
+  studio.initreq( request, response, pageName );
 %>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html>
 <html>
-
   <head>
     <!-- common head elements -->
     <%@ include file="inc/head/common.html"%>
     
     <!-- page specific scripts -->
     <script>
-      var TOKEN = "<%= ide.getResetToken()%>";
+      var TOKEN = "<%= studio.getResetToken()%>";
     </script>
-    <script src="/static/c/<%= ide.getStaticAssetPath("ide/js/init/ResetInit.js") %>" type="text/javascript"></script>
+    <script src="/studio/static/js/init/ResetInit.js" type="text/javascript"></script>
     
   </head>
   
@@ -41,6 +29,6 @@ try {
 </html>
 <%
 } catch( Exception e ) {
-  errlog.error("ide",e);
+  studio.error(e);
 }
 %>

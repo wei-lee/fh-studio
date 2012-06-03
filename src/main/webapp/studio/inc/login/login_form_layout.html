@@ -3,7 +3,7 @@
   
   <%@ include file="forgot_form.html"%>
  
-  <% if("true".equals(ide.getProperty("account.registration.free"))){ %>
+  <% if("true".equals(studio.getProperty(studio.PROP_FREEREGISTRATION))){ %>
     <%@ include file="register_form.html"%>  
   <% } %>
   

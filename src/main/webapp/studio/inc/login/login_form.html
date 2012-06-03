@@ -1,7 +1,7 @@
 
 <% 
 String loginFormClass = "input-form";
-if("false".equals(ide.getProperty("account.registration.free"))){ 
+if("false".equals(studio.getProperty(studio.PROP_FREEREGISTRATION))){ 
   loginFormClass = "input-form center-form";
 }
 %>
@@ -16,7 +16,7 @@ if("false".equals(ide.getProperty("account.registration.free"))){
     <div class="form-field ui-helper-clearfix">
        <label class="input-form-text" for="p">Password:</label><input name="p" type="password">
     </div>
-    <input id="login_domain" type="hidden" name="d" value="<%= ide.getLoginDomain() %>">
+    <input id="login_domain" type="hidden" name="d" value="<%= studio.getLoginDomain() %>">
     <div class="form-field submit-field ui-helper-clearfix">
       <label id="login_form_error" class="input-form-error input-form-text error"></label>
       <input type="button" id="login_button" class="btn btn-primary right" value="Login">

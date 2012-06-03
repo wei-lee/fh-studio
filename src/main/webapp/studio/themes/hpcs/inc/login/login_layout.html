@@ -27,14 +27,14 @@
 		</div>
 
      <div class="container">
-      <a href="/"><img class="logoWest" src="/static/c/<%= ide.getStaticAssetPath("ide/themes/enterprise/img/feedhenry_logo.png")%>" /></a>
-      <img class="logoEast" src="<%= ide.getThemeStaticAssetPath("/img/hpcloud_logo.png")%>" />
+      <a href="/"><img class="logoWest" src="/studio/static/themes/enterprise/img/feedhenry_logo.png" /></a>
+      <img class="logoEast" src="<%= studio.getThemeStaticAssetPath("/img/hpcloud_logo.png")%>" />
   
       <%@ include file="login_center_layout.html"%>
   
 		  <footer>
 		    <p style="float: left">&copy; Feedhenry 2012</p>
-		    <p class="tab-footer" style="float:right"><%=ide.getProperty("studio.landing.legaltext")%></p>
+		    <p class="tab-footer" style="float:right"><%=studio.getProperty(studio.PROP_LANDINGLEGALTEXT)%></p>
 		  </footer>    
      </div>
    </div>

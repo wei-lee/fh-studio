@@ -1,28 +1,20 @@
-<%@ page contentType="text/html"
-         import="java.util.*
-                ,org.tssg.millicore.server.*
-                ,org.apache.log4j.*
-                "
-         pageEncoding="UTF-8"
-         session="false"
-%><jsp:useBean id="ide" scope="request" class="com.feedhenry.studio.IDEWebBean"></jsp:useBean>
-<%!
-  Logger errlog = Common.selog;
-%>
+<%@ page contentType="text/html" pageEncoding="UTF-8" session="false" trimDirectiveWhitespaces="true"
+    import="java.util.Map" %>
+<jsp:useBean id="studio" scope="request" class="com.feedhenry.studio.StudioBean"></jsp:useBean>
 <%
-String pageName = com.feedhenry.studio.IDEWebBean.IDE_LANDING;
-ide.init( application );
+studio.init( application );
+String pageName = com.feedhenry.studio.StudioBean.IDE_LANDING;
 try {
-  if ( ide.initreq( request, response, pageName ) ) {
-    if( ide.canProceed( request, response, pageName ) ) {
+  if( studio.initreq( request, response, pageName ) ) {
+    if( studio.canProceed( request, response, pageName ) ) {
 
       String btnText = "Login";
       String btnTarget = "/?a=login";    
-      if( ide.isLoggedIn() ) {
+      if( studio.isLoggedIn() ) {
         btnText = "App Studio";
         btnTarget = "/?a=index";
       }
-      Map docLinks = ide.getDocsLinks();
+      Map docLinks = studio.getDocsLinks();
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -32,17 +24,17 @@ try {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <link rel="shortcut icon" href="<%= ide.getThemeStaticAssetPath("/img/favicon.ico") %>"></link>
+    <link rel="shortcut icon" href="<%= studio.getThemeStaticAssetPath("/img/favicon.ico") %>"></link>
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
     <!--[if lt IE 9]>
-      <script src="<%= ide.getThemeStaticAssetPath("/js/html5shim.js")%>"></script>
+      <script src="<%= studio.getThemeStaticAssetPath("/js/html5shim.js")%>"></script>
     <![endif]-->
 
     <!-- Le styles -->
-    <link rel="stylesheet" href="<%= ide.getThemeStaticAssetPath("/css/bootstrap.min.css")%>">
-    <link rel="stylesheet" href="<%= ide.getThemeStaticAssetPath("/css/style.css")%>">
-    <link rel="stylesheet" href="/static/c/<%= ide.getStaticAssetPath("ide/themes/default/css/header_links.css")%>">
+    <link rel="stylesheet" href="<%= studio.getThemeStaticAssetPath("/css/bootstrap.min.css")%>">
+    <link rel="stylesheet" href="<%= studio.getThemeStaticAssetPath("/css/style.css")%>">
+    <link rel="stylesheet" href="/studio/static/themes/default/css/header_links.css">
     <style type="text/css">
       body {
         padding-top: 60px;
@@ -53,7 +45,7 @@ try {
     </style>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-  <script src="<%= ide.getThemeStaticAssetPath("/js/bootstrap-tabs.js")%>"></script>
+  <script src="<%= studio.getThemeStaticAssetPath("/js/bootstrap-tabs.js")%>"></script>
   <script type="text/javascript">
     $('.tabs').tabs();
     
@@ -88,11 +80,11 @@ try {
   
     <!-- Mixpanel stuff -->
 		<script type="text/javascript">
-		    var mpEnabled = <%=ide.getProperty("studio.landing.mixpanel.enabled")%>;
-        var mpTestMode = <%=ide.getProperty("studio.landing.mixpanel.test")%>;
+		    var mpEnabled = <%=studio.getProperty(studio.PROP_LANDINGMIXPANELENABLED)%>;
+        var mpTestMode = <%=studio.getProperty(studio.PROP_LANDINGMIXPANELTEST)%>;
 		    var mpq = [];
 		    if (mpEnabled) {
-	        mpq.push(["init", "<%=ide.getProperty("studio.landing.mixpanel.apikey")%>"]);
+	        mpq.push(["init", "<%=studio.getProperty(studio.PROP_LANDINGMIXPANELKEY)%>"]);
 	        (function(){var b,a,e,d,c;b=document.createElement("script");b.type="text/javascript";
 	        b.async=true;b.src=(document.location.protocol==="https:"?"https:":"http:")+
 	        "//api.mixpanel.com/site_media/js/api/mixpanel.js";a=document.getElementsByTagName("script")[0];
@@ -105,10 +97,10 @@ try {
 	        }
 		    }
 
-        var gAnalyticsEnabled = <%=ide.getProperty("studio.landing.google.analytics.enabled")%>;
+        var gAnalyticsEnabled = <%=studio.getProperty(studio.PROP_LANDINGGOOGLEENABLED)%>;
         var _gaq = _gaq || [];
         if (gAnalyticsEnabled) {
-          _gaq.push(['_setAccount', '<%=ide.getProperty("studio.landing.google.analytics.apikey")%>']);
+          _gaq.push(['_setAccount', '<%=studio.getProperty(studio.PROP_LANDINGGOOGLEKEY)%>']);
           _gaq.push(['_trackPageview']);
 
           (function() {
@@ -134,8 +126,8 @@ try {
     </div>
 
     <div class="container">
-    <a href="/"><img class="logoWest" src="/static/c/<%= ide.getStaticAssetPath("ide/themes/enterprise/img/feedhenry_logo.png")%>" /></a>
-    <img class="logoEast" src="<%= ide.getThemeStaticAssetPath("/img/hpcloud_logo.png")%>" />
+    <a href="/"><img class="logoWest" src="/studio/static/themes/enterprise/img/feedhenry_logo.png" /></a>
+    <img class="logoEast" src="<%= studio.getThemeStaticAssetPath("/img/hpcloud_logo.png")%>" />
 
     <div id="activate_center_layout_north" class="ui-layout-north" style="display: none">
       <div id="info_area" class="dialog ui-corner-all"><p></p></div>
@@ -147,7 +139,7 @@ try {
 
     <!-- Main hero unit for a primary marketing message or call to action -->
     <ul class="tabs toptabs" data-tabs="tabs">
-      <% if (ide.isLoggedIn()) { %>
+      <% if (studio.isLoggedIn()) { %>
       <li class="active"><a href="#welcome">Getting Started</a></li>
       <% } else { %>
       <li class="active"><a href="#welcome">Welcome</a></li>
@@ -159,7 +151,7 @@ try {
 
       <div class="hero-unit tab-content pill-content tabs_container">
 
-      <% if (ide.isLoggedIn()) { %>
+      <% if (studio.isLoggedIn()) { %>
         <div id="welcome" class="row active">
         <div class="span7">
           <h2>Getting Started</h2>
@@ -231,7 +223,7 @@ $ fhc login email password</pre>
     </div>
   </div>
 
-  <% if (ide.isLoggedIn()) { %>
+  <% if (studio.isLoggedIn()) { %>
     <div class="hero-unit" id="tryit">
       <a href="#" onclick="switchTab('installing')" class="btn large primary bfob fhc_button">FHC CLI</a>
       <a href="<%=btnTarget%>" class="btn large primary bfob studio_button">App Studio</a>
@@ -246,19 +238,19 @@ $ fhc login email password</pre>
       <div class="row docs">
         <div class="span5">
           <h2>FeedHenry on Github</h2>
-          <img src="<%= ide.getThemeStaticAssetPath("/images/github.png")%>" alt="Github" class="pull-left thumb">
+          <img src="<%= studio.getThemeStaticAssetPath("/images/github.png")%>" alt="Github" class="pull-left thumb">
           <p>Browse or clone our selection of template apps - a great starting place with FeedHenry. Contribute to our open source projects.</p>
           <a class="btn" target="_blank" href="http://www.github.com/feedhenry">Browse the Repo &raquo;</a>
         </div>
         <div class="span6">
           <h2>Tutorials</h2>
-          <img src="<%= ide.getThemeStaticAssetPath("/images/tutorials.png")%>" alt="Tutorials" class="pull-left thumb">
+          <img src="<%= studio.getThemeStaticAssetPath("/images/tutorials.png")%>" alt="Tutorials" class="pull-left thumb">
           <p>Learn how to utilize the cloud to hash then cache data from multiple sources in the cloud. Localize an app, cloud powered language assets make corrections and updates a breeze.</p>
           <a class="btn" target="_blank" href="<%= docLinks.get("docs_tutorial")%>">Browse our tutorials &raquo;</a>
        </div>
         <div class="span5">
           <h2>Video Library</h2>
-          <img src="<%= ide.getThemeStaticAssetPath("/images/videos.png")%>" alt="Videos" class="pull-left thumb">
+          <img src="<%= studio.getThemeStaticAssetPath("/images/videos.png")%>" alt="Videos" class="pull-left thumb">
           <p>See the FeedHenry Video Library for some great quick start guides and tours of the product</p>
           <a class="btn" target="_blank" href="<%= docLinks.get("docs_video")%>">View our videos &raquo;</a>
           
@@ -269,19 +261,19 @@ $ fhc login email password</pre>
       <div class="row docs">
         <div class="span5">
           <h2>API Docs</h2>
-          <img src="<%= ide.getThemeStaticAssetPath("/images/apis.png")%>" alt="APIs" class="pull-left thumb">
+          <img src="<%= studio.getThemeStaticAssetPath("/images/apis.png")%>" alt="APIs" class="pull-left thumb">
           <p>Read about the $fh APIs that exist to make calls to the FeedHenry cloud, or access on-device functionality not normally available to HTML5 apps.</p>
           <a class="btn" target="_blank" href="<%= docLinks.get("docs_api")%>">Read the API Docs &raquo;</a>
         </div>
         <div class="span6">
           <h2>FHC Documentation</h2>
-          <img src="<%= ide.getThemeStaticAssetPath("/images/fhc.png")%>" alt="FHC" class="pull-left thumb">
+          <img src="<%= studio.getThemeStaticAssetPath("/images/fhc.png")%>" alt="FHC" class="pull-left thumb">
           <p>Learn about FHC, it's commands, and how you can use this utilitiy as a replacement for the studio to manage, edit and build your apps</p>
           <a class="btn" target="_blank" href="<%= docLinks.get("docs_fhc_more")%>">Learn about FHC &raquo;</a>
        </div>
         <div class="span5">
           <h2>Developer Blog</h2>
-          <img src="<%= ide.getThemeStaticAssetPath("/images/blog.png")%>" alt="Blog" class="pull-left thumb">  
+          <img src="<%= studio.getThemeStaticAssetPath("/images/blog.png")%>" alt="Blog" class="pull-left thumb">  
           <p>Read the FeedHenry developer blog, where you can find our latest blog articles </p>
           <a class="btn" target="_blank" href="http://developer.feedhenry.com/blog">View the Blog &raquo;</a>
           </div>
@@ -290,7 +282,7 @@ $ fhc login email password</pre>
 
       <footer>
         <p style="float: left">&copy; Feedhenry 2012</p>
-        <p class="tab-footer" style="float:right"><%=ide.getProperty("studio.landing.legaltext")%></p>
+        <p class="tab-footer" style="float:right"><%=studio.getProperty(studio.PROP_LANDINGLEGALTEXT)%></p>
       </footer>
 
     </div> <!-- /container -->
@@ -325,10 +317,6 @@ $ fhc login email password</pre>
     }
   }
 } catch( Exception e ) {
-  errlog.error("ide",e);
-  ide.addExplainError(e);
-}
-finally {
-  out.println(ide.outputExplain());
+  studio.error(e);
 }
 %>

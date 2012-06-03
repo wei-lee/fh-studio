@@ -41,7 +41,7 @@
   
   <%@ include file="../configuration/configuration_nokiawrt.html"%>
   
- <% if(ide.getProps().optBoolean("enable-per-app-metrics")){ %>
+ <% if(studio.getProps().optBoolean("enable-per-app-metrics")){ %>
   <%@ include file="../report/report_installsdest.html"%>
   <%@ include file="../report/report_installsdate.html"%>
   <%@ include file="../report/report_installsloc.html"%>
@@ -53,11 +53,11 @@
   <%@ include file="../debug/debug_logging.html"%>
   <%@ include file="../staging/staging.html"%>
 
-  <% if(ide.getProps().optBoolean("stats-enabled")){ %>
+  <% if(studio.getProps().optBoolean("stats-enabled")){ %>
    <%@ include file="../status/status.html"%>
   <%}%>
   
- <% if(ide.getProps().optBoolean("enable-push-notification")){ %>
+ <% if(studio.getProps().optBoolean("enable-push-notification")){ %>
   <%@ include file="../push/push_notification.html"%>
  <%}%>
   

@@ -1,28 +1,28 @@
 <div id="header_user_info">
   
-<% if (ide.isLoggedIn()) { %>
+<% if (studio.isLoggedIn()) { %>
   <!--  only show user details if logged in -->
-  <span><%=ide.getEmail()%> (<%=ide.getAccountType()%>)</span>
+  <span><%=studio.getEmail()%> (<%=studio.getAccountType()%>)</span>
 <% } %>
 
-<% if ( ide.getProperty("studio.landing.auth").equals(com.feedhenry.studio.IDEWebBean.IDE_LANDING) || ide.getProperty("studio.landing.noauth").equals(com.feedhenry.studio.IDEWebBean.IDE_LANDING) ) { %>
-  <a href="/?a=<%=com.feedhenry.studio.IDEWebBean.IDE_LANDING%>" class="<%=pageName.equals(com.feedhenry.studio.IDEWebBean.IDE_LANDING) ? "active" : ""%>">Home</a>
+<% if ( studio.getProperty(studio.PROP_AUTHLANDING).equals(studio.IDE_LANDING) || studio.getProperty(studio.PROP_NOAUTHLANDING).equals(studio.IDE_LANDING) ) { %>
+  <a href="/?a=<%=studio.IDE_LANDING%>" class="<%=pageName.equals(studio.IDE_LANDING) ? "active" : ""%>">Home</a>
 <% } %>
 
-<% if (ide.isLoggedIn()) { %>
+<% if (studio.isLoggedIn()) { %>
   <!--  only show studio if logged in -->
-  <a href="/?a=<%=com.feedhenry.studio.IDEWebBean.IDE_INDEX%>" class="<%=pageName.equals(com.feedhenry.studio.IDEWebBean.IDE_INDEX) ? "active" : ""%>">Studio</a>
+  <a href="/?a=<%=studio.IDE_INDEX%>" class="<%=pageName.equals(studio.IDE_INDEX) ? "active" : ""%>">Studio</a>
 <% } %>
 
-  <a target="_blank" href="<%=ide.getProperty("studio-js-docs-url")%>">Docs</a>
-  <a target="_blank" href="<%=ide.getProperty("studio-js-support-url")%>">Support</a>
+  <a target="_blank" href="<%=studio.getProperty("docs-url")%>">Docs</a>
+  <a target="_blank" href="<%=studio.getProperty("support-url")%>">Support</a>
   
-<% if("true".equals(ide.getProperty("studio-js-hiring-link"))) { %>
+<% if("true".equals(studio.getProperty("hiring-link"))) { %>
   <!--  only show hiring link if switched on -->
-  <a target="_blank" href="<%=ide.getProperty("studio-js-hiring-url")%>">We're Hiring</a>
+  <a target="_blank" href="<%=studio.getProperty("hiring-url")%>">We're Hiring</a>
 <% } %>
 
-<% if (ide.isLoggedIn()) { %>
+<% if (studio.isLoggedIn()) { %>
   <script>
   var signOut = function () { 
     $.post('/box/srv/1.1/act/sys/auth/logout',
@@ -34,7 +34,7 @@
   </script>
   <a onclick="signOut();">Sign Out</a>
 <% } else { %>
-  <a href="/?a=<%=com.feedhenry.studio.IDEWebBean.IDE_LOGIN%>" class="<%=pageName.equals(com.feedhenry.studio.IDEWebBean.IDE_LOGIN) ? "active" : ""%>">Login/Register</a>
+  <a href="/?a=<%=studio.IDE_LOGIN%>" class="<%=pageName.equals(studio.IDE_LOGIN) ? "active" : ""%>">Login/Register</a>
 <% } %>
   
 
