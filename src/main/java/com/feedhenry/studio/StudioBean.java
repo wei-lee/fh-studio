@@ -78,9 +78,9 @@ public class StudioBean {
   public static final String PROP_FREEREGISTRATION = "freeRegistration";
   public static final String PROP_AUTHTYPE = "authType";
   public static final String PROP_LANDINGLEGALTEXT = "landingLegaltext";
-  public static final String PROP_LANDINGMIXPANELENABLED = "ladingMixpanelEnabled";
-  public static final String PROP_LANDINGMIXPANELTEST = "ladingMixpanelTest";
-  public static final String PROP_LANDINGMIXPANELKEY = "ladingMixpanelKey";
+  public static final String PROP_LANDINGMIXPANELENABLED = "landingMixpanelEnabled";
+  public static final String PROP_LANDINGMIXPANELTEST = "landingMixpanelTest";
+  public static final String PROP_LANDINGMIXPANELKEY = "landingMixpanelKey";
   public static final String PROP_LANDINGGOOGLEENABLED = "landingGoogleEanbled";
   public static final String PROP_LANDINGGOOGLEKEY = "landingGoogleKey";
 
