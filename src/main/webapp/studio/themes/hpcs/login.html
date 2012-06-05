@@ -22,11 +22,11 @@ try {
       skipjQueryLayout = true;
     </script>
     
-    <script src="/studio/static/js/init/LoginInit.js" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("js/init/LoginInit.js")%>" type="text/javascript"></script>
     <link rel="stylesheet" href="<%= studio.getThemeStaticAssetPath("/css/bootstrap.min.css")%>">
     <link rel="stylesheet" href="<%= studio.getThemeStaticAssetPath("/css/style.css") %>" ></link>
     <link rel="stylesheet" href="<%= studio.getThemeStaticAssetPath("/css/login.css") %>" ></link>
-    <link rel="stylesheet" href="/studio/static/themes/default/css/header_links.css">
+    <link rel="stylesheet" href="<%=studio.getStaticAssetPath("themes/default/css/header_links.css")%>">
     <style type="text/css">
       body {
         padding-top: 60px;

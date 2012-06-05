@@ -1,0 +1,74 @@
+html, body {
+  height: 100%;  
+}
+
+#logo {
+  text-align: center;
+}
+
+a#forgot, a:active#forgot, a:hover#forgot a:hover{
+  color: #fff;
+  text-decoration: none;  
+}
+
+.forgot-password {
+	display:inline;
+}
+
+#forgot {
+	font-size:0.9em;
+}
+
+#login_form {
+  float: none;
+  margin-bottom: 0px;
+}
+
+label.error {
+  padding-top: 1px;
+  padding-bottom: 10px;
+}
+
+#login_form_error, #register_form_error {
+  color: white !important;  
+  width: 100% !important;
+  font-size: 1.1em;
+}
+
+#main_layout_center, #main_layout_east, #main_layout_west {
+	border-bottom: none;
+}
+
+#main_layout_south {
+  background-color: #FFF;
+  border-top: none;
+}
+#footer {
+	border-top: 1px solid #EEE;
+	font-size: 1em;
+	text-align: center;
+	font-weight: normal;
+	line-height: 18px;
+	margin-bottom: 9px;
+}
+
+#info_area {
+  width: 70%;
+  margin-left: 15%;
+  background-color: #EEE;
+  border : 1px solid #404040;
+}
+
+#login_center_layout_north {
+  margin-top: 15px;	
+}
+
+#info_area p {
+	font-size: 1.1em;
+	margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+#login_center_layout_north {
+	height : 60px !important;
+}

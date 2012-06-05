@@ -16,7 +16,7 @@ try {
     <script>
       var TOKEN = "<%= studio.getResetToken()%>";
     </script>
-    <script src="/studio/static/js/init/ResetInit.js" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("js/init/ResetInit.js")%>" type="text/javascript"></script>
     
   </head>
   

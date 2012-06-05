@@ -47,6 +47,11 @@ public class StudioBean {
 
   public static final String STUDIO_PAGES_GROUP_COOKIE = "feedhenry-studio-pages-group";
 
+  // Ok to have these here instead of in millicore as the endpoints used
+  // by the studio would dictate which role is required for particular 
+  // features i.e. reporting endpoints require 'analytics' role
+  // User's role is returned from millicore anyways, which is the important part
+  // If perms for a particular endpoint/s change, we need to update these
   public static final String[] GROUP_REPORTING = new String[] { "analytics" };
   public static final String[] GROUP_ARM = new String[] { "portaladmin" };
   public static final String[] GROUP_DEVELOPER = new String[] { "dev", "devadmin" };
@@ -54,7 +59,7 @@ public class StudioBean {
   public static final String THEME_DEFAULT = "default";
   public static final String THEME_ENTERPRISE = "enterprise";
 
-  public static final Log log = LogFactory.getLog("IDEWebBean");
+  public static final Log log = LogFactory.getLog("StudioBean");
 
   public static final String PROP_PROTOCOL = "studioProtocol";
   public static final String PROP_LEGACYDIG = "legacyDig";
@@ -94,11 +99,10 @@ public class StudioBean {
   private String mTheme = null;
   private JSONObject mStudioProps = null;
   private JSONObject mCoreProps = null;
-  private JSONObject mUC = null;
+  private JSONObject mUserProps = null;
 
   public void init(ServletContext pServletContext) throws Exception {
     mServletContext = pServletContext;
-    System.out.println("IDEWebBean.init()");
   }
 
   public boolean initreq(HttpServletRequest pRequest, HttpServletResponse pResponse, String pPageName) throws Exception {
@@ -132,7 +136,7 @@ public class StudioBean {
         try {
           URL url = new URL(referer);
           scheme = url.getProtocol();
-          host = url.getHost();
+          // lets use 127.0.0.1 due to hairpinning issues on dns. host = url.getHost();
           port = url.getPort();
 
         } catch (MalformedURLException e) {
@@ -144,12 +148,9 @@ public class StudioBean {
 
       // TODO: allow self-signed cert in development
       scheme = "http";
-      // keytool -import -alias localcert -file ./server.crt -keystore
-      // /usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/security/cacerts -storepass
-      // changeit
+      // keytool -import -alias localcert -file ./server.crt -keystore /usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/security/cacerts -storepass changeit
 
       String uri = scheme + "://" + host + ((port < 0 || port == 80 || port == 443) ? "" : ":" + port) + endpoint;
-      System.out.println("Props endpoint: " + uri);
 
       // call studio props endpoint to get all properties
       HttpClient client = new DefaultHttpClient();
@@ -174,22 +175,18 @@ public class StudioBean {
             sb.append(read);
             read = br.readLine();
           }
-          System.out.println("sb: " + sb.toString());
           mCoreProps = JSONObject.fromObject(sb.toString());
-          if (null != mCoreProps && !"error".equals(mCoreProps.optString("status"))) {
+          System.out.println("mCoreProps: " + mCoreProps.toString(2));
+          if (!"error".equals(mCoreProps.optString("status"))) {
             mStudioProps = mCoreProps.getJSONObject("clientProps");
-            System.out.println("mStudioProps: " + mStudioProps.toString(2));
             mDomain = mStudioProps.getString("domain");
-            mUC = mCoreProps.optJSONObject("userProps");
-            if (null != mUC) {
-              System.out.println("mUC: " + mUC.toString(2));
-            }
+            mUserProps = mCoreProps.optJSONObject("userProps");
             proceed = true;
           } else {
             // unable to get props info from core
             // TODO: send pretty 500 page
             proceed = false;
-            System.out.println("Got error from props endpoint: " + mCoreProps != null ? mCoreProps.toString() : "null");
+            System.out.println("Got error from props endpoint, sending 500");
             pResponse.sendError(500);
           }
         } catch (Throwable e) {
@@ -238,10 +235,8 @@ public class StudioBean {
   public boolean canProceed(HttpServletRequest pRequest, HttpServletResponse pResponse, String pPageName) throws Exception {
     boolean canProceed = false;
 
-    JSONObject uc = new JSONObject();
-
-    // check permissions
-    this.mLoggedIn = checkAuthenticatedUser(pRequest, uc);
+    // If we have a userProps object, we're logged in
+    this.mLoggedIn = mUserProps != null;
 
     String reqUri = pRequest.getRequestURI();
     String reqPage = pRequest.getParameter("a");
@@ -293,32 +288,17 @@ public class StudioBean {
     return canProceed;
   }
 
-  /**
-   * TODO This method updates member field mUC
-   */
-  private boolean checkAuthenticatedUser(HttpServletRequest pRequest, JSONObject uc) throws Exception {
-
-    boolean auth = false;
-
-    // If we have a user object, we're logged in ok
-    if (mUC != null) {
-      auth = true;
-    }
-
-    return auth;
-  }
-
   public boolean isLoggedIn() {
     return mLoggedIn;
   }
 
   public String getEmail() {
-    String email = mUC.optString("email");
+    String email = mUserProps.optString("email");
     return email;
   }
 
   public String getAccountType() {
-    String accountType = mUC.optString("accountType");
+    String accountType = mUserProps.optString("accountType");
     return accountType;
   }
 
@@ -552,20 +532,13 @@ public class StudioBean {
   }
 
   public String getStaticAssetPath(String pPath) throws Exception {
-    // String path = StpgAssetManager.insertAssetVersion(pPath,
-    // getLoginDomain());
-    String out = pPath;
-    /*
-     * long v = 42; int lastslash = pPath.lastIndexOf("/"); if( -1 < lastslash )
-     * { out =
-     * pPath.substring(0,lastslash)+"/"+v+"-"+pPath.substring(lastslash+1); }
-     */
+    String out = "/studio/static/" + pPath;
     return out;
   }
 
   public String getThemeStaticAssetPath(String pPath) throws Exception {
     String fullPath = "themes/" + getThemeName() + pPath;
-    String staticPath = "/studio/static/" + getStaticAssetPath(fullPath);
+    String staticPath = getStaticAssetPath(fullPath);
     return staticPath;
   }
 
@@ -575,11 +548,11 @@ public class StudioBean {
   public boolean inGroup(String[] groups) throws Exception {
     boolean inGroup = false;
     // Make sure we're logged in
-    if (null != mUC) {
+    if (null != mUserProps) {
 
       for (int pI = 0; pI < groups.length; pI++) {
         String group = groups[pI];
-        if (mUC.getJSONArray("roles").contains(group)) {
+        if (mUserProps.getJSONArray("roles").contains(group)) {
           inGroup = true;
           break;
         }

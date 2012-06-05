@@ -16,169 +16,169 @@ try {
     
     <!-- page specific scripts -->
     
-    <!--[if lt IE 9]><script src="/studio/static/common/js/ui/thirdparty/jquery/plugins/jqplot/excanvas.js" type="text/javascript"></script><![endif]-->
+    <!--[if lt IE 9]><script src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/jquery/plugins/jqplot/excanvas.js")%>" type="text/javascript"></script><![endif]-->
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <!-- script src="/static/ide/script/<%= studio.getLanguage()%>/<%= studio.getAssetCtrlVal() %>-scripts.js" type="text/javascript"></script-->
 
 
-<script type="text/javascript" src="/studio/static/common/js/ajax/ASyncServerTask.js"></script>
-<script type="text/javascript" src="/studio/static/js/application/Constants.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/Config.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/application.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/ShowHide.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/ServerInteraction.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/accordion/AccordionManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/accordion/AccountAccordionManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/accordion/AppsAccordionManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/accordion/ArmAccordionManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/accordion/arm/ArmusersAccordionManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/accordion/arm/ArmgroupsAccordionManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/accordion/arm/ArmdevicesAccordionManager.js"></script>
-    <!-- script type="text/javascript" src="/studio/static/js/application/accordion/CommunityAccordionManager.js"></script-->
-    <script type="text/javascript" src="/studio/static/js/application/accordion/ReportingAccordionManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/reporting/ReportingManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/apps/app/generate_app.controller.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/apps/app/AppSupport.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/apps/app/AppManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/apps/configuration/ConfigurationSupport.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/apps/configuration/ConfigurationManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/apps/configuration/IosConfigManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/apps/configuration/IPadConfigManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/apps/configuration/PreviewConfigManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/apps/configuration/AndroidConfigManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/apps/configuration/IPhoneConfigManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/apps/configuration/StudioConfigManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/apps/configuration/EmbedConfigManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/apps/configuration/BlackberryConfigManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/apps/configuration/Windowsphone7ConfigManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/apps/configuration/NokiawrtConfigManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/apps/report/ReportManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/apps/template/TemplateSupport.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/apps/template/TemplateManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/apps/preview/PreviewSupport.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/apps/preview/PreviewManager.js"></script>    
-    <script type="text/javascript" src="/studio/static/js/application/apps/file/FileManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/apps/icon/IconManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/apps/editor/EditorSupport.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/apps/editor/EditorManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/apps/debug/DebugManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/apps/staging/StagingManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/apps/status/StatusManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/apps/push/PushNotificationManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/account/profile/ProfileManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/account/keys/keys.controller.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/account/resource/ResourceManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/account/resource/AppleResourceManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/account/resource/AndroidResourceManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/account/resource/BlackberryResourceManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/community/snippet/SnippetSupport.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/community/snippet/SnippetManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/arm/ArmManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/arm/ArmUserManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/arm/ArmAppManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/arm/ArmGroupManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/arm/ArmDeviceManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/dialog/DialogManager.js"></script>
+<script type="text/javascript" src="<%=studio.getStaticAssetPath("common/js/ajax/ASyncServerTask.js")%>"></script>
+<script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/Constants.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/Config.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/application.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/ShowHide.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/ServerInteraction.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/accordion/AccordionManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/accordion/AccountAccordionManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/accordion/AppsAccordionManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/accordion/ArmAccordionManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/accordion/arm/ArmusersAccordionManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/accordion/arm/ArmgroupsAccordionManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/accordion/arm/ArmdevicesAccordionManager.js")%>"></script>
+    <!-- script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/accordion/CommunityAccordionManager.js")%>"></script-->
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/accordion/ReportingAccordionManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/reporting/ReportingManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/apps/app/generate_app.controller.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/apps/app/AppSupport.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/apps/app/AppManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/apps/configuration/ConfigurationSupport.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/apps/configuration/ConfigurationManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/apps/configuration/IosConfigManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/apps/configuration/IPadConfigManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/apps/configuration/PreviewConfigManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/apps/configuration/AndroidConfigManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/apps/configuration/IPhoneConfigManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/apps/configuration/StudioConfigManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/apps/configuration/EmbedConfigManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/apps/configuration/BlackberryConfigManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/apps/configuration/Windowsphone7ConfigManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/apps/configuration/NokiawrtConfigManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/apps/report/ReportManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/apps/template/TemplateSupport.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/apps/template/TemplateManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/apps/preview/PreviewSupport.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/apps/preview/PreviewManager.js")%>"></script>    
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/apps/file/FileManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/apps/icon/IconManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/apps/editor/EditorSupport.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/apps/editor/EditorManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/apps/debug/DebugManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/apps/staging/StagingManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/apps/status/StatusManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/apps/push/PushNotificationManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/account/profile/ProfileManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/account/keys/keys.controller.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/account/resource/ResourceManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/account/resource/AppleResourceManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/account/resource/AndroidResourceManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/account/resource/BlackberryResourceManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/community/snippet/SnippetSupport.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/community/snippet/SnippetManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/arm/ArmManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/arm/ArmUserManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/arm/ArmAppManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/arm/ArmGroupManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/arm/ArmDeviceManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/dialog/DialogManager.js")%>"></script>
 
-    <script type="text/javascript" src="/studio/static/js/application/chart/ChartManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/chart/locator/ChartLocator.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/chart/locator/MetricsChartLocator.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/chart/data/DataLocator.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/chart/data/MetricsDataLocator.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/chart/painter/ChartPainter.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/chart/painter/GeoChartPainter.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/chart/painter/jqplot/jQPlotChartPainter.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/chart/painter/jqplot/LineChartPainter.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/chart/painter/jqplot/PieChartPainter.js"></script>
-    <!--script type="text/javascript" src="/studio/static/js/application/chart/painter/jqplot/BarChartPainter.js"></script-->
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/chart/ChartManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/chart/locator/ChartLocator.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/chart/locator/MetricsChartLocator.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/chart/data/DataLocator.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/chart/data/MetricsDataLocator.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/chart/painter/ChartPainter.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/chart/painter/GeoChartPainter.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/chart/painter/jqplot/jQPlotChartPainter.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/chart/painter/jqplot/LineChartPainter.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/chart/painter/jqplot/PieChartPainter.js")%>"></script>
+    <!--script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/chart/painter/jqplot/BarChartPainter.js")%>"></script-->
     
-    <script type="text/javascript" src="/studio/static/common/js/ui/thirdparty/zeroclipboard/ZeroClipboard.js"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/zeroclipboard/ZeroClipboard.js")%>"></script>
     
-    <script type="text/javascript" src="/studio/static/common/js/ui/thirdparty/highcharts/highcharts.js"></script>
-    <script type="text/javascript" src="/studio/static/common/js/ui/thirdparty/highcharts/exporting.js"></script>
-    <script type="text/javascript" src="/studio/static/common/js/ui/thirdparty/highcharts/moment.js"></script>
-    <script type="text/javascript" src="/studio/static/common/js/ui/thirdparty/highcharts/highcharts.theme.js"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/highcharts/highcharts.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/highcharts/exporting.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/highcharts/moment.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/highcharts/highcharts.theme.js")%>"></script>
     
-    <script type="text/javascript" src="/studio/static/js/application/stats/models/stats.mock.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/stats/models/stats.model.base.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/stats/models/stats.model.historical.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/stats/models/stats.model.historical.timers.js"></script>
-<!--     <script type="text/javascript" src="/studio/static/js/application/stats/models/stats.model.historical.gauges.js"></script> -->
-    <script type="text/javascript" src="/studio/static/js/application/stats/models/stats.model.historical.counters.js"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/stats/models/stats.mock.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/stats/models/stats.model.base.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/stats/models/stats.model.historical.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/stats/models/stats.model.historical.timers.js")%>"></script>
+<!--     <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/stats/models/stats.model.historical.gauges.js")%>"></script> -->
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/stats/models/stats.model.historical.counters.js")%>"></script>
     
-    <script type="text/javascript" src="/studio/static/js/application/reporting/models/reports.mock.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/reporting/models/reports.model.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/reporting/controllers/reports.controller.js"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/reporting/models/reports.mock.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/reporting/models/reports.model.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/reporting/controllers/reports.controller.js")%>"></script>
     
-    <script type="text/javascript" src="/studio/static/js/application/stats/views/stats.view.base.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/stats/views/stats.view.list.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/stats/views/stats.view.list.timers.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/stats/views/stats.view.list.counters.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/stats/views/stats.view.table.base.js"></script>
-<!--     <script type="text/javascript" src="/studio/static/js/application/stats/views/stats.view.table.gauge.js"></script> -->
-    <script type="text/javascript" src="/studio/static/js/application/stats/views/stats.view.table.timer.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/stats/views/stats.view.table.counter.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/stats/views/stats.view.chart.base.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/stats/views/stats.view.chart.counter.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/stats/views/stats.view.chart.timer.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/stats/views/stats.view.list.timers.js"></script>
-<!--     <script type="text/javascript" src="/studio/static/js/application/stats/views/stats.view.gauge.js"></script> -->
-<!--     <script type="text/javascript" src="/studio/static/js/application/stats/views/stats.view.timers.js"></script> -->
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/stats/views/stats.view.base.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/stats/views/stats.view.list.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/stats/views/stats.view.list.timers.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/stats/views/stats.view.list.counters.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/stats/views/stats.view.table.base.js")%>"></script>
+<!--     <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/stats/views/stats.view.table.gauge.js")%>"></script> -->
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/stats/views/stats.view.table.timer.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/stats/views/stats.view.table.counter.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/stats/views/stats.view.chart.base.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/stats/views/stats.view.chart.counter.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/stats/views/stats.view.chart.timer.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/stats/views/stats.view.list.timers.js")%>"></script>
+<!--     <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/stats/views/stats.view.gauge.js")%>"></script> -->
+<!--     <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/stats/views/stats.view.timers.js")%>"></script> -->
     
-    <script type="text/javascript" src="/studio/static/js/application/stats/controllers/stats.controller.js"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/stats/controllers/stats.controller.js")%>"></script>
 
-    <script type="text/javascript" src="/studio/static/common/js/ui/thirdparty/bootstrap/bootstrap.js"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/bootstrap/bootstrap.js")%>"></script>
 
-    <script type="text/javascript" src="/studio/static/js/application/tab/TabSupport.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/tab/TabManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/tab/HomeTabManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/tab/AppsTabManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/tab/CommunityTabManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/tab/AccountTabManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/tab/ReportingTabManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/tab/arm/ArmLayout.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/tab/arm/ArmUsersLayout.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/tab/arm/ArmGroupsLayout.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/tab/arm/ArmDevicesLayout.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/tab/ArmTabManager.js"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/tab/TabSupport.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/tab/TabManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/tab/HomeTabManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/tab/AppsTabManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/tab/CommunityTabManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/tab/AccountTabManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/tab/ReportingTabManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/tab/arm/ArmLayout.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/tab/arm/ArmUsersLayout.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/tab/arm/ArmGroupsLayout.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/tab/arm/ArmDevicesLayout.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/tab/ArmTabManager.js")%>"></script>
     
-    <script type="text/javascript" src="/studio/static/js/application/destinations/destination_general.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/destinations/destination_feedhenry.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/destinations/destination_blackberry.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/destinations/destination_android.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/destinations/destination_ios.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/destinations/destination_ipad.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/destinations/destination_iphone.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/destinations/destination_windowsphone7.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/destinations/destination_embed.js"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/destinations/destination_general.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/destinations/destination_feedhenry.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/destinations/destination_blackberry.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/destinations/destination_android.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/destinations/destination_ios.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/destinations/destination_ipad.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/destinations/destination_iphone.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/destinations/destination_windowsphone7.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/destinations/destination_embed.js")%>"></script>
     
-    <script type="text/javascript" src="/studio/static/js/model/ModelManager.js"></script>
-    <script type="text/javascript" src="/studio/static/js/model/models/Model.js"></script>
-    <script type="text/javascript" src="/studio/static/js/model/models/App.js"></script>
-    <script type="text/javascript" src="/studio/static/js/model/models/Template.js"></script>
-    <script type="text/javascript" src="/studio/static/js/model/models/User.js"></script>
-    <script type="text/javascript" src="/studio/static/js/model/models/Snippet.js"></script>
-    <script type="text/javascript" src="/studio/static/js/model/models/Resource.js"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/model/ModelManager.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/model/models/Model.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/model/models/App.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/model/models/Template.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/model/models/User.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/model/models/Snippet.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/model/models/Resource.js")%>"></script>
     
-    <script type="text/javascript" src="/studio/static/js/analytics/AnalyticsIntegration.js"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/analytics/AnalyticsIntegration.js")%>"></script>
     
 <!--     /* Location & name of language and model files determined by generator
-    <script type="text/javascript" src="/studio/static/js/lang/" + mParam + ".js"></script>
-    <script type="text/javascript" src="/studio/static/js/model/model.js"></script-->
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/lang/")%>" + mParam + ".js"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/model/model.js")%>"></script-->
     
-    <script type="text/javascript" src="/studio/static/js/prototype/layout.js"></script>
-    <script type="text/javascript" src="/studio/static/js/prototype/tabs.js"></script>
-    <script type="text/javascript" src="/studio/static/js/prototype/accordion.js"></script>
-    <script type="text/javascript" src="/studio/static/js/prototype/grid.js"></script>
-    <script type="text/javascript" src="/studio/static/js/prototype/codemirroreditorimpl.js"></script>
-    <script type="text/javascript" src="/studio/static/js/prototype/aceeditorimpl.js"></script>
-    <script type="text/javascript" src="/studio/static/js/prototype/treeview.js"></script>
-    <script type="text/javascript" src="/studio/static/js/prototype/dialog.js"></script>
-    <script type="text/javascript" src="/studio/static/js/prototype/wizard.js"></script>
-    <script type="text/javascript" src="/studio/static/js/prototype/progress_dialog.js"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/prototype/layout.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/prototype/tabs.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/prototype/accordion.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/prototype/grid.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/prototype/codemirroreditorimpl.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/prototype/aceeditorimpl.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/prototype/treeview.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/prototype/dialog.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/prototype/wizard.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/prototype/progress_dialog.js")%>"></script>
     
-    <script type="text/javascript" src="/studio/static/js/init/IdeInit.js"></script>
-    <script type="text/javascript" src="/studio/static/js/application/IDEManager.js"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/init/IdeInit.js")%>"></script>
+    <script type="text/javascript" src="<%=studio.getStaticAssetPath("js/application/IDEManager.js")%>"></script>
 
 
 

@@ -32,7 +32,7 @@ try {
     <!-- Le styles -->
     <link rel="stylesheet" href="<%= studio.getThemeStaticAssetPath("/css/bootstrap.min.css")%>">
     <link rel="stylesheet" href="<%= studio.getThemeStaticAssetPath("/css/style.css")%>">
-    <link rel="stylesheet" href="/studio/static/themes/default/css/header_links.css">
+    <link rel="stylesheet" href="<%=studio.getStaticAssetPath("themes/default/css/header_links.css")%>">
     <style type="text/css">
       body {
         padding-top: 60px;
@@ -105,7 +105,7 @@ try {
     </div>
 
     <div class="container">
-    <img class="logoWest" src="/studio/static/themes/enterprise/img/feedhenry_logo.png" />
+    <img class="logoWest" src="<%=studio.getStaticAssetPath("themes/enterprise/img/feedhenry_logo.png")%>" />
     <img class="logoEast" src="<%= studio.getThemeStaticAssetPath("/img/powered_by_cloudfoundry.png")%>" />
     
 

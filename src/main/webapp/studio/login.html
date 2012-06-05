@@ -17,7 +17,7 @@ try {
     <script>
       var INFO_MESSAGE = "<%= studio.getInfoMessage() %>";
     </script>
-    <script src="/studio/static/js/init/LoginInit.js" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("js/init/LoginInit.js")%>" type="text/javascript"></script>
     
   </head>
   

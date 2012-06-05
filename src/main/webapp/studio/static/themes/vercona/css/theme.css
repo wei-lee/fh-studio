@@ -1,0 +1,200 @@
+/* CSS Document */
+/*Logo */
+#header_logo
+{
+  background-image:url(../img/vercona_logo.png);
+  width:165px;
+  height:33px;
+}
+
+#header_logo_east {
+  float:right;
+  width: 240px;
+  height: 40px;
+  margin:20px 0 0 0;
+  background-image:url(../../default/img/powered_by_feedhenry.png);
+  background-repeat:no-repeat;
+}
+
+/*Header Bar */
+#header_user_info
+{
+  background-image:none;
+}
+
+/*Body Background */
+html,body
+{
+  background:url(../img/background.png) repeat-x scroll 0 0 transparent;
+}
+
+/* .ui-state-active.home-tab, #home_north .container-header {
+background:url("../img/home_bar.png") repeat-x scroll 0 0 transparent !important;
+} */
+/*Tab Background colour for Off-State */
+#main_layout_center .ui-tabs-nav li.ui-state-default
+{
+  background-color:#004951;
+  background-image:none;
+}
+
+/*Tab Border */
+#main_layout_center .ui-tabs-nav li
+{
+  border:none;
+}
+
+/*Tab Text Colour*/
+#main_layout_center .ui-tabs-nav li.ui-state-default a
+{
+  color:#fff;
+  font-weight:600;
+}
+
+/*Container Header - Not sure about this one */
+#main_layout_center .ui-tabs-nav li.ui-state-active
+{
+  background-color:#008b53!important;
+  background-image:none!important;
+}
+
+/*Tab Background colour for Active-State
+  This should be generic to all tabs, rather than addressing each tab individually
+ */
+#home_north .container-header,#apps_north .container-header,#account_north .container-header
+{
+  background-color:#008b53;
+  background:url(../img/statement_header1.png) repeat-x scroll 0 0 transparent!important;
+  height:52px;
+}
+
+/*Dashboard Screen - Central Image */
+.dashboard-header
+{
+  background-image:url(../img/home_page_graphic.jpg);
+  height:370px;
+}
+
+/*Create an App Button - Off State*/
+.dashboard-create
+{
+  background:url(../img/create_app_sprite.png) no-repeat scroll 0 0 transparent;
+  margin:80px 0 0 190px;
+}
+
+/*Create an App Button - Hover State*/
+.dashboard-create:hover
+{
+  background-position:0 -100px;
+}
+
+/* Documentation Widget - Below Main Image on Dashboard Page */
+.section-body-dashboard
+{
+  padding-bottom:0;
+  padding-left:0;
+}
+
+/* Having the 'doc' image as the doc list background isn't a great idea,
+  causes cropping problems 
+*/
+.doc_list
+{
+  background-image:none;
+}
+
+#home_content_bottom_left.section-container-dashboard
+{
+  background:url(../img/phone_image.png) no-repeat scroll bottom left #fff;
+}
+
+/* Apps Page */
+.ui-state-active a,.ui-state-active a:link,.ui-state-active a:visited
+{
+  color:#009265;
+}
+
+/*Statement Bar - Breadcrumbs */
+.container-header-content h1 a
+{
+  color:#dcf2fd;
+  font-size:.9em;
+}
+
+/*Statement Bar - Page Title */
+.container-header-content h1
+{
+  margin-top:19px;
+}
+
+.fh_breadcrumb-wrapper .fh_breadcrumb-nolink
+{
+  font-size:1.1em;
+  font-weight:400;
+}
+
+/*Footer*/
+#main_layout_east{
+  display:none !important;
+}
+#main_layout_center, #main_layout_east, #main_layout_west {
+  border-bottom: none;
+}
+#main_layout_south
+{
+  color:gray;
+  border-top:none;
+  height:42px !important;
+  margin-bottom:5px !important;
+  -moz-border-radius:7px;
+  -webkit-border-radius:7px;
+  -opera-border-radius:7px;
+  border-radius:7px;
+  background-image:url(../img/powered_by_feedhenry.png);
+  background-repeat:no-repeat;
+  background-position:17px -3px;
+}
+#footer{
+  background-image:url(../img/vercona_logo_footer.png);
+  background-repeat:no-repeat;
+  background-position:right 9px;
+  width: 98%;
+}
+
+.section-container-dashboard-top{
+  height:60%;
+}
+.section-container-dashboard-bottom{
+  height:37%
+}
+
+.inner-layout .ui-layout-west,.inner-layout .ui-layout-center,.inner-layout .ui-layout-east
+{
+  background-color:#fff;
+  padding-top:5px;
+}
+
+#home_layout .ui-layout-west,#home_layout .ui-layout-center,#home_layout .ui-layout-east
+{
+  padding-top:0;
+}
+
+.jqgrow.ui-state-hover a, .jqgrow.ui-state-hover a:hover{
+  color:#008b53;
+}
+
+.editor-tab.current-selected-tab a {
+  color:#fff !important;
+}
+
+.input-form legend {
+  color: #008B53;
+}
+.input-form input[type="button"].ui-state-default {
+  background-image:none;
+  background-color:#004951;
+}
+.input-form input[type="button"].ui-state-hover {
+  background-image:none;
+  background-color:#008b53;
+}
