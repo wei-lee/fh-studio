@@ -458,10 +458,10 @@ public class StudioBean {
     return val;
   }
 
-  public String getIdeThemeUrl() throws Exception {
-    return "/static/ide/css/apps/default/42-style.css"; // TODO:
-                                                        // mPropsBean.getThemeUrl(mDomain,
-                                                        // getThemeName());
+  public List<String> getThemes() throws Exception {
+    JSONArray themes = mStudioProps.getJSONArray("themes");
+    
+    return themes;
   }
 
   private String getThemeName() throws Exception {

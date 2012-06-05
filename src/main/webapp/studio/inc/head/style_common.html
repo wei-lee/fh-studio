@@ -16,6 +16,15 @@
     <link rel="stylesheet" href="<%=studio.getStaticAssetPath("common/css/ui/framework/codemirror/jscolors.css")%>"/>
     <link rel="stylesheet" href="<%=studio.getStaticAssetPath("common/css/ui/framework/bootstrap.css")%>"/>
 
-<link rel="stylesheet" href="<%=studio.getIdeThemeUrl()%>" type="text/css">
+
+<%
+List<String> themes = studio.getThemes();
+for (String theme: themes) {
+%>
+<link rel="stylesheet" href="<%=studio.getStaticAssetPath("themes/" + theme + "/css/theme.css")%>" type="text/css" />
+<%
+}
+%>
+
 <link rel="shortcut icon" href="<%= studio.getThemeStaticAssetPath("/img/favicon.ico") %>" />
-<link rel="stylesheet" href="<%=studio.getStaticAssetPath("themes/default/css/header_links.css")%>">
+<link rel="stylesheet" href="<%=studio.getStaticAssetPath("themes/default/css/header_links.css")%>" type="text/css" />
