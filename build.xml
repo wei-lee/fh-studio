@@ -5,6 +5,7 @@
   <property name="lib"  value="${basedir}/lib" />
   <property name="dist" value="${basedir}/dist" />
   <property name="out"  value="${basedir}/bin"/>
+  <property name="webapp"  value="${basedir}/src/main/webapp/studio"/>
   <property name="web-inf"  value="${basedir}/src/main/webapp/studio/WEB-INF"/>
   <property name="dep-classes"  value="${web-inf}/classes"/>
   <property name="dep-lib"  value="${web-inf}/lib"/>
@@ -85,20 +86,9 @@
     <echo message="Build Version: ${VERSION}" />
 
     <zip destfile="${dist}/studio-${VERSION}.war">
-      <zipfileset dir="${dep-lib}" prefix="WEB-INF/lib" >
-        <include name="*.jar" />
-      </zipfileset>
-
-      <zipfileset dir="${dep-classes}" prefix="WEB-INF/classes" >
-        <include name="**/*.class" />
-      </zipfileset>
-
-      <zipfileset dir="${web-inf}" prefix="WEB-INF">
-        <include name="web.xml" />
-      </zipfileset>
-
-      <zipfileset dir="${main-res}" prefix="WEB-INF/classes">
-        <include name="**/*.txt" />
+    	
+      <zipfileset dir="${webapp}" prefix="">
+      	<exclude name="*.git,*.gitignore"/>
       </zipfileset>
     	
     </zip>
