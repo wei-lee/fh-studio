@@ -695,10 +695,17 @@ label.error
 {
   background: transparent url(../img/green_bar_repeat.png) repeat-x 0 0 !important;
 }
-.ui-state-active.arm-tab, #arm_north .container-header, #armusers_north .container-header, #armgroups_north .container-header, #armdevices_north .container-header
-{
+
+.ui-state-active.arm-tab,
+.ui-state-active.user_admin_tab,
+#user_admin_north .container-header,
+#arm_north .container-header, 
+#armusers_north .container-header, 
+#armgroups_north .container-header, 
+#armdevices_north .container-header {
   background: transparent url(../img/green_bar_repeat.png) repeat-x 0 0 !important;
 }
+
 .ui-state-active.home-tab, #home_north .container-header
 {
   background: transparent url(../img/home_bar.png) repeat-x 0 0 !important;

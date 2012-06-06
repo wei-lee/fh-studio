@@ -14,7 +14,8 @@
   <% } %>
   
   <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_ARM)) { %>
-    <li class="arm-tab"><a id="arm_tab" href="#tabs-6">Admin</a></li>
+    <li class="arm-tab"><a id="arm_tab" href="#tabs-6">ARM Admin</a></li>
+    <li class="user_admin_tab"><a id="user_admin_tab" href="#tabs-7">User Admin</a></li>
   <% } %>
   <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER)) { %>
   <li class="account-tab inactive_account"><a id="account_tab" href="#tabs-3">My Account</a></li>
@@ -35,6 +36,7 @@
   
   <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_ARM)) { %>
     <%@ include file="arm_tab.html" %>
+    <%@ include file="user_admin_tab.html" %>
   <% } %>
   
  <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER)) { %>

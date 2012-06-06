@@ -38,7 +38,8 @@ var IDEManager = Class.extend({
       community: new application.CommunityTabManager(),
       account: new application.AccountTabManager(),
       reporting: new application.ReportingTabManager(),
-      arm: new application.ArmTabManager()
+      arm: new application.ArmTabManager(),
+      user_admin: new application.UserAdminTabManager()
     };
     this.analytics = new analytics.AnalyticsIntegration();
     this.debug = new application.DebugManager();
