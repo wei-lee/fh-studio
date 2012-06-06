@@ -10,58 +10,9 @@
     <session-timeout>30</session-timeout>
   </session-config>
 
-
   <listener>
     <listener-class>com.feedhenry.studio.StudioServletContextListener</listener-class>
   </listener>
-  
-  <!--servlet>
-    <servlet-name>idewebbean</servlet-name>
-    <servlet-class>com.feedhenry.studio.IDEWebBean</servlet-class>
-    <load-on-startup>200</load-on-startup>
-  </servlet-->
-  
-  <!--servlet-mapping>
-    <servlet-name>idewebbean</servlet-name>
-    <url-pattern>/</url-pattern>
-  </servlet-mapping-->
-  
-  <!--context-param>
-    <param-name>contextConfigLocation</param-name>
-    <param-value>/WEB-INF/beans.xml</param-value>
-  </context-param-->
-
-  <!--context-param>
-    <param-name>contextConfigLocation</param-name>
-    <param-value>/WEB-INF/beans.xml</param-value>
-  </context-param-->
-  
-  <!--servlet>
-    <servlet-name>srv</servlet-name>
-    <servlet-class>org.tssg.millicore.server.servlet.http.HttpServiceServlet</servlet-class>
-    <load-on-startup>200</load-on-startup>
-  </servlet-->
-
-  <!--servlet>
-    <servlet-name>static</servlet-name>
-    <servlet-class>org.tssg.millicore.servlet.StaticServlet</servlet-class>
-    <load-on-startup>900</load-on-startup>
-  </servlet-->  
-  
-  <!--servlet-mapping>
-    <servlet-name>srv</servlet-name>
-    <url-pattern>/srv/*</url-pattern>
-  </servlet-mapping>
-  
-  <servlet-mapping>
-    <servlet-name>static</servlet-name>
-    <url-pattern>/static/*</url-pattern>
-  </servlet-mapping-->
-
-  <!--servlet>
-    <servlet-name>studio</servlet-name>
-    <jsp-file>/ide/index-dev.html</jsp-file> 
-  </servlet-->
   
   <servlet>
      <servlet-name>version</servlet-name>
