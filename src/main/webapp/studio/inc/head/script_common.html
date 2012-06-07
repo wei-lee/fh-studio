@@ -91,7 +91,7 @@
 <!-- Studio Specific properties -->
 <script type="text/javascript">
   $fw.setClientProps(<%=studio.getProps().toString()%>);
-  $fw.setUserProps(<%=studio.getUserProps().toString()%>);
+  $fw.setUserProps(<%=studio.getUserPropsJsonString()%>);
   // TODO: better way to inject these roles? probably
   $fw.ROLE_CUSTOMERADMIN = '<%=studio.ROLE_CUSTOMERADMIN%>';
   $fw.ROLE_RESELLERADMIN = '<%=studio.ROLE_RESELLERADMIN%>';
