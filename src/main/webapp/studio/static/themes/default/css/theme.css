@@ -474,7 +474,7 @@ html, body
   min-width:950px;
   height:100%;
   min-height:755px;
-  margin: 0 10px 0 10px;
+  margin: 0 20px 0 20px;
 }
 /*UI Login Overwrites*/
 .login_screen_body, .reset_screen_body, .activate_screen_body{
@@ -3198,4 +3198,8 @@ table.table thead .sorting_desc_disabled { background: url('../img/sort_desc_dis
 
 table.dataTable th:active {
   outline: none;
+}
+
+#useradmin_user_list table {
+  width: 100% !important;
 }
