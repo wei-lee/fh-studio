@@ -67,9 +67,9 @@ model.User = model.Model.extend({
     // based on our role
     var userRoles = $fw.getUserProps().roles;
     if (userRoles.indexOf($fw.ROLE_RESELLERADMIN) > -1) {
-      return this.resellerList(success, fail);
+      return this.resellerList(success, fail, post_process);
     } else if (userRoles.indexOf($fw.ROLE_CUSTOMERADMIN) > -1) {
-      return this.customerList(success, fail);
+      return this.customerList(success, fail, post_process);
     } else {
       return fail('operation_not_permitted');
     }

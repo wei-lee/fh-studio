@@ -2,8 +2,8 @@ var UserAdmin = UserAdmin || {};
 
 UserAdmin.Controller = Class.extend({
   models: {
-    user: "$fw.client.model.User",
-    group: "$fw.client.model.Group"
+    user: new model.User(),
+    group: new model.Group()
   },
   views: {
     users: "#useradmin_user_list",
@@ -27,8 +27,8 @@ UserAdmin.Controller = Class.extend({
   showUsersList: function() {
     this.hideViews();
     $(this.views.users).show();
-    // TODO: Fix eval
-    eval(this.models.user).list(function(res) {
+
+    this.models.user.list(function(res) {
       $('#useradmin_users_table').dataTable({
         "bDestroy": true,
         "bAutoWidth": false,
@@ -40,14 +40,14 @@ UserAdmin.Controller = Class.extend({
       });
     }, function(err) {
       console.error(err);
-    });
+    }, true);
   },
 
   showGroupsList: function() {
     this.hideViews();
     $(this.views.groups).show();
-    // TODO: Fix eval
-    eval(this.models.user).list(function(res) {
+    
+    this.models.group.list(function(res) {
       $('#useradmin_users_table').dataTable({
         "bDestroy": true,
         "bAutoWidth": false,
@@ -59,7 +59,7 @@ UserAdmin.Controller = Class.extend({
       });
     }, function(err) {
       console.error(err);
-    });
+    }, true);
   },
 
   // TODO: Move out of here into common class
