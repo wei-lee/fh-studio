@@ -111,6 +111,8 @@ model.User = model.Model.extend({
       "sysCreated": "Created"
     };
 
+    var checkbox_fields = ['enabled', 'activated'];
+
     var rows = res.list;
     var data = {
       aaData: [],
@@ -123,7 +125,21 @@ model.User = model.Model.extend({
       data.aaData.push([]);
 
       $.each(filtered_fields, function(k, v) {
-        data.aaData[i].push(row[k]);
+        var value = row[k];
+
+        if (checkbox_fields.indexOf(k) != -1) {
+          
+          if (value) {
+            // Checked
+            var checkbox = '<input type="checkbox" checked/>';
+          } else {
+            // Unchecked
+            var checkbox = '<input type="checkbox"/>';
+          }
+          data.aaData[i].push(checkbox);
+        } else {
+          data.aaData[i].push(value);
+        }
       });
     });
 
