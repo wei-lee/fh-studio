@@ -96,7 +96,11 @@ model.User = model.Model.extend({
   postProcessList: function(res) {
     var filtered_fields = {
       "email": "E-mail",
-      "name": "Name"
+      "name": "Name",
+      "activated": "Activated",
+      "enabled": "Enabled",
+      "lastLogin": "Last Login",
+      "sysCreated": "Created"
     };
 
     var rows = res.list;
