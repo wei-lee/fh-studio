@@ -25,34 +25,44 @@ UserAdmin.Controller = Class.extend({
   },
 
   showUsersList: function() {
+    var self = this;
     this.hideViews();
     $(this.views.users).show();
 
     this.models.user.list(function(res) {
-      $('#useradmin_users_table').dataTable({
-        "bDestroy": true,
-        "bAutoWidth": false,
-        "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
-        "sPaginationType": "bootstrap",
-        "bLengthChange": false,
-        "aaData": res.aaData,
-        "aoColumns": res.aoColumns,
-        "fnRowCallback": function(nRow, aData, iDisplayIndex) {
-
-          $('td', nRow).each(function(i, item) {
-            if (aData[i] == true) {
-              $(item).html('<input type="checkbox" checked/>');
-            }
-
-            if (aData[i] == false) {
-              $(item).html('<input type="checkbox"/>');
-            }
-          });
-        }
-      });
+      self.renderUserTable(res);
     }, function(err) {
       console.error(err);
     }, true);
+  },
+
+  renderUserTable: function(data) {
+    var self = this;
+
+    $('#useradmin_users_table').dataTable({
+      "bDestroy": true,
+      "bAutoWidth": false,
+      "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+      "sPaginationType": "bootstrap",
+      "bLengthChange": false,
+      "aaData": data.aaData,
+      "aoColumns": data.aoColumns,
+      "fnRowCallback": function(nRow, aData, iDisplayIndex) {
+        self.rowRender(nRow, aData);
+      }
+    });
+  },
+
+  rowRender: function(row, data) {
+    $('td', row).each(function(i, item) {
+      if (data[i] == true) {
+        $(item).html('<input type="checkbox" checked/>');
+      }
+
+      if (data[i] == false) {
+        $(item).html('<input type="checkbox"/>');
+      }
+    });
   },
 
   showGroupsList: function() {
