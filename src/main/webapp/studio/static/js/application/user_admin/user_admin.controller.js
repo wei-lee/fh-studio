@@ -36,7 +36,19 @@ UserAdmin.Controller = Class.extend({
         "sPaginationType": "bootstrap",
         "bLengthChange": false,
         "aaData": res.aaData,
-        "aoColumns": res.aoColumns
+        "aoColumns": res.aoColumns,
+        "fnRowCallback": function(nRow, aData, iDisplayIndex) {
+
+          $('td', nRow).each(function(i, item) {
+            if (aData[i] == true) {
+              $(item).html('<input type="checkbox" checked/>');
+            }
+
+            if (aData[i] == false) {
+              $(item).html('<input type="checkbox"/>');
+            }
+          });
+        }
       });
     }, function(err) {
       console.error(err);
