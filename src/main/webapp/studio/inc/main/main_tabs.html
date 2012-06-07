@@ -36,8 +36,11 @@
   
   <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_ARM)) { %>
     <%@ include file="arm_tab.html" %>
-    <%@ include file="user_admin_tab.html" %>
   <% } %>
+  
+  <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_USER_ADMIN)) { %>
+    <%@ include file="user_admin_tab.html" %>
+  <% } %>  
   
  <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER)) { %>
   <%@ include file="account_tab.html" %>
