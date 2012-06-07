@@ -81,7 +81,11 @@ model.User = model.Model.extend({
       "customer": $fw.getClientProp('customer')
     };
 
-    return this.serverPost(url, params, success, fail, true, this.postProcessList);
+    if (post_process) {
+      return this.serverPost(url, params, success, fail, true, this.postProcessList);
+    } else {
+      return this.serverPost(url, params, success, fail, true);
+    }
   },
 
   resellerList: function(success, fail, post_process) {
@@ -90,7 +94,11 @@ model.User = model.Model.extend({
       "reseller": $fw.getClientProp('reseller')
     };
 
-    return this.serverPost(url, params, success, fail, true, this.postProcessList);
+    if (post_process) {
+      return this.serverPost(url, params, success, fail, true, this.postProcessList);
+    } else {
+      return this.serverPost(url, params, success, fail, true);
+    }
   },
 
   postProcessList: function(res) {
