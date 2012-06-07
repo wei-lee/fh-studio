@@ -697,8 +697,8 @@ label.error
 }
 
 .ui-state-active.arm-tab,
-.ui-state-active.user_admin_tab,
-#user_admin_north .container-header,
+.ui-state-active.useradmin_tab,
+#useradmin_north .container-header,
 #arm_north .container-header, 
 #armusers_north .container-header, 
 #armgroups_north .container-header, 
