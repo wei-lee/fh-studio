@@ -2,10 +2,12 @@ var UserAdmin = UserAdmin || {};
 
 UserAdmin.Controller = Class.extend({
   models: {
-    user: "$fw.client.model.User"
+    user: "$fw.client.model.User",
+    group: "$fw.client.model.Group"
   },
   views: {
-    users: "#useradmin_user_list"
+    users: "#useradmin_user_list",
+    groups: "#useradmin_group_list"
   },
   config: null,
 
@@ -16,7 +18,14 @@ UserAdmin.Controller = Class.extend({
     this._setupDataTables();
   },
 
+  hideViews: function() {
+    $.each(this.views, function(k, v) {
+      $(v).hide();
+    });
+  },
+
   showUsersList: function() {
+    this.hideViews();
     $(this.views.users).show();
     // TODO: Fix eval
     eval(this.models.user).list(function(res) {
@@ -25,9 +34,26 @@ UserAdmin.Controller = Class.extend({
         "bAutoWidth": false,
         "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
         "sPaginationType": "bootstrap",
-        "oLanguage": {
-          "sLengthMenu": "_MENU_ records per page"
-        },
+        "bLengthChange": false,
+        "aaData": res.aaData,
+        "aoColumns": res.aoColumns
+      });
+    }, function(err) {
+      console.error(err);
+    });
+  },
+
+  showGroupsList: function() {
+    this.hideViews();
+    $(this.views.groups).show();
+    // TODO: Fix eval
+    eval(this.models.user).list(function(res) {
+      $('#useradmin_users_table').dataTable({
+        "bDestroy": true,
+        "bAutoWidth": false,
+        "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+        "sPaginationType": "bootstrap",
+        "bLengthChange": false,
         "aaData": res.aaData,
         "aoColumns": res.aoColumns
       });

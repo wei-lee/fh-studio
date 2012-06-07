@@ -7,5 +7,9 @@ application.UseradminAccordionManager = application.AccordionManager.extend({
 
   postSelectUsersList: function() {
     $fw_manager.client.useradmin.showUsersList();
+  },
+
+  postSelectGroupsList: function() {
+    $fw_manager.client.useradmin.showGroupsList();
   }
 });
