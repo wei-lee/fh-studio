@@ -481,6 +481,10 @@ public class StudioBean {
   public JSONObject getUserProps() throws Exception {
     return mUserProps;
   }
+  
+  public String getUserPropsJsonString() throws Exception {
+    return mUserProps != null ? mUserProps.toString() : "{}";
+  }
 
   public String getProperty(String pPropName) throws Exception {
     return mStudioProps.optString(pPropName);
