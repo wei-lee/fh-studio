@@ -95,7 +95,6 @@ public class StudioBean {
   private ServletContext mServletContext;
   private JSONObject mInput;
   private String mDomain = null;
-  private List<String> mGroups;
   private boolean mLoggedIn = false;
   private String mTheme = null;
   private JSONObject mStudioProps = null;
@@ -445,18 +444,6 @@ public class StudioBean {
     pResponse.setHeader("Cache-Control", "no-cache");
     pResponse.setHeader("Pragma", "no-cache");
     pResponse.setDateHeader("Expires", -1);
-  }
-
-  public String getRevision() throws Exception {
-    // String version = String.valueOf(mALM.getAssetControlVal());
-    String version = "42";
-    return version;
-  }
-
-  public String getAssetCtrlVal() throws Exception {
-    // String val = String.valueOf(mALM.getAssetControlVal());
-    String val = "42";
-    return val;
   }
 
   public List<String> getThemes() throws Exception {
