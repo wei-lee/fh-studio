@@ -52,9 +52,11 @@ public class StudioBean {
   // features i.e. reporting endpoints require 'analytics' role
   // User's role is returned from millicore anyways, which is the important part
   // If perms for a particular endpoint/s change, we need to update these
-  public static final String[] GROUP_REPORTING = new String[] { "analytics", "portaladmin", "customeradmin", "reselleradmin"};
-  public static final String[] GROUP_ARM = new String[] { "portaladmin", "customeradmin", "reselleradmin" };
-  public static final String[] GROUP_USER_ADMIN = new String[] { "customeradmin", "reselleradmin" };
+  public static final String ROLE_CUSTOMERADMIN = "customeradmin";
+  public static final String ROLE_RESELLERADMIN = "reselleradmin";
+  public static final String[] GROUP_REPORTING = new String[] { "analytics", "portaladmin", ROLE_CUSTOMERADMIN, ROLE_RESELLERADMIN};
+  public static final String[] GROUP_ARM = new String[] { "portaladmin", ROLE_CUSTOMERADMIN, ROLE_RESELLERADMIN };
+  public static final String[] GROUP_USER_ADMIN = new String[] { ROLE_CUSTOMERADMIN, ROLE_RESELLERADMIN };
   public static final String[] GROUP_DEVELOPER = new String[] { "dev", "devadmin" };
 
   public static final String THEME_DEFAULT = "default";
@@ -474,6 +476,10 @@ public class StudioBean {
 
   public JSONObject getProps() throws Exception {
     return mStudioProps;
+  }
+
+  public JSONObject getUserProps() throws Exception {
+    return mUserProps;
   }
 
   public String getProperty(String pPropName) throws Exception {
