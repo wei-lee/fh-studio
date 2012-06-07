@@ -46,9 +46,9 @@ UserAdmin.Controller = Class.extend({
   showGroupsList: function() {
     this.hideViews();
     $(this.views.groups).show();
-    
+
     this.models.group.list(function(res) {
-      $('#useradmin_users_table').dataTable({
+      $('#useradmin_groups_table').dataTable({
         "bDestroy": true,
         "bAutoWidth": false,
         "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
