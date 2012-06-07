@@ -45,15 +45,21 @@ UserAdmin.Controller = Class.extend({
         ["Webkit", "Safari 3.0", "OSX.4+", 522.1, "A"]
       ],
       "aoColumns": [{
-        "sTitle": "Engine"
+        "sTitle": "E-mail"
       }, {
-        "sTitle": "Browser"
+        "sTitle": "Name"
       }, {
-        "sTitle": "Platform"
+        "sTitle": "Active"
       }, {
-        "sTitle": "Version"
+        "sTitle": "Enabled"
       }, {
-        "sTitle": "Grade"
+        "sTitle": "Last Login"
+      }, {
+        "sTitle": "Roles"
+      }, {
+        "sTitle": "Groups"
+      }, {
+        "sTitle": "Created"
       }]
     });
   },
