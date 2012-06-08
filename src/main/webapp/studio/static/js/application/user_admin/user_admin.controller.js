@@ -14,7 +14,10 @@ UserAdmin.Controller = Class.extend({
   user_table: null,
   group_table: null,
 
-  // .fnGetData( this );
+  // Offsets for field names
+  user_table_map: ["email", "name", "activated", "enabled", "lastLogin", "sysCreated"],
+  group_table_map: ["name", "perms"],
+
   init: function(params) {
     var self = this;
     var params = params || {};
@@ -35,10 +38,29 @@ UserAdmin.Controller = Class.extend({
     this.models.user.list(function(res) {
       var data = self.addControls(res);
       self.renderUserTable(data);
+      self.bindUserControls();
     }, function(err) {
       console.error(err);
     }, true);
   },
+
+  bindUserControls: function() {
+    var self = this;
+    $('tr td .edit_user', this.user_table).click(function() {
+      var row = $(this).parent().parent();
+      var data = self.userDataForRow($(this).parent().parent().get(0));
+      self.editUser(row, data);
+    });
+  },
+
+  editUser: function(row, data) {
+    console.log(data);
+  },
+
+  deleteUser: function(row, data) {},
+
+  bindGroupControls: function() {},
+
 
   renderUserTable: function(data) {
     var self = this;
@@ -61,6 +83,19 @@ UserAdmin.Controller = Class.extend({
     this.renderCheckboxes(row, data);
   },
 
+  renderCheckboxes: function(row, data) {
+    $('td', row).each(function(i, item) {
+      // TODO: Move to clonable hidden_template
+      if (data[i] == true) {
+        $(item).html('<input type="checkbox" checked/>');
+      }
+
+      if (data[i] == false) {
+        $(item).html('<input type="checkbox"/>');
+      }
+    });
+  },
+
   userDataForRow: function(el) {
     return this.user_table.fnGetData(el);
   },
@@ -79,24 +114,12 @@ UserAdmin.Controller = Class.extend({
 
     $.each(res.aaData, function(i, row) {
       var controls = [];
-      controls.push('<button class="btn">Edit</button>&nbsp;');
-      controls.push('<button class="btn btn-danger">Delete</button>');
+      // TODO: Move to clonable hidden_template
+      controls.push('<button class="btn edit_user">Edit</button>&nbsp;');
+      controls.push('<button class="btn btn-danger delete_user">Delete</button>');
       row.push(controls.join(""));
     });
     return res;
-  },
-
-  renderCheckboxes: function(row, data) {
-    $('td', row).each(function(i, item) {
-      // TODO: Move to clonable hidden_template
-      if (data[i] == true) {
-        $(item).html('<input type="checkbox" checked/>');
-      }
-
-      if (data[i] == false) {
-        $(item).html('<input type="checkbox"/>');
-      }
-    });
   },
 
   showGroupsList: function() {
@@ -106,6 +129,7 @@ UserAdmin.Controller = Class.extend({
     this.models.group.list(function(res) {
       var data = self.addControls(res);
       self.renderGroupTable(data);
+      self.bindGroupControls();
     }, function(err) {
       console.error(err);
     }, true);
