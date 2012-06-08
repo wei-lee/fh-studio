@@ -369,7 +369,6 @@ application.PreviewManager = Class.extend({
 
   showInDialog: function (app_url, app_width) {
     var url;
-    debugger;
     var preview_loaded = true;
     if (typeof app_url !== "undefined") {
       url = app_url;
@@ -393,7 +392,6 @@ application.PreviewManager = Class.extend({
       options.stack = true;
 
       this.loadPreviewContent(url, function (data) {
-      	debugger;
         Log.append('got preview. length:' + data.length);
         preview_div.html(data);
         proto.Dialog.load(preview_div, options);
@@ -407,7 +405,6 @@ application.PreviewManager = Class.extend({
       dataType: 'text/html',
       success: success_callback,
       error: function () {
-      	debugger;
         Log.append('preview load failed', 'ERROR');
       }
     });

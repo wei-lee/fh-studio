@@ -2,7 +2,6 @@ application.AppsAccordionManager = application.AccordionManager.extend({
 
   init: function (accordion_name) {
     this._super('manage_apps_accordion');
-    debugger;
   },
   
   preSelectManageExport: function () {
