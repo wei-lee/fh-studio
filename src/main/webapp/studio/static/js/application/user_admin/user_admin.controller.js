@@ -1,6 +1,7 @@
 var UserAdmin = UserAdmin || {};
 
 UserAdmin.Controller = Class.extend({
+
   models: {
     user: new model.User(),
     group: new model.Group()
@@ -10,7 +11,10 @@ UserAdmin.Controller = Class.extend({
     groups: "#useradmin_group_list"
   },
   config: null,
+  user_table: null,
+  group_table: null,
 
+  // .fnGetData( this );
   init: function(params) {
     var self = this;
     var params = params || {};
@@ -39,7 +43,7 @@ UserAdmin.Controller = Class.extend({
   renderUserTable: function(data) {
     var self = this;
 
-    $('#useradmin_users_table').dataTable({
+    this.user_table = $('#useradmin_users_table').dataTable({
       "bDestroy": true,
       "bAutoWidth": false,
       "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
@@ -57,6 +61,14 @@ UserAdmin.Controller = Class.extend({
     this.renderCheckboxes(row, data);
   },
 
+  userDataForRow: function(el) {
+    return this.user_table.fnGetData(el);
+  },
+
+  groupDataForRow: function(el) {
+    return this.group_table.fnGetData(el);
+  },
+
   addControls: function(res) {
     // Add control column
     res.aoColumns.push({
@@ -67,7 +79,7 @@ UserAdmin.Controller = Class.extend({
 
     $.each(res.aaData, function(i, row) {
       var controls = [];
-      controls.push('<button class="btn">Update</button>&nbsp;');
+      controls.push('<button class="btn">Edit</button>&nbsp;');
       controls.push('<button class="btn btn-danger">Delete</button>');
       row.push(controls.join(""));
     });
@@ -100,7 +112,7 @@ UserAdmin.Controller = Class.extend({
   },
 
   renderGroupTable: function(data) {
-    $('#useradmin_groups_table').dataTable({
+    this.group_table = $('#useradmin_groups_table').dataTable({
       "bDestroy": true,
       "bAutoWidth": false,
       "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
