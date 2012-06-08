@@ -98,7 +98,7 @@ application.PreviewSupport = Class.extend({
     // set device image as background of preview, but only if we know there is an image
     var imgID = opts.img_id || opts.id;
     p_frame.css({
-      'background': have_img ? ('url(/static/c/ide/themes/default/img/preview_device/' + imgID + '.png) no-repeat') : 'none'
+      'background': have_img ? ('url(/studio/static/themes/default/img/preview_device/' + imgID + '.png) no-repeat') : 'none'
     });
     
     actual_size = {width: act_width, height: act_height, scale: scale_factor};

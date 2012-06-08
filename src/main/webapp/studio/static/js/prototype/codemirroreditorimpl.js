@@ -33,7 +33,7 @@ proto.CodemirrorEditorImpl = function(params){
     initEditor: function(){
       self.inited = true;
       // TODO: get scheme from location
-       var base_path = [window.location.protocol, "//", window.location.host, "/static/c/common/"].join("");
+       var base_path = [window.location.protocol, "//", window.location.host, "/studio/static/common/"].join("");
        var base_files = ["codemirrorbase.js"];
        var js_files_path = [base_path, "js/ui/thirdparty/codemirror/"].join("");
        var css_files_base_path = [base_path, "css/ui/framework/codemirror/"].join("");
