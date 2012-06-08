@@ -6,3 +6,10 @@ fh-studio -- FeedHenry App Studio
 
 ant deploy
 
+
+# jshint checking of javascript files (happens for deploy anyways)
+ant jshint
+
+# Add files to ignore in .jshintignore-src
+# Add/Remove jshint rules in .jshintrc
+# Add/Remove js globals in .jshintrc (predef array)
