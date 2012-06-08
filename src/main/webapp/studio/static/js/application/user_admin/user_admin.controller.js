@@ -6,17 +6,27 @@ UserAdmin.Controller = Class.extend({
     user: new model.User(),
     group: new model.Group()
   },
+
   views: {
     users: "#useradmin_user_list",
     groups: "#useradmin_group_list"
   },
+
   config: null,
   user_table: null,
   group_table: null,
 
   // Offsets for field names
-  user_table_map: ["email", "name", "activated", "enabled", "lastLogin", "sysCreated"],
-  group_table_map: ["name", "perms"],
+  table_column_field_map: {
+    user: ["email", "name", "activated", "enabled", "lastLogin", "sysCreated"],
+    group: ["name", "perms"]
+  },
+
+  // Offsets for editable fields
+  editable_fields: {
+    user: [0, 1, 2, 3],
+    group: [0]
+  },
 
   init: function(params) {
     var self = this;
@@ -49,18 +59,54 @@ UserAdmin.Controller = Class.extend({
     $('tr td .edit_user', this.user_table).click(function() {
       var row = $(this).parent().parent();
       var data = self.userDataForRow($(this).parent().parent().get(0));
-      self.editUser(row, data);
+
+      if ($(this).hasClass('update_user')) {
+        // Update action
+        self.updateUser(this, row, data);
+        $(this).removeClass('btn-success update_user').text('Edit');
+      } else {
+        // Edit action
+        self.editUser(this, row, data);
+        $(this).addClass('btn-success update_user').text('Update');
+      }
+      return false;
     });
   },
 
-  editUser: function(row, data) {
-    console.log(data);
+  editUser: function(button, row, data) {
+    this.makeUserRowEditable(row);
   },
 
-  deleteUser: function(row, data) {},
+  updateUser: function(button, row, data) {
+    // debugger;
+  },
+
+  makeUserRowEditable: function(row) {
+    var self = this;
+    $('td', row).each(function(i, td) {
+      // Field should be editable?
+      if (self.editable_fields.user.indexOf(i) != -1) {
+        // Checkbox row check
+        var checkbox = $(td).find('input[type=checkbox]');
+
+        if (checkbox.length > 0) {
+          $(checkbox).removeAttr('disabled');
+        } else {
+          var text = $(td).text();
+          var width = $(td).width();
+
+          // Empty cell
+          $(td).text('');
+          $(td).append('<input type="text"/>');
+          $(td).find('input').css('width', width + 'px').val(text);
+        }
+      }
+    });
+  },
+
+  deleteUser: function(button, row, data) {},
 
   bindGroupControls: function() {},
-
 
   renderUserTable: function(data) {
     var self = this;
@@ -87,11 +133,11 @@ UserAdmin.Controller = Class.extend({
     $('td', row).each(function(i, item) {
       // TODO: Move to clonable hidden_template
       if (data[i] == true) {
-        $(item).html('<input type="checkbox" checked/>');
+        $(item).html('<input type="checkbox" checked disabled/>');
       }
 
       if (data[i] == false) {
-        $(item).html('<input type="checkbox"/>');
+        $(item).html('<input type="checkbox" disabled/>');
       }
     });
   },

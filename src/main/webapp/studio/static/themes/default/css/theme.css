@@ -3204,7 +3204,3 @@ table.dataTable th:active {
 #useradmin_user_list table {
   width: 100% !important;
 }
-
-#useradmin_user_list table .controls{
-  width: 101px;
-}
