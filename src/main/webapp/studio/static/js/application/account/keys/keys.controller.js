@@ -38,8 +38,11 @@ application.controller.Keys = Class.extend({
     });
 
     $('#keys_manage_body .user_key .revoke').unbind().click(function() {
-      var key = $(this).parent().parent().find('.key_public').text();
-      self.revokeUserKey(key);
+      var confirmation = confirm("Are you sure you want to revoke this API key? This cannot be undone.");
+      if (confirmation == true) {
+        var key = $(this).parent().parent().find('.key_public').text();
+        self.revokeUserKey(key);
+      }
     });
 
     $('#keys_manage_body .user_key .edit, #keys_manage_body .user_key .update').unbind().click(function() {

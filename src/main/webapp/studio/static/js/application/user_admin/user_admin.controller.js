@@ -29,7 +29,8 @@ UserAdmin.Controller = Class.extend({
     $(this.views.users).show();
 
     this.models.user.list(function(res) {
-      self.renderUserTable(res);
+      var data = self.addControls(res);
+      self.renderUserTable(data);
     }, function(err) {
       console.error(err);
     }, true);
@@ -56,8 +57,26 @@ UserAdmin.Controller = Class.extend({
     this.renderCheckboxes(row, data);
   },
 
+  addControls: function(res) {
+    // Add control column
+    res.aoColumns.push({
+      sTitle: "Controls",
+      "bSortable": false,
+      "sClass": "controls"
+    });
+
+    $.each(res.aaData, function(i, row) {
+      var controls = [];
+      controls.push('<button class="btn">Update</button>&nbsp;');
+      controls.push('<button class="btn btn-danger">Delete</button>');
+      row.push(controls.join(""));
+    });
+    return res;
+  },
+
   renderCheckboxes: function(row, data) {
     $('td', row).each(function(i, item) {
+      // TODO: Move to clonable hidden_template
       if (data[i] == true) {
         $(item).html('<input type="checkbox" checked/>');
       }
@@ -73,17 +92,22 @@ UserAdmin.Controller = Class.extend({
     $(this.views.groups).show();
 
     this.models.group.list(function(res) {
-      $('#useradmin_groups_table').dataTable({
-        "bDestroy": true,
-        "bAutoWidth": false,
-        "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
-        "sPaginationType": "bootstrap",
-        "bLengthChange": false,
-        "aaData": res.aaData,
-        "aoColumns": res.aoColumns
-      });
+      var data = self.addControls(res);
+      self.renderGroupTable(data);
     }, function(err) {
       console.error(err);
     }, true);
+  },
+
+  renderGroupTable: function(data) {
+    $('#useradmin_groups_table').dataTable({
+      "bDestroy": true,
+      "bAutoWidth": false,
+      "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+      "sPaginationType": "bootstrap",
+      "bLengthChange": false,
+      "aaData": data.aaData,
+      "aoColumns": data.aoColumns
+    });
   }
 });
