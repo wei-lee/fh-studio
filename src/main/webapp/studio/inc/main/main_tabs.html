@@ -12,10 +12,13 @@
   <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_REPORTING)) { %>
     <li class="reporting-tab"><a id="reporting_tab" href="#tabs-5">Reporting</a></li>
   <% } %>
+
+  <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_USER_ADMIN)) { %>
+    <li class="useradmin_tab"><a id="useradmin_tab" href="#tabs-7">User Admin</a></li>
+  <% } %>  
   
   <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_ARM)) { %>
     <li class="arm-tab"><a id="arm_tab" href="#tabs-6">ARM Admin</a></li>
-    <li class="useradmin_tab"><a id="useradmin_tab" href="#tabs-7">User Admin</a></li>
   <% } %>
   <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER)) { %>
   <li class="account-tab inactive_account"><a id="account_tab" href="#tabs-3">My Account</a></li>
