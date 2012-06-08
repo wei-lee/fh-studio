@@ -34,7 +34,7 @@ application.HomeTabManager = application.TabManager.extend({
         $('#apps_tab').click();
         //$fw_manager.client.tab.apps.showListApps();
         $fw_manager.client.app.doCreate();
-    })
+    });
   },
   
   doPostShow: function () {
@@ -98,7 +98,7 @@ application.HomeTabManager = application.TabManager.extend({
               'Version',
               'Last Changed'
             ]   
-          })
+          });
       }
   }
 });

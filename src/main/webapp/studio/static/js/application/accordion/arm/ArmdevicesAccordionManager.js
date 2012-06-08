@@ -5,10 +5,10 @@ application.ArmdevicesAccordionManager = application.AccordionManager.extend({
   },
   
   postSelectArmdevicesEdit: function(){
-  	$fw_manager.client.arm.devices.initEdit();
+    $fw_manager.client.arm.devices.initEdit();
   },
   
   postSelectArmdevicesAssignusers: function(){
-  	$fw_manager.client.arm.devices.initUsers();
+    $fw_manager.client.arm.devices.initUsers();
   }
 });

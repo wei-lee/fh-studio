@@ -5,22 +5,22 @@ application.ArmusersAccordionManager = application.AccordionManager.extend({
   },
     
   postSelectArmusersEdit: function(){
-  	$fw_manager.client.arm.users.initEdit();
+    $fw_manager.client.arm.users.initEdit();
   },
   
   postSelectArmusersAssigngroups: function(){
-  	$fw_manager.client.arm.users.initGroups();
+    $fw_manager.client.arm.users.initGroups();
   },
   
   postSelectArmusersAssignapps: function(){
-  	$fw_manager.client.arm.users.initApps();
+    $fw_manager.client.arm.users.initApps();
   },
   
   postSelectArmusersAssigndevices: function(){
-  	$fw_manager.client.arm.users.initDevices();
+    $fw_manager.client.arm.users.initDevices();
   },
   
   postSelectArmusersResetpass: function(){
-  	$fw_manager.client.arm.users.resetUserPass();
+    $fw_manager.client.arm.users.resetUserPass();
   }
 });

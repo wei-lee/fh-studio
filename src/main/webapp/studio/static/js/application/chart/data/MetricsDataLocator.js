@@ -305,7 +305,7 @@
       sum = params.dest ? false : true;
       
       if (self.sampledataEnabled) {
-        self.getSampleData(params, type, function (result) {        	
+        self.getSampleData(params, type, function (result) {          
           self.handleData(result, params, sum, type, success, fail);
         });
       }
@@ -335,7 +335,7 @@
       var difference_ms = Math.abs(to - from);
     
       // Convert back to days and return
-      var days = Math.round(difference_ms/ONE_DAY)
+      var days = Math.round(difference_ms/ONE_DAY);
       
       // We want inclusive days so incr by 1
       days ++;
@@ -348,16 +348,16 @@
       
       var spliceFrom = days > tempData.length ? 0 : tempData.length - days; 
       var spliceTo = tempData.length;
-      var data = tempData.slice(spliceFrom, spliceTo);
+      data = tempData.slice(spliceFrom, spliceTo);
       
       var curDataDay = to;
       
       // Set the timestamps relative to the curent date
       for (di = data.length -1, dl = 0; di >= dl; di -= 1) {
-      	dt = data[di];
-      	dt._id.ts = curDataDay;
-      	
-      	curDataDay -= ONE_DAY;
+        dt = data[di];
+        dt._id.ts = curDataDay;
+        
+        curDataDay -= ONE_DAY;
       }
             
       result = {
@@ -569,7 +569,7 @@
       
       // convert fData array or objects to an array of arrays
       for (fi = 0, fl = fData.length; fi < fl; fi += 1) {
-        aData.push(self.convertObjectToArray(fData[fi]))
+        aData.push(self.convertObjectToArray(fData[fi]));
       }
   
       labels = self.transformLabels(labels);

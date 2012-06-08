@@ -13,4 +13,4 @@ application.DestinationFeedhenry = application.DestinationGeneral.extend({
     'publish': function(){
         //not supported yet
     }
-})
+});

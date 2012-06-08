@@ -31,4 +31,4 @@ var lang = {
   edit_app_back_text : 'Back', 
   grid_apps_title : 'My Apps', 
   apps_grid_north_text : 'Apps Grid Header'
-}
+};

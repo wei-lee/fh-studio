@@ -1,9 +1,3 @@
-/*
- * 
- */
-/*global UIManager, UILoader, document, ui_model, $
- */
-
 UIManager = Class.extend({
   loader: null,
   factory: null,

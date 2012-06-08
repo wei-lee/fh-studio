@@ -129,11 +129,11 @@ application.AppSupport = Class.extend({
     
     create_app_wizard.find('#create_app_frameworks').unbind('show').bind('show', function(e){
       var self = $(this);
-      if(self.find('input').length == 0){
-      	var contentHtml = $fw_manager.client.app.support.getAppFramworksHtml();
+      if(self.find('input').length === 0){
+        var contentHtml = $fw_manager.client.app.support.getAppFramworksHtml();
         self.find('#create_app_frameworks_text').after(contentHtml);
       }
-    })
+    });
         
     create_app_wizard.find("#create_app_progress").unbind('show').bind('show', function (e) {
       var step = $(this),
@@ -170,14 +170,14 @@ application.AppSupport = Class.extend({
       }
       
       if(null != framework_step){
-      	var selected_fws = framework_step.find('input[type=checkbox]:checked');
-      	var fw_values = [];
-      	for(var i=0;i<selected_fws.length;i++){
-      		fw_values.push($(selected_fws[i]).val());
-      	}
-      	if(fw_values.length > 0){
-      		params.frameworks = fw_values;
-      	}
+        var selected_fws = framework_step.find('input[type=checkbox]:checked');
+        var fw_values = [];
+        for(var i=0;i<selected_fws.length;i++){
+          fw_values.push($(selected_fws[i]).val());
+        }
+        if(fw_values.length > 0){
+          params.frameworks = fw_values;
+        }
       }
       
       $fw_manager.client.model.App.create(params, 
@@ -375,28 +375,28 @@ application.AppSupport = Class.extend({
   },
   
   getAppFramworksHtml: function(){
-  	var fw_options = $fw_manager.getClientProp('appFrameworks');
+    var fw_options = $fw_manager.getClientProp('appFrameworks');
     var getFwHtml = function(fw){
       var dom_id = fw.key.replace(/\./g, "_") + "_check";
       var html = "<td><input type='checkbox' id='"+ dom_id +"' ";
       html += "value='"+fw.key+"' />";
-      html += "<label for='" + dom_id + " '>"
+      html += "<label for='" + dom_id + " '>";
       html += fw.name.replace('_', ' ') + "  (v" + fw.version + ")";
       html += "</label></td>";
       return html;
-    }
+    };
     var contentHtml = "<table><tr>";
     var column = 3;
     for(var i=0;i<fw_options.length;i++){
       var fw = fw_options[i];
       contentHtml += getFwHtml(fw);
-      if((i+1)%column == 0 || i==fw_options.length - 1){
+      if(((i+1)%column === 0) || (i === (fw_options.length - 1))){
         contentHtml += "</tr>";
         if(i != fw_options.length - 1){
             contentHtml += "<tr>";
         }
       }
     }
-    return contentHtml;   	
+    return contentHtml;     
   }
 });

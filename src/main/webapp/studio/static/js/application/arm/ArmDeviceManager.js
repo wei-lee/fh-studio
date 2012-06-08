@@ -21,16 +21,16 @@ application.ArmDeviceManager = application.ArmManager.extend({
                 hidden: true
               },
               {
-              	index: 'deviceId',
-              	name: 'deviceId',
-              	editable: false,
-              	title: false
+                index: 'deviceId',
+                name: 'deviceId',
+                editable: false,
+                title: false
               },
               {
-              	index: 'description',
-              	name: 'description',
-              	editable: false,
-              	title: false
+                index: 'description',
+                name: 'description',
+                editable: false,
+                title: false
               },
               {                
                 index : 'make', 
@@ -74,7 +74,7 @@ application.ArmDeviceManager = application.ArmManager.extend({
             deviceDesc: $('#devices_add_desc').val(),
             make: $('#devices_add_make').val(),
             model : $('#devices_add_model').val()
-           }
+           };
     },
     
     createFinished: function(){
@@ -84,7 +84,7 @@ application.ArmDeviceManager = application.ArmManager.extend({
     getReadData: function(device_id){
         return {
             device: device_id
-        }
+        };
     },
     
     populateReadData: function(device_data){
@@ -101,14 +101,14 @@ application.ArmDeviceManager = application.ArmManager.extend({
         $('#armdevices_edit_make').val(device_make);
         $('#armdevices_edit_model').val(device_model);
         if(enabled){
-        	$('#armdevices_edit_enabled').attr('checked', 'checked');
+          $('#armdevices_edit_enabled').attr('checked', 'checked');
         } else {
-        	$('#armdevices_edit_enabled').removeAttr('checked');
+          $('#armdevices_edit_enabled').removeAttr('checked');
         }
         if(blocked){
-        	$('#armdevices_edit_blocked').attr('checked', 'checked');
+          $('#armdevices_edit_blocked').attr('checked', 'checked');
         } else {
-        	$('#armdevices_edit_blocked').removeAttr('checked');
+          $('#armdevices_edit_blocked').removeAttr('checked');
         }
     },
     
@@ -116,7 +116,7 @@ application.ArmDeviceManager = application.ArmManager.extend({
         form.validate({
           rules : {
           } 
-        })
+        });
     },
     
     getUpdateData: function(){
@@ -133,7 +133,7 @@ application.ArmDeviceManager = application.ArmManager.extend({
             model: device_model,
             enabled: enabled,
             blocked : blocked
-        }
+        };
     },
     
     updateFinished: function(){
@@ -146,7 +146,7 @@ application.ArmDeviceManager = application.ArmManager.extend({
             this.devices_users_grid = this.initUsersListGrid('armdevices_users_grid', 'armdevices_users_pager', 'armdevices_users_grid_columns');
             this.initSearch('armdevices_users_search_form', function(query){
               that.loadDevicesUsersGrid(query);
-            })
+            });
         }
         this.loadDevicesUsersGrid();
     },
@@ -157,7 +157,7 @@ application.ArmDeviceManager = application.ArmManager.extend({
     },
     
     loadDevicesUsersGrid: function(query){
-    	var that = this;
+      var that = this;
         this.populateUsersGrid(this.devices_users_grid, function(){
           //var device_id = $fw_manager.state.get('arm_devices', 'current_devices');
           //that.request('device/read', {device:device_id}, function(res){
@@ -165,7 +165,7 @@ application.ArmDeviceManager = application.ArmManager.extend({
           //    $fw_manager.state.set('arm_devices_data', 'devices', data);
           //    that.markSelectedUsers(data);
           //})        
-        }, query);         	
+        }, query);           
     },
     
     updateUserAssign: function(rowid, checkbox){
@@ -175,99 +175,99 @@ application.ArmDeviceManager = application.ArmManager.extend({
         var rows = $.isArray(rowid) ? rowid : [rowid];
         var users = [];
         for(var i=0;i<rows.length;i++){
-        	this.updated_user_map[rows[i]] = checkbox.checked;
+          this.updated_user_map[rows[i]] = checkbox.checked;
             users.push(rows[i].replace('_', '@'));
         }
         var device_id = $fw_manager.state.get('arm_devices', 'current_devices');
         var data  = {device: device_id, owner: users};
         that.request('device/' + action, data, function(res){
             $fw_manager.client.dialog.info.flash( ($.isArray(rowid) ? "Users " : "User ") + act );
-        })              
+        });              
     },
     
     initApproveGrid: function(){
-    	var that = this;
-    	if(null == this.devices_approve_grid){
-    		this.devices_approve_grid = proto.Grid.load($('#arm_devices_approve_grid'), {
-    		  	pager: 'arm_devices_approve_grid_pager',
+      var that = this;
+      if(null == this.devices_approve_grid){
+        this.devices_approve_grid = proto.Grid.load($('#arm_devices_approve_grid'), {
+            pager: 'arm_devices_approve_grid_pager',
                 viewrecords: true, 
                 recordtext: 'Total Requests : {2}',
                 emptyrecords: 'No requests',
                 colModel: [
                   {
-                  	index: 'id',
-                  	name : 'id',
-                  	hidden: true
+                    index: 'id',
+                    name : 'id',
+                    hidden: true
                   },
                   {
-                  	index: 'userId',
-                  	name : 'userId',
-                  	editable: false,
-                  	title : false
+                    index: 'userId',
+                    name : 'userId',
+                    editable: false,
+                    title : false
                   },
                   {
-                  	index: 'deviceId',
-                  	name: 'deviceId',
-                  	editable: false,
-                  	title: false
+                    index: 'deviceId',
+                    name: 'deviceId',
+                    editable: false,
+                    title: false
                   },
                   {
-                  	index: 'attemptedDate',
-                  	name: 'attemptedDate',
-                  	editable: false,
-                  	title: false
+                    index: 'attemptedDate',
+                    name: 'attemptedDate',
+                    editable: false,
+                    title: false
                   },
                   {
-                  	index: 'attempts',
-                  	name: 'attempts',
-                  	editable: false,
-                  	title: false
+                    index: 'attempts',
+                    name: 'attempts',
+                    editable: false,
+                    title: false
                   },
                   {
-                  	index: 'actions',
-                  	name: 'actions',
-                  	editable: false,
-                  	title: false
+                    index: 'actions',
+                    name: 'actions',
+                    editable: false,
+                    title: false
                   }
                 ],
                 colNames : $fw_manager.client.lang.getLangArray('arm_devices_approve_grid_columns')
-    		});
-    		this.initSearch('arm_devicesapprove_search_form', function(query){
-    		  	that.loadApproveGrid(query);
-    		})
-    	}
-    	 this.loadApproveGrid();
+        });
+        this.initSearch('arm_devicesapprove_search_form', function(query){
+            that.loadApproveGrid(query);
+        });
+      }
+       this.loadApproveGrid();
     },
     
     loadApproveGrid: function(query){
-    	var that = this;
-    	var query_data = {grid: true};
-    	if(typeof query === "string" && query.length > 0){
-    		query_data.search = query;
-    	}
-    	this.request(this.url_path + "/listApprovals", query_data, function(res){
-    	  	that.loadGridData(that.devices_approve_grid, res);
-    	})
+      var that = this;
+      var query_data = {grid: true};
+      if(typeof query === "string" && query.length > 0){
+        query_data.search = query;
+      }
+      this.request(this.url_path + "/listApprovals", query_data, function(res){
+          that.loadGridData(that.devices_approve_grid, res);
+      });
     },
     
     deviceOps: function(act, id){
-    	var that = this;
-    	this.request(this.url_path + "/manageApprovals", {approvalId: id, action: act}, function(res){
-    		that.devices_approve_grid.jqGrid('delRowData', id);
-    	})
+      var that = this;
+      this.request(this.url_path + "/manageApprovals", {approvalId: id, action: act}, function(res){
+        that.devices_approve_grid.jqGrid('delRowData', id);
+      });
     },
     
     approveDevice: function(id){
-    	this.deviceOps('approve', id);
+      this.deviceOps('approve', id);
     },
     
     blockDevice: function(id){
-    	this.deviceOps('block', id);
+      this.deviceOps('block', id);
     },
     
     ignoreDevice: function(id){
-    	this.deviceOps('ignore', id);
+      this.deviceOps('ignore', id);
     }
     
    
-})
+});

@@ -46,10 +46,10 @@
           days = self.daysBetweenDates(tempFDate, tempTDate);
           
           if (self.appid) {
-          	app = self.appid;
+            app = self.appid;
           } else {
-	        app = container.find('.appreport-applist option:selected').val();
-	      }
+          app = container.find('.appreport-applist option:selected').val();
+        }
   
           params = {
             id: app,//'7BmC8jo_jd4aQuvT6CSCzmWa',
@@ -84,12 +84,12 @@
     },
 
     doOptions: function (container, getAppsList) {
-	  if (getAppsList) {
-      	var appslist, url, params;
+    if (getAppsList) {
+        var appslist, url, params;
 
-      	url = Constants.LIST_APP_METRICS_APPS_URL;
-      	params = {};
-      	appslist = container.find('.appreport-applist').empty();
+        url = Constants.LIST_APP_METRICS_APPS_URL;
+        params = {};
+        appslist = container.find('.appreport-applist').empty();
 
         $fw.server.post(url, params, function (result) {
           if ('ok' === result.status) {
@@ -107,10 +107,10 @@
             $fw.client.dialog.error(result.message);
           }
         });
- 	  }	else {
-	 	  container.find('.appreport-applist').hide();
- 	  }
- 	   
+     }  else {
+       container.find('.appreport-applist').hide();
+     }
+      
       container.find('.appreportfrom-datepicker').datepicker({
         dateFormat: "yy-mm-dd",
         maxDate: "-2",

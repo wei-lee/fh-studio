@@ -76,7 +76,7 @@ application.ArmGroupManager = application.ArmManager.extend({
             groupId: $('#groups_add_id').val(),
             groupName: $('#groups_add_name').val(),
             groupDesc: $('#groups_add_desc').val()
-           }
+           };
     },
     
     createFinished: function(){
@@ -86,7 +86,7 @@ application.ArmGroupManager = application.ArmManager.extend({
     getReadData: function(group_id){
         return {
             groupId: group_id
-        }
+        };
     },
     
     populateReadData: function(group_data){
@@ -105,7 +105,7 @@ application.ArmGroupManager = application.ArmManager.extend({
           rules : {
             'name': 'required'
           } 
-        })
+        });
     },
     
     getUpdateData: function(){
@@ -116,7 +116,7 @@ application.ArmGroupManager = application.ArmManager.extend({
             groupId : group_id,
             groupName: group_name,
             groupDesc : group_desc
-        }
+        };
     },
     
     updateFinished: function(){
@@ -128,9 +128,9 @@ application.ArmGroupManager = application.ArmManager.extend({
         if(this.groups_apps_grid == null){
             this.groups_apps_grid = this.initAppListGrid('armgroups_apps_grid', 'armgroups_apps_pager', 'armgroups_apps_grid_columns');
             this.initSearch('armgroups_apps_search_form', function(query){
-            	that.loadGroupsAppsGrid(query);
+              that.loadGroupsAppsGrid(query);
             });
-        };
+        }
         this.loadGroupsAppsGrid();
     },
 
@@ -140,9 +140,9 @@ application.ArmGroupManager = application.ArmManager.extend({
     },
     
     loadGroupsAppsGrid: function(query){
-    	var that = this;
+      var that = this;
         that.populateAppsGrid(this.groups_apps_grid, function(){           
-        }, query);    	
+        }, query);      
     },
     
    updateAppsAssign: function(rowid, checkbox){
@@ -157,7 +157,7 @@ application.ArmGroupManager = application.ArmManager.extend({
         var data  = {groupId: group_id, apps: apps};
         that.request('group/' + action, data, function(res){
             $fw_manager.client.dialog.info.flash( ($.isArray(rowid) ? "Apps " : "App ") + act);
-        })      
+        });      
     },
     
     initUsers: function(){
@@ -166,13 +166,13 @@ application.ArmGroupManager = application.ArmManager.extend({
             this.groups_users_grid = this.initUsersListGrid('armgroups_users_grid', 'armgroups_users_pager', 'armgroups_users_grid_columns');
             this.initSearch('armgroups_users_search_form', function(query){
               that.loadGroupsUsersGrid(query);	
-            })
+            });
         }
         this.loadGroupsUsersGrid();
     },
     
     loadGroupsUsersGrid: function(query){
-    	var that = this;
+      var that = this;
         this.populateUsersGrid(this.groups_users_grid, function(){
           //var group_id = $fw_manager.state.get('arm_groups', 'current_groups');
           //that.request('group/read', {groupId:group_id}, function(res){
@@ -180,7 +180,7 @@ application.ArmGroupManager = application.ArmManager.extend({
           //    $fw_manager.state.set('arm_groups_data', 'groups', data);
           //    that.markSelectedUsers(data);
           //})        
-        }, query);         	
+        }, query);           
     },
     
     updateUserAssign: function(rowid, checkbox){
@@ -190,14 +190,14 @@ application.ArmGroupManager = application.ArmManager.extend({
         var rows = $.isArray(rowid) ? rowid : [rowid];
         var users = [];
         for(var i=0;i<rows.length;i++){
-        	this.updated_user_map[rows[i]] = checkbox.checked;
-        	users.push(rows[i].replace('_', '@'));
+          this.updated_user_map[rows[i]] = checkbox.checked;
+          users.push(rows[i].replace('_', '@'));
         }
         var group_id = $fw_manager.state.get('arm_groups', 'current_groups');
         var data  = {groupId: group_id, users: users};
         that.request('group/' + action, data, function(res){
             $fw_manager.client.dialog.info.flash( ($.isArray(rowid) ? "Users " : "User ") + act );
-        })          	
+        });
     },
     
     markSelectedUsers: function(data){
@@ -205,6 +205,6 @@ application.ArmGroupManager = application.ArmManager.extend({
       for(var i=0;i<users.length;i++){
         var user = users[i];
         $('#armgroups_users_grid').jqGrid('setSelection', user.userId.replace('@', '_'), false);  //jqgrid won't check the checkbox if the id has "@"
-      }         	
+      }           
     }
-})
+});

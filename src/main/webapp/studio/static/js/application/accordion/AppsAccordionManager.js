@@ -33,7 +33,7 @@ application.AppsAccordionManager = application.AccordionManager.extend({
   },
   
   preSelectConfigurationIos: function () {
-	 $fw_manager.client.config.ios.show();
+   $fw_manager.client.config.ios.show();
   },
 
   preSelectConfigurationFacebook: function () {
@@ -53,7 +53,7 @@ application.AppsAccordionManager = application.AccordionManager.extend({
   },
 
   preSelectReportApp: function(id, container) {
-  	$fw.client.report.show(id, container);
+    $fw.client.report.show(id, container);
   },
   
   postSelectReportApp: function(id, container) {
@@ -61,27 +61,27 @@ application.AppsAccordionManager = application.AccordionManager.extend({
   },
   
   preSelectReportStartupsdate: function (id, container) {
-  	$fw.client.report.show('appstartupsdest', 'line', id, container);
+    $fw.client.report.show('appstartupsdest', 'line', id, container);
   },
  
   preSelectReportStartupsdest: function(id, container) {
-  	$fw.client.report.show('appstartupsdest', 'pie', id, container);
+    $fw.client.report.show('appstartupsdest', 'pie', id, container);
   },
   
   preSelectReportStartupsloc: function(id, container) {
-  	$fw.client.report.show('appstartupsgeo', 'geo', id, container);
+    $fw.client.report.show('appstartupsgeo', 'geo', id, container);
   },
   
   preSelectReportInstallsdate: function (id, container) {
-  	$fw.client.report.show('appinstallsdest', 'line', id, container);
+    $fw.client.report.show('appinstallsdest', 'line', id, container);
   },
  
   preSelectReportInstallsdest: function(id, container) {
-  	$fw.client.report.show('appinstallsdest', 'pie', id, container);
+    $fw.client.report.show('appinstallsdest', 'pie', id, container);
   },
   
   preSelectReportInstallsloc: function(id, container) {
-  	$fw.client.report.show('appinstallsgeo', 'geo', id, container);
+    $fw.client.report.show('appinstallsgeo', 'geo', id, container);
   },
   
   postSelectEditorFiles: function () {
@@ -145,12 +145,12 @@ application.AppsAccordionManager = application.AccordionManager.extend({
   },
 
   postSelectManageFrameworks: function(){
-  	if($fw.client.needsSetup('manage_frameworks')){
-  		$('#manage_frameworks_update_button').bind('click', function(){
-  		  	$fw_manager.client.app.doUpdateFrameworks();
-  		})
-  	}
-  	$fw_manager.client.app.showCurrentFrameworks();
+    if($fw.client.needsSetup('manage_frameworks')){
+      $('#manage_frameworks_update_button').bind('click', function(){
+          $fw_manager.client.app.doUpdateFrameworks();
+      });
+    }
+    $fw_manager.client.app.showCurrentFrameworks();
   },
 
   postSelectManageIcons: function () {
@@ -176,10 +176,10 @@ application.AppsAccordionManager = application.AccordionManager.extend({
   },
   
   postSelectPushUrbanairship: function() {
-  	if(!$fw_manager.client.push_manager){
-  		$fw_manager.client.push_manager = new application.PushNotificationManager();
-  	};
-  	$fw_manager.client.push_manager.loadSettings();
+    if(!$fw_manager.client.push_manager){
+      $fw_manager.client.push_manager = new application.PushNotificationManager();
+    }
+    $fw_manager.client.push_manager.loadSettings();
   },
   
   getSelectedItemKey: function () {

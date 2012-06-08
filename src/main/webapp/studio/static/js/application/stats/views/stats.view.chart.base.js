@@ -14,7 +14,7 @@ Stats.View.Chart.Base = Class.extend({
     this.model = params.model;
     this.series = params.series.all_series;
     this.series_name = params.series.series_name;
-    this.renderTo = '#' + this.series_name + '_list_item .chart_container'
+    this.renderTo = '#' + this.series_name + '_list_item .chart_container';
     Log.append('Initialising chart view');
   },
 

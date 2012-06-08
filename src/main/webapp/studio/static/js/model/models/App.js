@@ -45,7 +45,11 @@ model.App = model.Model.extend({
   read: function (guid, success, fail, is_name) {
     var url = is_name ? Constants.READ_APP_BY_NAME_URL : Constants.READ_APP_URL;
     var params = {};
-    is_name ? (params.appName = guid) :  (params.guid = guid); 
+    if (is_name) {
+      params.appName = guid;
+    } else {
+      params.guid = guid;
+    }
     $fw_manager.server.post(url, params, function (result) {
       if (result.status && 'error' === result.status) {
         if ('function' === typeof fail) {
@@ -137,17 +141,17 @@ model.App = model.Model.extend({
   },
   
   updateFrameworks: function(guid, frameworks, success, fail){
-  	var url = Constants.UPDATE_APP_FRAMEWORKS_URL;
-  	var params = {guid: guid, frameworks: frameworks};
-  	$fw_manager.server.post(url, params, function(res){
-  	 if($.isFunction(success)){
-  	   success(res);	
-  	 }	
-  	}, function(err){
-  	 if($.isFunction(fail)){
-  	   fail(err);	
-  	 }
-  	})
+    var url = Constants.UPDATE_APP_FRAMEWORKS_URL;
+    var params = {guid: guid, frameworks: frameworks};
+    $fw_manager.server.post(url, params, function(res){
+     if($.isFunction(success)){
+       success(res);  
+     }  
+    }, function(err){
+     if($.isFunction(fail)){
+       fail(err);  
+     }
+    });
   }
   
 });

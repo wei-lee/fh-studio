@@ -11,7 +11,7 @@ proto.Dialog = {
   },
   
   load: function (el, overrides) {
-    var el = el.dialog($.extend({}, proto.Dialog.defaults, overrides));
+    el = el.dialog($.extend({}, proto.Dialog.defaults, overrides));
     // De-JQ UI-ify these buttons
     el.parent().find('.jw-buttons button').removeClass('ui-state-default ui-corner-all').addClass('btn btn-primary');
     return el;

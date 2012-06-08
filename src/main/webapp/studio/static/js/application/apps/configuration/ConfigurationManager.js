@@ -71,9 +71,9 @@ application.ConfigurationManager = Class.extend({
         newConfig = {};
     
     if(typeof self.validateForm === "function"){
-    	if(!self.validateForm()){
-    		return;
-    	}
+      if(!self.validateForm()){
+        return;
+      }
     }
     // Iterate over each config option and put it in newConfig
     form.find('.config_option').each(function (i, el) {

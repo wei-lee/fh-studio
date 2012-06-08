@@ -605,10 +605,6 @@ label.error
   margin:0 0 0 1em;
   cursor:pointer;
 }
-.snippets-list-grid .jqgrow, #snippets_tags_list_grid .jqgrow
-{
-  cursor:pointer;
-}
 .ui-jqgrid .ui-jqgrid-bdiv
 {
   overflow:hidden;
@@ -682,10 +678,6 @@ label.error
 .ui-state-active.apps-tab, #apps_north .container-header 
 {
   background: transparent url(../img/blue_bar_repeat.png) repeat-x 0 0 !important;
-}
-.ui-state-active.community-tab, #community_north .container-header
-{
-  background: transparent url(../img/dark_blue_bar_repeat.png) repeat-x 0 0 !important;
 }
 .ui-state-active.account-tab, #account_north .container-header
 {
@@ -1030,15 +1022,11 @@ label.error
   -webkit-border-radius:0;
   border-radius:0;
 }
-.manage_apps-container, .community-container, .logging-container, .reporting-container
+.manage_apps-container, .logging-container, .reporting-container
 {
   height:100%;    
   width:100%;
   overflow:auto; 
-}
-#snippets_tags_tabs_buttons
-{
-  display:none;
 }
 #manage_details_buttons {
   padding-left: 60%;
@@ -1165,62 +1153,6 @@ label.error
 .editor_disabled_p
 {
   padding-left:2em;
-}
-/* Community 
- -------------*/
-/* Snippets */
-.snippets-mine-container
-{
-  height:100%;
-  width:100%;
-  overflow:hidden;
-}
-.snippet-view-code-highlighted
-{
-  overflow: auto;
-  background-color:#fff;
-}
-.snippet-view-code-highlighted, textarea.snippet-view-code
-{
-  font-family: monospace;
-  max-height: 18em;
-}
-textarea.snippet-view-code
-{
-  height:18em;
-}
-.snippet-view-code-highlighted .code-numbers
-{
-  color: #CCCCCC;
-  float: left;
-  font-family: monospace;
-  margin-right: 0.5em;
-  text-align: right;
-  width: 2.5em;
-  padding:0 0.5em 0;
-  background-color:#eee;
-}
-.snippet-header
-{
-  padding:0 0 1em;
-}
-.snippet-footer
-{
-  padding:1em 0 0;
-}
-.snippet-view .form-field label
-{
-  float:left;
-  width:10%;
-}
-.snippet-view .form-field input, .snippet-view-code-highlighted, textarea.snippet-view-code
-{
-  float:left;
-  width:85%;
-}
-.snippet-view .form-field input[type=checkbox]
-{
-  width:1em;
 }
 /* Dialogs */
 .ui-dialog

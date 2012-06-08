@@ -45,7 +45,7 @@ application.PreviewManager = Class.extend({
       // Even though we're only calling a single function, we're
       // putting it inside an anonymous function so that the 
       // reference to 'this' is maintained inside showDebugger
-      $fw.client.preview.showDebugger()
+      $fw.client.preview.showDebugger();
     });
     $('#preview_frame_emulator_btn').button({
       'icons': {
@@ -419,7 +419,7 @@ application.PreviewManager = Class.extend({
   },
 
   getTemplatePreviewUrl: function (app_guid, destination, domain) {
-  	var domainStr = domain || Constants.DOMAIN;
+    var domainStr = domain || Constants.DOMAIN;
     var preview_url = Constants.PREVIEW_TEMPLATE_URL.replace('<GUID>', app_guid).replace('<DEST>', Constants.PREVIEW_APP_DESTINATION).replace('<DOMAIN>', domainStr);
     return preview_url;
   },

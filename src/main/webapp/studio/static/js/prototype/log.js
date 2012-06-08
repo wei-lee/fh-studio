@@ -1,4 +1,4 @@
-/*global Log, Properties, console 
+/*global Properties, console 
  */
 Log = {
   append: function (text, level) {

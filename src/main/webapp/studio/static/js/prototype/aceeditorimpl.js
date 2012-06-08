@@ -136,7 +136,7 @@ proto.AceEditorImpl = function (params) {
           line: self.editor.getCursorPosition().row,
           character: self.editor.getCursorPosition().column
         }
-      }
+      };
     },
 
     reset: function () {
@@ -156,7 +156,7 @@ proto.AceEditorImpl = function (params) {
     isInited: function() {
       return self.inited;
     }
-  }
+  };
   self.init();
   return {
     openFile: self.openFile,
@@ -167,5 +167,5 @@ proto.AceEditorImpl = function (params) {
     reset: self.reset,
     resize: self.resize,
     inited: self.isInited
-  }
-}
+  };
+};

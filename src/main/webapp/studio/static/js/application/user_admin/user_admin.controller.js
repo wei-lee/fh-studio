@@ -13,7 +13,7 @@ UserAdmin.Controller = Class.extend({
 
   init: function(params) {
     var self = this;
-    var params = params || {};
+    params = params || {};
     this.config = params.config || null;
   },
 
@@ -58,11 +58,11 @@ UserAdmin.Controller = Class.extend({
 
   renderCheckboxes: function(row, data) {
     $('td', row).each(function(i, item) {
-      if (data[i] == true) {
+      if (data[i]) {
         $(item).html('<input type="checkbox" checked/>');
       }
 
-      if (data[i] == false) {
+      if (data[i]) {
         $(item).html('<input type="checkbox"/>');
       }
     });

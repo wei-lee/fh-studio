@@ -32,37 +32,5 @@ $.extend(Application, {
     apps_layout.resizeAll();
     list_apps_layout.resizeAll();
     proto.Grid.resizeVisible();
-  },
-
-  /*
-   * Originally used specifically for snippet tabs callbacks when tabs were shown,
-   * but can now be used for any tabs show callback
-   *
-   * Usage:
-   *  If a tab id is 'snippets_tags_list_tab'
-   *  a postShow function of $fw_manager.app.postShowSnippetsTagsListTab() will be called after the
-   *  tab is shown
-   */
-  postShowTab: function(event, ui) {
-    var tab_name = $(ui.tab).attr('id').replace('_tab', '');
-    Log.append('loading ' + tab_name);
-    // construct the 'show' function name
-    var show_fn_name = 'postShow' + js_util.camelCase(tab_name.split('_')) + 'Tab';
-    var fn = $fw_manager.app[show_fn_name];
-    // check if it's acutally a function
-    if ('function' === typeof fn) {
-      fn();
-    } else {
-      Log.append(show_fn_name + ' isnt a function');
-    }
-  },
-
-  postShowSnippetsTagsListTab: function() {
-    Log.append('postShowSnippetsTagsListTab');
-    $fw_manager.client.snippet.doTagsList();
-  },
-
-  postShowSnippetsTagsCloudTab: function() {
-    Log.append('postShowSnippetsTagsCloudTab');
   }
 });

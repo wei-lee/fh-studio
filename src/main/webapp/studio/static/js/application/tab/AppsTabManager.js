@@ -138,9 +138,10 @@ application.AppsTabManager = application.TabManager.extend({
       // TODO: allow for UI structural changes
       var defval = 'list_apps_button_my_apps';
       var selected = $fw_manager.state.get('apps_tab_options', 'selected', defval);
+      var id;
       if (selected === 'app') {
         // An app was open last, so what's the id?
-        var id = $fw_manager.state.get('app', 'id', null);
+        id = $fw_manager.state.get('app', 'id', null);
         if (null !== id) {
           // Have an app id, lets try open it for managing
           $fw_manager.client.app.doManage(id, $.noop, function() {
@@ -154,7 +155,7 @@ application.AppsTabManager = application.TabManager.extend({
           $('li#' + defval).trigger('click');
         }
       } else if (selected === 'template') {
-        var id = $fw_manager.state.get('template', 'id', null);
+        id = $fw_manager.state.get('template', 'id', null);
         if (null !== id) {
           // Have an app id, lets try open it for managing
           $fw_manager.client.template.doView(id);
@@ -177,7 +178,7 @@ application.AppsTabManager = application.TabManager.extend({
       list_apps_layout.resizeAll();
     }
     if (null !== manage_apps_layout) {
-      Log.append('resizing manage_apps layout as part of tab postShow')
+      Log.append('resizing manage_apps layout as part of tab postShow');
       manage_apps_layout.resizeAll();
     }
   },

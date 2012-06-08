@@ -14,7 +14,7 @@ Reports.View.Chart.Base = Class.extend({
     this.model = params.model;
     this.series = params.series.all_series;
     this.series_name = params.series.series_name;
-    this.renderTo = '#appreport-results'
+    this.renderTo = '#appreport-results';
     Log.append('Initialising chart view');
   },
 
@@ -78,7 +78,7 @@ Reports.View.Chart.Base = Class.extend({
                 // Call back to the model to export this series as CSV
                 var csv = this.view.model.getCSVForSeries(this.model_series);
                 var content_type = 'csv';
-                this.view.controller.export(filename, csv, content_type);
+                this.view.controller['export'](filename, csv, content_type);
               }
             },
             null, null]

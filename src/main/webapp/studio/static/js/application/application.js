@@ -12,17 +12,17 @@ Application = {
     if ('accordion_item_report' === ui.newHeader.attr('id') || 'accordion_item_debug' === ui.newHeader.attr('id')) {
       // if moving to the reporting item and the preview is open then save flag and hide the preview
       if ($fw.client.preview.support.isPreviewOpen()) {
-    	this.previewWasOpen = true;
-	    $fw.client.preview.hideContent();
+      this.previewWasOpen = true;
+      $fw.client.preview.hideContent();
       }
     } else if ('accordion_item_report' === ui.oldHeader.attr('id') || 'accordion_item_debug' === ui.oldHeader.attr('id')) {
       // if moving from the reporting item and the preview had previously been open then re-open it
       if (this.previewWasOpen) {
-  	  	Log.append("reopening Preview");
-  		$fw.client.preview.showContent();
-  		this.previewWasOpen = undefined;   // will be reset in future by show() if required
-  	  }
-  	}
+        Log.append("reopening Preview");
+      $fw.client.preview.showContent();
+      this.previewWasOpen = undefined;   // will be reset in future by show() if required
+      }
+    }
     $fw_manager.app.accordionItemCallback(accordion, content);
   },
   
@@ -150,10 +150,10 @@ Application = {
     var temp_form = selector.closest('form');
     var ph_div = $("<div>");
     if(do_copy){
-    	selector.before(ph_div);
-    	temp_form = $("<form>");
-    	temp_form.append(selector);
-    	$('body').append(temp_form); 
+      selector.before(ph_div);
+      temp_form = $("<form>");
+      temp_form.append(selector);
+      $('body').append(temp_form); 
     }
 
     var options = {
@@ -163,7 +163,7 @@ Application = {
       success: function(res){
           success(res);
           if(do_copy){
-          	ph_div.after(selector);
+            ph_div.after(selector);
             temp_form.remove();
             ph_div.remove();
           }

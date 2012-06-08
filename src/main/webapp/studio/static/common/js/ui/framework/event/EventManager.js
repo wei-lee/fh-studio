@@ -3,9 +3,6 @@
  * handlers/subscribers interested in those events
  */
 
-/*globals document, $, EventManager EventChain
-*/
-
 EventManager = function () {
   var self = {
     numIntercepted: 0,

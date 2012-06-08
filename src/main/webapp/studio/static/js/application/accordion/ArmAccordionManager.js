@@ -13,7 +13,7 @@ application.ArmAccordionManager = application.AccordionManager.extend({
   },
   
   postSelectUsersAdd: function(){
-  	$fw_manager.client.arm.users.initAdd();
+    $fw_manager.client.arm.users.initAdd();
   },
 
   postSelectGroupsList: function () {
@@ -33,6 +33,6 @@ application.ArmAccordionManager = application.AccordionManager.extend({
   },
   
   postSelectDevicesApprove: function(){
-  	$fw_manager.client.arm.devices.initApproveGrid();
+    $fw_manager.client.arm.devices.initApproveGrid();
   }
 });

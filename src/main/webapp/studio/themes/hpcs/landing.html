@@ -80,7 +80,7 @@ try {
   
     <!-- Mixpanel stuff -->
 		<script type="text/javascript">
-		    var mpEnabled = <%=studio.getProperty(studio.PROP_LANDINGMIXPANELENABLED)%>;
+		    var mpEnabled = <%=studio.getProperty(studio.PROP_LANDINGMIXPANELENABLED).toString()%>;
         var mpTestMode = <%=studio.getProperty(studio.PROP_LANDINGMIXPANELTEST)%>;
 		    var mpq = [];
 		    if (mpEnabled) {
@@ -97,7 +97,7 @@ try {
 	        }
 		    }
 
-        var gAnalyticsEnabled = <%=studio.getProperty(studio.PROP_LANDINGGOOGLEENABLED)%>;
+        var gAnalyticsEnabled = <%=studio.getProperty(studio.PROP_LANDINGGOOGLEENABLED).toString()%>;
         var _gaq = _gaq || [];
         if (gAnalyticsEnabled) {
           _gaq.push(['_setAccount', '<%=studio.getProperty(studio.PROP_LANDINGGOOGLEKEY)%>']);

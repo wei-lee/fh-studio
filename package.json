@@ -1,0 +1,14 @@
+{
+  "name": "fh-studio",
+  "description": "FeedHenry App Studio",
+  "version": "0.0.0",
+  "author": "David Martin <david.martin@feedhenry.com>",
+  "engines": {
+    "node": ">= 0.6.17"
+  },
+  "dependencies" : {
+  },
+  "devDependencies": {
+    "jshint": ">=0.7.1"
+  }
+}

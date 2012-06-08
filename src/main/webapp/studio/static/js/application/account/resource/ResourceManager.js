@@ -107,7 +107,7 @@ application.ResourceManager = Class.extend({
         var dest = $(this).data('destination');
         Log.append(dest + '_getstarted_resource button clicked');
         $fw_manager.client.resource[dest].showGetStartedWizard();
-      })
+      });
       destinations_container.find('.resource-uploadnow, .resource-reupload').data('destination', that.destination).unbind().bind('click', function () {
         var dest = $(this).data('destination');
         // Find the resource div we are in
@@ -135,7 +135,7 @@ application.ResourceManager = Class.extend({
       
       // Combine the resources in the result to a single array and set the type of them accordingly
       var resources = [];
-      var certs = result.certificates
+      var certs = result.certificates;
       for (var ci=0; ci<certs.length; ci++) {
         var temp_cert = certs[ci];
         resources.push({type: temp_cert.type + '_cert', guid: temp_cert.guid});
@@ -273,7 +273,7 @@ application.ResourceManager = Class.extend({
       rules: validation_rules
     });
     cert_wizard.find('#' + that.destination + '_cert_finish').bind('show', function () {
-      var dest = that.destination
+      var dest = that.destination;
       Log.append('uploading cert');
       var step = $(this);
       

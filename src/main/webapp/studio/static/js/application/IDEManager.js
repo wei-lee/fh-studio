@@ -17,7 +17,6 @@ var IDEManager = Class.extend({
       blackberry: new application.BlackberryConfigManager(),
       windowsphone7: new application.Windowsphone7ConfigManager(),
       nokiawrt: new application.NokiawrtConfigManager()
-      //facebook: new application.ConfigurationManager()
     };
     this.report = new application.ReportManager();
     this.profile = new application.ProfileManager();
@@ -27,7 +26,6 @@ var IDEManager = Class.extend({
       android: new application.AndroidResourceManager(),
       blackberry: new application.BlackberryResourceManager()
     };
-    this.snippet = new application.SnippetManager();
     this.lang = new LangManager();
     this.dialog = new application.DialogManager();
     this.icon = new application.IconManager();
@@ -35,7 +33,6 @@ var IDEManager = Class.extend({
     this.tab = {
       home: new application.HomeTabManager(),
       apps: new application.AppsTabManager(),
-      community: new application.CommunityTabManager(),
       account: new application.AccountTabManager(),
       reporting: new application.ReportingTabManager(),
       arm: new application.ArmTabManager(),
@@ -47,23 +44,23 @@ var IDEManager = Class.extend({
     this.status = new application.StatusManager();
     this.chart = new application.ChartManager();
     this.arm = {
-    	apps: new application.ArmAppManager(),
-    	users: new application.ArmUserManager(),
-    	groups: new application.ArmGroupManager(),
-    	devices: new application.ArmDeviceManager()
+      apps: new application.ArmAppManager(),
+      users: new application.ArmUserManager(),
+      groups: new application.ArmGroupManager(),
+      devices: new application.ArmDeviceManager()
     };
     this.useradmin = new UserAdmin.Controller();
         
     // setup callbacks for server calls
     $fw_manager.server.setOpts({ 
       connectivity_ok: function () {
-        $fw_manager.client.dialog.connectivity.hide()
+        $fw_manager.client.dialog.connectivity.hide();
       },
       connectivity_error: function () {
         $fw_manager.client.dialog.connectivity.show($fw_manager.client.lang.getLangString('connectivity_error'));
       },
       cookie_error: function () {
-        location.reload()
+        location.reload();
       },
       server_error: function (status, statusText) {
         $fw_manager.client.dialog.connectivity.show($fw_manager.client.lang.getLangString('server_error') + status + ' - ' + statusText);
@@ -114,10 +111,10 @@ var IDEManager = Class.extend({
     
     //Initialise Analytics Binding
     this.analytics.doIntegration();
-  	
-  	//Setup docs links
-  	this.setupDocsLinks();
-  	
+    
+    //Setup docs links
+    this.setupDocsLinks();
+    
     // Retrieving and populating appropriate fields for Profile
     $fw_manager.client.profile.doLoad();
     
@@ -173,9 +170,9 @@ var IDEManager = Class.extend({
         nodeEnabled = $fw.getClientProp('nodejsEnabled');
     
     if ('true' === nodeEnabled) {
-      var docs = $fw.getClientProp('dashboard-docs-v2'); // nodejs
+      docs = $fw.getClientProp('dashboard-docs-v2'); // nodejs
     } else {
-      var docs = $fw.getClientProp('dashboard-docs-default');
+      docs = $fw.getClientProp('dashboard-docs-default');
     }
     
     //Log.append('dashboard-docs:' + docs);

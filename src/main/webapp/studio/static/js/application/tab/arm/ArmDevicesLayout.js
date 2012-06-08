@@ -21,7 +21,7 @@ application.ArmDevicesLayout = application.TabManager.extend({
         accordion.find('.ui-accordion-content-active .ui-menu li:first-child a').trigger('click');
       }});
     crumbs.push({text: $fw_manager.state.get('arm_devices_name', 'current_devices_name')});
-    crumbs.push({text: b2.text()})
+    crumbs.push({text: b2.text()});
     return crumbs;
   }
 });

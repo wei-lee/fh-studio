@@ -93,7 +93,7 @@ application.controller.Keys = Class.extend({
     Log.append('revoking: ' + key);
     var self = this;
     this.model.revoke(key, function(res) {
-      if (res.status = 'ok') {
+      if (res.status === 'ok') {
         self.refreshUserKeys();
       }
     });

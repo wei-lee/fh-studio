@@ -6,7 +6,7 @@ Reports.Controller = Class.extend({
 
   init: function(params) {
     var self = this;
-    var params = params || {};
+    params = params || {};
     this.config = params.config || null;
     this.initModels();
   },
@@ -22,7 +22,7 @@ Reports.Controller = Class.extend({
     var model = this.models[0];
     var self = this;
 
-    var self = this;
+    self = this;
     var chart = new Reports.View.Chart.Base({
       model: model,
       series: model.getSeries(),
@@ -137,7 +137,7 @@ Reports.Controller = Class.extend({
     var self = this;
     $.each(self.models, function(item_number, model) {
       var total = self.models.length;
-      var item_number = item_number + 1;
+      item_number = item_number + 1;
       model.load({
         loaded: function(res) {
           Log.append('Reports loaded');

@@ -28,7 +28,7 @@ application.TabManager = Class.extend({
     });
     crumbs.push({
       text: b2.text()
-    })
+    });
     return crumbs;
   },
 
