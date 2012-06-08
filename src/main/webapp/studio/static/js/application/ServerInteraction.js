@@ -10,8 +10,8 @@ $.extend(Application, {
     });
   },
   
-  loadTextFile: function(data, success) {  	
-    $fw_manager.server.post(Constants.LOAD_FILE_URL, data, success);  	
+  loadTextFile: function(data, success) {    
+    $fw_manager.server.post(Constants.LOAD_FILE_URL, data, success);    
   },
   
   loadAppsGridData: function (grid_name, callback) {
@@ -30,6 +30,6 @@ $.extend(Application, {
   loadHomeGridData: function(url, data, callback){
     $fw_manager.server.post(url, data, function(data){
      callback(data);   
-    })  
+    });  
   }
 });

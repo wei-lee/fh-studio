@@ -30,7 +30,7 @@ UserAdmin.Controller = Class.extend({
 
   init: function(params) {
     var self = this;
-    var params = params || {};
+    params = params || {};
     this.config = params.config || null;
   },
 
@@ -132,11 +132,11 @@ UserAdmin.Controller = Class.extend({
   renderCheckboxes: function(row, data) {
     $('td', row).each(function(i, item) {
       // TODO: Move to clonable hidden_template
-      if (data[i] == true) {
+      if (data[i] === true) {
         $(item).html('<input type="checkbox" checked disabled/>');
       }
 
-      if (data[i] == false) {
+      if (data[i] === false) {
         $(item).html('<input type="checkbox" disabled/>');
       }
     });

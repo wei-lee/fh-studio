@@ -131,7 +131,7 @@ GenerateApp.Controllers.Wufoo = Class.extend({
 
   init: function(params) {
     var self = this;
-    var params = params || {};
+    params = params || {};
     this.config = params.config || null;
     this.parent_controller = params.controller || null;
   },
@@ -233,28 +233,29 @@ GenerateApp.Controllers.Wufoo = Class.extend({
       do_stage: false
     };
 
+    var custom_client_config, custom_cloud_config, client_config, cloud_config;
     if (this.type == 'single') {
       var url = "https://" + this.getDomain() + "/forms/" + app_config.form.Hash + "/";
-      var custom_client_config = {
+      custom_client_config = {
         form_hash: app_config.form.Hash,
         form_url: url
       };
-      var custom_cloud_config = {
+      custom_cloud_config = {
         form_hash: app_config.form.Hash,
         form_url: url,
         api_key: self.getApiKey(),
         api_domain: self.getDomain()
       };
-      var client_config = GenerateApp.Configs.getConfig('wufoo_single_form_client', 'wufoo_config', custom_client_config);
-      var cloud_config = GenerateApp.Configs.getConfig('wufoo_single_form_cloud', 'wufoo_config', custom_cloud_config);
+      client_config = GenerateApp.Configs.getConfig('wufoo_single_form_client', 'wufoo_config', custom_client_config);
+      cloud_config = GenerateApp.Configs.getConfig('wufoo_single_form_cloud', 'wufoo_config', custom_cloud_config);
     } else {
-      var custom_client_config = {};
-      var custom_cloud_config = {
+      custom_client_config = {};
+      custom_cloud_config = {
         api_key: self.getApiKey(),
         api_domain: self.getDomain()
       };
-      var client_config = GenerateApp.Configs.getConfig('wufoo_multi_form_client', 'wufoo_config', custom_client_config);
-      var cloud_config = GenerateApp.Configs.getConfig('wufoo_multi_form_cloud', 'wufoo_config', custom_cloud_config);
+      client_config = GenerateApp.Configs.getConfig('wufoo_multi_form_client', 'wufoo_config', custom_client_config);
+      cloud_config = GenerateApp.Configs.getConfig('wufoo_multi_form_cloud', 'wufoo_config', custom_cloud_config);
     }
 
     var update_client_config_params = {
@@ -372,7 +373,7 @@ GenerateApp.Controllers.Wufoo = Class.extend({
           self.showError("Template fetching failed, we couldn't generate your app. Please try again.");
         }
       });
-    };
+    }
 
     $('#app_generation_modal').clone().appendTo($("body")).one('shown', modal_shown).modal();
   },
@@ -487,7 +488,7 @@ GenerateApp.Controller = Class.extend({
 
   init: function(params) {
     var self = this;
-    var params = params || {};
+    params = params || {};
     this.config = params.config || null;
     this.initGenerators();
   },
@@ -510,7 +511,7 @@ GenerateApp.Controller = Class.extend({
       wufoo_multi: new GenerateApp.Controllers.WufooMulti({
         controller: this
       })
-    }
+    };
   },
 
   hideCenterViews: function() {

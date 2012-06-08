@@ -51,7 +51,7 @@ application.PreviewSupport = Class.extend({
         overflow: 'hidden',
         width: act_width + 'px',
         height: act_height + 'px'
-      })
+      });
       
       // see note ^above^ about perspective translation
       // This logic works out the required distance from the viewing plane for the preview to be,

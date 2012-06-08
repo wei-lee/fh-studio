@@ -44,7 +44,7 @@ Stats.Model.Historical.Counters = Stats.Model.Historical.extend({
         }
         var value = counter_row.value.value;
         temp_data[key].series[key].data.push([timestamp, value]);
-      };
+      }
     }
 
     return temp_data;

@@ -43,7 +43,7 @@ application.DestinationGeneral = Class.extend({
     main_container.find("#app_export_wizard_container").show();
     var wizard_name = this.destination_id + "_export_wizard";
     var progress_id = '#app_export_' + this.destination_id + '_progress';
-    var export_version_id = '#app_export_' + this.destination_id + '_versions'
+    var export_version_id = '#app_export_' + this.destination_id + '_versions';
     var use_legacy_dig = $fw_manager.getClientProp('legacyDig');
     var include_wrappers = $fw_manager.getClientProp('includeWrappers');
     if (use_legacy_dig != "true" && include_wrappers == "true") {
@@ -70,7 +70,7 @@ application.DestinationGeneral = Class.extend({
     this.doExportWizardSetup(main_container, wizard);
     wizard.find(export_version_id).bind('postShow', function() {
       proto.Wizard.showCancelButton(wizard);
-    })
+    });
 
     wizard.find(progress_id).bind('show', function(e) {
       var data = that.getExportData(wizard, export_version_id);
@@ -90,7 +90,7 @@ application.DestinationGeneral = Class.extend({
             var source_url = res.action.url;
             $fw_manager.app.startDownload(source_url);
           }
-        })
+        });
       } else {
 
         step.parents('form').find('.jw-counter-progressbar').progressbar("value", 100);
@@ -106,7 +106,7 @@ application.DestinationGeneral = Class.extend({
       }
     }).bind('postShow', function() {
       proto.Wizard.hideCancelButton(wizard);
-    })
+    });
   },
 
   doExportWizardSetup: function(main_container, wizard) {
@@ -195,7 +195,7 @@ application.DestinationGeneral = Class.extend({
         Log.append('export error > Exporting of source disabled');
         complete(result);
       }
-    })
+    });
   },
 
   enableButton: function(button, type, text) {
@@ -264,20 +264,18 @@ application.DestinationGeneral = Class.extend({
     // To stage or not to stage?
     var checkbox = $(wizard).find("input[name='app_publish_" + this.destination_id + "_staging']:checked");
 
+    function skip() {
+      setTimeout(function() {
+        if (self.destination_id == 'ipad' || self.destination_id == 'iphone') {
+          proto.Wizard.jumpToStep(wizard, 6);
+        } else {
+          proto.Wizard.jumpToStep(wizard, 3);
+        }
+      }, 0);
+    }
+    
     if (checkbox.length < 1) {
       // Don't stage
-
-
-      function skip() {
-        setTimeout(function() {
-          if (self.destination_id == 'ipad' || self.destination_id == 'iphone') {
-            proto.Wizard.jumpToStep(wizard, 6);
-          } else {
-            proto.Wizard.jumpToStep(wizard, 3);
-          }
-        }, 0);
-      }
-
       return skip();
     }
 
@@ -462,4 +460,4 @@ application.DestinationGeneral = Class.extend({
     //abstract interface
     wizard.validate({});
   }
-})
+});

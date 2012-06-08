@@ -1,9 +1,6 @@
 /*
  * 
  */
-/*global $, document, UIComponentFactory, lang
- */
-
 UIComponentFactory = Class.extend ( {
   manager: null,
   

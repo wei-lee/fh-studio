@@ -1,5 +1,5 @@
 var Stats = Stats || {};
-Stats.Model = Stats.Model || {}
+Stats.Model = Stats.Model || {};
 
 /**
  * Basic stats model - models stats in their
@@ -40,7 +40,7 @@ Stats.Model.Base = Class.extend({
 
   init: function(params) {
     if (!params) {
-      var params = {};
+      params = {};
     }
 
     this.deploy_target = params.deploy_target || 'live';
@@ -55,20 +55,20 @@ Stats.Model.Base = Class.extend({
   },
 
   load: function(params) {
-    var params = params || {};
+    params = params || {};
     if (this.use_sample_data) {
       // Use mock
       this._loadMock(function(res) {
         if (typeof(params.loaded) == 'function') {
           params.loaded(res);
-        };
+        }
       });
     } else {
       // Remote call
       this._loadRemote(function(res) {
         if (typeof(params.loaded) == 'function') {
           params.loaded(res);
-        };
+        }
       });
     }
   },
@@ -77,7 +77,7 @@ Stats.Model.Base = Class.extend({
     var data = this._revisions;
 
     if (data.length > 0) {
-      return data[data.length - 1]
+      return data[data.length - 1];
     } else {
       return null;
     }
@@ -124,7 +124,7 @@ Stats.Model.Base = Class.extend({
       } else {
         callback({status: 'ok'});
       }      
-    };
+    }
   },
 
   _loadRemote: function(callback) {
@@ -160,19 +160,20 @@ Stats.Model.Base = Class.extend({
   },
 
   _clone: function(obj) {
+    var copy;
     // Handle the 3 simple types, and null or undefined
     if (null == obj || "object" != typeof obj) return obj;
 
     // Handle Date
     if (obj instanceof Date) {
-      var copy = new Date();
+      copy = new Date();
       copy.setTime(obj.getTime());
       return copy;
     }
 
     // Handle Array
     if (obj instanceof Array) {
-      var copy = [];
+      copy = [];
       for (var i = 0, len = obj.length; i < len; ++i) {
         copy[i] = this._clone(obj[i]);
       }
@@ -181,7 +182,7 @@ Stats.Model.Base = Class.extend({
 
     // Handle Object
     if (obj instanceof Object) {
-      var copy = {};
+      copy = {};
       for (var attr in obj) {
         if (obj.hasOwnProperty(attr)) copy[attr] = this._clone(obj[attr]);
       }
@@ -204,7 +205,7 @@ Stats.Model.Base = Class.extend({
 
   _labelForKey: function(key) {
     var label_map = {};
-    var key = label_map[key] || key;
+    key = label_map[key] || key;
     return key;
   },
 

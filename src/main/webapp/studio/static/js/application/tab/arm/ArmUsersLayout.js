@@ -6,7 +6,7 @@ application.ArmUsersLayout = application.TabManager.extend({
   },
   
   getBaseCrumbs: function(){
-  	return [{text: "Admin", callback: function () {
+    return [{text: "Admin", callback: function () {
         $fw_manager.client.tab.arm.showLayout('arm');
       }}];
   },
@@ -21,7 +21,7 @@ application.ArmUsersLayout = application.TabManager.extend({
         accordion.find('.ui-accordion-content-active .ui-menu li:first-child a').trigger('click');
       }});
     crumbs.push({text: $fw_manager.state.get('arm_users_name', 'current_users_name')});
-    crumbs.push({text: b2.text()})
+    crumbs.push({text: b2.text()});
     return crumbs;
   }
 });

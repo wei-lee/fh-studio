@@ -32,7 +32,7 @@ function reset() {
   
   if (reset_form.valid()) {
     var reset_params = {
-    	token: TOKEN,
+      token: TOKEN,
       password: reset_form.find('input[name=reset_password]').val(),
       confirm: reset_form.find('input[name=reset_password_confirm]').val()
     };

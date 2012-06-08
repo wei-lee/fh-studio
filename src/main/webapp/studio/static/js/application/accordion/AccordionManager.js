@@ -50,7 +50,7 @@ application.AccordionManager = Class.extend({
   
   preSelect: function (id, container) {
     Log.append('accordion:' + this.name + ' - preSelect');
-    var callback_suffix = js_util.camelCase(id.split('_'))
+    var callback_suffix = js_util.camelCase(id.split('_'));
     var pre_select_fn_name = 'preSelect' + callback_suffix;
     var pre_fn = this[pre_select_fn_name];
     
@@ -67,7 +67,7 @@ application.AccordionManager = Class.extend({
   
   postSelect: function (id, container) {
     Log.append('accordion:' + this.name + ' - postSelect');
-    var callback_suffix = js_util.camelCase(id.split('_'))
+    var callback_suffix = js_util.camelCase(id.split('_'));
     var post_select_fn_name = 'postSelect' + callback_suffix;
     var post_fn = this[post_select_fn_name];
     

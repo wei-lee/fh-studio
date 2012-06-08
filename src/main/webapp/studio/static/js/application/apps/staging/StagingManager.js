@@ -31,7 +31,7 @@ application.StagingManager = Class.extend({
     Log.append('staging.liveStage');
     var self = this;
     if (!guid) {
-      var guid = $fw_manager.data.get('app').guid;
+      guid = $fw_manager.data.get('app').guid;
     }
     var url = Constants.RELEASE_STAGE_APP_URL;
     var params = {
@@ -50,7 +50,7 @@ application.StagingManager = Class.extend({
     Log.append('staging.devStage');
     var self = this;
     if (!guid) {
-      var guid = $fw_manager.data.get('app').guid;
+      guid = $fw_manager.data.get('app').guid;
     }
     var url = Constants.STAGE_APP_URL;
     var params = {
@@ -129,11 +129,11 @@ application.StagingManager = Class.extend({
    * callback when a cacheKey for a stage has completed.
    * It doesn't track progress.
    */
-  simpleLiveStage: function() {
+  simpleLiveStage: function(guid, cb) {
     Log.append('staging.liveStage');
     var self = this;
     if (!guid) {
-      var guid = $fw_manager.data.get('app').guid;
+      guid = $fw_manager.data.get('app').guid;
     }
     var url = Constants.RELEASE_STAGE_APP_URL;
     var params = {
@@ -153,7 +153,7 @@ application.StagingManager = Class.extend({
     Log.append('staging.devStage');
     var self = this;
     if (!guid) {
-      var guid = $fw_manager.data.get('app').guid;
+      guid = $fw_manager.data.get('app').guid;
     }
     var url = Constants.STAGE_APP_URL;
     var params = {
@@ -201,10 +201,11 @@ application.StagingManager = Class.extend({
   },
 
   updateProgress: function(env, value) {
+    var progress_el;
     if (env == 'dev') {
-      var progress_el = $('#staging_dev_progressbar');
+      progress_el = $('#staging_dev_progressbar');
     } else if (env == 'live') {
-      var progress_el = $('#staging_live_progressbar');
+      progress_el = $('#staging_live_progressbar');
     }
 
     progress_el.progressbar({
@@ -213,16 +214,17 @@ application.StagingManager = Class.extend({
   },
 
   resetProgress: function(env) {
+    var progress_el, progress_log_el;
     if (env == 'dev') {
-      var progress_el = $('#staging_dev_progressbar');
+      progress_el = $('#staging_dev_progressbar');
     } else if (env == 'live') {
-      var progress_el = $('#staging_live_progressbar');
+      progress_el = $('#staging_live_progressbar');
     }
 
     if (env == 'dev') {
-      var progress_log_el = $('#staging_dev_progresslog textarea');
+      progress_log_el = $('#staging_dev_progresslog textarea');
     } else if (env == 'live') {
-      var progress_log_el = $('#staging_live_progresslog textarea');
+      progress_log_el = $('#staging_live_progresslog textarea');
     }
 
     progress_log_el.val('');
@@ -232,20 +234,23 @@ application.StagingManager = Class.extend({
   },
 
   updateProgressLog: function(env, log) {
+    var progress_log_el;
+
     // allow for string or array of strings
     log = 'string' === typeof log ? [log] : log;
     if (env == 'dev') {
-      var progress_log_el = $('#staging_dev_progresslog textarea');
+      progress_log_el = $('#staging_dev_progresslog textarea');
     } else if (env == 'live') {
-      var progress_log_el = $('#staging_live_progresslog textarea');
+      progress_log_el = $('#staging_live_progresslog textarea');
     }
 
     if (log.length > 0) {
-      var current_log = progress_log_el.val();
-      if (current_log == '') {
-        var log_value = current_log + log.join('\n');
+      var current_log = progress_log_el.val(),
+          log_value;
+      if (current_log === '') {
+        log_value = current_log + log.join('\n');
       } else {
-        var log_value = current_log + '\n' + log.join('\n');
+        log_value = current_log + '\n' + log.join('\n');
       }
       progress_log_el.val(log_value);
     }

@@ -136,7 +136,7 @@ proto.CodemirrorEditorImpl = function(params){
                 line: self.editor.lineNumber(self.editor.cursorLine()),
                 character : self.editor.cursorPosition().character
             }
-        }
+        };
     },
     
     reset: function(){
@@ -146,7 +146,7 @@ proto.CodemirrorEditorImpl = function(params){
         self.current_file_id = null;
         self.search_cursor = null;
     }
-  }
+  };
   self.init();
   return {
     openFile: self.openFile,
@@ -156,5 +156,5 @@ proto.CodemirrorEditorImpl = function(params){
     replaceAll: self.replaceAll,
     reset: self.reset,
     inited: self.isInited
-  }
-}
+  };
+};

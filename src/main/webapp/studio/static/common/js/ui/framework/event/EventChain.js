@@ -1,8 +1,6 @@
 /*
  * Represents a chain for events to be executed i.e. the events are to be triggered in a certain order
  */
-/*global EventChain
- */
 EventChain = function () {
   var self = {
     chain: [],

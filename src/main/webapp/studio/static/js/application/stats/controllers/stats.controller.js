@@ -8,7 +8,7 @@ Stats.Controller = Class.extend({
 
   init: function(params) {
     var self = this;
-    var params = params || {};
+    params = params || {};
     this.config = params.config || null;
     this.deploy_target = params.deploy_target;
     this.initModels();
@@ -150,7 +150,7 @@ Stats.Controller = Class.extend({
     var self = this;
     $.each(self.models, function(item_number, model) {
       var total = self.models.length;
-      var item_number = item_number + 1;
+      item_number = item_number + 1;
       model.load({
         loaded: function(res) {
           Log.append('Stats loaded');          
@@ -183,7 +183,7 @@ Stats.Controller = Class.extend({
     // Remove if it exists
     $('#export_form').remove();
 
-    $('body').append('<form name="export_form" id="export_form" method="post" action="' + Constants.TRIGGER_DOWNLOAD_URL + '"><input type="hidden" name="content" value=""><input type="hidden" name="content_type" value=""><input type="hidden" name="filename" value=""><input type="submit" name="export_json_submit" id="export_json_submit" value="Export" style="display: none"></form>')
+    $('body').append('<form name="export_form" id="export_form" method="post" action="' + Constants.TRIGGER_DOWNLOAD_URL + '"><input type="hidden" name="content" value=""><input type="hidden" name="content_type" value=""><input type="hidden" name="filename" value=""><input type="submit" name="export_json_submit" id="export_json_submit" value="Export" style="display: none"></form>');
     $("#export_form input[name=content]").val(content);
     $("#export_form input[name=content_type]").val(content_type);
     $("#export_form input[name=filename]").val(filename);

@@ -6,7 +6,6 @@
  <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER)) { %>
  <li class="home-tab inactive_home"><a id="home_tab" href="#tabs-4">Dashboard</a></li>
  <li class="apps-tab inactive_apps"><a id="apps_tab" href="#tabs-1">Apps</a></li>
- <li class="community-tab inactive_community"><a id="community_tab" href="#tabs-2">Community</a></li>
  <%}%>
   
   <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_REPORTING)) { %>
@@ -30,8 +29,6 @@
   <%@ include file="home_tab.html" %>
   
   <%@ include file="apps_tab.html" %>
-  
-  <%@ include file="community_tab.html" %>
  <%}%>
   
   <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_REPORTING)) { %>

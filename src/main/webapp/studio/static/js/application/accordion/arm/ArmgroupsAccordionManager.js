@@ -9,10 +9,10 @@ application.ArmgroupsAccordionManager = application.AccordionManager.extend({
   },
   
   postSelectArmgroupsAssignusers: function(){
-  	$fw_manager.client.arm.groups.initUsers();
+    $fw_manager.client.arm.groups.initUsers();
   },
   
   postSelectArmgroupsAssignapps: function(){
-  	$fw_manager.client.arm.groups.initApps();
+    $fw_manager.client.arm.groups.initApps();
   }
 });
