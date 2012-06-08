@@ -3132,6 +3132,11 @@ table.dataTable th:active {
   outline: none;
 }
 
+/* User Admin styling */
 #useradmin_user_list table {
   width: 100% !important;
+}
+
+#useradmin_user_list table .controls{
+  width: 101px;
 }
