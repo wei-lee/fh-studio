@@ -15,14 +15,16 @@ Constants = {
 $.extend(Constants, {
   ACT_URL_PREFIX : "/box/srv/1.1/act/",
   DAT_URL_PREFIX : "/box/srv/1.1/dat/",
-  DEV_URL_PREFIX : "/box/srv/1.1/dev/",
   PUB_URL_PREFIX : "/box/srv/1.1/pub/",
   IDE_URL_PREFIX : "/box/srv/1.1/ide/" + Constants.DOMAIN + "/",
-  _____DO_NOT_USE____ENT_URL_PREFIX : "/box/srv/1.1/ent/",
   WID_URL_BASE_PREFIX : "/box/srv/1.1/wid/",
   WID_URL_PREFIX : "/box/srv/1.1/wid/" + Constants.DOMAIN + "/",
   ARM_URL_PREFIX : "/box/srv/1.1/arm/",
-  METRICS_URL_PREFIX : "/box/srv/1.1/metrics/"
+  METRICS_URL_PREFIX : "/box/srv/1.1/metrics/",
+  ADMIN_URL_PREFIX : "/box/srv/1.1/admin/",
+
+  ____DEPRECATED____DEV_URL_PREFIX____DEPRECATED____ : "/box/srv/1.1/dev/" // dev endpoints to be moved/migrated into ide space
+
 });
 
 $.extend(Constants, {
@@ -59,7 +61,7 @@ $.extend(Constants, {
   RELEASE_STAGE_APP_URL: Constants.IDE_URL_PREFIX + "app/releasestage",
   UPDATE_APP_FRAMEWORKS_URL : Constants.IDE_URL_PREFIX + "app/updateFrameworks",
   // TODO: use new endpoints for export
-  EXPORT_APP_URL: Constants.DEV_URL_PREFIX + "editor/widget/download",
+  EXPORT_APP_URL: Constants.____DEPRECATED____DEV_URL_PREFIX____DEPRECATED____ + "editor/widget/download",
 	PREVIEW_APP_DESTINATION: 'studio',
   PREVIEW_APP_URL: Constants.WID_URL_BASE_PREFIX + "<DOMAIN>/<DEST>/<GUID>/container",
   PREVIEW_TEMPLATE_URL: Constants.WID_URL_BASE_PREFIX + "<DOMAIN>/<DEST>/<GUID>/deliver",
@@ -76,19 +78,19 @@ $.extend(Constants, {
   LIST_FILES_URL: Constants.IDE_URL_PREFIX + "file/list",
   VIEW_IMAGE_URL : Constants.IDE_URL_PREFIX + "file/view",
   TRIGGER_DOWNLOAD_URL : Constants.IDE_URL_PREFIX + "file/trigger_download",
-  RENAME_FILE_URL: Constants.DEV_URL_PREFIX + "editor/file/rename",
-  REMOVE_FILE_URL: Constants.DEV_URL_PREFIX + "editor/file/remove",
-  MOVE_FILE_URL: Constants.DEV_URL_PREFIX + "editor/file/move",
-  IMPORT_FILE_URL : Constants.DEV_URL_PREFIX + "editor/file/import",
+  RENAME_FILE_URL: Constants.____DEPRECATED____DEV_URL_PREFIX____DEPRECATED____ + "editor/file/rename",
+  REMOVE_FILE_URL: Constants.____DEPRECATED____DEV_URL_PREFIX____DEPRECATED____ + "editor/file/remove",
+  MOVE_FILE_URL: Constants.____DEPRECATED____DEV_URL_PREFIX____DEPRECATED____ + "editor/file/move",
+  IMPORT_FILE_URL : Constants.____DEPRECATED____DEV_URL_PREFIX____DEPRECATED____ + "editor/file/import",
   //update app start file url
   START_FILE_URL: Constants.IDE_URL_PREFIX + "file/default",
   
   // resource urls
-  UPLOAD_RESOURCE_URL: Constants.DEV_URL_PREFIX + "account/res/upload",
-  DOWNLOAD_RESOURCE_URL: Constants.DEV_URL_PREFIX + "account/res/download",
-  LIST_RESOURCES_URL: Constants.DEV_URL_PREFIX + "account/res/list",
-  GENERATE_CSR_URL: Constants.DEV_URL_PREFIX + "account/res/generate?type=csr",
-  GENERATE_CERT_URL: Constants.DEV_URL_PREFIX + "account/res/generate",
+  UPLOAD_RESOURCE_URL: Constants.____DEPRECATED____DEV_URL_PREFIX____DEPRECATED____ + "account/res/upload",
+  DOWNLOAD_RESOURCE_URL: Constants.____DEPRECATED____DEV_URL_PREFIX____DEPRECATED____ + "account/res/download",
+  LIST_RESOURCES_URL: Constants.____DEPRECATED____DEV_URL_PREFIX____DEPRECATED____ + "account/res/list",
+  GENERATE_CSR_URL: Constants.____DEPRECATED____DEV_URL_PREFIX____DEPRECATED____ + "account/res/generate?type=csr",
+  GENERATE_CERT_URL: Constants.____DEPRECATED____DEV_URL_PREFIX____DEPRECATED____ + "account/res/generate",
   
   // metric urls
   
@@ -117,15 +119,21 @@ $.extend(Constants, {
   
   // icon urls
   APP_ICON_URL: Constants.WID_URL_PREFIX + "sandbox/<GUID>/icon/<TYPE>",
-  UPLOAD_ICON_URL: Constants.DEV_URL_PREFIX + "instances/icons/upload",
+  UPLOAD_ICON_URL: Constants.____DEPRECATED____DEV_URL_PREFIX____DEPRECATED____ + "instances/icons/upload",
     
   //debug/logging urls
   LOGS_URL: Constants.IDE_URL_PREFIX + "app/logs",
   // DEPRECATED - DO NOT USE
   // use LOGS_URL instead
-  READ_SCRIPT_LOG_URL: Constants.DEV_URL_PREFIX + "editor/logging/list",
+  READ_SCRIPT_LOG_URL: Constants.____DEPRECATED____DEV_URL_PREFIX____DEPRECATED____ + "editor/logging/list",
   CLEAR_SCRIPT_LOG_URL: Constants.IDE_URL_PREFIX + "app/clearlog",
-
   
-  GET_SINGLE_APP_METRICS_URL: Constants.IDE_URL_PREFIX + "app/getsingleappmetrics"
+  GET_SINGLE_APP_METRICS_URL: Constants.IDE_URL_PREFIX + "app/getsingleappmetrics",
+
+  ADMIN_USER_LIST_URL: Constants.ADMIN_URL_PREFIX + "<users-type>/users/list",
+  ADMIN_USER_CREATE_URL: Constants.ADMIN_URL_PREFIX + "<users-type>/users/create",
+  ADMIN_USER_READ_URL: Constants.ADMIN_URL_PREFIX + "<users-type>/users/read",
+  ADMIN_USER_UPDATE_URL: Constants.ADMIN_URL_PREFIX + "<users-type>/users/update",
+
+  ADMIN_GROUP_LIST_URL: Constants.ADMIN_URL_PREFIX + "<domain>/group/list"
 });

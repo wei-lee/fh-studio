@@ -337,7 +337,6 @@ proto.TreeviewManager = function (params) {
           self.makeRealNode(node);
           node.attr('path', path + file_name);
           
-          //debugger;
           //self.setItemPath(node, res.path);          
         } else if (res.status === "error") {
           self.container.jstree("delete_node", node);

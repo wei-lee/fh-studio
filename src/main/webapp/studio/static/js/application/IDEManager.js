@@ -38,7 +38,8 @@ var IDEManager = Class.extend({
       community: new application.CommunityTabManager(),
       account: new application.AccountTabManager(),
       reporting: new application.ReportingTabManager(),
-      arm: new application.ArmTabManager()
+      arm: new application.ArmTabManager(),
+      useradmin: new application.UseradminTabManager()
     };
     this.analytics = new analytics.AnalyticsIntegration();
     this.debug = new application.DebugManager();
@@ -51,6 +52,7 @@ var IDEManager = Class.extend({
     	groups: new application.ArmGroupManager(),
     	devices: new application.ArmDeviceManager()
     };
+    this.useradmin = new UserAdmin.Controller();
         
     // setup callbacks for server calls
     $fw_manager.server.setOpts({ 

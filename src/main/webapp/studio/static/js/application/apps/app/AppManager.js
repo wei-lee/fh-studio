@@ -63,7 +63,6 @@ application.AppManager = Class.extend({
           var is_scm = $fw.client.app.isScmApp();
           var scmCrudEnabled = $fw_manager.getClientProp('scmCrudEnabled') == "true";
           Log.append('scmCrudEnabled = ' + scmCrudEnabled);
-          //debugger;
           if (is_scm) {
             Log.append('scm based app, applying restrictions');
             $fw.client.app.enableScmApp(scmCrudEnabled);

@@ -39,6 +39,18 @@ FrameworkManager = Class.extend({
     return this.clientProps;
   },
   
+  setUserProps: function (pUserProps) {
+    this.userProps = pUserProps;
+  },
+
+  getUserProp: function (pUserPropName) {
+    return this.userProps[pUserPropName];
+  },
+
+  getUserProps: function () {
+    return this.userProps;
+  },
+  
   initFramework: function () {
     this.analytics.initAnalytics(this.clientProps);
     this.state.initState(this.clientProps);

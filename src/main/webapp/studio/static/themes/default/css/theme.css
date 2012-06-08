@@ -472,9 +472,9 @@ html, body
 {
   margin:0 auto;
   min-width:950px;
-  max-width:1200px;
   height:100%;
   min-height:755px;
+  margin: 0 20px 0 20px;
 }
 /*UI Login Overwrites*/
 .login_screen_body, .reset_screen_body, .activate_screen_body{
@@ -695,10 +695,17 @@ label.error
 {
   background: transparent url(../img/green_bar_repeat.png) repeat-x 0 0 !important;
 }
-.ui-state-active.arm-tab, #arm_north .container-header, #armusers_north .container-header, #armgroups_north .container-header, #armdevices_north .container-header
-{
+
+.ui-state-active.arm-tab,
+.ui-state-active.useradmin_tab,
+#useradmin_north .container-header,
+#arm_north .container-header, 
+#armusers_north .container-header, 
+#armgroups_north .container-header, 
+#armdevices_north .container-header {
   background: transparent url(../img/green_bar_repeat.png) repeat-x 0 0 !important;
 }
+
 .ui-state-active.home-tab, #home_north .container-header
 {
   background: transparent url(../img/home_bar.png) repeat-x 0 0 !important;
@@ -3143,3 +3150,56 @@ button.btn.btn-large, input[type="submit"].btn.btn-large {
 }
 
 legend { border-bottom: none; }
+
+/* DataTables styling for Bootstrap */
+
+div.dataTables_length label {
+  float: left;
+  text-align: left;
+}
+
+div.dataTables_length select {
+  width: 75px;
+}
+
+div.dataTables_filter label {
+  float: right;
+}
+
+div.dataTables_info {
+  padding-top: 8px;
+}
+
+div.dataTables_paginate {
+  float: right;
+  margin: 0;
+}
+
+table.table {
+  clear: both;
+  margin-bottom: 6px !important;
+}
+
+table.table thead .sorting,
+table.table thead .sorting_asc,
+table.table thead .sorting_desc,
+table.table thead .sorting_asc_disabled,
+table.table thead .sorting_desc_disabled {
+  cursor: pointer;
+  *cursor: hand;
+}
+
+table.table thead .sorting { background: url('../img/sort_both.png') no-repeat center right; }
+table.table thead .sorting_asc { background: url('../img/sort_asc.png') no-repeat center right; }
+table.table thead .sorting_desc { background: url('../img/sort_desc.png') no-repeat center right; }
+
+table.table thead .sorting_asc_disabled { background: url('../img/sort_asc_disabled.png') no-repeat center right; }
+table.table thead .sorting_desc_disabled { background: url('../img/sort_desc_disabled.png') no-repeat center right; }
+
+table.dataTable th:active {
+  outline: none;
+}
+
+#useradmin_user_list table {
+  width: 100% !important;
+}
