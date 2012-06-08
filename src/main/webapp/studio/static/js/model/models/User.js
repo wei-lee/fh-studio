@@ -4,6 +4,28 @@ model.User = model.Model.extend({
 
   },
 
+  update: function(fields, success, fail) {
+    var user_type = this.resolveUserType();
+    var url = Constants.ADMIN_USER_UPDATE_URL.replace('<users-type>', user_type);
+    var params = {
+      "fields": fields
+    };
+    params[user_type] = $fw.getClientProp(user_type);
+
+    return this.serverPost(url, params, success, fail, true);
+  },
+
+  resolveUserType: function() {
+    var userRoles = $fw.getUserProps().roles;
+    if (userRoles.indexOf($fw.ROLE_RESELLERADMIN) > -1) {
+      return 'reseller';
+    } else if (userRoles.indexOf($fw.ROLE_CUSTOMERADMIN) > -1) {
+      return 'customer';
+    } else {
+      return fail('operation_not_permitted');
+    }
+  },
+
   read: function(email, success, fail) {
     // See if we should be calling reseller or customer user read endpoint
     // based on our role, but only if we're specifying an email address

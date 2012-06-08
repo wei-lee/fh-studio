@@ -79,8 +79,35 @@ UserAdmin.Controller = Class.extend({
 
   updateUser: function(button, row, data) {
     // Update the user model
-    
+    var fields = this.fieldsFromRow(row, this.editable_fields.user);
+    this.models.user.update(fields, function(res) {
+      console.log(res);
+    }, function(err) {
+      console.error(err);
+    });
+
     this.toggleEditableRow(row, this.editable_fields.user);
+  },
+
+  fieldsFromRow: function(row, editable_fields) {
+    var self = this;
+    var fields = {};
+    $('td', row).each(function(i, td) {
+      // Check editable
+      if (editable_fields.indexOf(i) != -1) {
+        // Check Checkbox
+        var checkbox = $(td).find('input[type=checkbox]');
+
+        if (checkbox.length > 0) {
+          var val = $(checkbox).is(":checked");
+          fields[self.table_column_field_map.user[i]] = val;
+        } else {
+          fields[self.table_column_field_map.user[i]] = $('input', td).val();
+        }
+      }
+    });
+
+    return fields;
   },
 
   toggleEditableRow: function(row, editable_fields) {
