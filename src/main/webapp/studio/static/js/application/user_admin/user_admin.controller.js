@@ -74,34 +74,59 @@ UserAdmin.Controller = Class.extend({
   },
 
   editUser: function(button, row, data) {
-    this.makeUserRowEditable(row);
+    this.toggleEditableRow(row, this.editable_fields.user);
   },
 
   updateUser: function(button, row, data) {
-    // debugger;
+    // Update the user model
+    
+    this.toggleEditableRow(row, this.editable_fields.user);
   },
 
-  makeUserRowEditable: function(row) {
+  toggleEditableRow: function(row, editable_fields) {
     var self = this;
-    $('td', row).each(function(i, td) {
-      // Field should be editable?
-      if (self.editable_fields.user.indexOf(i) != -1) {
-        // Checkbox row check
-        var checkbox = $(td).find('input[type=checkbox]');
 
-        if (checkbox.length > 0) {
-          $(checkbox).removeAttr('disabled');
-        } else {
-          var text = $(td).text();
-          var width = $(td).width();
+    if (row.hasClass('editing')) {
+      row.removeClass('editing');
+      $('td', row).each(function(i, td) {
+        // Field should be editable?
+        if (editable_fields.indexOf(i) != -1) {
+          // Checkbox row check
+          var checkbox = $(td).find('input[type=checkbox]');
 
-          // Empty cell
-          $(td).text('');
-          $(td).append('<input type="text"/>');
-          $(td).find('input').css('width', width + 'px').val(text);
+          if (checkbox.length > 0) {
+            $(checkbox).attr('disabled', 'true');
+          } else {
+            var text = $('input', td).val();
+
+            // Empty cell
+            $(td).empty();
+            $(td).text(text);
+          }
         }
-      }
-    });
+      });
+    } else {
+      row.addClass('editing');
+      $('td', row).each(function(i, td) {
+        // Field should be editable?
+        if (editable_fields.indexOf(i) != -1) {
+          // Checkbox row check
+          var checkbox = $(td).find('input[type=checkbox]');
+
+          if (checkbox.length > 0) {
+            $(checkbox).removeAttr('disabled');
+          } else {
+            var text = $(td).text();
+            var width = $(td).width();
+
+            // Empty cell
+            $(td).empty();
+            $(td).append('<input type="text"/>');
+            $(td).find('input').css('width', (width - 50) + 'px').val(text);
+          }
+        }
+      });
+    }
   },
 
   deleteUser: function(button, row, data) {},
