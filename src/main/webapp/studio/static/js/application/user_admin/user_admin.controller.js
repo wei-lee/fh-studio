@@ -24,7 +24,7 @@ UserAdmin.Controller = Class.extend({
 
   // Offsets for editable fields
   editable_fields: {
-    user: [0, 1, 2, 3],
+    user: [1, 2, 3],
     group: [0]
   },
 
@@ -50,7 +50,7 @@ UserAdmin.Controller = Class.extend({
       self.renderUserTable(data);
       self.bindUserControls();
     }, function(err) {
-      console.error(err);
+      Log.append('Error showing users');
     }, true);
   },
 
@@ -80,13 +80,19 @@ UserAdmin.Controller = Class.extend({
   updateUser: function(button, row, data) {
     // Update the user model
     var fields = this.fieldsFromRow(row, this.editable_fields.user);
+    var email = this.emailFromRow(row);
+    fields.email = email;
     this.models.user.update(fields, function(res) {
-      console.log(res);
+      Log.append('updateUser: OK');
     }, function(err) {
-      console.error(err);
+      Log.append(err);
     });
 
     this.toggleEditableRow(row, this.editable_fields.user);
+  },
+
+  emailFromRow: function(row) {
+    return $('td:first', row).text() || null;
   },
 
   fieldsFromRow: function(row, editable_fields) {
