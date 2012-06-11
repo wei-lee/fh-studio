@@ -18,7 +18,7 @@ UserAdmin.Controller = Class.extend({
   init: function(params) {
     var self = this;
     params = params || {};
-    this.config = params.config || null;
+    this.field_config = params.field_config || null;
   },
 
   hideViews: function() {
@@ -87,15 +87,15 @@ UserAdmin.Controller = Class.extend({
     var fields = {};
     $('td', row).each(function(i, td) {
       // Check editable
-      if (data_model.config[i] && data_model.config[i].editable) {
+      if (data_model.field_config[i] && data_model.field_config[i].editable) {
         // Check Checkbox
         var checkbox = $(td).find('input[type=checkbox]');
 
         if (checkbox.length > 0) {
           var val = $(checkbox).is(":checked");
-          fields[data_model.config[i].field_name] = val;
+          fields[data_model.field_config[i].field_name] = val;
         } else {
-          fields[data_model.config[i].field_name] = $('input', td).val();
+          fields[data_model.field_config[i].field_name] = $('input', td).val();
         }
       }
     });
@@ -110,7 +110,7 @@ UserAdmin.Controller = Class.extend({
       row.removeClass('editing');
       $('td', row).each(function(i, td) {
         // Field should be editable?
-        if (data_model.config[i] && data_model.config[i].editable) {
+        if (data_model.field_config[i] && data_model.field_config[i].editable) {
           // Checkbox row check
           var checkbox = $(td).find('input[type=checkbox]');
 
@@ -129,7 +129,7 @@ UserAdmin.Controller = Class.extend({
       row.addClass('editing');
       $('td', row).each(function(i, td) {
         // Field should be editable?
-        if (data_model.config[i] && data_model.config[i].editable) {
+        if (data_model.field_config[i] && data_model.field_config[i].editable) {
           // Checkbox row check
           var checkbox = $(td).find('input[type=checkbox]');
 
@@ -219,8 +219,7 @@ UserAdmin.Controller = Class.extend({
     $(this.views.groups).show();
 
     this.models.group.list(function(res) {
-      var data = self.addControls(res);
-      self.renderGroupTable(data);
+      self.renderGroupTable(res);
       self.bindGroupControls();
     }, function(err) {
       console.error(err);

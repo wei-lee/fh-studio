@@ -1,6 +1,10 @@
 model.User = model.Model.extend({
 
-  config: [{
+  // Model config
+  config: {},
+
+  // Field config
+  field_config: [{
     field_name: "email",
     editable: false,
     showable: true,
@@ -136,7 +140,7 @@ model.User = model.Model.extend({
     };
 
     if (post_process) {
-      return this.serverPost(url, params, success, fail, true, this.postProcessList);
+      return this.serverPost(url, params, success, fail, true, this.postProcessList, this);
     } else {
       return this.serverPost(url, params, success, fail, true);
     }
@@ -149,21 +153,14 @@ model.User = model.Model.extend({
     };
 
     if (post_process) {
-      return this.serverPost(url, params, success, fail, true, this.postProcessList);
+      return this.serverPost(url, params, success, fail, true, this.postProcessList, this);
     } else {
       return this.serverPost(url, params, success, fail, true);
     }
   },
 
-  postProcessList: function(res) {
-    var filtered_fields = {
-      "email": "E-mail",
-      "name": "Name",
-      "activated": "Activated",
-      "enabled": "Enabled",
-      "lastLogin": "Last Login",
-      "sysCreated": "Created"
-    };
+  postProcessList: function(res, data_model) {
+    var filtered_fields = data_model.getColumnMap();
 
     var rows = res.list;
     var data = {

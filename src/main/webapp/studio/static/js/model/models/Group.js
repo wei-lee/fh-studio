@@ -1,7 +1,16 @@
 model.Group = model.Model.extend({
 
-  config: [{
+  // Model config
+  config: {},
+
+  // Field config
+  field_config: [{
     field_name: "name",
+    editable: true,
+    showable: true,
+    column_title: "Group Name"
+  }, {
+    field_name: "perms",
     editable: true,
     showable: true,
     column_title: "Group Name"
@@ -14,17 +23,14 @@ model.Group = model.Model.extend({
     var params = {};
 
     if (post_process) {
-      return this.serverPost(url, params, success, fail, true, this.postProcessList);
+      return this.serverPost(url, params, success, fail, true, this.postProcessList, this);
     } else {
       return this.serverPost(url, params, success, fail, true);
     }
   },
 
-  postProcessList: function(res) {
-    var filtered_fields = {
-      "name": "Name",
-      "perms": "Permissions"
-    };
+  postProcessList: function(res, data_model) {
+    var filtered_fields = data_model.getColumnMap();
 
     var rows = res.list;
     var data = {
