@@ -2,7 +2,7 @@ model.Model = Class.extend({
   init: function() {
 
   },
-
+  
   serverPost: function(url, params, success, fail, no_payload, post_process) {
     $fw.server.post(url, params, function(res) {
       if (res.status === "ok") {

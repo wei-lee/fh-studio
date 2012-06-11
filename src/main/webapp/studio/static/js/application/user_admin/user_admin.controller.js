@@ -12,22 +12,8 @@ UserAdmin.Controller = Class.extend({
     groups: "#useradmin_group_list"
   },
 
-  config: null,
   user_table: null,
   group_table: null,
-
-  // TODO: Unify all of this stuff
-  // Offsets for field names
-  table_column_field_map: {
-    user: ["email", "name", "activated", "enabled", "lastLogin", "sysCreated"],
-    group: ["name", "perms"]
-  },
-
-  // Offsets for editable fields
-  editable_fields: {
-    user: [1, 2, 3],
-    group: [0]
-  },
 
   init: function(params) {
     var self = this;
@@ -75,12 +61,12 @@ UserAdmin.Controller = Class.extend({
   },
 
   editUser: function(button, row, data) {
-    this.toggleEditableRow(row, this.editable_fields.user);
+    this.toggleEditableRow(row, this.models.user);
   },
 
   updateUser: function(button, row, data) {
     // Update the user model
-    var fields = this.fieldsFromRow(row, this.editable_fields.user);
+    var fields = this.fieldsFromRow(row, this.models.user);
     var email = this.emailFromRow(row);
     fields.email = email;
     this.models.user.update(fields, function(res) {
@@ -89,27 +75,27 @@ UserAdmin.Controller = Class.extend({
       Log.append(err);
     });
 
-    this.toggleEditableRow(row, this.editable_fields.user);
+    this.toggleEditableRow(row, this.models.user);
   },
 
   emailFromRow: function(row) {
     return $('td:first', row).text() || null;
   },
 
-  fieldsFromRow: function(row, editable_fields) {
+  fieldsFromRow: function(row, data_model) {
     var self = this;
     var fields = {};
     $('td', row).each(function(i, td) {
       // Check editable
-      if (editable_fields.indexOf(i) != -1) {
+      if (data_model.config[i] && data_model.config[i].editable) {
         // Check Checkbox
         var checkbox = $(td).find('input[type=checkbox]');
 
         if (checkbox.length > 0) {
           var val = $(checkbox).is(":checked");
-          fields[self.table_column_field_map.user[i]] = val;
+          fields[data_model.config[i].field_name] = val;
         } else {
-          fields[self.table_column_field_map.user[i]] = $('input', td).val();
+          fields[data_model.config[i].field_name] = $('input', td).val();
         }
       }
     });
@@ -117,14 +103,14 @@ UserAdmin.Controller = Class.extend({
     return fields;
   },
 
-  toggleEditableRow: function(row, editable_fields) {
+  toggleEditableRow: function(row, data_model) {
     var self = this;
 
     if (row.hasClass('editing')) {
       row.removeClass('editing');
       $('td', row).each(function(i, td) {
         // Field should be editable?
-        if (editable_fields.indexOf(i) != -1) {
+        if (data_model.config[i] && data_model.config[i].editable) {
           // Checkbox row check
           var checkbox = $(td).find('input[type=checkbox]');
 
@@ -143,7 +129,7 @@ UserAdmin.Controller = Class.extend({
       row.addClass('editing');
       $('td', row).each(function(i, td) {
         // Field should be editable?
-        if (editable_fields.indexOf(i) != -1) {
+        if (data_model.config[i] && data_model.config[i].editable) {
           // Checkbox row check
           var checkbox = $(td).find('input[type=checkbox]');
 

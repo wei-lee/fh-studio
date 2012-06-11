@@ -1,5 +1,12 @@
 model.Group = model.Model.extend({
 
+  config: [{
+    field_name: "name",
+    editable: true,
+    showable: true,
+    column_title: "Group Name"
+  }],
+
   init: function() {},
 
   list: function(success, fail, post_process) {
