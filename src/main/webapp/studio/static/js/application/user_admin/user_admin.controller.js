@@ -16,6 +16,7 @@ UserAdmin.Controller = Class.extend({
   user_table: null,
   group_table: null,
 
+  // TODO: Unify all of this stuff
   // Offsets for field names
   table_column_field_map: {
     user: ["email", "name", "activated", "enabled", "lastLogin", "sysCreated"],
@@ -227,6 +228,7 @@ UserAdmin.Controller = Class.extend({
   },
 
   showGroupsList: function() {
+    var self = this;
     this.hideViews();
     $(this.views.groups).show();
 
@@ -240,6 +242,7 @@ UserAdmin.Controller = Class.extend({
   },
 
   renderGroupTable: function(data) {
+    var self = this;
     this.group_table = $('#useradmin_groups_table').dataTable({
       "bDestroy": true,
       "bAutoWidth": false,
@@ -247,7 +250,10 @@ UserAdmin.Controller = Class.extend({
       "sPaginationType": "bootstrap",
       "bLengthChange": false,
       "aaData": data.aaData,
-      "aoColumns": data.aoColumns
+      "aoColumns": data.aoColumns,
+      "fnRowCallback": function(nRow, aData, iDisplayIndex) {
+        self.rowRender(nRow, aData);
+      }
     });
   }
 });
