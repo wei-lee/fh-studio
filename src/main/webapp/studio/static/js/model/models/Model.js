@@ -4,7 +4,7 @@ model.Model = Class.extend({
   getColumnMap: function() {
     var column_map = {};
 
-    $.each(this.field_config, function(i, item){
+    $.each(this.field_config, function(i, item) {
       column_map[item.field_name] = item.column_title;
     });
 

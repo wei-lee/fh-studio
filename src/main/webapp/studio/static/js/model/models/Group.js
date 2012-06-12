@@ -9,14 +9,21 @@ model.Group = model.Model.extend({
     editable: true,
     showable: true,
     column_title: "Group Name"
-  }, {
-    field_name: "perms",
-    editable: true,
-    showable: true,
-    column_title: "Group Name"
   }],
 
   init: function() {},
+
+  create: function(name, success, fail) {
+    var url = Constants.ADMIN_GROUP_CREATE_URL.replace('<domain>', $fw_manager.getClientProp('domain'));
+    var params = {
+      "fields": {
+        "name": name,
+        "size": "small"
+      }
+    };
+
+    return this.serverPost(url, params, success, fail, true);
+  },
 
   list: function(success, fail, post_process) {
     var url = Constants.ADMIN_GROUP_LIST_URL.replace('<domain>', $fw_manager.getClientProp('domain'));
