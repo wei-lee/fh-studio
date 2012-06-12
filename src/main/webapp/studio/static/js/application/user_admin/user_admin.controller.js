@@ -251,7 +251,7 @@ UserAdmin.Controller = Class.extend({
     var name = $('#useradmin_user_create .user_name').val();
     var email = $('#useradmin_user_create .user_email').val();
     var password = $('#useradmin_user_create .user_password').val();
-    var roles = $('#useradmin_user_create .user_roles').val().join(",");
+    var roles = $('#useradmin_user_create .user_roles').val().join(", ");
 
     this.models.user.create(email, name, roles, password, function(res) {
       console.log(res);
