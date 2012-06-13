@@ -153,9 +153,6 @@ UserAdmin.Controller = Class.extend({
     var password = $('#useradmin_user_update .user_password').val();
     var enabled = $('#useradmin_user_update .user_enabled').is(':checked');
     var activated = $('#useradmin_user_update .user_activated').is(':checked');
-    if (password === '') {
-      password = null;
-    }
     var roles = $('#useradmin_user_update .user_roles').val();
 
     if (roles) {
@@ -165,11 +162,14 @@ UserAdmin.Controller = Class.extend({
     var fields = {
       email: email,
       name: name,
-      password: password,
       activated: activated,
       enabled: enabled,
       roles: roles
     };
+
+    if (password != '') {
+      fields.password = password;
+    }
 
     this.models.user.update(fields, function(res) {
       Log.append('updateUser: OK');

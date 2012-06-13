@@ -2233,7 +2233,8 @@ p.input-form-footer, .tandc_Link{
   background-image:url("../img/home_page_graphic.png");
   background-color:transparent;
   background-repeat:no-repeat;
-  width:1200px;
+  background-position-x: 100%;
+  background-position-y: 50%;
   height:320px;
 }
 .doc_list{
@@ -3057,12 +3058,16 @@ line-height:0.5em;
 }
 
 /* Wufoo Generator */
-#wufoo_single_generator_form .wufoo_api_url {
+#wufoo_single_generator_form .wufoo_api_url, #wufoo_multi_generator_form .wufoo_api_url {
   width: 150px;
 }
 
-#wufoo_single_generator_form .wufoo_api_key {
-  width: 199px;
+#wufoo_single_generator_form .wufoo_api_key, #wufoo_multi_generator_form .wufoo_api_key  {
+  width: 319px;
+}
+
+.wufoo_api_key_url a {
+  color: #0058C9;
 }
 
 /* Bootstrap Overrides */

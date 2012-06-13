@@ -143,6 +143,12 @@ GenerateApp.Controllers.Wufoo = Class.extend({
       return false;
     });
 
+    $(self.container).find('.wufoo_api_domain').keyup(function() {
+      var url = 'https://' + $(this).val() + '/api/code/';
+      var link = $('<a>').attr('href', url).text(url);
+      $(self.container).find('.wufoo_api_key_url').empty().append(link);      
+    });
+
     $(self.container).find('.validate:visible').unbind().click(function() {
       self.validate();
       return false;
