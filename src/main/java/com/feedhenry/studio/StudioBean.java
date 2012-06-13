@@ -62,7 +62,8 @@ public class StudioBean {
   public static final String THEME_DEFAULT = "default";
   public static final String THEME_ENTERPRISE = "enterprise";
 
-  public static final Log log = LogFactory.getLog("StudioBean");
+  public static final Log log = LogFactory.getLog("fhstudio");
+  //public static final Logger log = Logger.getLogger("fhstudio");
 
   public static final String PROP_PROTOCOL = "studioProtocol";
   public static final String PROP_LEGACYDIG = "legacyDig";
@@ -105,6 +106,7 @@ public class StudioBean {
 
   public void init(ServletContext pServletContext) throws Exception {
     mServletContext = pServletContext;
+    log.info("Servlet init()");
   }
 
   public boolean initreq(HttpServletRequest pRequest, HttpServletResponse pResponse, String pPageName) throws Exception {
@@ -178,7 +180,7 @@ public class StudioBean {
             read = br.readLine();
           }
           mCoreProps = JSONObject.fromObject(sb.toString());
-          System.out.println("mCoreProps: " + mCoreProps.toString(2));
+          log.debug("mCoreProps: " + mCoreProps.toString(2));
           if (!"error".equals(mCoreProps.optString("status"))) {
             mStudioProps = mCoreProps.getJSONObject("clientProps");
             mDomain = mStudioProps.getString("domain");
@@ -188,12 +190,11 @@ public class StudioBean {
             // unable to get props info from core
             // TODO: send pretty 500 page
             proceed = false;
-            System.out.println("Got error from props endpoint, sending 500");
+            log.error("Got error from props endpoint, sending 500");
             pResponse.sendError(500);
           }
         } catch (Throwable e) {
-          System.out.println(e);
-          e.printStackTrace();
+        	log.error("Got exception from props endpoint", e);
         } finally {
           br.close();
           iSR.close();
@@ -228,7 +229,7 @@ public class StudioBean {
     } else {
       setNoCacheHeaders(pResponse);
       mInput = JSONObject.fromObject(pRequest.getParameterMap());
-      System.out.println(mInput.toString(2));
+      log.debug(mInput.toString(2));
     }
 
     return proceed;
@@ -401,7 +402,7 @@ public class StudioBean {
 
   private void dispatchTo(HttpServletRequest pRequest, HttpServletResponse pResponse, String pPageName) throws Exception {
     String pPageUrl = resolveUrl(mDomain, pPageName);    
-    System.out.println("Dispatching to: pPageName=" + pPageName + " pPageUrl=" + pPageUrl);
+    log.debug("Dispatching to: pPageName=" + pPageName + " pPageUrl=" + pPageUrl);
     
     if (null != pPageUrl) {
       pRequest.setAttribute("result", "fail");
@@ -504,10 +505,7 @@ public class StudioBean {
         links.put(key, val);
       }
     } catch (Exception e) {
-      System.out.println(e);
-      e.printStackTrace();
-      // Explain.add(mExplain, "Error parsing json docs property :",
-      // e.getMessage());
+    	log.error("Exception parsing docs links" + ((linksStr!=null)?linksStr:"(null)"), e);
     }
 
     return links;
@@ -561,9 +559,8 @@ public class StudioBean {
   }
 
   public void error(Exception pException) throws Exception {
+	log.error("error called", pException);
     if (null != pException) {
-      System.out.println(pException);
-      pException.printStackTrace();
       throw pException;
     }
   }

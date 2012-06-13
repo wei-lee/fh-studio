@@ -72,6 +72,7 @@
     <copy todir="${dep-classes}" verbose="true" overwrite="true" failonerror="true">
     	<fileset dir="${main-res}">
     		<include name="**.txt"/>
+    		<include name="log4j.properties"/>
     	</fileset>
     </copy>
 		
