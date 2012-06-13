@@ -40,15 +40,20 @@ model.User = model.Model.extend({
 
   },
 
-  create: function(email, name, roles, password, success, fail) {
+  create: function(email, name, roles, password, activated, invite,  success, fail) {
     var user_type = this.resolveUserType();
     var url = Constants.ADMIN_USER_CREATE_URL.replace('<users-type>', user_type);
     var params = {
       "email": email,
-      "password": password,
       "name": name,
-      "roles": roles
+      "roles": roles,
+      "activated": activated,
+      "invite": invite
     };
+
+    if (password != null) {
+      params.password = password;
+    }
 
     params[user_type] = $fw.getClientProp(user_type);
     return this.serverPost(url, params, success, fail, true);

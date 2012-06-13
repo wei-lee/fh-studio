@@ -251,9 +251,21 @@ UserAdmin.Controller = Class.extend({
     var name = $('#useradmin_user_create .user_name').val();
     var email = $('#useradmin_user_create .user_email').val();
     var password = $('#useradmin_user_create .user_password').val();
+    if (password === '') {
+      password = null;
+    }
     var roles = $('#useradmin_user_create .user_roles').val().join(", ");
+    var activated;   
+    var invite = $('#useradmin_user_create .user_invite').is(':checked');
 
-    this.models.user.create(email, name, roles, password, function(res) {
+    // If we send an invite to the user, don't pre-activate
+    if (invite) {
+      activated = false;
+    } else {
+      activated = true;
+    }
+
+    this.models.user.create(email, name, roles, password, activated, invite, function(res) {
       console.log(res);
       self.showUsersList();
     }, function(e) {
