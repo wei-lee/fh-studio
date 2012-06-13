@@ -82,13 +82,52 @@
               <option>Loading...</option>
             </select>
           </label>
-<!--           <label class="control-label">Available Groups</label>
+          <!-- <label class="control-label">Available Groups</label>
           <label class="select">
             <select id="multiSelect" class="user_group" disabled>
               <option>Loading...</option>
             </select>
           </label> -->
           <button type="submit" class="btn btn-primary create_user_btn">Create User</button>
+        </form>
+      </div>
+
+      <div id="useradmin_user_update" class="hidden_template row-fluid">
+        <form class="well">
+          <h3>Update a User</h3>
+          <p>Here you can update a user. You can associate a user with a particular group, and you can assign a user multiple roles.</p>
+          <br/>
+          <label>Name</label>
+          <input type="text" class="span4 user_name" placeholder="Name">
+          <label>Email</label>
+          <input type="text" class="span4 user_email" placeholder="Email Address">
+          <label>Password (Optional)</label>
+          <input type="password" class="span4 user_password" placeholder="Password">
+          <label class="checkbox">
+            <input type="checkbox" class="user_activated" value="activated">Activated
+          </label>
+          <label class="checkbox">
+            <input type="checkbox" class="user_enabled" value="enabled">Enabled
+          </label>
+          <label class="control-label">Current Roles</label>
+          <label class="select">
+            <select class="user_current_roles">
+              <option>Loading...</option>
+            </select>
+          </label>
+          <label class="control-label">Available Roles</label>
+          <label class="select">
+            <select multiple="multiple" class="user_roles" disabled>
+              <option>Loading...</option>
+            </select>
+          </label>
+          <!-- <label class="control-label">Available Groups</label>
+          <label class="select">
+            <select id="multiSelect" class="user_group" disabled>
+              <option>Loading...</option>
+            </select>
+          </label> -->
+          <button type="submit" class="btn btn-primary update_user_btn">Update User</button>
         </form>
       </div>
     </div>

@@ -13,12 +13,12 @@ UserAdmin.Controller = Class.extend({
     users: "#useradmin_user_list",
     // groups: "#useradmin_group_list",
     // group_create: "#useradmin_group_create",
-    user_create: "#useradmin_user_create"
+    user_create: "#useradmin_user_create",
+    user_update: "#useradmin_user_update"
   },
 
   user_table: null,
   // group_table: null,
-
   init: function(params) {
     var self = this;
     params = params || {};
@@ -51,35 +51,112 @@ UserAdmin.Controller = Class.extend({
       var row = $(this).parent().parent();
       var data = self.userDataForRow($(this).parent().parent().get(0));
 
-      if ($(this).hasClass('update_user')) {
-        // Update action
-        self.updateUser(this, row, data);
-        $(this).removeClass('btn-success update_user').text('Edit');
-      } else {
-        // Edit action
-        self.editUser(this, row, data);
-        $(this).addClass('btn-success update_user').text('Update');
-      }
+      // if ($(this).hasClass('update_user')) {
+      //   // Update action
+      //   self.updateUser(this, row, data);
+      //   $(this).removeClass('btn-success update_user').text('Edit');
+      // } else {
+      //   // Edit action
+      //   self.editUser(this, row, data);
+      //   $(this).addClass('btn-success update_user').text('Update');
+      // }
+      // 
+      // 
+      self.showUserUpdate(this, row, data);
       return false;
     });
   },
 
-  editUser: function(button, row, data) {
-    this.toggleEditableRow(row, this.models.user);
+  showUserUpdate: function(button, row, data) {
+    var self = this;
+
+    this.hideViews();
+
+    // Reset user update view
+    $(this.views.user_update).find('.user_name').val('');
+    $(this.views.user_update).find('.user_email').val('');
+
+    $(this.views.user_update).show();
+
+    $('#useradmin_user_update .update_user_btn').unbind().click(function() {
+      self.updateUser();
+      return false;
+    });
+
+    var email = data[0];
+    var name = data[1];
+    var activated = data[2];
+    var enabled = data[3];
+
+    // Populate form
+    $(this.views.user_update).find('.user_name').val(name);
+    $(this.views.user_update).find('.user_email').val(email);
+
+    if (activated) {
+      $(this.views.user_update).find('.user_activated').attr('checked', 'checked');
+    } else {
+      $(this.views.user_update).find('.user_activated').removeAttr('checked');
+    }
+
+    if (enabled) {
+      $(this.views.user_update).find('.user_enabled').attr('checked', 'checked');
+    } else {
+      $(this.views.user_update).find('.user_enabled').removeAttr('checked');
+    }
+
+    // Load available roles
+    this.models.role.list_assignable(function(res) {
+      Log.append('Role list OK.');
+      var roles = res.list;
+      self.updateUserAssignableRoles(roles);
+
+    }, function(e) {
+      $fw.client.dialog.error("Error loading roles.");
+    });
+
+    // Load available roles
+    this.models.user.read(email, function(res) {
+      Log.append('User role load OK.');
+      var roles = res.fields.roles;
+      self.updateCurrentUserRoles(roles);
+    }, function(e) {
+      $fw.client.dialog.error("Error loading user data");
+    });
   },
 
-  updateUser: function(button, row, data) {
-    // Update the user model
-    var fields = this.fieldsFromRow(row, this.models.user);
-    var email = this.emailFromRow(row);
-    fields.email = email;
+  updateUser: function() {
+    var self = this;
+    var name = $('#useradmin_user_update .user_name').val();
+    var email = $('#useradmin_user_update .user_email').val();
+    var password = $('#useradmin_user_update .user_password').val();
+    var enabled = $('#useradmin_user_update .user_enabled').is(':checked');
+    var activated = $('#useradmin_user_update .user_activated').is(':checked');
+    if (password === '') {
+      password = null;
+    }
+    var roles = $('#useradmin_user_update .user_roles').val();
+
+    if (roles) {
+      roles = roles.join(", ");
+    }
+
+    var fields = {
+      email: email,
+      name: name,
+      password: password,
+      activated: activated,
+      enabled: enabled,
+      roles: roles
+    };
+
     this.models.user.update(fields, function(res) {
       Log.append('updateUser: OK');
+      self.showUsersList();
     }, function(err) {
       Log.append(err);
     });
 
-    this.toggleEditableRow(row, this.models.user);
+    //this.toggleEditableRow(row, this.models.user);
   },
 
   emailFromRow: function(row) {
@@ -163,7 +240,6 @@ UserAdmin.Controller = Class.extend({
   //     return false;
   //   });
   // },
-
   // createGroup: function(group_name) {
   //   var self = this;
   //   this.models.group.create(group_name, function(res) {
@@ -175,7 +251,6 @@ UserAdmin.Controller = Class.extend({
   //     $fw.client.dialog.error("Error creating your group - group names must be unique.");
   //   });
   // },
-
   renderUserTable: function(data) {
     var self = this;
 
@@ -228,6 +303,24 @@ UserAdmin.Controller = Class.extend({
     // });
   },
 
+  updateUserAssignableRoles: function(roles) {
+    var role_list = $('.user_roles:visible').empty();
+    $.each(roles, function(i, role) {
+      var option = $('<option>').text(role);
+      role_list.append(option);
+    });
+    role_list.removeAttr("disabled");
+  },
+
+  updateCurrentUserRoles: function(roles) {
+    var role_list = $('.user_current_roles:visible').empty();
+    $.each(roles, function(i, role) {
+      var option = $('<option>').text(role);
+      role_list.append(option);
+    });
+    role_list.removeAttr("disabled");
+  },
+
   // updateUserAssignableGroups: function(groups) {
   //   var group_list = $('#useradmin_user_create .user_group').empty();
   //   $.each(groups, function(i, group) {
@@ -236,9 +329,8 @@ UserAdmin.Controller = Class.extend({
   //   });
   //   group_list.removeAttr("disabled");
   // },
-
   updateUserAssignableRoles: function(roles) {
-    var role_list = $('#useradmin_user_create .user_roles').empty();
+    var role_list = $('.user_roles:visible').empty();
     $.each(roles, function(i, role) {
       var option = $('<option>').text(role);
       role_list.append(option);
@@ -255,7 +347,7 @@ UserAdmin.Controller = Class.extend({
       password = null;
     }
     var roles = $('#useradmin_user_create .user_roles').val().join(", ");
-    var activated;   
+    var activated;
     var invite = $('#useradmin_user_create .user_invite').is(':checked');
 
     // If we send an invite to the user, don't pre-activate
@@ -301,7 +393,6 @@ UserAdmin.Controller = Class.extend({
   // groupDataForRow: function(el) {
   //   return this.group_table.fnGetData(el);
   // },
-
   addControls: function(res) {
     // Add control column
     res.aoColumns.push({
@@ -324,7 +415,6 @@ UserAdmin.Controller = Class.extend({
   //   var self = this;
   //   this.hideViews();
   //   $(this.views.groups).show();
-
   //   this.models.group.list(function(res) {
   //     self.renderGroupTable(res);
   //     self.bindGroupControls();
@@ -332,7 +422,6 @@ UserAdmin.Controller = Class.extend({
   //     console.error(err);
   //   }, true);
   // },
-
   // renderGroupTable: function(data) {
   //   var self = this;
   //   this.group_table = $('#useradmin_groups_table').dataTable({
@@ -347,7 +436,6 @@ UserAdmin.Controller = Class.extend({
   //       self.rowRender(nRow, aData);
   //     }
   //   });
-
   //   // Inject Create button
   //   var create_button = $('<button>').addClass('btn btn-primary right').text('Create').click(function() {
   //     self.showCreateGroup();
@@ -355,7 +443,6 @@ UserAdmin.Controller = Class.extend({
   //   });
   //   $('#useradmin_group_list .span12:first').append(create_button);
   // },
-
   // showCreateGroup: function() {
   //   this.hideViews();
   //   $('#useradmin_group_create').show();
