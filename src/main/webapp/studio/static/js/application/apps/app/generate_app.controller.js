@@ -471,13 +471,13 @@ GenerateApp.Controllers.Wufoo = Class.extend({
 });
 
 GenerateApp.Controllers.WufooSingle = GenerateApp.Controllers.Wufoo.extend({
-  template_url: "https://bitbucket.org/jasonmadigan/wufootest/get/master.zip",
+  template_url: "https://github.com/feedhenry/Wufoo-Template/zipball/master",
   container: '#wufoo_single_generator_form',
   type: 'single'
 });
 
 GenerateApp.Controllers.WufooMulti = GenerateApp.Controllers.Wufoo.extend({
-  template_url: "https://bitbucket.org/jasonmadigan/wufootest/get/master.zip",
+  template_url: "https://github.com/feedhenry/Wufoo-Template/zipball/master",
   container: '#wufoo_multi_generator_form',
   type: 'multi'
 });
