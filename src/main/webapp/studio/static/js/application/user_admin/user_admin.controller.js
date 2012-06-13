@@ -25,6 +25,10 @@ UserAdmin.Controller = Class.extend({
     this.field_config = params.field_config || null;
   },
 
+  pageChange: function() {
+    this.bindUserControls();
+  },
+
   hideViews: function() {
     $.each(this.views, function(k, v) {
       $(v).hide();
@@ -67,6 +71,17 @@ UserAdmin.Controller = Class.extend({
     });
   },
 
+  resendInvite: function() {
+    var email = $(this.views.user_update).find('.user_email').val();
+
+    this.models.user.resendInvite(email, function(res) {
+      Log.append('User invite re-sent OK.');
+      $fw.client.dialog.info.flash('Successfully re-sent invite.');
+    }, function(e) {
+      $fw.client.dialog.error("Error sending invite");
+    });
+  },
+
   showUserUpdate: function(button, row, data) {
     var self = this;
 
@@ -75,11 +90,17 @@ UserAdmin.Controller = Class.extend({
     // Reset user update view
     $(this.views.user_update).find('.user_name').val('');
     $(this.views.user_update).find('.user_email').val('');
+    $(this.views.user_update).find('.user_resend_invite').hide();
 
     $(this.views.user_update).show();
 
     $('#useradmin_user_update .update_user_btn').unbind().click(function() {
       self.updateUser();
+      return false;
+    });
+
+    $('#useradmin_user_update .user_resend_invite').unbind().click(function() {
+      self.resendInvite();
       return false;
     });
 
@@ -96,6 +117,7 @@ UserAdmin.Controller = Class.extend({
       $(this.views.user_update).find('.user_activated').attr('checked', 'checked');
     } else {
       $(this.views.user_update).find('.user_activated').removeAttr('checked');
+      $(this.views.user_update).find('.user_resend_invite').show();
     }
 
     if (enabled) {

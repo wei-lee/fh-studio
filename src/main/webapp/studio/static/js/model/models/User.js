@@ -70,6 +70,16 @@ model.User = model.Model.extend({
     return this.serverPost(url, params, success, fail, true);
   },
 
+  resendInvite: function(email, success, fail) {
+    var url = Constants.ADMIN_USER_RESEND_INVITE_URL.replace('<domain>', $fw_manager.getClientProp('domain'));
+    var params = {
+      "email": email,
+      "force": true
+    };
+
+    return this.serverPost(url, params, success, fail, true);
+  },
+
   resolveUserType: function() {
     var userRoles = $fw.getUserProps().roles;
     if (userRoles.indexOf($fw.ROLE_RESELLERADMIN) > -1) {
