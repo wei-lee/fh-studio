@@ -40,6 +40,20 @@ model.User = model.Model.extend({
 
   },
 
+  create: function(email, name, roles, password, success, fail) {
+    var user_type = this.resolveUserType();
+    var url = Constants.ADMIN_USER_CREATE_URL.replace('<users-type>', user_type);
+    var params = {
+      "email": email,
+      "password": password,
+      "name": name,
+      "roles": roles
+    };
+
+    params[user_type] = $fw.getClientProp(user_type);
+    return this.serverPost(url, params, success, fail, true);
+  },
+
   update: function(fields, success, fail) {
     var user_type = this.resolveUserType();
     var url = Constants.ADMIN_USER_UPDATE_URL.replace('<users-type>', user_type);

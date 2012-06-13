@@ -4,12 +4,16 @@ UserAdmin.Controller = Class.extend({
 
   models: {
     user: new model.User(),
-    group: new model.Group()
+    group: new model.Group(),
+    role: new model.Role()
   },
 
+  // TODO: Refactor below to use these
   views: {
     users: "#useradmin_user_list",
-    groups: "#useradmin_group_list"
+    groups: "#useradmin_group_list",
+    group_create: "#useradmin_group_create",
+    user_create: "#useradmin_user_create"
   },
 
   user_table: null,
@@ -151,7 +155,26 @@ UserAdmin.Controller = Class.extend({
 
   deleteUser: function(button, row, data) {},
 
-  bindGroupControls: function() {},
+  bindGroupControls: function() {
+    var self = this;
+    $('#useradmin_group_create .create_group_btn').unbind().click(function() {
+      var group_name = $('.group_name').val();
+      self.createGroup(group_name);
+      return false;
+    });
+  },
+
+  createGroup: function(group_name) {
+    var self = this;
+    this.models.group.create(group_name, function(res) {
+      Log.append('createGroup: OK');
+      $fw.client.dialog.info.flash('Group created, refreshing list.');
+      self.showGroupsList();
+    }, function(err) {
+      Log.append(err);
+      $fw.client.dialog.error("Error creating your group - group names must be unique.");
+    });
+  },
 
   renderUserTable: function(data) {
     var self = this;
@@ -159,13 +182,85 @@ UserAdmin.Controller = Class.extend({
     this.user_table = $('#useradmin_users_table').dataTable({
       "bDestroy": true,
       "bAutoWidth": false,
-      "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+      "sDom": "<'row-fluid'<'span12'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
       "sPaginationType": "bootstrap",
       "bLengthChange": false,
       "aaData": data.aaData,
       "aoColumns": data.aoColumns,
       "fnRowCallback": function(nRow, aData, iDisplayIndex) {
         self.rowRender(nRow, aData);
+      }
+    });
+
+    // Inject Create button
+    var create_button = $('<button>').addClass('btn btn-primary right').text('Create').click(function() {
+      self.showCreateUser();
+      return false;
+    });
+    $('#useradmin_user_list .span12:first').append(create_button);
+  },
+
+  showCreateUser: function() {
+    var self = this;
+    this.hideViews();
+    $('#useradmin_user_create').show();
+
+    $('#useradmin_user_create .create_user_btn').unbind().click(function() {
+      self.createUser();
+      return false;
+    });
+
+    // Load roles & Groups
+    this.models.role.list_assignable(function(res) {
+      Log.append('Role list OK.');
+      var roles = res.list;
+      self.updateUserAssignableRoles(roles);
+
+    }, function(e) {
+      $fw.client.dialog.error("Error loading roles.");
+    });
+
+    this.models.group.list(function(res) {
+      var groups = res.list;
+      self.updateUserAssignableGroups(groups);
+    }, function(err) {
+      $fw.client.dialog.error("Error loading groups.");
+    });
+  },
+
+  updateUserAssignableGroups: function(groups) {
+    var group_list = $('#useradmin_user_create .user_group').empty();
+    $.each(groups, function(i, group) {
+      var option = $('<option>').text(group.fields.name).val(group.guid);
+      group_list.append(option);
+    });
+    group_list.removeAttr("disabled");
+  },
+
+  updateUserAssignableRoles: function(roles) {
+    var role_list = $('#useradmin_user_create .user_roles').empty();
+    $.each(roles, function(i, role) {
+      var option = $('<option>').text(role);
+      role_list.append(option);
+    });
+    role_list.removeAttr("disabled");
+  },
+
+  createUser: function() {
+    var self = this;
+    var name = $('#useradmin_user_create .user_name').val();
+    var email = $('#useradmin_user_create .user_email').val();
+    var password = $('#useradmin_user_create .user_password').val();
+    var roles = $('#useradmin_user_create .user_roles').val().join(", ");
+
+    this.models.user.create(email, name, roles, password, function(res) {
+      console.log(res);
+      self.showUsersList();
+    }, function(e) {
+      if (typeof e == 'undefined') {
+        $fw.client.dialog.error("Error creating user");
+      } else {
+        $fw.client.dialog.error("Error creating user: " + e);
       }
     });
   },
@@ -207,7 +302,7 @@ UserAdmin.Controller = Class.extend({
       var controls = [];
       // TODO: Move to clonable hidden_template
       controls.push('<button class="btn edit_user">Edit</button>&nbsp;');
-      controls.push('<button class="btn btn-danger delete_user">Delete</button>');
+      // controls.push('<button class="btn btn-danger delete_user">Delete</button>');
       row.push(controls.join(""));
     });
     return res;
@@ -231,7 +326,7 @@ UserAdmin.Controller = Class.extend({
     this.group_table = $('#useradmin_groups_table').dataTable({
       "bDestroy": true,
       "bAutoWidth": false,
-      "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+      "sDom": "<'row-fluid'<'span12'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
       "sPaginationType": "bootstrap",
       "bLengthChange": false,
       "aaData": data.aaData,
@@ -240,5 +335,17 @@ UserAdmin.Controller = Class.extend({
         self.rowRender(nRow, aData);
       }
     });
+
+    // Inject Create button
+    var create_button = $('<button>').addClass('btn btn-primary right').text('Create').click(function() {
+      self.showCreateGroup();
+      return false;
+    });
+    $('#useradmin_group_list .span12:first').append(create_button);
+  },
+
+  showCreateGroup: function() {
+    this.hideViews();
+    $('#useradmin_group_create').show();
   }
 });

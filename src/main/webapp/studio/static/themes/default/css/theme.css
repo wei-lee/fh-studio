@@ -459,7 +459,7 @@ textarea { resize:none; }
 }
 html, body
 {
-  font-family: Helvetica, Arial, Verdana,sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;
   background: transparent url(../img/top_bar.png) repeat-x 0 0;
   padding:0;
   margin:0;
@@ -824,6 +824,7 @@ label.error
   background:#fff;
   color:#333;
   padding: 0 0.5em;
+  z-index: 2;
 }
 #connectivity_dialog .ui-icon, #connectivity_dialog p 
 {
@@ -3095,7 +3096,7 @@ div.dataTables_length select {
 }
 
 div.dataTables_filter label {
-  float: right;
+  float: left;
 }
 
 div.dataTables_info {
@@ -3135,6 +3136,10 @@ table.dataTable th:active {
 /* User Admin styling */
 #useradmin_user_list table {
   width: 100% !important;
+}
+
+#useradmin_user_list table td {
+  line-height: 22px;
 }
 
 #useradmin_user_list table .controls {
