@@ -6,7 +6,7 @@
   <property name="dist" value="${basedir}/dist" />
   <property name="target-bin"  value="${basedir}/bin"/>
   <property name="target"  value="${basedir}/target"/>
-  <property name="test"  value="${basedir}/test"/>
+  <property name="test-rep"  value="${basedir}/test"/>
   <property name="webapp"  value="${basedir}/src/main/webapp/studio"/>
   <property name="web-inf"  value="${basedir}/src/main/webapp/studio/WEB-INF"/>
   <property name="dep-classes"  value="${web-inf}/classes"/>
@@ -34,17 +34,17 @@
       <fileset dir="${dist}"/>
       <fileset dir="${dep-lib}" includes="**/*.jar"/>
       <fileset dir="${dep-classes}" includes="**/*.*"/>
-      <fileset dir="${test}"/>
+      <fileset dir="${test-rep}"/>
     </delete>
   </target>
 
   <target name="mkdirs">
+    <mkdir dir="${test-rep}" />
     <mkdir dir="${target}" />
     <mkdir dir="${target-bin}" />
     <mkdir dir="${dep-classes}"/>
     <mkdir dir="${dep-lib}"/>
     <mkdir dir="${dist}" />
-    <mkdir dir="${test}" />
   </target>
 
   <target name="compile" depends="mkdirs">
@@ -132,7 +132,8 @@
 
   <target name="jshint" depends="mkdirs, npminstall">
     <exec executable="${basedir}/build/genjshintignore.sh" dir="${basedir}" failonerror="true" output="${basedir}/.jshintignore"/>
-    <exec executable="${basedir}/node_modules/jshint/bin/hint" dir="${basedir}" failonerror="true">
+    <exec executable="${basedir}/node_modules/jshint/bin/hint" dir="${basedir}" failonerror="true" output="${basedir}/test/jshint.xml">
+      <arg value="--jslint-reporter"/>
       <arg value="src/main/webapp/studio/static/"/>
     </exec>
   </target>
