@@ -166,10 +166,10 @@ UserAdmin.Controller = Class.extend({
       enabled: enabled
     };
 
-    if (password != '') {
+    if (password != null && password !== '') {
       fields.password = password;
     }
-    if (roles != null && roles != '') {
+    if (roles != null && roles !== '') {
       fields.roles = roles;
     }
 
@@ -345,23 +345,6 @@ UserAdmin.Controller = Class.extend({
     role_list.removeAttr("disabled");
   },
 
-  // updateUserAssignableGroups: function(groups) {
-  //   var group_list = $('#useradmin_user_create .user_group').empty();
-  //   $.each(groups, function(i, group) {
-  //     var option = $('<option>').text(group.fields.name).val(group.guid);
-  //     group_list.append(option);
-  //   });
-  //   group_list.removeAttr("disabled");
-  // },
-  updateUserAssignableRoles: function(roles) {
-    var role_list = $('.user_roles:visible').empty();
-    $.each(roles, function(i, role) {
-      var option = $('<option>').text(role);
-      role_list.append(option);
-    });
-    role_list.removeAttr("disabled");
-  },
-
   createUser: function() {
     var self = this;
     var name = $('#useradmin_user_create .user_name').val();
@@ -437,7 +420,7 @@ UserAdmin.Controller = Class.extend({
       row.push(controls.join(""));
     });
     return res;
-  },
+  }
 
   // showGroupsList: function() {
   //   var self = this;

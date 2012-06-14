@@ -128,5 +128,5 @@ $.extend(Constants, {
   ADMIN_GROUP_LIST_URL: Constants.ADMIN_URL_PREFIX + "<domain>/group/list",
   ADMIN_GROUP_CREATE_URL: Constants.ADMIN_URL_PREFIX + "<domain>/group/create",
 
-  ADMIN_ROLE_LIST_ASSIGNABLE_URL: Constants.ADMIN_URL_PREFIX + "role/listAssignable",
+  ADMIN_ROLE_LIST_ASSIGNABLE_URL: Constants.ADMIN_URL_PREFIX + "role/listAssignable"
 });
