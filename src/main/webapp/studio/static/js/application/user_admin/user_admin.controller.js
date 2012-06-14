@@ -370,7 +370,7 @@ UserAdmin.Controller = Class.extend({
     if (password === '') {
       password = null;
     }
-    var roles = $('#useradmin_user_update .user_roles').val();
+    var roles = $('#useradmin_user_create .user_roles').val();
     var activated;
     var invite = $('#useradmin_user_create .user_invite').is(':checked');
 
