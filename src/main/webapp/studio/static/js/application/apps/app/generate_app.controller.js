@@ -145,7 +145,7 @@ GenerateApp.Controllers.Wufoo = Class.extend({
 
     $(self.container).find('.wufoo_api_domain').keyup(function() {
       var url = 'https://' + $(this).val() + '/api/code/';
-      var link = $('<a>').attr('href', url).text(url);
+      var link = $('<a>').attr('href', url).text(url).attr('target', '_blank');
       $(self.container).find('.wufoo_api_key_url').empty().append(link);      
     });
 

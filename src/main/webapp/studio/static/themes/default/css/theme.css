@@ -3070,6 +3070,10 @@ line-height:0.5em;
   color: #0058C9;
 }
 
+#wufoo_single_generator_form .api_locator, #wufoo_multi_generator_form .api_locator {
+  margin-left: 54px;
+}
+
 /* Bootstrap Overrides */
 button.btn {
   font-size: 11px;
