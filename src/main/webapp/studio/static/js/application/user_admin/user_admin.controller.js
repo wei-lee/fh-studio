@@ -155,7 +155,7 @@ UserAdmin.Controller = Class.extend({
     var activated = $('#useradmin_user_update .user_activated').is(':checked');
     var roles = $('#useradmin_user_update .user_roles').val();
 
-    if (roles) {
+    if (roles != null) {
       roles = roles.join(", ");
     }
 
@@ -163,12 +163,14 @@ UserAdmin.Controller = Class.extend({
       email: email,
       name: name,
       activated: activated,
-      enabled: enabled,
-      roles: roles
+      enabled: enabled
     };
 
     if (password != '') {
       fields.password = password;
+    }
+    if (roles != null && roles != '') {
+      fields.roles = roles;
     }
 
     this.models.user.update(fields, function(res) {
@@ -368,9 +370,13 @@ UserAdmin.Controller = Class.extend({
     if (password === '') {
       password = null;
     }
-    var roles = $('#useradmin_user_create .user_roles').val().join(", ");
+    var roles = $('#useradmin_user_update .user_roles').val();
     var activated;
     var invite = $('#useradmin_user_create .user_invite').is(':checked');
+
+    if (roles) {
+      roles = roles.join(', ');
+    }
 
     // If we send an invite to the user, don't pre-activate
     if (invite) {

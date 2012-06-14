@@ -46,13 +46,16 @@ model.User = model.Model.extend({
     var params = {
       "email": email,
       "name": name,
-      "roles": roles,
       "activated": activated,
       "invite": invite
     };
 
     if (password != null) {
       params.password = password;
+    }
+
+    if (roles != null) {
+      params.roles = roles;
     }
 
     params[user_type] = $fw.getClientProp(user_type);
