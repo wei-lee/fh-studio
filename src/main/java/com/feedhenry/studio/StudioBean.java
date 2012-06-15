@@ -194,7 +194,9 @@ public class StudioBean {
             pResponse.sendError(500);
           }
         } catch (Throwable e) {
+        	proceed = false;
         	log.error("Got exception from props endpoint", e);
+            pResponse.sendError(500, "Error connecting to server. Please try again later.");
         } finally {
           br.close();
           iSR.close();
