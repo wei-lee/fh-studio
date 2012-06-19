@@ -2232,7 +2232,7 @@ p.input-form-footer, .tandc_Link{
   background-image:url("../img/home_page_graphic.png");
   background-color:transparent;
   background-repeat:no-repeat;
-  background-position-x: 100%;
+  background-position-x: 50%;
   background-position-y: 50%;
   height:320px;
 }

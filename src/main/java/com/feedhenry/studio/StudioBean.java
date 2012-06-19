@@ -3,8 +3,6 @@ package com.feedhenry.studio;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -30,6 +28,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 public class StudioBean {
 
+  private static final String CORPORATE_WEBSITE_URL = "http://www.feedhenry.com";
+  private static final String INVALID_DOMAIN_REDIRECT_URL = CORPORATE_WEBSITE_URL;
   // studio props endpoint
   private static final String PROPS_ENDPOINT = "/box/srv/1.1/studio/props";
 
@@ -63,8 +63,6 @@ public class StudioBean {
   public static final String THEME_ENTERPRISE = "enterprise";
 
   public static final Log log = LogFactory.getLog("fhstudio");
-  // public static final Logger log = Logger.getLogger("fhstudio");
-
   public static final String PROP_PROTOCOL = "studioProtocol";
   public static final String PROP_LEGACYDIG = "legacyDig";
   public static final String PROP_GITENABLED = "gitEnabled";
@@ -182,8 +180,8 @@ public class StudioBean {
               // issue with domain, unable to get props
               // redirect to corporate website
               proceed = false;
-              log.error("Issue getting props for domain, redirecting to corporate website");
-              redirectUrl = "http://www.feedhenry.com";
+              redirectUrl = INVALID_DOMAIN_REDIRECT_URL;
+              log.info("Invalid domain requested - redirecting to " + redirectUrl + ", Got error from props endpoint: " + mCoreProps.toString());
             } else {
               // unable to get props info from core, send 500
               proceed = false;
