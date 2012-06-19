@@ -109,7 +109,7 @@ GenerateApp.Controllers.Wufoo = Class.extend({
     var self = this;
     var alerts_area = $(this.container).find('#alerts');
     var alert = $('<div>').addClass('alert fade in alert-error').text(message);
-    var close_button = $('<button>').addClass('close').attr("data-dismiss", "alert").text("×");
+    var close_button = $('<button>').addClass('close').attr("data-dismiss", "alert").text("x");
     alert.append(close_button);
     alerts_area.append(alert);
     setTimeout(function() {
@@ -121,7 +121,7 @@ GenerateApp.Controllers.Wufoo = Class.extend({
     var self = this;
     var alerts_area = $(this.container).find('#alerts');
     var alert = $('<div>').addClass('alert fade in alert-success').text(message);
-    var close_button = $('<button>').addClass('close').attr("data-dismiss", "alert").text("×");
+    var close_button = $('<button>').addClass('close').attr("data-dismiss", "alert").text("x");
     alert.append(close_button);
     alerts_area.append(alert);
     setTimeout(function() {
@@ -146,7 +146,7 @@ GenerateApp.Controllers.Wufoo = Class.extend({
     $(self.container).find('.wufoo_api_domain').keyup(function() {
       var url = 'https://' + $(this).val() + '/api/code/';
       var link = $('<a>').attr('href', url).text(url).attr('target', '_blank');
-      $(self.container).find('.wufoo_api_key_url').empty().append(link);      
+      $(self.container).find('.wufoo_api_key_url').empty().append(link);
     });
 
     $(self.container).find('.validate:visible').unbind().click(function() {
@@ -165,6 +165,20 @@ GenerateApp.Controllers.Wufoo = Class.extend({
       self.previewForm(domain, selected_form_data);
       return false;
     });
+
+    $(self.container).find('.protected_password').unbind().click(function() {
+      self.togglePasswordProtection($(this).is(':checked'));
+    });
+  },
+
+  togglePasswordProtection: function(to_check) {
+    var self = this;
+    if (to_check) {
+      // Transitioning to checked, show password field
+      $(self.container).find('.form_password_container').show();
+    } else {
+      $(self.container).find('.form_password_container').hide();
+    }
   },
 
   previewForm: function(domain, form_data) {
@@ -242,16 +256,21 @@ GenerateApp.Controllers.Wufoo = Class.extend({
     var custom_client_config, custom_cloud_config, client_config, cloud_config;
     if (this.type == 'single') {
       var url = "https://" + this.getDomain() + "/forms/" + app_config.form.Hash + "/";
+
       custom_client_config = {
         form_hash: app_config.form.Hash,
         form_url: url
       };
+
       custom_cloud_config = {
         form_hash: app_config.form.Hash,
         form_url: url,
         api_key: self.getApiKey(),
         api_domain: self.getDomain()
       };
+
+      custom_cloud_config.form_password = app_config.wufoo_form_password || null;
+
       client_config = GenerateApp.Configs.getConfig('wufoo_single_form_client', 'wufoo_config', custom_client_config);
       cloud_config = GenerateApp.Configs.getConfig('wufoo_single_form_cloud', 'wufoo_config', custom_cloud_config);
     } else {
@@ -260,6 +279,7 @@ GenerateApp.Controllers.Wufoo = Class.extend({
         api_key: self.getApiKey(),
         api_domain: self.getDomain()
       };
+      custom_cloud_config.form_password = app_config.wufoo_form_password || null;
       client_config = GenerateApp.Configs.getConfig('wufoo_multi_form_client', 'wufoo_config', custom_client_config);
       cloud_config = GenerateApp.Configs.getConfig('wufoo_multi_form_cloud', 'wufoo_config', custom_cloud_config);
     }
@@ -406,6 +426,15 @@ GenerateApp.Controllers.Wufoo = Class.extend({
       wufoo_api_key: $(self.container).find('.wufoo_api_key').val(),
       wufoo_api_domain: $(self.container).find('.wufoo_api_domain').val()
     };
+
+    var password_checked = $(self.container).find('.protected_password').is(':checked');
+    var password_value = $(self.container).find('.wufoo_form_password').val();
+
+    if (password_checked && password_value !== '') {
+      app_config.wufoo_form_password = password_value;
+    }
+
+    var wufoo_form_password = $(self.container).find('.wufoo_api_key:visible');
 
     var selected_form_data = self.selectedFormData();
 

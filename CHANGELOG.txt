@@ -3,3 +3,4 @@
 3.1.0
 ------------------------------------------------------------------------------
 * Ant targets for compile, deploy (dev), and make-studio-war artifact
+* New Studio Admin tab - allows user creation, role assignment, activation email sending and user account updates

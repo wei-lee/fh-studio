@@ -87,6 +87,24 @@
               </label>
             </div>
           </div>
+
+          <div class="control-group">
+            <label class="control-label">Form Password</label>
+            <div class="controls">
+              <label class="checkbox">
+                <input type="checkbox" class="protected_password" value="password">
+                Is this Form password protected?
+              </label>
+            </div>
+          </div>
+
+          <div class="control-group form_password_container hidden_template">
+            <label class="control-label">Form Password</label>
+            <div class="controls">
+              <input type="password" class="input-xlarge wufoo_form_password" name="wufoo_form_password" placeholder="Form Password">
+            </div>
+          </div>
+
         </form>
       </div>
     </div>
@@ -157,6 +175,23 @@
                 &nbsp;<img class="loader hidden_template" src="<%=studio.getStaticAssetPath("themes/default/img/throbber.gif")%>" alt="loading"/>
               </span>
               <span class="help-block">Find your API Key here: <span class="wufoo_api_key_url">https://&lt;domain&gt;.wufoo.com/api/code/</span></span>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label">Form Password</label>
+            <div class="controls">
+              <label class="checkbox">
+                <input type="checkbox" class="protected_password" value="password">
+                Are these forms password protected?
+              </label>
+            </div>
+          </div>
+
+          <div class="control-group form_password_container hidden_template">
+            <label class="control-label">Password for Forms</label>
+            <div class="controls">
+              <input type="password" class="input-xlarge wufoo_form_password" name="wufoo_form_password" placeholder="Form Password">
             </div>
           </div>
          
