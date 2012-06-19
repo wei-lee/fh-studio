@@ -1,9 +1,9 @@
-HtmlUtil = function () {
+HtmlUtil = function() {
   var self = {
     cache: {},
-    
-    constructOptions: function (select, options, values, selected) {
-      $.each(values, function (key, val) {
+
+    constructOptions: function(select, options, values, selected) {
+      $.each(values, function(key, val) {
         var opt = $('<option>', {
           value: val,
           text: options[key]
@@ -12,21 +12,22 @@ HtmlUtil = function () {
           opt.attr('selected', 'selected');
         }
         select.append(opt);
-      });  
+      });
     },
-  
-    optionsFromConfig: function (config, textCallback, resolverCallback) {
-      var key = '', ret;
-      
+
+    optionsFromConfig: function(config, textCallback, resolverCallback) {
+      var key = '',
+          ret;
+
       key = JSON.stringify(config);
       ret = self.cache[key];
-      
+
       if ('undefined' === typeof ret) {
         ret = {};
-        
+
         ret.options = [];
         ret.values = [];
-        $.each(config, function (sub_key, sub_val) {
+        $.each(config, function(sub_key, sub_val) {
           var resolvedVal = sub_val;
           if ($.isFunction(resolverCallback)) {
             resolvedVal = resolverCallback(sub_key);
@@ -36,14 +37,14 @@ HtmlUtil = function () {
             ret.values.push(sub_key);
           }
         });
-        
+
         self.cache[key] = ret;
       }
-      
+
       return ret;
     }
   };
-  
+
   return {
     constructOptions: self.constructOptions,
     optionsFromConfig: self.optionsFromConfig

@@ -48,13 +48,13 @@ public class StudioBean {
   public static final String STUDIO_PAGES_GROUP_COOKIE = "feedhenry-studio-pages-group";
 
   // Ok to have these here instead of in millicore as the endpoints used
-  // by the studio would dictate which role is required for particular 
+  // by the studio would dictate which role is required for particular
   // features i.e. reporting endpoints require 'analytics' role
   // User's role is returned from millicore anyways, which is the important part
   // If perms for a particular endpoint/s change, we need to update these
   public static final String ROLE_CUSTOMERADMIN = "customeradmin";
   public static final String ROLE_RESELLERADMIN = "reselleradmin";
-  public static final String[] GROUP_REPORTING = new String[] { "analytics", "portaladmin", ROLE_CUSTOMERADMIN, ROLE_RESELLERADMIN};
+  public static final String[] GROUP_REPORTING = new String[] { "analytics", "portaladmin", ROLE_CUSTOMERADMIN, ROLE_RESELLERADMIN };
   public static final String[] GROUP_ARM = new String[] { "portaladmin", ROLE_CUSTOMERADMIN, ROLE_RESELLERADMIN };
   public static final String[] GROUP_USER_ADMIN = new String[] { ROLE_CUSTOMERADMIN, ROLE_RESELLERADMIN };
   public static final String[] GROUP_DEVELOPER = new String[] { "dev", "devadmin" };
@@ -63,7 +63,7 @@ public class StudioBean {
   public static final String THEME_ENTERPRISE = "enterprise";
 
   public static final Log log = LogFactory.getLog("fhstudio");
-  //public static final Logger log = Logger.getLogger("fhstudio");
+  // public static final Logger log = Logger.getLogger("fhstudio");
 
   public static final String PROP_PROTOCOL = "studioProtocol";
   public static final String PROP_LEGACYDIG = "legacyDig";
@@ -133,14 +133,16 @@ public class StudioBean {
 
       // TODO: if studio is deployed to separate box than millicore, need to look at this logic again
       String scheme = pRequest.getScheme();
-      String host = "127.0.0.1";//pRequest.getLocalName();
+      String host = "127.0.0.1";// pRequest.getLocalName();
       String endpoint = PROPS_ENDPOINT;
       int port = pRequest.getLocalPort();
       String referer = scheme + "://" + pRequest.getLocalName();
 
       // TODO: allow self-signed cert in development
       scheme = "http";
-      // keytool -import -alias localcert -file ./server.crt -keystore /usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/security/cacerts -storepass changeit
+      // keytool -import -alias localcert -file ./server.crt -keystore
+      // /usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/security/cacerts -storepass
+      // changeit
 
       String uri = scheme + "://" + host + ((port < 0 || port == 80 || port == 443) ? "" : ":" + port) + endpoint;
 
@@ -404,9 +406,9 @@ public class StudioBean {
   }
 
   private void dispatchTo(HttpServletRequest pRequest, HttpServletResponse pResponse, String pPageName) throws Exception {
-    String pPageUrl = resolveUrl(mDomain, pPageName);    
+    String pPageUrl = resolveUrl(mDomain, pPageName);
     log.debug("Dispatching to: pPageName=" + pPageName + " pPageUrl=" + pPageUrl);
-    
+
     if (null != pPageUrl) {
       pRequest.setAttribute("result", "fail");
       pRequest.setAttribute("orginal_URI", pRequest.getRequestURI());
@@ -428,8 +430,7 @@ public class StudioBean {
       pPage += ".html";
     }
 
-    String themeUrl = StudioBean.IDE_THEMES_FILE.replace("%theme%", themeName)
-        .replace("%file%", pPage);
+    String themeUrl = StudioBean.IDE_THEMES_FILE.replace("%theme%", themeName).replace("%file%", pPage);
     String defaultUrl = StudioBean.IDE_DEFAULT_FILE.replace("%file%", pPage);
 
     File fTheme = new File(mServletContext.getRealPath(themeUrl));
@@ -454,7 +455,16 @@ public class StudioBean {
 
   public List<String> getThemes() throws Exception {
     JSONArray themes = mStudioProps.getJSONArray("themes");
-    
+
+    // Theme override?
+    if (mInput.has("theme")) {
+      JSONArray theme_override = mInput.getJSONArray("theme");
+
+      if (null != theme_override) {
+        themes.add(theme_override.get(0));
+      }
+    }
+
     return themes;
   }
 
@@ -470,14 +480,6 @@ public class StudioBean {
     return mDomain;
   }
 
-  public String getResetToken() {
-    return mInput.optString("t");
-  }
-
-  public String getActivateToken() {
-    return mInput.optString("t");
-  }
-
   public JSONObject getProps() throws Exception {
     return mStudioProps;
   }
@@ -485,7 +487,7 @@ public class StudioBean {
   public JSONObject getUserProps() throws Exception {
     return mUserProps;
   }
-  
+
   public String getUserPropsJsonString() throws Exception {
     return mUserProps != null ? mUserProps.toString() : "{}";
   }
@@ -508,7 +510,7 @@ public class StudioBean {
         links.put(key, val);
       }
     } catch (Exception e) {
-    	log.error("Exception parsing docs links" + ((linksStr!=null)?linksStr:"(null)"), e);
+      log.error("Exception parsing docs links" + ((linksStr != null) ? linksStr : "(null)"), e);
     }
 
     return links;
@@ -562,7 +564,7 @@ public class StudioBean {
   }
 
   public void error(Exception pException) throws Exception {
-	log.error("error called", pException);
+    log.error("error called", pException);
     if (null != pException) {
       throw pException;
     }
