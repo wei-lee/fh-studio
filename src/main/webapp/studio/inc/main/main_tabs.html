@@ -20,9 +20,7 @@
     <li class="arm-tab"><a id="arm_tab" href="#tabs-6">App Admin</a></li>
   <% } %>
 
-  <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER)) { %>
   <li class="account-tab inactive_account"><a id="account_tab" href="#tabs-3">My Account</a></li>
-  <%}%>
 </ul>
 <div id="main_tabs_panels" class="ui-layout-content">
  <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER)) { %>
@@ -42,9 +40,7 @@
   <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_ARM)) { %>
     <%@ include file="arm_tab.html" %>
   <% } %>
-  
- <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER)) { %>
+ 
   <%@ include file="account_tab.html" %>
- <%}%>
   
 </div>
