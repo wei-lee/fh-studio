@@ -3156,3 +3156,8 @@ table.dataTable th:active {
 #useradmin_user_list table .controls {
   text-align: center;
 }
+
+/* Fixing long descriptions */
+#my_apps_grid td {
+  display: inline-block;
+}
