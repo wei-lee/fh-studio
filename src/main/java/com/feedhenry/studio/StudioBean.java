@@ -130,25 +130,13 @@ public class StudioBean {
 
     // Allow for domain being passed in request
     if (null == mDomain) {
-      
-      String referer = pRequest.getHeader("referer");
+
+      // TODO: if studio is deployed to separate box than millicore, need to look at this logic again
       String scheme = pRequest.getScheme();
       String host = "127.0.0.1";//pRequest.getLocalName();
       String endpoint = PROPS_ENDPOINT;
       int port = pRequest.getLocalPort();
-      if (null != referer) {
-        try {
-          URL url = new URL(referer);
-          scheme = url.getProtocol();
-          // lets use 127.0.0.1 due to hairpinning issues on dns. host = url.getHost();
-          port = url.getPort();
-
-        } catch (MalformedURLException e) {
-          // fail silently and use defaults above
-        }
-      } else {
-        referer = scheme + "://" + pRequest.getLocalName();
-      }
+      String referer = scheme + "://" + pRequest.getLocalName();
 
       // TODO: allow self-signed cert in development
       scheme = "http";
@@ -168,39 +156,52 @@ public class StudioBean {
       }
 
       HttpResponse response = client.execute(post);
-      HttpEntity resEntity = response.getEntity();
-      if (resEntity != null) {
-        InputStreamReader iSR = new InputStreamReader(resEntity.getContent());
-        BufferedReader br = new BufferedReader(iSR);
-        StringBuilder sb = new StringBuilder();
-        String read = br.readLine();
-        try {
-          while (read != null) {
-            sb.append(read);
-            read = br.readLine();
+      int statusCode = response.getStatusLine().getStatusCode();
+      if (200 == statusCode) {
+        HttpEntity resEntity = response.getEntity();
+        if (resEntity != null) {
+          InputStreamReader iSR = new InputStreamReader(resEntity.getContent());
+          BufferedReader br = new BufferedReader(iSR);
+          StringBuilder sb = new StringBuilder();
+          String read = br.readLine();
+          try {
+            while (read != null) {
+              sb.append(read);
+              read = br.readLine();
+            }
+            mCoreProps = JSONObject.fromObject(sb.toString());
+            log.debug("mCoreProps: " + mCoreProps.toString(2));
+            if (!"error".equals(mCoreProps.optString("status"))) {
+              mStudioProps = mCoreProps.getJSONObject("clientProps");
+              mDomain = mStudioProps.getString("domain");
+              mUserProps = mCoreProps.optJSONObject("userProps");
+              proceed = true;
+            } else if ("unknown_domain".equals(mCoreProps.optString("message"))) {
+              // issue with domain, unable to get props
+              // redirect to corporate website
+              proceed = false;
+              log.error("Issue getting props for domain, redirecting to corporate website");
+              redirectUrl = "http://www.feedhenry.com";
+            } else {
+              // unable to get props info from core, send 500
+              proceed = false;
+              log.error("Got error from props endpoint (" + mCoreProps.optString("message") + "), sending 500");
+              pResponse.sendError(500);
+            }
+          } catch (Throwable e) {
+          	proceed = false;
+          	log.error("Got exception parsing data from props endpoint", e);
+              pResponse.sendError(500, "Error connecting to server. Please try again later.");
+          } finally {
+            br.close();
+            iSR.close();
           }
-          mCoreProps = JSONObject.fromObject(sb.toString());
-          log.debug("mCoreProps: " + mCoreProps.toString(2));
-          if (!"error".equals(mCoreProps.optString("status"))) {
-            mStudioProps = mCoreProps.getJSONObject("clientProps");
-            mDomain = mStudioProps.getString("domain");
-            mUserProps = mCoreProps.optJSONObject("userProps");
-            proceed = true;
-          } else {
-            // unable to get props info from core
-            // TODO: send pretty 500 page
-            proceed = false;
-            log.error("Got error from props endpoint, sending 500");
-            pResponse.sendError(500);
-          }
-        } catch (Throwable e) {
-        	proceed = false;
-        	log.error("Got exception from props endpoint", e);
-            pResponse.sendError(500, "Error connecting to server. Please try again later.");
-        } finally {
-          br.close();
-          iSR.close();
         }
+      } else {
+        // redirect to corporate site
+        proceed = false;
+        log.error("Got Exception from props endpoint (" + statusCode + "), sending 500");
+        pResponse.sendError(500);
       }
     }
 
