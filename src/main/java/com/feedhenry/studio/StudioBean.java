@@ -30,6 +30,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 public class StudioBean {
 
+  private static final String CORPORATE_WEBSITE_URL = "http://www.feedhenry.com";
+  private static final String INVALID_DOMAIN_REDIRECT_URL = CORPORATE_WEBSITE_URL;
   // studio props endpoint
   private static final String PROPS_ENDPOINT = "/box/srv/1.1/studio/props";
 
@@ -63,7 +65,6 @@ public class StudioBean {
   public static final String THEME_ENTERPRISE = "enterprise";
 
   public static final Log log = LogFactory.getLog("fhstudio");
-  //public static final Logger log = Logger.getLogger("fhstudio");
 
   public static final String PROP_PROTOCOL = "studioProtocol";
   public static final String PROP_LEGACYDIG = "legacyDig";
@@ -188,14 +189,14 @@ public class StudioBean {
             proceed = true;
           } else {
             // unable to get props info from core
-            // TODO: send pretty 500 page
             proceed = false;
-            log.error("Got error from props endpoint, sending 500");
-            pResponse.sendError(500);
+            redirectUrl = INVALID_DOMAIN_REDIRECT_URL;
+            log.info("Invalid domain requested - redirecting to " + redirectUrl + ", Got error from props endpoint: " + mCoreProps.toString());
           }
         } catch (Throwable e) {
         	proceed = false;
         	log.error("Got exception from props endpoint", e);
+        	//TODO create pretty 500 page
             pResponse.sendError(500, "Error connecting to server. Please try again later.");
         } finally {
           br.close();
