@@ -2217,13 +2217,18 @@ p.input-form-footer, .tandc_Link{
 .dashboard-create{
   display:block;
   background:transparent url(../img/create_app_sprite.png) no-repeat 0 0;
+  border:none!important;
+  cursor:pointer;
+  height:50px;
+}
+
+.dashboard-create-container {
   width:250px;
   margin: 0 auto;
   height:50px;
-  border:none!important;
-  cursor:pointer;
   padding-right: 608px;
 }
+
 .dashboard-create:hover{
   background-position: 0 -100px;
   cursor:pointer;
