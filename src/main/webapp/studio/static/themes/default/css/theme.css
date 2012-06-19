@@ -2242,8 +2242,7 @@ p.input-form-footer, .tandc_Link{
   background-image:url("../img/home_page_graphic.png");
   background-color:transparent;
   background-repeat:no-repeat;
-  background-position-x: 50%;
-  background-position-y: 50%;
+  background-position: 50% 50%;
   height:290px;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
