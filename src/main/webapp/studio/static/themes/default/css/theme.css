@@ -21,7 +21,7 @@ textarea { resize:none; }
 ----------------------------------*/
 .ui-widget { font-size: 12px; }
 .ui-widget .ui-widget { font-size: 1em; }
-.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button { ont-size: 1em; }
+.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button { font-size: 1em; }
 .ui-widget-content { border: none; background:#fff; }
 .ui-widget-content a { color: #4d4d4d; }
 .ui-widget-header { border: none; background: none; font-weight: normal; }
@@ -1341,7 +1341,6 @@ table.jqplot-table-legend, table.jqplot-cursor-legend {
   width:65.6%;
 }
 .fh-form-field select{
-  height:1.75em;
   width:66%;
 }
 .fh-form-field-fullwidth input, .fh-form-field-fullwidth textarea, .fh-form-field-fullwidth select{
@@ -1678,7 +1677,7 @@ table.jqplot-table-legend, table.jqplot-cursor-legend {
 {
   font-size:0.9em;
 }
-#resources_resource_buttons, .resource-buttons .resource-build
+#resources_resource_buttons, .resource-buttons .resource-build, .resource-uploadnow
 {
   width:13em;
 }
@@ -2219,10 +2218,11 @@ p.input-form-footer, .tandc_Link{
   display:block;
   background:transparent url(../img/create_app_sprite.png) no-repeat 0 0;
   width:250px;
-  margin-left:130px;
+  margin: 0 auto;
   height:50px;
   border:none!important;
   cursor:pointer;
+  padding-right: 608px;
 }
 .dashboard-create:hover{
   background-position: 0 -100px;
@@ -2235,7 +2235,10 @@ p.input-form-footer, .tandc_Link{
   background-repeat:no-repeat;
   background-position-x: 50%;
   background-position-y: 50%;
-  height:320px;
+  height:290px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
 }
 .doc_list{
   background-image:url("../img/book_image.png");
@@ -2303,13 +2306,12 @@ p.input-form-footer, .tandc_Link{
 .section-container-dashboard {
   border: 1px solid #e6e6e6;
   background-color:#f8f8f8;  
-  height:48%;
   overflow:hidden;
   width:49%;
 }
 .section-container-dashboard-top
 {
-  margin-bottom:1%;
+  margin-bottom: 15px;
 }
 .section-container-dashboard-left
 {

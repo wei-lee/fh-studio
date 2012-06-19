@@ -329,7 +329,8 @@ application.AppSupport = Class.extend({
     container.find('#template_title').text(template.title);
     container.find('#template_description').text(template.description);
     container.find('#template_icon').html($('<img>', {'src': $fw_manager.client.icon.getIconUrl(template.id, $fw_manager.client.icon.ICON_TYPE_LARGE)}));
-    container.find('#template_preview_button').unbind().bind('click', function () {
+    container.find('#template_preview_button').unbind().bind('click', function (e) {
+      e.preventDefault();
       $fw_manager.client.preview.showInDialog($fw_manager.client.preview.getTemplatePreviewUrl(template.id, 'studio', template.domain), template.width);
     });
     $fw_manager.data.set('clone_from_app', template.id);

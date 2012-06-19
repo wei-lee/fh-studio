@@ -6,6 +6,6 @@
 *  Handle NPE when Millicore not running bug#1502
 *  Fixed startup and shutdown messaging for start/stop scripts
 *  New Studio Admin tab - allows user creation, role assignment, activation email sending and user account updates
+*  Updated main tabs logic to show 'My Account' tab to everyone
 ** change location and name of studio log file to ${fh.logdir}/studio/studio.log, change log level to info
    see deploy note deploy/IR182/deploy01.txt
-
