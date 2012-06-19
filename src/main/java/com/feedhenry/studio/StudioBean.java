@@ -3,8 +3,6 @@ package com.feedhenry.studio;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -30,6 +28,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 public class StudioBean {
 
+  private static final String CORPORATE_WEBSITE_URL = "http://www.feedhenry.com";
+  private static final String INVALID_DOMAIN_REDIRECT_URL = CORPORATE_WEBSITE_URL;
   // studio props endpoint
   private static final String PROPS_ENDPOINT = "/box/srv/1.1/studio/props";
 
@@ -48,23 +48,21 @@ public class StudioBean {
   public static final String STUDIO_PAGES_GROUP_COOKIE = "feedhenry-studio-pages-group";
 
   // Ok to have these here instead of in millicore as the endpoints used
-  // by the studio would dictate which role is required for particular 
+  // by the studio would dictate which role is required for particular
   // features i.e. reporting endpoints require 'analytics' role
   // User's role is returned from millicore anyways, which is the important part
   // If perms for a particular endpoint/s change, we need to update these
   public static final String ROLE_CUSTOMERADMIN = "customeradmin";
   public static final String ROLE_RESELLERADMIN = "reselleradmin";
-  public static final String[] GROUP_REPORTING = new String[] { "analytics", "portaladmin", ROLE_CUSTOMERADMIN, ROLE_RESELLERADMIN};
+  public static final String[] GROUP_REPORTING = new String[] { "analytics", "portaladmin", ROLE_CUSTOMERADMIN, ROLE_RESELLERADMIN };
   public static final String[] GROUP_ARM = new String[] { "portaladmin", ROLE_CUSTOMERADMIN, ROLE_RESELLERADMIN };
-  public static final String[] GROUP_USER_ADMIN = new String[] { ROLE_CUSTOMERADMIN, ROLE_RESELLERADMIN };
+  public static final String[] GROUP_USER_ADMIN = new String[] { ROLE_CUSTOMERADMIN, ROLE_RESELLERADMIN};
   public static final String[] GROUP_DEVELOPER = new String[] { "dev", "devadmin" };
 
   public static final String THEME_DEFAULT = "default";
   public static final String THEME_ENTERPRISE = "enterprise";
 
   public static final Log log = LogFactory.getLog("fhstudio");
-  //public static final Logger log = Logger.getLogger("fhstudio");
-
   public static final String PROP_PROTOCOL = "studioProtocol";
   public static final String PROP_LEGACYDIG = "legacyDig";
   public static final String PROP_GITENABLED = "gitEnabled";
@@ -130,29 +128,19 @@ public class StudioBean {
 
     // Allow for domain being passed in request
     if (null == mDomain) {
-      
-      String referer = pRequest.getHeader("referer");
+
+      // TODO: if studio is deployed to separate box than millicore, need to look at this logic again
       String scheme = pRequest.getScheme();
-      String host = "127.0.0.1";//pRequest.getLocalName();
+      String host = "127.0.0.1";// pRequest.getLocalName();
       String endpoint = PROPS_ENDPOINT;
       int port = pRequest.getLocalPort();
-      if (null != referer) {
-        try {
-          URL url = new URL(referer);
-          scheme = url.getProtocol();
-          // lets use 127.0.0.1 due to hairpinning issues on dns. host = url.getHost();
-          port = url.getPort();
-
-        } catch (MalformedURLException e) {
-          // fail silently and use defaults above
-        }
-      } else {
-        referer = scheme + "://" + pRequest.getLocalName();
-      }
+      String referer = scheme + "://" + pRequest.getLocalName();
 
       // TODO: allow self-signed cert in development
       scheme = "http";
-      // keytool -import -alias localcert -file ./server.crt -keystore /usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/security/cacerts -storepass changeit
+      // keytool -import -alias localcert -file ./server.crt -keystore
+      // /usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/security/cacerts -storepass
+      // changeit
 
       String uri = scheme + "://" + host + ((port < 0 || port == 80 || port == 443) ? "" : ":" + port) + endpoint;
 
@@ -168,39 +156,52 @@ public class StudioBean {
       }
 
       HttpResponse response = client.execute(post);
-      HttpEntity resEntity = response.getEntity();
-      if (resEntity != null) {
-        InputStreamReader iSR = new InputStreamReader(resEntity.getContent());
-        BufferedReader br = new BufferedReader(iSR);
-        StringBuilder sb = new StringBuilder();
-        String read = br.readLine();
-        try {
-          while (read != null) {
-            sb.append(read);
-            read = br.readLine();
+      int statusCode = response.getStatusLine().getStatusCode();
+      if (200 == statusCode) {
+        HttpEntity resEntity = response.getEntity();
+        if (resEntity != null) {
+          InputStreamReader iSR = new InputStreamReader(resEntity.getContent());
+          BufferedReader br = new BufferedReader(iSR);
+          StringBuilder sb = new StringBuilder();
+          String read = br.readLine();
+          try {
+            while (read != null) {
+              sb.append(read);
+              read = br.readLine();
+            }
+            mCoreProps = JSONObject.fromObject(sb.toString());
+            log.debug("mCoreProps: " + mCoreProps.toString(2));
+            if (!"error".equals(mCoreProps.optString("status"))) {
+              mStudioProps = mCoreProps.getJSONObject("clientProps");
+              mDomain = mStudioProps.getString("domain");
+              mUserProps = mCoreProps.optJSONObject("userProps");
+              proceed = true;
+            } else if ("unknown_domain".equals(mCoreProps.optString("message"))) {
+              // issue with domain, unable to get props
+              // redirect to corporate website
+              proceed = false;
+              redirectUrl = INVALID_DOMAIN_REDIRECT_URL;
+              log.info("Invalid domain requested - redirecting to " + redirectUrl + ", Got error from props endpoint: " + mCoreProps.toString());
+            } else {
+              // unable to get props info from core, send 500
+              proceed = false;
+              log.error("Got error from props endpoint (" + mCoreProps.optString("message") + "), sending 500");
+              pResponse.sendError(500);
+            }
+          } catch (Throwable e) {
+          	proceed = false;
+          	log.error("Got exception parsing data from props endpoint", e);
+              pResponse.sendError(500, "Error connecting to server. Please try again later.");
+          } finally {
+            br.close();
+            iSR.close();
           }
-          mCoreProps = JSONObject.fromObject(sb.toString());
-          log.debug("mCoreProps: " + mCoreProps.toString(2));
-          if (!"error".equals(mCoreProps.optString("status"))) {
-            mStudioProps = mCoreProps.getJSONObject("clientProps");
-            mDomain = mStudioProps.getString("domain");
-            mUserProps = mCoreProps.optJSONObject("userProps");
-            proceed = true;
-          } else {
-            // unable to get props info from core
-            // TODO: send pretty 500 page
-            proceed = false;
-            log.error("Got error from props endpoint, sending 500");
-            pResponse.sendError(500);
-          }
-        } catch (Throwable e) {
-        	proceed = false;
-        	log.error("Got exception from props endpoint", e);
-            pResponse.sendError(500, "Error connecting to server. Please try again later.");
-        } finally {
-          br.close();
-          iSR.close();
         }
+      } else {
+        // redirect to corporate site
+        proceed = false;
+        log.error("Got Exception from props endpoint (" + statusCode + "), sending 500");
+        pResponse.sendError(500);
       }
     }
 
@@ -403,9 +404,9 @@ public class StudioBean {
   }
 
   private void dispatchTo(HttpServletRequest pRequest, HttpServletResponse pResponse, String pPageName) throws Exception {
-    String pPageUrl = resolveUrl(mDomain, pPageName);    
+    String pPageUrl = resolveUrl(mDomain, pPageName);
     log.debug("Dispatching to: pPageName=" + pPageName + " pPageUrl=" + pPageUrl);
-    
+
     if (null != pPageUrl) {
       pRequest.setAttribute("result", "fail");
       pRequest.setAttribute("orginal_URI", pRequest.getRequestURI());
@@ -427,8 +428,7 @@ public class StudioBean {
       pPage += ".html";
     }
 
-    String themeUrl = StudioBean.IDE_THEMES_FILE.replace("%theme%", themeName)
-        .replace("%file%", pPage);
+    String themeUrl = StudioBean.IDE_THEMES_FILE.replace("%theme%", themeName).replace("%file%", pPage);
     String defaultUrl = StudioBean.IDE_DEFAULT_FILE.replace("%file%", pPage);
 
     File fTheme = new File(mServletContext.getRealPath(themeUrl));
@@ -453,7 +453,16 @@ public class StudioBean {
 
   public List<String> getThemes() throws Exception {
     JSONArray themes = mStudioProps.getJSONArray("themes");
-    
+
+    // Theme override?
+    if (mInput.has("theme")) {
+      JSONArray theme_override = mInput.getJSONArray("theme");
+
+      if (null != theme_override) {
+        themes.add(theme_override.get(0));
+      }
+    }
+
     return themes;
   }
 
@@ -469,14 +478,6 @@ public class StudioBean {
     return mDomain;
   }
 
-  public String getResetToken() {
-    return mInput.optString("t");
-  }
-
-  public String getActivateToken() {
-    return mInput.optString("t");
-  }
-
   public JSONObject getProps() throws Exception {
     return mStudioProps;
   }
@@ -484,7 +485,7 @@ public class StudioBean {
   public JSONObject getUserProps() throws Exception {
     return mUserProps;
   }
-  
+
   public String getUserPropsJsonString() throws Exception {
     return mUserProps != null ? mUserProps.toString() : "{}";
   }
@@ -507,7 +508,7 @@ public class StudioBean {
         links.put(key, val);
       }
     } catch (Exception e) {
-    	log.error("Exception parsing docs links" + ((linksStr!=null)?linksStr:"(null)"), e);
+      log.error("Exception parsing docs links" + ((linksStr != null) ? linksStr : "(null)"), e);
     }
 
     return links;
@@ -561,7 +562,7 @@ public class StudioBean {
   }
 
   public void error(Exception pException) throws Exception {
-	log.error("error called", pException);
+    log.error("error called", pException);
     if (null != pException) {
       throw pException;
     }

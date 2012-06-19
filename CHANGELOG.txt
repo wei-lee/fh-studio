@@ -3,3 +3,6 @@
 3.1.0
 ------------------------------------------------------------------------------
 * Ant targets for compile, deploy (dev), and make-studio-war artifact
+* Handle NPE when Millicore not running bug#1502
+* Fixed startup and shutdown messaging for start/stop scripts
+* New Studio Admin tab - allows user creation, role assignment, activation email sending and user account updates
