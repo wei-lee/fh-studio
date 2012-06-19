@@ -44,11 +44,6 @@ application.DestinationGeneral = Class.extend({
     var wizard_name = this.destination_id + "_export_wizard";
     var progress_id = '#app_export_' + this.destination_id + '_progress';
     var export_version_id = '#app_export_' + this.destination_id + '_versions';
-    var use_legacy_dig = $fw_manager.getClientProp('legacyDig');
-    var include_wrappers = $fw_manager.getClientProp('includeWrappers');
-    if (use_legacy_dig != "true" && include_wrappers == "true") {
-      $(progress_id).removeClass('progress-step');
-    }
     var wizard = proto.Wizard.load(wizard_name, {
       cancel: function() {
         that.showDestinations('export');
@@ -78,32 +73,17 @@ application.DestinationGeneral = Class.extend({
         return;
       }
       var step = $(this);
+      that.showGenerateProgress("Export", wizard, data, step, function(res) {
+        // TODO: better way for this temporary workaround for finishing wizard after successful upload  
+        wizard.find('.jw-button-finish').trigger('click');
 
-      if (use_legacy_dig == "true" || include_wrappers == "false") {
-        that.showGenerateProgress("Export", wizard, data, step, function(res) {
-          // TODO: better way for this temporary workaround for finishing wizard after successful upload  
-          wizard.find('.jw-button-finish').trigger('click');
-
-          if (res.error) {
-            $fw_manager.client.dialog.error($fw_manager.client.lang.getLangString('free_source_export_disabled'));
-          } else if (res.action && res.action.url) {
-            var source_url = res.action.url;
-            $fw_manager.app.startDownload(source_url);
-          }
-        });
-      } else {
-
-        step.parents('form').find('.jw-counter-progressbar').progressbar("value", 100);
-        step.parents('form').find('.jw-counter-text').text("100%");
-        step.html('<p> ' + $fw_manager.client.lang.getLangString('app_export_downlaod_message') + '</p>');
-
-        var queryData = "?";
-        for (var index in data) {
-          queryData += index + "=" + data[index] + "&";
+        if (res.error) {
+          $fw_manager.client.dialog.error($fw_manager.client.lang.getLangString('free_source_export_disabled'));
+        } else if (res.action && res.action.url) {
+          var source_url = res.action.url;
+          $fw_manager.app.startDownload(source_url);
         }
-        var download_url = that.base_url + queryData;
-        $fw_manager.app.startDownload(download_url);
-      }
+      });
     }).bind('postShow', function() {
       proto.Wizard.hideCancelButton(wizard);
     });
