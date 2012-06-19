@@ -402,7 +402,7 @@ application.PreviewManager = Class.extend({
   loadPreviewContent: function (url, success_callback) {
     $.ajax({
       url: url,
-      dataType: 'text/html',
+      dataType: 'html',
       success: success_callback,
       error: function () {
         Log.append('preview load failed', 'ERROR');
