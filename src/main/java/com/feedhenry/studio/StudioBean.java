@@ -469,14 +469,6 @@ public class StudioBean {
     return mDomain;
   }
 
-  public String getResetToken() {
-    return mInput.optString("t");
-  }
-
-  public String getActivateToken() {
-    return mInput.optString("t");
-  }
-
   public JSONObject getProps() throws Exception {
     return mStudioProps;
   }
