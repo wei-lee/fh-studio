@@ -87,11 +87,14 @@ public class StudioBean {
   public static final String PROP_LANDINGGOOGLEKEY = "landingGoogleKey";
 
   public static final List<String> mAllowedActionRequest = new ArrayList<String>();
+  private static ArrayList<String> sSchemeHeaders = new ArrayList<String>();
 
   static {
     mAllowedActionRequest.add(IDE_LOGIN);
     mAllowedActionRequest.add(IDE_LANDING);
     mAllowedActionRequest.add(IDE_INDEX);
+    
+    sSchemeHeaders.add("X-Forwarded-Proto");
   }
   private ServletContext mServletContext;
   private JSONObject mInput;
@@ -130,7 +133,7 @@ public class StudioBean {
     if (null == mDomain) {
 
       // TODO: if studio is deployed to separate box than millicore, need to look at this logic again
-      String scheme = pRequest.getScheme();
+      String scheme = resolveScheme(pRequest);
       String host = "127.0.0.1";// pRequest.getLocalName();
       String endpoint = PROPS_ENDPOINT;
       int port = pRequest.getLocalPort();
@@ -581,5 +584,18 @@ public class StudioBean {
       }
     }
     return cookie;
+  }
+  
+  private String resolveScheme( HttpServletRequest pReq ) {
+    String scheme = pReq.getScheme();
+    for( Iterator hI = sSchemeHeaders.iterator(); hI.hasNext(); ) {
+      String ph = (String) hI.next();
+      String v  = pReq.getHeader( ph );
+      if( null != ph && null != v && !"".equals( v ) ) {
+        scheme = v;
+      }
+    }
+
+    return scheme;
   }
 }
