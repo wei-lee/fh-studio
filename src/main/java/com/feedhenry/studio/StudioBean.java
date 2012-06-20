@@ -218,19 +218,21 @@ public class StudioBean {
       // }
 
       String requiredProtocol = mStudioProps.getString(PROP_PROTOCOL);
-      String selectedProtocol = pRequest.getScheme();
+      String selectedProtocol = resolveScheme(pRequest);
 
       // Ensure that we are using the correct protocol (https by default);
       if (!requiredProtocol.equals(selectedProtocol)) {
         String serverName = pRequest.getServerName();
         String redirect = requiredProtocol + "://" + serverName;
         redirectUrl = redirect;
+        log.info("requiredProtocol=" + requiredProtocol + ", selectedProtocol=" + selectedProtocol);
         proceed = false;
       }
     }
 
     if (null != redirectUrl) {
       // If a redirect url has been set, send the redirect.
+      log.info("Redirecting to " + redirectUrl);
       pResponse.sendRedirect(redirectUrl);
     } else {
       setNoCacheHeaders(pResponse);
@@ -593,6 +595,7 @@ public class StudioBean {
       String v  = pReq.getHeader( ph );
       if( null != ph && null != v && !"".equals( v ) ) {
         scheme = v;
+        log.info("Got scheme header '" + ph + "' with value '" + v + "'");
       }
     }
 
