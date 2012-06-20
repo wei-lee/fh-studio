@@ -1623,9 +1623,13 @@ table.jqplot-table-legend, table.jqplot-cursor-legend {
 #debug_logging_text
 {
   width:100%;
-  height:15em;
+  height: 80%;
   margin:1em 0 0;
   border:1px solid #ccc;
+}
+
+#debug_logging_body {
+  height: 100%;
 }
 /* Destination Resources */
 .resource-div
@@ -2217,13 +2221,18 @@ p.input-form-footer, .tandc_Link{
 .dashboard-create{
   display:block;
   background:transparent url(../img/create_app_sprite.png) no-repeat 0 0;
+  border:none!important;
+  cursor:pointer;
+  height:50px;
+}
+
+.dashboard-create-container {
   width:250px;
   margin: 0 auto;
   height:50px;
-  border:none!important;
-  cursor:pointer;
   padding-right: 608px;
 }
+
 .dashboard-create:hover{
   background-position: 0 -100px;
   cursor:pointer;
@@ -2233,8 +2242,7 @@ p.input-form-footer, .tandc_Link{
   background-image:url("../img/home_page_graphic.png");
   background-color:transparent;
   background-repeat:no-repeat;
-  background-position-x: 50%;
-  background-position-y: 50%;
+  background-position: 50% 50%;
   height:290px;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
@@ -3155,4 +3163,9 @@ table.dataTable th:active {
 
 #useradmin_user_list table .controls {
   text-align: center;
+}
+
+/* Fixing long descriptions */
+#my_apps_grid, #templates_grid, #arm_apps_grid {
+  table-layout: fixed;
 }
