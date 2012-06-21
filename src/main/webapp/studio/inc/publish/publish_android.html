@@ -1,0 +1,61 @@
+  <div id="app_publish_android_build" class="ui-helper-hidden">
+    <div id="app_android_build_debug" class="resource-div">
+      <h3 class="ui-helper-clearfix">
+        <span class="resource-title">Debug</span>       
+      </h3>
+      <p class="resource-content"></p>
+      <div id="resources_resource_buttons" class="resources-buttons-div">
+      <span class="resource-buttons">
+          <button class="resource-uploaded resource-build publish-resource-buttons">Build Now</button>
+        </span>
+        </div>
+          <div class="spacer"></div>
+    </div>
+                  
+    <div id="app_android_build_release" class="resource-div">
+      <h3 class="ui-helper-clearfix">
+        <span class="resource-title">Release</span>        
+      </h3>
+      <p class="resource-content"></p>
+      <div id="resources_resource_buttons" class="resources-buttons-div">
+      <span class="resource-buttons">
+          <button class="resource-uploaded resource-build publish-resource-buttons">Build Now</button>
+          <button class="resource-not-uploaded resource-uploadnow publish-resource-buttons">Upload Certificate</button>
+        </span>
+        </div>
+          <div class="spacer"></div>
+    </div>
+  </div>
+
+  <div id= "app_publish_android_wizard" class="ui-helper-hidden">
+    <form id="android_publish_form">
+    
+      <div id="app_publish_android_staging_env" class="app_publish_staging_env">
+      	<div id="app_publish_android_staging_env_text" class="insert-lang-block"></div>
+      	<form>
+        <div class="form-field ui-helper-reset ui-helper-clearfix">
+          <input type="checkbox" name="app_publish_android_staging" next="app_publish_android_versions" value="stage"><label>Stage the server-side of the app</label>
+        </div>
+      	
+        </form>
+      </div>
+      
+      <div id="app_publish_android_staging_progress" class="app_publish_staging_progress" track="no">
+		 <div id="app_publish_android_staging_env_progresslog"><textarea class="progresslog" readonly="true"></textarea></div>
+      </div>
+    
+      <div id="app_publish_android_versions" config-radio="build-options-android"></div>
+      
+      <div id="app_publish_android_password">
+        <div id="app_publish_android_password_text" class="insert-lang-block"></div>
+        <div class="form-field ui-helper-reset ui-helper-clearfix">
+          <label for="app_publish_android_pk_password" id="app_publish_android_pk_password_text" class="insert-lang"></label><input type="password" id="app_publish_android_pk_password" name="app_publish_android_pk_password" class="insert-help-icon"></input>
+        </div>
+        <div class="form-field ui-helper-reset ui-helper-clearfix">
+          <label for="app_publish_android_cert_password" id="app_publish_android_cert_password_text" class="insert-lang"></label><input type="password" id="app_publish_android_cert_password" name="app_publish_android_cert_password" class="insert-help-icon"></input>
+        </div>
+      </div>
+    
+      <div id="app_publish_android_progress" class="progress-step"></div>
+    </form>
+  </div>

@@ -1,0 +1,30 @@
+<div id="android_getstarted_wizard" class="dashboard-content">
+ <form>
+  <div id="android_getstarted_resources">
+    <div id="android_getstarted_resources_text" class="insert-lang-block"></div>
+    <div class="form-field ui-helper-reset ui-helper-clearfix">
+      <input type="radio" name="android_getstarted_resources_radio" next="android_getstarted_generate_password" checked="checked"><label id="android_getstarted_resources_opt1" class="insert-lang"></label>
+    </div>
+    <!-- Disable this option for now. Requires first step of android_cert_upload to explain how a cert can be generated.
+      <div class="form-field ui-helper-reset ui-helper-clearfix">
+      <input type="radio" name="android_getstarted_resources_radio" next="android_getstarted_finish" ><label id="android_getstarted_resources_opt2" class="insert-lang"></label>
+    </div> -->
+    <div class="form-field ui-helper-reset ui-helper-clearfix">
+      <input type="radio" name="android_getstarted_resources_radio" next="android_getstarted_finish" ><label id="android_getstarted_resources_opt3" class="insert-lang"></label>
+    </div>
+  </div>
+  
+  <div id="android_getstarted_generate_password" next="android_getstarted_generate">
+      <div id="android_getstarted_password_text" class="insert-lang-block"></div>
+      <div class="form-field ui-helper-reset ui-helper-clearfix">
+        <label id="android_key_password_text" for="android_key_password" class="insert-lang"></label><input id="android_key_password" type="password" name="key_password" class="insert-help-icon">
+      </div>
+  </div>
+  
+  <div id="android_getstarted_generate" class="progress-step" next="android_getstarted_finish"></div>
+  
+  <div id="android_getstarted_finish">
+    <!-- placeholder for finish -->
+  </div>
+ </form>
+</div>

@@ -1,0 +1,50 @@
+<div id="apple_getstarted_wizard" class="dashboard-content">
+ <form>
+  <div id="apple_getstarted_user">
+    <div id="apple_getstarted_user_text" class="insert-lang-block"></div>
+    <div class="form-field ui-helper-reset ui-helper-clearfix">
+      <input type="radio" name="apple_getstarted_user_radio" next="apple_getstarted_finish" checked="checked"><label id="apple_getstarted_user_yes" class="insert-lang"></label>
+    </div>
+    <div class="form-field ui-helper-reset ui-helper-clearfix">
+      <input type="radio" name="apple_getstarted_user_radio" next="apple_getstarted_new" ><label id="apple_getstarted_user_no" class="insert-lang"></label>
+    </div>
+  </div>
+  
+  <div id="apple_getstarted_new">
+    <div id="apple_getstarted_new_text" class="insert-lang-block"></div>
+    <div class="form-field ui-helper-reset ui-helper-clearfix">
+      <input type="radio" name="apple_getstarted_new_radio" next="apple_getstarted_openssl" checked="checked"><label id="apple_getstarted_new1" class="insert-lang"></label>
+    </div>
+    <div class="form-field ui-helper-reset ui-helper-clearfix">
+      <input type="radio" name="apple_getstarted_new_radio" next="apple_getstarted_csr"><label id="apple_getstarted_new2" class="insert-lang"></label>
+    </div>
+    <div class="form-field ui-helper-reset ui-helper-clearfix">
+      <input type="radio" name="apple_getstarted_new_radio" next="apple_getstarted_account_help"><label id="apple_getstarted_new3" class="insert-lang"></label>
+    </div>
+  </div>
+  
+  <div id="apple_getstarted_openssl" next="apple_getstarted_account_help">
+    <div id="apple_getstarted_openssl_text" class="insert-lang-block"></div>
+  </div>
+  
+  <div id="apple_getstarted_csr" next="apple_getstarted_account_help">
+    <div id="apple_getstarted_csr_text1" class="insert-lang-block"></div>
+    <div class="form-field ui-helper-reset ui-helper-clearfix">
+      <label id="apple_key_password_text" for="apple_key_password" class="insert-lang"></label><input id="apple_key_password" type="password" name="key_password" class="insert-help-icon">
+    </div>
+    <button id="apple_getstarted_csr_download" class="insert-lang" name="apple_getstarted_csr_download"></button>
+    <input id="apple_csr_downloaded" name="apple_csr_downloaded" type="hidden" value="">
+    <div id="apple_getstarted_csr_text2" class="insert-lang-block"></div>
+  </div>
+  
+  <div id="apple_getstarted_account_help" next="apple_getstarted_finish">
+    <div id="apple_getstarted_account_help_text1" class="insert-lang-block"></div>
+    <a href="http://developer.apple.com/programs/" target="_blank">http://developer.apple.com/programs/</a>
+    <div id="apple_getstarted_account_help_text2" class="insert-lang-block"></div>
+  </div>
+  
+  <div id="apple_getstarted_finish">
+    <p></p>
+  </div>
+ </form>
+</div>

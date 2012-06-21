@@ -1,0 +1,69 @@
+<!-- template layout
+
+<div id="main_north" class="ui-layout-north">North</div>
+<div id="main_west" class="ui-layout-west">West</div>
+<div id="main_center" class="ui-layout-center">Center</div>
+<div id="main_east" class="ui-layout-east">East</div>
+<div id="main_south" class="ui-layout-south">South</div>
+ -->
+
+<div id="main_layout_wrapper">
+
+  <!-- main_layout north -->
+  <div id="main_layout_north" class="ui-layout-north">
+    <%@ include file="../header.html"%>
+  </div>
+  
+  <!-- end main_layout north -->
+  
+  <!-- main_layout west -->
+  
+  <div id="main_layout_west" class="ui-layout-west"></div>
+  
+  <!-- end main_layout west -->
+  
+  <!-- main_layout center -->
+  
+  <div id="main_layout_center" class="ui-layout-center ui-no-corner-bottom">
+    <%@ include file="main_tabs.html"%>
+  </div>
+  
+  <!-- end main_layout center -->
+  
+  <!-- main_layout east -->
+  
+  <div id="main_layout_east" class="ui-layout-east"></div>
+  
+  <!-- end main_layout east -->
+  
+  <!-- main_layout south -->
+  
+  <div id="main_layout_south" class="ui-layout-south">
+    <%@ include file="../footer.html"%>
+  </div>
+
+</div>
+
+<!-- end main_layout south -->
+
+<div id="wizard_dialog"></div>
+
+<%@ include file="../dialogs/app_create_dialog.html"%>
+
+<%@ include file="../dialogs/app_import_dialog.html"%>
+
+<%@ include file="../dialogs/app_clone_dialog.html"%>
+
+<%@ include file="../dialogs/progress_dialog.html"%>
+
+<%@ include file="../dialogs/editor_find_dialog.html"%>
+
+<%@ include file="../dialogs/file_import_dialog.html"%>
+
+<%@ include file="../dialogs/icon_upload_dialog.html"%>
+
+<%@ include file="../dialogs/confirm_dialog.html"%>
+
+<%@ include file="../dialogs/error_dialog.html"%>
+
+<%@ include file="../dialogs/warning_dialog.html"%>

@@ -1,0 +1,33 @@
+#header_logo {
+  background-image:url(../../enterprise/img/feedhenry_logo.png);
+}
+
+.ui-state-active.home-tab, #home_north .container-header
+{
+  background: transparent url(../../enterprise/img/dark_blue_bar_repeat.png) repeat-x 0 0 !important;
+}
+
+.dashboard-header{
+  background-image: url(../../enterprise/img/home_page_graphic.png);
+}
+
+.dashboard-create{
+  background-image: url(../../enterprise/img/create_app_sprite.png);
+}
+
+.hiring-link {
+ display: none !important;
+}
+
+#header_logo_east {
+  float:right;
+  width: 92px;
+  height: 34px;
+  margin:23px 13px 0 0;
+  background-image:url(../img/hpcloud_logo.png);
+  background-repeat:no-repeat;
+}
+
+.hero-unit h3 {
+	font-size:15px;
+}

@@ -1,0 +1,12 @@
+#header_logo {
+  background-image: url(../img/corplogo.png) !important;
+}
+
+#header_logo_east {
+  float:right;
+  width: 240px;
+  height: 40px;
+  margin:20px 0 0 0;
+  background-image:url(../../default/img/powered_by_feedhenry.png);
+  background-repeat:no-repeat;
+}

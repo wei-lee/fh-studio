@@ -1,0 +1,42 @@
+<%@ page contentType="text/html" pageEncoding="UTF-8" session="false" trimDirectiveWhitespaces="true"
+    import="java.util.List" %>
+<jsp:useBean id="studio" scope="request" class="com.feedhenry.studio.StudioBean"></jsp:useBean>
+<%
+studio.init( application );
+String pageName = com.feedhenry.studio.StudioBean.IDE_LOGIN;
+try {
+  if( studio.initreq( request, response, pageName ) ) {
+    if( studio.canProceed( request, response, pageName ) ) {
+%>
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <!-- common head elements -->
+    <%@ include file="../../inc/head/common.html"%>
+  
+    <!-- page specific scripts -->
+    <script>
+      var INFO_MESSAGE = "<%= studio.getInfoMessage() %>";
+    </script>
+    <script src="<%=studio.getStaticAssetPath("js/init/LoginInit.js")%>" type="text/javascript"></script>
+    <link rel="stylesheet" href="<%= studio.getThemeStaticAssetPath("/css/bootstrap.min.css")%>">
+    <link rel="stylesheet" href="<%= studio.getThemeStaticAssetPath("/css/style.css") %>" ></link>
+    <link rel="stylesheet" href="<%= studio.getThemeStaticAssetPath("/css/login.css") %>" ></link>
+    
+  </head>
+  
+  <body style="display:none;" class="login_screen_body">
+  
+    <%@ include file="inc/login/login_layout.html"%>
+    
+  </body>
+  
+</html>
+<%
+    }
+  }
+} catch( Exception e ) {
+  studio.error(e);
+}
+%>

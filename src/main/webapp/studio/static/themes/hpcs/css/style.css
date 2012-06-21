@@ -1,0 +1,269 @@
+body {
+	background: transparent url(../img/background-hatch.png);
+	background-image: url(../img/background-hatch.png);
+	background-repeat-x: initial;
+	background-repeat-y: initial;
+	background-attachment: initial;
+	background-position-x: initial;
+	background-position-y: initial;
+	background-origin: initial;
+	background-clip: initial;
+	background-color: transparent;
+}
+
+.docs h2 {
+	color: #006393;
+}
+
+.logoWest {
+	*float : left; /* < ie8 */
+}
+.logoEast {
+  float:right;
+}
+
+pre.code {
+	background: #222; 
+	color: #ccc; 
+	border: 1px solid #444;
+}
+.toptabs {
+	*clear : both; /* < ie8 */
+	margin: 20px 0 0 0;
+	font-size: 1.4em;
+}
+
+.tab-content, .tab-content h1, .tab-content h2, .tab-content h3 {
+  	background: url(../images/hero_bg.png);
+
+}
+.tab-content, .tab-content h1, .tab-content h2, .tab-content h3, .tab-content fieldset, .tab-content fieldset legend, .tab-content label {
+  color: #eee;  
+}
+.tab-content legend {
+  padding-left: 0px;
+}
+
+.toptabs a:link, .toptabs a:active, .toptabs a:hover, .toptabs a:visited {
+
+}
+.toptabs li a, .toptabs li a:link, .toptabs li a:active, .toptabs li a:hover {
+	background: transparent;
+	border: 0px;
+	color: #333;
+}
+.toptabs li.active a, .toptabs li.active a:hover {
+		background: url(../images/hero_bg.png);
+
+	color: #eee;
+	border: 0px;
+	/* Overlap the tab slightly to hide the rounded corner */
+	padding-bottom: 5px;
+	margin-bottom: -5px;
+}
+.tab-content span a, .tab-content span a:link, .tab-content span a:visited, .tab-content span a:active, .tab-content span a:hover {
+  color: #4793df;  
+}
+
+.hero-unit .promo {
+	font-weight:700;
+}
+
+p.tab-footer, .hero-unit p.tab-footer{
+	font-size:13px;
+	line-height: 1.5em;
+}
+
+.tab-list li, .hero-unit .tab-list li{
+	font-size:1.4em;
+	color:white;
+} 
+
+.video {
+	text-align: right;
+}
+iframe.vimeo {
+	margin-right: -10px;
+}
+
+.docs p {
+	height: 90px;
+	font-size: 12px;
+}
+
+.docs img.thumb {
+  padding-right: 10px;
+}
+
+.hero-unit.tabs_container {
+	height: 235px;
+}
+
+.hero-unit {
+	background: url(../images/hero_bg.png);
+	padding: 30px;
+}
+
+.signup.hero-unit {
+	background: #333;
+}
+
+.hero-unit h3, .hero-unit, .hero-unit p {
+	color: #eee;
+}
+
+#tryit .bfob {
+	font-size: 25px;
+	padding: 10px 60px 10px 60px;
+	font-weight: bold;
+}
+
+#tryit {
+	margin-top: -40px;
+	text-align: center;
+	height: 40px;
+	padding-top: 15px;
+	-webkit-border-top-left-radius: 0px;
+	-webkit-border-top-right-radius: 0px;
+	-moz-border-radius-topleft: 0px;
+	-moz-border-radius-topright: 0px;
+	border-top-left-radius: 0px;
+	border-top-right-radius: 0px;
+	background: #eee;
+}
+
+.tabs { border: none; }
+
+#login_button, #register_button, #forgot_button, #login_back_link {
+	float: right;
+}
+
+#forgot_button {
+	margin-left: 15px;
+}
+
+.forgot-password {
+	padding: 0 !important;
+	float: left;
+	margin-top : 10px;
+}
+
+.forgot-password a {
+	color : #EEE !important;
+	margin-left: 30px;
+}
+
+#hero-login, #hero-register {
+	height: 300px;
+}
+
+#hero-login {
+	position: relative;
+	margin-left: 0px;
+	border-left: 1px solid #2b2b2b;
+	-moz-border-radius-topleft: 0px;
+	-moz-border-radius-topright: 6px;
+	-moz-border-radius-bottomright: 6px;
+	-moz-border-radius-bottomleft: 0px;
+	-webkit-border-radius: 0px 6px 6px 0px;
+	border-radius: 0px 6px 6px 0px;
+}
+
+#hero-register {
+	position: relative;
+	border-right: 1px solid #3b3b3b;
+	-moz-border-radius-topleft: 6px;
+	-moz-border-radius-topright: 0px;
+	-moz-border-radius-bottomright: 0px;
+	-moz-border-radius-bottomleft: 6px;
+	-webkit-border-radius: 6px 0px 0px 6px;
+	border-radius: 6px 0px 0px 6px;
+}
+
+.login_or{
+	padding-bottom: 20px;
+}
+
+.login_or span {
+	font-size: 30px !important;
+	font-style: italic !important;
+	font-family: "Georgia", serif !important;
+	border-bottom: 1px solid #ccc;
+}
+
+.login_or .middle {
+	text-align: center;
+}
+
+.hero-border {
+	border-left: 1px solid #ccc;
+}
+
+.user_info_container {
+	width: 950px; 
+	margin: auto;
+}
+
+.login_button_container {
+	position: absolute;
+	bottom: 20px;
+}
+
+.register_button_container {
+	position: absolute;
+	bottom: 20px;
+	padding-bottom: 10px;
+}
+
+.register_button_container a {
+	float: left;
+}
+
+.fhc_button {
+	float: left;
+	margin-left: 12.5%;
+}
+
+.studio_button {
+	float: right;
+	margin-right: 12.5%;
+}
+
+#welcome a {
+	margin-bottom: 18px;
+	width: 260px;
+	text-align: center;
+	padding: 10px;
+	font-size: 15px;
+	margin-left: 22px;
+}
+
+.vimeo {
+	background: black;
+}
+
+.row .video {
+	margin-left: 15px;
+}
+
+.hero-unit p {
+	font-size: 17px;
+}
+
+#register_form label, #forgot_form label {
+	width : 100% !important;
+	text-align : left;
+}
+
+#forgot_form {
+	display : block;
+}
+
+#activation_successful {
+  background: #fff; 
+  border: 1px solid #ccc; 
+  border-radius: 3px; 
+  padding: 10px; 
+  margin-top: 10px; 
+  display: none;
+}

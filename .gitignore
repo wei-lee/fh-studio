@@ -1,0 +1,11 @@
+src/main/webapp/studio/WEB-INF/classes
+src/main/webapp/studio/WEB-INF/lib
+*.class
+dist
+bin
+src/main/resources/git-info.txt
+src/main/resources/git-branch-info.txt
+src/main/resources/VERSION.txt
+test
+node_modules
+.jshintignore

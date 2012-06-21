@@ -1,0 +1,83 @@
+.ui-layout-pane {}
+.ui-layout-pane-north {}
+.ui-layout-pane-south {}
+.ui-layout-pane-center {}
+.ui-layout-pane-east {}
+.ui-layout-pane-west {}
+
+.ui-layout-pane-open {}
+.ui-layout-pane-north-open {}
+.ui-layout-pane-south-open {}
+.ui-layout-pane-center-open {}
+.ui-layout-pane-east-open {}
+.ui-layout-pane-west-open {}
+
+.ui-layout-pane-closed {}
+.ui-layout-pane-north-closed {}
+.ui-layout-pane-south-closed {}
+.ui-layout-pane-center-closed {}
+.ui-layout-pane-east-closed {}
+.ui-layout-pane-west-closed {}
+
+.ui-layout-resizer {}
+.ui-layout-resizer-north {}
+.ui-layout-resizer-south {}
+.ui-layout-resizer-center {}
+.ui-layout-resizer-east {}
+.ui-layout-resizer-west {}
+
+.ui-layout-resizer-open {}
+.ui-layout-resizer-north-open {}
+.ui-layout-resizer-south-open {}
+.ui-layout-resizer-center-open {}
+.ui-layout-resizer-east-open {}
+.ui-layout-resizer-west-open {}
+
+.ui-layout-resizer-closed {}
+.ui-layout-resizer-north-closed {}
+.ui-layout-resizer-south-closed {}
+.ui-layout-resizer-center-closed {}
+.ui-layout-resizer-east-closed {}
+.ui-layout-resizer-west-closed {}
+
+.ui-layout-resizer-sliding {}
+.ui-layout-resizer-north-sliding {}
+.ui-layout-resizer-south-sliding {}
+.ui-layout-resizer-center-sliding {}
+.ui-layout-resizer-east-sliding {}
+.ui-layout-resizer-west-sliding {}
+
+.ui-layout-resizer-drag {}
+.ui-layout-resizer-north-drag {}
+.ui-layout-resizer-south-drag {}
+.ui-layout-resizer-center-drag {}
+.ui-layout-resizer-east-drag {}
+.ui-layout-resizer-west-drag {}
+
+.ui-layout-resizer-dragging {}
+.ui-layout-resizer-north-dragging {}
+.ui-layout-resizer-south-dragging {}
+.ui-layout-resizer-center-dragging {}
+.ui-layout-resizer-east-dragging {}
+.ui-layout-resizer-west-dragging {}
+
+.ui-layout-toggler {}
+.ui-layout-toggler-north {}
+.ui-layout-toggler-south {}
+.ui-layout-toggler-center {}
+.ui-layout-toggler-east {}
+.ui-layout-toggler-west {}
+
+.ui-layout-toggler-open {}
+.ui-layout-toggler-north-open {}
+.ui-layout-toggler-south-open {}
+.ui-layout-toggler-center-open {}
+.ui-layout-toggler-east-open {}
+.ui-layout-toggler-west-open {}
+
+.ui-layout-toggler-closed {}
+.ui-layout-toggler-north-closed {}
+.ui-layout-toggler-south-closed {}
+.ui-layout-toggler-center-closed {}
+.ui-layout-toggler-east-closed {}
+.ui-layout-toggler-west-closed {}
