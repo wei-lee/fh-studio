@@ -15,7 +15,6 @@
 
   <!-- Allow access to environment variables through 'env' -->
   <property environment="env"/>
-
   <!-- If build no. isn't passed in (by build server), default to dev version -->
   <property name="env.BUILD_NUMBER" value="DEV-VERSION"/>
 
@@ -100,11 +99,16 @@
     	
     </zip>
 	</target>
-	
   
   <target name="save-git-info">
-    <exec executable="${basedir}/build/recordGitRev.sh" dir="${basedir}/build" failonerror="true" output="${main-res}/git-info.txt"/>
-    <exec executable="${basedir}/build/get_git_branch.sh" dir="${basedir}/build" failonerror="true" output="${main-res}/git-branch-info.txt"/>
+    <exec executable="${basedir}/build/get_git_branch.sh" dir="${basedir}/build" failonerror="true" outputproperty="git-branch"/>
+    <exec executable="${basedir}/build/recordGitRev.sh" dir="${basedir}/build" failonerror="true" outputproperty="git-commit"/>
+
+    <property name="env.GIT_BRANCH" value="${git-branch}"/>
+    <property name="env.GIT_COMMIT" value="${git-commit}"/>
+  	
+  	<echo file="${main-res}/git-branch-info.txt" message="${env.GIT_BRANCH}"/>
+    <echo file="${main-res}/git-info.txt" message="${env.GIT_COMMIT}"/>
   </target>
   
   <target name="save-version-info" depends="generate-version">
