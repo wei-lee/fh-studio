@@ -15,13 +15,14 @@
       
       <div id="account_accordion" class="">
          <!--  have to manually add ui-accordion-header-first class here as accordion plugin doesn't have a first tab class -->
-        <h3 id="accordion_item_profile"><a>My Profile</a></h3>
+        <h3 id="accordion_item_profile" class="<%=studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER) ? "" : "ui-accordion-header-last"%>"><a>My Profile</a></h3>
         <div>
           <ul class="ui-menu">
             <li id="profile_details" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>Manage My Profile</a></li>
             <li id="keys_manage" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>API Keys</a></li>
           </ul>
         </div>
+        <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER)) { %>
         <h3 id="accordion_item_destinations" class="ui-accordion-header-last"><a>Destinations</a></h3>
         <div>
           <ul class="ui-menu">
@@ -32,6 +33,7 @@
            <% } %>          
           </ul>
         </div>
+        <% } %>
       </div>
       
     </div>

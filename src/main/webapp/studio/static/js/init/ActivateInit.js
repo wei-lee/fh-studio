@@ -31,7 +31,7 @@ function activate() {
   
   if (activate_form.valid()) {
     var activate_params = {
-      token: TOKEN,
+      token: QueryStringParser.getParameterByName('t'),
       password: activate_form.find('input[name=activate_password]').val(),
       confirm: activate_form.find('input[name=activate_password_confirm]').val()
     };

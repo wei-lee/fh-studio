@@ -227,7 +227,11 @@ li.ui-state-active a {
 .dashboard-create
 {
   background:url(../img/create_app_sprite.png) no-repeat scroll 0 0 transparent !important;
-  margin: 90px 0 0 340px !important;
+}
+
+.dashboard-create-container {
+  padding-top: 100px !important;
+  padding-right: 300px !important;
 }
 
 /*Create an App Button - Hover State*/
