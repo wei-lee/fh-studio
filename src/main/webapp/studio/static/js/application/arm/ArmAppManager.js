@@ -6,9 +6,9 @@ application.ArmAppManager = application.ArmManager.extend({
     grid_pager_id : 'arm_apps_grid_pager',
     update_apps_map: {},
     getGridConf: function(){
-    	var that = this;
-    	var grid_conf = {
-    		pager: this.grid_pager_id,
+      var that = this;
+      var grid_conf = {
+        pager: this.grid_pager_id,
             viewrecords: true, 
             recordtext: 'Total Apps : {2}',
             emptyrecords: 'No apps',
@@ -45,20 +45,20 @@ application.ArmAppManager = application.ArmManager.extend({
             ],
             colNames : $fw_manager.client.lang.getLangArray('arm_apps_grid_columns'),
             loadComplete: function(){
-            	that.markSelected(that.list_grid, that.update_apps_map);
+              that.markSelected(that.list_grid, that.update_apps_map);
             }
-    	};
-    	return grid_conf;
+      };
+      return grid_conf;
     },
     
     toggle: function(checkbox, id){
-    	var enabled = false;
-    	if(checkbox.checked){
-    	  enabled = true;	
-    	}
-    	this.update_apps_map[id] = enabled;
-    	this.request('app/update', {appId: id, enabled: enabled}, function(res){
-    	  $fw_manager.client.dialog.info.flash("App " + (enabled?"enabled" : "disabled"));	
-    	})
+      var enabled = false;
+      if(checkbox.checked){
+        enabled = true;  
+      }
+      this.update_apps_map[id] = enabled;
+      this.request('app/update', {appId: id, enabled: enabled}, function(res){
+        $fw_manager.client.dialog.info.flash("App " + (enabled?"enabled" : "disabled"));  
+      });
     }
-})
+});

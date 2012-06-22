@@ -71,4 +71,4 @@ application.DestinationAndroid = application.DestinationGeneral.extend({
           wizard.find("#app_publish_android_versions").attr('next', 'app_publish_android_progress');
       }
   }
-})
+});

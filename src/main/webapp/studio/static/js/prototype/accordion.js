@@ -22,4 +22,4 @@ proto.Accordion = {
       accord.accordion('resize');
     }
   }
-}
+};

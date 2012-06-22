@@ -38,7 +38,7 @@ StateManager = function () {
       
       stateKey = self.getStateKey();
       
-      $.cookie(stateKey, JSON.stringify(self.state_def))
+      $.cookie(stateKey, JSON.stringify(self.state_def));
     },
     
     getStateKey: function () {

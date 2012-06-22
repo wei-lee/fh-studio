@@ -2,8 +2,6 @@
  * Utility functions for javascript object manipulation.
  * Accessible through the global variable 'js_util'
  */
-/*global StringUtil
- */
 
 StringUtil = function () {
   var self = {
@@ -35,7 +33,7 @@ StringUtil = function () {
     },
     
     isBinaryExt: function(file_name){
-      var extension = self.getFileExt(file_name)
+      var extension = self.getFileExt(file_name);
       if (extension === "jpg" || extension === "gif" || extension === "png" || extension === "jpeg" || extension === "jar" || extension === "swf") {
         return true;
       } else {

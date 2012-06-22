@@ -129,7 +129,7 @@
                   // Export
                   $('#export_form').remove();
 
-                  $('body').append('<form name="export_form" id="export_form" method="post" action="' + Constants.TRIGGER_DOWNLOAD_URL + '"><input type="hidden" name="content" value=""><input type="hidden" name="content_type" value=""><input type="hidden" name="filename" value=""><input type="submit" name="export_json_submit" id="export_json_submit" value="Export" style="display: none"></form>')
+                  $('body').append('<form name="export_form" id="export_form" method="post" action="' + Constants.TRIGGER_DOWNLOAD_URL + '"><input type="hidden" name="content" value=""><input type="hidden" name="content_type" value=""><input type="hidden" name="filename" value=""><input type="submit" name="export_json_submit" id="export_json_submit" value="Export" style="display: none"></form>');
                   $("#export_form input[name=content]").val(csv);
                   $("#export_form input[name=content_type]").val('csv');
                   $("#export_form input[name=filename]").val('export.csv');
@@ -156,7 +156,7 @@
 
     drawPieHighChart: function(data, container, opts, callback) {
       var self = this;
-      var data = data[0];
+      data = data[0];
       var series = [];
 
       var series_item = {
@@ -256,7 +256,7 @@
                   // Export
                   $('#export_form').remove();
 
-                  $('body').append('<form name="export_form" id="export_form" method="post" action="' + Constants.TRIGGER_DOWNLOAD_URL + '"><input type="hidden" name="content" value=""><input type="hidden" name="content_type" value=""><input type="hidden" name="filename" value=""><input type="submit" name="export_json_submit" id="export_json_submit" value="Export" style="display: none"></form>')
+                  $('body').append('<form name="export_form" id="export_form" method="post" action="' + Constants.TRIGGER_DOWNLOAD_URL + '"><input type="hidden" name="content" value=""><input type="hidden" name="content_type" value=""><input type="hidden" name="filename" value=""><input type="submit" name="export_json_submit" id="export_json_submit" value="Export" style="display: none"></form>');
                   $("#export_form input[name=content]").val(csv);
                   $("#export_form input[name=content_type]").val('csv');
                   $("#export_form input[name=filename]").val('export.csv');

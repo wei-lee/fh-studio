@@ -19,7 +19,7 @@ application.DestinationWindowsphone7 = application.DestinationGeneral.extend({
   },
   
   getExportData: function(wizard, export_version_id){
-	  var version = wizard.find( export_version_id + ' input:checked').val();
+    var version = wizard.find( export_version_id + ' input:checked').val();
       var data = {generateSrc: true, config: 'debug', version: version};
       return data;
   },
@@ -29,4 +29,4 @@ application.DestinationWindowsphone7 = application.DestinationGeneral.extend({
       var data = {config: config, generateSrc: false, version: version};
       return data;
   }
-})
+});

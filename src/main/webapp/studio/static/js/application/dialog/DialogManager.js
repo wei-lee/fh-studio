@@ -13,12 +13,11 @@ application.DialogManager = Class.extend({
     };
     this.info = {
       flash: function (text, timeout) {
-        var t = text,
-            timeout = 'undefined' !== typeof timeout ? timeout : 1500;
+        var t = text;
         $('#info_dialog').queue(function () {
           $(this).text(t);
           $(this).dequeue();
-        }).fadeIn(300).delay(timeout).fadeOut(300);
+        }).fadeIn(300).delay('undefined' !== typeof timeout ? timeout : 1500).fadeOut(300);
       }
     };
     this.error = function (text) {
@@ -56,7 +55,7 @@ application.DialogManager = Class.extend({
           }
         }
       });
-    }
+    };
   },
 
   showConfirmDialog: function (dialog_title, confirm_text, ok_function, cancel_function) {

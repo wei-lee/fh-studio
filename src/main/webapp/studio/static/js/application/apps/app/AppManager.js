@@ -200,15 +200,15 @@ application.AppManager = Class.extend({
     import_app_wizard.validate({
       rules: {
         location: {
-        	required: true,
-        	accept: "zip|wgt|wgz"
+          required: true,
+          accept: "zip|wgt|wgz"
         },
         type: 'required'
       },
       messages: {
-      	location: {
-      		accept: 'Invalid file type'
-      	}
+        location: {
+          accept: 'Invalid file type'
+        }
       }
     });
     
@@ -216,7 +216,7 @@ application.AppManager = Class.extend({
     import_app_wizard[0].reset();
     var fileToUpload = null;
     var fileUploader = import_app_wizard.parent().fileupload({
-    	url: Constants.IMPORT_APP_URL,
+      url: Constants.IMPORT_APP_URL,
         dataType: 'json',
         replaceFileInput: false,
         add: function(e, data){
@@ -242,13 +242,13 @@ application.AppManager = Class.extend({
       var currentProgress;
       var callbacks = {
         progress: function(e, data){
-        	var progress = parseInt(data.loaded/data.total*100, 10);
-        	if(progress != currentProgress){
-        	  Log.append("upload progress: " + progress);
-        	  proto.ProgressDialog.setProgress(step, parseInt(progress*0.5, 10));
-        	  proto.ProgressDialog.append(step, "Uploaded: " + progress + "%");
-        	};
-        	currentProgress = progress;
+          var progress = parseInt(data.loaded/data.total*100, 10);
+          if(progress != currentProgress){
+            Log.append("upload progress: " + progress);
+            proto.ProgressDialog.setProgress(step, parseInt(progress*0.5, 10));
+            proto.ProgressDialog.append(step, "Uploaded: " + progress + "%");
+          }
+          currentProgress = progress;
         },
         done: function (e, data) {
           var result = data.result;
@@ -301,7 +301,7 @@ application.AppManager = Class.extend({
           proto.Wizard.jumpToStep(import_app_wizard, 1, 'import failed');
         },
         always: function(e, data){
-        	fileUploader.fileupload('destroy');
+          fileUploader.fileupload('destroy');
         }
       };
       
@@ -442,36 +442,36 @@ application.AppManager = Class.extend({
   },
   
   showCurrentFrameworks: function(){
-  	var container = $('#manage_frameworks_container');
-  	var contentHtml = $fw_manager.client.app.support.getAppFramworksHtml();
-  	container.find('#manage_update_app_frameworks').html(contentHtml);
-  	var app = $fw_manager.data.get('app');
-  	var frameworks = app.frameworks;
-  	if(frameworks && frameworks.length > 0){
-  		for(var i=0;i<frameworks.length;i++){
-  			var fw_key = frameworks[i];
-  			var dom_id = fw_key.replace(/\./g, "_") + "_check";
-  			var dom = $('#manage_update_app_frameworks').find('#' + dom_id);
-  			$(dom).attr('checked', true);
-  		}
-  	}
+    var container = $('#manage_frameworks_container');
+    var contentHtml = $fw_manager.client.app.support.getAppFramworksHtml();
+    container.find('#manage_update_app_frameworks').html(contentHtml);
+    var app = $fw_manager.data.get('app');
+    var frameworks = app.frameworks;
+    if(frameworks && frameworks.length > 0){
+      for(var i=0;i<frameworks.length;i++){
+        var fw_key = frameworks[i];
+        var dom_id = fw_key.replace(/\./g, "_") + "_check";
+        var dom = $('#manage_update_app_frameworks').find('#' + dom_id);
+        $(dom).attr('checked', true);
+      }
+    }
   },
   
   doUpdateFrameworks: function(){
-  	var selected_fws = $('#manage_update_app_frameworks').find('input[type=checkbox]:checked');
+    var selected_fws = $('#manage_update_app_frameworks').find('input[type=checkbox]:checked');
     var fw_values = [];
     for(var i=0;i<selected_fws.length;i++){
         fw_values.push($(selected_fws[i]).val());
     }
     var guid = $fw_manager.data.get('app').guid;
     $fw_manager.client.model.App.updateFrameworks(guid, fw_values, function(res){
-    	var app = $fw_manager.data.get('app');
-    	app.frameworks = fw_values;
-    	$fw_manager.data.set('app', app);
-    	$fw_manager.client.dialog.info.flash($fw_manager.client.lang.getLangString('app_frameworks_updated'));
+      var app = $fw_manager.data.get('app');
+      app.frameworks = fw_values;
+      $fw_manager.data.set('app', app);
+      $fw_manager.client.dialog.info.flash($fw_manager.client.lang.getLangString('app_frameworks_updated'));
     }, function(err){
-      	$fw_manager.client.dialog.error(error);
-    })
+        $fw_manager.client.dialog.error(error);
+    });
   },
   
   setStateForAppView: function (id) {
@@ -569,7 +569,7 @@ application.AppManager = Class.extend({
     var url, params, app;
     
     if (!guid) {
-      var guid = $fw.data.get('app').guid;
+      guid = $fw.data.get('app').guid;
     }
 
     url = Constants.STAGE_APP_URL;
@@ -631,7 +631,7 @@ application.AppManager = Class.extend({
               },
               retriesLimit: function () {
                 Log.append('retriesLimit exceeded: ' + Properties.cache_lookup_retries);
-		        $fw.client.dialog.error($fw.client.lang.getLangString('scm_trigger_error'));
+            $fw.client.dialog.error($fw.client.lang.getLangString('scm_trigger_error'));
                 if($.isFunction(fail)) {
                    fail();
                 }
@@ -645,7 +645,7 @@ application.AppManager = Class.extend({
           clone_task.run();
         } else {
                 Log.append('No CacheKey in response > ' + JSON.stringify(result));
-	        $fw.client.dialog.error($fw.client.lang.getLangString('scm_trigger_error'));
+          $fw.client.dialog.error($fw.client.lang.getLangString('scm_trigger_error'));
                if($.isFunction(fail)) {
                   fail();
             }

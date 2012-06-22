@@ -9,11 +9,11 @@ application.ConfigurationSupport = Class.extend({
     $.each(configs, function (key, value) {
       Log.append("Construct config form - " + key + "=" + value);
       if (!(key in hiddenOptions)) {
-        var input = ""
+        var input = "";
         if (!(key in replaceOptions)) {
           input = self.getConfigDom(key, value, dest, false);
         } else {
-          input = self.getConfigDom(key, value, dest, true)
+          input = self.getConfigDom(key, value, dest, true);
         }
         container.append(input);
       }
@@ -95,7 +95,7 @@ application.ConfigurationSupport = Class.extend({
       }
     } else {
       div.addClass('fh-form-text-field');
-      var lang_key = dest + "_" + config_name.replace(/\s/g, '_').toLowerCase() + "_notes"
+      var lang_key = dest + "_" + config_name.replace(/\s/g, '_').toLowerCase() + "_notes";
       var lang_val = $fw_manager.client.lang.getLangString(lang_key);
       if (null == lang_val) {
         lang_val = $fw_manager.client.lang.getLangString(dest + "_configuration_replace_general_notes");

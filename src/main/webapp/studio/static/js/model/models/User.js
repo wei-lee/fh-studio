@@ -1,7 +1,97 @@
 model.User = model.Model.extend({
 
+  // Model config
+  config: {},
+
+  // Field config
+  field_config: [{
+    field_name: "email",
+    editable: false,
+    showable: true,
+    column_title: "Email"
+  }, {
+    field_name: "name",
+    editable: true,
+    showable: true,
+    column_title: "Name"
+  }, {
+    field_name: "activated",
+    editable: true,
+    showable: true,
+    column_title: "Activated"
+  }, {
+    field_name: "enabled",
+    editable: true,
+    showable: true,
+    column_title: "Enabled"
+  }, {
+    field_name: "lastLogin",
+    editable: false,
+    showable: true,
+    column_title: "Last Login"
+  }, {
+    field_name: "sysCreated",
+    editable: false,
+    showable: true,
+    column_title: "Created"
+  }],
+
   init: function() {
 
+  },
+
+  create: function(email, name, roles, password, activated, invite,  success, fail) {
+    var user_type = this.resolveUserType();
+    var url = Constants.ADMIN_USER_CREATE_URL.replace('<users-type>', user_type);
+    var params = {
+      "email": email,
+      "name": name,
+      "activated": activated,
+      "invite": invite
+    };
+
+    if (password != null) {
+      params.password = password;
+    }
+
+    if (roles != null) {
+      params.roles = roles;
+    }
+
+    params[user_type] = $fw.getClientProp(user_type);
+    return this.serverPost(url, params, success, fail, true);
+  },
+
+  update: function(fields, success, fail) {
+    var user_type = this.resolveUserType();
+    var url = Constants.ADMIN_USER_UPDATE_URL.replace('<users-type>', user_type);
+    var params = {
+      "fields": fields
+    };
+    params[user_type] = $fw.getClientProp(user_type);
+
+    return this.serverPost(url, params, success, fail, true);
+  },
+
+  resendInvite: function(email, success, fail) {
+    var url = Constants.ADMIN_USER_RESEND_INVITE_URL.replace('<domain>', $fw_manager.getClientProp('domain'));
+    var params = {
+      "email": email,
+      "force": true
+    };
+
+    return this.serverPost(url, params, success, fail, true);
+  },
+
+  resolveUserType: function() {
+    var userRoles = $fw.getUserProps().roles;
+    if (userRoles.indexOf($fw.ROLE_RESELLERADMIN) > -1) {
+      return 'reseller';
+    } else if (userRoles.indexOf($fw.ROLE_CUSTOMERADMIN) > -1) {
+      return 'customer';
+    } else {
+      return fail('operation_not_permitted');
+    }
   },
 
   read: function(email, success, fail) {
@@ -82,7 +172,7 @@ model.User = model.Model.extend({
     };
 
     if (post_process) {
-      return this.serverPost(url, params, success, fail, true, this.postProcessList);
+      return this.serverPost(url, params, success, fail, true, this.postProcessList, this);
     } else {
       return this.serverPost(url, params, success, fail, true);
     }
@@ -95,21 +185,14 @@ model.User = model.Model.extend({
     };
 
     if (post_process) {
-      return this.serverPost(url, params, success, fail, true, this.postProcessList);
+      return this.serverPost(url, params, success, fail, true, this.postProcessList, this);
     } else {
       return this.serverPost(url, params, success, fail, true);
     }
   },
 
-  postProcessList: function(res) {
-    var filtered_fields = {
-      "email": "E-mail",
-      "name": "Name",
-      "activated": "Activated",
-      "enabled": "Enabled",
-      "lastLogin": "Last Login",
-      "sysCreated": "Created"
-    };
+  postProcessList: function(res, data_model) {
+    var filtered_fields = data_model.getColumnMap();
 
     var rows = res.list;
     var data = {

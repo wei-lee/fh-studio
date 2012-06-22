@@ -72,4 +72,4 @@ application.DestinationBlackberry = application.DestinationGeneral.extend({
           wizard.find("#app_publish_blackberry_versions").attr('next', 'app_publish_blackberry_progress');
       }
   }
-})
+});

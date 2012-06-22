@@ -132,4 +132,4 @@ application.IconManager = Class.extend({
       );
     });
   }
-})
+});

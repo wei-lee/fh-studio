@@ -39,7 +39,7 @@ application.controller.Keys = Class.extend({
 
     $('#keys_manage_body .user_key .revoke').unbind().click(function() {
       var confirmation = confirm("Are you sure you want to revoke this API key? This cannot be undone.");
-      if (confirmation == true) {
+      if (confirmation) {
         var key = $(this).parent().parent().find('.key_public').text();
         self.revokeUserKey(key);
       }
@@ -96,7 +96,7 @@ application.controller.Keys = Class.extend({
     Log.append('revoking: ' + key);
     var self = this;
     this.model.revoke(key, function(res) {
-      if (res.status = 'ok') {
+      if (res.status === 'ok') {
         self.refreshUserKeys();
       }
     });

@@ -10,7 +10,7 @@ FrameworkManager = Class.extend({
    */
   init: function (opts) {
     // set defaults
-    var opts = opts || {};
+    opts = opts || {};
     
     this.data = new DataManager();
     this.event = new EventManager();

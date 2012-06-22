@@ -26,6 +26,26 @@ button {
   top: 95px !important;
 }
 
+/* changes to allow the preview to be seen on mac book air size screen */
+#preview_wrapper{
+    min-height: 445px;
+}
+#preview_header{
+    padding: 0;
+    margin-bottom: 0;
+    position: relative;
+    top: -4px;
+}
+#preview_temporary_select{
+   margin-bottom: 2px;
+}
+
+.inner-layout .ui-layout-north, #apps_north {
+    height: 30px !important; /*changed from 42 px*/
+}
+
+/*end changes */
+
 #main_tabs_panels {
   padding: 10px;
   background: #fff;
@@ -227,7 +247,11 @@ li.ui-state-active a {
 .dashboard-create
 {
   background:url(../img/create_app_sprite.png) no-repeat scroll 0 0 transparent !important;
-  margin: 90px 0 0 340px !important;
+}
+
+.dashboard-create-container {
+  padding-top: 100px !important;
+  padding-right: 300px !important;
 }
 
 /*Create an App Button - Hover State*/

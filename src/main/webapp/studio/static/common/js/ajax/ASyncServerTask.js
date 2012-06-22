@@ -3,8 +3,6 @@
  * 
  * Expects a serverside cacheKey to be passed in the constructor params 
  */
-/*global ASyncServerTask, $, server_constants, server_util, scheduler
- */
 ASyncServerTask = function (params, opts) {
   var self = {
     tasks: {},
@@ -37,7 +35,8 @@ ASyncServerTask = function (params, opts) {
               for (var ri = 0, rl = results.length; ri < rl; ri++) {
                 var res = results[ri],
                     cacheKey = res.cacheKey,
-                    task = self.tasks[cacheKey];
+                    task = self.tasks[cacheKey],
+                    allComplete;
                 if (res.log) {
                   if (res.log.length > 0) {
                     task.start_timestamp = new Date().getTime();
@@ -52,7 +51,7 @@ ASyncServerTask = function (params, opts) {
                     task.status = "timeout";
 
                     // Check if all tasks have complete, and clear interval and execute timeout callbacks if they are
-                    var allComplete = self.allTasksComplete();
+                    allComplete = self.allTasksComplete();
 
                     if (allComplete) {
                       clearInterval(self.log_timeout);
@@ -73,7 +72,7 @@ ASyncServerTask = function (params, opts) {
                     task.status = "complete";
                     task.res = res;
                     // Check if all tasks have complete, and clear interval and execute callbacks if they are
-                    var allComplete = self.allTasksComplete();
+                    allComplete = self.allTasksComplete();
 
                     if (allComplete) {
                       clearInterval(self.log_timeout);

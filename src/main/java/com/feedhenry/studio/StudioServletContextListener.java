@@ -6,19 +6,23 @@ import java.util.Date;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 public class StudioServletContextListener implements ServletContextListener {
-  
-  private static final SimpleDateFormat format = new SimpleDateFormat("EEE dd MMM HH:mm:ss zzz yyyy");
+	  
+  public static final Log log = LogFactory.getLog("fhstudio");
+  private static final SimpleDateFormat DATEFORMAT = new SimpleDateFormat("EEE dd MMM HH:mm:ss zzz yyyy");
 
   @Override
   public void contextDestroyed(ServletContextEvent arg0) {
     try {
-      System.out.println("===============STUDIO STOPPING================");
-      System.out.println(format.format(new Date()));
-      System.out.println("==============================================");
+        VersionBean vb = new VersionBean();
+        
+        System.out.println("Stopped Studio " + vb.getVersion() + " " + DATEFORMAT.format(new Date()));
+        log.info("Stopped Studio " + vb.getVersion() + " " + DATEFORMAT.format(new Date()));
     } catch (Exception e) {
-      System.out.println(e);
-      e.printStackTrace();
+      log.error("Exception getting version info", e);
       System.exit(1);
     }
   }
@@ -26,14 +30,17 @@ public class StudioServletContextListener implements ServletContextListener {
   @Override
   public void contextInitialized(ServletContextEvent arg0) {
     try {
+      ServerInit.doInit();
+
       VersionBean vb = new VersionBean();
-      System.out.println("===============STUDIO STARTING================");
-      System.out.println(format.format(new Date()));
+      System.out.println("=============== START STUDIO BUILD INFO ================");
       System.out.println(vb.getReleaseInfo().toString(2));
-      System.out.println("==============================================");
+      System.out.println("================ END STUDIO BUILD INFO =================");
+      
+      log.info("Started Studio " + vb.getVersion() + " " + DATEFORMAT.format(new Date()));
+      System.out.println("Started Studio " + vb.getVersion() + " " + DATEFORMAT.format(new Date()));
     } catch (Exception e) {
-      System.out.println(e);
-      e.printStackTrace();
+      log.error("Exception starting", e);
       System.exit(1);
     }
   }

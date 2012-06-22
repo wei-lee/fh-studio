@@ -6,7 +6,6 @@
  <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER)) { %>
  <li class="home-tab inactive_home"><a id="home_tab" href="#tabs-4">Dashboard</a></li>
  <li class="apps-tab inactive_apps"><a id="apps_tab" href="#tabs-1">Apps</a></li>
- <li class="community-tab inactive_community"><a id="community_tab" href="#tabs-2">Community</a></li>
  <%}%>
   
   <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_REPORTING)) { %>
@@ -14,24 +13,20 @@
   <% } %>
 
   <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_USER_ADMIN)) { %>
-    <li class="useradmin_tab"><a id="useradmin_tab" href="#tabs-7">User Admin</a></li>
+    <li class="useradmin_tab"><a id="useradmin_tab" href="#tabs-7">Studio Admin</a></li>
   <% } %>  
   
   <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_ARM)) { %>
-    <li class="arm-tab"><a id="arm_tab" href="#tabs-6">ARM Admin</a></li>
+    <li class="arm-tab"><a id="arm_tab" href="#tabs-6">App Admin</a></li>
   <% } %>
 
-  <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER)) { %>
   <li class="account-tab inactive_account"><a id="account_tab" href="#tabs-3">My Account</a></li>
-  <%}%>
 </ul>
 <div id="main_tabs_panels" class="ui-layout-content">
  <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER)) { %>
   <%@ include file="home_tab.html" %>
   
   <%@ include file="apps_tab.html" %>
-  
-  <%@ include file="community_tab.html" %>
  <%}%>
   
   <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_REPORTING)) { %>
@@ -45,9 +40,7 @@
   <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_ARM)) { %>
     <%@ include file="arm_tab.html" %>
   <% } %>
-  
- <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER)) { %>
+ 
   <%@ include file="account_tab.html" %>
- <%}%>
   
 </div>

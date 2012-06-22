@@ -2,13 +2,13 @@
  */
 AnalyticsManager = Class.extend({	
 	
-	impls : new Array(),	
+	impls : [],	
 	
 	initAnalytics: function(pProps) {
-	  if( pProps["mixpanel-enabled"] ) {      
+    if( pProps["mixpanel-enabled"] ) {      
       mixPanelAnalytics = new MixPanelAnalytics(pProps);
-	  	this.impls.push(mixPanelAnalytics);
-	  }
+      this.impls.push(mixPanelAnalytics);
+    }
 
     if( pProps["google-analytics-enabled"] ) {
       googleAnalytics = new GoogleAnalytics(pProps);

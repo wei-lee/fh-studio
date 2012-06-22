@@ -15,7 +15,7 @@ application.BlackberryResourceManager = application.ResourceManager.extend({
       
       // Combine the resources in the result to a single array and set the type of them accordingly
       var resources = [];
-      var csk = result.csk
+      var csk = result.csk;
       for (var ci=0; ci<csk.length; ci++) {
         var temp_csk = csk[ci];
         resources.push({type: 'csk', guid: temp_csk.guid});

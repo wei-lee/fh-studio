@@ -27,7 +27,7 @@ LangManager = Class.extend({
       container.find('.' + $fw_manager.client.lang.INSERT_LANG).each($fw_manager.client.lang.insertLang);
       container.find('.' + $fw_manager.client.lang.INSERT_LANG_BLOCK).each($fw_manager.client.lang.insertLangBlock);
       container.find('.' + $fw_manager.client.lang.INSERT_HELP).each($fw_manager.client.lang.insertHelp);
-      container.find('.' + $fw_manager.client.lang.INSERT_HELP_ICON).each($fw_manager.client.lang.insertHelpIcon);;
+      container.find('.' + $fw_manager.client.lang.INSERT_HELP_ICON).each($fw_manager.client.lang.insertHelpIcon);
       // record lang being inserted so it isn't done repeatedly
       this.containers[id] = true;
     }
@@ -43,7 +43,7 @@ LangManager = Class.extend({
       elements.filter('.' + $fw_manager.client.lang.INSERT_LANG).each($fw_manager.client.lang.insertLang);
       elements.filter('.' + $fw_manager.client.lang.INSERT_LANG_BLOCK).each($fw_manager.client.lang.insertLangBlock);
       elements.filter('.' + $fw_manager.client.lang.INSERT_HELP).each($fw_manager.client.lang.insertHelp);
-      elements.filter('.' + $fw_manager.client.lang.INSERT_HELP_ICON).each($fw_manager.client.lang.insertHelpIcon);;
+      elements.filter('.' + $fw_manager.client.lang.INSERT_HELP_ICON).each($fw_manager.client.lang.insertHelpIcon);
       // record lang being inserted so it isn't done repeatedly
       this.containers[id] = true;
     }
@@ -140,7 +140,7 @@ LangManager = Class.extend({
     var lang_type = typeof lang_obj;
     if ('undefined' !== lang_type ) {
       if ('string' === lang_type) {
-        lang = lang_obj
+        lang = lang_obj;
       }
       else {
         // lang is an array of strings

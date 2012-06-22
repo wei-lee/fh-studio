@@ -7,13 +7,13 @@ application.BlackberryConfigManager = application.ConfigurationManager.extend({
   },
   
   validateForm: function(){
-  	var bgColor = $(".config_option[name='splash Background Color']").val();
-  	if(bgColor != ""){
-  		if(bgColor.length != 7 || bgColor.charAt(0) != "#"){
-  			$fw_manager.client.dialog.error("The background color should be hexadecimal value.");
-  			return false;
-  		}
-  	}
-  	return true;
+    var bgColor = $(".config_option[name='splash Background Color']").val();
+    if(bgColor !== ""){
+      if(bgColor.length != 7 || bgColor.charAt(0) != "#"){
+        $fw_manager.client.dialog.error("The background color should be hexadecimal value.");
+        return false;
+      }
+    }
+    return true;
   }
 });

@@ -1,23 +1,43 @@
 model.Group = model.Model.extend({
 
+  // Model config
+  config: {},
+
+  // Field config
+  field_config: [{
+    field_name: "name",
+    editable: true,
+    showable: true,
+    column_title: "Group Name"
+  }],
+
   init: function() {},
+
+  create: function(name, success, fail) {
+    var url = Constants.ADMIN_GROUP_CREATE_URL.replace('<domain>', $fw_manager.getClientProp('domain'));
+    var params = {
+      "fields": {
+        "name": name,
+        "size": "small"
+      }
+    };
+
+    return this.serverPost(url, params, success, fail, true);
+  },
 
   list: function(success, fail, post_process) {
     var url = Constants.ADMIN_GROUP_LIST_URL.replace('<domain>', $fw_manager.getClientProp('domain'));
     var params = {};
 
     if (post_process) {
-      return this.serverPost(url, params, success, fail, true, this.postProcessList);
+      return this.serverPost(url, params, success, fail, true, this.postProcessList, this);
     } else {
       return this.serverPost(url, params, success, fail, true);
     }
   },
 
-  postProcessList: function(res) {
-    var filtered_fields = {
-      "name": "Name",
-      "perms": "Permissions"
-    };
+  postProcessList: function(res, data_model) {
+    var filtered_fields = data_model.getColumnMap();
 
     var rows = res.list;
     var data = {

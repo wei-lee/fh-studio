@@ -21,7 +21,7 @@ application.ArmGroupsLayout = application.TabManager.extend({
         accordion.find('.ui-accordion-content-active .ui-menu li:first-child a').trigger('click');
       }});
     crumbs.push({text: $fw_manager.state.get('arm_groups_name', 'current_groups_name')});
-    crumbs.push({text: b2.text()})
+    crumbs.push({text: b2.text()});
     return crumbs;
   }
 });

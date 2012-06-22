@@ -106,17 +106,6 @@ $.extend(Constants, {
   READ_USER_DETAILS: Constants.IDE_URL_PREFIX + "user/read",
   CHANGE_USER_PASSWORD: Constants.IDE_URL_PREFIX + "user/chgpwd",
   
-  //community snippet urls
-  LIST_TAGS_URL:            Constants.IDE_URL_PREFIX + "community/snippet/tags",
-  LIST_SHARED_SNIPPETS_URL: Constants.IDE_URL_PREFIX + "community/snippet/sharedlist",
-  LIST_MY_SNIPPETS_URL:     Constants.IDE_URL_PREFIX + "community/snippet/list",
-  LIST_SNIPPETS_BY_TAG_URL: Constants.IDE_URL_PREFIX + "community/snippet/taglist",
-  CREATE_SNIPPET_URL:       Constants.IDE_URL_PREFIX + "community/snippet/create",
-  DELETE_SNIPPET_URL:       Constants.IDE_URL_PREFIX + "community/snippet/delete",
-  UPDATE_SNIPPET_URL:       Constants.IDE_URL_PREFIX + "community/snippet/update",
-  VIEW_SNIPPET_URL:         Constants.IDE_URL_PREFIX + "community/snippet/read",
-  SEARCH_SNIPPETS_URL:      Constants.IDE_URL_PREFIX + "community/snippet/search",
-  
   // icon urls
   APP_ICON_URL: Constants.WID_URL_PREFIX + "sandbox/<GUID>/icon/<TYPE>",
   UPLOAD_ICON_URL: Constants.____DEPRECATED____DEV_URL_PREFIX____DEPRECATED____ + "instances/icons/upload",
@@ -134,6 +123,10 @@ $.extend(Constants, {
   ADMIN_USER_CREATE_URL: Constants.ADMIN_URL_PREFIX + "<users-type>/users/create",
   ADMIN_USER_READ_URL: Constants.ADMIN_URL_PREFIX + "<users-type>/users/read",
   ADMIN_USER_UPDATE_URL: Constants.ADMIN_URL_PREFIX + "<users-type>/users/update",
+  ADMIN_USER_RESEND_INVITE_URL: Constants.IDE_URL_PREFIX + "user/invite",
 
-  ADMIN_GROUP_LIST_URL: Constants.ADMIN_URL_PREFIX + "<domain>/group/list"
+  ADMIN_GROUP_LIST_URL: Constants.ADMIN_URL_PREFIX + "<domain>/group/list",
+  ADMIN_GROUP_CREATE_URL: Constants.ADMIN_URL_PREFIX + "<domain>/group/create",
+
+  ADMIN_ROLE_LIST_ASSIGNABLE_URL: Constants.ADMIN_URL_PREFIX + "role/listAssignable"
 });

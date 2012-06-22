@@ -2,13 +2,13 @@
 analytics.AnalyticsIntegration = Class.extend({
 
   config_general : {
-  	'dashboardDocs' : true  	
+    'dashboardDocs' : true    
   },
   
   config_button : {
-  	'manage_details_update_button' : 'Manage App - Update Details',
-  	'user_info_logout' : 'Top Nav Bar - Logout',
-  	'user_info_help' : 'Top Nav Bar - Help'
+    'manage_details_update_button' : 'Manage App - Update Details',
+    'user_info_logout' : 'Top Nav Bar - Logout',
+    'user_info_help' : 'Top Nav Bar - Help'
   },
 
   config_div : {
@@ -20,8 +20,8 @@ analytics.AnalyticsIntegration = Class.extend({
   },
   
   config_accordion : {
-  	'manage_apps_accordion' : 'Manage Apps Accordion',
-  	'account_accordion': 'Account Accordion'
+    'manage_apps_accordion' : 'Manage Apps Accordion',
+    'account_accordion': 'Account Accordion'
   },
   
   config_wizard : {
@@ -43,24 +43,24 @@ analytics.AnalyticsIntegration = Class.extend({
   },
 
   doIntegration: function() {
-  	this.doDashboardDocs();
-  	this.doButtons();
-  	this.doDivs();  	
+    this.doDashboardDocs();
+    this.doButtons();
+    this.doDivs();    
   },
 
   doDashboardDocs: function() {
-  	if( this.config_general.dashboardDocs ) {
+    if( this.config_general.dashboardDocs ) {
       $('.doc_links').bind('click', function(evt) {
         var docName = this.innerText;
         $fw_manager.analytics.trackEvent({id:'Dashboard - View Documentation', props:{'Document Name':docName}});
       });
-  	}
+    }
   },
   
   doButtons: function() {
-  	var that = this;
-  	$('button').bind('click', function(evt) {
-  		var elementId = this.id;
+    var that = this;
+    $('button').bind('click', function(evt) {
+      var elementId = this.id;
       if( that.config_button[elementId] ) {
         var eventId = that.config_button[elementId];	
         var eventProps = $fw_manager.data.getDataStore();
@@ -70,9 +70,9 @@ analytics.AnalyticsIntegration = Class.extend({
   },
   
   doDivs: function() {
-  	var that = this;
+    var that = this;
     $('div').bind('click', function(evt) {
-    	var elementId = this.id;
+      var elementId = this.id;
       if( that.config_div[elementId] ) {
         var eventId = that.config_div[elementId]; 
         var eventProps = $fw_manager.data.getDataStore();
@@ -109,7 +109,7 @@ analytics.AnalyticsIntegration = Class.extend({
     var that = this;
     var elementId = accordion.attr('id');
     if( that.config_accordion[elementId] ) {
-    	accordion.find('li').bind('click', function(evt) {
+      accordion.find('li').bind('click', function(evt) {
         var accordionItem = $(this);
         var accordion = accordionItem.parents('.ui-accordion');
         var accordionId = accordion.attr('id');

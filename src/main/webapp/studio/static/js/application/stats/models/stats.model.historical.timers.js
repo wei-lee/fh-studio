@@ -71,7 +71,7 @@ Stats.Model.Historical.Timers = Stats.Model.Historical.extend({
           };
         }
         temp_data[key].series[percentile_key].data.push([timestamp, percentile_value]);
-      };
+      }
     }
 
     return temp_data;
