@@ -1,0 +1,438 @@
+/* Lowercase text */
+.container-title,
+.ui-layout-pane,
+button {
+  text-transform: lowercase !important;
+}
+#manage_apps_center, #account_center, #editor_files_list { text-transform: none !important; }
+
+/*Logo */
+#header_logo {
+  background-image: url(../img/o2.gif) !important;
+  width: 97px;
+  height: 95px;
+  margin: -8px 0 0 13px;
+}
+
+#home_center #home_content_top_left {
+  height: 370px;
+}
+
+#main_tabs_buttons {
+  padding-left: 150px !important;
+}
+
+#main_layout_center {
+  top: 95px !important;
+}
+
+/* changes to allow the preview to be seen on mac book air size screen */
+#preview_wrapper{
+    min-height: 445px;
+}
+#preview_header{
+    padding: 0;
+    margin-bottom: 0;
+    position: relative;
+    top: -4px;
+}
+#preview_temporary_select{
+   margin-bottom: 2px;
+}
+
+.inner-layout .ui-layout-north, #apps_north {
+    height: 30px !important; /*changed from 42 px*/
+}
+
+/*end changes */
+
+#main_tabs_panels {
+  padding: 10px;
+  background: #fff;
+  border-radius: 10px;
+  padding-bottom: 30px;
+}
+
+.ui-state-active .container-header {
+  background: #fff !important;
+  line-height: 46px;
+}
+
+.container-header .container-header-bottom {
+  display: none;
+}
+
+.inner-layout .ui-layout-north, #apps_north {
+  height: 52px !important;
+}
+.section-header-dashboard, .section-header {
+  color: #032B5A;
+  font-size: 1.2em;
+  background: #fafafa;
+  background: -moz-linear-gradient(top, #fafafa 0%, #f0f0f0 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fafafa), color-stop(100%,#f0f0f0));
+  background: -webkit-linear-gradient(top, #fafafa 0%,#f0f0f0 100%);
+  background: -o-linear-gradient(top, #fafafa 0%,#f0f0f0 100%);
+  background: -ms-linear-gradient(top, #fafafa 0%,#f0f0f0 100%);
+  background: linear-gradient(top, #fafafa 0%,#f0f0f0 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fafafa', endColorstr='#f0f0f0',GradientType=0 );
+  line-height: 10px;
+}
+
+/* Buttons! */
+button.ui-state-default, .input-form input[type="button"].ui-state-default  {
+  border: none !important;
+  background: #38b2de !important;
+  background: -moz-linear-gradient(top, #38b2de 0%, #01619c 100%)!important;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#38b2de), color-stop(100%,#01619c)) !important;
+  background: -webkit-linear-gradient(top, #38b2de 0%,#01619c 100%) !important;
+  background: -o-linear-gradient(top, #38b2de 0%,#01619c 100%) !important;
+  background: -ms-linear-gradient(top, #38b2de 0%,#01619c 100%) !important;
+  background: linear-gradient(top, #38b2de 0%,#01619c 100%) !important;
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#38b2de', endColorstr='#01619c',GradientType=0 ) !important;
+  color: #fff !important;
+}
+
+button.ui-state-default:hover, .input-form input[type="button"].ui-state-hover {
+  color: #032c57 !important;
+  text-shadow: none;
+  background: #38b2de !important;
+  background: -moz-linear-gradient(top, #38b2de 0%, #01619c 100%)!important;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#38b2de), color-stop(100%,#01619c)) !important;
+  background: -webkit-linear-gradient(top, #38b2de 0%,#01619c 100%) !important;
+  background: -o-linear-gradient(top, #38b2de 0%,#01619c 100%) !important;
+  background: -ms-linear-gradient(top, #38b2de 0%,#01619c 100%) !important;
+  background: linear-gradient(top, #38b2de 0%,#01619c 100%) !important;
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#38b2de', endColorstr='#01619c',GradientType=0 ) !important;
+}
+
+.resource-div .resource-buttons .resource-not-uploaded {
+  background: #bcc3c7 !important;
+  background: -moz-linear-gradient(top, #bcc3c7 0%, #64676c 100%) !important;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#bcc3c7), color-stop(100%,#64676c)) !important;
+  background: -webkit-linear-gradient(top, #bcc3c7 0%,#64676c 100%) !important;
+  background: -o-linear-gradient(top, #bcc3c7 0%,#64676c 100%) !important;
+  background: -ms-linear-gradient(top, #bcc3c7 0%,#64676c 100%) !important;
+  background: linear-gradient(top, #bcc3c7 0%,#64676c 100%) !important;
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bcc3c7', endColorstr='#64676c',GradientType=0 ) !important;
+  color: #fff !important;
+}
+
+#editor_toolbar button {
+  color: #000 !important;
+}
+
+#editor_save_btn {
+  background: url(../img/save_icon_sprite.png) no-repeat -2px 3px !important;
+}
+
+#editor_save_all_btn {
+  background: url(../img/save_all_sprite.png) no-repeat -2px 3px !important;
+}
+
+#editor_find_btn {
+  background: url(../img/go_to_icon_sprite.png) no-repeat -2px 3px !important;
+}
+
+.resource-div:hover .resource-buttons:hover .resource-not-uploaded:hover {
+  color: #ddd !important;
+}
+
+.section-body {
+  background: none;
+}
+
+.section-container, .section-container-dashboard {
+  background: #FAFAFA;
+}
+
+/*Header Bar */
+#header_user_info
+{
+  background-image:none;
+}
+
+/*Body Background */
+html,body {
+  background:url(../img/background.png) repeat-x scroll 0 0 transparent;
+  font-family: "Verdana", sans-serif !important;
+}
+
+.ui-widget {
+  font-family: "Verdana", sans-serif !important;
+}
+
+/*Tab Background colour for Off-State */
+#main_layout_center .ui-tabs-nav li.ui-state-default
+{
+  background-image:none;
+  color: #88ccff;
+}
+
+/*Tab Border */
+#main_layout_center .ui-tabs-nav li
+{
+  border:none;
+  height: 35px;
+  background:none!important;
+  background: #153064 !important;
+  background: -moz-linear-gradient(top, #153064 0%, #153064 100%)!important;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#153064), color-stop(100%,#153064))!important;
+  background: -webkit-linear-gradient(top, #153064 0%,#153064 100%)!important;
+  background: -o-linear-gradient(top, #153064 0%,#153064 100%)!important;
+  background: -ms-linear-gradient(top, #153064 0%,#153064 100%)!important;
+  background: linear-gradient(top, #153064 0%,#153064 100%)!important;
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#153064', endColorstr='#153064',GradientType=0 )!important;
+}
+
+#main_layout_center .ui-tabs-nav li.ui-state-hover.ui-state-active a {
+  color: #153064 !important;
+}
+
+#main_layout_center .ui-tabs-nav li a:hover {
+  color: #fff !important;
+}
+
+#main_layout_center .ui-tabs-nav li a
+{
+  line-height: 35px;
+  padding: 0 20px 0 20px;
+}
+
+/*Tab Text Colour*/
+#main_layout_center .ui-tabs-nav li.ui-state-default a
+{
+  font-weight:600;
+  color: #88ccff;
+}
+
+/*Container Header - Not sure about this one */
+#main_layout_center .ui-tabs-nav li.ui-state-active
+{ 
+  background: none !important;
+  background: #fff !important;
+}
+
+li.ui-state-active a {
+  color: #005896 !important;
+}
+
+#home_content_top_left {
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+}
+
+#header_user_info button {
+  color: #8CF !important;
+  background: transparent !important;
+}
+
+/*Tab Background colour for Active-State
+  This should be generic to all tabs, rather than addressing each tab individually
+ */
+#home_north .container-header,#apps_north .container-header,#account_north .container-header
+{
+  background:#fff !important;
+  height:52px;
+}
+
+/*Dashboard Screen - Central Image */
+.dashboard-header {
+  background-image:url(../img/home_page_graphic.png) !important;
+  height:370px !important;
+}
+
+/*Create an App Button - Off State*/
+.dashboard-create
+{
+  background:url(../img/create_app_sprite.png) no-repeat scroll 0 0 transparent !important;
+}
+
+.dashboard-create-container {
+  padding-top: 100px !important;
+  padding-right: 300px !important;
+}
+
+/*Create an App Button - Hover State*/
+.dashboard-create:hover
+{
+  background-position:0 -100px;
+}
+
+/* Documentation Widget - Below Main Image on Dashboard Page */
+.section-body-dashboard
+{
+  padding-bottom:0;
+  padding-left:0;
+}
+
+/* Having the 'doc' image as the doc list background isn't a great idea,
+  causes cropping problems 
+*/
+.doc_list
+{
+  background-image:none;
+}
+
+#home_content_bottom_left.section-container-dashboard
+{
+  background:url(../img/phone_image.png) no-repeat scroll bottom left #fff;
+}
+
+#home_center {
+  top: 0 !important;
+}
+
+#manage_apps_center {
+  padding-top: 0px !important;
+}
+
+#home_north {
+  display: none !important;
+}
+
+.ui-accordion-header {
+  border-top: 1px solid #ccc !important;
+}
+
+.ui-layout-west .ui-accordion, #list_apps_buttons li:last-child, #list_arm_buttons li:last-child {
+  border-bottom: 1px solid #ccc !important;
+}
+
+/* Apps Page */
+.ui-state-active a,.ui-state-active a:link,.ui-state-active a:visited
+{
+  color:#153064 !important;
+}
+
+#manage_apps_accordion h3 a {
+  color: #000 !important;
+}
+
+/*Statement Bar - Breadcrumbs */
+.container-header-content h1 a
+{
+  color:#000;
+  font-size:.9em;
+}
+
+.container-header-content h1 {
+  margin: 0;
+  padding-left: 10px;
+}
+
+/*Statement Bar - Page Title */
+.container-header-content {
+  padding: 0;
+  margin: 0;
+}
+
+.container-title {
+  line-height: 46px;
+  padding: 0;
+  margin: 0;
+}
+
+.fh_breadcrumb-wrapper .fh_breadcrumb-nolink
+{
+  font-size:1.1em;
+  font-weight:400;
+  color: #005896 !important;
+}
+
+/*Footer*/
+#main_layout_east{
+  display:none !important;
+}
+#main_layout_center, #main_layout_east, #main_layout_west {
+  border-bottom: none;
+}
+#main_layout_south {
+  height:42px !important;
+  background: url('../img/footer.png') no-repeat 50% 0 !important;
+  margin-bottom: 30px !important;
+  border: none !important;
+}
+#footer{
+  display: none;
+}
+
+.section-container-dashboard-bottom{
+  height:37%
+}
+
+.inner-layout .ui-layout-west,.inner-layout .ui-layout-center,.inner-layout .ui-layout-east
+{
+  background-color:#fff;
+  padding-top:5px;
+}
+
+#home_layout .ui-layout-west,#home_layout .ui-layout-center,#home_layout .ui-layout-east
+{
+  padding-top:0;
+}
+
+.jqgrow.ui-state-hover a, .jqgrow.ui-state-hover a:hover{
+  color:#000;
+}
+
+.editor-tab.current-selected-tab a {
+  color:#fff !important;
+}
+
+.input-form { box-shadow: none !important; }
+
+.input-form legend {
+  color: #000;
+  font-size: 16px;
+  text-align: center;
+}
+
+/* T&Cs */
+#login_form .input-form-footer.input-form-element.input-form-text {
+  font-size: 12px;
+}
+
+/* Hide headers on login/reg/forgotten pass etc. forms */
+#login_form .input-form-header, #forgot_form .input-form-header, #register_form .input-form-header {
+  background: none;
+  border: none;
+  height: 10px;
+}
+
+#login_form, #forgot_form, #register_form {
+  border: none;
+}
+
+#login_device_logos_wrapper {
+  display: none;
+}
+
+#login_form legend, #forgot_form legend, #register_form legend {
+  padding-bottom: 10px;
+}
+
+#login_form, #forgot_form, #register_form {
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+}
+
+#editor_titles li.editor-tab {
+  background: #fff !important;
+  border: 1px solid #B3B3B3 !important;
+  border-bottom: none !important;
+}
+
+#editor_titles li.editor-tab a, #editor_titles li.editor-tab a:hover {
+  color: #000 !important;
+  font-weight: normal !important;
+  line-height: 24px !important;
+  font-size: 12px !important;
+  padding: 0 5px 0 5px !important;
+}
+
+#editor_titles li.editor-tab.current-selected-tab a {
+  color: #0071BC !important;
+}

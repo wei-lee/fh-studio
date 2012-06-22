@@ -1,0 +1,145 @@
+<?xml version="1.0" standalone="yes"?>
+<project name="fh-studio" default="compile" basedir="./">
+  <property name="src"  value="${basedir}/src/main/java"/>
+  <property name="test" value="${basedir}/src/test/java"/>
+  <property name="lib"  value="${basedir}/lib" />
+  <property name="dist" value="${basedir}/dist" />
+  <property name="target-bin"  value="${basedir}/bin"/>
+  <property name="target"  value="${basedir}/target"/>
+  <property name="test-rep"  value="${basedir}/test"/>
+  <property name="webapp"  value="${basedir}/src/main/webapp/studio"/>
+  <property name="web-inf"  value="${basedir}/src/main/webapp/studio/WEB-INF"/>
+  <property name="dep-classes"  value="${web-inf}/classes"/>
+  <property name="dep-lib"  value="${web-inf}/lib"/>
+  <property name="main-res" value="${basedir}/src/main/resources" />
+
+  <!-- Allow access to environment variables through 'env' -->
+  <property environment="env"/>
+  <!-- If build no. isn't passed in (by build server), default to dev version -->
+  <property name="env.BUILD_NUMBER" value="DEV-VERSION"/>
+
+  <path id="compile.classpath">
+    <pathelement location="${target}"/>
+    <pathelement location="${main-res}"/>
+    <fileset dir="${lib}">
+      <include name="*.jar"/>
+    </fileset>
+  </path>
+	
+	<target name="clean">
+    <delete quiet="true" includeEmptyDirs="yes">
+      <fileset dir="${target}" includes="**/*.class"/>
+      <fileset dir="${target-bin}" includes="**/*.class"/>
+      <fileset dir="${dist}"/>
+      <fileset dir="${dep-lib}" includes="**/*.jar"/>
+      <fileset dir="${dep-classes}" includes="**/*.*"/>
+      <fileset dir="${test-rep}"/>
+    </delete>
+  </target>
+
+  <target name="mkdirs">
+    <mkdir dir="${test-rep}" />
+    <mkdir dir="${target}" />
+    <mkdir dir="${target-bin}" />
+    <mkdir dir="${dep-classes}"/>
+    <mkdir dir="${dep-lib}"/>
+    <mkdir dir="${dist}" />
+  </target>
+
+  <target name="compile" depends="mkdirs">
+    <javac destdir="${target}" 
+      debug="on" 
+      srcdir="${src}" 
+      includeantruntime="false">
+      <classpath>
+        <pathelement location="${target}"/>
+        <fileset dir="${lib}">
+          <include name="*.jar"/>
+        </fileset>
+      </classpath>
+      <include name="**"/>
+      <exclude name="tags/**"/>
+    </javac>
+  	
+  </target>
+	
+	<target name="deploy" depends="save-version-info, save-git-info, compile">
+    <sync todir="${dep-classes}" verbose="true" overwrite="true" failonerror="true">
+      <fileset dir="${target}"/>
+    </sync>
+
+    <copy todir="${dep-classes}" verbose="true" overwrite="true" failonerror="true">
+    	<fileset dir="${main-res}">
+    		<include name="**.txt"/>
+    		<include name="log4j.properties"/>
+    	</fileset>
+    </copy>
+		
+    <sync todir="${dep-lib}" verbose="true" overwrite="true" failonerror="true">
+      <fileset dir="lib">
+        <exclude name="servletapi-2.4.jar"/>
+      </fileset>
+    </sync>
+    <touch file="${web-inf}/web.xml" />
+	</target>
+	
+	<target name="make-studio-war" depends="dist-version-info, save-git-info, deploy, test">		
+		<delete file="${dist}/studio*.war" failonerror="false">
+      <fileset dir="${dist}" includes="studio*.war"/>
+    </delete>
+    <exec executable="${basedir}/build/recordGitRev.sh" dir="${basedir}/build" outputproperty="gitbuildrev" failonerror="true" />
+    <echo message="Git revision: ${gitbuildrev}" />
+    <echo message="Build Version: ${VERSION}" />
+
+    <zip destfile="${dist}/studio-${VERSION}.war">
+    	
+      <zipfileset dir="${webapp}" prefix="">
+      	<exclude name="*.git,*.gitignore"/>
+      </zipfileset>
+    	
+    </zip>
+	</target>
+  
+  <target name="save-git-info">
+    <exec executable="${basedir}/build/recordGitRev.sh" dir="${basedir}/build" failonerror="true" output="${main-res}/git-info.txt"/>
+
+    <exec executable="${basedir}/build/get_git_branch.sh" dir="${basedir}/build" failonerror="true" outputproperty="git-branch"/>
+    <property name="env.GIT_BRANCH" value="${git-branch}"/>  	
+  	<echo file="${main-res}/git-branch-info.txt" message="${env.GIT_BRANCH}"/>
+  </target>
+  
+  <target name="save-version-info" depends="generate-version">
+    <echo message="${VERSION}" file="${main-res}/VERSION.txt"/>
+  </target>
+  
+  <target name="dist-version-info" depends="save-version-info">
+    <echo message="${VERSION}" file="${dist}/VERSION.txt"/>
+  </target>
+  
+  <target name="generate-version">
+    <exec executable="sed" dir="${basedir}" failonerror="true" outputproperty="VERSION">
+      <arg value="s/BUILD-NUMBER/${env.BUILD_NUMBER}/"/>
+      <arg value="VERSION.txt"/>
+    </exec>
+    <echo message="VERSION = ${VERSION}"/>
+  </target>
+
+  <target name="npminstall">
+    <exec executable="npm" dir="${basedir}" failonerror="true">
+      <arg value="install"/>
+      <arg value="."/>
+    </exec>
+  </target>
+
+  <target name="jshint" depends="mkdirs, npminstall">
+    <exec executable="${basedir}/build/genjshintignore.sh" dir="${basedir}" failonerror="true" output="${basedir}/.jshintignore"/>
+    <exec executable="${basedir}/node_modules/jshint/bin/hint" dir="${basedir}" failonerror="true" output="${basedir}/test/jshint.xml">
+      <arg value="--jslint-reporter"/>
+      <arg value="src/main/webapp/studio/static/"/>
+    </exec>
+  </target>
+
+  <target name="test" depends="jshint">
+  </target>
+
+</project>

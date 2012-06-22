@@ -1,0 +1,35 @@
+    <div class="container login">
+        
+        <div class="row">
+          <div class="span4">&nbsp;</div>
+          <div class="span8">
+            <br /><br />
+            <div class="hero-unit tab-content pill-content">
+              <form id="login_form">
+                <div id="login" class="row active">
+                  <div class="span7">
+                    <p>Enter your username and password to login</p>
+                    <fieldset>
+                      <input class="span6" placeholder="username" name="u" id="u" type="text"><br /><br />
+                      <input class="span6" placeholder="password" name="p" id="p" type="password"><br /><br />
+                      <input id="login_domain" type="hidden" name="d" value="<%= studio.getLoginDomain() %>">
+                    </fieldset>
+                  
+                    <div id="login_button" class="btn primary large">Login</div>
+                    &nbsp;
+                    <p class="forgot-password"><a id="forgot" class="large">Forgot your password...</a>
+                    </p>
+                    
+                    <label id="login_form_error" class="input-form-error input-form-text error"></label>
+                  </div>
+                  
+                </div> <!-- /login -->
+              </form>
+             <!--<div id="loginCloud">&nbsp;</div>-->
+           </div><!-- /hero-unit -->
+         </div> <!-- /span8 -->
+         <div class="span4">&nbsp;</div>
+       </div>
+     
+      
+    </div> <!-- /container -->

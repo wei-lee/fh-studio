@@ -1,0 +1,295 @@
+<%@ page contentType="text/html" pageEncoding="UTF-8" session="false" trimDirectiveWhitespaces="true"
+    import="java.util.Map" %>
+<jsp:useBean id="studio" scope="request" class="com.feedhenry.studio.StudioBean"></jsp:useBean>
+<%
+studio.init( application );
+String pageName = com.feedhenry.studio.StudioBean.IDE_LANDING;
+try {
+  if( studio.initreq( request, response, pageName ) ) {
+    if( studio.canProceed( request, response, pageName ) ) {
+
+      String btnText = "Login";
+      String btnTarget = "/?a=login";    
+      if( studio.isLoggedIn() ) {
+        btnText = "App Studio";
+        btnTarget = "/?a=index";
+      }
+      Map docLinks = studio.getDocsLinks();
+%>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>FeedHenry Studio</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="<%= studio.getThemeStaticAssetPath("/js/html5shim.js")%>"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link rel="stylesheet" href="<%= studio.getThemeStaticAssetPath("/css/bootstrap.min.css")%>">
+    <link rel="stylesheet" href="<%= studio.getThemeStaticAssetPath("/css/style.css")%>">
+    <link rel="stylesheet" href="<%=studio.getStaticAssetPath("themes/default/css/header_links.css")%>">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+      }
+      .topbar-inner{
+        height: 25px;
+      }
+    </style>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script src="<%= studio.getThemeStaticAssetPath("/js/bootstrap-tabs.js")%>"></script>
+  <script type="text/javascript">
+    $('.tabs').tabs();
+    
+    function switchTab(id){
+      //$(".row").removeClass("active");
+      //$("#" + id).addClass("active");
+      $("#" + id + "Link").data('track', 'false').click();
+      return false;
+    }
+    
+  
+  </script>
+  
+    <!-- Mixpanel stuff -->
+		<script type="text/javascript">
+    var mpEnabled = <%=studio.getProperty(studio.PROP_LANDINGMIXPANELENABLED).toString()%>;
+    var mpTestMode = <%=studio.getProperty(studio.PROP_LANDINGMIXPANELTEST)%>;
+    var mpq = [];
+    if (mpEnabled) {
+      mpq.push(["init", "<%=studio.getProperty(studio.PROP_LANDINGMIXPANELKEY)%>"]);
+	        (function(){var b,a,e,d,c;b=document.createElement("script");b.type="text/javascript";
+	        b.async=true;b.src=(document.location.protocol==="https:"?"https:":"http:")+
+	        "//api.mixpanel.com/site_media/js/api/mixpanel.js";a=document.getElementsByTagName("script")[0];
+	        a.parentNode.insertBefore(b,a);e=function(f){return function(){mpq.push(
+	        [f].concat(Array.prototype.slice.call(arguments,0)))}};d=["init","track","track_links",
+	        "track_forms","register","register_once","identify","name_tag","set_config"];for(c=0;c<
+	        d.length;c++){mpq[d[c]]=e(d[c])}})();	
+	        if( mpTestMode ) {
+	          mpq.push(["set_config", {'test': 1 }]);
+	        }
+		    }
+    
+		   var gAnalyticsEnabled = <%=studio.getProperty(studio.PROP_LANDINGGOOGLEENABLED).toString()%>;
+		   var _gaq = _gaq || [];
+		   if (gAnalyticsEnabled) {
+		     _gaq.push(['_setAccount', '<%=studio.getProperty(studio.PROP_LANDINGGOOGLEKEY)%>']);
+          _gaq.push(['_trackPageview']);
+
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+        }
+		</script>
+  </head>
+
+  <body>
+
+
+    <div class="topbar">
+      <div class="topbar-inner">
+        <div class="container-fluid">
+          <div class="user_info_container">
+            <%@ include file="../../inc/header_links.html"%>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+    <img class="logoWest" src="<%=studio.getStaticAssetPath("themes/enterprise/img/feedhenry_logo.png")%>" />
+    <img class="logoEast" src="<%= studio.getThemeStaticAssetPath("/img/powered_by_cloudfoundry.png")%>" />
+    
+
+    <!-- Main hero unit for a primary marketing message or call to action -->
+    <ul class="tabs toptabs" data-tabs="tabs">
+      <% if (studio.isLoggedIn()) { %>
+      <li class="active"><a href="#welcome">Getting Started</a></li>
+      <% } else { %>
+      <li class="active"><a href="#welcome">Welcome</a></li>
+      <% } %>
+      <li><a id="installingLink" href="#installing">Installing FHC</a></li>
+      <li><a id="studioLink" href="#studio">App Studio</a></li>
+      <li><a href="#staging">First App</a></li>
+    </ul>
+
+      <div class="hero-unit tab-content pill-content tabs_container">
+
+      <% if (studio.isLoggedIn()) { %>
+        <div id="welcome" class="row active">
+        <div class="span7">
+          <h2>Getting Started</h2>
+          <p>Here are some links to help you get started</p>
+          <a class="btn" target="_blank" href="http://developer.feedhenry.com/blog/2012/03/build-an-app-and-stage-to-cloud-foundry%E2%84%A2-in-3-easy-steps/">3 Step Guide - Create, Build & Stage &raquo;</a><br/>
+          <a class="btn" target="_blank" href="<%= docLinks.get("docs_fhc")%>">Installing FHC &raquo;</a><br/>
+          <a class="btn" target="_blank" href="<%= docLinks.get("docs_fhc_labs")%>">FHC Labs &raquo;</a><br/>
+        </div>
+        <div class="span8 video">
+          <iframe class="vimeo" src="https://player.vimeo.com/video/34675315?title=0&amp;byline=0&amp;portrait=0" width="400" height="225" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+        </div>
+      </div>
+      <% } else { %>
+        <div id="welcome" class="row active">
+        <div class="span7">
+          <h2>Build apps powered by Cloud Foundry (Beta)</h2>
+          <p>Build powerful cloud powered apps with Feedhenry. Write in HTML5 and JavaScript. Deploy to your Cloud Foundry, and have a cloud scalable app on 5 platforms 
+          instantly!</p><br />
+          <p>            
+          </p>
+        </div>
+        <div class="span8 video">
+          <iframe class="vimeo" src="https://player.vimeo.com/video/34086215?title=0&amp;byline=0&amp;portrait=0" width="400" height="225" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+        </div>
+      </div>
+      
+      <% }%>
+    
+    <div id="installing" class="row">
+          <div class="span7">
+              <h2>Installing FHC</h2>
+              <p>The FHC command line utility gives access to the entire FeedHenry suite through your command line. It's a NodeJS utility which allows you to quickly get started staging your apps to Cloud Foundry.</p>
+          <pre class="code">
+$ sudo npm install -g fh-fhc 
+$ fhc -v
+$ fhc target mobilecf.feedhenry.com
+$ fhc login you@cloudfoundry.com password</pre>
+        </div>
+          <div class="span8 video">
+          <iframe class="vimeo" src="https://player.vimeo.com/video/33966777?title=0&amp;byline=0&amp;portrait=0" width="400" height="225" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+
+        </div>                 
+    </div>
+    
+    <div id="staging" class="row">
+        <div class="span7">
+            <h2>Staging your first app to Cloud Foundry</h2>
+            <p>Learn how to stage an app you've created to public Cloud Foundry. 
+        We start with in app in GitHub, add it to the FeedHenry platform then stage it's server side to Cloud Foundry.  
+        </p>
+
+      </div>
+        <div class="span8 video">
+        <iframe class="vimeo" src="https://player.vimeo.com/video/34675315?title=0&amp;byline=0&amp;portrait=0" width="400" height="225" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+
+      </div>
+    </div>
+  
+    <div id="studio" class="row">
+        <div class="span7">
+            <h2>App Studio</h2>
+            <p>Learn about the FeedHenry App Studio. 
+            This powerful web-based tool allows you to build and manage your app portfolio. 
+            </p>
+      </div>
+        <div class="span8 video">
+        <iframe class="vimeo" src="https://player.vimeo.com/video/34513716?title=0&amp;byline=0&amp;portrait=0" width="400" height="225" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+
+      </div>
+    </div>
+  </div>
+
+  <% if (studio.isLoggedIn()) { %>
+    <div class="hero-unit" id="tryit">
+      <a href="#" onclick="switchTab('installing')" class="btn large primary bfob fhc_button">FHC CLI</a>
+      <a href="<%=btnTarget%>" class="btn large primary bfob studio_button">App Studio</a>
+    </div>
+  <% } else { %>
+    <div class="hero-unit" id="tryit">
+      <a href="/?a=login" class="btn large primary bfob">Try it now - it's free!</a>
+    </div>
+  <% } %>
+
+      <!-- Example row of columns -->
+      <div class="row docs">
+        <div class="span5">
+          <h2>FeedHenry on Github</h2>
+          <img src="<%= studio.getThemeStaticAssetPath("/images/github.png")%>" alt="Github" class="pull-left thumb">
+          <p>Browse or clone our selection of template apps - a great starting place with FeedHenry. Contribute to our open source projects.</p>
+          <a class="btn" target="_blank" href="http://www.github.com/feedhenry">Browse the Repo &raquo;</a>
+        </div>
+        <div class="span6">
+          <h2>Tutorials</h2>
+          <img src="<%= studio.getThemeStaticAssetPath("/images/tutorials.png")%>" alt="Tutorials" class="pull-left thumb">
+          <p>Learn how to utilize the cloud to hash then cache data from multiple sources in the cloud. Localize an app, cloud powered language assets make corrections and updates a breeze.</p>
+          <a class="btn" target="_blank" href="<%= docLinks.get("docs_tutorial")%>">Browse our tutorials &raquo;</a>
+       </div>
+        <div class="span5">
+          <h2>Video Library</h2>
+          <img src="<%= studio.getThemeStaticAssetPath("/images/videos.png")%>" alt="Videos" class="pull-left thumb">
+          <p>See the FeedHenry Video Library for some great quick start guides and tours of the product</p>
+          <a class="btn" target="_blank" href="<%= docLinks.get("docs_video")%>">View our videos &raquo;</a>
+          
+        </div>
+      </div>
+      <hr>
+      <!-- Example row of columns -->
+      <div class="row docs">
+        <div class="span5">
+          <h2>API Docs</h2>
+          <img src="<%= studio.getThemeStaticAssetPath("/images/apis.png")%>" alt="APIs" class="pull-left thumb">
+          <p>Read about the $fh APIs that exist to make calls to the FeedHenry cloud, or access on-device functionality not normally available to HTML5 apps.</p>
+          <a class="btn" target="_blank" href="<%= docLinks.get("docs_api")%>">Read the API Docs &raquo;</a>
+        </div>
+        <div class="span6">
+          <h2>FHC Documentation</h2>
+          <img src="<%= studio.getThemeStaticAssetPath("/images/fhc.png")%>" alt="FHC" class="pull-left thumb">
+          <p>Learn about FHC, it's commands, and how you can use this utilitiy as a replacement for the studio to manage, edit and build your apps</p>
+          <a class="btn" target="_blank" href="<%= docLinks.get("docs_fhc_more")%>">Learn about FHC &raquo;</a>
+       </div>
+        <div class="span5">
+          <h2>Developer Blog</h2>
+          <img src="<%= studio.getThemeStaticAssetPath("/images/blog.png")%>" alt="Blog" class="pull-left thumb">  
+          <p>Read the FeedHenry developer blog, where you can find our latest blog articles </p>
+          <a class="btn" target="_blank" href="http://developer.feedhenry.com/blog">View the Blog &raquo;</a>
+          </div>
+        
+      </div>
+
+      <footer>
+        <p style="float: left">&copy; Feedhenry 2012</p>
+        <p class="tab-footer" style="float:right"><%=studio.getProperty(studio.PROP_LANDINGLEGALTEXT)%></p>
+      </footer>
+
+    </div> <!-- /container -->
+    
+    <!-- Mixpanel stuff - bind to all anchor tags when clicked -->
+    <script>
+    var fhpage = "<%=this.getClass().getSimpleName().replaceAll("_", ".")%>";
+    $(document).ready(function () {
+      if (mpEnabled) {
+        // Track tabs and links
+        // We can track links here because we've set the target to _blank for all <a> tags
+        // This means the page doesn't get replaced, allowing mixpanel to track
+        $('a').bind('click', function (e) {
+          var thisA = $(this);
+          // To ensure we don't track both button clicks and tabs if one links to the other,
+          // lets check if we shouldn't track
+          if (thisA.data('track') !== 'false') {
+            var buttonName = thisA.text().replace(/\s/g, '_');
+            mpq.track(buttonName + '-clicked', {"page": fhpage}); 
+          } else {
+            thisA.data('track', '');
+          }
+		    });
+        // track page also
+		    mpq.track('page-loaded', {"page": fhpage});
+      }
+    });
+    </script>
+  </body>
+</html>
+<%
+    }
+  }
+} catch( Exception e ) {
+  studio.error(e);
+}
+%>

@@ -1,0 +1,18 @@
+#header_user_info, #header_user_info a {
+	color: #eee;
+	font-size: 12px;
+	line-height: 25px;
+}
+
+#header_user_info a {
+	cursor: pointer;
+	text-decoration: none;
+	padding-left: 5px;
+}
+#header_user_info a.active {
+	color: #999;
+}
+
+#header_user_info {
+	text-align: right;
+}

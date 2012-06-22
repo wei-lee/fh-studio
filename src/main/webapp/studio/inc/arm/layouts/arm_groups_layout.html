@@ -1,0 +1,48 @@
+<div id="armgroups_layout" class="inner-layout arm-layout" style="display:none;">
+    <!-- arm_layout north -->
+    <div id="armgroups_north" class="ui-layout-north">
+      <div class="container-header">
+        <div class="container-header-content">
+          <h1 class="container-title"></h1>
+        </div>
+        <div class="container-header-bottom"></div>
+      </div>
+    </div>
+    <!-- end armgroups_layout north -->
+    <!-- armgroups_layout west -->
+    <div id="armgroups_west" class="ui-layout-west">
+      <div id="armgroups_accordion" class="">
+         <!--  have to manually add ui-accordion-header-first class here as accordion plugin doesn't have a first tab class -->
+         <h3 id="accordion_item_apps"><a>Groups</a></h3>
+        <div>
+          <ul class="ui-menu">
+            <li id="armgroups_edit" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>Detail</a></li>
+            <li id="armgroups_assignusers" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>Assign Users</a></li>
+            <li id="armgroups_assignapps" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>Assign Apps</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- end armgroups_layout west -->
+    <!-- armgroups_layout center -->
+    <div id="armgroups_center" class="ui-layout-center">
+       <div id="armgroups_header">
+          <!-- Generic header for standard sections with plain text header -->
+          <div id="armgroups_header_text" class="arm-users-header section-header"></div>
+        </div>    
+      
+      <!-- Hide this initially and let javascript show it when its ready -->
+      <div id="armgroups_content" class="ui-layout-content ui-widget ui-widget-content" style="display:none;">
+        <%@ include file="../arm_groups/groups_edit.html" %>
+        <%@ include file="../arm_groups/groups_assign_users.html" %>
+        <%@ include file="../arm_groups/groups_assign_apps.html" %>
+      </div>
+    </div>
+    <!-- end armgroups_layout center -->
+    <!-- armgroups_layout east -->
+    <div id="armgroups_east" class="ui-layout-east"></div>
+    <!-- end armgroups_layout east -->
+    <!-- armgroups_layout south -->
+    <div id="armgroups_south" class="ui-layout-south"></div>
+    <!-- end armgroups_layout south -->
+  </div>

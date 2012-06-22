@@ -1,0 +1,65 @@
+<div id="manage_apps_header" style="display:none;">
+  <!-- Generic header for standard sections with plain text header -->
+  <div id="manage_apps_header_text" class="manage_apps-header section-header"></div>
+  
+  <!-- Special case for editor as it need the header to be a fixed width and the content to be 100% -->
+  <%@ include file="../editor/editor_files_header.html"%> 
+</div>
+
+<!-- Hide this initially and let javascript show it when its ready -->
+<div id="manage_apps_content" class="ui-layout-content ui-widget ui-widget-content" style="display:none;">
+  
+  <%@ include file="../manage/manage_details.html"%>
+  
+  <%@ include file="../manage/manage_frameworks.html"%>
+  
+  <%@ include file="../manage/manage_icons.html"%>
+  
+  <%@ include file="../manage/manage_export.html"%>
+  
+  <%@ include file="../manage/manage_publish.html"%>
+  
+  <%@ include file="../editor/editor_files.html"%>
+  
+  <%@ include file="../configuration/configuration_studio.html"%>
+  
+  <%@ include file="../configuration/configuration_embed.html"%>
+  
+  <%@ include file="../configuration/configuration_iphone.html"%>
+  
+  <%@ include file="../configuration/configuration_ipad.html"%>
+  
+  <%@ include file="../configuration/configuration_ios.html"%>
+  
+  <%@ include file="../configuration/configuration_android.html"%>
+  
+  <%@ include file="../configuration/configuration_facebook.html"%>
+  
+  <%@ include file="../configuration/configuration_blackberry.html"%>
+  
+  <%@ include file="../configuration/configuration_windowsphone7.html"%>
+  
+  <%@ include file="../configuration/configuration_nokiawrt.html"%>
+  
+ <% if(studio.getProps().optBoolean("enable-per-app-metrics")){ %>
+  <%@ include file="../report/report_installsdest.html"%>
+  <%@ include file="../report/report_installsdate.html"%>
+  <%@ include file="../report/report_installsloc.html"%>
+  <%@ include file="../report/report_startupsdest.html"%>
+  <%@ include file="../report/report_startupsdate.html"%>
+  <%@ include file="../report/report_startupsloc.html"%>
+ <%}%>
+
+  <%@ include file="../debug/debug_logging.html"%>
+  <%@ include file="../staging/staging.html"%>
+
+  <% if(studio.getProps().optBoolean("stats-enabled")){ %>
+   <%@ include file="../status/status.html"%>
+  <%}%>
+  
+ <% if(studio.getProps().optBoolean("enable-push-notification")){ %>
+  <%@ include file="../push/push_notification.html"%>
+ <%}%>
+  
+  <%@ include file="../preview/preview_configuration.html"%>
+</div>

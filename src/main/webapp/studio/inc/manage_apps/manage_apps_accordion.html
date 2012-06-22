@@ -1,0 +1,82 @@
+<div id="manage_apps_accordion" class="">
+  <h3 id="accordion_item_manage"><a href="#">Manage</a></h3>
+  <div>
+    <ul class="ui-menu">
+      <!-- have to manually add ui classes here as there's no ui component to help us -->
+      <li id="manage_details" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default ui-state-active"><a>Details</a></li>
+      <li id="manage_frameworks" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default ui-state-active"><a>Libraries</a></li>
+      <li id="manage_icons" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default template-restriction"><a>Icons</a></li>
+      <li id="manage_export" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default template-restriction"><a>Export</a></li>
+      <li id="manage_publish" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default template-restriction"><a>Build</a></li>
+    </ul>
+  </div>
+  <h3 id="accordion_item_editor"><a>Editor</a></h3>
+  <div>
+    <ul class="ui-menu ui-helper-clearfix">
+      <li id="editor_files" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default ui-state-active"><a>Files</a></li>
+    </ul>
+    <div id="editor_loading_view" class="loading_view">
+      <p>Loading...Please wait...</p>
+    </div>
+    <div id="editor_files_list">
+    </div>
+  </div>
+  <h3 id="accordion_item_configuration"><a href="#">Configuration</a></h3>
+  <div> 
+    <ul class="ui-menu">      
+      <li id="configuration_studio" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default ui-state-active"><a>Studio Preview</a></li>    
+      <li id="configuration_embed" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default ui-state-active"><a>Embed</a></li>
+      <li id="configuration_iphone" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>iPhone</a></li>
+      <li id="configuration_ipad" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>iPad</a></li>
+      <% if(studio.getProps().optBoolean("ios-universal-enabled")){%>
+       <li id="configuration_ios" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>iOS Universal</a></li>
+      <%}%>
+      <li id="configuration_android" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>Android</a></li>
+      <li id="configuration_blackberry" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>Blackberry</a></li>
+      <li id="configuration_windowsphone7" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>Windows Phone 7</a></li>
+      <li id="configuration_nokiawrt" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>Nokia Web Run Time</a></li>
+<!--  <li id="configuration_facebook" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>Facebook</a></li> -->
+    </ul>
+  </div>
+  <h3 id="accordion_item_debug" class="ui-accordion-header-last"><a href="#">Cloud Management</a></h3>
+  
+  <div>
+    <ul class="ui-menu">
+      <li id="debug_logging" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default ui-state-active"><a>Logging</a></li>
+      <% if(studio.getProps().optBoolean("stats-enabled")){ %>
+       <li id="status" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default ui-state-active"><a>Status</a></li>
+      <%}%>
+      <li id="staging" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default ui-state-active"><a>Staging</a></li>
+      <!-- li id="debug_script" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default ui-state-active"><a>Script Errors</a></li -->
+    </ul>
+  </div>
+ 
+  <% if(studio.getProps().optBoolean("enable-per-app-metrics")){ %>
+  <h3 id="accordion_item_report" class="ui-accordion-header-last"><a href="#">Reporting</a></h3>
+  <div>
+    <ul class="ui-menu">
+      <li id="report_installsdate" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default ui-state-active"><a>App Installs by Date</a></li>
+      <li id="report_installsdest" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>App Installs by Destination</a></li>
+      <li id="report_installsloc"  class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>App Installs by Location</a></li>
+      <li id="report_startupsdate" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>App Startups by Date</a></li>
+      <li id="report_startupsdest" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>App Startups by Destination</a></li>
+      <li id="report_startupsloc"  class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>App Startups by Location</a></li>
+    </ul>
+  </div>
+  <%}%>
+  
+  <% if(studio.getProps().optBoolean("enable-push-notification")){ %>
+  <h3 id="accordion_item_push" class="ui-accordion-header-last"><a href="#">Push Notification</a></h3>
+  <div>
+    <ul class="ui-menu">
+      <li id="push_urbanairship" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default ui-state-active"><a>Urban Airship</a></li>
+    </ul>
+  </div>
+ <%}%>
+  <h3 id="accordion_item_preview" class="ui-accordion-header-last"><a href="#">Preview</a></h3>
+  <div>
+    <ul class="ui-menu">
+      <li id="preview_configuration" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>Configuration</a></li>
+    </ul>
+  </div>   
+</div>

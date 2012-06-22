@@ -1,0 +1,15 @@
+{
+  "predef": [
+    "$fw", "fw_manager", "google", "Log", "application", "HtmlUtil", "js_util", "Class", "Constants", "Highcharts", "moment"
+  ],
+  "eqeqeq": false,
+  "eqnull": true,
+  "sub": true,
+  "devel": false,
+  "browser": true,
+  "smarttabs": false,
+  "laxbreak": true,
+  "laxcomma": true,
+  "jquery": true,
+  "loopfunc": true
+}

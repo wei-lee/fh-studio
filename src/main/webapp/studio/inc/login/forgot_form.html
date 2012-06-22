@@ -1,0 +1,22 @@
+<% 
+String forgotFormClass = "input-form";
+if("false".equals(studio.getProperty(studio.PROP_FREEREGISTRATION))){ 
+  forgotFormClass = "input-form center-form";
+}
+%>
+
+<form id="forgot_form" class="<%=forgotFormClass%>">
+  <div class="input-form-header"></div>
+  <fieldset class="input-form-element">
+    <legend class="input-form-text">Forgot your password</legend>
+    <p class="input-form-desc input-form-text">Please enter your email address below, then click 'Continue' to send Password Reset instructions.</p>
+    <div class="form-field ui-helper-clearfix">
+       <label for="forgot_email" class="input-form-text">Email:</label><input id="forgot_email" name="forgot_email" type="text">
+    </div>
+    <div class="form-field submit-field ui-helper-clearfix">
+      <label id="forgot_form_error" class="input-form-text input-form-error error"></label>
+      <input type="button" id="forgot_button" class="btn btn-primary right" value="Continue">
+    </div>
+  </fieldset>
+  <p class="input-form-footer input-form-text"><a id="login_back_link" class="input-form-text">&laquo;Back to Login</a></p>
+</form>

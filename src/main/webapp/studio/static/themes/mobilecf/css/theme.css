@@ -1,0 +1,16 @@
+#header_logo {
+  background-image:url(../../enterprise/img/feedhenry_logo.png);
+}
+
+.hiring-link {
+ display: none !important;
+}
+
+#header_logo_east {
+  float:right;
+  width: 280px;
+  height: 42px;
+  margin:15px 5px 0 0;
+  background-image:url(../img/powered_by_cloudfoundry.png);
+  background-repeat:no-repeat;
+}

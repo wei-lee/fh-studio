@@ -1,0 +1,24 @@
+<form id="register_form" class="input-form" autocomplete="off">
+  <div class="input-form-header"></div>
+  <fieldset>
+    <legend>Register to Create Apps for Free!</legend>
+    <div class="form-field ui-helper-clearfix">
+       <label for="register_name">Name:</label><input name="register_name" id="register_name" type="text">
+    </div>
+    <div class="form-field ui-helper-clearfix">
+       <label for="register_email">Email:</label><input name="register_email" id="register_email" type="text">
+    </div>
+    <div class="form-field ui-helper-clearfix">
+       <label for="register_password">Password:</label><input name="register_password" id="register_password" type="password" autocomplete="off">
+    </div>
+    <div class="form-field ui-helper-clearfix">
+       <label for="register_confirm">Confirm:</label><input name="register_confirm" id="register_confirm" type="password">
+    </div>
+    <input id="register_domain" type="hidden" name="register_domain" value="<%= studio.getLoginDomain() %>">
+    <div class="form-field submit-field ui-helper-clearfix">
+      <label id="register_form_error" class="input-form-error error"></label>
+      <input type="button" id="register_button" class="btn btn-primary right" value="Register">
+    </div>
+  </fieldset>
+  <p class="input-form-footer">By registering for this site, you are agreeing to the FeedHenry <a class="tandc_Link" href="http://www.feedhenry.com/terms" target="_blank" alt="Terms & Conditions">terms and conditions</a></p>
+</form>

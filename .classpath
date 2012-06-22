@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="src" path="src/test/java"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/json-lib-2.4-jdk15.jar" sourcepath="/home/dmartin/json-lib-2.4-jdk15-sources.jar"/>
+	<classpathentry kind="lib" path="lib/servletapi-2.4.jar"/>
+	<classpathentry kind="lib" path="lib/httpclient-4.2.jar"/>
+	<classpathentry kind="lib" path="lib/httpcore-4.2.jar"/>
+	<classpathentry kind="lib" path="lib/log4j-1.2.14.jar"/>
+	<classpathentry kind="lib" path="lib/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

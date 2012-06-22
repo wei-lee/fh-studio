@@ -1,0 +1,110 @@
+<script>
+  var DOMAIN = "<%= studio.getLoginDomain()%>";
+  // Script locations for ace workers
+  var aceWorkerJsUrl = "<%=studio.getStaticAssetPath("common/js/ui/thirdparty/ace/worker-javascript.js")%>";
+  var aceWorkerCssUrl = "<%=studio.getStaticAssetPath("common/js/ui/thirdparty/ace/worker-css.js")%>";
+  
+  var workerMappings = {
+      "worker-javascript.js" : "",//aceWorkerJsUrl, TODO: fix above required if mergers used
+      "worker-css.js" : ""//aceWorkerCssUrl
+    };
+<%-- NOTE: See /src/main/webapp/studio/static/common/js/ui/thirdparty/ace/README.txt for info on modified files for worker support --%>
+<%-- TODO: is this necessary anymore now that were not using mergers ^^ --%>
+</script>
+
+<!-- Framework javascript -->
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/json/json2.js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/jquery/jquery.js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/jquery/plugins/jquery.throttle.js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/jquery/plugins/jquery.transform.js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/jquery/plugins/jquery.qtip.js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/jquery/plugins/jquery.validate.js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty-mods/jquery/plugins/jquery.validate.fh_extensions.js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/jquery/plugins/jquery.cookie.js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/jquery/plugins/jquery.dataTables.min.js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/jquery/plugins/jquery.dataTables.fhext.js")%>" type="text/javascript"></script>
+
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/jquery/plugins/jquery.jstree.js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/jquery/plugins/jquery.form.js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/jquery/plugins/jquery.placeholder.js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/jquery-ui/jquery-ui.js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/jquery-ui/plugins/jquery.layout.js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/jquery-ui/plugins/jqgrid/i18n/grid.locale-" + studio.getLanguage() + ".js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/jquery-ui/plugins/jqgrid/jquery.jqGrid.min.js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty-mods/jquery-ui/plugins/jquery.jWizard.fh_extensions.js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/jquery-ui/plugins/jquery.jWizard.js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/codemirror/codemirror.js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/codemirror/stringstream.js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/codemirror/tokenize.js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/codemirror/tokenizejavascript.js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/codemirror/parsejavascript.js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/ace/ace-uncompressed-noconflict.js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/ace/theme-textmate-uncompressed-noconflict.js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/ace/mode-javascript-uncompressed-noconflict.js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/ace/mode-json-uncompressed-noconflict.js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/ace/mode-html-uncompressed-noconflict.js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/ace/mode-xml-uncompressed-noconflict.js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/ace/mode-css-uncompressed-noconflict.js")%>" type="text/javascript"></script>
+    <!--// See /src/main/webapp/studio/static/common/js/ui/thirdparty/ace/README.txt for info on modified files for worker support-->
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/Class.js")%>" type="text/javascript"></script>
+    
+    <!--// jqplot scripts -->
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/jquery/plugins/jqplot/jquery.jqplot.js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/jquery/plugins/jqplot/plugins/jqplot.pieRenderer.js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/jquery/plugins/jqplot/plugins/jqplot.highlighter.js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/jquery/plugins/jqplot/plugins/jqplot.canvasTextRenderer.js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/jquery/plugins/jqplot/plugins/jqplot.canvasAxisTickRenderer.js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/jquery/plugins/jqplot/plugins/jqplot.dateAxisRenderer.js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/jquery/plugins/jqplot/plugins/jqplot.categoryAxisRenderer.js")%>" type="text/javascript"></script>
+    
+    <!--//jquery file upload -->
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/jquery-fileupload/jquery.iframe-transport.js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/jquery-fileupload/jquery.fileupload.js")%>" type="text/javascript"></script>
+    
+    
+    <!--    // TODO: move non-framework files out to IDEMerger -->
+    <script src="<%=studio.getStaticAssetPath("common/js/util/StringUtil.js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/util/HtmlUtil.js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/util/QueryStringParser.js")%>" type="text/javascript"></script>
+
+<!--/*  Omit framework files for prototyping */-->
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/framework/server/AjaxCaller.js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/framework/server/ServerManager.js")%>" type="text/javascript"></script>
+    
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/framework/data/DataManager.js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/framework/state/StateManager.js")%>" type="text/javascript"></script>
+    
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/framework/event/EventChain.js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/framework/event/EventManager.js")%>" type="text/javascript"></script>
+    
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/framework/ui/UIComponentFactory.js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/framework/ui/UILoader.js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/framework/ui/UIManager.js")%>" type="text/javascript"></script>
+
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/framework/analytics/AnalyticsImpl.js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/framework/analytics/GoogleAnalytics.js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/framework/analytics/MixPanelAnalytics.js")%>" type="text/javascript"></script>
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/framework/analytics/AnalyticsManager.js")%>" type="text/javascript"></script>
+    
+    <script src="<%=studio.getStaticAssetPath("common/js/ui/framework/FrameworkManager.js")%>" type="text/javascript"></script>
+
+
+
+
+<!-- Studio Specific properties -->
+<script type="text/javascript">
+  $fw.setClientProps(<%=studio.getProps().toString()%>);
+  $fw.setUserProps(<%=studio.getUserPropsJsonString()%>);
+  // TODO: better way to inject these roles? probably
+  $fw.ROLE_CUSTOMERADMIN = '<%=studio.ROLE_CUSTOMERADMIN%>';
+  $fw.ROLE_RESELLERADMIN = '<%=studio.ROLE_RESELLERADMIN%>';
+  $fw.initFramework();
+</script> 
+
+  
+<!-- Very small subset of studio javascript required for all pages -->
+<script src="<%=studio.getStaticAssetPath("js/application/Properties.js")%>" type="text/javascript"></script>
+<script src="<%=studio.getStaticAssetPath("js/prototype/log.js")%>" type="text/javascript"></script>
+<script src="<%=studio.getStaticAssetPath("js/application/lang/Lang.js")%>" type="text/javascript"></script>
+<script src="<%=studio.getStaticAssetPath("js/application/lang/LangManager.js")%>" type="text/javascript"></script>
+<script src="<%=studio.getStaticAssetPath("js/init/Init.js")%>" type="text/javascript"></script> 

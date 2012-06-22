@@ -1,0 +1,12 @@
+#header_logo {
+  background-image: url(../img/corplogo.png) !important;
+}
+
+#header_logo_east {
+  float:right;
+  width: 240px;
+  height: 40px;
+  margin:20px 0 0 0;
+  background-image:url(../../telefonica-ie/img/powered_by_reseller.png);
+  background-repeat:no-repeat;
+}
