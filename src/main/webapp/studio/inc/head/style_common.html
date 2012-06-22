@@ -1,18 +1,4 @@
-<link rel="stylesheet" href="<%=studio.getStaticAssetPath("common/css/ui/framework/jquery.ui.core.css")%>"/>
-    <link rel="stylesheet" href="<%=studio.getStaticAssetPath("common/css/ui/framework/jquery.ui.accordion.css")%>"/>
-    <link rel="stylesheet" href="<%=studio.getStaticAssetPath("common/css/ui/framework/jquery.ui.button.css")%>"/>
-    <link rel="stylesheet" href="<%=studio.getStaticAssetPath("common/css/ui/framework/jquery.ui.dialog.css")%>"/>
-    <link rel="stylesheet" href="<%=studio.getStaticAssetPath("common/css/ui/framework/jquery.ui.tabs.css")%>"/>
-    <link rel="stylesheet" href="<%=studio.getStaticAssetPath("common/css/ui/framework/jquery.ui.progressbar.css")%>"/>
-    <link rel="stylesheet" href="<%=studio.getStaticAssetPath("common/css/ui/framework/jquery.ui.layout.css")%>"/>
-    <link rel="stylesheet" href="<%=studio.getStaticAssetPath("common/css/ui/framework/jquery.ui.datepicker.css")%>"/>
-    <link rel="stylesheet" href="<%=studio.getStaticAssetPath("common/css/ui/framework/jWizard.base.css")%>"/>
-    <link rel="stylesheet" href="<%=studio.getStaticAssetPath("common/css/ui/framework/jqplot/jquery.jqplot.css")%>"/>
-    <link rel="stylesheet" href="<%=studio.getStaticAssetPath("common/css/ui/framework/jqgrid/ui.jqgrid.css")%>"/>
-    <link rel="stylesheet" href="<%=studio.getStaticAssetPath("common/css/ui/framework/codemirror/docs.css")%>"/>
-    <link rel="stylesheet" href="<%=studio.getStaticAssetPath("common/css/ui/framework/codemirror/jscolors.css")%>"/>
-    <link rel="stylesheet" href="<%=studio.getStaticAssetPath("common/css/ui/framework/bootstrap.css")%>"/>
-
+<%= studio.getIdeStyles() %>
 
 <%
 List<String> themes = studio.getThemes();
