@@ -62,9 +62,6 @@ button {
   display: none;
 }
 
-.inner-layout .ui-layout-north, #apps_north {
-  height: 52px !important;
-}
 .section-header-dashboard, .section-header {
   color: #032B5A;
   font-size: 1.2em;
