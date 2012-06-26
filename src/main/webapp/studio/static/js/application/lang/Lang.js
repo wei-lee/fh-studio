@@ -295,7 +295,7 @@ var Lang = {
   publish_embed_title: 'Embed Code',
   publish_embed_text: 'Paste the following code in your html to load an embedded version of the App.',
   
-  my_apps_grid_columns: ['Id', 'Name', 'Description', 'Version', 'Last Changed', 'Actions'],
+  my_apps_grid_columns: ['Id', 'Name', 'Email', 'Description', 'Version', 'Last Changed', 'Actions'],
   template_apps_grid_columns:  ['Id', 'Name', 'Description', 'Actions'],
   
   new_app_w3cid_help_icon: 'A unique identifier for the App.',
