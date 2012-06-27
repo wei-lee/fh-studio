@@ -602,7 +602,7 @@ label.error
 }
 .jqgrow td a
 {
-  margin:0 0 0 1em;
+  margin:0 0 0 8px;
   cursor:pointer;
 }
 .ui-jqgrid .ui-jqgrid-bdiv
