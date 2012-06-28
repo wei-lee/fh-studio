@@ -791,10 +791,7 @@ ace.define('ace/worker/worker_client', ['require', 'exports', 'module' , 'ace/li
 var oop = require("../lib/oop");
 var EventEmitter = require("../lib/event_emitter").EventEmitter;
 
-var WorkerClient = function(topLevelNamespaces, packagedJs, mod, classname) {
-    // NOTE: Modified by david.martin@feedhenry.com. Needed for loading workers statically
-    packagedJs = workerMappings[packagedJs] || packagedJs;
-  
+var WorkerClient = function(topLevelNamespaces, packagedJs, mod, classname) {  
     this.changeListener = this.changeListener.bind(this);
 
     if (module.packaged) {

@@ -1,17 +1,9 @@
 <script>
   var DOMAIN = "<%= studio.getLoginDomain()%>";
-  // Script locations for ace workers
-  var aceWorkerJsUrl = "<%=studio.getStaticAssetPath("common/js/ui/thirdparty/ace/worker-javascript.js")%>";
-  var aceWorkerCssUrl = "<%=studio.getStaticAssetPath("common/js/ui/thirdparty/ace/worker-css.js")%>";
-  
-  var workerMappings = {
-      "worker-javascript.js" : "",//aceWorkerJsUrl, TODO: fix above required if mergers used
-      "worker-css.js" : ""//aceWorkerCssUrl
-    };
-<%-- NOTE: See /src/main/webapp/studio/static/common/js/ui/thirdparty/ace/README.txt for info on modified files for worker support --%>
-<%-- TODO: is this necessary anymore now that were not using mergers ^^ --%>
 </script>
 <!-- Framework javascript -->
+
+<script src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/ace/ace-uncompressed-noconflict.js")%>" type="text/javascript"></script>
 
 <%= studio.getFrameworkScripts() %>
 
