@@ -1,3 +1,0 @@
-The log file for studio has changed from ${fh.logdir}/core/fhstudio.log to ${fh.logdir}/studio/studio.log
-The directory should exist before studio is deployed.
-
