@@ -9,13 +9,15 @@
   <property name="test-rep"  value="${basedir}/test"/>
   <property name="webapp"  value="${basedir}/src/main/webapp/studio"/>
   <property name="web-inf"  value="${basedir}/src/main/webapp/studio/WEB-INF"/>
+	<property name="webapp-static"  value="${basedir}/src/main/webapp/studio/static"/>
   <property name="dep-classes"  value="${web-inf}/classes"/>
   <property name="dep-lib"  value="${web-inf}/lib"/>
   <property name="main-res" value="${basedir}/src/main/resources" />
+	
+	<!-- import file="./scripts.xml" / -->
 
   <!-- Allow access to environment variables through 'env' -->
   <property environment="env"/>
-
   <!-- If build no. isn't passed in (by build server), default to dev version -->
   <property name="env.BUILD_NUMBER" value="DEV-VERSION"/>
 
@@ -26,6 +28,18 @@
       <include name="*.jar"/>
     </fileset>
   </path>
+	
+	<path id="compressor.classpath">
+	  <fileset dir="${basedir}/build">
+	    <include name="*.jar" />
+	  </fileset>
+	</path>
+	
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+	  <classpath>
+	    <pathelement location="${basedir}/build/ant-contrib-0.3.jar"/>
+	  </classpath>
+	</taskdef>
 	
 	<target name="clean">
     <delete quiet="true" includeEmptyDirs="yes">
@@ -71,7 +85,7 @@
 
     <copy todir="${dep-classes}" verbose="true" overwrite="true" failonerror="true">
     	<fileset dir="${main-res}">
-    		<include name="**.txt"/>
+    		<include name="**/*.txt"/>
     		<include name="log4j.properties"/>
     	</fileset>
     </copy>
@@ -84,7 +98,7 @@
     <touch file="${web-inf}/web.xml" />
 	</target>
 	
-	<target name="make-studio-war" depends="dist-version-info, save-git-info, deploy, test">		
+	<target name="make-studio-war" depends="dist-version-info, save-git-info, deploy, compress_scripts, test">		
 		<delete file="${dist}/studio*.war" failonerror="false">
       <fileset dir="${dist}" includes="studio*.war"/>
     </delete>
@@ -100,11 +114,13 @@
     	
     </zip>
 	</target>
-	
   
   <target name="save-git-info">
     <exec executable="${basedir}/build/recordGitRev.sh" dir="${basedir}/build" failonerror="true" output="${main-res}/git-info.txt"/>
-    <exec executable="${basedir}/build/get_git_branch.sh" dir="${basedir}/build" failonerror="true" output="${main-res}/git-branch-info.txt"/>
+
+    <exec executable="${basedir}/build/get_git_branch.sh" dir="${basedir}/build" failonerror="true" outputproperty="git-branch"/>
+    <property name="env.GIT_BRANCH" value="${git-branch}"/>  	
+  	<echo file="${main-res}/git-branch-info.txt" message="${env.GIT_BRANCH}"/>
   </target>
   
   <target name="save-version-info" depends="generate-version">
@@ -140,5 +156,57 @@
 
   <target name="test" depends="jshint">
   </target>
-
+		
+	<target name="concat_framework_scripts">
+		<echo message="contacting framwork js file ${line}" />
+		<concat destfile="${webapp}/static/all/framework-script.js" append="true">
+			<fileset dir="${webapp-static}" includes="${line}" />
+		</concat>
+	</target>
+	
+  <target name="concat_ide_scripts">
+  	<echo message="contacting ide js file ${line}" />
+    <concat destfile="${webapp}/static/all/ide-script.js" append="true">
+      <fileset dir="${webapp-static}" includes="${line}" />
+    </concat>
+  </target>
+	
+  <target name="concat_styles">
+  	<echo message="contacting css file ${line}" />
+    <concat destfile="${webapp}/static/all/ide-style.css" append="true">
+      <fileset dir="${webapp-static}" includes="${line}" />
+    </concat>
+  </target>
+	
+	
+	<target name="concat_scripts">
+		<delete>
+			<fileset dir="${webapp}/static/all">
+				 <include name="*-script*.js" />
+				 <include name="*-style*.css" />
+			</fileset>
+		</delete>
+	  <loadfile property="framework_scripts" srcfile="${main-res}/scripts/framework-script.txt" />
+	  <loadfile property="ide_scripts" srcfile="${main-res}/scripts/ide-script.txt" />
+	  <loadfile property="style_sheets" srcfile="${main-res}/scripts/style-script.txt" />
+    <foreach param="line" list="${framework_scripts}" delimiter="${line.separator}" target="concat_framework_scripts">
+    </foreach>
+		<foreach param="line" list="${ide_scripts}" delimiter="${line.separator}" target="concat_ide_scripts">
+		</foreach>
+		<foreach param="line" list="${style_sheets}" delimiter="${line.separator}" target="concat_styles">
+		</foreach>
+	</target>
+	
+	<taskdef resource="yuicompressor.tasks" classpathref="compressor.classpath" />
+	
+	<target name="compress_scripts" depends="concat_scripts">
+		<yuicompressor linebreak="40" todir="${webapp-static}/all" type="js">
+			<fileset dir="${webapp-static}/all" includes="*-script.js" />
+			<mapper type="glob" from="*.js" to="*-min.js" />
+		</yuicompressor>
+		<yuicompressor linebreak="40" todir="${webapp-static}/all" type="css">
+		  <fileset dir="${webapp-static}/all" includes="*-style.css" />
+		  <mapper type="glob" from="*.css" to="*-min.css" />
+		</yuicompressor>
+	</target>
 </project>
