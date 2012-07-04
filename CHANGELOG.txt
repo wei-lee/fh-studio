@@ -1,4 +1,8 @@
 ===============================================================================
+3.2.0
+-----------------------------------------------------------------------------
+* Added a new ant task to automatically merge and minify javascript and css files
+* Added support to deliver minifed js and css files if they are exist
 
 3.1.0
 ------------------------------------------------------------------------------
