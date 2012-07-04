@@ -42,7 +42,7 @@ try {
     }
 		</script>
 		<script>
-		if (typeof intercomSettings != 'undefined') {
+		if (typeof intercomSettings != 'undefined' && ENVIRONMENT === 'prod') {
 		  Log.append('Intercom initialising');
 		  (function() {
 		    function async_load() {

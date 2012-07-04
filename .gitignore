@@ -7,6 +7,7 @@ bin
 src/main/resources/git-info.txt
 src/main/resources/git-branch-info.txt
 src/main/resources/VERSION.txt
+src/main/resources/ENV.txt
 test
 node_modules
 .jshintignore

@@ -11,18 +11,37 @@ public class VersionBean {
   private static final String GIT_FILE = "/git-info.txt";
   private static final String GIT_BRANCH_INFO_FILE = "/git-branch-info.txt";
   private static final String VERSION_FILE = "/VERSION.txt";
+  private static final String ENV_FILE = "/ENV.txt";
 
   private String release = null;
-//  private String environment = null;
 //  private String node = null;
   private String gitRevision = null;
   private String gitBranchName = null;
   private String version = null;
   private JSONObject versionInfo = null;
+  private String environment = null;
   
   public JSONObject getReleaseInfo() throws Exception{
     readReleaseInfo();
     return versionInfo;
+  }
+  
+  public String getEnvironment() throws Exception{
+    if( null == environment ) {
+      InputStream is = getFileFromClasspath(ENV_FILE);
+      if(null == is) {
+        environment = "dev";
+      } else {
+        BufferedReader br = new BufferedReader( new InputStreamReader( is));
+    
+        String line = null;
+        while((line = br.readLine()) != null) {
+          environment = line.trim();
+        }
+      }
+    }
+    
+    return environment;
   }
   
   public String getGitVersion() throws Exception {
@@ -129,10 +148,7 @@ public class VersionBean {
     release = getVersion();
     //node = ServerInit.resolveNode();
     versionInfo.put("Release", release);
-    
-    // TODO: node? and env
-    //versionInfo.put("Node", node);
-    //versionInfo.put("Environment", ServerConfig.getEnvironment());
+    versionInfo.put("Environment", getEnvironment());
   }
 
   private InputStream getFileFromClasspath(String gitFile) {

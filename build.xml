@@ -98,7 +98,7 @@
     <touch file="${web-inf}/web.xml" />
 	</target>
 	
-	<target name="make-studio-war" depends="dist-version-info, save-git-info, deploy, compress_scripts, test">		
+	<target name="make-studio-war" depends="dist-version-info, save-git-info, save-env-info, deploy, compress_scripts, test">		
 		<delete file="${dist}/studio*.war" failonerror="false">
       <fileset dir="${dist}" includes="studio*.war"/>
     </delete>
@@ -121,6 +121,11 @@
     <exec executable="${basedir}/build/get_git_branch.sh" dir="${basedir}/build" failonerror="true" outputproperty="git-branch"/>
     <property name="env.GIT_BRANCH" value="${git-branch}"/>  	
   	<echo file="${main-res}/git-branch-info.txt" message="${env.GIT_BRANCH}"/>
+  </target>
+  
+  <target name="save-env-info">
+  	<!-- ENV.txt file only exists when making the war file, so set mode to prod in war file-->
+    <echo file="${main-res}/ENV.txt" message="prod"/>
   </target>
   
   <target name="save-version-info" depends="generate-version">
