@@ -435,6 +435,8 @@ application.AppManager = Class.extend({
     if ('undefined' !== typeof app.config && 'undefined' !== typeof app.config.keys) {
       detailsContainer.find('textarea[name=keyspublic]').val(app.config.keys['public']);
     }
+
+    detailsContainer.find('input[name=app_id]').val(inst.guid);
         
     var preview_config = inst.config.preview || {};
     var preview_list = $('#manage_details_container #new_app_target');

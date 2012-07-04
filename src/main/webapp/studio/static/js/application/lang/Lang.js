@@ -301,6 +301,8 @@ var Lang = {
   new_app_w3cid_help_icon: 'A unique identifier for the App.',
   new_app_title_label: 'Name',
   new_app_title_label_help_icon: 'This will be used as the App name on devices.',
+  new_app_id_label: 'App ID',
+  new_app_id_label_help_icon: 'Your App ID is used to identify your app (FHC uses this)',
   new_app_description_label: 'Description',
   new_app_description_label_help_icon: 'A short description of the App.',
   new_app_target_label: 'Default Preview Device',
