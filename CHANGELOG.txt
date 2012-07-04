@@ -4,6 +4,7 @@
 ###CHANGES
 * Added intercom user tracking for logged in users
 * Added new 'email' column to app listing, shows email of original app creator (only if email is sent back in app list response)
+* Added 'ENVIRONMENT' global to studio js. Can be either 'dev' or 'prod'
 
 ###NOTES
 * 
