@@ -49,6 +49,10 @@
       <fileset dir="${dep-lib}" includes="**/*.jar"/>
       <fileset dir="${dep-classes}" includes="**/*.*"/>
       <fileset dir="${test-rep}"/>
+      <fileset dir="${main-res}" includes="git-branch-info.txt"/>
+      <fileset dir="${main-res}" includes="git-info.txt"/>
+      <fileset dir="${main-res}" includes="VERSION.txt"/>
+      <fileset dir="${main-res}" includes="ENV.txt"/>
     </delete>
   </target>
 
@@ -126,6 +130,7 @@
   <target name="save-env-info">
   	<!-- ENV.txt file only exists when making the war file, so set mode to prod in war file-->
     <echo file="${main-res}/ENV.txt" message="prod"/>
+    <echo level="warning" message="ENVIRONMENT IS NOW SET TO 'prod'" />
   </target>
   
   <target name="save-version-info" depends="generate-version">
