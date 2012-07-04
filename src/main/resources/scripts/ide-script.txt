@@ -48,11 +48,6 @@ js/application/account/resource/ResourceManager.js
 js/application/account/resource/AppleResourceManager.js
 js/application/account/resource/AndroidResourceManager.js
 js/application/account/resource/BlackberryResourceManager.js
-js/application/arm/ArmManager.js
-js/application/arm/ArmUserManager.js
-js/application/arm/ArmAppManager.js
-js/application/arm/ArmGroupManager.js
-js/application/arm/ArmDeviceManager.js
 js/application/dialog/DialogManager.js
 js/model/ModelManager.js
 js/model/models/Model.js
@@ -62,6 +57,13 @@ js/model/models/User.js
 js/model/models/Group.js
 js/model/models/Role.js
 js/model/models/Resource.js
+js/model/models/ArmAuthPolicy.js
+js/application/arm/ArmManager.js
+js/application/arm/ArmUserManager.js
+js/application/arm/ArmAppManager.js
+js/application/arm/ArmGroupManager.js
+js/application/arm/ArmDeviceManager.js
+js/application/arm/ArmAuthPolicyManager.js
 js/application/user_admin/user_admin.controller.js
 js/application/chart/ChartManager.js
 js/application/chart/locator/ChartLocator.js

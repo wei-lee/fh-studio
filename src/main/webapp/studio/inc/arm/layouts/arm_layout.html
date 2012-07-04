@@ -41,6 +41,14 @@
             <li id="devices_approve" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>Approve</a></li>    
           </ul>
         </div>
+        <% if(studio.getProps().optBoolean("arm-auth-policy-enabled", false)) { %>
+        <h3 id="accordion_item_auth_policies" class="ui-accordion-header-last"><a>Authentication Policies</a></h3>
+        <div>
+          <ul class="ui-menu">
+            <li id="auth_policies_manage" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>Manage</a></li> 
+          </ul>
+        </div>
+        <% } %>
       </div>
     </div>
     <!-- end arm_layout west -->
@@ -62,7 +70,9 @@
         <%@ include file="../arm_devices/devices_list.html" %>
         <%@ include file="../arm_devices/devices_add.html" %>
         <%@ include file="../arm_devices/devices_approve.html" %>
-      
+        <% if(studio.getProps().optBoolean("arm-auth-policy-enabled", false)) { %>
+        <%@ include file="../arm_auth_policies/auth_policies_manage.html" %>
+        <% } %>
       </div>
     </div>
     <!-- end arm_layout center -->

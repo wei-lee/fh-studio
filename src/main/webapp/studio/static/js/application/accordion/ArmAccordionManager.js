@@ -34,5 +34,9 @@ application.ArmAccordionManager = application.AccordionManager.extend({
   
   postSelectDevicesApprove: function(){
     $fw_manager.client.arm.devices.initApproveGrid();
+  },
+  
+  postSelectAuthPoliciesManage: function(){
+    $fw_manager.client.arm.authPolicies.showPolicyList();
   }
 });
