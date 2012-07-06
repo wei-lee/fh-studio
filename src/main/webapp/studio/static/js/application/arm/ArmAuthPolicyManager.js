@@ -19,7 +19,6 @@ application.ArmAuthPolicyManager = application.ArmManager.extend({
           '<label class="select">',
             '<select class="" id="policy_type">',
           	  '<option value="oauth"> oAuth </option>',
-          	  '<option value="openid"> OpenId </option>',
             '</select>',
           '</label>',
           '<label>Provider</label>',
