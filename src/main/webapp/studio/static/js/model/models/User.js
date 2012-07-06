@@ -189,36 +189,6 @@ model.User = model.Model.extend({
     } else {
       return this.serverPost(url, params, success, fail, true);
     }
-  },
-
-  postProcessList: function(res, data_model) {
-    var filtered_fields = data_model.getColumnMap();
-
-    var rows = res.list;
-    var data = {
-      aaData: [],
-      aoColumns: []
-    };
-
-    // Buid Data
-    $.each(rows, function(i, item) {
-      var row = item.fields;
-      data.aaData.push([]);
-
-      $.each(filtered_fields, function(k, v) {
-        var value = row[k];
-        data.aaData[i].push(value);
-      });
-    });
-
-    // Build Columns
-    $.each(filtered_fields, function(k, v) {
-      data.aoColumns.push({
-        sTitle: v
-      });
-    });
-
-    return data;
   }
 
 });

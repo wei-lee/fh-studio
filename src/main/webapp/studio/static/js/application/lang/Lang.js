@@ -675,7 +675,7 @@ var Lang = {
   armdevices_assignusers_header: 'Assign Users To Device',
   armdevices_users_grid_columns: ['Id', 'User Email', 'User Name', 'Select'],
   arm_devices_approve_grid_columns: ['Id', 'User Email', 'Device Id', 'Last Attempt', 'Total Attempts', 'Actions'],
-  
+  auth_policies_manage_header: 'Manage Authentication Policies',
   reporting_installsdate_header: 'App Installs by Date',
   reporting_installsdest_header: 'App Installs by Destination',
   reporting_installsloc_header: 'App Installs by Location',
