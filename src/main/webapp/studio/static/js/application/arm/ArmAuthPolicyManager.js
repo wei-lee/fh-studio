@@ -29,7 +29,7 @@ application.ArmAuthPolicyManager = application.ArmManager.extend({
     '</label>',
     '<label>Client Id</label>',
     '<input id="client_id" type="text" class="span6" placeholder="Client Id (provided by Oauth service (ie Google etc...))">',
-    '<label>Client Id</label>',
+    '<label>Client Secret</label>',
     '<input id="client_secret" type="text" class="span6" placeholder="Client Secret (provided by Oauth service (ie Google etc...))">',
     '<label>Oauth Callback Url (Note* this should be added as the oauth callback url on the provider side i.e Google)</label>',
     '<input id="oauth_callback" type="text" class="span6" disabled="disabled">',
