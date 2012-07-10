@@ -23,7 +23,7 @@
         return '#3d96ae';
       } else if (key == 'iPad') {
         return '#aa4643';
-      } else {
+      }  else {
         var random_colours = ['#4572a7', '#aa4643', '#89a54e', '#80699b', '#3d96ae', '#db843d'];
         var random_colour = random_colours[Math.floor(Math.random() * random_colours.length)];
         return random_colour;
@@ -36,7 +36,9 @@
         "iphone": "iPhone",
         "ipad": "iPad",
         "blackberry": "BlackBerry",
-        "wp7": "Windows Phone 7"
+        "wp7": "Windows Phone 7",
+        "nokiawrt": "Nokia WRT",
+        "windowsphone7": "Windows Phone 7"
       };
       return label_map[key] || key;
     },
