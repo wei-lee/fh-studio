@@ -2424,7 +2424,7 @@ line-height:0.5em;
 .arm-container .section-body-grid, .armusers-container .section-body-grid, .armgroups-container .section-body-grid, .armdevices-container .section-body-grid{
  height: 100%;
  padding: 5px 0 0 0;
- overflow: hidden;
+ overflow: scroll;
 }
 .arm_list_grid {
  height: 100%;
