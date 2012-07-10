@@ -3097,6 +3097,10 @@ button.btn.btn-large, input[type="submit"].btn.btn-large {
   height: 30px;
 }
 
+input[disabled],select[disabled],textarea[disabled],input[readonly],select[readonly],textarea[readonly] {
+  cursor: default;
+}
+
 .jw-content input[type="radio"] {
   margin-right: 5px;
 }
