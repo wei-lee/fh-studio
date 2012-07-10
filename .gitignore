@@ -1,4 +1,3 @@
-src/main/webapp/studio/static/all
 src/main/webapp/studio/WEB-INF/classes
 src/main/webapp/studio/WEB-INF/lib
 *.class
