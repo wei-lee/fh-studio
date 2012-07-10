@@ -102,7 +102,7 @@
     <touch file="${web-inf}/web.xml" />
 	</target>
 	
-	<target name="make-studio-war" depends="dist-version-info, save-git-info, save-env-info, deploy, compress_scripts, test">		
+	<target name="make-studio-war" depends="dist-version-info, save-git-info, save-env-info, deploy, test, compress_scripts">		
 		<delete file="${dist}/studio*.war" failonerror="false">
       <fileset dir="${dist}" includes="studio*.war"/>
     </delete>
