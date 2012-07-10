@@ -75,9 +75,19 @@ application.AppManager = Class.extend({
           // Check if the current app is a Node.js one
           if ($fw.client.app.isNodeJsApp()) {
             Log.append('Node.js based app, applying changes');
+            
+            // Show Node cloud logo
+            $('#cloud_logo').removeClass().addClass('node').unbind().bind('click', function(){
+              window.open('http://nodejs.org/', '_blank');
+            });
           } else {
             Log.append('Rhino based app, applying changes');
             $fw.client.app.disableNodeJsApp();
+
+            // Show Rhino cloud logo
+            $('#cloud_logo').removeClass().addClass('rhino').unbind().bind('click', function(){
+              window.open('http://www.mozilla.org/rhino/', '_blank');
+            });
           }
           
           $fw_manager.client.tab.apps.showManageApps( success );

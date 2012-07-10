@@ -3173,3 +3173,23 @@ table.dataTable th:active {
 #new_app_id {
   cursor: text;
 }
+
+#manage_apps_west {
+  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+#cloud_logo {
+  height: 35px;
+  padding-bottom: 10px;
+  cursor: pointer;
+}
+
+#cloud_logo.node {
+  background: url('../img/cloud_logo_node.png') no-repeat top center;
+}
+
+#cloud_logo.rhino {
+  background: url('../img/cloud_logo_rhino.png') no-repeat top center;
+}
