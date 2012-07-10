@@ -51,5 +51,10 @@ model.ArmAuthPolicy = model.Model.extend({
   	var params = {policyId: policyId};
   	var url = this.baseUrl + "/read";
   	return this.serverPost(url, params, success, fail);
+  },
+
+  getConfig : function (success, fail){
+    var url = Constants.ARM_URL_PREFIX + "getAuthCallbackUrl";
+    return this.serverPost(url, {}, success, fail);
   }
-})
+});

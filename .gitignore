@@ -11,3 +11,4 @@ src/main/resources/ENV.txt
 test
 node_modules
 .jshintignore
+.idea/

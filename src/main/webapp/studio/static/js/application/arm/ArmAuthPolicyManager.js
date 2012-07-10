@@ -27,6 +27,12 @@ application.ArmAuthPolicyManager = application.ArmManager.extend({
               '<option value="google">Google</option>',
             '</select>',
           '</label>',
+          '<label>Client Id</label>',
+          '<input id="client_id" type="text" class="span4" placeholder="Client Id (provided by Oauth service (ie Google etc...))">',
+          '<label>Client Id</label>',
+          '<input id="client_secret" type="text" class="span4" placeholder="Client Secret (provided by Oauth service (ie Google etc...))">',
+          '<label>Oauth Callback Url</label>',
+          '<input id="oauth_callback" type="text" class="span4" disabled="disabled">',
           '<label>Users (Use comma to separate multiple users)</label>',
           '<label class="textarea">',
           '<textarea id="policy_users" rows=10></textarea>',
@@ -79,7 +85,7 @@ application.ArmAuthPolicyManager = application.ArmManager.extend({
     $('tr td .edit_policy', this.policy_table).click(function() {
       var row = $(this).parent().parent();
       var data = self.policyDataForRow($(this).parent().parent().get(0));
-      console.log(data);
+      //console.log(data);
       self.showCreatePolicy(data[0]);
       return false;
     });
@@ -125,27 +131,37 @@ application.ArmAuthPolicyManager = application.ArmManager.extend({
         self.createPolicy(action);
         return false;
       });
-    }
+    };
 
     var readPolicy = function(id){
-    	self.models.policy.read(id, function(res){
+
+      self.models.policy.read(id, function(res){
+
           self.hideViews();
           $(view).empty().append($(self.getFormTemplate(action)).clone());
-    	  self.showEditPolicy(res);
-    	  $(view).show();
+        self.showEditPolicy(res);
+        $(view).show();
         bindEvent();
-    	}, function(e){
-    	  $fw.client.dialog.error("Error reading policy with id " + id);
-    	})
-    }
+      }, function(e){
+        $fw.client.dialog.error("Error reading policy with id " + id);
+      });
+    };
 
     if(policy_id){
       readPolicy(policy_id);
     } else {
-      this.hideViews();
-      $(view).empty().append($(self.getFormTemplate(action)).clone());
-      $(view).show();
-      bindEvent();
+      self.models.policy.getConfig(function (conf){
+
+        self.hideViews();
+
+        $(view).empty().append($(self.getFormTemplate(action)).clone());
+        $('#oauth_callback', self.views.policies_create).val(conf.url);
+
+        $(view).show();
+        bindEvent();
+      }, function (err){
+
+      });
     }
     
   },
@@ -160,6 +176,9 @@ application.ArmAuthPolicyManager = application.ArmManager.extend({
       $('#policy_id', self.views.policies_update).val(policy.policyId).attr("disabled", "true");
       $('#policy_type', self.views.policies_update).val(policy.policyType);
       $('#policy_conf_provider', self.views.policies_update).val(policy.configurations.provider);
+      $('#client_id',self.views.policies_update).val(policy.configurations.clientId);
+      $('#client_secret',self.views.policies_update).val(policy.configurations.clientSecret);
+      $('#oauth_callback',self.views.policies_update).val(policy.configurations.callbackUrl);
       var userList = policy.users.list;
       $('#policy_users', self.views.policies_update).text(userList.join(","));
     }
@@ -175,12 +194,15 @@ application.ArmAuthPolicyManager = application.ArmManager.extend({
     var type = $('#policy_type', view).val();
     var provider = $('#policy_conf_provider', view).val();
     var users = $('#policy_users', view).val().replace(/\s/g, '').replace(/\n/g, '');
+    var clientId = $('#client_id', view).val();
+    var clientSecret = $('#client_secret',view).val();
+    var callbackUrl  = $('#oauth_callback', view).val();
 
-    var conf = {'provider': provider};
+    var conf = {'provider': provider, "clientId":clientId , "clientSecret":clientSecret,"callbackUrl":callbackUrl};
     var usersArr = users.split(",");
 
     this.models.policy[action](id, type, conf, {list: usersArr}, function(res) {
-      console.log(res);
+      //console.log(res);
       self.showPolicyList();
     }, function(e) {
       if (typeof e == 'undefined') {
