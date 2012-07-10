@@ -1,4 +1,8 @@
 ===============================================================================
+###CHANGES
+* Added new auth policy section for the portal admin, allowing the configuration of third party oauth and authentication that ties back into ARM
+
+###NOTES
 3.3.0
 -----------------------------------------------------------------------------
 ###CHANGES
