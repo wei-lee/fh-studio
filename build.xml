@@ -102,7 +102,7 @@
     <touch file="${web-inf}/web.xml" />
 	</target>
 	
-	<target name="make-studio-war" depends="dist-version-info, save-git-info, save-env-info, deploy, compress_scripts, test">		
+	<target name="make-studio-war" depends="dist-version-info, save-git-info, save-env-info, deploy, test, compress_scripts">		
 		<delete file="${dist}/studio*.war" failonerror="false">
       <fileset dir="${dist}" includes="studio*.war"/>
     </delete>
@@ -158,8 +158,7 @@
 
   <target name="jshint" depends="mkdirs, npminstall">
     <exec executable="${basedir}/build/genjshintignore.sh" dir="${basedir}" failonerror="true" output="${basedir}/.jshintignore"/>
-    <exec executable="${basedir}/node_modules/jshint/bin/hint" dir="${basedir}" failonerror="true" output="${basedir}/test/jshint.xml">
-      <arg value="--jslint-reporter"/>
+    <exec executable="${basedir}/node_modules/jshint/bin/hint" dir="${basedir}" failonerror="true">
       <arg value="src/main/webapp/studio/static/"/>
     </exec>
   </target>
