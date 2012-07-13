@@ -370,9 +370,7 @@ GenerateApp.Controllers.Wufoo = Class.extend({
             },
             complete: function(res) {
               Log.append('SCM refresh successful > ' + JSON.stringify(res));
-              $fw_manager.client.dialog.info.flash('App generation failed.', 2000);
               self.updateCloningProgress(75, modal);
-
             },
             error: function(res) {
               Log.append('clone error > ' + JSON.stringify(res));
