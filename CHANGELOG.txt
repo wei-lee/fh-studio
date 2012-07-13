@@ -1,8 +1,27 @@
 ===============================================================================
+###CHANGES
+* Added new auth policy section for the portal admin, allowing the configuration of third party oauth and authentication that ties back into ARM
+
+###NOTES
+3.3.0
+-----------------------------------------------------------------------------
+###CHANGES
+* Added intercom user tracking for logged in users
+* Added new 'email' column to app listing, shows email of original app creator (only if email is sent back in app list response)
+* Added 'ENVIRONMENT' global to studio js. Can be either 'dev' or 'prod'
+
+###NOTES
+* 
+
+
 3.2.0
 -----------------------------------------------------------------------------
+###CHANGES
 * Added a new ant task to automatically merge and minify javascript and css files
 * Added support to deliver minifed js and css files if they are exist
+
+###NOTES
+* The log file for studio has changed from ${fh.logdir}/core/fhstudio.log to ${fh.logdir}/studio/studio.log The directory should exist before studio is deployed.
 
 3.1.0
 ------------------------------------------------------------------------------

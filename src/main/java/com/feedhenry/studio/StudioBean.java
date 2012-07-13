@@ -108,6 +108,7 @@ public class StudioBean {
   private JSONObject mStudioProps = null;
   private JSONObject mCoreProps = null;
   private JSONObject mUserProps = null;
+  private VersionBean mVersionBean;
   
   private static List<String> mFrameworkScripts = null;
   private static List<String> mIdeScripts = null;
@@ -123,7 +124,8 @@ public class StudioBean {
 
   public void init(ServletContext pServletContext) throws Exception {
     mServletContext = pServletContext;
-    log.info("Servlet init()");
+    log.info("StudioBean.init()");
+    mVersionBean = new VersionBean();
   }
 
   public boolean initreq(HttpServletRequest pRequest, HttpServletResponse pResponse, String pPageName) throws Exception {
@@ -513,6 +515,10 @@ public class StudioBean {
 
   public String getProperty(String pPropName) throws Exception {
     return mStudioProps.optString(pPropName);
+  }
+  
+  public String getEnvironment() throws Exception {
+    return mVersionBean.getEnvironment();
   }
 
   public Map<String, String> getDocsLinks() throws Exception {

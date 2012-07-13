@@ -228,8 +228,11 @@ Reports.Model.InstallsByDate = Reports.Model.Base.extend({
     var label_map = {
       android: "Android",
       iphone: "iPhone",
+      ipad: "iPad",
       blackberry: "BlackBerry",
-      wp7: "Windows Phone 7"
+      wp7: "Windows Phone 7",
+      nokiawrt: "Nokia WRT",
+      windowsphone7: "Windows Phone 7"
     };
     return label_map[key] || key;
   },

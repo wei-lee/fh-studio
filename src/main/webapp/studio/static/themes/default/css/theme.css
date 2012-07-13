@@ -602,7 +602,7 @@ label.error
 }
 .jqgrow td a
 {
-  margin:0 0 0 1em;
+  margin:0 0 0 8px;
   cursor:pointer;
 }
 .ui-jqgrid .ui-jqgrid-bdiv
@@ -2423,8 +2423,8 @@ line-height:0.5em;
 }
 .arm-container .section-body-grid, .armusers-container .section-body-grid, .armgroups-container .section-body-grid, .armdevices-container .section-body-grid{
  height: 100%;
- padding: 0;
- overflow: hidden;
+ padding: 5px 0 0 0;
+ overflow: scroll;
 }
 .arm_list_grid {
  height: 100%;
@@ -3097,6 +3097,10 @@ button.btn.btn-large, input[type="submit"].btn.btn-large {
   height: 30px;
 }
 
+input[disabled],select[disabled],textarea[disabled],input[readonly],select[readonly],textarea[readonly] {
+  cursor: default;
+}
+
 .jw-content input[type="radio"] {
   margin-right: 5px;
 }
@@ -3168,4 +3172,28 @@ table.dataTable th:active {
 /* Fixing long descriptions */
 #my_apps_grid, #templates_grid, #arm_apps_grid {
   table-layout: fixed;
+}
+
+#new_app_id {
+  cursor: text;
+}
+
+#manage_apps_west {
+  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+#cloud_logo {
+  height: 35px;
+  padding-bottom: 10px;
+  cursor: pointer;
+}
+
+#cloud_logo.node {
+  background: url('../img/cloud_logo_node.png') no-repeat top center;
+}
+
+#cloud_logo.rhino {
+  background: url('../img/cloud_logo_rhino.png') no-repeat top center;
 }

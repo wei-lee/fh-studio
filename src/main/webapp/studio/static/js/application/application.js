@@ -242,6 +242,12 @@ Application = {
           editible : false,
           title: false
         },
+        {                
+          index : 'email', 
+          name : 'email', 
+          editible : false,
+          title: false
+        },
         {
           index : 'description',
           name : 'description',

@@ -49,6 +49,10 @@
       <fileset dir="${dep-lib}" includes="**/*.jar"/>
       <fileset dir="${dep-classes}" includes="**/*.*"/>
       <fileset dir="${test-rep}"/>
+      <fileset dir="${main-res}" includes="git-branch-info.txt"/>
+      <fileset dir="${main-res}" includes="git-info.txt"/>
+      <fileset dir="${main-res}" includes="VERSION.txt"/>
+      <fileset dir="${main-res}" includes="ENV.txt"/>
     </delete>
   </target>
 
@@ -98,7 +102,7 @@
     <touch file="${web-inf}/web.xml" />
 	</target>
 	
-	<target name="make-studio-war" depends="dist-version-info, save-git-info, deploy, compress_scripts, test">		
+	<target name="make-studio-war" depends="dist-version-info, save-git-info, save-env-info, deploy, test, compress_scripts">		
 		<delete file="${dist}/studio*.war" failonerror="false">
       <fileset dir="${dist}" includes="studio*.war"/>
     </delete>
@@ -121,6 +125,12 @@
     <exec executable="${basedir}/build/get_git_branch.sh" dir="${basedir}/build" failonerror="true" outputproperty="git-branch"/>
     <property name="env.GIT_BRANCH" value="${git-branch}"/>  	
   	<echo file="${main-res}/git-branch-info.txt" message="${env.GIT_BRANCH}"/>
+  </target>
+  
+  <target name="save-env-info">
+  	<!-- ENV.txt file only exists when making the war file, so set mode to prod in war file-->
+    <echo file="${main-res}/ENV.txt" message="prod"/>
+    <echo level="warning" message="ENVIRONMENT IS NOW SET TO 'prod'" />
   </target>
   
   <target name="save-version-info" depends="generate-version">
@@ -148,8 +158,7 @@
 
   <target name="jshint" depends="mkdirs, npminstall">
     <exec executable="${basedir}/build/genjshintignore.sh" dir="${basedir}" failonerror="true" output="${basedir}/.jshintignore"/>
-    <exec executable="${basedir}/node_modules/jshint/bin/hint" dir="${basedir}" failonerror="true" output="${basedir}/test/jshint.xml">
-      <arg value="--jslint-reporter"/>
+    <exec executable="${basedir}/node_modules/jshint/bin/hint" dir="${basedir}" failonerror="true">
       <arg value="src/main/webapp/studio/static/"/>
     </exec>
   </target>

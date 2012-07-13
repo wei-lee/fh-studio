@@ -26,7 +26,43 @@ try {
   <body style="display:none;">
     
     <%@ include file="inc/main/main_layout.html"%>
-  
+    
+	  <script id="IntercomSettingsScriptTag">
+	  if ($fw.getUserProp('created') != null) {
+		  var intercomSettings = {
+		    app_id: 'xbv6bi62',
+		    email: $fw.getUserProp('email'),
+		    created_at: ($fw.getUserProp('created') / 1000),
+		    custom_data: {
+		      domain: $fw.getUserProp('domain'),
+		      host: document.location.host,
+		      accountType: $fw.getUserProp('accountType')
+		    }
+		  };
+    }
+		</script>
+		<script>
+		if (typeof intercomSettings != 'undefined' && ENVIRONMENT === 'prod') {
+		  Log.append('Intercom initialising');
+		  (function() {
+		    function async_load() {
+		      var s = document.createElement('script');
+		      s.type = 'text/javascript'; s.async = true;
+		      s.src = 'https://api.intercom.io/api/js/library.js';
+		      var x = document.getElementsByTagName('script')[0];
+		      x.parentNode.insertBefore(s, x);
+		    }
+		    if (window.attachEvent) {
+		      window.attachEvent('onload', async_load);
+		    } else {
+		      window.addEventListener('load', async_load, false);
+		    }
+		  })();
+    } else {
+      Log.append('Intercom disabled');
+    }
+		</script>
+		
   </body>
   
 </html>

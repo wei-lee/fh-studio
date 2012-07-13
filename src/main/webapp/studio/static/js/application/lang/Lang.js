@@ -295,12 +295,14 @@ var Lang = {
   publish_embed_title: 'Embed Code',
   publish_embed_text: 'Paste the following code in your html to load an embedded version of the App.',
   
-  my_apps_grid_columns: ['Id', 'Name', 'Description', 'Version', 'Last Changed', 'Actions'],
+  my_apps_grid_columns: ['Id', 'Name', 'Email', 'Description', 'Version', 'Last Changed', 'Actions'],
   template_apps_grid_columns:  ['Id', 'Name', 'Description', 'Actions'],
   
   new_app_w3cid_help_icon: 'A unique identifier for the App.',
   new_app_title_label: 'Name',
   new_app_title_label_help_icon: 'This will be used as the App name on devices.',
+  new_app_id_label: 'App ID',
+  new_app_id_label_help_icon: 'Your App ID is used to identify your app (FHC uses this)',
   new_app_description_label: 'Description',
   new_app_description_label_help_icon: 'A short description of the App.',
   new_app_target_label: 'Default Preview Device',
@@ -673,7 +675,7 @@ var Lang = {
   armdevices_assignusers_header: 'Assign Users To Device',
   armdevices_users_grid_columns: ['Id', 'User Email', 'User Name', 'Select'],
   arm_devices_approve_grid_columns: ['Id', 'User Email', 'Device Id', 'Last Attempt', 'Total Attempts', 'Actions'],
-  
+  auth_policies_manage_header: 'Manage Authentication Policies',
   reporting_installsdate_header: 'App Installs by Date',
   reporting_installsdest_header: 'App Installs by Destination',
   reporting_installsloc_header: 'App Installs by Location',

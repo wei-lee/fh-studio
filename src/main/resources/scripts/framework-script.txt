@@ -22,7 +22,6 @@ common/js/ui/thirdparty/codemirror/stringstream.js
 common/js/ui/thirdparty/codemirror/tokenize.js
 common/js/ui/thirdparty/codemirror/tokenizejavascript.js
 common/js/ui/thirdparty/codemirror/parsejavascript.js
-common/js/ui/thirdparty/ace/ace-uncompressed-noconflict.js
 common/js/ui/thirdparty/ace/theme-textmate-uncompressed-noconflict.js
 common/js/ui/thirdparty/ace/mode-javascript-uncompressed-noconflict.js
 common/js/ui/thirdparty/ace/mode-json-uncompressed-noconflict.js

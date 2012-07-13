@@ -11,6 +11,36 @@ model.Model = Class.extend({
     return column_map;
   },
 
+  postProcessList: function(res, data_model) {
+    var filtered_fields = data_model.getColumnMap();
+
+    var rows = res.list;
+    var data = {
+      aaData: [],
+      aoColumns: []
+    };
+
+    // Buid Data
+    $.each(rows, function(i, item) {
+      var row = item.fields || item;
+      data.aaData.push([]);
+
+      $.each(filtered_fields, function(k, v) {
+        var value = row[k];
+        data.aaData[i].push(value);
+      });
+    });
+
+    // Build Columns
+    $.each(filtered_fields, function(k, v) {
+      data.aoColumns.push({
+        sTitle: v
+      });
+    });
+
+    return data;
+  },
+
   serverPost: function(url, params, success, fail, no_payload, post_process, model) {
     $fw.server.post(url, params, function(res) {
       if (res.status === "ok") {
