@@ -4,15 +4,15 @@ UserAdmin.Controller = Class.extend({
 
   models: {
     user: new model.User(),
-    // group: new model.Group(),
+    group: new model.Group(),
     role: new model.Role()
   },
 
   // TODO: Refactor below to use these
   views: {
     users: "#useradmin_user_list",
-    // groups: "#useradmin_group_list",
-    // group_create: "#useradmin_group_create",
+    groups: "#useradmin_group_list",
+    group_create: "#useradmin_group_create",
     user_create: "#useradmin_user_create",
     user_update: "#useradmin_user_update"
   },
@@ -55,17 +55,16 @@ UserAdmin.Controller = Class.extend({
       var row = $(this).parent().parent();
       var data = self.userDataForRow($(this).parent().parent().get(0));
 
-      // if ($(this).hasClass('update_user')) {
-      //   // Update action
-      //   self.updateUser(this, row, data);
-      //   $(this).removeClass('btn-success update_user').text('Edit');
-      // } else {
-      //   // Edit action
-      //   self.editUser(this, row, data);
-      //   $(this).addClass('btn-success update_user').text('Update');
-      // }
-      // 
-      // 
+      if ($(this).hasClass('update_user')) {
+        // Update action
+        self.updateUser(this, row, data);
+        $(this).removeClass('btn-success update_user').text('Edit');
+      } else {
+        // Edit action
+        self.editUser(this, row, data);
+        $(this).addClass('btn-success update_user').text('Update');
+      }
+      
       self.showUserUpdate(this, row, data);
       return false;
     });
@@ -256,25 +255,27 @@ UserAdmin.Controller = Class.extend({
 
   deleteUser: function(button, row, data) {},
 
-  // bindGroupControls: function() {
-  //   var self = this;
-  //   $('#useradmin_group_create .create_group_btn').unbind().click(function() {
-  //     var group_name = $('.group_name').val();
-  //     self.createGroup(group_name);
-  //     return false;
-  //   });
-  // },
-  // createGroup: function(group_name) {
-  //   var self = this;
-  //   this.models.group.create(group_name, function(res) {
-  //     Log.append('createGroup: OK');
-  //     $fw.client.dialog.info.flash('Group created, refreshing list.');
-  //     self.showGroupsList();
-  //   }, function(err) {
-  //     Log.append(err);
-  //     $fw.client.dialog.error("Error creating your group - group names must be unique.");
-  //   });
-  // },
+  bindGroupControls: function() {
+    var self = this;
+    $('#useradmin_group_create .create_group_btn').unbind().click(function() {
+      var group_name = $('.group_name').val();
+      self.createGroup(group_name);
+      return false;
+    });
+  },
+
+  createGroup: function(group_name) {
+    var self = this;
+    this.models.group.create(group_name, function(res) {
+      Log.append('createGroup: OK');
+      $fw.client.dialog.info.flash('Group created, refreshing list.');
+      self.showGroupsList();
+    }, function(err) {
+      Log.append(err);
+      $fw.client.dialog.error("Error creating your group - group names must be unique.");
+    });
+  },
+
   renderUserTable: function(data) {
     var self = this;
 
@@ -319,12 +320,12 @@ UserAdmin.Controller = Class.extend({
       $fw.client.dialog.error("Error loading roles.");
     });
 
-    // this.models.group.list(function(res) {
-    //   var groups = res.list;
-    //   self.updateUserAssignableGroups(groups);
-    // }, function(err) {
-    //   $fw.client.dialog.error("Error loading groups.");
-    // });
+    this.models.group.list(function(res) {
+      var groups = res.list;
+      self.updateUserAssignableGroups(groups);
+    }, function(err) {
+      $fw.client.dialog.error("Error loading groups.");
+    });
   },
 
   updateUserAssignableRoles: function(roles) {
@@ -401,9 +402,10 @@ UserAdmin.Controller = Class.extend({
     return this.user_table.fnGetData(el);
   },
 
-  // groupDataForRow: function(el) {
-  //   return this.group_table.fnGetData(el);
-  // },
+  groupDataForRow: function(el) {
+    return this.group_table.fnGetData(el);
+  },
+
   addControls: function(res) {
     // Add control column
     res.aoColumns.push({
@@ -420,42 +422,44 @@ UserAdmin.Controller = Class.extend({
       row.push(controls.join(""));
     });
     return res;
-  }
+  },
 
-  // showGroupsList: function() {
-  //   var self = this;
-  //   this.hideViews();
-  //   $(this.views.groups).show();
-  //   this.models.group.list(function(res) {
-  //     self.renderGroupTable(res);
-  //     self.bindGroupControls();
-  //   }, function(err) {
-  //     console.error(err);
-  //   }, true);
-  // },
-  // renderGroupTable: function(data) {
-  //   var self = this;
-  //   this.group_table = $('#useradmin_groups_table').dataTable({
-  //     "bDestroy": true,
-  //     "bAutoWidth": false,
-  //     "sDom": "<'row-fluid'<'span12'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
-  //     "sPaginationType": "bootstrap",
-  //     "bLengthChange": false,
-  //     "aaData": data.aaData,
-  //     "aoColumns": data.aoColumns,
-  //     "fnRowCallback": function(nRow, aData, iDisplayIndex) {
-  //       self.rowRender(nRow, aData);
-  //     }
-  //   });
-  //   // Inject Create button
-  //   var create_button = $('<button>').addClass('btn btn-primary right').text('Create').click(function() {
-  //     self.showCreateGroup();
-  //     return false;
-  //   });
-  //   $('#useradmin_group_list .span12:first').append(create_button);
-  // },
-  // showCreateGroup: function() {
-  //   this.hideViews();
-  //   $('#useradmin_group_create').show();
-  // }
+  showGroupsList: function() {
+    var self = this;
+    this.hideViews();
+    $(this.views.groups).show();
+    this.models.group.list(function(res) {
+      self.renderGroupTable(res);
+      self.bindGroupControls();
+    }, function(err) {
+      console.error(err);
+    }, true);
+  },
+
+  renderGroupTable: function(data) {
+    var self = this;
+    this.group_table = $('#useradmin_groups_table').dataTable({
+      "bDestroy": true,
+      "bAutoWidth": false,
+      "sDom": "<'row-fluid'<'span12'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+      "sPaginationType": "bootstrap",
+      "bLengthChange": false,
+      "aaData": data.aaData,
+      "aoColumns": data.aoColumns,
+      "fnRowCallback": function(nRow, aData, iDisplayIndex) {
+        self.rowRender(nRow, aData);
+      }
+    });
+    // Inject Create button
+    var create_button = $('<button>').addClass('btn btn-primary right').text('Create').click(function() {
+      self.showCreateGroup();
+      return false;
+    });
+    $('#useradmin_group_list .span12:first').append(create_button);
+  },
+
+  showCreateGroup: function() {
+    this.hideViews();
+    $('#useradmin_group_create').show();
+  }
 });
