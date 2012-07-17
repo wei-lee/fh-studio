@@ -320,12 +320,12 @@ UserAdmin.Controller = Class.extend({
       $fw.client.dialog.error("Error loading roles.");
     });
 
-    this.models.group.list(function(res) {
-      var groups = res.list;
-      self.updateUserAssignableGroups(groups);
-    }, function(err) {
-      $fw.client.dialog.error("Error loading groups.");
-    });
+    // this.models.group.list(function(res) {
+    //   var groups = res.list;
+    //   self.updateUserAssignableGroups(groups);
+    // }, function(err) {
+    //   $fw.client.dialog.error("Error loading groups.");
+    // });
   },
 
   updateUserAssignableRoles: function(roles) {
