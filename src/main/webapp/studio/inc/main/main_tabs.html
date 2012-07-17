@@ -12,7 +12,7 @@
     <li class="reporting-tab"><a id="reporting_tab" href="#tabs-5">Reporting</a></li>
   <% } %>
   
-  <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_ARM)) { %>
+  <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_ARM) || studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_USER_ADMIN)) { %>
     <li class="arm-tab"><a id="arm_tab" href="#tabs-6">Admin</a></li>
   <% } %>
 
