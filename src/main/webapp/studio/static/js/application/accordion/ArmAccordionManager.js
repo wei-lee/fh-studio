@@ -11,32 +11,28 @@ application.ArmAccordionManager = application.AccordionManager.extend({
   postSelectUsersList: function () {
     $fw_manager.client.useradmin.showUsersList();
   },
-  
-  postSelectUsersAdd: function(){
-    $fw_manager.client.arm.users.initAdd();
-  },
 
   postSelectGroupsList: function () {
     $fw_manager.client.useradmin.showGroupsList();
   },
-  
-  postSelectGroupsAdd: function(){
-    $fw_manager.client.arm.groups.initAdd();
-  },
 
   postSelectDevicesList: function () {
+    $fw_manager.client.useradmin.hideViews();
     $fw_manager.client.arm.devices.initGrid();
   },
   
   postSelectDevicesAdd: function(){
+    $fw_manager.client.useradmin.hideViews();
     $fw_manager.client.arm.devices.initAdd();
   },
   
   postSelectDevicesApprove: function(){
+    $fw_manager.client.useradmin.hideViews();
     $fw_manager.client.arm.devices.initApproveGrid();
   },
   
   postSelectAuthPoliciesManage: function(){
+    $fw_manager.client.useradmin.hideViews();
     $fw_manager.client.arm.authPolicies.showPolicyList();
   }
 });
