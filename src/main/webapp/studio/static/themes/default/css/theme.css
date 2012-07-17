@@ -460,13 +460,13 @@ textarea { resize:none; }
 html, body
 {
   font-family: "Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;
-  background: transparent url(../img/top_bar.png) repeat-x 0 0;
   padding:0;
   margin:0;
   width:100%;
   height:100%;
   overflow-y:auto;
   min-height:755px;
+  background: url('../img/bg_page.png');
 }
 #main_layout_wrapper
 {
@@ -3108,7 +3108,6 @@ input[disabled],select[disabled],textarea[disabled],input[readonly],select[reado
 legend { border-bottom: none; }
 
 /* DataTables styling for Bootstrap */
-
 div.dataTables_length label {
   float: left;
   text-align: left;
@@ -3154,6 +3153,10 @@ table.table thead .sorting_desc_disabled { background: url('../img/sort_desc_dis
 
 table.dataTable th:active {
   outline: none;
+}
+
+.table-striped tbody tr:nth-child(odd) td, .table-striped tbody tr:nth-child(odd) th {
+
 }
 
 /* User Admin styling */

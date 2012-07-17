@@ -53,18 +53,7 @@ UserAdmin.Controller = Class.extend({
     var self = this;
     $('tr td .edit_user', this.user_table).click(function() {
       var row = $(this).parent().parent();
-      var data = self.userDataForRow($(this).parent().parent().get(0));
-
-      if ($(this).hasClass('update_user')) {
-        // Update action
-        self.updateUser(this, row, data);
-        $(this).removeClass('btn-success update_user').text('Edit');
-      } else {
-        // Edit action
-        self.editUser(this, row, data);
-        $(this).addClass('btn-success update_user').text('Update');
-      }
-      
+      var data = self.userDataForRow($(this).parent().parent().get(0));      
       self.showUserUpdate(this, row, data);
       return false;
     });
