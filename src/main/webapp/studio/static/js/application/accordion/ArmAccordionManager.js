@@ -5,14 +5,17 @@ application.ArmAccordionManager = application.AccordionManager.extend({
   },
     
   postSelectAppsList: function () {
+    $fw_manager.client.useradmin.hideViews();
     $fw_manager.client.arm.apps.initGrid();
   },
   
   postSelectUsersList: function () {
+    $fw_manager.client.useradmin.hideViews();
     $fw_manager.client.useradmin.showUsersList();
   },
 
   postSelectGroupsList: function () {
+    $fw_manager.client.useradmin.hideViews();
     $fw_manager.client.useradmin.showGroupsList();
   },
 

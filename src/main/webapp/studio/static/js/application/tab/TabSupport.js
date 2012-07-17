@@ -15,7 +15,7 @@ application.TabSupport = Class.extend({
       var temp_crumb = crumbs[ci];
       var link = $('<a>', {
         'class': 'fh_breadcrumb fh_breadcrumb-link',
-        text: temp_crumb.text
+        text: temp_crumb.text.trim()
       });
       if ($.isFunction(temp_crumb.callback)) {
         link.bind('click', temp_crumb.callback);
