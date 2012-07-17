@@ -3197,3 +3197,7 @@ table.dataTable th:active {
 #cloud_logo.rhino {
   background: url('../img/cloud_logo_rhino.png') no-repeat top center;
 }
+
+#auth_policies_manage_body {
+  background: #fff;
+}
