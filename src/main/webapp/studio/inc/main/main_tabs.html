@@ -11,13 +11,9 @@
   <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_REPORTING)) { %>
     <li class="reporting-tab"><a id="reporting_tab" href="#tabs-5">Reporting</a></li>
   <% } %>
-
-  <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_USER_ADMIN)) { %>
-    <li class="useradmin_tab"><a id="useradmin_tab" href="#tabs-7">Studio Admin</a></li>
-  <% } %>  
   
   <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_ARM)) { %>
-    <li class="arm-tab"><a id="arm_tab" href="#tabs-6">App Admin</a></li>
+    <li class="arm-tab"><a id="arm_tab" href="#tabs-6">Admin</a></li>
   <% } %>
 
   <li class="account-tab inactive_account"><a id="account_tab" href="#tabs-3">My Account</a></li>
@@ -32,10 +28,6 @@
   <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_REPORTING)) { %>
     <%@ include file="reporting_tab.html" %>
   <% } %>
-
-  <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_USER_ADMIN)) { %>
-    <%@ include file="user_admin_tab.html" %>
-  <% } %>  
   
   <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_ARM)) { %>
     <%@ include file="arm_tab.html" %>
