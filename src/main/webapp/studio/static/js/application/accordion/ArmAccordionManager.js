@@ -9,7 +9,7 @@ application.ArmAccordionManager = application.AccordionManager.extend({
   },
   
   postSelectUsersList: function () {
-    $fw_manager.client.arm.users.initGrid();
+    $fw_manager.client.useradmin.showUsersList();
   },
   
   postSelectUsersAdd: function(){
@@ -17,7 +17,7 @@ application.ArmAccordionManager = application.AccordionManager.extend({
   },
 
   postSelectGroupsList: function () {
-    $fw_manager.client.arm.groups.initGrid();
+    $fw_manager.client.useradmin.showGroupsList();
   },
   
   postSelectGroupsAdd: function(){

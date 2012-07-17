@@ -19,18 +19,24 @@
             <li id="apps_list" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>List</a></li>
           </ul>
         </div>
-        <h3 id="accordion_item_users"><a>Users</a></h3>
+        <h3 id="accordion_item_useradmin_users">
+          <a>Users</a>
+        </h3>
         <div>
           <ul class="ui-menu">
-            <li id="users_list" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>List</a></li>
-            <li id="users_add" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>Add User</a></li>    
+            <li id="users_list" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default">
+              <a>Manage</a>
+            </li>
           </ul>
         </div>
-        <h3 id="accordion_item_groups"><a>Groups</a></h3>
+        <h3 id="accordion_item_useradmin_groups">
+          <a>Groups</a>
+        </h3>
         <div>
           <ul class="ui-menu">
-            <li id="groups_list" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>List</a></li>
-            <li id="groups_add" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>Add Group</a></li>    
+            <li id="groups_list" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default">
+              <a>Manage</a>
+            </li>
           </ul>
         </div>
         <h3 id="accordion_item_devices" class="ui-accordion-header-last"><a>Devices</a></h3>
@@ -63,10 +69,100 @@
       <div id="arm_content" class="ui-layout-content ui-widget ui-widget-content" style="display:none;">
       
         <%@ include file="../arm_apps/apps_list.html" %>
-        <%@ include file="../arm_users/users_list.html" %>
-        <%@ include file="../arm_users/users_add.html" %>
-        <%@ include file="../arm_groups/groups_list.html" %>
-        <%@ include file="../arm_groups/groups_add.html" %>
+
+        <!-- Users Templates -->
+        <div id="useradmin_user_list" class="hidden_template row-fluid">
+          <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="useradmin_users_table"></table>
+        </div>
+
+        <div id="useradmin_user_create" class="hidden_template row-fluid">
+          <form class="well">
+            <h3>Create a User</h3>
+            <p>Here you can create a user. You can associate a user with a particular group, and you can assign a user multiple roles.</p>
+            <br/>
+            <label>Name</label>
+            <input type="text" class="span4 user_name" placeholder="Name">
+            <label>Email</label>
+            <input type="text" class="span4 user_email" placeholder="Email Address">
+            <label>Password (Optional)</label>
+            <input type="password" class="span4 user_password" placeholder="Password">
+            <label class="checkbox">
+              <input type="checkbox" class="user_invite" value="invite" checked="checked">Send Invite Email?
+            </label>
+            <label class="control-label">Available Roles</label>
+            <label class="select">
+              <select multiple="multiple" id="multiSelect" class="user_roles" disabled>
+                <option>Loading...</option>
+              </select>
+            </label>
+            <label class="control-label">Available Groups</label>
+            <label class="select">
+              <select id="multiSelect" class="user_group" disabled>
+                <option>Loading...</option>
+              </select>
+            </label>
+            <button type="submit" class="btn btn-primary create_user_btn">Create User</button>
+          </form>
+        </div>
+
+        <div id="useradmin_user_update" class="hidden_template row-fluid">
+          <form class="well">
+            <h3>Update a User</h3>
+            <p>Here you can update a user. You can associate a user with a particular group, and you can assign a user multiple roles.</p>
+            <br/>
+            <label>Name</label>
+            <input type="text" class="span4 user_name" placeholder="Name">
+            <label>Email</label>
+            <input type="text" class="span4 user_email" placeholder="Email Address">
+            <label>Password (Optional)</label>
+            <input type="password" class="span4 user_password" placeholder="Password">
+            <label class="checkbox">
+              <input type="checkbox" class="user_activated" value="activated">Activated
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" class="user_enabled" value="enabled">Enabled
+            </label>
+            <label class="control-label">Current Roles</label>
+            <label class="select">
+              <select class="user_current_roles">
+                <option>Loading...</option>
+              </select>
+            </label>
+            <label class="control-label">Available Roles</label>
+            <label class="select">
+              <select multiple="multiple" class="user_roles" disabled>
+                <option>Loading...</option>
+              </select>
+            </label>
+            <label class="control-label">Available Groups</label>
+            <label class="select">
+              <select id="multiSelect" class="user_group" disabled>
+                <option>Loading...</option>
+              </select>
+            </label>
+            <button class="btn user_resend_invite" style="display: none">Re-Send Invite Email</button>
+            <button type="submit" class="btn btn-primary update_user_btn">Update User</button>
+          </form>
+        </div>
+
+        <!-- Groups Templates -->
+        <div id="useradmin_group_list" class="hidden_template row-fluid">
+          <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="useradmin_groups_table"></table>
+        </div>
+
+        <div id="useradmin_group_create" class="hidden_template row-fluid">
+          <form class="well">
+            <h3>Create a Group</h3>
+            <p>
+              Groups can be used to group users together. For example, you can group users for one project together so they can see one another's apps.
+            </p>
+            <br/>
+            <label>Group Name</label>
+            <input type="text" class="span4 group_name" placeholder="Group Name (e.g. Project A Developers)">
+            <button type="submit" class="btn btn-primary create_group_btn">Create Group</button>
+          </form>
+        </div>
+
         <%@ include file="../arm_devices/devices_list.html" %>
         <%@ include file="../arm_devices/devices_add.html" %>
         <%@ include file="../arm_devices/devices_approve.html" %>
