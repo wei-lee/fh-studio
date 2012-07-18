@@ -13,7 +13,7 @@
   <% } %>
   
   <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_ARM) || studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_USER_ADMIN)) { %>
-    <li class="arm-tab"><a id="arm_tab" href="#tabs-6">Admin</a></li>
+    <li class="admin-tab"><a id="admin_tab" href="#tabs-6">Admin</a></li>
   <% } %>
 
   <li class="account-tab inactive_account"><a id="account_tab" href="#tabs-3">My Account</a></li>
@@ -30,7 +30,7 @@
   <% } %>
   
   <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_ARM)) { %>
-    <%@ include file="arm_tab.html" %>
+    <%@ include file="admin_tab.html" %>
   <% } %>
  
   <%@ include file="account_tab.html" %>
