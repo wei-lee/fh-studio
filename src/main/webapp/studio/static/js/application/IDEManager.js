@@ -35,8 +35,8 @@ var IDEManager = Class.extend({
       apps: new application.AppsTabManager(),
       account: new application.AccountTabManager(),
       reporting: new application.ReportingTabManager(),
-      arm: new application.ArmTabManager(),
-      useradmin: new application.UseradminTabManager()
+      useradmin: new application.UseradminTabManager(),
+      admin: new Admin.Tab.Manager()
     };
     this.analytics = new analytics.AnalyticsIntegration();
     this.debug = new application.DebugManager();

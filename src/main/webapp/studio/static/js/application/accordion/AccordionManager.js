@@ -165,7 +165,10 @@ application.AccordionManager = Class.extend({
         
         // need to manually trigger a resize in case center pane header has changed height e.g. editor toolbar
         Log.append('resizing visible inner layouts');
-        $('.inner-layout:visible').layout().resizeAll();
+        var innerLayouts = $('.inner-layout:visible');
+        if (innerLayouts.length > 0) {
+          innerLayouts.layout().resizeAll();
+        }
       } else {
         Log.append('clicked accordion item not visible');
       }

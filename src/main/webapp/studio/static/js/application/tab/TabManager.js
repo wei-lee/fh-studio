@@ -10,6 +10,8 @@ application.TabManager = Class.extend({
   inited: false,
   layout: null,
   accordion: null,
+  useLayout: true,
+  useAccordion: true,
 
   init: function(opts) {
     this.support = new application.TabSupport();
@@ -17,7 +19,7 @@ application.TabManager = Class.extend({
 
   constructBreadcrumbsArray: function() {
     var crumbs = this.getBaseCrumbs();
-    var accordion = this.tab_content.find('.ui-layout-west .ui-accordion');
+    var accordion = this.tab_content.find('#' + this.name + '_accordion');
     var b1 = accordion.find('h3.ui-state-active:visible');
     var b2 = accordion.find('.ui-accordion-content-active .ui-state-active:visible');
     crumbs.push({
@@ -66,17 +68,21 @@ application.TabManager = Class.extend({
   },
 
   doPreInit: function() {
-    this.layout = proto.Layout.load($('#' + this.name + '_layout'), {
-      center__onresize: function(pane, $Pane, pane_state) {
-        proto.Accordion.resizeVisible();
-        proto.Grid.resizeVisible();
-      },
-      east__initClosed: true
-    });
+    if (this.useLayout) {
+      this.layout = proto.Layout.load($('#' + this.name + '_layout'), {
+        center__onresize: function(pane, $Pane, pane_state) {
+          proto.Accordion.resizeVisible();
+          proto.Grid.resizeVisible();
+        },
+        east__initClosed: true
+      });
+    }
 
-    var accordion_name = this.name + '_accordion',
-        manager_name = js_util.capitalise(this.name) + 'AccordionManager';
-    Log.append('accordion_name: ' + accordion_name + ", accordion manager name: " + manager_name);
+    if (this.useAccordion) {
+      var accordion_name = this.name + '_accordion',
+          manager_name = js_util.capitalise(this.name) + 'AccordionManager';
+      Log.append('accordion_name: ' + accordion_name + ", accordion manager name: " + manager_name);
+    }
 
     if ('undefined' !== typeof application[manager_name]) {
       this.accordion = new application[manager_name](accordion_name);
@@ -113,8 +119,10 @@ application.TabManager = Class.extend({
 
   doPostShow: function() {
     try {
-      main_layout.resizeAll();
-      this.layout.resizeAll();
+      if (this.useLayout) {
+        main_layout.resizeAll();
+        this.layout.resizeAll();
+      }
     } catch (err) {
       Log.append("No layout to resize");
     }
