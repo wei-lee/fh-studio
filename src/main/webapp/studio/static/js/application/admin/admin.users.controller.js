@@ -35,7 +35,7 @@ Admin.Users.Controller = Controller.extend({
     this.bindUserControls();
   },
 
-  hideViews: function() {
+  hide: function() {
     $.each(this.views, function(k, v) {
       $(v).hide();
     });
@@ -43,7 +43,7 @@ Admin.Users.Controller = Controller.extend({
 
   showUsersList: function() {
     var self = this;
-    this.hideViews();
+    this.hide();
     $(this.views.users).show();
 
     this.models.user.list(function(res) {
@@ -79,7 +79,7 @@ Admin.Users.Controller = Controller.extend({
   showUserUpdate: function(button, row, data) {
     var self = this;
 
-    this.hideViews();
+    this.hide();
 
     // Reset user update view
     $(this.views.user_update).find('.user_name').val('');
@@ -249,7 +249,7 @@ Admin.Users.Controller = Controller.extend({
 
   showCreateUser: function() {
     var self = this;
-    this.hideViews();
+    this.hide();
     $('#useradmin_user_create').show();
 
     $('#useradmin_user_create .create_user_btn').unbind().click(function() {
@@ -373,7 +373,7 @@ Admin.Users.Controller = Controller.extend({
 
   showGroupsList: function() {
     var self = this;
-    this.hideViews();
+    this.hide();
     $(this.views.groups).show();
     this.models.group.list(function(res) {
       self.renderGroupTable(res);
@@ -406,7 +406,7 @@ Admin.Users.Controller = Controller.extend({
   },
 
   showCreateGroup: function() {
-    this.hideViews();
+    this.hide();
     $('#useradmin_group_create').show();
   }
 });
