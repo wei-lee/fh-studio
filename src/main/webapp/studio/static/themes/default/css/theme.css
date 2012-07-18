@@ -670,19 +670,7 @@ label.error
 {
   color:#000;
 }
-.ui-state-active.account-tab, #account_north .container-header
-{
-  background: transparent url(../img/aqua_bar_repeat.png) repeat-x 0 0 !important;
-}
-.ui-state-active.reporting-tab, #reporting_north .container-header
-{
-  background: transparent url(../img/green_bar_repeat.png) repeat-x 0 0 !important;
-}
 
-.ui-state-active.home-tab, #home_north .container-header
-{
-  background: transparent url(../img/home_bar.png) repeat-x 0 0 !important;
-}
 #main_layout_center .ui-tabs-nav li.ui-state-active a
 {
   color:#fff;
@@ -2317,7 +2305,6 @@ p.input-form-footer, .tandc_Link{
   padding-left: 15px;
   padding-right: 15px;
   padding-bottom: 20px;
-  /*border: 1px solid #e6e6e6;*/
 }
 #home_top_right_body.section-body-dashboard {
   padding:0;
@@ -3204,29 +3191,7 @@ table.dataTable th:active {
   background: transparent;
 }
 
-#arm_north .container-header-content {
-  background: #33bf86; /* Old browsers */
-  background: -moz-linear-gradient(top,  #33bf86 0%, #2aa37c 100%); /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#33bf86), color-stop(100%,#2aa37c)); /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top,  #33bf86 0%,#2aa37c 100%); /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top,  #33bf86 0%,#2aa37c 100%); /* Opera 11.10+ */
-  background: -ms-linear-gradient(top,  #33bf86 0%,#2aa37c 100%); /* IE10+ */
-  background: linear-gradient(to bottom,  #33bf86 0%,#2aa37c 100%); /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#33bf86', endColorstr='#2aa37c',GradientType=0 ); /* IE6-9 */
-}
-
-.ui-state-active.arm-tab, .ui-state-active.useradmin_tab {
-  background: #33be7f; /* Old browsers */
-  background: -moz-linear-gradient(top,  #33be7f 0%, #33bf86 100%); /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#33be7f), color-stop(100%,#33bf86)); /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top,  #33be7f 0%,#33bf86 100%); /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top,  #33be7f 0%,#33bf86 100%); /* Opera 11.10+ */
-  background: -ms-linear-gradient(top,  #33be7f 0%,#33bf86 100%); /* IE10+ */
-  background: linear-gradient(to bottom,  #33be7f 0%,#33bf86 100%); /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#33be7f', endColorstr='#33bf86',GradientType=0 ); /* IE6-9 */
-}
-
-#apps_north .container-header-content {
+.container-header-content {
   background: #3364b9; /* Old browsers */
   background: -moz-linear-gradient(top,  #3364b9 0%, #2a4ba3 100%); /* FF3.6+ */
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#3364b9), color-stop(100%,#2a4ba3)); /* Chrome,Safari4+ */
@@ -3237,7 +3202,7 @@ table.dataTable th:active {
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3364b9', endColorstr='#2a4ba3',GradientType=0 ); /* IE6-9 */
 }
 
-.ui-state-active.apps-tab {
+#main_tabs_buttons .ui-state-active {
   background: #3870c3; /* Old browsers */
   background: -moz-linear-gradient(top,  #3870c3 0%, #3364b9 100%); /* FF3.6+ */
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#3870c3), color-stop(100%,#3364b9)); /* Chrome,Safari4+ */
