@@ -47,7 +47,12 @@ Tab.Manager = Class.extend({
           }
           self.updateCrumbs(crumbs);
 
-          // tell controller we're ready for it to do it's thing
+          // tell all controllers to hide themselves
+          for (var key in self.controllers) {
+            var temp = self.controllers[key];
+            temp.hide();
+          }
+          // tell active controller we're ready for it to do it's thing
           controller.show(e);
         });
       });
