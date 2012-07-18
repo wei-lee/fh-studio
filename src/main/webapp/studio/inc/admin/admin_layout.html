@@ -1,83 +1,39 @@
-<div id="arm_layout" class="inner-layout arm-layout">
-  <!-- arm_layout north -->
-  <div id="arm_north" class="ui-layout-north">
-    <div class="container-header">
-      <div class="container-header-content">
-        <h1 class="container-title"></h1>
-      </div>
-    </div>
-  </div>
-  <!-- end arm_layout north -->
-  <!-- arm_layout west -->
-  <div id="arm_west" class="ui-layout-west">
-    <div id="arm_accordion" class="">
-      <!--  have to manually add ui-accordion-header-first class here as accordion plugin doesn't have a first tab class -->
-      <h3 id="accordion_item_apps">
-        <a>Apps</a>
-      </h3>
-      <div>
-        <ul class="ui-menu">
-          <li id="apps_list" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default">
-            <a>List</a>
-          </li>
-        </ul>
-      </div>
-      <h3 id="accordion_item_useradmin_users">
-        <a>Users</a>
-      </h3>
-      <div>
-        <ul class="ui-menu">
-          <li id="users_list" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default">
-            <a>Manage</a>
-          </li>
-        </ul>
-      </div>
-      <h3 id="accordion_item_useradmin_groups">
-        <a>Groups</a>
-      </h3>
-      <div>
-        <ul class="ui-menu">
-          <li id="groups_list" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default">
-            <a>Manage</a>
-          </li>
-        </ul>
-      </div>
-      <h3 id="accordion_item_devices" class="ui-accordion-header-last">
-        <a>Devices</a>
-      </h3>
-      <div>
-        <ul class="ui-menu">
-          <li id="devices_list" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default">
-            <a>List</a>
-          </li>
-          <li id="devices_add" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default">
-            <a>Add Device</a>
-          </li>
-          <li id="devices_approve" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default">
-            <a>Approve</a>
-          </li>
-        </ul>
-      </div>
-      <% if(studio.getProps().optBoolean("arm-auth-policy-enabled", false)) { %>
-      <h3 id="accordion_item_auth_policies" class="ui-accordion-header-last">
-        <a>Authentication Policies</a>
-      </h3>
-      <div>
-        <ul class="ui-menu">
-          <li id="auth_policies_manage" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default">
-            <a>Manage</a>
-          </li>
-        </ul>
-      </div>
-      <% } %></div>
-  </div>
-  <!-- end arm_layout west -->
-  <!-- arm_layout center -->
-  <div id="arm_center" class="ui-layout-center">
-    <!-- Hide this initially and let javascript show it when its ready -->
-    <div id="arm_content" class="ui-layout-content ui-widget ui-widget-content" style="display:none;">
+<div id="admin_layout" class="container-fluid">
 
-      <%@ include file="../arm_apps/apps_list.html" %>
+  <div class="row-fluid">
+    <ul class="breadcrumb"></ul>
+  </div>
+
+  <div class="row-fluid">
+
+    <ul class="nav nav-list span2">
+      <li class="active">
+        <a href="#" data-controller="admin.storeitems.controller">Store Items</a>
+      </li>
+      <li>
+        <a href="#" data-controller="admin.users.controller">Users</a>
+      </li>
+      <li>
+        <a href="#" data-controller="admin.groups.controller">Groups</a>
+      </li>
+      <li>
+        <a href="#" data-controller="admin.devices.controller">Devices</a>
+      </li>
+<% if(studio.getProps().optBoolean("arm-auth-policy-enabled", false)) { %>
+      <li>
+        <a href="#" data-controller="admin.authpolicy.controller">Authentication Policies</a>
+      </li>
+<% } %>
+      <li>
+        <a href="#" data-controller="admin.mam.controller">Mobile App Management</a>
+      </li>
+
+    </ul>
+
+    <!-- Hide this initially and let javascript show it when its ready -->
+    <div class="layout-content span10" style="display:none;">
+
+      <%--@ include file="../arm_apps/apps_list.html" --%>
 
       <!-- Users Templates -->
       <div id="useradmin_user_list" class="hidden_template row-fluid">
@@ -161,19 +117,13 @@
         </form>
       </div>
 
-      <%@ include file="../arm_devices/devices_list.html" %>
-      <%@ include file="../arm_devices/devices_add.html" %>
-      <%@ include file="../arm_devices/devices_approve.html" %>
-      <% if(studio.getProps().optBoolean("arm-auth-policy-enabled", false)) { %>
-      <%@ include file="../arm_auth_policies/auth_policies_manage.html" %>
-      <% } %>
+      <%--@ include file="../arm_devices/devices_list.html" --%>
+      <%--@ include file="../arm_devices/devices_add.html" --%>
+      <%--@ include file="../arm_devices/devices_approve.html" --%>
+      <%-- if(studio.getProps().optBoolean("arm-auth-policy-enabled", false)) { --%>
+      <%--@ include file="../arm_auth_policies/auth_policies_manage.html" --%>
+      <%-- } --%>
     </div>
   </div>
-  <!-- end arm_layout center -->
-  <!-- arm_layout east -->
-  <div id="arm_east" class="ui-layout-east"></div>
-  <!-- end arm_layout east -->
-  <!-- arm_layout south -->
-  <div id="arm_south" class="ui-layout-south"></div>
-  <!-- end arm_layout south -->
+
 </div>

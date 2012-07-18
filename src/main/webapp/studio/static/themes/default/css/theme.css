@@ -403,15 +403,15 @@ textarea { resize:none; }
 }
 
 /* accordion */
-.ui-layout-west .ui-accordion
+.inner-layout .ui-accordion
 {
   margin: 0 10px 0 2px;
 }
-.ui-layout-west .ui-accordion, #list_apps_buttons li:last-child, #list_arm_buttons li:last-child
+.ui-accordion, #list_apps_buttons li:last-child, #list_arm_buttons li:last-child
 {
   border-bottom:solid 1px gray;
 }
-.ui-layout-west .ui-accordion .ui-accordion-content,.ui-layout-west .ui-accordion .ui-accordion-header {
+.ui-accordion .ui-accordion-content,.ui-accordion .ui-accordion-header {
   border:none;
   background:transparent none;
   margin:0;
@@ -424,7 +424,7 @@ textarea { resize:none; }
   line-height:1.5;
   zoom:1;
 }
-#list_apps_buttons li,#list_arm_buttons li,.ui-layout-west .ui-accordion .ui-accordion-header {
+#list_apps_buttons li,#list_arm_buttons li,.ui-accordion .ui-accordion-header {
   background:transparent none;
   border-left:none;
   border-bottom:none;
@@ -446,7 +446,7 @@ textarea { resize:none; }
 .ui-accordion .ui-accordion-header .ui-icon {
   left:-4px;
 }
-.ui-layout-west .ui-accordion .ui-menu li {
+.ui-accordion .ui-menu li {
   text-indent:1.5em;
 }
 .ui-accordion .ui-accordion-header a
