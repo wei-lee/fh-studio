@@ -48,12 +48,13 @@ Tab.Manager = Class.extend({
           self.updateCrumbs(crumbs);
 
           // tell controller we're ready for it to do it's thing
-          controller.show();
+          controller.show(e);
         });
       });
 
       // meh, lets start with first item
       // TODO: state stuff here
+      el.find('.layout-content').show();
       navList.find('a:eq(0)').trigger('click');
     }
   },

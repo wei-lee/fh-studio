@@ -39,7 +39,9 @@ $.extend($.fn.dataTableExt.oPagination, {
     },
 
     "fnUpdate": function(oSettings, fnDraw) {
-      $fw_manager.client.useradmin.pageChange();
+      //$fw_manager.client.useradmin.pageChange();
+      // TODO: very convoluted to call
+      $fw.client.tab.admin.controllers['admin.users.controller'].pageChange();
       var iListLength = 5;
       var oPaging = oSettings.oInstance.fnPagingInfo();
       var an = oSettings.aanFeatures.p;
