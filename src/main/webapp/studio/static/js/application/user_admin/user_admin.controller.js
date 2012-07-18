@@ -167,8 +167,6 @@ UserAdmin.Controller = Class.extend({
     }, function(err) {
       Log.append(err);
     });
-
-    //this.toggleEditableRow(row, this.models.user);
   },
 
   emailFromRow: function(row) {
@@ -194,52 +192,6 @@ UserAdmin.Controller = Class.extend({
     });
 
     return fields;
-  },
-
-  toggleEditableRow: function(row, data_model) {
-    var self = this;
-
-    if (row.hasClass('editing')) {
-      row.removeClass('editing');
-      $('td', row).each(function(i, td) {
-        // Field should be editable?
-        if (data_model.field_config[i] && data_model.field_config[i].editable) {
-          // Checkbox row check
-          var checkbox = $(td).find('input[type=checkbox]');
-
-          if (checkbox.length > 0) {
-            $(checkbox).attr('disabled', 'true');
-          } else {
-            var text = $('input', td).val();
-
-            // Empty cell
-            $(td).empty();
-            $(td).text(text);
-          }
-        }
-      });
-    } else {
-      row.addClass('editing');
-      $('td', row).each(function(i, td) {
-        // Field should be editable?
-        if (data_model.field_config[i] && data_model.field_config[i].editable) {
-          // Checkbox row check
-          var checkbox = $(td).find('input[type=checkbox]');
-
-          if (checkbox.length > 0) {
-            $(checkbox).removeAttr('disabled');
-          } else {
-            var text = $(td).text();
-            var width = $(td).width();
-
-            // Empty cell
-            $(td).empty();
-            $(td).append('<input type="text"/>');
-            $(td).find('input').css('width', (width - 50) + 'px').val(text);
-          }
-        }
-      });
-    }
   },
 
   deleteUser: function(button, row, data) {},
