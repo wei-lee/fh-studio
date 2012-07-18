@@ -50,7 +50,7 @@ var IDEManager = Class.extend({
       devices: new application.ArmDeviceManager(),
       authPolicies: new application.ArmAuthPolicyManager()
     };
-    this.useradmin = new UserAdmin.Controller();
+    //this.useradmin = new UserAdmin.Controller();
         
     // setup callbacks for server calls
     $fw_manager.server.setOpts({ 

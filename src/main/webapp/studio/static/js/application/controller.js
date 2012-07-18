@@ -4,7 +4,7 @@ var Controller = Class.extend({
   },
 
   show: function () {
-    // TODO: generic show for all controllers
-    console.error('IMPLEMENT ME!!!');
+    // TODO: generic hide/show
   }
+
 });
