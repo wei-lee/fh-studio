@@ -194,8 +194,7 @@ Admin.Users.Controller = Controller.extend({
   },
 
   deleteUser: function(button, row, data) {
-    // TODO: validate fields and call import endpoint
-    alert('IMPLEMENT deleteUser!!!');
+    $('#useradmin_user_delete_modal').clone().appendTo($("body")).on('shown', modal_shown).modal();
   },
 
   bindGroupControls: function() {
@@ -307,21 +306,36 @@ Admin.Users.Controller = Controller.extend({
 
   createUser: function() {
     var self = this;
-    var name = $('#useradmin_user_create .user_name').val();
-    var email = $('#useradmin_user_create .user_email').val();
-    var password = $('#useradmin_user_create .user_password').val();
+
+    var form = $('#useradmin_user_create form');
+
+    var id = form.find('#create_user_id').val();
+    var password = form.find('#create_user_password').val();
     if (password === '') {
       password = null;
     }
-    var roles = $('#useradmin_user_create .user_roles').val();
-    var activated = true;
-    var invite = $('#useradmin_user_create .user_invite').is(':checked');
+    var email = form.find('#create_user_email').val();
+    if (email === '') {
+      email = null;
+    }
+    var name = form.find('#create_user_name').val();
+    if (name === '') {
+      name = null;
+    }
+    var invite = form.find('#create_user_invite').is(':checked');
 
+    var roles = $('#useradmin_user_create .user_roles').val();
     if (roles) {
       roles = roles.join(', ');
     }
 
-    this.models.user.create(email, name, roles, password, activated, invite, function(res) {
+    var groups = form.find('#create_user_groups').val();
+    if (groups) {
+      groups = groups.join(', ');
+    }
+
+    var activated = true;
+    this.models.user.create(id, email, name, roles, groups, password, activated, invite, function(res) {
       console.log(res);
       self.showUsersList();
     }, function(e) {
