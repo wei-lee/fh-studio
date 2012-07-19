@@ -15,11 +15,6 @@ model.User = model.Model.extend({
     showable: true,
     column_title: "Name"
   }, {
-    field_name: "activated",
-    editable: true,
-    showable: true,
-    column_title: "Activated"
-  }, {
     field_name: "enabled",
     editable: true,
     showable: true,
@@ -40,12 +35,11 @@ model.User = model.Model.extend({
 
   },
 
-  create: function(email, name, roles, password, activated, invite,  success, fail) {
+  create: function(id, email, name, roles, groups, password, activated, invite,  success, fail) {
     var user_type = this.resolveUserType();
     var url = Constants.ADMIN_USER_CREATE_URL.replace('<users-type>', user_type);
     var params = {
-      "email": email,
-      "name": name,
+      "id": id,
       "activated": activated,
       "invite": invite
     };
@@ -54,8 +48,20 @@ model.User = model.Model.extend({
       params.password = password;
     }
 
+    if (email != null) {
+      params.email = email;
+    }
+
+    if (name != null) {
+      params.name = name;
+    }
+
     if (roles != null) {
       params.roles = roles;
+    }
+
+    if (groups != null) {
+      params.groups = groups;
     }
 
     params[user_type] = $fw.getClientProp(user_type);

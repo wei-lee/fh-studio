@@ -11,7 +11,8 @@ Admin.Users.Controller = Controller.extend({
   views: {
     users: "#useradmin_user_list",
     user_create: "#useradmin_user_create",
-    user_update: "#useradmin_user_update"
+    user_update: "#useradmin_user_update",
+    user_import: "#useradmin_user_import"
   },
 
   user_table: null,
@@ -52,10 +53,16 @@ Admin.Users.Controller = Controller.extend({
 
   bindUserControls: function() {
     var self = this;
-    $('tr td .edit_user', this.user_table).click(function() {
+    $('tr td .edit_user', this.user_table).unbind().click(function() {
       var row = $(this).parent().parent();
-      var data = self.userDataForRow($(this).parent().parent().get(0));      
+      var data = self.userDataForRow($(this).parent().parent().get(0));
       self.showUserUpdate(this, row, data);
+      return false;
+    });
+    $('tr td .delete_user', this.user_table).unbind().click(function() {
+      var row = $(this).parent().parent();
+      var data = self.userDataForRow($(this).parent().parent().get(0));
+      self.deleteUser(this, row, data);
       return false;
     });
   },
@@ -95,19 +102,12 @@ Admin.Users.Controller = Controller.extend({
 
     var email = data[0];
     var name = data[1];
-    var activated = data[2];
     var enabled = data[3];
 
     // Populate form
     $(this.views.user_update).find('.user_name').val(name);
     $(this.views.user_update).find('.user_email').val(email);
-
-    if (activated) {
-      $(this.views.user_update).find('.user_activated').attr('checked', 'checked');
-    } else {
-      $(this.views.user_update).find('.user_activated').removeAttr('checked');
-      $(this.views.user_update).find('.user_resend_invite').show();
-    }
+    $(this.views.user_update).find('.user_resend_invite').show();
 
     if (enabled) {
       $(this.views.user_update).find('.user_enabled').attr('checked', 'checked');
@@ -141,7 +141,6 @@ Admin.Users.Controller = Controller.extend({
     var email = $('#useradmin_user_update .user_email').val();
     var password = $('#useradmin_user_update .user_password').val();
     var enabled = $('#useradmin_user_update .user_enabled').is(':checked');
-    var activated = $('#useradmin_user_update .user_activated').is(':checked');
     var roles = $('#useradmin_user_update .user_roles').val();
 
     if (roles != null) {
@@ -151,7 +150,6 @@ Admin.Users.Controller = Controller.extend({
     var fields = {
       email: email,
       name: name,
-      activated: activated,
       enabled: enabled
     };
 
@@ -195,7 +193,9 @@ Admin.Users.Controller = Controller.extend({
     return fields;
   },
 
-  deleteUser: function(button, row, data) {},
+  deleteUser: function(button, row, data) {
+    $('#useradmin_user_delete_modal').clone().appendTo($("body")).on('shown', modal_shown).modal();
+  },
 
   renderUserTable: function(data) {
     var self = this;
@@ -213,12 +213,16 @@ Admin.Users.Controller = Controller.extend({
       }
     });
 
-    // Inject Create button
-    var create_button = $('<button>').addClass('btn btn-primary right').text('Create').click(function() {
+    // Inject Import and Create button
+    var import_button = $('<button>').addClass('btn pull-right').text('Import Users').click(function() {
+      self.showImportUsers();
+      return false;
+    });
+    var create_button = $('<button>').addClass('btn btn-primary pull-right').text('Create').click(function() {
       self.showCreateUser();
       return false;
     });
-    $('#useradmin_user_list .span12:first').append(create_button);
+    $('#useradmin_user_list .span12:first').append(create_button).append(import_button);
   },
 
   showCreateUser: function() {
@@ -242,6 +246,18 @@ Admin.Users.Controller = Controller.extend({
     });
   },
 
+  showImportUsers: function () {
+    var self = this;
+    this.hide();
+
+    $('#useradmin_user_import').show();
+
+    $('#useradmin_user_import .import_user_btn').unbind().click(function() {
+      self.importUsers();
+      return false;
+    });
+  },
+
   updateUserAssignableRoles: function(roles) {
     var role_list = $('.user_roles:visible').empty();
     $.each(roles, function(i, role) {
@@ -262,28 +278,36 @@ Admin.Users.Controller = Controller.extend({
 
   createUser: function() {
     var self = this;
-    var name = $('#useradmin_user_create .user_name').val();
-    var email = $('#useradmin_user_create .user_email').val();
-    var password = $('#useradmin_user_create .user_password').val();
+
+    var form = $('#useradmin_user_create form');
+
+    var id = form.find('#create_user_id').val();
+    var password = form.find('#create_user_password').val();
     if (password === '') {
       password = null;
     }
-    var roles = $('#useradmin_user_create .user_roles').val();
-    var activated;
-    var invite = $('#useradmin_user_create .user_invite').is(':checked');
+    var email = form.find('#create_user_email').val();
+    if (email === '') {
+      email = null;
+    }
+    var name = form.find('#create_user_name').val();
+    if (name === '') {
+      name = null;
+    }
+    var invite = form.find('#create_user_invite').is(':checked');
 
+    var roles = $('#useradmin_user_create .user_roles').val();
     if (roles) {
       roles = roles.join(', ');
     }
 
-    // If we send an invite to the user, don't pre-activate
-    if (invite) {
-      activated = false;
-    } else {
-      activated = true;
+    var groups = form.find('#create_user_groups').val();
+    if (groups) {
+      groups = groups.join(', ');
     }
 
-    this.models.user.create(email, name, roles, password, activated, invite, function(res) {
+    var activated = true;
+    this.models.user.create(id, email, name, roles, groups, password, activated, invite, function(res) {
       console.log(res);
       self.showUsersList();
     }, function(e) {
@@ -293,6 +317,11 @@ Admin.Users.Controller = Controller.extend({
         $fw.client.dialog.error("Error creating user: " + e);
       }
     });
+  },
+
+  importUsers: function () {
+    // TODO: validate fields and call import endpoint
+    alert('IMPLEMENT IMPORT USERS!!!');
   },
 
   rowRender: function(row, data) {
@@ -328,7 +357,7 @@ Admin.Users.Controller = Controller.extend({
       var controls = [];
       // TODO: Move to clonable hidden_template
       controls.push('<button class="btn edit_user">Edit</button>&nbsp;');
-      // controls.push('<button class="btn btn-danger delete_user">Delete</button>');
+      controls.push('<button class="btn btn-danger delete_user">Delete</button>');
       row.push(controls.join(""));
     });
     return res;

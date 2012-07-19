@@ -43,27 +43,53 @@
         </div>
 
         <div id="useradmin_user_create" class="hidden_template row-fluid">
-          <form class="well">
-            <h3>Create a User</h3>
-            <p>
-              Here you can create a user. You can associate a user with a particular group, and you can assign a user multiple roles.
-            </p>
-            <br/>
-            <label>Name</label>
-            <input type="text" class="span4 user_name" placeholder="Name">
-            <label>Email</label>
-            <input type="text" class="span4 user_email" placeholder="Email Address">
-            <label>Password (Optional)</label>
-            <input type="password" class="span4 user_password" placeholder="Password">
-            <label class="checkbox">
-              <input type="checkbox" class="user_invite" value="invite" checked="checked">Send Invite Email?</label>
-            <label class="control-label">Available Roles</label>
-            <label class="select">
-              <select multiple="multiple" id="multiSelect" class="user_roles" disabled>
-                <option>Loading...</option>
-              </select>
-            </label>
-            <button type="submit" class="btn btn-primary create_user_btn">Create User</button>
+          <form class="well form-horizontal">
+            <fieldset>
+              <legend>Create a User</legend>
+              <p>
+                Here you can create a user for your domain.
+              </p>
+              <div class="control-group">
+                <label class="control-label" for="create_user_id">User ID</label>
+                <div class="controls">
+                  <input type="text" class="input-xxlarge" name="create_user_id" placeholder="User ID">
+                </div>
+              </div>
+              <div class="control-group">
+                <label class="control-label" for="create_user_password">Password (Optional)</label>
+                <div class="controls">
+                  <input type="password" class="input-xxlarge" id="create_user_password" placeholder="Password">
+                </div>
+              </div>
+              <div class="control-group">
+                <label class="control-label" for="create_user_email">Email Address (Optional)</label>
+                <div class="controls">
+                  <input type="text" class="input-xxlarge" id="create_user_email" placeholder="Email Address">
+                </div>
+              </div>
+              <div class="control-group">
+                <label class="control-label" for="create_user_name">Name (Optional)</label>
+                <div class="controls">
+                  <input type="email" class="input-xxlarge" id="create_user_name" placeholder="Name">
+                </div>
+              </div>
+              <div class="control-group">
+                <label class="control-label" for="create_user_invite">Invite</label>
+                <div class="controls">
+                  <label class="checkbox"><input type="checkbox" class="input-xxlarge" id="create_user_invite">Send Invite Email?</label>
+                </div>
+              </div>
+              <!-- 
+              <label class="control-label">Available Roles</label>
+              <label class="select">
+                <select multiple="multiple" id="multiSelect" class="user_roles" disabled>
+                  <option>Loading...</option>
+                </select>
+              </label> -->
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary create_user_btn">Create User</button>
+              </div>
+            </fieldset>
           </form>
         </div>
 
@@ -81,8 +107,6 @@
             <label>Password (Optional)</label>
             <input type="password" class="span4 user_password" placeholder="Password">
             <label class="checkbox">
-              <input type="checkbox" class="user_activated" value="activated">Activated</label>
-            <label class="checkbox">
               <input type="checkbox" class="user_enabled" value="enabled">Enabled</label>
             <label class="control-label">Current Roles</label>
             <label class="select">
@@ -98,6 +122,14 @@
             </label>
             <button class="btn user_resend_invite" style="display: none">Re-Send Invite Email</button>
             <button type="submit" class="btn btn-primary update_user_btn">Update User</button>
+          </form>
+        </div>
+
+        <div id="useradmin_user_import" class="hidden_template row-fluid">
+          <form class="well">
+            <h3>Import Users</h3>
+            <p></p>
+            <button type="submit" class="btn btn-primary import_user_btn">Import Users</button>
           </form>
         </div>
 
