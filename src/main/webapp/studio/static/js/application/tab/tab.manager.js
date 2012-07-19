@@ -1,3 +1,4 @@
+/*jshint evil:true */
 var Tab = Tab || {};
 Tab.Manager = Class.extend({
   controllers: {},
