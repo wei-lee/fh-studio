@@ -53,10 +53,16 @@ Admin.Users.Controller = Controller.extend({
 
   bindUserControls: function() {
     var self = this;
-    $('tr td .edit_user', this.user_table).click(function() {
+    $('tr td .edit_user', this.user_table).unbind().click(function() {
       var row = $(this).parent().parent();
-      var data = self.userDataForRow($(this).parent().parent().get(0));      
+      var data = self.userDataForRow($(this).parent().parent().get(0));
       self.showUserUpdate(this, row, data);
+      return false;
+    });
+    $('tr td .delete_user', this.user_table).unbind().click(function() {
+      var row = $(this).parent().parent();
+      var data = self.userDataForRow($(this).parent().parent().get(0));
+      self.deleteUser(this, row, data);
       return false;
     });
   },
@@ -96,19 +102,19 @@ Admin.Users.Controller = Controller.extend({
 
     var email = data[0];
     var name = data[1];
-    var activated = data[2];
+    //var activated = data[2];
     var enabled = data[3];
 
     // Populate form
     $(this.views.user_update).find('.user_name').val(name);
     $(this.views.user_update).find('.user_email').val(email);
 
-    if (activated) {
-      $(this.views.user_update).find('.user_activated').attr('checked', 'checked');
-    } else {
-      $(this.views.user_update).find('.user_activated').removeAttr('checked');
+    // if (activated) {
+    //   $(this.views.user_update).find('.user_activated').attr('checked', 'checked');
+    // } else {
+      //$(this.views.user_update).find('.user_activated').removeAttr('checked');
       $(this.views.user_update).find('.user_resend_invite').show();
-    }
+    // }
 
     if (enabled) {
       $(this.views.user_update).find('.user_enabled').attr('checked', 'checked');
@@ -142,7 +148,7 @@ Admin.Users.Controller = Controller.extend({
     var email = $('#useradmin_user_update .user_email').val();
     var password = $('#useradmin_user_update .user_password').val();
     var enabled = $('#useradmin_user_update .user_enabled').is(':checked');
-    var activated = $('#useradmin_user_update .user_activated').is(':checked');
+    //var activated = $('#useradmin_user_update .user_activated').is(':checked');
     var roles = $('#useradmin_user_update .user_roles').val();
 
     if (roles != null) {
@@ -152,7 +158,7 @@ Admin.Users.Controller = Controller.extend({
     var fields = {
       email: email,
       name: name,
-      activated: activated,
+      //activated: activated,
       enabled: enabled
     };
 
@@ -196,7 +202,10 @@ Admin.Users.Controller = Controller.extend({
     return fields;
   },
 
-  deleteUser: function(button, row, data) {},
+  deleteUser: function(button, row, data) {
+    // TODO: validate fields and call import endpoint
+    alert('IMPLEMENT deleteUser!!!');
+  },
 
   bindGroupControls: function() {
     var self = this;
@@ -314,7 +323,7 @@ Admin.Users.Controller = Controller.extend({
       password = null;
     }
     var roles = $('#useradmin_user_create .user_roles').val();
-    var activated;
+    var activated = true;
     var invite = $('#useradmin_user_create .user_invite').is(':checked');
 
     if (roles) {
@@ -322,11 +331,11 @@ Admin.Users.Controller = Controller.extend({
     }
 
     // If we send an invite to the user, don't pre-activate
-    if (invite) {
-      activated = false;
-    } else {
-      activated = true;
-    }
+    // if (invite) {
+    //   activated = false;
+    // } else {
+    //  activated = true;
+    // }
 
     this.models.user.create(email, name, roles, password, activated, invite, function(res) {
       console.log(res);
@@ -342,6 +351,7 @@ Admin.Users.Controller = Controller.extend({
 
   importUsers: function () {
     // TODO: validate fields and call import endpoint
+    alert('IMPLEMENT IMPORT USERS!!!');
   },
 
   rowRender: function(row, data) {
@@ -381,7 +391,7 @@ Admin.Users.Controller = Controller.extend({
       var controls = [];
       // TODO: Move to clonable hidden_template
       controls.push('<button class="btn edit_user">Edit</button>&nbsp;');
-      // controls.push('<button class="btn btn-danger delete_user">Delete</button>');
+      controls.push('<button class="btn btn-danger delete_user">Delete</button>');
       row.push(controls.join(""));
     });
     return res;

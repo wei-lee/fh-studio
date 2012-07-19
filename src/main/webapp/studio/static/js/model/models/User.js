@@ -14,12 +14,12 @@ model.User = model.Model.extend({
     editable: true,
     showable: true,
     column_title: "Name"
-  }, {
+  },/* {
     field_name: "activated",
     editable: true,
     showable: true,
     column_title: "Activated"
-  }, {
+   },*/ {
     field_name: "enabled",
     editable: true,
     showable: true,
