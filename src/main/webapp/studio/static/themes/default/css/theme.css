@@ -1,4 +1,6 @@
 @charset 'UTF-8';
+@import url("font-awesome.css");
+
 /*
  * DEFAULT IDE THEME
  *
@@ -526,6 +528,7 @@ button.ui-state-default
   margin:0;
   padding:0;
   border-width:0;
+  padding: 0 20px 0 20px;
 }
 
 .container-header-content {
@@ -658,6 +661,7 @@ label.error
   color:#666666;
   text-align:center;
 }
+
 #main_tabs_buttons a 
 {
   width:70px;
@@ -906,8 +910,7 @@ label.error
 
 #main_tabs_buttons.ui-widget-header {
   border: none;
-  padding: 0;
-  padding-top: 10px;
+  padding: 10px 0 0 20px;
 }
 
 /* App tools */
@@ -3229,4 +3232,12 @@ table.dataTable th:active {
   clear: right;
   margin-top: 10px;
   width: 54px;
+}
+
+.admin_nav_list {
+  padding: 5px 14px 5px 14px;
+}
+
+#home_content, #apps_center {
+  padding: 0 20px 0 20px;
 }

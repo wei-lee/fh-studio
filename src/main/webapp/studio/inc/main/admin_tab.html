@@ -6,31 +6,47 @@
     </div>
 
     <div class="row-fluid">
-
-      <ul class="nav nav-list span2">
+      <ul class="nav nav-list span2 well admin_nav_list">
         <li class="nav-header">Administration</li>
         <li>
-          <a href="#" data-controller="admin.users.controller">Users</a>
+          <a href="#" data-controller="admin.users.controller">
+            <i class="icon-user"></i>
+            Users
+          </a>
         </li>
         <li>
-          <a href="#" data-controller="admin.groups.controller">Groups</a>
+          <a href="#" data-controller="admin.groups.controller">
+            <i class="icon-group"></i>
+            Groups
+          </a>
         </li>
         <li>
-          <a href="#" data-controller="admin.devices.controller">Devices</a>
+          <a href="#" data-controller="admin.devices.controller">
+            <i class="icon-phone"></i>
+            Devices
+          </a>
         </li>
         <% if(studio.getProps().optBoolean("arm-auth-policy-enabled", false)) { %>
         <li>
-          <a href="#" data-controller="admin.authpolicy.controller">Authentication Policies</a>
+          <a href="#" data-controller="admin.authpolicy.controller">
+            <i class="icon-key"></i>
+            Auth Policies
+          </a>
         </li>
         <% } %>
-        <li class="nav-header">Mobile App Management</li>
+        <li class="nav-header">App Management</li>
         <li>
-          <a href="#" data-controller="admin.stores.controller">App Stores</a>
+          <a href="#" data-controller="admin.stores.controller">
+            <i class="icon-globe"></i>
+            App Stores
+          </a>
         </li>
         <li>
-          <a href="#" data-controller="admin.storeitems.controller">Store Items</a>
+          <a href="#" data-controller="admin.storeitems.controller">
+            <i class="icon-pencil"></i>
+            Store Items
+          </a>
         </li>
-
       </ul>
 
       <!-- Hide this initially and let javascript show it when its ready -->
