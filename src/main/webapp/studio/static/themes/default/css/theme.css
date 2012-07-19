@@ -3223,9 +3223,10 @@ table.dataTable th:active {
 }
 
 /* Store Items */
+.admin_store_item .controls { padding-top: 21px; }
 .admin_store_item .controls button {
   float: right;
   clear: right;
-  margin-top: 21px;
+  margin-top: 10px;
   width: 54px;
 }
