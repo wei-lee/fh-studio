@@ -17,11 +17,11 @@
         <li>
           <a href="#" data-controller="admin.devices.controller">Devices</a>
         </li>
-  <% if(studio.getProps().optBoolean("arm-auth-policy-enabled", false)) { %>
+        <% if(studio.getProps().optBoolean("arm-auth-policy-enabled", false)) { %>
         <li>
           <a href="#" data-controller="admin.authpolicy.controller">Authentication Policies</a>
         </li>
-  <% } %>
+        <% } %>
         <li class="nav-header">Mobile App Management</li>
         <li>
           <a href="#" data-controller="admin.stores.controller">App Stores</a>
@@ -46,145 +46,149 @@
           <form class="well form-horizontal">
             <fieldset>
               <legend>Create a User</legend>
-              <p>
-                Here you can create a user for your domain.
-              </p>
+              <p>Here you can create a user for your domain.</p>
               <div class="control-group">
                 <label class="control-label" for="create_user_id">User ID</label>
                 <div class="controls">
-                  <input type="text" class="input-xxlarge" name="create_user_id" placeholder="User ID">
-                </div>
+                  <input type="text" class="input-xxlarge" name="create_user_id" placeholder="User ID"></div>
               </div>
               <div class="control-group">
                 <label class="control-label" for="create_user_password">Password (Optional)</label>
                 <div class="controls">
-                  <input type="password" class="input-xxlarge" id="create_user_password" placeholder="Password">
-                </div>
+                  <input type="password" class="input-xxlarge" id="create_user_password" placeholder="Password"></div>
               </div>
               <div class="control-group">
                 <label class="control-label" for="create_user_email">Email Address (Optional)</label>
                 <div class="controls">
-                  <input type="text" class="input-xxlarge" id="create_user_email" placeholder="Email Address">
-                </div>
+                  <input type="text" class="input-xxlarge" id="create_user_email" placeholder="Email Address"></div>
               </div>
               <div class="control-group">
                 <label class="control-label" for="create_user_name">Name (Optional)</label>
                 <div class="controls">
-                  <input type="email" class="input-xxlarge" id="create_user_name" placeholder="Name">
-                </div>
+                  <input type="email" class="input-xxlarge" id="create_user_name" placeholder="Name"></div>
               </div>
               <div class="control-group">
                 <label class="control-label" for="create_user_invite">Invite</label>
                 <div class="controls">
-                  <label class="checkbox"><input type="checkbox" class="input-xxlarge" id="create_user_invite">Send Invite Email?</label>
+                  <label class="checkbox">
+                    <input type="checkbox" class="input-xxlarge" id="create_user_invite">Send Invite Email?</label>
                 </div>
               </div>
               <!-- 
               <label class="control-label">Available Roles</label>
-              <label class="select">
-                <select multiple="multiple" id="multiSelect" class="user_roles" disabled>
-                  <option>Loading...</option>
-                </select>
-              </label> -->
-              <div class="form-actions">
-                <button type="submit" class="btn btn-primary create_user_btn">Create User</button>
-              </div>
-            </fieldset>
-          </form>
-        </div>
-
-        <div id="useradmin_user_update" class="hidden_template row-fluid">
-          <form class="well">
-            <h3>Update a User</h3>
-            <p>
-              Here you can update a user. You can associate a user with a particular group, and you can assign a user multiple roles.
-            </p>
-            <br/>
-            <label>Name</label>
-            <input type="text" class="span4 user_name" placeholder="Name">
-            <label>Email</label>
-            <input type="text" class="span4 user_email" placeholder="Email Address">
-            <label>Password (Optional)</label>
-            <input type="password" class="span4 user_password" placeholder="Password">
-            <label class="checkbox">
-              <input type="checkbox" class="user_enabled" value="enabled">Enabled</label>
-            <label class="control-label">Current Roles</label>
             <label class="select">
-              <select class="user_current_roles">
+              <select multiple="multiple" id="multiSelect" class="user_roles" disabled>
                 <option>Loading...</option>
               </select>
             </label>
-            <label class="control-label">Available Roles</label>
-            <label class="select">
-              <select multiple="multiple" class="user_roles" disabled>
-                <option>Loading...</option>
-              </select>
-            </label>
-            <button class="btn user_resend_invite" style="display: none">Re-Send Invite Email</button>
-            <button type="submit" class="btn btn-primary update_user_btn">Update User</button>
-          </form>
-        </div>
-
-        <div id="useradmin_user_import" class="hidden_template row-fluid">
-          <form class="well">
-            <h3>Import Users</h3>
-            <p></p>
-            <button type="submit" class="btn btn-primary import_user_btn">Import Users</button>
-          </form>
-        </div>
-
-        <!-- Groups Templates -->
-        <div id="useradmin_group_list" class="hidden_template row-fluid">
-          <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="useradmin_groups_table"></table>
-        </div>
-
-        <div id="useradmin_group_create" class="hidden_template row-fluid">
-          <form class="well">
-            <h3>Create a Group</h3>
-            <p>
-              Groups can be used to group users together. For example, you can group users for one project together so they can see one another's apps.
-            </p>
-            <br/>
-            <label>Group Name</label>
-            <input type="text" class="span4 group_name" placeholder="Group Name (e.g. Project A Developers)">
-            <button type="submit" class="btn btn-primary create_group_btn">Create Group</button>
-          </form>
-        </div>
-
-        <!-- Storeitem templates -->
-        <ul id="admin_store_items" class="hidden_template">
-        </ul>
-
-        <li id="admin_store_item" class="hidden_template admin_store_item well">
-          <div class="row-fluid">
-            <div class="span2 icon_container">
-              <img src="" alt="" class="icon" />
+            -->
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary create_user_btn">Create User</button>
             </div>
-            <div class="details span8">
-              <h3 class="name"></h3>
-              <p class="description"></p>
-            </div>
-            <div class="span2 controls">
-              <button class="btn edit_store_item">Edit</button><br/>
-              <button class="btn btn-danger delete_store_item">Delete</button>
-            </div>
-          </div>
-        </li>
-
-        <div id="admin_store_item_create" class="hidden_template row-fluid">
-          <form class="well">
-            <h3>Create a new Store Item</h3>
-            <br/>
-            <label>Name</label>
-            <input type="text" class="span4 item_name" placeholder="Name">
-            <label>Store Item ID</label>
-            <input type="text" class="span4 item_id" placeholder="Store Item ID">
-            <button type="submit" class="btn btn-primary create_user_btn">Create Item</button>
-          </form>
-        </div>
-
+          </fieldset>
+        </form>
       </div>
-    </div>
 
+      <div id="useradmin_user_update" class="hidden_template row-fluid">
+        <form class="well">
+          <h3>Update a User</h3>
+          <p>
+            Here you can update a user. You can associate a user with a particular group, and you can assign a user multiple roles.
+          </p>
+          <br/>
+          <label>Name</label>
+          <input type="text" class="span4 user_name" placeholder="Name">
+          <label>Email</label>
+          <input type="text" class="span4 user_email" placeholder="Email Address">
+          <label>Password (Optional)</label>
+          <input type="password" class="span4 user_password" placeholder="Password">
+          <label class="checkbox">
+            <input type="checkbox" class="user_enabled" value="enabled">Enabled</label>
+          <label class="control-label">Current Roles</label>
+          <label class="select">
+            <select class="user_current_roles">
+              <option>Loading...</option>
+            </select>
+          </label>
+          <label class="control-label">Available Roles</label>
+          <label class="select">
+            <select multiple="multiple" class="user_roles" disabled>
+              <option>Loading...</option>
+            </select>
+          </label>
+          <button class="btn user_resend_invite" style="display: none">Re-Send Invite Email</button>
+          <button type="submit" class="btn btn-primary update_user_btn">Update User</button>
+        </form>
+      </div>
+
+      <div id="useradmin_user_import" class="hidden_template row-fluid">
+        <form class="well">
+          <h3>Import Users</h3>
+          <p></p>
+          <button type="submit" class="btn btn-primary import_user_btn">Import Users</button>
+        </form>
+      </div>
+
+      <!-- Groups Templates -->
+      <div id="useradmin_group_list" class="hidden_template row-fluid">
+        <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="useradmin_groups_table"></table>
+      </div>
+
+      <div id="useradmin_group_create" class="hidden_template row-fluid">
+        <form class="well">
+          <h3>Create a Group</h3>
+          <p>
+            Groups can be used to group users together. For example, you can group users for one project together so they can see one another's apps.
+          </p>
+          <br/>
+          <label>Group Name</label>
+          <input type="text" class="span4 group_name" placeholder="Group Name (e.g. Project A Developers)">
+          <button type="submit" class="btn btn-primary create_group_btn">Create Group</button>
+        </form>
+      </div>
+
+      <!-- Storeitem templates -->
+      <ul id="admin_store_items" class="hidden_template"></ul>
+
+      <li id="admin_store_item" class="hidden_template admin_store_item well">
+        <div class="row-fluid">
+          <div class="span2 icon_container">
+            <img src="" alt="" class="icon" />
+          </div>
+          <div class="details span8">
+            <h3 class="name"></h3>
+            <p class="description"></p>
+          </div>
+          <div class="span2 controls">
+            <button class="btn edit_store_item">Edit</button>
+            <br/>
+            <button class="btn btn-danger delete_store_item">Delete</button>
+          </div>
+        </div>
+      </li>
+
+      <div id="admin_store_item_create" class="hidden_template row-fluid">
+        <form class="well">
+          <h3>Create a new Store Item</h3>
+          <br/>
+          <label>Name</label>
+          <input type="text" class="span4 item_name" placeholder="Name">
+          <label>Store Item ID</label>
+          <input type="text" class="span4 item_id" placeholder="Store Item ID">
+          <button type="submit" class="btn btn-primary create_user_btn">Create Item</button>
+        </form>
+      </div>
+
+      <!-- AuthPolicy Templates -->
+      <div id="auth_policies_list" class="hidden_template row-fluid">
+        <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="auth_policies_list_table"></table>
+      </div>
+
+      <div id="auth_policies_create" class="hidden_template row-fluid"></div>
+      <div id="auth_policies_update" class="hidden_template row-fluid"></div>
+
+    </div>
   </div>
+
+</div>
 </div>

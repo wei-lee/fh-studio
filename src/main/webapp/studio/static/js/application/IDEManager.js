@@ -48,7 +48,6 @@ var IDEManager = Class.extend({
       users: new application.ArmUserManager(),
       groups: new application.ArmGroupManager(),
       devices: new application.ArmDeviceManager(),
-      authPolicies: new application.ArmAuthPolicyManager()
     };
     //this.useradmin = new UserAdmin.Controller();
         

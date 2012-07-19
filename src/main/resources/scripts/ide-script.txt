@@ -71,7 +71,6 @@ js/application/arm/ArmUserManager.js
 js/application/arm/ArmAppManager.js
 js/application/arm/ArmGroupManager.js
 js/application/arm/ArmDeviceManager.js
-js/application/arm/ArmAuthPolicyManager.js
 js/application/chart/ChartManager.js
 js/application/chart/locator/ChartLocator.js
 js/application/chart/locator/MetricsChartLocator.js
