@@ -3221,3 +3221,11 @@ table.dataTable th:active {
   background: linear-gradient(to bottom,  #3870c3 0%,#3364b9 100%); /* W3C */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3870c3', endColorstr='#3364b9',GradientType=0 ); /* IE6-9 */
 }
+
+/* Store Items */
+.admin_store_item .controls button {
+  float: right;
+  clear: right;
+  margin-top: 21px;
+  width: 54px;
+}
