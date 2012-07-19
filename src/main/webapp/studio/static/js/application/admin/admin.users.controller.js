@@ -11,7 +11,8 @@ Admin.Users.Controller = Controller.extend({
   views: {
     users: "#useradmin_user_list",
     user_create: "#useradmin_user_create",
-    user_update: "#useradmin_user_update"
+    user_update: "#useradmin_user_update",
+    user_import: "#useradmin_user_import"
   },
 
   user_table: null,
@@ -234,12 +235,16 @@ Admin.Users.Controller = Controller.extend({
       }
     });
 
-    // Inject Create button
-    var create_button = $('<button>').addClass('btn btn-primary right').text('Create').click(function() {
+    // Inject Import and Create button
+    var import_button = $('<button>').addClass('btn pull-right').text('Import Users').click(function() {
+      self.showImportUsers();
+      return false;
+    });
+    var create_button = $('<button>').addClass('btn btn-primary pull-right').text('Create').click(function() {
       self.showCreateUser();
       return false;
     });
-    $('#useradmin_user_list .span12:first').append(create_button);
+    $('#useradmin_user_list .span12:first').append(create_button).append(import_button);
   },
 
   showCreateUser: function() {
@@ -268,6 +273,18 @@ Admin.Users.Controller = Controller.extend({
     // }, function(err) {
     //   $fw.client.dialog.error("Error loading groups.");
     // });
+  },
+
+  showImportUsers: function () {
+    var self = this;
+    this.hide();
+
+    $('#useradmin_user_import').show();
+
+    $('#useradmin_user_import .import_user_btn').unbind().click(function() {
+      self.importUsers();
+      return false;
+    });
   },
 
   updateUserAssignableRoles: function(roles) {
@@ -321,6 +338,10 @@ Admin.Users.Controller = Controller.extend({
         $fw.client.dialog.error("Error creating user: " + e);
       }
     });
+  },
+
+  importUsers: function () {
+    // TODO: validate fields and call import endpoint
   },
 
   rowRender: function(row, data) {
@@ -393,7 +414,7 @@ Admin.Users.Controller = Controller.extend({
       }
     });
     // Inject Create button
-    var create_button = $('<button>').addClass('btn btn-primary right').text('Create').click(function() {
+    var create_button = $('<button>').addClass('btn btn-primary pull-right').text('Create').click(function() {
       self.showCreateGroup();
       return false;
     });
