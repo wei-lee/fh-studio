@@ -1,12 +1,6 @@
 #header_logo {
   background-image: url(../img/feedhenry_logo.png);
 }
-
-.ui-state-active.home-tab, #home_north .container-header
-{
-  background: transparent url(../img/dark_blue_bar_repeat.png) repeat-x 0 0 !important;
-}
-
  .dashboard-header{
   background-image: url(../img/home_page_graphic.png);
 }

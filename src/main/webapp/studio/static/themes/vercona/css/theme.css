@@ -28,9 +28,6 @@ html,body
   background:url(../img/background.png) repeat-x scroll 0 0 transparent;
 }
 
-/* .ui-state-active.home-tab, #home_north .container-header {
-background:url("../img/home_bar.png") repeat-x scroll 0 0 transparent !important;
-} */
 /*Tab Background colour for Off-State */
 #main_layout_center .ui-tabs-nav li.ui-state-default
 {
