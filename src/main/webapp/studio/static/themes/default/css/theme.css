@@ -468,7 +468,7 @@ html, body
   height:100%;
   overflow-y:auto;
   min-height:755px;
-  background: #fff;
+  background: url('../img/bg_page.png');
 }
 #main_layout_wrapper
 {
