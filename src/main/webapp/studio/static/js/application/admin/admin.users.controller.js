@@ -102,19 +102,12 @@ Admin.Users.Controller = Controller.extend({
 
     var email = data[0];
     var name = data[1];
-    //var activated = data[2];
     var enabled = data[3];
 
     // Populate form
     $(this.views.user_update).find('.user_name').val(name);
     $(this.views.user_update).find('.user_email').val(email);
-
-    // if (activated) {
-    //   $(this.views.user_update).find('.user_activated').attr('checked', 'checked');
-    // } else {
-      //$(this.views.user_update).find('.user_activated').removeAttr('checked');
-      $(this.views.user_update).find('.user_resend_invite').show();
-    // }
+    $(this.views.user_update).find('.user_resend_invite').show();
 
     if (enabled) {
       $(this.views.user_update).find('.user_enabled').attr('checked', 'checked');
@@ -148,7 +141,6 @@ Admin.Users.Controller = Controller.extend({
     var email = $('#useradmin_user_update .user_email').val();
     var password = $('#useradmin_user_update .user_password').val();
     var enabled = $('#useradmin_user_update .user_enabled').is(':checked');
-    //var activated = $('#useradmin_user_update .user_activated').is(':checked');
     var roles = $('#useradmin_user_update .user_roles').val();
 
     if (roles != null) {
@@ -158,7 +150,6 @@ Admin.Users.Controller = Controller.extend({
     var fields = {
       email: email,
       name: name,
-      //activated: activated,
       enabled: enabled
     };
 
@@ -329,13 +320,6 @@ Admin.Users.Controller = Controller.extend({
     if (roles) {
       roles = roles.join(', ');
     }
-
-    // If we send an invite to the user, don't pre-activate
-    // if (invite) {
-    //   activated = false;
-    // } else {
-    //  activated = true;
-    // }
 
     this.models.user.create(email, name, roles, password, activated, invite, function(res) {
       console.log(res);
