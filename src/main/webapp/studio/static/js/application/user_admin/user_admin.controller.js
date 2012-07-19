@@ -18,7 +18,8 @@ UserAdmin.Controller = Class.extend({
   },
 
   user_table: null,
-  // group_table: null,
+  group_table: null,
+  
   init: function(params) {
     var self = this;
     params = params || {};
