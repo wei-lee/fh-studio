@@ -119,12 +119,23 @@
           </form>
         </div>
 
-        <%--@ include file="../arm_devices/devices_list.html" --%>
-        <%--@ include file="../arm_devices/devices_add.html" --%>
-        <%--@ include file="../arm_devices/devices_approve.html" --%>
-        <%-- if(studio.getProps().optBoolean("arm-auth-policy-enabled", false)) { --%>
-        <%--@ include file="../arm_auth_policies/auth_policies_manage.html" --%>
-        <%-- } --%>
+        <!-- Storeitem templates -->
+        <div id="admin_storeitem_list" class="hidden_template row-fluid">
+          <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="admin_storeitem_table"></table>
+        </div>
+
+        <div id="admin_storeitem_create" class="hidden_template row-fluid">
+          <form class="well">
+            <h3>Create a new Store Item</h3>
+            <br/>
+            <label>Name</label>
+            <input type="text" class="span4 item_name" placeholder="Name">
+            <label>Store Item ID</label>
+            <input type="text" class="span4 item_id" placeholder="Store Item ID">
+            <button type="submit" class="btn btn-primary create_user_btn">Create Item</button>
+          </form>
+        </div>
+
       </div>
     </div>
 
