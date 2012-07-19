@@ -466,7 +466,7 @@ html, body
   height:100%;
   overflow-y:auto;
   min-height:755px;
-  background: url('../img/bg_page.png');
+  background: #fff;
 }
 #main_layout_wrapper
 {
@@ -3221,3 +3221,12 @@ table.dataTable th:active {
   background: linear-gradient(to bottom,  #3870c3 0%,#3364b9 100%); /* W3C */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3870c3', endColorstr='#3364b9',GradientType=0 ); /* IE6-9 */
 }
+
+/* Store Items */
+.admin_store_item {
+  margin-bottom: 10px;
+}
+
+/*.admin_store_item .icon_container {
+  margin: 0 10px 10px 0;
+}*/

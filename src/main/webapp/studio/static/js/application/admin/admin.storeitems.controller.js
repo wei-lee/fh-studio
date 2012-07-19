@@ -17,7 +17,6 @@ Admin.Storeitems.Controller = Controller.extend({
   init: function() {},
 
   show: function(e) {
-    console.log('show store items!');
     this.showStoreItems();
   },
 
@@ -42,9 +41,12 @@ Admin.Storeitems.Controller = Controller.extend({
   renderItems: function(store_items) {
     var self = this;
     var list = $(this.views.store_items);
+    list.empty();
     $.each(store_items, function(i, store_item) {
       var list_item = $(self.views.store_item).clone().show().removeAttr('id');
-      list_item.find('.description').text(store_item.name);
+      list_item.find('.details h3').text(store_item.name);
+      list_item.find('.details p').text(store_item.description);
+      list_item.find('img').attr('src', 'data:image/png;base64,' + store_item.icon);
       list_item.appendTo(list);
     })
   }
