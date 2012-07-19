@@ -214,7 +214,7 @@ Admin.Users.Controller = Controller.extend({
     });
 
     // Inject Import and Create button
-    var import_button = $('<button>').addClass('btn pull-right').text('Import Users').click(function() {
+    var import_button = $('<button>').addClass('btn pull-right import_users').text('Import Users').click(function() {
       self.showImportUsers();
       return false;
     });

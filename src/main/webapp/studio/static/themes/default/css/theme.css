@@ -3241,3 +3241,7 @@ table.dataTable th:active {
 #home_content, #apps_center {
   padding: 0 20px 0 20px;
 }
+
+.import_users {
+  margin-right: 10px;
+}
