@@ -5,21 +5,16 @@ Admin.Users = Admin.Users || {};
 Admin.Users.Controller = Controller.extend({
   models: {
     user: new model.User(),
-    group: new model.Group(),
     role: new model.Role()
   },
 
-  // TODO: Refactor below to use these
   views: {
     users: "#useradmin_user_list",
-    groups: "#useradmin_group_list",
-    group_create: "#useradmin_group_create",
     user_create: "#useradmin_user_create",
     user_update: "#useradmin_user_update"
   },
 
   user_table: null,
-  // group_table: null,
 
   init: function(params) {
     var self = this;
