@@ -28,7 +28,7 @@ Tab.Manager = Class.extend({
           try {
             self.controllers[controllerName] = new (eval(upperName))(); // ok to use eval here
           } catch (e) {
-            console.error('Make user ' + upperName + ' is loaded and defined');
+            console.error('Make sure ' + upperName + ' is loaded and defined');
             throw e;
           }
         }
@@ -42,7 +42,7 @@ Tab.Manager = Class.extend({
 
           // udpate breadcrumbs
           var crumbs = [jqEl.text()];
-          var header = jqEl.closest('li').prev('.nav-header');
+          var header = jqEl.closest('li').prevAll('.nav-header:eq(0)');
           if (header.length > 0) {
             crumbs.unshift(header.text());
           }
@@ -81,7 +81,7 @@ Tab.Manager = Class.extend({
         }).on('click', function (e) {
           // TODO: implement
           console.error('IMPLEMENT breadcrumb click');
-        })).append($('span', {
+        })).append($('<span>', {
           "class": "divider",
           "text": "/"
         })));

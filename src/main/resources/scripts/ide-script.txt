@@ -64,7 +64,7 @@ js/application/admin/admin.users.controller.js
 js/application/admin/admin.groups.controller.js
 js/application/admin/admin.devices.controller.js
 js/application/admin/admin.authpolicy.controller.js
-js/application/admin/admin.mam.controller.js
+js/application/admin/admin.stores.controller.js
 js/application/arm/ArmManager.js
 js/application/arm/ArmUserManager.js
 js/application/arm/ArmAppManager.js
