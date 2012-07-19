@@ -2166,6 +2166,13 @@ p.input-form-footer, .tandc_Link{
  clear: both;
  height: 3em;
 }
+
+#home_content_bottom_left, #home_content_bottom_right {
+  -webkit-border-radius: 7px;
+  -moz-border-radius: 7px;
+  border-radius: 7px;
+}
+
 #home_content_bottom_right p {
  float: left;
 }
@@ -2299,9 +2306,11 @@ p.input-form-footer, .tandc_Link{
   float:right;
 }
 .section-header-dashboard {
-  background:#fff url(../img/section-header.png) repeat-x 0 0;
+  background: -moz-linear-gradient(#FAFAFA,#E0E0E0);
+  background: -webkit-linear-gradient(#FAFAFA,#E0E0E0);
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#fafafa',endColorstr='#e0e0e0')";
   border-bottom: 1px solid #cccccc;
-  height:10px;
+  height:14px;
   padding:10px;
 }
 .section-body-dashboard {
@@ -3244,4 +3253,8 @@ table.dataTable th:active {
 
 .import_users {
   margin-right: 10px;
+}
+
+#list_apps_center {
+  background: #fff;
 }
