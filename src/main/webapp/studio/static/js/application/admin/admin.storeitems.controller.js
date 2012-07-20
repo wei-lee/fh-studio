@@ -41,13 +41,28 @@ Admin.Storeitems.Controller = Controller.extend({
   renderItems: function(store_items) {
     var self = this;
     var list = $(this.views.store_items);
-    list.empty();
+    list.find('li').remove();
     $.each(store_items, function(i, store_item) {
       var list_item = $(self.views.store_item).clone().show().removeAttr('id');
       list_item.find('.details h3').text(store_item.name);
       list_item.find('.details p').text(store_item.description);
       list_item.find('img').attr('src', 'data:image/png;base64,' + store_item.icon);
       list_item.appendTo(list);
-    })
+    });
+
+    this.bind();
+  },
+
+  showCreateStoreItem: function() {
+    this.hide();
+    $(this.views.store_item_create).show();
+  },
+
+  bind: function() {
+    var self = this;
+    var create_button = $(this.views.store_items).find('.admin_store_items_controls button');
+    create_button.unbind().click(function(){
+      self.showCreateStoreItem();
+    });
   }
 });
