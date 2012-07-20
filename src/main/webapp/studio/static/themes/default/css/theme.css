@@ -3235,6 +3235,24 @@ table.dataTable th:active {
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3870c3', endColorstr='#3364b9',GradientType=0 ); /* IE6-9 */
 }
 
+#home_content, #apps_center {
+  padding: 0 20px 0 20px;
+}
+
+#list_apps_center {
+  background: #fff;
+}
+
+/* Bootstrap navlist */
+.admin_nav_list {
+  padding: 5px 14px 5px 14px;
+}
+
+
+.import_users {
+  margin-right: 10px;
+}
+
 /* Store Items */
 .admin_store_item .controls { padding-top: 21px; }
 .admin_store_item .controls button {
@@ -3242,20 +3260,4 @@ table.dataTable th:active {
   clear: right;
   margin-top: 10px;
   width: 54px;
-}
-
-.admin_nav_list {
-  padding: 5px 14px 5px 14px;
-}
-
-#home_content, #apps_center {
-  padding: 0 20px 0 20px;
-}
-
-.import_users {
-  margin-right: 10px;
-}
-
-#list_apps_center {
-  background: #fff;
 }
