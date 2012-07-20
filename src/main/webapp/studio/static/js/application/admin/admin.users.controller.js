@@ -371,15 +371,17 @@ Admin.Users.Controller = Controller.extend({
     }
     var invite = form.find('#create_user_invite').is(':checked');
 
-    var roles = $(this.views.user_create + ' .user_roles').val();
-    if (roles) {
-      roles = roles.join(', ');
-    }
+    var rolesArr = [];
+    $('#create_user_role_swap .swap-to option', this.views.user_create).each(function (i, item) {
+      rolesArr.push($(item).text());
+    });
+    var roles = rolesArr.join(', ');
 
-    var groups = form.find('#create_user_groups').val();
-    if (groups) {
-      groups = groups.join(', ');
-    }
+    var groupsArr = [];
+    $('#create_user_group_swap .swap-to option', this.views.user_create).each(function (i, item) {
+      groupsArr.push($(item).text());
+    });
+    var groups = groupsArr.join(', ');
 
     var activated = true;
     this.models.user.create(id, email, name, roles, groups, password, activated, invite, function(res) {
