@@ -784,8 +784,8 @@ label.error
 #connectivity_dialog, #info_dialog
 {
   position:absolute;
-/*  z-index:1020;
-*/  top:47px;
+  z-index:3;
+  top:47px;
   right:13px;
   min-width: 200px;
   height: 18px;

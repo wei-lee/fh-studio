@@ -3,12 +3,14 @@ application.DialogManager = Class.extend({
   init: function () {
     this.progress = proto.ProgressDialog.load($('#progress_dialog'), {});
     this.connectivity = {
-      el: $('#connectivity_dialog'),
       show: function (text) {
-        this.el.show().find('p').text(text);
+        $('#connectivity_dialog').queue(function () {
+          $(this).show().find('p').text(text);
+          $(this).dequeue();
+        }).fadeIn(300).delay('undefined' !== typeof timeout ? timeout : 1500).fadeOut(300);
       },
       hide: function () {
-        this.el.hide();
+        $('#connectivity_dialog').hide();
       }
     };
     this.info = {

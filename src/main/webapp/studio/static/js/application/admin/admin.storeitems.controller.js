@@ -99,12 +99,23 @@ Admin.Storeitems.Controller = Controller.extend({
     var name = $('.item_name', container).val();
     var item_id = $('.item_id', container).val();
     var description = $('.item_description', container).val();
+    var groups = this._selectedGroups(container);
+    console.log(groups);
 
     this.models.store_item.create(name, item_id, description, [], function(res) {
       Log.append('create StoreItem: OK');
     }, function(err) {
       Log.append(err);
     });
+  },
+
+  _selectedGroups: function(container) {
+    var group_options = $('.store_item_assigned_groups option', container);
+    var groups = [];
+    group_options.each(function(i, item){
+      groups.push($(item).val());
+    });
+    return groups;
   }
 
 });
