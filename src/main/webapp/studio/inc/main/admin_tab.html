@@ -213,14 +213,22 @@
           <div class="control-group">
             <label class="control-label">Name</label>
             <div class="controls">
-              <input type="text" class="span4 item_name" placeholder="Name">
+              <input type="text" class="item_name input-xlarge" placeholder="Name">
             </div>
           </div>
 
           <div class="control-group">
-            <label class="control-label">Auth Token????</label>
+            <label class="control-label">Auth Token</label>
             <div class="controls">
-              <input type="text" class="span4 item_id" placeholder="Auth Token?????">
+              <input type="text" class="input-xlarge item_id" placeholder="Auth Token">
+              <span class="help-inline">Your Auth Token can be used to identify your app when using $fh.auth to track app access events</span>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label" for="textarea">Description</label>
+            <div class="controls">
+              <textarea class="input-xlarge item_description" id="textarea" rows="3"></textarea>
             </div>
           </div>
 
@@ -228,12 +236,8 @@
             <label class="control-label">Groups</label>
             <div class="controls swap-select" id="store_item_group_swap">
               <div class="span2">
-                <select multiple="multiple" class="span12 swap-from">
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                  <option>5</option>
+                <span>Available</span>
+                <select multiple="multiple" class="span12 swap-from store_item_available_groups">
                 </select>
               </div>
               <div class="span1">
@@ -241,12 +245,8 @@
                 <button class="btn remove span12">&lt;</button>
               </div>
               <div class="span2">
-                <select multiple="multiple" class="span12 swap-to">
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                  <option>5</option>
+                <span>Member Of</span>
+                <select multiple="multiple" class="span12 swap-to store_item_assigned_groups">
                 </select>
               </div>
               <span class="help-inline span4">Members of the these groups will be able to view this Item in your App Store</span>
@@ -254,7 +254,7 @@
           </div>
 
           <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Create Item</button>
+            <button type="submit" class="btn btn-primary create_store_item">Create Item</button>
           </div>
         </form>
       </div>

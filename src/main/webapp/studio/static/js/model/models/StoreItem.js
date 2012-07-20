@@ -6,6 +6,10 @@ model.StoreItem = model.Model.extend({
   init: function() {},
 
   list: function(success, fail) {
+    // var url = Constants.ADMIN_STORE_ITEM_LIST_URL;
+    // var params = {};
+    // return this.serverPost(url, params, success, fail);
+
     var mock = {
       "status": "ok",
       store_items: [{
@@ -89,6 +93,16 @@ model.StoreItem = model.Model.extend({
       }]
     };
     success(mock);
+  },
+
+  create: function(name, item_id, description, groups, success, fail) {
+    var url = Constants.ADMIN_STORE_ITEM_CREATE_URL;
+    var params = {
+      "name": name,
+      "description": description,
+      "authToken": item_id
+    };
+    return this.serverPost(url, params, success, fail, true);
   }
 
 });
