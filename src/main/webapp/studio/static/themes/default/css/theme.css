@@ -1129,6 +1129,7 @@ label.error
 {
   padding:0;  
   border: 1px solid #dfdfdf;
+  background: #fff;
 }
 .ui-dialog .ui-dialog-content
 {
