@@ -61,8 +61,11 @@ Admin.Storeitems.Controller = Controller.extend({
   bind: function() {
     var self = this;
     var create_button = $(this.views.store_items).find('.admin_store_items_controls button');
-    create_button.unbind().click(function(){
+    create_button.unbind().click(function() {
       self.showCreateStoreItem();
     });
+
+    this.bindSwapSelect(this.views.store_item_create);
   }
+
 });

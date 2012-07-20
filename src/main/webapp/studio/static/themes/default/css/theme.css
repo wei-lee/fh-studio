@@ -3253,6 +3253,15 @@ table.dataTable th:active {
   margin-right: 10px;
 }
 
+/* Swap Select layout */
+.swap-select select {
+  height: 150px;
+}
+
+.swap-select button:first-child {
+  margin-top: 41px;
+}
+
 /* Store Items */
 .admin_store_item .controls { padding-top: 21px; }
 

@@ -189,13 +189,54 @@
       </li>
 
       <div id="admin_store_item_create" class="hidden_template row-fluid">
-        <form class="well">
+        <form class="well form-horizontal">
           <h3>Create a new Store Item</h3>
           <br/>
-          <label>Name</label>
-          <input type="text" class="span4 item_name" placeholder="Name">
-          <label>Store Item ID</label>
-          <input type="text" class="span4 item_id" placeholder="Store Item ID">
+          <div class="control-group">
+            <label class="control-label">Name</label>
+            <div class="controls">
+              <input type="text" class="span4 item_name" placeholder="Name">
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label">Auth Token????</label>
+            <div class="controls">
+              <input type="text" class="span4 item_id" placeholder="Auth Token?????">
+            </div>
+          </div>
+
+
+          <div class="control-group">
+            <label class="control-label">Groups</label>
+            <div class="controls swap-select" id="store_item_group_swap">
+              <div class="span2">
+                <select multiple="multiple" class="span12 swap-from">
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                </select>
+              </div>
+              <div class="span1">
+                <button class="btn add span12">&gt;</button>
+                <button class="btn remove span12">&lt;</button>
+              </div>
+              <div class="span2">
+                <select multiple="multiple" class="span12 swap-to">
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                </select>
+              </div>
+              <span class="help-inline">Members of the these groups will be <br/>able to view this Item in your App Store</span>
+            </div>
+          </div>
+
+
           <button type="submit" class="btn btn-primary create_user_btn">Create Item</button>
         </form>
       </div>
