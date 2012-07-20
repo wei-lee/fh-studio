@@ -123,6 +123,7 @@ $.extend(Constants, {
   ADMIN_USER_CREATE_URL: Constants.ADMIN_URL_PREFIX + "<users-type>/users/create",
   ADMIN_USER_READ_URL: Constants.ADMIN_URL_PREFIX + "<users-type>/users/read",
   ADMIN_USER_UPDATE_URL: Constants.ADMIN_URL_PREFIX + "<users-type>/users/update",
+  ADMIN_USER_DELETE_URL: Constants.ADMIN_URL_PREFIX + "<users-type>/users/delete",
   ADMIN_USER_RESEND_INVITE_URL: Constants.IDE_URL_PREFIX + "user/invite",
 
   ADMIN_GROUP_LIST_URL: Constants.ADMIN_URL_PREFIX + "<domain>/group/list",
