@@ -84,6 +84,17 @@ model.User = model.Model.extend({
     return this.serverPost(url, params, success, fail, true);
   },
 
+  delete: function(email, success, fail) {
+    var user_type = this.resolveUserType();
+    var url = Constants.ADMIN_USER_DELETE_URL.replace('<users-type>', user_type);
+    var params = {
+      "email": email
+    };
+    params[user_type] = $fw.getClientProp(user_type);
+
+    return this.serverPost(url, params, success, fail, true);
+  },
+
   resendInvite: function(email, success, fail) {
     var url = Constants.ADMIN_USER_RESEND_INVITE_URL.replace('<domain>', $fw_manager.getClientProp('domain'));
     var params = {

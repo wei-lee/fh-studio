@@ -125,8 +125,8 @@ Admin.Users.Controller = Controller.extend({
       return false;
     });
 
-    var email = data[0];
-    var name = data[1];
+    var email = data[1];
+    var name = data[2];
     var enabled = data[3];
 
     // Populate form
@@ -231,6 +231,15 @@ Admin.Users.Controller = Controller.extend({
       // confirmed delete, go ahead
       modal.modal('hide');
       self.showAlert('info', '<strong>Deleting User</strong> This may take some time.');
+      // delete user
+      var email = data[1];
+      self.models.user.delete(email, function(res) {
+        self.showAlert('success', '<strong>User Successfully Deleted</strong>');
+        // remove user from table
+        self.user_table.fnDeleteRow(row[0]);
+      }, function(e) {
+        self.showAlert('error', '<strong>Problem Deleting User</strong> ' + e);
+      });
     }).end().on('hidden', function() {
       // wait a couple seconds for modal backdrop to be hidden also before removing from dom
       setTimeout(function () {
