@@ -233,7 +233,7 @@ Admin.Users.Controller = Controller.extend({
       self.showAlert('info', '<strong>Deleting User</strong> This may take some time.');
       // delete user
       var email = data[1];
-      self.models.user.delete(email, function(res) {
+      self.models.user.remove(email, function(res) {
         self.showAlert('success', '<strong>User Successfully Deleted</strong>');
         // remove user from table
         self.user_table.fnDeleteRow(row[0]);

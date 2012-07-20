@@ -84,7 +84,7 @@ model.User = model.Model.extend({
     return this.serverPost(url, params, success, fail, true);
   },
 
-  delete: function(email, success, fail) {
+  remove: function(email, success, fail) {
     var user_type = this.resolveUserType();
     var url = Constants.ADMIN_USER_DELETE_URL.replace('<users-type>', user_type);
     var params = {
