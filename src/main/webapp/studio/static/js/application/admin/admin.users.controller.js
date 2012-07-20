@@ -5,7 +5,8 @@ Admin.Users = Admin.Users || {};
 Admin.Users.Controller = Controller.extend({
   models: {
     user: new model.User(),
-    role: new model.Role()
+    role: new model.Role(),
+    group: new model.Group()
   },
 
   views: {
@@ -147,7 +148,7 @@ Admin.Users.Controller = Controller.extend({
       self.updateUserAssignableRoles(roles);
 
     }, function(e) {
-      $fw.client.dialog.error("Error loading roles.");
+      self.showAlert('error', '<strong>Error loading Roles</strong> ' + e);
     });
 
     // Load available roles
@@ -156,7 +157,7 @@ Admin.Users.Controller = Controller.extend({
       var roles = res.fields.roles;
       self.updateCurrentUserRoles(roles);
     }, function(e) {
-      $fw.client.dialog.error("Error loading user data");
+      self.showAlert('error', '<strong>Error loading user data</strong> ' + e);
     });
   },
 
@@ -287,14 +288,26 @@ Admin.Users.Controller = Controller.extend({
       return false;
     });
 
-    // Load roles & Groups
+    // initialise all swap selects
+    self.bindSwapSelect(this.container);
+
+    // Load roles & Groups into swap select
     this.models.role.list_assignable(function(res) {
       Log.append('Role list OK.');
       var roles = res.list;
-      self.updateUserAssignableRoles(roles);
-
+      var container = '#create_user_role_swap';
+      self.updateSwapSelect(container, roles);
     }, function(e) {
-      $fw.client.dialog.error("Error loading roles.");
+      self.showAlert('error', '<strong>Error loading Roles</strong> ' + e);
+    });
+
+    this.models.group.list_assignable(function(res) {
+      Log.append('Group list OK.');
+      var groups = res.list;
+      var container = '#create_user_group_swap';
+      self.updateSwapSelect(container, groups);
+    }, function(e) {
+      self.showAlert('error', '<strong>Error loading Groups</strong> ' + e);
     });
   },
 
@@ -311,13 +324,22 @@ Admin.Users.Controller = Controller.extend({
     });
   },
 
-  updateUserAssignableRoles: function(roles) {
-    var role_list = $('.user_roles:visible').empty();
-    $.each(roles, function(i, role) {
-      var option = $('<option>').text(role);
-      role_list.append(option);
+  updateSwapSelect: function(container, from, to) {
+    var from_list = $('.swap-from', container).empty();
+    $.each(from, function(i, form_item) {
+      var option = $('<option>').text(form_item);
+      from_list.append(option);
     });
-    role_list.removeAttr("disabled");
+    from_list.removeAttr("disabled");
+
+    var to_list = $('.swap-to', container).empty();
+    if ('undefined' !== typeof to) {
+      $.each(to, function(i, to_item) {
+        var option = $('<option>').text(to_list);
+        to_list.append(option);
+      });
+    }
+    to_list.removeAttr("disabled");
   },
 
   updateCurrentUserRoles: function(roles) {

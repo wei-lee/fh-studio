@@ -93,14 +93,45 @@
                     <input type="checkbox" class="input-xxlarge" id="create_user_invite">Send Invite Email?</label>
                 </div>
               </div>
-              <!-- 
-              <label class="control-label">Available Roles</label>
-            <label class="select">
-              <select multiple="multiple" id="multiSelect" class="user_roles" disabled>
-                <option>Loading...</option>
-              </select>
-            </label>
-            -->
+
+              <div class="control-group">
+                <label class="control-label">Roles</label>
+                <div class="controls swap-select" id="create_user_role_swap">
+                  <div class="span2">
+                    <select multiple="multiple" class="span12 swap-from">
+                      <option>Loading...</option>
+                    </select>
+                  </div>
+                  <div class="span1">
+                    <button class="btn add span12">&gt;</button>
+                    <button class="btn remove span12">&lt;</button>
+                  </div>
+                  <div class="span2">
+                    <select multiple="multiple" class="span12 swap-to">
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="control-group">
+                <label class="control-label">Groups</label>
+                <div class="controls swap-select" id="create_user_group_swap">
+                  <div class="span2">
+                    <select multiple="multiple" class="span12 swap-from">
+                      <option>Loading...</option>
+                    </select>
+                  </div>
+                  <div class="span1">
+                    <button class="btn add span12">&gt;</button>
+                    <button class="btn remove span12">&lt;</button>
+                  </div>
+                  <div class="span2">
+                    <select multiple="multiple" class="span12 swap-to">
+                    </select>
+                  </div>
+                </div>
+              </div>
+
             <div class="form-actions">
               <button type="submit" class="btn btn-primary create_user_btn">Create User</button>
             </div>

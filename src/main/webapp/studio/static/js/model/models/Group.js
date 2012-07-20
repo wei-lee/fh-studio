@@ -36,6 +36,17 @@ model.Group = model.Model.extend({
     }
   },
 
+  list_assignable: function(success, fail) {
+    var url = Constants.ADMIN_GROUP_LIST_ASSIGNABLE_URL;
+    var params = {};
+
+    return this.serverPost(url, params, success, function (status, statusText) {
+      if ('function' === typeof fail) {
+        return fail('' + status + ':' + statusText);
+      }
+    }, true);
+  },
+
   postProcessList: function(res, data_model) {
     var filtered_fields = data_model.getColumnMap();
 

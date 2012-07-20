@@ -150,7 +150,11 @@ model.User = model.Model.extend({
       "email": email
     };
 
-    return this.serverPost(url, params, success, fail, true);
+    return this.serverPost(url, params, success, function (status, statusText) {
+      if ('function' === typeof fail) {
+        return fail('' + status + ':' + statusText);
+      }
+    }, true);
   },
 
   resellerUserRead: function(email, success, fail) {
@@ -160,7 +164,11 @@ model.User = model.Model.extend({
       "email": email
     };
 
-    return this.serverPost(url, params, success, fail, true);
+    return this.serverPost(url, params, success, function (status, statusText) {
+      if ('function' === typeof fail) {
+        return fail('' + status + ':' + statusText);
+      }
+    }, true);
   },
 
   changePassword: function(old_password, new_password, success, fail) {
