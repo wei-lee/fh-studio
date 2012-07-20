@@ -5,6 +5,11 @@ model.User = model.Model.extend({
 
   // Field config
   field_config: [{
+    field_name: "userid",
+    editable: false,
+    showable: true,
+    column_title: "User ID"
+  }, {
     field_name: "email",
     editable: false,
     showable: true,
@@ -39,7 +44,7 @@ model.User = model.Model.extend({
     var user_type = this.resolveUserType();
     var url = Constants.ADMIN_USER_CREATE_URL.replace('<users-type>', user_type);
     var params = {
-      "id": id,
+      "userid": id,
       "activated": activated,
       "invite": invite
     };

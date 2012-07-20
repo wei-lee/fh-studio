@@ -113,7 +113,9 @@ GenerateApp.Controllers.Wufoo = Class.extend({
     alert.append(close_button);
     alerts_area.append(alert);
     setTimeout(function() {
-      alert.slideUp();
+      alert.slideUp(function () {
+        alert.remove();
+      });
     }, self.alert_timeout);
   },
 
@@ -125,7 +127,9 @@ GenerateApp.Controllers.Wufoo = Class.extend({
     alert.append(close_button);
     alerts_area.append(alert);
     setTimeout(function() {
-      alert.slideUp();
+      alert.slideUp(function () {
+        alert.remove();
+      });
     }, self.alert_timeout);
   },
 

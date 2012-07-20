@@ -15,6 +15,10 @@ Admin.Users.Controller = Controller.extend({
     user_import: "#useradmin_user_import"
   },
 
+  container: null, // keeps track of currently active/visible container
+
+  alert_timeout: 10000,
+
   user_table: null,
 
   init: function(params) {
@@ -37,10 +41,29 @@ Admin.Users.Controller = Controller.extend({
     });
   },
 
+  // type: error|success|info
+  showAlert: function (type, message) {
+    var self = this;
+    var alerts_area = $(this.container).find('#alerts');
+    var alert = $('<div>').addClass('alert fade in alert-' + type).html(message);
+    var close_button = $('<button>').addClass('close').attr("data-dismiss", "alert").text("x");
+    alert.append(close_button);
+    alerts_area.append(alert);
+    // only automatically hide alert if it's not an error
+    if ('error' !== type) {
+      setTimeout(function() {
+        alert.slideUp(function () {
+          alert.remove();
+        });
+      }, self.alert_timeout);
+    }
+  },
+
   showUsersList: function() {
     var self = this;
     this.hide();
     $(this.views.users).show();
+    this.container = this.views.users;
 
     this.models.user.list(function(res) {
       var data = self.addControls(res);
@@ -84,18 +107,20 @@ Admin.Users.Controller = Controller.extend({
     this.hide();
 
     // Reset user update view
-    $(this.views.user_update).find('.user_name').val('');
-    $(this.views.user_update).find('.user_email').val('');
-    $(this.views.user_update).find('.user_resend_invite').hide();
+    var parent = $(this.views.user_update);
+    parent.find('.user_name').val('');
+    parent.find('.user_email').val('');
+    parent.find('.user_resend_invite').hide();
+    this.container = this.views.user_update;
 
-    $(this.views.user_update).show();
+    parent.show();
 
-    $('#useradmin_user_update .update_user_btn').unbind().click(function() {
+    parent.find('.update_user_btn').unbind().click(function() {
       self.updateUser();
       return false;
     });
 
-    $('#useradmin_user_update .user_resend_invite').unbind().click(function() {
+    parent.find('.user_resend_invite').unbind().click(function() {
       self.resendInvite();
       return false;
     });
@@ -105,14 +130,14 @@ Admin.Users.Controller = Controller.extend({
     var enabled = data[3];
 
     // Populate form
-    $(this.views.user_update).find('.user_name').val(name);
-    $(this.views.user_update).find('.user_email').val(email);
-    $(this.views.user_update).find('.user_resend_invite').show();
+    parent.find('.user_name').val(name);
+    parent.find('.user_email').val(email);
+    parent.find('.user_resend_invite').show();
 
     if (enabled) {
-      $(this.views.user_update).find('.user_enabled').attr('checked', 'checked');
+      parent.find('.user_enabled').attr('checked', 'checked');
     } else {
-      $(this.views.user_update).find('.user_enabled').removeAttr('checked');
+      parent.find('.user_enabled').removeAttr('checked');
     }
 
     // Load available roles
@@ -137,11 +162,13 @@ Admin.Users.Controller = Controller.extend({
 
   updateUser: function() {
     var self = this;
-    var name = $('#useradmin_user_update .user_name').val();
-    var email = $('#useradmin_user_update .user_email').val();
-    var password = $('#useradmin_user_update .user_password').val();
-    var enabled = $('#useradmin_user_update .user_enabled').is(':checked');
-    var roles = $('#useradmin_user_update .user_roles').val();
+    var parent = $(this.views.user_update);
+
+    var name = parent.find('.user_name').val();
+    var email = parent.find('.user_email').val();
+    var password = parent.find('.user_password').val();
+    var enabled = parent.find('.user_enabled').is(':checked');
+    var roles = parent.find('.user_roles').val();
 
     if (roles != null) {
       roles = roles.join(", ");
@@ -194,7 +221,22 @@ Admin.Users.Controller = Controller.extend({
   },
 
   deleteUser: function(button, row, data) {
-    $('#useradmin_user_delete_modal').clone().appendTo($("body")).on('shown', modal_shown).modal();
+    var self = this;
+
+    var modal = $('#useradmin_user_delete_modal').clone();
+    modal.appendTo($("body")).modal({
+      "keyboard": false,
+      "backdrop": "static"
+    }).find('.btn-primary').on('click', function () {
+      // confirmed delete, go ahead
+      modal.modal('hide');
+      self.showAlert('info', '<strong>Deleting User</strong> This may take some time.');
+    }).end().on('hidden', function() {
+      // wait a couple seconds for modal backdrop to be hidden also before removing from dom
+      setTimeout(function () {
+        modal.remove();
+      }, 2000);
+    });
   },
 
   renderUserTable: function(data) {
@@ -222,15 +264,16 @@ Admin.Users.Controller = Controller.extend({
       self.showCreateUser();
       return false;
     });
-    $('#useradmin_user_list .span12:first').append(create_button).append(import_button);
+    $(this.views.users + ' .span12:first').append(create_button).append(import_button);
   },
 
   showCreateUser: function() {
     var self = this;
     this.hide();
-    $('#useradmin_user_create').show();
+    $(this.views.user_create).show();
+    this.container = this.views.user_create;
 
-    $('#useradmin_user_create .create_user_btn').unbind().click(function() {
+    $(this.views.user_create + ' .create_user_btn').unbind().click(function() {
       self.createUser();
       return false;
     });
@@ -250,9 +293,10 @@ Admin.Users.Controller = Controller.extend({
     var self = this;
     this.hide();
 
-    $('#useradmin_user_import').show();
+    $(this.views.user_import).show();
+    this.container = this.views.user_import;
 
-    $('#useradmin_user_import .import_user_btn').unbind().click(function() {
+    $(this.views.user_import + '.import_user_btn').unbind().click(function() {
       self.importUsers();
       return false;
     });
@@ -279,7 +323,7 @@ Admin.Users.Controller = Controller.extend({
   createUser: function() {
     var self = this;
 
-    var form = $('#useradmin_user_create form');
+    var form = $(this.views.user_create + ' form');
 
     var id = form.find('#create_user_id').val();
     var password = form.find('#create_user_password').val();
@@ -296,7 +340,7 @@ Admin.Users.Controller = Controller.extend({
     }
     var invite = form.find('#create_user_invite').is(':checked');
 
-    var roles = $('#useradmin_user_create .user_roles').val();
+    var roles = $(this.views.user_create + ' .user_roles').val();
     if (roles) {
       roles = roles.join(', ');
     }
