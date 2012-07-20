@@ -36,6 +36,7 @@ Tab.Manager = Class.extend({
 
         // handler for when navlist item is clicked
         jqEl.on('click', function (e) {
+          e.preventDefault();
           // update active status of navlist
           navList.find('li').removeClass('active');
           jqEl.closest('li').addClass('active');
@@ -55,6 +56,8 @@ Tab.Manager = Class.extend({
           }
           // tell active controller we're ready for it to do it's thing
           controller.show(e);
+
+          return false;
         });
       });
 
