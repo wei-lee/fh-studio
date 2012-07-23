@@ -192,36 +192,54 @@ Admin.Users.Controller = Controller.extend({
 
   updateUser: function() {
     var self = this;
-    var parent = $(this.views.user_update);
 
-    var name = parent.find('.user_name').val();
-    var email = parent.find('.user_email').val();
-    var password = parent.find('.user_password').val();
-    var enabled = parent.find('.user_enabled').is(':checked');
-    var roles = parent.find('.user_roles').val();
+    var form = $(this.views.user_update + ' form');
+    var fields = {};
 
-    if (roles != null) {
-      roles = roles.join(", ");
-    }
+    // required fields first
+    // text inputs
+    fields.username = form.find('#update_user_id').val();
+    // checkbox fields
+    fields.enabled = form.find('#update_user_enabled').is(':checked');
+    fields.blacklisted = form.find('#update_user_blacklisted').is(':checked');
 
-    var fields = {
-      email: email,
-      name: name,
-      enabled: enabled
-    };
-
-    if (password != null && password !== '') {
+    // optional fields
+    // text inputs
+    var password = form.find('#update_user_password').val();
+    if (password !== '') {
       fields.password = password;
     }
-    if (roles != null && roles !== '') {
-      fields.roles = roles;
+    var email = form.find('#update_user_email').val();
+    if (email !== '') {
+      fields.email = email;
+    }
+    var name = form.find('#update_user_name').val();
+    if (name !== '') {
+      fields.name = name;
+    }
+    // select fields
+    var rolesArr = [];
+    $('#update_user_role_swap .swap-to option', this.views.user_update).each(function (i, item) {
+      rolesArr.push($(item).text());
+    });
+    if (rolesArr.length > 0 ) {
+      fields.roles = rolesArr.join(', ');
+    }
+    var groupsArr = [];
+    $('#update_user_group_swap .swap-to option', this.views.user_update).each(function (i, item) {
+      groupsArr.push($(item).text());
+    });
+    if (groupsArr.length > 0) {
+      fields.groups = groupsArr.join(', ');
     }
 
     this.models.user.update(fields, function(res) {
       Log.append('updateUser: OK');
       self.showUsersList();
+      self.showAlert('success', '<strong>User successfully updated</strong> (' + res.fields.username + ')');
     }, function(err) {
       Log.append(err);
+      self.showAlert('error', '<strong>Error updating User</strong> ' + err);
     });
   },
 
@@ -268,7 +286,7 @@ Admin.Users.Controller = Controller.extend({
         // remove user from table
         self.user_table.fnDeleteRow(row[0]);
       }, function(e) {
-        self.showAlert('error', '<strong>Problem Deleting User</strong> ' + e);
+        self.showAlert('error', '<strong>Error Deleting User</strong> ' + e);
       });
     }).end().on('hidden', function() {
       // wait a couple seconds for modal backdrop to be hidden also before removing from dom
@@ -390,11 +408,7 @@ Admin.Users.Controller = Controller.extend({
       console.log(res);
       self.showUsersList();
     }, function(e) {
-      if (typeof e == 'undefined') {
-        $fw.client.dialog.error("Error creating user");
-      } else {
-        $fw.client.dialog.error("Error creating user: " + e);
-      }
+      self.showAlert('error', '<strong>Error creating user</strong> ' + e);
     });
   },
 

@@ -75,13 +75,9 @@ model.User = model.Model.extend({
 
   update: function(fields, success, fail) {
     var user_type = this.resolveUserType();
-    var url = Constants.ADMIN_USER_UPDATE_URL.replace('<users-type>', user_type);
-    var params = {
-      "fields": fields
-    };
-    params[user_type] = $fw.getClientProp(user_type);
+    var url = Constants.ADMIN_USER_UPDATE_URL;
 
-    return this.serverPost(url, params, success, fail, true);
+    return this.serverPost(url, fields, success, fail, true);
   },
 
   remove: function(email, success, fail) {
