@@ -32,7 +32,7 @@ Admin.Storeitems.Controller = Controller.extend({
     this.hide();
     $(this.views.store_items).show();
     this.models.store_item.list(function(res) {
-      var store_items = res.store_items;
+      var store_items = res.list;
       self.renderItems(store_items);
     }, function(err) {
       console.error(err);
@@ -43,12 +43,13 @@ Admin.Storeitems.Controller = Controller.extend({
     var self = this;
     var list = $(this.views.store_items);
     list.find('li').remove();
+
     $.each(store_items, function(i, store_item) {
       var list_item = $(self.views.store_item).clone().show().removeAttr('id');
       list_item.data('store_item', store_item);
       list_item.find('.details h3').text(store_item.name);
       list_item.find('.details p').text(store_item.description);
-      if (store_item.icon != '') {
+      if (store_item.icon !== '') {
         list_item.find('img').attr('src', 'data:image/png;base64,' + store_item.icon);
       } else {
         list_item.find('img').attr('src', '/studio/static/themes/default/img/store_no_icon.png');
@@ -100,7 +101,7 @@ Admin.Storeitems.Controller = Controller.extend({
     $(self.views.store_item_update).show();
 
     // Bind Binary upload fields
-    var icon_upload_field = $('.store_item_icon', self.views.store_item_update)
+    var icon_upload_field = $('.store_item_icon', self.views.store_item_update);
     icon_upload_field.fileupload({
       url: Constants.ADMIN_STORE_ITEM_UPLOAD_BINARY_URL,
       dataType: 'json',
@@ -115,10 +116,10 @@ Admin.Storeitems.Controller = Controller.extend({
       // add: function(e, data) {
       // },
       done: function(e, data) {
-        alert('done!')
+        // alert('done!')
       },
       progressall: function(e, data) {
-        console.log(data)
+        console.log(data);
       }
     });
   },
