@@ -123,13 +123,9 @@ Admin.Users.Controller = Controller.extend({
       $('#update_user_name', parent).val(user.name);
       $('#update_user_email', parent).val(user.email);
 
-      // TODO: enable user, whitelist user buttons
-      if (user.enabled) {
-        $('#update_user_enabled', parent).attr('checked', 'checked');
-      }
-      if (user.blacklisted) {
-        $('#update_user_blacklisted', parent).attr('checked', 'checked');
-      }
+      // setup enabled/blacklisted checkboxes and buttons
+      self.setUserEnabled(user.enabled);
+      self.setUserBlacklisted(user.blacklisted);
 
       // no need to show sub role
       var rolesTo = user.roles;
@@ -140,7 +136,7 @@ Admin.Users.Controller = Controller.extend({
       self.updateSwapSelect('#update_user_group_swap', results[2], user.groups);
       self.bindSwapSelect(parent);
 
-      $('input,select,button', parent).removeAttr('disabled');
+      $('input,select,button', parent).not('#update_user_id,#update_user_enabled,#update_user_blacklisted').removeAttr('disabled');
     };
 
     clearForm();
@@ -266,34 +262,6 @@ Admin.Users.Controller = Controller.extend({
     });
 
     return fields;
-  },
-
-  deleteUser: function(button, row, data) {
-    var self = this;
-
-    var modal = $('#useradmin_user_delete_modal').clone();
-    modal.appendTo($("body")).modal({
-      "keyboard": false,
-      "backdrop": "static"
-    }).find('.btn-primary').on('click', function () {
-      // confirmed delete, go ahead
-      modal.modal('hide');
-      self.showAlert('info', '<strong>Deleting User</strong> This may take some time.');
-      // delete user
-      var email = data[1];
-      self.models.user.remove(email, function(res) {
-        self.showAlert('success', '<strong>User Successfully Deleted</strong>');
-        // remove user from table
-        self.user_table.fnDeleteRow(row[0]);
-      }, function(e) {
-        self.showAlert('error', '<strong>Error Deleting User</strong> ' + e);
-      });
-    }).end().on('hidden', function() {
-      // wait a couple seconds for modal backdrop to be hidden also before removing from dom
-      setTimeout(function () {
-        modal.remove();
-      }, 2000);
-    });
   },
 
   renderUserTable: function(data) {
@@ -454,5 +422,123 @@ Admin.Users.Controller = Controller.extend({
       row.push(controls.join(""));
     });
     return res;
+  },
+
+  showBooleanModal: function (msg, success) {
+    var modal = $('#useradmin_user_boolean_modal').clone();
+    modal.find('.modal-body').html(msg).end().appendTo($("body")).modal({
+      "keyboard": false,
+      "backdrop": "static"
+    }).find('.btn-primary').unbind().on('click', function () {
+      // confirmed delete, go ahead
+      modal.modal('hide');
+      success();
+    }).end().on('hidden', function() {
+      // wait a couple seconds for modal backdrop to be hidden also before removing from dom
+      setTimeout(function () {
+        modal.remove();
+      }, 2000);
+    });
+  },
+
+  setUserEnabled: function (enabled) {
+    var self = this;
+    if (enabled) {
+      $('#update_user_enabled').attr('checked', 'checked');
+      $('.enable_user_button').text('Disable User').unbind().on('click', function () {
+        self.disableUser();
+      });
+    } else {
+      $('#update_user_enabled').removeAttr('checked');
+      $('.enable_user_button').text('Enable User').unbind().on('click', function () {
+        self.enableUser();
+      });
+    }
+  },
+
+  setUserBlacklisted: function (blacklisted) {
+    var self = this;
+    if (blacklisted) {
+      $('#update_user_blacklisted').attr('checked', 'checked');
+      $('.blacklist_user_button').text('Whitelist User').unbind().on('click', function () {
+        self.whitelistUser();
+      });
+    } else {
+      $('#update_user_blacklisted').removeAttr('checked');
+      $('.blacklist_user_button').text('Blacklist User').unbind().on('click', function () {
+        self.blacklistUser();
+      });
+    }
+  },
+
+  deleteUser: function(button, row, data) {
+    var self = this;
+    self.showBooleanModal('Are you sure you want to delete this User?', function () {
+      self.showAlert('info', '<strong>Deleting User</strong> This may take some time.');
+      // delete user
+      var email = data[1];
+      self.models.user.remove(email, function(res) {
+        self.showAlert('success', '<strong>User Successfully Deleted</strong>');
+        // remove user from table
+        self.user_table.fnDeleteRow(row[0]);
+      }, function(e) {
+        self.showAlert('error', '<strong>Error Deleting User</strong> ' + e);
+      });
+    });
+  },
+
+  enableUser: function () {
+    var self = this;
+    self.showBooleanModal('Are you sure you want to enable this User?', function () {
+      self.changeBooleanField('enabled', true, 'Enabling', function () {
+        self.setUserEnabled(true);
+      });
+    });
+  },
+
+  disableUser: function () {
+    var self = this;
+    self.showBooleanModal('Are you sure you want to disable this user? This user will no longer be able to authenticate.', function () {
+      self.changeBooleanField('enabled', false, 'Disabling', function () {
+        self.setUserEnabled(false);
+      });
+    });
+  },
+
+  blacklistUser: function () {
+    var self = this;
+    self.showBooleanModal('Are you sure you want to Blacklist this User? (In supported apps, data will be purged at next login.)', function () {
+      self.changeBooleanField('blacklisted', true, 'Blacklisting', function () {
+        self.setUserBlacklisted(true);
+      });
+    });
+  },
+
+  whitelistUser: function () {
+    var self = this;
+    self.showBooleanModal('Are you sure you want to Whitelist this User?', function () {
+      self.changeBooleanField('blacklisted', false, 'Whitelisting', function () {
+        self.setUserBlacklisted(false);
+      });
+    });
+  },
+
+  changeBooleanField: function (boolField, boolVal, actionDesc, success) {
+    var self = this;
+    var form = $(self.views.user_update + ' form');
+    var fields = {
+      "username": form.find('#update_user_id').val()
+    };
+    fields[boolField] = boolVal;
+
+    self.showAlert('info', '<strong>' + actionDesc + ' User</strong> (' + fields.username + ')');
+    self.models.user.update(fields, function(res) {
+      Log.append(actionDesc + ' User OK');
+      self.showAlert('success', '<strong>' + actionDesc + ' User successful</strong> (' + fields.username + ')');
+      success();
+    }, function(err) {
+      Log.append(err);
+      self.showAlert('error', '<strong>Error ' + actionDesc + ' User</strong> ' + err);
+    });
   }
 });
