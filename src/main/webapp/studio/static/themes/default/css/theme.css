@@ -643,7 +643,6 @@ label.error
 {
   background-image:none;
   background-color:transparent;
-  border-bottom: 1px solid #ccc;
 }
 #main_layout_center.ui-tabs
 {
@@ -683,17 +682,21 @@ label.error
 {
   color:#fff;
 }
-#main_layout_south
-{
-  height:42px!important;
-  border-top:1px solid #fff;
-  background-color:#e6e6e6;
-  text-align:center;
-  color:#666;
-  margin /*\**/: auto\9 !important;  /*IE 7&8 only, see: http://my.opera.com/dbloom/blog/2009/03/11/css-hack-for-ie8-standards-mode*/
-  position /*\**/: fixed\9 !important;
-  left /*\**/: auto\9 !important;
-  right /*\**/: auto\9 !important;
+
+#main_layout_south {
+  height: 42px!important;
+  background-color: #e6e6e6;
+  text-align: center;
+  color: #666;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+}
+
+#main_tabs_panels {
+  padding-bottom: 42px;
 }
 
 /* Inner layouts*/
