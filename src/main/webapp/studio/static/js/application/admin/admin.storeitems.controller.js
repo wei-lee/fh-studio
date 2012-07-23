@@ -49,7 +49,6 @@ Admin.Storeitems.Controller = Controller.extend({
       list_item.find('.details h3').text(store_item.name);
       list_item.find('.details p').text(store_item.description);
       list_item.find('img').attr('src', 'data:image/png;base64,' + store_item.icon);
-      list_item.appendTo(list);
       list_item.find('.delete_store_item').unbind().click(function() {
         var guid = store_item.guid;
         var okay = confirm("Are you sure you want to delete this Store Item?");
@@ -57,6 +56,12 @@ Admin.Storeitems.Controller = Controller.extend({
           self.deleteStoreItem(guid);
         }
       });
+
+      list_item.find('.edit_store_item').unbind().click(function() {
+        self.showUpdateStoreItem(store_item);
+      });
+
+      list_item.appendTo(list);
     });
 
     this.bind();
@@ -82,6 +87,23 @@ Admin.Storeitems.Controller = Controller.extend({
       self.renderAvailableGroups(res.list);
     }, function(err) {
       Log.append(err);
+    });
+  },
+
+  showUpdateStoreItem: function(store_item) {
+    var self = this;
+    this.hide();
+    $(self.views.store_item_update).show();
+
+    // Bind Binary upload fields
+    $('.store_item_icon', self.views.store_item_update).fileupload({
+      dataType: 'json',
+      done: function(e, data) {
+        debugger;
+        // $.each(data.result, function(index, file) {
+        //   $('<p/>').text(file.name).appendTo(document.body);
+        // });
+      }
     });
   },
 
@@ -119,9 +141,8 @@ Admin.Storeitems.Controller = Controller.extend({
     var item_id = $('.item_id', container).val();
     var description = $('.item_description', container).val();
     var groups = this._selectedGroups(container);
-    console.log(groups);
 
-    this.models.store_item.create(name, item_id, description, [], function(res) {
+    this.models.store_item.create(name, item_id, description, groups, function(res) {
       Log.append('create StoreItem: OK');
     }, function(err) {
       Log.append(err);
