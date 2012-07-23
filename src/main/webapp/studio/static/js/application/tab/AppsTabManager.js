@@ -171,8 +171,6 @@ application.AppsTabManager = application.TabManager.extend({
         $('li#' + selected).trigger('click');
       }
     }
-    // TODO: move all layouts to a layout manager
-    main_layout.resizeAll();
     apps_layout.resizeAll();
     if (null !== list_apps_layout) {
       list_apps_layout.resizeAll();
