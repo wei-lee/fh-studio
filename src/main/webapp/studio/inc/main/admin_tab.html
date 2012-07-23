@@ -61,7 +61,7 @@
         </div>
 
         <div id="useradmin_user_create" class="hidden_template row-fluid">
-        <div id="alerts"></div>
+          <div id="alerts"></div>
           <form class="well form-horizontal">
             <fieldset>
               <legend>Create a User</legend>
@@ -69,7 +69,7 @@
               <div class="control-group">
                 <label class="control-label" for="create_user_id">User ID</label>
                 <div class="controls">
-                  <input type="text" class="input-xxlarge" name="create_user_id" placeholder="User ID"></div>
+                  <input type="text" class="input-xxlarge" id="create_user_id" placeholder="User ID"></div>
               </div>
               <div class="control-group">
                 <label class="control-label" for="create_user_password">Password (Optional)</label>
@@ -141,34 +141,90 @@
 
       <div id="useradmin_user_update" class="hidden_template row-fluid">
         <div id="alerts"></div>
-        <form class="well">
-          <h3>Update a User</h3>
-          <p>
-            Here you can update a user. You can associate a user with a particular group, and you can assign a user multiple roles.
-          </p>
-          <br/>
-          <label>Name</label>
-          <input type="text" class="span4 user_name" placeholder="Name">
-          <label>Email</label>
-          <input type="text" class="span4 user_email" placeholder="Email Address">
-          <label>Password (Optional)</label>
-          <input type="password" class="span4 user_password" placeholder="Password">
-          <label class="checkbox">
-            <input type="checkbox" class="user_enabled" value="enabled">Enabled</label>
-          <label class="control-label">Current Roles</label>
-          <label class="select">
-            <select class="user_current_roles">
-              <option>Loading...</option>
-            </select>
-          </label>
-          <label class="control-label">Available Roles</label>
-          <label class="select">
-            <select multiple="multiple" class="user_roles" disabled>
-              <option>Loading...</option>
-            </select>
-          </label>
-          <button class="btn user_resend_invite" style="display: none">Re-Send Invite Email</button>
-          <button type="submit" class="btn btn-primary update_user_btn">Update User</button>
+        <form class="well form-horizontal">
+          <fieldset>
+            <legend>Update a User</legend>
+            <p>Here you can update a user for your domain.</p>
+            <div class="control-group">
+              <label class="control-label" for="update_user_id">User ID</label>
+              <div class="controls">
+                <input type="text" disabled="disabled" class="input-xxlarge" id="update_user_id" placeholder="User ID"></div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="update_user_password">Password (Optional)</label>
+              <div class="controls">
+                <input type="password" class="input-xxlarge" id="update_user_password" placeholder="Password"></div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="update_user_email">Email Address (Optional)</label>
+              <div class="controls">
+                <input type="text" class="input-xxlarge" id="update_user_email" placeholder="Email Address"></div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="update_user_name">Name (Optional)</label>
+              <div class="controls">
+                <input type="email" class="input-xxlarge" id="update_user_name" placeholder="Name"></div>
+            </div>
+
+            <div class="control-group">
+              <div class="controls">
+                <label class="checkbox" for="update_user_enabled">
+                <input type="checkbox" class="input-xxlarge" id="update_user_enabled">Enabled</label>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <div class="controls">
+                <label class="checkbox" for="update_user_blacklisted">
+                <input type="checkbox" class="input-xxlarge" id="update_user_blacklisted">Blacklisted</label>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label class="control-label">Roles</label>
+              <div class="controls swap-select" id="update_user_role_swap">
+                <div class="span2">
+                  <select multiple="multiple" class="span12 swap-from">
+                    <option>Loading...</option>
+                  </select>
+                </div>
+                <div class="span1">
+                  <button class="btn add span12">&gt;</button>
+                  <button class="btn remove span12">&lt;</button>
+                </div>
+                <div class="span2">
+                  <select multiple="multiple" class="span12 swap-to">
+                    <option>Loading...</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label class="control-label">Groups</label>
+              <div class="controls swap-select" id="update_user_group_swap">
+                <div class="span2">
+                  <select multiple="multiple" class="span12 swap-from">
+                    <option>Loading...</option>
+                  </select>
+                </div>
+                <div class="span1">
+                  <button class="btn add span12">&gt;</button>
+                  <button class="btn remove span12">&lt;</button>
+                </div>
+                <div class="span2">
+                  <select multiple="multiple" class="span12 swap-to">
+                    <option>Loading...</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn invite_user_btn">Re-Send Invite Email</button>
+              <button type="submit" class="btn btn-primary update_user_btn">Update User</button>
+            </div>
+          </fieldset>
         </form>
       </div>
 

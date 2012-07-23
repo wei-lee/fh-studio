@@ -119,11 +119,11 @@ $.extend(Constants, {
   
   GET_SINGLE_APP_METRICS_URL: Constants.IDE_URL_PREFIX + "app/getsingleappmetrics",
 
-  ADMIN_USER_LIST_URL: Constants.ADMIN_URL_PREFIX + "<users-type>/users/list",
-  ADMIN_USER_CREATE_URL: Constants.ADMIN_URL_PREFIX + "<users-type>/users/create",
-  ADMIN_USER_READ_URL: Constants.ADMIN_URL_PREFIX + "<users-type>/users/read",
-  ADMIN_USER_UPDATE_URL: Constants.ADMIN_URL_PREFIX + "<users-type>/users/update",
-  ADMIN_USER_DELETE_URL: Constants.ADMIN_URL_PREFIX + "<users-type>/users/delete",
+  ADMIN_USER_LIST_URL: Constants.ADMIN_URL_PREFIX + "user/list",
+  ADMIN_USER_CREATE_URL: Constants.ADMIN_URL_PREFIX + "user/create",
+  ADMIN_USER_READ_URL: Constants.ADMIN_URL_PREFIX + "user/read",
+  ADMIN_USER_UPDATE_URL: Constants.ADMIN_URL_PREFIX + "user/update",
+  ADMIN_USER_DELETE_URL: Constants.ADMIN_URL_PREFIX + "user/delete",
   ADMIN_USER_RESEND_INVITE_URL: Constants.IDE_URL_PREFIX + "user/invite",
 
   ADMIN_GROUP_LIST_URL: Constants.ADMIN_URL_PREFIX + "<domain>/group/list",
