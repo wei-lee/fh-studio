@@ -8,7 +8,7 @@
  */
  
 /* Custom Reset */
-div, p, ul, ol, li, textarea, fieldset, form, pre { margin: 0; padding: 0; border: 0; outline: 0; text-decoration: none; font-size: 100%; list-style: none; }
+div, p, ul, ol, li, fieldset, form, pre { margin: 0; padding: 0; border: 0; outline: 0; text-decoration: none; font-size: 100%; list-style: none; }
 textarea { resize:none; } 
 /*
  * jQuery UI CSS Framework @VERSION
@@ -468,7 +468,8 @@ html, body
   height:100%;
   overflow-y:auto;
   min-height:755px;
-  background: url('../img/bg_page.png');
+  /*background: url('../img/bg_page.png');*/
+  background: #fff;
 }
 #main_layout_wrapper
 {
@@ -783,8 +784,8 @@ label.error
 #connectivity_dialog, #info_dialog
 {
   position:absolute;
-/*  z-index:1020;
-*/  top:47px;
+  z-index:3;
+  top:47px;
   right:13px;
   min-width: 200px;
   height: 18px;

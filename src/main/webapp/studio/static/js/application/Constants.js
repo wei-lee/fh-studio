@@ -129,6 +129,10 @@ $.extend(Constants, {
   ADMIN_GROUP_LIST_URL: Constants.ADMIN_URL_PREFIX + "<domain>/group/list",
   ADMIN_GROUP_CREATE_URL: Constants.ADMIN_URL_PREFIX + "<domain>/group/create",
 
-  ADMIN_GROUP_LIST_ASSIGNABLE_URL: Constants.ADMIN_URL_PREFIX + "group/listAssignable",
+  ADMIN_STORE_ITEM_READ_URL: Constants.ADMIN_URL_PREFIX + "storeitem/read",
+  ADMIN_STORE_ITEM_LIST_URL: Constants.ADMIN_URL_PREFIX + "storeitem/list",
+  ADMIN_STORE_ITEM_CREATE_URL: Constants.ADMIN_URL_PREFIX + "storeitem/create",
+  ADMIN_STORE_ITEM_DELETE_URL: Constants.ADMIN_URL_PREFIX + "storeitem/delete",
+
   ADMIN_ROLE_LIST_ASSIGNABLE_URL: Constants.ADMIN_URL_PREFIX + "role/listAssignable"
 });
