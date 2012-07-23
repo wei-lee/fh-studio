@@ -132,6 +132,7 @@ $.extend(Constants, {
   ADMIN_STORE_ITEM_READ_URL: Constants.ADMIN_URL_PREFIX + "storeitem/read",
   ADMIN_STORE_ITEM_LIST_URL: Constants.ADMIN_URL_PREFIX + "storeitem/list",
   ADMIN_STORE_ITEM_CREATE_URL: Constants.ADMIN_URL_PREFIX + "storeitem/create",
+  ADMIN_STORE_ITEM_DELETE_URL: Constants.ADMIN_URL_PREFIX + "storeitem/delete",
 
   ADMIN_ROLE_LIST_ASSIGNABLE_URL: Constants.ADMIN_URL_PREFIX + "role/listAssignable"
 });

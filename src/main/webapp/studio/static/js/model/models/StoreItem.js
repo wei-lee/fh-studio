@@ -103,6 +103,14 @@ model.StoreItem = model.Model.extend({
       "authToken": item_id
     };
     return this.serverPost(url, params, success, fail, true);
+  },
+
+  remove: function(guid, success, fail) {
+    var url = Constants.ADMIN_STORE_ITEM_DELETE_URL;
+    var params = {
+      "guid": guid
+    };
+    return this.serverPost(url, params, success, fail, true);
   }
 
 });
