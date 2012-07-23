@@ -393,15 +393,52 @@
             </div>
           </div>
 
-          <div class="control-group">
-            <label class="control-label" for="textarea">Icon</label>
-            <div class="controls">
-              <input type="file" class="store_item_icon"/>
-            </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary create_store_item">Update Item Details</button>
           </div>
 
-          <div class="form-actions">
-            <button type="submit" class="btn btn-primary create_store_item">Create Item</button>
+          <div class="well store_item_binaries">
+            <h3>Upload Icon & Binaries</h3>
+            <div class="control-group">
+              <label class="control-label" for="textarea">Icon</label>
+              <div class="controls">
+                <input type="file" class="store_item_icon input-xlarge"/>
+                <span class="help-inline">Icons should be 128x128, and in PNG format.</span>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label class="control-label" for="textarea">Android Binary</label>
+              <div class="controls">
+                <input type="file" class="store_item_binary_android input-xlarge"/>
+                <span class="help-inline">An Android binary must be signed for distribution.</span>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label class="control-label" for="textarea">iPhone Binary</label>
+              <div class="controls">
+                <input type="file" class="store_item_binary_android input-xlarge"/>
+                <span class="help-inline">An iPhone binary consists of an signed IPA.</span>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label class="control-label" for="textarea">iPad Binary</label>
+              <div class="controls">
+                <input type="file" class="store_item_binary_android input-xlarge"/>
+                <span class="help-inline">An iPad binary consists of an signed IPA.</span>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label class="control-label" for="textarea">iOS Universal Binary</label>
+              <div class="controls">
+                <input type="file" class="store_item_binary_android input-xlarge"/>
+                <span class="help-inline">An iOS Universal binary consists of an signed IPA.</span>
+              </div>
+            </div>
+
           </div>
         </form>
       </div>

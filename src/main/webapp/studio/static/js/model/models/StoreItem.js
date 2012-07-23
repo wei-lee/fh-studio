@@ -131,5 +131,4 @@ model.StoreItem = model.Model.extend({
     };
     return this.serverPost(url, params, success, fail, true);
   }
-
 });

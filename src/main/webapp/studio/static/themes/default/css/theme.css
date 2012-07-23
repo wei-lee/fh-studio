@@ -3277,3 +3277,11 @@ table.dataTable th:active {
   text-align: right; 
   margin-bottom: 10px;
 }
+
+.store_item_binaries {
+  background: #eaeaea;
+}
+
+.store_item_binaries .control-group {
+  margin-bottom: 0;
+}
