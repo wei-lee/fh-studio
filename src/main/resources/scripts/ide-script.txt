@@ -25,13 +25,11 @@ js/application/apps/configuration/BlackberryConfigManager.js
 js/application/apps/configuration/Windowsphone7ConfigManager.js
 js/application/apps/configuration/NokiawrtConfigManager.js
 js/application/apps/report/ReportManager.js
-js/application/apps/template/TemplateSupport.js
 js/application/apps/template/TemplateManager.js
 js/application/apps/preview/PreviewSupport.js
 js/application/apps/preview/PreviewManager.js
 js/application/apps/file/FileManager.js
 js/application/apps/icon/IconManager.js
-js/application/apps/editor/EditorSupport.js
 js/application/apps/editor/EditorManager.js
 js/application/apps/debug/DebugManager.js
 js/application/apps/staging/StagingManager.js
@@ -97,7 +95,6 @@ js/application/stats/views/stats.view.chart.timer.js
 js/application/stats/views/stats.view.list.timers.js
 js/application/stats/controllers/stats.controller.js
 common/js/ui/thirdparty/bootstrap/bootstrap.js
-js/application/tab/TabSupport.js
 js/application/tab/TabManager.js
 js/application/tab/HomeTabManager.js
 js/application/tab/AppsTabManager.js

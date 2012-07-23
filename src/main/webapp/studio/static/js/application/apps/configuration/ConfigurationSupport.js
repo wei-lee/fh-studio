@@ -1,6 +1,5 @@
 application.ConfigurationSupport = Class.extend({
   init: function () {
-    Log.append('init ConfigurationSupport');
   },
   constructConfigDom: function (configs, dest, container, hiddenOptions, replaceOptions) {
     var self = this;

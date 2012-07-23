@@ -13,17 +13,10 @@ FrameworkManager = Class.extend({
     opts = opts || {};
     
     this.data = new DataManager();
-    this.event = new EventManager();
-    //this.ui = new UIManager();
     this.state = new StateManager();
     // use default ajax caller by passing in null for first param
     this.server = new ServerManager(null, opts.server);
-    this.ui = new UIManager();
     this.analytics = new AnalyticsManager();
-    
-    /*
-    this.ui.setEventManager(this.event);
-    this.ui.setStateManager(this.state);*/
   },
   
   

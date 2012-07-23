@@ -1,8 +1,7 @@
 application.TemplateManager = Class.extend({
-  support: null,
   
   init: function () {
-    this.support = new application.TemplateSupport();
+    this.initTemplateCloneButton();
   },
   
   doView: function (guid) {
@@ -28,7 +27,6 @@ application.TemplateManager = Class.extend({
   
   applyPostRestrictions: function () {
     // show the template app message
-    $fw_manager.ui.getComponent($fw_manager.client.template, 'template_clone_button');
     manage_apps_layout.open('north');
   },
   
@@ -45,11 +43,9 @@ application.TemplateManager = Class.extend({
     manage_apps_layout.close('north');
   },
   
-  /*
-   * Support functions
-   */
-  
   initTemplateCloneButton: function () {
-    return $fw_manager.client.template.support.initTemplateCloneButton();
+    $('#template_clone_button').unbind().bind('click', function () {
+      $fw.client.app.doClone($fw.data.get('inst').guid);
+    });
   }
 });

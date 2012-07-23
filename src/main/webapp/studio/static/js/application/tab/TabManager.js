@@ -3,7 +3,8 @@
  * such as initialising its contents, showing it, or updating the breadcrumb
  */
 application.TabManager = Class.extend({
-  support: null,
+  BREADCRUMB_SEPARATOR: ' / ',
+
   name: null,
   tab: null,
   tab_content: null,
@@ -12,7 +13,7 @@ application.TabManager = Class.extend({
   accordion: null,
 
   init: function(opts) {
-    this.support = new application.TabSupport();
+
   },
 
   constructBreadcrumbsArray: function() {
@@ -30,6 +31,38 @@ application.TabManager = Class.extend({
       text: b2.text()
     });
     return crumbs;
+  },
+
+  createBreadcrumbsHtml: function (crumbs) {
+    var wrapper = $('<div>', {
+      'class': 'fh_breadcrumb-wrapper'
+    });
+    
+    // add all crumbs except final one
+    for (var ci=0; ci<crumbs.length-1; ci++) {
+      var temp_crumb = crumbs[ci];
+      var link = $('<a>', {
+        'class': 'fh_breadcrumb fh_breadcrumb-link',
+        text: temp_crumb.text.trim()
+      });
+      if ($.isFunction(temp_crumb.callback)) {
+        link.bind('click', temp_crumb.callback);
+      }
+      wrapper.append(link);
+      // add spearator
+      wrapper.append($('<span>', {
+        'class': 'fh_breadcrumb-separator',
+        text: this.BREADCRUMB_SEPARATOR
+      }));
+    }
+    // add final crumb
+    var final_crumb = crumbs[crumbs.length-1];
+    wrapper.append($('<span>', {
+      'class': 'fh_breadcrumb fh_breadcrumb-nolink',
+      text: final_crumb.text
+    }));
+    
+    return wrapper;
   },
 
   doUpdateBreadcrumb: function() {
@@ -117,12 +150,6 @@ application.TabManager = Class.extend({
     } catch (err) {
       Log.append("No layout to resize");
     }
-  },
-
-  /* Suppport Functions */
-
-  createBreadcrumbsHtml: function(crumbs) {
-    return this.support.createBreadcrumbsHtml(crumbs);
   },
 
   getBaseCrumbs: function() {

@@ -66,6 +66,7 @@ application.PreviewSupport = Class.extend({
     }
     else {
       // use transform plugin to remove scaling of preview
+      // TODO: remove transform plugin if not used common/js/ui/thirdparty/jquery/plugins/jquery.transform.js
       p_frame.css({
         position: 'absolute',
         scale: '1',
