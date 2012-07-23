@@ -253,6 +253,7 @@
 
       <!-- Groups Templates -->
       <div id="useradmin_group_list" class="hidden_template row-fluid">
+        <div id="alerts"></div>
         <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="useradmin_groups_table"></table>
       </div>
 
@@ -264,8 +265,22 @@
           </p>
           <br/>
           <label>Group Name</label>
-          <input type="text" class="span4 group_name" placeholder="Group Name (e.g. Project A Developers)">
+          <input type="text" class="span4 group_name" placeholder="Group Name (e.g. Project A Developers)" >
           <button type="submit" class="btn btn-primary create_group_btn">Create Group</button>
+        </form>
+      </div>
+
+      <div id="useradmin_group_update" class="hidden_template row-fluid">
+        <form class="well">
+          <h3>Update a Group</h3>
+          <p>
+            Groups can be used to group users together. For example, you can group users for one project together so they can see one another's apps.
+          </p>
+          <br/>
+          <label>Group Name</label>
+          <input type="text" class="span4" id="update_group_name" >
+          <input type="hidden" id="update_group_id" >
+          <button type="submit" class="btn btn-primary update_group_btn">Update Group</button>
         </form>
       </div>
 
