@@ -239,7 +239,7 @@
 
       <div id="useradmin_user_delete_modal" class="modal hide fade hidden_template">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">×</button>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h3>Alert</h3>
         </div>
         <div class="modal-body">
@@ -341,7 +341,104 @@
           </div>
 
           <div class="form-actions">
-            <button type="submit" class="btn btn-primary create_store_item">Create Item</button>
+            <button type="submit" class="btn btn-primary update_store_item">Create Item</button>
+          </div>
+        </form>
+      </div>
+
+      <div id="admin_store_item_update" class="hidden_template row-fluid">
+        <form class="well form-horizontal">
+          <h3>Update Store Item</h3>
+          <br/>
+          <div class="control-group">
+            <label class="control-label">Name</label>
+            <div class="controls">
+              <input type="text" class="item_name input-xlarge" placeholder="Name">
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label">Auth Token</label>
+            <div class="controls">
+              <input type="text" class="input-xlarge item_id" placeholder="Auth Token">
+              <span class="help-inline">Your Auth Token can be used to identify your app when using $fh.auth to track app access events</span>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label" for="textarea">Description</label>
+            <div class="controls">
+              <textarea class="input-xlarge item_description" id="textarea" rows="3"></textarea>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label">Groups</label>
+            <div class="controls swap-select" id="store_item_group_swap">
+              <div class="span2">
+                <span>Available</span>
+                <select multiple="multiple" class="span12 swap-from store_item_available_groups">
+                </select>
+              </div>
+              <div class="span1">
+                <button class="btn add span12">&gt;</button>
+                <button class="btn remove span12">&lt;</button>
+              </div>
+              <div class="span2">
+                <span>Member Of</span>
+                <select multiple="multiple" class="span12 swap-to store_item_assigned_groups">
+                </select>
+              </div>
+              <span class="help-inline span4"><br/>Members of the these groups will be able to view this Item in your App Store</span>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary create_store_item">Update Item Details</button>
+          </div>
+
+          <div class="well store_item_binaries">
+            <h3>Upload Icon & Binaries</h3>
+            <div class="control-group">
+              <label class="control-label" for="textarea">Icon</label>
+              <div class="controls">
+                <input type="file" class="store_item_icon input-xlarge"/>
+                <span class="help-inline">Icons should be 128x128, and in PNG format.</span>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label class="control-label" for="textarea">Android Binary</label>
+              <div class="controls">
+                <input type="file" class="store_item_binary_android input-xlarge"/>
+                <span class="help-inline">An Android binary consists of an APK signed for distribution.</span>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label class="control-label" for="textarea">iPhone Binary</label>
+              <div class="controls">
+                <input type="file" class="store_item_binary_android input-xlarge"/>
+                <span class="help-inline">An iPhone binary consists of an signed IPA.</span>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label class="control-label" for="textarea">iPad Binary</label>
+              <div class="controls">
+                <input type="file" class="store_item_binary_android input-xlarge"/>
+                <span class="help-inline">An iPad binary consists of an signed IPA.</span>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label class="control-label" for="textarea">iOS Universal Binary</label>
+              <div class="controls">
+                <input type="file" class="store_item_binary_android input-xlarge"/>
+                <span class="help-inline">An iOS Universal binary consists of an signed IPA.</span>
+              </div>
+            </div>
+
           </div>
         </form>
       </div>

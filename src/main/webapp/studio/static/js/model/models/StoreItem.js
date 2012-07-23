@@ -9,7 +9,6 @@ model.StoreItem = model.Model.extend({
     // var url = Constants.ADMIN_STORE_ITEM_LIST_URL;
     // var params = {};
     // return this.serverPost(url, params, success, fail);
-
     var mock = {
       "status": "ok",
       store_items: [{
@@ -24,6 +23,21 @@ model.StoreItem = model.Model.extend({
         }, {
           "type": "android",
           "url": "http://localhost/binary"
+        }],
+        groups: [{
+          "fields": {
+            "flag": 65,
+            "name": "A brand new group",
+            "perms": ""
+          },
+          "guid": "K-VX6vPYJTCEQr8K1ky28TVS"
+        }, {
+          "fields": {
+            "flag": 64,
+            "name": "grp-hpcs-default",
+            "perms": "dev_ent"
+          },
+          "guid": "qkStkcl4hpSEuXE91TTLC3o_"
         }]
       }, {
         "guid": "0123456789",
@@ -37,7 +51,8 @@ model.StoreItem = model.Model.extend({
         }, {
           "type": "android",
           "url": "http://localhost/binary"
-        }]
+        }],
+        groups: []
       }, {
         "guid": "0123456789",
         "name": "My App 2",
@@ -50,7 +65,8 @@ model.StoreItem = model.Model.extend({
         }, {
           "type": "android",
           "url": "http://localhost/binary"
-        }]
+        }],
+        groups: []
       }, {
         "guid": "0123456789",
         "name": "My App 2",
@@ -63,7 +79,8 @@ model.StoreItem = model.Model.extend({
         }, {
           "type": "android",
           "url": "http://localhost/binary"
-        }]
+        }],
+        groups: []
       }, {
         "guid": "0123456789",
         "name": "My App 2",
@@ -76,7 +93,8 @@ model.StoreItem = model.Model.extend({
         }, {
           "type": "android",
           "url": "http://localhost/binary"
-        }]
+        }],
+        groups: []
       }, {
         "guid": "0123456789",
         "name": "My App 2",
@@ -89,7 +107,8 @@ model.StoreItem = model.Model.extend({
         }, {
           "type": "android",
           "url": "http://localhost/binary"
-        }]
+        }],
+        groups: []
       }]
     };
     success(mock);
@@ -112,5 +131,4 @@ model.StoreItem = model.Model.extend({
     };
     return this.serverPost(url, params, success, fail, true);
   }
-
 });
