@@ -1,4 +1,4 @@
-// initialise globals
+// TODO: remove these globals
 var my_apps_grid = null;
 var templates_grid = null;
 var apps_layout = null;

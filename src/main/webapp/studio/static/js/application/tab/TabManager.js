@@ -113,7 +113,6 @@ application.TabManager = Class.extend({
 
   doPostShow: function() {
     try {
-      main_layout.resizeAll();
       this.layout.resizeAll();
     } catch (err) {
       Log.append("No layout to resize");

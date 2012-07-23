@@ -409,7 +409,7 @@ textarea { resize:none; }
 {
   margin: 0 10px 0 2px;
 }
-.ui-accordion, #list_apps_buttons li:last-child, #list_arm_buttons li:last-child
+.ui-accordion, #list_apps_buttons li:last-child
 {
   border-bottom:solid 1px gray;
 }
@@ -426,7 +426,7 @@ textarea { resize:none; }
   line-height:1.5;
   zoom:1;
 }
-#list_apps_buttons li,#list_arm_buttons li,.ui-accordion .ui-accordion-header {
+#list_apps_buttons li,.ui-accordion .ui-accordion-header {
   background:transparent none;
   border-left:none;
   border-bottom:none;
@@ -459,17 +459,20 @@ textarea { resize:none; }
 {
   font-size:0.9em;
 }
+html {
+  overflow-y:auto;
+}
 html, body
 {
   font-family: "Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;
   padding:0;
   margin:0;
   width:100%;
-  height:100%;
-  overflow-y:auto;
   min-height:755px;
-  /*background: url('../img/bg_page.png');*/
   background: #fff;
+}
+body {
+  height:100%;
 }
 #main_layout_wrapper
 {
@@ -938,7 +941,7 @@ label.error
 }
 
 /* Apps Buttons */
-.list-apps-west-item, .list-arm-west-item
+.list-apps-west-item
 {
   margin:0 10px 0 2px;
 }
@@ -2395,30 +2398,6 @@ line-height:0.5em;
   float:right;
 }
 
-/*Arm styles*/
-.arm-container, .armusers-container, .armgroups-container, .armdevices-container {
- height: 100%;
-}
-.arm-container .section-body-grid, .armusers-container .section-body-grid, .armgroups-container .section-body-grid, .armdevices-container .section-body-grid{
- height: 100%;
- padding: 5px 0 0 0;
- overflow: scroll;
-}
-.arm_list_grid {
- height: 100%;
-}
-.arm_list_tools_wrapper {
- width: 100%;
- height: 35px;
-}
-.arm-foot-wrapper {
- height: 35px;
- padding: 10px 0 0 0;
-}
-.arm_list_create_btn{
- float: right;
- margin-right : 10px;
-}
 .search_form
 {
   text-align:center;
@@ -2442,9 +2421,6 @@ line-height:0.5em;
   padding:0.2em 0.5em;
   width:100%;
   color:#000;
-}
-.arm_grid_action_span {
- margin: 0 0 0 1em;
 }
 /** Reporting Tab content**/
 .chart_container_body .section-body {
@@ -3168,7 +3144,7 @@ table.dataTable th:active {
 }
 
 /* Fixing long descriptions */
-#my_apps_grid, #templates_grid, #arm_apps_grid {
+#my_apps_grid, #templates_grid {
   table-layout: fixed;
 }
 
@@ -3194,11 +3170,6 @@ table.dataTable th:active {
 
 #cloud_logo.rhino {
   background: url('../img/cloud_logo_rhino.png') no-repeat top center;
-}
-
-#arm_content {
-  padding: 0 0 20px 20px;
-  background: transparent;
 }
 
 .container-header-content {
@@ -3322,4 +3293,8 @@ table.dataTable th:active {
   -moz-border-radius: 25px;
   border-radius: 25px;
   box-shadow: 0 4px 3px rgba(0, 0, 0, .25), 0 -1px 1px rgba(153, 153, 153, .2);
+}
+
+#apps_layout, #account_layout, #reporting_layout, #home_layout {
+  height:700px;
 }

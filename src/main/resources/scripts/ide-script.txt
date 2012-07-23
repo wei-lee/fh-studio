@@ -7,11 +7,6 @@ js/application/ServerInteraction.js
 js/application/accordion/AccordionManager.js
 js/application/accordion/AccountAccordionManager.js
 js/application/accordion/AppsAccordionManager.js
-js/application/accordion/ArmAccordionManager.js
-js/application/accordion/UserAdminAccordionManager.js
-js/application/accordion/arm/ArmusersAccordionManager.js
-js/application/accordion/arm/ArmgroupsAccordionManager.js
-js/application/accordion/arm/ArmdevicesAccordionManager.js
 js/application/accordion/ReportingAccordionManager.js
 js/application/reporting/ReportingManager.js
 js/application/apps/app/generate_app.controller.js
@@ -66,11 +61,6 @@ js/application/admin/admin.groups.controller.js
 js/application/admin/admin.devices.controller.js
 js/application/admin/admin.authpolicy.controller.js
 js/application/admin/admin.stores.controller.js
-js/application/arm/ArmManager.js
-js/application/arm/ArmUserManager.js
-js/application/arm/ArmAppManager.js
-js/application/arm/ArmGroupManager.js
-js/application/arm/ArmDeviceManager.js
 js/application/chart/ChartManager.js
 js/application/chart/locator/ChartLocator.js
 js/application/chart/locator/MetricsChartLocator.js
@@ -113,7 +103,6 @@ js/application/tab/HomeTabManager.js
 js/application/tab/AppsTabManager.js
 js/application/tab/AccountTabManager.js
 js/application/tab/ReportingTabManager.js
-js/application/tab/UserAdminTabManager.js
 js/application/tab/tab.manager.js
 js/application/tab/admin.tab.manager.js
 js/application/destinations/destination_general.js
