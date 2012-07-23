@@ -130,7 +130,7 @@ Admin.Storeitems.Controller = Controller.extend({
     var assigned_select = $('.store_item_assigned_groups', this.views.store_item_create);
     assigned_select.empty();
     $.each(available_groups, function(i, group) {
-      var option = $('<option>').val(group.guid).text(group.fields.name);
+      var option = $('<option>').val(group.guid).text(group.name);
       available_select.append(option);
     });
   },
