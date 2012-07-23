@@ -35,7 +35,7 @@ model.Group = model.Model.extend({
       return this.serverPost(url, params, success, fail, true);
     }
   },
-
+  
   postProcessList: function(res, data_model) {
     var filtered_fields = data_model.getColumnMap();
 

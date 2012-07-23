@@ -5,7 +5,8 @@ Admin.Users = Admin.Users || {};
 Admin.Users.Controller = Controller.extend({
   models: {
     user: new model.User(),
-    role: new model.Role()
+    role: new model.Role(),
+    group: new model.Group()
   },
 
   views: {
@@ -103,60 +104,89 @@ Admin.Users.Controller = Controller.extend({
 
   showUserUpdate: function(button, row, data) {
     var self = this;
-
     this.hide();
 
-    // Reset user update view
     var parent = $(this.views.user_update);
-    parent.find('.user_name').val('');
-    parent.find('.user_email').val('');
-    parent.find('.user_resend_invite').hide();
     this.container = this.views.user_update;
 
+    var clearForm = function () {
+      $('input[type=text],input[type=email],input[type=password]', parent).val('');
+      $('input[type=checkbox]', parent).removeAttr('checked');
+      $('input,select,button', parent).attr('disabled', 'disabled');
+      self.clearSwapSelect(parent);
+    };
+
+    var populateForm = function (results) {
+      Log.append('populating user update form');
+      var user = results[0];
+      $('#update_user_id', parent).val(user.username);
+      $('#update_user_name', parent).val(user.name);
+      $('#update_user_email', parent).val(user.email);
+
+      // TODO: enable user, whitelist user buttons
+      if (user.enabled) {
+        $('#update_user_enabled', parent).attr('checked', 'checked');
+      }
+      if (user.blacklisted) {
+        $('#update_user_blacklisted', parent).attr('checked', 'checked');
+      }
+
+      // no need to show sub role
+      var rolesTo = user.roles;
+      if (rolesTo.indexOf('sub') > -1) {
+        rolesTo.splice(rolesTo.indexOf('sub'), 1);
+      }
+      self.updateSwapSelect('#update_user_role_swap', results[1], rolesTo);
+      self.updateSwapSelect('#update_user_group_swap', results[2], user.groups);
+      self.bindSwapSelect(parent);
+
+      $('input,select,button', parent).removeAttr('disabled');
+    };
+
+    clearForm();
     parent.show();
 
-    parent.find('.update_user_btn').unbind().click(function() {
+    $('.update_user_btn', parent).unbind().click(function() {
       self.updateUser();
       return false;
     });
 
-    parent.find('.user_resend_invite').unbind().click(function() {
+    $('.invite_user_btn', parent).unbind().click(function() {
       self.resendInvite();
       return false;
     });
 
-    var email = data[1];
-    var name = data[2];
-    var enabled = data[3];
-
-    // Populate form
-    parent.find('.user_name').val(name);
-    parent.find('.user_email').val(email);
-    parent.find('.user_resend_invite').show();
-
-    if (enabled) {
-      parent.find('.user_enabled').attr('checked', 'checked');
-    } else {
-      parent.find('.user_enabled').removeAttr('checked');
-    }
-
-    // Load available roles
-    this.models.role.list_assignable(function(res) {
-      Log.append('Role list OK.');
-      var roles = res.list;
-      self.updateUserAssignableRoles(roles);
-
-    }, function(e) {
-      $fw.client.dialog.error("Error loading roles.");
-    });
-
-    // Load available roles
-    this.models.user.read(email, function(res) {
-      Log.append('User role load OK.');
-      var roles = res.fields.roles;
-      self.updateCurrentUserRoles(roles);
-    }, function(e) {
-      $fw.client.dialog.error("Error loading user data");
+    // Setup user details, roles and groups
+    var id = data[0];
+    async.parallel([function (cb) {
+      // user details
+      self.models.user.read(id, function(res) {
+        Log.append('User read OK.');
+        return cb(null, res.fields);
+      }, function(e) {
+        return cb(e);
+      });
+    }, function (cb) {
+      // roles
+      self.models.role.list_assignable(function(res) {
+        Log.append('Role list OK.');
+        return cb(null, res.list);
+      }, function(e) {
+        return cb(e);
+      });
+    }, function (cb) {
+      // groups
+      self.models.group.list(function(res) {
+        Log.append('Group list OK.');
+        return cb(null, res.list);
+      }, function(e) {
+        return cb(e);
+      });
+    }], function (err, results) {
+      if (err != null) {
+        return self.showAlert('error', '<strong>Error loading user data</strong> ' + err);
+      }
+      return populateForm(results);
     });
   },
 
@@ -287,14 +317,26 @@ Admin.Users.Controller = Controller.extend({
       return false;
     });
 
-    // Load roles & Groups
+    // initialise all swap selects
+    self.bindSwapSelect(this.container);
+
+    // Load roles & Groups into swap select
     this.models.role.list_assignable(function(res) {
       Log.append('Role list OK.');
       var roles = res.list;
-      self.updateUserAssignableRoles(roles);
-
+      var container = '#create_user_role_swap';
+      self.updateSwapSelect(container, roles);
     }, function(e) {
-      $fw.client.dialog.error("Error loading roles.");
+      self.showAlert('error', '<strong>Error loading Roles</strong> ' + e);
+    });
+
+    this.models.group.list_assignable(function(res) {
+      Log.append('Group list OK.');
+      var groups = res.list;
+      var container = '#create_user_group_swap';
+      self.updateSwapSelect(container, groups);
+    }, function(e) {
+      self.showAlert('error', '<strong>Error loading Groups</strong> ' + e);
     });
   },
 
@@ -309,24 +351,6 @@ Admin.Users.Controller = Controller.extend({
       self.importUsers();
       return false;
     });
-  },
-
-  updateUserAssignableRoles: function(roles) {
-    var role_list = $('.user_roles:visible').empty();
-    $.each(roles, function(i, role) {
-      var option = $('<option>').text(role);
-      role_list.append(option);
-    });
-    role_list.removeAttr("disabled");
-  },
-
-  updateCurrentUserRoles: function(roles) {
-    var role_list = $('.user_current_roles:visible').empty();
-    $.each(roles, function(i, role) {
-      var option = $('<option>').text(role);
-      role_list.append(option);
-    });
-    role_list.removeAttr("disabled");
   },
 
   createUser: function() {
@@ -349,15 +373,17 @@ Admin.Users.Controller = Controller.extend({
     }
     var invite = form.find('#create_user_invite').is(':checked');
 
-    var roles = $(this.views.user_create + ' .user_roles').val();
-    if (roles) {
-      roles = roles.join(', ');
-    }
+    var rolesArr = [];
+    $('#create_user_role_swap .swap-to option', this.views.user_create).each(function (i, item) {
+      rolesArr.push($(item).text());
+    });
+    var roles = rolesArr.length > 0 ? rolesArr.join(', ') : null;
 
-    var groups = form.find('#create_user_groups').val();
-    if (groups) {
-      groups = groups.join(', ');
-    }
+    var groupsArr = [];
+    $('#create_user_group_swap .swap-to option', this.views.user_create).each(function (i, item) {
+      groupsArr.push($(item).text());
+    });
+    var groups = groupsArr.length > 0 ? groupsArr.join(', ') : null;
 
     var activated = true;
     this.models.user.create(id, email, name, roles, groups, password, activated, invite, function(res) {

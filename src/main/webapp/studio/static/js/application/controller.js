@@ -34,6 +34,30 @@ var Controller = Class.extend({
         return false;
       });
     });
+  },
+
+  clearSwapSelect: function (container) {
+    $(container).find('.swap-select select').empty().html('<option>Loading...</option>');
+  },
+
+  updateSwapSelect: function(container, from, to) {
+    var from_list = $('.swap-from', container).empty();
+    $.each(from, function(i, form_item) {
+      if (to.indexOf(form_item) < 0) {
+        var option = $('<option>').text(form_item);
+        from_list.append(option);
+      }
+    });
+    from_list.removeAttr("disabled");
+
+    var to_list = $('.swap-to', container).empty();
+    if ('undefined' !== typeof to) {
+      $.each(to, function(i, to_item) {
+        var option = $('<option>').text(to_item);
+        to_list.append(option);
+      });
+    }
+    to_list.removeAttr("disabled");
   }
 
 });

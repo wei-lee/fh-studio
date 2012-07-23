@@ -9,7 +9,11 @@ model.Role = model.Model.extend({
     var url = Constants.ADMIN_ROLE_LIST_ASSIGNABLE_URL;
     var params = {};
 
-    return this.serverPost(url, params, success, fail, true);
+    return this.serverPost(url, params, success, function (status, statusText) {
+      if ('function' === typeof fail) {
+        return fail('' + status + ':' + statusText);
+      }
+    }, true);
   }
 
 });

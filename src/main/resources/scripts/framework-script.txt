@@ -38,6 +38,7 @@ common/js/ui/thirdparty/jquery/plugins/jqplot/plugins/jqplot.dateAxisRenderer.js
 common/js/ui/thirdparty/jquery/plugins/jqplot/plugins/jqplot.categoryAxisRenderer.js
 common/js/ui/thirdparty/jquery-fileupload/jquery.iframe-transport.js
 common/js/ui/thirdparty/jquery-fileupload/jquery.fileupload.js
+common/js/ui/thirdparty/async/async.min.js
 common/js/util/StringUtil.js
 common/js/util/HtmlUtil.js
 common/js/util/QueryStringParser.js
