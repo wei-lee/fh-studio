@@ -48,7 +48,11 @@ Admin.Storeitems.Controller = Controller.extend({
       list_item.data('store_item', store_item);
       list_item.find('.details h3').text(store_item.name);
       list_item.find('.details p').text(store_item.description);
-      list_item.find('img').attr('src', 'data:image/png;base64,' + store_item.icon);
+      if (store_item.icon != '') {
+        list_item.find('img').attr('src', 'data:image/png;base64,' + store_item.icon);
+      } else {
+        list_item.find('img').attr('src', '/studio/static/themes/default/img/store_no_icon.png');
+      }
       list_item.find('.delete_store_item').unbind().click(function() {
         var guid = store_item.guid;
         var okay = confirm("Are you sure you want to delete this Store Item?");

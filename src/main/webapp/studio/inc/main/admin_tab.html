@@ -20,12 +20,6 @@
             Groups
           </a>
         </li>
-        <li>
-          <a href="#" data-controller="admin.devices.controller">
-            <i class="icon-phone"></i>
-            Devices
-          </a>
-        </li>
         <% if(studio.getProps().optBoolean("arm-auth-policy-enabled", false)) { %>
         <li>
           <a href="#" data-controller="admin.authpolicy.controller">
@@ -34,7 +28,7 @@
           </a>
         </li>
         <% } %>
-        <li class="nav-header">App Management</li>
+        <li class="nav-header">Mobile App Management</li>
         <li>
           <a href="#" data-controller="admin.stores.controller">
             <i class="icon-globe"></i>
@@ -45,6 +39,12 @@
           <a href="#" data-controller="admin.storeitems.controller">
             <i class="icon-pencil"></i>
             Store Items
+          </a>
+        </li>
+        <li>
+          <a href="#" data-controller="admin.devices.controller">
+            <i class="icon-phone"></i>
+            Devices
           </a>
         </li>
       </ul>
