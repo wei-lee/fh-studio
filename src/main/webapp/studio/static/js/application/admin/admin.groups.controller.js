@@ -13,6 +13,10 @@ Admin.Groups.Controller = Controller.extend({
     group_update: "#useradmin_group_update"
   },
 
+  alert_timeout: 3000,
+
+  container: null,
+  
   group_table: null,
 
   init: function(params) {
@@ -72,10 +76,40 @@ Admin.Groups.Controller = Controller.extend({
       var data = self.groupDataForRow($(this).parent().parent().get(0));
       self.deleteGroup(this, row, data);
       return false;
+    }); 
+  },
+
+  showBooleanModal: function (msg, success) {
+    var modal = $('#useradmin_group_boolean_modal').clone();
+    modal.find('.modal-body').html(msg).end().appendTo($("body")).modal({
+      "keyboard": false,
+      "backdrop": "static"
+    }).find('.btn-primary').unbind().on('click', function () {
+      // confirmed delete, go ahead
+      modal.modal('hide');
+      success();
+    }).end().on('hidden', function() {
+      // wait a couple seconds for modal backdrop to be hidden also before removing from dom
+      setTimeout(function () {
+        modal.remove();
+      }, 2000);
     });
-    
-    
-    
+  },
+
+  deleteGroup: function(button, row, data) {
+    var self = this;
+    self.showBooleanModal('Are you sure you want to delete this Group?', function () {
+      self.showAlert('info', '<strong>Deleting Group</strong> This may take some time.');
+      // delete user
+      var guid = data[0];
+      self.models.group.remove(guid, function(res) {
+        self.showAlert('success', '<strong>Group Successfully Deleted</strong>');
+        // remove user from table
+        self.group_table.fnDeleteRow(row[0]);
+      }, function(e) {
+        self.showAlert('error', '<strong>Error Deleting Group</strong> ' + e);
+      });
+    });
   },
 
   createGroup: function(group_name) {
@@ -116,6 +150,7 @@ Admin.Groups.Controller = Controller.extend({
     this.hide();
     
     $(this.views.groups).show();
+    this.container = this.views.groups;
     this.models.group.list(function(res) {
       var data = self.addControls(res);
       self.renderGroupTable(data);
@@ -150,7 +185,7 @@ Admin.Groups.Controller = Controller.extend({
   // type: error|success|info
   showAlert: function (type, message) {
     var self = this;
-    var alerts_area = $(this.container).find('#alerts');
+    var alerts_area = $(this.container).find('.alerts');
     var alert = $('<div>').addClass('alert fade in alert-' + type).html(message);
     var close_button = $('<button>').addClass('close').attr("data-dismiss", "alert").text("x");
     alert.append(close_button);
@@ -174,8 +209,6 @@ Admin.Groups.Controller = Controller.extend({
     var self = this;
     this.hide();
 
-//    $('#useradmin_group_update').show();
-//
     var parent = $(this.views.group_update);
     this.container = this.views.group_update;
 
@@ -222,12 +255,10 @@ Admin.Groups.Controller = Controller.extend({
       fields.name = name;
     }
 
-    console.log('>>>>>>> Updating with: ' + JSON.stringify(fields));
-
     this.models.group.update(fields, function(res) {
       Log.append('updateUser: OK');
       self.showGroupsList();
-      self.showAlert('success', '<strong>Group successfully updated</strong> (' + res.name + ')');
+      self.showAlert('success', '<strong>Group successfully updated</strong> (' + fields.name + ')');
     }, function(err) {
       Log.append(err);
       self.showAlert('error', '<strong>Error updating Group</strong> ' + err);

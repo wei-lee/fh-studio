@@ -36,6 +36,16 @@ model.Group = model.Model.extend({
       return this.serverPost(url, params, success, fail, true);
     }
   },
+
+  remove: function(guid, success, fail) {
+    var url = Constants.ADMIN_GROUP_DELETE_URL;
+    var params = {
+      "guid": guid
+    };
+
+    return this.serverPost(url, params, success, fail, true);
+  },
+
   
   update: function(params, success, fail, post_process) {
     var url = Constants.ADMIN_GROUP_UPDATE_URL.replace('<domain>', $fw_manager.getClientProp('domain'));
