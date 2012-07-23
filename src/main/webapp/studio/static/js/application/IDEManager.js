@@ -35,7 +35,8 @@ var IDEManager = Class.extend({
       apps: new application.AppsTabManager(),
       account: new application.AccountTabManager(),
       reporting: new application.ReportingTabManager(),
-      useradmin: new application.UseradminTabManager(),
+
+      // new 'non-ui-layout' tabs go here
       admin: new Admin.Tab.Manager()
     };
     this.analytics = new analytics.AnalyticsIntegration();
@@ -43,33 +44,26 @@ var IDEManager = Class.extend({
     this.staging = new application.StagingManager();
     this.status = new application.StatusManager();
     this.chart = new application.ChartManager();
-    this.arm = {
-      apps: new application.ArmAppManager(),
-      users: new application.ArmUserManager(),
-      groups: new application.ArmGroupManager(),
-      devices: new application.ArmDeviceManager()
-    };
-    //this.useradmin = new UserAdmin.Controller();
         
     // setup callbacks for server calls
-    $fw_manager.server.setOpts({ 
+    $fw.server.setOpts({
       connectivity_ok: function () {
-        $fw_manager.client.dialog.connectivity.hide();
+        $fw.client.dialog.connectivity.hide();
       },
       connectivity_error: function () {
-        $fw_manager.client.dialog.connectivity.show($fw_manager.client.lang.getLangString('connectivity_error'));
+        $fw.client.dialog.connectivity.show($fw.client.lang.getLangString('connectivity_error'));
       },
       cookie_error: function () {
         location.reload();
       },
       server_error: function (status, statusText) {
-        $fw_manager.client.dialog.connectivity.show($fw_manager.client.lang.getLangString('server_error') + status + ' - ' + statusText);
+        $fw.client.dialog.connectivity.show($fw.client.lang.getLangString('server_error') + status + ' - ' + statusText);
       },
       client_error: function (status, statusText) {
-        $fw_manager.client.dialog.connectivity.show($fw_manager.client.lang.getLangString('client_error') + status + ' - ' + statusText);
+        $fw.client.dialog.connectivity.show($fw.client.lang.getLangString('client_error') + status + ' - ' + statusText);
       },
       generic_error: function (status, statusText) {
-        $fw_manager.client.dialog.connectivity.show($fw_manager.client.lang.getLangString('generic_error') + status + ' - ' + statusText);
+        $fw.client.dialog.connectivity.show($fw.client.lang.getLangString('generic_error') + status + ' - ' + statusText);
       },
       cookie_name: 'feedhenry'
     });
@@ -103,8 +97,8 @@ var IDEManager = Class.extend({
   },
   
   /*
-   * Initialise components that are essential to the IDE, , called by fw_manager
-   * 
+   * Initialise components that are essential to the IDE, , called by fw
+   *
    * different from what init() constructor above is for
    */
   doInit: function () {
@@ -116,14 +110,14 @@ var IDEManager = Class.extend({
     this.setupDocsLinks();
     
     // Retrieving and populating appropriate fields for Profile
-    $fw_manager.client.profile.doLoad();
+    $fw.client.profile.doLoad();
     
     // call updatebreadcrumb for home tab to set account type text
     $fw.client.tab.home.doUpdateBreadcrumb();
     
     var disabled_tabs;
     try {
-      disabled_tabs = $fw_manager.getClientProp('disabled-tabs');
+      disabled_tabs = $fw.getClientProp('disabled-tabs');
       $.each(disabled_tabs, function (key, val) {
         var tab = $('.' + val),
             panel = $(tab.find('a').attr('href'));
@@ -142,10 +136,10 @@ var IDEManager = Class.extend({
         var tab_name = tab.replace('_tab', '');
         Log.append('show ' + tab_name + ' tab');
         // construct the 'show' function name
-        var tab_manager = $fw_manager.client.tab[tab_name];
+        var tab_manager = $fw.client.tab[tab_name];
         if ('undefined' !== typeof tab_manager) {
           // update state information
-          $fw_manager.state.set('main_tabs', 'selected', ui.index);
+          $fw.state.set('main_tabs', 'selected', ui.index);
           
           // call the show function
           tab_manager.show(event, ui);
@@ -157,7 +151,7 @@ var IDEManager = Class.extend({
       }
     };
     // Check if we need to force a state
-    var selected = $fw_manager.state.get('main_tabs', 'selected');
+    var selected = $fw.state.get('main_tabs', 'selected');
     if ('number' === typeof selected) {
       overrides.selected = selected;
     }
