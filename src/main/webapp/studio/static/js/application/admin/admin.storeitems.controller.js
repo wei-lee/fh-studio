@@ -98,7 +98,14 @@ Admin.Storeitems.Controller = Controller.extend({
   showUpdateStoreItem: function(store_item) {
     var self = this;
     this.hide();
-    $(self.views.store_item_update).show();
+
+    var update_view = $(self.views.store_item_update);
+    $('.item_name', update_view).val(store_item.name);
+    $('.item_id', update_view).val(store_item.authToken);
+    $('.item_description', update_view).val(store_item.description);
+
+    console.log(store_item);
+    update_view.show();
 
     // Bind Binary upload fields
     var icon_upload_field = $('.store_item_icon', self.views.store_item_update);
@@ -153,6 +160,7 @@ Admin.Storeitems.Controller = Controller.extend({
   },
 
   createStoreItem: function() {
+    var self = this;
     var container = $(this.views.store_item_create);
     var name = $('.item_name', container).val();
     var item_id = $('.item_id', container).val();
@@ -161,6 +169,7 @@ Admin.Storeitems.Controller = Controller.extend({
 
     this.models.store_item.create(name, item_id, description, groups, function(res) {
       Log.append('create StoreItem: OK');
+      self.showStoreItems();
     }, function(err) {
       Log.append(err);
     });
