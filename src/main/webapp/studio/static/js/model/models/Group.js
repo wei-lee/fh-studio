@@ -21,8 +21,8 @@ model.Group = model.Model.extend({
   create: function(name, success, fail) {
     var url = Constants.ADMIN_GROUP_CREATE_URL.replace('<domain>', $fw_manager.getClientProp('domain'));
     var params = {
-	  "name": name
-	};
+      "name": name
+    };
     return this.serverPost(url, params, success, fail, true);
   },
 
