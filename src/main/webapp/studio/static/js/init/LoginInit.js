@@ -31,7 +31,6 @@ function init() {
   
   if( doJQLayout === true ) {
     center_layout.resizeAll();
-    main_layout.resizeAll();
   }
 }
 
@@ -45,10 +44,6 @@ function setupLayout() {
     spacing_closed: 0,
     enableCursorHotkey: false
   };
-  
-  center_layout = $('#main_layout_center').layout($.extend({}, options, {
-    south__initClosed: true
-  }));
 
   // Set text below login area if required
   var loginFooterText = $fw.getClientProp('login-footer-text');

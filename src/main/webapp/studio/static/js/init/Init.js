@@ -1,6 +1,3 @@
-// initialise globals
-var main_layout = null;
-
 $(document).ready(function () {
   Log.append('main init');
   
@@ -19,12 +16,6 @@ $(document).ready(function () {
     spacing_closed: 0,
     enableCursorHotkey: false
   };
-  
-  main_layout = $('#main_layout_wrapper').layout($.extend({}, options, {
-    center__onresize : function () {
-      center_layout.resizeAll();
-    }
-  }));
   
   $.validator.addMethod("validpass", function (value, element) {
     // check the password length

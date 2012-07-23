@@ -38,7 +38,6 @@ application.HomeTabManager = application.TabManager.extend({
   },
   
   doPostShow: function () {
-    main_layout.resizeAll();
     this.layout.resizeAll();
     this.showRecentApps();
   },

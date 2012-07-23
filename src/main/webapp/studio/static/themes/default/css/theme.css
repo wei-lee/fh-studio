@@ -459,17 +459,20 @@ textarea { resize:none; }
 {
   font-size:0.9em;
 }
+html {
+  overflow-y:auto;
+}
 html, body
 {
   font-family: "Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;
   padding:0;
   margin:0;
   width:100%;
-  height:100%;
-  overflow-y:auto;
   min-height:755px;
-  /*background: url('../img/bg_page.png');*/
   background: #fff;
+}
+body {
+  height:100%;
 }
 #main_layout_wrapper
 {
@@ -3283,4 +3286,8 @@ table.dataTable th:active {
 -moz-border-radius-topright: 3px;
 border-top-left-radius: 3px;
 border-top-right-radius: 3px;
+}
+
+#apps_layout, #account_layout, #reporting_layout, #home_layout {
+  height:700px;
 }
