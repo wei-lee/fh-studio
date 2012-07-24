@@ -43,7 +43,7 @@ var Controller = Class.extend({
   updateSwapSelect: function(container, from, to) {
     var from_list = $('.swap-from', container).empty();
     $.each(from, function(i, form_item) {
-      if (to.indexOf(form_item) < 0) {
+      if (('undefined' === typeof to) || (to.indexOf(form_item) < 0)) {
         var option = $('<option>').text(form_item);
         from_list.append(option);
       }

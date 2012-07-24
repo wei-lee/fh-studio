@@ -98,9 +98,9 @@ Admin.Users.Controller = Controller.extend({
 
     this.models.user.resendInvite(email, function(res) {
       Log.append('User invite re-sent OK.');
-      self.showAlert('success', '<strong>Successfully sent Invite</strong>');
+      self.showAlert('success', '<strong>Successfully sent Invite</strong> (' + email + ')');
     }, function(e) {
-      self.showAlert('error', '<strong>Error sending Invite</strong> ' + e);
+      self.showAlert('error', '<strong>Error sending Invite</strong> (' + email + ') ' + e);
     });
   },
 
@@ -137,9 +137,14 @@ Admin.Users.Controller = Controller.extend({
       if (rolesTo.indexOf('sub') > -1) {
         rolesTo.splice(rolesTo.indexOf('sub'), 1);
       }
+      // take out 'name' field from storeitems
+      var itemsFrom = [];
+      for (var ri = 0, rl = results[2].length; ri < rl; ri += 1) {
+        itemsFrom.push(results[2][ri].name);
+      }
       self.updateSwapSelect('#update_user_role_swap', results[1], rolesTo);
       //self.updateSwapSelect('#update_user_group_swap', results[2], user.groups);
-      self.updateSwapSelect('#update_user_storeitem_swap', results[2], user.storeitems);
+      self.updateSwapSelect('#update_user_storeitem_swap', itemsFrom, user.storeitems);
       self.bindSwapSelect(parent);
 
       $('input,select,button', parent).not('#update_user_id,#update_user_enabled,#update_user_blacklisted,.invite_user_btn').removeAttr('disabled');
@@ -341,7 +346,12 @@ Admin.Users.Controller = Controller.extend({
       Log.append('Storeitem list OK.');
       var storeitems = res.list;
       var container = '#create_user_storeitem_swap';
-      self.updateSwapSelect(container, storeitems);
+      // take out 'name' field from storeitems
+      var itemsFrom = [];
+      for (var si = 0, sl = storeitems.length; si < sl; si += 1) {
+        itemsFrom.push(storeitems[si].name);
+      }
+      self.updateSwapSelect(container, itemsFrom);
     }, function(e) {
       self.showAlert('error', '<strong>Error loading Store Items</strong> ' + e);
     });
@@ -406,6 +416,7 @@ Admin.Users.Controller = Controller.extend({
     //   groupsArr.push($(item).text());
     // });
     // var groups = groupsArr.length > 0 ? groupsArr.join(', ') : null;
+    var groups = null;
 
     var activated = true;
     this.models.user.create(id, email, name, roles, groups, storeitems, password, activated, invite, function(res) {
