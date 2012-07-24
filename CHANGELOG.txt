@@ -1,20 +1,29 @@
 ===============================================================================
+3.3.2
+-----------------------------------------------------------------------------
+###CHANGES
+* 
+
+###NOTES
+*
+
+
+3.3.1
+-----------------------------------------------------------------------------
 ###CHANGES
 * o2 Theming changes made. Small changes to CSS and removed ! from login form panel.
 
 ###NOTES
-3.3.1
+*
 
-###CHANGES
-* Added new auth policy section for the portal admin, allowing the configuration of third party oauth and authentication that ties back into ARM
 
-###NOTES
 3.3.0
 -----------------------------------------------------------------------------
 ###CHANGES
 * Added intercom user tracking for logged in users
 * Added new 'email' column to app listing, shows email of original app creator (only if email is sent back in app list response)
 * Added 'ENVIRONMENT' global to studio js. Can be either 'dev' or 'prod'
+* Added new auth policy section for the portal admin, allowing the configuration of third party oauth and authentication that ties back into ARM
 
 ###NOTES
 * 
