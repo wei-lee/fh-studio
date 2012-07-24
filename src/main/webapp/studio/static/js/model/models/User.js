@@ -84,13 +84,11 @@ model.User = model.Model.extend({
     return this.serverPost(url, fields, success, fail, true);
   },
 
-  remove: function(email, success, fail) {
-    var user_type = this.resolveUserType();
-    var url = Constants.ADMIN_USER_DELETE_URL.replace('<users-type>', user_type);
+  remove: function(id, success, fail) {
+    var url = Constants.ADMIN_USER_DELETE_URL;
     var params = {
-      "email": email
+      "username": id
     };
-    params[user_type] = $fw.getClientProp(user_type);
 
     return this.serverPost(url, params, success, fail, true);
   },

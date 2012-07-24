@@ -521,15 +521,15 @@ Admin.Users.Controller = Controller.extend({
   deleteUser: function(button, row, data) {
     var self = this;
     self.showBooleanModal('Are you sure you want to delete this User?', function () {
-      self.showAlert('info', '<strong>Deleting User</strong> This may take some time.');
+      var id = data[0];
+      self.showAlert('info', '<strong>Deleting User</strong> (' + id + ') This may take some time.');
       // delete user
-      var email = data[1];
-      self.models.user.remove(email, function(res) {
-        self.showAlert('success', '<strong>User Successfully Deleted</strong>');
+      self.models.user.remove(id, function(res) {
+        self.showAlert('success', '<strong>User Successfully Deleted</strong> (' + id + ')');
         // remove user from table
         self.user_table.fnDeleteRow(row[0]);
       }, function(e) {
-        self.showAlert('error', '<strong>Error Deleting User</strong> ' + e);
+        self.showAlert('error', '<strong>Error Deleting User</strong> (' + id + ') ' + e);
       });
     });
   },
