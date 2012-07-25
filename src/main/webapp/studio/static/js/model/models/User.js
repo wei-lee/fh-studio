@@ -40,7 +40,7 @@ model.User = model.Model.extend({
 
   },
 
-  create: function(id, email, name, roles, groups, password, activated, invite,  success, fail) {
+  create: function(id, email, name, roles, groups, storeitems, password, activated, invite,  success, fail) {
     var user_type = this.resolveUserType();
     var url = Constants.ADMIN_USER_CREATE_URL.replace('<users-type>', user_type);
     var params = {
@@ -69,6 +69,10 @@ model.User = model.Model.extend({
       params.groups = groups;
     }
 
+    if (storeitems != null) {
+      params.storeitems = storeitems;
+    }
+
     params[user_type] = $fw.getClientProp(user_type);
     return this.serverPost(url, params, success, fail, true);
   },
@@ -80,13 +84,11 @@ model.User = model.Model.extend({
     return this.serverPost(url, fields, success, fail, true);
   },
 
-  remove: function(email, success, fail) {
-    var user_type = this.resolveUserType();
-    var url = Constants.ADMIN_USER_DELETE_URL.replace('<users-type>', user_type);
+  remove: function(id, success, fail) {
+    var url = Constants.ADMIN_USER_DELETE_URL;
     var params = {
-      "email": email
+      "username": id
     };
-    params[user_type] = $fw.getClientProp(user_type);
 
     return this.serverPost(url, params, success, fail, true);
   },

@@ -14,14 +14,12 @@
             Users
           </a>
         </li>
-<!--  Remove Groups
-        <li>
+        <!-- <li>
           <a href="#" data-controller="admin.groups.controller">
             <i class="icon-group"></i>
             Groups
           </a>
-        </li>
--->
+        </li> -->
         <% if(studio.getProps().optBoolean("arm-auth-policy-enabled", false)) { %>
         <li>
           <a href="#" data-controller="admin.authpolicy.controller">
@@ -113,7 +111,26 @@
                 </div>
               </div>
 
-              <div class="control-group">
+              <!-- <div class="control-group">
+                <label class="control-label">Store Items</label>
+                <div class="controls swap-select" id="create_user_storeitem_swap">
+                  <div class="span2">
+                    <select multiple="multiple" class="span12 swap-from">
+                      <option>Loading...</option>
+                    </select>
+                  </div>
+                  <div class="span1">
+                    <button class="btn add span12">&gt;</button>
+                    <button class="btn remove span12">&lt;</button>
+                  </div>
+                  <div class="span2">
+                    <select multiple="multiple" class="span12 swap-to">
+                    </select>
+                  </div>
+                </div>
+              </div> -->
+
+              <!-- <div class="control-group">
                 <label class="control-label">Groups</label>
                 <div class="controls swap-select" id="create_user_group_swap">
                   <div class="span2">
@@ -130,7 +147,7 @@
                     </select>
                   </div>
                 </div>
-              </div>
+              </div> -->
 
             <div class="form-actions">
               <button type="submit" class="btn btn-primary create_user_btn">Create User</button>
@@ -158,7 +175,10 @@
             <div class="control-group">
               <label class="control-label" for="update_user_email">Email Address (Optional)</label>
               <div class="controls">
-                <input type="text" class="input-xxlarge" id="update_user_email" placeholder="Email Address"></div>
+                <div class="input-append">
+                  <input type="text" class="input-xxlarge" id="update_user_email" placeholder="Email Address"><button type="submit" class="btn invite_user_btn">Send Invite Email</button>
+                </div>
+              </div>
             </div>
             <div class="control-group">
               <label class="control-label" for="update_user_name">Name (Optional)</label>
@@ -206,7 +226,27 @@
               </div>
             </div>
 
-            <div class="control-group">
+            <!-- <div class="control-group">
+              <label class="control-label">Store Items</label>
+              <div class="controls swap-select" id="update_user_storeitem_swap">
+                <div class="span2">
+                  <select multiple="multiple" class="span12 swap-from">
+                    <option>Loading...</option>
+                  </select>
+                </div>
+                <div class="span1">
+                  <button class="btn add span12">&gt;</button>
+                  <button class="btn remove span12">&lt;</button>
+                </div>
+                <div class="span2">
+                  <select multiple="multiple" class="span12 swap-to">
+                    <option>Loading...</option>
+                  </select>
+                </div>
+              </div>
+            </div> -->
+
+            <!-- <div class="control-group">
               <label class="control-label">Groups</label>
               <div class="controls swap-select" id="update_user_group_swap">
                 <div class="span2">
@@ -224,10 +264,9 @@
                   </select>
                 </div>
               </div>
-            </div>
+            </div> -->
 
             <div class="form-actions">
-              <button type="submit" class="btn invite_user_btn">Re-Send Invite Email</button>
               <button type="submit" class="btn btn-primary update_user_btn">Update User</button>
             </div>
           </fieldset>

@@ -412,8 +412,45 @@ application.DestinationGeneral = Class.extend({
         // TODO: better way for this temporary workaround for finishing wizard after successful upload  
         wizard.find('.jw-button-finish').trigger('click');
         Log.append('publish successful: ' + JSON.stringify(res));
+
         var source_url = res.action.url;
-        $fw_manager.app.startDownload(source_url);
+        //$fw_manager.app.startDownload(source_url);
+        var showDownload = function(message){
+          var dialog = $('#confirm_dialog').clone();
+          dialog.find('#confirm_dialog_text').html(message);
+          proto.Dialog.load(dialog, {
+            autoOpen: true,
+            height: 210,
+            title: 'Download',
+            stack: true,
+            dialogClass: 'success-dialog popup-dialog',
+            width: 320,
+            buttons: {
+              'OK': function () {
+                $(this).dialog('close');
+              }
+            }
+          });
+        };
+        var html = "<p> The build is ready. Please click the link below to download";
+        var showOTA = false;
+        var destName = that.destination_id.toLowerCase();
+        if( destName == "ios" || destName == "ipad" || destName == "iphone" || destName == "android"){
+          html += ", or you can use the OTA link to install the application directly on to your phone.</p>";
+          showOTA = true;
+        } else {
+          html += ".</p>";
+        }
+        html += "<br><ul> <li> <a target='_blank' href='"+source_url+"'> Download </a></li>";
+        if(showOTA){
+          that.getOTALink(source_url, function(otalink){
+            html += "<li> OTA Link : <a target='_blank' href='"+otalink+"'>" + otalink + " </a></li></ul>";
+            showDownload(html);
+          });
+        } else {
+          html += "</ul>";
+          showDownload(html);
+        }
       });
     });
 
@@ -439,5 +476,32 @@ application.DestinationGeneral = Class.extend({
   doPublishWizardSetup: function(main_container, wizard) {
     //abstract interface
     wizard.validate({});
+  },
+
+  getShortenUrl: function(url, cb){
+    var shortenerRequestBody = { "longUrl": url};
+    var req = {url: 'https://www.googleapis.com/urlshortener/v1/url', method:"POST", body: JSON.stringify(shortenerRequestBody), headers: [{"name":"Content-Type", "value":"application/json"}]};
+    $.ajax({
+      url: '/box/srv/1.1/act/wid/web', 
+      type: 'POST', 
+      contentType: "application/json",
+      dataType: 'json',
+      data: JSON.stringify(req), 
+      success: function(res){
+        if(res.status == 200){
+          var resObj = JSON.parse(res.body);
+          var shortUrl = resObj.id.replace("\\", "");
+          Log.append("ota link is " + shortUrl);
+          cb(shortUrl);
+        } else {
+          Log.append("Failed to get shortened link.");
+          cb(url);
+        }
+      },
+      error: function(){
+        Log.append("Failed to get shortened link.");
+        cb(url);
+      }
+    });
   }
 });

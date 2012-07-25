@@ -140,6 +140,14 @@ application.DestinationIos = application.DestinationGeneral.extend({
       certPass: cert_pass
     };
     return data;
+  },
+
+  getOTALink: function(download_url, cb) {
+    var url = download_url;
+    url = url.replace(/\/[a-zA-Z]+~.+~/g,'/');
+    url = url.replace('.zip','.plist');
+    url = "http://ota.feedhenry.com/ota/ios.html?url=" + url; 
+    this.getShortenUrl(url, cb);
   }
 
 });

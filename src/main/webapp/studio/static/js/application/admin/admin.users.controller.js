@@ -5,8 +5,9 @@ Admin.Users = Admin.Users || {};
 Admin.Users.Controller = Controller.extend({
   models: {
     user: new model.User(),
-    role: new model.Role(),
-    group: new model.Group()
+    role: new model.Role()/*,
+    group: new model.Group(),
+    storeitem: new model.StoreItem()*/
   },
 
   views: {
@@ -92,13 +93,14 @@ Admin.Users.Controller = Controller.extend({
   },
 
   resendInvite: function() {
-    var email = $(this.views.user_update).find('.user_email').val();
+    var self = this;
+    var email = $(this.views.user_update).find('#update_user_email').val();
 
     this.models.user.resendInvite(email, function(res) {
       Log.append('User invite re-sent OK.');
-      $fw.client.dialog.info.flash('Successfully re-sent invite.');
+      self.showAlert('success', '<strong>Successfully sent Invite</strong> (' + email + ')');
     }, function(e) {
-      $fw.client.dialog.error("Error sending invite");
+      self.showAlert('error', '<strong>Error sending Invite</strong> (' + email + ') ' + e);
     });
   },
 
@@ -122,6 +124,9 @@ Admin.Users.Controller = Controller.extend({
       $('#update_user_id', parent).val(user.username);
       $('#update_user_name', parent).val(user.name);
       $('#update_user_email', parent).val(user.email);
+      if (user.email != null && user.email !== '') {
+        $('.invite_user_btn', parent).removeAttr('disabled');
+      }
 
       // setup enabled/blacklisted checkboxes and buttons
       self.setUserEnabled(user.enabled);
@@ -132,11 +137,17 @@ Admin.Users.Controller = Controller.extend({
       if (rolesTo.indexOf('sub') > -1) {
         rolesTo.splice(rolesTo.indexOf('sub'), 1);
       }
+      // take out 'name' field from storeitems
+      // var itemsFrom = [];
+      // for (var ri = 0, rl = results[2].length; ri < rl; ri += 1) {
+      //   itemsFrom.push(results[2][ri].name);
+      // }
       self.updateSwapSelect('#update_user_role_swap', results[1], rolesTo);
-      self.updateSwapSelect('#update_user_group_swap', results[2], user.groups);
+      //self.updateSwapSelect('#update_user_group_swap', results[2], user.groups);
+      //self.updateSwapSelect('#update_user_storeitem_swap', itemsFrom, user.storeitems);
       self.bindSwapSelect(parent);
 
-      $('input,select,button', parent).not('#update_user_id,#update_user_enabled,#update_user_blacklisted').removeAttr('disabled');
+      $('input,select,button', parent).not('#update_user_id,#update_user_enabled,#update_user_blacklisted,.invite_user_btn').removeAttr('disabled');
     };
 
     clearForm();
@@ -170,7 +181,15 @@ Admin.Users.Controller = Controller.extend({
       }, function(e) {
         return cb(e);
       });
-    }, function (cb) {
+    }/*, function (cb) {
+      // storeitems
+      self.models.storeitem.list(function (res) {
+        Log.append('Storeitem list OK');
+        return cb(null, res.list);
+      }, function (e) {
+        return cb(e);
+      });
+    }*//* function (cb) {
       // groups
       self.models.group.list(function(res) {
         Log.append('Group list OK.');
@@ -178,7 +197,7 @@ Admin.Users.Controller = Controller.extend({
       }, function(e) {
         return cb(e);
       });
-    }], function (err, results) {
+    }*/], function (err, results) {
       if (err != null) {
         return self.showAlert('error', '<strong>Error loading user data</strong> ' + err);
       }
@@ -221,13 +240,20 @@ Admin.Users.Controller = Controller.extend({
     if (rolesArr.length > 0 ) {
       fields.roles = rolesArr.join(', ');
     }
-    var groupsArr = [];
-    $('#update_user_group_swap .swap-to option', this.views.user_update).each(function (i, item) {
-      groupsArr.push($(item).text());
-    });
-    if (groupsArr.length > 0) {
-      fields.groups = groupsArr.join(', ');
-    }
+    // var storeitemsArr = [];
+    // $('#update_user_storeitem_swap .swap-to option', this.views.user_update).each(function (i, item) {
+    //   storeitemsArr.push($(item).text());
+    // });
+    // if (storeitemsArr.length > 0) {
+    //   fields.storeitems = storeitemsArr.join(', ');
+    // }
+    // var groupsArr = [];
+    // $('#update_user_group_swap .swap-to option', this.views.user_update).each(function (i, item) {
+    //   groupsArr.push($(item).text());
+    // });
+    // if (groupsArr.length > 0) {
+    //   fields.groups = groupsArr.join(', ');
+    // }
 
     this.models.user.update(fields, function(res) {
       Log.append('updateUser: OK');
@@ -306,7 +332,7 @@ Admin.Users.Controller = Controller.extend({
     // initialise all swap selects
     self.bindSwapSelect(this.container);
 
-    // Load roles & Groups into swap select
+    // Load roles & storeitems into swap select
     this.models.role.list_assignable(function(res) {
       Log.append('Role list OK.');
       var roles = res.list;
@@ -316,14 +342,28 @@ Admin.Users.Controller = Controller.extend({
       self.showAlert('error', '<strong>Error loading Roles</strong> ' + e);
     });
 
-    this.models.group.list_assignable(function(res) {
-      Log.append('Group list OK.');
-      var groups = res.list;
-      var container = '#create_user_group_swap';
-      self.updateSwapSelect(container, groups);
-    }, function(e) {
-      self.showAlert('error', '<strong>Error loading Groups</strong> ' + e);
-    });
+    // this.models.storeitem.list(function(res) {
+    //   Log.append('Storeitem list OK.');
+    //   var storeitems = res.list;
+    //   var container = '#create_user_storeitem_swap';
+    //   // take out 'name' field from storeitems
+    //   var itemsFrom = [];
+    //   for (var si = 0, sl = storeitems.length; si < sl; si += 1) {
+    //     itemsFrom.push(storeitems[si].name);
+    //   }
+    //   self.updateSwapSelect(container, itemsFrom);
+    // }, function(e) {
+    //   self.showAlert('error', '<strong>Error loading Store Items</strong> ' + e);
+    // });
+
+    // this.models.group.list(function(res) {
+    //   Log.append('Group list OK.');
+    //   var groups = res.list;
+    //   var container = '#create_user_group_swap';
+    //   self.updateSwapSelect(container, groups);
+    // }, function(e) {
+    //   self.showAlert('error', '<strong>Error loading Groups</strong> ' + e);
+    // });
   },
 
   showImportUsers: function () {
@@ -365,14 +405,22 @@ Admin.Users.Controller = Controller.extend({
     });
     var roles = rolesArr.length > 0 ? rolesArr.join(', ') : null;
 
-    var groupsArr = [];
-    $('#create_user_group_swap .swap-to option', this.views.user_create).each(function (i, item) {
-      groupsArr.push($(item).text());
-    });
-    var groups = groupsArr.length > 0 ? groupsArr.join(', ') : null;
+    // var storeitemsArr = [];
+    // $('#create_user_storeitem_swap .swap-to option', this.views.user_create).each(function (i, item) {
+    //   storeitemsArr.push($(item).text());
+    // });
+    // var storeitems = storeitemsArr.length > 0 ? storeitemsArr.join(', ') : null;
+    var storeitems = null;
+
+    // var groupsArr = [];
+    // $('#create_user_group_swap .swap-to option', this.views.user_create).each(function (i, item) {
+    //   groupsArr.push($(item).text());
+    // });
+    // var groups = groupsArr.length > 0 ? groupsArr.join(', ') : null;
+    var groups = null;
 
     var activated = true;
-    this.models.user.create(id, email, name, roles, groups, password, activated, invite, function(res) {
+    this.models.user.create(id, email, name, roles, groups, storeitems, password, activated, invite, function(res) {
       console.log(res);
       self.showUsersList();
     }, function(e) {
@@ -474,15 +522,15 @@ Admin.Users.Controller = Controller.extend({
   deleteUser: function(button, row, data) {
     var self = this;
     self.showBooleanModal('Are you sure you want to delete this User?', function () {
-      self.showAlert('info', '<strong>Deleting User</strong> This may take some time.');
+      var id = data[0];
+      self.showAlert('info', '<strong>Deleting User</strong> (' + id + ') This may take some time.');
       // delete user
-      var email = data[1];
-      self.models.user.remove(email, function(res) {
-        self.showAlert('success', '<strong>User Successfully Deleted</strong>');
+      self.models.user.remove(id, function(res) {
+        self.showAlert('success', '<strong>User Successfully Deleted</strong> (' + id + ')');
         // remove user from table
         self.user_table.fnDeleteRow(row[0]);
       }, function(e) {
-        self.showAlert('error', '<strong>Error Deleting User</strong> ' + e);
+        self.showAlert('error', '<strong>Error Deleting User</strong> (' + id + ') ' + e);
       });
     });
   },
