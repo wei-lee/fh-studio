@@ -14,12 +14,14 @@
             Users
           </a>
         </li>
+<!--  Remove Groups
         <li>
           <a href="#" data-controller="admin.groups.controller">
             <i class="icon-group"></i>
             Groups
           </a>
         </li>
+-->
         <% if(studio.getProps().optBoolean("arm-auth-policy-enabled", false)) { %>
         <li>
           <a href="#" data-controller="admin.authpolicy.controller">
@@ -257,6 +259,7 @@
       </div>
 
       <!-- Groups Templates -->
+<!-- Removing GROUPS
       <div id="useradmin_group_list" class="hidden_template row-fluid">
         <div class="alerts"></div>
         <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="useradmin_groups_table"></table>
@@ -304,7 +307,7 @@
           <a href="#" class="btn btn-primary">Yes</a>
         </div>
       </div>
-
+-->
       <!-- Storeitem templates -->
       <ul id="admin_store_items" class="hidden_template">
         <div class="admin_store_items_controls">
