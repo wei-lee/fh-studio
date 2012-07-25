@@ -11,13 +11,25 @@ model.StoreItem = model.Model.extend({
     return this.serverPost(url, params, success, fail);
   },
 
-  create: function(name, item_id, description, groups, success, fail) {
+  create: function(name, item_id, description, auth_policies, success, fail) {
     var url = Constants.ADMIN_STORE_ITEM_CREATE_URL;
     var params = {
       name: name,
       description: description,
       authToken: item_id,
-      groups: groups
+      auth_policies: auth_policies
+    };
+    return this.serverPost(url, params, success, fail, true);
+  },
+
+  update: function(guid, name, item_id, description, auth_policies, success, fail) {
+    var url = Constants.ADMIN_STORE_ITEM_UPDATE_URL;
+    var params = {
+      guid: guid,
+      name: name,
+      description: description,
+      authToken: item_id,
+      auth_policies: auth_policies
     };
     return this.serverPost(url, params, success, fail, true);
   },

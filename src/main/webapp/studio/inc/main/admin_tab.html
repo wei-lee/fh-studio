@@ -397,11 +397,11 @@
           </div>
 
           <div class="control-group">
-            <label class="control-label">Groups</label>
-            <div class="controls swap-select" id="store_item_group_swap">
+            <label class="control-label">Auth Policies</label>
+            <div class="controls swap-select store_item_auth_policies_swap">
               <div class="span2">
                 <span>Available</span>
-                <select multiple="multiple" class="span12 swap-from store_item_available_groups">
+                <select multiple="multiple" class="span12 swap-from store_item_available_auth_policies">
                 </select>
               </div>
               <div class="span1">
@@ -409,11 +409,11 @@
                 <button class="btn remove span12">&lt;</button>
               </div>
               <div class="span2">
-                <span>Member Of</span>
-                <select multiple="multiple" class="span12 swap-to store_item_assigned_groups">
+                <span>Assigned</span>
+                <select multiple="multiple" class="span12 swap-to store_item_assigned_auth_policies">
                 </select>
               </div>
-              <span class="help-inline span4"><br/>Members of the these groups will be able to view this Item in your App Store</span>
+              <span class="help-inline span4"><br/>These Auth Policies will be applied to $fh.auth calls in your Store Item.</span>
             </div>
           </div>
 
@@ -424,6 +424,8 @@
       </div>
 
       <div id="admin_store_item_update" class="hidden_template row-fluid">
+        <input type="hidden" class="item_guid">
+
         <form class="well form-horizontal">
           <h3>Update Store Item</h3>
           <br/>
@@ -450,11 +452,11 @@
           </div>
 
           <div class="control-group">
-            <label class="control-label">Groups</label>
-            <div class="controls swap-select" id="store_item_group_swap">
+            <label class="control-label">Auth Policies</label>
+            <div class="controls swap-select store_item_auth_policies_swap">
               <div class="span2">
                 <span>Available</span>
-                <select multiple="multiple" class="span12 swap-from store_item_available_groups">
+                <select multiple="multiple" class="span12 swap-from store_item_available_auth_policies">
                 </select>
               </div>
               <div class="span1">
@@ -462,11 +464,11 @@
                 <button class="btn remove span12">&lt;</button>
               </div>
               <div class="span2">
-                <span>Member Of</span>
-                <select multiple="multiple" class="span12 swap-to store_item_assigned_groups">
+                <span>Assigned</span>
+                <select multiple="multiple" class="span12 swap-to store_item_assigned_auth_policies">
                 </select>
               </div>
-              <span class="help-inline span4"><br/>Members of the these groups will be able to view this Item in your App Store</span>
+              <span class="help-inline span4"><br/>These Auth Policies will be applied to $fh.auth calls in your Store Item.</span>
             </div>
           </div>
 
