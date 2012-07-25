@@ -91,7 +91,7 @@ var IDEManager = Class.extend({
       $fw.data.set('setup', setup);
     }
 
-    Log.append('needsSetup:' + componentName + '::' + needsSetup);
+    log('needsSetup:' + componentName + '::' + needsSetup);
     
     return needsSetup;
   },
@@ -127,14 +127,14 @@ var IDEManager = Class.extend({
       });
     }
     catch(e) {
-      Log.append('error parsing disabled-tabs prop:' + e, 'ERROR');
+      log('error parsing disabled-tabs prop:' + e, 'ERROR');
     }
     var overrides = {
       // add a show callback for each tab
       show: function (event, ui) {
         var tab = $(ui.tab).attr('id');
         var tab_name = tab.replace('_tab', '');
-        Log.append('show ' + tab_name + ' tab');
+        log('show ' + tab_name + ' tab');
         // construct the 'show' function name
         var tab_manager = $fw.client.tab[tab_name];
         if ('undefined' !== typeof tab_manager) {
@@ -146,7 +146,7 @@ var IDEManager = Class.extend({
         }
         else {
           // if tabmanager doesn't exist, log a warning
-          Log.append('TabManager for ' + tab_name + ' not initialised in IDEManager', 'WARNING');
+          log('TabManager for ' + tab_name + ' not initialised in IDEManager', 'WARNING');
         }
       }
     };
@@ -169,11 +169,11 @@ var IDEManager = Class.extend({
       docs = $fw.getClientProp('dashboard-docs-default');
     }
     
-    //Log.append('dashboard-docs:' + docs);
+    //log('dashboard-docs:' + docs);
     
     try {
       var docs_array = docs;
-      Log.append('got ' + docs_array.length + ' docs');
+      log('got ' + docs_array.length + ' docs');
       
       var docs_container = $('.doc_list');
       for (var di=0, dl=docs_array.length; di<dl; di++) {
@@ -189,7 +189,7 @@ var IDEManager = Class.extend({
       }
     }
     catch (e) {
-      Log.append('Error getting docs links from property', 'ERROR');
+      log('Error getting docs links from property', 'ERROR');
     }
   }
   

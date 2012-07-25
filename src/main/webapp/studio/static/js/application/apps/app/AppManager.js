@@ -18,7 +18,7 @@ application.AppManager = Class.extend({
   },
   
   doShowManage: function (guid, success, fail, is_name, intermediate) {
-    Log.append('app.doManage');
+    log('app.doManage');
     if (!$('#apps_tab').parent().hasClass('ui-state-active')) {
       //this function is called from home page, need to set state information to show the manage apps view
       this.setStateForAppView(guid);
@@ -32,7 +32,7 @@ application.AppManager = Class.extend({
       is_app_name = true;
     }
     $fw_manager.client.model.App.read(guid, function (result) {
-      Log.append('app read result > ' + JSON.stringify(result));
+      log('app read result > ' + JSON.stringify(result));
       if (result.app && result.inst) {
         var inst = result.inst;
         
@@ -62,26 +62,26 @@ application.AppManager = Class.extend({
           // Check if the current app is a scm based app, and if crud operations are allowed
           var is_scm = $fw.client.app.isScmApp();
           var scmCrudEnabled = $fw_manager.getClientProp('scmCrudEnabled') == "true";
-          Log.append('scmCrudEnabled = ' + scmCrudEnabled);
+          log('scmCrudEnabled = ' + scmCrudEnabled);
           if (is_scm) {
-            Log.append('scm based app, applying restrictions');
+            log('scm based app, applying restrictions');
             $fw.client.app.enableScmApp(scmCrudEnabled);
           }
           else {
-            Log.append('non-scm based app, removing restrictions');
+            log('non-scm based app, removing restrictions');
             $fw.client.app.disableScmApp();
           }
 
           // Check if the current app is a Node.js one
           if ($fw.client.app.isNodeJsApp()) {
-            Log.append('Node.js based app, applying changes');
+            log('Node.js based app, applying changes');
             
             // Show Node cloud logo
             $('#cloud_logo').removeClass().addClass('node').unbind().bind('click', function(){
               window.open('http://nodejs.org/', '_blank');
             });
           } else {
-            Log.append('Rhino based app, applying changes');
+            log('Rhino based app, applying changes');
             $fw.client.app.disableNodeJsApp();
 
             // Show Rhino cloud logo
@@ -106,13 +106,13 @@ application.AppManager = Class.extend({
       }
       else {
         // TODO: call a failure callback, if specified
-        Log.append('error reading app > ' + result.message, 'ERROR');
+        log('error reading app > ' + result.message, 'ERROR');
         if ($.isFunction(fail)) {
           fail.call();
         }
       }
     }, function () {
-      Log.append('app.doManage:ERROR');
+      log('app.doManage:ERROR');
       if ($.isFunction(fail)) {
         fail.call();
       }
@@ -132,7 +132,7 @@ application.AppManager = Class.extend({
    *
    */
   doClone: function (guid) {
-    Log.append('app.doclone');
+    log('app.doclone');
     $fw_manager.data.set('clone_from_app', guid);
     var clone_app_wizard = $fw_manager.client.app.initCloneAppWizard();
     clone_app_wizard.jWizard('firstStep');
@@ -143,19 +143,19 @@ application.AppManager = Class.extend({
    *
    */
   doDelete: function (guid) {
-    Log.append('app.doDelete guid:' + guid);
+    log('app.doDelete guid:' + guid);
     var icon_html = "<span class=\"ui-icon ui-icon-alert content_icon\"></span>",
         app_title = $('<div>').html(my_apps_grid.jqGrid('getRowData', guid).title);
     $fw_manager.client.dialog.showConfirmDialog($fw_manager.client.lang.getLangString('caution'), icon_html + $fw_manager.client.lang.getLangString('delete_app_confirm_text').replace('<APP>', $.trim(app_title.text())), function () {
       proto.ProgressDialog.reset($fw_manager.client.dialog.progress);
       proto.ProgressDialog.setTitle($fw_manager.client.dialog.progress, 'Delete Progress');
       proto.ProgressDialog.setProgress($fw_manager.client.dialog.progress, 10);
-      proto.ProgressDialog.append($fw_manager.client.dialog.progress, 'Starting delete');
+      proto.ProgressDialog($fw_manager.client.dialog.progress, 'Starting delete');
       proto.ProgressDialog.show($fw_manager.client.dialog.progress);
       $fw_manager.client.model.App['delete'](guid, function (data) {
         if (data.inst && data.inst.id) {
           proto.ProgressDialog.setProgress($fw_manager.client.dialog.progress, 100);
-          proto.ProgressDialog.append($fw_manager.client.dialog.progress, 'Delete complete');
+          proto.ProgressDialog($fw_manager.client.dialog.progress, 'Delete complete');
           my_apps_grid.jqGrid('delRowData', guid);
           my_apps_grid.trigger('reloadGrid');
           setTimeout(function () {
@@ -174,7 +174,7 @@ application.AppManager = Class.extend({
   },
   
   doPublish: function (guid) {
-    Log.append('app.doPublish');
+    log('app.doPublish');
     
     // force state to manage > publish
     $fw_manager.state.set('manage_apps_accordion_app', 'selected', 0);
@@ -187,7 +187,7 @@ application.AppManager = Class.extend({
    * Show the create app wizard
    */
   doCreate: function () {
-    Log.append('app.docreate');
+    log('app.docreate');
     var create_app_wizard = $fw_manager.client.app.initCreateAppWizard();
   },
   
@@ -195,7 +195,7 @@ application.AppManager = Class.extend({
    *
    */
   doImport: function () {
-    Log.append('app.doimport');
+    log('app.doimport');
     var import_app_wizard = proto.Wizard.load('import_app_wizard', {
       validate: true,
       finish: function () {
@@ -241,28 +241,28 @@ application.AppManager = Class.extend({
     // When next is clicked on details page, intercept and send back to details page until 
     // import is attempted
     import_app_wizard.find('#import_app_progress').bind('show', function () {      
-      Log.append('doing import');
+      log('doing import');
       var step = $(this);
       
       // show import progress
       proto.ProgressDialog.resetBarAndLog(step);
       proto.ProgressDialog.setProgress(step, 1);
-      proto.ProgressDialog.append(step, 'Starting Import');
+      proto.ProgressDialog(step, 'Starting Import');
       
       var currentProgress;
       var callbacks = {
         progress: function(e, data){
           var progress = parseInt(data.loaded/data.total*100, 10);
           if(progress != currentProgress){
-            Log.append("upload progress: " + progress);
+            log("upload progress: " + progress);
             proto.ProgressDialog.setProgress(step, parseInt(progress*0.5, 10));
-            proto.ProgressDialog.append(step, "Uploaded: " + progress + "%");
+            proto.ProgressDialog(step, "Uploaded: " + progress + "%");
           }
           currentProgress = progress;
         },
         done: function (e, data) {
           var result = data.result;
-          Log.append('import result > ' + JSON.stringify(result));
+          log('import result > ' + JSON.stringify(result));
           var cache_key = result.cacheKey;
           
           // If the cache key was sent back, set up a new asynchronous server task to 
@@ -274,13 +274,13 @@ application.AppManager = Class.extend({
               updateInterval: Properties.cache_lookup_interval,
               maxTime: Properties.cache_lookup_timeout,
               timeout: function (res) {
-                Log.append('timeout error > ' + JSON.stringify(res));
+                log('timeout error > ' + JSON.stringify(res));
                 // TODO: internationalise during refactor
                 proto.Wizard.jumpToStep(import_app_wizard, 1, 'Import timed out');  
               },
               update: function (res) {
                 for (var i = 0;i < res.log.length; i++) {
-                  proto.ProgressDialog.append(step, res.log[i]);
+                  proto.ProgressDialog(step, res.log[i]);
                 }
                 if (res.progress) {
                   proto.ProgressDialog.setProgress(step, parseInt(50 + res.progress*0.5, 10));
@@ -288,14 +288,14 @@ application.AppManager = Class.extend({
               },
               complete: function (res) {
                 proto.ProgressDialog.setProgress(step, 100);
-                Log.append('import successful, good to go > ' + JSON.stringify(res));
+                log('import successful, good to go > ' + JSON.stringify(res));
                 $fw_manager.data.set('new_app', res.action.guid);
-                Log.append('jumping to final step and hiding progress dialog');
+                log('jumping to final step and hiding progress dialog');
                 proto.Wizard.jumpToStep(import_app_wizard, 3);
                 proto.Wizard.hidePreviousButton(import_app_wizard); 
               },
               error: function (res) {
-                Log.append('import error > ' + JSON.stringify(res));
+                log('import error > ' + JSON.stringify(res));
                 proto.Wizard.jumpToStep(import_app_wizard, 1, res.error);  
               },
               end: function () {
@@ -306,7 +306,7 @@ application.AppManager = Class.extend({
           }          
         },
         fail: function (e, data) {
-          Log.append('import failed > ' + e);
+          log('import failed > ' + e);
           // Not good, first step, with error
           proto.Wizard.jumpToStep(import_app_wizard, 1, 'import failed');
         },
@@ -357,7 +357,7 @@ application.AppManager = Class.extend({
     
     // TODO: take preview device option for preview area select for now, instead of in manage details section
     var target = $('#preview_temporary_select option:selected').val();
-    Log.append('target:' + target);
+    log('target:' + target);
     var device = $fw.client.preview.resolveDevice(target);
     
     var app = $fw_manager.data.get('app'),
@@ -381,7 +381,7 @@ application.AppManager = Class.extend({
     };
     // submit to server
     $fw_manager.client.model.App.update(fields, function (result) {
-      Log.append('update success:' + result);
+      log('update success:' + result);
       $fw_manager.client.dialog.info.flash($fw_manager.client.lang.getLangString('app_updated'));
       // TODO: overkill here by doing a second call to read the app
 
@@ -394,7 +394,7 @@ application.AppManager = Class.extend({
       }
     }, function (error) {
       $fw_manager.client.dialog.error(error);
-      Log.append('update failed:' + error);
+      log('update failed:' + error);
       if ($.isFunction(callback)) {
         callback();
       }
@@ -407,7 +407,7 @@ application.AppManager = Class.extend({
   doSearch: function (query) {
     // Send the query to the server
     $fw.client.model.App.search(query, function (results) {
-      Log.append('search results:' + results.length);
+      log('search results:' + results.length);
       // make sure the correct apps grid is showing
       $fw.app.showAppsGrid('my_apps', results);
     });
@@ -591,7 +591,7 @@ application.AppManager = Class.extend({
     
     $fw.server.post(url, params, function (result) {
       // TODO: succeed or fail quietly for now
-      Log.append('stage result:' + JSON.stringify(result));
+      log('stage result:' + JSON.stringify(result));
       cb(result);
     });
   },
@@ -613,7 +613,7 @@ application.AppManager = Class.extend({
               maxTime: Properties.cache_lookup_timeout, // 5 minutes
               maxRetries: Properties.cache_lookup_retries,
               timeout: function (res) {
-                Log.append('timeout error > ' + JSON.stringify(res));
+                log('timeout error > ' + JSON.stringify(res));
                 $fw.client.dialog.error($fw.client.lang.getLangString('scm_trigger_error'));
                 // TODO: internationalise during refactor
                 // ALERT THE USER OF TIMEOUT proto.Wizard.jumpToStep(clone_app_wizard, 1, 'Clone timed out');  
@@ -623,11 +623,11 @@ application.AppManager = Class.extend({
               },
               update: function (res) {
                 for (var i = 0; i < res.log.length; i++) {
-                   Log.append(res.log[i]);
+                   log(res.log[i]);
                 }
               },
               complete: function (res) {
-                Log.append('SCM refresh successful > ' + JSON.stringify(res));
+                log('SCM refresh successful > ' + JSON.stringify(res));
                 $fw_manager.client.dialog.info.flash($fw_manager.client.lang.getLangString('scm_updated'), 2000);
         
                 if($.isFunction(success)) {
@@ -635,14 +635,14 @@ application.AppManager = Class.extend({
                 }
               },
               error: function (res) {
-                Log.append('clone error > ' + JSON.stringify(res));
+                log('clone error > ' + JSON.stringify(res));
                 $fw.client.dialog.error($fw.client.lang.getLangString('scm_trigger_error') + "<br /> Error Message:" + res.error);
                 if($.isFunction(fail)) {
                    fail();
                 }
               },
               retriesLimit: function () {
-                Log.append('retriesLimit exceeded: ' + Properties.cache_lookup_retries);
+                log('retriesLimit exceeded: ' + Properties.cache_lookup_retries);
             $fw.client.dialog.error($fw.client.lang.getLangString('scm_trigger_error'));
                 if($.isFunction(fail)) {
                    fail();
@@ -656,7 +656,7 @@ application.AppManager = Class.extend({
           });
           clone_task.run();
         } else {
-                Log.append('No CacheKey in response > ' + JSON.stringify(result));
+                log('No CacheKey in response > ' + JSON.stringify(result));
           $fw.client.dialog.error($fw.client.lang.getLangString('scm_trigger_error'));
                if($.isFunction(fail)) {
                   fail();

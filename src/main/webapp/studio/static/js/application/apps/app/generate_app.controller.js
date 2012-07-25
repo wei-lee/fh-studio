@@ -302,13 +302,13 @@ GenerateApp.Controllers.Wufoo = Class.extend({
 
     // Create client config
     $fw.server.post(create_url, create_client_config_params, function(res) {
-      Log.append('Client config created');
+      log('Client config created');
       // Create cloud config
       $fw.server.post(create_url, create_cloud_config_params, function(res) {
-        Log.append('Cloud config created');
+        log('Cloud config created');
         // Update client & cloud config
         $fw.server.post(update_url, update_client_config_params, function(res) {
-          Log.append('Configs updated');
+          log('Configs updated');
 
           self.appendCloningLog('Configuring your app.', modal);
 
@@ -353,7 +353,7 @@ GenerateApp.Controllers.Wufoo = Class.extend({
             // 5 minutes
             maxRetries: Properties.cache_lookup_retries,
             timeout: function(res) {
-              Log.append('timeout error > ' + JSON.stringify(res));
+              log('timeout error > ' + JSON.stringify(res));
               $fw.client.dialog.error($fw.client.lang.getLangString('scm_trigger_error'));
               self.updateCloningProgress(100, modal);
               if (typeof fail != 'undefined') {
@@ -362,22 +362,22 @@ GenerateApp.Controllers.Wufoo = Class.extend({
             },
             update: function(res) {
               for (var i = 0; i < res.log.length; i++) {
-                Log.append(res.log[i]);
+                log(res.log[i]);
                 if (typeof res.action.guid != 'undefined') {
                   new_guid = res.action.guid;
-                  Log.append('GUID for new app > ' + new_guid);
+                  log('GUID for new app > ' + new_guid);
                 }
                 self.appendCloningLog(res.log[i], modal);
-                Log.append("Current progress> " + self.current_progress);
+                log("Current progress> " + self.current_progress);
               }
               self.updateCloningProgress(self.current_progress + 1, modal);
             },
             complete: function(res) {
-              Log.append('SCM refresh successful > ' + JSON.stringify(res));
+              log('SCM refresh successful > ' + JSON.stringify(res));
               self.updateCloningProgress(75, modal);
             },
             error: function(res) {
-              Log.append('clone error > ' + JSON.stringify(res));
+              log('clone error > ' + JSON.stringify(res));
               $fw.client.dialog.error('App generation failed.' + "<br /> Error Message:" + res.error);
               self.updateCloningProgress(100, modal);
               if (typeof fail != 'undefined') {
@@ -385,7 +385,7 @@ GenerateApp.Controllers.Wufoo = Class.extend({
               }
             },
             retriesLimit: function() {
-              Log.append('retriesLimit exceeded: ' + Properties.cache_lookup_retries);
+              log('retriesLimit exceeded: ' + Properties.cache_lookup_retries);
               $fw.client.dialog.error('App generation failed.');
               self.updateCloningProgress(100, modal);
               if (typeof fail != 'undefined') {
@@ -561,7 +561,7 @@ GenerateApp.Controller = Class.extend({
       list_apps_layout.resizeAll();
       proto.Grid.resizeVisible();
     } catch (err) {
-      Log.append("Couldn't resize layouts, elements probably not displaying right now");
+      log("Couldn't resize layouts, elements probably not displaying right now");
     }
   },
 

@@ -26,7 +26,7 @@ application.DestinationGeneral = Class.extend({
   },
 
   'export': function() {
-    Log.append("generate for " + this.destination_id + ":: Type: Export");
+    log("generate for " + this.destination_id + ":: Type: Export");
     var url = this.base_url + "?generateSrc=true";
     $fw_manager.app.startDownload(url);
   },
@@ -99,14 +99,14 @@ application.DestinationGeneral = Class.extend({
     var that = this;
     proto.ProgressDialog.resetBarAndLog(step);
     proto.ProgressDialog.setProgress(step, 1);
-    proto.ProgressDialog.append(step, 'Starting ' + type);
+    proto.ProgressDialog(step, 'Starting ' + type);
 
-    Log.append('sending request to server');
-    Log.append('request url ' + that.base_url);
+    log('sending request to server');
+    log('request url ' + that.base_url);
 
     $.post(that.base_url, data, function(result) {
 
-      Log.append('import result > ' + JSON.stringify(result));
+      log('import result > ' + JSON.stringify(result));
       var cacheKey, stageKey;
 
       cacheKey = result.cacheKey;
@@ -120,8 +120,8 @@ application.DestinationGeneral = Class.extend({
           cacheKey: cacheKey,
           complete: function(res) {
             proto.ProgressDialog.setProgress(step, 100);
-            proto.ProgressDialog.append(step, "Starting Download");
-            Log.append('jumping to final step and hiding progress dialog');
+            proto.ProgressDialog(step, "Starting Download");
+            log('jumping to final step and hiding progress dialog');
             setTimeout(function() {
               complete(res);
             }, 1000);
@@ -143,26 +143,26 @@ application.DestinationGeneral = Class.extend({
           updateInterval: Properties.cache_lookup_interval,
           maxTime: Properties.cache_lookup_timeout,
           timeout: function(res) {
-            Log.append('timeout error > ' + JSON.stringify(res));
+            log('timeout error > ' + JSON.stringify(res));
             proto.Wizard.jumpToStep(wizard, 1, type + ' timed out');
           },
           update: function(res) {
             for (var i = 0; i < res.log.length; i++) {
               // If there's more than one task, send on the task name to the progress dialog
               if (cacheKeys.length > 1) {
-                proto.ProgressDialog.append(step, res.log[i], taskNames[res.cacheKey]);
+                proto.ProgressDialog(step, res.log[i], taskNames[res.cacheKey]);
               } else {
-                proto.ProgressDialog.append(step, res.log[i]);
+                proto.ProgressDialog(step, res.log[i]);
               }
               if (res.log[i] && res.log[i].length > 0) {
-                Log.append("increase progress: " + progress_val);
+                log("increase progress: " + progress_val);
                 progress_val = progress_val + 3;
                 proto.ProgressDialog.setProgress(step, parseInt(progress_val, 10));
               }
             }
           },
           error: function(res) {
-            Log.append('export error > ' + JSON.stringify(res));
+            log('export error > ' + JSON.stringify(res));
             proto.Wizard.jumpToStep(wizard, 1, res.error);
           },
           end: function() {
@@ -172,7 +172,7 @@ application.DestinationGeneral = Class.extend({
         export_task.run();
       } else if (result.error) {
         // Exporting of source disabled.
-        Log.append('export error > Exporting of source disabled');
+        log('export error > Exporting of source disabled');
         complete(result);
       }
     });
@@ -223,7 +223,7 @@ application.DestinationGeneral = Class.extend({
   },
 
   doAsyncPublish: function() {
-    Log.append("Publish :: " + this.destination_id);
+    log("Publish :: " + this.destination_id);
     var main_container = $('#manage_publish_container');
     main_container.find(".dashboard-content").hide();
     var that = this;
@@ -232,7 +232,7 @@ application.DestinationGeneral = Class.extend({
       appId: $fw_manager.data.get('inst').guid
     }, function(res) {
       that.resourceCheckCallback(res, that);
-      Log.append('resource checked :: ' + that.destination_id);
+      log('resource checked :: ' + that.destination_id);
       main_container.find('#app_publish_' + that.destination_id + '_build').show();
       main_container.find("#app_publish_" + that.destination_id).show();
     });
@@ -270,7 +270,7 @@ application.DestinationGeneral = Class.extend({
     // Clear visible progresslog
     $('#wizard_dialog .progresslog:visible').val('');
 
-    Log.append("Starting stage :: " + staging_env);
+    log("Starting stage :: " + staging_env);
 
     if (staging_env == 'dev') {
       self.doDevStage(wizard, step);
@@ -280,7 +280,7 @@ application.DestinationGeneral = Class.extend({
   },
 
   doDevStage: function(wizard, step) {
-    Log.append('staging.devStage');
+    log('staging.devStage');
     var self = this;
     var guid = $fw_manager.data.get('app').guid;
     var url = Constants.STAGE_APP_URL;
@@ -292,13 +292,13 @@ application.DestinationGeneral = Class.extend({
       if (res.status === "ok") {
         self.stageStarted("dev", res.cacheKey, wizard, step);
       } else {
-        Log.append('dev stage failed:' + res);
+        log('dev stage failed:' + res);
       }
     }, null, true);
   },
 
   doLiveStage: function(wizard, step) {
-    Log.append('staging.liveStage');
+    log('staging.liveStage');
     var self = this;
     var guid = $fw_manager.data.get('app').guid;
     var url = Constants.RELEASE_STAGE_APP_URL;
@@ -309,7 +309,7 @@ application.DestinationGeneral = Class.extend({
       if (res.status === "ok") {
         self.stageStarted("live", res.cacheKey, wizard, step);
       } else {
-        Log.append('live stage failed:' + res);
+        log('live stage failed:' + res);
       }
     }, null, true);
   },
@@ -326,7 +326,7 @@ application.DestinationGeneral = Class.extend({
   },
 
   stageComplete: function(wizard, step) {
-    Log.append('stageComplete');
+    log('stageComplete');
 
     if (this.destination_id == 'ipad' || this.destination_id == 'iphone') {
       proto.Wizard.jumpToStep(wizard, 6);
@@ -338,7 +338,7 @@ application.DestinationGeneral = Class.extend({
 
   stageStarted: function(staging_env, cacheKey, wizard, step) {
     var self = this;
-    Log.append('staging.stageStarted: [' + staging_env + '] [' + cacheKey + ']');
+    log('staging.stageStarted: [' + staging_env + '] [' + cacheKey + ']');
 
     var stage_task = new ASyncServerTask({
       cacheKey: cacheKey
@@ -348,28 +348,28 @@ application.DestinationGeneral = Class.extend({
       // 5 minutes
       maxRetries: Properties.cache_lookup_retries,
       timeout: function(res) {
-        Log.append('Staging timeout error > ' + JSON.stringify(res));
+        log('Staging timeout error > ' + JSON.stringify(res));
         proto.Wizard.jumpToStep(import_app_wizard, 1, 'Staging timed-out');
       },
       update: function(res) {
         for (var i = 0; i < res.log.length; i++) {
-          Log.append(res.log[i]);
+          log(res.log[i]);
         }
         self.updateProgressLog(staging_env, res.log);
       },
       complete: function(res) {
-        Log.append('Stage successful > ' + JSON.stringify(res));
+        log('Stage successful > ' + JSON.stringify(res));
         if ($.isFunction(self.stageComplete)) {
           self.stageComplete(wizard, step);
         }
       },
       error: function(res) {
-        Log.append('Stage error > ' + JSON.stringify(res));
+        log('Stage error > ' + JSON.stringify(res));
         self.updateProgressLog(staging_env, [res.error]);
         proto.Wizard.jumpToStep(import_app_wizard, 1, 'Staging failed');
       },
       retriesLimit: function() {
-        Log.append('Stage retriesLimit exceeded: ' + Properties.cache_lookup_retries);
+        log('Stage retriesLimit exceeded: ' + Properties.cache_lookup_retries);
         proto.Wizard.jumpToStep(import_app_wizard, 1, 'Staging retries exceeded');
       },
       end: function() {}
@@ -411,7 +411,7 @@ application.DestinationGeneral = Class.extend({
       that.showGenerateProgress("Build", wizard, data, progress_view, function(res) {
         // TODO: better way for this temporary workaround for finishing wizard after successful upload  
         wizard.find('.jw-button-finish').trigger('click');
-        Log.append('publish successful: ' + JSON.stringify(res));
+        log('publish successful: ' + JSON.stringify(res));
 
         var source_url = res.action.url;
         //$fw_manager.app.startDownload(source_url);
@@ -470,7 +470,7 @@ application.DestinationGeneral = Class.extend({
   },
 
   changeWizardStep: function(config, wizard, step) {
-    Log.append("changeWizardStep");
+    log("changeWizardStep");
   },
 
   doPublishWizardSetup: function(main_container, wizard) {
@@ -491,15 +491,15 @@ application.DestinationGeneral = Class.extend({
         if(res.status == 200){
           var resObj = JSON.parse(res.body);
           var shortUrl = resObj.id.replace("\\", "");
-          Log.append("ota link is " + shortUrl);
+          log("ota link is " + shortUrl);
           cb(shortUrl);
         } else {
-          Log.append("Failed to get shortened link.");
+          log("Failed to get shortened link.");
           cb(url);
         }
       },
       error: function(){
-        Log.append("Failed to get shortened link.");
+        log("Failed to get shortened link.");
         cb(url);
       }
     });

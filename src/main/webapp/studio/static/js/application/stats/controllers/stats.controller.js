@@ -34,7 +34,7 @@ Stats.Controller = Class.extend({
 
     $('.stats_area li').removeClass('active');
     $(el).addClass('active');
-    Log.append('toggle Counter stats');
+    log('toggle Counter stats');
     var series = model.getSeries(series_name);
 
     // Empty showing containers
@@ -71,7 +71,7 @@ Stats.Controller = Class.extend({
 
     $('.stats_area li').removeClass('active');
     $(el).addClass('active');
-    Log.append('toggle Timer stats');
+    log('toggle Timer stats');
     var series = model.getSeries(series_name);
 
     // Empty showing containers
@@ -153,7 +153,7 @@ Stats.Controller = Class.extend({
       item_number = item_number + 1;
       model.load({
         loaded: function(res) {
-          Log.append('Stats loaded');          
+          log('Stats loaded');          
 
           if (res.status == 'ok') {
             // model.applyFilter({
@@ -166,7 +166,7 @@ Stats.Controller = Class.extend({
               self.buildLists();
             }
           } else {
-            Log.append("Couldn't load stats: " + model.name);
+            log("Couldn't load stats: " + model.name);
             self.hideStatsLoading();
             var failed = $("<li>", {
               "class": "load_failed",

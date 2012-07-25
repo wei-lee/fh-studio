@@ -11,7 +11,7 @@ application.BlackberryResourceManager = application.ResourceManager.extend({
     $.post(Constants.LIST_RESOURCES_URL, {
       dest: dest
     }, function (result) {
-      Log.append('list resources response > ' + JSON.stringify(result));
+      log('list resources response > ' + JSON.stringify(result));
       
       // Combine the resources in the result to a single array and set the type of them accordingly
       var resources = [];
@@ -43,7 +43,7 @@ application.BlackberryResourceManager = application.ResourceManager.extend({
    */
   bindGetStartedWizardSteps: function (wizard) {
     var that = this;
-    Log.append('binding get started steps for android');
+    log('binding get started steps for android');
     
     wizard.validate({
       rules: {
@@ -54,11 +54,11 @@ application.BlackberryResourceManager = application.ResourceManager.extend({
     
     wizard.find('#blackberry_csk_finish').bind('show', function () {
       var step = $(this);
-      Log.append('uploading csk file');
+      log('uploading csk file');
       
       proto.ProgressDialog.resetBarAndLog(step);
       proto.ProgressDialog.setProgress(step, 1);
-      proto.ProgressDialog.append(step, 'Starting Upload');
+      proto.ProgressDialog(step, 'Starting Upload');
       
       var file_input_id = that.destination + '_csk_upload_file';
       var upload_url = Constants.UPLOAD_RESOURCE_URL;
@@ -67,33 +67,33 @@ application.BlackberryResourceManager = application.ResourceManager.extend({
         resourceType: 'csk',
         buildType: 'release'
       };
-      Log.append("params: " + JSON.stringify(data));
+      log("params: " + JSON.stringify(data));
       
       $fw_manager.app.startUpload(wizard.find('#'+file_input_id), upload_url, data, function (result) {
-        Log.append('upload result > ' + JSON.stringify(result));
+        log('upload result > ' + JSON.stringify(result));
         if ('undefined' !== typeof result.error && result.error.length > 0) {  
-          proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_failed'));
+          proto.ProgressDialog(step, $fw.client.lang.getLangString('file_upload_failed'));
           proto.Wizard.previousStep(wizard, result.error);
         }   
         else {          
           proto.ProgressDialog.setProgress(step, 100);
-          proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_complete'));
+          proto.ProgressDialog(step, $fw.client.lang.getLangString('file_upload_complete'));
           proto.Wizard.jumpToStep(wizard, 3);
         }
       }, true, function(xhr, err){
         var error = $fw.client.lang.getLangString('file_upload_error');
-        proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_failed'));
+        proto.ProgressDialog(step, $fw.client.lang.getLangString('file_upload_failed'));
         proto.Wizard.previousStep(wizard, error);
       });
     });
     
     wizard.find('#blackberry_db_finish').bind('show', function () {
-      Log.append('uploading db file');
+      log('uploading db file');
       var step = $(this);
       
       proto.ProgressDialog.resetBarAndLog(step);
       proto.ProgressDialog.setProgress(step, 1);
-      proto.ProgressDialog.append(step, 'Starting Upload');
+      proto.ProgressDialog(step, 'Starting Upload');
       
       var file_input_id = that.destination + '_db_upload_file';
       var upload_url = Constants.UPLOAD_RESOURCE_URL;
@@ -102,17 +102,17 @@ application.BlackberryResourceManager = application.ResourceManager.extend({
         resourceType: 'db',
         buildType: 'release'
       };
-      Log.append("params: " + JSON.stringify(data));
+      log("params: " + JSON.stringify(data));
       
       $fw_manager.app.startUpload(wizard.find('#'+file_input_id), upload_url, data, function (result) {
-        Log.append('upload result > ' + JSON.stringify(result));
+        log('upload result > ' + JSON.stringify(result));
         if ('undefined' !== typeof result.error && result.error.length > 0) {  
-          proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_failed'));
+          proto.ProgressDialog(step, $fw.client.lang.getLangString('file_upload_failed'));
           proto.Wizard.previousStep(wizard, result.error);
         }   
         else { 
           proto.ProgressDialog.setProgress(step, 100);
-          proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_complete'));
+          proto.ProgressDialog(step, $fw.client.lang.getLangString('file_upload_complete'));
             
           wizard.find('.jw-button-finish').trigger('click');     
           
@@ -120,7 +120,7 @@ application.BlackberryResourceManager = application.ResourceManager.extend({
         }
       }, true, function(xhr, err){
         var error = $fw.client.lang.getLangString('file_upload_error');
-        proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_failed'));
+        proto.ProgressDialog(step, $fw.client.lang.getLangString('file_upload_failed'));
         proto.Wizard.previousStep(wizard, error);
       });
     });

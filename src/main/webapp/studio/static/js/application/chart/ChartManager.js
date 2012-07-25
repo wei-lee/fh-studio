@@ -22,12 +22,12 @@
 
       // Get the chart definition first
       self.chartLocators[chartLocator].getChart(chartType, function (chart) {
-        Log.append('inserting chart:' + chartType + ' >> ' + typeof chart);
+        log('inserting chart:' + chartType + ' >> ' + typeof chart);
         
         // Overwrite options with any passed in
         opts = chartOpts ? $.extend(true, {}, chart.opts, chartOpts) : chart.opts;
-        Log.append('default    chartOpts:' + JSON.stringify(chart.opts));
-        Log.append('overridden chartOpts:' + JSON.stringify(opts));
+        log('default    chartOpts:' + JSON.stringify(chart.opts));
+        log('overridden chartOpts:' + JSON.stringify(opts));
         
         // Resolve data locator using chart options value for dataLoc
         dataLocator = new application[js_util.capitalise(chart.dataLoc) + 'DataLocator'](self.sampledataEnabled);
@@ -62,10 +62,10 @@
         }, function (res) {
           // failed to locate chart data
           $fw.client.dialog.error(res);
-          Log.append('getData failed for params: ' + res + ' :: ' + JSON.stringify(params));
+          log('getData failed for params: ' + res + ' :: ' + JSON.stringify(params));
         });
       }, function (res) {
-        Log.append('getChart failed for chart: ' + chartType + ' :: ' + res, 'ERROR');
+        log('getChart failed for chart: ' + chartType + ' :: ' + res, 'ERROR');
       });
     }
   });

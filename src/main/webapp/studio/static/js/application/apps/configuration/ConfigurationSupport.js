@@ -4,9 +4,9 @@ application.ConfigurationSupport = Class.extend({
   constructConfigDom: function (configs, dest, container, hiddenOptions, replaceOptions) {
     var self = this;
     container.empty();
-    Log.append("Construct config form");
+    log("Construct config form");
     $.each(configs, function (key, value) {
-      Log.append("Construct config form - " + key + "=" + value);
+      log("Construct config form - " + key + "=" + value);
       if (!(key in hiddenOptions)) {
         var input = "";
         if (!(key in replaceOptions)) {

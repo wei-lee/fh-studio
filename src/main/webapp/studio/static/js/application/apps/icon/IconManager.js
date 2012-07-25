@@ -87,7 +87,7 @@ application.IconManager = Class.extend({
 
   doUploadIcon: function (instance_guid, type) {
     var that = this;
-    Log.append('instance::' + instance_guid + "::type::" + type);
+    log('instance::' + instance_guid + "::type::" + type);
     
     var upload_wizard = proto.Wizard.load('upload_icon_wizard', {
       validate: true
@@ -98,16 +98,16 @@ application.IconManager = Class.extend({
       }
     });
     
-    Log.append("icon upload:: bind show events");
+    log("icon upload:: bind show events");
     upload_wizard.find('#upload_icon_progress').unbind().bind('show', function () {
-      Log.append('doing upload');
+      log('doing upload');
       var step = $(this);
       
       // TODO: tidy up all these calls and refactor
       proto.ProgressDialog.resetBarAndLog(step);
       proto.ProgressDialog.setProgress(step, 1);
-      proto.ProgressDialog.append(step, 'Starting Upload');
-      Log.append('icon path :: ' + upload_wizard.find('#icon_file_location').val());
+      proto.ProgressDialog(step, 'Starting Upload');
+      log('icon path :: ' + upload_wizard.find('#icon_file_location').val());
       
       var params = {
         'widgetGuid': $fw_manager.data.get('app').guid,
@@ -118,14 +118,14 @@ application.IconManager = Class.extend({
       $fw_manager.client.model.App.uploadIcon( upload_wizard.find('#icon_file_location'), params,
         function () {
           proto.ProgressDialog.setProgress(step, 100);
-          proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_complete'));
+          proto.ProgressDialog(step, $fw.client.lang.getLangString('file_upload_complete'));
           
           // TODO: better way for this temporary workaround for finishing wizard after successful upload  
           upload_wizard.find('.jw-button-finish').trigger('click');
           that.reloadIcon(instance_guid, type);
         },
         function (res) {
-          proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_failed'));
+          proto.ProgressDialog(step, $fw.client.lang.getLangString('file_upload_failed'));
           proto.Wizard.previousStep(upload_wizard, res.error);
         },
         5000

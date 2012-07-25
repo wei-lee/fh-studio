@@ -69,7 +69,7 @@ application.TabManager = Class.extend({
     var crumbs = this.constructBreadcrumbsArray();
     var crumbs_html = this.createBreadcrumbsHtml(crumbs);
     this.tab_content.find('.container-title').empty().html(crumbs_html);
-    Log.append('closing all dialogs');
+    log('closing all dialogs');
     // Close all dialogs, except for warning dialogs, as they may have been opened 
     // just before this tab is shown
     $('.dialog').not('#warning_dialog').dialog('close');
@@ -95,7 +95,7 @@ application.TabManager = Class.extend({
     }
 
     this.doPostShow();
-    Log.append('tab id: ' + this.name + '_tab');
+    log('tab id: ' + this.name + '_tab');
   },
 
   doPreInit: function() {
@@ -109,7 +109,7 @@ application.TabManager = Class.extend({
 
     var accordion_name = this.name + '_accordion';
     var manager_name = js_util.capitalise(this.name) + 'AccordionManager';
-    Log.append('accordion_name: ' + accordion_name + ", accordion manager name: " + manager_name);
+    log('accordion_name: ' + accordion_name + ", accordion manager name: " + manager_name);
 
     if ('undefined' !== typeof application[manager_name]) {
       this.accordion = new application[manager_name](accordion_name);
@@ -125,7 +125,7 @@ application.TabManager = Class.extend({
   },
 
   bindBreadcrumbEvents: function() {
-    Log.append('binding breadcrumbs');
+    log('binding breadcrumbs');
     var that = this;
     this.tab_content.find('.fh_breadcrumb').live('click', function() {
       that.doUpdateBreadcrumb();
@@ -137,7 +137,7 @@ application.TabManager = Class.extend({
   },
 
   doPreShow: function() {
-    Log.append('doPreShow not implemented for ' + this.name + '_tab');
+    log('doPreShow not implemented for ' + this.name + '_tab');
   },
 
   doReset: function() {
@@ -148,7 +148,7 @@ application.TabManager = Class.extend({
     try {
       this.layout.resizeAll();
     } catch (err) {
-      Log.append("No layout to resize");
+      log("No layout to resize");
     }
   },
 

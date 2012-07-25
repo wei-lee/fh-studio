@@ -20,7 +20,7 @@ application.StatusManager = Class.extend({
 
   show: function() {
     var self = this;
-    Log.append('status.show');
+    log('status.show');
     $fw_manager.client.preview.hideContent();
     this.stats_controller.closeAll();
     this.stats_controller.loadModels();
@@ -37,26 +37,26 @@ application.StatusManager = Class.extend({
   },
 
   bind: function() {
-    Log.append('status.bind');
+    log('status.bind');
     var self = this;
     $('#refresh_dev_status').unbind().click(function() {
-      Log.append('dev status.refresh');
+      log('dev status.refresh');
       self.refreshDev();
     });
     $('#refresh_live_status').unbind().click(function() {
-      Log.append('live status.refresh');
+      log('live status.refresh');
       self.refreshLive();
     });
     $('#deploy_target .dev').unbind().click(function() {
-      Log.append('dev stats target');
+      log('dev stats target');
       self.changeStatsTarget('dev');
     });
     $('#deploy_target .live').unbind().click(function() {
-      Log.append('live stats target');
+      log('live stats target');
       self.changeStatsTarget('live');
     });
     $('#deploy_target .refresh').unbind().click(function() {
-      Log.append('stats refresh');
+      log('stats refresh');
       self.refresh();
     });
   },

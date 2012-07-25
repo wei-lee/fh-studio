@@ -15,11 +15,11 @@ Stats.View.Table.Base = Class.extend({
     this.series = params.series.all_series;
     this.series_name = params.series.series_name;
     this.renderTo = '#' + this.series_name + '_container .table_container';
-    Log.append('Initialising table view');
+    log('Initialising table view');
   },
 
   render: function(model) {
-    Log.append('rendering table');
+    log('rendering table');
     var self = this;
     var table_container = this.getTableContainer();
     this.emptyTableContainer();
@@ -33,7 +33,7 @@ Stats.View.Table.Base = Class.extend({
 
     // Table for each series
     $.each(all_series, function(i, series){
-      Log.append('Table rendering series: ' + series.name);
+      log('Table rendering series: ' + series.name);
 
       // New table for series
       var table_id = 'table_' + series.name;

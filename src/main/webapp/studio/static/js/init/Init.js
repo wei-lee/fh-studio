@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  Log.append('main init');
+  log('main init');
   
   $('.dialog').hide();
   // Footer text

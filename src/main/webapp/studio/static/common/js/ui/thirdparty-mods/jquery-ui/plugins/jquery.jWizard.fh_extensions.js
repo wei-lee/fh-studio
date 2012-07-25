@@ -82,7 +82,7 @@ var fh_extensions_jquery_jwizard = {
       }
     }
     catch (e) {
-      Log.append(e);
+      log(e);
     }
     
     // Every check passed for a valid step change, so lets update the step index

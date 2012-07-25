@@ -5,13 +5,13 @@ application.TemplateManager = Class.extend({
   },
   
   doView: function (guid) {
-    Log.append('template.doView');
+    log('template.doView');
     $fw_manager.data.set('template_mode', true);
     $fw_manager.client.app.doShowManage(guid);
   },
   
   doClone: function (guid) {
-    Log.append('template.doClone');
+    log('template.doClone');
     $fw_manager.client.app.doClone(guid);
   },
   
@@ -21,7 +21,7 @@ application.TemplateManager = Class.extend({
    * and unbind/block anything that can't be hidden and isn't relevant to templates 
    */
   applyPreRestrictions: function () {
-    Log.append('applying template restrictions');
+    log('applying template restrictions');
     $('.template-restriction').hide();
   },
   
@@ -34,7 +34,7 @@ application.TemplateManager = Class.extend({
    * Exact opposite of applyPreRestrictions
    */
   removePreRestrictions: function () {
-    Log.append('removing template restrictions');
+    log('removing template restrictions');
     $('.template-restriction').show();
   },
   

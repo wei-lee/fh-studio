@@ -53,7 +53,7 @@ function reset() {
       },
       "error": function(jqXHR, textStatus, errorThrown) {
         // reset failed, highlight the fact/show error message
-        Log.append('Reset Failed: textStatus:' + textStatus + ', errorThrown:' + errorThrown, 'ERROR');
+        log('Reset Failed: textStatus:' + textStatus + ', errorThrown:' + errorThrown, 'ERROR');
         $('#reset_form_error').css('display', '').css('display', 'inline !important').text('Reset failed (' + jqXHR.status + ')');
         reset_button.removeAttr('disabled').val('Reset');
       }

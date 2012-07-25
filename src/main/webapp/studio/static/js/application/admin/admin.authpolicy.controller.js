@@ -37,7 +37,7 @@ Admin.Authpolicy.Controller = Controller.extend({
       self.renderUserTable(data);
       self.bindUserControls();
     }, function(err) {
-      Log.append('Error showing policies');
+      log('Error showing policies');
     }, true);
   },
 
@@ -64,7 +64,7 @@ Admin.Authpolicy.Controller = Controller.extend({
     $('tr td .edit_policy', this.policy_table).click(function() {
       var row = $(this).parent().parent();
       var data = self.policyDataForRow($(this).parent().parent().get(0));
-      //console.log(data);
+      //log(data);
       self.showCreatePolicy(data[0]);
       return false;
     });
@@ -191,11 +191,11 @@ Admin.Authpolicy.Controller = Controller.extend({
   },
 
   showAlert: function (type, message) {
-  console.log("message: " + message + " type: " + type);
+  log("message: " + message + " type: " + type);
     var self = this;
     var alerts_area = $(this.container).find('#alerts');
-console.log("ALERTS:");
-  console.log(alerts_area);
+log("ALERTS:");
+  log(alerts_area);
     var alert = $('<div>').addClass('alert fade in alert-' + type).html(message);
     var close_button = $('<button>').addClass('close').attr("data-dismiss", "alert").text("x");
     alert.append(close_button);
@@ -214,8 +214,8 @@ console.log("ALERTS:");
     var self = this;
     self.showBooleanModal('Are you sure you want to delete this Policy?', function () {
       var id = data[0];
-console.log("ID");
-console.log(id);
+log("ID");
+log(id);
       self.showAlert('info', '<strong>Deleting Profile</strong> (' + id + ') This may take some time.');
       // delete user
       self.models.policy.remove(id, function(res) {
