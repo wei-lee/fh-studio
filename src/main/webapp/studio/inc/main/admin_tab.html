@@ -523,18 +523,82 @@
         </form>
       </div>
 
-      <!-- App Store template -->
+      <!-- AppStore template -->
       <div id="admin_app_store" class="hidden_template row-fluid">
         <form class="well form-horizontal">
           <h3>App Store</h3>
           <br/>
+
+          <div class="control-group">
+            <label class="control-label" for="store_name">Name</label>
+            <div class="controls">
+              <input id="store_name" type="text" class="input-xxlarge" placeholder="My App Store">
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label" for="store_description">Description</label>
+            <div class="controls">
+              <textarea class="input-xxlarge store_description" id="store_description" rows="3"></textarea>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label" for="textarea">Icon</label>
+            <div class="controls">
+              <input type="file" class="store_item_icon input-xlarge"/><br/>
+              <span class="help-inline">Your App Store Icon should be 128x128 in size, and in PNG format.</span>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label">Store Items</label>
+            <div class="controls swap-select store_item_auth_policies_swap">
+              <div class="span2">
+                <span>Available</span>
+                <select multiple="multiple" class="span12 swap-from store_item_available_auth_policies">
+                </select>
+              </div>
+              <div class="span1">
+                <button class="btn add span12">&gt;</button>
+                <button class="btn remove span12">&lt;</button>
+              </div>
+              <div class="span2">
+                <span>In Store</span>
+                <select multiple="multiple" class="span12 swap-to store_item_assigned_auth_policies">
+                </select>
+              </div>
+              <span class="help-inline span4"><br/>These Store Items will appear in your App Store</span>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label">Auth Policies</label>
+            <div class="controls swap-select store_item_auth_policies_swap">
+              <div class="span2">
+                <span>Available</span>
+                <select multiple="multiple" class="span12 swap-from store_item_available_auth_policies">
+                </select>
+              </div>
+              <div class="span1">
+                <button class="btn add span12">&gt;</button>
+                <button class="btn remove span12">&lt;</button>
+              </div>
+              <div class="span2">
+                <span>Assigned</span>
+                <select multiple="multiple" class="span12 swap-to store_item_assigned_auth_policies">
+                </select>
+              </div>
+              <span class="help-inline span4"><br/>Here you can define a list of supported auth policies for logging into your App Store.</span>
+            </div>
+          </div>
 
           <div class="form-actions">
             <button type="submit" class="btn btn-primary update_store_item">Update App Store</button>
           </div>
         </form>
       </div>
-      <!--/App Store template -->
+      <!--/AppStore template -->
 
       <!-- AuthPolicy Templates -->
       <div id="auth_policies_list" class="hidden_template row-fluid">
