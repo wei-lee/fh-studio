@@ -8,11 +8,10 @@ Admin.Stores.Controller = Controller.extend({
   },
 
   views: {
-    app_store: "#admin_app_store"
+    app_store: '#admin_app_store'
   },
 
-  init: function() {
-  },
+  init: function() {},
 
   hide: function() {
     $.each(this.views, function(k, v) {
@@ -21,11 +20,13 @@ Admin.Stores.Controller = Controller.extend({
   },
 
   show: function() {
+    // TODO: Check App Store existence (read automatically creates Store if it doesn't exist)
+    var store_exists = false;
     this.showAppStoreUpdate();
   },
 
+
   showAppStoreUpdate: function() {
-    var self = this;
     this.hide();
     $(this.views.app_store).show();
   }
