@@ -210,23 +210,6 @@ console.log("ALERTS:");
     }
   },
 
-  showBooleanModal: function (msg, success) {
-    var modal = $('#generic_boolean_modal').clone();
-    modal.find('.modal-body').html(msg).end().appendTo($("body")).modal({
-      "keyboard": false,
-      "backdrop": "static"
-    }).find('.btn-primary').unbind().on('click', function () {
-      // confirmed delete, go ahead
-      modal.modal('hide');
-      success();
-    }).end().on('hidden', function() {
-      // wait a couple seconds for modal backdrop to be hidden also before removing from dom
-      setTimeout(function () {
-        modal.remove();
-      }, 2000);
-    });
-  },
-
   deletePolicy: function(button, row, data) {
     var self = this;
     self.showBooleanModal('Are you sure you want to delete this Policy?', function () {

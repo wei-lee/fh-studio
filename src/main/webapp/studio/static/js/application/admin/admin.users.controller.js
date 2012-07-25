@@ -475,23 +475,6 @@ Admin.Users.Controller = Controller.extend({
     return res;
   },
 
-  showBooleanModal: function (msg, success) {
-    var modal = $('#generic_boolean_modal').clone();
-    modal.find('.modal-body').html(msg).end().appendTo($("body")).modal({
-      "keyboard": false,
-      "backdrop": "static"
-    }).find('.btn-primary').unbind().on('click', function () {
-      // confirmed delete, go ahead
-      modal.modal('hide');
-      success();
-    }).end().on('hidden', function() {
-      // wait a couple seconds for modal backdrop to be hidden also before removing from dom
-      setTimeout(function () {
-        modal.remove();
-      }, 2000);
-    });
-  },
-
   setUserEnabled: function (enabled) {
     var self = this;
     if (enabled) {
