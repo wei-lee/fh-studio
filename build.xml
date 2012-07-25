@@ -53,6 +53,7 @@
       <fileset dir="${main-res}" includes="git-info.txt"/>
       <fileset dir="${main-res}" includes="VERSION.txt"/>
       <fileset dir="${main-res}" includes="ENV.txt"/>
+      <fileset dir="${webapp-static}/all" includes="*.js,*.css"/>
     </delete>
   </target>
 
