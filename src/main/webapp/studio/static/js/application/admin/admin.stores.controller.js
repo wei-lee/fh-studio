@@ -12,7 +12,6 @@ Admin.Stores.Controller = Controller.extend({
   },
 
   init: function() {
-    // TODO: implement Stores stuff
   },
 
   hide: function() {
