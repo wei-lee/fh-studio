@@ -112,6 +112,7 @@ Admin.Storeitems.Controller = Controller.extend({
 
       // Bind Binary upload fields
       var icon_upload_field = $('.store_item_icon', self.views.store_item_update);
+      var icon_upload_status_area = $('.store_item_icon_status', self.views.store_item_update);
       icon_upload_field.fileupload({
         url: Constants.ADMIN_STORE_ITEM_UPLOAD_BINARY_URL,
         dataType: 'json',
@@ -123,10 +124,13 @@ Admin.Storeitems.Controller = Controller.extend({
           name: 'type',
           value: 'icon'
         }],
-        // add: function(e, data) {
-        // },
+        add: function(e, data) {
+          icon_upload_status_area.text('Uploading...');
+          data.submit();
+        },
         done: function(e, data) {
-          // alert('done!')
+          var filename = data.files[0].name;
+          icon_upload_status_area.text('Uploaded ' + filename);
         },
         progressall: function(e, data) {
           // console.log(data);
