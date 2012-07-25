@@ -13594,7 +13594,8 @@ var RenderLoop = function(onRender, win) {
 
 exports.RenderLoop = RenderLoop;
 });
-ace.define("text!ace/css/editor.css", [], "@import url(//fonts.googleapis.com/css?family=Droid+Sans+Mono);\n" +
+// FEEDHENRY - Removed remote font loading.
+ace.define("text!ace/css/editor.css", [], "@font-face { font-family: 'Droid Sans Mono'; font-style: normal; font-weight: 400; src: url('/studio/static/themes/default/css/font/droid_sans.woff') format('woff'); }" +
   "\n" +
   "\n" +
   ".ace_editor {\n" +

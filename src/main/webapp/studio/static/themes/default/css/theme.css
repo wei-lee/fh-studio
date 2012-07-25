@@ -693,6 +693,7 @@ label.error
   left: 0;
   right: 0;
   z-index: 1;
+  border-top: 1px solid #ccc;
 }
 
 #main_tabs_panels {
@@ -3300,6 +3301,8 @@ table.dataTable th:active {
   -moz-border-radius: 25px;
   border-radius: 25px;
   box-shadow: 0 4px 3px rgba(0, 0, 0, .25), 0 -1px 1px rgba(153, 153, 153, .2);
+  width: 128px;
+  height: 128px;
 }
 
 #apps_layout, #account_layout, #reporting_layout, #home_layout {

@@ -129,7 +129,7 @@ Admin.Storeitems.Controller = Controller.extend({
           // alert('done!')
         },
         progressall: function(e, data) {
-          console.log(data);
+          // console.log(data);
         }
       });
 
