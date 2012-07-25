@@ -29,9 +29,9 @@ function init() {
   setupRegisterForm();
   setupForgotForm();
   
-  if( doJQLayout === true ) {
-    center_layout.resizeAll();
-  }
+  // if( doJQLayout === true ) {
+  //   center_layout.resizeAll();
+  // }
 }
 
 function setupLayout() {

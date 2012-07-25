@@ -5,7 +5,7 @@ Admin.Storeitems = Admin.Storeitems || {};
 Admin.Storeitems.Controller = Controller.extend({
   models: {
     store_item: new model.StoreItem(),
-    group: new model.Group()
+    auth_policy: new model.ArmAuthPolicy()
   },
 
   views: {
@@ -86,58 +86,89 @@ Admin.Storeitems.Controller = Controller.extend({
   showCreateStoreItem: function() {
     var self = this;
     this.hide();
-    this.models.group.list(function(res) {
+    this.models.auth_policy.list(function(res) {
       $(self.views.store_item_create).show();
       self.bind();
-      self.renderAvailableGroups(res.list);
+      self.renderAvailableAuthPolicies(res.list, self.views.store_item_create);
     }, function(err) {
       Log.append(err);
-    });
+    }, false);
   },
 
   showUpdateStoreItem: function(store_item) {
     var self = this;
     this.hide();
 
-    var update_view = $(self.views.store_item_update);
-    $('.item_name', update_view).val(store_item.name);
-    $('.item_id', update_view).val(store_item.authToken);
-    $('.item_description', update_view).val(store_item.description);
+    this.models.auth_policy.list(function(res) {
+      var update_view = $(self.views.store_item_update);
+      self.renderAvailableAuthPolicies(res.list, self.views.store_item_update);
 
-    console.log(store_item);
-    update_view.show();
+      $('.item_guid', update_view).val(store_item.guid);
+      $('.item_name', update_view).val(store_item.name);
+      $('.item_id', update_view).val(store_item.authToken);
+      $('.item_description', update_view).val(store_item.description);
 
-    // Bind Binary upload fields
-    var icon_upload_field = $('.store_item_icon', self.views.store_item_update);
-    icon_upload_field.fileupload({
-      url: Constants.ADMIN_STORE_ITEM_UPLOAD_BINARY_URL,
-      dataType: 'json',
-      replaceFileInput: false,
-      formData: [{
-        name: 'guid',
-        value: store_item.guid
-      }, {
-        name: 'type',
-        value: 'icon'
-      }],
-      // add: function(e, data) {
-      // },
-      done: function(e, data) {
-        // alert('done!')
-      },
-      progressall: function(e, data) {
-        console.log(data);
-      }
+      update_view.show();
+
+      // Bind Binary upload fields
+      var icon_upload_field = $('.store_item_icon', self.views.store_item_update);
+      icon_upload_field.fileupload({
+        url: Constants.ADMIN_STORE_ITEM_UPLOAD_BINARY_URL,
+        dataType: 'json',
+        replaceFileInput: false,
+        formData: [{
+          name: 'guid',
+          value: store_item.guid
+        }, {
+          name: 'type',
+          value: 'icon'
+        }],
+        // add: function(e, data) {
+        // },
+        done: function(e, data) {
+          // alert('done!')
+        },
+        progressall: function(e, data) {
+          console.log(data);
+        }
+      });
+
+      $('.update_store_item', update_view).unbind().click(function(e) {
+        e.preventDefault();
+        self.updateStoreItem();
+        return false;
+      });
+
+    }, function(err) {
+      Log.append(err);
+    }, false);
+  },
+
+  updateStoreItem: function() {
+    var self = this;
+    var container = $(this.views.store_item_update);
+
+    var name = $('.item_name', container).val();
+    var item_id = $('.item_id', container).val();
+    var description = $('.item_description', container).val();
+    var auth_policies = this._selectedAuthPolicies(container);
+    var guid = $('.item_guid', container).val();
+
+    this.models.store_item.update(guid, name, item_id, description, auth_policies, function(res) {
+      Log.append('update StoreItem: OK');
+      self.showStoreItems();
+    }, function(err) {
+      Log.append(err);
     });
   },
 
-  renderAvailableGroups: function(available_groups) {
-    var available_select = $('.store_item_available_groups', this.views.store_item_create);
+  renderAvailableAuthPolicies: function(auth_policies, container) {
+    var available_select = $('.store_item_available_auth_policies', container);
     available_select.empty();
-    var assigned_select = $('.store_item_assigned_groups', this.views.store_item_create);
+    var assigned_select = $('.store_item_assigned_auth_policies', container);
     assigned_select.empty();
-    $.each(available_groups, function(i, group) {
-      var option = $('<option>').val(group.guid).text(group.name);
+    $.each(auth_policies, function(i, policy) {
+      var option = $('<option>').val(policy.policyId).text(policy.policyId);
       available_select.append(option);
     });
   },
@@ -165,9 +196,9 @@ Admin.Storeitems.Controller = Controller.extend({
     var name = $('.item_name', container).val();
     var item_id = $('.item_id', container).val();
     var description = $('.item_description', container).val();
-    var groups = this._selectedGroups(container);
+    var auth_policies = this._selectedAuthPolicies(container);
 
-    this.models.store_item.create(name, item_id, description, groups, function(res) {
+    this.models.store_item.create(name, item_id, description, auth_policies, function(res) {
       Log.append('create StoreItem: OK');
       self.showStoreItems();
     }, function(err) {
@@ -175,13 +206,12 @@ Admin.Storeitems.Controller = Controller.extend({
     });
   },
 
-  _selectedGroups: function(container) {
-    var group_options = $('.store_item_assigned_groups option', container);
-    var groups = [];
-    group_options.each(function(i, item) {
-      groups.push($(item).val());
+  _selectedAuthPolicies: function(container) {
+    var policy_options = $('.store_item_assigned_auth_policies option', container);
+    var policies = [];
+    policy_options.each(function(i, item) {
+      policies.push($(item).val());
     });
-    return groups;
+    return policies;
   }
-
 });

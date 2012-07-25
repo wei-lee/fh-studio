@@ -1,26 +1,23 @@
 model.ArmAuthPolicy = model.Model.extend({
   // Model config
-  config:{},
+  config: {},
 
   baseUrl:Constants.ADMIN_URL_PREFIX + "authpolicy",
 
   // Field config
-  field_config:[
-    {
-      field_name:"policyId",
-      editable:false,
-      showable:true,
-      column_title:"Policy Id"
-    },
-    {
-      field_name:"policyType",
-      editable:true,
-      showable:true,
-      column_title:"Type"
-    }
-  ],
+  field_config: [{
+    field_name: "policyId",
+    editable: false,
+    showable: true,
+    column_title: "Policy Id"
+  }, {
+    field_name: "policyType",
+    editable: true,
+    showable: true,
+    column_title: "Type"
+  }],
 
-  init:function () {
+  init: function() {
 
   },
 
@@ -53,13 +50,16 @@ model.ArmAuthPolicy = model.Model.extend({
     return this.serverPost(url, params, success, fail, true);
   },
   
-  list:function (success, fail) {
+ 
+  list: function(success, fail, post_process) {
     var url = this.baseUrl + "/list";
-    return this.serverPost(url, {}, success, fail, false, this.postProcessList, this);
+    return this.serverPost(url, {}, success, fail, false, post_process, this);
   },
 
-  read:function (policyId, success, fail) {
-    var params = {policyId:policyId};
+  read: function(policyId, success, fail) {
+    var params = {
+      policyId: policyId
+    };
     var url = this.baseUrl + "/read";
     return this.serverPost(url, params, success, fail, true);
   },
