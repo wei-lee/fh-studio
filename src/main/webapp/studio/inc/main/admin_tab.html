@@ -275,10 +275,51 @@
 
       <div id="useradmin_user_import" class="hidden_template row-fluid">
         <div id="alerts"></div>
-        <form class="well">
-          <h3>Import Users</h3>
-          <p></p>
-          <button type="submit" class="btn btn-primary import_user_btn">Import Users</button>
+        <form class="well form-horizontal">
+          <fieldset>
+            <legend>Import Users</legend>
+            <p>Here you can mass create users by uploading a CSV file</p><br>
+            <p>Each line in your CSV file should be in the following format:<br>&lt;UserID&gt;,&lt;Email&gt;,&lt;Name&gt;,&lt;Password&gt;</p><br>
+            <p>e.g.<br><br>joebloggs, joe.bloggs@example.com, Joe Bloggs, password<br>john, , John Bloggs, password<br>jane.bloggs, jane.bloggs@example.com, , password</p><br>
+
+            <div class="control-group">
+              <label class="control-label" for="import_users_file">CSV File</label>
+              <div class="controls">
+                <input class="input-file" id="import_users_file" type="file">
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label class="control-label" for="import_users_invite">Invite</label>
+              <div class="controls">
+                <label class="checkbox">
+                  <input type="checkbox" class="input-xxlarge" id="import_users_invite">Send Invite Emails?</label>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label class="control-label">Roles</label>
+              <div class="controls swap-select" id="import_users_role_swap">
+                <div class="span2">
+                  <select multiple="multiple" class="span12 swap-from">
+                    <option>Loading...</option>
+                  </select>
+                </div>
+                <div class="span1">
+                  <button class="btn add span12">&gt;</button>
+                  <button class="btn remove span12">&lt;</button>
+                </div>
+                <div class="span2">
+                  <select multiple="multiple" class="span12 swap-to">
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary import_user_btn">Import Users</button>
+            </div>
+          </fieldset>
         </form>
       </div>
 

@@ -112,13 +112,6 @@ Admin.Users.Controller = Controller.extend({
     var parent = $(this.views.user_update);
     this.container = this.views.user_update;
 
-    var clearForm = function () {
-      $('input[type=text],input[type=email],input[type=password]', parent).val('');
-      $('input[type=checkbox]', parent).removeAttr('checked');
-      $('input,select,button', parent).attr('disabled', 'disabled');
-      self.clearSwapSelect(parent);
-    };
-
     var populateForm = function (results) {
       Log.append('populating user update form');
       var user = results[0];
@@ -151,7 +144,7 @@ Admin.Users.Controller = Controller.extend({
       $('input,select,button', parent).not('#update_user_id,#update_user_enabled,#update_user_blacklisted,.invite_user_btn').removeAttr('disabled');
     };
 
-    clearForm();
+    self.resetForm(parent);
     parent.show();
 
     $('.update_user_btn', parent).unbind().click(function() {
@@ -238,9 +231,7 @@ Admin.Users.Controller = Controller.extend({
     $('#update_user_role_swap .swap-to option', this.views.user_update).each(function (i, item) {
       rolesArr.push($(item).text());
     });
-    if (rolesArr.length > 0 ) {
-      fields.roles = rolesArr.join(', ');
-    }
+    fields.roles = (rolesArr.length > 0) ? rolesArr.join(', ') : '';
     // var storeitemsArr = [];
     // $('#update_user_storeitem_swap .swap-to option', this.views.user_update).each(function (i, item) {
     //   storeitemsArr.push($(item).text());
@@ -369,12 +360,41 @@ Admin.Users.Controller = Controller.extend({
 
   showImportUsers: function () {
     var self = this;
-    this.hide();
+    self.hide();
 
-    $(this.views.user_import).show();
-    this.container = this.views.user_import;
+    self.container = self.views.user_import;
+    var parent = $(self.container);
 
-    $(this.views.user_import + '.import_user_btn').unbind().click(function() {
+    self.resetForm(parent);
+    parent.show();
+
+    // initialise all swap selects
+    self.bindSwapSelect(self.container);
+
+    // initial file upload
+    var fileInput = $('#import_users_file').fileupload('destroy');
+    fileInput.fileupload({
+      add: function(e, data){
+        setTimeout(function(){
+          $('form', parent).data('import_users_file_data', data);
+          return false;
+        }, 100);
+      }
+    });
+
+    // Load roles & storeitems into swap select
+    self.models.role.list_assignable(function(res) {
+      Log.append('Role list OK.');
+      var roles = res.list;
+      var container = '#import_users_role_swap';
+      self.updateSwapSelect(container, roles);
+      $('input,select,button', parent).removeAttr('disabled');
+
+    }, function(e) {
+      self.showAlert('error', '<strong>Error loading Roles</strong> ' + e);
+    });
+
+    $('.import_user_btn', parent).unbind().click(function() {
       self.importUsers();
       return false;
     });
@@ -423,7 +443,6 @@ Admin.Users.Controller = Controller.extend({
     var activated = true;
     self.showAlert('info', '<strong>Creating User</strong> (' + id + ')');
     this.models.user.create(id, email, name, roles, groups, storeitems, password, activated, invite, function(res) {
-      console.log(res);
       self.showUsersList();
       self.showAlert('success', '<strong>Successfully create User</strong> (' + id + ')');
     }, function(e) {
@@ -432,8 +451,80 @@ Admin.Users.Controller = Controller.extend({
   },
 
   importUsers: function () {
-    // TODO: validate fields and call import endpoint
-    alert('IMPLEMENT IMPORT USERS!!!');
+    var self = this;
+    var form = $(this.views.user_import + ' form');
+
+    var invite = form.find('#import_users_invite').is(':checked');
+    var rolesArr = [];
+    $('#import_users_role_swap .swap-to option', this.views.user_import).each(function (i, item) {
+      rolesArr.push($(item).text());
+    });
+    var roles = rolesArr.length > 0 ? rolesArr.join(', ') : ''; // important to send '' here if no roles selected to ensure roles updated to remove all
+    var groups = null;
+    var fileField = form.find('#import_users_file');
+
+
+    self.showAlert('info', '<strong>Importing Users</strong>');
+
+    $('#generic_progress_modal').clone()
+      .find('h3').text('Importing Users').end()
+      .appendTo($("body")).one('shown', function () {
+
+      }).modal();
+
+    self.models.user.imports(invite, roles, groups, fileField, function(data) {
+      var res = data.result;
+        self.showProgressModal(res.cachekey, {
+          title: 'Generating Your App',
+          initLog: 'We\'re generating your app...',
+          timeout: function(res) {
+            Log.append('timeout error > ' + JSON.stringify(res));
+            $fw.client.dialog.error($fw.client.lang.getLangString('scm_trigger_error'));
+            self.updateProgressModalBar(100);
+            if (typeof fail != 'undefined') {
+              fail();
+            }
+          },
+          update: function(res) {
+            for (var i = 0; i < res.log.length; i++) {
+              Log.append(res.log[i]);
+              if (typeof res.action.guid != 'undefined') {
+                new_guid = res.action.guid;
+                Log.append('GUID for new app > ' + new_guid);
+              }
+              self.appendProgressModalLog(res.log[i], modal);
+              Log.append("Current progress> " + self.current_progress);
+            }
+            self.updateProgressModalBar(self.current_progress + 1);
+          },
+          complete: function(res) {
+            Log.append('SCM refresh successful > ' + JSON.stringify(res));
+            self.updateProgressModalBar(75);
+          },
+          error: function(res) {
+            Log.append('clone error > ' + JSON.stringify(res));
+            $fw.client.dialog.error('App generation failed.' + "<br /> Error Message:" + res.error);
+            self.updateProgressModalBar(100);
+            if (typeof fail != 'undefined') {
+              fail();
+            }
+          },
+          retriesLimit: function() {
+            Log.append('retriesLimit exceeded: ' + Properties.cache_lookup_retries);
+            $fw.client.dialog.error('App generation failed.');
+            self.updateProgressModalBar(100);
+            if (typeof fail != 'undefined') {
+              fail();
+            }
+          },
+          end: function(guid, modal) {
+            self.showUsersList();
+            self.showAlert('success', '<strong>Successfully imported Users</strong>');
+          }
+        });
+    }, function(e) {
+      self.showAlert('error', '<strong>Error importing Users</strong> ' + e);
+    });
   },
 
   rowRender: function(row, data) {

@@ -1,4 +1,7 @@
 var Controller = Class.extend({
+
+  progressModal: null,
+
   init: function () {
     // generic controller stuff
   },
@@ -36,10 +39,13 @@ var Controller = Class.extend({
     });
   },
 
-  clearSwapSelect: function (container) {
+  // clears/resets all swap selects found in container
+  clearSwapSelects: function (container) {
     $(container).find('.swap-select select').empty().html('<option>Loading...</option>');
   },
 
+  // updates the swap select, given as the container, with the form and to values.
+  // to values are optional
   updateSwapSelect: function(container, from, to) {
     var from_list = $('.swap-from', container).empty();
     $.each(from, function(i, form_item) {
@@ -60,6 +66,8 @@ var Controller = Class.extend({
     to_list.removeAttr("disabled");
   },
 
+  // show a simple yes|no modal, where success is called if yes is chosen
+  // TODO: allow a fail callback to be specified in event of 'no' selected
   showBooleanModal: function (msg, success) {
     var modal = $('#generic_boolean_modal').clone();
     modal.find('.modal-body').html(msg).end().appendTo($("body")).modal({
@@ -75,6 +83,43 @@ var Controller = Class.extend({
         modal.remove();
       }, 2000);
     });
+  },
+
+  // resets all form elements (inputs etc..) in the given container
+  resetForm: function (container) {
+    $('input[type=text],input[type=email],input[type=password]', container).val('');
+    $('input[type=checkbox]', container).removeAttr('checked');
+    $('input,select,button', container).attr('disabled', 'disabled');
+    this.clearSwapSelects(container);
+  },
+
+  destroyProgressModal: function () {
+    progressModal.remove();
+    progressModal = null;
+  },
+
+  clearProgressModal: function() {
+    var log_area = progressModal.find('textarea');
+    current = log_area.val('');
+    this.updateProgressModalBar(0);
+  },
+
+  appendProgressModalLog: function(message) {
+    var log_area = progressModal.find('textarea');
+    var current = log_area.val();
+    log_area.val(current + message + "\n");
+    log_area.scrollTop(99999);
+    log_area.scrollTop(log_area.scrollTop() * 12);
+  },
+
+  updateProgressModalBar: function(value) {
+    var progress_bar = progressModal.find('.progress .bar');
+    progress_bar.css('width', value + '%');
+    this.current_progress = value;
+  },
+
+  showProgressModal: function(cb) {
+    progressModal = $('#generic_progress_modal').clone().appendTo($("body")).one('shown', cb).modal();
   }
 
 });

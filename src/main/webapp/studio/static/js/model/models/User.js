@@ -41,8 +41,7 @@ model.User = model.Model.extend({
   },
 
   create: function(id, email, name, roles, groups, storeitems, password, activated, invite,  success, fail) {
-    var user_type = this.resolveUserType();
-    var url = Constants.ADMIN_USER_CREATE_URL.replace('<users-type>', user_type);
+    var url = Constants.ADMIN_USER_CREATE_URL;
     var params = {
       "username": id,
       "activated": activated,
@@ -73,12 +72,10 @@ model.User = model.Model.extend({
       params.storeitems = storeitems;
     }
 
-    params[user_type] = $fw.getClientProp(user_type);
     return this.serverPost(url, params, success, fail, true);
   },
 
   update: function(fields, success, fail) {
-    var user_type = this.resolveUserType();
     var url = Constants.ADMIN_USER_UPDATE_URL;
 
     return this.serverPost(url, fields, success, fail, true);
@@ -103,15 +100,53 @@ model.User = model.Model.extend({
     return this.serverPost(url, params, success, fail, true);
   },
 
-  resolveUserType: function() {
-    var userRoles = $fw.getUserProps().roles;
-    if (userRoles.indexOf($fw.ROLE_RESELLERADMIN) > -1) {
-      return 'reseller';
-    } else if (userRoles.indexOf($fw.ROLE_CUSTOMERADMIN) > -1) {
-      return 'customer';
-    } else {
-      return fail('operation_not_permitted');
+  // purposely called imports due to keyword 'import'
+  imports: function (invite, roles, groups, fileField, success, fail) {
+    var url = Constants.ADMIN_USER_IMPORT_URL;
+    var formData = [];
+
+    if (invite != null) {
+      formData.push({
+        "name": "invite",
+        "value": invite
+      });
     }
+    if (roles != null) {
+      formData.push({
+        "name": "roles",
+        "value": roles
+      });
+    }
+    if (groups != null) {
+      formData.push({
+        "name": "groups",
+        "value": groups
+      });
+    }
+
+    fileField.fileupload('option', {
+      url: Constants.ADMIN_USER_IMPORT_URL,
+      dataType: 'json',
+      replaceFileInput: false,
+      formData: formData,
+      done: function(e, data) {
+        var res = data.result;
+        // TODO: figure out correct data or error to send back
+        if (res != null && res.status != null && 'ok' === res.status) {
+          success(data);
+        } else {
+          fail(data);
+        }
+      },
+      progressall: function(e, data) {
+        console.log(data);
+      }
+    });
+
+    // submit fileupload, with params in the formData too
+    fileField.closest('form').data('import_users_file_data').submit();
+
+    // TODO: cachekey handling
   },
 
   read: function(id, success, fail) {
