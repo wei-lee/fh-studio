@@ -473,7 +473,7 @@ Admin.Users.Controller = Controller.extend({
   },
 
   showBooleanModal: function (msg, success) {
-    var modal = $('#useradmin_user_boolean_modal').clone();
+    var modal = $('#generic_boolean_modal').clone();
     modal.find('.modal-body').html(msg).end().appendTo($("body")).modal({
       "keyboard": false,
       "backdrop": "static"

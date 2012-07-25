@@ -2,7 +2,7 @@ model.ArmAuthPolicy = model.Model.extend({
   // Model config
   config: {},
 
-  baseUrl: Constants.ARM_URL_PREFIX + "policy",
+  baseUrl:Constants.ADMIN_URL_PREFIX + "authpolicy",
 
   // Field config
   field_config: [{
@@ -21,27 +21,36 @@ model.ArmAuthPolicy = model.Model.extend({
 
   },
 
-  create: function(policyId, policyType, configurations, users, success, fail) {
+  create:function (policyId, policyType, configurations, requireUser, success, fail) {
     var params = {};
     params.policyId = policyId;
     params.policyType = policyType;
     params.configurations = configurations;
-    params.users = users;
+    params.requireUser = requireUser;
     var url = this.baseUrl + "/create";
-    return this.serverPost(url, params, success, fail);
+    return this.serverPost(url, params, success, fail, true);
   },
 
 
-  update: function(policyId, policyType, configurations, users, success, fail) {
+  update:function (guid, policyId, policyType, configurations, requireUser, success, fail) {
     var params = {};
+    params.guid = guid;
     params.policyId = policyId;
     params.policyType = policyType;
     params.configurations = configurations;
-    params.users = users;
+    params.requireUser = requireUser;
     var url = this.baseUrl + "/update";
-    return this.serverPost(url, params, success, fail);
+    return this.serverPost(url, params, success, fail, true);
   },
 
+  remove:function (guid, success, fail) {
+    var params = {};
+    params.guid = guid;
+    var url = this.baseUrl + "/delete";
+    return this.serverPost(url, params, success, fail, true);
+  },
+  
+ 
   list: function(success, fail, post_process) {
     var url = this.baseUrl + "/list";
     return this.serverPost(url, {}, success, fail, false, post_process, this);
@@ -52,10 +61,11 @@ model.ArmAuthPolicy = model.Model.extend({
       policyId: policyId
     };
     var url = this.baseUrl + "/read";
-    return this.serverPost(url, params, success, fail);
+    return this.serverPost(url, params, success, fail, true);
   },
 
-  getConfig: function(success, fail) {
+ // TODO DB - fix this..
+  getConfig:function (success, fail) {
     var url = Constants.ARM_URL_PREFIX + "getAuthCallbackUrl";
     return this.serverPost(url, {}, success, fail);
   }
