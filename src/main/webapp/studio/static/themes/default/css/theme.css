@@ -3319,3 +3319,9 @@ table.dataTable th:active {
   background: linear-gradient(to bottom,  #0088cc 0%,#0055cc 100%); /* W3C */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0088cc', endColorstr='#0055cc',GradientType=0 ); /* IE6-9 */
 }
+
+.store_item_icon_progress {
+  margin: 0 10px 0 0 !important;
+  min-height: inherit !important;
+  width: 162px !important;
+}

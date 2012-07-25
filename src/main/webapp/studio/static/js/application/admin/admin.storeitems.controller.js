@@ -109,29 +109,7 @@ Admin.Storeitems.Controller = Controller.extend({
       $('.item_description', update_view).val(store_item.description);
 
       update_view.show();
-
-      // Bind Binary upload fields
-      var icon_upload_field = $('.store_item_icon', self.views.store_item_update);
-      icon_upload_field.fileupload({
-        url: Constants.ADMIN_STORE_ITEM_UPLOAD_BINARY_URL,
-        dataType: 'json',
-        replaceFileInput: false,
-        formData: [{
-          name: 'guid',
-          value: store_item.guid
-        }, {
-          name: 'type',
-          value: 'icon'
-        }],
-        // add: function(e, data) {
-        // },
-        done: function(e, data) {
-          // alert('done!')
-        },
-        progressall: function(e, data) {
-          // console.log(data);
-        }
-      });
+      self.bindBinaryUploads(store_item);
 
       $('.update_store_item', update_view).unbind().click(function(e) {
         e.preventDefault();
@@ -142,6 +120,43 @@ Admin.Storeitems.Controller = Controller.extend({
     }, function(err) {
       Log.append(err);
     }, false);
+  },
+
+  bindBinaryUploads: function(store_item) {
+    var self = this;
+    // Bind Binary upload fields
+    var icon_upload_field = $('.store_item_icon', self.views.store_item_update);
+    var icon_upload_status_area = $('.store_item_icon_status', self.views.store_item_update);
+    var icon_progress = $('.store_item_icon_progress', self.views.store_item_update);
+    icon_upload_field.fileupload({
+      url: Constants.ADMIN_STORE_ITEM_UPLOAD_BINARY_URL,
+      dataType: 'json',
+      replaceFileInput: false,
+      formData: [{
+        name: 'guid',
+        value: store_item.guid
+      }, {
+        name: 'type',
+        value: 'icon'
+      }],
+      add: function(e, data) {
+        icon_upload_status_area.text('Uploading...');
+        icon_upload_status_area.slideDown();
+        icon_progress.slideDown();
+        data.submit();
+      },
+      done: function(e, data) {
+        var filename = data.files[0].name;
+        icon_upload_status_area.text('Uploaded ' + filename);
+        setTimeout(function() {
+          icon_progress.slideUp();
+        }, 500);
+      },
+      progressall: function(e, data) {
+        var progress = parseInt(data.loaded / data.total * 100, 10);
+        $('.bar', icon_progress).css('width', progress + '%');
+      }
+    });
   },
 
   updateStoreItem: function() {
