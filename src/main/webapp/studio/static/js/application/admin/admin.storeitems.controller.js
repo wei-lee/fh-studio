@@ -104,7 +104,6 @@ Admin.Storeitems.Controller = Controller.extend({
     $('.item_id', update_view).val(store_item.authToken);
     $('.item_description', update_view).val(store_item.description);
 
-    console.log(store_item);
     update_view.show();
 
     // Bind Binary upload fields
