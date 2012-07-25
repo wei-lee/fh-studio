@@ -48,6 +48,7 @@ js/model/models/App.js
 js/model/models/Template.js
 js/model/models/User.js
 js/model/models/StoreItem.js
+js/model/models/AppStore.js
 js/model/models/Group.js
 js/model/models/Role.js
 js/model/models/Resource.js

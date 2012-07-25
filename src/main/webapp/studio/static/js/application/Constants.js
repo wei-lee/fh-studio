@@ -138,5 +138,8 @@ $.extend(Constants, {
   ADMIN_STORE_ITEM_DELETE_URL: Constants.ADMIN_URL_PREFIX + "storeitem/delete",
   ADMIN_STORE_ITEM_UPLOAD_BINARY_URL: Constants.ADMIN_URL_PREFIX + "storeitem/uploadbinary",
 
+  ADMIN_APP_STORE_READ_URL: Constants.ADMIN_URL_PREFIX + "store/read",
+  ADMIN_APP_STORE_UPDATE_URL: Constants.ADMIN_URL_PREFIX + "store/update",
+
   ADMIN_ROLE_LIST_ASSIGNABLE_URL: Constants.ADMIN_URL_PREFIX + "role/listAssignable"
 });
