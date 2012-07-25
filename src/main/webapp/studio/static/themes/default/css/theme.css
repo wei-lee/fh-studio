@@ -1199,6 +1199,10 @@ label.error
  border: none;
 }
 
+.success-dialog .ui-dialog-titlebar {
+  background-color: #90D690;
+}
+
 /* jqplot */
 .jqplot-xaxis-tick
 {
