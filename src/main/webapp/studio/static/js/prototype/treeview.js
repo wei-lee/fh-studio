@@ -256,7 +256,7 @@ proto.TreeviewManager = function (params) {
         isDisabled = true;
       }
       
-      // console.log("checkContextMenuDisabled - " + id + " => " + isDisabled + " ===== enabled = " + enabled + " :: scmEnabled = " + scmEnabled + " :: isFolder = " + isFolder + " :: is Root = " + isRoot);
+      // log("checkContextMenuDisabled - " + id + " => " + isDisabled + " ===== enabled = " + enabled + " :: scmEnabled = " + scmEnabled + " :: isFolder = " + isFolder + " :: is Root = " + isRoot);
       
       return isDisabled;
     },
@@ -354,7 +354,7 @@ proto.TreeviewManager = function (params) {
         // remove entry from tree
         var ori_path = self.getItemPath(obj.parent());
         obj.path = ori_path;
-        //console.log("ori path is " + ori_path);
+        //log("ori path is " + ori_path);
         self.container.jstree("remove", obj);
         //var ori_path = self.getItemPath(obj.parent());
         //obj.old_delete_folder_path = ori_path;
@@ -489,7 +489,7 @@ proto.TreeviewManager = function (params) {
       if (filePath.charAt(filePath.length - 1) === "/") {
         filePath = filePath.substring(0, filePath.length - 1);
       }
-      Log.append("default file path :: " + filePath);
+      log("default file path :: " + filePath);
       data = {
         appId: self.app_id,
         'filePath': filePath
@@ -514,7 +514,7 @@ proto.TreeviewManager = function (params) {
       // When next is clicked on details page, intercept and send back to details page until 
       // import is attempted
       import_file_wizard.find('#import_file_progress').bind('show', function () {
-        Log.append('doing import file');
+        log('doing import file');
         step = $(this);
 
         import_file_wizard.find('#import_file_app_guid').val(self.app_id);
@@ -525,40 +525,40 @@ proto.TreeviewManager = function (params) {
           current_path = self.getItemPath(current_node.parent());
         }
 
-        Log.append("Current path is " + current_path);
+        log("Current path is " + current_path);
         import_file_wizard.find('#import_file_path').val(current_path);
         file_path = import_file_wizard.find("#import_file_location").val();
-        Log.append("file path:" + file_path);
+        log("file path:" + file_path);
         file_name = js_util.getFileNameFromPath(file_path);
-        Log.append("upload file: " + file_name);
+        log("upload file: " + file_name);
 
         // show import progress
         // TODO: tidy up all these calls and refactor
         proto.ProgressDialog.resetBarAndLog(step);
         proto.ProgressDialog.setProgress(step, 20);
-        proto.ProgressDialog.append(step, 'Starting Import');
+        proto.ProgressDialog(step, 'Starting Import');
 
         import_file_wizard.ajaxSubmit({
           url: Constants.IMPORT_FILE_URL,
           dataType: 'json',
           success: function (result) {
-            Log.append('import result > ' + JSON.stringify(result));
+            log('import result > ' + JSON.stringify(result));
             if ('string' === typeof result.guid) {
               // TODO: better way for this temporary workaround for finishing wizard after successful upload  
               import_file_wizard.find('.jw-button-finish').trigger('click');
 
               // All good, finish step
               proto.ProgressDialog.setProgress(step, 100);
-              proto.ProgressDialog.append(step, 'Import Complete');
-              Log.append('import successful, good to go > ' + result.guid);
+              proto.ProgressDialog(step, 'Import Complete');
+              log('import successful, good to go > ' + result.guid);
               self.addNode(current_node, file_name, result.guid);
             } else {
-              Log.append('import failed');
+              log('import failed');
               self.handleImportFailed(import_file_wizard, 'server');
             }
           },
           error: function (jqXHR, textStatus, errorThrown) {
-            Log.append('import failed > ' + errorThrown);
+            log('import failed > ' + errorThrown);
 
             self.handleImportFailed(import_file_wizard, jqXHR.error);
           }
@@ -650,7 +650,7 @@ proto.TreeviewManager = function (params) {
         //path = item.attr('path');
         path = '/';
       }
-      //console.log("getItemPath: " + path);
+      //log("getItemPath: " + path);
       return path;
     },
 

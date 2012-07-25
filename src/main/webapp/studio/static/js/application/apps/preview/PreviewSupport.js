@@ -23,7 +23,7 @@ application.PreviewSupport = Class.extend({
         act_offsety = opts.offsety || 0,
         actual_size = {},
         scale_factor = 1;
-    Log.append('full size:' + act_width + 'x' + act_height);
+    log('full size:' + act_width + 'x' + act_height);
     
     // scale preview, if necessary
     if (opts.scale) {
@@ -38,7 +38,7 @@ application.PreviewSupport = Class.extend({
       scale_factor = self.calculateScaleFactor(opts.img_width, opts.mm_width);
       act_width = Math.round(opts.img_width * scale_factor);
       act_height = Math.round(opts.img_height * scale_factor);
-      Log.append('scaling preview, factor: ' + scale_factor);
+      log('scaling preview, factor: ' + scale_factor);
       // use transform plugin to scale preview
       p_frame.css({
         position: 'absolute',
@@ -62,7 +62,7 @@ application.PreviewSupport = Class.extend({
       var angle = Math.tan(Math.asin((sh / 2) / (p)));
       // Work out the z offset by using triangle maths
       var z_offset = ((h / 2)-(sh / 2)) / angle;
-      Log.append('h:' + h + ', sh: ' + sh + ', p:' + p + ', angle:' + angle*(180/Math.PI) + ', z:' + z_offset);*/
+      log('h:' + h + ', sh: ' + sh + ', p:' + p + ', angle:' + angle*(180/Math.PI) + ', z:' + z_offset);*/
     }
     else {
       // use transform plugin to remove scaling of preview
@@ -103,7 +103,7 @@ application.PreviewSupport = Class.extend({
     });
     
     actual_size = {width: act_width, height: act_height, scale: scale_factor};
-    Log.append('scaled size:' + JSON.stringify(actual_size));
+    log('scaled size:' + JSON.stringify(actual_size));
     return actual_size;
   },
 
@@ -203,16 +203,16 @@ application.PreviewSupport = Class.extend({
         
         self.chromeWidth = 301 - retWindowWidth;
   
-        Log.append('chrome:' + self.chromeWidth + ', ' +  self.chromeHeight);
+        log('chrome:' + self.chromeWidth + ', ' +  self.chromeHeight);
         // add chrome width and height to get the required viewport size
         var resize_width = width + self.chromeWidth,
             resize_height = height + self.chromeHeight;
-        Log.append('psize:' + width + 'x' + height + ', wsize:' + resize_width + 'x' + resize_height);
+        log('psize:' + width + 'x' + height + ', wsize:' + resize_width + 'x' + resize_height);
         retWindow.resizeTo(resize_width, resize_height);
       }, 500);
     }
     catch (e) {
-      Log.append('failed to open window: ' + e);
+      log('failed to open window: ' + e);
     }
     
     return retWindow;

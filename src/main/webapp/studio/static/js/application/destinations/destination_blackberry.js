@@ -5,14 +5,14 @@ application.DestinationBlackberry = application.DestinationGeneral.extend({
   },
   
   'export': function(){
-      Log.append("blackberry :: Export");
+      log("blackberry :: Export");
       this.doAsyncExport();
   },
   
   getExportData: function(wizard){
       var export_version_id = '#app_export_blackberry_versions';
       var version = wizard.find( export_version_id + ' input:checked').val();
-      Log.append("Export version: " + version);
+      log("Export version: " + version);
       if(version === "" || version === undefined){
           proto.Wizard.jumpToStep(wizard, 1, "Please select the OS version");
           return null;
@@ -26,7 +26,7 @@ application.DestinationBlackberry = application.DestinationGeneral.extend({
   },
   
   resourceCheckCallback: function(res, that){
-      Log.append('check resources');
+      log('check resources');
       var main_container = $('#manage_publish_container');
       
       var csk_found = false; 

@@ -176,7 +176,7 @@ application.AppsTabManager = application.TabManager.extend({
       list_apps_layout.resizeAll();
     }
     if (null !== manage_apps_layout) {
-      Log.append('resizing manage_apps layout as part of tab postShow');
+      log('resizing manage_apps layout as part of tab postShow');
       manage_apps_layout.resizeAll();
     }
   },
@@ -187,9 +187,9 @@ application.AppsTabManager = application.TabManager.extend({
   showManageApps: function(callback) {
     if (null === this.mode_buttons) {
       this.mode_buttons = $('#mode_buttons').buttonset().find('#radio1').click(function() {
-        Log.append('basic clicked');
+        log('basic clicked');
       }).end().find('#radio2').click(function() {
-        Log.append('advanced clicked');
+        log('advanced clicked');
       });
     }
     $fw_manager.app.showAndHide('#manage_apps_layout', '#list_apps_layout');

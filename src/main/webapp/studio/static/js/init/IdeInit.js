@@ -18,7 +18,7 @@ $(document).ready(function () {
       // fail silently
     }
   });
-  Log.append('init and set IDEManager as client of FrameworkManager');
+  log('init and set IDEManager as client of FrameworkManager');
   // $fw_manager.client becomes available as well as $fw_manager.app
   $fw_manager.setClient(new IDEManager());
   $fw_manager.initClient();

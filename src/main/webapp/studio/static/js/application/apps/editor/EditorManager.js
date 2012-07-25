@@ -68,7 +68,7 @@ application.EditorManager = Class.extend({
     var editorMessageDiv = $('#editor_message');
     var is_scm = $fw.client.app.isScmApp();
 
-    // console.log('initEditorMessage :: initEditorMessage - is_scm = ' + is_scm);
+    // log('initEditorMessage :: initEditorMessage - is_scm = ' + is_scm);
     if (is_scm) {
       var editorMessageText = $fw_manager.getClientProp('scm-editor-text');
       editorMessageDiv.text(editorMessageText);
@@ -108,7 +108,7 @@ application.EditorManager = Class.extend({
   openFile: function(file_guid, file_name, file_version, path, app_id) {
     this.enableEditor();
     var file_id = file_guid || path;
-    // console.log("file_id = " + file_id);
+    // log("file_id = " + file_id);
     var existed = false;
     if (!this.file_manager[file_id]) {
       // cache the current file content
@@ -549,7 +549,7 @@ application.EditorManager = Class.extend({
   },
 
   resetContent: function() {
-    Log.append("resetContent");
+    log("resetContent");
     this.editor_impl.reset();
     this.img_content_container.empty();
     this.disableEditor();

@@ -23,7 +23,7 @@ LangManager = Class.extend({
     var id = 'string' === typeof container_id ? container_id : container.attr('id');
     // if container with this id doesn't have lang inserted yet
     if (always || ('undefined' === typeof this.containers[id])) {
-      Log.append('inserting lang for:' + id);
+      log('inserting lang for:' + id);
       container.find('.' + $fw_manager.client.lang.INSERT_LANG).each($fw_manager.client.lang.insertLang);
       container.find('.' + $fw_manager.client.lang.INSERT_LANG_BLOCK).each($fw_manager.client.lang.insertLangBlock);
       container.find('.' + $fw_manager.client.lang.INSERT_HELP).each($fw_manager.client.lang.insertHelp);
@@ -39,7 +39,7 @@ LangManager = Class.extend({
    */
   insertLangForElements: function (elements, id) {
     if ('undefined' === typeof this.containers[id]) {
-      Log.append('inserting lang for:' + id);
+      log('inserting lang for:' + id);
       elements.filter('.' + $fw_manager.client.lang.INSERT_LANG).each($fw_manager.client.lang.insertLang);
       elements.filter('.' + $fw_manager.client.lang.INSERT_LANG_BLOCK).each($fw_manager.client.lang.insertLangBlock);
       elements.filter('.' + $fw_manager.client.lang.INSERT_HELP).each($fw_manager.client.lang.insertHelp);

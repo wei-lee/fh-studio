@@ -355,13 +355,13 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
 
     // Create client config
     $fw.server.post(create_url, create_client_config_params, function(res) {
-      Log.append('Client config created');
+      log('Client config created');
       // Create cloud config
       $fw.server.post(create_url, create_cloud_config_params, function(res) {
-        Log.append('Cloud config created');
+        log('Cloud config created');
         // Update client & cloud config
         $fw.server.post(update_url, update_client_config_params, function(res) {
-          Log.append('Configs updated');
+          log('Configs updated');
 
           self.appendProgressLog('Configuring your app.');
 
@@ -375,14 +375,8 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
     });
   },
 
-  .find('h3').text('Generating Your App').end()
-      .find('h4').text('We\'re generating your app...').end()
-
-  showProgressModal: function(cb) {
-    var self = this;
-
-    
-  },
+  //.find('h3').text('Generating Your App').end()
+    //  .find('h4').text('We\'re generating your app...').end()
 
   selectedFormData: function() {
     var self = this;
@@ -539,7 +533,7 @@ GenerateApp.Controller = Class.extend({
       list_apps_layout.resizeAll();
       proto.Grid.resizeVisible();
     } catch (err) {
-      Log.append("Couldn't resize layouts, elements probably not displaying right now");
+      log("Couldn't resize layouts, elements probably not displaying right now");
     }
   },
 

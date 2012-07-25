@@ -47,14 +47,14 @@ application.ResourceManager = Class.extend({
       resource_div.find('.resource-uploaded').show();
       resource_div.find('.resource-download').data('guid', temp_resource.guid).unbind().bind('click', function () {
         var guid = $(this).data('guid');
-        Log.append('download clicked for resource with guid: ' + guid);
+        log('download clicked for resource with guid: ' + guid);
         $fw_manager.app.startDownload(Constants.DOWNLOAD_RESOURCE_URL + '?guid=' + guid);
       });
       destination_resources[temp_resource.type] = true;
     }
     $fw_manager.client.resource[this.destination].setResources(destination_resources);
     
-    Log.append('show resources for destination: ' + this.destination);
+    log('show resources for destination: ' + this.destination);
     $('#' + this.destination + '_resources').show();
   },
   
@@ -96,16 +96,16 @@ application.ResourceManager = Class.extend({
    */
   setupDestination: function () {
     var that = this;
-    Log.append('setupDestination ' + that.destination);
+    log('setupDestination ' + that.destination);
     var destinations_container = $('#destinations_' + that.destination + '_container');
     destinations_container.find('.dashboard-content').hide();
     
     // Initialise resource buttons if not already done
     if ('undefined' === typeof that[that.destination + '_buttons']) {
-      Log.append('binding buttons for ' + that.destination);
+      log('binding buttons for ' + that.destination);
       $('#' + that.destination + '_getstarted_resource').find('.resource-getstarted').data('destination', that.destination).unbind().bind('click', function () {
         var dest = $(this).data('destination');
-        Log.append(dest + '_getstarted_resource button clicked');
+        log(dest + '_getstarted_resource button clicked');
         $fw_manager.client.resource[dest].showGetStartedWizard();
       });
       destinations_container.find('.resource-uploadnow, .resource-reupload').data('destination', that.destination).unbind().bind('click', function () {
@@ -131,7 +131,7 @@ application.ResourceManager = Class.extend({
     $.post(Constants.LIST_RESOURCES_URL, {
       dest: dest
     }, function (result) {
-      Log.append('list resources response > ' + JSON.stringify(result));
+      log('list resources response > ' + JSON.stringify(result));
       
       // Combine the resources in the result to a single array and set the type of them accordingly
       var resources = [];
@@ -199,12 +199,12 @@ application.ResourceManager = Class.extend({
     });
     // TODO: refactor, code duplication below !!!
     key_wizard.find('#' + that.destination + '_key_finish').bind('show', function () {
-      Log.append('uploading key');
+      log('uploading key');
       var step = $(this);
       
       proto.ProgressDialog.resetBarAndLog(step);
       proto.ProgressDialog.setProgress(step, 1);
-      proto.ProgressDialog.append(step, 'Starting Upload');
+      proto.ProgressDialog(step, 'Starting Upload');
       
       // TODO: remove this apple/iphone specific check
       var upload_dest = 'apple' === that.destination ? 'iphone' : that.destination;
@@ -215,24 +215,24 @@ application.ResourceManager = Class.extend({
         resourceType: 'privatekey',
         buildType: key_wizard.find('#'+that.destination+'_key_type').val()
       };
-      Log.append("params: " + JSON.stringify(data));
+      log("params: " + JSON.stringify(data));
       $fw_manager.app.startUpload(key_wizard.find('#' + file_input_id), upload_url, data, function (result) {
-        Log.append('upload result > ' + JSON.stringify(result));
+        log('upload result > ' + JSON.stringify(result));
         if ('undefined' !== typeof result.error && result.error.length > 0) {
-          proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_failed'));
+          proto.ProgressDialog(step, $fw.client.lang.getLangString('file_upload_failed'));
           proto.Wizard.previousStep(key_wizard, result.error);
         }   
         else {  
           // fill progress bar and trigger finish
           proto.ProgressDialog.setProgress(step, 100);
-          proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_complete'));     
+          proto.ProgressDialog(step, $fw.client.lang.getLangString('file_upload_complete'));     
           
           // TODO: better way for this temporary workaround for finishing wizard after successful upload  
           key_wizard.find('.jw-button-finish').trigger('click');
         }
       }, false, function(xhr, err){
         var error = $fw.client.lang.getLangString('file_upload_error');
-        proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_failed'));
+        proto.ProgressDialog(step, $fw.client.lang.getLangString('file_upload_failed'));
         proto.Wizard.previousStep(key_wizard, error);
       });
     });
@@ -253,7 +253,7 @@ application.ResourceManager = Class.extend({
       build_type = 'debug';
     }
     
-    Log.append('showing resource wizard for destination: ' + that.destination + ',and resource_type:' + resource_type);
+    log('showing resource wizard for destination: ' + that.destination + ',and resource_type:' + resource_type);
     var destinations_container = $('#destinations_' + that.destination + '_container');
     destinations_container.find('.dashboard-content').hide();
     
@@ -274,12 +274,12 @@ application.ResourceManager = Class.extend({
     });
     cert_wizard.find('#' + that.destination + '_cert_finish').bind('show', function () {
       var dest = that.destination;
-      Log.append('uploading cert');
+      log('uploading cert');
       var step = $(this);
       
       proto.ProgressDialog.resetBarAndLog(step);
       proto.ProgressDialog.setProgress(step, 1);
-      proto.ProgressDialog.append(step, 'Starting Upload');
+      proto.ProgressDialog(step, 'Starting Upload');
       
       var upload_dest = 'apple' === dest ? 'iphone' : dest;
       
@@ -292,24 +292,24 @@ application.ResourceManager = Class.extend({
       };
       
       $fw_manager.app.startUpload(cert_wizard.find('#' + file_input_id), upload_url, data, function (result) {
-        Log.append('upload result > ' + JSON.stringify(result));
+        log('upload result > ' + JSON.stringify(result));
         if ('undefined' !== typeof result.error && result.error.length > 0) {
-          Log.append('upload failed');
-          proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_failed'));
+          log('upload failed');
+          proto.ProgressDialog(step, $fw.client.lang.getLangString('file_upload_failed'));
           proto.Wizard.previousStep(cert_wizard, result.error);
         }
         else {
-          Log.append('upload Complete');
+          log('upload Complete');
           
           // TODO: better way for this temporary workaround for finishing wizard after successful upload  
           cert_wizard.find('.jw-button-finish').trigger('click');
           
           proto.ProgressDialog.setProgress(step, 100);
-          proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_complete'));
+          proto.ProgressDialog(step, $fw.client.lang.getLangString('file_upload_complete'));
         }
       }, false, function(xhr, err){
         var error = $fw.client.lang.getLangString('file_upload_error');
-        proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_failed'));
+        proto.ProgressDialog(step, $fw.client.lang.getLangString('file_upload_failed'));
         proto.Wizard.previousStep(cert_wizard, error);
       });
     });
@@ -340,12 +340,12 @@ application.ResourceManager = Class.extend({
     });
     // TODO: refactor, code duplication below !!!
     res_wizard.find('#' + that.destination + '_'+resource_type+'_finish').bind('show', function () {
-      Log.append('uploading ' + resource_type);
+      log('uploading ' + resource_type);
       var step = $(this);
       
       proto.ProgressDialog.resetBarAndLog(step);
       proto.ProgressDialog.setProgress(step, 1);
-      proto.ProgressDialog.append(step, 'Starting Upload');
+      proto.ProgressDialog(step, 'Starting Upload');
       
       // TODO: remove this apple/iphone specific check
       var upload_dest = that.destination;
@@ -356,11 +356,11 @@ application.ResourceManager = Class.extend({
         resourceType: resource_type,
         buildType: 'release'
       };
-      Log.append("params: " + JSON.stringify(data));
+      log("params: " + JSON.stringify(data));
      $fw_manager.app.startUpload(res_wizard.find('#' + file_input_id), upload_url, data, function (result) {
-        Log.append('upload result > ' + JSON.stringify(result));
+        log('upload result > ' + JSON.stringify(result));
         if ('undefined' !== typeof result.error && result.error.length > 0) {  
-          proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_failed'));
+          proto.ProgressDialog(step, $fw.client.lang.getLangString('file_upload_failed'));
           proto.Wizard.previousStep(res_wizard, result.error);
         }   
         else {  
@@ -368,11 +368,11 @@ application.ResourceManager = Class.extend({
           res_wizard.find('.jw-button-finish').trigger('click');
           
           proto.ProgressDialog.setProgress(step, 100);
-          proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_complete'));     
+          proto.ProgressDialog(step, $fw.client.lang.getLangString('file_upload_complete'));     
         }
       }, false, function(xhr, err){
         var error = $fw.client.lang.getLangString('file_upload_error');
-        proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_failed'));
+        proto.ProgressDialog(step, $fw.client.lang.getLangString('file_upload_failed'));
         proto.Wizard.previousStep(res_wizard, error);
       });
     });

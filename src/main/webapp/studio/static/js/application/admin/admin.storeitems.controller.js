@@ -75,11 +75,11 @@ Admin.Storeitems.Controller = Controller.extend({
   deleteStoreItem: function(guid) {
     var self = this;
     this.models.store_item.remove(guid, function(res) {
-      Log.append('delete StoreItem: OK');
+      log('delete StoreItem: OK');
       self.showStoreItems();
     }, function(err) {
       self.showStoreItems();
-      Log.append(err);
+      log(err);
     });
   },
 
@@ -91,7 +91,7 @@ Admin.Storeitems.Controller = Controller.extend({
       self.bind();
       self.renderAvailableAuthPolicies(res.list, self.views.store_item_create);
     }, function(err) {
-      Log.append(err);
+      log(err);
     }, false);
   },
 
@@ -118,7 +118,7 @@ Admin.Storeitems.Controller = Controller.extend({
       });
 
     }, function(err) {
-      Log.append(err);
+      log(err);
     }, false);
   },
 
@@ -170,10 +170,10 @@ Admin.Storeitems.Controller = Controller.extend({
     var guid = $('.item_guid', container).val();
 
     this.models.store_item.update(guid, name, item_id, description, auth_policies, function(res) {
-      Log.append('update StoreItem: OK');
+      log('update StoreItem: OK');
       self.showStoreItems();
     }, function(err) {
-      Log.append(err);
+      log(err);
     });
   },
 
@@ -214,10 +214,10 @@ Admin.Storeitems.Controller = Controller.extend({
     var auth_policies = this._selectedAuthPolicies(container);
 
     this.models.store_item.create(name, item_id, description, auth_policies, function(res) {
-      Log.append('create StoreItem: OK');
+      log('create StoreItem: OK');
       self.showStoreItems();
     }, function(err) {
-      Log.append(err);
+      log(err);
     });
   },
 

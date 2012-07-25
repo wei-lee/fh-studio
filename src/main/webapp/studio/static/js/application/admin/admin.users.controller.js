@@ -72,7 +72,7 @@ Admin.Users.Controller = Controller.extend({
       self.renderUserTable(data);
       self.bindUserControls();
     }, function(err) {
-      Log.append('Error showing users');
+      log('Error showing users');
     }, true);
   },
 
@@ -98,7 +98,7 @@ Admin.Users.Controller = Controller.extend({
 
     self.showAlert('info', '<strong>Sending Invite</strong> (' + email + ')');
     self.models.user.resendInvite(email, function(res) {
-      Log.append('User invite re-sent OK.');
+      log('User invite re-sent OK.');
       self.showAlert('success', '<strong>Successfully sent Invite</strong> (' + email + ')');
     }, function(e) {
       self.showAlert('error', '<strong>Error sending Invite</strong> (' + email + ') ' + e);
@@ -113,7 +113,7 @@ Admin.Users.Controller = Controller.extend({
     this.container = this.views.user_update;
 
     var populateForm = function (results) {
-      Log.append('populating user update form');
+      log('populating user update form');
       var user = results[0];
       $('#update_user_id', parent).val(user.username);
       $('#update_user_name', parent).val(user.name);
@@ -162,7 +162,7 @@ Admin.Users.Controller = Controller.extend({
     async.parallel([function (cb) {
       // user details
       self.models.user.read(id, function(res) {
-        Log.append('User read OK.');
+        log('User read OK.');
         return cb(null, res.fields);
       }, function(e) {
         return cb(e);
@@ -170,7 +170,7 @@ Admin.Users.Controller = Controller.extend({
     }, function (cb) {
       // roles
       self.models.role.list_assignable(function(res) {
-        Log.append('Role list OK.');
+        log('Role list OK.');
         return cb(null, res.list);
       }, function(e) {
         return cb(e);
@@ -178,7 +178,7 @@ Admin.Users.Controller = Controller.extend({
     }/*, function (cb) {
       // storeitems
       self.models.storeitem.list(function (res) {
-        Log.append('Storeitem list OK');
+        log('Storeitem list OK');
         return cb(null, res.list);
       }, function (e) {
         return cb(e);
@@ -186,7 +186,7 @@ Admin.Users.Controller = Controller.extend({
     }*//* function (cb) {
       // groups
       self.models.group.list(function(res) {
-        Log.append('Group list OK.');
+        log('Group list OK.');
         return cb(null, res.list);
       }, function(e) {
         return cb(e);
@@ -248,11 +248,11 @@ Admin.Users.Controller = Controller.extend({
     // }
 
     this.models.user.update(fields, function(res) {
-      Log.append('updateUser: OK');
+      log('updateUser: OK');
       self.showUsersList();
       self.showAlert('success', '<strong>User successfully updated</strong> (' + res.fields.username + ')');
     }, function(err) {
-      Log.append(err);
+      log(err);
       self.showAlert('error', '<strong>Error updating User</strong> ' + err);
     });
   },
@@ -326,7 +326,7 @@ Admin.Users.Controller = Controller.extend({
 
     // Load roles & storeitems into swap select
     this.models.role.list_assignable(function(res) {
-      Log.append('Role list OK.');
+      log('Role list OK.');
       var roles = res.list;
       var container = '#create_user_role_swap';
       self.updateSwapSelect(container, roles);
@@ -335,7 +335,7 @@ Admin.Users.Controller = Controller.extend({
     });
 
     // this.models.storeitem.list(function(res) {
-    //   Log.append('Storeitem list OK.');
+    //   log('Storeitem list OK.');
     //   var storeitems = res.list;
     //   var container = '#create_user_storeitem_swap';
     //   // take out 'name' field from storeitems
@@ -349,7 +349,7 @@ Admin.Users.Controller = Controller.extend({
     // });
 
     // this.models.group.list(function(res) {
-    //   Log.append('Group list OK.');
+    //   log('Group list OK.');
     //   var groups = res.list;
     //   var container = '#create_user_group_swap';
     //   self.updateSwapSelect(container, groups);
@@ -443,6 +443,7 @@ Admin.Users.Controller = Controller.extend({
     var activated = true;
     self.showAlert('info', '<strong>Creating User</strong> (' + id + ')');
     this.models.user.create(id, email, name, roles, groups, storeitems, password, activated, invite, function(res) {
+      log(res);
       self.showUsersList();
       self.showAlert('success', '<strong>Successfully create User</strong> (' + id + ')');
     }, function(e) {
@@ -658,11 +659,11 @@ Admin.Users.Controller = Controller.extend({
 
     self.showAlert('info', '<strong>' + actionDesc + ' User</strong> (' + fields.username + ')');
     self.models.user.update(fields, function(res) {
-      Log.append(actionDesc + ' User OK');
+      log(actionDesc + ' User OK');
       self.showAlert('success', '<strong>' + actionDesc + ' User successful</strong> (' + fields.username + ')');
       success();
     }, function(err) {
-      Log.append(err);
+      log(err);
       self.showAlert('error', '<strong>Error ' + actionDesc + ' User</strong> ' + err);
     });
   }

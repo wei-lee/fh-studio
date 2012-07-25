@@ -15,7 +15,7 @@ $.extend(Application, {
   },
   
   loadAppsGridData: function (grid_name, callback) {
-    Log.append('loading grid data');    
+    log('loading grid data');    
     var url;  
     
     url = 'templates' === grid_name ? Constants.LIST_TEMPLATE_APPS_URL : Constants.LIST_APPS_URL;

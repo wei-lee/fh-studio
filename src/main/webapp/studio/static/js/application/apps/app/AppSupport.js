@@ -1,11 +1,11 @@
 application.AppSupport = Class.extend({
   
   init: function () {
-    Log.append('init AppSupport');
+    log('init AppSupport');
   },
   
   initCloneAppWizard: function () {
-    Log.append('initCloneAppWizard');
+    log('initCloneAppWizard');
     var clone_app_wizard = proto.Wizard.load('clone_app_wizard', {
       validate: true,
       finish: function () {
@@ -40,9 +40,9 @@ application.AppSupport = Class.extend({
       
       proto.ProgressDialog.resetBarAndLog(step);
       proto.ProgressDialog.setProgress(step, 1);
-      proto.ProgressDialog.append(step, 'Starting Clone');
+      proto.ProgressDialog(step, 'Starting Clone');
       
-      Log.append('sending clone request to server');
+      log('sending clone request to server');
       $fw_manager.server.post(Constants.CLONE_APP_URL, {
         guid : $fw_manager.data.get('clone_from_app'),
         title: clone_app_wizard.find('input[name=app_title]').val()
@@ -55,13 +55,13 @@ application.AppSupport = Class.extend({
             maxTime: Properties.cache_lookup_timeout, // 5 minutes
             maxRetries: Properties.cache_lookup_retries,
             timeout: function (res) {
-              Log.append('timeout error > ' + JSON.stringify(res));
+              log('timeout error > ' + JSON.stringify(res));
               // TODO: internationalise during refactor
               proto.Wizard.jumpToStep(clone_app_wizard, 1, 'Clone timed out');  
             },
             update: function (res) {
               for (var i = 0; i < res.log.length; i++) {
-                proto.ProgressDialog.append(step, res.log[i]);
+                proto.ProgressDialog(step, res.log[i]);
               }
               if (res.progress) {
                 proto.ProgressDialog.setProgress(step, parseInt(res.progress, 10));
@@ -69,14 +69,14 @@ application.AppSupport = Class.extend({
             },
             complete: function (res) {
               proto.ProgressDialog.setProgress(step, 100);
-              Log.append('clone successful, good to go > ' + JSON.stringify(res));
+              log('clone successful, good to go > ' + JSON.stringify(res));
               $fw_manager.data.set('new_app_name', result.appId);
-              Log.append('jumping to final step and hiding progress dialog');
+              log('jumping to final step and hiding progress dialog');
               proto.Wizard.jumpToStep(clone_app_wizard, 3);
               proto.Wizard.hidePreviousButton(clone_app_wizard); 
             },
             error: function (res) {
-              Log.append('clone error > ' + JSON.stringify(res));
+              log('clone error > ' + JSON.stringify(res));
               proto.Wizard.jumpToStep(clone_app_wizard, 1, $fw_manager.client.lang.getLangString('clone_server_error'));
             },
             retriesLimit: function () {
@@ -92,7 +92,7 @@ application.AppSupport = Class.extend({
         }
       }, function () {
         proto.Wizard.jumpToStep(clone_app_wizard, 1, $fw_manager.client.lang.getLangString('clone_server_error'));
-        Log.append('clone failed', 'ERROR');
+        log('clone failed', 'ERROR');
       });
     });
     
@@ -152,7 +152,7 @@ application.AppSupport = Class.extend({
       
       proto.ProgressDialog.resetBarAndLog(step);
       proto.ProgressDialog.setProgress(step, 1);
-      proto.ProgressDialog.append(step, 'Starting Create');
+      proto.ProgressDialog(step, 'Starting Create');
       
       var id = $fw.client.preview.getDefaultDeviceId();
       var device = $fw.client.preview.resolveDevice(id);
@@ -182,8 +182,8 @@ application.AppSupport = Class.extend({
       
       $fw_manager.client.model.App.create(params, 
         function (app) {
-          Log.append('create ok');
-          proto.ProgressDialog.append(step, 'App created successfully.');
+          log('create ok');
+          proto.ProgressDialog(step, 'App created successfully.');
           $fw_manager.data.set('new_app', app.guid);
           
           var nextStep = create_app_wizard.find('#create_app_next');
@@ -234,12 +234,12 @@ application.AppSupport = Class.extend({
             var createTask = new ASyncServerTask(keys, {
               updateInterval: 2000,
               timeout: function (res) {
-                Log.append('timeout error > ' + JSON.stringify(res));
+                log('timeout error > ' + JSON.stringify(res));
                 proto.Wizard.jumpToStep(create_app_wizard, details_step, 'Create timed out'); 
               },
               update: function (res) {
                 for (var i = 0; i < res.log.length; i++) {
-                  proto.ProgressDialog.append(step, res.log[i]);
+                  proto.ProgressDialog(step, res.log[i]);
                 }
                 if (res.progress) {
                   proto.ProgressDialog.setProgress(step, parseInt(res.progress, 10));
@@ -247,7 +247,7 @@ application.AppSupport = Class.extend({
               },
               complete: completeFn,
               error: function (res) {
-                Log.append('clone error > ' + JSON.stringify(res));
+                log('clone error > ' + JSON.stringify(res));
                 proto.Wizard.jumpToStep(create_app_wizard, details_step, 'An error occured while creating your App. Please try again.'); 
               },
               retriesLimit: function () {
@@ -264,7 +264,7 @@ application.AppSupport = Class.extend({
           }
         },
         function (result) {
-          Log.append('create not ok > ' + result.message);
+          log('create not ok > ' + result.message);
           // Jump back to details step and show error
           proto.Wizard.jumpToStep(create_app_wizard, details_step, result.message);
         }
@@ -282,13 +282,13 @@ application.AppSupport = Class.extend({
           proto.Wizard.previousStep(create_app_wizard, $fw_manager.client.lang.getLangString('no_templates_message'));
         }
         else {
-          Log.append("got template app list");
-          //console.log(template_select);
+          log("got template app list");
+          //log(template_select);
           for (var li = 0; li < list.length; li++) {
             var template = list[li];
-            //console.log(template);
+            //log(template);
             var item = $('<option>', {'value': li, 'text': template.title });
-            //console.log(item);
+            //log(item);
             template_select.append(item);
           }
           
@@ -296,9 +296,9 @@ application.AppSupport = Class.extend({
           template_select.unbind('change').bind('change', {templates: list}, function (event) {
             var templates = event.data.templates;
             var index = $(this).val();
-            Log.append("selected template index: " + index);
+            log("selected template index: " + index);
             var t = templates[index];
-            Log.append("selected template guid: " + t.id + ":: title: " + t.title + " :: desc:: " + t.description);
+            log("selected template guid: " + t.id + ":: title: " + t.title + " :: desc:: " + t.description);
             $fw_manager.client.app.showTemplateDetails(self, t);
           });
         }
@@ -348,7 +348,7 @@ application.AppSupport = Class.extend({
     var is_app_name = app_name !== undefined;
     var app_identifier = is_app_name ? app_name : app_guid;
     
-    Log.append('finished... is_app_name = ' + is_app_name + ' app_identifier = ' + app_identifier + ' > ' + finish_option);
+    log('finished... is_app_name = ' + is_app_name + ' app_identifier = ' + app_identifier + ' > ' + finish_option);
     
     if ('edit' === finish_option) {
       // force state to Editor > Files

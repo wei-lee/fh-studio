@@ -36,12 +36,12 @@
       
       /* chart region zooming. Currently zooms in to country level. 
        * google.visualization.events.addListener(geochart, 'regionClick', function(event) {
-        Log.append('clicked region: ' + event.region);
+        log('clicked region: ' + event.region);
         geochart.draw(table, $.extend(true, {}, options, { region: event.region }));
       });*/
       
       google.visualization.events.addListener(geochart, 'error', function(event) {
-        Log.append('Geochart error: ' + JSON.stringify(event), 'ERROR');
+        log('Geochart error: ' + JSON.stringify(event), 'ERROR');
         $fw.client.dialog.error(JSON.stringify(event));
       });
     },
@@ -59,7 +59,7 @@
           });
         }
         else {
-          Log.append('Unable to load visualisation API', 'ERROR');
+          log('Unable to load visualisation API', 'ERROR');
         }
       }, 100);
     }

@@ -66,7 +66,7 @@ application.PreviewManager = Class.extend({
     self.preview_select = $('#preview_temporary_select');
     self.preview_select.bind('change', function () {
       var val = $(this).val();
-      Log.append('preview device changed:' + val);
+      log('preview device changed:' + val);
       $fw_manager.data.set('preview_override', val);
       // If we're not viewing a template, save the preview device as the default
       if (!$fw_manager.data.get('template_mode')) {
@@ -86,7 +86,7 @@ application.PreviewManager = Class.extend({
 
     // Reload the preview whenever the east pane of layout is re-opened
     manage_apps_layout.options.east.onopen_end = function () {
-      Log.append('east pane opened, reload preview');
+      log('east pane opened, reload preview');
       $fw_manager.client.preview.show();
     };
 
@@ -174,7 +174,7 @@ application.PreviewManager = Class.extend({
 
     preview_wrapper.find('#preview_frame').hide().end().find('#preview_text').hide();
     var east_pane_size = (Math.min(Math.max(actual_size.width, parseInt($('#preview_controls').width(), 10)), $fw_manager.client.preview.MAX_PREVIEW_WIDTH)) + 10;
-    Log.append('inserting preview frame');
+    log('inserting preview frame');
 
     // Empty the preview frame contents, and insert an iframe with the source set as the preview url
     preview_wrapper.find('#preview_frame').html('').html($('<iframe>', {
@@ -218,7 +218,7 @@ application.PreviewManager = Class.extend({
       var chrome_preview_fix = "Chrome/10.0.648";
       if (navigator.userAgent.indexOf(chrome_preview_fix) > -1) {
         var scale_fix = Math.sqrt(1 / self.act_scale);
-        Log.append('applying preview fix for ' + chrome_preview_fix + ':' + scale_fix);
+        log('applying preview fix for ' + chrome_preview_fix + ':' + scale_fix);
         container.find('#preview_frame > iframe').css({
           '-webkit-transform': 'scale(' + scale_fix + ')',
           '-webkit-transform-origin': '0 0'
@@ -238,11 +238,11 @@ application.PreviewManager = Class.extend({
       }
 
       if (chrome_ver != null) {
-        Log.append('Chrome version:' + chrome_ver);
+        log('Chrome version:' + chrome_ver);
         
         if (chrome_ver > 10 && chrome_ver < 15) {
           var reverse_scale = 1 / self.act_scale;
-          Log.append('applying preview fix for Chrome version ' + chrome_ver);
+          log('applying preview fix for Chrome version ' + chrome_ver);
   
           // check if we have an iframe in the preview frame
           // if we don't, we're working with a cloned preview, so get it from the preview fix div
@@ -282,13 +282,13 @@ application.PreviewManager = Class.extend({
 
       var safari = "Safari/";
       if (navigator.userAgent.indexOf(safari) > -1) {
-        Log.append('applying preview fix for ' + safari);
+        log('applying preview fix for ' + safari);
         container.css('-webkit-transform-style', 'preserve-3d');
       }
       
       $('#preview_wrapper,#preview_frame').unbind('scroll').bind('scroll', function () {
         var el = $(this);
-        Log.append('PREVIEW SCROLLFIX:' + el.attr('id'));
+        log('PREVIEW SCROLLFIX:' + el.attr('id'));
         // jquery mobile causes preview to jump down and to the right when certain actions happen in the app
         // this fix ensures the preview is anchored at the topleft.
         el.scrollTop(0).scrollLeft(0);
@@ -299,7 +299,7 @@ application.PreviewManager = Class.extend({
   
   showDebugger: function () {
     var self = this, debugUrl = '', guid = '';
-    Log.append('showing debugger');
+    log('showing debugger');
     
     debugUrl =  $fw_manager.client.preview.getPreviewUrl(self.inst.guid, null, self.inst.domain);
     
@@ -307,7 +307,7 @@ application.PreviewManager = Class.extend({
   },
   
   showEmulator: function () {
-    Log.append('showing emulator');
+    log('showing emulator');
     $fw.client.preview.showInNewWindow();
   },
   
@@ -319,7 +319,7 @@ application.PreviewManager = Class.extend({
 
   showInNewWindow: function (app_url, app_width, app_height, show_in_tab) {
     var self = this;
-    Log.append("open preview in new window");
+    log("open preview in new window");
     var url = app_url || self.url,
         width = (app_width || self.act_width) + 25,
         height = (app_height || self.act_height) + 20;
@@ -343,7 +343,7 @@ application.PreviewManager = Class.extend({
         // add chrome width and height to get the required viewport size
         var resize_width = width + $fw.client.preview.support.getChromeWidth(),
             resize_height = height + $fw.client.preview.support.getChromeHeight();
-        Log.append('storedsize:' + self.act_width + 'x' + self.act_height + ', psize:' + width + 'x' + height + ', wsize:' + resize_width + 'x' + resize_height);
+        log('storedsize:' + self.act_width + 'x' + self.act_height + ', psize:' + width + 'x' + height + ', wsize:' + resize_width + 'x' + resize_height);
         self.p_window.resizeTo(resize_width, resize_height);
       }
       self.n_window = self.p_window;
@@ -357,7 +357,7 @@ application.PreviewManager = Class.extend({
       overflow: 'hidden',
       '-webkit-transform-style': ''
     });
-    //Log.append("preview html = " + html); 
+    //log("preview html = " + html); 
     self.p_window.document.open();
     var content = $('<div>').append(c_wrapper).html();
     self.p_window.document.write(content);
@@ -392,7 +392,7 @@ application.PreviewManager = Class.extend({
       options.stack = true;
 
       this.loadPreviewContent(url, function (data) {
-        Log.append('got preview. length:' + data.length);
+        log('got preview. length:' + data.length);
         preview_div.html(data);
         proto.Dialog.load(preview_div, options);
       });
@@ -405,7 +405,7 @@ application.PreviewManager = Class.extend({
       dataType: 'html',
       success: success_callback,
       error: function () {
-        Log.append('preview load failed', 'ERROR');
+        log('preview load failed', 'ERROR');
       }
     });
   },

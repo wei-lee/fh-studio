@@ -3,12 +3,12 @@ application.StagingManager = Class.extend({
   init: function() {},
 
   show: function() {
-    Log.append('staging.show');
+    log('staging.show');
     this.bind();
   },
 
   bind: function() {
-    Log.append('staging.bind');
+    log('staging.bind');
     var self = this;
     var container = $('#staging_container');
 
@@ -28,7 +28,7 @@ application.StagingManager = Class.extend({
   },
 
   liveStage: function(guid) {
-    Log.append('staging.liveStage');
+    log('staging.liveStage');
     var self = this;
     if (!guid) {
       guid = $fw_manager.data.get('app').guid;
@@ -41,13 +41,13 @@ application.StagingManager = Class.extend({
       if (res.status === "ok") {
         self.stageStarted("live", res.cacheKey);
       } else {
-        Log.append('live stage failed:' + res);
+        log('live stage failed:' + res);
       }
     }, null, true);
   },
 
   devStage: function(guid) {
-    Log.append('staging.devStage');
+    log('staging.devStage');
     var self = this;
     if (!guid) {
       guid = $fw_manager.data.get('app').guid;
@@ -61,7 +61,7 @@ application.StagingManager = Class.extend({
       if (res.status === "ok") {
         self.stageStarted("dev", res.cacheKey);
       } else {
-        Log.append('dev stage failed:' + res);
+        log('dev stage failed:' + res);
       }
     }, null, true);
   },
@@ -69,7 +69,7 @@ application.StagingManager = Class.extend({
   stageStarted: function(staging_env, cache_key) {
     var self = this;
     this.resetProgress(staging_env);
-    Log.append('staging.stageStarted: [' + staging_env + '] [' + cache_key + ']');
+    log('staging.stageStarted: [' + staging_env + '] [' + cache_key + ']');
     var progress = 0;
 
     var stage_task = new ASyncServerTask({
@@ -80,7 +80,7 @@ application.StagingManager = Class.extend({
       // 5 minutes
       maxRetries: Properties.cache_lookup_retries,
       timeout: function(res) {
-        Log.append('Staging timeout error > ' + JSON.stringify(res));
+        log('Staging timeout error > ' + JSON.stringify(res));
         self.updateProgressLog(staging_env, "Stage request timed out.");
         if ($.isFunction(self.stageCompleteFailed)) {
           self.stageCompleteFailed();
@@ -88,9 +88,9 @@ application.StagingManager = Class.extend({
         self.updateProgress(staging_env, 100);
       },
       update: function(res) {
-        Log.append('Staging update > ' + JSON.stringify(res));
+        log('Staging update > ' + JSON.stringify(res));
         for (var i = 0; i < res.log.length; i++) {
-          Log.append(res.log[i]);
+          log(res.log[i]);
         }
         progress += 3;
 
@@ -98,14 +98,14 @@ application.StagingManager = Class.extend({
         self.updateProgress(staging_env, progress);
       },
       complete: function(res) {
-        Log.append('Stage successful > ' + JSON.stringify(res));
+        log('Stage successful > ' + JSON.stringify(res));
         if ($.isFunction(self.stageCompleteSuccess)) {
           self.stageCompleteSuccess();
         }
         self.updateProgress(staging_env, 100);
       },
       error: function(res) {
-        Log.append('Stage error > ' + JSON.stringify(res));
+        log('Stage error > ' + JSON.stringify(res));
         self.updateProgressLog(staging_env, res.error);
         if ($.isFunction(self.stageCompleteFailed)) {
           self.stageCompleteFailed();
@@ -113,7 +113,7 @@ application.StagingManager = Class.extend({
         self.updateProgress(staging_env, 100);
       },
       retriesLimit: function() {
-        Log.append('Stage retriesLimit exceeded: ' + Properties.cache_lookup_retries);
+        log('Stage retriesLimit exceeded: ' + Properties.cache_lookup_retries);
         if ($.isFunction(self.stageCompleteFailed)) {
           self.stageCompleteFailed();
         }
@@ -130,7 +130,7 @@ application.StagingManager = Class.extend({
    * It doesn't track progress.
    */
   simpleLiveStage: function(guid, cb) {
-    Log.append('staging.liveStage');
+    log('staging.liveStage');
     var self = this;
     if (!guid) {
       guid = $fw_manager.data.get('app').guid;
@@ -144,13 +144,13 @@ application.StagingManager = Class.extend({
       if (res.status === "ok") {
         self.simpleStageStart("live", res.cacheKey, cb);
       } else {
-        Log.append('live stage failed:' + res);
+        log('live stage failed:' + res);
       }
     }, null, true);
   },
 
   simpleDevStage: function(guid, cb) {
-    Log.append('staging.devStage');
+    log('staging.devStage');
     var self = this;
     if (!guid) {
       guid = $fw_manager.data.get('app').guid;
@@ -164,14 +164,14 @@ application.StagingManager = Class.extend({
       if (res.status === "ok") {
         self.simpleStageStart("dev", res.cacheKey, cb);
       } else {
-        Log.append('dev stage failed:' + res);
+        log('dev stage failed:' + res);
       }
     }, null, true);
   },
   
   simpleStageStart: function(staging_env, cache_key, cb) {
     var self = this;
-    Log.append('staging.stageStarted: [' + staging_env + '] [' + cache_key + ']');
+    log('staging.stageStarted: [' + staging_env + '] [' + cache_key + ']');
 
     var stage_task = new ASyncServerTask({
       cacheKey: cache_key
@@ -184,7 +184,7 @@ application.StagingManager = Class.extend({
         cb(res);
       },
       update: function(res) {
-        Log.append('Staging update > ' + JSON.stringify(res));
+        log('Staging update > ' + JSON.stringify(res));
       },
       complete: function(res) {
         cb(res);
@@ -257,10 +257,10 @@ application.StagingManager = Class.extend({
   },
 
   stageCompleteSuccess: function() {
-    Log.append('Stage complete - success.');
+    log('Stage complete - success.');
   },
 
   stageCompleteFailed: function() {
-    Log.append('Stage complete - failed.');
+    log('Stage complete - failed.');
   }
 });

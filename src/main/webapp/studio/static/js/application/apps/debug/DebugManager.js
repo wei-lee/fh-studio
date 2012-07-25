@@ -10,7 +10,7 @@ application.DebugManager = Class.extend({
   },
   
   showLogging: function () {
-    Log.append('showLogging');
+    log('showLogging');
     
     if ( !this.showLoggingInitDone ) {
       this.showLoggingInit();

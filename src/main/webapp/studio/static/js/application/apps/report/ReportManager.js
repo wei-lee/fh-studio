@@ -13,7 +13,7 @@ application.ReportManager = Class.extend({
     
     $fw.client.reporting.init();
     $fw.client.reporting.initMetric(metric, type, container, Constants.GET_SINGLE_APP_METRICS_URL, appid);
-    Log.append("Called initMetric for appid: " + appid + ", metric: " + metric + ", chart type: " + type);
+    log("Called initMetric for appid: " + appid + ", metric: " + metric + ", chart type: " + type);
   }
   
 });

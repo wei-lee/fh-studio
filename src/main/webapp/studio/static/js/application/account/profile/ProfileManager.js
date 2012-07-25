@@ -17,12 +17,12 @@ application.ProfileManager = Class.extend({
   },
     
   doChangePassword: function(){
-    Log.append("doChangePassword");
+    log("doChangePassword");
     // TODO: some of this could be made more generic and reused
     var form = $('#profile_changepassword');
     var validated_form = $fw_manager.client.profile.validatePasswordForm(form);
     if (form.valid()) {
-      Log.append('valid');
+      log('valid');
       var current_password = validated_form.findByName('current_password').val();
       var new_password = validated_form.findByName('new_password').val();
       $fw_manager.client.model.User.changePassword(current_password, new_password, function (result) {

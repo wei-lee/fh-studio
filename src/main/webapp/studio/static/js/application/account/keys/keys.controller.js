@@ -1,11 +1,11 @@
 application.controller.Keys = Class.extend({
   init: function() {
-    Log.append('Keys controller init');
+    log('Keys controller init');
     this.model = new application.model.UserKey();
   },
 
   refreshClipboardPaste: function() {
-    Log.append('Refreshing copy and paste.');
+    log('Refreshing copy and paste.');
     // Destroy existing agents
     $.each(ZeroClipboard.clients, function(i, client) {
       client.destroy();
@@ -75,7 +75,7 @@ application.controller.Keys = Class.extend({
     } else {
       // Model update
       var label = label_input.val();
-      Log.append('Updating key label: ' + key);
+      log('Updating key label: ' + key);
       var self = this;
       this.model.update(key, label, function(res) {
         if (res.status == 'ok') {
@@ -93,7 +93,7 @@ application.controller.Keys = Class.extend({
   },
 
   revokeUserKey: function(key) {
-    Log.append('revoking: ' + key);
+    log('revoking: ' + key);
     var self = this;
     this.model.revoke(key, function(res) {
       if (res.status === 'ok') {
@@ -131,7 +131,7 @@ application.controller.Keys = Class.extend({
   refreshUserKeys: function() {
     var self = this;
     this.model.load(function(res) {
-      Log.append('Keys show - model loaded');
+      log('Keys show - model loaded');
 
       if (res.status == 'ok') {
         self.renderUserKeys();
@@ -144,7 +144,7 @@ application.controller.Keys = Class.extend({
   show: function() {
     var self = this;
     this.bind();
-    Log.append('Keys controller show');
+    log('Keys controller show');
     this.refreshUserKeys();
   },
 
@@ -244,7 +244,7 @@ application.model.UserKey = Class.extend({
 
   load: function(cb) {
     var self = this;
-    Log.append('Keys model loading');
+    log('Keys model loading');
     var url = Constants.KEY_LIST_URL;
     var params = {
       type: "user"

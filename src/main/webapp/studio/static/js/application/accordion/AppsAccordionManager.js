@@ -57,7 +57,7 @@ application.AppsAccordionManager = application.AccordionManager.extend({
   },
   
   postSelectReportApp: function(id, container) {
-   Log.append("postSelectReportApp id: " + id);
+   log("postSelectReportApp id: " + id);
   },
   
   preSelectReportStartupsdate: function (id, container) {
@@ -103,7 +103,7 @@ application.AppsAccordionManager = application.AccordionManager.extend({
       });      
     });
     
-    Log.append('setupEditorFileset');
+    log('setupEditorFileset');
     $fw_manager.client.editor.setup();
     var git_mode = $fw.data.get('git_mode');
     if (null === $fw_manager.app.treeviewManager && !git_mode) {
@@ -140,7 +140,7 @@ application.AppsAccordionManager = application.AccordionManager.extend({
         });
       });
     }
-    Log.append('updateAppDetails');
+    log('updateAppDetails');
     $fw_manager.client.app.updateDetails();
   },
 
