@@ -96,7 +96,8 @@ Admin.Users.Controller = Controller.extend({
     var self = this;
     var email = $(this.views.user_update).find('#update_user_email').val();
 
-    this.models.user.resendInvite(email, function(res) {
+    self.showAlert('info', '<strong>Sending Invite</strong> (' + email + ')');
+    self.models.user.resendInvite(email, function(res) {
       Log.append('User invite re-sent OK.');
       self.showAlert('success', '<strong>Successfully sent Invite</strong> (' + email + ')');
     }, function(e) {
@@ -420,11 +421,13 @@ Admin.Users.Controller = Controller.extend({
     var groups = null;
 
     var activated = true;
+    self.showAlert('info', '<strong>Creating User</strong> (' + id + ')');
     this.models.user.create(id, email, name, roles, groups, storeitems, password, activated, invite, function(res) {
       console.log(res);
       self.showUsersList();
+      self.showAlert('success', '<strong>Successfully create User</strong> (' + id + ')');
     }, function(e) {
-      self.showAlert('error', '<strong>Error creating user</strong> ' + e);
+      self.showAlert('error', '<strong>Error creating User</strong> ' + e);
     });
   },
 
