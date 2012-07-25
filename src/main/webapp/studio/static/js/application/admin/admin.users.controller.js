@@ -5,9 +5,9 @@ Admin.Users = Admin.Users || {};
 Admin.Users.Controller = Controller.extend({
   models: {
     user: new model.User(),
-    role: new model.Role(),
+    role: new model.Role()/*,
     group: new model.Group(),
-    storeitem: new model.StoreItem()
+    storeitem: new model.StoreItem()*/
   },
 
   views: {
@@ -138,13 +138,13 @@ Admin.Users.Controller = Controller.extend({
         rolesTo.splice(rolesTo.indexOf('sub'), 1);
       }
       // take out 'name' field from storeitems
-      var itemsFrom = [];
-      for (var ri = 0, rl = results[2].length; ri < rl; ri += 1) {
-        itemsFrom.push(results[2][ri].name);
-      }
+      // var itemsFrom = [];
+      // for (var ri = 0, rl = results[2].length; ri < rl; ri += 1) {
+      //   itemsFrom.push(results[2][ri].name);
+      // }
       self.updateSwapSelect('#update_user_role_swap', results[1], rolesTo);
       //self.updateSwapSelect('#update_user_group_swap', results[2], user.groups);
-      self.updateSwapSelect('#update_user_storeitem_swap', itemsFrom, user.storeitems);
+      //self.updateSwapSelect('#update_user_storeitem_swap', itemsFrom, user.storeitems);
       self.bindSwapSelect(parent);
 
       $('input,select,button', parent).not('#update_user_id,#update_user_enabled,#update_user_blacklisted,.invite_user_btn').removeAttr('disabled');
@@ -181,7 +181,7 @@ Admin.Users.Controller = Controller.extend({
       }, function(e) {
         return cb(e);
       });
-    }, function (cb) {
+    }/*, function (cb) {
       // storeitems
       self.models.storeitem.list(function (res) {
         Log.append('Storeitem list OK');
@@ -189,7 +189,7 @@ Admin.Users.Controller = Controller.extend({
       }, function (e) {
         return cb(e);
       });
-    }/* function (cb) {
+    }*//* function (cb) {
       // groups
       self.models.group.list(function(res) {
         Log.append('Group list OK.');
@@ -240,13 +240,13 @@ Admin.Users.Controller = Controller.extend({
     if (rolesArr.length > 0 ) {
       fields.roles = rolesArr.join(', ');
     }
-    var storeitemsArr = [];
-    $('#update_user_storeitem_swap .swap-to option', this.views.user_update).each(function (i, item) {
-      storeitemsArr.push($(item).text());
-    });
-    if (storeitemsArr.length > 0) {
-      fields.storeitems = storeitemsArr.join(', ');
-    }
+    // var storeitemsArr = [];
+    // $('#update_user_storeitem_swap .swap-to option', this.views.user_update).each(function (i, item) {
+    //   storeitemsArr.push($(item).text());
+    // });
+    // if (storeitemsArr.length > 0) {
+    //   fields.storeitems = storeitemsArr.join(', ');
+    // }
     // var groupsArr = [];
     // $('#update_user_group_swap .swap-to option', this.views.user_update).each(function (i, item) {
     //   groupsArr.push($(item).text());
@@ -342,19 +342,19 @@ Admin.Users.Controller = Controller.extend({
       self.showAlert('error', '<strong>Error loading Roles</strong> ' + e);
     });
 
-    this.models.storeitem.list(function(res) {
-      Log.append('Storeitem list OK.');
-      var storeitems = res.list;
-      var container = '#create_user_storeitem_swap';
-      // take out 'name' field from storeitems
-      var itemsFrom = [];
-      for (var si = 0, sl = storeitems.length; si < sl; si += 1) {
-        itemsFrom.push(storeitems[si].name);
-      }
-      self.updateSwapSelect(container, itemsFrom);
-    }, function(e) {
-      self.showAlert('error', '<strong>Error loading Store Items</strong> ' + e);
-    });
+    // this.models.storeitem.list(function(res) {
+    //   Log.append('Storeitem list OK.');
+    //   var storeitems = res.list;
+    //   var container = '#create_user_storeitem_swap';
+    //   // take out 'name' field from storeitems
+    //   var itemsFrom = [];
+    //   for (var si = 0, sl = storeitems.length; si < sl; si += 1) {
+    //     itemsFrom.push(storeitems[si].name);
+    //   }
+    //   self.updateSwapSelect(container, itemsFrom);
+    // }, function(e) {
+    //   self.showAlert('error', '<strong>Error loading Store Items</strong> ' + e);
+    // });
 
     // this.models.group.list(function(res) {
     //   Log.append('Group list OK.');
@@ -405,11 +405,12 @@ Admin.Users.Controller = Controller.extend({
     });
     var roles = rolesArr.length > 0 ? rolesArr.join(', ') : null;
 
-    var storeitemsArr = [];
-    $('#create_user_storeitem_swap .swap-to option', this.views.user_create).each(function (i, item) {
-      storeitemsArr.push($(item).text());
-    });
-    var storeitems = storeitemsArr.length > 0 ? storeitemsArr.join(', ') : null;
+    // var storeitemsArr = [];
+    // $('#create_user_storeitem_swap .swap-to option', this.views.user_create).each(function (i, item) {
+    //   storeitemsArr.push($(item).text());
+    // });
+    // var storeitems = storeitemsArr.length > 0 ? storeitemsArr.join(', ') : null;
+    var storeitems = null;
 
     // var groupsArr = [];
     // $('#create_user_group_swap .swap-to option', this.views.user_create).each(function (i, item) {
