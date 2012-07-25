@@ -19,9 +19,6 @@ Admin.Authpolicy.Controller = Controller.extend({
     "policies_update": "#auth_policies_update"
   },
 
-  form_template: ['<form class="well">', '<h3>%ACTION_CAP% an Authentication Policy</h3>', '<p>Here you can %ACTION% an authentication policy which can be used by your applications.</p>', '<br/>', '<label>Policy Id</label>', '<input id="policy_id" type="text" class="span6" placeholder="Policy Id">', '<label>Type</label>', '<label class="select">', '<select class="" id="policy_type">', '<option value="oauth2" selected="selected"> oAuth2 </option>', '<option value="ldap"> LDAP </option>', '</select>', '</label>', '<div id="oauth2_div">', '<label>Provider</label>', '<label class="select">', '<select id="policy_conf_provider">', '<option value="google">Google</option>', '</select>', '</label>', '<label>Client Id</label>', '<input id="client_id" type="text" class="span6" placeholder="Client Id (provided by Oauth service (ie Google etc...))">', '<label>Client Secret</label>', '<input id="client_secret" type="text" class="span6" placeholder="Client Secret (provided by Oauth service (ie Google etc...))">', '<label>Oauth Callback Url (Note* this should be added as the oauth callback url on the provider side i.e Google)</label>', '<input id="oauth_callback" type="text" class="span6" disabled="disabled"></div>', '<div id="ldap_div">', '<label>Authentication Method</label>', '<label class="select">', '<select id="authmethod_id">', '<option value="simple">Simple</option>', '<option value="DIGEST-MD5">Digest MD5 (SASL)</option>', '<option value="CRAM-MD5">CRAM MD5 (SASL)</option>', '<option value="GSSAPI">GSSAPI (Kerberos)</option>', '</select>', '</label>','<label>Distinguished Name (dn) prefix</label>', '<input id="dn_prefix_id" type="text" class="span6" placeholder="normally \'uid\' or \'cn\'">','<label>Distinguished Name (dn) </label>','<input id="dn_id" type="text" class="span6" placeholder="e.g. ou=people,dc=example,dc=com">', '</div>', '<label class="checkbox">','<input type="checkbox" id="require_user_id">Ensure User exists?</label>', '<input type="hidden" name="guid" id="guid" value=""/>', '<button type="button" class="btn btn-primary edit_policy_btn">%ACTION_CAP% Policy</button>', '</form>'],
-
-
   policy_table: null,
 
   hide: function() {
@@ -40,7 +37,7 @@ Admin.Authpolicy.Controller = Controller.extend({
       self.renderUserTable(data);
       self.bindUserControls();
     }, function(err) {
-      Log.append('Error showing users');
+      Log.append('Error showing policies');
     }, true);
   },
 
@@ -118,30 +115,52 @@ Admin.Authpolicy.Controller = Controller.extend({
     }
 
     var bindEvent = function() {
-        $(view).find('.edit_policy_btn').unbind().click(function() {
+      if (action === 'update') {
+        $(view).find('#update_policy_btn').unbind().click(function() {
+          self.createPolicy(action); // TODO - make separate updatePolicy
+          return false;
+        });
+      }else {
+        $(view).find('#create_policy_btn').unbind().click(function() {
           self.createPolicy(action);
           return false;
         });
-      };
+      }
+    };
 
     var bindPolicyTypeEvent = function() {
-        $(view).find('#policy_type').unbind().change(function(e) {
-          var type = $('#policy_type').val();
+      if (action === 'update') {
+        $(view).find('#update_policy_type').unbind().change(function(e) {
+          var type = $('#update_policy_type').val();
           if (type === 'oauth2') {
-            $('#oauth2_div').show();
-            $('#ldap_div').hide();
+            $('#update_oauth2_div').show();
+            $('#update_ldap_div').hide();
           }else {
-            $('#oauth2_div').hide();
-            $('#ldap_div').show();
+            $('#update_oauth2_div').hide();
+            $('#update_ldap_div').show();
+          }
+          return false;
+        });    
+      }else {
+        $(view).find('#create_policy_type').unbind().change(function(e) {
+          var type = $('#create_policy_type').val();
+          if (type === 'oauth2') {
+            $('#create_oauth2_div').show();
+            $('#create_ldap_div').hide();
+          }else {
+            $('#create_oauth2_div').hide();
+            $('#create_ldap_div').show();
           }
           return false;
         });
-      };
+      }
+    };
 
     var readPolicy = function(id) {
         self.models.policy.read(id, function(res) {
           self.hide();
-          $(view).empty().append($(self.getFormTemplate(action)).clone());
+          self.container = view;
+          //$(view).empty().append($(self.getFormTemplate(action)).clone());
           self.showEditPolicy(res);
           $(view).show();
           bindEvent();
@@ -156,10 +175,11 @@ Admin.Authpolicy.Controller = Controller.extend({
     } else {
       self.models.policy.getConfig(function(conf) {
         self.hide();
-        $(view).empty().append($(self.getFormTemplate(action)).clone());
-        $('#oauth_callback', self.views.policies_create).val(conf.url);
-        $('#oauth2_div', self.views.policies_create).show();
-        $('#ldap_div', self.views.policies_create).hide();
+        //$(view).empty().append($(self.getFormTemplate(action)).clone());
+        self.container = view;
+        $('#create_oauth_callback', self.views.policies_create).val(conf.url);
+        $('#create_oauth2_div', self.views.policies_create).show();
+        $('#create_ldap_div', self.views.policies_create).hide();
         $(view).show();
         bindEvent();
         bindPolicyTypeEvent();                       
@@ -233,24 +253,24 @@ console.log(id);
     if (policy) {
       action = "update";
       acting = "Updating";
-      $('#guid', self.views.policies_update).val(policy.guid);
-      $('#policy_id', self.views.policies_update).val(policy.policyId).attr("disabled", "true");
-      $('#policy_type', self.views.policies_update).val(policy.policyType);   
-      $('#require_user_id', self.views.policies_update).prop("checked", policy.requireUser === true);
+      $('#update_guid', self.views.policies_update).val(policy.guid);
+      $('#update_policy_id', self.views.policies_update).val(policy.policyId).attr("disabled", "true");
+      $('#update_policy_type', self.views.policies_update).val(policy.policyType);   
+      $('#update_require_user_id', self.views.policies_update).prop("checked", policy.requireUser === true);
 
       if (policy.policyType === 'oauth2') {
-        $('#oauth2_div', self.views.policies_update).show();
-        $('#ldap_div', self.views.policies_update).hide();
-        $('#policy_conf_provider', self.views.policies_update).val(policy.configurations.provider);
-        $('#client_id', self.views.policies_update).val(policy.configurations.clientId);
-        $('#client_secret', self.views.policies_update).val(policy.configurations.clientSecret);
-        $('#oauth_callback', self.views.policies_update).val(policy.configurations.callbackUrl);
+        $('#update_oauth2_div', self.views.policies_update).show();
+        $('#update_ldap_div', self.views.policies_update).hide();
+        $('#update_policy_conf_provider', self.views.policies_update).val(policy.configurations.provider);
+        $('#update_client_id', self.views.policies_update).val(policy.configurations.clientId);
+        $('#update_client_secret', self.views.policies_update).val(policy.configurations.clientSecret);
+        $('#update_oauth_callback', self.views.policies_update).val(policy.configurations.callbackUrl);
       } else if (policy.policyType === 'ldap') {
-        $('#oauth2_div', self.views.policies_update).hide();
-        $('#ldap_div', self.views.policies_update).show();
-        $('#authmethod_id', self.views.policies_update).val(policy.configurations.authmethod);
-        $('#dn_prefix_id', self.views.policies_update).val(policy.configurations.dn_prefix);
-        $('#dn_id', self.views.policies_update).val(policy.configurations.dn);
+        $('#update_oauth2_div', self.views.policies_update).hide();
+        $('#update_ldap_div', self.views.policies_update).show();
+        $('#update_authmethod_id', self.views.policies_update).val(policy.configurations.authmethod);
+        $('#update_dn_prefix_id', self.views.policies_update).val(policy.configurations.dn_prefix);
+        $('#update_dn_id', self.views.policies_update).val(policy.configurations.dn);
       }
     }
   },
@@ -258,36 +278,52 @@ console.log(id);
   createPolicy: function(action) {
     var self = this;
     var view = self.views.policies_create;
+    var guid, id, type, provider, requireUser, conf;
     if (action == "update") {
-      view = self.views.policies_update;
-    }
-    var guid = $('#guid', view).val() === "" ? undefined : $('#guid', view).val();
-    var id = $('#policy_id', view).val();
-    var type = $('#policy_type', view).val();
-    var provider = $('#policy_conf_provider', view).val();
-    var requireUser = $('#require_user_id', view).prop("checked");
-    var conf;
-    if (type === 'oauth2') {          
-      var clientId = $('#client_id', view).val();
-      var clientSecret = $('#client_secret', view).val();
-      var callbackUrl = $('#oauth_callback', view).val();
+      view = self.views.policies_update;    
 
-      conf = {
-        "provider": provider,
-        "clientId": clientId,
-        "clientSecret": clientSecret,
-        "callbackUrl": callbackUrl
-      };
-    }else if (type === 'ldap') {
-      var authmethod = $('#authmethod_id', view).val();
-      var dn_prefix = $('#dn_prefix_id', view).val();
-      var dn = $('#dn_id', view).val();
+      guid = $('#update_guid', view).val() === "" ? undefined : $('#update_guid', view).val();
+      id = $('#update_policy_id', view).val();
+      type = $('#update_policy_type', view).val();
+      provider = $('#update_policy_conf_provider', view).val();
+      requireUser = $('#update_require_user_id', view).prop("checked");
+    
+      if (type === 'oauth2') {          
+        conf = {
+          "provider": provider,
+          "clientId": $('#update_client_id', view).val(),
+          "clientSecret": $('#update_client_secret', view).val(),
+          "callbackUrl": $('#update_oauth_callback', view).val()
+        };
+      }else if (type === 'ldap') {
+        conf = {
+          "authmethod": $('#update_authmethod_id', view).val(),
+          "dn_prefix": $('#update_dn_prefix_id', view).val(),
+          "dn": $('#update_dn_id', view).val()
+        };
+      }
+    }else {
+      view = self.views.policies_create;
 
-      conf = {
-        "authmethod": authmethod,
-        "dn_prefix": dn_prefix,
-        "dn": dn
-      };
+      id = $('#create_policy_id', view).val();
+      type = $('#create_policy_type', view).val();
+      provider = $('#create_policy_conf_provider', view).val();
+      requireUser = $('#create_require_user_id', view).prop("checked");
+    
+      if (type === 'oauth2') {          
+        conf = {
+          "provider": provider,
+          "clientId": $('#create_client_id', view).val(),
+          "clientSecret": $('#create_client_secret', view).val(),
+          "callbackUrl": $('#create_oauth_callback', view).val()
+        };
+      }else if (type === 'ldap') {
+        conf = {
+          "authmethod": $('#create_authmethod_id', view).val(),
+          "dn_prefix": $('#create_dn_prefix_id', view).val(),
+          "dn": $('#create_dn_id', view).val()
+        };
+      }
     }
 
     function onSuccess(res) {
@@ -307,10 +343,5 @@ console.log(id);
     }else {
       this.models.policy.create(id, type, conf, requireUser, onSuccess, onFailure); 
     }
-  },
-
-  getFormTemplate: function(act) {
-    var template = this.form_template.join('').replace(/%ACTION%/g, act).replace(/%ACTION_CAP%/g, act.charAt(0).toUpperCase() + act.slice(1));
-    return template;
   }
 });
