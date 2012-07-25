@@ -1,30 +1,27 @@
 model.ArmAuthPolicy = model.Model.extend({
   // Model config
-  config:{},
+  config: {},
 
-  baseUrl:Constants.ARM_URL_PREFIX + "policy",
+  baseUrl: Constants.ARM_URL_PREFIX + "policy",
 
   // Field config
-  field_config:[
-    {
-      field_name:"policyId",
-      editable:false,
-      showable:true,
-      column_title:"Policy Id"
-    },
-    {
-      field_name:"policyType",
-      editable:true,
-      showable:true,
-      column_title:"Type"
-    }
-  ],
+  field_config: [{
+    field_name: "policyId",
+    editable: false,
+    showable: true,
+    column_title: "Policy Id"
+  }, {
+    field_name: "policyType",
+    editable: true,
+    showable: true,
+    column_title: "Type"
+  }],
 
-  init:function () {
+  init: function() {
 
   },
 
-  create:function (policyId, policyType, configurations, users, success, fail) {
+  create: function(policyId, policyType, configurations, users, success, fail) {
     var params = {};
     params.policyId = policyId;
     params.policyType = policyType;
@@ -35,7 +32,7 @@ model.ArmAuthPolicy = model.Model.extend({
   },
 
 
-  update:function (policyId, policyType, configurations, users, success, fail) {
+  update: function(policyId, policyType, configurations, users, success, fail) {
     var params = {};
     params.policyId = policyId;
     params.policyType = policyType;
@@ -45,18 +42,20 @@ model.ArmAuthPolicy = model.Model.extend({
     return this.serverPost(url, params, success, fail);
   },
 
-  list:function (success, fail) {
+  list: function(success, fail, post_process) {
     var url = this.baseUrl + "/list";
-    return this.serverPost(url, {}, success, fail, false, this.postProcessList, this);
+    return this.serverPost(url, {}, success, fail, false, post_process, this);
   },
 
-  read:function (policyId, success, fail) {
-    var params = {policyId:policyId};
+  read: function(policyId, success, fail) {
+    var params = {
+      policyId: policyId
+    };
     var url = this.baseUrl + "/read";
     return this.serverPost(url, params, success, fail);
   },
 
-  getConfig:function (success, fail) {
+  getConfig: function(success, fail) {
     var url = Constants.ARM_URL_PREFIX + "getAuthCallbackUrl";
     return this.serverPost(url, {}, success, fail);
   }
