@@ -53,7 +53,7 @@ model.ArmAuthPolicy = model.Model.extend({
  
   list: function(success, fail, post_process) {
     var url = this.baseUrl + "/list";
-    return this.serverPost(url, {}, success, fail, false, post_process, this);
+    return this.serverPost(url, {}, success, fail, post_process, this.postProcessList, this);
   },
 
   read: function(policyId, success, fail) {
