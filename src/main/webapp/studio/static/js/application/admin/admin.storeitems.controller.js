@@ -124,11 +124,14 @@ Admin.Storeitems.Controller = Controller.extend({
 
   bindBinaryUploads: function(store_item) {
     var self = this;
+
+    // TODO: Oh god make this generic.
+
     // Bind Binary upload fields
-    var icon_upload_field = $('.store_item_icon', self.views.store_item_update);
+    var icon_upload_field = $('#icon_binary', self.views.store_item_update);
     var icon_upload_status_area = $('.store_item_icon_status', self.views.store_item_update);
     var icon_progress = $('.store_item_icon_progress', self.views.store_item_update);
-    icon_upload_field.fileupload({
+    icon_upload_field.unbind().fileupload({
       url: Constants.ADMIN_STORE_ITEM_UPLOAD_BINARY_URL,
       dataType: 'json',
       replaceFileInput: false,
@@ -140,10 +143,15 @@ Admin.Storeitems.Controller = Controller.extend({
         value: 'icon'
       }],
       add: function(e, data) {
-        icon_upload_status_area.text('Uploading...');
-        icon_upload_status_area.slideDown();
-        icon_progress.slideDown();
-        data.submit();
+        // Need to check the event target ID to get around a strange bug
+        // If files are dropped onto an input, all of them call this add callback
+        // so you need to find out if the event correlates to this particular field
+        if (e.target.id === 'icon_binary') {
+          icon_upload_status_area.text('Uploading...');
+          icon_upload_status_area.slideDown();
+          icon_progress.slideDown();
+          data.submit();
+        }
       },
       done: function(e, data) {
         var filename = data.files[0].name;
@@ -155,6 +163,44 @@ Admin.Storeitems.Controller = Controller.extend({
       progressall: function(e, data) {
         var progress = parseInt(data.loaded / data.total * 100, 10);
         $('.bar', icon_progress).css('width', progress + '%');
+      }
+    });
+
+    var android_upload_field = $('#android_binary', self.views.store_item_update);
+    var android_upload_status_area = $('.store_item_binary_android_status', self.views.store_item_update);
+    var android_upload_progress = $('.store_item_binary_android_progress', self.views.store_item_update);
+    android_upload_field.unbind().fileupload({
+      url: Constants.ADMIN_STORE_ITEM_UPLOAD_BINARY_URL,
+      dataType: 'json',
+      replaceFileInput: false,
+      formData: [{
+        name: 'guid',
+        value: store_item.guid
+      }, {
+        name: 'type',
+        value: 'storeitem'
+      }, {
+        name: 'destination',
+        value: 'android'
+      }],
+      add: function(e, data) {
+        if (e.target.id === 'android_binary') {
+          android_upload_status_area.text('Uploading...');
+          android_upload_status_area.slideDown();
+          android_upload_progress.slideDown();
+          data.submit();
+        }
+      },
+      done: function(e, data) {
+        var filename = data.files[0].name;
+        android_upload_status_area.text('Uploaded ' + filename);
+        setTimeout(function() {
+          android_upload_progress.slideUp();
+        }, 500);
+      },
+      progressall: function(e, data) {
+        var progress = parseInt(data.loaded / data.total * 100, 10);
+        $('.bar', android_upload_progress).css('width', progress + '%');
       }
     });
   },

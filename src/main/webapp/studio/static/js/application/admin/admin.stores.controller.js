@@ -20,14 +20,21 @@ Admin.Stores.Controller = Controller.extend({
   },
 
   show: function() {
-    // TODO: Check App Store existence (read automatically creates Store if it doesn't exist)
-    var store_exists = false;
-    this.showAppStoreUpdate();
+    var self = this;
+    this.models.app_store.read(function(res) {
+      self.showAppStoreUpdate(res);
+    }, function() {
+      log("Error loading App Store");
+    });
   },
 
 
-  showAppStoreUpdate: function() {
+  showAppStoreUpdate: function(store) {
     this.hide();
-    $(this.views.app_store).show();
+    var container = $(this.views.app_store);
+    $('.store_name', container).val(store.name);
+    $('.store_description', container).val(store.description);
+
+    container.show();
   }
 });
