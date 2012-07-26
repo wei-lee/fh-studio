@@ -3307,3 +3307,7 @@ table.dataTable th:active {
   display: inline-block;
   text-align: center;
 }
+
+.store_item_binaries_table td {
+  line-height: 28px;
+}

@@ -269,7 +269,7 @@ Admin.Storeitems.Controller = Controller.extend({
       var binaries = store_item.binaries;
 
       // No uploaded binaries
-      if (binaries.length == 0) {
+      if (binaries.length === 0) {
         return false;
       }
 
