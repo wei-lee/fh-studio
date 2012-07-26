@@ -22,18 +22,27 @@ Admin.Stores.Controller = Controller.extend({
 
   show: function() {
     var self = this;
-    self.models.app_store.read(function(res) {
-      self.models.store_item.list(function(res) {
-        var store_items = res.list;
+    self.models.app_store.read(function(app_store_res) {
+      $('.store_guid', self.views.app_store).val(app_store_res.guid);
+      self.models.store_item.list(function(store_items_res) {
+        var store_items = store_items_res.list;
         self.renderAvailableStoreItems(store_items, self.views.app_store);
-        self.bindSwapSelect(self.views.app_store);
-        self.showAppStoreUpdate(res);
+        self.bind();
+        self.showAppStoreUpdate(app_store_res);
       }, function(err) {
         console.error(err);
       }, true);
-
     }, function() {
       log("Error loading App Store");
+    });
+  },
+
+  bind: function() {
+    var self = this;
+    self.bindSwapSelect(self.views.app_store);
+    $('.update_app_store', self.views.app_store).unbind().click(function(e){
+      self.updateAppStore();
+      return false;
     });
   },
 
@@ -48,12 +57,22 @@ Admin.Stores.Controller = Controller.extend({
     });
   },
 
+  updateAppStore: function() {
+    var guid = $('.store_guid', this.views.app_store).val();
+    var name = $('.store_name', this.views.app_store).val();
+    var description  = $('.store_description', this.views.app_store).val();
+    this.models.app_store.update(guid, name, description, function(res) {
+      console.log(res);
+    }, function(err) {
+      console.error(err);
+    }, true);
+  },
+
   showAppStoreUpdate: function(store) {
     this.hide();
     var container = $(this.views.app_store);
     $('.store_name', container).val(store.name);
     $('.store_description', container).val(store.description);
-
     container.show();
   }
 });
