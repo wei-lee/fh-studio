@@ -28,6 +28,15 @@ Admin.Storeitems.Controller = Controller.extend({
     });
   },
 
+  setStoreIcon: function(data) {
+    var icon = $('.store_item_icon', this.views.admin_store_item_update);
+    if (data !== '') {
+      icon.attr('src', 'data:image/png;base64,' + data);
+    } else {
+      icon.attr('src', '/studio/static/themes/default/img/store_no_icon.png');
+    }
+  },
+
   showStoreItems: function() {
     var self = this;
     this.hide();
@@ -99,6 +108,8 @@ Admin.Storeitems.Controller = Controller.extend({
   showUpdateStoreItem: function(store_item) {
     var self = this;
     this.hide();
+
+    self.setStoreIcon(store_item.icon);
 
     this.models.auth_policy.list(function(res) {
       var update_view = $(self.views.store_item_update);
@@ -244,6 +255,9 @@ Admin.Storeitems.Controller = Controller.extend({
           var filename = data.files[0].name;
           status.text('Uploaded ' + filename);
           status_el.text('Uploaded').removeClass('label-inverse').addClass('label-success');
+
+          // Set icon
+          self.setStoreIcon(data.result.icon);
           setTimeout(function() {
             progress_bar.slideUp();
             status.slideUp();
