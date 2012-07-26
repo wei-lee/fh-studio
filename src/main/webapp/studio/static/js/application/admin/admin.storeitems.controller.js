@@ -19,9 +19,6 @@ Admin.Storeitems.Controller = Controller.extend({
 
   show: function(e) {
     var self = this;
-    // $.each(this.views, function(k, v) {
-    //   self.resetForm($(v), true);
-    // });
     this.showStoreItems();
   },
 
