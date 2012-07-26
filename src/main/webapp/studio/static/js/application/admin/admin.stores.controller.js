@@ -58,14 +58,26 @@ Admin.Stores.Controller = Controller.extend({
   },
 
   updateAppStore: function() {
-    var guid = $('.store_guid', this.views.app_store).val();
-    var name = $('.store_name', this.views.app_store).val();
-    var description  = $('.store_description', this.views.app_store).val();
-    this.models.app_store.update(guid, name, description, function(res) {
+    var container = this.views.app_store;
+    var guid = $('.store_guid', container).val();
+    var name = $('.store_name', container).val();
+    var description  = $('.store_description', container).val();
+    var store_items = this._selectedStoreItems(container);
+
+    this.models.app_store.update(guid, name, description, store_items, function(res) {
       console.log(res);
     }, function(err) {
       console.error(err);
     }, true);
+  },
+
+  _selectedStoreItems: function(container) {
+    var store_item_options = $('.app_store_store_items_assigned option', container);
+    var items = [];
+    store_item_options.each(function(i, item) {
+      items.push($(item).val());
+    });
+    return items;
   },
 
   showAppStoreUpdate: function(store) {

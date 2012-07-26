@@ -11,12 +11,13 @@ model.AppStore = model.Model.extend({
     return this.serverPost(url, params, success, fail);
   },
 
-  update: function(guid, name, description, success, fail) {
+  update: function(guid, name, description, store_items, success, fail) {
     var url = Constants.ADMIN_APP_STORE_UPDATE_URL;
     var params = {
       guid: guid,
       name: name,
-      description: description
+      description: description,
+      store_items: store_items
     };
     return this.serverPost(url, params, success, fail, true);
   }
