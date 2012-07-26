@@ -159,6 +159,30 @@ Admin.Storeitems.Controller = Controller.extend({
         name: 'destination',
         value: 'iphone'
       }]
+    }, {
+      id: 'ipad_binary',
+      params: [{
+        name: 'guid',
+        value: store_item.guid
+      }, {
+        name: 'type',
+        value: 'storeitem'
+      }, {
+        name: 'destination',
+        value: 'ipad'
+      }]
+    }, {
+      id: 'ios_binary',
+      params: [{
+        name: 'guid',
+        value: store_item.guid
+      }, {
+        name: 'type',
+        value: 'storeitem'
+      }, {
+        name: 'destination',
+        value: 'ios'
+      }]
     }];
 
     $.each(binaries, function(i, binary) {
