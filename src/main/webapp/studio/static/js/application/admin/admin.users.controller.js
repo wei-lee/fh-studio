@@ -650,7 +650,7 @@ Admin.Users.Controller = Controller.extend({
   enableUser: function () {
     var self = this;
     self.showBooleanModal('Are you sure you want to enable this User?', function () {
-      self.changeBooleanField('enabled', true, 'Enabling', function () {
+      self.changeBooleanField('enabled', true, 'Enabling User', function () {
         self.setUserEnabled(true);
       });
     });
@@ -659,7 +659,7 @@ Admin.Users.Controller = Controller.extend({
   disableUser: function () {
     var self = this;
     self.showBooleanModal('Are you sure you want to disable this user? This user will no longer be able to authenticate.', function () {
-      self.changeBooleanField('enabled', false, 'Disabling', function () {
+      self.changeBooleanField('enabled', false, 'Disabling User', function () {
         self.setUserEnabled(false);
       });
     });
@@ -668,7 +668,7 @@ Admin.Users.Controller = Controller.extend({
   blacklistUser: function () {
     var self = this;
     self.showBooleanModal('Are you sure you want to mark this User for data purge? (In supported apps, data will be purged at next login.)', function () {
-      self.changeBooleanField('blacklisted', true, 'Marking for Data Purge', function () {
+      self.changeBooleanField('blacklisted', true, 'Marking User for Data Purge', function () {
         self.setUserBlacklisted(true);
       });
     });
@@ -677,7 +677,7 @@ Admin.Users.Controller = Controller.extend({
   whitelistUser: function () {
     var self = this;
     self.showBooleanModal('Are you sure you want to unmark this User for data purge?', function () {
-      self.changeBooleanField('blacklisted', false, 'Unmarking for Data Purge', function () {
+      self.changeBooleanField('blacklisted', false, 'Unmarking User for Data Purge', function () {
         self.setUserBlacklisted(false);
       });
     });
