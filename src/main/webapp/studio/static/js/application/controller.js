@@ -86,18 +86,22 @@ var Controller = Class.extend({
   },
 
   // resets all form elements (inputs etc..) in the given container
-  resetForm: function (container) {
+  resetForm: function (container, enable) {
     $('input[type=text],input[type=email],input[type=password]', container).val('');
     $('input[type=checkbox]', container).removeAttr('checked');
-    $('input,select,button', container).attr('disabled', 'disabled');
+    if (!enable) {
+      $('input,select,button', container).attr('disabled', 'disabled');
+    }
     this.clearSwapSelects(container);
   },
 
   destroyProgressModal: function () {
-    this.progressModal.modal('hide');
+    var self = this;
+
+    self.progressModal.modal('hide');
     setTimeout(function(){
-      this.progressModal.remove();
-      this.progressModal = null;
+      self.progressModal.remove();
+      self.progressModal = null;
     }, 2000);
   },
 

@@ -30,6 +30,7 @@ Admin.Users.Controller = Controller.extend({
   },
 
   show: function (e) {
+    // TODO: stateful restore i.e. $fw.state
     this.showUsersList();
   },
 
@@ -464,67 +465,100 @@ Admin.Users.Controller = Controller.extend({
     var groups = null;
     var fileField = form.find('#import_users_file');
 
+    var title = "Importing Users";
+    var message = "Import Progress";
+    var import_progress = 0;
 
-    self.showAlert('info', '<strong>Importing Users</strong>');
+    // we're allowing from 0 to 10 for file upload
+    // and 11 to 100 for the progress of the import task
+    // server responds with 0 to 100 for how far it's done
+    // so need calculate a relative percent
+    var rangeStart = 11;
+    var rangeEnd = 100;
+    var multiplier = (rangeEnd - rangeStart) / 100;
 
-    $('#generic_progress_modal').clone()
-      .find('h3').text('Importing Users').end()
-      .appendTo($("body")).one('shown', function () {
+    self.showProgressModal(title, message, function () {
+      self.clearProgressModal();
+      self.appendProgressLog('Uploading file.');
 
-      }).modal();
+      self.models.user.imports(invite, roles, groups, fileField, function(data) {
+        // file upload success
+        var res = data.result;
+        if (res.cachekey != null) {
+          var cachekey = res.cachekey;
+          self.appendProgressLog('File uploaded.');
 
-    self.models.user.imports(invite, roles, groups, fileField, function(data) {
-      var res = data.result;
-        self.showProgressModal(res.cachekey, {
-          title: 'Generating Your App',
-          initLog: 'We\'re generating your app...',
-          timeout: function(res) {
-            console.log('timeout error > ' + JSON.stringify(res));
-            $fw.client.dialog.error($fw.client.lang.getLangString('scm_trigger_error'));
-            self.updateProgressModalBar(100);
-            if (typeof fail != 'undefined') {
-              fail();
-            }
-          },
-          update: function(res) {
-            for (var i = 0; i < res.log.length; i++) {
-              console.log(res.log[i]);
-              if (typeof res.action.guid != 'undefined') {
-                new_guid = res.action.guid;
-                console.log('GUID for new app > ' + new_guid);
+          import_progress = 10;
+          self.updateProgressBar(import_progress);
+
+          // Poll cacheKey
+          var import_task = new ASyncServerTask({
+            cacheKey: cachekey
+          }, {
+            updateInterval: Properties.cache_lookup_interval,
+            maxTime: Properties.cache_lookup_timeout,
+            // 5 minutes
+            maxRetries: Properties.cache_lookup_retries,
+            timeout: function(res) {
+              console.log('timeout error > ' + JSON.stringify(res));
+              var msg = 'Importing timed out (' + Properties.cache_lookup_timeout + ')';
+              self.appendProgressLog(msg);
+              self.showAlert('error', '<strong>Error importing Users</strong> ');
+            },
+            update: function(res) {
+              for (var i = 0; i < res.log.length; i++) {
+                console.log(res.log[i]);
+                self.appendProgressLog(res.log[i]);
+                console.log("Current progress> " + import_progress);
               }
-              self.appendProgressModalLog(res.log[i], modal);
-              console.log("Current progress> " + self.current_progress);
+              import_progress = Math.floor(res.progress * multiplier) + rangeStart;
+              self.updateProgressBar(import_progress);
+            },
+            complete: function(res) {
+              import_progress = 100;
+              self.updateProgressBar(import_progress);
+              self.showUsersList();
+              self.showAlert('success', '<strong>Successfully imported Users</strong>');
+            },
+            error: function(res) {
+              console.log('import error > ' + JSON.stringify(res));
+              self.appendProgressLog(res.error);
+              self.showAlert('error', '<strong>Error importing Users</strong> ' + res.error);
+            },
+            retriesLimit: function() {
+              console.log('retriesLimit exceeded: ' + Properties.cache_lookup_retries);
+              var msg = 'Unable to track import progress (retry limit exceeded (' + Properties.cache_lookup_retries + '))';
+              self.appendProgressLog(msg);
+              self.showAlert('error', '<strong>Error importing Users</strong> ' + msg);
+            },
+            end: function() {
+              setTimeout(function () {
+                self.destroyProgressModal();
+              }, 1000);
             }
-            self.updateProgressModalBar(self.current_progress + 1);
-          },
-          complete: function(res) {
-            console.log('SCM refresh successful > ' + JSON.stringify(res));
-            self.updateProgressModalBar(75);
-          },
-          error: function(res) {
-            console.log('clone error > ' + JSON.stringify(res));
-            $fw.client.dialog.error('App generation failed.' + "<br /> Error Message:" + res.error);
-            self.updateProgressModalBar(100);
-            if (typeof fail != 'undefined') {
-              fail();
-            }
-          },
-          retriesLimit: function() {
-            console.log('retriesLimit exceeded: ' + Properties.cache_lookup_retries);
-            $fw.client.dialog.error('App generation failed.');
-            self.updateProgressModalBar(100);
-            if (typeof fail != 'undefined') {
-              fail();
-            }
-          },
-          end: function(guid, modal) {
-            self.showUsersList();
-            self.showAlert('success', '<strong>Successfully imported Users</strong>');
-          }
-        });
-    }, function(e) {
-      self.showAlert('error', '<strong>Error importing Users</strong> ' + e);
+          });
+          import_task.run();
+        } else {
+          var msg = 'Unable to track import progress (cachekey missing)';
+          self.showAlert('error', '<strong>Error importing Users</strong> ' + msg);
+          setTimeout(function () {
+            self.destroyProgressModal();
+          }, 1000);
+        }
+      }, function (data) {
+        // file upload failed
+        var msg = data.result;
+        self.appendProgressLog(msg);
+        self.showAlert('error', '<strong>Error importing Users</strong> ' + msg);
+        setTimeout(function () {
+          self.destroyProgressModal();
+        }, 1000);
+      }, function (data) {
+        // progress update on file upload
+        // max of 10% for file upload
+        import_progress = ((data.loaded/data.total) * 10);
+        self.updateProgressBar(import_progress);
+      });
     });
   },
 
@@ -573,12 +607,12 @@ Admin.Users.Controller = Controller.extend({
       $('#update_user_enabled').attr('checked', 'checked');
       $('.enable_user_button').text('Disable User').unbind().on('click', function () {
         self.disableUser();
-      });
+      }).closest('.control-group').find('.control-label').text('Enabled');
     } else {
       $('#update_user_enabled').removeAttr('checked');
       $('.enable_user_button').text('Enable User').unbind().on('click', function () {
         self.enableUser();
-      });
+      }).closest('.control-group').find('.control-label').text('Disabled');
     }
   },
 
@@ -586,14 +620,14 @@ Admin.Users.Controller = Controller.extend({
     var self = this;
     if (blacklisted) {
       $('#update_user_blacklisted').attr('checked', 'checked');
-      $('.blacklist_user_button').text('Whitelist User').unbind().on('click', function () {
+      $('.blacklist_user_button').text('Unmark for Data Purge').unbind().on('click', function () {
         self.whitelistUser();
-      });
+      }).closest('.control-group').find('.control-label').text('Marked for Data Purge');
     } else {
       $('#update_user_blacklisted').removeAttr('checked');
-      $('.blacklist_user_button').text('Blacklist User').unbind().on('click', function () {
+      $('.blacklist_user_button').text('Mark for Data Purge').unbind().on('click', function () {
         self.blacklistUser();
-      });
+      }).closest('.control-group').find('.control-label').text('Not Marked for Data Purge');
     }
   },
 
@@ -616,7 +650,7 @@ Admin.Users.Controller = Controller.extend({
   enableUser: function () {
     var self = this;
     self.showBooleanModal('Are you sure you want to enable this User?', function () {
-      self.changeBooleanField('enabled', true, 'Enabling', function () {
+      self.changeBooleanField('enabled', true, 'Enabling User', function () {
         self.setUserEnabled(true);
       });
     });
@@ -625,7 +659,7 @@ Admin.Users.Controller = Controller.extend({
   disableUser: function () {
     var self = this;
     self.showBooleanModal('Are you sure you want to disable this user? This user will no longer be able to authenticate.', function () {
-      self.changeBooleanField('enabled', false, 'Disabling', function () {
+      self.changeBooleanField('enabled', false, 'Disabling User', function () {
         self.setUserEnabled(false);
       });
     });
@@ -633,8 +667,8 @@ Admin.Users.Controller = Controller.extend({
 
   blacklistUser: function () {
     var self = this;
-    self.showBooleanModal('Are you sure you want to Blacklist this User? (In supported apps, data will be purged at next login.)', function () {
-      self.changeBooleanField('blacklisted', true, 'Blacklisting', function () {
+    self.showBooleanModal('Are you sure you want to mark this User for data purge? (In supported apps, data will be purged at next login.)', function () {
+      self.changeBooleanField('blacklisted', true, 'Marking User for Data Purge', function () {
         self.setUserBlacklisted(true);
       });
     });
@@ -642,8 +676,8 @@ Admin.Users.Controller = Controller.extend({
 
   whitelistUser: function () {
     var self = this;
-    self.showBooleanModal('Are you sure you want to Whitelist this User?', function () {
-      self.changeBooleanField('blacklisted', false, 'Whitelisting', function () {
+    self.showBooleanModal('Are you sure you want to unmark this User for data purge?', function () {
+      self.changeBooleanField('blacklisted', false, 'Unmarking User for Data Purge', function () {
         self.setUserBlacklisted(false);
       });
     });
@@ -657,14 +691,14 @@ Admin.Users.Controller = Controller.extend({
     };
     fields[boolField] = boolVal;
 
-    self.showAlert('info', '<strong>' + actionDesc + ' User</strong> (' + fields.username + ')');
+    self.showAlert('info', '<strong>' + actionDesc + '</strong> (' + fields.username + ')');
     self.models.user.update(fields, function(res) {
       console.log(actionDesc + ' User OK');
-      self.showAlert('success', '<strong>' + actionDesc + ' User successful</strong> (' + fields.username + ')');
+      self.showAlert('success', '<strong>' + actionDesc + ' successful</strong> (' + fields.username + ')');
       success();
     }, function(err) {
       console.log(err);
-      self.showAlert('error', '<strong>Error ' + actionDesc + ' User</strong> ' + err);
+      self.showAlert('error', '<strong>Error ' + actionDesc + '</strong> ' + err);
     });
   }
 });
