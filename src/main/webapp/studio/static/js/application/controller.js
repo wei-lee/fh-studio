@@ -96,10 +96,12 @@ var Controller = Class.extend({
   },
 
   destroyProgressModal: function () {
-    this.progressModal.modal('hide');
+    var self = this;
+
+    self.progressModal.modal('hide');
     setTimeout(function(){
-      this.progressModal.remove();
-      this.progressModal = null;
+      self.progressModal.remove();
+      self.progressModal = null;
     }, 2000);
   },
 

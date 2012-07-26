@@ -101,7 +101,7 @@ model.User = model.Model.extend({
   },
 
   // purposely called imports due to keyword 'import'
-  imports: function (invite, roles, groups, fileField, success, fail) {
+  imports: function (invite, roles, groups, fileField, success, fail, progress) {
     var url = Constants.ADMIN_USER_IMPORT_URL;
     var formData = [];
 
@@ -140,6 +140,7 @@ model.User = model.Model.extend({
       },
       progressall: function(e, data) {
         console.log(data);
+        progress(data);
       }
     });
 
