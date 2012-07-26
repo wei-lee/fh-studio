@@ -511,6 +511,11 @@
               <div class="controls">
                 <input type="file" id="icon_binary" class="input-xlarge"/>
                 <span class="help-inline">Icons should be 128x128, and in PNG format.</span>
+                <br/>
+                <div class="store_item_icon_progress progress progress-striped active" style="display: none">
+                  <div class="bar" style="width: 0%;"></div>
+                </div>
+                <span class="store_item_icon_status" style="display: none;"></span>
               </div>
             </div>
 
@@ -519,6 +524,11 @@
               <div class="controls">
                 <input type="file" id="android_binary" class="input-xlarge"/>
                 <span class="help-inline">An Android binary consists of an APK signed for distribution.</span>
+                <br/>
+                <div class="store_item_binary_android_progress progress progress-striped active" style="display: none">
+                  <div class="bar" style="width: 0%;"></div>
+                </div>
+                <span class="store_item_binary_android_status" style="display: none;"></span>
               </div>
             </div>
 
@@ -852,62 +862,8 @@
         </form>
       </div>
 
-       </div> <!-- oauth div -->
-
-       <div id="update_ldap_div">
-
-         <div class="control-group">
-           <label class="control-label">Authentication Method</label>
-           <label class="select">
-             <div class="controls">
-               <select id="update_authmethod_id">
-                 <option value="simple">Simple</option>
-                 <option value="DIGEST-MD5">Digest MD5 (SASL)</option>
-                 <option value="CRAM-MD5">CRAM MD5 (SASL)</option>
-                 <option value="GSSAPI">GSSAPI (Kerberos)</option>
-               </select>
-             </div>
-           </label>
-         </div>
-         
-         <div class="control-group">
-           <label class="control-label" for="update_dn_prefix_id">Distinguished Name (dn) Prefix</label>
-           <div class="controls">
-             <input id="update_dn_prefix_id" type="text" class="input-xxlarge" placeholder="normally 'uid' or 'cn'">
-           </div>
-         </div>
-
-         <div class="control-group">
-           <label class="control-label" for="update_dn_id">Distinguished Name (dn) </label>
-           <div class="controls">
-             <input id="update_dn_id" type="text" class="input-xxlarge" placeholder="e.g. ou=people,dc=example,dc=com">
-           </div>
-         </div>
-       </div>
-
-       <div class="control-group">
-         <label class="control-label" for="update_require_user_id">Ensure user exists?</label>
-         <div class="controls">
-           <input type="checkbox" class="input-xxlarge" id="update_require_user_id"/>
-         </div>
-       </div>
-       <input type="hidden" name="guid" id="update_guid" value=""/>
-       <button type="button" id="update_policy_btn" class="btn btn-primary">Update Policy</button>
-
-    </form>
-  </div>
-
+      </div>
     </div>
 
 </div>
-</div>
-
-
-<!-- Binary Upload progress template -->
-<div id="binary_upload_progress_template" class="hidden_template progress_area">
-  <br/>
-  <div class="progress progress-striped active">
-    <div class="bar" style="width: 0%;"></div>
-  </div>
-  <span class="status"></span>
 </div>
