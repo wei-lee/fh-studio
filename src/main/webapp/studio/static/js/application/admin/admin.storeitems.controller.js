@@ -126,6 +126,23 @@ Admin.Storeitems.Controller = Controller.extend({
     var self = this;
 
     // TODO: Oh god make this generic.
+    // Icon Upload
+    // <br/>
+    // <div class="store_item_icon_progress progress progress-striped active" style="display: none">
+    //   <div class="bar" style="width: 0%;"></div>
+    // </div>
+    // <span class="store_item_icon_status" style="display: none;"></span>
+
+    var binaries = [{
+      selector: '#icon_binary',
+      params: [{
+        name: 'guid',
+        value: store_item.guid
+      }, {
+        name: 'type',
+        value: 'icon'
+      }]
+    }];
 
     // Bind Binary upload fields
     var icon_upload_field = $('#icon_binary', self.views.store_item_update);
