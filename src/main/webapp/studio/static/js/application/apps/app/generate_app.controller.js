@@ -202,7 +202,10 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
   generateApp: function() {
     var self = this;
     var app_config = this.buildAppConfig();
-    self.showProgressModal(function () {
+    var title = "Generating Your App";
+    var message = "We're generating your app...";
+
+    self.showProgressModal(title, message, function () {
       self.clearProgressModal();
       self.appendProgressLog('Cloning Wufoo app template.');
 
@@ -229,7 +232,7 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
             // 5 minutes
             maxRetries: Properties.cache_lookup_retries,
             timeout: function(res) {
-              Log.append('timeout error > ' + JSON.stringify(res));
+              console.log('timeout error > ' + JSON.stringify(res));
               $fw.client.dialog.error($fw.client.lang.getLangString('scm_trigger_error'));
               self.updateProgressBar(100);
               if (typeof fail != 'undefined') {
@@ -238,22 +241,22 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
             },
             update: function(res) {
               for (var i = 0; i < res.log.length; i++) {
-                Log.append(res.log[i]);
+                console.log(res.log[i]);
                 if (typeof res.action.guid != 'undefined') {
                   new_guid = res.action.guid;
-                  Log.append('GUID for new app > ' + new_guid);
+                  console.log('GUID for new app > ' + new_guid);
                 }
                 self.appendProgressLog(res.log[i]);
-                Log.append("Current progress> " + self.current_progress);
+                console.log("Current progress> " + self.current_progress);
               }
               self.updateProgressBar(self.current_progress + 1);
             },
             complete: function(res) {
-              Log.append('SCM refresh successful > ' + JSON.stringify(res));
+              console.log('SCM refresh successful > ' + JSON.stringify(res));
               self.updateProgressBar(75);
             },
             error: function(res) {
-              Log.append('clone error > ' + JSON.stringify(res));
+              console.log('clone error > ' + JSON.stringify(res));
               $fw.client.dialog.error('App generation failed.' + "<br /> Error Message:" + res.error);
               self.updateProgressBar(100);
               if (typeof fail != 'undefined') {
@@ -261,7 +264,7 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
               }
             },
             retriesLimit: function() {
-              Log.append('retriesLimit exceeded: ' + Properties.cache_lookup_retries);
+              console.log('retriesLimit exceeded: ' + Properties.cache_lookup_retries);
               $fw.client.dialog.error('App generation failed.');
               self.updateProgressBar(100);
               if (typeof fail != 'undefined') {
@@ -275,7 +278,7 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
                   // Reset state back to the manage tab/build app
                   $fw_manager.state.set('manage_apps_accordion_accordion_item_manage', 'selected', 4);
                   $fw_manager.state.set('manage_apps_accordion_app', 'selected', 0);
-                  $fw_manager.client.app.doShowManage(guid);
+                  $fw_manager.client.app.doShowManage(new_guid);
                 }, 250);
               });
             }
@@ -355,13 +358,13 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
 
     // Create client config
     $fw.server.post(create_url, create_client_config_params, function(res) {
-      log('Client config created');
+      console.log('Client config created');
       // Create cloud config
       $fw.server.post(create_url, create_cloud_config_params, function(res) {
-        log('Cloud config created');
+        console.log('Cloud config created');
         // Update client & cloud config
         $fw.server.post(update_url, update_client_config_params, function(res) {
-          log('Configs updated');
+          console.log('Configs updated');
 
           self.appendProgressLog('Configuring your app.');
 
@@ -374,9 +377,6 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
       });
     });
   },
-
-  //.find('h3').text('Generating Your App').end()
-    //  .find('h4').text('We\'re generating your app...').end()
 
   selectedFormData: function() {
     var self = this;
@@ -533,7 +533,7 @@ GenerateApp.Controller = Class.extend({
       list_apps_layout.resizeAll();
       proto.Grid.resizeVisible();
     } catch (err) {
-      log("Couldn't resize layouts, elements probably not displaying right now");
+      console.log("Couldn't resize layouts, elements probably not displaying right now");
     }
   },
 

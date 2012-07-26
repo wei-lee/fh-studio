@@ -10,7 +10,7 @@ application.AndroidResourceManager = application.ResourceManager.extend({
    */
   bindGetStartedWizardSteps: function (wizard) {
     var that = this;
-    log('binding get started steps for android');
+    console.log('binding get started steps for android');
     
     wizard.validate({
       rules: {
@@ -20,7 +20,7 @@ application.AndroidResourceManager = application.ResourceManager.extend({
     
     // automatically generate key & cert when this step is shown
     wizard.find('#android_getstarted_generate').bind('show', function () {
-      log('generating android key & cert');
+      console.log('generating android key & cert');
       var step = $(this);
       var resources = $fw_manager.client.resource.android.getResources();
       var password = wizard.find('#android_key_password').val();
@@ -63,13 +63,13 @@ application.AndroidResourceManager = application.ResourceManager.extend({
       
       var resources = $fw_manager.client.resource.android.getResources();
       
-      log('android getstarted wizard finished');
+      console.log('android getstarted wizard finished');
       if (resources.private_key) {
-        log('have a private key, lets go back to the dashboard');
+        console.log('have a private key, lets go back to the dashboard');
         $fw_manager.client.resource.android.setupDestination();
       }
       else {
-        log('dont have a key yet, lets show the upload key wizard');
+        console.log('dont have a key yet, lets show the upload key wizard');
         $fw_manager.client.resource.android.showResourceWizard('private_key');
       }
     });

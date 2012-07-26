@@ -509,7 +509,7 @@
             <div class="control-group">
               <label class="control-label" for="textarea">App Store Icon</label>
               <div class="controls">
-                <input type="file" class="store_item_icon input-xlarge"/>
+                <input type="file" id="icon_binary" class="input-xlarge"/>
                 <span class="help-inline">Icons should be 128x128, and in PNG format.</span>
                 <br/>
                 <div class="store_item_icon_progress progress progress-striped active" style="display: none">
@@ -522,15 +522,20 @@
             <div class="control-group">
               <label class="control-label" for="textarea">Android Binary</label>
               <div class="controls">
-                <input type="file" class="store_item_binary_android input-xlarge"/>
+                <input type="file" id="android_binary" class="input-xlarge"/>
                 <span class="help-inline">An Android binary consists of an APK signed for distribution.</span>
+                <br/>
+                <div class="store_item_binary_android_progress progress progress-striped active" style="display: none">
+                  <div class="bar" style="width: 0%;"></div>
+                </div>
+                <span class="store_item_binary_android_status" style="display: none;"></span>
               </div>
             </div>
 
             <div class="control-group">
               <label class="control-label" for="textarea">iPhone Binary</label>
               <div class="controls">
-                <input type="file" class="store_item_binary_android input-xlarge"/>
+                <input type="file" class="input-xlarge"/>
                 <span class="help-inline">An iPhone binary consists of an signed IPA.</span>
               </div>
             </div>
@@ -538,7 +543,7 @@
             <div class="control-group">
               <label class="control-label" for="textarea">iPad Binary</label>
               <div class="controls">
-                <input type="file" class="store_item_binary_android input-xlarge"/>
+                <input type="file" class="input-xlarge"/>
                 <span class="help-inline">An iPad binary consists of an signed IPA.</span>
               </div>
             </div>
@@ -546,7 +551,7 @@
             <div class="control-group">
               <label class="control-label" for="textarea">iOS Universal Binary</label>
               <div class="controls">
-                <input type="file" class="store_item_binary_android input-xlarge"/>
+                <input type="file" class="input-xlarge"/>
                 <span class="help-inline">An iOS Universal binary consists of an signed IPA.</span>
               </div>
             </div>
@@ -564,7 +569,7 @@
           <div class="control-group">
             <label class="control-label" for="store_name">Name</label>
             <div class="controls">
-              <input id="store_name" type="text" class="input-xxlarge" placeholder="My App Store">
+              <input type="text" class="store_name input-xxlarge" placeholder="My App Store">
             </div>
           </div>
 

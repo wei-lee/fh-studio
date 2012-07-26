@@ -114,7 +114,7 @@
               }, {
                 text: 'Export to CSV',
                 onclick: function() {
-                  log('Exporting to CSV.');
+                  console.log('Exporting to CSV.');
 
                   // For all series
                   var csv = [];
@@ -242,7 +242,7 @@
               }, {
                 text: 'Export to CSV',
                 onclick: function() {
-                  log('Exporting to CSV.');
+                  console.log('Exporting to CSV.');
 
                   // For all series
                   var csv = [];
@@ -292,11 +292,11 @@
         // Draw with jqPlot
         var self = this,
             di, dl, dt, yMax, yMin, ri, rl, rt;
-        log('jqplot default opts:' + JSON.stringify(this.defaultOpts));
+        console.log('jqplot default opts:' + JSON.stringify(this.defaultOpts));
 
         // Determine the best no. of ticks to show
         opts.xTicks = self.optimiseXTicks(opts.xTicks || data[0].length);
-        log('xTicks: ' + opts.xTicks);
+        console.log('xTicks: ' + opts.xTicks);
 
         // Figure out max value on y axis
         yMin = data[0][0][1];
@@ -316,7 +316,7 @@
         opts.yTicks = self.optimiseYTicks(yMin, yMax);
 
         opts = this.overrideOpts(opts);
-        log('jqplot overriden opts:' + JSON.stringify(opts));
+        console.log('jqplot overriden opts:' + JSON.stringify(opts));
 
         // Set the size of the chart div
         container.css({

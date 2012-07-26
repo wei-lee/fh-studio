@@ -14,7 +14,7 @@ proto.Grid = {
   },
 
   resizeVisible: function() {
-    log('resizing visible grids');
+    console.log('resizing visible grids');
     var grid = $('.ui-jqgrid-btable');
     if (grid.length > 0) {
       grid.each(function(index) {
@@ -39,7 +39,7 @@ proto.Grid = {
             rowNum: row_num
           }).trigger('reloadGrid');
         } catch (err) {
-          log("Couldn't resize a grid - not visible");
+          console.log("Couldn't resize a grid - not visible");
         }
       });
     }
@@ -60,7 +60,7 @@ proto.Grid = {
       var table_height = parseInt(gbox.find('.ui-jqgrid-bdiv').innerHeight(), 10);
       var row_height = parseInt(row.outerHeight(), 10);
       //log('table height:' + table_height);
-      log('row_height:' + row_height);
+      console.log('row_height:' + row_height);
       //alert('row_height:' + row_height);
       return Math.floor(table_height / row_height);
     }

@@ -115,11 +115,11 @@ Admin.Groups.Controller = Controller.extend({
   createGroup: function(group_name) {
     var self = this;
     this.models.group.create(group_name, function(res) {
-      log('createGroup: OK');
+      console.log('createGroup: OK');
       $fw.client.dialog.info.flash('Group created, refreshing list.');
       self.showGroupsList();
     }, function(err) {
-      log(err);
+      console.log(err);
       $fw.client.dialog.error("Error creating your group - group names must be unique.");
     });
   },
@@ -218,7 +218,7 @@ Admin.Groups.Controller = Controller.extend({
     };
 
     var populateForm = function (group) {
-      log('populating group update form: ' + JSON.stringify(group));
+      console.log('populating group update form: ' + JSON.stringify(group));
       $('#update_group_id', parent).val(group.guid);
       $('#update_group_name', parent).val(group.name);
     };
@@ -232,7 +232,7 @@ Admin.Groups.Controller = Controller.extend({
     });
 
     // Setup group details - currently just name
-    log("data: " + JSON.stringify(data));
+    console.log("data: " + JSON.stringify(data));
     var id = data[0];
     var oldName = data[1];
     
@@ -256,11 +256,11 @@ Admin.Groups.Controller = Controller.extend({
     }
 
     this.models.group.update(fields, function(res) {
-      log('updateUser: OK');
+      console.log('updateUser: OK');
       self.showGroupsList();
       self.showAlert('success', '<strong>Group successfully updated</strong> (' + fields.name + ')');
     }, function(err) {
-      log(err);
+      console.log(err);
       self.showAlert('error', '<strong>Error updating Group</strong> ' + err);
     });
   },

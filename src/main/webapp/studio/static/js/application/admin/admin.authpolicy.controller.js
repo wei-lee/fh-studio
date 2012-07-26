@@ -37,7 +37,7 @@ Admin.Authpolicy.Controller = Controller.extend({
       self.renderUserTable(data);
       self.bindUserControls();
     }, function(err) {
-      log('Error showing policies');
+      console.log('Error showing policies');
     }, true);
   },
 
@@ -191,11 +191,11 @@ Admin.Authpolicy.Controller = Controller.extend({
   },
 
   showAlert: function (type, message) {
-  log("message: " + message + " type: " + type);
+  console.log("message: " + message + " type: " + type);
     var self = this;
     var alerts_area = $(this.container).find('#alerts');
 log("ALERTS:");
-  log(alerts_area);
+  console.log(alerts_area);
     var alert = $('<div>').addClass('alert fade in alert-' + type).html(message);
     var close_button = $('<button>').addClass('close').attr("data-dismiss", "alert").text("x");
     alert.append(close_button);

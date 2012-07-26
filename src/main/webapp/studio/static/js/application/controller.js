@@ -94,32 +94,35 @@ var Controller = Class.extend({
   },
 
   destroyProgressModal: function () {
-    progressModal.remove();
-    progressModal = null;
+    this.progressModal.modal('hide');
+    setTimeout(function(){
+      this.progressModal.remove();
+      this.progressModal = null;
+    }, 2000);
   },
 
   clearProgressModal: function() {
-    var log_area = progressModal.find('textarea');
+    var log_area = this.progressModal.find('textarea');
     current = log_area.val('');
-    this.updateProgressModalBar(0);
+    this.updateProgressBar(0);
   },
 
-  appendProgressModalLog: function(message) {
-    var log_area = progressModal.find('textarea');
+  appendProgressLog: function(message) {
+    var log_area = this.progressModal.find('textarea');
     var current = log_area.val();
     log_area.val(current + message + "\n");
     log_area.scrollTop(99999);
     log_area.scrollTop(log_area.scrollTop() * 12);
   },
 
-  updateProgressModalBar: function(value) {
-    var progress_bar = progressModal.find('.progress .bar');
+  updateProgressBar: function(value) {
+    var progress_bar = this.progressModal.find('.progress .bar');
     progress_bar.css('width', value + '%');
     this.current_progress = value;
   },
 
-  showProgressModal: function(cb) {
-    progressModal = $('#generic_progress_modal').clone().appendTo($("body")).one('shown', cb).modal();
+  showProgressModal: function(title, message, cb) {
+    this.progressModal = $('#generic_progress_modal').clone();
+    this.progressModal.find('h3').text(title).end().find('h4').text(message).end().appendTo($("body")).one('shown', cb).modal();
   }
-
 });

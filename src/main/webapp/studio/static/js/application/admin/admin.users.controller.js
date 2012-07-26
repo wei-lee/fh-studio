@@ -72,7 +72,7 @@ Admin.Users.Controller = Controller.extend({
       self.renderUserTable(data);
       self.bindUserControls();
     }, function(err) {
-      log('Error showing users');
+      console.log('Error showing users');
     }, true);
   },
 
@@ -98,7 +98,7 @@ Admin.Users.Controller = Controller.extend({
 
     self.showAlert('info', '<strong>Sending Invite</strong> (' + email + ')');
     self.models.user.resendInvite(email, function(res) {
-      log('User invite re-sent OK.');
+      console.log('User invite re-sent OK.');
       self.showAlert('success', '<strong>Successfully sent Invite</strong> (' + email + ')');
     }, function(e) {
       self.showAlert('error', '<strong>Error sending Invite</strong> (' + email + ') ' + e);
@@ -113,7 +113,7 @@ Admin.Users.Controller = Controller.extend({
     this.container = this.views.user_update;
 
     var populateForm = function (results) {
-      log('populating user update form');
+      console.log('populating user update form');
       var user = results[0];
       $('#update_user_id', parent).val(user.username);
       $('#update_user_name', parent).val(user.name);
@@ -162,7 +162,7 @@ Admin.Users.Controller = Controller.extend({
     async.parallel([function (cb) {
       // user details
       self.models.user.read(id, function(res) {
-        log('User read OK.');
+        console.log('User read OK.');
         return cb(null, res.fields);
       }, function(e) {
         return cb(e);
@@ -170,7 +170,7 @@ Admin.Users.Controller = Controller.extend({
     }, function (cb) {
       // roles
       self.models.role.list_assignable(function(res) {
-        log('Role list OK.');
+        console.log('Role list OK.');
         return cb(null, res.list);
       }, function(e) {
         return cb(e);
@@ -178,7 +178,7 @@ Admin.Users.Controller = Controller.extend({
     }/*, function (cb) {
       // storeitems
       self.models.storeitem.list(function (res) {
-        log('Storeitem list OK');
+        console.log('Storeitem list OK');
         return cb(null, res.list);
       }, function (e) {
         return cb(e);
@@ -186,7 +186,7 @@ Admin.Users.Controller = Controller.extend({
     }*//* function (cb) {
       // groups
       self.models.group.list(function(res) {
-        log('Group list OK.');
+        console.log('Group list OK.');
         return cb(null, res.list);
       }, function(e) {
         return cb(e);
@@ -248,11 +248,11 @@ Admin.Users.Controller = Controller.extend({
     // }
 
     this.models.user.update(fields, function(res) {
-      log('updateUser: OK');
+      console.log('updateUser: OK');
       self.showUsersList();
       self.showAlert('success', '<strong>User successfully updated</strong> (' + res.fields.username + ')');
     }, function(err) {
-      log(err);
+      console.log(err);
       self.showAlert('error', '<strong>Error updating User</strong> ' + err);
     });
   },
@@ -326,7 +326,7 @@ Admin.Users.Controller = Controller.extend({
 
     // Load roles & storeitems into swap select
     this.models.role.list_assignable(function(res) {
-      log('Role list OK.');
+      console.log('Role list OK.');
       var roles = res.list;
       var container = '#create_user_role_swap';
       self.updateSwapSelect(container, roles);
@@ -335,7 +335,7 @@ Admin.Users.Controller = Controller.extend({
     });
 
     // this.models.storeitem.list(function(res) {
-    //   log('Storeitem list OK.');
+    //   console.log('Storeitem list OK.');
     //   var storeitems = res.list;
     //   var container = '#create_user_storeitem_swap';
     //   // take out 'name' field from storeitems
@@ -349,7 +349,7 @@ Admin.Users.Controller = Controller.extend({
     // });
 
     // this.models.group.list(function(res) {
-    //   log('Group list OK.');
+    //   console.log('Group list OK.');
     //   var groups = res.list;
     //   var container = '#create_user_group_swap';
     //   self.updateSwapSelect(container, groups);
@@ -384,7 +384,7 @@ Admin.Users.Controller = Controller.extend({
 
     // Load roles & storeitems into swap select
     self.models.role.list_assignable(function(res) {
-      Log.append('Role list OK.');
+      console.log('Role list OK.');
       var roles = res.list;
       var container = '#import_users_role_swap';
       self.updateSwapSelect(container, roles);
@@ -443,7 +443,7 @@ Admin.Users.Controller = Controller.extend({
     var activated = true;
     self.showAlert('info', '<strong>Creating User</strong> (' + id + ')');
     this.models.user.create(id, email, name, roles, groups, storeitems, password, activated, invite, function(res) {
-      log(res);
+      console.log(res);
       self.showUsersList();
       self.showAlert('success', '<strong>Successfully create User</strong> (' + id + ')');
     }, function(e) {
@@ -479,7 +479,7 @@ Admin.Users.Controller = Controller.extend({
           title: 'Generating Your App',
           initLog: 'We\'re generating your app...',
           timeout: function(res) {
-            Log.append('timeout error > ' + JSON.stringify(res));
+            console.log('timeout error > ' + JSON.stringify(res));
             $fw.client.dialog.error($fw.client.lang.getLangString('scm_trigger_error'));
             self.updateProgressModalBar(100);
             if (typeof fail != 'undefined') {
@@ -488,22 +488,22 @@ Admin.Users.Controller = Controller.extend({
           },
           update: function(res) {
             for (var i = 0; i < res.log.length; i++) {
-              Log.append(res.log[i]);
+              console.log(res.log[i]);
               if (typeof res.action.guid != 'undefined') {
                 new_guid = res.action.guid;
-                Log.append('GUID for new app > ' + new_guid);
+                console.log('GUID for new app > ' + new_guid);
               }
               self.appendProgressModalLog(res.log[i], modal);
-              Log.append("Current progress> " + self.current_progress);
+              console.log("Current progress> " + self.current_progress);
             }
             self.updateProgressModalBar(self.current_progress + 1);
           },
           complete: function(res) {
-            Log.append('SCM refresh successful > ' + JSON.stringify(res));
+            console.log('SCM refresh successful > ' + JSON.stringify(res));
             self.updateProgressModalBar(75);
           },
           error: function(res) {
-            Log.append('clone error > ' + JSON.stringify(res));
+            console.log('clone error > ' + JSON.stringify(res));
             $fw.client.dialog.error('App generation failed.' + "<br /> Error Message:" + res.error);
             self.updateProgressModalBar(100);
             if (typeof fail != 'undefined') {
@@ -511,7 +511,7 @@ Admin.Users.Controller = Controller.extend({
             }
           },
           retriesLimit: function() {
-            Log.append('retriesLimit exceeded: ' + Properties.cache_lookup_retries);
+            console.log('retriesLimit exceeded: ' + Properties.cache_lookup_retries);
             $fw.client.dialog.error('App generation failed.');
             self.updateProgressModalBar(100);
             if (typeof fail != 'undefined') {
@@ -659,11 +659,11 @@ Admin.Users.Controller = Controller.extend({
 
     self.showAlert('info', '<strong>' + actionDesc + ' User</strong> (' + fields.username + ')');
     self.models.user.update(fields, function(res) {
-      log(actionDesc + ' User OK');
+      console.log(actionDesc + ' User OK');
       self.showAlert('success', '<strong>' + actionDesc + ' User successful</strong> (' + fields.username + ')');
       success();
     }, function(err) {
-      log(err);
+      console.log(err);
       self.showAlert('error', '<strong>Error ' + actionDesc + ' User</strong> ' + err);
     });
   }
