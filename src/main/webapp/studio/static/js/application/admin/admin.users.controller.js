@@ -390,7 +390,7 @@ Admin.Users.Controller = Controller.extend({
       self.updateSwapSelect('#import_users_role_swap', results[0]);
       self.updateSwapSelect('#import_users_policy_swap', policiesFrom);
       self.bindSwapSelect(parent);
-      $('input,select,button', parent).removeAttr('disabled');
+      $('input,select,button', parent).not('input[type=file]').removeAttr('disabled');
     });
 
     $('.import_user_btn', parent).unbind().click(function() {
