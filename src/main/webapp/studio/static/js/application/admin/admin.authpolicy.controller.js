@@ -239,7 +239,7 @@ log(id);
       $('#update_guid', self.views.policies_update).val(policy.guid);
       $('#update_policy_id', self.views.policies_update).val(policy.policyId).attr("disabled", "true");
       $('#update_policy_type', self.views.policies_update).val(policy.policyType);   
-      $('#update_require_user_id', self.views.policies_update).prop("checked", policy.requireUser === true);
+      $('#update_check_user_exists_id', self.views.policies_update).prop("checked", policy.checkUserExists === true);
 
       if (policy.policyType === 'oauth2') {
         $('#update_oauth2_div', self.views.policies_update).show();
@@ -261,7 +261,7 @@ log(id);
   createPolicy: function(action) {
     var self = this;
     var view = self.views.policies_create;
-    var guid, id, type, provider, requireUser, conf;
+    var guid, id, type, provider, checkUserExists, conf;
     if (action == "update") {
       view = self.views.policies_update;    
 
@@ -269,7 +269,7 @@ log(id);
       id = $('#update_policy_id', view).val();
       type = $('#update_policy_type', view).val();
       provider = $('#update_policy_conf_provider', view).val();
-      requireUser = $('#update_require_user_id', view).prop("checked");
+      checkUserExists = $('#update_check_user_exists_id', view).prop("checked");
     
       if (type === 'oauth2') {          
         conf = {
@@ -291,7 +291,7 @@ log(id);
       id = $('#create_policy_id', view).val();
       type = $('#create_policy_type', view).val();
       provider = $('#create_policy_conf_provider', view).val();
-      requireUser = $('#create_require_user_id', view).prop("checked");
+      checkUserExists = $('#create_check_user_exists_id', view).prop("checked");
     
       if (type === 'oauth2') {          
         conf = {
@@ -322,9 +322,9 @@ log(id);
     }
 
     if(action === 'update') {
-      this.models.policy.update(guid, id, type, conf, requireUser, onSuccess, onFailure); 
+      this.models.policy.update(guid, id, type, conf, checkUserExists, onSuccess, onFailure); 
     }else {
-      this.models.policy.create(id, type, conf, requireUser, onSuccess, onFailure); 
+      this.models.policy.create(id, type, conf, checkUserExists, onSuccess, onFailure); 
     }
   }
 });

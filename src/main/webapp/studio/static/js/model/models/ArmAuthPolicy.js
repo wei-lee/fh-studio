@@ -21,24 +21,24 @@ model.ArmAuthPolicy = model.Model.extend({
 
   },
 
-  create:function (policyId, policyType, configurations, requireUser, success, fail) {
+  create:function (policyId, policyType, configurations, checkUserExists, success, fail) {
     var params = {};
     params.policyId = policyId;
     params.policyType = policyType;
     params.configurations = configurations;
-    params.requireUser = requireUser;
+    params.checkUserExists = checkUserExists;
     var url = this.baseUrl + "/create";
     return this.serverPost(url, params, success, fail, true);
   },
 
 
-  update:function (guid, policyId, policyType, configurations, requireUser, success, fail) {
+  update:function (guid, policyId, policyType, configurations, checkUserExists, success, fail) {
     var params = {};
     params.guid = guid;
     params.policyId = policyId;
     params.policyType = policyType;
     params.configurations = configurations;
-    params.requireUser = requireUser;
+    params.checkUserExists = checkUserExists;
     var url = this.baseUrl + "/update";
     return this.serverPost(url, params, success, fail, true);
   },
