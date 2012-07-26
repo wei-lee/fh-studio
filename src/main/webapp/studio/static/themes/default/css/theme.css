@@ -3320,8 +3320,7 @@ table.dataTable th:active {
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0088cc', endColorstr='#0055cc',GradientType=0 ); /* IE6-9 */
 }
 
-.store_item_icon_progress {
+.progress_area .progress {
   margin: 0 10px 0 0 !important;
-  min-height: inherit !important;
-  width: 162px !important;
+  height: 18px !important;
 }

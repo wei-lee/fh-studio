@@ -507,51 +507,41 @@
             <h3>Upload App Binaries & App Store Icon</h3>
 
             <div class="control-group">
-              <label class="control-label" for="textarea">App Store Icon</label>
+              <label class="control-label" for="icon_binary">App Store Icon</label>
               <div class="controls">
                 <input type="file" id="icon_binary" class="input-xlarge"/>
-                <span class="help-inline">Icons should be 128x128, and in PNG format.</span>
-                <br/>
-                <div class="store_item_icon_progress progress progress-striped active" style="display: none">
-                  <div class="bar" style="width: 0%;"></div>
-                </div>
-                <span class="store_item_icon_status" style="display: none;"></span>
+                <span class="help-inline">Store Item icons should be 128x128px and in PNG format.</span>
               </div>
             </div>
 
             <div class="control-group">
-              <label class="control-label" for="textarea">Android Binary</label>
+              <label class="control-label" for="android_binary">Android Binary</label>
               <div class="controls">
                 <input type="file" id="android_binary" class="input-xlarge"/>
                 <span class="help-inline">An Android binary consists of an APK signed for distribution.</span>
-                <br/>
-                <div class="store_item_binary_android_progress progress progress-striped active" style="display: none">
-                  <div class="bar" style="width: 0%;"></div>
-                </div>
-                <span class="store_item_binary_android_status" style="display: none;"></span>
               </div>
             </div>
 
             <div class="control-group">
-              <label class="control-label" for="textarea">iPhone Binary</label>
+              <label class="control-label" for="iphone_binary">iPhone Binary</label>
               <div class="controls">
-                <input type="file" class="input-xlarge"/>
+                <input type="file" class="input-xlarge" id="iphone_binary"/>
                 <span class="help-inline">An iPhone binary consists of an signed IPA.</span>
               </div>
             </div>
 
             <div class="control-group">
-              <label class="control-label" for="textarea">iPad Binary</label>
+              <label class="control-label" for="ipad_binary">iPad Binary</label>
               <div class="controls">
-                <input type="file" class="input-xlarge"/>
+                <input type="file" class="input-xlarge" id="ipad_binary"/>
                 <span class="help-inline">An iPad binary consists of an signed IPA.</span>
               </div>
             </div>
 
             <div class="control-group">
-              <label class="control-label" for="textarea">iOS Universal Binary</label>
+              <label class="control-label" for="ios_binary">iOS Universal Binary</label>
               <div class="controls">
-                <input type="file" class="input-xlarge"/>
+                <input type="file" class="input-xlarge" id="ios_binary"/>
                 <span class="help-inline">An iOS Universal binary consists of an signed IPA.</span>
               </div>
             </div>
@@ -654,209 +644,224 @@
             <input id="create_policy_id" type="text" class="input-xxlarge" placeholder="Policy Id">
           </div>
         </div>
-
-        <div class="control-group">
-          <label class="control-label">Type</label>
-          <label class="select">
-            <div class="controls">
-              <select class="" id="create_policy_type">
-                <option value="oauth2" selected="selected"> oAuth2 </option>
-                <option value="ldap"> LDAP </option>
-              </select>
-            </div>
-          </label>
-        </div>
-
-        <div id="create_oauth2_div">
-
+        <fieldset class="well">  <!-- Authentication well -->
+          <legend>Authentication</legend>
           <div class="control-group">
-            <label class="control-label">Provider</label>
+            <label class="control-label">Type</label>
             <label class="select">
               <div class="controls">
-                <select id="create_policy_conf_provider">
-                  <option value="google">Google</option>
+                <select class="" id="create_policy_type">
+                  <option value="oauth2" selected="selected"> oAuth2 </option>
+                  <option value="ldap"> LDAP </option>
                 </select>
               </div>
             </label>
           </div>
-
-          <div class="control-group"> 
-            <label class="control-label" for="create_client_id">Client Id</label>
-            <div class="controls">
-              <input id="create_client_id" type="text" class="input-xxlarge" placeholder="Client Id (provided by Oauth service (ie Google etc...))">
+          
+          <div id="create_oauth2_div">
+            
+            <div class="control-group">
+              <label class="control-label">Provider</label>
+              <label class="select">
+                <div class="controls">
+                  <select id="create_policy_conf_provider">
+                    <option value="google">Google</option>
+                  </select>
+                </div>
+              </label>
             </div>
-          </div>
-
-          <div class="control-group">
-            <label class="control-label" for="create_client_secret">Client Secret</label>
-            <div class="controls">
-              <input id="create_client_secret" type="text" class="input-xxlarge" placeholder="Client Secret (provided by Oauth service (ie Google etc...))">
-            </div>
-          </div>
-
-          <div class="control-group">
-            <!-- TODO - this 'Note' needs to be an info text or something -->
-            <label class="control-label" for="create_oauth_callback">Oauth Callback Url (Note* this should be added as the oauth callback url on the provider side i.e Google)</label>
-            <div class="controls">
-              <input id="create_oauth_callback" type="text" class="input-xxlarge" disabled="disabled">
-            </div>
-          </div>
-
-       </div> <!-- oauth div -->
-
-       <div id="create_ldap_div">
-
-         <div class="control-group">
-           <label class="control-label">Authentication Method</label>
-           <label class="select">
-             <div class="controls">
-               <select id="create_authmethod_id">
-                 <option value="simple">Simple</option>
-                 <option value="DIGEST-MD5">Digest MD5 (SASL)</option>
-                 <option value="CRAM-MD5">CRAM MD5 (SASL)</option>
-                 <option value="GSSAPI">GSSAPI (Kerberos)</option>
-               </select>
-             </div>
-           </label>
-         </div>
-         
-         <div class="control-group">
-           <label class="control-label" for="create_dn_prefix_id">Distinguished Name (dn) Prefix</label>
-           <div class="controls">
-             <input id="create_dn_prefix_id" type="text" class="input-xxlarge" placeholder="normally 'uid' or 'cn'">
-           </div>
-         </div>
-
-         <div class="control-group">
-           <label class="control-label" for="create_dn_id">Distinguished Name (dn) </label>
-           <div class="controls">
-             <input id="create_dn_id" type="text" class="input-xxlarge" placeholder="e.g. ou=people,dc=example,dc=com">
-           </div>
-         </div>
-       </div>
-
-       <div class="control-group">
-         <label class="control-label" for="create_require_user_id">Ensure user exists?</label>
-         <div class="controls">
-           <input type="checkbox" class="input-xxlarge" id="create_require_user_id"/>
-         </div>
-       </div>
- 
-       <button type="button" id="create_policy_btn" class="btn btn-primary">Create Policy</button>
-
-    </form>
-  </div>
-
-  <div id="auth_policies_update" class="hidden_template row-fluid">
-      <div id="alerts"></div>
-      <form class="well form-horizontal">
-        <legend>Update an Auth Policy</legend>
-        <p>Here you can update an Authentication/Authorization policy which can be used by your applications.</p>
-        <div class="control-group">
-          <label class="control-label" for="update_policy_id">Policy Id</label>
-          <div class="controls">
-            <input id="update_policy_id" type="text" class="input-xxlarge" placeholder="Policy Id">
-          </div>
-        </div>
-
-        <div class="control-group">
-          <label class="control-label">Type</label>
-          <label class="select">
-            <div class="controls">
-              <select class="" id="update_policy_type">
-                <option value="oauth2" selected="selected"> oAuth2 </option>
-                <option value="ldap"> LDAP </option>
-              </select>
-            </div>
-          </label>
-        </div>
-
-        <div id="update_oauth2_div">
-
-          <div class="control-group">
-            <label class="control-label">Provider</label>
-            <label class="select">
+            
+            <div class="control-group"> 
+              <label class="control-label" for="create_client_id">Client Id</label>
               <div class="controls">
-                <select id="update_policy_conf_provider">
-                  <option value="google">Google</option>
-                </select>
+                <input id="create_client_id" type="text" class="input-xxlarge" placeholder="Client Id (provided by Oauth service (ie Google etc...))">
               </div>
-            </label>
-          </div>
+            </div>
+            
+            <div class="control-group">
+              <label class="control-label" for="create_client_secret">Client Secret</label>
+              <div class="controls">
+                <input id="create_client_secret" type="text" class="input-xxlarge" placeholder="Client Secret (provided by Oauth service (ie Google etc...))">
+              </div>
+            </div>
+            
+            <div class="control-group">
+              <!-- TODO - this 'Note' needs to be an info text or something -->
+              <label class="control-label" for="create_oauth_callback">Oauth Callback Url</label>
+              <div class="controls">
+                <input id="create_oauth_callback" type="text" class="input-xxlarge" disabled="disabled">
+              </div>
+              <span class="help-inline span6">(Note* this should be added as the oauth callback url on the provider side i.e Google)</span>
+            </div>
 
-          <div class="control-group"> 
-            <label class="control-label" for="update_client_id">Client Id</label>
-            <div class="controls">
-              <input id="update_client_id" type="text" class="input-xxlarge" placeholder="Client Id (provided by Oauth service (ie Google etc...))">
+          </div> <!-- oauth div -->
+
+          <div id="create_ldap_div">
+            
+            <div class="control-group">
+              <label class="control-label">Authentication Method</label>
+              <label class="select">
+                <div class="controls">
+                  <select id="create_authmethod_id">
+                    <option value="simple">Simple</option>
+                    <option value="DIGEST-MD5">Digest MD5 (SASL)</option>
+                    <option value="CRAM-MD5">CRAM MD5 (SASL)</option>
+                    <option value="GSSAPI">GSSAPI (Kerberos)</option>
+                  </select>
+                </div>
+              </label>
+            </div>
+            
+            <div class="control-group">
+              <label class="control-label" for="create_dn_prefix_id">Distinguished Name (dn) Prefix</label>
+              <div class="controls">
+                <input id="create_dn_prefix_id" type="text" class="input-xxlarge" placeholder="normally 'uid' or 'cn'">
+              </div>
+            </div>
+            
+            <div class="control-group">
+              <label class="control-label" for="create_dn_id">Distinguished Name (dn) </label>
+              <div class="controls">
+                <input id="create_dn_id" type="text" class="input-xxlarge" placeholder="e.g. ou=people,dc=example,dc=com">
+              </div>
             </div>
           </div>
-
+        </fieldset> <!-- authentication well -->
+        <fieldset class="well"> <!-- authorization well -->
+          <legend>Authorization</legend>
           <div class="control-group">
-            <label class="control-label" for="update_client_secret">Client Secret</label>
             <div class="controls">
-              <input id="update_client_secret" type="text" class="input-xxlarge" placeholder="Client Secret (provided by Oauth service (ie Google etc...))">
+              <label class="checkbox"><input type="checkbox" class="input" id="create_check_user_exists_id"/>Check if user exists on platform?</label>
+            </div>
+            <div class="controls">
+              <label class="checkbox"><input type="checkbox" class="input" id="create_check_user_approved_id"/>Check if user approved for auth</label>
             </div>
           </div>
+        </fieldset> <!-- authorization well -->
+        <button type="button" id="create_policy_btn" class="btn btn-primary">Create Policy</button>
+      </form>
+      </div>
 
+      <div id="auth_policies_update" class="hidden_template row-fluid">
+        <div id="alerts"></div>
+        <form class="well form-horizontal">
+          <legend>Update an Auth Policy</legend>
+          <p>Here you can update an Authentication/Authorization policy which can be used by your applications.</p>
           <div class="control-group">
-            <!-- TODO - this 'Note' needs to be an info text or something -->
-            <label class="control-label" for="update_oauth_callback">Oauth Callback Url (Note* this should be added as the oauth callback url on the provider side i.e Google)</label>
+            <label class="control-label" for="update_policy_id">Policy Name</label>
             <div class="controls">
-              <input id="update_oauth_callback" type="text" class="input-xxlarge" disabled="disabled">
+              <input id="update_policy_id" type="text" class="input-xxlarge" placeholder="Policy Name">
             </div>
           </div>
+          <fieldset class="well">  <!-- Authentication well -->
+            <legend>Authentication</legend>
+            <div class="control-group">
+              <label class="control-label">Type</label>
+              <label class="select">
+                <div class="controls">
+                  <select class="" id="update_policy_type">
+                    <option value="oauth2" selected="selected"> oAuth2 </option>
+                    <option value="ldap"> LDAP </option>
+                  </select>
+                </div>
+              </label>
+            </div>
+            
+            <div id="update_oauth2_div">
+              
+              <div class="control-group">
+                <label class="control-label">Provider</label>
+                <label class="select">
+                  <div class="controls">
+                    <select id="update_policy_conf_provider">
+                      <option value="google">Google</option>
+                    </select>
+                  </div>
+                </label>
+              </div>
+              
+              <div class="control-group"> 
+                <label class="control-label" for="update_client_id">Client Id</label>
+                <div class="controls">
+                  <input id="update_client_id" type="text" class="input-xxlarge" placeholder="Client Id (provided by Oauth service (ie Google etc...))">
+                </div>
+            </div>
+              
+              <div class="control-group">
+                <label class="control-label" for="update_client_secret">Client Secret</label>
+                <div class="controls">
+                  <input id="update_client_secret" type="text" class="input-xxlarge" placeholder="Client Secret (provided by Oauth service (ie Google etc...))">
+                </div>
+              </div>
+              
+              <div class="control-group">
+                <!-- TODO - this 'Note' needs to be an info text or something -->
+                <label class="control-label" for="update_oauth_callback">Oauth Callback Url</label>
+                <div class="controls">
+                  <input id="update_oauth_callback" type="text" class="input-xxlarge" disabled="disabled">
+                </div>
+                <span class="help-inline span6">(Note* this should be added as the oauth callback url on the provider side i.e Google)</span>
+              </div>
+              
+            </div> <!-- oauth div -->
+            
+            <div id="update_ldap_div">
+              
+              <div class="control-group">
+                <label class="control-label">Authentication Method</label>
+                <label class="select">
+                  <div class="controls">
+                    <select id="update_authmethod_id">
+                      <option value="simple">Simple</option>
+                      <option value="DIGEST-MD5">Digest MD5 (SASL)</option>
+                      <option value="CRAM-MD5">CRAM MD5 (SASL)</option>
+                      <option value="GSSAPI">GSSAPI (Kerberos)</option>
+                    </select>
+                  </div>
+                </label>
+              </div>
+              
+              <div class="control-group">
+                <label class="control-label" for="update_dn_prefix_id">Distinguished Name (dn) Prefix</label>
+                <div class="controls">
+                  <input id="update_dn_prefix_id" type="text" class="input-xxlarge" placeholder="normally 'uid' or 'cn'">
+                </div>
+              </div>
+              
+              <div class="control-group">
+                <label class="control-label" for="update_dn_id">Distinguished Name (dn) </label>
+                <div class="controls">
+                  <input id="update_dn_id" type="text" class="input-xxlarge" placeholder="e.g. ou=people,dc=example,dc=com">
+                </div>
+              </div>
+            </div>
+          </fieldset> <!-- authentication well -->
+          <fieldset class="well"> <!-- authorization well -->
+            <legend>Authorization</legend> 
+            <div class="control-group">
+              <div class="controls">
+                <label class="checkbox"><input type="checkbox" class="input" id="update_check_user_exists_id"/>Check if user exists on platform?</label>
+              </div>
+              <div class="controls">
+                <label class="checkbox"><input type="checkbox" class="input" id="update_check_user_approved_id"/>Check if user approved for auth</label>
+              </div>
+            </div>
+          </fieldset> <!-- authorization well -->
+          <input type="hidden" name="guid" id="update_guid" value=""/>
+        <button type="button" id="update_policy_btn" class="btn btn-primary">Update Policy</button>        
+        </form>
+      </div>
 
-       </div> <!-- oauth div -->
-
-       <div id="update_ldap_div">
-
-         <div class="control-group">
-           <label class="control-label">Authentication Method</label>
-           <label class="select">
-             <div class="controls">
-               <select id="update_authmethod_id">
-                 <option value="simple">Simple</option>
-                 <option value="DIGEST-MD5">Digest MD5 (SASL)</option>
-                 <option value="CRAM-MD5">CRAM MD5 (SASL)</option>
-                 <option value="GSSAPI">GSSAPI (Kerberos)</option>
-               </select>
-             </div>
-           </label>
-         </div>
-         
-         <div class="control-group">
-           <label class="control-label" for="update_dn_prefix_id">Distinguished Name (dn) Prefix</label>
-           <div class="controls">
-             <input id="update_dn_prefix_id" type="text" class="input-xxlarge" placeholder="normally 'uid' or 'cn'">
-           </div>
-         </div>
-
-         <div class="control-group">
-           <label class="control-label" for="update_dn_id">Distinguished Name (dn) </label>
-           <div class="controls">
-             <input id="update_dn_id" type="text" class="input-xxlarge" placeholder="e.g. ou=people,dc=example,dc=com">
-           </div>
-         </div>
-       </div>
-
-       <div class="control-group">
-         <label class="control-label" for="update_require_user_id">Ensure user exists?</label>
-         <div class="controls">
-           <input type="checkbox" class="input-xxlarge" id="update_require_user_id"/>
-         </div>
-       </div>
-       <input type="hidden" name="guid" id="update_guid" value=""/>
-       <button type="button" id="update_policy_btn" class="btn btn-primary">Update Policy</button>
-
-    </form>
-  </div>
-
-
-
-
-
+      </div>
     </div>
-  </div>
 
 </div>
+</div>
+
+<!-- Binary Upload progress template -->
+<div id="binary_upload_progress_template" class="hidden_template progress_area">
+  <div class="progress progress-striped active" style="display: none">
+    <div class="bar" style="width: 0%;"></div>
+  </div>
+  <span class="status" style="display: none"></span>
 </div>
