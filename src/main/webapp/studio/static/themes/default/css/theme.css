@@ -3272,7 +3272,7 @@ table.dataTable th:active {
   border-top-right-radius: 3px;
 }
 
-.admin_store_item .icon {
+.admin_store_item .icon, #admin_app_store .store_icon {
   -webkit-border-radius: 25px;
   -moz-border-radius: 25px;
   border-radius: 25px;

@@ -17,7 +17,7 @@ model.AppStore = model.Model.extend({
       guid: guid,
       name: name,
       description: description,
-      store_items: store_items
+      storeitems: store_items
     };
     return this.serverPost(url, params, success, fail, true);
   }

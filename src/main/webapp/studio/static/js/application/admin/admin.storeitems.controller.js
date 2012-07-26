@@ -203,6 +203,8 @@ Admin.Storeitems.Controller = Controller.extend({
 
       // Inject binary upload progress template
       var progress_area = $('#binary_upload_progress_template').clone();
+      var status = $('.status', progress_area);
+      var progress_bar = $('.progress', progress_area);
       progress_area.removeAttr('id');
       input.after(progress_area);
 
@@ -219,9 +221,6 @@ Admin.Storeitems.Controller = Controller.extend({
         status_el.text('Not Uploaded');
         input.before(status_el);
       }
-
-      var status = $('.status', progress_area);
-      var progress_bar = $('.progress', progress_area);
 
       // Setup file upload
       input.fileupload({
