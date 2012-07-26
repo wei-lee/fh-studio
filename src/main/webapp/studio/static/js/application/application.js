@@ -4,10 +4,10 @@ Application = {
   treeviewManager: null,
   
   appAccordionChangeHandler: function(event, ui){
-    log('appAccordionChangeHandler');
+    console.log('appAccordionChangeHandler');
     var accordion = $(event.target),
         content = ui.newContent;
-    log('old header: ' + ui.oldHeader.attr('id'));
+    console.log('old header: ' + ui.oldHeader.attr('id'));
 
     if ('accordion_item_report' === ui.newHeader.attr('id') || 'accordion_item_debug' === ui.newHeader.attr('id')) {
       // if moving to the reporting item and the preview is open then save flag and hide the preview
@@ -18,7 +18,7 @@ Application = {
     } else if ('accordion_item_report' === ui.oldHeader.attr('id') || 'accordion_item_debug' === ui.oldHeader.attr('id')) {
       // if moving from the reporting item and the preview had previously been open then re-open it
       if (this.previewWasOpen) {
-        log("reopening Preview");
+        console.log("reopening Preview");
       $fw.client.preview.showContent();
       this.previewWasOpen = undefined;   // will be reset in future by show() if required
       }

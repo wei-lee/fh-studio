@@ -4,7 +4,7 @@ Stats.View.List.Timers = Stats.View.List.extend({
   },
 
   render: function() {
-    log('Rendering List');
+    console.log('Rendering List');
     var self = this;
     $(self.renderTo).empty();
     var all_series = this.model.getAllSeriesNames();

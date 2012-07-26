@@ -4,12 +4,12 @@ application.DestinationWindowsphone7 = application.DestinationGeneral.extend({
   },
   
   'export': function(){
-      log("Windowsphone7 :: Export");
+      console.log("Windowsphone7 :: Export");
       this.doAsyncExport();
   },
   
   'publish': function(){
-    log("Publish :: " + this.destination_id);
+    console.log("Publish :: " + this.destination_id);
     var main_container = $('#manage_publish_container');
     main_container.find(".dashboard-content").hide();
     this.enableButton(main_container.find("#app_windowsphone7_build_debug"), "debug", "You can build debug version of the app.");

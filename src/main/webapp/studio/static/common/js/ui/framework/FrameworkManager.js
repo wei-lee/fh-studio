@@ -63,7 +63,7 @@ FrameworkManager = Class.extend({
     catch (e) {
       // TODO: internationalise
       alert('Application failed to initialise.');
-      log(e);
+      console.log(e);
       throw e;
     }
   }

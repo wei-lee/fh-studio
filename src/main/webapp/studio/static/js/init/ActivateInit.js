@@ -51,7 +51,7 @@ function activate() {
       },
       "error": function (jqXHR, textStatus, errorThrown) {
         // activate failed, highlight the fact/show error message
-        log('Activate Failed: textStatus:' + textStatus + ', errorThrown:' + errorThrown , 'ERROR');
+        console.log('Activate Failed: textStatus:' + textStatus + ', errorThrown:' + errorThrown , 'ERROR');
         $('#activate_form_error').css('display','').css('display','inline !important').text('Activate failed (' + jqXHR.status + ')');
         activate_button.removeAttr('disabled').val('Activate'); 
       }

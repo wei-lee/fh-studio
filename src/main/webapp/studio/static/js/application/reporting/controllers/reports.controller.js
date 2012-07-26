@@ -41,7 +41,7 @@ Reports.Controller = Class.extend({
   //   }
   //   $('.stats_area li').removeClass('active');
   //   $(el).addClass('active');
-  //   log('toggle Counter stats');
+  //   console.log('toggle Counter stats');
   //   var series = model.getSeries(series_name);
   //   // Empty showing containers
   //   $('.table_container, .chart_container').empty();
@@ -72,7 +72,7 @@ Reports.Controller = Class.extend({
   //   }
   //   $('.stats_area li').removeClass('active');
   //   $(el).addClass('active');
-  //   log('toggle Timer stats');
+  //   console.log('toggle Timer stats');
   //   var series = model.getSeries(series_name);
   //   // Empty showing containers
   //   this.closeAll();
@@ -140,7 +140,7 @@ Reports.Controller = Class.extend({
       item_number = item_number + 1;
       model.load({
         loaded: function(res) {
-          log('Reports loaded');
+          console.log('Reports loaded');
 
           if (res.status == 'ok') {
             // model.applyFilter({
@@ -153,7 +153,7 @@ Reports.Controller = Class.extend({
               // self.buildLists();
             }
           } else {
-            log("Couldn't load reports: " + model.name);
+            console.log("Couldn't load reports: " + model.name);
             // self.hideStatsLoading();
             var failed = $("<li>", {
               "class": "load_failed",

@@ -48,7 +48,7 @@ function setupLayout() {
   // Set text below login area if required
   var loginFooterText = $fw.getClientProp('login-footer-text');
   if (('undefined' !== typeof loginFooterText) && (loginFooterText.length > 0)) {
-    log('setting login footer text:' + loginFooterText);
+    console.log('setting login footer text:' + loginFooterText);
     // Set text as html here in case there are links
     $('.login-footer-text').html(loginFooterText).parent().show();
   }
@@ -171,7 +171,7 @@ function login() {
       },
       "error": function (jqXHR, textStatus, errorThrown) {
         // login failed, highlight the fact/show error message
-        log('Login Failed: textStatus:' + textStatus + ', errorThrown:' + errorThrown , 'ERROR');
+        console.log('Login Failed: textStatus:' + textStatus + ', errorThrown:' + errorThrown , 'ERROR');
         $('#login_form_error').css('display','inline !important').text('Login failed (' + jqXHR.status + ')');
         loginButton.removeAttr('disabled').val('Login');
       }
@@ -217,7 +217,7 @@ function register() {
         }
       },
       "error": function (jqXHR, textStatus, errorThrown) {
-        log('Registration Failed: textStatus:' + textStatus + ', errorThrown:' + errorThrown , 'ERROR');
+        console.log('Registration Failed: textStatus:' + textStatus + ', errorThrown:' + errorThrown , 'ERROR');
         register_form.find('#register_form_error').show().text('Registration Failed (' + jqXHR.status + ")");
         registerButton.removeAttr('disabled').val('Register');
       }

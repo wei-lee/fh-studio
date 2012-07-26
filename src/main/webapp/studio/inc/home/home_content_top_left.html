@@ -8,7 +8,7 @@
 	<script type="text/javascript">
         $('.doc_links').unbind().bind('click', function(evt) {
           var docName = this.innerText;
-          log('Clicked Doc Link : ' + docName);
+          console.log('Clicked Doc Link : ' + docName);
           
           $fw_manager.analytics.trackEvent({id:'Dashboard - View Documentation', props:{'docName':docName}});
         });

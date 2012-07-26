@@ -4,7 +4,7 @@ application.DestinationAndroid = application.DestinationGeneral.extend({
   },
   
   'export': function(){
-      log("android :: Export");
+      console.log("android :: Export");
       this.doAsyncExport();
   },
   
@@ -13,7 +13,7 @@ application.DestinationAndroid = application.DestinationGeneral.extend({
   },
   
   resourceCheckCallback: function(res, that){
-      log('check resources');
+      console.log('check resources');
       var main_container = $('#manage_publish_container');
       
       var dist_cert_found = false; 
@@ -36,7 +36,7 @@ application.DestinationAndroid = application.DestinationGeneral.extend({
   
   getExportData: function(wizard, export_version_id){
       var version = wizard.find( export_version_id + ' input:checked').val();
-      log("Export version: " + version);
+      console.log("Export version: " + version);
       /*if(version === "" || version === undefined){
          proto.Wizard.jumpToStep(wizard, 1, "Please select the SDK version");
          return null;
