@@ -504,48 +504,43 @@
           </div>
 
           <div class="well store_item_binaries">
-            <h3>Upload App Binaries & App Store Icon</h3>
-
-            <div class="control-group">
-              <label class="control-label" for="icon_binary">App Store Icon</label>
-              <div class="controls">
-                <input type="file" id="icon_binary" class="input-xlarge"/>
-                <span class="help-inline">Store Item icons should be 128x128px and in PNG format.</span>
-              </div>
-            </div>
-
-            <div class="control-group">
-              <label class="control-label" for="android_binary">Android Binary</label>
-              <div class="controls">
-                <input type="file" id="android_binary" class="input-xlarge"/>
-                <span class="help-inline">An Android binary consists of an APK signed for distribution.</span>
-              </div>
-            </div>
-
-            <div class="control-group">
-              <label class="control-label" for="iphone_binary">iPhone Binary</label>
-              <div class="controls">
-                <input type="file" class="input-xlarge" id="iphone_binary"/>
-                <span class="help-inline">An iPhone binary consists of an signed IPA.</span>
-              </div>
-            </div>
-
-            <div class="control-group">
-              <label class="control-label" for="ipad_binary">iPad Binary</label>
-              <div class="controls">
-                <input type="file" class="input-xlarge" id="ipad_binary"/>
-                <span class="help-inline">An iPad binary consists of an signed IPA.</span>
-              </div>
-            </div>
-
-            <div class="control-group">
-              <label class="control-label" for="ios_binary">iOS Universal Binary</label>
-              <div class="controls">
-                <input type="file" class="input-xlarge" id="ios_binary"/>
-                <span class="help-inline">An iOS Universal binary consists of an signed IPA.</span>
-              </div>
-            </div>
-
+            <h3>Upload App Binaries & App Store Icon</h3><br/>
+            <table class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>Type</th>
+                  <th>Description</th>
+                  <th>Upload Binary</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>App Store Icon</td>
+                  <td>Store Item icons should be 128x128px and in PNG format.</td>
+                  <td><input type="file" id="icon_binary" class="input-xlarge"/></td>
+                </tr>
+                <tr>
+                  <td>Android Binary</td>
+                  <td>An Android binary consists of an <code>.apk</code> signed for distribution.</td>
+                  <td><input type="file" id="android_binary" class="input-xlarge"/></td>
+                </tr>
+                <tr>
+                  <td>iPhone Binary</td>
+                  <td>An iPhone binary consists of an <code>.ipa</code> signed for distribution.</td>
+                  <td><input type="file" id="iphone_binary" class="input-xlarge"/></td>
+                </tr>
+                <tr>
+                  <td>iPad Binary</td>
+                  <td>An iPad binary consists of an <code>.ipa</code> signed for distribution.</td>
+                  <td><input type="file" id="ipad_binary" class="input-xlarge"/></td>
+                </tr>
+                <tr>
+                  <td>iOS Universal Binary</td>
+                  <td>An iOS Universal Binary consists of an <code>.ipa</code> signed for distribution.</td>
+                  <td><input type="file" id="ios_binary" class="input-xlarge"/></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </form>
       </div>
@@ -865,3 +860,7 @@
   </div>
   <span class="status" style="display: none"></span>
 </div>
+
+<!-- Binary Upload progress template -->
+<span id="binary_upload_status" class="label label-inverse upload_status hidden_template"></span>
+

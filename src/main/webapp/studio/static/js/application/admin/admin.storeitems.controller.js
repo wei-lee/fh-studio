@@ -18,6 +18,10 @@ Admin.Storeitems.Controller = Controller.extend({
   init: function() {},
 
   show: function(e) {
+    var self = this;
+    // $.each(this.views, function(k, v) {
+    //   self.resetForm($(v), true);
+    // });
     this.showStoreItems();
   },
 
@@ -101,6 +105,10 @@ Admin.Storeitems.Controller = Controller.extend({
 
     this.models.auth_policy.list(function(res) {
       var update_view = $(self.views.store_item_update);
+
+      // Remove uploaded status labels
+      //$('span.label', update_view).remove();
+
       self.renderAvailableAuthPolicies(res.list, self.views.store_item_update);
 
       $('.item_guid', update_view).val(store_item.guid);
@@ -128,6 +136,7 @@ Admin.Storeitems.Controller = Controller.extend({
     // Config
     var binaries = [{
       id: 'icon_binary',
+      destination: null,
       params: [{
         name: 'guid',
         value: store_item.guid
@@ -137,6 +146,7 @@ Admin.Storeitems.Controller = Controller.extend({
       }]
     }, {
       id: 'android_binary',
+      destination: 'android',
       params: [{
         name: 'guid',
         value: store_item.guid
@@ -149,6 +159,7 @@ Admin.Storeitems.Controller = Controller.extend({
       }]
     }, {
       id: 'iphone_binary',
+      destination: 'iphone',
       params: [{
         name: 'guid',
         value: store_item.guid
@@ -161,6 +172,7 @@ Admin.Storeitems.Controller = Controller.extend({
       }]
     }, {
       id: 'ipad_binary',
+      destination: 'ipad',
       params: [{
         name: 'guid',
         value: store_item.guid
@@ -173,6 +185,7 @@ Admin.Storeitems.Controller = Controller.extend({
       }]
     }, {
       id: 'ios_binary',
+      destination: 'ios',
       params: [{
         name: 'guid',
         value: store_item.guid
@@ -195,6 +208,20 @@ Admin.Storeitems.Controller = Controller.extend({
       var progress_area = $('#binary_upload_progress_template').clone();
       progress_area.removeAttr('id');
       input.after(progress_area);
+
+      // Does a binary already exist?
+      var binary_upload_status = self._resolveUploadStatus(binary.destination, store_item);
+      var status_el = $('#binary_upload_status').clone().removeAttr('id').removeClass('hidden_template');
+
+      if (binary_upload_status === true) {
+        // Uploaded
+        status_el.text('Uploaded').removeClass('label-inverse').addClass('label-success');
+        input.before(status_el);
+      } else {
+        // Not uploaded
+        status_el.text('Not Uploaded');
+        input.before(status_el);
+      }
 
       var status = $('.status', progress_area);
       var progress_bar = $('.progress', progress_area);
@@ -220,8 +247,10 @@ Admin.Storeitems.Controller = Controller.extend({
         done: function(e, data) {
           var filename = data.files[0].name;
           status.text('Uploaded ' + filename);
+          status_el.text('Uploaded').removeClass('label-inverse').addClass('label-success');
           setTimeout(function() {
             progress_bar.slideUp();
+            status.slideUp();
           }, 500);
         },
         progressall: function(e, data) {
@@ -231,6 +260,33 @@ Admin.Storeitems.Controller = Controller.extend({
       });
 
     });
+  },
+
+  _resolveUploadStatus: function(destination, store_item) {
+    var uploaded = null;
+    if (destination) {
+      // App Binary check
+      var binaries = store_item.binaries;
+
+      // No uploaded binaries
+      if (binaries.length == 0) {
+        return false;
+      }
+
+      $.each(binaries, function(i, binary) {
+        if (binary.type == destination) {
+          uploaded = true;
+        }
+      });
+    } else {
+      // Icon check
+      if (store_item.icon !== '') {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    return uploaded;
   },
 
   updateStoreItem: function() {
