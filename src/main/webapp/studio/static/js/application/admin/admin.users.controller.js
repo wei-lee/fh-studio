@@ -30,6 +30,7 @@ Admin.Users.Controller = Controller.extend({
   },
 
   show: function (e) {
+    // TODO: stateful restore i.e. $fw.state
     this.showUsersList();
   },
 
@@ -606,12 +607,12 @@ Admin.Users.Controller = Controller.extend({
       $('#update_user_enabled').attr('checked', 'checked');
       $('.enable_user_button').text('Disable User').unbind().on('click', function () {
         self.disableUser();
-      });
+      }).closest('.control-group').find('.control-label').text('Enabled');
     } else {
       $('#update_user_enabled').removeAttr('checked');
       $('.enable_user_button').text('Enable User').unbind().on('click', function () {
         self.enableUser();
-      });
+      }).closest('.control-group').find('.control-label').text('Disabled');
     }
   },
 
@@ -619,14 +620,14 @@ Admin.Users.Controller = Controller.extend({
     var self = this;
     if (blacklisted) {
       $('#update_user_blacklisted').attr('checked', 'checked');
-      $('.blacklist_user_button').text('Whitelist User').unbind().on('click', function () {
+      $('.blacklist_user_button').text('Unmark for Data Purge').unbind().on('click', function () {
         self.whitelistUser();
-      });
+      }).closest('.control-group').find('.control-label').text('Marked for Data Purge');
     } else {
       $('#update_user_blacklisted').removeAttr('checked');
-      $('.blacklist_user_button').text('Blacklist User').unbind().on('click', function () {
+      $('.blacklist_user_button').text('Mark for Data Purge').unbind().on('click', function () {
         self.blacklistUser();
-      });
+      }).closest('.control-group').find('.control-label').text('Not Marked for Data Purge');
     }
   },
 
@@ -666,8 +667,8 @@ Admin.Users.Controller = Controller.extend({
 
   blacklistUser: function () {
     var self = this;
-    self.showBooleanModal('Are you sure you want to Blacklist this User? (In supported apps, data will be purged at next login.)', function () {
-      self.changeBooleanField('blacklisted', true, 'Blacklisting', function () {
+    self.showBooleanModal('Are you sure you want to mark this User for data purge? (In supported apps, data will be purged at next login.)', function () {
+      self.changeBooleanField('blacklisted', true, 'Marking for Data Purge', function () {
         self.setUserBlacklisted(true);
       });
     });
@@ -675,8 +676,8 @@ Admin.Users.Controller = Controller.extend({
 
   whitelistUser: function () {
     var self = this;
-    self.showBooleanModal('Are you sure you want to Whitelist this User?', function () {
-      self.changeBooleanField('blacklisted', false, 'Whitelisting', function () {
+    self.showBooleanModal('Are you sure you want to unmark this User for data purge?', function () {
+      self.changeBooleanField('blacklisted', false, 'Unmarking for Data Purge', function () {
         self.setUserBlacklisted(false);
       });
     });
@@ -690,14 +691,14 @@ Admin.Users.Controller = Controller.extend({
     };
     fields[boolField] = boolVal;
 
-    self.showAlert('info', '<strong>' + actionDesc + ' User</strong> (' + fields.username + ')');
+    self.showAlert('info', '<strong>' + actionDesc + '</strong> (' + fields.username + ')');
     self.models.user.update(fields, function(res) {
       console.log(actionDesc + ' User OK');
-      self.showAlert('success', '<strong>' + actionDesc + ' User successful</strong> (' + fields.username + ')');
+      self.showAlert('success', '<strong>' + actionDesc + ' successful</strong> (' + fields.username + ')');
       success();
     }, function(err) {
       console.log(err);
-      self.showAlert('error', '<strong>Error ' + actionDesc + ' User</strong> ' + err);
+      self.showAlert('error', '<strong>Error ' + actionDesc + '</strong> ' + err);
     });
   }
 });
