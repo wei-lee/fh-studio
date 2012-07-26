@@ -46,11 +46,20 @@ var Controller = Class.extend({
 
   // updates the swap select, given as the container, with the form and to values.
   // to values are optional
+  // from/to values can be:
+  // - array of values to use as text and 'value' e.g. [['TEST'], ...] ==> <option value="TEST">TEST</option>...
+  // - or array of arrays, where each sub-array has 2 values, the text and the 'value' e.g. [['TEST','testid'], ...] ==> <option value="testid">TEST</option>...
   updateSwapSelect: function(container, from, to) {
     var from_list = $('.swap-from', container).empty();
-    $.each(from, function(i, form_item) {
-      if (('undefined' === typeof to) || (to.indexOf(form_item) < 0)) {
-        var option = $('<option>').text(form_item);
+    $.each(from, function(i, from_item) {
+      if (('undefined' === typeof to) || (to.indexOf(from_item) < 0)) {
+        var option = $('<option>');
+        if ('string' === typeof from_item) {
+          option.text(from_item).val(from_item);
+        } else {
+          // have name, value as array
+          option.text(from_item[0]).val(from_item[1]);
+        }
         from_list.append(option);
       }
     });
@@ -59,7 +68,13 @@ var Controller = Class.extend({
     var to_list = $('.swap-to', container).empty();
     if ('undefined' !== typeof to) {
       $.each(to, function(i, to_item) {
-        var option = $('<option>').text(to_item);
+        var option = $('<option>');
+        if ('string' === typeof to_item) {
+          option.text(to_item).val(to_item);
+        } else {
+          // have name, value as array
+          option.text(to_item[0]).val(to_item[1]);
+        }
         to_list.append(option);
       });
     }

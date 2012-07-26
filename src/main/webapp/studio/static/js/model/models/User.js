@@ -40,13 +40,15 @@ model.User = model.Model.extend({
 
   },
 
-  create: function(id, email, name, roles, groups, storeitems, password, activated, invite,  success, fail) {
+  create: function(id, email, name, roles, policies, groups, storeitems, password, activated, invite,  success, fail) {
     var url = Constants.ADMIN_USER_CREATE_URL;
     var params = {
       "username": id,
       "activated": activated,
       "invite": invite
     };
+
+    // TODO: should all individual params be passed in here ??
 
     if (password != null) {
       params.password = password;
@@ -62,6 +64,10 @@ model.User = model.Model.extend({
 
     if (roles != null) {
       params.roles = roles;
+    }
+
+    if (policies != null) {
+      params.policies = policies;
     }
 
     if (groups != null) {
@@ -101,7 +107,7 @@ model.User = model.Model.extend({
   },
 
   // purposely called imports due to keyword 'import'
-  imports: function (invite, roles, groups, fileField, success, fail, progress) {
+  imports: function (invite, roles, policies, groups, fileField, success, fail, progress) {
     var url = Constants.ADMIN_USER_IMPORT_URL;
     var formData = [];
 
