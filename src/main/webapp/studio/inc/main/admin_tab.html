@@ -747,6 +747,28 @@
               <label class="checkbox"><input type="checkbox" class="input" id="create_check_user_approved_id"/>Check if user approved for auth</label>
             </div>
           </div>
+
+          <div class="control-group" id="create_approved_users">
+            <label class="control-label">Users</label>
+            <div class="controls swap-select" id="create_approved_users_auth_policies_swap">
+              <div class="span2">
+                <span>Available</span>
+                <select multiple="multiple" class="span12 swap-from">
+                </select>
+              </div>
+              <div class="span1">
+                <button class="btn add span12">&gt;</button>
+                <button class="btn remove span12">&lt;</button>
+              </div>
+              <div class="span2">
+                <span>Approved</span>
+                <select multiple="multiple" class="span12 swap-to">
+                </select>
+              </div>
+              <!-- <span class="help-inline span4"><br/>These Auth Policies will be applied to $fh.auth calls in your Store Item.</span> -->
+            </div>
+          </div>
+
         </fieldset> <!-- authorization well -->
         <button type="button" id="create_policy_btn" class="btn btn-primary">Create Policy</button>
       </form>
@@ -855,8 +877,30 @@
               <div class="controls">
                 <label class="checkbox"><input type="checkbox" class="input" id="update_check_user_approved_id"/>Check if user approved for auth</label>
               </div>
+
+          <div class="control-group" id="update_approved_users">
+            <label class="control-label">Users</label>
+            <div class="controls swap-select" id="update_approved_users_auth_policies_swap">
+              <div class="span2">
+                <span>Available</span>
+                <select multiple="multiple" class="span12 swap-from">
+                </select>
+              </div>
+              <div class="span1">
+                <button class="btn add span12">&gt;</button>
+                <button class="btn remove span12">&lt;</button>
+              </div>
+              <div class="span2">
+                <span>Approved</span>
+                <select multiple="multiple" class="span12 swap-to">
+                </select>
+              </div>
+              <!-- <span class="help-inline span4"><br/>These Auth Policies will be applied to $fh.auth calls in your Store Item.</span> -->
             </div>
-          </fieldset> <!-- authorization well -->
+          </div>
+
+            </div>
+          </fieldset> <!-- /authorization well -->
           <input type="hidden" name="guid" id="update_guid" value=""/>
         <button type="button" id="update_policy_btn" class="btn btn-primary">Update Policy</button>        
         </form>
