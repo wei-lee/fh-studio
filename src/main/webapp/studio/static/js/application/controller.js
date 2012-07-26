@@ -101,7 +101,7 @@ var Controller = Class.extend({
   },
 
   // resets all form elements (inputs etc..) in the given container
-  resetForm: function (container, enable) {
+  resetForm: function (container) {
     $('input[type=text],input[type=email],input[type=password]', container).val('').attr('disabled');
     $('input[type=checkbox]', container).removeAttr('checked').attr('disabled');
     $('select,button', container).attr('disabled', 'disabled');
