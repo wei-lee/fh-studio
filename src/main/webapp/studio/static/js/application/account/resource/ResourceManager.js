@@ -47,14 +47,14 @@ application.ResourceManager = Class.extend({
       resource_div.find('.resource-uploaded').show();
       resource_div.find('.resource-download').data('guid', temp_resource.guid).unbind().bind('click', function () {
         var guid = $(this).data('guid');
-        log('download clicked for resource with guid: ' + guid);
+        console.log('download clicked for resource with guid: ' + guid);
         $fw_manager.app.startDownload(Constants.DOWNLOAD_RESOURCE_URL + '?guid=' + guid);
       });
       destination_resources[temp_resource.type] = true;
     }
     $fw_manager.client.resource[this.destination].setResources(destination_resources);
     
-    log('show resources for destination: ' + this.destination);
+    console.log('show resources for destination: ' + this.destination);
     $('#' + this.destination + '_resources').show();
   },
   
@@ -96,16 +96,16 @@ application.ResourceManager = Class.extend({
    */
   setupDestination: function () {
     var that = this;
-    log('setupDestination ' + that.destination);
+    console.log('setupDestination ' + that.destination);
     var destinations_container = $('#destinations_' + that.destination + '_container');
     destinations_container.find('.dashboard-content').hide();
     
     // Initialise resource buttons if not already done
     if ('undefined' === typeof that[that.destination + '_buttons']) {
-      log('binding buttons for ' + that.destination);
+      console.log('binding buttons for ' + that.destination);
       $('#' + that.destination + '_getstarted_resource').find('.resource-getstarted').data('destination', that.destination).unbind().bind('click', function () {
         var dest = $(this).data('destination');
-        log(dest + '_getstarted_resource button clicked');
+        console.log(dest + '_getstarted_resource button clicked');
         $fw_manager.client.resource[dest].showGetStartedWizard();
       });
       destinations_container.find('.resource-uploadnow, .resource-reupload').data('destination', that.destination).unbind().bind('click', function () {
@@ -131,7 +131,7 @@ application.ResourceManager = Class.extend({
     $.post(Constants.LIST_RESOURCES_URL, {
       dest: dest
     }, function (result) {
-      log('list resources response > ' + JSON.stringify(result));
+      console.log('list resources response > ' + JSON.stringify(result));
       
       // Combine the resources in the result to a single array and set the type of them accordingly
       var resources = [];
@@ -199,7 +199,7 @@ application.ResourceManager = Class.extend({
     });
     // TODO: refactor, code duplication below !!!
     key_wizard.find('#' + that.destination + '_key_finish').bind('show', function () {
-      log('uploading key');
+      console.log('uploading key');
       var step = $(this);
       
       proto.ProgressDialog.resetBarAndLog(step);
@@ -215,9 +215,9 @@ application.ResourceManager = Class.extend({
         resourceType: 'privatekey',
         buildType: key_wizard.find('#'+that.destination+'_key_type').val()
       };
-      log("params: " + JSON.stringify(data));
+      console.log("params: " + JSON.stringify(data));
       $fw_manager.app.startUpload(key_wizard.find('#' + file_input_id), upload_url, data, function (result) {
-        log('upload result > ' + JSON.stringify(result));
+        console.log('upload result > ' + JSON.stringify(result));
         if ('undefined' !== typeof result.error && result.error.length > 0) {
           proto.ProgressDialog(step, $fw.client.lang.getLangString('file_upload_failed'));
           proto.Wizard.previousStep(key_wizard, result.error);
@@ -253,7 +253,7 @@ application.ResourceManager = Class.extend({
       build_type = 'debug';
     }
     
-    log('showing resource wizard for destination: ' + that.destination + ',and resource_type:' + resource_type);
+    console.log('showing resource wizard for destination: ' + that.destination + ',and resource_type:' + resource_type);
     var destinations_container = $('#destinations_' + that.destination + '_container');
     destinations_container.find('.dashboard-content').hide();
     
@@ -274,7 +274,7 @@ application.ResourceManager = Class.extend({
     });
     cert_wizard.find('#' + that.destination + '_cert_finish').bind('show', function () {
       var dest = that.destination;
-      log('uploading cert');
+      console.log('uploading cert');
       var step = $(this);
       
       proto.ProgressDialog.resetBarAndLog(step);
@@ -292,14 +292,14 @@ application.ResourceManager = Class.extend({
       };
       
       $fw_manager.app.startUpload(cert_wizard.find('#' + file_input_id), upload_url, data, function (result) {
-        log('upload result > ' + JSON.stringify(result));
+        console.log('upload result > ' + JSON.stringify(result));
         if ('undefined' !== typeof result.error && result.error.length > 0) {
-          log('upload failed');
+          console.log('upload failed');
           proto.ProgressDialog(step, $fw.client.lang.getLangString('file_upload_failed'));
           proto.Wizard.previousStep(cert_wizard, result.error);
         }
         else {
-          log('upload Complete');
+          console.log('upload Complete');
           
           // TODO: better way for this temporary workaround for finishing wizard after successful upload  
           cert_wizard.find('.jw-button-finish').trigger('click');
@@ -340,7 +340,7 @@ application.ResourceManager = Class.extend({
     });
     // TODO: refactor, code duplication below !!!
     res_wizard.find('#' + that.destination + '_'+resource_type+'_finish').bind('show', function () {
-      log('uploading ' + resource_type);
+      console.log('uploading ' + resource_type);
       var step = $(this);
       
       proto.ProgressDialog.resetBarAndLog(step);
@@ -356,9 +356,9 @@ application.ResourceManager = Class.extend({
         resourceType: resource_type,
         buildType: 'release'
       };
-      log("params: " + JSON.stringify(data));
+      console.log("params: " + JSON.stringify(data));
      $fw_manager.app.startUpload(res_wizard.find('#' + file_input_id), upload_url, data, function (result) {
-        log('upload result > ' + JSON.stringify(result));
+        console.log('upload result > ' + JSON.stringify(result));
         if ('undefined' !== typeof result.error && result.error.length > 0) {  
           proto.ProgressDialog(step, $fw.client.lang.getLangString('file_upload_failed'));
           proto.Wizard.previousStep(res_wizard, result.error);

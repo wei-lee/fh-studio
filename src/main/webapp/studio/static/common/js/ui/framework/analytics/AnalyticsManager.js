@@ -17,12 +17,12 @@ AnalyticsManager = Class.extend({
 	},
 		
 	trackEvent: function(pEventInfo) {
-		log("START - AnalyticsManager.trackEvent::" + JSON.stringify(pEventInfo));
+		console.log("START - AnalyticsManager.trackEvent::" + JSON.stringify(pEventInfo));
 		for( var i = 0; i < this.impls.length; i++ ) {
 			var impl = this.impls[i];
 			impl.trackEvent(pEventInfo);
-		}	
-		log("END - AnalyticsManager.trackEvent::" + JSON.stringify(pEventInfo));
+		}
+		console.log("END - AnalyticsManager.trackEvent::" + JSON.stringify(pEventInfo));
 	},
 	
 	getAnalyticsImpls: function() {

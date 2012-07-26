@@ -52,7 +52,7 @@ proto.Wizard = {
           }).text(ct.label)));
         }
       } catch(e) {
-        log('could not apply config for ' + parent.attr('config-radio') + ' :: ' + e.toString(), 'ERROR');
+        console.log('could not apply config for ' + parent.attr('config-radio') + ' :: ' + e.toString(), 'ERROR');
       }
       // make sure the radios aren't added every time wizard is re-used
       parent.removeAttr('config-radio');
@@ -109,7 +109,7 @@ proto.Wizard = {
     
     // turn on the modal dialog if required
     if (fh_config.modal) {
-      log('set up dialog');
+      console.log('set up dialog');
       proto.Dialog.load($(fh_config.container), {}).dialog('open');
     }
     
@@ -146,7 +146,7 @@ proto.Wizard = {
     }
     
     if ('undefined' !== typeof msg) {
-      log('jumpToStep ' + num + ':' + msg);
+      console.log('jumpToStep ' + num + ':' + msg);
       // TODO: show message inside wizard
       //        and specify the container to show the message in
       $fw_manager.client.dialog.error(msg);
@@ -156,7 +156,7 @@ proto.Wizard = {
   previousStep: function (el, msg) {
     el.jWizard('previousStep');
     if ('undefined' !== typeof msg) {
-      log('previousStep:' + msg);
+      console.log('previousStep:' + msg);
       // TODO: show message inside wizard
       $fw_manager.client.dialog.error(msg);
     }
@@ -263,7 +263,7 @@ proto.Wizard = {
     };
 
     if ($fw.client.app.isNodeJsApp()) {
-      log('Node.js based app, applying wizard changes');
+      console.log('Node.js based app, applying wizard changes');
       wizards.blackberry_publish_wizard = ['app_publish_blackberry_staging_env', 'app_publish_blackberry_staging_progress', 'app_publish_blackberry_versions', 'app_publish_blackberry_password', 'app_publish_blackberry_progress'];
       wizards.ipad_publish_wizard = ['app_publish_ipad_select_provisionings', 'app_publish_ipad_upload_provisionings', 'app_publish_ipad_upload_progress', 'app_publish_ipad_staging_env', 'app_publish_ipad_staging_progress', 'app_publish_ipad_versions', 'app_publish_ipad_password', 'app_publish_ipad_progress'];
       wizards.iphone_publish_wizard = ['app_publish_iphone_select_provisionings', 'app_publish_iphone_upload_provisionings', 'app_publish_iphone_upload_progress', 'app_publish_iphone_staging_env', 'app_publish_iphone_staging_progress', 'app_publish_iphone_versions', 'app_publish_iphone_password', 'app_publish_iphone_progress'];

@@ -8,7 +8,7 @@ application.DestinationEmbed = application.DestinationGeneral.extend({
    * Determine the script embed code and display it to the user
    */
   publish: function () {
-    log("Embed :: Publish");
+    console.log("Embed :: Publish");
     
     // get the embed code string
     var guid = $fw_manager.data.get('inst').guid;

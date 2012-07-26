@@ -15,7 +15,7 @@ Reports.View.Chart.Base = Class.extend({
     this.series = params.series.all_series;
     this.series_name = params.series.series_name;
     this.renderTo = '#appreport-results';
-    log('Initialising chart view');
+    console.log('Initialising chart view');
   },
 
   render: function() {
@@ -71,7 +71,7 @@ Reports.View.Chart.Base = Class.extend({
             }, {
               text: 'Export to CSV',
               onclick: function() {
-                log('Exporting to CSV.');
+                console.log('Exporting to CSV.');
                 var model = this.view.model;
                 var filename = model.name + '.csv';
 

@@ -376,7 +376,7 @@
       if ('ok' === result.status) {
         // Show results
         payload = result.payload;
-        log('metrics results: ' + payload.results.length);
+        console.log('metrics results: ' + payload.results.length);
         data = payload.results; 
           
         if ('undefined' !== typeof data) {

@@ -19,7 +19,7 @@ application.PreviewConfigManager = application.ConfigurationManager.extend({
   
   showPost: function () {
     var self = this;
-    log('showPost preview');
+    console.log('showPost preview');
     
     // use preview settings stored in 'config' object of app to populate options
     var opts = Config.app.preview;
@@ -45,7 +45,7 @@ application.PreviewConfigManager = application.ConfigurationManager.extend({
   },
   
   saveConfig: function () {
-    log('saving preview config');
+    console.log('saving preview config');
     var table = $('#configuration_preview_content');
     
     // populate preview config object with form element values
@@ -62,7 +62,7 @@ application.PreviewConfigManager = application.ConfigurationManager.extend({
       preview_config[el.attr('name')] = val;  
     });
     
-    log('target:' + preview_config.device);
+    console.log('target:' + preview_config.device);
     var device = $fw.client.preview.resolveDevice(preview_config.device);
     
     var inst = $fw_manager.data.get('inst');
@@ -77,13 +77,13 @@ application.PreviewConfigManager = application.ConfigurationManager.extend({
     };
     // call app update with updated 'config' object
     $fw_manager.client.model.App.update(fields, function (result) {
-      log('update success:' + result);
+      console.log('update success:' + result);
       $fw_manager.client.dialog.info.flash($fw_manager.client.lang.getLangString('config_saved'));
       $fw_manager.client.app.updateAppData(result.app, result.inst);
       $fw_manager.client.preview.show();
       
     }, function (error) {
-      log('update config failed:' + error);
+      console.log('update config failed:' + error);
       $fw_manager.client.dialog.error(error);
       self.show();
     });
