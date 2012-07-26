@@ -510,12 +510,6 @@
               <label class="control-label" for="textarea">App Store Icon</label>
               <div class="controls">
                 <input type="file" id="icon_binary" class="input-xlarge"/>
-                <span class="help-inline">Icons should be 128x128, and in PNG format.</span>
-                <br/>
-                <div class="store_item_icon_progress progress progress-striped active" style="display: none">
-                  <div class="bar" style="width: 0%;"></div>
-                </div>
-                <span class="store_item_icon_status" style="display: none;"></span>
               </div>
             </div>
 
@@ -524,11 +518,6 @@
               <div class="controls">
                 <input type="file" id="android_binary" class="input-xlarge"/>
                 <span class="help-inline">An Android binary consists of an APK signed for distribution.</span>
-                <br/>
-                <div class="store_item_binary_android_progress progress progress-striped active" style="display: none">
-                  <div class="bar" style="width: 0%;"></div>
-                </div>
-                <span class="store_item_binary_android_status" style="display: none;"></span>
               </div>
             </div>
 
@@ -866,4 +855,13 @@
     </div>
 
 </div>
+</div>
+
+<!-- Binary Upload progress template -->
+<div id="binary_upload_progress_template" class="hidden_template progress_area">
+  <br/>
+  <div class="progress progress-striped active">
+    <div class="bar" style="width: 0%;"></div>
+  </div>
+  <span class="status"></span>
 </div>
