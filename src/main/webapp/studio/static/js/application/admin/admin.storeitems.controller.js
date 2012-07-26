@@ -107,7 +107,7 @@ Admin.Storeitems.Controller = Controller.extend({
       var update_view = $(self.views.store_item_update);
 
       // Remove uploaded status labels
-      //$('span.label', update_view).remove();
+      $('span.label', update_view).remove();
 
       self.renderAvailableAuthPolicies(res.list, self.views.store_item_update);
 
