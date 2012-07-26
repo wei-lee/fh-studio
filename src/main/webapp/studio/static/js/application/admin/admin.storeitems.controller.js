@@ -333,6 +333,7 @@ Admin.Storeitems.Controller = Controller.extend({
     });
 
     this.bindSwapSelect(this.views.store_item_create);
+    this.bindSwapSelect(this.views.store_item_update);
   },
 
   createStoreItem: function() {
