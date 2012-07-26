@@ -229,7 +229,7 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
             // 5 minutes
             maxRetries: Properties.cache_lookup_retries,
             timeout: function(res) {
-              Log.append('timeout error > ' + JSON.stringify(res));
+              log('timeout error > ' + JSON.stringify(res));
               $fw.client.dialog.error($fw.client.lang.getLangString('scm_trigger_error'));
               self.updateProgressBar(100);
               if (typeof fail != 'undefined') {
@@ -238,22 +238,22 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
             },
             update: function(res) {
               for (var i = 0; i < res.log.length; i++) {
-                Log.append(res.log[i]);
+                log(res.log[i]);
                 if (typeof res.action.guid != 'undefined') {
                   new_guid = res.action.guid;
-                  Log.append('GUID for new app > ' + new_guid);
+                  log('GUID for new app > ' + new_guid);
                 }
                 self.appendProgressLog(res.log[i]);
-                Log.append("Current progress> " + self.current_progress);
+                log("Current progress> " + self.current_progress);
               }
               self.updateProgressBar(self.current_progress + 1);
             },
             complete: function(res) {
-              Log.append('SCM refresh successful > ' + JSON.stringify(res));
+              log('SCM refresh successful > ' + JSON.stringify(res));
               self.updateProgressBar(75);
             },
             error: function(res) {
-              Log.append('clone error > ' + JSON.stringify(res));
+              log('clone error > ' + JSON.stringify(res));
               $fw.client.dialog.error('App generation failed.' + "<br /> Error Message:" + res.error);
               self.updateProgressBar(100);
               if (typeof fail != 'undefined') {
@@ -261,7 +261,7 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
               }
             },
             retriesLimit: function() {
-              Log.append('retriesLimit exceeded: ' + Properties.cache_lookup_retries);
+              log('retriesLimit exceeded: ' + Properties.cache_lookup_retries);
               $fw.client.dialog.error('App generation failed.');
               self.updateProgressBar(100);
               if (typeof fail != 'undefined') {
