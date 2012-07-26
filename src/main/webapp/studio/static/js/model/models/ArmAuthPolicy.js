@@ -21,24 +21,28 @@ model.ArmAuthPolicy = model.Model.extend({
 
   },
 
-  create:function (policyId, policyType, configurations, checkUserExists, success, fail) {
+  create:function (policyId, policyType, configurations, checkUserExists, checkUserApproved, users, success, fail) {
     var params = {};
     params.policyId = policyId;
     params.policyType = policyType;
     params.configurations = configurations;
     params.checkUserExists = checkUserExists;
+    params.checkUserApproved = checkUserApproved;
+    params.users = users;
     var url = this.baseUrl + "/create";
     return this.serverPost(url, params, success, fail, true);
   },
 
 
-  update:function (guid, policyId, policyType, configurations, checkUserExists, success, fail) {
+  update:function (guid, policyId, policyType, configurations, checkUserExists, checkUserApproved, users, success, fail) {
     var params = {};
     params.guid = guid;
     params.policyId = policyId;
     params.policyType = policyType;
     params.configurations = configurations;
     params.checkUserExists = checkUserExists;
+    params.checkUserApproved = checkUserApproved;
+    params.users = users;
     var url = this.baseUrl + "/update";
     return this.serverPost(url, params, success, fail, true);
   },
@@ -66,7 +70,6 @@ model.ArmAuthPolicy = model.Model.extend({
     return this.serverPost(url, params, success, fail, true);
   },
 
- // TODO DB - fix this..
   getConfig:function (success, fail) {
     var url = Constants.ARM_URL_PREFIX + "getAuthCallbackUrl";
     return this.serverPost(url, {}, success, fail);

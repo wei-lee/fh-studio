@@ -562,48 +562,43 @@
           </div>
 
           <div class="well store_item_binaries">
-            <h3>Upload App Binaries & App Store Icon</h3>
-
-            <div class="control-group">
-              <label class="control-label" for="icon_binary">App Store Icon</label>
-              <div class="controls">
-                <input type="file" id="icon_binary" class="input-xlarge"/>
-                <span class="help-inline">Store Item icons should be 128x128px and in PNG format.</span>
-              </div>
-            </div>
-
-            <div class="control-group">
-              <label class="control-label" for="android_binary">Android Binary</label>
-              <div class="controls">
-                <input type="file" id="android_binary" class="input-xlarge"/>
-                <span class="help-inline">An Android binary consists of an APK signed for distribution.</span>
-              </div>
-            </div>
-
-            <div class="control-group">
-              <label class="control-label" for="iphone_binary">iPhone Binary</label>
-              <div class="controls">
-                <input type="file" class="input-xlarge" id="iphone_binary"/>
-                <span class="help-inline">An iPhone binary consists of an signed IPA.</span>
-              </div>
-            </div>
-
-            <div class="control-group">
-              <label class="control-label" for="ipad_binary">iPad Binary</label>
-              <div class="controls">
-                <input type="file" class="input-xlarge" id="ipad_binary"/>
-                <span class="help-inline">An iPad binary consists of an signed IPA.</span>
-              </div>
-            </div>
-
-            <div class="control-group">
-              <label class="control-label" for="ios_binary">iOS Universal Binary</label>
-              <div class="controls">
-                <input type="file" class="input-xlarge" id="ios_binary"/>
-                <span class="help-inline">An iOS Universal binary consists of an signed IPA.</span>
-              </div>
-            </div>
-
+            <h3>Upload App Binaries & App Store Icon</h3><br/>
+            <table class="table table-bordered table-striped store_item_binaries_table">
+              <thead>
+                <tr>
+                  <th>Type</th>
+                  <th>Description</th>
+                  <th>Upload Binary</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>App Store Icon</td>
+                  <td>Store Item icons should be 128x128px and in PNG format.</td>
+                  <td><input type="file" id="icon_binary" class="input-xlarge"/></td>
+                </tr>
+                <tr>
+                  <td>Android Binary</td>
+                  <td>An Android binary consists of an <code>.apk</code> signed for distribution.</td>
+                  <td><input type="file" id="android_binary" class="input-xlarge"/></td>
+                </tr>
+                <tr>
+                  <td>iPhone Binary</td>
+                  <td>An iPhone binary consists of an <code>.ipa</code> signed for distribution.</td>
+                  <td><input type="file" id="iphone_binary" class="input-xlarge"/></td>
+                </tr>
+                <tr>
+                  <td>iPad Binary</td>
+                  <td>An iPad binary consists of an <code>.ipa</code> signed for distribution.</td>
+                  <td><input type="file" id="ipad_binary" class="input-xlarge"/></td>
+                </tr>
+                <tr>
+                  <td>iOS Universal Binary</td>
+                  <td>An iOS Universal Binary consists of an <code>.ipa</code> signed for distribution.</td>
+                  <td><input type="file" id="ios_binary" class="input-xlarge"/></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </form>
       </div>
@@ -638,10 +633,10 @@
 
           <div class="control-group">
             <label class="control-label">Store Items</label>
-            <div class="controls swap-select store_item_auth_policies_swap">
+            <div class="controls swap-select app_store_store_items">
               <div class="span2">
                 <span>Available</span>
-                <select multiple="multiple" class="span12 swap-from store_item_available_auth_policies">
+                <select multiple="multiple" class="span12 swap-from app_store_store_items_available">
                 </select>
               </div>
               <div class="span1">
@@ -650,7 +645,7 @@
               </div>
               <div class="span2">
                 <span>In Store</span>
-                <select multiple="multiple" class="span12 swap-to store_item_assigned_auth_policies">
+                <select multiple="multiple" class="span12 swap-to app_store_store_items_assigned">
                 </select>
               </div>
               <span class="help-inline span4"><br/>These Store Items will appear in your App Store</span>
@@ -795,6 +790,28 @@
               <label class="checkbox"><input type="checkbox" class="input" id="create_check_user_approved_id"/>Check if user approved for auth</label>
             </div>
           </div>
+
+          <div class="control-group" id="create_approved_users">
+            <label class="control-label">Users</label>
+            <div class="controls swap-select" id="create_approved_users_auth_policies_swap">
+              <div class="span2">
+                <span>Available</span>
+                <select multiple="multiple" class="span12 swap-from">
+                </select>
+              </div>
+              <div class="span1">
+                <button class="btn add span12">&gt;</button>
+                <button class="btn remove span12">&lt;</button>
+              </div>
+              <div class="span2">
+                <span>Approved</span>
+                <select multiple="multiple" class="span12 swap-to">
+                </select>
+              </div>
+              <!-- <span class="help-inline span4"><br/>These Auth Policies will be applied to $fh.auth calls in your Store Item.</span> -->
+            </div>
+          </div>
+
         </fieldset> <!-- authorization well -->
         <button type="button" id="create_policy_btn" class="btn btn-primary">Create Policy</button>
       </form>
@@ -903,8 +920,30 @@
               <div class="controls">
                 <label class="checkbox"><input type="checkbox" class="input" id="update_check_user_approved_id"/>Check if user approved for auth</label>
               </div>
+
+          <div class="control-group" id="update_approved_users">
+            <label class="control-label">Users</label>
+            <div class="controls swap-select" id="update_approved_users_auth_policies_swap">
+              <div class="span2">
+                <span>Available</span>
+                <select multiple="multiple" class="span12 swap-from">
+                </select>
+              </div>
+              <div class="span1">
+                <button class="btn add span12">&gt;</button>
+                <button class="btn remove span12">&lt;</button>
+              </div>
+              <div class="span2">
+                <span>Approved</span>
+                <select multiple="multiple" class="span12 swap-to">
+                </select>
+              </div>
+              <!-- <span class="help-inline span4"><br/>These Auth Policies will be applied to $fh.auth calls in your Store Item.</span> -->
             </div>
-          </fieldset> <!-- authorization well -->
+          </div>
+
+            </div>
+          </fieldset> <!-- /authorization well -->
           <input type="hidden" name="guid" id="update_guid" value=""/>
         <button type="button" id="update_policy_btn" class="btn btn-primary">Update Policy</button>        
         </form>
@@ -923,3 +962,7 @@
   </div>
   <span class="status" style="display: none"></span>
 </div>
+
+<!-- Binary Upload progress template -->
+<span id="binary_upload_status" class="label label-inverse upload_status hidden_template"></span>
+
