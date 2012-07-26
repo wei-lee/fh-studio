@@ -202,7 +202,10 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
   generateApp: function() {
     var self = this;
     var app_config = this.buildAppConfig();
-    self.showProgressModal(function () {
+    var title = "Generating Your App";
+    var message = "We're generating your app...";
+
+    self.showProgressModal(title, message, function () {
       self.clearProgressModal();
       self.appendProgressLog('Cloning Wufoo app template.');
 
@@ -275,7 +278,7 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
                   // Reset state back to the manage tab/build app
                   $fw_manager.state.set('manage_apps_accordion_accordion_item_manage', 'selected', 4);
                   $fw_manager.state.set('manage_apps_accordion_app', 'selected', 0);
-                  $fw_manager.client.app.doShowManage(guid);
+                  $fw_manager.client.app.doShowManage(new_guid);
                 }, 250);
               });
             }
@@ -374,9 +377,6 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
       });
     });
   },
-
-  //.find('h3').text('Generating Your App').end()
-    //  .find('h4').text('We\'re generating your app...').end()
 
   selectedFormData: function() {
     var self = this;
