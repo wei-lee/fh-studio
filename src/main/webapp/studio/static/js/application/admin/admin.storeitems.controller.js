@@ -193,7 +193,7 @@ Admin.Storeitems.Controller = Controller.extend({
 
       // Inject binary upload progress template
       var progress_area = $('#binary_upload_progress_template').clone();
-      progress_area.removeAttr('id').removeClass('hidden_template');
+      progress_area.removeAttr('id');
       input.after(progress_area);
 
       var status = $('.status', progress_area);
@@ -210,6 +210,7 @@ Admin.Storeitems.Controller = Controller.extend({
           // If files are dropped onto an input, all of them call this add callback
           // so you need to find out if the event correlates to this particular field
           if (e.target.id === binary.id) {
+            progress_area.show();
             status.text('Uploading...');
             status.slideDown();
             progress_bar.slideDown();
