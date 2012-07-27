@@ -40,5 +40,15 @@ model.StoreItem = model.Model.extend({
       "guid": guid
     };
     return this.serverPost(url, params, success, fail, true);
+  },
+
+  updateConfig: function(guid, type, bundle_id, success, fail) {
+    var url = Constants.ADMIN_STORE_ITEM_UPDATE_CONFIG_URL;
+    var params = {
+      guid: guid,
+      type: type,
+      config: {bundle_id: bundle_id}
+    };
+    return this.serverPost(url, params, success, fail, true);
   }
 });

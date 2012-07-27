@@ -509,6 +509,7 @@
       </div>
 
       <div id="admin_store_item_update" class="hidden_template row-fluid">
+        <div class="alerts"></div>
         <input type="hidden" class="item_guid">
 
         <form class="well form-horizontal">
@@ -562,13 +563,14 @@
             <button type="submit" class="btn btn-primary update_store_item">Update Item Details</button>
           </div>
 
-          <div class="well store_item_binaries">
+          <div class="store_item_binaries">
             <h3>Upload App Binaries & App Store Icon</h3><br/>
             <table class="table table-bordered table-striped store_item_binaries_table">
               <thead>
                 <tr>
                   <th>Type</th>
                   <th>Description</th>
+                  <th>Configuration</th>
                   <th>Upload Binary</th>
                 </tr>
               </thead>
@@ -576,26 +578,31 @@
                 <tr>
                   <td>App Store Icon</td>
                   <td>Store Item icons should be 128x128px and in PNG format.</td>
+                  <td>&nbsp;</td>
                   <td><input type="file" id="icon_binary" class="input-xlarge"/></td>
                 </tr>
                 <tr>
-                  <td>Android Binary</td>
+                  <td><div class="device_icon android"></div>Android Binary</td>
                   <td>An Android binary consists of an <code>.apk</code> signed for distribution.</td>
+                  <td>&nbsp;</td>
                   <td><input type="file" id="android_binary" class="input-xlarge"/></td>
                 </tr>
                 <tr>
-                  <td>iPhone Binary</td>
-                  <td>An iPhone binary consists of an <code>.ipa</code> signed for distribution.</td>
+                  <td><div class="device_icon iphone"></div>iPhone Binary</td>
+                  <td>An iPhone binary consists of an <code>.ipa</code> signed for distribution. You will also need to provide us with the Bundle ID of the binary you're uploading (this value is in your Info.plist).</td>
+                  <td><input type="text" name="iphone_bundle_id" value="" class="bundle_id" data-destination="iphone" placeholder="iPhone Bundle ID" disabled="disabled"><br/><button class="btn btn-primary update_bundle_id" disabled="disabled">Update</button></td>
                   <td><input type="file" id="iphone_binary" class="input-xlarge"/></td>
                 </tr>
                 <tr>
-                  <td>iPad Binary</td>
-                  <td>An iPad binary consists of an <code>.ipa</code> signed for distribution.</td>
+                  <td><div class="device_icon ipad"></div>iPad Binary</td>
+                  <td>An iPad binary consists of an <code>.ipa</code> signed for distribution. You will also need to provide us with the Bundle ID of the binary you're uploading (this value is in your Info.plist).</td>
+                  <td><input type="text" name="ipad_bundle_id" value="" class="bundle_id" data-destination="ipad" placeholder="iPad Bundle ID" disabled="disabled"><br/><button class="btn btn-primary update_bundle_id" disabled="disabled">Update</button></td>
                   <td><input type="file" id="ipad_binary" class="input-xlarge"/></td>
                 </tr>
                 <tr>
-                  <td>iOS Universal Binary</td>
-                  <td>An iOS Universal Binary consists of an <code>.ipa</code> signed for distribution.</td>
+                  <td><div class="device_icon ios"></div>iOS Universal Binary</td>
+                  <td>An iOS Universal Binary consists of an <code>.ipa</code> signed for distribution. You will also need to provide us with the Bundle ID of the binary you're uploading (this value is in your Info.plist).</td>
+                  <td><input type="text" name="ios_bundle_id" value="" class="bundle_id" data-destination="ios" placeholder="iOS Universal Bundle ID" disabled="disabled"><br/><button class="btn btn-primary update_bundle_id" disabled="disabled">Update</button></td>
                   <td><input type="file" id="ios_binary" class="input-xlarge"/></td>
                 </tr>
               </tbody>

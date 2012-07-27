@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/studio/static/common/css/ui/framework/bootstrap.css">
+    <link rel="stylesheet" href="/studio/static/themes/default/css/font-awesome.css">
+    <link rel="stylesheet" href="store.css">
+ 
+    <script>
+      var model = {};
+      var $fw = {};
+    </script>
+  </head>
+  
+  <body>
+    <div class="container-fluid">
+      <div class="row-fluid page-header">
+        <h1 class="span12 appstore_name">Loading...</h1>
+      </div>
+      <div class="alerts"></div>
+      <div class="row-fluid">
+
+        <!-- Loading -->
+        <div id="store_loading" class="row-fluid">
+          <div class="span1"></div>
+          <div class="span10">
+              <p>Loading App Store information</p>
+          </div>
+        </div>
+
+        <!-- Login -->
+        <div id="store_login">
+          <div class="well">
+            <img class="appstore_icon" />
+            <button class="login_button btn-primary btn-large">Login</button>
+          </div>
+          <div id="auth_policy_actions" class="well">
+          </div>
+        </div>
+
+ 
+      <!-- Storeitem templates -->
+      <ul id="store_list" class="">
+        <div class="store_items_controls">
+        </div>
+      </ul>
+
+      <li id="store_item" class="store_item well">
+        <div class="row-fluid">
+          <div class="span2 icon_container">
+            <img src="" alt="" class="icon" />
+          </div>
+          <div class="details span8">
+            <h3 class="name"></h3>
+            <p class="description"></p>
+          </div>
+          <div class="span2 controls">
+            <button class="btn show_store_item"><i class="icon-chevron-right"></i></button>
+          </div>
+        </div>
+      </li>
+
+
+        <!-- Store Detail -->
+        <div id="store_detail" class="well row-fluid">
+          <div class="span2 icon_container">
+            <img src="" alt="" class="icon" />
+          </div>
+          <div class="span8">
+            <!--Body content-->
+            <div class="details span8">
+              <h3 class="item_name"></h3>
+              <p class="item_description"></p>
+            </div>
+            <div class="item_guid hidden"></div>
+            <div class="item_id hidden"></div>
+            <div class="span2 controls">
+              <button class="btn install_store_item">Install</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <script src="/studio/static/common/js/ui/thirdparty/jquery/jquery.js"></script>
+    <script src="/studio/static/common/js/ui/thirdparty/bootstrap/bootstrap.js"></script>
+    <script src="/studio/static/common/js/ui/thirdparty/Class.js"></script>    
+    <script src="/studio/static/common/js/ui/framework/server/AjaxCaller.js"></script>    
+    <script src="/studio/static/common/js/ui/framework/server/ServerManager.js"></script>    
+    <script src="/studio/static/js/model/models/Model.js"></script>
+    <script src="model_storeItemConsumer.js"></script>
+    <script src="model_storeInfo.js"></script>
+
+    <script src="store_controller.js"></script>
+  </body>
+</html>

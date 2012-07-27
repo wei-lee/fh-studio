@@ -28,6 +28,24 @@ Admin.Storeitems.Controller = Controller.extend({
     });
   },
 
+  // type: error|success|info
+  showAlert: function(type, message) {
+    var self = this;
+    var alerts_area = $(this.views.store_item_update).find('.alerts');
+    var alert = $('<div>').addClass('alert fade in alert-' + type).html(message);
+    var close_button = $('<button>').addClass('close').attr("data-dismiss", "alert").text("x");
+    alert.append(close_button);
+    alerts_area.append(alert);
+    // only automatically hide alert if it's not an error
+    if ('error' !== type) {
+      setTimeout(function() {
+        alert.slideUp(function() {
+          alert.remove();
+        });
+      }, self.alert_timeout);
+    }
+  },
+
   setStoreIcon: function(data) {
     var icon = $('.store_item_icon', this.views.admin_store_item_update);
     if (data !== '') {
@@ -110,6 +128,9 @@ Admin.Storeitems.Controller = Controller.extend({
     this.hide();
 
     self.setStoreIcon(store_item.icon);
+
+    // Disable bundle id inputs
+    $('.bundle_id, .update_bundle_id', self.views.store_item_update).attr('disabled', 'disabled');
 
     this.models.auth_policy.list(function(res) {
       var update_view = $(self.views.store_item_update);
@@ -215,6 +236,9 @@ Admin.Storeitems.Controller = Controller.extend({
         // Uploaded
         status_el.text('Uploaded').removeClass('label-inverse').addClass('label-success');
         input.before(status_el);
+
+        // Enable config setting
+        input.parents('tr').find('.bundle_id, .update_bundle_id').removeAttr('disabled');
       } else {
         // Not uploaded
         status_el.text('Not Uploaded');
@@ -244,6 +268,8 @@ Admin.Storeitems.Controller = Controller.extend({
             var filename = data.files[0].name;
             status.text('Uploaded ' + filename);
             status_el.text('Uploaded').removeClass('label-inverse').addClass('label-success');
+            // Enable config setting
+            input.parents('tr').find('.bundle_id, .update_bundle_id').removeAttr('disabled');
 
             // Set icon
             if (typeof data.result.icon !== 'undefined') {
@@ -343,8 +369,27 @@ Admin.Storeitems.Controller = Controller.extend({
       return false;
     });
 
+    var update_config = $('.update_bundle_id', self.views.store_item_update);
+    update_config.unbind().click(function() {
+      var input = $(this).parents('tr').find('.bundle_id');
+      var destination = input.attr('data-destination');
+      var bundle_id = input.val();
+      var guid = $('.item_guid', self.views.store_item_update).val();
+      self.updateStoreItemConfig(guid, destination, bundle_id);
+      return false;
+    });
+
     this.bindSwapSelect(this.views.store_item_create);
     this.bindSwapSelect(this.views.store_item_update);
+  },
+
+  updateStoreItemConfig: function(guid, destination, bundle_id) {
+    var self = this;
+    this.models.store_item.updateConfig(guid, destination, bundle_id, function(res) {
+      self.showAlert('success', "Store Item config updated");
+    }, function(err) {
+      self.showAlert('error', "Store Item config couldn't be updated");
+    });
   },
 
   createStoreItem: function() {

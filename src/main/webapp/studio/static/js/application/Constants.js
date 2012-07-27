@@ -136,6 +136,7 @@ $.extend(Constants, {
   ADMIN_STORE_ITEM_LIST_URL: Constants.ADMIN_URL_PREFIX + "storeitem/list",
   ADMIN_STORE_ITEM_CREATE_URL: Constants.ADMIN_URL_PREFIX + "storeitem/create",
   ADMIN_STORE_ITEM_UPDATE_URL: Constants.ADMIN_URL_PREFIX + "storeitem/update",
+  ADMIN_STORE_ITEM_UPDATE_CONFIG_URL: Constants.ADMIN_URL_PREFIX + "storeitem/setbinaryconfig",
   ADMIN_STORE_ITEM_DELETE_URL: Constants.ADMIN_URL_PREFIX + "storeitem/delete",
   ADMIN_STORE_ITEM_UPLOAD_BINARY_URL: Constants.ADMIN_URL_PREFIX + "storeitem/uploadbinary",
 

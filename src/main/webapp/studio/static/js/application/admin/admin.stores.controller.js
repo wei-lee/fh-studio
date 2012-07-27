@@ -54,8 +54,7 @@ Admin.Stores.Controller = Controller.extend({
           self.renderAvailableStoreItems(available_store_items, assigned_store_items, self.views.app_store);
 
           var available_auth_policies = auth_policy_res.list;
-          // TODO: Wire
-          var assigned_auth_policies = [];
+          var assigned_auth_policies = app_store_res.authpolicies;
           self.renderAvailableAuthPolicies(available_auth_policies, assigned_auth_policies, self.views.app_store);
 
           self.bind();
