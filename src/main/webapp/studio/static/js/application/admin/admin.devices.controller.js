@@ -119,23 +119,10 @@ Admin.Devices.Controller = Controller.extend({
 
   bindControls: function() {
     var self = this;
-    $('tr td .edit_device', this.device_table).unbind().click(function() {
+    $('tr td .edit_device, tr td .view_device_users, tr td .view_device_apps', this.device_table).unbind().click(function() {
       var row = $(this).parent().parent();
       var data = self.dataForRow($(this).parent().parent().get(0));
       self.showViewDevice(this, row, data);
-      return false;
-    });
-    $('tr td .view_device_users', this.device_table).unbind().click(function() {
-      var row = $(this).parent().parent();
-      var data = self.dataForRow($(this).parent().parent().get(0));
-      console.log(data);
-      return false;
-    });
-
-    $('tr td .view_device_apps', this.device_table).unbind().click(function() {
-      var row = $(this).parent().parent();
-      var data = self.dataForRow($(this).parent().parent().get(0));
-      console.log(data);
       return false;
     });
   },
@@ -151,6 +138,7 @@ Admin.Devices.Controller = Controller.extend({
     var parent = $(self.views.device_update);
     self.container = self.views.device_update;
     self.resetForm(parent);
+    self.resetLists(parent);
     var populateForm = function(device){
       var fields = device.fields;
       $('#update_device_name', parent).val(fields.name).removeAttr("disabled");
@@ -249,27 +237,74 @@ Admin.Devices.Controller = Controller.extend({
   },
 
   showDeviceUsers: function(users){
+    var self = this;
     var userlist = users.list;
-    var userhtml = "<li> No users found </li>";
     if(userlist.length > 0){
-      userhtml = "";
+      $('#device_users').empty();
       $.each(userlist, function(k, v){
-        userhtml += "<li><a>"+ v.fields.userId+"</a></li>";
+        var a = $("<a>", {"text": v.fields.userId, "href": "#"});
+        var li = $("<li>");
+        li.append(a);
+        a.popover({
+          title: v.fields.userId,
+          content: self.getUserPopOverContent(v.fields)
+        });
+        a.unbind('click').bind('click', function(){
+          self.hide();
+          $fw.client.tab.admin.controllers['admin.users.controller'].showUserUpdate(null, null, [v.fields.userId]);
+        })
+        $('#device_users').append(li);
+
       })
+    } else {
+      var userhtml = $("<li>", {"text":"No users found"});
+      $('#device_users').html(userhtml);
     }
-    $('#device_users').html(userhtml);
   },
 
   showStoreItems: function(storeitems){
+    var self = this;
     var storeitemlist = storeitems.list;
-    var storeitemhtml = "<li> No store items found </li>";
+    
     if(storeitemlist.length > 0){
-      storeitemhtml = "";
+      $('#device_storeitems').empty();
       $.each(storeitemlist, function(k, v){
-        storeitemhtml += "<li><a>" + v.fields.name + "</a></li>";
-      })
+        var a = $("<a>", {"text": v.fields.name, "href":"#"});
+        var li = $("<li>");
+        li.append(a);
+        a.popover({
+          title : v.fields.name,
+          content: self.getStoreItemPopoverContent(v.fields)
+        });
+        a.unbind('click').bind('click', function(){
+          self.hide();
+          var fields = v.fields;
+          fields.guid = v.guid;
+          $fw.client.tab.admin.controllers['admin.storeitems.controller'].showUpdateStoreItem(fields);
+        })
+        $('#device_storeitems').append(li);
+      });
+    } else {
+      var storeitemhtml =$("<li>", {"text":"No store items found"});
+      $('#device_storeitems').html(storeitemhtml);
     }
-    $('#device_storeitems').html(storeitemhtml);
+  },
+
+  resetLists: function(parent){
+    $('#device_users').empty().html('<li>Loading...</li>');
+    $('#device_storeitems').empty().html('<li>Loading...</li>');
+  },
+
+  getUserPopOverContent: function(user){
+    return "<ul><li> <strong>User Id - </strong>  " + user.userId+ "</li><li> <strong>Email - </strong> " + user.email + "</li><li> <strong>Name - </strong>" + user.name + "</li></ul>";
+  },
+
+  getStoreItemPopoverContent: function(item){
+    var iconsrc = "/studio/static/themes/default/img/store_no_icon.png";
+    if(item.icon != ''){
+      iconsrc = "data:image/png;base64,"+ item.icon
+    }
+    return "<div class='device_store_item_popover'><div class='icon_container'><img class='icon' src='"+ iconsrc + "'></div>" + "<div class='details'> <h3 class='name'> " + item.name + "</h3> <p>" + item.description + "</p></div></div>"; 
   }
 
 });
