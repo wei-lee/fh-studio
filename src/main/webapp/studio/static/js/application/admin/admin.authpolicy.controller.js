@@ -127,7 +127,7 @@ Admin.Authpolicy.Controller = Controller.extend({
       }
     };
 
-    var bindPolicyTypeEvent = function() {
+    var bindPolicyTypeChangeEvent = function() {
       if (action === 'update') {
         $(view).find('#update_policy_type').unbind().change(function(e) {
           var type = $('#update_policy_type').val();
@@ -152,6 +152,31 @@ Admin.Authpolicy.Controller = Controller.extend({
           }
           return false;
         });
+      }
+    };
+
+    // hide the users swap select if user not approved for auth
+    var bindUserApprovedCheckEvent = function() {
+      if (action === 'update') {
+        $(view).find('#update_check_user_approved_id').unbind().change(function(e) {
+          var check = $('#update_check_user_approved_id').is(':checked');
+          if (check === true) {
+            $('#update_approved_users').show();            
+          }else {
+            $('#update_approved_users').hide();
+          }
+          return false;
+        });    
+      }else {
+        $(view).find('#create_check_user_approved_id').unbind().change(function(e) {
+          var check = $('#create_check_user_approved_id').is(':checked');
+          if (check === true) {
+            $('#create_approved_users').show();            
+          }else {
+            $('#create_approved_users').hide();
+          }
+          return false;
+        });    
       }
     };
 
@@ -183,11 +208,11 @@ Admin.Authpolicy.Controller = Controller.extend({
             return self.showAlert('error', '<strong>Error loading user data</strong> ' + err);
           }       
           self.hide();
-          //self.container = view;
           self.showEditPolicy(results[0], results[1]);
           $(view).show();
           bindEvent();
-          bindPolicyTypeEvent();
+          bindPolicyTypeChangeEvent();
+          bindUserApprovedCheckEvent();          
         });
       };
 
@@ -207,22 +232,21 @@ Admin.Authpolicy.Controller = Controller.extend({
         }
       ], function(err, results){
         self.hide();
-//        self.container = view;
         self.updateSwapSelect('#create_approved_users_auth_policies_swap', results[0], []);
         self.bindSwapSelect(self.views.policies_create);      
 
         $('#create_oauth_callback', self.views.policies_create).val(results[1].url);
         $('#create_oauth2_div', self.views.policies_create).show();
         $('#create_ldap_div', self.views.policies_create).hide();
+        $('#create_approved_users').hide();
         $(view).show();
         bindEvent();
-        bindPolicyTypeEvent();  
+        bindPolicyTypeChangeEvent();  
+        bindUserApprovedCheckEvent();          
       });      
     }
   },
-
-  // TODO - container necessary??
-//  container: null, // keeps track of currently active/visible container
+  
   alert_timeout: 10000,
 
   showAlert: function (type, message) {
@@ -269,6 +293,7 @@ Admin.Authpolicy.Controller = Controller.extend({
       $('#update_policy_id', self.views.policies_update).val(policy.policyId).attr("disabled", "true");
       $('#update_policy_type', self.views.policies_update).val(policy.policyType);   
       $('#update_check_user_exists_id', self.views.policies_update).prop("checked", policy.checkUserExists === true);
+      $('#update_check_user_approved_id', self.views.policies_update).prop("checked", policy.checkUserApproved === true);
        
       // create an array of user names from the users return json
       var pusers = [];
@@ -279,6 +304,13 @@ Admin.Authpolicy.Controller = Controller.extend({
 
       self.updateSwapSelect('#update_approved_users_auth_policies_swap', users, pusers);
       self.bindSwapSelect(self.views.policies_update);      
+
+      // do various show/hides
+      if (policy.checkUserApproved === true) {
+        $('#update_approved_users').show();
+      } else {
+        $('#update_approved_users').hide();
+      }
 
       if (policy.policyType === 'oauth2') {
         $('#update_oauth2_div', self.views.policies_update).show();
