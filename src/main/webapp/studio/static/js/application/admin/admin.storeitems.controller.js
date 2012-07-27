@@ -215,6 +215,9 @@ Admin.Storeitems.Controller = Controller.extend({
         // Uploaded
         status_el.text('Uploaded').removeClass('label-inverse').addClass('label-success');
         input.before(status_el);
+
+        // Enable config setting
+        input.parents('tr').find('.bundle_id, .update_bundle_id').removeAttr('disabled');
       } else {
         // Not uploaded
         status_el.text('Not Uploaded');
@@ -244,6 +247,8 @@ Admin.Storeitems.Controller = Controller.extend({
             var filename = data.files[0].name;
             status.text('Uploaded ' + filename);
             status_el.text('Uploaded').removeClass('label-inverse').addClass('label-success');
+            // Enable config setting
+            input.parents('tr').find('.bundle_id, .update_bundle_id').removeAttr('disabled');
 
             // Set icon
             if (typeof data.result.icon !== 'undefined') {

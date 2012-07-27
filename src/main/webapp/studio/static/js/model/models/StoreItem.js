@@ -40,5 +40,23 @@ model.StoreItem = model.Model.extend({
       "guid": guid
     };
     return this.serverPost(url, params, success, fail, true);
+  },
+
+  updateConfig: function(guid, type, config, success, fail) {
+    // {
+    //   "guid": "<store_item_guid>",
+    //   "type": "<ios|ipad|iphone|android>",
+    //   "config": {
+    //     "<config_key>": "<config_value>"
+    //   }
+    // }
+
+    var url = Constants.ADMIN_STORE_ITEM_UPDATE_CONFIG_URL;
+    var params = {
+      guid: guid,
+      type: type,
+      config: config
+    };
+    return this.serverPost(url, params, success, fail, true);
   }
 });
