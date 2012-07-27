@@ -46,8 +46,9 @@ Admin.Stores.Controller = Controller.extend({
       $('.store_guid', self.views.app_store).val(app_store_res.guid);
       self.setStoreIcon(app_store_res.icon);
       self.models.store_item.list(function(store_items_res) {
-        var store_items = store_items_res.list;
-        self.renderAvailableStoreItems(store_items, self.views.app_store);
+        var available = store_items_res.list;
+        var assigned = app_store_res.storeitems;
+        self.renderAvailableStoreItems(available, assigned, self.views.app_store);
         self.bind();
         self.showAppStoreUpdate(app_store_res);
       }, function(err) {
@@ -110,14 +111,31 @@ Admin.Stores.Controller = Controller.extend({
     });
   },
 
-  renderAvailableStoreItems: function(store_items, container) {
-    var available_select = $('.app_store_store_items_available', container);
-    available_select.empty();
-    var assigned_select = $('.app_store_store_items_assigned', container);
-    assigned_select.empty();
-    $.each(store_items, function(i, item) {
-      var option = $('<option>').val(item.guid).text(item.name);
-      available_select.append(option);
+  renderAvailableStoreItems: function(available, assigned, container) {
+    var self = this;
+    var available_select = $('.app_store_store_items_available', container).empty();
+    var assigned_select = $('.app_store_store_items_assigned', container).empty();
+
+    var map = {};
+
+    // Massaging into {v: name, v: name} hash for lookup
+    $.each(available, function(i, item) {
+      map[item.guid] = item.name;
+    });
+
+    // Assigned first
+    $.each(assigned, function(i, guid) {
+      var name = map[guid];
+      var option = $('<option>').val(guid).text(name);
+      assigned_select.append(option);
+    });
+
+    // Available, minus assigned
+    $.each(map, function(guid, name) {
+      if (assigned.indexOf(guid) == -1) {
+        var option = $('<option>').val(guid).text(name);
+        available_select.append(option);
+      }
     });
   },
 
