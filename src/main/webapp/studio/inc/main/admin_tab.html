@@ -111,6 +111,25 @@
                 </div>
               </div>
 
+              <div class="control-group">
+                <label class="control-label">Auth Policies</label>
+                <div class="controls swap-select" id="create_user_policy_swap">
+                  <div class="span2">
+                    <select multiple="multiple" class="span12 swap-from">
+                      <option>Loading...</option>
+                    </select>
+                  </div>
+                  <div class="span1">
+                    <button class="btn add span12">&gt;</button>
+                    <button class="btn remove span12">&lt;</button>
+                  </div>
+                  <div class="span2">
+                    <select multiple="multiple" class="span12 swap-to">
+                    </select>
+                  </div>
+                </div>
+              </div>
+
               <!-- <div class="control-group">
                 <label class="control-label">Store Items</label>
                 <div class="controls swap-select" id="create_user_storeitem_swap">
@@ -226,6 +245,26 @@
               </div>
             </div>
 
+            <div class="control-group">
+              <label class="control-label">Auth Policies</label>
+              <div class="controls swap-select" id="update_user_policy_swap">
+                <div class="span2">
+                  <select multiple="multiple" class="span12 swap-from">
+                    <option>Loading...</option>
+                  </select>
+                </div>
+                <div class="span1">
+                  <button class="btn add span12">&gt;</button>
+                  <button class="btn remove span12">&lt;</button>
+                </div>
+                <div class="span2">
+                  <select multiple="multiple" class="span12 swap-to">
+                    <option>Loading...</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
             <!-- <div class="control-group">
               <label class="control-label">Store Items</label>
               <div class="controls swap-select" id="update_user_storeitem_swap">
@@ -300,6 +339,25 @@
             <div class="control-group">
               <label class="control-label">Roles</label>
               <div class="controls swap-select" id="import_users_role_swap">
+                <div class="span2">
+                  <select multiple="multiple" class="span12 swap-from">
+                    <option>Loading...</option>
+                  </select>
+                </div>
+                <div class="span1">
+                  <button class="btn add span12">&gt;</button>
+                  <button class="btn remove span12">&lt;</button>
+                </div>
+                <div class="span2">
+                  <select multiple="multiple" class="span12 swap-to">
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label class="control-label">Auth Policies</label>
+              <div class="controls swap-select" id="import_users_policy_swap">
                 <div class="span2">
                   <select multiple="multiple" class="span12 swap-from">
                     <option>Loading...</option>
@@ -454,9 +512,10 @@
         <input type="hidden" class="item_guid">
 
         <form class="well form-horizontal">
+          <img src="" class="store_item_icon right">
           <h3>Update Store Item</h3>
           <br/>
-          <div class="control-group">
+          <div class="control-group" style="display: inline-block;">
             <label class="control-label">Name</label>
             <div class="controls">
               <input type="text" class="item_name input-xlarge" placeholder="Name">
@@ -547,11 +606,13 @@
 
       <!-- AppStore template -->
       <div id="admin_app_store" class="hidden_template row-fluid">
+        <input type="hidden" class="store_guid">
         <form class="well form-horizontal">
+          <img src="" class="store_icon right">
           <h3>App Store</h3>
           <br/>
 
-          <div class="control-group">
+          <div class="control-group" style="display: inline-block;">
             <label class="control-label" for="store_name">Name</label>
             <div class="controls">
               <input type="text" class="store_name input-xxlarge" placeholder="My App Store">
@@ -568,17 +629,17 @@
           <div class="control-group">
             <label class="control-label" for="textarea">Icon</label>
             <div class="controls">
-              <input type="file" class="store_item_icon input-xlarge"/><br/>
+              <input type="file" class="app_store_icon input-xlarge"/><br/>
               <span class="help-inline">Your App Store Icon should be 128x128 in size, and in PNG format.</span>
             </div>
           </div>
 
           <div class="control-group">
             <label class="control-label">Store Items</label>
-            <div class="controls swap-select store_item_auth_policies_swap">
+            <div class="controls swap-select app_store_store_items">
               <div class="span2">
                 <span>Available</span>
-                <select multiple="multiple" class="span12 swap-from store_item_available_auth_policies">
+                <select multiple="multiple" class="span12 swap-from app_store_store_items_available">
                 </select>
               </div>
               <div class="span1">
@@ -587,7 +648,7 @@
               </div>
               <div class="span2">
                 <span>In Store</span>
-                <select multiple="multiple" class="span12 swap-to store_item_assigned_auth_policies">
+                <select multiple="multiple" class="span12 swap-to app_store_store_items_assigned">
                 </select>
               </div>
               <span class="help-inline span4"><br/>These Store Items will appear in your App Store</span>
@@ -616,7 +677,7 @@
           </div>
 
           <div class="form-actions">
-            <button type="submit" class="btn btn-primary update_store_item">Update App Store</button>
+            <button type="submit" class="btn btn-primary update_app_store">Update App Store</button>
           </div>
         </form>
       </div>

@@ -19,9 +19,6 @@ Admin.Storeitems.Controller = Controller.extend({
 
   show: function(e) {
     var self = this;
-    // $.each(this.views, function(k, v) {
-    //   self.resetForm($(v), true);
-    // });
     this.showStoreItems();
   },
 
@@ -29,6 +26,15 @@ Admin.Storeitems.Controller = Controller.extend({
     $.each(this.views, function(k, v) {
       $(v).hide();
     });
+  },
+
+  setStoreIcon: function(data) {
+    var icon = $('.store_item_icon', this.views.admin_store_item_update);
+    if (data !== '') {
+      icon.attr('src', 'data:image/png;base64,' + data);
+    } else {
+      icon.attr('src', '/studio/static/themes/default/img/store_no_icon.png');
+    }
   },
 
   showStoreItems: function() {
@@ -102,6 +108,8 @@ Admin.Storeitems.Controller = Controller.extend({
   showUpdateStoreItem: function(store_item) {
     var self = this;
     this.hide();
+
+    self.setStoreIcon(store_item.icon);
 
     this.models.auth_policy.list(function(res) {
       var update_view = $(self.views.store_item_update);
@@ -206,6 +214,8 @@ Admin.Storeitems.Controller = Controller.extend({
 
       // Inject binary upload progress template
       var progress_area = $('#binary_upload_progress_template').clone();
+      var status = $('.status', progress_area);
+      var progress_bar = $('.progress', progress_area);
       progress_area.removeAttr('id');
       input.after(progress_area);
 
@@ -222,9 +232,6 @@ Admin.Storeitems.Controller = Controller.extend({
         status_el.text('Not Uploaded');
         input.before(status_el);
       }
-
-      var status = $('.status', progress_area);
-      var progress_bar = $('.progress', progress_area);
 
       // Setup file upload
       input.fileupload({
@@ -248,6 +255,9 @@ Admin.Storeitems.Controller = Controller.extend({
           var filename = data.files[0].name;
           status.text('Uploaded ' + filename);
           status_el.text('Uploaded').removeClass('label-inverse').addClass('label-success');
+
+          // Set icon
+          self.setStoreIcon(data.result.icon);
           setTimeout(function() {
             progress_bar.slideUp();
             status.slideUp();
