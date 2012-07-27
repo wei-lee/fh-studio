@@ -54,12 +54,12 @@
 
         <!-- Users Templates -->
         <div id="useradmin_user_list" class="hidden_template row-fluid">
-          <div id="alerts"></div>
+          <div class="alerts"></div>
           <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="useradmin_users_table"></table>
         </div>
 
         <div id="useradmin_user_create" class="hidden_template row-fluid">
-          <div id="alerts"></div>
+          <div class="alerts"></div>
           <form class="well form-horizontal">
             <fieldset>
               <legend>Create a User</legend>
@@ -101,8 +101,27 @@
                     </select>
                   </div>
                   <div class="span1">
-                    <button class="btn add span12">&gt;</button>
-                    <button class="btn remove span12">&lt;</button>
+                    <button class="btn btn-inverse add span12">&gt;</button>
+                    <button class="btn btn-inverse remove span12">&lt;</button>
+                  </div>
+                  <div class="span2">
+                    <select multiple="multiple" class="span12 swap-to">
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="control-group">
+                <label class="control-label">Auth Policies</label>
+                <div class="controls swap-select" id="create_user_policy_swap">
+                  <div class="span2">
+                    <select multiple="multiple" class="span12 swap-from">
+                      <option>Loading...</option>
+                    </select>
+                  </div>
+                  <div class="span1">
+                    <button class="btn btn-inverse add span12">&gt;</button>
+                    <button class="btn btn-inverse remove span12">&lt;</button>
                   </div>
                   <div class="span2">
                     <select multiple="multiple" class="span12 swap-to">
@@ -120,8 +139,8 @@
                     </select>
                   </div>
                   <div class="span1">
-                    <button class="btn add span12">&gt;</button>
-                    <button class="btn remove span12">&lt;</button>
+                    <button class="btn btn-inverse add span12">&gt;</button>
+                    <button class="btn btn-inverse remove span12">&lt;</button>
                   </div>
                   <div class="span2">
                     <select multiple="multiple" class="span12 swap-to">
@@ -139,8 +158,8 @@
                     </select>
                   </div>
                   <div class="span1">
-                    <button class="btn add span12">&gt;</button>
-                    <button class="btn remove span12">&lt;</button>
+                    <button class="btn btn-inverse add span12">&gt;</button>
+                    <button class="btn btn-inverse remove span12">&lt;</button>
                   </div>
                   <div class="span2">
                     <select multiple="multiple" class="span12 swap-to">
@@ -157,7 +176,7 @@
       </div>
 
       <div id="useradmin_user_update" class="hidden_template row-fluid">
-        <div id="alerts"></div>
+        <div class="alerts"></div>
         <form class="well form-horizontal">
           <fieldset>
             <legend>Update a User</legend>
@@ -197,11 +216,11 @@
             </div>
 
             <div class="control-group">
-              <label class="control-label" for="update_user_blacklisted">Blacklisted</label>
+              <label class="control-label" for="update_user_blacklisted">Not Marked for Data Purge</label>
               <div class="controls">
                 <div class="input-append">
                   <input type="checkbox" class="input-xxlarge" id="update_user_blacklisted">
-                  <button class="btn blacklist_user_button" type="button">Blacklist User</button>
+                  <button class="btn blacklist_user_button" type="button">Mark for Data Purge</button>
                 </div>
               </div>
             </div>
@@ -215,8 +234,28 @@
                   </select>
                 </div>
                 <div class="span1">
-                  <button class="btn add span12">&gt;</button>
-                  <button class="btn remove span12">&lt;</button>
+                  <button class="btn btn-inverse add span12">&gt;</button>
+                  <button class="btn btn-inverse remove span12">&lt;</button>
+                </div>
+                <div class="span2">
+                  <select multiple="multiple" class="span12 swap-to">
+                    <option>Loading...</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label class="control-label">Auth Policies</label>
+              <div class="controls swap-select" id="update_user_policy_swap">
+                <div class="span2">
+                  <select multiple="multiple" class="span12 swap-from">
+                    <option>Loading...</option>
+                  </select>
+                </div>
+                <div class="span1">
+                  <button class="btn btn-inverse add span12">&gt;</button>
+                  <button class="btn btn-inverse remove span12">&lt;</button>
                 </div>
                 <div class="span2">
                   <select multiple="multiple" class="span12 swap-to">
@@ -235,8 +274,8 @@
                   </select>
                 </div>
                 <div class="span1">
-                  <button class="btn add span12">&gt;</button>
-                  <button class="btn remove span12">&lt;</button>
+                  <button class="btn btn-inverse add span12">&gt;</button>
+                  <button class="btn btn-inverse remove span12">&lt;</button>
                 </div>
                 <div class="span2">
                   <select multiple="multiple" class="span12 swap-to">
@@ -255,8 +294,8 @@
                   </select>
                 </div>
                 <div class="span1">
-                  <button class="btn add span12">&gt;</button>
-                  <button class="btn remove span12">&lt;</button>
+                  <button class="btn btn-inverse add span12">&gt;</button>
+                  <button class="btn btn-inverse remove span12">&lt;</button>
                 </div>
                 <div class="span2">
                   <select multiple="multiple" class="span12 swap-to">
@@ -274,7 +313,7 @@
       </div>
 
       <div id="useradmin_user_import" class="hidden_template row-fluid">
-        <div id="alerts"></div>
+        <div class="alerts"></div>
         <form class="well form-horizontal">
           <fieldset>
             <legend>Import Users</legend>
@@ -306,8 +345,27 @@
                   </select>
                 </div>
                 <div class="span1">
-                  <button class="btn add span12">&gt;</button>
-                  <button class="btn remove span12">&lt;</button>
+                  <button class="btn btn-inverse add span12">&gt;</button>
+                  <button class="btn btn-inverse remove span12">&lt;</button>
+                </div>
+                <div class="span2">
+                  <select multiple="multiple" class="span12 swap-to">
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label class="control-label">Auth Policies</label>
+              <div class="controls swap-select" id="import_users_policy_swap">
+                <div class="span2">
+                  <select multiple="multiple" class="span12 swap-from">
+                    <option>Loading...</option>
+                  </select>
+                </div>
+                <div class="span1">
+                  <button class="btn btn-inverse add span12">&gt;</button>
+                  <button class="btn btn-inverse remove span12">&lt;</button>
                 </div>
                 <div class="span2">
                   <select multiple="multiple" class="span12 swap-to">
@@ -390,7 +448,7 @@
             <p class="description"></p>
           </div>
           <div class="span2 controls">
-            <button class="btn edit_store_item">Edit</button>
+            <button class="btn btn-inverse edit_store_item">Edit</button>
             <br/>
             <button class="btn btn-danger delete_store_item">Delete</button>
           </div>
@@ -432,8 +490,8 @@
                 </select>
               </div>
               <div class="span1">
-                <button class="btn add span12">&gt;</button>
-                <button class="btn remove span12">&lt;</button>
+                <button class="btn btn-inverse add span12">&gt;</button>
+                <button class="btn btn-inverse remove span12">&lt;</button>
               </div>
               <div class="span2">
                 <span>Assigned</span>
@@ -454,9 +512,10 @@
         <input type="hidden" class="item_guid">
 
         <form class="well form-horizontal">
+          <img src="" class="store_item_icon right">
           <h3>Update Store Item</h3>
           <br/>
-          <div class="control-group">
+          <div class="control-group" style="display: inline-block;">
             <label class="control-label">Name</label>
             <div class="controls">
               <input type="text" class="item_name input-xlarge" placeholder="Name">
@@ -487,8 +546,8 @@
                 </select>
               </div>
               <div class="span1">
-                <button class="btn add span12">&gt;</button>
-                <button class="btn remove span12">&lt;</button>
+                <button class="btn btn-inverse add span12">&gt;</button>
+                <button class="btn btn-inverse remove span12">&lt;</button>
               </div>
               <div class="span2">
                 <span>Assigned</span>
@@ -504,69 +563,57 @@
           </div>
 
           <div class="well store_item_binaries">
-            <h3>Upload App Binaries & App Store Icon</h3>
-
-            <div class="control-group">
-              <label class="control-label" for="textarea">App Store Icon</label>
-              <div class="controls">
-                <input type="file" id="icon_binary" class="input-xlarge"/>
-                <span class="help-inline">Icons should be 128x128, and in PNG format.</span>
-                <br/>
-                <div class="store_item_icon_progress progress progress-striped active" style="display: none">
-                  <div class="bar" style="width: 0%;"></div>
-                </div>
-                <span class="store_item_icon_status" style="display: none;"></span>
-              </div>
-            </div>
-
-            <div class="control-group">
-              <label class="control-label" for="textarea">Android Binary</label>
-              <div class="controls">
-                <input type="file" id="android_binary" class="input-xlarge"/>
-                <span class="help-inline">An Android binary consists of an APK signed for distribution.</span>
-                <br/>
-                <div class="store_item_binary_android_progress progress progress-striped active" style="display: none">
-                  <div class="bar" style="width: 0%;"></div>
-                </div>
-                <span class="store_item_binary_android_status" style="display: none;"></span>
-              </div>
-            </div>
-
-            <div class="control-group">
-              <label class="control-label" for="textarea">iPhone Binary</label>
-              <div class="controls">
-                <input type="file" class="input-xlarge"/>
-                <span class="help-inline">An iPhone binary consists of an signed IPA.</span>
-              </div>
-            </div>
-
-            <div class="control-group">
-              <label class="control-label" for="textarea">iPad Binary</label>
-              <div class="controls">
-                <input type="file" class="input-xlarge"/>
-                <span class="help-inline">An iPad binary consists of an signed IPA.</span>
-              </div>
-            </div>
-
-            <div class="control-group">
-              <label class="control-label" for="textarea">iOS Universal Binary</label>
-              <div class="controls">
-                <input type="file" class="input-xlarge"/>
-                <span class="help-inline">An iOS Universal binary consists of an signed IPA.</span>
-              </div>
-            </div>
-
+            <h3>Upload App Binaries & App Store Icon</h3><br/>
+            <table class="table table-bordered table-striped store_item_binaries_table">
+              <thead>
+                <tr>
+                  <th>Type</th>
+                  <th>Description</th>
+                  <th>Upload Binary</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>App Store Icon</td>
+                  <td>Store Item icons should be 128x128px and in PNG format.</td>
+                  <td><input type="file" id="icon_binary" class="input-xlarge"/></td>
+                </tr>
+                <tr>
+                  <td>Android Binary</td>
+                  <td>An Android binary consists of an <code>.apk</code> signed for distribution.</td>
+                  <td><input type="file" id="android_binary" class="input-xlarge"/></td>
+                </tr>
+                <tr>
+                  <td>iPhone Binary</td>
+                  <td>An iPhone binary consists of an <code>.ipa</code> signed for distribution.</td>
+                  <td><input type="file" id="iphone_binary" class="input-xlarge"/></td>
+                </tr>
+                <tr>
+                  <td>iPad Binary</td>
+                  <td>An iPad binary consists of an <code>.ipa</code> signed for distribution.</td>
+                  <td><input type="file" id="ipad_binary" class="input-xlarge"/></td>
+                </tr>
+                <tr>
+                  <td>iOS Universal Binary</td>
+                  <td>An iOS Universal Binary consists of an <code>.ipa</code> signed for distribution.</td>
+                  <td><input type="file" id="ios_binary" class="input-xlarge"/></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </form>
       </div>
 
       <!-- AppStore template -->
       <div id="admin_app_store" class="hidden_template row-fluid">
+        <div class="alerts"></div>
+        <input type="hidden" class="store_guid">
         <form class="well form-horizontal">
+          <img src="" class="store_icon right">
           <h3>App Store</h3>
           <br/>
 
-          <div class="control-group">
+          <div class="control-group" style="display: inline-block;">
             <label class="control-label" for="store_name">Name</label>
             <div class="controls">
               <input type="text" class="store_name input-xxlarge" placeholder="My App Store">
@@ -583,26 +630,26 @@
           <div class="control-group">
             <label class="control-label" for="textarea">Icon</label>
             <div class="controls">
-              <input type="file" class="store_item_icon input-xlarge"/><br/>
+              <input type="file" class="app_store_icon input-xlarge"/><br/>
               <span class="help-inline">Your App Store Icon should be 128x128 in size, and in PNG format.</span>
             </div>
           </div>
 
           <div class="control-group">
             <label class="control-label">Store Items</label>
-            <div class="controls swap-select store_item_auth_policies_swap">
+            <div class="controls swap-select app_store_store_items">
               <div class="span2">
                 <span>Available</span>
-                <select multiple="multiple" class="span12 swap-from store_item_available_auth_policies">
+                <select multiple="multiple" class="span12 swap-from app_store_store_items_available">
                 </select>
               </div>
               <div class="span1">
-                <button class="btn add span12">&gt;</button>
-                <button class="btn remove span12">&lt;</button>
+                <button class="btn btn-inverse add span12">&gt;</button>
+                <button class="btn btn-inverse remove span12">&lt;</button>
               </div>
               <div class="span2">
                 <span>In Store</span>
-                <select multiple="multiple" class="span12 swap-to store_item_assigned_auth_policies">
+                <select multiple="multiple" class="span12 swap-to app_store_store_items_assigned">
                 </select>
               </div>
               <span class="help-inline span4"><br/>These Store Items will appear in your App Store</span>
@@ -611,19 +658,19 @@
 
           <div class="control-group">
             <label class="control-label">Auth Policies</label>
-            <div class="controls swap-select store_item_auth_policies_swap">
+            <div class="controls swap-select app_store_auth_policies_swap">
               <div class="span2">
                 <span>Available</span>
-                <select multiple="multiple" class="span12 swap-from store_item_available_auth_policies">
+                <select multiple="multiple" class="span12 swap-from app_store_available_auth_policies">
                 </select>
               </div>
               <div class="span1">
-                <button class="btn add span12">&gt;</button>
-                <button class="btn remove span12">&lt;</button>
+                <button class="btn btn-inverse add span12">&gt;</button>
+                <button class="btn btn-inverse remove span12">&lt;</button>
               </div>
               <div class="span2">
                 <span>Assigned</span>
-                <select multiple="multiple" class="span12 swap-to store_item_assigned_auth_policies">
+                <select multiple="multiple" class="span12 swap-to app_store_assigned_auth_policies">
                 </select>
               </div>
               <span class="help-inline span4"><br/>Here you can define a list of supported auth policies for logging into your App Store.</span>
@@ -631,7 +678,7 @@
           </div>
 
           <div class="form-actions">
-            <button type="submit" class="btn btn-primary update_store_item">Update App Store</button>
+            <button type="submit" class="btn btn-primary update_app_store">Update App Store</button>
           </div>
         </form>
       </div>
@@ -639,12 +686,11 @@
 
       <!-- AuthPolicy Templates -->
       <div id="auth_policies_list" class="hidden_template row-fluid">
-        <div id="alerts"></div>
+        <div id="auth_policies_alerts"></div>
         <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="auth_policies_list_table"></table>
       </div>
 
       <div id="auth_policies_create" class="hidden_template row-fluid">
-      <div id="alerts"></div>
       <form class="well form-horizontal">
         <legend>Create an Auth Policy</legend>
         <p>Here you can create an Authentication/Authorization policy which can be used by your applications.</p>
@@ -736,8 +782,8 @@
               </div>
             </div>
           </div>
-        </fieldset> <!-- authentication well -->
-        <fieldset class="well"> <!-- authorization well -->
+        </fieldset> <!-- end of authentication well -->
+        <fieldset class="well"> <!-- start of authorization well -->
           <legend>Authorization</legend>
           <div class="control-group">
             <div class="controls">
@@ -747,13 +793,34 @@
               <label class="checkbox"><input type="checkbox" class="input" id="create_check_user_approved_id"/>Check if user approved for auth</label>
             </div>
           </div>
+
+          <div class="control-group" id="create_approved_users">
+            <label class="control-label">Users</label>
+            <div class="controls swap-select" id="create_approved_users_auth_policies_swap">
+              <div class="span2">
+                <span>Available</span>
+                <select multiple="multiple" class="span12 swap-from">
+                </select>
+              </div>
+              <div class="span1">
+                <button class="btn btn-inverse add span12">&gt;</button>
+                <button class="btn btn-inverse remove span12">&lt;</button>
+              </div>
+              <div class="span2">
+                <span>Approved</span>
+                <select multiple="multiple" class="span12 swap-to">
+                </select>
+              </div>
+              <!-- <span class="help-inline span4"><br/>These Auth Policies will be applied to $fh.auth calls in your Store Item.</span> -->
+            </div>
+          </div>
+
         </fieldset> <!-- authorization well -->
         <button type="button" id="create_policy_btn" class="btn btn-primary">Create Policy</button>
       </form>
       </div>
 
       <div id="auth_policies_update" class="hidden_template row-fluid">
-        <div id="alerts"></div>
         <form class="well form-horizontal">
           <legend>Update an Auth Policy</legend>
           <p>Here you can update an Authentication/Authorization policy which can be used by your applications.</p>
@@ -855,8 +922,30 @@
               <div class="controls">
                 <label class="checkbox"><input type="checkbox" class="input" id="update_check_user_approved_id"/>Check if user approved for auth</label>
               </div>
+
+          <div class="control-group" id="update_approved_users">
+            <label class="control-label">Users</label>
+            <div class="controls swap-select" id="update_approved_users_auth_policies_swap">
+              <div class="span2">
+                <span>Available</span>
+                <select multiple="multiple" class="span12 swap-from">
+                </select>
+              </div>
+              <div class="span1">
+                <button class="btn btn-inverse add span12">&gt;</button>
+                <button class="btn btn-inverse remove span12">&lt;</button>
+              </div>
+              <div class="span2">
+                <span>Approved</span>
+                <select multiple="multiple" class="span12 swap-to">
+                </select>
+              </div>
+              <!-- <span class="help-inline span4"><br/>These Auth Policies will be applied to $fh.auth calls in your Store Item.</span> -->
             </div>
-          </fieldset> <!-- authorization well -->
+          </div>
+
+            </div>
+          </fieldset> <!-- /authorization well -->
           <input type="hidden" name="guid" id="update_guid" value=""/>
         <button type="button" id="update_policy_btn" class="btn btn-primary">Update Policy</button>        
         </form>
@@ -943,3 +1032,15 @@
 
 </div>
 </div>
+
+<!-- Binary Upload progress template -->
+<div id="binary_upload_progress_template" class="hidden_template progress_area">
+  <div class="progress progress-striped active" style="display: none">
+    <div class="bar" style="width: 0%;"></div>
+  </div>
+  <span class="status" style="display: none"></span>
+</div>
+
+<!-- Binary Upload progress template -->
+<span id="binary_upload_status" class="label label-inverse upload_status hidden_template"></span>
+

@@ -5,7 +5,8 @@ Admin.Users = Admin.Users || {};
 Admin.Users.Controller = Controller.extend({
   models: {
     user: new model.User(),
-    role: new model.Role()/*,
+    role: new model.Role(),
+    policy: new model.ArmAuthPolicy()/*,
     group: new model.Group(),
     storeitem: new model.StoreItem()*/
   },
@@ -30,6 +31,7 @@ Admin.Users.Controller = Controller.extend({
   },
 
   show: function (e) {
+    // TODO: stateful restore i.e. $fw.state
     this.showUsersList();
   },
 
@@ -46,7 +48,7 @@ Admin.Users.Controller = Controller.extend({
   // type: error|success|info
   showAlert: function (type, message) {
     var self = this;
-    var alerts_area = $(this.container).find('#alerts');
+    var alerts_area = $(this.container).find('.alerts');
     var alert = $('<div>').addClass('alert fade in alert-' + type).html(message);
     var close_button = $('<button>').addClass('close').attr("data-dismiss", "alert").text("x");
     alert.append(close_button);
@@ -131,14 +133,14 @@ Admin.Users.Controller = Controller.extend({
       if (rolesTo.indexOf('sub') > -1) {
         rolesTo.splice(rolesTo.indexOf('sub'), 1);
       }
-      // take out 'name' field from storeitems
-      // var itemsFrom = [];
-      // for (var ri = 0, rl = results[2].length; ri < rl; ri += 1) {
-      //   itemsFrom.push(results[2][ri].name);
-      // }
+
+      var policiesFrom = [];
+      for (var pi = 0, pl = results[2].length; pi < pl; pi += 1) {
+        policiesFrom.push([results[2][pi].policyId, results[2][pi].guid]);
+      }
+
       self.updateSwapSelect('#update_user_role_swap', results[1], rolesTo);
-      //self.updateSwapSelect('#update_user_group_swap', results[2], user.groups);
-      //self.updateSwapSelect('#update_user_storeitem_swap', itemsFrom, user.storeitems);
+      self.updateSwapSelect('#update_user_policy_swap', policiesFrom, user.authpolicies);
       self.bindSwapSelect(parent);
 
       $('input,select,button', parent).not('#update_user_id,#update_user_enabled,#update_user_blacklisted,.invite_user_btn').removeAttr('disabled');
@@ -175,23 +177,15 @@ Admin.Users.Controller = Controller.extend({
       }, function(e) {
         return cb(e);
       });
-    }/*, function (cb) {
-      // storeitems
-      self.models.storeitem.list(function (res) {
-        console.log('Storeitem list OK');
-        return cb(null, res.list);
-      }, function (e) {
-        return cb(e);
-      });
-    }*//* function (cb) {
-      // groups
-      self.models.group.list(function(res) {
-        console.log('Group list OK.');
+    }, function (cb) {
+      // roles
+      self.models.policy.list(function(res) {
+        console.log('Policy list OK.');
         return cb(null, res.list);
       }, function(e) {
         return cb(e);
       });
-    }*/], function (err, results) {
+    }], function (err, results) {
       if (err != null) {
         return self.showAlert('error', '<strong>Error loading user data</strong> ' + err);
       }
@@ -229,23 +223,16 @@ Admin.Users.Controller = Controller.extend({
     // select fields
     var rolesArr = [];
     $('#update_user_role_swap .swap-to option', this.views.user_update).each(function (i, item) {
-      rolesArr.push($(item).text());
+      rolesArr.push($(item).val());
     });
     fields.roles = (rolesArr.length > 0) ? rolesArr.join(', ') : '';
-    // var storeitemsArr = [];
-    // $('#update_user_storeitem_swap .swap-to option', this.views.user_update).each(function (i, item) {
-    //   storeitemsArr.push($(item).text());
-    // });
-    // if (storeitemsArr.length > 0) {
-    //   fields.storeitems = storeitemsArr.join(', ');
-    // }
-    // var groupsArr = [];
-    // $('#update_user_group_swap .swap-to option', this.views.user_update).each(function (i, item) {
-    //   groupsArr.push($(item).text());
-    // });
-    // if (groupsArr.length > 0) {
-    //   fields.groups = groupsArr.join(', ');
-    // }
+
+    // select fields
+    var policiesArr = [];
+    $('#update_user_policy_swap .swap-to option', this.views.user_update).each(function (i, item) {
+      policiesArr.push($(item).val());
+    });
+    fields.policies = (policiesArr.length > 0) ? policiesArr.join(', ') : '';
 
     this.models.user.update(fields, function(res) {
       console.log('updateUser: OK');
@@ -324,7 +311,7 @@ Admin.Users.Controller = Controller.extend({
     // initialise all swap selects
     self.bindSwapSelect(this.container);
 
-    // Load roles & storeitems into swap select
+    // Load roles & policies into swap select
     this.models.role.list_assignable(function(res) {
       console.log('Role list OK.');
       var roles = res.list;
@@ -334,28 +321,19 @@ Admin.Users.Controller = Controller.extend({
       self.showAlert('error', '<strong>Error loading Roles</strong> ' + e);
     });
 
-    // this.models.storeitem.list(function(res) {
-    //   console.log('Storeitem list OK.');
-    //   var storeitems = res.list;
-    //   var container = '#create_user_storeitem_swap';
-    //   // take out 'name' field from storeitems
-    //   var itemsFrom = [];
-    //   for (var si = 0, sl = storeitems.length; si < sl; si += 1) {
-    //     itemsFrom.push(storeitems[si].name);
-    //   }
-    //   self.updateSwapSelect(container, itemsFrom);
-    // }, function(e) {
-    //   self.showAlert('error', '<strong>Error loading Store Items</strong> ' + e);
-    // });
-
-    // this.models.group.list(function(res) {
-    //   console.log('Group list OK.');
-    //   var groups = res.list;
-    //   var container = '#create_user_group_swap';
-    //   self.updateSwapSelect(container, groups);
-    // }, function(e) {
-    //   self.showAlert('error', '<strong>Error loading Groups</strong> ' + e);
-    // });
+    this.models.policy.list(function(res) {
+      console.log('Policy list OK.');
+      var policies = res.list;
+      var container = '#create_user_policy_swap';
+      // take out 'name' and 'guid' fields from storeitems
+      var itemsFrom = [];
+      for (var pi = 0, pl = policies.length; pi < pl; pi += 1) {
+        itemsFrom.push([policies[pi].policyId, policies[pi].guid]);
+      }
+      self.updateSwapSelect(container, itemsFrom);
+    }, function(e) {
+      self.showAlert('error', '<strong>Error loading Groups</strong> ' + e);
+    });
   },
 
   showImportUsers: function () {
@@ -381,17 +359,38 @@ Admin.Users.Controller = Controller.extend({
         }, 100);
       }
     });
+ 
+    async.parallel([function (cb) {
+      // roles
+      self.models.role.list_assignable(function(res) {
+        console.log('Role list OK.');
+        return cb(null, res.list);
+      }, function(e) {
+        return cb(e);
+      });
+    }, function (cb) {
+      // roles
+      self.models.policy.list(function(res) {
+        console.log('Policy list OK.');
+        return cb(null, res.list);
+      }, function(e) {
+        return cb(e);
+      });
+    }], function (err, results) {
+      if (err != null) {
+        return self.showAlert('error', '<strong>Error loading import user options</strong> ' + err);
+      }
+      console.log('populating user import form');
 
-    // Load roles & storeitems into swap select
-    self.models.role.list_assignable(function(res) {
-      console.log('Role list OK.');
-      var roles = res.list;
-      var container = '#import_users_role_swap';
-      self.updateSwapSelect(container, roles);
-      $('input,select,button', parent).removeAttr('disabled');
+      var policiesFrom = [];
+      for (var pi = 0, pl = results[1].length; pi < pl; pi += 1) {
+        policiesFrom.push([results[1][pi].policyId, results[1][pi].guid]);
+      }
 
-    }, function(e) {
-      self.showAlert('error', '<strong>Error loading Roles</strong> ' + e);
+      self.updateSwapSelect('#import_users_role_swap', results[0]);
+      self.updateSwapSelect('#import_users_policy_swap', policiesFrom);
+      self.bindSwapSelect(parent);
+      $('input,select,button', parent).not('input[type=file]').removeAttr('disabled');
     });
 
     $('.import_user_btn', parent).unbind().click(function() {
@@ -422,27 +421,22 @@ Admin.Users.Controller = Controller.extend({
 
     var rolesArr = [];
     $('#create_user_role_swap .swap-to option', this.views.user_create).each(function (i, item) {
-      rolesArr.push($(item).text());
+      rolesArr.push($(item).val());
     });
     var roles = rolesArr.length > 0 ? rolesArr.join(', ') : null;
 
-    // var storeitemsArr = [];
-    // $('#create_user_storeitem_swap .swap-to option', this.views.user_create).each(function (i, item) {
-    //   storeitemsArr.push($(item).text());
-    // });
-    // var storeitems = storeitemsArr.length > 0 ? storeitemsArr.join(', ') : null;
-    var storeitems = null;
+    var policiesArr = [];
+    $('#create_user_policy_swap .swap-to option', this.views.user_create).each(function (i, item) {
+      policiesArr.push($(item).val());
+    });
+    var policies = policiesArr.length > 0 ? policiesArr.join(', ') : null;
 
-    // var groupsArr = [];
-    // $('#create_user_group_swap .swap-to option', this.views.user_create).each(function (i, item) {
-    //   groupsArr.push($(item).text());
-    // });
-    // var groups = groupsArr.length > 0 ? groupsArr.join(', ') : null;
+    var storeitems = null;
     var groups = null;
 
     var activated = true;
     self.showAlert('info', '<strong>Creating User</strong> (' + id + ')');
-    this.models.user.create(id, email, name, roles, groups, storeitems, password, activated, invite, function(res) {
+    this.models.user.create(id, email, name, roles, policies, groups, storeitems, password, activated, invite, function(res) {
       console.log(res);
       self.showUsersList();
       self.showAlert('success', '<strong>Successfully create User</strong> (' + id + ')');
@@ -458,73 +452,111 @@ Admin.Users.Controller = Controller.extend({
     var invite = form.find('#import_users_invite').is(':checked');
     var rolesArr = [];
     $('#import_users_role_swap .swap-to option', this.views.user_import).each(function (i, item) {
-      rolesArr.push($(item).text());
+      rolesArr.push($(item).val());
     });
     var roles = rolesArr.length > 0 ? rolesArr.join(', ') : ''; // important to send '' here if no roles selected to ensure roles updated to remove all
+    var policiesArr = [];
+    $('#import_users_policy_swap .swap-to option', this.views.user_import).each(function (i, item) {
+      policiesArr.push($(item).val());
+    });
+    var policies = policiesArr.length > 0 ? policiesArr.join(', ') : ''; // same as above ^^^
     var groups = null;
     var fileField = form.find('#import_users_file');
 
+    var title = "Importing Users";
+    var message = "Import Progress";
+    var import_progress = 0;
 
-    self.showAlert('info', '<strong>Importing Users</strong>');
+    // we're allowing from 0 to 10 for file upload
+    // and 11 to 100 for the progress of the import task
+    // server responds with 0 to 100 for how far it's done
+    // so need calculate a relative percent
+    var rangeStart = 11;
+    var rangeEnd = 100;
+    var multiplier = (rangeEnd - rangeStart) / 100;
 
-    $('#generic_progress_modal').clone()
-      .find('h3').text('Importing Users').end()
-      .appendTo($("body")).one('shown', function () {
+    self.showProgressModal(title, message, function () {
+      self.clearProgressModal();
+      self.appendProgressLog('Uploading file.');
 
-      }).modal();
+      self.models.user.imports(invite, roles, policies, groups, fileField, function(data) {
+        // file upload success
+        var res = data.result;
+        if (res.cachekey != null) {
+          var cachekey = res.cachekey;
+          self.appendProgressLog('File uploaded.');
 
-    self.models.user.imports(invite, roles, groups, fileField, function(data) {
-      var res = data.result;
-        self.showProgressModal(res.cachekey, {
-          title: 'Generating Your App',
-          initLog: 'We\'re generating your app...',
-          timeout: function(res) {
-            console.log('timeout error > ' + JSON.stringify(res));
-            $fw.client.dialog.error($fw.client.lang.getLangString('scm_trigger_error'));
-            self.updateProgressModalBar(100);
-            if (typeof fail != 'undefined') {
-              fail();
-            }
-          },
-          update: function(res) {
-            for (var i = 0; i < res.log.length; i++) {
-              console.log(res.log[i]);
-              if (typeof res.action.guid != 'undefined') {
-                new_guid = res.action.guid;
-                console.log('GUID for new app > ' + new_guid);
+          import_progress = 10;
+          self.updateProgressBar(import_progress);
+
+          // Poll cacheKey
+          var import_task = new ASyncServerTask({
+            cacheKey: cachekey
+          }, {
+            updateInterval: Properties.cache_lookup_interval,
+            maxTime: Properties.cache_lookup_timeout,
+            // 5 minutes
+            maxRetries: Properties.cache_lookup_retries,
+            timeout: function(res) {
+              console.log('timeout error > ' + JSON.stringify(res));
+              var msg = 'Importing timed out (' + Properties.cache_lookup_timeout + ')';
+              self.appendProgressLog(msg);
+              self.showAlert('error', '<strong>Error importing Users</strong> ');
+            },
+            update: function(res) {
+              for (var i = 0; i < res.log.length; i++) {
+                console.log(res.log[i]);
+                self.appendProgressLog(res.log[i]);
+                console.log("Current progress> " + import_progress);
               }
-              self.appendProgressModalLog(res.log[i], modal);
-              console.log("Current progress> " + self.current_progress);
+              import_progress = Math.floor(res.progress * multiplier) + rangeStart;
+              self.updateProgressBar(import_progress);
+            },
+            complete: function(res) {
+              import_progress = 100;
+              self.updateProgressBar(import_progress);
+              self.showUsersList();
+              self.showAlert('success', '<strong>Successfully imported Users</strong>');
+            },
+            error: function(res) {
+              console.log('import error > ' + JSON.stringify(res));
+              self.appendProgressLog(res.error);
+              self.showAlert('error', '<strong>Error importing Users</strong> ' + res.error);
+            },
+            retriesLimit: function() {
+              console.log('retriesLimit exceeded: ' + Properties.cache_lookup_retries);
+              var msg = 'Unable to track import progress (retry limit exceeded (' + Properties.cache_lookup_retries + '))';
+              self.appendProgressLog(msg);
+              self.showAlert('error', '<strong>Error importing Users</strong> ' + msg);
+            },
+            end: function() {
+              setTimeout(function () {
+                self.destroyProgressModal();
+              }, 1000);
             }
-            self.updateProgressModalBar(self.current_progress + 1);
-          },
-          complete: function(res) {
-            console.log('SCM refresh successful > ' + JSON.stringify(res));
-            self.updateProgressModalBar(75);
-          },
-          error: function(res) {
-            console.log('clone error > ' + JSON.stringify(res));
-            $fw.client.dialog.error('App generation failed.' + "<br /> Error Message:" + res.error);
-            self.updateProgressModalBar(100);
-            if (typeof fail != 'undefined') {
-              fail();
-            }
-          },
-          retriesLimit: function() {
-            console.log('retriesLimit exceeded: ' + Properties.cache_lookup_retries);
-            $fw.client.dialog.error('App generation failed.');
-            self.updateProgressModalBar(100);
-            if (typeof fail != 'undefined') {
-              fail();
-            }
-          },
-          end: function(guid, modal) {
-            self.showUsersList();
-            self.showAlert('success', '<strong>Successfully imported Users</strong>');
-          }
-        });
-    }, function(e) {
-      self.showAlert('error', '<strong>Error importing Users</strong> ' + e);
+          });
+          import_task.run();
+        } else {
+          var msg = 'Unable to track import progress (cachekey missing)';
+          self.showAlert('error', '<strong>Error importing Users</strong> ' + msg);
+          setTimeout(function () {
+            self.destroyProgressModal();
+          }, 1000);
+        }
+      }, function (data) {
+        // file upload failed
+        var msg = data.result;
+        self.appendProgressLog(msg);
+        self.showAlert('error', '<strong>Error importing Users</strong> ' + msg);
+        setTimeout(function () {
+          self.destroyProgressModal();
+        }, 1000);
+      }, function (data) {
+        // progress update on file upload
+        // max of 10% for file upload
+        import_progress = ((data.loaded/data.total) * 10);
+        self.updateProgressBar(import_progress);
+      });
     });
   },
 
@@ -573,12 +605,12 @@ Admin.Users.Controller = Controller.extend({
       $('#update_user_enabled').attr('checked', 'checked');
       $('.enable_user_button').text('Disable User').unbind().on('click', function () {
         self.disableUser();
-      });
+      }).closest('.control-group').find('.control-label').text('Enabled');
     } else {
       $('#update_user_enabled').removeAttr('checked');
       $('.enable_user_button').text('Enable User').unbind().on('click', function () {
         self.enableUser();
-      });
+      }).closest('.control-group').find('.control-label').text('Disabled');
     }
   },
 
@@ -586,14 +618,14 @@ Admin.Users.Controller = Controller.extend({
     var self = this;
     if (blacklisted) {
       $('#update_user_blacklisted').attr('checked', 'checked');
-      $('.blacklist_user_button').text('Whitelist User').unbind().on('click', function () {
+      $('.blacklist_user_button').text('Unmark for Data Purge').unbind().on('click', function () {
         self.whitelistUser();
-      });
+      }).closest('.control-group').find('.control-label').text('Marked for Data Purge');
     } else {
       $('#update_user_blacklisted').removeAttr('checked');
-      $('.blacklist_user_button').text('Blacklist User').unbind().on('click', function () {
+      $('.blacklist_user_button').text('Mark for Data Purge').unbind().on('click', function () {
         self.blacklistUser();
-      });
+      }).closest('.control-group').find('.control-label').text('Not Marked for Data Purge');
     }
   },
 
@@ -616,7 +648,7 @@ Admin.Users.Controller = Controller.extend({
   enableUser: function () {
     var self = this;
     self.showBooleanModal('Are you sure you want to enable this User?', function () {
-      self.changeBooleanField('enabled', true, 'Enabling', function () {
+      self.changeBooleanField('enabled', true, 'Enabling User', function () {
         self.setUserEnabled(true);
       });
     });
@@ -625,7 +657,7 @@ Admin.Users.Controller = Controller.extend({
   disableUser: function () {
     var self = this;
     self.showBooleanModal('Are you sure you want to disable this user? This user will no longer be able to authenticate.', function () {
-      self.changeBooleanField('enabled', false, 'Disabling', function () {
+      self.changeBooleanField('enabled', false, 'Disabling User', function () {
         self.setUserEnabled(false);
       });
     });
@@ -633,8 +665,8 @@ Admin.Users.Controller = Controller.extend({
 
   blacklistUser: function () {
     var self = this;
-    self.showBooleanModal('Are you sure you want to Blacklist this User? (In supported apps, data will be purged at next login.)', function () {
-      self.changeBooleanField('blacklisted', true, 'Blacklisting', function () {
+    self.showBooleanModal('Are you sure you want to mark this User for data purge? (In supported apps, data will be purged at next login.)', function () {
+      self.changeBooleanField('blacklisted', true, 'Marking User for Data Purge', function () {
         self.setUserBlacklisted(true);
       });
     });
@@ -642,8 +674,8 @@ Admin.Users.Controller = Controller.extend({
 
   whitelistUser: function () {
     var self = this;
-    self.showBooleanModal('Are you sure you want to Whitelist this User?', function () {
-      self.changeBooleanField('blacklisted', false, 'Whitelisting', function () {
+    self.showBooleanModal('Are you sure you want to unmark this User for data purge?', function () {
+      self.changeBooleanField('blacklisted', false, 'Unmarking User for Data Purge', function () {
         self.setUserBlacklisted(false);
       });
     });
@@ -657,14 +689,14 @@ Admin.Users.Controller = Controller.extend({
     };
     fields[boolField] = boolVal;
 
-    self.showAlert('info', '<strong>' + actionDesc + ' User</strong> (' + fields.username + ')');
+    self.showAlert('info', '<strong>' + actionDesc + '</strong> (' + fields.username + ')');
     self.models.user.update(fields, function(res) {
       console.log(actionDesc + ' User OK');
-      self.showAlert('success', '<strong>' + actionDesc + ' User successful</strong> (' + fields.username + ')');
+      self.showAlert('success', '<strong>' + actionDesc + ' successful</strong> (' + fields.username + ')');
       success();
     }, function(err) {
       console.log(err);
-      self.showAlert('error', '<strong>Error ' + actionDesc + ' User</strong> ' + err);
+      self.showAlert('error', '<strong>Error ' + actionDesc + '</strong> ' + err);
     });
   }
 });

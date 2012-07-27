@@ -536,7 +536,7 @@ proto.TreeviewManager = function (params) {
         // TODO: tidy up all these calls and refactor
         proto.ProgressDialog.resetBarAndLog(step);
         proto.ProgressDialog.setProgress(step, 20);
-        proto.ProgressDialog(step, 'Starting Import');
+        proto.ProgressDialog.append(step, 'Starting Import');
 
         import_file_wizard.ajaxSubmit({
           url: Constants.IMPORT_FILE_URL,
@@ -549,7 +549,7 @@ proto.TreeviewManager = function (params) {
 
               // All good, finish step
               proto.ProgressDialog.setProgress(step, 100);
-              proto.ProgressDialog(step, 'Import Complete');
+              proto.ProgressDialog.append(step, 'Import Complete');
               console.log('import successful, good to go > ' + result.guid);
               self.addNode(current_node, file_name, result.guid);
             } else {

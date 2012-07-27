@@ -10,7 +10,8 @@ Admin.Authpolicy.Controller = Controller.extend({
   },
 
   models: {
-    "policy": new model.ArmAuthPolicy()
+    user: new model.User(),
+    policy: new model.ArmAuthPolicy()
   },
 
   views: {
@@ -34,10 +35,10 @@ Admin.Authpolicy.Controller = Controller.extend({
 
     this.models.policy.list(function(res) {
       var data = self.addControls(res);
-      self.renderUserTable(data);
+      self.renderPolicyTable(data);
       self.bindUserControls();
     }, function(err) {
-      console.log('Error showing policies');
+      console.error('Error showing policies: ' + err);
     }, true);
   },
 
@@ -64,8 +65,7 @@ Admin.Authpolicy.Controller = Controller.extend({
     $('tr td .edit_policy', this.policy_table).click(function() {
       var row = $(this).parent().parent();
       var data = self.policyDataForRow($(this).parent().parent().get(0));
-      //log(data);
-      self.showCreatePolicy(data[0]);
+      self.showCreateUpdatePolicy(data[0]);
       return false;
     });
 
@@ -82,8 +82,7 @@ Admin.Authpolicy.Controller = Controller.extend({
     return this.policy_table.fnGetData(el);
   },
 
-  // TODO - remove
-  renderUserTable: function(data) {
+  renderPolicyTable: function(data) {
     var self = this;
 
     this.policy_table = $('#auth_policies_list_table').dataTable({
@@ -98,13 +97,13 @@ Admin.Authpolicy.Controller = Controller.extend({
 
     // Inject Create button
     var create_button = $('<button>').addClass('btn btn-primary right').text('Create').click(function() {
-      self.showCreatePolicy();
+      self.showCreateUpdatePolicy();
       return false;
     });
     $('.span12:first', self.views.policies).append(create_button);
   },
 
-  showCreatePolicy: function(policy_id) {
+  showCreateUpdatePolicy: function(policy_id) {
     var self = this;
 
     var view = self.views.policies_create;
@@ -117,18 +116,18 @@ Admin.Authpolicy.Controller = Controller.extend({
     var bindEvent = function() {
       if (action === 'update') {
         $(view).find('#update_policy_btn').unbind().click(function() {
-          self.createPolicy(action); // TODO - make separate updatePolicy
+          self.createOrUpdatePolicy(action);
           return false;
         });
       }else {
         $(view).find('#create_policy_btn').unbind().click(function() {
-          self.createPolicy(action);
+          self.createOrUpdatePolicy(action);
           return false;
         });
       }
     };
 
-    var bindPolicyTypeEvent = function() {
+    var bindPolicyTypeChangeEvent = function() {
       if (action === 'update') {
         $(view).find('#update_policy_type').unbind().change(function(e) {
           var type = $('#update_policy_type').val();
@@ -156,46 +155,103 @@ Admin.Authpolicy.Controller = Controller.extend({
       }
     };
 
+    // hide the users swap select if user not approved for auth
+    var bindUserApprovedCheckEvent = function() {
+      if (action === 'update') {
+        $(view).find('#update_check_user_approved_id').unbind().change(function(e) {
+          var check = $('#update_check_user_approved_id').is(':checked');
+          if (check === true) {
+            $('#update_approved_users').show();            
+          }else {
+            $('#update_approved_users').hide();
+          }
+          return false;
+        });    
+      }else {
+        $(view).find('#create_check_user_approved_id').unbind().change(function(e) {
+          var check = $('#create_check_user_approved_id').is(':checked');
+          if (check === true) {
+            $('#create_approved_users').show();            
+          }else {
+            $('#create_approved_users').hide();
+          }
+          return false;
+        });    
+      }
+    };
+
+    function getUserList (cb) {
+      self.models.user.list(function(res) {
+        // create an array of userids from the users return json
+        var users = [];
+        for (var i=0; i<res.list.length; i++) {
+          var u = res.list[i];
+          users.push(u.fields.username);
+        }
+        return cb(null, users);
+      }, function(e) {
+         return cb(e);
+      });
+    }
+
     var readPolicy = function(id) {
-        self.models.policy.read(id, function(res) {
+      async.parallel([
+        getUserList,
+        function (cb) {
+          self.models.policy.read(id, function(res) {
+            return cb(null, res);
+          }, function(e) {
+            return cb(e);
+          });
+        }], function(err, results){
+          if (err != null) {
+            return self.showAlert('error', '<strong>Error loading user data</strong> ' + err);
+          }       
           self.hide();
-          self.container = view;
-          //$(view).empty().append($(self.getFormTemplate(action)).clone());
-          self.showEditPolicy(res);
+          self.showEditPolicy(results[0], results[1]);
           $(view).show();
           bindEvent();
-          bindPolicyTypeEvent();
-        }, function(e) {
-          $fw.client.dialog.error("Error reading policy with id " + id);
+          bindPolicyTypeChangeEvent();
+          bindUserApprovedCheckEvent();          
         });
       };
 
     if (policy_id) {
+      // existing policy
       readPolicy(policy_id);      
     } else {
-      self.models.policy.getConfig(function(conf) {
+      // new policy
+      async.parallel([
+        getUserList,
+        function (cb) {
+          self.models.policy.getConfig(function(conf) {
+            return cb(null, conf);
+          }, function(e) {
+            return cb(e);
+          });
+        }
+      ], function(err, results){
         self.hide();
-        //$(view).empty().append($(self.getFormTemplate(action)).clone());
-        self.container = view;
-        $('#create_oauth_callback', self.views.policies_create).val(conf.url);
+        self.updateSwapSelect('#create_approved_users_auth_policies_swap', results[0], []);
+        self.bindSwapSelect(self.views.policies_create);      
+
+        $('#create_oauth_callback', self.views.policies_create).val(results[1].url);
         $('#create_oauth2_div', self.views.policies_create).show();
         $('#create_ldap_div', self.views.policies_create).hide();
+        $('#create_approved_users').hide();
         $(view).show();
         bindEvent();
-        bindPolicyTypeEvent();                       
-      }, function(err) {
-
-      });
+        bindPolicyTypeChangeEvent();  
+        bindUserApprovedCheckEvent();          
+      });      
     }
-
   },
+  
+  alert_timeout: 10000,
 
   showAlert: function (type, message) {
-  console.log("message: " + message + " type: " + type);
     var self = this;
-    var alerts_area = $(this.container).find('#alerts');
-log("ALERTS:");
-  console.log(alerts_area);
+    var alerts_area = $('#auth_policies_alerts');
     var alert = $('<div>').addClass('alert fade in alert-' + type).html(message);
     var close_button = $('<button>').addClass('close').attr("data-dismiss", "alert").text("x");
     alert.append(close_button);
@@ -214,9 +270,7 @@ log("ALERTS:");
     var self = this;
     self.showBooleanModal('Are you sure you want to delete this Policy?', function () {
       var id = data[0];
-log("ID");
-log(id);
-      self.showAlert('info', '<strong>Deleting Profile</strong> (' + id + ') This may take some time.');
+      self.showAlert('info', '<strong>Deleting Profile</strong> (' + id + ').. ');
       // delete user
       self.models.policy.remove(id, function(res) {
         self.showAlert('success', '<strong>Policy Successfully Deleted</strong> (' + id + ')');
@@ -228,8 +282,7 @@ log(id);
     });
   },
 
-
-  showEditPolicy: function(policy) {
+  showEditPolicy: function(users, policy) {
     var self = this;
     var action = 'create';
     var acting = "Creating";
@@ -240,6 +293,24 @@ log(id);
       $('#update_policy_id', self.views.policies_update).val(policy.policyId).attr("disabled", "true");
       $('#update_policy_type', self.views.policies_update).val(policy.policyType);   
       $('#update_check_user_exists_id', self.views.policies_update).prop("checked", policy.checkUserExists === true);
+      $('#update_check_user_approved_id', self.views.policies_update).prop("checked", policy.checkUserApproved === true);
+       
+      // create an array of user names from the users return json
+      var pusers = [];
+      for (var i=0; i<policy.users.length; i++) {
+        var u = policy.users[i];
+        pusers.push(u.userid);
+      }
+
+      self.updateSwapSelect('#update_approved_users_auth_policies_swap', users, pusers);
+      self.bindSwapSelect(self.views.policies_update);      
+
+      // do various show/hides
+      if (policy.checkUserApproved === true) {
+        $('#update_approved_users').show();
+      } else {
+        $('#update_approved_users').hide();
+      }
 
       if (policy.policyType === 'oauth2') {
         $('#update_oauth2_div', self.views.policies_update).show();
@@ -258,10 +329,11 @@ log(id);
     }
   },
 
-  createPolicy: function(action) {
+  createOrUpdatePolicy: function(action) {
     var self = this;
     var view = self.views.policies_create;
-    var guid, id, type, provider, checkUserExists, conf;
+    var guid, id, type, provider, checkUserExists, checkUserApproved, conf;
+    var users = [];
     if (action == "update") {
       view = self.views.policies_update;    
 
@@ -270,7 +342,12 @@ log(id);
       type = $('#update_policy_type', view).val();
       provider = $('#update_policy_conf_provider', view).val();
       checkUserExists = $('#update_check_user_exists_id', view).prop("checked");
-    
+      checkUserApproved = $('#update_check_user_approved_id', view).prop("checked");
+      
+      $('#update_approved_users_auth_policies_swap .swap-to option', view).each(function (i, item) {
+        users.push($(item).text());
+      });
+
       if (type === 'oauth2') {          
         conf = {
           "provider": provider,
@@ -292,7 +369,11 @@ log(id);
       type = $('#create_policy_type', view).val();
       provider = $('#create_policy_conf_provider', view).val();
       checkUserExists = $('#create_check_user_exists_id', view).prop("checked");
-    
+      checkUserApproved = $('#create_check_user_approved_id', view).prop("checked");
+      
+      $('#create_approved_users_auth_policies_swap .swap-to option', view).each(function (i, item) {
+        users.push($(item).text());
+      });
       if (type === 'oauth2') {          
         conf = {
           "provider": provider,
@@ -314,17 +395,18 @@ log(id);
     }
 
     function onFailure(e) {
+      var act = action === 'create' ? 'creating' : 'updating';
       if (typeof e == 'undefined') {
-        $fw.client.dialog.error("Error editing policy");
+        $fw.client.dialog.error("Error " + act + " policy");
       } else {
-        $fw.client.dialog.error("Error editing policy: " + e);
+        $fw.client.dialog.error("Error " + act + " policy: " + e);
       }
     }
 
     if(action === 'update') {
-      this.models.policy.update(guid, id, type, conf, checkUserExists, onSuccess, onFailure); 
+      this.models.policy.update(guid, id, type, conf, checkUserExists, checkUserApproved, users, onSuccess, onFailure); 
     }else {
-      this.models.policy.create(id, type, conf, checkUserExists, onSuccess, onFailure); 
+      this.models.policy.create(id, type, conf, checkUserExists, checkUserApproved, users, onSuccess, onFailure); 
     }
   }
 });

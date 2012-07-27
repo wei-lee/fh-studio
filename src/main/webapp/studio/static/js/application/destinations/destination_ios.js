@@ -60,7 +60,7 @@ application.DestinationIos = application.DestinationGeneral.extend({
       var step = $(this);
       proto.ProgressDialog.resetBarAndLog(step);
       proto.ProgressDialog.setProgress(step, 1);
-      proto.ProgressDialog(step, 'Starting Upload');
+      proto.ProgressDialog.append(step, 'Starting Upload');
 
       var upload_url = Constants.UPLOAD_RESOURCE_URL;
       var data = {
@@ -72,12 +72,12 @@ application.DestinationIos = application.DestinationGeneral.extend({
       $fw_manager.app.startUpload(wizard.find("#" + that.destination_id + "_provisioning_upload_file"), upload_url, data, function (result) {
         if ('undefined' !== typeof result.error && result.error.length > 0) {
           console.log('upload failed');
-          proto.ProgressDialog(step, $fw.client.lang.getLangString('file_upload_failed'));
+          proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_failed'));
           proto.Wizard.previousStep(wizard, result.error);
         } else {
           console.log('upload Complete');
           proto.ProgressDialog.setProgress(step, 100);
-          proto.ProgressDialog(step, $fw.client.lang.getLangString('file_upload_complete'));
+          proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_complete'));
           wizard.jWizard("nextStep");
         }
       });

@@ -141,6 +141,7 @@ $.extend(Constants, {
 
   ADMIN_APP_STORE_READ_URL: Constants.ADMIN_URL_PREFIX + "appstore/read",
   ADMIN_APP_STORE_UPDATE_URL: Constants.ADMIN_URL_PREFIX + "appstore/update",
+  ADMIN_APP_STORE_UPLOAD_BINARY_URL: Constants.ADMIN_URL_PREFIX + "appstore/uploadbinary",
 
   ADMIN_ROLE_LIST_ASSIGNABLE_URL: Constants.ADMIN_URL_PREFIX + "role/listAssignable",
 

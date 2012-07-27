@@ -40,7 +40,7 @@ application.AppSupport = Class.extend({
       
       proto.ProgressDialog.resetBarAndLog(step);
       proto.ProgressDialog.setProgress(step, 1);
-      proto.ProgressDialog(step, 'Starting Clone');
+      proto.ProgressDialog.append(step, 'Starting Clone');
       
       console.log('sending clone request to server');
       $fw_manager.server.post(Constants.CLONE_APP_URL, {
@@ -61,7 +61,7 @@ application.AppSupport = Class.extend({
             },
             update: function (res) {
               for (var i = 0; i < res.log.length; i++) {
-                proto.ProgressDialog(step, res.log[i]);
+                proto.ProgressDialog.append(step, res.log[i]);
               }
               if (res.progress) {
                 proto.ProgressDialog.setProgress(step, parseInt(res.progress, 10));
@@ -152,7 +152,7 @@ application.AppSupport = Class.extend({
       
       proto.ProgressDialog.resetBarAndLog(step);
       proto.ProgressDialog.setProgress(step, 1);
-      proto.ProgressDialog(step, 'Starting Create');
+      proto.ProgressDialog.append(step, 'Starting Create');
       
       var id = $fw.client.preview.getDefaultDeviceId();
       var device = $fw.client.preview.resolveDevice(id);
@@ -183,7 +183,7 @@ application.AppSupport = Class.extend({
       $fw_manager.client.model.App.create(params, 
         function (app) {
           console.log('create ok');
-          proto.ProgressDialog(step, 'App created successfully.');
+          proto.ProgressDialog.append(step, 'App created successfully.');
           $fw_manager.data.set('new_app', app.guid);
           
           var nextStep = create_app_wizard.find('#create_app_next');
@@ -239,7 +239,7 @@ application.AppSupport = Class.extend({
               },
               update: function (res) {
                 for (var i = 0; i < res.log.length; i++) {
-                  proto.ProgressDialog(step, res.log[i]);
+                  proto.ProgressDialog.append(step, res.log[i]);
                 }
                 if (res.progress) {
                   proto.ProgressDialog.setProgress(step, parseInt(res.progress, 10));

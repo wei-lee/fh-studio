@@ -204,7 +204,7 @@ application.ResourceManager = Class.extend({
       
       proto.ProgressDialog.resetBarAndLog(step);
       proto.ProgressDialog.setProgress(step, 1);
-      proto.ProgressDialog(step, 'Starting Upload');
+      proto.ProgressDialog.append(step, 'Starting Upload');
       
       // TODO: remove this apple/iphone specific check
       var upload_dest = 'apple' === that.destination ? 'iphone' : that.destination;
@@ -219,20 +219,20 @@ application.ResourceManager = Class.extend({
       $fw_manager.app.startUpload(key_wizard.find('#' + file_input_id), upload_url, data, function (result) {
         console.log('upload result > ' + JSON.stringify(result));
         if ('undefined' !== typeof result.error && result.error.length > 0) {
-          proto.ProgressDialog(step, $fw.client.lang.getLangString('file_upload_failed'));
+          proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_failed'));
           proto.Wizard.previousStep(key_wizard, result.error);
         }   
         else {  
           // fill progress bar and trigger finish
           proto.ProgressDialog.setProgress(step, 100);
-          proto.ProgressDialog(step, $fw.client.lang.getLangString('file_upload_complete'));     
+          proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_complete'));     
           
           // TODO: better way for this temporary workaround for finishing wizard after successful upload  
           key_wizard.find('.jw-button-finish').trigger('click');
         }
       }, false, function(xhr, err){
         var error = $fw.client.lang.getLangString('file_upload_error');
-        proto.ProgressDialog(step, $fw.client.lang.getLangString('file_upload_failed'));
+        proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_failed'));
         proto.Wizard.previousStep(key_wizard, error);
       });
     });
@@ -279,7 +279,7 @@ application.ResourceManager = Class.extend({
       
       proto.ProgressDialog.resetBarAndLog(step);
       proto.ProgressDialog.setProgress(step, 1);
-      proto.ProgressDialog(step, 'Starting Upload');
+      proto.ProgressDialog.append(step, 'Starting Upload');
       
       var upload_dest = 'apple' === dest ? 'iphone' : dest;
       
@@ -295,7 +295,7 @@ application.ResourceManager = Class.extend({
         console.log('upload result > ' + JSON.stringify(result));
         if ('undefined' !== typeof result.error && result.error.length > 0) {
           console.log('upload failed');
-          proto.ProgressDialog(step, $fw.client.lang.getLangString('file_upload_failed'));
+          proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_failed'));
           proto.Wizard.previousStep(cert_wizard, result.error);
         }
         else {
@@ -305,11 +305,11 @@ application.ResourceManager = Class.extend({
           cert_wizard.find('.jw-button-finish').trigger('click');
           
           proto.ProgressDialog.setProgress(step, 100);
-          proto.ProgressDialog(step, $fw.client.lang.getLangString('file_upload_complete'));
+          proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_complete'));
         }
       }, false, function(xhr, err){
         var error = $fw.client.lang.getLangString('file_upload_error');
-        proto.ProgressDialog(step, $fw.client.lang.getLangString('file_upload_failed'));
+        proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_failed'));
         proto.Wizard.previousStep(cert_wizard, error);
       });
     });
@@ -345,7 +345,7 @@ application.ResourceManager = Class.extend({
       
       proto.ProgressDialog.resetBarAndLog(step);
       proto.ProgressDialog.setProgress(step, 1);
-      proto.ProgressDialog(step, 'Starting Upload');
+      proto.ProgressDialog.append(step, 'Starting Upload');
       
       // TODO: remove this apple/iphone specific check
       var upload_dest = that.destination;
@@ -360,7 +360,7 @@ application.ResourceManager = Class.extend({
      $fw_manager.app.startUpload(res_wizard.find('#' + file_input_id), upload_url, data, function (result) {
         console.log('upload result > ' + JSON.stringify(result));
         if ('undefined' !== typeof result.error && result.error.length > 0) {  
-          proto.ProgressDialog(step, $fw.client.lang.getLangString('file_upload_failed'));
+          proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_failed'));
           proto.Wizard.previousStep(res_wizard, result.error);
         }   
         else {  
@@ -368,11 +368,11 @@ application.ResourceManager = Class.extend({
           res_wizard.find('.jw-button-finish').trigger('click');
           
           proto.ProgressDialog.setProgress(step, 100);
-          proto.ProgressDialog(step, $fw.client.lang.getLangString('file_upload_complete'));     
+          proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_complete'));     
         }
       }, false, function(xhr, err){
         var error = $fw.client.lang.getLangString('file_upload_error');
-        proto.ProgressDialog(step, $fw.client.lang.getLangString('file_upload_failed'));
+        proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_failed'));
         proto.Wizard.previousStep(res_wizard, error);
       });
     });

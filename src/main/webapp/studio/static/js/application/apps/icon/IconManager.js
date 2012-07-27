@@ -106,7 +106,7 @@ application.IconManager = Class.extend({
       // TODO: tidy up all these calls and refactor
       proto.ProgressDialog.resetBarAndLog(step);
       proto.ProgressDialog.setProgress(step, 1);
-      proto.ProgressDialog(step, 'Starting Upload');
+      proto.ProgressDialog.append(step, 'Starting Upload');
       console.log('icon path :: ' + upload_wizard.find('#icon_file_location').val());
       
       var params = {
@@ -118,14 +118,14 @@ application.IconManager = Class.extend({
       $fw_manager.client.model.App.uploadIcon( upload_wizard.find('#icon_file_location'), params,
         function () {
           proto.ProgressDialog.setProgress(step, 100);
-          proto.ProgressDialog(step, $fw.client.lang.getLangString('file_upload_complete'));
+          proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_complete'));
           
           // TODO: better way for this temporary workaround for finishing wizard after successful upload  
           upload_wizard.find('.jw-button-finish').trigger('click');
           that.reloadIcon(instance_guid, type);
         },
         function (res) {
-          proto.ProgressDialog(step, $fw.client.lang.getLangString('file_upload_failed'));
+          proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_failed'));
           proto.Wizard.previousStep(upload_wizard, res.error);
         },
         5000

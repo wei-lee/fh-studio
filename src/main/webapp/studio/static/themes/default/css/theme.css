@@ -2323,8 +2323,9 @@ p.input-form-footer, .tandc_Link{
   background: -webkit-linear-gradient(#FAFAFA,#E0E0E0);
   -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#fafafa',endColorstr='#e0e0e0')";
   border-bottom: 1px solid #cccccc;
-  height:14px;
-  padding:10px;
+  height: 14px;
+  padding: 10px;
+  font-weight: bold;
 }
 .section-body-dashboard {
   padding-left: 15px;
@@ -2595,30 +2596,6 @@ line-height:0.5em;
 
 .ui-state-disabled input {
   cursor: default;
-}
-
-/* Labels */
-.label {
-  padding: 1px 4px 2px;
-  font-size: 10.998px;
-  font-weight: bold;
-  line-height: 13px;
-  color: white;
-  vertical-align: middle;
-  white-space: nowrap;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-  background-color: #999;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-}
-
-.label.failure {
-  background-color: #B94A48;
-}
-
-.label.success {
-  background-color: #468847;
 }
 
 #status_refresh_button {
@@ -3239,7 +3216,8 @@ table.dataTable th:active {
 }
 
 .swap-select button:first-child {
-  margin-top: 41px;
+  margin-top: 58px;
+  margin-bottom: 10px;
 }
 
 /* Store Items */
@@ -3296,7 +3274,7 @@ table.dataTable th:active {
   border-top-right-radius: 3px;
 }
 
-.admin_store_item .icon {
+.admin_store_item .icon, #admin_app_store .store_icon, #admin_store_item_update .store_item_icon {
   -webkit-border-radius: 25px;
   -moz-border-radius: 25px;
   border-radius: 25px;
@@ -3320,8 +3298,18 @@ table.dataTable th:active {
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0088cc', endColorstr='#0055cc',GradientType=0 ); /* IE6-9 */
 }
 
-.store_item_icon_progress {
+.progress_area .progress {
   margin: 0 10px 0 0 !important;
-  min-height: inherit !important;
-  width: 162px !important;
+  height: 18px !important;
+}
+
+.store_item_binaries span.label {
+  margin-right: 10px;
+  width: 77px;
+  display: inline-block;
+  text-align: center;
+}
+
+.store_item_binaries_table td {
+  line-height: 28px;
 }

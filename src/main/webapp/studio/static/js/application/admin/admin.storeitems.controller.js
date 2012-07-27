@@ -18,6 +18,7 @@ Admin.Storeitems.Controller = Controller.extend({
   init: function() {},
 
   show: function(e) {
+    var self = this;
     this.showStoreItems();
   },
 
@@ -25,6 +26,15 @@ Admin.Storeitems.Controller = Controller.extend({
     $.each(this.views, function(k, v) {
       $(v).hide();
     });
+  },
+
+  setStoreIcon: function(data) {
+    var icon = $('.store_item_icon', this.views.admin_store_item_update);
+    if (data !== '') {
+      icon.attr('src', 'data:image/png;base64,' + data);
+    } else {
+      icon.attr('src', '/studio/static/themes/default/img/store_no_icon.png');
+    }
   },
 
   showStoreItems: function() {
@@ -99,8 +109,14 @@ Admin.Storeitems.Controller = Controller.extend({
     var self = this;
     this.hide();
 
+    self.setStoreIcon(store_item.icon);
+
     this.models.auth_policy.list(function(res) {
       var update_view = $(self.views.store_item_update);
+
+      // Remove uploaded status labels
+      $('span.label', update_view).remove();
+
       self.renderAvailableAuthPolicies(res.list, self.views.store_item_update);
 
       $('.item_guid', update_view).val(store_item.guid);
@@ -125,84 +141,163 @@ Admin.Storeitems.Controller = Controller.extend({
   bindBinaryUploads: function(store_item) {
     var self = this;
 
-    // TODO: Oh god make this generic.
-
-    // Bind Binary upload fields
-    var icon_upload_field = $('#icon_binary', self.views.store_item_update);
-    var icon_upload_status_area = $('.store_item_icon_status', self.views.store_item_update);
-    var icon_progress = $('.store_item_icon_progress', self.views.store_item_update);
-    icon_upload_field.unbind().fileupload({
-      url: Constants.ADMIN_STORE_ITEM_UPLOAD_BINARY_URL,
-      dataType: 'json',
-      replaceFileInput: false,
-      formData: [{
+    // Config
+    var binaries = [{
+      id: 'icon_binary',
+      destination: null,
+      params: [{
         name: 'guid',
         value: store_item.guid
       }, {
         name: 'type',
         value: 'icon'
-      }],
-      add: function(e, data) {
-        // Need to check the event target ID to get around a strange bug
-        // If files are dropped onto an input, all of them call this add callback
-        // so you need to find out if the event correlates to this particular field
-        if (e.target.id === 'icon_binary') {
-          icon_upload_status_area.text('Uploading...');
-          icon_upload_status_area.slideDown();
-          icon_progress.slideDown();
-          data.submit();
-        }
-      },
-      done: function(e, data) {
-        var filename = data.files[0].name;
-        icon_upload_status_area.text('Uploaded ' + filename);
-        setTimeout(function() {
-          icon_progress.slideUp();
-        }, 500);
-      },
-      progressall: function(e, data) {
-        var progress = parseInt(data.loaded / data.total * 100, 10);
-        $('.bar', icon_progress).css('width', progress + '%');
-      }
-    });
-
-    var android_upload_field = $('#android_binary', self.views.store_item_update);
-    var android_upload_status_area = $('.store_item_binary_android_status', self.views.store_item_update);
-    var android_upload_progress = $('.store_item_binary_android_progress', self.views.store_item_update);
-    android_upload_field.unbind().fileupload({
-      url: Constants.ADMIN_STORE_ITEM_UPLOAD_BINARY_URL,
-      dataType: 'json',
-      replaceFileInput: false,
-      formData: [{
+      }]
+    }, {
+      id: 'android_binary',
+      destination: 'android',
+      params: [{
         name: 'guid',
         value: store_item.guid
       }, {
         name: 'type',
-        value: 'storeitem'
-      }, {
-        name: 'destination',
         value: 'android'
-      }],
-      add: function(e, data) {
-        if (e.target.id === 'android_binary') {
-          android_upload_status_area.text('Uploading...');
-          android_upload_status_area.slideDown();
-          android_upload_progress.slideDown();
-          data.submit();
-        }
-      },
-      done: function(e, data) {
-        var filename = data.files[0].name;
-        android_upload_status_area.text('Uploaded ' + filename);
-        setTimeout(function() {
-          android_upload_progress.slideUp();
-        }, 500);
-      },
-      progressall: function(e, data) {
-        var progress = parseInt(data.loaded / data.total * 100, 10);
-        $('.bar', android_upload_progress).css('width', progress + '%');
+      }]
+    }, {
+      id: 'iphone_binary',
+      destination: 'iphone',
+      params: [{
+        name: 'guid',
+        value: store_item.guid
+      }, {
+        name: 'type',
+        value: 'iphone'
+      }]
+    }, {
+      id: 'ipad_binary',
+      destination: 'ipad',
+      params: [{
+        name: 'guid',
+        value: store_item.guid
+      }, {
+        name: 'type',
+        value: 'ipad'
+      }]
+    }, {
+      id: 'ios_binary',
+      destination: 'ios',
+      params: [{
+        name: 'guid',
+        value: store_item.guid
+      }, {
+        name: 'type',
+        value: 'ios'
+      }]
+    }];
+
+    $.each(binaries, function(i, binary) {
+      var input = $('#' + binary.id);
+      if (input.length < 1) {
+        return console.error('Input not found: ' + binary.id);
       }
+
+      // Inject binary upload progress template
+      var progress_area = $('#binary_upload_progress_template').clone();
+      var status = $('.status', progress_area);
+      var progress_bar = $('.progress', progress_area);
+      progress_area.removeAttr('id');
+      input.after(progress_area);
+
+      // Does a binary already exist?
+      var binary_upload_status = self._resolveUploadStatus(binary.destination, store_item);
+      var status_el = $('#binary_upload_status').clone().removeAttr('id').removeClass('hidden_template');
+
+      if (binary_upload_status === true) {
+        // Uploaded
+        status_el.text('Uploaded').removeClass('label-inverse').addClass('label-success');
+        input.before(status_el);
+      } else {
+        // Not uploaded
+        status_el.text('Not Uploaded');
+        input.before(status_el);
+      }
+
+      // Setup file upload
+      input.fileupload({
+        url: Constants.ADMIN_STORE_ITEM_UPLOAD_BINARY_URL,
+        dataType: 'json',
+        replaceFileInput: false,
+        formData: binary.params,
+        add: function(e, data) {
+          // Need to check the event target ID to get around a strange bug
+          // If files are dropped onto an input, all of them call this add callback
+          // so you need to find out if the event correlates to this particular field
+          if (e.target.id === binary.id) {
+            progress_area.show();
+            status.text('Uploading...');
+            status.slideDown();
+            progress_bar.slideDown();
+            data.submit();
+          }
+        },
+        done: function(e, data) {
+          if (data.result.status === 'ok') {
+            var filename = data.files[0].name;
+            status.text('Uploaded ' + filename);
+            status_el.text('Uploaded').removeClass('label-inverse').addClass('label-success');
+
+            // Set icon
+            if (typeof data.result.icon !== 'undefined') {
+              self.setStoreIcon(data.result.icon);
+            }
+
+            setTimeout(function() {
+              progress_bar.slideUp();
+              status.slideUp();
+            }, 500);
+          } else {
+            // Show error
+            status.text('Error: ' + data.result.message);
+            status_el.text('Error').removeClass('label-inverse').addClass('label-danger');
+            setTimeout(function() {
+              progress_bar.slideUp();
+              status.slideUp();
+            }, 500);
+          }
+        },
+        progressall: function(e, data) {
+          var progress = parseInt(data.loaded / data.total * 100, 10);
+          $('.bar', progress_bar).css('width', progress + '%');
+        }
+      });
+
     });
+  },
+
+  _resolveUploadStatus: function(destination, store_item) {
+    var uploaded = null;
+    if (destination) {
+      // App Binary check
+      var binaries = store_item.binaries;
+
+      // No uploaded binaries
+      if (binaries.length === 0) {
+        return false;
+      }
+
+      $.each(binaries, function(i, binary) {
+        if (binary.type == destination) {
+          uploaded = true;
+        }
+      });
+    } else {
+      // Icon check
+      if (store_item.icon !== '') {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    return uploaded;
   },
 
   updateStoreItem: function() {
@@ -249,6 +344,7 @@ Admin.Storeitems.Controller = Controller.extend({
     });
 
     this.bindSwapSelect(this.views.store_item_create);
+    this.bindSwapSelect(this.views.store_item_update);
   },
 
   createStoreItem: function() {
