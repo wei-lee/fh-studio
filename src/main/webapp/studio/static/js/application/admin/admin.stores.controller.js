@@ -5,7 +5,8 @@ Admin.Stores = Admin.Stores || {};
 Admin.Stores.Controller = Controller.extend({
   models: {
     app_store: new model.AppStore(),
-    store_item: new model.StoreItem()
+    store_item: new model.StoreItem(),
+    auth_policy: new model.ArmAuthPolicy()
   },
 
   alert_timeout: 3000,
@@ -46,13 +47,24 @@ Admin.Stores.Controller = Controller.extend({
       $('.store_guid', self.views.app_store).val(app_store_res.guid);
       self.setStoreIcon(app_store_res.icon);
       self.models.store_item.list(function(store_items_res) {
-        var available = store_items_res.list;
-        var assigned = app_store_res.storeitems;
-        self.renderAvailableStoreItems(available, assigned, self.views.app_store);
-        self.bind();
-        self.showAppStoreUpdate(app_store_res);
+        self.models.auth_policy.list(function(auth_policy_res) {
+          // Render swap selects
+          var available_store_items = store_items_res.list;
+          var assigned_store_items = app_store_res.storeitems;
+          self.renderAvailableStoreItems(available_store_items, assigned_store_items, self.views.app_store);
+
+          var available_auth_policies = auth_policy_res.list;
+          // TODO: Wire
+          var assigned_auth_policies = [];
+          self.renderAvailableAuthPolicies(available_auth_policies, assigned_auth_policies, self.views.app_store);
+
+          self.bind();
+          self.showAppStoreUpdate(app_store_res);
+        }, function(err) {
+          self.showAlert('error', "Error loading App Store Store Items");
+        }, false);
       }, function(err) {
-        console.error(err);
+        self.showAlert('error', "Error loading App Store Store Items");
       }, true);
     }, function() {
       self.showAlert('error', "Error loading App Store");
@@ -121,6 +133,34 @@ Admin.Stores.Controller = Controller.extend({
     // Massaging into {v: name, v: name} hash for lookup
     $.each(available, function(i, item) {
       map[item.guid] = item.name;
+    });
+
+    // Assigned first
+    $.each(assigned, function(i, guid) {
+      var name = map[guid];
+      var option = $('<option>').val(guid).text(name);
+      assigned_select.append(option);
+    });
+
+    // Available, minus assigned
+    $.each(map, function(guid, name) {
+      if (assigned.indexOf(guid) == -1) {
+        var option = $('<option>').val(guid).text(name);
+        available_select.append(option);
+      }
+    });
+  },
+
+  renderAvailableAuthPolicies: function(available, assigned, container) {
+    var self = this;
+    var available_select = $('.app_store_available_auth_policies', container).empty();
+    var assigned_select = $('.app_store_assigned_auth_policies', container).empty();
+
+    var map = {};
+
+    // Massaging into {v: name, v: name} hash for lookup
+    $.each(available, function(i, item) {
+      map[item.guid] = item.policyId;
     });
 
     // Assigned first
