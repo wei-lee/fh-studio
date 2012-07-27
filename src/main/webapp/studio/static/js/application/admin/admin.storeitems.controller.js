@@ -111,6 +111,9 @@ Admin.Storeitems.Controller = Controller.extend({
 
     self.setStoreIcon(store_item.icon);
 
+    // Disable bundle id inputs
+    $('.bundle_id, .update_bundle_id', self.views.store_item_update).attr('disabled', 'disabled');
+
     this.models.auth_policy.list(function(res) {
       var update_view = $(self.views.store_item_update);
 
