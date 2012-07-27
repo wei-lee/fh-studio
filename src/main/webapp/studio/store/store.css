@@ -44,3 +44,14 @@ textarea { resize:none; }
 .store_item_binaries_table td {
   line-height: 28px;
 }
+
+.appstore_icon {
+  margin: auto;
+  display: block;
+}
+
+.login_button {
+  display: block;
+  margin: auto;
+  margin-top: 10px;
+}
