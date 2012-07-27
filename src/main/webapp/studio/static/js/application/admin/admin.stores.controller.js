@@ -186,8 +186,9 @@ Admin.Stores.Controller = Controller.extend({
     var name = $('.store_name', container).val();
     var description = $('.store_description', container).val();
     var store_items = this._selectedStoreItems(container);
+    var auth_policies = this._selectedAuthPolicies(container);
 
-    this.models.app_store.update(guid, name, description, store_items, function(res) {
+    this.models.app_store.update(guid, name, description, store_items, auth_policies, function(res) {
       self.showAlert('success', "App Store updated successfully");
     }, function(err) {
       console.error(err);
@@ -198,6 +199,15 @@ Admin.Stores.Controller = Controller.extend({
     var store_item_options = $('.app_store_store_items_assigned option', container);
     var items = [];
     store_item_options.each(function(i, item) {
+      items.push($(item).val());
+    });
+    return items;
+  },
+
+  _selectedAuthPolicies: function(container) {
+    var options = $('.app_store_assigned_auth_policies option', container);
+    var items = [];
+    options.each(function(i, item) {
       items.push($(item).val());
     });
     return items;
