@@ -25,7 +25,7 @@ textarea { resize:none; }
   margin-bottom: 0;
 }
 
-.store_item .icon, #app_store .store_icon, #store_item_update .store_item_icon {
+.store_item .icon, #app_store .store_icon, #store_item_update .store_item_icon, .appstore_icon {
   -webkit-border-radius: 25px;
   -moz-border-radius: 25px;
   border-radius: 25px;
