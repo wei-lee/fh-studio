@@ -99,7 +99,7 @@ application.DestinationGeneral = Class.extend({
     var that = this;
     proto.ProgressDialog.resetBarAndLog(step);
     proto.ProgressDialog.setProgress(step, 1);
-    proto.ProgressDialog(step, 'Starting ' + type);
+    proto.ProgressDialog.append(step, 'Starting ' + type);
 
     console.log('sending request to server');
     console.log('request url ' + that.base_url);
@@ -120,7 +120,7 @@ application.DestinationGeneral = Class.extend({
           cacheKey: cacheKey,
           complete: function(res) {
             proto.ProgressDialog.setProgress(step, 100);
-            proto.ProgressDialog(step, "Starting Download");
+            proto.ProgressDialog.append(step, "Starting Download");
             console.log('jumping to final step and hiding progress dialog');
             setTimeout(function() {
               complete(res);
@@ -150,9 +150,9 @@ application.DestinationGeneral = Class.extend({
             for (var i = 0; i < res.log.length; i++) {
               // If there's more than one task, send on the task name to the progress dialog
               if (cacheKeys.length > 1) {
-                proto.ProgressDialog(step, res.log[i], taskNames[res.cacheKey]);
+                proto.ProgressDialog.append(step, res.log[i], taskNames[res.cacheKey]);
               } else {
-                proto.ProgressDialog(step, res.log[i]);
+                proto.ProgressDialog.append(step, res.log[i]);
               }
               if (res.log[i] && res.log[i].length > 0) {
                 console.log("increase progress: " + progress_val);

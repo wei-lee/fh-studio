@@ -27,7 +27,7 @@ application.AndroidResourceManager = application.ResourceManager.extend({
       
       proto.ProgressDialog.resetBarAndLog(step);
       proto.ProgressDialog.setProgress(step, 1);
-      proto.ProgressDialog(step, 'Starting Generation');
+      proto.ProgressDialog.append(step, 'Starting Generation');
       
       var params = {
         dest: 'android',
@@ -37,7 +37,7 @@ application.AndroidResourceManager = application.ResourceManager.extend({
       $fw_manager.client.model.Resource.generateCert(params, 
         function (result) {
           proto.ProgressDialog.setProgress(step, 100);
-          proto.ProgressDialog(step, 'Generation Complete');     
+          proto.ProgressDialog.append(step, 'Generation Complete');     
           
           // TODO: better way for this temporary workaround for finishing wizard after successful upload  
           wizard.find('.jw-button-finish').trigger('click');
@@ -50,7 +50,7 @@ application.AndroidResourceManager = application.ResourceManager.extend({
           $fw_manager.client.resource.android.setupDestination();
         },
         function (result) {
-          proto.ProgressDialog(step, 'Generate Failed');
+          proto.ProgressDialog.append(step, 'Generate Failed');
           // go back a step and show error
           proto.Wizard.previousStep(wizard, result.error);
         }

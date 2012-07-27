@@ -150,12 +150,12 @@ application.AppManager = Class.extend({
       proto.ProgressDialog.reset($fw_manager.client.dialog.progress);
       proto.ProgressDialog.setTitle($fw_manager.client.dialog.progress, 'Delete Progress');
       proto.ProgressDialog.setProgress($fw_manager.client.dialog.progress, 10);
-      proto.ProgressDialog($fw_manager.client.dialog.progress, 'Starting delete');
+      proto.ProgressDialog.append($fw_manager.client.dialog.progress, 'Starting delete');
       proto.ProgressDialog.show($fw_manager.client.dialog.progress);
       $fw_manager.client.model.App['delete'](guid, function (data) {
         if (data.inst && data.inst.id) {
           proto.ProgressDialog.setProgress($fw_manager.client.dialog.progress, 100);
-          proto.ProgressDialog($fw_manager.client.dialog.progress, 'Delete complete');
+          proto.ProgressDialog.append($fw_manager.client.dialog.progress, 'Delete complete');
           my_apps_grid.jqGrid('delRowData', guid);
           my_apps_grid.trigger('reloadGrid');
           setTimeout(function () {
@@ -247,7 +247,7 @@ application.AppManager = Class.extend({
       // show import progress
       proto.ProgressDialog.resetBarAndLog(step);
       proto.ProgressDialog.setProgress(step, 1);
-      proto.ProgressDialog(step, 'Starting Import');
+      proto.ProgressDialog.append(step, 'Starting Import');
       
       var currentProgress;
       var callbacks = {
@@ -256,7 +256,7 @@ application.AppManager = Class.extend({
           if(progress != currentProgress){
             console.log("upload progress: " + progress);
             proto.ProgressDialog.setProgress(step, parseInt(progress*0.5, 10));
-            proto.ProgressDialog(step, "Uploaded: " + progress + "%");
+            proto.ProgressDialog.append(step, "Uploaded: " + progress + "%");
           }
           currentProgress = progress;
         },
@@ -280,7 +280,7 @@ application.AppManager = Class.extend({
               },
               update: function (res) {
                 for (var i = 0;i < res.log.length; i++) {
-                  proto.ProgressDialog(step, res.log[i]);
+                  proto.ProgressDialog.append(step, res.log[i]);
                 }
                 if (res.progress) {
                   proto.ProgressDialog.setProgress(step, parseInt(50 + res.progress*0.5, 10));
