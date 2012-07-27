@@ -862,6 +862,82 @@
         </form>
       </div>
 
+      <!-- Devices template -->
+      <div id="admin_devices_list" class="hidden_template row-fluid">
+        <div id="alerts"></div>
+        <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="admin_devices_table"></table>
+      </div>
+
+      <div id="admin_devices_update" class="hidden_template row-fluid">
+        <div id="alerts"></div>
+        <form class="well form-horizontal">
+          <fieldset>
+            <legend>View Device</legend>
+            <div class="control-group">
+              <label class="control-label" for="update_device_name">Label</label>
+              <div class="controls">
+                <input type="text" class="input-xxlarge" id="update_device_name" placeholder="A friendly name for the device">
+                <button class="btn update_device_name_btn">Update Label</button>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="device_cuid">Device ID</label>
+              <div class="controls">
+                <input type="text" disabled="disabled" class="input-xxlarge" id="device_cuid">
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="device_last_access">Last Access</label>
+              <div class="controls">
+                <input type="text" disabled="disabled" class="input-xxlarge" id="device_last_access">
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="device_first_seen">First Seen</label>
+              <div class="controls">
+                <input type="text" disabled="disabled" class="input-xxlarge" id="device_first_seen">
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="device_disabled">Disabled</label>
+              <div class="controls">
+                <input type="checkbox" disabled="disabled" class="input-xxlarge" id="device_update_disabled">
+                <button class="btn update_device_disabled_btn">Disable Authentication</button>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="device_blacklisted">Purge Data</label>
+              <div class="controls">
+                <input type="checkbox" disabled="disabled" class="input-xxlarge" id="device_update_blacklisted">
+                <button class="btn update_device_blacklisted_btn">Mark for Data Purge</button>
+              </div>
+            </div>
+            <div class="control-group">
+              <div class="controls">
+                <fieldset>
+                  <legend>Users</legend>
+                    <div class="well">
+                      <ul id="device_users">
+                      </ul>
+                    </div>
+                </fieldset>
+              </div>
+            </div>
+            <div class="control-group">
+              <div class="controls">
+                <fieldset>
+                  <legend>Store Item</legend>
+                  <div class="well">
+                    <ul id="device_storeitems">
+                    </ul>
+                  </div>
+                </fieldset>
+              </div>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+
       </div>
     </div>
 

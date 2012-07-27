@@ -142,5 +142,11 @@ $.extend(Constants, {
   ADMIN_APP_STORE_READ_URL: Constants.ADMIN_URL_PREFIX + "appstore/read",
   ADMIN_APP_STORE_UPDATE_URL: Constants.ADMIN_URL_PREFIX + "appstore/update",
 
-  ADMIN_ROLE_LIST_ASSIGNABLE_URL: Constants.ADMIN_URL_PREFIX + "role/listAssignable"
+  ADMIN_ROLE_LIST_ASSIGNABLE_URL: Constants.ADMIN_URL_PREFIX + "role/listAssignable",
+
+  ADMIN_DEVICES_LIST_URL: Constants.ADMIN_URL_PREFIX + "device/list",
+  ADMIN_DEVICES_UPDATE_URL : Constants.ADMIN_URL_PREFIX + "device/update",
+  ADMIN_DEVICES_READ_URL: Constants.ADMIN_URL_PREFIX + "device/read",
+  ADMIN_DEVICES_LISTUSERS_URL : Constants.ADMIN_URL_PREFIX + "device/listusers",
+  ADMIN_DEVICES_LISTAPPS_URL : Constants.ADMIN_URL_PREFIX + "device/listapps"
 });
