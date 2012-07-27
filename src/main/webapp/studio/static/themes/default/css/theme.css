@@ -3316,4 +3316,29 @@ table.dataTable th:active {
 
 .store_item_binaries_table tr td:first-child {
   width: 115px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.store_item_binaries_table .device_icon {
+  height: 64px;
+  width: 64px;
+  margin: auto;
+  margin-bottom: 5px;
+}
+
+.store_item_binaries_table .device_icon.android {
+  background: url('../img/device_android.png');
+}
+
+.store_item_binaries_table .device_icon.ipad {
+  background: url('../img/device_ipad.png');
+}
+
+.store_item_binaries_table .device_icon.iphone {
+  background: url('../img/device_iphone.png');
+}
+
+.store_item_binaries_table .device_icon.ios {
+  background: url('../img/device_ios.png');
 }
