@@ -2323,8 +2323,9 @@ p.input-form-footer, .tandc_Link{
   background: -webkit-linear-gradient(#FAFAFA,#E0E0E0);
   -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#fafafa',endColorstr='#e0e0e0')";
   border-bottom: 1px solid #cccccc;
-  height:14px;
-  padding:10px;
+  height: 14px;
+  padding: 10px;
+  font-weight: bold;
 }
 .section-body-dashboard {
   padding-left: 15px;
@@ -3215,7 +3216,8 @@ table.dataTable th:active {
 }
 
 .swap-select button:first-child {
-  margin-top: 41px;
+  margin-top: 58px;
+  margin-bottom: 10px;
 }
 
 /* Store Items */
