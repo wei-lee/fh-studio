@@ -160,9 +160,6 @@ Admin.Storeitems.Controller = Controller.extend({
         value: store_item.guid
       }, {
         name: 'type',
-        value: 'storeitem'
-      }, {
-        name: 'destination',
         value: 'android'
       }]
     }, {
@@ -173,9 +170,6 @@ Admin.Storeitems.Controller = Controller.extend({
         value: store_item.guid
       }, {
         name: 'type',
-        value: 'storeitem'
-      }, {
-        name: 'destination',
         value: 'iphone'
       }]
     }, {
@@ -186,9 +180,6 @@ Admin.Storeitems.Controller = Controller.extend({
         value: store_item.guid
       }, {
         name: 'type',
-        value: 'storeitem'
-      }, {
-        name: 'destination',
         value: 'ipad'
       }]
     }, {
@@ -199,9 +190,6 @@ Admin.Storeitems.Controller = Controller.extend({
         value: store_item.guid
       }, {
         name: 'type',
-        value: 'storeitem'
-      }, {
-        name: 'destination',
         value: 'ios'
       }]
     }];
@@ -252,16 +240,29 @@ Admin.Storeitems.Controller = Controller.extend({
           }
         },
         done: function(e, data) {
-          var filename = data.files[0].name;
-          status.text('Uploaded ' + filename);
-          status_el.text('Uploaded').removeClass('label-inverse').addClass('label-success');
+          if (data.result.status === 'ok') {
+            var filename = data.files[0].name;
+            status.text('Uploaded ' + filename);
+            status_el.text('Uploaded').removeClass('label-inverse').addClass('label-success');
 
-          // Set icon
-          self.setStoreIcon(data.result.icon);
-          setTimeout(function() {
-            progress_bar.slideUp();
-            status.slideUp();
-          }, 500);
+            // Set icon
+            if (typeof data.result.icon !== 'undefined') {
+              self.setStoreIcon(data.result.icon);
+            }
+
+            setTimeout(function() {
+              progress_bar.slideUp();
+              status.slideUp();
+            }, 500);
+          } else {
+            // Show error
+            status.text('Error: ' + data.result.message);
+            status_el.text('Error').removeClass('label-inverse').addClass('label-danger');
+            setTimeout(function() {
+              progress_bar.slideUp();
+              status.slideUp();
+            }, 500);
+          }
         },
         progressall: function(e, data) {
           var progress = parseInt(data.loaded / data.total * 100, 10);
