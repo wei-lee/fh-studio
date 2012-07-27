@@ -183,7 +183,7 @@ Admin.Authpolicy.Controller = Controller.extend({
             return self.showAlert('error', '<strong>Error loading user data</strong> ' + err);
           }       
           self.hide();
-          self.container = view;
+          //self.container = view;
           self.showEditPolicy(results[0], results[1]);
           $(view).show();
           bindEvent();
@@ -207,7 +207,7 @@ Admin.Authpolicy.Controller = Controller.extend({
         }
       ], function(err, results){
         self.hide();
-        self.container = view;
+//        self.container = view;
         self.updateSwapSelect('#create_approved_users_auth_policies_swap', results[0], []);
         self.bindSwapSelect(self.views.policies_create);      
 
@@ -221,11 +221,13 @@ Admin.Authpolicy.Controller = Controller.extend({
     }
   },
 
+  // TODO - container necessary??
+//  container: null, // keeps track of currently active/visible container
+  alert_timeout: 10000,
+
   showAlert: function (type, message) {
-  console.log("message: " + message + " type: " + type);
     var self = this;
-    var alerts_area = $(this.container).find('#alerts');
-  console.log(alerts_area);
+    var alerts_area = $('#auth_policies_alerts');
     var alert = $('<div>').addClass('alert fade in alert-' + type).html(message);
     var close_button = $('<button>').addClass('close').attr("data-dismiss", "alert").text("x");
     alert.append(close_button);
@@ -244,7 +246,7 @@ Admin.Authpolicy.Controller = Controller.extend({
     var self = this;
     self.showBooleanModal('Are you sure you want to delete this Policy?', function () {
       var id = data[0];
-      self.showAlert('info', '<strong>Deleting Profile</strong> (' + id + ') This may take some time.');
+      self.showAlert('info', '<strong>Deleting Profile</strong> (' + id + ').. ');
       // delete user
       self.models.policy.remove(id, function(res) {
         self.showAlert('success', '<strong>Policy Successfully Deleted</strong> (' + id + ')');
@@ -298,7 +300,8 @@ Admin.Authpolicy.Controller = Controller.extend({
   createOrUpdatePolicy: function(action) {
     var self = this;
     var view = self.views.policies_create;
-    var guid, id, type, provider, checkUserExists, checkUserApproved, conf, users;
+    var guid, id, type, provider, checkUserExists, checkUserApproved, conf;
+    var users = [];
     if (action == "update") {
       view = self.views.policies_update;    
 

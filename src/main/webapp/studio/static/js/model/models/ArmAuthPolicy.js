@@ -47,17 +47,22 @@ model.ArmAuthPolicy = model.Model.extend({
     return this.serverPost(url, params, success, fail, true);
   },
 
-  remove:function (guid, success, fail) {
-    var params = {};
-    params.guid = guid;
-    var url = this.baseUrl + "/delete";
-    return this.serverPost(url, params, success, fail, true);
+  remove:function (policyId, success, fail) {
+    var self = this;
+    // need to look up the guid of the policy being delete.. bit clunky this.. 
+    this.read(policyId, function(policy){
+      var params = {};
+      params.guid = policy.guid;
+      var url = self.baseUrl + "/delete";
+      return self.serverPost(url, params, success, fail, true);      
+    }, fail);
   },
   
  
   list: function(success, fail, post_process) {
-    if (post_process)
+    if (post_process){          
       post_process = this.postProcessList;
+    }
     var url = this.baseUrl + "/list";
     return this.serverPost(url, {}, success, fail, false, post_process, this);
   },
