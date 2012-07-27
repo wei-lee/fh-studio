@@ -47,7 +47,7 @@ Admin.Devices.Controller = Controller.extend({
   hide: function(){
     $.each(this.views, function(k, v){
       $(v).hide();
-    })
+    });
   },
 
   showDeviceList: function(){
@@ -61,7 +61,7 @@ Admin.Devices.Controller = Controller.extend({
       self.bindControls();
     }, function(err){
       console.log("Error showing devices");
-    }, true)
+    }, true);
   },
 
   addControls: function(res){
@@ -147,7 +147,7 @@ Admin.Devices.Controller = Controller.extend({
       $('#device_first_seen', parent).val(fields.sysCreated);
       self.setDeviceDisabled(fields.cuid, fields.disabled, parent);
       self.setDeviceBlacklisted(fields.cuid, fields.blacklisted, parent);
-    }
+    };
     var cuid = data[1];
     $('.update_device_name_btn', parent).removeAttr("disabled").unbind().bind("click", function(){
       var newname = $('#update_device_name', parent).val();
@@ -172,7 +172,7 @@ Admin.Devices.Controller = Controller.extend({
       self.showStoreItems(res);
     }, function(err){
       self.showAlert("error", "Failed to list store items");
-    })
+    });
     parent.show();
   },
 
@@ -200,7 +200,7 @@ Admin.Devices.Controller = Controller.extend({
           }, function(err){
             self.showAlert("error", "Failed to disable device.");
           });
-        })
+        });
         return false;
       });
     }
@@ -230,7 +230,7 @@ Admin.Devices.Controller = Controller.extend({
           }, function(err){
             self.showAlert("error", "Failed to mark data purge for device.");
           });
-        })
+        });
         return false;
       });
     }
@@ -252,10 +252,10 @@ Admin.Devices.Controller = Controller.extend({
         a.unbind('click').bind('click', function(){
           self.hide();
           $fw.client.tab.admin.controllers['admin.users.controller'].showUserUpdate(null, null, [v.fields.userId]);
-        })
+        });
         $('#device_users').append(li);
 
-      })
+      });
     } else {
       var userhtml = $("<li>", {"text":"No users found"});
       $('#device_users').html(userhtml);
@@ -281,7 +281,7 @@ Admin.Devices.Controller = Controller.extend({
           var fields = v.fields;
           fields.guid = v.guid;
           $fw.client.tab.admin.controllers['admin.storeitems.controller'].showUpdateStoreItem(fields);
-        })
+        });
         $('#device_storeitems').append(li);
       });
     } else {
@@ -301,8 +301,8 @@ Admin.Devices.Controller = Controller.extend({
 
   getStoreItemPopoverContent: function(item){
     var iconsrc = "/studio/static/themes/default/img/store_no_icon.png";
-    if(item.icon != ''){
-      iconsrc = "data:image/png;base64,"+ item.icon
+    if(item.icon !== ''){
+      iconsrc = "data:image/png;base64,"+ item.icon;
     }
     return "<div class='device_store_item_popover'><div class='icon_container'><img class='icon' src='"+ iconsrc + "'></div>" + "<div class='details'> <h3 class='name'> " + item.name + "</h3> <p>" + item.description + "</p></div></div>"; 
   }
