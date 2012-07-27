@@ -109,12 +109,28 @@ Admin.Stores.Controller = Controller.extend({
         data.submit();
       },
       done: function(e, data) {
-        var filename = data.files[0].name;
-        self.setStoreIcon(data.result.icon);
-        status.text('Uploaded ' + filename);
-        setTimeout(function() {
-          progress_bar.slideUp();
-        }, 500);
+        if (data.result.status === 'ok') {
+          var filename = data.files[0].name;
+          status.text('Uploaded ' + filename);
+          self.showAlert('success', 'Icon successfully uploaded');
+
+          // Set icon
+          if (typeof data.result.icon !== 'undefined') {
+            self.setStoreIcon(data.result.icon);
+          }
+
+          setTimeout(function() {
+            progress_bar.slideUp();
+            status.slideUp();
+          }, 500);
+        } else {
+          // Show error
+          self.showAlert('error', data.result.message);
+          setTimeout(function() {
+            progress_bar.slideUp();
+            status.slideUp();
+          }, 500);
+        }
       },
       progressall: function(e, data) {
         var progress = parseInt(data.loaded / data.total * 100, 10);
