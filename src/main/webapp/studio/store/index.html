@@ -21,7 +21,7 @@
       <div class="row-fluid">
 
         <!-- Loading -->
-        <div id="store_loading" class="row">
+        <div id="store_loading" class="well">
           <div class="span1"></div>
           <div class="span10">
               <p>Loading App Store information</p>
@@ -29,7 +29,7 @@
         </div>
 
         <!-- Login -->
-        <div id="store_login">
+        <div id="store_login" class="well">
           <div class="well">
             <img class="appstore_icon" />
           </div>
@@ -39,29 +39,31 @@
 
  
       <!-- Storeitem templates -->
-      <ul id="store_list" class="row">
-        <div class="store_items_controls">
-        </div>
-      </ul>
+      <div class="span12">
+        <ul id="store_list" class="well">
+          <li>No items available for download</li>
+          <div class="store_items_controls">
+          </div>
+        </ul>
 
-      <li id="store_item" class="store_item well">
-        <div class="row">
-          <div class="span2 icon_container">
-            <img src="" alt="" class="icon" />
+        <li id="store_item" class="store_item">
+          <div>
+            <div class="span2 icon_container">
+              <img src="" alt="" class="icon" />
+            </div>
+            <div class="details span8">
+              <h3 class="name"></h3>
+              <p class="description"></p>
+            </div>
+            <div class="span2 controls">
+              <button class="btn show_store_item"><i class="icon-chevron-right"></i></button>
+            </div>
           </div>
-          <div class="details span8">
-            <h3 class="name"></h3>
-            <p class="description"></p>
-          </div>
-          <div class="span2 controls">
-            <button class="btn show_store_item"><i class="icon-chevron-right"></i></button>
-          </div>
-        </div>
-      </li>
-
+        </li>
+      </div>
 
         <!-- Store Detail -->
-        <div id="store_detail" class="well row">
+        <div id="store_detail" class="span12 well">
           <div class="span2 icon_container">
             <img src="" alt="" class="icon" />
           </div>
