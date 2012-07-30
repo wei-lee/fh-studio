@@ -226,10 +226,10 @@ Admin.Storeitems.Controller = Controller.extend({
       // Render Binary config
       var row = input.parents('tr');
       if ($(row).has('.bundle_id').length > 0) {
-        var bundle_config_input = $(row, '.bundle_id');
+        var bundle_config_input = $('.bundle_id', row);
         var config = self._configForDestination(store_item, binary.destination);
         if (config) {
-          // debugger;
+          bundle_config_input.val(config.bundle_id);
         }
       }
 
@@ -339,11 +339,13 @@ Admin.Storeitems.Controller = Controller.extend({
   },
 
   _configForDestination: function(store_item, destination) {
+    var config = null;
     $.each(store_item.binaries, function(i, binary) {
       if (binary.type === destination) {
-        return binary.config.bundle_id;
+        config = binary.config;
       }
     });
+    return config;
   },
 
   updateStoreItem: function() {
