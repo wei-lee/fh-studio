@@ -206,7 +206,7 @@ Admin.Stores.Controller = Controller.extend({
     this.models.app_store.update(guid, name, description, store_items, auth_policies, function(res) {
       self.showAlert('success', "App Store updated successfully");
     }, function(err) {
-      console.error(err);
+      self.showAlert('error', err);
     }, true);
   },
 
