@@ -14,14 +14,14 @@
   
   <body>
     <div class="container-fluid">
-      <div class="row-fluid page-header">
+      <div class="row page-header">
         <h1 class="span12 appstore_name">Loading...</h1>
       </div>
       <div class="alerts"></div>
       <div class="row-fluid">
 
         <!-- Loading -->
-        <div id="store_loading" class="row-fluid">
+        <div id="store_loading" class="row">
           <div class="span1"></div>
           <div class="span10">
               <p>Loading App Store information</p>
@@ -39,13 +39,13 @@
 
  
       <!-- Storeitem templates -->
-      <ul id="store_list" class="">
+      <ul id="store_list" class="row">
         <div class="store_items_controls">
         </div>
       </ul>
 
       <li id="store_item" class="store_item well">
-        <div class="row-fluid">
+        <div class="row">
           <div class="span2 icon_container">
             <img src="" alt="" class="icon" />
           </div>
@@ -61,7 +61,7 @@
 
 
         <!-- Store Detail -->
-        <div id="store_detail" class="well row-fluid">
+        <div id="store_detail" class="well row">
           <div class="span2 icon_container">
             <img src="" alt="" class="icon" />
           </div>
@@ -74,7 +74,10 @@
             <div class="item_guid hidden"></div>
             <div class="item_id hidden"></div>
             <div class="span2 controls">
-              <button class="btn install_store_item">Install</button>
+              <a href="#" class="btn btn_device_install iphone">iPhone</a>
+              <a href="#" class="btn btn_device_install ipad">ipad</a>
+              <a href="#" class="btn btn_device_install ios">iOS</a>
+              <a href="#" class="btn btn_device_install android">Android</a>
             </div>
           </div>
         </div>
