@@ -312,14 +312,14 @@ Admin.Authpolicy.Controller = Controller.extend({
         $('#update_approved_users').hide();
       }
 
-      if (policy.policyType === 'oauth2') {
+      if (policy.policyType === 'OAUTH2') {
         $('#update_oauth2_div', self.views.policies_update).show();
         $('#update_ldap_div', self.views.policies_update).hide();
         $('#update_policy_conf_provider', self.views.policies_update).val(policy.configurations.provider);
         $('#update_client_id', self.views.policies_update).val(policy.configurations.clientId);
         $('#update_client_secret', self.views.policies_update).val(policy.configurations.clientSecret);
         $('#update_oauth_callback', self.views.policies_update).val(policy.configurations.callbackUrl);
-      } else if (policy.policyType === 'ldap') {
+      } else if (policy.policyType === 'LDAP') {
         $('#update_oauth2_div', self.views.policies_update).hide();
         $('#update_ldap_div', self.views.policies_update).show();
         $('#update_authmethod_id', self.views.policies_update).val(policy.configurations.authmethod);
@@ -349,14 +349,14 @@ Admin.Authpolicy.Controller = Controller.extend({
         users.push($(item).text());
       });
 
-      if (type === 'oauth2') {          
+      if (type === 'OAUTH2') {          
         conf = {
           "provider": provider,
           "clientId": $('#update_client_id', view).val(),
           "clientSecret": $('#update_client_secret', view).val(),
           "callbackUrl": $('#update_oauth_callback', view).val()
         };
-      }else if (type === 'ldap') {
+      }else if (type === 'LDAP') {
         conf = {
           "authmethod": $('#update_authmethod_id', view).val(),
           "url": $('#update_ldap_url_id', view).val(),
@@ -376,14 +376,14 @@ Admin.Authpolicy.Controller = Controller.extend({
       $('#create_approved_users_auth_policies_swap .swap-to option', view).each(function (i, item) {
         users.push($(item).text());
       });
-      if (type === 'oauth2') {          
+      if (type === 'OAUTH2') {          
         conf = {
           "provider": provider,
           "clientId": $('#create_client_id', view).val(),
           "clientSecret": $('#create_client_secret', view).val(),
           "callbackUrl": $('#create_oauth_callback', view).val()
         };
-      }else if (type === 'ldap') {
+      }else if (type === 'LDAP') {
         conf = {
           "authmethod": $('#create_authmethod_id', view).val(),
           "url": $('#create_ldap_url_id', view).val(),
