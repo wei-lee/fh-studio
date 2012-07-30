@@ -229,7 +229,7 @@ Admin.Storeitems.Controller = Controller.extend({
         var bundle_config_input = $(row, '.bundle_id');
         var config = self._configForDestination(store_item, binary.destination);
         if (config) {
-          debugger;
+          // debugger;
         }
       }
 
