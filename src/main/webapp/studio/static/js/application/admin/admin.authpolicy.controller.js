@@ -299,7 +299,7 @@ Admin.Authpolicy.Controller = Controller.extend({
       var pusers = [];
       for (var i=0; i<policy.users.length; i++) {
         var u = policy.users[i];
-        pusers.push(u.userid);
+        pusers.push(u.userId);
       }
 
       self.updateSwapSelect('#update_approved_users_auth_policies_swap', users, pusers);
