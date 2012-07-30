@@ -15,6 +15,8 @@ Admin.Storeitems.Controller = Controller.extend({
     store_item_update: "#admin_store_item_update"
   },
 
+  alert_timeout: 3000,
+
   init: function() {},
 
   show: function(e) {
@@ -146,7 +148,7 @@ Admin.Storeitems.Controller = Controller.extend({
       $('.item_description', update_view).val(store_item.description);
 
       update_view.show();
-      self.bindBinaryUploads(store_item);
+      self.renderBinaryUploads(store_item);
 
       $('.update_store_item', update_view).unbind().click(function(e) {
         e.preventDefault();
@@ -159,7 +161,7 @@ Admin.Storeitems.Controller = Controller.extend({
     }, false);
   },
 
-  bindBinaryUploads: function(store_item) {
+  renderBinaryUploads: function(store_item) {
     var self = this;
 
     // Config
@@ -219,6 +221,16 @@ Admin.Storeitems.Controller = Controller.extend({
       var input = $('#' + binary.id);
       if (input.length < 1) {
         return console.error('Input not found: ' + binary.id);
+      }
+
+      // Render Binary config
+      var row = input.parents('tr');
+      if ($(row).has('.bundle_id').length > 0) {
+        var bundle_config_input = $(row, '.bundle_id');
+        var config = self._configForDestination(store_item, binary.destination);
+        if (config) {
+          debugger;
+        }
       }
 
       // Inject binary upload progress template
@@ -324,6 +336,14 @@ Admin.Storeitems.Controller = Controller.extend({
       }
     }
     return uploaded;
+  },
+
+  _configForDestination: function(store_item, destination) {
+    $.each(store_item.binaries, function(i, binary) {
+      if (binary.type === destination) {
+        return binary.config.bundle_id;
+      }
+    });
   },
 
   updateStoreItem: function() {
