@@ -119,7 +119,7 @@ Admin.Storeitems.Controller = Controller.extend({
     this.models.auth_policy.list(function(res) {
       $(self.views.store_item_create).show();
       self.bind();
-      self.renderAvailableAuthPolicies(res.list, self.views.store_item_create);
+      self.renderAvailableAuthPolicies(res.list, [], self.views.store_item_create);
     }, function(err) {
       console.log(err);
     }, false);
@@ -140,7 +140,8 @@ Admin.Storeitems.Controller = Controller.extend({
       // Remove uploaded status labels
       $('span.label', update_view).remove();
 
-      self.renderAvailableAuthPolicies(res.list, self.views.store_item_update);
+      var assigned_auth_policies = store_item.authpolicies;
+      self.renderAvailableAuthPolicies(res.list, assigned_auth_policies, self.views.store_item_update);
 
       $('.item_guid', update_view).val(store_item.guid);
       $('.item_name', update_view).val(store_item.name);
@@ -366,14 +367,31 @@ Admin.Storeitems.Controller = Controller.extend({
     });
   },
 
-  renderAvailableAuthPolicies: function(auth_policies, container) {
-    var available_select = $('.store_item_available_auth_policies', container);
-    available_select.empty();
-    var assigned_select = $('.store_item_assigned_auth_policies', container);
-    assigned_select.empty();
-    $.each(auth_policies, function(i, policy) {
-      var option = $('<option>').val(policy.policyId).text(policy.policyId);
-      available_select.append(option);
+  renderAvailableAuthPolicies: function(available, assigned, container) {
+    var self = this;
+    var available_select = $('.store_item_available_auth_policies', container).empty();
+    var assigned_select = $('.store_item_assigned_auth_policies', container).empty();
+
+    var map = {};
+
+    // Massaging into {v: name, v: name} hash for lookup
+    $.each(available, function(i, item) {
+      map[item.guid] = item.policyId;
+    });
+
+    // Assigned first
+    $.each(assigned, function(i, guid) {
+      var name = map[guid];
+      var option = $('<option>').val(guid).text(name);
+      assigned_select.append(option);
+    });
+
+    // Available, minus assigned
+    $.each(map, function(guid, name) {
+      if (assigned.indexOf(guid) == -1) {
+        var option = $('<option>').val(guid).text(name);
+        available_select.append(option);
+      }
     });
   },
 
