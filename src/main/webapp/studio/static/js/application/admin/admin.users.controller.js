@@ -141,7 +141,7 @@ Admin.Users.Controller = Controller.extend({
         policyIdGuidMap[results[2][pi].guid] = results[2][pi].policyId;
       }
       var policiesTo = [];
-      for (var pi = 0, pl = user.authpolicies.length; pi < pl; pi += 1) {
+      for (pi = 0, pl = user.authpolicies.length; pi < pl; pi += 1) {
         policiesTo.push([policyIdGuidMap[user.authpolicies[pi]] || ('Unknown Policy - ' + user.authpolicies[pi]), user.authpolicies[pi]]);
       }
 
