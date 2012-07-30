@@ -31,9 +31,9 @@ Admin.Storeitems.Controller = Controller.extend({
   },
 
   // type: error|success|info
-  showAlert: function(type, message) {
+  showAlert: function(type, message, container) {
     var self = this;
-    var alerts_area = $(this.views.store_item_update).find('.alerts');
+    var alerts_area = $(container).find('.alerts');
     var alert = $('<div>').addClass('alert fade in alert-' + type).html(message);
     var close_button = $('<button>').addClass('close').attr("data-dismiss", "alert").text("x");
     alert.append(close_button);
@@ -427,9 +427,9 @@ Admin.Storeitems.Controller = Controller.extend({
   updateStoreItemConfig: function(guid, destination, bundle_id) {
     var self = this;
     this.models.store_item.updateConfig(guid, destination, bundle_id, function(res) {
-      self.showAlert('success', "Store Item config updated");
+      self.showAlert('success', "Store Item config updated", self.views.store_item_update);
     }, function(err) {
-      self.showAlert('error', "Store Item config couldn't be updated");
+      self.showAlert('error', "Store Item config couldn't be updated", self.views.store_item_update);
     });
   },
 
@@ -445,7 +445,7 @@ Admin.Storeitems.Controller = Controller.extend({
       console.log('create StoreItem: OK');
       self.showStoreItems();
     }, function(err) {
-      self.showAlert('error', err);
+      self.showAlert('error', err, self.views.store_item_create);
     });
   },
 
