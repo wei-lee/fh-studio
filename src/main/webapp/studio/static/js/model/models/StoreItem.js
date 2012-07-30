@@ -17,7 +17,7 @@ model.StoreItem = model.Model.extend({
       name: name,
       description: description,
       authToken: item_id,
-      auth_policies: auth_policies
+      authpolicies: auth_policies
     };
     return this.serverPost(url, params, success, fail, true);
   },
