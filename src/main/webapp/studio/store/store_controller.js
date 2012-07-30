@@ -15,14 +15,6 @@ var store = {
     authPolicyLogin: "#store_auth_policy_login"
   },
 
-  auth_policies: {
-    policy1: {name: "Auth Policy 1", data:{} },
-    policy2: {name: "Auth Policy 2", data:{} },
-    policy3: {name: "Auth Policy 3", data:{} },
-    policy4: {name: "Auth Policy 4", data:{} },
-    policy5: {name: "Auth Policy 5", data:{} },
-  },
-  
   storeInfo: null,
   
   alert_timeout: 2000,
@@ -42,13 +34,13 @@ var store = {
     console.log("info: " + JSON.stringify(info));
     $.each(info.authpolicies, function (i, item) {
         console.log("iter: " + i);
-        if (item.type === "oauth") {
+        if (item.type === "OAUTH2") {
           console.log("found OAUTH policy: " + item.id);
           var imgIcon = '<img src=\"/studio/static/themes/default/img/store_no_icon.png\" />';
           if (item.iconData && (item.iconData !== '')) {
             imgIcon = '<img src=\"data:image/png;base64,' + item.icon + '\" />';
           }
-          var authPolRow='<div class=\"row-fluid auth_policy_select_btn\" data-authid=\"' + item.id + '\">' + imgIcon +
+          var authPolRow='<div class=\"row-fluid auth_policy_select_btn\" data-authid=\"' + item.name + '\">' + imgIcon +
           item.name + '</div>';
           $('#auth_policy_actions').append(authPolRow);
         } else if (item.type === "ldap") {
@@ -135,15 +127,15 @@ var store = {
 
   do_auth: function(options, cbSuccess, cbFailure) {
     //$fh.auth
-    if (options.type === "auth_policy_global_unique_id_1") {
-        return cbSuccess({authorised: false, msg: "Pol 1 always fails"});
-    } else if (options.type === "auth_policy_global_unique_id_2") {
+  //  if (options.type === "auth_policy_global_unique_id_1") {
+  //      return cbSuccess({authorised: false, msg: "Pol 1 always fails"});
+  //  } else if (options.type === "martins_auth") {
         return cbSuccess({authorised: true, msg: "Pol 2 always succeeds"});
-    } else if (options.type === "auth_policy_global_unique_id_3") {
-        return cbSuccess({authorised: false, msg: "Pol 3 always fails"});
-    } else {
-      return cbFailure("Unknown auth policy");
-    }            
+  //  } else if (options.type === "auth_policy_global_unique_id_3") {
+  //      return cbSuccess({authorised: false, msg: "Pol 3 always fails"});
+  //  } else {
+  //    return cbFailure("Unknown auth policy: " + options.type);
+  //  }            
   },
   
   // type: error|success|info
@@ -211,12 +203,6 @@ var store = {
 
       self.setIcon(list_item.find('img'), store_item.icon);
        
-      //if (store_item.icon !== '') {
-      //  list_item.find('img').attr('src', 'data:image/png;base64,' + store_item.icon);
-      //} else {
-      //  list_item.find('img').attr('src', '/studio/static/themes/default/img/store_no_icon.png');
-      //}
-
       list_item.find('.show_store_item').unbind().click(function() {
         self.showStoreItem(store_item);
       });
@@ -247,14 +233,19 @@ var store = {
     self.setIcon(show_item_view.find('img'), store_item.icon);
     
     show_item_view.show();
-      
+          
+    console.log("Store Item: " + JSON.stringify(store_item));
     // iterate through store_item.targets and add a button for each iOS, iPhone, iPad...
-    $('.install_store_item', show_item_view).unbind().click(function(e) {
-        e.preventDefault();
+    $('.btn_device_install', show_item_view).hide();
+    $.each(store_item.binaries, function(i,v) {
+        console.log("Store Item(" + i + "): " + JSON.stringify(v));
+        $('.btn_device_install', show_item_view).filter('.'+v.type).attr("href",v.url).show().unbind().click(function(e) {
         alert("installing....");
-        //self.updateStoreItem();
-        return false;
+        return true;
+    });;
     });
+    
+    $('.install_store_item', show_item_view)
   }
   
 };
