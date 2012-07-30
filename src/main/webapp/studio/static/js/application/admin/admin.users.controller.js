@@ -135,12 +135,18 @@ Admin.Users.Controller = Controller.extend({
       }
 
       var policiesFrom = [];
+      var policyIdGuidMap = {};
       for (var pi = 0, pl = results[2].length; pi < pl; pi += 1) {
         policiesFrom.push([results[2][pi].policyId, results[2][pi].guid]);
+        policyIdGuidMap[results[2][pi].guid] = results[2][pi].policyId;
+      }
+      var policiesTo = [];
+      for (var pi = 0, pl = user.authpolicies.length; pi < pl; pi += 1) {
+        policiesTo.push([policyIdGuidMap[user.authpolicies[pi]] || ('Unknown Policy - ' + user.authpolicies[pi]), user.authpolicies[pi]]);
       }
 
       self.updateSwapSelect('#update_user_role_swap', results[1], rolesTo);
-      self.updateSwapSelect('#update_user_policy_swap', policiesFrom, user.authpolicies);
+      self.updateSwapSelect('#update_user_policy_swap', policiesFrom, policiesTo);
       self.bindSwapSelect(parent);
 
       $('input,select,button', parent).not('#update_user_id,#update_user_enabled,#update_user_blacklisted,.invite_user_btn').removeAttr('disabled');
@@ -232,7 +238,7 @@ Admin.Users.Controller = Controller.extend({
     $('#update_user_policy_swap .swap-to option', this.views.user_update).each(function (i, item) {
       policiesArr.push($(item).val());
     });
-    fields.policies = (policiesArr.length > 0) ? policiesArr.join(', ') : '';
+    fields.authpolicies = (policiesArr.length > 0) ? policiesArr.join(', ') : '';
 
     this.models.user.update(fields, function(res) {
       console.log('updateUser: OK');

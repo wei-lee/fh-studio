@@ -52,7 +52,7 @@ var Controller = Class.extend({
   updateSwapSelect: function(container, from, to) {
     var from_list = $('.swap-from', container).empty();
     $.each(from, function(i, from_item) {
-      if (('undefined' === typeof to) || (to.indexOf(from_item) < 0)) {
+      if (('undefined' === typeof to) || ((to.indexOf(from_item) < 0) && ('string' !== typeof from_item ? (((to.length > 0 && to[0].length > 0) ? to[0][1] : true) !== from_item[1]) : true))) {
         var option = $('<option>');
         if ('string' === typeof from_item) {
           option.text(from_item).val(from_item);

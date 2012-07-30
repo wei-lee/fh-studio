@@ -66,8 +66,8 @@ model.User = model.Model.extend({
       params.roles = roles;
     }
 
-    if (policies != null) {
-      params.policies = policies;
+    if (authpolicies != null) {
+      params.authpolicies = authpolicies;
     }
 
     if (groups != null) {
@@ -107,7 +107,7 @@ model.User = model.Model.extend({
   },
 
   // purposely called imports due to keyword 'import'
-  imports: function (invite, roles, policies, groups, fileField, success, fail, progress) {
+  imports: function (invite, roles, authpolicies, groups, fileField, success, fail, progress) {
     var url = Constants.ADMIN_USER_IMPORT_URL;
     var formData = [];
 
@@ -123,10 +123,10 @@ model.User = model.Model.extend({
         "value": roles
       });
     }
-    if (groups != null) {
+    if (authpolicies != null) {
       formData.push({
-        "name": "groups",
-        "value": groups
+        "name": "authpolicies",
+        "value": authpolicies
       });
     }
 
