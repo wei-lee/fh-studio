@@ -323,6 +323,7 @@ Admin.Authpolicy.Controller = Controller.extend({
         $('#update_oauth2_div', self.views.policies_update).hide();
         $('#update_ldap_div', self.views.policies_update).show();
         $('#update_authmethod_id', self.views.policies_update).val(policy.configurations.authmethod);
+        $('#update_ldap_url_id', self.views.policies_update).val(policy.configurations.url);
         $('#update_dn_prefix_id', self.views.policies_update).val(policy.configurations.dn_prefix);
         $('#update_dn_id', self.views.policies_update).val(policy.configurations.dn);
       }
@@ -358,6 +359,7 @@ Admin.Authpolicy.Controller = Controller.extend({
       }else if (type === 'ldap') {
         conf = {
           "authmethod": $('#update_authmethod_id', view).val(),
+          "url": $('#update_ldap_url_id', view).val(),
           "dn_prefix": $('#update_dn_prefix_id', view).val(),
           "dn": $('#update_dn_id', view).val()
         };
@@ -384,6 +386,7 @@ Admin.Authpolicy.Controller = Controller.extend({
       }else if (type === 'ldap') {
         conf = {
           "authmethod": $('#create_authmethod_id', view).val(),
+          "url": $('#create_ldap_url_id', view).val(),
           "dn_prefix": $('#create_dn_prefix_id', view).val(),
           "dn": $('#create_dn_id', view).val()
         };

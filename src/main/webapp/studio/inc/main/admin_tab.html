@@ -706,8 +706,8 @@
             <label class="select">
               <div class="controls">
                 <select class="" id="create_policy_type">
-                  <option value="oauth2" selected="selected"> oAuth2 </option>
-                  <option value="ldap"> LDAP </option>
+                  <option value="OAUTH2" selected="selected"> oAuth2 </option>
+                  <option value="LDAP"> LDAP </option>
                 </select>
               </div>
             </label>
@@ -767,6 +767,13 @@
               </label>
             </div>
             
+            <div class="control-group">
+              <label class="control-label" for="create_ldap_url_id">Url</label>
+              <div class="controls">
+                <input id="create_ldap_url_id" type="text" class="input-xxlarge" placeholder="ldap://foo.example.com:389/">
+              </div>
+            </div>
+
             <div class="control-group">
               <label class="control-label" for="create_dn_prefix_id">Distinguished Name (dn) Prefix</label>
               <div class="controls">
@@ -836,8 +843,8 @@
               <label class="select">
                 <div class="controls">
                   <select class="" id="update_policy_type">
-                    <option value="oauth2" selected="selected"> oAuth2 </option>
-                    <option value="ldap"> LDAP </option>
+                    <option value="OAUTH2" selected="selected"> oAuth2 </option>
+                    <option value="LDAP"> LDAP </option>
                   </select>
                 </div>
               </label>
@@ -897,6 +904,13 @@
                 </label>
               </div>
               
+              <div class="control-group">
+                <label class="control-label" for="update_ldap_url_id">Url</label>
+                <div class="controls">
+                  <input id="update_ldap_url_id" type="text" class="input-xxlarge" placeholder="ldap://foo.example.com:389/">
+                </div>
+              </div>
+
               <div class="control-group">
                 <label class="control-label" for="update_dn_prefix_id">Distinguished Name (dn) Prefix</label>
                 <div class="controls">
