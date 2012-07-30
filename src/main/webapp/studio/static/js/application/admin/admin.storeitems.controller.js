@@ -139,6 +139,7 @@ Admin.Storeitems.Controller = Controller.extend({
 
       // Remove uploaded status labels
       $('span.label', update_view).remove();
+      $('.bundle_id', update_view).val('');
 
       var assigned_auth_policies = store_item.authpolicies;
       self.renderAvailableAuthPolicies(res.list, assigned_auth_policies, self.views.store_item_update);
@@ -444,7 +445,7 @@ Admin.Storeitems.Controller = Controller.extend({
       console.log('create StoreItem: OK');
       self.showStoreItems();
     }, function(err) {
-      console.log(err);
+      self.showAlert('error', err);
     });
   },
 
