@@ -5,11 +5,32 @@ Admin.Stores = Admin.Stores || {};
 Admin.Stores.Controller = Controller.extend({
   models: {
     app_store: new model.AppStore(),
-    store_item: new model.StoreItem()
+    store_item: new model.StoreItem(),
+    auth_policy: new model.ArmAuthPolicy()
   },
+
+  alert_timeout: 3000,
 
   views: {
     app_store: '#admin_app_store'
+  },
+
+  // type: error|success|info
+  showAlert: function(type, message) {
+    var self = this;
+    var alerts_area = $(this.views.app_store).find('.alerts');
+    var alert = $('<div>').addClass('alert fade in alert-' + type).html(message);
+    var close_button = $('<button>').addClass('close').attr("data-dismiss", "alert").text("x");
+    alert.append(close_button);
+    alerts_area.append(alert);
+    // only automatically hide alert if it's not an error
+    if ('error' !== type) {
+      setTimeout(function() {
+        alert.slideUp(function() {
+          alert.remove();
+        });
+      }, self.alert_timeout);
+    }
   },
 
   init: function() {},
@@ -26,15 +47,26 @@ Admin.Stores.Controller = Controller.extend({
       $('.store_guid', self.views.app_store).val(app_store_res.guid);
       self.setStoreIcon(app_store_res.icon);
       self.models.store_item.list(function(store_items_res) {
-        var store_items = store_items_res.list;
-        self.renderAvailableStoreItems(store_items, self.views.app_store);
-        self.bind();
-        self.showAppStoreUpdate(app_store_res);
+        self.models.auth_policy.list(function(auth_policy_res) {
+          // Render swap selects
+          var available_store_items = store_items_res.list;
+          var assigned_store_items = app_store_res.storeitems;
+          self.renderAvailableStoreItems(available_store_items, assigned_store_items, self.views.app_store);
+
+          var available_auth_policies = auth_policy_res.list;
+          var assigned_auth_policies = app_store_res.authpolicies;
+          self.renderAvailableAuthPolicies(available_auth_policies, assigned_auth_policies, self.views.app_store);
+
+          self.bind();
+          self.showAppStoreUpdate(app_store_res);
+        }, function(err) {
+          self.showAlert('error', "Error loading App Store Store Items");
+        }, false);
       }, function(err) {
-        console.error(err);
+        self.showAlert('error', "Error loading App Store Store Items");
       }, true);
     }, function() {
-      log("Error loading App Store");
+      self.showAlert('error', "Error loading App Store");
     });
   },
 
@@ -50,7 +82,7 @@ Admin.Stores.Controller = Controller.extend({
   bind: function() {
     var self = this;
     self.bindSwapSelect(self.views.app_store);
-    $('.update_app_store', self.views.app_store).unbind().click(function(e){
+    $('.update_app_store', self.views.app_store).unbind().click(function(e) {
       self.updateAppStore();
       return false;
     });
@@ -76,12 +108,28 @@ Admin.Stores.Controller = Controller.extend({
         data.submit();
       },
       done: function(e, data) {
-        var filename = data.files[0].name;
-        self.setStoreIcon(data.result.icon);        
-        status.text('Uploaded ' + filename);
-        setTimeout(function() {
-          progress_bar.slideUp();
-        }, 500);
+        if (data.result.status === 'ok') {
+          var filename = data.files[0].name;
+          status.text('Uploaded ' + filename);
+          self.showAlert('success', 'Icon successfully uploaded');
+
+          // Set icon
+          if (typeof data.result.icon !== 'undefined') {
+            self.setStoreIcon(data.result.icon);
+          }
+
+          setTimeout(function() {
+            progress_bar.slideUp();
+            status.slideUp();
+          }, 500);
+        } else {
+          // Show error
+          self.showAlert('error', data.result.message);
+          setTimeout(function() {
+            progress_bar.slideUp();
+            status.slideUp();
+          }, 500);
+        }
       },
       progressall: function(e, data) {
         var progress = parseInt(data.loaded / data.total * 100, 10);
@@ -90,26 +138,73 @@ Admin.Stores.Controller = Controller.extend({
     });
   },
 
-  renderAvailableStoreItems: function(store_items, container) {
-    var available_select = $('.app_store_store_items_available', container);
-    available_select.empty();
-    var assigned_select = $('.app_store_store_items_assigned', container);
-    assigned_select.empty();
-    $.each(store_items, function(i, item) {
-      var option = $('<option>').val(item.guid).text(item.name);
-      available_select.append(option);
+  renderAvailableStoreItems: function(available, assigned, container) {
+    var self = this;
+    var available_select = $('.app_store_store_items_available', container).empty();
+    var assigned_select = $('.app_store_store_items_assigned', container).empty();
+
+    var map = {};
+
+    // Massaging into {v: name, v: name} hash for lookup
+    $.each(available, function(i, item) {
+      map[item.guid] = item.name;
+    });
+
+    // Assigned first
+    $.each(assigned, function(i, guid) {
+      var name = map[guid];
+      var option = $('<option>').val(guid).text(name);
+      assigned_select.append(option);
+    });
+
+    // Available, minus assigned
+    $.each(map, function(guid, name) {
+      if (assigned.indexOf(guid) == -1) {
+        var option = $('<option>').val(guid).text(name);
+        available_select.append(option);
+      }
+    });
+  },
+
+  renderAvailableAuthPolicies: function(available, assigned, container) {
+    var self = this;
+    var available_select = $('.app_store_available_auth_policies', container).empty();
+    var assigned_select = $('.app_store_assigned_auth_policies', container).empty();
+
+    var map = {};
+
+    // Massaging into {v: name, v: name} hash for lookup
+    $.each(available, function(i, item) {
+      map[item.guid] = item.policyId;
+    });
+
+    // Assigned first
+    $.each(assigned, function(i, guid) {
+      var name = map[guid];
+      var option = $('<option>').val(guid).text(name);
+      assigned_select.append(option);
+    });
+
+    // Available, minus assigned
+    $.each(map, function(guid, name) {
+      if (assigned.indexOf(guid) == -1) {
+        var option = $('<option>').val(guid).text(name);
+        available_select.append(option);
+      }
     });
   },
 
   updateAppStore: function() {
+    var self = this;
     var container = this.views.app_store;
     var guid = $('.store_guid', container).val();
     var name = $('.store_name', container).val();
-    var description  = $('.store_description', container).val();
+    var description = $('.store_description', container).val();
     var store_items = this._selectedStoreItems(container);
+    var auth_policies = this._selectedAuthPolicies(container);
 
-    this.models.app_store.update(guid, name, description, store_items, function(res) {
-      console.log(res);
+    this.models.app_store.update(guid, name, description, store_items, auth_policies, function(res) {
+      self.showAlert('success', "App Store updated successfully");
     }, function(err) {
       console.error(err);
     }, true);
@@ -119,6 +214,15 @@ Admin.Stores.Controller = Controller.extend({
     var store_item_options = $('.app_store_store_items_assigned option', container);
     var items = [];
     store_item_options.each(function(i, item) {
+      items.push($(item).val());
+    });
+    return items;
+  },
+
+  _selectedAuthPolicies: function(container) {
+    var options = $('.app_store_assigned_auth_policies option', container);
+    var items = [];
+    options.each(function(i, item) {
       items.push($(item).val());
     });
     return items;

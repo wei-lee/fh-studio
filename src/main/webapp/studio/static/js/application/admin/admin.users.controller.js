@@ -48,7 +48,7 @@ Admin.Users.Controller = Controller.extend({
   // type: error|success|info
   showAlert: function (type, message) {
     var self = this;
-    var alerts_area = $(this.container).find('#alerts');
+    var alerts_area = $(this.container).find('.alerts');
     var alert = $('<div>').addClass('alert fade in alert-' + type).html(message);
     var close_button = $('<button>').addClass('close').attr("data-dismiss", "alert").text("x");
     alert.append(close_button);

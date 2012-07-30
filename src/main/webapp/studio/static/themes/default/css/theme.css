@@ -3235,10 +3235,6 @@ table.dataTable th:active {
   margin-bottom: 10px;
 }
 
-.store_item_binaries {
-  background: #eaeaea;
-}
-
 .store_item_binaries .control-group {
   margin-bottom: 0;
 }
@@ -3310,6 +3306,67 @@ table.dataTable th:active {
   text-align: center;
 }
 
-.store_item_binaries_table td {
-  line-height: 28px;
+.store_item_binaries_table td button {
+  margin-top: 5px;
+}
+
+.store_item_binaries_table input[type=file] {
+  width: 180px;
+}
+
+.store_item_binaries_table tr td:first-child {
+  width: 115px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.store_item_binaries_table .device_icon {
+  height: 64px;
+  width: 64px;
+  margin: auto;
+  margin-bottom: 5px;
+}
+
+.store_item_binaries_table .device_icon.android {
+  background: url('../img/device_android.png');
+}
+
+.store_item_binaries_table .device_icon.ipad {
+  background: url('../img/device_ipad.png');
+}
+
+.store_item_binaries_table .device_icon.iphone {
+  background: url('../img/device_iphone.png');
+}
+
+.store_item_binaries_table .device_icon.ios {
+  background: url('../img/device_ios.png');
+}
+
+.device_store_item_popover {
+  width: 200px;
+  height: 75px;
+  clear: both;
+}
+
+.device_store_item_popover .icon_container {
+  width: 68px;
+  height: 70px;
+  float: left;
+}
+
+.device_store_item_popover .details {
+  width: 100px;
+  height: 70px;
+  float: right;
+  margin-left: 10px;
+}
+
+.device_store_item_popover .icon {
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 3px rgba(0, 0, 0, .25), 0 -1px 1px rgba(153, 153, 153, .2);
+  width: 64px;
+  height: 64px;
 }

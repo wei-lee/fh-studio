@@ -1,0 +1,57 @@
+/* Custom Reset */
+div, p, ul, ol, li, fieldset, form, pre { margin: 0; padding: 0; border: 0; outline: 0; text-decoration: none; font-size: 100%; list-style: none; }
+textarea { resize:none; }
+
+/* Store Items */
+.store_item .controls { padding-top: 21px; }
+
+.store_item .controls button {
+  float: right;
+  clear: right;
+  margin-top: 10px;
+  width: 54px;
+}
+
+.store_items_controls { 
+  text-align: right; 
+  margin-bottom: 10px;
+}
+
+.store_item_binaries {
+  background: #eaeaea;
+}
+
+.store_item_binaries .control-group {
+  margin-bottom: 0;
+}
+
+.store_item .icon, #app_store .store_icon, #store_item_update .store_item_icon, .appstore_icon {
+  -webkit-border-radius: 25px;
+  -moz-border-radius: 25px;
+  border-radius: 25px;
+  box-shadow: 0 4px 3px rgba(0, 0, 0, .25), 0 -1px 1px rgba(153, 153, 153, .2);
+  width: 128px;
+  height: 128px;
+}
+
+.store_item_binaries span.label {
+  margin-right: 10px;
+  width: 77px;
+  display: inline-block;
+  text-align: center;
+}
+
+.store_item_binaries_table td {
+  line-height: 28px;
+}
+
+.appstore_icon {
+  margin: auto;
+  display: block;
+}
+
+.login_button {
+  display: block;
+  margin: auto;
+  margin-top: 10px;
+}

@@ -54,12 +54,12 @@
 
         <!-- Users Templates -->
         <div id="useradmin_user_list" class="hidden_template row-fluid">
-          <div id="alerts"></div>
+          <div class="alerts"></div>
           <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="useradmin_users_table"></table>
         </div>
 
         <div id="useradmin_user_create" class="hidden_template row-fluid">
-          <div id="alerts"></div>
+          <div class="alerts"></div>
           <form class="well form-horizontal">
             <fieldset>
               <legend>Create a User</legend>
@@ -176,7 +176,7 @@
       </div>
 
       <div id="useradmin_user_update" class="hidden_template row-fluid">
-        <div id="alerts"></div>
+        <div class="alerts"></div>
         <form class="well form-horizontal">
           <fieldset>
             <legend>Update a User</legend>
@@ -313,7 +313,7 @@
       </div>
 
       <div id="useradmin_user_import" class="hidden_template row-fluid">
-        <div id="alerts"></div>
+        <div class="alerts"></div>
         <form class="well form-horizontal">
           <fieldset>
             <legend>Import Users</legend>
@@ -448,7 +448,7 @@
             <p class="description"></p>
           </div>
           <div class="span2 controls">
-            <button class="btn edit_store_item">Edit</button>
+            <button class="btn btn-inverse edit_store_item">Edit</button>
             <br/>
             <button class="btn btn-danger delete_store_item">Delete</button>
           </div>
@@ -509,6 +509,7 @@
       </div>
 
       <div id="admin_store_item_update" class="hidden_template row-fluid">
+        <div class="alerts"></div>
         <input type="hidden" class="item_guid">
 
         <form class="well form-horizontal">
@@ -562,13 +563,14 @@
             <button type="submit" class="btn btn-primary update_store_item">Update Item Details</button>
           </div>
 
-          <div class="well store_item_binaries">
+          <div class="store_item_binaries">
             <h3>Upload App Binaries & App Store Icon</h3><br/>
             <table class="table table-bordered table-striped store_item_binaries_table">
               <thead>
                 <tr>
                   <th>Type</th>
                   <th>Description</th>
+                  <th>Configuration</th>
                   <th>Upload Binary</th>
                 </tr>
               </thead>
@@ -576,26 +578,31 @@
                 <tr>
                   <td>App Store Icon</td>
                   <td>Store Item icons should be 128x128px and in PNG format.</td>
+                  <td>&nbsp;</td>
                   <td><input type="file" id="icon_binary" class="input-xlarge"/></td>
                 </tr>
                 <tr>
-                  <td>Android Binary</td>
+                  <td><div class="device_icon android"></div>Android Binary</td>
                   <td>An Android binary consists of an <code>.apk</code> signed for distribution.</td>
+                  <td>&nbsp;</td>
                   <td><input type="file" id="android_binary" class="input-xlarge"/></td>
                 </tr>
                 <tr>
-                  <td>iPhone Binary</td>
-                  <td>An iPhone binary consists of an <code>.ipa</code> signed for distribution.</td>
+                  <td><div class="device_icon iphone"></div>iPhone Binary</td>
+                  <td>An iPhone binary consists of an <code>.ipa</code> signed for distribution. You will also need to provide us with the Bundle ID of the binary you're uploading (this value is in your Info.plist).</td>
+                  <td><input type="text" name="iphone_bundle_id" value="" class="bundle_id" data-destination="iphone" placeholder="iPhone Bundle ID" disabled="disabled"><br/><button class="btn btn-primary update_bundle_id" disabled="disabled">Update</button></td>
                   <td><input type="file" id="iphone_binary" class="input-xlarge"/></td>
                 </tr>
                 <tr>
-                  <td>iPad Binary</td>
-                  <td>An iPad binary consists of an <code>.ipa</code> signed for distribution.</td>
+                  <td><div class="device_icon ipad"></div>iPad Binary</td>
+                  <td>An iPad binary consists of an <code>.ipa</code> signed for distribution. You will also need to provide us with the Bundle ID of the binary you're uploading (this value is in your Info.plist).</td>
+                  <td><input type="text" name="ipad_bundle_id" value="" class="bundle_id" data-destination="ipad" placeholder="iPad Bundle ID" disabled="disabled"><br/><button class="btn btn-primary update_bundle_id" disabled="disabled">Update</button></td>
                   <td><input type="file" id="ipad_binary" class="input-xlarge"/></td>
                 </tr>
                 <tr>
-                  <td>iOS Universal Binary</td>
-                  <td>An iOS Universal Binary consists of an <code>.ipa</code> signed for distribution.</td>
+                  <td><div class="device_icon ios"></div>iOS Universal Binary</td>
+                  <td>An iOS Universal Binary consists of an <code>.ipa</code> signed for distribution. You will also need to provide us with the Bundle ID of the binary you're uploading (this value is in your Info.plist).</td>
+                  <td><input type="text" name="ios_bundle_id" value="" class="bundle_id" data-destination="ios" placeholder="iOS Universal Bundle ID" disabled="disabled"><br/><button class="btn btn-primary update_bundle_id" disabled="disabled">Update</button></td>
                   <td><input type="file" id="ios_binary" class="input-xlarge"/></td>
                 </tr>
               </tbody>
@@ -606,6 +613,7 @@
 
       <!-- AppStore template -->
       <div id="admin_app_store" class="hidden_template row-fluid">
+        <div class="alerts"></div>
         <input type="hidden" class="store_guid">
         <form class="well form-horizontal">
           <img src="" class="store_icon right">
@@ -657,10 +665,10 @@
 
           <div class="control-group">
             <label class="control-label">Auth Policies</label>
-            <div class="controls swap-select store_item_auth_policies_swap">
+            <div class="controls swap-select app_store_auth_policies_swap">
               <div class="span2">
                 <span>Available</span>
-                <select multiple="multiple" class="span12 swap-from store_item_available_auth_policies">
+                <select multiple="multiple" class="span12 swap-from app_store_available_auth_policies">
                 </select>
               </div>
               <div class="span1">
@@ -669,7 +677,7 @@
               </div>
               <div class="span2">
                 <span>Assigned</span>
-                <select multiple="multiple" class="span12 swap-to store_item_assigned_auth_policies">
+                <select multiple="multiple" class="span12 swap-to app_store_assigned_auth_policies">
                 </select>
               </div>
               <span class="help-inline span4"><br/>Here you can define a list of supported auth policies for logging into your App Store.</span>
@@ -961,6 +969,80 @@
           </fieldset> <!-- /authorization well -->
           <input type="hidden" name="guid" id="update_guid" value=""/>
         <button type="button" id="update_policy_btn" class="btn btn-primary">Update Policy</button>        
+        </form>
+      </div>
+
+      <!-- Devices template -->
+      <div id="admin_devices_list" class="hidden_template row-fluid">
+        <div id="alerts"></div>
+        <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="admin_devices_table"></table>
+      </div>
+
+      <div id="admin_devices_update" class="hidden_template row-fluid">
+        <div id="alerts"></div>
+        <form class="well form-horizontal">
+          <fieldset>
+            <legend>View Device</legend>
+            <div class="control-group">
+              <label class="control-label" for="update_device_name">Label</label>
+              <div class="controls">
+                <input type="text" class="input-xxlarge" id="update_device_name" placeholder="A friendly name for the device">
+                <button class="btn update_device_name_btn">Update Label</button>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="device_cuid">Device ID</label>
+              <div class="controls">
+                <input type="text" disabled="disabled" class="input-xxlarge" id="device_cuid">
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="device_last_access">Last Access</label>
+              <div class="controls">
+                <input type="text" disabled="disabled" class="input-xxlarge" id="device_last_access">
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="device_first_seen">First Seen</label>
+              <div class="controls">
+                <input type="text" disabled="disabled" class="input-xxlarge" id="device_first_seen">
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="device_disabled">Disabled</label>
+              <div class="controls">
+                <input type="checkbox" disabled="disabled" class="input-xxlarge" id="device_update_disabled">
+                <button class="btn update_device_disabled_btn">Disable Authentication</button>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="device_blacklisted">Purge Data</label>
+              <div class="controls">
+                <input type="checkbox" disabled="disabled" class="input-xxlarge" id="device_update_blacklisted">
+                <button class="btn update_device_blacklisted_btn">Mark for Data Purge</button>
+              </div>
+            </div>
+            <div class="control-group">
+              <div class="controls">
+                <fieldset class="well span5">
+                  <legend>Users</legend>
+                    <ul id="device_users">
+                    </ul>
+                </fieldset>
+              </div>
+            </div>
+            <div class="control-group">
+              <div class="controls">
+                <fieldset class="well span5">
+                  <legend>Store Item</legend>
+                  <div>
+                    <ul id="device_storeitems">
+                    </ul>
+                  </div>
+                </fieldset>
+              </div>
+            </div>
+          </fieldset>
         </form>
       </div>
 

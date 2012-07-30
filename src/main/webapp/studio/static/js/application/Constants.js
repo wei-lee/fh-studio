@@ -136,6 +136,7 @@ $.extend(Constants, {
   ADMIN_STORE_ITEM_LIST_URL: Constants.ADMIN_URL_PREFIX + "storeitem/list",
   ADMIN_STORE_ITEM_CREATE_URL: Constants.ADMIN_URL_PREFIX + "storeitem/create",
   ADMIN_STORE_ITEM_UPDATE_URL: Constants.ADMIN_URL_PREFIX + "storeitem/update",
+  ADMIN_STORE_ITEM_UPDATE_CONFIG_URL: Constants.ADMIN_URL_PREFIX + "storeitem/setbinaryconfig",
   ADMIN_STORE_ITEM_DELETE_URL: Constants.ADMIN_URL_PREFIX + "storeitem/delete",
   ADMIN_STORE_ITEM_UPLOAD_BINARY_URL: Constants.ADMIN_URL_PREFIX + "storeitem/uploadbinary",
 
@@ -143,5 +144,11 @@ $.extend(Constants, {
   ADMIN_APP_STORE_UPDATE_URL: Constants.ADMIN_URL_PREFIX + "appstore/update",
   ADMIN_APP_STORE_UPLOAD_BINARY_URL: Constants.ADMIN_URL_PREFIX + "appstore/uploadbinary",
 
-  ADMIN_ROLE_LIST_ASSIGNABLE_URL: Constants.ADMIN_URL_PREFIX + "role/listAssignable"
+  ADMIN_ROLE_LIST_ASSIGNABLE_URL: Constants.ADMIN_URL_PREFIX + "role/listAssignable",
+
+  ADMIN_DEVICES_LIST_URL: Constants.ADMIN_URL_PREFIX + "device/list",
+  ADMIN_DEVICES_UPDATE_URL : Constants.ADMIN_URL_PREFIX + "device/update",
+  ADMIN_DEVICES_READ_URL: Constants.ADMIN_URL_PREFIX + "device/read",
+  ADMIN_DEVICES_LISTUSERS_URL : Constants.ADMIN_URL_PREFIX + "device/listusers",
+  ADMIN_DEVICES_LISTAPPS_URL : Constants.ADMIN_URL_PREFIX + "device/listapps"
 });

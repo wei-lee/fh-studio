@@ -54,6 +54,7 @@ js/model/models/Group.js
 js/model/models/Role.js
 js/model/models/Resource.js
 js/model/models/ArmAuthPolicy.js
+js/model/models/Device.js
 js/application/admin/admin.storeitems.controller.js
 js/application/admin/admin.users.controller.js
 js/application/admin/admin.groups.controller.js
