@@ -15,6 +15,8 @@ Admin.Storeitems.Controller = Controller.extend({
     store_item_update: "#admin_store_item_update"
   },
 
+  alert_timeout: 3000,
+
   init: function() {},
 
   show: function(e) {
@@ -146,7 +148,7 @@ Admin.Storeitems.Controller = Controller.extend({
       $('.item_description', update_view).val(store_item.description);
 
       update_view.show();
-      self.bindBinaryUploads(store_item);
+      self.renderBinaryUploads(store_item);
 
       $('.update_store_item', update_view).unbind().click(function(e) {
         e.preventDefault();
@@ -159,7 +161,7 @@ Admin.Storeitems.Controller = Controller.extend({
     }, false);
   },
 
-  bindBinaryUploads: function(store_item) {
+  renderBinaryUploads: function(store_item) {
     var self = this;
 
     // Config
@@ -221,6 +223,16 @@ Admin.Storeitems.Controller = Controller.extend({
         return console.error('Input not found: ' + binary.id);
       }
 
+      // Render Binary config
+      var row = input.parents('tr');
+      if ($(row).has('.bundle_id').length > 0) {
+        var bundle_config_input = $('.bundle_id', row);
+        var config = self._configForDestination(store_item, binary.destination);
+        if (config) {
+          bundle_config_input.val(config.bundle_id);
+        }
+      }
+
       // Inject binary upload progress template
       var progress_area = $('#binary_upload_progress_template').clone();
       var status = $('.status', progress_area);
@@ -267,7 +279,7 @@ Admin.Storeitems.Controller = Controller.extend({
           if (data.result.status === 'ok') {
             var filename = data.files[0].name;
             status.text('Uploaded ' + filename);
-            status_el.text('Uploaded').removeClass('label-inverse').addClass('label-success');
+            status_el.text('Uploaded ' + filename).removeClass('label-inverse').addClass('label-success');
             // Enable config setting
             input.parents('tr').find('.bundle_id, .update_bundle_id').removeAttr('disabled');
 
@@ -324,6 +336,16 @@ Admin.Storeitems.Controller = Controller.extend({
       }
     }
     return uploaded;
+  },
+
+  _configForDestination: function(store_item, destination) {
+    var config = null;
+    $.each(store_item.binaries, function(i, binary) {
+      if (binary.type === destination) {
+        config = binary.config;
+      }
+    });
+    return config;
   },
 
   updateStoreItem: function() {

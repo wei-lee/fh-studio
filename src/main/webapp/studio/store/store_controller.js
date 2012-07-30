@@ -17,50 +17,70 @@ var store = {
 
   storeInfo: null,
   
+  allowedBinaryTypes: null,
+  
   alert_timeout: 2000,
+
+  setStoreName: function(name) {
+    $('.appstore_name').each(function (i) {
+        $(this).html(name);
+    });
+  },
+    
+  getAllowedBinaryTypes: function() {
+    var typeMap = {
+        iphone:  ['iphone', 'ios'],
+        ipad:    ['iphone', 'ipad', 'ios'],
+        android: ['android'],
+        unknown: ['iphone', 'ipad', 'ios', 'android']
+    };
+    
+    var deviceType = this.identifyDevice();
+         
+    return typeMap[deviceType];
+  },
   
   populateStoreInfo: function (info) {
     var self = this;
     self.storeInfo = info;
-    $('.appstore_name').each(function (i) {
-        console.log('Setting store name to ' + info.name);
-        $(this).html(info.name);
-    });
+    self.setStoreName(info.name);
     if (info.icon && (info.icon !== '')) {
       $('.appstore_icon').attr('src', 'data:image/png;base64,' + info.icon);
     } else {
       $('.appstore_icon').attr('src', '/studio/static/themes/default/img/store_no_icon.png');
     }
-    console.log("info: " + JSON.stringify(info));
-    $.each(info.authpolicies, function (i, item) {
-        console.log("iter: " + i);
-        if (item.type === "OAUTH2") {
-          console.log("found OAUTH policy: " + item.id);
-          var imgIcon = '<img src=\"/studio/static/themes/default/img/store_no_icon.png\" />';
-          if (item.iconData && (item.iconData !== '')) {
-            imgIcon = '<img src=\"data:image/png;base64,' + item.icon + '\" />';
+    if(info.authpolicies.length > 0) {
+      $.each(info.authpolicies, function (i, item) {
+          console.log("iter: " + i);
+          if (item.type === "OAUTH2") {
+            var imgIcon = '<img src=\"/studio/static/themes/default/img/store_no_icon.png\" />';
+            if (item.iconData && (item.iconData !== '')) {
+              imgIcon = '<img src=\"data:image/png;base64,' + item.icon + '\" />';
+            }
+            var authPolRow='<div class=\"row-fluid auth_policy_select_btn\" data-authid=\"' + item.name + '\">' + imgIcon +
+            item.name + '</div>';
+            $('#auth_policy_actions').append(authPolRow);
+          } else if (item.type === "ldap") {
+              console.log("found LDAP policy: " + item.id + ", IGNORING");
+          } else {
+             console.log("found UNKNOWN auth policy type: " + item.type);
           }
-          var authPolRow='<div class=\"row-fluid auth_policy_select_btn\" data-authid=\"' + item.name + '\">' + imgIcon +
-          item.name + '</div>';
-          $('#auth_policy_actions').append(authPolRow);
-        } else if (item.type === "ldap") {
-            console.log("found LDAP policy: " + item.id + ", IGNORING");
-        } else {
-           console.log("found UNKNOWN auth policy type: " + item.type);
-        }
-    });
-    self.bindLoginControls();  
+      });
+      self.bindLoginControls();  
+    } else { // no auth policies defined
+      self.showAlert("error", "App Store not available");
+    }
   },
     
   getStoreInfo: function() {
     var self = this;
     self.models.store_info.getInfo(function (results) {
-        console.log("Success function called in storeInfo");
         self.populateStoreInfo(results);
         self.show();
     },
     function (results) {
-        console.log("failure function called in storeInfo");
+       self.setStoreName("App Store Not Available");
+       self.show();
     });
   },
   
@@ -89,12 +109,12 @@ var store = {
       self.showList();
       return false;
     });
-    
   },
     
   init: function() {
     $fw.server = new ServerManager();
     this.bindLoginControls();
+    this.allowedBinaryTypes = this.getAllowedBinaryTypes();
     this.show();
     this.getStoreInfo();
   },
@@ -126,7 +146,7 @@ var store = {
   },
 
   do_auth: function(options, cbSuccess, cbFailure) {
-    //$fh.auth
+  //$fh.auth
   //  if (options.type === "auth_policy_global_unique_id_1") {
   //      return cbSuccess({authorised: false, msg: "Pol 1 always fails"});
   //  } else if (options.type === "martins_auth") {
@@ -178,39 +198,53 @@ var store = {
   },
   
   showList: function() {
-    console.log("calling show list");
     var self = this;
     this.hide();
     $(this.views.list).show();
-    this.models.store_item.list(function(res) {
+    this.models.store_item.list(self.allowedBinaryTypes, function(res) {
       var store_items = res.list;
       self.renderItems(store_items);
     }, function(err) {
       console.error(err);
     }, true);
   },
+  
+  identifyDevice: function() {
+    var device = "unknown";
+    
+    if (navigator.userAgent.match(/Android/i)) {
+        device = "android";
+    } else if (navigator.userAgent.match(/iPhone/i)) {
+        device = "iphone";
+    } else if (navigator.userAgent.match(/iPod/i)) {
+        device = "iphone";
+    } else if (navigator.userAgent.match(/iPad/i)) {
+        device = "ipad";
+    };
+    return device;
+  },
 
   renderItems: function(store_items) {
     var self = this;
     var list = $(this.views.list);
-    list.find('li').remove();
+    
+    if(store_items.length > 0) {
+      list.find('li').remove();
+      $.each(store_items, function(i, store_item) {
+        var list_item = $(self.views.store_item).clone().show().removeAttr('id');
+        list_item.data('store_item', store_item);
+        list_item.find('.details h3').text(store_item.name);
+        list_item.find('.details p').text(store_item.description);
 
-    $.each(store_items, function(i, store_item) {
-      var list_item = $(self.views.store_item).clone().show().removeAttr('id');
-      list_item.data('store_item', store_item);
-      list_item.find('.details h3').text(store_item.name);
-      list_item.find('.details p').text(store_item.description);
-
-      self.setIcon(list_item.find('img'), store_item.icon);
+        self.setIcon(list_item.find('img'), store_item.icon);
        
-      list_item.find('.show_store_item').unbind().click(function() {
-        self.showStoreItem(store_item);
-      });
+        list_item.find('.show_store_item').unbind().click(function() {
+          self.showStoreItem(store_item);
+        });
       
-      list_item.appendTo(list);
-    });
-
-    //this.bind();
+        list_item.appendTo(list);
+      });
+    }
   },
 
   setIcon: function (iconTag, iconData) {

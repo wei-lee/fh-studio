@@ -5,9 +5,43 @@ model.StoreItemConsumer = model.Model.extend({
 
   init: function() {},
 
-  list: function(success, fail) {
+  list: function(allowedTypes, success, fail) {
+    var self = this;
     var MAM_STORE_ITEMS_URL = '/box/srv/1.1/mas/appstore/getstoreitems';
     var params = {};
-    return this.serverPost(MAM_STORE_ITEMS_URL, params, success, fail);   
+    return this.serverPost(MAM_STORE_ITEMS_URL, params,  function(res) {
+      return self.filterAllowedTypes(res, allowedTypes, success)
+    }, fail);   
+  },
+    
+  filterAllowedTypes: function (res, allowedTypes, cb) {
+    var filteredRes = {
+        status: res.status,
+        list: []
+    };
+    console.log("res: " + JSON.stringify(res));
+    console.log("allowed: " + JSON.stringify(allowedTypes));
+    $.each(res.list, function(itemIndex, item) {
+      console.log("item: " + JSON.stringify(item));
+      var filteredItem = {};
+      var isAllowed = false;
+      $.each(item, function (k, v) {
+        if (k !== 'binaries') {
+            filteredItem[k] = v;
+        }
+      });
+      filteredItem.binaries = [];
+      $.each(item.binaries, function (binaryIndex, binary) {
+        if(allowedTypes.indexOf(binary.type) > -1) {
+            isAllowed = true;
+            filteredItem.binaries.push(binary);
+        }
+      });
+      if(isAllowed) {
+        filteredRes.list.push(filteredItem);
+      }
+    });
+    return cb(filteredRes);
   }
+  
 });
