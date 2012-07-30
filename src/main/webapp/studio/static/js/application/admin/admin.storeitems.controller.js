@@ -267,7 +267,7 @@ Admin.Storeitems.Controller = Controller.extend({
           if (data.result.status === 'ok') {
             var filename = data.files[0].name;
             status.text('Uploaded ' + filename);
-            status_el.text('Uploaded').removeClass('label-inverse').addClass('label-success');
+            status_el.text('Uploaded ' + filename).removeClass('label-inverse').addClass('label-success');
             // Enable config setting
             input.parents('tr').find('.bundle_id, .update_bundle_id').removeAttr('disabled');
 

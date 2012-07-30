@@ -811,11 +811,13 @@ label.error
   float:left;
   margin: 0 0.5em;
 }
-#header_user_info
-{
+
+#header_user_info {
   height:25px;
   background: transparent url(../img/top_bar.png) repeat-x 0 0;
+  margin: 0 20px 0 20px;
 }
+
 #header_user_info .ui-state-default
 {
   color:#b3b3b3;
@@ -3300,8 +3302,6 @@ table.dataTable th:active {
 }
 
 .store_item_binaries span.label {
-  margin-right: 10px;
-  width: 77px;
   display: inline-block;
   text-align: center;
 }
