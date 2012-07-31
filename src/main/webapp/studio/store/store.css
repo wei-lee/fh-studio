@@ -1,8 +1,4 @@
 /* App Store all screens */
-h1 {
-  text-align: center;
-}
-
 .back_button {
   position:absolute;
 }
@@ -75,7 +71,6 @@ body {
   margin-right: 20px;
 }
 
-<<<<<<< HEAD
 .description {
   height:6em;
   overflow:hidden;
@@ -84,7 +79,7 @@ body {
 .item_description {
   margin-top:1em;
 }
-=======
+
 .page-header {
   margin: 0;
   padding: 0;
@@ -109,4 +104,19 @@ body {
 }
 
 .alerts { margin-top: 10px; }
->>>>>>> 4ebcec2a11670cd90a165bd932f34e987c1b5463
+
+#store_login h3 {
+  text-align: center;
+}
+
+#auth_policy_actions {
+  text-align: center;
+}
+
+#auth_policy_actions .auth_policy_select_btn {
+  margin-bottom: 10px;
+}
+
+.btn [class^="icon-"], .btn [class*=" icon-"] {
+  line-height: inherit;
+}
