@@ -1,11 +1,13 @@
-/* Custom Reset */
-div, p, ul, ol, li, fieldset, form, pre { margin: 0; padding: 0; border: 0; outline: 0; text-decoration: none; font-size: 100%; list-style: none; }
-textarea { resize:none; }
+/* App Store all screens */
+.back_button {
+  position:absolute;
+}
+h1 {
+  text-align: center;
+}
 
 /* Store Items */
 .store_item .controls { padding-top: 21px; }
-
-.store_item { margin-bottom: 20px; }
 
 .store_item .controls button {
   float: right;
@@ -27,13 +29,15 @@ textarea { resize:none; }
   margin-bottom: 0;
 }
 
-.store_item .icon, #app_store .store_icon, #store_item_update .store_item_icon, .appstore_icon {
-  -webkit-border-radius: 25px;
-  -moz-border-radius: 25px;
-  border-radius: 25px;
+.store_item .icon, #app_store .store_icon, #store_item_update .store_item_icon, .appstore_icon, .icon_container .icon, .auth_icon {
+  -webkit-border-radius: 15px;
+  -moz-border-radius: 15px;
+  border-radius: 15px;
   box-shadow: 0 4px 3px rgba(0, 0, 0, .25), 0 -1px 1px rgba(153, 153, 153, .2);
-  width: 128px;
-  height: 128px;
+  width: 100%;
+  height: 100%;
+  max-width: 128px;
+  max-height: 128px;
 }
 
 .store_item_binaries span.label {
@@ -50,6 +54,7 @@ textarea { resize:none; }
 .appstore_icon {
   margin: auto;
   display: block;
+  margin-bottom: 20px;
 }
 
 .login_button {
@@ -58,23 +63,6 @@ textarea { resize:none; }
   margin-top: 10px;
 }
 
-.clearfix:after {
-  content: ".";
-  display: block;
-  clear: both;
-  visibility: hidden;
-  line-height: 0;
-  height: 0;
-}
- 
-.clearfix {
-  display: inline-block;
-}
- 
-html[xmlns] .clearfix {
-  display: block;
-}
- 
-* html .clearfix {
-  height: 1%;
+.auth_icon {
+  margin-right: 20px;
 }

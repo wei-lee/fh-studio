@@ -54,9 +54,9 @@ var store = {
     }
     if(info.authpolicies.length > 0) {
       $.each(info.authpolicies, function (i, item) {
-        var imgIcon = '<img src=\"/studio/static/themes/default/img/store_no_icon.png\" />';
+        var imgIcon = '<img class=\"auth_icon\" src=\"/studio/static/themes/default/img/store_no_icon.png\" />';
         if (item.iconData && (item.iconData !== '')) {
-          imgIcon = '<img src=\"data:image/png;base64,' + item.icon + '\" />';
+          imgIcon = '<img src=\"data:image/png;base64,' + item.icon + '\" class=\"auth_icon\" />';
         }
         var authPolRow='<div class=\"row-fluid auth_policy_select_btn\" data-auth-policy-id=\"' + item.name + '\" data-auth-policy-type=\"' + item.type + '\">' + imgIcon +
         item.name + '</div>';
@@ -112,6 +112,7 @@ var store = {
     $.each(this.views, function(k, v) {
       $(v).hide();
     });
+    $('.back_button').hide();
   },
   
   show: function() {
@@ -121,7 +122,7 @@ var store = {
     } else {
       console.log("store:show() - no store info showing loading screen");
       this.showLoading();
-    };
+    }
   },
   
   showLogin: function () {
@@ -253,9 +254,9 @@ var store = {
   renderItems: function(store_items) {
     var self = this;
     var list = $(this.views.list);
-    
+
     if(store_items.length > 0) {
-      list.find('li').remove();
+      list.find('.store_item, h5').remove();
       $.each(store_items, function(i, store_item) {
         var list_item = $(self.views.store_item).clone().show().removeAttr('id');
         list_item.data('store_item', store_item);
@@ -293,19 +294,22 @@ var store = {
     self.setIcon(show_item_view.find('img'), store_item.icon);
     
     show_item_view.show();
+    $('.back_button').unbind().bind('click', function () {
+      self.showList();
+    }).show();
           
     console.log("Store Item: " + JSON.stringify(store_item));
     // iterate through store_item.targets and add a button for each iOS, iPhone, iPad...
     $('.btn_device_install', show_item_view).hide();
     $.each(store_item.binaries, function(i,v) {
-        console.log("Store Item(" + i + "): " + JSON.stringify(v));
-        $('.btn_device_install', show_item_view).filter('.'+v.type).attr("href",v.url).show().unbind().click(function(e) {
+      console.log("Store Item(" + i + "): " + JSON.stringify(v));
+      $('.btn_device_install', show_item_view).filter('.'+v.type).attr("href",v.url).show().unbind().click(function(e) {
         alert("installing....");
         return true;
-    });;
+      });
     });
     
-    $('.install_store_item', show_item_view)
+    $('.install_store_item', show_item_view);
   }
   
 };

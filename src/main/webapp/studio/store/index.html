@@ -1,98 +1,98 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/studio/static/common/css/ui/framework/bootstrap.css">
-    <link rel="stylesheet" href="/studio/static/themes/default/css/font-awesome.css">
-    <link rel="stylesheet" href="store.css">
- 
-    <script>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/studio/static/common/css/ui/framework/bootstrap.css">
+  <link rel="stylesheet" href="/studio/static/themes/default/css/font-awesome.css">
+  <link rel="stylesheet" href="store.css">
+
+  <script>
       var model = {};
       var $fw = {};
     </script>
-  </head>
-  
-  <body>
-    <div class="container-fluid">
-      <div class="row page-header">
-        <h1 class="span12 appstore_name">Loading...</h1>
+</head>
+
+<body>
+  <div class="container-fluid">
+    <div class="row-fluid page-header">
+      <button class="btn back_button"> <i class="icon-chevron-left"></i></button>
+      <h1 class="span12 appstore_name">Loading...</h1>
+    </div>
+    <div class="alerts"></div>
+    <div class="row-fluid">
+
+      <!-- Loading -->
+      <div id="store_loading" class="well">
+        <div class="span1"></div>
+        <div class="span10">
+          <p>Loading App Store information</p>
+        </div>
       </div>
-      <div class="alerts"></div>
-      <div class="row-fluid">
 
-        <!-- Loading -->
-        <div id="store_loading" class="well">
-          <div class="span1"></div>
-          <div class="span10">
-              <p>Loading App Store information</p>
-          </div>
+      <!-- Login -->
+      <div id="store_login">
+        <img class="appstore_icon" />
+        <div id="auth_policy_actions" class="well">
+          <h3>Login</h3><br/>
         </div>
+      </div>
 
-        <!-- Login -->
-        <div id="store_login" class="well">
-          <div class="well">
-            <img class="appstore_icon" />
-          </div>
-          <div id="auth_policy_actions" class="well">
-          </div>
-        </div>
-
- 
       <!-- Storeitem templates -->
-      <ul id="store_list" class="well">
-        <li>No items available for download</li>
-        <div class="store_items_controls">
+      <div class="row-fluid">
+        <div id="store_list" class="span12">
+          <h5>No items available for download</h5>
         </div>
-      </ul>
+      </div>
 
-      <li id="store_item" class="store_item clearfix">
-        <div class="span2 icon_container">
+      <div id="store_item" class="store_item row-fluid">
+        <div class="span3 icon_container">
           <img src="" alt="" class="icon" />
         </div>
-        <div class="details span8">
+        <div class="span7 details">
           <h3 class="name"></h3>
           <p class="description"></p>
         </div>
         <div class="span2 controls">
-          <button class="btn show_store_item"><i class="icon-chevron-right"></i></button>
+          <button class="btn show_store_item"> <i class="icon-chevron-right"></i>
+          </button>
         </div>
-      </li>
+      </div>
 
-        <!-- Store Detail -->
-        <div id="store_detail" class="span12 well">
-          <div class="span2 icon_container">
+      <!-- Store Detail -->
+      <div id="store_detail" class="row-fluid">
+        <div class="row-fluid">
+          <div class="span3 icon_container">
             <img src="" alt="" class="icon" />
           </div>
-          <div class="span8">
-            <!--Body content-->
-            <div class="details span8">
-              <h3 class="item_name"></h3>
-              <p class="item_description"></p>
-            </div>
-            <div class="item_guid hidden"></div>
-            <div class="item_id hidden"></div>
-          </div>
-          <div class="span12 controls">
+          <div class="span9 controls">
+            <h3 class="item_name"></h3>
             <a href="#" class="btn btn_device_install iphone">iPhone</a>
             <a href="#" class="btn btn_device_install ipad">ipad</a>
             <a href="#" class="btn btn_device_install ios">iOS</a>
             <a href="#" class="btn btn_device_install android">Android</a>
+            <div class="item_guid hidden"></div>
+            <div class="item_id hidden"></div>
           </div>
         </div>
 
+        <div class="span12">
+          <p class="item_description"></p>
+        </div>
       </div>
+
     </div>
+  </div>
 
-    <script src="/studio/static/common/js/ui/thirdparty/jquery/jquery.js"></script>
-    <script src="/studio/static/common/js/ui/thirdparty/bootstrap/bootstrap.js"></script>
-    <script src="/studio/static/common/js/ui/thirdparty/Class.js"></script>    
-    <script src="/studio/static/common/js/ui/framework/server/AjaxCaller.js"></script>    
-    <script src="/studio/static/common/js/ui/framework/server/ServerManager.js"></script>    
-    <script src="/studio/static/js/model/models/Model.js"></script>
-    <script src="model_storeItemConsumer.js"></script>
-    <script src="model_storeInfo.js"></script>
-    <script src="model_auth.js"></script>
+  <script src="/studio/static/common/js/ui/thirdparty/jquery/jquery.js"></script>
+  <script src="/studio/static/common/js/ui/thirdparty/bootstrap/bootstrap.js"></script>
+  <script src="/studio/static/common/js/ui/thirdparty/Class.js"></script>
+  <script src="/studio/static/common/js/ui/framework/server/AjaxCaller.js"></script>
+  <script src="/studio/static/common/js/ui/framework/server/ServerManager.js"></script>
+  <script src="/studio/static/js/model/models/Model.js"></script>
+  <script src="model_storeItemConsumer.js"></script>
+  <script src="model_storeInfo.js"></script>
+  <script src="model_auth.js"></script>
 
-    <script src="store_controller.js"></script>
-  </body>
+  <script src="store_controller.js"></script>
+</body>
 </html>
