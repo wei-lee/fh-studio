@@ -58,9 +58,14 @@ var store = {
         if (item.iconData && (item.iconData !== '')) {
           imgIcon = '<img src=\"data:image/png;base64,' + item.icon + '\" class=\"auth_icon\" />';
         }
-        var authPolRow='<div class=\"row-fluid auth_policy_select_btn\" data-auth-policy-id=\"' + item.name + '\" data-auth-policy-type=\"' + item.type + '\">' + imgIcon +
-        item.name + '</div>';
-        $('#auth_policy_actions').append(authPolRow);
+        // var authPolRow='<div class=\"row-fluid auth_policy_select_btn\" data-auth-policy-id=\"' + item.name + '\" data-auth-policy-type=\"' + item.type + '\">' + imgIcon +
+        // item.name + '</div>';
+
+        var authPolRow = $('<button>').addClass('btn btn-large auth_policy_select_btn').text(item.name);
+        authPolRow.attr('data-auth-policy-id', item.name);
+        authPolRow.attr('data-auth-policy-type', item.type);
+
+        $('#auth_policy_actions').append(authPolRow).append('<br/>');
       });
       self.bindLoginControls();  
     } else { // no auth policies defined
