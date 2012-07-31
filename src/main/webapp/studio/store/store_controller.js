@@ -304,7 +304,6 @@ var store = {
         var list_item = $(self.views.store_item).clone().show().removeAttr('id');
         list_item.data('store_item', store_item);
         list_item.find('.details h3').text(store_item.name);
-        list_item.find('.details p').text(store_item.description);
 
         self.setIcon(list_item.find('img'), store_item.icon);
        
