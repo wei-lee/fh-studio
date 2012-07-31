@@ -7,6 +7,10 @@ h1 {
 }
 
 /* Store Items */
+.store_item, .store_detail {
+  padding:1em 0;
+}
+
 .store_item .controls { padding-top: 21px; }
 
 .store_item .controls button {
