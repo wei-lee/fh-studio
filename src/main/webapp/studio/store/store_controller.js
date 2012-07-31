@@ -17,6 +17,7 @@ var store = {
   },
 
   authSession: null,
+  authSessionCookie: 'appStoreAuthSession',
   
   storeInfo: null,
   
@@ -118,7 +119,10 @@ var store = {
     console.log("store:init() - queryParams: " + JSON.stringify(queryParams));
     if (queryParams && queryParams.fh_auth_session) {
         this.authSession = queryParams.fh_auth_session;
+        $.cookie(this.authSessionCookie, this.authSession);
         console.log("store:init() authSession: " + this.authSession);
+    } else if ($.cookie(this.authSessionCookie) != null) {
+      this.authSession = $.cookie(this.authSessionCookie);
     } else {
         console.log("store:init() - no query params");
     }
@@ -255,6 +259,7 @@ var store = {
       // failed getting list, re-authenticate
       console.log("store:showList() - failed getting list, need to re-authenticate");
       self.authSession = null;
+      $.cookie(this.authSessionCookie, self.authSession);
       self.showLogin();
     }, true);
   },
