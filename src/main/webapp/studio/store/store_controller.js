@@ -13,7 +13,8 @@ var store = {
     list: "#store_list",
     store_item: "#store_item",
     detail: "#store_detail",
-    authPolicyLogin: "#store_auth_policy_login"
+    authPolicyLogin: "#store_auth_policy_login",
+    user_password: "#store_user_password"
   },
 
   authSession: null,
@@ -216,21 +217,17 @@ var store = {
     var self = this;
     this.hide();
     console.log("calling $fh.auth() with auth_policy type: " + pol_type + ", and id: " + pol_id);
-//    if authType = oauth then
-//        do oauthcall and get url to redirect to
+
 //    if authType == ldap || authType == feedhenry then
 //        show screen for user name and password
 //        do auth call with params
 //        get sessionId
 //        redirect to window.location + "?fh_auth_session=" + sessionId;
-//    
-    var params = {
-      endRedirectUrl: window.location.href
-    };
+
     if (pol_type === 'OAUTH2') {  
-        self.models.auth.auth(pol_id, "client789012345678901234", params, function (res) {
+        self.models.auth.auth(pol_id, "client789012345678901234", window.location.href, {}, function (res) {
             if (res && res.url) {
-              window.location = url;  // redirect to location specified by auth call
+              window.location = res.url;  // redirect to location specified by auth call
             } else {
               self.showAlert("error", "Not authorised - no url returned");
               self.showLogin();
@@ -240,20 +237,14 @@ var store = {
            self.showLogin();
         });
     } else {
+      self.showUserPassLogin();
     }
-//    
-//    
-//      if (res.authorised) {
-//        self.showAlert('success', res.msg);
-//        self.showList();
-//      } else {
-//        self.showAlert('error', res.msg);
-//        self.showLogin();
-//      }
-//    }, function(err) {
-//      self.showAlert('error', err);
-//      self.showLogin();
-//    });
+  },
+  
+  showUserPassLogin: function() {
+    var self = this;
+    $('.appstore_loginUser').val();
+    $('.appstore_loginPass').val();
   },
   
   showList: function() {
