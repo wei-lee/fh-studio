@@ -53,9 +53,9 @@ var store = {
       $.each(info.authpolicies, function (i, item) {
           console.log("iter: " + i);
           if (item.type === "OAUTH2") {
-            var imgIcon = '<img src=\"/studio/static/themes/default/img/store_no_icon.png\" />';
+            var imgIcon = '<img class=\"auth_icon\" src=\"/studio/static/themes/default/img/store_no_icon.png\" />';
             if (item.iconData && (item.iconData !== '')) {
-              imgIcon = '<img src=\"data:image/png;base64,' + item.icon + '\" />';
+              imgIcon = '<img src=\"data:image/png;base64,' + item.icon + '\" class=\"auth_icon\" />';
             }
             var authPolRow='<div class=\"row-fluid auth_policy_select_btn\" data-authid=\"' + item.name + '\">' + imgIcon +
             item.name + '</div>';
