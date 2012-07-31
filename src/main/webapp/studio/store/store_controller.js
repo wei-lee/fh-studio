@@ -225,7 +225,7 @@ var store = {
               self.showLogin();
             }
         }, function (msg) {
-           self.showAlert("error", "Not authorised - " + msg);
+           self.showAlert("error", "Not authorised - Error from server: " + msg);
            self.showLogin();
         });
     } else {
@@ -240,13 +240,13 @@ var store = {
     var pol_password = $('#store_login_policy_password').val();
     self.models.auth.auth(pol_id, self.storeInfo.guid, window.location.href, {username: pol_username, password:pol_password}, function (res) {
         if (res && res.sessionId) {
-          window.location = window.lores.url;  // redirect to location specified by auth call
+          window.location = window.location.href + "?fh_auth_session=" + res.sessionId;  // redirect to location specified by auth call
         } else {
-          self.showAlert("error", "Not authorised - no url returned");
+          self.showAlert("error", "Not authorised - no sessionid returned");
           self.showLogin();
         }
     }, function (msg) {
-       self.showAlert("error", "Not authorised - " + msg);
+       self.showAlert("error", "Not authorised - Error from server: " + msg);
        self.showLogin();
     });
 
@@ -257,6 +257,7 @@ var store = {
     $('#store_login_policy_id').val(pol_id);
     $('#store_login_policy_username').attr('placeholder', "Username");
     $('#store_login_policy_password').attr('placeholder', "Password");
+    $(this.views.user_password).show();
   },
   
   showList: function() {
