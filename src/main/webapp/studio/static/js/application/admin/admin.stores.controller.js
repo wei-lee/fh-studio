@@ -101,11 +101,16 @@ Admin.Stores.Controller = Controller.extend({
       dataType: 'json',
       replaceFileInput: false,
       add: function(e, data) {
-        progress_area.show();
-        status.text('Uploading...');
-        status.slideDown();
-        progress_bar.slideDown();
-        data.submit();
+        // Need to check the event target ID to get around a strange bug
+        // If files are dropped onto an input, all of them call this add callback
+        // so you need to find out if the event correlates to this particular field
+        if (e.target.id === 'app_store_icon_binary') {
+          progress_area.show();
+          status.text('Uploading...');
+          status.slideDown();
+          progress_bar.slideDown();
+          data.submit();
+        }
       },
       done: function(e, data) {
         if (data.result.status === 'ok') {
