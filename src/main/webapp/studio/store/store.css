@@ -1,21 +1,12 @@
 /* App Store all screens */
-.back_button {
-  position:absolute;
-}
 h1 {
   text-align: center;
 }
 
 /* Store Items */
-.store_item, .store_detail {
-  padding:1em 0;
-}
-
 .store_item .controls { padding-top: 21px; }
 
 .store_item .controls button {
-  float: right;
-  clear: right;
   margin-top: 10px;
   width: 54px;
 }
@@ -69,4 +60,13 @@ h1 {
 
 .auth_icon {
   margin-right: 20px;
+}
+
+.description {
+  height:6em;
+  overflow:hidden;
+}
+
+.item_description {
+  margin-top:1em;
 }
