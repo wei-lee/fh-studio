@@ -18,6 +18,7 @@ var store = {
   },
 
   authSession: null,
+  authSessionCookie: 'appStoreAuthSession',
   
   storeInfo: null,
   
@@ -60,9 +61,18 @@ var store = {
           imgIcon = '<img src=\"data:image/png;base64,' + item.icon + '\" class=\"auth_icon\" />';
         }
 
-        var authPolRow = $('<button>').addClass('btn btn-large auth_policy_select_btn').text(item.name);
+        var authPolRow = $('<button>').addClass('btn-large auth_policy_select_btn btn');
         authPolRow.attr('data-auth-policy-id', item.name);
         authPolRow.attr('data-auth-policy-type', item.type);
+        if (item.type === 'OAUTH2') {
+          authPolRow.addClass('google');
+        } else if (item.type === 'FEEDHENRY') {
+          authPolRow.addClass('feedhenry');
+        } else if (item.type === 'LDAP') {
+          authPolRow.addClass('ldap');
+        } else {
+          authPolRow.text(item.name);
+        }
 
         $('#auth_policy_actions').append(authPolRow).append('<br/>');
       });
@@ -119,7 +129,10 @@ var store = {
     console.log("store:init() - queryParams: " + JSON.stringify(queryParams));
     if (queryParams && queryParams.fh_auth_session) {
         this.authSession = queryParams.fh_auth_session;
+        $.cookie(this.authSessionCookie, this.authSession);
         console.log("store:init() authSession: " + this.authSession);
+    } else if ($.cookie(this.authSessionCookie) != null) {
+      this.authSession = $.cookie(this.authSessionCookie);
     } else {
         console.log("store:init() - no query params");
     }
@@ -249,6 +262,7 @@ var store = {
       // failed getting list, re-authenticate
       console.log("store:showList() - failed getting list, need to re-authenticate");
       self.authSession = null;
+      $.cookie(this.authSessionCookie, self.authSession);
       self.showLogin();
     }, true);
   },
