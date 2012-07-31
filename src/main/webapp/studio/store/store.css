@@ -139,10 +139,12 @@ body {
 
 .logout_button {
   margin: 4px 10px 0 0;
+  width: 81px;
 }
 
 .back_button { 
   margin: 4px 0 0 10px;
+  width: 81px;
 }
 
 .store_item.well, #store_detail .well {
