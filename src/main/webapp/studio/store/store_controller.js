@@ -60,9 +60,18 @@ var store = {
           imgIcon = '<img src=\"data:image/png;base64,' + item.icon + '\" class=\"auth_icon\" />';
         }
 
-        var authPolRow = $('<button>').addClass('btn btn-large auth_policy_select_btn').text(item.name);
+        var authPolRow = $('<button>').addClass('btn-large auth_policy_select_btn btn');
         authPolRow.attr('data-auth-policy-id', item.name);
         authPolRow.attr('data-auth-policy-type', item.type);
+        if (item.type === 'OAUTH2') {
+          authPolRow.addClass('google');
+        } else if (item.type === 'FEEDHENRY') {
+          authPolRow.addClass('feedhenry');
+        } else if (item.type === 'LDAP') {
+          authPolRow.addClass('ldap');
+        } else {
+          authPolRow.text(item.name);
+        }
 
         $('#auth_policy_actions').append(authPolRow).append('<br/>');
       });
@@ -214,7 +223,7 @@ var store = {
 //        redirect to window.location + "?fh_auth_session=" + sessionId;
 //    
     var params = {
-      endRedirectUrl: window.location
+      endRedirectUrl: window.location.href
     };
     if (pol_type === 'OAUTH2') {  
         self.models.auth.auth(pol_id, "client789012345678901234", params, function (res) {

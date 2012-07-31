@@ -14,6 +14,7 @@ model.Auth = model.Model.extend({
       device: deviceID,
       params: params
     };
+
     return this.serverPost(MAM_AUTH_URL, authParams, success, fail, true);
   }
 });
