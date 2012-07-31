@@ -12,7 +12,7 @@ model.Auth = model.Model.extend({
       policyId: policyId,
       clientToken: clientToken,
       device: deviceID,
-      endRedirectUrl: endRedirectUrl
+      endRedirectUrl: endRedirectUrl,
       params: params
     };
 
