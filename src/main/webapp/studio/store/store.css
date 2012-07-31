@@ -1,4 +1,7 @@
 /* App Store all screens */
+.back_button {
+  position:absolute;
+}
 h1 {
   text-align: center;
 }

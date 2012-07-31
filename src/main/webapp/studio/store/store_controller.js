@@ -123,6 +123,7 @@ var store = {
     $.each(this.views, function(k, v) {
       $(v).hide();
     });
+    $('.back_button').hide();
   },
   
   show: function() {
@@ -130,7 +131,7 @@ var store = {
       this.showLogin();
     } else {
       this.showLoading();
-    };
+    }
   },
   
   showLogin: function () {
@@ -201,6 +202,7 @@ var store = {
     var self = this;
     this.hide();
     $(this.views.list).show();
+
     this.models.store_item.list(self.allowedBinaryTypes, function(res) {
       var store_items = res.list;
       self.renderItems(store_items);
@@ -267,19 +269,22 @@ var store = {
     self.setIcon(show_item_view.find('img'), store_item.icon);
     
     show_item_view.show();
+    $('.back_button').unbind().bind('click', function () {
+      self.showList();
+    }).show();
           
     console.log("Store Item: " + JSON.stringify(store_item));
     // iterate through store_item.targets and add a button for each iOS, iPhone, iPad...
     $('.btn_device_install', show_item_view).hide();
     $.each(store_item.binaries, function(i,v) {
-        console.log("Store Item(" + i + "): " + JSON.stringify(v));
-        $('.btn_device_install', show_item_view).filter('.'+v.type).attr("href",v.url).show().unbind().click(function(e) {
+      console.log("Store Item(" + i + "): " + JSON.stringify(v));
+      $('.btn_device_install', show_item_view).filter('.'+v.type).attr("href",v.url).show().unbind().click(function(e) {
         alert("installing....");
         return true;
-    });;
+      });
     });
     
-    $('.install_store_item', show_item_view)
+    $('.install_store_item', show_item_view);
   }
   
 };
