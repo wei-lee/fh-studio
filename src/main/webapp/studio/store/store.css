@@ -28,12 +28,12 @@ textarea { resize:none; }
 }
 
 .store_item .icon, #app_store .store_icon, #store_item_update .store_item_icon, .appstore_icon {
-  -webkit-border-radius: 25px;
-  -moz-border-radius: 25px;
-  border-radius: 25px;
+  -webkit-border-radius: 15px;
+  -moz-border-radius: 15px;
+  border-radius: 15px;
   box-shadow: 0 4px 3px rgba(0, 0, 0, .25), 0 -1px 1px rgba(153, 153, 153, .2);
-  width: 128px;
-  height: 128px;
+  width: 96px;
+  height: 96px;
 }
 
 .store_item_binaries span.label {
