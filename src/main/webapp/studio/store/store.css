@@ -55,7 +55,8 @@ body {
 .appstore_icon {
   margin: auto;
   display: block;
-  margin-bottom: 20px;
+  margin-top: 10px;
+  margin-bottom: 25px;
 }
 
 .login_button {
@@ -89,3 +90,7 @@ body {
 .page-header h2 {
   text-align: center;
 }
+
+.alerts { margin-top: 10px; }
+
+
