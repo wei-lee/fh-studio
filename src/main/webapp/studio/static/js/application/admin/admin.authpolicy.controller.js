@@ -135,7 +135,7 @@ Admin.Authpolicy.Controller = Controller.extend({
       if (action === 'update') {
         $(view).find('#update_policy_type').unbind().change(function(e) {
           var type = $('#update_policy_type').val();
-  console.log("type: " + type)
+    console.log("type: " + type);
           switch(type) {
             case OAUTH2:
               $('#update_oauth2_div').show();
@@ -161,7 +161,7 @@ Admin.Authpolicy.Controller = Controller.extend({
       }else {
         $(view).find('#create_policy_type').unbind().change(function(e) {
           var type = $('#create_policy_type').val();
-  console.log("type: " + type)
+  console.log("type: " + type);
           switch(type) {
             case OAUTH2:
               $('#create_oauth2_div').show();
