@@ -715,8 +715,9 @@
             <label class="select">
               <div class="controls">
                 <select class="" id="create_policy_type">
-                  <option value="OAUTH2" selected="selected"> oAuth2 </option>
+                  <option value="OAUTH2" selected="selected"> OAUTH2 </option>
                   <option value="LDAP"> LDAP </option>
+                  <option value="FEEDHENRY"> FEEDHENRY </option>
                 </select>
               </div>
             </label>
@@ -796,6 +797,8 @@
                 <input id="create_dn_id" type="text" class="input-xxlarge" placeholder="e.g. ou=people,dc=example,dc=com">
               </div>
             </div>
+          </div> <!-- ldap div -->
+          <div id="create_feedhenry_div">
           </div>
         </fieldset> <!-- end of authentication well -->
         <fieldset class="well"> <!-- start of authorization well -->
@@ -852,8 +855,9 @@
               <label class="select">
                 <div class="controls">
                   <select class="" id="update_policy_type">
-                    <option value="OAUTH2" selected="selected"> oAuth2 </option>
+                    <option value="OAUTH2" selected="selected"> OAUTH2 </option>
                     <option value="LDAP"> LDAP </option>
+                    <option valie="FEEDHENRY"> FEEDHENRY </option>
                   </select>
                 </div>
               </label>
@@ -933,6 +937,8 @@
                   <input id="update_dn_id" type="text" class="input-xxlarge" placeholder="e.g. ou=people,dc=example,dc=com">
                 </div>
               </div>
+            </div> <!-- end ldap div -->
+            <div id="update_feedhenry_div">
             </div>
           </fieldset> <!-- authentication well -->
           <fieldset class="well"> <!-- authorization well -->
