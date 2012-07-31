@@ -1,8 +1,4 @@
 /* App Store all screens */
-h1 {
-  text-align: center;
-}
-
 .back_button {
   position:absolute;
 }
@@ -119,4 +115,8 @@ body {
 
 #auth_policy_actions .auth_policy_select_btn {
   margin-bottom: 10px;
+}
+
+.btn [class^="icon-"], .btn [class*=" icon-"] {
+  line-height: inherit;
 }
