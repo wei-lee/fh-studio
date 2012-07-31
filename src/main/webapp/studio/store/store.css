@@ -7,6 +7,11 @@ body {
   background: #f5f5f5;
 }
 
+/* Padding for fixed header */
+.page_container {
+  padding-top: 47px;
+}
+
 /* Store Items */
 .store_item .controls { padding-top: 21px; }
 
@@ -55,7 +60,6 @@ body {
 .appstore_icon {
   margin: auto;
   display: block;
-  margin-top: 10px;
   margin-bottom: 25px;
 }
 
@@ -85,6 +89,7 @@ body {
   background: linear-gradient(to bottom,  #525252 0%,#4b4b4b 20%,#404040 40%,#2f2f2f 60%,#222222 80%,#202020 100%); /* W3C */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#525252', endColorstr='#202020',GradientType=0 ); /* IE6-9 */
   border-bottom: 1px solid #000;
+  position: fixed;
 }
 
 .page-header h2 {
@@ -92,5 +97,3 @@ body {
 }
 
 .alerts { margin-top: 10px; }
-
-
