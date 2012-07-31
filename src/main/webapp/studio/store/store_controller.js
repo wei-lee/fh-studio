@@ -96,6 +96,24 @@ var store = {
       return false;
     });
     
+    // Authenticate using selected policy
+    $('#store_auth_policy_login .btn_do_auth_request').unbind().click(function() {
+      console.log('auth policy authenticated');
+      self.showList();
+      return false;
+    });
+    
+    // Logout
+    $('#store_auth_policy_login .btn_do_auth_request').unbind().click(function() {
+      console.log('auth policy authenticated');
+      self.showList();
+      return false;
+    });
+
+    $('.logout_button').unbind().click(function () {
+      self.showLogin();
+      // TODO: remove session stuff too
+    });
   },
     
   init: function(queryParams) {
@@ -117,7 +135,8 @@ var store = {
     $.each(this.views, function(k, v) {
       $(v).hide();
     });
-    $('.back_button').hide();
+    $('.back_button').hide(); // hidden on most screens
+    $('.logout_button').show(); // visible on most screens
   },
   
   show: function() {
@@ -132,14 +151,15 @@ var store = {
   
   showLogin: function () {
     var self = this;
+
     if (self.authSession) { // already authenticated
-        console.log("store:showLogin() - already authenticated showing list");
-        self.showList();
-    } else {
-         console.log("store:showLogin() - NOT authenticated showing login");
-      this.hide();
-      $(this.views.login).show();
+      console.log("store:showLogin() - already authenticated showing list");
+      return self.showList();
     }
+
+    this.hide();
+    $(this.views.login).show();
+    $('.logout_button').hide();
   },
   
   showLoading: function () {
@@ -252,7 +272,7 @@ var store = {
         device = "iphone";
     } else if (navigator.userAgent.match(/iPad/i)) {
         device = "ipad";
-    };
+    }
     return device;
   },
 
@@ -276,6 +296,7 @@ var store = {
       
         list_item.appendTo(list);
       });
+      ellipsisDescriptions();
     }
   },
 
@@ -337,4 +358,18 @@ function init() {
   store.init(queryParams);    
 }
 
+function ellipsisDescriptions() {
+  $('.description').ellipsis();
+}
 
+var resizeThrottleTimeout = null;
+$(window).on('resize', function () {
+  console.log('resize' + Date.now());
+  if (resizeThrottleTimeout !== null) {
+    clearTimeout(resizeThrottleTimeout);
+  }
+  resizeThrottleTimeout = setTimeout(function () {
+    console.log('resize FIRED' + Date.now());
+    ellipsisDescriptions();
+  }, 100);
+});
