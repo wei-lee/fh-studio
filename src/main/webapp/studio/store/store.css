@@ -9,7 +9,7 @@ body {
 
 /* Padding for fixed header */
 .page_container {
-  padding-top: 47px;
+  padding-top: 57px;
 }
 
 /* Store Items */
@@ -143,4 +143,8 @@ body {
 
 .back_button { 
   margin: 4px 0 0 10px;
+}
+
+.store_item.well, #store_detail.well {
+  background-color: #ebebeb;
 }
