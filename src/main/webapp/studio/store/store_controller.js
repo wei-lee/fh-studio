@@ -104,21 +104,13 @@ var store = {
       self.login(auth_policy_type, auth_policy_id);
       return false;
     });
-    
-    // Authenticate using selected policy
-    $('#store_auth_policy_login .btn_do_auth_request').unbind().click(function() {
-      console.log('auth policy authenticated');
-      self.showList();
-      return false;
-    });
-    
-    // Logout
-    $('#store_auth_policy_login .btn_do_auth_request').unbind().click(function() {
-      console.log('auth policy authenticated');
-      self.showList();
+
+    $('#store_auth_login_user_pass').unbind().click(function() {
+      self.doLoginUserPass();
       return false;
     });
 
+    // Logout
     $('.logout_button').unbind().click(function () {
       self.authSession = null;
       $.cookie(self.authSessionCookie, null);
@@ -225,7 +217,7 @@ var store = {
 //        redirect to window.location + "?fh_auth_session=" + sessionId;
 
     if (pol_type === 'OAUTH2') {  
-        self.models.auth.auth(pol_id, "client789012345678901234", window.location.href, {}, function (res) {
+        self.models.auth.auth(pol_id, self.storeInfo.guid, window.location.href, {}, function (res) {
             if (res && res.url) {
               window.location = res.url;  // redirect to location specified by auth call
             } else {
@@ -237,14 +229,34 @@ var store = {
            self.showLogin();
         });
     } else {
-      self.showUserPassLogin();
+      self.showUserPassLogin(pol_id);
     }
   },
-  
-  showUserPassLogin: function() {
+
+  doLoginUserPass: function() {
     var self = this;
-    $('.appstore_loginUser').val();
-    $('.appstore_loginPass').val();
+    var pol_id = $('#store_login_policy_id').val();
+    var pol_username = $('#store_login_policy_username').val();
+    var pol_password = $('#store_login_policy_password').val();
+    self.models.auth.auth(pol_id, self.storeInfo.guid, window.location.href, {username: pol_username, password:pol_password}, function (res) {
+        if (res && res.sessionId) {
+          window.location = window.lores.url;  // redirect to location specified by auth call
+        } else {
+          self.showAlert("error", "Not authorised - no url returned");
+          self.showLogin();
+        }
+    }, function (msg) {
+       self.showAlert("error", "Not authorised - " + msg);
+       self.showLogin();
+    });
+
+  },
+  
+  showUserPassLogin: function(pol_id) {
+    var self = this;
+    $('#store_login_policy_id').val(pol_id);
+    $('#store_login_policy_username').attr('placeholder', "Username");
+    $('#store_login_policy_password').attr('placeholder', "Password");
   },
   
   showList: function() {
