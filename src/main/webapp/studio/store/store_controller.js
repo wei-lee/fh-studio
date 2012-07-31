@@ -227,9 +227,9 @@ var store = {
   renderItems: function(store_items) {
     var self = this;
     var list = $(this.views.list);
-    
+
     if(store_items.length > 0) {
-      list.find('li').remove();
+      list.find('.store_item, h5').remove();
       $.each(store_items, function(i, store_item) {
         var list_item = $(self.views.store_item).clone().show().removeAttr('id');
         list_item.data('store_item', store_item);
