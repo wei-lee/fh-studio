@@ -115,8 +115,22 @@ body {
 
 #auth_policy_actions .auth_policy_select_btn {
   margin-bottom: 10px;
+  min-width: 210px;
+  min-height: 60px;
 }
 
 .btn [class^="icon-"], .btn [class*=" icon-"] {
   line-height: inherit;
+}
+
+.auth_policy_select_btn.google {
+  background: url(img/auth_google.png) #fff no-repeat 50% 50%;
+}
+
+.auth_policy_select_btn.feedhenry {
+  background: url(img/auth_feedhenry.png) #fff no-repeat 50% 50%;
+}
+
+.auth_policy_select_btn.ldap {
+  background: url(img/auth_ldap.png) #fff no-repeat 50% 50%;
 }
