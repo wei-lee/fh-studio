@@ -135,7 +135,6 @@ Admin.Authpolicy.Controller = Controller.extend({
       if (action === 'update') {
         $(view).find('#update_policy_type').unbind().change(function(e) {
           var type = $('#update_policy_type').val();
-    console.log("type: " + type);
           switch(type) {
             case OAUTH2:
               $('#update_oauth2_div').show();
@@ -161,7 +160,6 @@ Admin.Authpolicy.Controller = Controller.extend({
       }else {
         $(view).find('#create_policy_type').unbind().change(function(e) {
           var type = $('#create_policy_type').val();
-  console.log("type: " + type);
           switch(type) {
             case OAUTH2:
               $('#create_oauth2_div').show();
@@ -379,7 +377,7 @@ Admin.Authpolicy.Controller = Controller.extend({
   createOrUpdatePolicy: function(action) {
     var self = this;
     var view = self.views.policies_create;
-    var guid, id, type, provider, checkUserExists, checkUserApproved, conf = {};
+    var guid, id, type, provider, checkUserExists, checkUserApproved, conf;
     var users = [];
     if (action == "update") {
       view = self.views.policies_update;    
@@ -431,10 +429,15 @@ Admin.Authpolicy.Controller = Controller.extend({
         };
       }else if (type === LDAP) {
         conf = {
+          "provider" : LDAP,
           "authmethod": $('#create_authmethod_id', view).val(),
           "url": $('#create_ldap_url_id', view).val(),
           "dn_prefix": $('#create_dn_prefix_id', view).val(),
           "dn": $('#create_dn_id', view).val()
+        };
+      } else {
+        conf = {
+           "provider": FEEDHENRY
         };
       }
     }
