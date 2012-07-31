@@ -91,7 +91,6 @@ body {
   border-bottom: 1px solid #000;
   position: fixed;
   height: 36px;
-  text-overflow: ellipsis;
 
   background: #6d6d6d; /* Old browsers */
   background: -moz-linear-gradient(top,  #6d6d6d 0%, #393939 100%); /* FF3.6+ */
@@ -105,6 +104,9 @@ body {
 
 .page-header h2 {
   text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .alerts { margin-top: 10px; }
