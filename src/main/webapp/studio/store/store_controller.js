@@ -3,7 +3,8 @@ $(document).ready(init);
 var store = {
   models: {
     store_item: new model.StoreItemConsumer(),
-    store_info: new model.StoreInfo()
+    store_info: new model.StoreInfo(),
+    auth:       new model.Auth()
   },
 
   views:  {
@@ -15,6 +16,8 @@ var store = {
     authPolicyLogin: "#store_auth_policy_login"
   },
 
+  authSession: null,
+  
   storeInfo: null,
   
   allowedBinaryTypes: null,
@@ -51,20 +54,13 @@ var store = {
     }
     if(info.authpolicies.length > 0) {
       $.each(info.authpolicies, function (i, item) {
-          console.log("iter: " + i);
-          if (item.type === "OAUTH2") {
-            var imgIcon = '<img class=\"auth_icon\" src=\"/studio/static/themes/default/img/store_no_icon.png\" />';
-            if (item.iconData && (item.iconData !== '')) {
-              imgIcon = '<img src=\"data:image/png;base64,' + item.icon + '\" class=\"auth_icon\" />';
-            }
-            var authPolRow='<div class=\"row-fluid auth_policy_select_btn\" data-authid=\"' + item.name + '\">' + imgIcon +
-            item.name + '</div>';
-            $('#auth_policy_actions').append(authPolRow);
-          } else if (item.type === "ldap") {
-              console.log("found LDAP policy: " + item.id + ", IGNORING");
-          } else {
-             console.log("found UNKNOWN auth policy type: " + item.type);
-          }
+        var imgIcon = '<img class=\"auth_icon\" src=\"/studio/static/themes/default/img/store_no_icon.png\" />';
+        if (item.iconData && (item.iconData !== '')) {
+          imgIcon = '<img src=\"data:image/png;base64,' + item.icon + '\" class=\"auth_icon\" />';
+        }
+        var authPolRow='<div class=\"row-fluid auth_policy_select_btn\" data-auth-policy-id=\"' + item.name + '\" data-auth-policy-type=\"' + item.type + '\">' + imgIcon +
+        item.name + '</div>';
+        $('#auth_policy_actions').append(authPolRow);
       });
       self.bindLoginControls();  
     } else { // no auth policies defined
@@ -84,34 +80,27 @@ var store = {
     });
   },
   
-  
   bindLoginControls: function() {
     var self = this;
     
     // Choose and auth policy
     $('#store_login .auth_policy_select_btn').unbind().click(function() {
-      var auth_policy_name = $(this).attr('data-authid');
-      console.log('name : ' + auth_policy_name);
-      self.login(auth_policy_name);
+      var auth_policy_id = $(this).attr('data-auth-policy-id');
+      var auth_policy_type = $(this).attr('data-auth-policy-type');
+      self.login(auth_policy_type, auth_policy_id);
       return false;
     });
     
-    // Authenticate using selected policy
-    $('#store_auth_policy_login .btn_do_auth_request').unbind().click(function() {
-      console.log('auth policy authenticated');
-      self.showList();
-      return false;
-    });
-    
-    // Logout
-    $('#store_auth_policy_login .btn_do_auth_request').unbind().click(function() {
-      console.log('auth policy authenticated');
-      self.showList();
-      return false;
-    });
   },
     
-  init: function() {
+  init: function(queryParams) {
+    console.log("store:init() - queryParams: " + JSON.stringify(queryParams));
+    if (queryParams && queryParams.fh_auth_session) {
+        this.authSession = queryParams.fh_auth_session;
+        console.log("store:init() authSession: " + this.authSession);
+    } else {
+        console.log("store:init() - no query params");
+    }
     $fw.server = new ServerManager();
     this.bindLoginControls();
     this.allowedBinaryTypes = this.getAllowedBinaryTypes();
@@ -128,16 +117,24 @@ var store = {
   
   show: function() {
     if(this.storeInfo) {
+      console.log("store:show() - have store info showing login");
       this.showLogin();
     } else {
+      console.log("store:show() - no store info showing loading screen");
       this.showLoading();
     }
   },
   
   showLogin: function () {
     var self = this;
-    this.hide();
-    $(this.views.login).show();
+    if (self.authSession) { // already authenticated
+        console.log("store:showLogin() - already authenticated showing list");
+        self.showList();
+    } else {
+         console.log("store:showLogin() - NOT authenticated showing login");
+      this.hide();
+      $(this.views.login).show();
+    }
   },
   
   showLoading: function () {
@@ -177,37 +174,65 @@ var store = {
     }
   },
   
-  login: function (pol_name) {
+  login: function (pol_type, pol_id) {
     var self = this;
     this.hide();
-    console.log("calling $fh.auth() with auth_policy id: " + pol_name);
-    self.do_auth({
-      "type": pol_name
-    }, function(res) {
-      if (res.authorised) {
-        self.showAlert('success', res.msg);
-        
-        self.showList();
-      } else {
-        self.showAlert('error', res.msg);
-        self.showLogin();
-      }
-    }, function(err) {
-      self.showAlert('error', err);
-      self.showLogin();
-    });
+    console.log("calling $fh.auth() with auth_policy type: " + pol_type + ", and id: " + pol_id);
+//    if authType = oauth then
+//        do oauthcall and get url to redirect to
+//    if authType == ldap || authType == feedhenry then
+//        show screen for user name and password
+//        do auth call with params
+//        get sessionId
+//        redirect to window.location + "?fh_auth_session=" + sessionId;
+//    
+    var params = {
+      endRedirectUrl: window.location
+    };
+    if (pol_type === 'OAUTH2') {  
+        self.models.auth.auth(pol_id, "client789012345678901234", params, function (res) {
+            if (res && res.url) {
+              window.location = url;  // redirect to location specified by auth call
+            } else {
+              self.showAlert("error", "Not authorised - no url returned");
+              self.showLogin();
+            }
+        }, function (msg) {
+           self.showAlert("error", "Not authorised - " + msg);
+           self.showLogin();
+        });
+    } else {
+    }
+//    
+//    
+//      if (res.authorised) {
+//        self.showAlert('success', res.msg);
+//        self.showList();
+//      } else {
+//        self.showAlert('error', res.msg);
+//        self.showLogin();
+//      }
+//    }, function(err) {
+//      self.showAlert('error', err);
+//      self.showLogin();
+//    });
   },
   
   showList: function() {
     var self = this;
     this.hide();
     $(this.views.list).show();
-
-    this.models.store_item.list(self.allowedBinaryTypes, function(res) {
+    console.log("store:showList() - getting store item list");
+    
+    this.models.store_item.list(self.authSession, self.allowedBinaryTypes, function(res) {
       var store_items = res.list;
+      console.log("store:showList() - rendering list");
       self.renderItems(store_items);
     }, function(err) {
-      console.error(err);
+      // failed getting list, re-authenticate
+      console.log("store:showList() - failed getting list, need to re-authenticate");
+      self.authSession = null;
+      self.showLogin();
     }, true);
   },
   
@@ -290,7 +315,21 @@ var store = {
 };
 
 function init() {
-  store.init();    
+  function getQueryString() {
+    var result = {}, queryString = location.search.substring(1);
+    var re = /([^&=]+)=([^&]*)/g, m;
+
+    while (m = re.exec(queryString)) {
+      result[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
+    }
+    
+    console.log("getQueryString queryString = " + queryString);
+    console.log("getQueryString result = " + result);
+    return result;
+  }
+  var queryParams = getQueryString();
+  
+  store.init(queryParams);    
 }
 
 
