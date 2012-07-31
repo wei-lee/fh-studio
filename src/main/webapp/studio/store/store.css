@@ -16,8 +16,9 @@ body {
 .store_item .controls { padding-top: 21px; }
 
 .store_item .controls button {
-  margin-top: 10px;
-  width: 54px;
+  margin-top: 13px;
+  width: 50px;
+  height: 50px;
 }
 
 .store_items_controls { 
@@ -138,4 +139,8 @@ body {
 
 .logout_button {
   margin: 4px 10px 0 0;
+}
+
+.back_button { 
+  margin: 4px 0 0 10px;
 }
