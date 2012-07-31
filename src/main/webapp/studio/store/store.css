@@ -154,3 +154,7 @@ body {
 .store_item.well, #store_detail .well {
   background-color: #ebebeb;
 }
+
+#store_user_password {
+  text-align: right;
+}
