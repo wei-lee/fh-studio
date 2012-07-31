@@ -221,12 +221,9 @@ var store = {
 //        do auth call with params
 //        get sessionId
 //        redirect to window.location + "?fh_auth_session=" + sessionId;
-    
-    var params = {
-      endRedirectUrl: window.location.href
-    };
+
     if (pol_type === 'OAUTH2') {  
-        self.models.auth.auth(pol_id, "client789012345678901234", params, function (res) {
+        self.models.auth.auth(pol_id, "client789012345678901234", window.location.href, {}, function (res) {
             if (res && res.url) {
               window.location = res.url;  // redirect to location specified by auth call
             } else {
