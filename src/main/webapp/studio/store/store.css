@@ -3,6 +3,19 @@ h1 {
   text-align: center;
 }
 
+.back_button {
+  position:absolute;
+}
+
+body {
+  background: #f5f5f5;
+}
+
+/* Padding for fixed header */
+.page_container {
+  padding-top: 47px;
+}
+
 /* Store Items */
 .store_item .controls { padding-top: 21px; }
 
@@ -49,7 +62,7 @@ h1 {
 .appstore_icon {
   margin: auto;
   display: block;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 
 .login_button {
@@ -62,6 +75,7 @@ h1 {
   margin-right: 20px;
 }
 
+<<<<<<< HEAD
 .description {
   height:6em;
   overflow:hidden;
@@ -70,3 +84,29 @@ h1 {
 .item_description {
   margin-top:1em;
 }
+=======
+.page-header {
+  margin: 0;
+  padding: 0;
+  padding: 5px 0 5px 0;
+  margin-bottom: 5px;
+  color: #c8c8c8;
+  text-shadow: 0 1px 1px #161616;
+  background: #525252; /* Old browsers */
+  background: -moz-linear-gradient(top,  #525252 0%, #4b4b4b 20%, #404040 40%, #2f2f2f 60%, #222222 80%, #202020 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#525252), color-stop(20%,#4b4b4b), color-stop(40%,#404040), color-stop(60%,#2f2f2f), color-stop(80%,#222222), color-stop(100%,#202020)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top,  #525252 0%,#4b4b4b 20%,#404040 40%,#2f2f2f 60%,#222222 80%,#202020 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top,  #525252 0%,#4b4b4b 20%,#404040 40%,#2f2f2f 60%,#222222 80%,#202020 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top,  #525252 0%,#4b4b4b 20%,#404040 40%,#2f2f2f 60%,#222222 80%,#202020 100%); /* IE10+ */
+  background: linear-gradient(to bottom,  #525252 0%,#4b4b4b 20%,#404040 40%,#2f2f2f 60%,#222222 80%,#202020 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#525252', endColorstr='#202020',GradientType=0 ); /* IE6-9 */
+  border-bottom: 1px solid #000;
+  position: fixed;
+}
+
+.page-header h2 {
+  text-align: center;
+}
+
+.alerts { margin-top: 10px; }
+>>>>>>> 4ebcec2a11670cd90a165bd932f34e987c1b5463
