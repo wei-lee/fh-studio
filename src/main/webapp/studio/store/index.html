@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name = "viewport" content = "user-scalable=no, initial-scale=1.0, maximum-scale=1.0, width=device-width">
   <meta name="apple-mobile-web-app-capable" content="yes"/>
   <link rel="stylesheet" href="/studio/static/common/css/ui/framework/bootstrap.css">
   <link rel="stylesheet" href="/studio/static/themes/default/css/font-awesome.css">
@@ -16,12 +16,12 @@
 
 <body>
   <div class="row-fluid page-header">
-    <div class="span2">
-      <button class="btn back_button btn-inverse">Back</button>
+    <div class="span3">
+      <button class="btn back_button btn-inverse"><i class="icon-chevron-left icon-white"></i> Back</button>
     </div>
-    <h2 class="span8 appstore_name">Loading...</h2>
-    <div class="span2">
-      <button class="btn logout_button pull-right btn-inverse">Logout</button>
+    <h2 class="span6 appstore_name">Loading...</h2>
+    <div class="span3">
+      <button class="btn logout_button pull-right btn-inverse"><i class="icon-signout icon-white"></i> Logout</button>
     </div>
   </div>
   <div class="container-fluid page_container">
@@ -66,23 +66,24 @@
       </div>
 
       <!-- Store Detail -->
-      <div id="store_detail" class="well clearfix">
-        <div class="store_detail span12">
-          <div class="span3 icon_container">
-            <img src="" alt="" class="icon" />
+      <div id="store_detail" class="row-fluid">
+        <div class="well">
+          <div class="store_detail row-fluid">
+            <div class="span3 icon_container">
+              <img src="" alt="" class="icon" />
+            </div>
+            <div class="span9 controls">
+              <h3 class="item_name"></h3>
+              <a href="#" class="btn btn_device_install iphone">iPhone</a>
+              <a href="#" class="btn btn_device_install ipad">ipad</a>
+              <a href="#" class="btn btn_device_install ios">iOS</a>
+              <a href="#" class="btn btn_device_install android">Android</a>
+              <div class="item_guid hidden"></div>
+              <div class="item_id hidden"></div>
+            </div>
           </div>
-          <div class="span9 controls">
-            <h3 class="item_name"></h3>
-            <a href="#" class="btn btn_device_install iphone">iPhone</a>
-            <a href="#" class="btn btn_device_install ipad">ipad</a>
-            <a href="#" class="btn btn_device_install ios">iOS</a>
-            <a href="#" class="btn btn_device_install android">Android</a>
-            <div class="item_guid hidden"></div>
-            <div class="item_id hidden"></div>
-          </div>
+          <div class="item_description row-fluid"></div>
         </div>
-
-        <p class="item_description span12"></p>
       </div>
 
     </div>

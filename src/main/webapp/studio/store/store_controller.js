@@ -120,6 +120,8 @@ var store = {
     });
 
     $('.logout_button').unbind().click(function () {
+      self.authSession = null;
+      $.cookie(self.authSessionCookie, null);
       self.showLogin();
       // TODO: remove session stuff too
     });
