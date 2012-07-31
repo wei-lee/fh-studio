@@ -145,6 +145,6 @@ body {
   margin: 4px 0 0 10px;
 }
 
-.store_item.well, #store_detail.well {
+.store_item.well, #store_detail .well {
   background-color: #ebebeb;
 }
