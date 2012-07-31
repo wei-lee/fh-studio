@@ -1,5 +1,3 @@
-
-
 model.StoreInfo = model.Model.extend({
   // Model config
   config: {},
