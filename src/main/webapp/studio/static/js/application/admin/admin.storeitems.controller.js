@@ -168,7 +168,7 @@ Admin.Storeitems.Controller = Controller.extend({
 
     // Config
     var binaries = [{
-      id: 'store_item_icon_binary',
+      id: 'icon_binary',
       destination: null,
       params: [{
         name: 'guid',

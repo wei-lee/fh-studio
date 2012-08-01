@@ -101,10 +101,9 @@ Admin.Stores.Controller = Controller.extend({
       dataType: 'json',
       replaceFileInput: false,
       add: function(e, data) {
-        // Need to check the event target ID to get around a strange bug
-        // If files are dropped onto an input, all of them call this add callback
-        // so you need to find out if the event correlates to this particular field
-        if (e.target.id === 'app_store_icon_binary') {
+        // Check to see if App Store admin visible
+        // Fixes a weird multiple upload triggering bug
+        if ($(self.views.app_store).is(':visible')) {
           progress_area.show();
           status.text('Uploading...');
           status.slideDown();
