@@ -168,7 +168,7 @@ Admin.Storeitems.Controller = Controller.extend({
 
     // Config
     var binaries = [{
-      id: 'store_item_icon_binary',
+      id: 'icon_binary',
       destination: null,
       params: [{
         name: 'guid',
@@ -260,22 +260,18 @@ Admin.Storeitems.Controller = Controller.extend({
       }
 
       // Setup file upload
-      input.fileupload({
+      input.fileupload('destroy').fileupload({
         url: Constants.ADMIN_STORE_ITEM_UPLOAD_BINARY_URL,
         dataType: 'json',
         replaceFileInput: false,
         formData: binary.params,
+        dropZone: input,
         add: function(e, data) {
-          // Need to check the event target ID to get around a strange bug
-          // If files are dropped onto an input, all of them call this add callback
-          // so you need to find out if the event correlates to this particular field
-          if (e.target.id === binary.id) {
-            progress_area.show();
-            status.text('Uploading...');
-            status.slideDown();
-            progress_bar.slideDown();
-            data.submit();
-          }
+          progress_area.show();
+          status.text('Uploading...');
+          status.slideDown();
+          progress_bar.slideDown();
+          data.submit();
         },
         done: function(e, data) {
           if (data.result.status === 'ok') {

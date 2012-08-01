@@ -402,10 +402,15 @@ Admin.Authpolicy.Controller = Controller.extend({
         };
       }else if (type === LDAP) {
         conf = {
+          "provider" : LDAP,
           "authmethod": $('#update_authmethod_id', view).val(),
           "url": $('#update_ldap_url_id', view).val(),
           "dn_prefix": $('#update_dn_prefix_id', view).val(),
           "dn": $('#update_dn_id', view).val()
+        };
+      }else {
+        conf = {
+           "provider": FEEDHENRY
         };
       }
     }else {
