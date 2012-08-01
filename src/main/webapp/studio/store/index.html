@@ -29,7 +29,7 @@
     <div class="row-fluid">
 
       <!-- Loading -->
-      <div id="store_loading" class="well">
+      <div id="store_loading" class="well hidden_template">
         <div class="span1"></div>
         <div class="span10">
           <p>Loading App Store information</p>
@@ -37,14 +37,14 @@
       </div>
 
       <!-- Login -->
-      <div id="store_login">
+      <div id="store_login" class="hidden_template">
         <img class="appstore_icon" />
         <div id="auth_policy_actions">
           <h3>Sign into the App Store</h3><br/>
         </div>
       </div>
 
-      <form id="store_user_password" class="well">
+      <form id="store_user_password" class="well hidden_template">
         <img class="appstore_icon" />
         <input type="hidden" id="store_login_policy_id">
         <input type="text" id="store_login_policy_username" class="input-xlarge span12" placeholder="Username">
@@ -54,12 +54,12 @@
         
       <!-- Storeitem templates -->
       <div class="row-fluid store_list_container">
-        <div id="store_list" class="span12">
+        <div id="store_list" class="span12 hidden_template">
           <h5>No items available for download</h5>
         </div>
       </div>
 
-      <div id="store_item" class="store_item">
+      <div id="store_item" class="store_item hidden_template">
         <div class="span3 icon_container">
           <img src="" alt="" class="icon" />
         </div>
@@ -73,7 +73,7 @@
       </div>
 
       <!-- Store Detail -->
-      <div id="store_detail" class="row-fluid">
+      <div id="store_detail" class="row-fluid hidden_template">
         <div class="well">
           <div class="store_detail row-fluid">
             <div class="span3 icon_container">

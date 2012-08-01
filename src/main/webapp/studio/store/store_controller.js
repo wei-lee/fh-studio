@@ -263,7 +263,6 @@ var store = {
   showList: function() {
     var self = this;
     this.hide();
-    $(this.views.list).show();
     console.log("store:showList() - getting store item list");
     
     this.models.store_item.list(self.authSession, self.allowedBinaryTypes, function(res) {
@@ -315,6 +314,7 @@ var store = {
       });
       ellipsisDescriptions();
     }
+    $(this.views.list).show();
   },
 
   setIcon: function (iconTag, iconData) {

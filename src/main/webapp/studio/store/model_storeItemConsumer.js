@@ -23,10 +23,10 @@ model.StoreItemConsumer = model.Model.extend({
         status: res.status,
         list: []
     };
-    console.log("res: " + JSON.stringify(res));
-    console.log("allowed: " + JSON.stringify(allowedTypes));
+    // console.log("res: " + JSON.stringify(res));
+    // console.log("allowed: " + JSON.stringify(allowedTypes));
     $.each(res.list, function(itemIndex, item) {
-      console.log("item: " + JSON.stringify(item));
+      // console.log("item: " + JSON.stringify(item));
       var filteredItem = {};
       var isAllowed = false;
       $.each(item, function (k, v) {
