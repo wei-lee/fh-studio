@@ -60,9 +60,23 @@ body {
 }
 
 .store_item {
-  background: #ccc;
-  border-bottom: 1px solid #ddd;
+  background: -moz-linear-gradient(#FAFAFA,#E0E0E0);
+  background: -webkit-linear-gradient(#FAFAFA,#E0E0E0);
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#fafafa',endColorstr='#e0e0e0')";
+  border-top: 1px solid #cccccc;
+  border-right: 1px solid #cccccc;
+  border-left: 1px solid #cccccc;
   height: 64px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+
+.store_list_container {
+  border-bottom: 1px solid #cccccc;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
 }
 
 .store_item .name {
