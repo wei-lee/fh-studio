@@ -100,19 +100,13 @@ Admin.Stores.Controller = Controller.extend({
       url: Constants.ADMIN_APP_STORE_UPLOAD_BINARY_URL,
       dataType: 'json',
       replaceFileInput: false,
+      dropZone: input,
       add: function(e, data) {
-        // Check to see if App Store admin visible
-        // Fixes a weird multiple upload triggering bug
-        if ($(self.views.app_store).is(':visible')) {
-          progress_area.show();
-          status.text('Uploading...');
-          status.slideDown();
-          progress_bar.slideDown();
-          data.submit();
-        } else {
-          console.log('Not triggering upload: ' + e.target.id);
-          return null;
-        }
+        progress_area.show();
+        status.text('Uploading...');
+        status.slideDown();
+        progress_bar.slideDown();
+        data.submit();
       },
       done: function(e, data) {
         if (data.result.status === 'ok') {

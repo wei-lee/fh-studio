@@ -265,20 +265,13 @@ Admin.Storeitems.Controller = Controller.extend({
         dataType: 'json',
         replaceFileInput: false,
         formData: binary.params,
+        dropZone: input,
         add: function(e, data) {
-          // Need to check the event target ID to get around a strange bug
-          // If files are dropped onto an input, all of them call this add callback
-          // so you need to find out if the event correlates to this particular field
-          if (e.target.id === binary.id) {
-            progress_area.show();
-            status.text('Uploading...');
-            status.slideDown();
-            progress_bar.slideDown();
-            data.submit();
-          } else {
-            console.log('Not triggering upload: ' + e.target.id + ', ' + binary.id);
-            return null;
-          }
+          progress_area.show();
+          status.text('Uploading...');
+          status.slideDown();
+          progress_bar.slideDown();
+          data.submit();
         },
         done: function(e, data) {
           if (data.result.status === 'ok') {
