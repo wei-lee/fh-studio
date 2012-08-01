@@ -28,6 +28,14 @@ Admin.Storeitems.Controller = Controller.extend({
     $.each(this.views, function(k, v) {
       $(v).hide();
     });
+    this.reset();
+  },
+
+  reset: function() {
+    $.each(this.views, function(k, v) {
+      $('input[type=text],input[type=email],input[type=password], textarea', v).val('');
+      $('input[type=checkbox]', v).removeAttr('checked');
+    });
   },
 
   // type: error|success|info
