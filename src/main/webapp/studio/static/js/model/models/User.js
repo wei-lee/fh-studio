@@ -66,8 +66,8 @@ model.User = model.Model.extend({
       params.roles = roles;
     }
 
-    if (authpolicies != null) {
-      params.authpolicies = authpolicies;
+    if (policies != null) {
+      params.authpolicies = policies;
     }
 
     if (groups != null) {
