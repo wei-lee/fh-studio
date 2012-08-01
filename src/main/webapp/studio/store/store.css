@@ -203,3 +203,11 @@ body {
 .store_detail .controls a {
   float: right;
 } 
+
+.store_detail .icon_container .icon {
+  max-width: 128px;
+  max-height: 128px;
+  margin: auto;
+  display: block;
+  margin-bottom: 20px;
+}
