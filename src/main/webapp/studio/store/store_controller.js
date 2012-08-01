@@ -129,6 +129,14 @@ var store = {
     } else {
       console.log("store:init() - no query params");
     }
+    if (queryParams && queryParams.message) {
+        var message = queryParams.message;
+        var level = 'info'; // default to info
+        if(queryParams.result && (queryParams.result === 'failure')) {
+            level = 'error';
+        }
+        this.showAlert(level, message);
+    }    
     $fw.server = new ServerManager();
     this.bindLoginControls();
     this.allowedBinaryTypes = this.getAllowedBinaryTypes();
