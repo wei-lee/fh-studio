@@ -430,11 +430,11 @@ application.DestinationGeneral = Class.extend({
           dialog.find('#confirm_dialog_text').html(message);
           proto.Dialog.load(dialog, {
             autoOpen: true,
-            height: 210,
+            height: 235,
             title: 'Download',
             stack: true,
             dialogClass: 'success-dialog popup-dialog',
-            width: 320,
+            width: 340,
             buttons: {
               'OK': function () {
                 $(this).dialog('close');
