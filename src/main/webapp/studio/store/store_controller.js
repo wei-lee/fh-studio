@@ -223,10 +223,10 @@ var store = {
       userId: pol_username,
       password: pol_password
     }, function(res) {
-      if (res && res.sessionId) {
-        window.location = window.location.href + "?fh_auth_session=" + res.sessionId; // redirect to location specified by auth call
+      if (res && res.sessionToken) {
+        window.location = window.location.href + "?fh_auth_session=" + res.sessionToken; // redirect to location specified by auth call
       } else {
-        self.showAlert("error", "Not authorised - no sessionid returned");
+        self.showAlert("error", "Not authorised - no sessionToken returned");
         self.showLogin();
       }
     }, function(msg) {
