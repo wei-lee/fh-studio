@@ -3042,6 +3042,16 @@ input[disabled],select[disabled],textarea[disabled],input[readonly],select[reado
   margin-right: 5px;
 }
 
+form .required {
+  font-weight: bold;
+}
+
+form .required label:after {
+  color: #e32;
+  content: ' *';
+  display: inline;
+}
+
 legend { border-bottom: none; }
 
 /* DataTables styling for Bootstrap */
