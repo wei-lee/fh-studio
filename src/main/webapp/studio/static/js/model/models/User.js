@@ -42,7 +42,6 @@ model.User = model.Model.extend({
 
   create: function(id, email, name, roles, policies, groups, storeitems, password, activated, invite,  success, fail) {
     var url = Constants.ADMIN_USER_CREATE_URL;
-    debugger;
     var params = {
       "username": id,
       "activated": activated,
