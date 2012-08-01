@@ -414,17 +414,27 @@ application.DestinationGeneral = Class.extend({
         console.log('publish successful: ' + JSON.stringify(res));
 
         var source_url = res.action.url;
+        var ota_url = res.action.ota_url;
+        var ipa_url = res.action.ipa_url;
         //$fw_manager.app.startDownload(source_url);
+        var showOTA = false;
+        var showIPA = false;
+        if(typeof ota_url !== "undefined"){
+          showOTA = true;
+        }
+        if(typeof ipa_url !== "undefined"){
+          showIPA = true;
+        }
         var showDownload = function(message){
           var dialog = $('#confirm_dialog').clone();
           dialog.find('#confirm_dialog_text').html(message);
           proto.Dialog.load(dialog, {
             autoOpen: true,
-            height: 210,
+            height: 235,
             title: 'Download',
             stack: true,
             dialogClass: 'success-dialog popup-dialog',
-            width: 320,
+            width: 340,
             buttons: {
               'OK': function () {
                 $(this).dialog('close');
@@ -433,17 +443,18 @@ application.DestinationGeneral = Class.extend({
           });
         };
         var html = "<p> The build is ready. Please click the link below to download";
-        var showOTA = false;
-        var destName = that.destination_id.toLowerCase();
-        if( destName == "ios" || destName == "ipad" || destName == "iphone" || destName == "android"){
+        
+        if( showOTA ){
           html += ", or you can use the OTA link to install the application directly on to your phone.</p>";
-          showOTA = true;
         } else {
           html += ".</p>";
         }
         html += "<br><ul> <li> <a target='_blank' href='"+source_url+"'> Download </a></li>";
+        if(showIPA){
+          html += "<li> <a target='_blank' href='"+ipa_url+"'> Download IPA File </a></li>";
+        }
         if(showOTA){
-          that.getOTALink(source_url, function(otalink){
+          that.getShortenUrl(ota_url, function(otalink){
             html += "<li> OTA Link : <a target='_blank' href='"+otalink+"'>" + otalink + " </a></li></ul>";
             showDownload(html);
           });
