@@ -109,6 +109,9 @@ Admin.Stores.Controller = Controller.extend({
           status.slideDown();
           progress_bar.slideDown();
           data.submit();
+        } else {
+          console.log('Not triggering upload: ' + e.target.id);
+          return null;
         }
       },
       done: function(e, data) {

@@ -260,7 +260,7 @@ Admin.Storeitems.Controller = Controller.extend({
       }
 
       // Setup file upload
-      input.fileupload({
+      input.fileupload('destroy').fileupload({
         url: Constants.ADMIN_STORE_ITEM_UPLOAD_BINARY_URL,
         dataType: 'json',
         replaceFileInput: false,
@@ -275,6 +275,9 @@ Admin.Storeitems.Controller = Controller.extend({
             status.slideDown();
             progress_bar.slideDown();
             data.submit();
+          } else {
+            console.log('Not triggering upload: ' + e.target.id + ', ' + binary.id);
+            return null;
           }
         },
         done: function(e, data) {
