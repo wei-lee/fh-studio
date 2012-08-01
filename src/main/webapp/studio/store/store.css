@@ -199,3 +199,7 @@ body {
 #store_user_password {
   text-align: right;
 }
+
+.store_detail .controls a {
+  float: right;
+} 
