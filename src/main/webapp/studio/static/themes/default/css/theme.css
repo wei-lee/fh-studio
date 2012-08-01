@@ -3384,3 +3384,7 @@ table.dataTable th:active {
 .swap-select .span1 button.remove {
   margin-top: 5px;
 }
+
+.btn.enable_user_button, .btn.invite_user_btn, .btn.blacklist_user_button {
+  margin-left: 5px;
+}
