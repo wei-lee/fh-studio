@@ -307,7 +307,7 @@ var store = {
 
         self.setIcon(list_item.find('img'), store_item.icon);
        
-        list_item.find('.show_store_item').unbind().click(function() {
+        list_item.unbind().click(function() {
           self.showStoreItem(store_item);
         });
       
