@@ -144,7 +144,7 @@ var store = {
     }
     
     this.deviceId = $.cookie(this.deviceIdCookie);
-    if (!deviceId) {
+    if (!this.deviceId) {
         this.deviceId = this.generateDeviceId();
         $.cookie(this.deviceIdCookie, this.deviceId);
     }
