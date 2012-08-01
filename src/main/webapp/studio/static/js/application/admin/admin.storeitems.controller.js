@@ -94,10 +94,9 @@ Admin.Storeitems.Controller = Controller.extend({
       }
       list_item.find('.delete_store_item').unbind().click(function() {
         var guid = store_item.guid;
-        var okay = confirm("Are you sure you want to delete this Store Item?");
-        if (okay) {
+        self.showBooleanModal('Are you sure you want to delete this Store Item?', function () {
           self.deleteStoreItem(guid);
-        }
+        });
       });
 
       list_item.find('.edit_store_item').unbind().click(function() {
@@ -113,9 +112,10 @@ Admin.Storeitems.Controller = Controller.extend({
   deleteStoreItem: function(guid) {
     var self = this;
     this.models.store_item.remove(guid, function(res) {
-      console.log('delete StoreItem: OK');
+      self.showAlert('success', "Store Item successfully deleted", self.views.store_items);
       self.showStoreItems();
     }, function(err) {
+      self.showAlert('error', err, self.views.store_items);
       self.showStoreItems();
       console.log(err);
     });
@@ -365,7 +365,7 @@ Admin.Storeitems.Controller = Controller.extend({
     var guid = $('.item_guid', container).val();
 
     this.models.store_item.update(guid, name, item_id, description, auth_policies, function(res) {
-      console.log('update StoreItem: OK');
+      self.showAlert('success', "Store Item successfully updated", self.views.store_items);
       self.showStoreItems();
     }, function(err) {
       console.log(err);
@@ -387,8 +387,11 @@ Admin.Storeitems.Controller = Controller.extend({
     // Assigned first
     $.each(assigned, function(i, guid) {
       var name = map[guid];
-      var option = $('<option>').val(guid).text(name);
-      assigned_select.append(option);
+      // Check if policy exists still
+      if (name) {
+        var option = $('<option>').val(guid).text(name);
+        assigned_select.append(option);
+      }
     });
 
     // Available, minus assigned
@@ -446,7 +449,7 @@ Admin.Storeitems.Controller = Controller.extend({
     var auth_policies = this._selectedAuthPolicies(container);
 
     this.models.store_item.create(name, item_id, description, auth_policies, function(res) {
-      console.log('create StoreItem: OK');
+      self.showAlert('success', "Store Item successfully created", self.views.store_items);
       self.showStoreItems();
     }, function(err) {
       self.showAlert('error', err, self.views.store_item_create);
