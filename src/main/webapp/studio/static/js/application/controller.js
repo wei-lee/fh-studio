@@ -14,6 +14,10 @@ var Controller = Class.extend({
     // generic hide
   },
 
+  reset: function() {
+    // generic reset - resets all views
+  },
+
   // Generic Swap select controller
   bindSwapSelect: function(container) {
     $(container).find('.swap-select').each(function(i, item){

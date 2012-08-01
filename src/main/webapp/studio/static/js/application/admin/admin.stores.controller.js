@@ -39,6 +39,7 @@ Admin.Stores.Controller = Controller.extend({
     $.each(this.views, function(k, v) {
       $(v).hide();
     });
+    this.reset();
   },
 
   show: function() {
@@ -67,6 +68,12 @@ Admin.Stores.Controller = Controller.extend({
       }, true);
     }, function() {
       self.showAlert('error', "Error loading App Store");
+    });
+  },
+
+  reset: function() {
+    $.each(this.views, function(k, v) {
+      $(v).hide();
     });
   },
 

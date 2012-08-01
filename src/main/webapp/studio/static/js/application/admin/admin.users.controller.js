@@ -35,6 +35,13 @@ Admin.Users.Controller = Controller.extend({
     this.showUsersList();
   },
 
+  reset: function() {    
+    $.each(this.views, function(k, v) {
+      $('input[type=text],input[type=email],input[type=password], textarea', v).val('');
+      $('input[type=checkbox]', v).removeAttr('checked');
+    });
+  },
+
   pageChange: function() {
     this.bindUserControls();
   },
@@ -43,6 +50,7 @@ Admin.Users.Controller = Controller.extend({
     $.each(this.views, function(k, v) {
       $(v).hide();
     });
+    this.reset();
   },
 
   // type: error|success|info
