@@ -345,7 +345,7 @@ var store = {
       self.showList();
     }).show();
 
-    console.log("Store Item: " + JSON.stringify(store_item));
+    // console.log("Store Item: " + JSON.stringify(store_item));
     // iterate through store_item.targets and add a button for each iOS, iPhone, iPad...
     $('.btn_device_install', show_item_view).hide();
     $.each(store_item.binaries, function(i, v) {
