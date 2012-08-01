@@ -191,13 +191,21 @@ var store = {
     }
   },
 
+  removeQueryString: function(fullUri) {
+    var parts = fullUri.split(/\?/);
+    return parts[0];
+  },
+  
   login: function(pol_type, pol_id) {
     var self = this;
     this.hide();
     console.log("calling $fh.auth() with auth_policy type: " + pol_type + ", and id: " + pol_id);
 
+    var redirectTo = self.removeQueryString(window.location.href);
+    console.log('should redirect to: ' + redirectTo);
+
     if (pol_type === 'OAUTH2') {
-      self.models.auth.auth(pol_id, self.storeInfo.guid, window.location.href, {}, function(res) {
+      self.models.auth.auth(pol_id, self.storeInfo.guid, redirectTo, {}, function(res) {
         if (res && res.url) {
           window.location = res.url; // redirect to location specified by auth call
         } else {
@@ -219,12 +227,15 @@ var store = {
     var pol_username = $('#store_login_policy_username').val();
     var pol_password = $('#store_login_policy_password').val();
 
-    self.models.auth.auth(pol_id, self.storeInfo.guid, window.location.href, {
+    var redirectTo = self.removeQueryString(window.location.href);
+    console.log('should redirect to: ' + redirectTo);
+
+    self.models.auth.auth(pol_id, self.storeInfo.guid, redirectTo, {
       userId: pol_username,
       password: pol_password
     }, function(res) {
       if (res && res.sessionToken) {
-        window.location = window.location.href + "?fh_auth_session=" + res.sessionToken; // redirect to location specified by auth call
+        window.location = redirectTo + "?fh_auth_session=" + res.sessionToken; // redirect to location specified by auth call
       } else {
         self.showAlert("error", "Not authorised - no sessionToken returned");
         self.showLogin();
