@@ -370,10 +370,15 @@ var store = {
     $.each(store_item.binaries, function(i, v) {
       console.log("Store Item(" + i + "): " + JSON.stringify(v));
       $('.btn_device_install', show_item_view).filter('.' + v.type).attr("href", v.url).show().unbind().click(function(e) {
-        $('iframe').remove();
-        var iframe = $('<iframe>').attr('src', '_blank').attr('src', v.url).hide();
-        $(this).append(iframe);
-        return false;
+        if (v.type === 'android') {
+          return true;
+        } else {
+          // iOS way
+          $('iframe').remove();
+          var iframe = $('<iframe>').attr('src', '_blank').attr('src', v.url).hide();
+          $(this).append(iframe);
+          return false;
+        }
       });
     });
 
