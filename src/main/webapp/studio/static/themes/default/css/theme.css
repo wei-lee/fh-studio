@@ -3042,6 +3042,12 @@ input[disabled],select[disabled],textarea[disabled],input[readonly],select[reado
   margin-right: 5px;
 }
 
+form .required label:after {
+  color: #e32;
+  content: ' *';
+  display: inline;
+}
+
 legend { border-bottom: none; }
 
 /* DataTables styling for Bootstrap */
@@ -3277,8 +3283,8 @@ table.dataTable th:active {
   -moz-border-radius: 25px;
   border-radius: 25px;
   box-shadow: 0 4px 3px rgba(0, 0, 0, .25), 0 -1px 1px rgba(153, 153, 153, .2);
-  width: 128px;
-  height: 128px;
+  width: 100px;
+  height: 100px;
 }
 
 #apps_layout, #account_layout, #reporting_layout, #home_layout {

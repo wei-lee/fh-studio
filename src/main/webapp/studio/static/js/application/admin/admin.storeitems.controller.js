@@ -83,7 +83,7 @@ Admin.Storeitems.Controller = Controller.extend({
     list.find('li').remove();
 
     $.each(store_items, function(i, store_item) {
-      var list_item = $(self.views.store_item).clone().show().removeAttr('id');
+      var list_item = $(self.views.store_item).clone().show().removeAttr('id').removeClass('hidden_template');
       list_item.data('store_item', store_item);
       list_item.find('.details h3').text(store_item.name);
       list_item.find('.details p').text(store_item.description);
