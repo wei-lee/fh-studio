@@ -173,19 +173,6 @@ var store = {
     this.hide();
     $(this.views.loading).show();
   },
-
-  do_auth: function(options, cbSuccess, cbFailure) {
-  //$fh.auth
-  //  if (options.type === "auth_policy_global_unique_id_1") {
-  //      return cbSuccess({authorised: false, msg: "Pol 1 always fails"});
-  //  } else if (options.type === "martins_auth") {
-        return cbSuccess({authorised: true, msg: "Pol 2 always succeeds"});
-  //  } else if (options.type === "auth_policy_global_unique_id_3") {
-  //      return cbSuccess({authorised: false, msg: "Pol 3 always fails"});
-  //  } else {
-  //    return cbFailure("Unknown auth policy: " + options.type);
-  //  }            
-  },
   
   // type: error|success|info
   showAlert: function (type, message) {
@@ -210,12 +197,6 @@ var store = {
     this.hide();
     console.log("calling $fh.auth() with auth_policy type: " + pol_type + ", and id: " + pol_id);
 
-//    if authType == ldap || authType == feedhenry then
-//        show screen for user name and password
-//        do auth call with params
-//        get sessionId
-//        redirect to window.location + "?fh_auth_session=" + sessionId;
-
     if (pol_type === 'OAUTH2') {  
         self.models.auth.auth(pol_id, self.storeInfo.guid, window.location.href, {}, function (res) {
             if (res && res.url) {
@@ -238,7 +219,7 @@ var store = {
     var pol_id = $('#store_login_policy_id').val();
     var pol_username = $('#store_login_policy_username').val();
     var pol_password = $('#store_login_policy_password').val();
-    self.models.auth.auth(pol_id, self.storeInfo.guid, window.location.href, {username: pol_username, password:pol_password}, function (res) {
+    self.models.auth.auth(pol_id, self.storeInfo.guid, window.location.href, {userId: pol_username, password:pol_password}, function (res) {
         if (res && res.sessionId) {
           window.location = window.location.href + "?fh_auth_session=" + res.sessionId;  // redirect to location specified by auth call
         } else {
