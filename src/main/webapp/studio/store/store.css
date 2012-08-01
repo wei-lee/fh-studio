@@ -125,12 +125,13 @@ body {
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#252525', endColorstr='#000000',GradientType=0 ); /* IE6-9 */
 }
 
-.page-header h2 {
+.page-header .appstore_name {
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   line-height: 36px;
+  font-size: 18px;
 }
 
 .alerts { margin-top: 10px; }
