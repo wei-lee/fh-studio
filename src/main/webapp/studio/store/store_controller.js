@@ -4,10 +4,10 @@ var store = {
   models: {
     store_item: new model.StoreItemConsumer(),
     store_info: new model.StoreInfo(),
-    auth:       new model.Auth()
+    auth: new model.Auth()
   },
 
-  views:  {
+  views: {
     loading: "#store_loading",
     login: "#store_login",
     list: "#store_list",
@@ -19,33 +19,33 @@ var store = {
 
   authSession: null,
   authSessionCookie: 'appStoreAuthSession',
-  
+
   storeInfo: null,
-  
+
   allowedBinaryTypes: null,
-  
+
   alert_timeout: 2000,
 
   setStoreName: function(name) {
-    $('.appstore_name').each(function (i) {
-        $(this).html(name);
+    $('.appstore_name').each(function(i) {
+      $(this).html(name);
     });
   },
-    
+
   getAllowedBinaryTypes: function() {
     var typeMap = {
-        iphone:  ['iphone', 'ios'],
-        ipad:    ['iphone', 'ipad', 'ios'],
-        android: ['android'],
-        unknown: ['iphone', 'ipad', 'ios', 'android']
+      iphone: ['iphone', 'ios'],
+      ipad: ['iphone', 'ipad', 'ios'],
+      android: ['android'],
+      unknown: ['iphone', 'ipad', 'ios', 'android']
     };
-    
+
     var deviceType = this.identifyDevice();
-         
+
     return typeMap[deviceType];
   },
-  
-  populateStoreInfo: function (info) {
+
+  populateStoreInfo: function(info) {
     var self = this;
     self.storeInfo = info;
     self.setStoreName(info.name);
@@ -54,8 +54,8 @@ var store = {
     } else {
       $('.appstore_icon').attr('src', '/studio/static/themes/default/img/store_no_icon.png');
     }
-    if(info.authpolicies.length > 0) {
-      $.each(info.authpolicies, function (i, item) {
+    if (info.authpolicies.length > 0) {
+      $.each(info.authpolicies, function(i, item) {
         var imgIcon = '<img class=\"auth_icon\" src=\"/studio/static/themes/default/img/store_no_icon.png\" />';
         if (item.iconData && (item.iconData !== '')) {
           imgIcon = '<img src=\"data:image/png;base64,' + item.icon + '\" class=\"auth_icon\" />';
@@ -76,27 +76,26 @@ var store = {
 
         $('#auth_policy_actions').append(authPolRow).append('<br/>');
       });
-      self.bindLoginControls();  
+      self.bindLoginControls();
     } else { // no auth policies defined
       self.showAlert("error", "App Store not available");
     }
   },
-    
+
   getStoreInfo: function() {
     var self = this;
-    self.models.store_info.getInfo(function (results) {
-        self.populateStoreInfo(results);
-        self.show();
-    },
-    function (results) {
-       self.setStoreName("App Store Not Available");
-       self.show();
+    self.models.store_info.getInfo(function(results) {
+      self.populateStoreInfo(results);
+      self.show();
+    }, function(results) {
+      self.setStoreName("App Store Not Available");
+      self.show();
     });
   },
-  
+
   bindLoginControls: function() {
     var self = this;
-    
+
     // Choose and auth policy
     $('#store_login .auth_policy_select_btn').unbind().click(function() {
       var auth_policy_id = $(this).attr('data-auth-policy-id');
@@ -111,24 +110,24 @@ var store = {
     });
 
     // Logout
-    $('.logout_button').unbind().click(function () {
+    $('.logout_button').unbind().click(function() {
       self.authSession = null;
       $.cookie(self.authSessionCookie, null);
       self.showLogin();
       // TODO: remove session stuff too
     });
   },
-    
+
   init: function(queryParams) {
     console.log("store:init() - queryParams: " + JSON.stringify(queryParams));
     if (queryParams && queryParams.fh_auth_session) {
-        this.authSession = queryParams.fh_auth_session;
-        $.cookie(this.authSessionCookie, this.authSession);
-        console.log("store:init() authSession: " + this.authSession);
+      this.authSession = queryParams.fh_auth_session;
+      $.cookie(this.authSessionCookie, this.authSession);
+      console.log("store:init() authSession: " + this.authSession);
     } else if ($.cookie(this.authSessionCookie) != null) {
       this.authSession = $.cookie(this.authSessionCookie);
     } else {
-        console.log("store:init() - no query params");
+      console.log("store:init() - no query params");
     }
     $fw.server = new ServerManager();
     this.bindLoginControls();
@@ -136,7 +135,7 @@ var store = {
     this.show();
     this.getStoreInfo();
   },
-  
+
   hide: function() {
     $.each(this.views, function(k, v) {
       $(v).hide();
@@ -144,9 +143,9 @@ var store = {
     $('.back_button').hide(); // hidden on most screens
     $('.logout_button').show(); // visible on most screens
   },
-  
+
   show: function() {
-    if(this.storeInfo) {
+    if (this.storeInfo) {
       console.log("store:show() - have store info showing login");
       this.showLogin();
     } else {
@@ -154,8 +153,8 @@ var store = {
       this.showLoading();
     }
   },
-  
-  showLogin: function () {
+
+  showLogin: function() {
     var self = this;
 
     if (self.authSession) { // already authenticated
@@ -167,28 +166,31 @@ var store = {
     $(this.views.login).show();
     $('.logout_button').hide();
   },
-  
-  showLoading: function () {
+
+  showLoading: function() {
     var self = this;
     this.hide();
     $(this.views.loading).show();
   },
 
   do_auth: function(options, cbSuccess, cbFailure) {
-  //$fh.auth
-  //  if (options.type === "auth_policy_global_unique_id_1") {
-  //      return cbSuccess({authorised: false, msg: "Pol 1 always fails"});
-  //  } else if (options.type === "martins_auth") {
-        return cbSuccess({authorised: true, msg: "Pol 2 always succeeds"});
-  //  } else if (options.type === "auth_policy_global_unique_id_3") {
-  //      return cbSuccess({authorised: false, msg: "Pol 3 always fails"});
-  //  } else {
-  //    return cbFailure("Unknown auth policy: " + options.type);
-  //  }            
+    //$fh.auth
+    //  if (options.type === "auth_policy_global_unique_id_1") {
+    //      return cbSuccess({authorised: false, msg: "Pol 1 always fails"});
+    //  } else if (options.type === "martins_auth") {
+    return cbSuccess({
+      authorised: true,
+      msg: "Pol 2 always succeeds"
+    });
+    //  } else if (options.type === "auth_policy_global_unique_id_3") {
+    //      return cbSuccess({authorised: false, msg: "Pol 3 always fails"});
+    //  } else {
+    //    return cbFailure("Unknown auth policy: " + options.type);
+    //  }            
   },
-  
+
   // type: error|success|info
-  showAlert: function (type, message) {
+  showAlert: function(type, message) {
     var self = this;
     var alerts_area = $('.alerts');
     var alert = $('<div>').addClass('alert fade in alert-' + type).html(message);
@@ -198,36 +200,35 @@ var store = {
     // only automatically hide alert if it's not an error
     if ('error' !== type) {
       setTimeout(function() {
-        alert.slideUp(function () {
+        alert.slideUp(function() {
           alert.remove();
         });
       }, self.alert_timeout);
     }
   },
-  
-  login: function (pol_type, pol_id) {
+
+  login: function(pol_type, pol_id) {
     var self = this;
     this.hide();
     console.log("calling $fh.auth() with auth_policy type: " + pol_type + ", and id: " + pol_id);
 
-//    if authType == ldap || authType == feedhenry then
-//        show screen for user name and password
-//        do auth call with params
-//        get sessionId
-//        redirect to window.location + "?fh_auth_session=" + sessionId;
-
-    if (pol_type === 'OAUTH2') {  
-        self.models.auth.auth(pol_id, self.storeInfo.guid, window.location.href, {}, function (res) {
-            if (res && res.url) {
-              window.location = res.url;  // redirect to location specified by auth call
-            } else {
-              self.showAlert("error", "Not authorised - no url returned");
-              self.showLogin();
-            }
-        }, function (msg) {
-           self.showAlert("error", "Not authorised - Error from server: " + msg);
-           self.showLogin();
-        });
+    //    if authType == ldap || authType == feedhenry then
+    //        show screen for user name and password
+    //        do auth call with params
+    //        get sessionId
+    //        redirect to window.location + "?fh_auth_session=" + sessionId;
+    if (pol_type === 'OAUTH2') {
+      self.models.auth.auth(pol_id, self.storeInfo.guid, window.location.href, {}, function(res) {
+        if (res && res.url) {
+          window.location = res.url; // redirect to location specified by auth call
+        } else {
+          self.showAlert("error", "Not authorised - no url returned");
+          self.showLogin();
+        }
+      }, function(msg) {
+        self.showAlert("error", "Not authorised - Error from server: " + msg);
+        self.showLogin();
+      });
     } else {
       self.showUserPassLogin(pol_id);
     }
@@ -238,20 +239,23 @@ var store = {
     var pol_id = $('#store_login_policy_id').val();
     var pol_username = $('#store_login_policy_username').val();
     var pol_password = $('#store_login_policy_password').val();
-    self.models.auth.auth(pol_id, self.storeInfo.guid, window.location.href, {username: pol_username, password:pol_password}, function (res) {
-        if (res && res.sessionId) {
-          window.location = window.location.href + "?fh_auth_session=" + res.sessionId;  // redirect to location specified by auth call
-        } else {
-          self.showAlert("error", "Not authorised - no sessionid returned");
-          self.showLogin();
-        }
-    }, function (msg) {
-       self.showAlert("error", "Not authorised - Error from server: " + msg);
-       self.showLogin();
+    self.models.auth.auth(pol_id, self.storeInfo.guid, window.location.href, {
+      username: pol_username,
+      password: pol_password
+    }, function(res) {
+      if (res && res.sessionId) {
+        window.location = window.location.href + "?fh_auth_session=" + res.sessionId; // redirect to location specified by auth call
+      } else {
+        self.showAlert("error", "Not authorised - no sessionid returned");
+        self.showLogin();
+      }
+    }, function(msg) {
+      self.showAlert("error", "Not authorised - Error from server: " + msg);
+      self.showLogin();
     });
 
   },
-  
+
   showUserPassLogin: function(pol_id) {
     var self = this;
     $('#store_login_policy_id').val(pol_id);
@@ -259,12 +263,12 @@ var store = {
     $('#store_login_policy_password').attr('placeholder', "Password");
     $(this.views.user_password).show();
   },
-  
+
   showList: function() {
     var self = this;
     this.hide();
     console.log("store:showList() - getting store item list");
-    
+
     this.models.store_item.list(self.authSession, self.allowedBinaryTypes, function(res) {
       var store_items = res.list;
       console.log("store:showList() - rendering list");
@@ -277,18 +281,18 @@ var store = {
       self.showLogin();
     }, true);
   },
-  
+
   identifyDevice: function() {
     var device = "unknown";
-    
+
     if (navigator.userAgent.match(/Android/i)) {
-        device = "android";
+      device = "android";
     } else if (navigator.userAgent.match(/iPhone/i)) {
-        device = "iphone";
+      device = "iphone";
     } else if (navigator.userAgent.match(/iPod/i)) {
-        device = "iphone";
+      device = "iphone";
     } else if (navigator.userAgent.match(/iPad/i)) {
-        device = "ipad";
+      device = "ipad";
     }
     return device;
   },
@@ -297,7 +301,7 @@ var store = {
     var self = this;
     var list = $(this.views.list);
 
-    if(store_items.length > 0) {
+    if (store_items.length > 0) {
       list.find('.store_item, h5').remove();
       $.each(store_items, function(i, store_item) {
         var list_item = $(self.views.store_item).clone().show().removeAttr('id');
@@ -305,11 +309,11 @@ var store = {
         list_item.find('.details h3').text(store_item.name);
 
         self.setIcon(list_item.find('img'), store_item.icon);
-       
+
         list_item.unbind().click(function() {
           self.showStoreItem(store_item);
         });
-      
+
         list_item.appendTo(list);
       });
       ellipsisDescriptions();
@@ -317,14 +321,14 @@ var store = {
     $(this.views.list).show();
   },
 
-  setIcon: function (iconTag, iconData) {
-      if (iconData !== '') {
-        iconTag.attr('src', 'data:image/png;base64,' + iconData);
-      } else {
-        iconTag.attr('src', '/studio/static/themes/default/img/store_no_icon.png');
-      }
+  setIcon: function(iconTag, iconData) {
+    if (iconData !== '') {
+      iconTag.attr('src', 'data:image/png;base64,' + iconData);
+    } else {
+      iconTag.attr('src', '/studio/static/themes/default/img/store_no_icon.png');
+    }
   },
-  
+
   showStoreItem: function(store_item) {
     var self = this;
     this.hide();
@@ -335,43 +339,45 @@ var store = {
     $('.item_id', show_item_view).text(store_item.authToken);
     $('.item_description', show_item_view).text(store_item.description);
     self.setIcon(show_item_view.find('img'), store_item.icon);
-    
+
     show_item_view.show();
-    $('.back_button').unbind().bind('click', function () {
+    $('.back_button').unbind().bind('click', function() {
       self.showList();
     }).show();
-          
+
     console.log("Store Item: " + JSON.stringify(store_item));
     // iterate through store_item.targets and add a button for each iOS, iPhone, iPad...
     $('.btn_device_install', show_item_view).hide();
-    $.each(store_item.binaries, function(i,v) {
+    $.each(store_item.binaries, function(i, v) {
       console.log("Store Item(" + i + "): " + JSON.stringify(v));
-      $('.btn_device_install', show_item_view).filter('.'+v.type).attr("href",v.url).show().unbind().click(function(e) {
+      $('.btn_device_install', show_item_view).filter('.' + v.type).attr("href", v.url).show().unbind().click(function(e) {
         return true;
       });
     });
-    
+
     $('.install_store_item', show_item_view);
   }
-  
+
 };
 
 function init() {
   function getQueryString() {
-    var result = {}, queryString = location.search.substring(1);
-    var re = /([^&=]+)=([^&]*)/g, m;
+    var result = {},
+      queryString = location.search.substring(1);
+    var re = /([^&=]+)=([^&]*)/g,
+      m;
 
     while (m = re.exec(queryString)) {
       result[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
     }
-    
+
     console.log("getQueryString queryString = " + queryString);
     console.log("getQueryString result = " + result);
     return result;
   }
   var queryParams = getQueryString();
-  
-  store.init(queryParams);    
+
+  store.init(queryParams);
 }
 
 function ellipsisDescriptions() {
@@ -379,12 +385,12 @@ function ellipsisDescriptions() {
 }
 
 var resizeThrottleTimeout = null;
-$(window).on('resize', function () {
+$(window).on('resize', function() {
   console.log('resize' + Date.now());
   if (resizeThrottleTimeout !== null) {
     clearTimeout(resizeThrottleTimeout);
   }
-  resizeThrottleTimeout = setTimeout(function () {
+  resizeThrottleTimeout = setTimeout(function() {
     console.log('resize FIRED' + Date.now());
     ellipsisDescriptions();
   }, 100);
