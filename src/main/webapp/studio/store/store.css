@@ -211,3 +211,16 @@ body {
   display: block;
   margin-bottom: 20px;
 }
+
+.store_detail .icon_container {
+  border-bottom: 1px solid #DDD;
+  margin-bottom: 10px;
+}
+
+#store_loading { 
+  text-align: center;
+  background: -moz-linear-gradient(#FAFAFA,#E0E0E0);
+  background: -webkit-linear-gradient(#FAFAFA,#E0E0E0);
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#fafafa',endColorstr='#e0e0e0')";
+  border: 1px solid #cccccc;
+}
