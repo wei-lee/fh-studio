@@ -42,6 +42,7 @@ model.User = model.Model.extend({
 
   create: function(id, email, name, roles, policies, groups, storeitems, password, activated, invite,  success, fail) {
     var url = Constants.ADMIN_USER_CREATE_URL;
+    debugger;
     var params = {
       "username": id,
       "activated": activated,
@@ -66,8 +67,8 @@ model.User = model.Model.extend({
       params.roles = roles;
     }
 
-    if (authpolicies != null) {
-      params.authpolicies = authpolicies;
+    if (policies != null) {
+      params.authpolicies = policies;
     }
 
     if (groups != null) {

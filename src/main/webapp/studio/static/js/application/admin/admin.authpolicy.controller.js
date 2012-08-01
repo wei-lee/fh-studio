@@ -25,6 +25,7 @@ Admin.Authpolicy.Controller = Controller.extend({
   },
 
   policy_table: null,
+  alert_timeout: 3000,
 
   hide: function() {
     $.each(this.views, function(k, v) {
@@ -278,8 +279,6 @@ Admin.Authpolicy.Controller = Controller.extend({
     }
   },
   
-  alert_timeout: 10000,
-
   showAlert: function (type, message) {
     var self = this;
     var alerts_area = $('#auth_policies_alerts');
