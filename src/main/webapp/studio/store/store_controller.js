@@ -366,12 +366,10 @@ function ellipsisDescriptions() {
 
 var resizeThrottleTimeout = null;
 $(window).on('resize', function() {
-  console.log('resize' + Date.now());
   if (resizeThrottleTimeout !== null) {
     clearTimeout(resizeThrottleTimeout);
   }
   resizeThrottleTimeout = setTimeout(function() {
-    console.log('resize FIRED' + Date.now());
     ellipsisDescriptions();
   }, 100);
 });

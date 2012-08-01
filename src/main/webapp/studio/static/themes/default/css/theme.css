@@ -3370,3 +3370,17 @@ table.dataTable th:active {
   width: 64px;
   height: 64px;
 }
+
+/* Swap select */
+.swap-select .span1 button {
+  display: block;
+  margin: auto;
+}
+
+.swap-select .span1 button.add {
+  margin-top: 46px;
+}
+
+.swap-select .span1 button.remove {
+  margin-top: 5px;
+}
