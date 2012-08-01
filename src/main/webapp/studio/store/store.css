@@ -167,12 +167,10 @@ body {
 
 .logout_button {
   margin: 4px 5px 0 0;
-  width: 81px;
 }
 
 .back_button { 
   margin: 4px 0 0 5px;
-  width: 81px;
 }
 
 .store_item.well, #store_detail .well {
