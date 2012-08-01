@@ -5,13 +5,12 @@ model.Auth = model.Model.extend({
 
   init: function () {},
 
-  auth: function (policyId, clientToken, endRedirectUrl, params, success, fail) {
+  auth: function (policyId, clientToken, endRedirectUrl, params, deviceId, success, fail) {
     var MAM_AUTH_URL = '/box/srv/1.1/admin/authpolicy/auth';
-    deviceID = "123456789012345678901234";
     var authParams = {
       policyId: policyId,
       clientToken: clientToken,
-      device: deviceID,
+      device: deviceId,
       endRedirectUrl: endRedirectUrl,
       params: params
     };

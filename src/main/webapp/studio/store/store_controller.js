@@ -19,6 +19,7 @@ var store = {
 
   authSession: null,
   authSessionCookie: 'appStoreAuthSession',
+  deviceIdCookie: 'deviceId',
 
   storeInfo: null,
 
@@ -118,6 +119,18 @@ var store = {
     });
   },
 
+  generateDeviceId: function() {
+    var s = [];
+    var hexDigitals = "0123456789ABCDEF";
+    for (var i = 0; i < 32; i++) {
+      s[i] = hexDigitals.substr(Math.floor(Math.random() * 0x10), 1);
+    }
+    s[12] = "4";
+    s[16] = hexDigitals.substr((s[16] & 0x3) | 0x8, 1);
+    var uuid = s.join("");
+    return uuid;
+  },
+  
   init: function(queryParams) {
     console.log("store:init() - queryParams: " + JSON.stringify(queryParams));
     if (queryParams && queryParams.fh_auth_session) {
@@ -129,6 +142,13 @@ var store = {
     } else {
       console.log("store:init() - no query params");
     }
+    
+    this.deviceId = $.cookie(this.deviceIdCookie);
+    if (!deviceId) {
+        this.deviceId = this.generateDeviceId();
+        $.cookie(this.deviceIdCookie, this.deviceId);
+    }
+    
     if (queryParams && queryParams.message) {
         var message = queryParams.message;
         var level = 'info'; // default to info
@@ -213,7 +233,7 @@ var store = {
     console.log('should redirect to: ' + redirectTo);
 
     if (pol_type === 'OAUTH2') {
-      self.models.auth.auth(pol_id, self.storeInfo.guid, redirectTo, {}, function(res) {
+      self.models.auth.auth(pol_id, self.storeInfo.guid, redirectTo, {}, self.deviceId, function(res) {
         if (res && res.url) {
           window.location = res.url; // redirect to location specified by auth call
         } else {
@@ -241,7 +261,7 @@ var store = {
     self.models.auth.auth(pol_id, self.storeInfo.guid, redirectTo, {
       userId: pol_username,
       password: pol_password
-    }, function(res) {
+    }, self.deviceId, function(res) {
       if (res && res.sessionToken) {
         window.location = redirectTo + "?fh_auth_session=" + res.sessionToken; // redirect to location specified by auth call
       } else {
