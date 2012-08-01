@@ -387,8 +387,11 @@ Admin.Storeitems.Controller = Controller.extend({
     // Assigned first
     $.each(assigned, function(i, guid) {
       var name = map[guid];
-      var option = $('<option>').val(guid).text(name);
-      assigned_select.append(option);
+      // Check if policy exists still
+      if (name) {
+        var option = $('<option>').val(guid).text(name);
+        assigned_select.append(option);
+      }
     });
 
     // Available, minus assigned
