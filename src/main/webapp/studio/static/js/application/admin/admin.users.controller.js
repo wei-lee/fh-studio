@@ -450,7 +450,7 @@ Admin.Users.Controller = Controller.extend({
     var activated = true;
     self.showAlert('info', '<strong>Creating User</strong> (' + id + ')');
     this.models.user.create(id, email, name, roles, policies, groups, storeitems, password, activated, invite, function(res) {
-      if (res.warning) {
+      if (res.message === 'user_invalid_email') {
         self.showAlert('info', '<strong>Warning - invalid user email</strong> (' + id + ')');
       }
       self.showUsersList();
