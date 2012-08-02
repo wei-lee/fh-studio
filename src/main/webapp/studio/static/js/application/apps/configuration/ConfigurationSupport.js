@@ -119,7 +119,7 @@ application.ConfigurationSupport = Class.extend({
   postProcessVal: function(config_name, config_val) {
     if (config_name === 'app Id' && config_val === '') {
       var app_title = $fw_manager.data.get('inst').title;
-      app_title = "com.feedhenry." + app_title.replace(/^a-zA-Z0-9\\./g,'.');
+      app_title = "com.feedhenry." + app_title.replace(/[^a-zA-Z0-9\\.]/g,'.');
       return app_title;
     } else {
       return config_val;
