@@ -41,6 +41,7 @@ Admin.Devices.Controller = Controller.extend({
   },
 
   show: function(){
+    this.hideAlerts();
     this.showDeviceList();
   },
 

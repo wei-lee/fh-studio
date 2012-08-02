@@ -21,6 +21,7 @@ Admin.Storeitems.Controller = Controller.extend({
 
   show: function(e) {
     var self = this;
+    this.hideAlerts();
     this.showStoreItems();
   },
 

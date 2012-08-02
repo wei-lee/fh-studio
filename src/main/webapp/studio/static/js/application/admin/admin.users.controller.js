@@ -30,6 +30,7 @@ Admin.Users.Controller = Controller.extend({
 
   show: function (e) {
     // TODO: stateful restore i.e. $fw.state
+    this.hideAlerts();
     this.showUsersList();
   },
 
