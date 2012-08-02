@@ -15,7 +15,7 @@ body {
 
 /* Padding for fixed header */
 .page_container {
-  padding-top: 57px;
+  padding: 42px 5px 10px 5px;
 }
 
 /* Store Items */
@@ -63,6 +63,8 @@ body {
   height: 100%;
   max-width: 64px;
   max-height: 64px;
+  min-width: 64px;
+  min-height: 64px;
 }
 
 .store_item {
@@ -77,6 +79,14 @@ body {
   -moz-border-radius: 5px;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.store_item .name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 15px;
+  font-weight: normal;
 }
 
 .store_item:last-child {
@@ -223,4 +233,16 @@ body {
   background: -webkit-linear-gradient(#FAFAFA,#E0E0E0);
   -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#fafafa',endColorstr='#e0e0e0')";
   border: 1px solid #cccccc;
+}
+
+.store_item .icon_container {
+  float: left;
+}
+
+.store_item .details .name {
+  padding-left: 7px;
+}
+
+.store_item .controls {
+  float: right;
 }
