@@ -21,6 +21,7 @@ Admin.Storeitems.Controller = Controller.extend({
 
   show: function(e) {
     var self = this;
+    this.hideAlerts();
     this.showStoreItems();
   },
 
@@ -33,7 +34,7 @@ Admin.Storeitems.Controller = Controller.extend({
 
   reset: function() {
     $.each(this.views, function(k, v) {
-      $('input[type=text],input[type=email],input[type=password], textarea', v).val('');
+      $('input[type=text],input[type=email],input[type=password], input[type=file], textarea', v).val('');
       $('input[type=checkbox]', v).removeAttr('checked');
     });
   },

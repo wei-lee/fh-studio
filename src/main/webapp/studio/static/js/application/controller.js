@@ -18,6 +18,14 @@ var Controller = Class.extend({
     // generic reset - resets all views
   },
 
+  hideAlerts: function() {
+    if (typeof this.views !== 'undefined') {
+      $.each(this.views, function(k, v) {
+        $('.alerts .alert', v).remove();
+      });
+    }
+  },
+
   // Generic Swap select controller
   bindSwapSelect: function(container) {
     $(container).find('.swap-select').each(function(i, item){
