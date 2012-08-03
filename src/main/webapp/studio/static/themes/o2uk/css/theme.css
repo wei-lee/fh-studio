@@ -19,10 +19,6 @@ button {
   height: 370px;
 }
 
-#main_tabs_buttons {
-  padding-left: 150px !important;
-}
-
 #main_layout_center {
   top: 95px !important;
 }
@@ -325,7 +321,8 @@ li.ui-state-active a {
 .container-header-content {
   padding: 0;
   margin: 0;
-  background: #fff;
+  background: #fff !important;
+  filter: none !important;
 }
 
 .container-title {
@@ -336,6 +333,7 @@ li.ui-state-active a {
 
 .fh_breadcrumb-wrapper .fh_breadcrumb-nolink, .breadcrumb li a, .breadcrumb li {
   color: #005896 !important;
+  filter: none !important;
 }
 
 .breadcrumb {
