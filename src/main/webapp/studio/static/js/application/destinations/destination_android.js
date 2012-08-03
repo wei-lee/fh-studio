@@ -70,10 +70,5 @@ application.DestinationAndroid = application.DestinationGeneral.extend({
       } else {
           wizard.find("#app_publish_android_versions").attr('next', 'app_publish_android_progress');
       }
-  },
-
-  getOTALink: function(download_url, cb) {
-    var url = download_url;
-    this.getShortenUrl(download_url, cb);
   }
 });

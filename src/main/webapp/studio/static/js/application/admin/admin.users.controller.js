@@ -30,6 +30,7 @@ Admin.Users.Controller = Controller.extend({
 
   show: function (e) {
     // TODO: stateful restore i.e. $fw.state
+    this.hideAlerts();
     this.showUsersList();
   },
 
@@ -449,8 +450,10 @@ Admin.Users.Controller = Controller.extend({
     var activated = true;
     self.showAlert('info', '<strong>Creating User</strong> (' + id + ')');
     this.models.user.create(id, email, name, roles, policies, groups, storeitems, password, activated, invite, function(res) {
-      console.log(res);
       self.showUsersList();
+      if (res.message === 'user_invalid_email') {
+        self.showAlert('info', '<strong>Warning - invalid user email</strong> (' + id + ')');
+      }
       self.showAlert('success', '<strong>Successfully create User</strong> (' + id + ')');
     }, function(e) {
       self.showAlert('error', '<strong>Error creating User</strong> ' + e);

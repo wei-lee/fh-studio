@@ -454,7 +454,7 @@ application.DestinationGeneral = Class.extend({
           html += "<li> <a target='_blank' href='"+ipa_url+"'> Download IPA File </a></li>";
         }
         if(showOTA){
-          that.getShortenUrl(ota_url, function(otalink){
+          that.getOTALink(ota_url, function(otalink){
             html += "<li> OTA Link : <a target='_blank' href='"+otalink+"'>" + otalink + " </a></li></ul>";
             showDownload(html);
           });
@@ -487,6 +487,11 @@ application.DestinationGeneral = Class.extend({
   doPublishWizardSetup: function(main_container, wizard) {
     //abstract interface
     wizard.validate({});
+  },
+
+  getOTALink: function(download_url, cb) {
+    var url = download_url;
+    this.getShortenUrl(download_url, cb);
   },
 
   getShortenUrl: function(url, cb){

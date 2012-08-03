@@ -42,6 +42,7 @@ Admin.Stores.Controller = Controller.extend({
   },
 
   show: function() {
+    this.hideAlerts();
     var self = this;
     self.models.app_store.read(function(app_store_res) {
       $('.store_guid', self.views.app_store).val(app_store_res.guid);
