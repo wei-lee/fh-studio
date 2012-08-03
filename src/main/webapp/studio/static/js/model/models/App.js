@@ -69,7 +69,7 @@ model.App = model.Model.extend({
   },
   
   update: function (fields, success, fail) {
-    Log.append('App.update');
+    console.log('App.update');
     var url = Constants.UPDATE_APP_URL;
     var params = fields;
     // TODO: error callback should also happen if update failed, not just if status wasn't 200

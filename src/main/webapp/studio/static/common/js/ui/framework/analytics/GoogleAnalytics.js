@@ -18,7 +18,7 @@ GoogleAnalytics = AnalyticsImpl.extend({
   },
   
   trackEvent : function(pEventInfo) {
-    //Log.append("GoogleAnalytics.trackEvent::" + pEventInfo);
+    //log("GoogleAnalytics.trackEvent::" + pEventInfo);
   }
   
 });

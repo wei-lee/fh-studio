@@ -1,18 +1,17 @@
 application.TemplateManager = Class.extend({
-  support: null,
   
   init: function () {
-    this.support = new application.TemplateSupport();
+    this.initTemplateCloneButton();
   },
   
   doView: function (guid) {
-    Log.append('template.doView');
+    console.log('template.doView');
     $fw_manager.data.set('template_mode', true);
     $fw_manager.client.app.doShowManage(guid);
   },
   
   doClone: function (guid) {
-    Log.append('template.doClone');
+    console.log('template.doClone');
     $fw_manager.client.app.doClone(guid);
   },
   
@@ -22,13 +21,12 @@ application.TemplateManager = Class.extend({
    * and unbind/block anything that can't be hidden and isn't relevant to templates 
    */
   applyPreRestrictions: function () {
-    Log.append('applying template restrictions');
+    console.log('applying template restrictions');
     $('.template-restriction').hide();
   },
   
   applyPostRestrictions: function () {
     // show the template app message
-    $fw_manager.ui.getComponent($fw_manager.client.template, 'template_clone_button');
     manage_apps_layout.open('north');
   },
   
@@ -36,7 +34,7 @@ application.TemplateManager = Class.extend({
    * Exact opposite of applyPreRestrictions
    */
   removePreRestrictions: function () {
-    Log.append('removing template restrictions');
+    console.log('removing template restrictions');
     $('.template-restriction').show();
   },
   
@@ -45,11 +43,9 @@ application.TemplateManager = Class.extend({
     manage_apps_layout.close('north');
   },
   
-  /*
-   * Support functions
-   */
-  
   initTemplateCloneButton: function () {
-    return $fw_manager.client.template.support.initTemplateCloneButton();
+    $('#template_clone_button').unbind().bind('click', function () {
+      $fw.client.app.doClone($fw.data.get('inst').guid);
+    });
   }
 });

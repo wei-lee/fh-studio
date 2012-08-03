@@ -1,4 +1,36 @@
 ===============================================================================
+3.4.0
+-----------------------------------------------------------------------------
+###CHANGES
+* Added App Store consumption UI (/store)
+* Merged ARM Admin and Studio Admin into unified Admin tab
+* Support for MAM
+  * User UI updated with $fh.auth support (data purge/wipe)
+  * Auth Policy UI updated with LDAP and FeedHenry login support, user to policy
+    assignment, and authorisation checks
+  * New App Store Admin UI - users can create and configure an App Store
+  * New Store Item UI - users can create Store Items to associate with 
+    their App Store. These store items can have multiple binaries uploaded
+    for iOS, iPhone, Android & iPad
+  * New Devices UI - shows list of devices/apps accessing $fh.auth API
+
+###NOTES
+*
+
+
+===============================================================================
+3.3.3
+-----------------------------------------------------------------------------
+###CHANGES
+* Add app store consumption UI
+
+###NOTES
+*  update apache rewrite rules to add redirect for /store to /studio/store
+       # App Store
+       RewriteRule ^/store$ /store/ [R]
+       RewriteRule ^/store/(.*)$  /studio/store/$1 [P,L]
+
+===============================================================================
 3.3.2
 -----------------------------------------------------------------------------
 ###CHANGES

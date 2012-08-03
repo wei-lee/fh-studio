@@ -43,7 +43,7 @@ try {
 		</script>
 		<script>
 		if (typeof intercomSettings != 'undefined' && ENVIRONMENT === 'prod') {
-		  Log.append('Intercom initialising');
+		  console.log('Intercom initialising');
 		  (function() {
 		    function async_load() {
 		      var s = document.createElement('script');
@@ -59,7 +59,7 @@ try {
 		    }
 		  })();
     } else {
-      Log.append('Intercom disabled');
+      console.log('Intercom disabled');
     }
 		</script>
 		

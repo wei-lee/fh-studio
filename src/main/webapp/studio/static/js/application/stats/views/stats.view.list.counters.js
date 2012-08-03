@@ -4,7 +4,7 @@ Stats.View.List.Counters = Stats.View.List.extend({
   },
 
   render: function() {
-    Log.append('Rendering List');
+    console.log('Rendering List');
     var self = this;
     $(self.renderTo).empty();
     var all_series = this.model.getAllSeriesNames();

@@ -1,3 +1,6 @@
+*#
+*~
+fhc-debug.log
 src/main/webapp/studio/WEB-INF/classes
 src/main/webapp/studio/WEB-INF/lib
 *.class
@@ -11,3 +14,4 @@ test
 node_modules
 .jshintignore
 .idea/
+TAGS

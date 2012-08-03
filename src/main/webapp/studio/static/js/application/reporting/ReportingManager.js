@@ -18,7 +18,7 @@
       
       self.url = url;
       self.appid = appid;
-      Log.append("set self.appid to: " + appid);
+      console.log("set self.appid to: " + appid);
       
       if ('undefined' === typeof self[metric + '_' + type]) {
         self[metric + '_' + type] = true;
@@ -30,7 +30,7 @@
         
         if ('line' === type) {
           container.find('.appreport-radio').buttonset().bind('change', function () {
-            Log.append('buttonset radio changed: ' + $(this).find(':checked').attr('id'));
+            console.log('buttonset radio changed: ' + $(this).find(':checked').attr('id'));
             if (container.find('.jqplot-target').length > 0) {
               container.find('.appreport-button').trigger('click');
             }
@@ -64,12 +64,12 @@
             params.dest = true;
           }
           
-          Log.append('metrics request: ' + JSON.stringify(params));
+          console.log('metrics request: ' + JSON.stringify(params));
           container.find('.appreport-results').empty();
           
           self.drawChart(type, container, params, self.url, function (err) {
             if (err) {
-              Log.append('drawChart failed: ' + err.code +' :: ' + err.message);
+              console.log('drawChart failed: ' + err.code +' :: ' + err.message);
             } else {
               container.find('.appreport-download-button').data('chart', params);
               

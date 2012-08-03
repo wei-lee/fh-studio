@@ -41,7 +41,7 @@ MixPanelAnalytics = AnalyticsImpl.extend({
   
   trackEvent : function(pEventInfo) {
     if( this.mixPanelActive ) {
-      Log.append("MixPanelAnalytics.trackEvent: active=" + this.mixPanelActive + "; eventInfo=" + pEventInfo);
+      console.log("MixPanelAnalytics.trackEvent: active=" + this.mixPanelActive + "; eventInfo=" + pEventInfo);
       var eventId = pEventInfo.id || "";
       var eventProps = pEventInfo.props || {};
       mpq.push(["track", eventId, eventProps]);

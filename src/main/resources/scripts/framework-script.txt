@@ -38,6 +38,7 @@ common/js/ui/thirdparty/jquery/plugins/jqplot/plugins/jqplot.dateAxisRenderer.js
 common/js/ui/thirdparty/jquery/plugins/jqplot/plugins/jqplot.categoryAxisRenderer.js
 common/js/ui/thirdparty/jquery-fileupload/jquery.iframe-transport.js
 common/js/ui/thirdparty/jquery-fileupload/jquery.fileupload.js
+common/js/ui/thirdparty/async/async.min.js
 common/js/util/StringUtil.js
 common/js/util/HtmlUtil.js
 common/js/util/QueryStringParser.js
@@ -45,11 +46,6 @@ common/js/ui/framework/server/AjaxCaller.js
 common/js/ui/framework/server/ServerManager.js
 common/js/ui/framework/data/DataManager.js
 common/js/ui/framework/state/StateManager.js
-common/js/ui/framework/event/EventChain.js
-common/js/ui/framework/event/EventManager.js
-common/js/ui/framework/ui/UIComponentFactory.js
-common/js/ui/framework/ui/UILoader.js
-common/js/ui/framework/ui/UIManager.js
 common/js/ui/framework/analytics/AnalyticsImpl.js
 common/js/ui/framework/analytics/GoogleAnalytics.js
 common/js/ui/framework/analytics/MixPanelAnalytics.js
@@ -59,4 +55,4 @@ js/application/Properties.js
 js/prototype/log.js
 js/application/lang/Lang.js
 js/application/lang/LangManager.js
-js/init/Init.js 
+js/init/Init.js

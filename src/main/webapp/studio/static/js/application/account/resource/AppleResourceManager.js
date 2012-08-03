@@ -10,7 +10,7 @@ application.AppleResourceManager = application.ResourceManager.extend({
    */
   bindGetStartedWizardSteps: function (wizard) {
     var that = this;
-    Log.append('binding get started steps for apple');
+    console.log('binding get started steps for apple');
 
     wizard.validate({
       rules: {
@@ -40,18 +40,18 @@ application.AppleResourceManager = application.ResourceManager.extend({
       $fw_manager.client.resource.apple.setResources(resources);
     });*/
     wizard.find('#apple_getstarted_finish').bind('show', function () {
-      Log.append('apple getstarted wizard finished');
+      console.log('apple getstarted wizard finished');
       
       // TODO: better way for this temporary workaround for finishing wizard after successful upload  
       wizard.find('.jw-button-finish').trigger('click');
       
       var resources = $fw_manager.client.resource.apple.getResources();
       if (resources.private_key) {
-        Log.append('have a private key, lets go back to the dashboard');
+        console.log('have a private key, lets go back to the dashboard');
         $fw_manager.client.resource.apple.setupDestination();
       }
       else {
-        Log.append('dont have a key yet, lets show the upload key wizard');
+        console.log('dont have a key yet, lets show the upload key wizard');
         $fw_manager.client.resource.apple.showResourceWizard('private_key');
       }
     });

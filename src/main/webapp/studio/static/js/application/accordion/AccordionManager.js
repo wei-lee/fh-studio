@@ -49,7 +49,7 @@ application.AccordionManager = Class.extend({
   },
   
   preSelect: function (id, container) {
-    Log.append('accordion:' + this.name + ' - preSelect');
+    console.log('accordion:' + this.name + ' - preSelect');
     var callback_suffix = js_util.camelCase(id.split('_'));
     var pre_select_fn_name = 'preSelect' + callback_suffix;
     var pre_fn = this[pre_select_fn_name];
@@ -61,12 +61,12 @@ application.AccordionManager = Class.extend({
       this.preSelectCatchAll.call(container[0], id, container);
     }
     else {
-      Log.append(pre_select_fn_name + '() not implemented for accordion:' + this.name);
+      console.log(pre_select_fn_name + '() not implemented for accordion:' + this.name);
     }
   },
   
   postSelect: function (id, container) {
-    Log.append('accordion:' + this.name + ' - postSelect');
+    console.log('accordion:' + this.name + ' - postSelect');
     var callback_suffix = js_util.camelCase(id.split('_'));
     var post_select_fn_name = 'postSelect' + callback_suffix;
     var post_fn = this[post_select_fn_name];
@@ -78,16 +78,16 @@ application.AccordionManager = Class.extend({
       this.postSelectCatchAll.call(container[0], id, container);
     }
     else {
-      Log.append(post_select_fn_name + '() not implemented for accordion:' + this.name);
+      console.log(post_select_fn_name + '() not implemented for accordion:' + this.name);
     }
   },
   
   bindCallback: function(){
-    Log.append('bindCallback');
+    console.log('bindCallback');
     var that = this;
     //use jquery delegate method here so that it will automatically bind click events to future created nodes. See http://api.jquery.com/delegate/
     that.el.delegate('li.ui-menu-item','click', function(e){
-      Log.append('li.ui-menu-item clicked');
+      console.log('li.ui-menu-item clicked');
       var clicked_item = $(this); 
       if (clicked_item.is(':visible')) {
         clicked_item.parent().parent().parent().find('li.ui-state-active').removeClass('ui-state-active');
@@ -164,10 +164,13 @@ application.AccordionManager = Class.extend({
         that.postSelect(id, container);
         
         // need to manually trigger a resize in case center pane header has changed height e.g. editor toolbar
-        Log.append('resizing visible inner layouts');
-        $('.inner-layout:visible').layout().resizeAll();
+        console.log('resizing visible inner layouts');
+        var innerLayouts = $('.inner-layout:visible');
+        if (innerLayouts.length > 0) {
+          innerLayouts.layout().resizeAll();
+        }
       } else {
-        Log.append('clicked accordion item not visible');
+        console.log('clicked accordion item not visible');
       }
     });
   },
@@ -185,7 +188,7 @@ application.AccordionManager = Class.extend({
       });
     }
     catch (e) {
-      Log.append('error reading hidden accordion items prop:' + e, 'ERROR');
+      console.log('error reading hidden accordion items prop:' + e, 'ERROR');
     }
   }
 

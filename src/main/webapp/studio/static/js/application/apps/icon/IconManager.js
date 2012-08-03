@@ -87,7 +87,7 @@ application.IconManager = Class.extend({
 
   doUploadIcon: function (instance_guid, type) {
     var that = this;
-    Log.append('instance::' + instance_guid + "::type::" + type);
+    console.log('instance::' + instance_guid + "::type::" + type);
     
     var upload_wizard = proto.Wizard.load('upload_icon_wizard', {
       validate: true
@@ -98,16 +98,16 @@ application.IconManager = Class.extend({
       }
     });
     
-    Log.append("icon upload:: bind show events");
+    console.log("icon upload:: bind show events");
     upload_wizard.find('#upload_icon_progress').unbind().bind('show', function () {
-      Log.append('doing upload');
+      console.log('doing upload');
       var step = $(this);
       
       // TODO: tidy up all these calls and refactor
       proto.ProgressDialog.resetBarAndLog(step);
       proto.ProgressDialog.setProgress(step, 1);
       proto.ProgressDialog.append(step, 'Starting Upload');
-      Log.append('icon path :: ' + upload_wizard.find('#icon_file_location').val());
+      console.log('icon path :: ' + upload_wizard.find('#icon_file_location').val());
       
       var params = {
         'widgetGuid': $fw_manager.data.get('app').guid,

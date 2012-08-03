@@ -38,7 +38,6 @@ application.HomeTabManager = application.TabManager.extend({
   },
   
   doPostShow: function () {
-    main_layout.resizeAll();
     this.layout.resizeAll();
     this.showRecentApps();
   },
@@ -56,7 +55,7 @@ application.HomeTabManager = application.TabManager.extend({
         var entries = apps.list;
         for (var di=0; di<entries.length; di++) {
           var entry = entries[di];
-          Log.append('add Entry: ' + entry.id);
+          console.log('add Entry: ' + entry.id);
           self.recent_apps_grid.jqGrid('addRowData', entry.id, entry);
         }
         self.recent_apps_grid.trigger('reloadGrid');

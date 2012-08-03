@@ -35,42 +35,35 @@ var IDEManager = Class.extend({
       apps: new application.AppsTabManager(),
       account: new application.AccountTabManager(),
       reporting: new application.ReportingTabManager(),
-      arm: new application.ArmTabManager(),
-      useradmin: new application.UseradminTabManager()
+
+      // new 'non-ui-layout' tabs go here
+      admin: new Admin.Tab.Manager()
     };
     this.analytics = new analytics.AnalyticsIntegration();
     this.debug = new application.DebugManager();
     this.staging = new application.StagingManager();
     this.status = new application.StatusManager();
     this.chart = new application.ChartManager();
-    this.arm = {
-      apps: new application.ArmAppManager(),
-      users: new application.ArmUserManager(),
-      groups: new application.ArmGroupManager(),
-      devices: new application.ArmDeviceManager(),
-      authPolicies: new application.ArmAuthPolicyManager()
-    };
-    this.useradmin = new UserAdmin.Controller();
         
     // setup callbacks for server calls
-    $fw_manager.server.setOpts({ 
+    $fw.server.setOpts({
       connectivity_ok: function () {
-        $fw_manager.client.dialog.connectivity.hide();
+        $fw.client.dialog.connectivity.hide();
       },
       connectivity_error: function () {
-        $fw_manager.client.dialog.connectivity.show($fw_manager.client.lang.getLangString('connectivity_error'));
+        $fw.client.dialog.connectivity.show($fw.client.lang.getLangString('connectivity_error'));
       },
       cookie_error: function () {
         location.reload();
       },
       server_error: function (status, statusText) {
-        $fw_manager.client.dialog.connectivity.show($fw_manager.client.lang.getLangString('server_error') + status + ' - ' + statusText);
+        $fw.client.dialog.connectivity.show($fw.client.lang.getLangString('server_error') + status + ' - ' + statusText);
       },
       client_error: function (status, statusText) {
-        $fw_manager.client.dialog.connectivity.show($fw_manager.client.lang.getLangString('client_error') + status + ' - ' + statusText);
+        $fw.client.dialog.connectivity.show($fw.client.lang.getLangString('client_error') + status + ' - ' + statusText);
       },
       generic_error: function (status, statusText) {
-        $fw_manager.client.dialog.connectivity.show($fw_manager.client.lang.getLangString('generic_error') + status + ' - ' + statusText);
+        $fw.client.dialog.connectivity.show($fw.client.lang.getLangString('generic_error') + status + ' - ' + statusText);
       },
       cookie_name: 'feedhenry'
     });
@@ -98,14 +91,14 @@ var IDEManager = Class.extend({
       $fw.data.set('setup', setup);
     }
 
-    Log.append('needsSetup:' + componentName + '::' + needsSetup);
+    console.log('needsSetup:' + componentName + '::' + needsSetup);
     
     return needsSetup;
   },
   
   /*
-   * Initialise components that are essential to the IDE, , called by fw_manager
-   * 
+   * Initialise components that are essential to the IDE, , called by fw
+   *
    * different from what init() constructor above is for
    */
   doInit: function () {
@@ -117,14 +110,14 @@ var IDEManager = Class.extend({
     this.setupDocsLinks();
     
     // Retrieving and populating appropriate fields for Profile
-    $fw_manager.client.profile.doLoad();
+    $fw.client.profile.doLoad();
     
     // call updatebreadcrumb for home tab to set account type text
     $fw.client.tab.home.doUpdateBreadcrumb();
     
     var disabled_tabs;
     try {
-      disabled_tabs = $fw_manager.getClientProp('disabled-tabs');
+      disabled_tabs = $fw.getClientProp('disabled-tabs');
       $.each(disabled_tabs, function (key, val) {
         var tab = $('.' + val),
             panel = $(tab.find('a').attr('href'));
@@ -134,31 +127,31 @@ var IDEManager = Class.extend({
       });
     }
     catch(e) {
-      Log.append('error parsing disabled-tabs prop:' + e, 'ERROR');
+      console.log('error parsing disabled-tabs prop:' + e, 'ERROR');
     }
     var overrides = {
       // add a show callback for each tab
       show: function (event, ui) {
         var tab = $(ui.tab).attr('id');
         var tab_name = tab.replace('_tab', '');
-        Log.append('show ' + tab_name + ' tab');
+        console.log('show ' + tab_name + ' tab');
         // construct the 'show' function name
-        var tab_manager = $fw_manager.client.tab[tab_name];
+        var tab_manager = $fw.client.tab[tab_name];
         if ('undefined' !== typeof tab_manager) {
           // update state information
-          $fw_manager.state.set('main_tabs', 'selected', ui.index);
+          $fw.state.set('main_tabs', 'selected', ui.index);
           
           // call the show function
           tab_manager.show(event, ui);
         }
         else {
           // if tabmanager doesn't exist, log a warning
-          Log.append('TabManager for ' + tab_name + ' not initialised in IDEManager', 'WARNING');
+          console.log('TabManager for ' + tab_name + ' not initialised in IDEManager', 'WARNING');
         }
       }
     };
     // Check if we need to force a state
-    var selected = $fw_manager.state.get('main_tabs', 'selected');
+    var selected = $fw.state.get('main_tabs', 'selected');
     if ('number' === typeof selected) {
       overrides.selected = selected;
     }
@@ -176,11 +169,11 @@ var IDEManager = Class.extend({
       docs = $fw.getClientProp('dashboard-docs-default');
     }
     
-    //Log.append('dashboard-docs:' + docs);
+    //log('dashboard-docs:' + docs);
     
     try {
       var docs_array = docs;
-      Log.append('got ' + docs_array.length + ' docs');
+      console.log('got ' + docs_array.length + ' docs');
       
       var docs_container = $('.doc_list');
       for (var di=0, dl=docs_array.length; di<dl; di++) {
@@ -196,7 +189,7 @@ var IDEManager = Class.extend({
       }
     }
     catch (e) {
-      Log.append('Error getting docs links from property', 'ERROR');
+      console.log('Error getting docs links from property', 'ERROR');
     }
   }
   

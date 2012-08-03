@@ -26,7 +26,7 @@ application.DestinationGeneral = Class.extend({
   },
 
   'export': function() {
-    Log.append("generate for " + this.destination_id + ":: Type: Export");
+    console.log("generate for " + this.destination_id + ":: Type: Export");
     var url = this.base_url + "?generateSrc=true";
     $fw_manager.app.startDownload(url);
   },
@@ -101,12 +101,12 @@ application.DestinationGeneral = Class.extend({
     proto.ProgressDialog.setProgress(step, 1);
     proto.ProgressDialog.append(step, 'Starting ' + type);
 
-    Log.append('sending request to server');
-    Log.append('request url ' + that.base_url);
+    console.log('sending request to server');
+    console.log('request url ' + that.base_url);
 
     $.post(that.base_url, data, function(result) {
 
-      Log.append('import result > ' + JSON.stringify(result));
+      console.log('import result > ' + JSON.stringify(result));
       var cacheKey, stageKey;
 
       cacheKey = result.cacheKey;
@@ -121,7 +121,7 @@ application.DestinationGeneral = Class.extend({
           complete: function(res) {
             proto.ProgressDialog.setProgress(step, 100);
             proto.ProgressDialog.append(step, "Starting Download");
-            Log.append('jumping to final step and hiding progress dialog');
+            console.log('jumping to final step and hiding progress dialog');
             setTimeout(function() {
               complete(res);
             }, 1000);
@@ -143,7 +143,7 @@ application.DestinationGeneral = Class.extend({
           updateInterval: Properties.cache_lookup_interval,
           maxTime: Properties.cache_lookup_timeout,
           timeout: function(res) {
-            Log.append('timeout error > ' + JSON.stringify(res));
+            console.log('timeout error > ' + JSON.stringify(res));
             proto.Wizard.jumpToStep(wizard, 1, type + ' timed out');
           },
           update: function(res) {
@@ -155,14 +155,14 @@ application.DestinationGeneral = Class.extend({
                 proto.ProgressDialog.append(step, res.log[i]);
               }
               if (res.log[i] && res.log[i].length > 0) {
-                Log.append("increase progress: " + progress_val);
+                console.log("increase progress: " + progress_val);
                 progress_val = progress_val + 3;
                 proto.ProgressDialog.setProgress(step, parseInt(progress_val, 10));
               }
             }
           },
           error: function(res) {
-            Log.append('export error > ' + JSON.stringify(res));
+            console.log('export error > ' + JSON.stringify(res));
             proto.Wizard.jumpToStep(wizard, 1, res.error);
           },
           end: function() {
@@ -172,7 +172,7 @@ application.DestinationGeneral = Class.extend({
         export_task.run();
       } else if (result.error) {
         // Exporting of source disabled.
-        Log.append('export error > Exporting of source disabled');
+        console.log('export error > Exporting of source disabled');
         complete(result);
       }
     });
@@ -223,7 +223,7 @@ application.DestinationGeneral = Class.extend({
   },
 
   doAsyncPublish: function() {
-    Log.append("Publish :: " + this.destination_id);
+    console.log("Publish :: " + this.destination_id);
     var main_container = $('#manage_publish_container');
     main_container.find(".dashboard-content").hide();
     var that = this;
@@ -232,7 +232,7 @@ application.DestinationGeneral = Class.extend({
       appId: $fw_manager.data.get('inst').guid
     }, function(res) {
       that.resourceCheckCallback(res, that);
-      Log.append('resource checked :: ' + that.destination_id);
+      console.log('resource checked :: ' + that.destination_id);
       main_container.find('#app_publish_' + that.destination_id + '_build').show();
       main_container.find("#app_publish_" + that.destination_id).show();
     });
@@ -270,7 +270,7 @@ application.DestinationGeneral = Class.extend({
     // Clear visible progresslog
     $('#wizard_dialog .progresslog:visible').val('');
 
-    Log.append("Starting stage :: " + staging_env);
+    console.log("Starting stage :: " + staging_env);
 
     if (staging_env == 'dev') {
       self.doDevStage(wizard, step);
@@ -280,7 +280,7 @@ application.DestinationGeneral = Class.extend({
   },
 
   doDevStage: function(wizard, step) {
-    Log.append('staging.devStage');
+    console.log('staging.devStage');
     var self = this;
     var guid = $fw_manager.data.get('app').guid;
     var url = Constants.STAGE_APP_URL;
@@ -292,13 +292,13 @@ application.DestinationGeneral = Class.extend({
       if (res.status === "ok") {
         self.stageStarted("dev", res.cacheKey, wizard, step);
       } else {
-        Log.append('dev stage failed:' + res);
+        console.log('dev stage failed:' + res);
       }
     }, null, true);
   },
 
   doLiveStage: function(wizard, step) {
-    Log.append('staging.liveStage');
+    console.log('staging.liveStage');
     var self = this;
     var guid = $fw_manager.data.get('app').guid;
     var url = Constants.RELEASE_STAGE_APP_URL;
@@ -309,7 +309,7 @@ application.DestinationGeneral = Class.extend({
       if (res.status === "ok") {
         self.stageStarted("live", res.cacheKey, wizard, step);
       } else {
-        Log.append('live stage failed:' + res);
+        console.log('live stage failed:' + res);
       }
     }, null, true);
   },
@@ -326,7 +326,7 @@ application.DestinationGeneral = Class.extend({
   },
 
   stageComplete: function(wizard, step) {
-    Log.append('stageComplete');
+    console.log('stageComplete');
 
     if (this.destination_id == 'ipad' || this.destination_id == 'iphone') {
       proto.Wizard.jumpToStep(wizard, 6);
@@ -338,7 +338,7 @@ application.DestinationGeneral = Class.extend({
 
   stageStarted: function(staging_env, cacheKey, wizard, step) {
     var self = this;
-    Log.append('staging.stageStarted: [' + staging_env + '] [' + cacheKey + ']');
+    console.log('staging.stageStarted: [' + staging_env + '] [' + cacheKey + ']');
 
     var stage_task = new ASyncServerTask({
       cacheKey: cacheKey
@@ -348,28 +348,28 @@ application.DestinationGeneral = Class.extend({
       // 5 minutes
       maxRetries: Properties.cache_lookup_retries,
       timeout: function(res) {
-        Log.append('Staging timeout error > ' + JSON.stringify(res));
+        console.log('Staging timeout error > ' + JSON.stringify(res));
         proto.Wizard.jumpToStep(import_app_wizard, 1, 'Staging timed-out');
       },
       update: function(res) {
         for (var i = 0; i < res.log.length; i++) {
-          Log.append(res.log[i]);
+          console.log(res.log[i]);
         }
         self.updateProgressLog(staging_env, res.log);
       },
       complete: function(res) {
-        Log.append('Stage successful > ' + JSON.stringify(res));
+        console.log('Stage successful > ' + JSON.stringify(res));
         if ($.isFunction(self.stageComplete)) {
           self.stageComplete(wizard, step);
         }
       },
       error: function(res) {
-        Log.append('Stage error > ' + JSON.stringify(res));
+        console.log('Stage error > ' + JSON.stringify(res));
         self.updateProgressLog(staging_env, [res.error]);
         proto.Wizard.jumpToStep(import_app_wizard, 1, 'Staging failed');
       },
       retriesLimit: function() {
-        Log.append('Stage retriesLimit exceeded: ' + Properties.cache_lookup_retries);
+        console.log('Stage retriesLimit exceeded: ' + Properties.cache_lookup_retries);
         proto.Wizard.jumpToStep(import_app_wizard, 1, 'Staging retries exceeded');
       },
       end: function() {}
@@ -411,20 +411,30 @@ application.DestinationGeneral = Class.extend({
       that.showGenerateProgress("Build", wizard, data, progress_view, function(res) {
         // TODO: better way for this temporary workaround for finishing wizard after successful upload  
         wizard.find('.jw-button-finish').trigger('click');
-        Log.append('publish successful: ' + JSON.stringify(res));
+        console.log('publish successful: ' + JSON.stringify(res));
 
         var source_url = res.action.url;
+        var ota_url = res.action.ota_url;
+        var ipa_url = res.action.ipa_url;
         //$fw_manager.app.startDownload(source_url);
+        var showOTA = false;
+        var showIPA = false;
+        if(typeof ota_url !== "undefined"){
+          showOTA = true;
+        }
+        if(typeof ipa_url !== "undefined"){
+          showIPA = true;
+        }
         var showDownload = function(message){
           var dialog = $('#confirm_dialog').clone();
           dialog.find('#confirm_dialog_text').html(message);
           proto.Dialog.load(dialog, {
             autoOpen: true,
-            height: 210,
+            height: 235,
             title: 'Download',
             stack: true,
             dialogClass: 'success-dialog popup-dialog',
-            width: 320,
+            width: 340,
             buttons: {
               'OK': function () {
                 $(this).dialog('close');
@@ -433,17 +443,18 @@ application.DestinationGeneral = Class.extend({
           });
         };
         var html = "<p> The build is ready. Please click the link below to download";
-        var showOTA = false;
-        var destName = that.destination_id.toLowerCase();
-        if( destName == "ios" || destName == "ipad" || destName == "iphone" || destName == "android"){
+        
+        if( showOTA ){
           html += ", or you can use the OTA link to install the application directly on to your phone.</p>";
-          showOTA = true;
         } else {
           html += ".</p>";
         }
         html += "<br><ul> <li> <a target='_blank' href='"+source_url+"'> Download </a></li>";
+        if(showIPA){
+          html += "<li> <a target='_blank' href='"+ipa_url+"'> Download IPA File </a></li>";
+        }
         if(showOTA){
-          that.getOTALink(source_url, function(otalink){
+          that.getOTALink(ota_url, function(otalink){
             html += "<li> OTA Link : <a target='_blank' href='"+otalink+"'>" + otalink + " </a></li></ul>";
             showDownload(html);
           });
@@ -470,12 +481,17 @@ application.DestinationGeneral = Class.extend({
   },
 
   changeWizardStep: function(config, wizard, step) {
-    Log.append("changeWizardStep");
+    console.log("changeWizardStep");
   },
 
   doPublishWizardSetup: function(main_container, wizard) {
     //abstract interface
     wizard.validate({});
+  },
+
+  getOTALink: function(download_url, cb) {
+    var url = download_url;
+    this.getShortenUrl(download_url, cb);
   },
 
   getShortenUrl: function(url, cb){
@@ -491,15 +507,15 @@ application.DestinationGeneral = Class.extend({
         if(res.status == 200){
           var resObj = JSON.parse(res.body);
           var shortUrl = resObj.id.replace("\\", "");
-          Log.append("ota link is " + shortUrl);
+          console.log("ota link is " + shortUrl);
           cb(shortUrl);
         } else {
-          Log.append("Failed to get shortened link.");
+          console.log("Failed to get shortened link.");
           cb(url);
         }
       },
       error: function(){
-        Log.append("Failed to get shortened link.");
+        console.log("Failed to get shortened link.");
         cb(url);
       }
     });

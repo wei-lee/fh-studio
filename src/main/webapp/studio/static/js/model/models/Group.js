@@ -5,6 +5,11 @@ model.Group = model.Model.extend({
 
   // Field config
   field_config: [{
+    field_name: "guid",
+    editable: false,
+    showable: false,
+    column_title: "Group ID"
+  },{
     field_name: "name",
     editable: true,
     showable: true,
@@ -16,12 +21,8 @@ model.Group = model.Model.extend({
   create: function(name, success, fail) {
     var url = Constants.ADMIN_GROUP_CREATE_URL.replace('<domain>', $fw_manager.getClientProp('domain'));
     var params = {
-      "fields": {
-        "name": name,
-        "size": "small"
-      }
+      "name": name
     };
-
     return this.serverPost(url, params, success, fail, true);
   },
 
@@ -36,6 +37,26 @@ model.Group = model.Model.extend({
     }
   },
 
+  remove: function(guid, success, fail) {
+    var url = Constants.ADMIN_GROUP_DELETE_URL;
+    var params = {
+      "guid": guid
+    };
+
+    return this.serverPost(url, params, success, fail, true);
+  },
+
+  
+  update: function(params, success, fail, post_process) {
+    var url = Constants.ADMIN_GROUP_UPDATE_URL.replace('<domain>', $fw_manager.getClientProp('domain'));
+
+    if (post_process) {
+      return this.serverPost(url, params, success, fail, true, this.postProcessList, this);
+    } else {
+      return this.serverPost(url, params, success, fail, true);
+    }
+  },
+  
   postProcessList: function(res, data_model) {
     var filtered_fields = data_model.getColumnMap();
 
@@ -47,7 +68,7 @@ model.Group = model.Model.extend({
 
     // Buid Data
     $.each(rows, function(i, item) {
-      var row = item.fields;
+      var row = item;
       data.aaData.push([]);
 
       $.each(filtered_fields, function(k, v) {

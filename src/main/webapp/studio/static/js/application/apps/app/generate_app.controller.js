@@ -97,7 +97,7 @@ GenerateApp.Models.Wufoo = Class.extend({
   }
 });
 
-GenerateApp.Controllers.Wufoo = Class.extend({
+GenerateApp.Controllers.Wufoo = Controller.extend({
   config: null,
   parent_controller: null,
   type: null,
@@ -113,7 +113,9 @@ GenerateApp.Controllers.Wufoo = Class.extend({
     alert.append(close_button);
     alerts_area.append(alert);
     setTimeout(function() {
-      alert.slideUp();
+      alert.slideUp(function () {
+        alert.remove();
+      });
     }, self.alert_timeout);
   },
 
@@ -125,7 +127,9 @@ GenerateApp.Controllers.Wufoo = Class.extend({
     alert.append(close_button);
     alerts_area.append(alert);
     setTimeout(function() {
-      alert.slideUp();
+      alert.slideUp(function () {
+        alert.remove();
+      });
     }, self.alert_timeout);
   },
 
@@ -187,26 +191,6 @@ GenerateApp.Controllers.Wufoo = Class.extend({
     window.open(url, "_blank");
   },
 
-  clearCloningLog: function(modal) {
-    var log_area = $(modal).find('textarea');
-    current = log_area.val('');
-    this.updateCloningProgress(0, modal);
-  },
-
-  appendCloningLog: function(message, modal) {
-    var log_area = $(modal).find('textarea');
-    var current = log_area.val();
-    log_area.val(current + message + "\n");
-    log_area.scrollTop(99999);
-    log_area.scrollTop(log_area.scrollTop() * 12);
-  },
-
-  updateCloningProgress: function(value, modal) {
-    var progress_bar = $(modal).find('.progress .bar');
-    progress_bar.css('width', value + '%');
-    this.current_progress = value;
-  },
-
   hideLoader: function() {
     $(this.container).find('.loader').hide();
   },
@@ -218,20 +202,96 @@ GenerateApp.Controllers.Wufoo = Class.extend({
   generateApp: function() {
     var self = this;
     var app_config = this.buildAppConfig();
-    self.showCloningModal(function(guid, modal) {
-      self.injectConfig(app_config, guid, modal, function() {
-        $('.modal:visible').modal('hide');
-        setTimeout(function() {
-          // Reset state back to the manage tab/build app
-          $fw_manager.state.set('manage_apps_accordion_accordion_item_manage', 'selected', 4);
-          $fw_manager.state.set('manage_apps_accordion_app', 'selected', 0);
-          $fw_manager.client.app.doShowManage(guid);
-        }, 250);
+    var title = "Generating Your App";
+    var message = "We're generating your app...";
+
+    self.showProgressModal(title, message, function () {
+      self.clearProgressModal();
+      self.appendProgressLog('Cloning Wufoo app template.');
+
+      // Import template & configure
+      var import_url = Constants.IMPORT_APP_VIA_URL;
+      params = {
+        url: self.template_url
+      };
+
+      $fw.server.post(import_url, params, function(res) {
+        if (res.cacheKey) {
+          var cacheKey = res.cacheKey;
+          self.appendProgressLog('Fetching template.');
+          self.updateProgressBar(10);
+
+          var new_guid = null;
+
+          // Poll cacheKey
+          var import_task = new ASyncServerTask({
+            cacheKey: cacheKey
+          }, {
+            updateInterval: Properties.cache_lookup_interval,
+            maxTime: Properties.cache_lookup_timeout,
+            // 5 minutes
+            maxRetries: Properties.cache_lookup_retries,
+            timeout: function(res) {
+              console.log('timeout error > ' + JSON.stringify(res));
+              $fw.client.dialog.error($fw.client.lang.getLangString('scm_trigger_error'));
+              self.updateProgressBar(100);
+              if (typeof fail != 'undefined') {
+                fail();
+              }
+            },
+            update: function(res) {
+              for (var i = 0; i < res.log.length; i++) {
+                console.log(res.log[i]);
+                if (typeof res.action.guid != 'undefined') {
+                  new_guid = res.action.guid;
+                  console.log('GUID for new app > ' + new_guid);
+                }
+                self.appendProgressLog(res.log[i]);
+                console.log("Current progress> " + self.current_progress);
+              }
+              self.updateProgressBar(self.current_progress + 1);
+            },
+            complete: function(res) {
+              console.log('SCM refresh successful > ' + JSON.stringify(res));
+              self.updateProgressBar(75);
+            },
+            error: function(res) {
+              console.log('clone error > ' + JSON.stringify(res));
+              $fw.client.dialog.error('App generation failed.' + "<br /> Error Message:" + res.error);
+              self.updateProgressBar(100);
+              if (typeof fail != 'undefined') {
+                fail();
+              }
+            },
+            retriesLimit: function() {
+              console.log('retriesLimit exceeded: ' + Properties.cache_lookup_retries);
+              $fw.client.dialog.error('App generation failed.');
+              self.updateProgressBar(100);
+              if (typeof fail != 'undefined') {
+                fail();
+              }
+            },
+            end: function() {
+              self.injectConfig(app_config, new_guid, function() {
+                self.destroyProgressModal();
+                setTimeout(function() {
+                  // Reset state back to the manage tab/build app
+                  $fw_manager.state.set('manage_apps_accordion_accordion_item_manage', 'selected', 4);
+                  $fw_manager.state.set('manage_apps_accordion_app', 'selected', 0);
+                  $fw_manager.client.app.doShowManage(new_guid);
+                }, 250);
+              });
+            }
+          });
+          import_task.run();
+        } else {
+          self.showError("Template fetching failed, we couldn't generate your app. Please try again.");
+        }
       });
     });
   },
 
-  injectConfig: function(app_config, guid, modal, cb) {
+  injectConfig: function(app_config, guid, cb) {
     var self = this;
 
     var create_url = Constants.CREATE_FILE_URL;
@@ -298,110 +358,24 @@ GenerateApp.Controllers.Wufoo = Class.extend({
 
     // Create client config
     $fw.server.post(create_url, create_client_config_params, function(res) {
-      Log.append('Client config created');
+      console.log('Client config created');
       // Create cloud config
       $fw.server.post(create_url, create_cloud_config_params, function(res) {
-        Log.append('Cloud config created');
+        console.log('Cloud config created');
         // Update client & cloud config
         $fw.server.post(update_url, update_client_config_params, function(res) {
-          Log.append('Configs updated');
+          console.log('Configs updated');
 
-          self.appendCloningLog('Configuring your app.', modal);
+          self.appendProgressLog('Configuring your app.');
 
           $fw_manager.client.staging.simpleDevStage(guid, function(res) {
-            self.appendCloningLog('App configured.', modal);
+            self.appendProgressLog('App configured.');
             cb();
           });
 
         });
       });
     });
-  },
-
-  showCloningModal: function(cb) {
-    var self = this;
-
-    function modal_shown() {
-      var modal = this;
-      self.clearCloningLog(modal);
-      self.appendCloningLog('Cloning Wufoo app template.', modal);
-
-      // Import template & configure
-      var import_url = Constants.IMPORT_APP_VIA_URL;
-      params = {
-        url: self.template_url
-      };
-
-      $fw.server.post(import_url, params, function(res) {
-        if (res.cacheKey) {
-          var cacheKey = res.cacheKey;
-          self.appendCloningLog('Fetching template.', modal);
-          self.updateCloningProgress(10, modal);
-
-          var new_guid = null;
-
-          // Poll cacheKey
-          var import_task = new ASyncServerTask({
-            cacheKey: cacheKey
-          }, {
-            updateInterval: Properties.cache_lookup_interval,
-            maxTime: Properties.cache_lookup_timeout,
-            // 5 minutes
-            maxRetries: Properties.cache_lookup_retries,
-            timeout: function(res) {
-              Log.append('timeout error > ' + JSON.stringify(res));
-              $fw.client.dialog.error($fw.client.lang.getLangString('scm_trigger_error'));
-              self.updateCloningProgress(100, modal);
-              if (typeof fail != 'undefined') {
-                fail();
-              }
-            },
-            update: function(res) {
-              for (var i = 0; i < res.log.length; i++) {
-                Log.append(res.log[i]);
-                if (typeof res.action.guid != 'undefined') {
-                  new_guid = res.action.guid;
-                  Log.append('GUID for new app > ' + new_guid);
-                }
-                self.appendCloningLog(res.log[i], modal);
-                Log.append("Current progress> " + self.current_progress);
-              }
-              self.updateCloningProgress(self.current_progress + 1, modal);
-            },
-            complete: function(res) {
-              Log.append('SCM refresh successful > ' + JSON.stringify(res));
-              $fw_manager.client.dialog.info.flash('App generation failed.', 2000);
-              self.updateCloningProgress(75, modal);
-
-            },
-            error: function(res) {
-              Log.append('clone error > ' + JSON.stringify(res));
-              $fw.client.dialog.error('App generation failed.' + "<br /> Error Message:" + res.error);
-              self.updateCloningProgress(100, modal);
-              if (typeof fail != 'undefined') {
-                fail();
-              }
-            },
-            retriesLimit: function() {
-              Log.append('retriesLimit exceeded: ' + Properties.cache_lookup_retries);
-              $fw.client.dialog.error('App generation failed.');
-              self.updateCloningProgress(100, modal);
-              if (typeof fail != 'undefined') {
-                fail();
-              }
-            },
-            end: function() {
-              cb(new_guid, modal);
-            }
-          });
-          import_task.run();
-        } else {
-          self.showError("Template fetching failed, we couldn't generate your app. Please try again.");
-        }
-      });
-    }
-
-    $('#app_generation_modal').clone().appendTo($("body")).one('shown', modal_shown).modal();
   },
 
   selectedFormData: function() {
@@ -559,7 +533,7 @@ GenerateApp.Controller = Class.extend({
       list_apps_layout.resizeAll();
       proto.Grid.resizeVisible();
     } catch (err) {
-      Log.append("Couldn't resize layouts, elements probably not displaying right now");
+      console.log("Couldn't resize layouts, elements probably not displaying right now");
     }
   },
 

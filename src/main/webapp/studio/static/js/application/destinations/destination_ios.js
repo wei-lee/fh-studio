@@ -6,7 +6,7 @@ application.DestinationIos = application.DestinationGeneral.extend({
   },
 
   'export': function () {
-    Log.append("iOS - " + this.destination_id + " :: Export");
+    console.log("iOS - " + this.destination_id + " :: Export");
     this.doAsyncExport();
   },
 
@@ -71,11 +71,11 @@ application.DestinationIos = application.DestinationGeneral.extend({
       };
       $fw_manager.app.startUpload(wizard.find("#" + that.destination_id + "_provisioning_upload_file"), upload_url, data, function (result) {
         if ('undefined' !== typeof result.error && result.error.length > 0) {
-          Log.append('upload failed');
+          console.log('upload failed');
           proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_failed'));
           proto.Wizard.previousStep(wizard, result.error);
         } else {
-          Log.append('upload Complete');
+          console.log('upload Complete');
           proto.ProgressDialog.setProgress(step, 100);
           proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_complete'));
           wizard.jWizard("nextStep");
@@ -88,13 +88,13 @@ application.DestinationIos = application.DestinationGeneral.extend({
     this._super(config, wizard);
     var found_prov = false;
     for (var i = 0; i < this.dev_resources.provisionings.length; i++) {
-      Log.append(JSON.stringify(this.dev_resources.provisionings[i]));
+      console.log(JSON.stringify(this.dev_resources.provisionings[i]));
       var provisioning = this.dev_resources.provisionings[i];
-      Log.append("temp:" + $fw_manager.data.get("inst").guid);
-      Log.append("config: " + config);
+      console.log("temp:" + $fw_manager.data.get("inst").guid);
+      console.log("config: " + config);
       if ($fw_manager.data.get('inst').guid.toLowerCase() === provisioning.templateInstance.toLowerCase() && config.toLowerCase() === provisioning.type.toLowerCase()) {
-        Log.append("pro temp:" + provisioning.templateInstance);
-        Log.append("pro type:" + provisioning.type);
+        console.log("pro temp:" + provisioning.templateInstance);
+        console.log("pro type:" + provisioning.type);
         found_prov = true;
         break;
       }
@@ -110,7 +110,7 @@ application.DestinationIos = application.DestinationGeneral.extend({
   getExportData: function (wizard) {
     var export_version_id = '#app_export_' + this.destination_id + '_versions';
     var version = wizard.find(export_version_id + ' input:checked').val();
-    Log.append("Export version: " + version);
+    console.log("Export version: " + version);
     if (version === "" || version === undefined) {
       proto.Wizard.jumpToStep(wizard, 2, "Please select the SDK version");
       return null;
@@ -129,8 +129,8 @@ application.DestinationIos = application.DestinationGeneral.extend({
     var version = wizard.find(export_version_id + ' input:checked').val();
     var pk_pass = wizard.find("#app_publish_" + this.destination_id + "_pk_password").val();
     var cert_pass = wizard.find("#app_publish_" + this.destination_id + "_cert_password").val();
-    Log.append("cert pass: " + cert_pass);
-    Log.append("Export version: " + version);
+    console.log("cert pass: " + cert_pass);
+    console.log("Export version: " + version);
     var data = {
       generateSrc: false,
       config: config,
@@ -144,8 +144,6 @@ application.DestinationIos = application.DestinationGeneral.extend({
 
   getOTALink: function(download_url, cb) {
     var url = download_url;
-    url = url.replace(/\/[a-zA-Z]+~.+~/g,'/');
-    url = url.replace('.zip','.plist');
     url = "http://ota.feedhenry.com/ota/ios.html?url=" + url; 
     this.getShortenUrl(url, cb);
   }

@@ -10,7 +10,7 @@ application.ConfigurationManager = Class.extend({
   
   show: function () {
     var self = this;
-    Log.append('show config for ' + self.destination);
+    console.log('show config for ' + self.destination);
     
     if (!self.showInitDone) {
       if ($.isFunction(self.showInit)) {
@@ -45,13 +45,13 @@ application.ConfigurationManager = Class.extend({
   
   showPost: function () {
     var self = this;
-    Log.append("Get configration for : " + self.destination);
+    console.log("Get configration for : " + self.destination);
 
     $fw_manager.data.set("config-dest", self.destination);
     var container = $('#configuration_' + self.destination + '_form');
     var template = $fw_manager.data.get("inst").guid;
 
-    Log.append("container = " + '#configuration_' + self.destination + '_form');
+    console.log("container = " + '#configuration_' + self.destination + '_form');
 
     $fw_manager.server.post(Constants.LIST_CONFIG_URL, {
       template: template,
@@ -78,7 +78,7 @@ application.ConfigurationManager = Class.extend({
     // Iterate over each config option and put it in newConfig
     form.find('.config_option').each(function (i, el) {
       key = $(el).attr('name');
-      Log.append("key:" + key);
+      console.log("key:" + key);
       val = $(el).val();
       if ($(el).attr("type") === "checkbox") {
         if ($(el).prop("checked")) {
@@ -110,7 +110,7 @@ application.ConfigurationManager = Class.extend({
       if (res.status === "ok") {
         $fw_manager.client.dialog.info.flash($fw_manager.client.lang.getLangString('config_saved'));
       } else {
-        Log.append('update config failed:' + res);
+        console.log('update config failed:' + res);
         self.show();
       }
     });

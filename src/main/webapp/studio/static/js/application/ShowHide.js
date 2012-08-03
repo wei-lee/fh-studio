@@ -24,7 +24,7 @@ $.extend(Application, {
   showAppsGrid: function(grid_name, data) {
     // initialise grid if required
     var init_grid_fn = 'init' + js_util.camelCase(grid_name.split('_')) + 'Grid';
-    Log.append('Initialising with: ' + init_grid_fn + '()');
+    console.log('Initialising with: ' + init_grid_fn + '()');
     $fw_manager.app[init_grid_fn](data);
 
     // show new grid

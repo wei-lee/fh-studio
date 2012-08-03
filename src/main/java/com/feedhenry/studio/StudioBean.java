@@ -178,51 +178,54 @@ public class StudioBean {
 
       HttpResponse response = client.execute(post);
       int statusCode = response.getStatusLine().getStatusCode();
-      if (200 == statusCode) {
-        HttpEntity resEntity = response.getEntity();
-        if (resEntity != null) {
-          InputStreamReader iSR = new InputStreamReader(resEntity.getContent());
-          BufferedReader br = new BufferedReader(iSR);
-          StringBuilder sb = new StringBuilder();
-          String read = br.readLine();
-          try {
-            while (read != null) {
-              sb.append(read);
-              read = br.readLine();
-            }
-            mCoreProps = JSONObject.fromObject(sb.toString());
-            log.debug("mCoreProps: " + mCoreProps.toString(2));
-            if (!"error".equals(mCoreProps.optString("status"))) {
-              mStudioProps = mCoreProps.getJSONObject("clientProps");
-              mDomain = mStudioProps.getString("domain");
-              mUserProps = mCoreProps.optJSONObject("userProps");
-              proceed = true;
-            } else if ("unknown_domain".equals(mCoreProps.optString("message"))) {
-              // issue with domain, unable to get props
-              // redirect to corporate website
-              proceed = false;
-              redirectUrl = INVALID_DOMAIN_REDIRECT_URL;
-              log.info("Invalid domain requested - redirecting to " + redirectUrl + ", Got error from props endpoint: " + mCoreProps.toString());
-            } else {
-              // unable to get props info from core, send 500
-              proceed = false;
-              log.error("Got error from props endpoint (" + mCoreProps.optString("message") + "), sending 500");
-              pResponse.sendError(500);
-            }
-          } catch (Throwable e) {
-          	proceed = false;
-          	log.error("Got exception parsing data from props endpoint", e);
-              pResponse.sendError(500, "Error connecting to server. Please try again later.");
-          } finally {
-            br.close();
-            iSR.close();
+      
+      HttpEntity resEntity = response.getEntity();
+      StringBuilder sb = new StringBuilder();
+
+      if (resEntity != null) {
+        InputStreamReader iSR = new InputStreamReader(resEntity.getContent());
+        BufferedReader br = new BufferedReader(iSR);
+        String read = br.readLine();
+        try {
+          while (read != null) {
+            sb.append(read);
+            read = br.readLine();
           }
+        } catch (Throwable e) {
+          proceed = false;
+          log.error("Got exception parsing data from props endpoint", e);
+            pResponse.sendError(500, "Error connecting to server. Please try again later.");
+        } finally {
+          br.close();
+          iSR.close();
+        }
+      }
+      
+      if (200 == statusCode) {
+        mCoreProps = JSONObject.fromObject(sb.toString());
+        log.debug("mCoreProps: " + mCoreProps.toString(2));
+        if (!"error".equals(mCoreProps.optString("status"))) {
+          mStudioProps = mCoreProps.getJSONObject("clientProps");
+          mDomain = mStudioProps.getString("domain");
+          mUserProps = mCoreProps.optJSONObject("userProps");
+          proceed = true;
+        } else if ("unknown_domain".equals(mCoreProps.optString("message"))) {
+          // issue with domain, unable to get props
+          // redirect to corporate website
+          proceed = false;
+          redirectUrl = INVALID_DOMAIN_REDIRECT_URL;
+          log.info("Invalid domain requested - redirecting to " + redirectUrl + ", Got error from props endpoint: " + mCoreProps.toString());
+        } else {
+          // unable to get props info from core, send 500
+          proceed = false;
+          log.error("Got error from props endpoint (" + mCoreProps.optString("message") + "), sending 500");
+          pResponse.sendError(500);
         }
       } else {
         // redirect to corporate site
         proceed = false;
-        log.error("Got Exception from props endpoint (" + statusCode + "), sending 500");
-        pResponse.sendError(500);
+        log.error("Got Exception from props endpoint (" + statusCode + "), redirecting to corporate site\nResponse Body:\n" + sb.toString());
+        redirectUrl = CORPORATE_WEBSITE_URL;
       }
     }
 

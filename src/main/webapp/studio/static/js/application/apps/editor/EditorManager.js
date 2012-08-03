@@ -1,8 +1,6 @@
 application.EditorManager = Class.extend({
   opts: null,
 
-  support: null,
-
   actual_tabs_width: 0,
   scroll_step_value: 100,
   file_manager: {},
@@ -12,7 +10,6 @@ application.EditorManager = Class.extend({
 
   init: function(opts) {
     this.opts = opts;
-    this.support = new application.EditorSupport();
   },
 
   setup: function() {
@@ -552,7 +549,7 @@ application.EditorManager = Class.extend({
   },
 
   resetContent: function() {
-    Log.append("resetContent");
+    console.log("resetContent");
     this.editor_impl.reset();
     this.img_content_container.empty();
     this.disableEditor();
@@ -657,8 +654,25 @@ application.EditorManager = Class.extend({
     this.resizeTabs();
   },
 
-  normaliseString: function(string) {
-    return $fw_manager.client.editor.support.normaliseString(string);
+  normaliseString: function (string) {
+    var tab = "";
+    for (var i = 0; i < Properties.editor_indent_amount; i++){
+      tab += " ";
+    }
+  
+    string = string.replace(/\t/g, tab).replace(/\u00a0/g, " ").replace(/\r\n?/g, "\n");
+    var pos = 0, parts = [], lines = string.split("\n");
+    for (var line = 0; line < lines.length; line++) {
+      if (line !== 0) parts.push("\n");
+      parts.push(lines[line]);
+    }
+  
+    return {
+      next: function() {
+        if (pos < parts.length) return parts[pos++];
+        else throw StopIteration;
+      }
+    };
   },
 
   setWaitCursor: function() {

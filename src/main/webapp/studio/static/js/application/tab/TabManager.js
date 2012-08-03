@@ -3,7 +3,8 @@
  * such as initialising its contents, showing it, or updating the breadcrumb
  */
 application.TabManager = Class.extend({
-  support: null,
+  BREADCRUMB_SEPARATOR: ' / ',
+
   name: null,
   tab: null,
   tab_content: null,
@@ -12,12 +13,12 @@ application.TabManager = Class.extend({
   accordion: null,
 
   init: function(opts) {
-    this.support = new application.TabSupport();
+
   },
 
   constructBreadcrumbsArray: function() {
     var crumbs = this.getBaseCrumbs();
-    var accordion = this.tab_content.find('.ui-layout-west .ui-accordion');
+    var accordion = this.tab_content.find('#' + this.name + '_accordion');
     var b1 = accordion.find('h3.ui-state-active:visible');
     var b2 = accordion.find('.ui-accordion-content-active .ui-state-active:visible');
     crumbs.push({
@@ -32,11 +33,43 @@ application.TabManager = Class.extend({
     return crumbs;
   },
 
+  createBreadcrumbsHtml: function (crumbs) {
+    var wrapper = $('<div>', {
+      'class': 'fh_breadcrumb-wrapper'
+    });
+    
+    // add all crumbs except final one
+    for (var ci=0; ci<crumbs.length-1; ci++) {
+      var temp_crumb = crumbs[ci];
+      var link = $('<a>', {
+        'class': 'fh_breadcrumb fh_breadcrumb-link',
+        text: temp_crumb.text.trim()
+      });
+      if ($.isFunction(temp_crumb.callback)) {
+        link.bind('click', temp_crumb.callback);
+      }
+      wrapper.append(link);
+      // add spearator
+      wrapper.append($('<span>', {
+        'class': 'fh_breadcrumb-separator',
+        text: this.BREADCRUMB_SEPARATOR
+      }));
+    }
+    // add final crumb
+    var final_crumb = crumbs[crumbs.length-1];
+    wrapper.append($('<span>', {
+      'class': 'fh_breadcrumb fh_breadcrumb-nolink',
+      text: final_crumb.text
+    }));
+    
+    return wrapper;
+  },
+
   doUpdateBreadcrumb: function() {
     var crumbs = this.constructBreadcrumbsArray();
     var crumbs_html = this.createBreadcrumbsHtml(crumbs);
     this.tab_content.find('.container-title').empty().html(crumbs_html);
-    Log.append('closing all dialogs');
+    console.log('closing all dialogs');
     // Close all dialogs, except for warning dialogs, as they may have been opened 
     // just before this tab is shown
     $('.dialog').not('#warning_dialog').dialog('close');
@@ -62,7 +95,7 @@ application.TabManager = Class.extend({
     }
 
     this.doPostShow();
-    Log.append('tab id: ' + this.name + '_tab');
+    console.log('tab id: ' + this.name + '_tab');
   },
 
   doPreInit: function() {
@@ -74,9 +107,9 @@ application.TabManager = Class.extend({
       east__initClosed: true
     });
 
-    var accordion_name = this.name + '_accordion',
-        manager_name = js_util.capitalise(this.name) + 'AccordionManager';
-    Log.append('accordion_name: ' + accordion_name + ", accordion manager name: " + manager_name);
+    var accordion_name = this.name + '_accordion';
+    var manager_name = js_util.capitalise(this.name) + 'AccordionManager';
+    console.log('accordion_name: ' + accordion_name + ", accordion manager name: " + manager_name);
 
     if ('undefined' !== typeof application[manager_name]) {
       this.accordion = new application[manager_name](accordion_name);
@@ -92,7 +125,7 @@ application.TabManager = Class.extend({
   },
 
   bindBreadcrumbEvents: function() {
-    Log.append('binding breadcrumbs');
+    console.log('binding breadcrumbs');
     var that = this;
     this.tab_content.find('.fh_breadcrumb').live('click', function() {
       that.doUpdateBreadcrumb();
@@ -104,7 +137,7 @@ application.TabManager = Class.extend({
   },
 
   doPreShow: function() {
-    Log.append('doPreShow not implemented for ' + this.name + '_tab');
+    console.log('doPreShow not implemented for ' + this.name + '_tab');
   },
 
   doReset: function() {
@@ -113,17 +146,10 @@ application.TabManager = Class.extend({
 
   doPostShow: function() {
     try {
-      main_layout.resizeAll();
       this.layout.resizeAll();
     } catch (err) {
-      Log.append("No layout to resize");
+      console.log("No layout to resize");
     }
-  },
-
-  /* Suppport Functions */
-
-  createBreadcrumbsHtml: function(crumbs) {
-    return this.support.createBreadcrumbsHtml(crumbs);
   },
 
   getBaseCrumbs: function() {

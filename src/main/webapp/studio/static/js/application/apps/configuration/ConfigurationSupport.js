@@ -1,13 +1,12 @@
 application.ConfigurationSupport = Class.extend({
   init: function () {
-    Log.append('init ConfigurationSupport');
   },
   constructConfigDom: function (configs, dest, container, hiddenOptions, replaceOptions) {
     var self = this;
     container.empty();
-    Log.append("Construct config form");
+    console.log("Construct config form");
     $.each(configs, function (key, value) {
-      Log.append("Construct config form - " + key + "=" + value);
+      console.log("Construct config form - " + key + "=" + value);
       if (!(key in hiddenOptions)) {
         var input = "";
         if (!(key in replaceOptions)) {
@@ -34,7 +33,7 @@ application.ConfigurationSupport = Class.extend({
       label, input_el;
     label = $("<label>", {
       id: 'configuration_' + config_name.replace(/\s/g, '_'),
-      text: js_util.capitalise(config_name),
+      text: js_util.capitalise(self.labelMap(config_name)),
       'class': 'insert-help-icon'
     });
     if (!doReplace) {
@@ -90,7 +89,8 @@ application.ConfigurationSupport = Class.extend({
           input_el = self.constructSelect(config_name, config_val);
         } else {
           div.addClass('fh-form-text-field');
-          input_el = $("<input type='text' class='config_option' name='" + config_name + "' value='" + config_val + "'>");
+          var processed_val = self.postProcessVal(config_name, config_val);
+          input_el = $("<input type='text' class='config_option' name='" + config_name + "' value='" + processed_val + "'>");
         }
       }
     } else {
@@ -105,6 +105,27 @@ application.ConfigurationSupport = Class.extend({
     div.append(label).append(input_el);
     return div;
   },
+
+  labelMap: function(id) {
+    // Custom Labels
+    var map = {"app Id": "Bundle Identifier"};
+    if (typeof map[id] !== 'undefined') {
+      return map[id];
+    } else {
+      return id;
+    }
+  },
+
+  postProcessVal: function(config_name, config_val) {
+    if (config_name === 'app Id' && config_val === '') {
+      var app_title = $fw_manager.data.get('inst').title;
+      app_title = "com.feedhenry." + app_title.replace(/[^a-zA-Z0-9\\.]/g,'.');
+      return app_title;
+    } else {
+      return config_val;
+    }
+  },
+
   constructSelect: function (config_name, config_val) {
     var select = $('<select>', {
       name: config_name

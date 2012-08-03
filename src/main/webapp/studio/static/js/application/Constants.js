@@ -119,14 +119,36 @@ $.extend(Constants, {
   
   GET_SINGLE_APP_METRICS_URL: Constants.IDE_URL_PREFIX + "app/getsingleappmetrics",
 
-  ADMIN_USER_LIST_URL: Constants.ADMIN_URL_PREFIX + "<users-type>/users/list",
-  ADMIN_USER_CREATE_URL: Constants.ADMIN_URL_PREFIX + "<users-type>/users/create",
-  ADMIN_USER_READ_URL: Constants.ADMIN_URL_PREFIX + "<users-type>/users/read",
-  ADMIN_USER_UPDATE_URL: Constants.ADMIN_URL_PREFIX + "<users-type>/users/update",
+  ADMIN_USER_LIST_URL: Constants.ADMIN_URL_PREFIX + "user/list",
+  ADMIN_USER_CREATE_URL: Constants.ADMIN_URL_PREFIX + "user/create",
+  ADMIN_USER_READ_URL: Constants.ADMIN_URL_PREFIX + "user/read",
+  ADMIN_USER_UPDATE_URL: Constants.ADMIN_URL_PREFIX + "user/update",
+  ADMIN_USER_DELETE_URL: Constants.ADMIN_URL_PREFIX + "user/delete",
   ADMIN_USER_RESEND_INVITE_URL: Constants.IDE_URL_PREFIX + "user/invite",
+  ADMIN_USER_IMPORT_URL: Constants.ADMIN_URL_PREFIX + "user/import",
 
-  ADMIN_GROUP_LIST_URL: Constants.ADMIN_URL_PREFIX + "<domain>/group/list",
-  ADMIN_GROUP_CREATE_URL: Constants.ADMIN_URL_PREFIX + "<domain>/group/create",
+  ADMIN_GROUP_LIST_URL: Constants.ADMIN_URL_PREFIX + "group/list",
+  ADMIN_GROUP_CREATE_URL: Constants.ADMIN_URL_PREFIX + "group/create",
+  ADMIN_GROUP_UPDATE_URL: Constants.ADMIN_URL_PREFIX + "group/update",
+  ADMIN_GROUP_DELETE_URL: Constants.ADMIN_URL_PREFIX + "group/delete",
 
-  ADMIN_ROLE_LIST_ASSIGNABLE_URL: Constants.ADMIN_URL_PREFIX + "role/listAssignable"
+  ADMIN_STORE_ITEM_READ_URL: Constants.ADMIN_URL_PREFIX + "storeitem/read",
+  ADMIN_STORE_ITEM_LIST_URL: Constants.ADMIN_URL_PREFIX + "storeitem/list",
+  ADMIN_STORE_ITEM_CREATE_URL: Constants.ADMIN_URL_PREFIX + "storeitem/create",
+  ADMIN_STORE_ITEM_UPDATE_URL: Constants.ADMIN_URL_PREFIX + "storeitem/update",
+  ADMIN_STORE_ITEM_UPDATE_CONFIG_URL: Constants.ADMIN_URL_PREFIX + "storeitem/setbinaryconfig",
+  ADMIN_STORE_ITEM_DELETE_URL: Constants.ADMIN_URL_PREFIX + "storeitem/delete",
+  ADMIN_STORE_ITEM_UPLOAD_BINARY_URL: Constants.ADMIN_URL_PREFIX + "storeitem/uploadbinary",
+
+  ADMIN_APP_STORE_READ_URL: Constants.ADMIN_URL_PREFIX + "appstore/read",
+  ADMIN_APP_STORE_UPDATE_URL: Constants.ADMIN_URL_PREFIX + "appstore/update",
+  ADMIN_APP_STORE_UPLOAD_BINARY_URL: Constants.ADMIN_URL_PREFIX + "appstore/uploadbinary",
+
+  ADMIN_ROLE_LIST_ASSIGNABLE_URL: Constants.ADMIN_URL_PREFIX + "role/listAssignable",
+
+  ADMIN_DEVICES_LIST_URL: Constants.ADMIN_URL_PREFIX + "device/list",
+  ADMIN_DEVICES_UPDATE_URL : Constants.ADMIN_URL_PREFIX + "device/update",
+  ADMIN_DEVICES_READ_URL: Constants.ADMIN_URL_PREFIX + "device/read",
+  ADMIN_DEVICES_LISTUSERS_URL : Constants.ADMIN_URL_PREFIX + "device/listusers",
+  ADMIN_DEVICES_LISTAPPS_URL : Constants.ADMIN_URL_PREFIX + "device/listapps"
 });

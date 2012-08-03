@@ -1,0 +1,248 @@
+/* App Store all screens */
+
+.hidden_template {
+  display: none;
+}
+
+
+.back_button {
+  position:absolute;
+}
+
+body {
+  background: #f5f5f5;
+}
+
+/* Padding for fixed header */
+.page_container {
+  padding: 42px 5px 10px 5px;
+}
+
+/* Store Items */
+.store_item .controls button {
+  margin: 8px 3px 0 0;
+  width: 50px;
+  height: 50px;
+}
+
+.store_items_controls { 
+  text-align: right; 
+  margin-bottom: 10px;
+}
+
+.store_item_binaries {
+  background: #eaeaea;
+}
+
+.store_item_binaries .control-group {
+  margin-bottom: 0;
+}
+
+#app_store .store_icon, #store_item_update .store_item_icon, .appstore_icon, .icon_container .icon, .auth_icon {
+  -webkit-border-radius: 15px;
+  -moz-border-radius: 15px;
+  border-radius: 15px;
+  box-shadow: 0 4px 3px rgba(0, 0, 0, .25), 0 -1px 1px rgba(153, 153, 153, .2);
+  width: 100%;
+  height: 100%;
+  max-width: 64px;
+  max-height: 64px;
+}
+
+.appstore_icon {
+  max-width: 128px;
+  max-height: 128px;
+}
+
+.store_item .icon {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  box-shadow: none;
+  width: 100%;
+  height: 100%;
+  max-width: 64px;
+  max-height: 64px;
+  min-width: 64px;
+  min-height: 64px;
+}
+
+.store_item {
+  background: -moz-linear-gradient(#FAFAFA,#E0E0E0);
+  background: -webkit-linear-gradient(#FAFAFA,#E0E0E0);
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#fafafa',endColorstr='#e0e0e0')";
+  border-top: 1px solid #cccccc;
+  border-right: 1px solid #cccccc;
+  border-left: 1px solid #cccccc;
+  height: 64px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.store_item .name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 15px;
+  font-weight: normal;
+}
+
+.store_item:last-child {
+  border-bottom: 1px solid #ccc;
+}
+
+.store_item .name {
+  line-height: 64px;
+}
+
+.store_item_binaries span.label {
+  margin-right: 10px;
+  width: 77px;
+  display: inline-block;
+  text-align: center;
+}
+
+.store_item_binaries_table td {
+  line-height: 28px;
+}
+
+.appstore_icon {
+  margin: auto;
+  display: block;
+  margin-bottom: 20px;
+}
+
+.login_button {
+  display: block;
+  margin: auto;
+  margin-top: 10px;
+}
+
+.auth_icon {
+  margin-right: 20px;
+}
+
+.description {
+  height:6em;
+  overflow:hidden;
+}
+
+.item_description {
+  margin-top:1em;
+}
+
+.page-header {
+  margin: 0;
+  padding: 0;
+  padding: 5px 0 5px 0;
+  margin-bottom: 5px;
+  color: #fff;
+  text-shadow: 0 1px 1px #161616;
+  border-bottom: 1px solid #000;
+  position: fixed;
+  height: 36px;
+  background: #252525; /* Old browsers */
+  background: -moz-linear-gradient(top, #252525 0%, #181818 50%, #000000 50%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#252525), color-stop(50%,#181818), color-stop(50%,#000000)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #252525 0%,#181818 50%,#000000 50%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #252525 0%,#181818 50%,#000000 50%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #252525 0%,#181818 50%,#000000 50%); /* IE10+ */
+  background: linear-gradient(top, #252525 0%,#181818 50%,#000000 50%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#252525', endColorstr='#000000',GradientType=0 ); /* IE6-9 */
+}
+
+.page-header .appstore_name {
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 36px;
+  font-size: 18px;
+}
+
+.alerts { margin-top: 10px; }
+
+#store_login h3 {
+  text-align: center;
+}
+
+#auth_policy_actions {
+  text-align: center;
+}
+
+#auth_policy_actions .auth_policy_select_btn {
+  margin-bottom: 10px;
+  min-width: 210px;
+  min-height: 60px;
+}
+
+.btn [class^="icon-"], .btn [class*=" icon-"] {
+  line-height: inherit;
+}
+
+.auth_policy_select_btn.google {
+  background: url(img/auth_google.png) #fff no-repeat 50% 50%;
+}
+
+.auth_policy_select_btn.feedhenry {
+  background: url(img/auth_feedhenry.png) #fff no-repeat 50% 50%;
+}
+
+.auth_policy_select_btn.ldap {
+  background: url(img/auth_ldap.png) #fff no-repeat 50% 50%;
+}
+
+.logout_button {
+  margin: 4px 5px 0 0;
+}
+
+.back_button { 
+  margin: 4px 0 0 5px;
+}
+
+.store_item.well, #store_detail .well {
+  background-color: #ebebeb;
+}
+
+#store_user_password {
+  text-align: right;
+}
+
+.store_detail .controls a {
+  float: right;
+} 
+
+.store_detail .icon_container .icon {
+  max-width: 128px;
+  max-height: 128px;
+  margin: auto;
+  display: block;
+  margin-bottom: 20px;
+}
+
+.store_detail .icon_container {
+  border-bottom: 1px solid #DDD;
+  margin-bottom: 10px;
+}
+
+#store_loading { 
+  text-align: center;
+  background: -moz-linear-gradient(#FAFAFA,#E0E0E0);
+  background: -webkit-linear-gradient(#FAFAFA,#E0E0E0);
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#fafafa',endColorstr='#e0e0e0')";
+  border: 1px solid #cccccc;
+}
+
+.store_item .icon_container {
+  float: left;
+}
+
+.store_item .details .name {
+  padding-left: 7px;
+}
+
+.store_item .controls {
+  float: right;
+}
