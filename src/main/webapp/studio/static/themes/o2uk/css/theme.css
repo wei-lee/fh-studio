@@ -12,7 +12,6 @@ button {
   width: 200px;
   height: 66px;
   margin: -8px 0 0 13px;
-  background-size: 98%;
   background-repeat: no-repeat;
 }
 
@@ -20,12 +19,8 @@ button {
   height: 370px;
 }
 
-#main_tabs_buttons {
-  padding-left: 150px !important;
-}
-
 #main_layout_center {
-  top: 95px !important;
+  top: 35px !important;
 }
 
 /* changes to allow the preview to be seen on mac book air size screen */
@@ -155,11 +150,6 @@ button.ui-state-default:hover, .input-form input[type="button"].ui-state-hover {
 html, body {
   background: url(../img/background.jpg) repeat-x scroll 0 0 transparent!important;
   font-family: "Verdana",sans-serif!important;
-  padding: 0;
-  margin: 0;
-  width: 100%;
-  height: 100%;
-  overflow-y: auto;
 }
 
 .ui-widget {
@@ -176,17 +166,14 @@ html, body {
 /*Tab Border */
 #main_layout_center .ui-tabs-nav li
 {
-  border:none;
   height: 35px;
   background:none!important;
-  background: #153064 !important;
-  background: -moz-linear-gradient(top, #153064 0%, #153064 100%)!important;
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#153064), color-stop(100%,#153064))!important;
-  background: -webkit-linear-gradient(top, #153064 0%,#153064 100%)!important;
-  background: -o-linear-gradient(top, #153064 0%,#153064 100%)!important;
-  background: -ms-linear-gradient(top, #153064 0%,#153064 100%)!important;
-  background: linear-gradient(top, #153064 0%,#153064 100%)!important;
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#153064', endColorstr='#153064',GradientType=0 )!important;
+  background: #004791 !important;
+  border: none !important;
+}
+
+#main_layout_center .ui-tabs-nav li.ui-state-active {
+  border-color: #fff;
 }
 
 #main_layout_center .ui-tabs-nav li.ui-state-hover.ui-state-active a {
@@ -215,6 +202,7 @@ html, body {
 { 
   background: none !important;
   background: #fff !important;
+  filter: none !important;
 }
 
 li.ui-state-active a {
@@ -222,9 +210,9 @@ li.ui-state-active a {
 }
 
 #home_content_top_left {
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
+  -webkit-border-radius: 15px;
+  -moz-border-radius: 15px;
+  border-radius: 15px;
 }
 
 #header_user_info button {
@@ -330,6 +318,8 @@ li.ui-state-active a {
 .container-header-content {
   padding: 0;
   margin: 0;
+  background: #fff !important;
+  filter: none !important;
 }
 
 .container-title {
@@ -338,11 +328,14 @@ li.ui-state-active a {
   margin: 0;
 }
 
-.fh_breadcrumb-wrapper .fh_breadcrumb-nolink
-{
-  font-size:1.1em;
-  font-weight:400;
+.fh_breadcrumb-wrapper .fh_breadcrumb-nolink, .breadcrumb li a, .breadcrumb li {
   color: #005896 !important;
+  filter: none !important;
+}
+
+.breadcrumb {
+  background: #fff !important;
+  filter: none !important;
 }
 
 /*Footer*/
@@ -354,10 +347,9 @@ li.ui-state-active a {
 }
 #main_layout_south {
   height:42px !important;
-  background: url('../img/footerNew.png') no-repeat 50% 0 !important;
-  margin-bottom: 30px !important;
-  border: none !important;
+  background: #fff url('../img/footerNew.png') no-repeat 50% 0 !important;
 }
+
 #footer{
   display: none;
 }
@@ -439,4 +431,14 @@ li.ui-state-active a {
 
 #editor_titles li.editor-tab.current-selected-tab a {
   color: #0071BC !important;
+}
+
+#home_content, #apps_center {
+  padding: 0;
+}
+
+#admin_layout {
+  padding: 0;
+  padding-bottom: 50px;
+  font-size: 11px;
 }
