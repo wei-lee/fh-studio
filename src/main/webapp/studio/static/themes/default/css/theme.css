@@ -1310,20 +1310,18 @@ table.jqplot-table-legend, table.jqplot-cursor-legend {
   float:left;
   margin-left:1em;
 }
+
 .fh-form-field input, .fh-form-field textarea, .fh-form-field select, .fh-form-field div{
-  float:right;
-  width:65%;
+  float: right;
+  width: 65%;
 }
+
 .fh-form-field textarea{
-  border:1px solid #7F9DB9;
-  height:5em;
-  width:65.6%;
+  border: 1px solid #7F9DB9;
+  height: 5em;
+  width: 65%;
 }
-.fh-form-field textarea{
-  border:1px solid #7F9DB9;
-  height:5em;
-  width:65.6%;
-}
+
 .fh-form-field select{
   width:66%;
 }
