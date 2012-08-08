@@ -82,13 +82,25 @@ application.PreviewManager = Class.extend({
       // reload the preview
       self.show();
     });
+    $('.preview_toggle').unbind().bind('click', function () {
+      var app_preview = $('#app_preview');
+      if (app_preview.is(':visible')) {
+        $fw.client.preview.hideContent();
+        $('#preview_toggle_open').show();
+        $('#preview_toggle_close').hide();
+      } else {
+        $fw.client.preview.showContent();
+        $('#preview_toggle_open').hide();
+        $('#preview_toggle_close').show();
+      }
+    });
     $fw_manager.client.preview.insertPreviewOptionsIntoSelect(self.preview_select, self.device_id);
 
     // Reload the preview whenever the east pane of layout is re-opened
-    manage_apps_layout.options.east.onopen_end = function () {
-      console.log('east pane opened, reload preview');
-      $fw_manager.client.preview.show();
-    };
+    // manage_apps_layout.options.east.onopen_end = function () {
+    //   console.log('east pane opened, reload preview');
+    //   $fw_manager.client.preview.show();
+    // };
 
     self.showInitDone = true;
   },
@@ -149,8 +161,13 @@ application.PreviewManager = Class.extend({
     // Only render the preview if the preview area is open
     var is_open = $fw_manager.client.preview.support.isPreviewOpen();
     if (is_open) {
+      $('#preview_toggle_open').hide();
+      $('#preview_toggle_close').show();
       $fw_manager.client.preview.clearContent();
       $fw_manager.client.preview.showInPreviewFrame();
+    } else {
+      $('#preview_toggle_open').show();
+      $('#preview_toggle_close').hide();
     }
   },
 
@@ -165,12 +182,12 @@ application.PreviewManager = Class.extend({
     self.act_width = actual_size.width;
     self.act_height = actual_size.height;
     self.act_scale = actual_size.scale;
-    manage_apps_layout.resizeAll();
+    //manage_apps_layout.resizeAll();
 
     var preview_wrapper = $('#preview_wrapper');
     preview_wrapper.data('scaled', scale_preview);
-    var max_width = $fw_manager.client.preview.MAX_PREVIEW_WIDTH;
-    var max_height = parseInt(preview_wrapper.height() + 10, 10);
+    var max_width = $('#app_preview').innerWidth(); //$fw_manager.client.preview.MAX_PREVIEW_WIDTH;
+    var max_height = parseInt(preview_wrapper.height() + $('#preview_controls').height() + $('#main_layout_south').height(), 10);
 
     preview_wrapper.find('#preview_frame').hide().end().find('#preview_text').hide();
     var east_pane_size = (Math.min(Math.max(actual_size.width, parseInt($('#preview_controls').width(), 10)), $fw_manager.client.preview.MAX_PREVIEW_WIDTH)) + 10;
@@ -187,14 +204,14 @@ application.PreviewManager = Class.extend({
     self.previewFixes(scale_preview);
 
     if (actual_size.width >= max_width || actual_size.height > max_height) {
-      manage_apps_layout.sizePane('east', $fw_manager.client.preview.EMPTY_PREVIEW_WIDTH);
+      //manage_apps_layout.sizePane('east', $fw_manager.client.preview.EMPTY_PREVIEW_WIDTH);
       preview_wrapper.css({
         width: 'auto'
       }).find('#preview_frame').hide().end()
       .find('.preview_fix').hide().end()
       .find('#preview_text').show();
     } else {
-      manage_apps_layout.sizePane('east', east_pane_size);
+      //manage_apps_layout.sizePane('east', east_pane_size);
       preview_wrapper.find('#preview_frame').show();
     }
   },

@@ -27,7 +27,7 @@ application.TemplateManager = Class.extend({
   
   applyPostRestrictions: function () {
     // show the template app message
-    manage_apps_layout.open('north');
+    $('#template_message').show();
   },
   
   /*
@@ -40,7 +40,8 @@ application.TemplateManager = Class.extend({
   
   removePostRestrictions: function () {
     // hide the template app message
-    manage_apps_layout.close('north');
+    $('#template_message').hide();
+
   },
   
   initTemplateCloneButton: function () {

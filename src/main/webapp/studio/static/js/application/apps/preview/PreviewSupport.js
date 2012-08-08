@@ -112,11 +112,13 @@ application.PreviewSupport = Class.extend({
   },
 
   hideContent: function () {
-    manage_apps_layout.close('east');
+    $('#app_preview').hide();
+    $('#app_content').removeClass('span8').addClass('span10');
   },
 
   showContent: function () {
-    manage_apps_layout.open('east');
+    $('#app_content').removeClass('span10').addClass('span8');
+    $('#app_preview').show();
   },
 
   getContent: function () {
@@ -124,7 +126,7 @@ application.PreviewSupport = Class.extend({
   },
 
   isPreviewOpen: function () {
-    return !manage_apps_layout.state.east.isClosed;
+    return $('#app_preview').is(':visible');
   },
   
   calculateScaleFactor: function (px_actual, mm_desired) {
