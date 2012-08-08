@@ -32,12 +32,12 @@ var IDEManager = Class.extend({
     this.model = new model.ModelManager();
     this.tab = {
       home: new application.HomeTabManager(),
-      apps: new application.AppsTabManager(),
       account: new application.AccountTabManager(),
       reporting: new application.ReportingTabManager(),
 
       // new 'non-ui-layout' tabs go here
-      admin: new Admin.Tab.Manager()
+      admin: new Admin.Tab.Manager(),
+      apps: new Apps.Tab.Manager()
     };
     this.analytics = new analytics.AnalyticsIntegration();
     this.debug = new application.DebugManager();

@@ -61,6 +61,9 @@ js/application/admin/admin.groups.controller.js
 js/application/admin/admin.devices.controller.js
 js/application/admin/admin.authpolicy.controller.js
 js/application/admin/admin.stores.controller.js
+js/application/apps/apps.myapps.controller.js
+js/application/apps/apps.templates.controller.js
+js/application/apps/apps.details.controller.js
 js/application/chart/ChartManager.js
 js/application/chart/locator/ChartLocator.js
 js/application/chart/locator/MetricsChartLocator.js
@@ -104,6 +107,7 @@ js/application/tab/AccountTabManager.js
 js/application/tab/ReportingTabManager.js
 js/application/tab/tab.manager.js
 js/application/tab/admin.tab.manager.js
+js/application/tab/apps.tab.manager.js
 js/application/destinations/destination_general.js
 js/application/destinations/destination_feedhenry.js
 js/application/destinations/destination_blackberry.js

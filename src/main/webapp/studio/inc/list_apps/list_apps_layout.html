@@ -1,26 +1,60 @@
 <div id="list_apps_layout" class="inner-layout">
-  <!-- list_apps_layout north -->
-  <div id="list_apps_north" class="ui-layout-north">
+
+  <div class="row-fluid">
+    <ul class="nav nav-list span2 well listapps_nav_list">
+      <li>
+        <a href="#" data-controller="apps.myapps.controller">
+          <i class="icon-user"></i>
+          My Apps
+        </a>
+      </li>
+      <li>
+        <a href="#" data-controller="apps.templates.controller">
+          <i class="icon-user"></i>
+          Template Apps
+        </a>
+      </li>
+    </ul>
+
+<!-- <form id="apps_search_form" class="list-apps-west-item" onsubmit="return false;"><span class="ui-icon ui-icon-search"></span><input id="apps_search" type="text" placeholder="Search My Apps"></form>
+<ul id="list_apps_buttons" class="list-apps-west-item ui-helper-clearfix">
+  <li id="list_apps_button_my_apps" class="fh_breadcrumb ui-widget ui-widget-content ui-state-default"><a>My Apps</a></li>
+  <li id="list_apps_button_templates" class="fh_breadcrumb ui-widget ui-widget-content ui-state-default"><a>Template Apps</a></li>
+  <li id="list_apps_button_create" class="ui-widget ui-widget-content ui-state-default"><a>Create An App</a></li>
+  <li id="list_apps_button_import" class="ui-widget ui-widget-content ui-state-default"><a>Import An App</a></li>
+  <li id="list_apps_button_generate_app" class="fh_breadcrumb ui-widget ui-widget-content ui-state-default"><a>Generate an App</a></li>
+</ul> -->
+
+    <div class="span10">
+      <div id="list_apps_grid_wrapper" class="ui-layout-content">
+        <table id="my_apps_grid"></table>
+        <div id="my_apps_grid_pager"></div>
+        <table id="templates_grid"></table>
+        <div id="templates_grid_pager"></div>
+        <%@ include file="generate_app.html"%>
+      </div>
+    </div>
+
   </div>
+
+
+
+
+  <!-- list_apps_layout north -->
+  <!-- <div id="list_apps_north" class="ui-layout-north">
+  </div> -->
   <!-- end list_apps_layout north -->
   
   <!-- list_apps_layout west -->
-  <div id="list_apps_west" class="ui-layout-west">
-    <%@ include file="list_apps_menu.html"%>
-  </div>
+  <!-- <div id="list_apps_west" class="ui-layout-west"> -->
+    <%--@ include file="list_apps_menu.html"--%>
+  <!-- </div> -->
   <!-- end list_apps_layout west -->
   
   <!-- list_apps_layout center -->
-  <div id="list_apps_center" class="ui-layout-center">
-    <%@ include file="list_apps_grid.html"%>
-  </div>
+  <!-- <div id="list_apps_center" class="ui-layout-center"> -->
+    <%--@ include file="list_apps_grid.html"--%>
+  <!-- </div> -->
   <!-- end list_apps_layout center -->
-  
-  <!-- list_apps_layout east -->
-  <div id="list_apps_east" class="ui-layout-east"></div>
-  <!-- end list_apps_layout east -->
-  
-  <!-- list_apps_layout south -->
-  <div id="list_apps_south" class="ui-layout-south"></div>
-  <!-- end list_apps_layout south -->
+
 </div>
