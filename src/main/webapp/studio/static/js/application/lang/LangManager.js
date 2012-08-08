@@ -59,7 +59,11 @@ LangManager = Class.extend({
     var lang = $fw_manager.client.lang.getLangString(el_id);
       
     if (null !== lang && lang.length > 0) {
-      el.text(lang);
+      if ($('i', el).length > 0) {
+        el.append('&nbsp;' + lang);
+      } else {
+        el.append(lang);
+      }
     }
   },
   
