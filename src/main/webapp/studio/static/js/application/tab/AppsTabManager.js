@@ -133,7 +133,8 @@ application.AppsTabManager = application.TabManager.extend({
     this.disableItems();
 
     var that = this;
-    if (null === list_apps_layout && null === manage_apps_layout) {
+    // TODO: different check when we no longer use globals for this
+    if (null === list_apps_layout) {
       // Check if we need to force a state
       // TODO: allow for UI structural changes
       var defval = 'list_apps_button_my_apps';
@@ -175,10 +176,6 @@ application.AppsTabManager = application.TabManager.extend({
     if (null !== list_apps_layout) {
       list_apps_layout.resizeAll();
     }
-    if (null !== manage_apps_layout) {
-      console.log('resizing manage_apps layout as part of tab postShow');
-      manage_apps_layout.resizeAll();
-    }
   },
 
   /*
@@ -193,35 +190,7 @@ application.AppsTabManager = application.TabManager.extend({
       });
     }
     $fw_manager.app.showAndHide('#manage_apps_layout', '#list_apps_layout');
-    if (manage_apps_layout === null) {
-      manage_apps_layout = proto.Layout.load($('#manage_apps_layout'), {
-        fxName: 'none',
-        west__resizable: true,
-        west__closable: true,
-        west__slidable: false,
-        west__spacing_open: 16,
-        west__spacing_closed: 16,
-        west__minSize: 150,
-        center__resizable: true,
-        center__minWidth: 250,
-        center__onresize: function(pane, $Pane, pane_state) {
-          proto.Accordion.resizeVisible();
-          $fw.client.editor.resize();
-        },
-        east__resizable: true,
-        east__closable: true,
-        east__slidable: false,
-        east__spacing_open: 16,
-        east__spacing_closed: 16,
-        east__minSize: 100,
-        north__initClosed: true,
-        south__initClosed: true,
-        togglerLength_open: 16,
-        togglerLength_closed: 16
-      });
-    }
     apps_layout.resizeAll();
-    manage_apps_layout.resizeAll();
 
     var accordion_name = this.name + '_accordion',
         manager_name = js_util.capitalise(this.name) + 'AccordionManager';

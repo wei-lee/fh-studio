@@ -1,43 +1,140 @@
-<div id="manage_apps_layout" class="inner-layout">
-  <!-- manage_apps_layout north -->
-  <div id="manage_apps_north" class="ui-layout-north">
-    <div id="template_message">
-      <span id="template_message_1" class="insert-lang"></span><button id="template_clone_button" class="btn insert-lang"></button><span id="template_message_2" class="insert-lang"></span>
-    </div>
+<div id="manage_apps_layout" class="container-fluid">
+
+  <div class="row-fluid">
+    <ul class="breadcrumb"></ul>
   </div>
+
+
+
+  <!-- manage_apps_layout north -->
+  <!-- <div id="manage_apps_north" class="ui-layout-north"> -->
+  <div id="template_message">
+    <span id="template_message_1" class="insert-lang"></span><button id="template_clone_button" class="btn insert-lang"></button><span id="template_message_2" class="insert-lang"></span>
+  </div>
+  <!-- </div> -->
   <!-- end manage_apps_layout north -->
+
+
+
+  <div class="row-fluid">
+    <ul class="nav nav-list span2 well admin_nav_list">
+      <li class="nav-header">Overview</li>
+      <li>
+        <a href="#" data-controller="admin.users.controller">
+          <i class="icon-user"></i>
+          Details
+        </a>
+      </li>
+    </ul>
+
+    <div id="app_content" class="layout-content span8">
+      <div id="manage_apps_header" style="display:none;">
+        <!-- Generic header for standard sections with plain text header -->
+        <div id="manage_apps_header_text" class="manage_apps-header section-header"></div>
+        
+        <!-- Special case for editor as it need the header to be a fixed width and the content to be 100% -->
+        <%@ include file="../editor/editor_files_header.html"%> 
+      </div>
+
+      <button id="preview_toggle_open" class="btn preview_toggle pull-right"> <i class="icon-chevron-left"></i></button>
+
+      <!-- Hide this initially and let javascript show it when its ready -->
+      <div id="manage_apps_content" class="ui-layout-content ui-widget ui-widget-content" style="display:none;">
+        
+        <%@ include file="../manage/manage_details.html"%>
+        
+        <%@ include file="../manage/manage_frameworks.html"%>
+        
+        <%@ include file="../manage/manage_icons.html"%>
+        
+        <%@ include file="../manage/manage_export.html"%>
+        
+        <%@ include file="../manage/manage_publish.html"%>
+        
+        <%@ include file="../editor/editor_files.html"%>
+        
+        <%@ include file="../configuration/configuration_studio.html"%>
+        
+        <%@ include file="../configuration/configuration_embed.html"%>
+        
+        <%@ include file="../configuration/configuration_iphone.html"%>
+        
+        <%@ include file="../configuration/configuration_ipad.html"%>
+        
+        <%@ include file="../configuration/configuration_ios.html"%>
+        
+        <%@ include file="../configuration/configuration_android.html"%>
+        
+        <%@ include file="../configuration/configuration_facebook.html"%>
+        
+        <%@ include file="../configuration/configuration_blackberry.html"%>
+        
+        <%@ include file="../configuration/configuration_windowsphone7.html"%>
+        
+        <%@ include file="../configuration/configuration_nokiawrt.html"%>
+        
+       <% if(studio.getProps().optBoolean("enable-per-app-metrics")){ %>
+        <%@ include file="../report/report_installsdest.html"%>
+        <%@ include file="../report/report_installsdate.html"%>
+        <%@ include file="../report/report_installsloc.html"%>
+        <%@ include file="../report/report_startupsdest.html"%>
+        <%@ include file="../report/report_startupsdate.html"%>
+        <%@ include file="../report/report_startupsloc.html"%>
+       <%}%>
+
+        <%@ include file="../debug/debug_logging.html"%>
+        <%@ include file="../staging/staging.html"%>
+
+        <% if(studio.getProps().optBoolean("stats-enabled")){ %>
+         <%@ include file="../status/status.html"%>
+        <%}%>
+        
+       <% if(studio.getProps().optBoolean("enable-push-notification")){ %>
+        <%@ include file="../push/push_notification.html"%>
+       <%}%>
+        
+        <%@ include file="../preview/preview_configuration.html"%>
+      </div>
+    </div>
+
+    <div id="app_preview" class="span2">
+      <button id="preview_toggle_close" class="btn preview_toggle pull-left"> <i class="icon-chevron-right"></i></button>
+      <div id="preview_header">
+        <select id="preview_temporary_select" class="insert-help"></select>
+      </div>
+      <div id="preview_wrapper" class="ui-layout-content">
+        <div id="preview_frame"></div>
+        <div id="preview_text"><span id="preview_device_too_large1" class="insert-lang"></span><a id="preview_device_open_emulator" class="script-link insert-lang"></a><span id="preview_device_too_large2" class="insert-lang"></span></div>
+      </div>
+      <div id="preview_controls">
+        <button id="preview_frame_debugger_btn" class="preview_control_btn insert-lang insert-help btn btn-inverse"></button>
+        <button id="preview_frame_emulator_btn" class="preview_control_btn insert-lang insert-help btn btn-inverse"></button>
+        <button id="preview_frame_refresh_btn" class="preview_control_btn insert-lang insert-help btn btn-inverse"></button>
+      </div>
+    </div>
+
+
+  </div>
   
   <!-- manage_apps_layout west -->
-  <div id="manage_apps_west" class="ui-layout-west">
+  <!-- <div id="manage_apps_west" class="ui-layout-west">
     <div id="cloud_logo"></div>
-    <%@ include file="manage_apps_accordion.html"%>
-  </div>
+    <%--@ include file="manage_apps_accordion.html"--%>
+  </div> -->
   <!-- end manage_apps_layout west -->
   
   <!-- manage_apps_layout center -->
-  <div id="manage_apps_center" class="ui-layout-center">
-    <%@ include file="manage_apps_center.html"%>
-  </div>
+  <!-- <div id="manage_apps_center" class="ui-layout-center">
+    <%--@ include file="manage_apps_center.html"--%>
+  </div> -->
   <!-- end manage_apps_layout center -->
   
   <!-- manage_apps_layout east -->
-  <div id="manage_apps_east" class="ui-layout-east">
-    <div id="preview_header">
-      <select id="preview_temporary_select" class="insert-help"></select>
-    </div>
-    <div id="preview_wrapper" class="ui-layout-content">
-      <div id="preview_frame"></div>
-      <div id="preview_text"><span id="preview_device_too_large1" class="insert-lang"></span><a id="preview_device_open_emulator" class="script-link insert-lang"></a><span id="preview_device_too_large2" class="insert-lang"></span></div>
-    </div>
-    <div id="preview_controls">
-      <button id="preview_frame_debugger_btn" class="preview_control_btn insert-lang insert-help btn btn-inverse"></button>
-      <button id="preview_frame_emulator_btn" class="preview_control_btn insert-lang insert-help btn btn-inverse"></button>
-      <button id="preview_frame_refresh_btn" class="preview_control_btn insert-lang insert-help btn btn-inverse"></button>
-    </div>
-  </div>
+  <!-- <div id="manage_apps_east" class="ui-layout-east">  
+  </div> -->
   <!-- end manage_apps_layout east -->
   
   <!-- manage_apps_layout south -->
-  <div id="manage_apps_south" class="ui-layout-south"></div>
+  <!-- <div id="manage_apps_south" class="ui-layout-south"></div> -->
   <!-- end manage_apps_layout south -->
 </div>
