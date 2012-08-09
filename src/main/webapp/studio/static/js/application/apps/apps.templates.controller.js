@@ -9,8 +9,7 @@ Apps.Templates.Controller = Controller.extend({
   },
 
   views: {
-    // device_list: "#admin_devices_list",
-    // device_update: "#admin_devices_update"
+    templates_grid: "#gbox_templates_grid"
   },
 
   container: null,
@@ -21,12 +20,6 @@ Apps.Templates.Controller = Controller.extend({
 
   show: function(){
     // TODO
-  },
-
-  hide: function(){
-    $.each(this.views, function(k, v){
-      $(v).hide();
-    });
   }
 
 });

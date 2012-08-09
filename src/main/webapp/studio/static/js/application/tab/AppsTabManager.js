@@ -136,7 +136,7 @@ application.AppsTabManager = application.TabManager.extend({
 
     var that = this;
     // TODO: different check when we no longer use globals for this
-    if (self.inited) {
+    if (!self.inited) {
       // Check if we need to force a state
       // TODO: allow for UI structural changes
       var defval = 'list_apps_button_my_apps';
