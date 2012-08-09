@@ -3347,3 +3347,18 @@ table.dataTable th:active {
 #my_apps_grid .app_title {
   cursor: pointer;
 }
+
+/* Fix text overflow in App Listing */
+#my_apps_grid td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Awesome nth item selector that works cross platform (including IE!)
+  http://reference.sitepoint.com/css/adjacentsiblingselector
+  Hides App ID column (:nth(6))
+*/
+#my_apps_grid td:first-child + td + td + td + td + td + td, 
+#my_apps_grid th:first-child + th + th + th + th + th + th {
+  display: none;
+}​

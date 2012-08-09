@@ -11,10 +11,30 @@ model.Model = Class.extend({
     return column_map;
   },
 
+  configForField: function(field) {
+    var config = null;
+    $.each(this.field_config, function(i, item) {
+      if (item.field_name === field) {
+        config = item;
+        index = i;
+      }
+    });
+
+    return {
+      config: config,
+      index: index
+    };
+  },
+
+  configForIndex: function(i) {
+    var config = null;
+    return this.field_config[i];
+  },
+
   postProcessList: function(res, data_model) {
     try {
       var filtered_fields = data_model.getColumnMap();
-    } catch(e) {
+    } catch (e) {
       console.error("Couldn't get a column map for this model, so I can't post-process it.");
       return res;
     }
