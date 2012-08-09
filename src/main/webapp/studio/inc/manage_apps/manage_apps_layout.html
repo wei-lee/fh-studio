@@ -36,7 +36,7 @@
         <%@ include file="../editor/editor_files_header.html"%> 
       </div>
 
-      <button id="preview_toggle_open" class="btn preview_toggle pull-right"> <i class="icon-chevron-left"></i></button>
+      <button id="preview_toggle_open" class="btn preview_toggle pull-right"><i class="icon-chevron-left"></i>&nbsp;Show Preview</button>
 
       <!-- Hide this initially and let javascript show it when its ready -->
       <div id="manage_apps_content" class="ui-layout-content ui-widget ui-widget-content" style="display:none;">
@@ -98,9 +98,9 @@
     </div>
 
     <div id="app_preview" class="span2">
-      <button id="preview_toggle_close" class="btn preview_toggle pull-left"> <i class="icon-chevron-right"></i></button>
+      
       <div id="preview_header">
-        <select id="preview_temporary_select" class="insert-help"></select>
+        <button id="preview_toggle_close" class="btn preview_toggle pull-left"><i class="icon-chevron-right"></i></button><select id="preview_temporary_select" class="insert-help"></select>
       </div>
       <div id="preview_wrapper" class="ui-layout-content">
         <div id="preview_frame"></div>
