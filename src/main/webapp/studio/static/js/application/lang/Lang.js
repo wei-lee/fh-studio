@@ -343,9 +343,9 @@ var Lang = {
   preview_device_ipad_portrait_noscale_title: 'iPad portrait',
   preview_device_htc_tattoo_title: 'Mobile Device',
   
-  preview_frame_debugger_btn: 'Debugger',
+  preview_frame_debugger_btn: 'Debug',
   preview_frame_emulator_btn: 'Emulator',
-  preview_frame_refresh_btn: 'Refresh',
+  preview_frame_refresh_btn: 'Reload',
   preview_frame_debugger_btn_help: 'Opens your App in a new window allowing browser debugging tools to be used.',
   preview_frame_emulator_btn_help: 'Displays your App in the selected Device Emulator',
   preview_temporary_select_help: 'Size of your App preview. Scaled preview options use the detected monitor size to show your App at the size it would appear on device. *experimental, known issues with Chrome',
