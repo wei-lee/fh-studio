@@ -94,17 +94,13 @@ Tab.Manager = Class.extend({
 
       if (ci !== (cl - 1)) {
         // non-final crumb
-        crumb.append($('<li>').append($('<a>', {
-          "href": "#",
+        crumb.append($('<li>', {
+          //"href": "#",
           "text": ct
-        }).on('click', function (e) {
-          // TODO: implement
-          e.preventDefault();
-          console.error('IMPLEMENT breadcrumb click');
         })).append($('<span>', {
           "class": "divider",
           "text": "/"
-        })));
+        }));
       } else {
         // final crumb
         crumb.append($('<li>', {
