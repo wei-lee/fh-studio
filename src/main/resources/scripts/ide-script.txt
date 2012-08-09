@@ -16,7 +16,6 @@ js/application/apps/configuration/ConfigurationSupport.js
 js/application/apps/configuration/ConfigurationManager.js
 js/application/apps/configuration/IosConfigManager.js
 js/application/apps/configuration/IPadConfigManager.js
-js/application/apps/configuration/PreviewConfigManager.js
 js/application/apps/configuration/AndroidConfigManager.js
 js/application/apps/configuration/IPhoneConfigManager.js
 js/application/apps/configuration/StudioConfigManager.js

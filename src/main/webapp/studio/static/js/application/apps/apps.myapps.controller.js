@@ -9,7 +9,7 @@ Apps.Myapps.Controller = Controller.extend({
   },
 
   views: {
-    myapps_grid: "#gbox_my_apps_grid",
+    myapps_grid: "#my_apps_grid_wrapper",
     generate_app: "#generate_app"
   },
 
@@ -167,7 +167,8 @@ Apps.Myapps.Controller = Controller.extend({
       $('td:eq(1)', row).addClass('app_title').unbind().click(function(){
         // GUID is last, TODO: Make this better
         var guid = data[5];
-        $fw_manager.client.app.doShowManage(guid);
+        $fw.client.tab.apps.showManageapps(guid);
+        // $fw.client.tab.showManageapps
       });
     }
   }

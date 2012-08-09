@@ -468,8 +468,6 @@ var Lang = {
   status_header: 'Cloud App Status',
   status_refresh_button: 'Refresh Status',
   
-  preview_configuration_header: 'Preview Configuration',
-  
   profile_details_header: 'Profile Details',
   account_type_free: 'Free',
   account_type_devadmin: 'Devadmin',

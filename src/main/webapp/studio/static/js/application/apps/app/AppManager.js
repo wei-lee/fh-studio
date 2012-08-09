@@ -417,46 +417,46 @@ application.AppManager = Class.extend({
     });
   },
   
-  updateAppData: function (app, inst) {
-    $fw.data.set('app', app);
-    $fw.data.set('inst', inst);
-  },
+  // updateAppData: function (app, inst) {
+  //   $fw.data.set('app', app);
+  //   $fw.data.set('inst', inst);
+  // },
   
-  updateDetails: function () {
-    var self = this,
-        app = $fw.data.get('app'),
-        inst = $fw.data.get('inst'),
-        detailsContainer = $('#manage_details_container');
-    inst.w3cid = app.w3cid;
+  // updateDetails: function () {
+  //   var self = this,
+  //       app = $fw.data.get('app'),
+  //       inst = $fw.data.get('inst'),
+  //       detailsContainer = $('#manage_details_container');
+  //   inst.w3cid = app.w3cid;
     
-    detailsContainer.find('input,textarea').each(function () {
-      var el = $(this);
-      el.val(inst[el.attr('name')]);
-    });
+  //   detailsContainer.find('input,textarea').each(function () {
+  //     var el = $(this);
+  //     el.val(inst[el.attr('name')]);
+  //   });
     
-    var scm = 'undefined' !== typeof app.config ? app.config.scm : undefined;
-    if ('undefined' !== typeof scm) {
-      detailsContainer.find('input[name=scmurl]').val(scm.url);
-      if ('undefined' === typeof scm.key || scm.key.length < 1) {
-        detailsContainer.find('textarea[name=scmkey]').parent().hide(); // hide scm key input as it's being deprecated
-      } else {
-        detailsContainer.find('textarea[name=scmkey]').val(scm.key);
-      }
-      detailsContainer.find('input[name=scmbranch]').val(scm.branch);
-      detailsContainer.find('input[name=postreceiveurl]').val(self.getPostReceiveUrl()).focus(function () {
-        this.select();
-      });
-    }
-    if ('undefined' !== typeof app.config && 'undefined' !== typeof app.config.keys) {
-      detailsContainer.find('textarea[name=keyspublic]').val(app.config.keys['public']);
-    }
+  //   var scm = 'undefined' !== typeof app.config ? app.config.scm : undefined;
+  //   if ('undefined' !== typeof scm) {
+  //     detailsContainer.find('input[name=scmurl]').val(scm.url);
+  //     if ('undefined' === typeof scm.key || scm.key.length < 1) {
+  //       detailsContainer.find('textarea[name=scmkey]').parent().hide(); // hide scm key input as it's being deprecated
+  //     } else {
+  //       detailsContainer.find('textarea[name=scmkey]').val(scm.key);
+  //     }
+  //     detailsContainer.find('input[name=scmbranch]').val(scm.branch);
+  //     detailsContainer.find('input[name=postreceiveurl]').val(self.getPostReceiveUrl()).focus(function () {
+  //       this.select();
+  //     });
+  //   }
+  //   if ('undefined' !== typeof app.config && 'undefined' !== typeof app.config.keys) {
+  //     detailsContainer.find('textarea[name=keyspublic]').val(app.config.keys['public']);
+  //   }
 
-    detailsContainer.find('input[name=app_id]').val(inst.guid);
+  //   detailsContainer.find('input[name=app_id]').val(inst.guid);
         
-    var preview_config = inst.config.preview || {};
-    var preview_list = $('#manage_details_container #new_app_target');
-    $fw.client.preview.insertPreviewOptionsIntoSelect(preview_list, preview_config.device);
-  },
+  //   var preview_config = inst.config.preview || {};
+  //   var preview_list = $('#manage_details_container #new_app_target');
+  //   $fw.client.preview.insertPreviewOptionsIntoSelect(preview_list, preview_config.device);
+  // },
   
   showCurrentFrameworks: function(){
     var self = this;
@@ -500,62 +500,62 @@ application.AppManager = Class.extend({
     $fw.state.set('app', 'id', id);
   },
   
-  enableScmApp: function (scmCrudEnabled) {
-    $fw.data.set('scm_mode', true);
+  // enableScmApp: function (scmCrudEnabled) {
+  //   $fw.data.set('scm_mode', true);
     
-    if( ! scmCrudEnabled ) {
-      var files_div = $('#accordion_item_editor').next();
-      var temp = $('<p>').addClass('editor_disabled_p').text($fw.client.lang.getLangString('scm_editor_disabled'));
-      files_div.children().hide().end().append(temp);
-    }
+  //   if( ! scmCrudEnabled ) {
+  //     var files_div = $('#accordion_item_editor').next();
+  //     var temp = $('<p>').addClass('editor_disabled_p').text($fw.client.lang.getLangString('scm_editor_disabled'));
+  //     files_div.children().hide().end().append(temp);
+  //   }
     
-    $('#new_app_scmurl').parent().show();
-    $('#new_app_scmkey').parent().show();
-    $('#new_app_scmbranch').parent().show();
-    $('#postreceiveurl').parent().show();
-    $('#scm_trigger_button').show();
-    $('#scm_trigger_button_editor').show();
-  },
+  //   $('#new_app_scmurl').parent().show();
+  //   $('#new_app_scmkey').parent().show();
+  //   $('#new_app_scmbranch').parent().show();
+  //   $('#postreceiveurl').parent().show();
+  //   $('#scm_trigger_button').show();
+  //   $('#scm_trigger_button_editor').show();
+  // },
   
-  disableScmApp: function () {
-    $fw.data.set('scm_mode', false);
+  // disableScmApp: function () {
+  //   $fw.data.set('scm_mode', false);
     
-    $('.editor_disabled_p').remove();
-    $('#accordion_item_editor').next().children().show();
-    $('#new_app_scmkey').parent().hide();
-    $('#new_app_scmurl').parent().hide();
-    $('#new_app_scmbranch').parent().hide();
-    $('#postreceiveurl').parent().hide();
-    $('#scm_trigger_button').hide();
-    $('#scm_trigger_button_editor').hide();
-  },
+  //   $('.editor_disabled_p').remove();
+  //   $('#accordion_item_editor').next().children().show();
+  //   $('#new_app_scmkey').parent().hide();
+  //   $('#new_app_scmurl').parent().hide();
+  //   $('#new_app_scmbranch').parent().hide();
+  //   $('#postreceiveurl').parent().hide();
+  //   $('#scm_trigger_button').hide();
+  //   $('#scm_trigger_button_editor').hide();
+  // },
   
-  isScmApp: function () {
-    var isScm = false,
-        app = $fw.data.get('app'),
-        inst = $fw.data.get('inst'),
-        appConfig = 'undefined' !== typeof app.config ? app.config : {};
+  // isScmApp: function () {
+  //   var isScm = false,
+  //       app = $fw.data.get('app'),
+  //       inst = $fw.data.get('inst'),
+  //       appConfig = 'undefined' !== typeof app.config ? app.config : {};
     
-    if (('undefined' !== typeof appConfig.scm) && ('EXTERNAL' === app.config.scm.type)) {
-      isScm = true;
-    }
-    else {
-      // TODO: If required, can lookup an app that isn't open in the studio.
-    }
+  //   if (('undefined' !== typeof appConfig.scm) && ('EXTERNAL' === app.config.scm.type)) {
+  //     isScm = true;
+  //   }
+  //   else {
+  //     // TODO: If required, can lookup an app that isn't open in the studio.
+  //   }
     
-    return isScm;
-  },
+  //   return isScm;
+  // },
 
-  isNodeJsApp: function() {
-    var isNodeJs = false;
+  // isNodeJsApp: function() {
+  //   var isNodeJs = false;
     
-    var inst = $fw.data.get('inst');
-    if (null != inst) {
-      isNodeJs = inst.nodejs === 'true';
-    }
+  //   var inst = $fw.data.get('inst');
+  //   if (null != inst) {
+  //     isNodeJs = inst.nodejs === 'true';
+  //   }
     
-    return isNodeJs;
-  },
+  //   return isNodeJs;
+  // },
   
   /*
    * Gets the scm trigger url for the current app
