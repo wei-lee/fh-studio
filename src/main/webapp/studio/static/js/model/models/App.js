@@ -26,6 +26,11 @@ model.App = model.Model.extend({
     editable: false,
     showable: true,
     column_title: "Last Modified"
+  }, {
+    field_name: "id",
+    editable: false,
+    showable: false,
+    column_title: "App ID"
   }],
 
   init: function() {

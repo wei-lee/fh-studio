@@ -162,6 +162,13 @@ Apps.Myapps.Controller = Controller.extend({
       var icon_path = icon_cell.text().trim();
       var icon = $('<img>').attr('src', icon_path).addClass('app_icon');
       icon_cell.empty().append(icon);
+
+      // Bind row clicks to show Manage an app
+      $('td:eq(1)', row).addClass('app_title').unbind().click(function(){
+        // GUID is last, TODO: Make this better
+        var guid = data[5];
+        $fw_manager.client.app.doShowManage(guid);
+      });
     }
   }
 
