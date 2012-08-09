@@ -529,8 +529,8 @@ GenerateApp.Controller = Class.extend({
 
   resizeLayouts: function() {
     try {
-      apps_layout.resizeAll();
-      list_apps_layout.resizeAll();
+      //apps_layout.resizeAll();
+      //list_apps_layout.resizeAll();
       proto.Grid.resizeVisible();
     } catch (err) {
       console.log("Couldn't resize layouts, elements probably not displaying right now");

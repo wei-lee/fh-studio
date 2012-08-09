@@ -1,6 +1,8 @@
 var Controller = Class.extend({
 
   progressModal: null,
+  views: {},
+  models: {},
 
   init: function () {
     // generic controller stuff
@@ -10,8 +12,10 @@ var Controller = Class.extend({
     // generic show
   },
 
-  hide: function () {
-    // generic hide
+  hide: function(){
+    $.each(this.views, function(k, v){
+      $(v).hide();
+    });
   },
 
   reset: function() {

@@ -701,7 +701,7 @@ label.error
 }
 
 /* Inner layouts*/
-.inner-layout, #apps_layout
+.inner-layout
 {
   width:100%;
   height:100%;
@@ -717,18 +717,6 @@ label.error
 {
   /*padding:0 10px;*/
 }
-#manage_apps_north
-{
-  height: 32px !important;
-}
-#manage_apps_east
-{
-  padding-right:0px !important;
-  overflow: none;
-}
-#manage_apps_layout .ui-layout-resizer-east
-{
-}
 .inner-layout .ui-layout-south, #apps_south
 {
   height:15px!important;
@@ -742,33 +730,6 @@ label.error
 .ui-widget-content
 {
   border:none;
-}
-/* resize and toggler styles */
-#manage_apps_layout .ui-layout-resizer {
- background: #EFEFEF;
-}
-#manage_apps_layout .ui-layout-resizer:hover,#manage_apps_layout .ui-layout-resizer-dragging {
- background: #C4E1A4;
-}
-#manage_apps_layout .ui-layout-toggler {
- width: 16px; 
- height: 16px; 
- background-image: url(../img/ui-icons_222222_256x240.png);
-}
-#manage_apps_layout .ui-layout-toggler:hover {
- background-image: url(../img/ui-icons_454545_256x240.png); 
-}
-#manage_apps_layout .ui-layout-toggler-west-closed {
- background-position: -208px -48px;
-}
-#manage_apps_layout .ui-layout-toggler-west-open {
- background-position: -240px -48px;
-}
-#manage_apps_layout .ui-layout-toggler-east-closed {
- background-position: -240px -48px;
-}
-#manage_apps_layout .ui-layout-toggler-east-open {
- background-position: -208px -48px;
 }
 
 /* Header */
@@ -3279,7 +3240,7 @@ table.dataTable th:active {
   height: 100px;
 }
 
-#apps_layout, #account_layout, #reporting_layout, #home_layout {
+#account_layout, #reporting_layout, #home_layout {
   height:700px;
 }
 

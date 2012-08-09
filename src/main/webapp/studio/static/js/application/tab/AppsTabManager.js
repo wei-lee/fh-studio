@@ -2,6 +2,7 @@ application.AppsTabManager = application.TabManager.extend({
   name: 'apps',
   mode_buttons: null,
   accordion: null,
+  inited: false,
 
   init: function(opts) {
     this._super(opts);
@@ -112,10 +113,10 @@ application.AppsTabManager = application.TabManager.extend({
       changeButtonState($(this));
       $fw_manager.client.app.generate_app_controller.show();
     });
-    apps_layout = proto.Layout.load($('#apps_layout'), {
-      east__initClosed: true,
-      west__initClosed: true
-    });
+    // apps_layout = proto.Layout.load($('#apps_layout'), {
+    //   east__initClosed: true,
+    //   west__initClosed: true
+    // });
   },
 
   doPostInit: function() {},
@@ -130,11 +131,12 @@ application.AppsTabManager = application.TabManager.extend({
   },
 
   doPostShow: function() {
-    this.disableItems();
+    var self = this;
+    self.disableItems();
 
     var that = this;
     // TODO: different check when we no longer use globals for this
-    if (null === list_apps_layout) {
+    if (!self.inited) {
       // Check if we need to force a state
       // TODO: allow for UI structural changes
       var defval = 'list_apps_button_my_apps';
@@ -172,10 +174,7 @@ application.AppsTabManager = application.TabManager.extend({
         $('li#' + selected).trigger('click');
       }
     }
-    apps_layout.resizeAll();
-    if (null !== list_apps_layout) {
-      list_apps_layout.resizeAll();
-    }
+    self.inited = true;
   },
 
   /*
@@ -190,7 +189,7 @@ application.AppsTabManager = application.TabManager.extend({
       });
     }
     $fw_manager.app.showAndHide('#manage_apps_layout', '#list_apps_layout');
-    apps_layout.resizeAll();
+    //apps_layout.resizeAll();
 
     var accordion_name = this.name + '_accordion',
         manager_name = js_util.capitalise(this.name) + 'AccordionManager';
@@ -215,15 +214,5 @@ application.AppsTabManager = application.TabManager.extend({
   // TODO: all show list_app_layout functionality should be build out separately from tab initialisation code
   showListApps: function() {
     $fw_manager.app.showAndHide('#list_apps_layout', '#manage_apps_layout');
-    if (null === list_apps_layout) {
-      list_apps_layout = proto.Layout.load($('#list_apps_layout'), {
-        center__onresize: function(pane, $Pane, pane_state) {
-          proto.Grid.resizeVisible();
-        },
-        east__initClosed: true,
-        north__initClosed: true,
-        south__initClosed: true
-      });
-    }
   }
 });

@@ -29,8 +29,8 @@ $.extend(Application, {
 
     // show new grid
     $('#list_apps_grid_wrapper').find('#gbox_' + grid_name + '_grid').show();
-    apps_layout.resizeAll();
-    list_apps_layout.resizeAll();
+    //apps_layout.resizeAll();
+    //list_apps_layout.resizeAll();
     proto.Grid.resizeVisible();
   }
 });
