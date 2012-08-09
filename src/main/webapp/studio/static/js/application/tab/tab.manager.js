@@ -1,7 +1,6 @@
 /*jshint evil:true */
 var Tab = Tab || {};
 Tab.Manager = Class.extend({
-  controllers: {},
   inited: false,
 
   init: function () {
@@ -9,13 +8,12 @@ Tab.Manager = Class.extend({
   },
 
   show: function () {
+    var self = this;
+    var el = $('#' + this.id);
+    var navList = el.find('.nav-list');
+
     if (!this.inited) {
       this.inited = true;
-
-      var self = this;
-      var el = $('#' + this.id);
-      var navList = el.find('.nav-list');
-      var crumb = el.find('.breadcrumb');
 
       // bind events to each navlist items
       navList.find('a').each(function (index, element) {
@@ -23,6 +21,12 @@ Tab.Manager = Class.extend({
         var controllerName = jqEl.data('controller');
 
         // resolve the right controller for the navlist item
+        // NOTE: we initialise to an emtpy object here rather than have it as a field due to 
+        //       bug/feature of Class where all sub classes have a reference to the same field
+        //       http://ejohn.org/blog/simple-javascript-inheritance/
+        if (self.controllers == null) {
+          self.controllers = {};
+        }
         if ('undefined' === typeof self.controllers[controllerName]) {
           var upperName = self.toUpper(controllerName);
           try {
@@ -37,17 +41,7 @@ Tab.Manager = Class.extend({
         // handler for when navlist item is clicked
         jqEl.on('click', function (e) {
           e.preventDefault();
-          // update active status of navlist
-          navList.find('li').removeClass('active');
-          jqEl.closest('li').addClass('active');
-
-          // udpate breadcrumbs
-          var crumbs = [jqEl.text()];
-          var header = jqEl.closest('li').prevAll('.nav-header:eq(0)');
-          if (header.length > 0) {
-            crumbs.unshift(header.text());
-          }
-          self.updateCrumbs(crumbs);
+          self.updateCrumbs.call(this, self);
 
           // tell all controllers to hide themselves
           for (var key in self.controllers) {
@@ -65,13 +59,35 @@ Tab.Manager = Class.extend({
       // TODO: state stuff here
       el.find('.layout-content').show();
       navList.find('a:eq(0)').trigger('click');
+    } else {
+      self.updateCrumbs.call(navList.find('li.active a')[0], self);
     }
   },
 
   // see http://twitter.github.com/bootstrap/components.html#breadcrumbs
-  updateCrumbs: function (crumbs) {
-    var el = $('#' + this.id);
-    var crumb = el.find('.breadcrumb').empty();
+  updateCrumbs: function (self) {
+    console.log('updateCrumbs');
+    var crumb;
+
+    var el = $('#' + self.id);
+    var navList = el.find('.nav-list');
+    var jqEl = $(this);
+    // update active status of navlist
+    navList.find('li').removeClass('active');
+    jqEl.closest('li').addClass('active');
+
+    // udpate breadcrumbs
+    var crumbs = [jqEl.text()];
+    var header = jqEl.closest('li').prevAll('.nav-header:eq(0)');
+    if (header.length > 0) {
+      crumbs.unshift(header.text());
+    }
+
+    if (self.breadcrumbId != null) {
+      crumb = $('#' + self.breadcrumbId).empty();
+    } else {
+      crumb = $('#' + self.id).find('.breadcrumb').empty();
+    }
 
     for (var ci = 0, cl = crumbs.length; ci < cl; ci += 1) {
       var ct = crumbs[ci];
@@ -83,6 +99,7 @@ Tab.Manager = Class.extend({
           "text": ct
         }).on('click', function (e) {
           // TODO: implement
+          e.preventDefault();
           console.error('IMPLEMENT breadcrumb click');
         })).append($('<span>', {
           "class": "divider",
