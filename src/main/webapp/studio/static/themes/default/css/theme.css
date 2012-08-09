@@ -3339,3 +3339,11 @@ table.dataTable th:active {
 .btn.enable_user_button, .btn.invite_user_btn, .btn.blacklist_user_button {
   margin-left: 5px;
 }
+
+.app_icon_cell, #my_apps_grid.table-bordered thead:first-child tr:first-child th:first-child {
+  width: 16px !important;
+}
+
+#my_apps_grid .app_title {
+  cursor: pointer;
+}
