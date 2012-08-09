@@ -17,6 +17,11 @@ model.App = model.Model.extend({
     showable: true,
     column_title: "Description"
   }, {
+    field_name: "email",
+    editable: false,
+    showable: false,
+    column_title: "Email"
+  }, {
     field_name: "version",
     editable: false,
     showable: true,
