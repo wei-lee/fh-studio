@@ -111,38 +111,38 @@ application.AppsAccordionManager = application.AccordionManager.extend({
     }
   },
   
-  postSelectManageDetails: function () {
-    if ($fw.client.needsSetup('manage_details')) {
-      var pleaseWaitText = $fw.client.lang.getLangString('please_wait_text');
-      var scmTriggerButtonText = $fw.client.lang.getLangString('scm_trigger_button_text');
+  // postSelectManageDetails: function () {
+  //   if ($fw.client.needsSetup('manage_details')) {
+  //     var pleaseWaitText = $fw.client.lang.getLangString('please_wait_text');
+  //     var scmTriggerButtonText = $fw.client.lang.getLangString('scm_trigger_button_text');
 
-      // setup update details button
-      var updateButtonText = $fw.client.lang.getLangString('manage_details_update_button_text'),
-          updateButton = $('#manage_details_update_button');
-      updateButton.text(updateButtonText).bind('click', function () {
-        updateButton.attr('disabled', 'disabled').text(pleaseWaitText);
-        $fw_manager.client.app.doUpdate(function () {
-          updateButton.removeAttr('disabled').text(updateButtonText).removeClass('ui-state-hover');
-        });
-      });
+  //     // setup update details button
+  //     var updateButtonText = $fw.client.lang.getLangString('manage_details_update_button_text'),
+  //         updateButton = $('#manage_details_update_button');
+  //     updateButton.text(updateButtonText).bind('click', function () {
+  //       updateButton.attr('disabled', 'disabled').text(pleaseWaitText);
+  //       $fw_manager.client.app.doUpdate(function () {
+  //         updateButton.removeAttr('disabled').text(updateButtonText).removeClass('ui-state-hover');
+  //       });
+  //     });
       
-      // also enable the scm trigger button
-      var scmTriggerButton = $('#scm_trigger_button');      
-      scmTriggerButton.text(scmTriggerButtonText).bind('click', function () {
-        scmTriggerButton.attr('disabled', 'disabled').text(pleaseWaitText);
-        $fw.client.app.triggerScm(function () {
-          $fw.client.preview.show();
-          $fw_manager.client.editor.reloadFiles();
-        }, 
-        $.noop,
-        function () {
-          scmTriggerButton.removeAttr('disabled').text(scmTriggerButtonText).removeClass('ui-state-hover');
-        });
-      });
-    }
-    console.log('updateAppDetails');
-    $fw_manager.client.app.updateDetails();
-  },
+  //     // also enable the scm trigger button
+  //     var scmTriggerButton = $('#scm_trigger_button');      
+  //     scmTriggerButton.text(scmTriggerButtonText).bind('click', function () {
+  //       scmTriggerButton.attr('disabled', 'disabled').text(pleaseWaitText);
+  //       $fw.client.app.triggerScm(function () {
+  //         $fw.client.preview.show();
+  //         $fw_manager.client.editor.reloadFiles();
+  //       }, 
+  //       $.noop,
+  //       function () {
+  //         scmTriggerButton.removeAttr('disabled').text(scmTriggerButtonText).removeClass('ui-state-hover');
+  //       });
+  //     });
+  //   }
+  //   console.log('updateAppDetails');
+  //   $fw_manager.client.app.updateDetails();
+  // },
 
   postSelectManageFrameworks: function(){
     if($fw.client.needsSetup('manage_frameworks')){

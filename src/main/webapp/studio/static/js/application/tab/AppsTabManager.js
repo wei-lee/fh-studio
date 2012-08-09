@@ -16,12 +16,12 @@ application.AppsTabManager = application.TabManager.extend({
     var crumbs = [{
       text: b1.text(),
       callback: function() {
-        $fw_manager.client.tab.apps.showListApps();
+        $fw.client.tab.apps.showListApps();
         b1.trigger('click');
       }
     }];
     if (!outer_layout.is(':visible')) {
-      var b2 = $fw_manager.data.get('inst').title;
+      var b2 = $fw.data.get('inst').title;
       var accordion = this.tab_content.find('.ui-layout-west .ui-accordion');
       var b3 = accordion.find('h3.ui-state-active');
       var b4 = accordion.find('.ui-accordion-content-active .ui-state-active');
@@ -64,7 +64,7 @@ application.AppsTabManager = application.TabManager.extend({
         if (query.length > 0) {
           // and if the query doesn't match the placeholder
           if (query !== apps_search.attr('placeholder')) {
-            $fw_manager.client.app.doSearch(query);
+            $fw.client.app.doSearch(query);
           }
         }
         // otherwise just show all apps
@@ -87,7 +87,7 @@ application.AppsTabManager = application.TabManager.extend({
     });
 
     function changeButtonState(button) {
-      $fw_manager.state.set('apps_tab_options', 'selected', button.attr('id'));
+      $fw.state.set('apps_tab_options', 'selected', button.attr('id'));
 
       // highlight active button
       $('#list_apps_buttons li').removeClass('ui-state-active');
@@ -96,7 +96,7 @@ application.AppsTabManager = application.TabManager.extend({
 
     list_apps_buttons.find('#list_apps_button_my_apps').addClass('ui-state-active').bind('click', $.throttle(Properties.click_throttle_timeout, function() {
       changeButtonState($(this));
-      $fw_manager.app.showAndLoadGrid('my_apps');
+      $fw.app.showAndLoadGrid('my_apps');
     }));
     list_apps_buttons.find('#list_apps_button_templates').bind('click', $.throttle(Properties.click_throttle_timeout, function() {
       changeButtonState($(this));
@@ -104,13 +104,13 @@ application.AppsTabManager = application.TabManager.extend({
       // Remove text from search box
       $('#apps_search').val('').trigger('blur');
 
-      $fw_manager.app.showAndLoadGrid('templates');
+      $fw.app.showAndLoadGrid('templates');
     }));
-    list_apps_buttons.find('#list_apps_button_create').bind('click', $fw_manager.client.app.doCreate);
-    list_apps_buttons.find('#list_apps_button_import').bind('click', $fw_manager.client.app.doImport);
+    list_apps_buttons.find('#list_apps_button_create').bind('click', $fw.client.app.doCreate);
+    list_apps_buttons.find('#list_apps_button_import').bind('click', $fw.client.app.doImport);
     list_apps_buttons.find('#list_apps_button_generate_app').bind('click', function() {
       changeButtonState($(this));
-      $fw_manager.client.app.generate_app_controller.show();
+      $fw.client.app.generate_app_controller.show();
     });
     // apps_layout = proto.Layout.load($('#apps_layout'), {
     //   east__initClosed: true,
@@ -121,8 +121,8 @@ application.AppsTabManager = application.TabManager.extend({
   doPostInit: function() {},
 
   disableItems: function() {
-    var app_generation_enabled = $fw_manager.getClientProp('app-generation-enabled') == "true";
-    var nodejs_domain = $fw_manager.getClientProp('nodejsEnabled') == "true";
+    var app_generation_enabled = $fw.getClientProp('app-generation-enabled') == "true";
+    var nodejs_domain = $fw.getClientProp('nodejsEnabled') == "true";
     if (!app_generation_enabled || !nodejs_domain) {
       $('#list_apps_button_generate_app').hide().remove();
       $('#create_app_generator_container').hide().remove();
@@ -139,14 +139,14 @@ application.AppsTabManager = application.TabManager.extend({
       // Check if we need to force a state
       // TODO: allow for UI structural changes
       var defval = 'list_apps_button_my_apps';
-      var selected = $fw_manager.state.get('apps_tab_options', 'selected', defval);
+      var selected = $fw.state.get('apps_tab_options', 'selected', defval);
       var id;
       if (selected === 'app') {
         // An app was open last, so what's the id?
-        id = $fw_manager.state.get('app', 'id', null);
+        id = $fw.state.get('app', 'id', null);
         if (null !== id) {
           // Have an app id, lets try open it for managing
-          $fw_manager.client.app.doManage(id, $.noop, function() {
+          $fw.client.app.doManage(id, $.noop, function() {
             // if it fails (permission issue or app doesn't exist), show apps list
             that.showListApps();
             $('li#' + defval).trigger('click');
@@ -157,10 +157,10 @@ application.AppsTabManager = application.TabManager.extend({
           $('li#' + defval).trigger('click');
         }
       } else if (selected === 'template') {
-        id = $fw_manager.state.get('template', 'id', null);
+        id = $fw.state.get('template', 'id', null);
         if (null !== id) {
           // Have an app id, lets try open it for managing
-          $fw_manager.client.template.doView(id);
+          $fw.client.template.doView(id);
           // TODO: need a failure callback if template cant be shown
         } else {
           // setup the list_apps_layout 
@@ -187,7 +187,7 @@ application.AppsTabManager = application.TabManager.extend({
         console.log('advanced clicked');
       });
     }
-    $fw_manager.app.showAndHide('#manage_apps_layout', '#list_apps_layout');
+    $fw.app.showAndHide('#manage_apps_layout', '#list_apps_layout');
     //apps_layout.resizeAll();
 
     var accordion_name = this.name + '_accordion',
@@ -203,7 +203,7 @@ application.AppsTabManager = application.TabManager.extend({
       this.accordion.reset();
     }
     // Reload preview
-    $fw_manager.client.preview.show();
+    $fw.client.preview.show();
 
     if ($.isFunction(callback)) {
       callback();
@@ -212,6 +212,6 @@ application.AppsTabManager = application.TabManager.extend({
 
   // TODO: all show list_app_layout functionality should be build out separately from tab initialisation code
   showListApps: function() {
-    $fw_manager.app.showAndHide('#list_apps_layout', '#manage_apps_layout');
+    $fw.app.showAndHide('#list_apps_layout', '#manage_apps_layout');
   }
 });

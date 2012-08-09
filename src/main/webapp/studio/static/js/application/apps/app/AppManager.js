@@ -10,114 +10,114 @@ application.AppManager = Class.extend({
   /*
    *
    */
-  doManage: function (guid, success, fail, is_name, intermediate) {
-    $fw.data.set('template_mode', false);
-    this.doShowManage(guid, success, fail, is_name, intermediate);
-  },
+  // doManage: function (guid, success, fail, is_name, intermediate) {
+  //   $fw.data.set('template_mode', false);
+  //   this.doShowManage(guid, success, fail, is_name, intermediate);
+  // },
   
-  doShowManage: function (guid, success, fail, is_name, intermediate) {
-    var self = this;
+  // doShowManage: function (guid, success, fail, is_name, intermediate) {
+  //   var self = this;
 
-    console.log('app.doManage');
-    if (!$('#apps_tab').parent().hasClass('ui-state-active')) {
-      //this function is called from home page, need to set state information to show the manage apps view
-      this.setStateForAppView(guid);
+  //   console.log('app.doManage');
+  //   if (!$('#apps_tab').parent().hasClass('ui-state-active')) {
+  //     //this function is called from home page, need to set state information to show the manage apps view
+  //     this.setStateForAppView(guid);
       
-      // click apps tab to trigger state restoration
-      $('#apps_tab').click();
-    }
-    $fw.app.resetApp();
-    var is_app_name = false;
-    if (typeof is_name !== "undefined" && is_name) {
-      is_app_name = true;
-    }
-    $fw.client.model.App.read(guid, function (result) {
-      console.log('app read result > ' + JSON.stringify(result));
-      if (result.app && result.inst) {
-        var inst = result.inst;
+  //     // click apps tab to trigger state restoration
+  //     $('#apps_tab').click();
+  //   }
+  //   $fw.app.resetApp();
+  //   var is_app_name = false;
+  //   if (typeof is_name !== "undefined" && is_name) {
+  //     is_app_name = true;
+  //   }
+  //   $fw.client.model.App.read(guid, function (result) {
+  //     console.log('app read result > ' + JSON.stringify(result));
+  //     if (result.app && result.inst) {
+  //       var inst = result.inst;
         
-        self.updateAppData(result.app, inst);
-        self.updateDetails();
-        var postFn = function() {
-          var template_mode = $fw.data.get('template_mode');
-          if (template_mode) {
-            // make sure correct button is active on list apps layout
-            $('#list_apps_buttons li').removeClass('ui-state-active');
-            $('#list_apps_button_templates').addClass('ui-state-active');
-            // update state information
-            $fw.state.set('apps_tab_options', 'selected', 'template');
-            $fw.state.set('template', 'id', inst.guid);
-            $fw.client.template.applyPreRestrictions();
-          }
-          else {
-            // make sure correct button is active on list apps layout
-            $('#list_apps_buttons li').removeClass('ui-state-active');
-            $('#list_apps_button_my_apps').addClass('ui-state-active');
-            // update state information
-            $fw.state.set('apps_tab_options', 'selected', 'app');
-            $fw.state.set('app', 'id', inst.guid);
-            $fw.client.template.removePreRestrictions();
-          }
+  //       self.updateAppData(result.app, inst);
+  //       self.updateDetails();
+  //       var postFn = function() {
+  //         var template_mode = $fw.data.get('template_mode');
+  //         if (template_mode) {
+  //           // make sure correct button is active on list apps layout
+  //           $('#list_apps_buttons li').removeClass('ui-state-active');
+  //           $('#list_apps_button_templates').addClass('ui-state-active');
+  //           // update state information
+  //           $fw.state.set('apps_tab_options', 'selected', 'template');
+  //           $fw.state.set('template', 'id', inst.guid);
+  //           $fw.client.template.applyPreRestrictions();
+  //         }
+  //         else {
+  //           // make sure correct button is active on list apps layout
+  //           $('#list_apps_buttons li').removeClass('ui-state-active');
+  //           $('#list_apps_button_my_apps').addClass('ui-state-active');
+  //           // update state information
+  //           $fw.state.set('apps_tab_options', 'selected', 'app');
+  //           $fw.state.set('app', 'id', inst.guid);
+  //           $fw.client.template.removePreRestrictions();
+  //         }
           
-          // Check if the current app is a scm based app, and if crud operations are allowed
-          var is_scm = self.isScmApp();
-          var scmCrudEnabled = $fw.getClientProp('scmCrudEnabled') == "true";
-          console.log('scmCrudEnabled = ' + scmCrudEnabled);
-          if (is_scm) {
-            console.log('scm based app, applying restrictions');
-            self.enableScmApp(scmCrudEnabled);
-          }
-          else {
-            console.log('non-scm based app, removing restrictions');
-            self.disableScmApp();
-          }
+  //         // Check if the current app is a scm based app, and if crud operations are allowed
+  //         var is_scm = self.isScmApp();
+  //         var scmCrudEnabled = $fw.getClientProp('scmCrudEnabled') == "true";
+  //         console.log('scmCrudEnabled = ' + scmCrudEnabled);
+  //         if (is_scm) {
+  //           console.log('scm based app, applying restrictions');
+  //           self.enableScmApp(scmCrudEnabled);
+  //         }
+  //         else {
+  //           console.log('non-scm based app, removing restrictions');
+  //           self.disableScmApp();
+  //         }
 
-          // Check if the current app is a Node.js one
-          if (self.isNodeJsApp()) {
-            console.log('Node.js based app, applying changes');
+  //         // Check if the current app is a Node.js one
+  //         if (self.isNodeJsApp()) {
+  //           console.log('Node.js based app, applying changes');
             
-            // Show Node cloud logo
-            $('#cloud_logo').removeClass().addClass('node').unbind().bind('click', function(){
-              window.open('http://nodejs.org/', '_blank');
-            });
-          } else {
-            console.log('Rhino based app, applying changes');
-            self.disableNodeJsApp();
+  //           // Show Node cloud logo
+  //           $('#cloud_logo').removeClass().addClass('node').unbind().bind('click', function(){
+  //             window.open('http://nodejs.org/', '_blank');
+  //           });
+  //         } else {
+  //           console.log('Rhino based app, applying changes');
+  //           self.disableNodeJsApp();
 
-            // Show Rhino cloud logo
-            $('#cloud_logo').removeClass().addClass('rhino').unbind().bind('click', function(){
-              window.open('http://www.mozilla.org/rhino/', '_blank');
-            });
-          }
+  //           // Show Rhino cloud logo
+  //           $('#cloud_logo').removeClass().addClass('rhino').unbind().bind('click', function(){
+  //             window.open('http://www.mozilla.org/rhino/', '_blank');
+  //           });
+  //         }
           
-          $fw.client.tab.apps.showManageapps( success );
-          if (template_mode) {
-            $fw.client.template.applyPostRestrictions();
-          }
-          else {
-            $fw.client.template.removePostRestrictions();
-          }
-        };
-        if($.isFunction(intermediate)) {
-          intermediate(postFn);
-        } else {
-          postFn();
-        }
-      }
-      else {
-        // TODO: call a failure callback, if specified
-        console.log('error reading app > ' + result.message, 'ERROR');
-        if ($.isFunction(fail)) {
-          fail.call();
-        }
-      }
-    }, function () {
-      console.log('app.doManage:ERROR');
-      if ($.isFunction(fail)) {
-        fail.call();
-      }
-    }, is_app_name);
-  },
+  //         $fw.client.tab.apps.showManageapps( success );
+  //         if (template_mode) {
+  //           $fw.client.template.applyPostRestrictions();
+  //         }
+  //         else {
+  //           $fw.client.template.removePostRestrictions();
+  //         }
+  //       };
+  //       if($.isFunction(intermediate)) {
+  //         intermediate(postFn);
+  //       } else {
+  //         postFn();
+  //       }
+  //     }
+  //     else {
+  //       // TODO: call a failure callback, if specified
+  //       console.log('error reading app > ' + result.message, 'ERROR');
+  //       if ($.isFunction(fail)) {
+  //         fail.call();
+  //       }
+  //     }
+  //   }, function () {
+  //     console.log('app.doManage:ERROR');
+  //     if ($.isFunction(fail)) {
+  //       fail.call();
+  //     }
+  //   }, is_app_name);
+  // },
 
   disableNodeJsApp: function() {
     $('#staging').hide();
@@ -561,28 +561,28 @@ application.AppManager = Class.extend({
    * Gets the scm trigger url for the current app
    * e.g. /box/srv/1.1/pub/app/xzEWsLxpEp60ED-PxM8Zlc0B/refresh
    */
-  getTriggerUrl: function () {
-    var app = $fw.data.get('app'),
-        url;
+  // getTriggerUrl: function () {
+  //   var app = $fw.data.get('app'),
+  //       url;
     
-    url = Constants.TRIGGER_SCM_URL.replace('<GUID>', app.guid);
+  //   url = Constants.TRIGGER_SCM_URL.replace('<GUID>', app.guid);
     
-    return url;
-  },
+  //   return url;
+  // },
   
   /*
    * Gets the post receive url for the current app.
    * e.g. https://apps.feedhenry.com/box/srv/1.1/pub/app/xzEWsLxpEp60ED-PxM8Zlc0B/refresh
    */
-  getPostReceiveUrl: function () {
-    var postReceiveUrl,
-        host;
+  // getPostReceiveUrl: function () {
+  //   var postReceiveUrl,
+  //       host;
     
-    host = document.location.protocol + '//' + document.location.host;
-    postReceiveUrl = host + this.getTriggerUrl();
+  //   host = document.location.protocol + '//' + document.location.host;
+  //   postReceiveUrl = host + this.getTriggerUrl();
     
-    return postReceiveUrl;
-  },
+  //   return postReceiveUrl;
+  // },
   
   stageApp: function (guid, cb) {
     var url, params, app;
