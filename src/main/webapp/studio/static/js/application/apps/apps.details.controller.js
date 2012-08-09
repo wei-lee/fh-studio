@@ -21,6 +21,7 @@ Apps.Details.Controller = Controller.extend({
 
   show: function(){
     // TODO
+    console.log('app details show');
   },
 
   hide: function(){
