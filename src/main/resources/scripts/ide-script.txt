@@ -11,7 +11,6 @@ js/application/accordion/ReportingAccordionManager.js
 js/application/reporting/ReportingManager.js
 js/application/controller.js
 js/application/apps/app/generate_app.controller.js
-js/application/apps/app/AppSupport.js
 js/application/apps/app/AppManager.js
 js/application/apps/configuration/ConfigurationSupport.js
 js/application/apps/configuration/ConfigurationManager.js
@@ -102,7 +101,6 @@ js/application/stats/controllers/stats.controller.js
 common/js/ui/thirdparty/bootstrap/bootstrap.js
 js/application/tab/TabManager.js
 js/application/tab/HomeTabManager.js
-js/application/tab/AppsTabManager.js
 js/application/tab/AccountTabManager.js
 js/application/tab/ReportingTabManager.js
 js/application/tab/tab.manager.js

@@ -1,6 +1,5 @@
 application.AppsTabManager = application.TabManager.extend({
   name: 'apps',
-  mode_buttons: null,
   accordion: null,
   inited: false,
 
