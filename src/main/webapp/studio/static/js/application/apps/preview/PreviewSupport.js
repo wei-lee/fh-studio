@@ -113,20 +113,16 @@ application.PreviewSupport = Class.extend({
 
   hideContent: function () {
     $('#app_preview').hide();
-    $('#app_content').removeClass('span8').addClass('span10');
+    $('#app_content').removeClass('span7').addClass('span10');
   },
 
   showContent: function () {
-    $('#app_content').removeClass('span10').addClass('span8');
+    $('#app_content').removeClass('span10').addClass('span7');
     $('#app_preview').show();
   },
 
   getContent: function () {
     return $('#preview_frame');
-  },
-
-  isPreviewOpen: function () {
-    return $('#app_preview').is(':visible');
   },
   
   calculateScaleFactor: function (px_actual, mm_desired) {

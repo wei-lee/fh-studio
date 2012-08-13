@@ -2,7 +2,7 @@ var Apps = Apps || {};
 
 Apps.Push = Apps.Push || {};
 
-Apps.Push.Controller = Controller.extend({
+Apps.Push.Controller = Apps.Controller.extend({
 
   model: {
     //device: new model.Device()
@@ -15,6 +15,7 @@ Apps.Push.Controller = Controller.extend({
   },
 
   container: null,
+  showPreview: true,
   options: ['ua_push_dev_app_key', 'ua_push_dev_app_secret', 'ua_push_dev_master_secret', 'ua_push_prod_app_key', 'ua_push_prod_app_secret', 'ua_push_prod_master_secret', 'ua_push_transport', 'ua_push_c2dm_sender'],
 
   init: function () {
@@ -38,6 +39,8 @@ Apps.Push.Controller = Controller.extend({
   },
 
   show: function(){
+    this._super();
+    
     // TODO
     this.hide();
     this.container = this.views.push_urbanairship_container;

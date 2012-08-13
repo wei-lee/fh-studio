@@ -11,7 +11,7 @@ Application = {
 
     if ('accordion_item_report' === ui.newHeader.attr('id') || 'accordion_item_debug' === ui.newHeader.attr('id')) {
       // if moving to the reporting item and the preview is open then save flag and hide the preview
-      if ($fw.client.preview.support.isPreviewOpen()) {
+      if ($fw.client.preview.isPreviewOpen()) {
       this.previewWasOpen = true;
       $fw.client.preview.hideContent();
       }

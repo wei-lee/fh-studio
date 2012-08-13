@@ -2,7 +2,7 @@ var Apps = Apps || {};
 
 Apps.Status = Apps.Status || {};
 
-Apps.Status.Controller = Controller.extend({
+Apps.Status.Controller = Apps.Controller.extend({
 
   model: {
     //device: new model.Device()
@@ -35,12 +35,15 @@ Apps.Status.Controller = Controller.extend({
   },
 
   show: function() {
+    this._super();
+    
     var self = this;
     console.log('status.show');
 
     this.hide();
     this.container = this.views.status_container;
 
+    // FIXME: show/hide preview could depend on a field in each sub-class of controller
     $fw_manager.client.preview.hideContent();
     this.stats_controller.closeAll();
     this.stats_controller.loadModels();

@@ -2,7 +2,7 @@ var Apps = Apps || {};
 
 Apps.Icons = Apps.Icons || {};
 
-Apps.Icons.Controller = Controller.extend({
+Apps.Icons.Controller = Apps.Controller.extend({
   ICON_TYPE_SMALL: 'small',
   ICON_TYPE_LARGE: 'large',
 
@@ -17,6 +17,7 @@ Apps.Icons.Controller = Controller.extend({
   },
 
   container: null,
+  showPreview: true,
 
   init: function () {
     this.icon_sizes = {
@@ -26,7 +27,8 @@ Apps.Icons.Controller = Controller.extend({
   },
 
   show: function(){
-    // TODO
+    this._super();
+    
     this.hide();
     this.container = this.views.manage_icons_container;
     

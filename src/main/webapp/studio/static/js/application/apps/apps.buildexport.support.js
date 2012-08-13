@@ -2,10 +2,14 @@ var Apps = Apps || {};
 
 Apps.BuildExport = Apps.BuildExport || {};
 
-Apps.BuildExport.Support = Controller.extend({
+Apps.BuildExport.Support = Apps.Controller.extend({
 
   init: function () {
     
+  },
+
+  show: function () {
+    this._super();
   },
   
   setupAppGeneration: function(is_source){

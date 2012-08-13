@@ -2,7 +2,7 @@ var Apps = Apps || {};
 
 Apps.Logging = Apps.Logging || {};
 
-Apps.Logging.Controller = Controller.extend({
+Apps.Logging.Controller = Apps.Controller.extend({
 
   model: {
     //device: new model.Device()
@@ -40,7 +40,8 @@ Apps.Logging.Controller = Controller.extend({
   },
 
   show: function(){
-    // TODO
+    this._super();
+    
     this.hide();
     this.container = this.views.debug_logging_container;
 

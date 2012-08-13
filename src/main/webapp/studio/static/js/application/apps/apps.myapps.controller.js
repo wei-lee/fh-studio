@@ -2,7 +2,7 @@ var Apps = Apps || {};
 
 Apps.Myapps = Apps.Myapps || {};
 
-Apps.Myapps.Controller = Controller.extend({
+Apps.Myapps.Controller = Apps.Controller.extend({
 
   model: {
     app: new model.App()
@@ -22,6 +22,8 @@ Apps.Myapps.Controller = Controller.extend({
   },
 
   show: function() {
+    this._super();
+    
     var self = this;
     console.log('myapps show');
     

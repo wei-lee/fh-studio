@@ -2,7 +2,7 @@ var Apps = Apps || {};
 
 Apps.Installs = Apps.Installs || {};
 
-Apps.Installs.Controller = Controller.extend({
+Apps.Installs.Controller = Apps.Controller.extend({
 
   model: {
     //device: new model.Device()
@@ -23,7 +23,8 @@ Apps.Installs.Controller = Controller.extend({
   },
 
   show: function(){
-    // TODO
+    this._super();
+    
     this.hide();
     // this.container = this.views.report_installsdest_container;
     // $(this.container).show();

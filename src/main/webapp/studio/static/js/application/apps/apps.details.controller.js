@@ -2,7 +2,7 @@ var Apps = Apps || {};
 
 Apps.Details = Apps.Details || {};
 
-Apps.Details.Controller = Controller.extend({
+Apps.Details.Controller = Apps.Controller.extend({
 
   model: {
     //device: new model.Device()
@@ -15,13 +15,15 @@ Apps.Details.Controller = Controller.extend({
   },
 
   container: null,
+  showPreview: true,
 
   init: function () {
     this.initFn = _.once(this.initBindings);
   },
 
   show: function(){
-    // TODO
+    this._super();
+    
     console.log('app details show');
     this.initFn();
 

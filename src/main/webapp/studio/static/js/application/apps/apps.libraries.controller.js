@@ -2,7 +2,7 @@ var Apps = Apps || {};
 
 Apps.Libraries = Apps.Libraries || {};
 
-Apps.Libraries.Controller = Controller.extend({
+Apps.Libraries.Controller = Apps.Controller.extend({
 
   model: {
     //device: new model.Device()
@@ -13,6 +13,7 @@ Apps.Libraries.Controller = Controller.extend({
   },
 
   container: null,
+  showPreview: true,
 
   init: function () {
     this.initFn = _.once(this.initBindings);
@@ -27,7 +28,8 @@ Apps.Libraries.Controller = Controller.extend({
   },
 
   show: function(){
-    // TODO
+    this._super();
+    
     this.hide();
 
     this.initFn();

@@ -154,7 +154,7 @@ ManageappsTabManager = Tab.Manager.extend({
         self.updateDetails();
 
         // Reload preview
-        $fw_manager.client.preview.show();
+        //$fw_manager.client.preview.show();
         
         var postFn = function() {
           var template_mode = $fw.data.get('template_mode');

@@ -4,7 +4,16 @@ application.PreviewManager = Class.extend({
   EMPTY_PREVIEW_WIDTH: 320,
 
   init: function () {
+    var self = this;
     this.support = new application.PreviewSupport();
+    
+    $('.preview_toggle').unbind().bind('click', function () {
+      if (self.isPreviewOpen()) {
+        self.hide();
+      } else {
+        self.show();
+      }
+    });
   },
 
   show: function () {
@@ -29,10 +38,16 @@ application.PreviewManager = Class.extend({
     }
   },
 
+  hide: function () {
+    this.hideContent();
+    $('#preview_toggle_open').show();
+    $('#preview_toggle_close').hide();
+  },
+
   showInit: function () {
     var self = this;
 
-    $fw.client.lang.insertLangForContainer($('#manage_apps_east'));
+    $fw.client.lang.insertLangForContainer($('#app_preview'));
     
     $('#preview_device_open_emulator').bind('click', $fw.client.preview.showEmulator);
     
@@ -71,7 +86,7 @@ application.PreviewManager = Class.extend({
       // If we're not viewing a template, save the preview device as the default
       if (!$fw_manager.data.get('template_mode')) {
         self.device_id = $fw_manager.data.get('preview_override');
-        $fw_manager.client.app.doUpdate(function () {
+        $fw.client.tab.apps.manageapps.controllers['apps.details.controller'].doUpdate(function () {
           // TODO: should AppManager handle this??
           var target = $('#new_app_target');
           target.find(':selected').removeAttr('selected');
@@ -81,18 +96,6 @@ application.PreviewManager = Class.extend({
 
       // reload the preview
       self.show();
-    });
-    $('.preview_toggle').unbind().bind('click', function () {
-      var app_preview = $('#app_preview');
-      if (app_preview.is(':visible')) {
-        $fw.client.preview.hideContent();
-        $('#preview_toggle_open').show();
-        $('#preview_toggle_close').hide();
-      } else {
-        $fw.client.preview.showContent();
-        $('#preview_toggle_open').hide();
-        $('#preview_toggle_close').show();
-      }
     });
     $fw_manager.client.preview.insertPreviewOptionsIntoSelect(self.preview_select, self.device_id);
 
@@ -159,16 +162,17 @@ application.PreviewManager = Class.extend({
 
   showPost: function () {
     // Only render the preview if the preview area is open
-    var is_open = $fw_manager.client.preview.support.isPreviewOpen();
-    if (is_open) {
+    // var is_open = this.isPreviewOpen();
+    // if (is_open) {
       $('#preview_toggle_open').hide();
       $('#preview_toggle_close').show();
       $fw_manager.client.preview.clearContent();
+      $fw_manager.client.preview.showContent();
       $fw_manager.client.preview.showInPreviewFrame();
-    } else {
-      $('#preview_toggle_open').show();
-      $('#preview_toggle_close').hide();
-    }
+    // } else {
+    //   $('#preview_toggle_open').show();
+    //   $('#preview_toggle_close').hide();
+    // }
   },
 
   showInPreviewFrame: function () {
@@ -206,7 +210,8 @@ application.PreviewManager = Class.extend({
     if (actual_size.width >= max_width || actual_size.height > max_height) {
       //manage_apps_layout.sizePane('east', $fw_manager.client.preview.EMPTY_PREVIEW_WIDTH);
       preview_wrapper.css({
-        width: 'auto'
+        width: 'auto',
+        height: 'auto'
       }).find('#preview_frame').hide().end()
       .find('.preview_fix').hide().end()
       .find('#preview_text').show();
@@ -439,6 +444,10 @@ application.PreviewManager = Class.extend({
     var domainStr = domain || Constants.DOMAIN;
     var preview_url = Constants.PREVIEW_TEMPLATE_URL.replace('<GUID>', app_guid).replace('<DEST>', Constants.PREVIEW_APP_DESTINATION).replace('<DOMAIN>', domainStr);
     return preview_url;
+  },
+
+  isPreviewOpen: function () {
+    return $('#app_preview').is(':visible');
   },
 
   /*

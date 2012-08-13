@@ -2,7 +2,7 @@ var Apps = Apps || {};
 
 Apps.Templates = Apps.Templates || {};
 
-Apps.Templates.Controller = Controller.extend({
+Apps.Templates.Controller = Apps.Controller.extend({
 
   model: {
     //device: new model.Device()
@@ -18,8 +18,8 @@ Apps.Templates.Controller = Controller.extend({
     
   },
 
-  show: function(){
-    // TODO
+  show: function() {
+    this._super();
   }
 
 });

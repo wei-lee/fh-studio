@@ -2,7 +2,7 @@ var Apps = Apps || {};
 
 Apps.Editor = Apps.Editor || {};
 
-Apps.Editor.Controller = Controller.extend({
+Apps.Editor.Controller = Apps.Controller.extend({
 
   model: {
     //device: new model.Device()
@@ -15,13 +15,15 @@ Apps.Editor.Controller = Controller.extend({
   },
 
   container: null,
+  showPreview: true,
 
   init: function () {
     
   },
 
   show: function(){
-    // TODO
+    this._super();
+    
     this.hide();
     this.container = this.views.editor_files_container;
     $(this.container).show();

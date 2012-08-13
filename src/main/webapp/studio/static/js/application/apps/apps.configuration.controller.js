@@ -2,7 +2,7 @@ var Apps = Apps || {};
 
 Apps.Configuration = Apps.Configuration || {};
 
-Apps.Configuration.Controller = Controller.extend({
+Apps.Configuration.Controller = Apps.Controller.extend({
 
   model: {
     //device: new model.Device()
@@ -24,13 +24,15 @@ Apps.Configuration.Controller = Controller.extend({
   },
 
   container: null,
+  showPreview: true,
 
   init: function () {
     
   },
 
   show: function(){
-    // TODO
+    this._super();
+    
     this.hide();
     // this.container = this.views.manage_publish_container;
     // $(this.container).show();

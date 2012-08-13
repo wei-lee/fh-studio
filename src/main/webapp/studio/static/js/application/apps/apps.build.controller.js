@@ -15,13 +15,15 @@ Apps.Build.Controller = Apps.BuildExport.Support.extend({
   },
 
   container: null,
+  showPreview: true,
 
   init: function () {
     
   },
 
   show: function(){
-    // TODO
+    this._super();
+    
     this.hide();
     this.container = this.views.manage_publish_container;
     this.setupAppGeneration(false);

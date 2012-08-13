@@ -2,7 +2,7 @@ var Apps = Apps || {};
 
 Apps.Deploy = Apps.Deploy || {};
 
-Apps.Deploy.Controller = Controller.extend({
+Apps.Deploy.Controller = Apps.Controller.extend({
 
   model: {
     //device: new model.Device()
@@ -22,7 +22,8 @@ Apps.Deploy.Controller = Controller.extend({
   },
 
   show: function(){
-    // TODO
+    this._super();
+    
     this.hide();
     this.container = this.views.deploying_container;
     this.initFn();
