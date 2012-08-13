@@ -969,10 +969,8 @@ label.error
   margin:0 auto;  
 }
 /* Editor */
-#editor_text_content, #editor_img_content 
-{
-  height: 100%;
-  width: 100%;
+#editor_text_content {
+  min-height: 300px;
 }
 #editor_img_content 
 {
@@ -982,9 +980,6 @@ label.error
 {
   height: 25px;
   background-color:#fff;
-}
-#editor_toolbar .ui-button-text {
-   padding: 0.5em 0 0 1em;
 }
 #editor_titles_wrapper {
    padding: 0px;
@@ -1036,52 +1031,6 @@ label.error
 }
 #editor_tabs_scroller_left {
  right: 10px;
-}
-#editor_save_btn{
-  background:transparent url(../img/save_icon_sprite.png) no-repeat -2px 3px;
-  padding-left:20px;
-  border:none !important;
-  -moz-border-radius:0px;
-  -moz-border-radius:0px;
-  -webkit-border-radius:0px;
-  -webkit-border-radius:0px;
-  border-radius:0px;
-  border-radius:0px;
-  line-height: 23px;
-}
-#editor_save_btn:hover, #editor_save_all_btn:hover, #editor_find_btn:hover{
-  background-position:-2px -27px;
-  color:#0071BC;
-}
-#editor_save_all_btn{
-  background:transparent url(../img/save_all_sprite.png) no-repeat -2px 3px;
-  padding-left:20px;
-  border:none !important;
-  border-right:1px solid #ccc;
-  -moz-border-radius:0px;
-  -moz-border-radius:0px;
-  -webkit-border-radius:0px;
-  -webkit-border-radius:0px;
-  border-radius:0px;
-  border-radius:0px;
-  line-height: 23px;
-}
-
-#editor_find_btn{
-  background:transparent url(../img/go_to_icon_sprite.png) no-repeat -2px 3px;
-  padding-left:20px;
-  border:none !important;
-  border-right:1px solid #ccc;
-  -moz-border-radius:0px;
-  -moz-border-radius:0px;
-  -webkit-border-radius:0px;
-  -webkit-border-radius:0px;
-  border-radius:0px;
-  border-radius:0px;
-  line-height: 23px;
-}
-#editor_files_list {
-  padding-bottom: 4px;
 }
 .editor_disabled_p
 {
