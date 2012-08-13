@@ -2,7 +2,7 @@ var Apps = Apps || {};
 
 Apps.Export = Apps.Export || {};
 
-Apps.Export.Controller = Controller.extend({
+Apps.Export.Controller = Apps.BuildExport.Support.extend({
 
   model: {
     //device: new model.Device()
@@ -24,6 +24,8 @@ Apps.Export.Controller = Controller.extend({
     // TODO
     this.hide();
     this.container = this.views.manage_export_container;
+
+    this.setupAppGeneration(true);
     $(this.container).show();
   }
 

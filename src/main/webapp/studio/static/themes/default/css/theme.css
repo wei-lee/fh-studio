@@ -1454,9 +1454,6 @@ table.jqplot-table-legend, table.jqplot-cursor-legend {
   margin: 0 0 0 1em;
 }
 /* Export/publish destinations */
-.spacer {
-  clear: both;
-}
 .app_generate_destinations #app_destinations {
   width: 90%;
   margin: 2% 8%;

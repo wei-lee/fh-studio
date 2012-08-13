@@ -262,7 +262,7 @@ proto.Wizard = {
       blackberry_db_wizard: ['blackberry_db_upload', 'blackberry_db_finish']
     };
 
-    if ($fw.client.app.isNodeJsApp()) {
+    if ($fw.client.tab.apps.manageapps.isNodeJsApp()) {
       console.log('Node.js based app, applying wizard changes');
       wizards.blackberry_publish_wizard = ['app_publish_blackberry_staging_env', 'app_publish_blackberry_staging_progress', 'app_publish_blackberry_versions', 'app_publish_blackberry_password', 'app_publish_blackberry_progress'];
       wizards.ipad_publish_wizard = ['app_publish_ipad_select_provisionings', 'app_publish_ipad_upload_provisionings', 'app_publish_ipad_upload_progress', 'app_publish_ipad_staging_env', 'app_publish_ipad_staging_progress', 'app_publish_ipad_versions', 'app_publish_ipad_password', 'app_publish_ipad_progress'];

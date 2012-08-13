@@ -6,12 +6,10 @@ js/application/ShowHide.js
 js/application/ServerInteraction.js
 js/application/accordion/AccordionManager.js
 js/application/accordion/AccountAccordionManager.js
-js/application/accordion/AppsAccordionManager.js
 js/application/accordion/ReportingAccordionManager.js
 js/application/reporting/ReportingManager.js
 js/application/controller.js
 js/application/apps/app/generate_app.controller.js
-js/application/apps/app/AppManager.js
 js/application/apps/configuration/ConfigurationSupport.js
 js/application/apps/configuration/ConfigurationManager.js
 js/application/apps/configuration/IosConfigManager.js
@@ -28,7 +26,6 @@ js/application/apps/template/TemplateManager.js
 js/application/apps/preview/PreviewSupport.js
 js/application/apps/preview/PreviewManager.js
 js/application/apps/file/FileManager.js
-js/application/apps/icon/IconManager.js
 js/application/apps/editor/EditorManager.js
 js/application/apps/debug/DebugManager.js
 js/application/apps/staging/StagingManager.js
@@ -66,6 +63,7 @@ js/application/apps/apps.details.controller.js
 js/application/apps/apps.icons.controller.js
 js/application/apps/apps.editor.controller.js
 js/application/apps/apps.libraries.controller.js
+js/application/apps/apps.buildexport.support.js
 js/application/apps/apps.export.controller.js
 js/application/apps/apps.build.controller.js
 js/application/apps/apps.configuration.controller.js

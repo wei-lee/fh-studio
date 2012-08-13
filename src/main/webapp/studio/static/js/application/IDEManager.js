@@ -2,7 +2,6 @@ var IDEManager = Class.extend({
   
   init: function () {
     this.accordion = new application.AccordionManager();
-    this.app = new application.AppManager();
     this.template = new application.TemplateManager();
     this.preview = new application.PreviewManager();
     this.file = new application.FileManager();
@@ -28,7 +27,6 @@ var IDEManager = Class.extend({
     };
     this.lang = new LangManager();
     this.dialog = new application.DialogManager();
-    this.icon = new application.IconManager();
     this.model = new model.ModelManager();
     this.tab = {
       home: new application.HomeTabManager(),

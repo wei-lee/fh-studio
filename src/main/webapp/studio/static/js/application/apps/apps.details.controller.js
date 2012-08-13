@@ -62,6 +62,7 @@ Apps.Details.Controller = Controller.extend({
         scmTriggerButton.removeAttr('disabled').text(scmTriggerButtonText).removeClass('ui-state-hover');
       });
     });
+    $fw.client.lang.insertLangForContainer($(this.views.manage_details_container));
   },
   
   updateDetails: function () {

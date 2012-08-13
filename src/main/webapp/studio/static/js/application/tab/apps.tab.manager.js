@@ -208,7 +208,8 @@ ManageappsTabManager = Tab.Manager.extend({
             });
           }
           
-          $fw.client.tab.apps.showManageapps( success );
+          // TODO: what was this doing before?? now it's an infinite loop
+          //$fw.client.tab.apps.showManageapps(guid, success);
           if (template_mode) {
             $fw.client.template.applyPostRestrictions();
           }

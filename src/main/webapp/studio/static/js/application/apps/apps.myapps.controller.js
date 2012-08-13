@@ -91,7 +91,7 @@ Apps.Myapps.Controller = Controller.extend({
       // Bind row clicks to show Manage an app
       $('td:eq(1)', row).addClass('app_title').unbind().click(function(){
         // GUID is last, TODO: Make this better
-        var guid = data[5];
+        var guid = data[6];
         $fw.client.tab.apps.showManageapps(guid);
         // $fw.client.tab.showManageapps
       });

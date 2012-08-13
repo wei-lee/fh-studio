@@ -2,7 +2,7 @@ var Apps = Apps || {};
 
 Apps.Build = Apps.Build || {};
 
-Apps.Build.Controller = Controller.extend({
+Apps.Build.Controller = Apps.BuildExport.Support.extend({
 
   model: {
     //device: new model.Device()
@@ -24,6 +24,8 @@ Apps.Build.Controller = Controller.extend({
     // TODO
     this.hide();
     this.container = this.views.manage_publish_container;
+    this.setupAppGeneration(false);
+    
     $(this.container).show();
   }
 
