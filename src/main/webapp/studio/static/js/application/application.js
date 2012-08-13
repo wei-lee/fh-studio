@@ -59,7 +59,8 @@ Application = {
   constructFileTreeView: function(res, guid) {
       $fw_manager.app.treeviewManager = new proto.TreeviewManager({data: res, container: $('#editor_files_list'), app_id: guid });
       $fw_manager.app.treeviewManager.load();
-      $fw_manager.app.showAndHide('#editor_files_list', '#editor_loading_view');
+      $('#editor_loading_view').hide();
+      $('#editor_files_list').show();
   },
     
   resetApp: function(){

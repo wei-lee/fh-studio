@@ -42,15 +42,21 @@ application.HomeTabManager = application.TabManager.extend({
     this.showRecentApps();
   },
   
+  loadHomeGridData: function(url, data, callback){
+    $fw.server.post(url, data, function(data){
+      callback(data);
+    });
+  },
+  
   showRecentApps: function(){
+    // FIXME: convert to datatables and fix conclick event for each row
     this.initHomeGrids();
     var self = this;
     this.recent_apps_grid.jqGrid('clearGridData');
-    $fw_manager.app.loadHomeGridData(Constants.LIST_APPS_URL, {
+    this.loadHomeGridData(Constants.LIST_APPS_URL, {
         'max': 5,
         'order': 'desc',
-        'order-by': 'sysModified',
-        'grid': true
+        'order-by': 'sysModified'
     }, function(apps){
         var entries = apps.list;
         for (var di=0; di<entries.length; di++) {

@@ -120,7 +120,8 @@ application.AppManager = Class.extend({
   // },
 
   disableNodeJsApp: function() {
-    $('#staging').hide();
+    // TODO: is this id correct??
+    $('#deploying').hide();
     $('#status').hide();
 
     // Change some "next" steps in wizards

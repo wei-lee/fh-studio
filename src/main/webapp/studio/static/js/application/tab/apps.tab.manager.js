@@ -337,7 +337,8 @@ ManageappsTabManager = Tab.Manager.extend({
   },
 
   disableNodeJsApp: function() {
-    $('#staging').hide();
+    // FIXME: Fix these ID's
+    $('#deploying').hide();
     $('#status').hide();
 
     // Change some "next" steps in wizards

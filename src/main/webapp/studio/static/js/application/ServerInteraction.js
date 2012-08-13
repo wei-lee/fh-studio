@@ -12,24 +12,5 @@ $.extend(Application, {
   
   loadTextFile: function(data, success) {    
     $fw_manager.server.post(Constants.LOAD_FILE_URL, data, success);    
-  },
-  
-  loadAppsGridData: function (grid_name, callback) {
-    console.log('loading grid data');    
-    var url;  
-    
-    url = 'templates' === grid_name ? Constants.LIST_TEMPLATE_APPS_URL : Constants.LIST_APPS_URL;
-    
-    $fw_manager.server.post(url, {
-      grid: true
-    }, function (res) {
-      callback(res.list);
-    });
-  },
-  
-  loadHomeGridData: function(url, data, callback){
-    $fw_manager.server.post(url, data, function(data){
-     callback(data);   
-    });  
   }
 });

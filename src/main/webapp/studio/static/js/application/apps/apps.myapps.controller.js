@@ -24,21 +24,7 @@ Apps.Myapps.Controller = Controller.extend({
   show: function() {
     var self = this;
     console.log('myapps show');
-
-    // TODO: need to throttle this call
-    // TODO: where to put this logic
-    // var app_generation_enabled = $fw_manager.getClientProp('app-generation-enabled') == "true";
-    // var nodejs_domain = $fw_manager.getClientProp('nodejsEnabled') == "true";
-    // if (!app_generation_enabled || !nodejs_domain) {
-    //   $('#list_apps_button_generate_app').hide().remove();
-    //   $('#create_app_generator_container').hide().remove();
-    // }
-    // ($.throttle(Properties.click_throttle_timeout, function() {
-    //   $fw_manager.app.showAndLoadGrid('my_apps');
-    // }))();
-    //$fw_manager.app.showAndLoadGrid('my_apps');
-    // hide all grids in the grid wrapper
-    //$('#list_apps_grid_wrapper > .ui-jqgrid, #generate_app').hide();
+    
     var grid_name = 'my_apps';
     console.log('loading grid data');
     var url = Constants.LIST_APPS_URL;

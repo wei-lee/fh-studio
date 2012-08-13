@@ -148,25 +148,25 @@ var Lang = {
   iphone_publish_wizard_supertitle: 'iPhone Build',
   app_publish_iphone_select_provisionings_title: 'Please select the Provisioning Profile',
 
-  app_publish_iphone_staging_env_text: "Would you like to stage the app's server-side code?",
-  app_publish_iphone_staging_env_title: 'Server-side code staging',
-  app_publish_iphone_staging_progress_title: 'Staging App',
+  app_publish_iphone_deploying_env_text: "Would you like to deploy the app's server-side code?",
+  app_publish_iphone_deploying_env_title: 'Server-side code deploying',
+  app_publish_iphone_deploying_progress_title: 'Deploying App',
 
-  app_publish_android_staging_env_text: "Would you like to stage the app's server-side code?",
-  app_publish_android_staging_env_title: 'Server-side code staging',
-  app_publish_android_staging_progress_title: 'Staging App',
+  app_publish_android_deploying_env_text: "Would you like to deploy the app's server-side code?",
+  app_publish_android_deploying_env_title: 'Server-side code deploying',
+  app_publish_android_deploying_progress_title: 'Deploying App',
 
-  app_publish_ipad_staging_env_text: "Would you like to stage the app's server-side code?",
-  app_publish_ipad_staging_env_title: 'Server-side code staging',
-  app_publish_ipad_staging_progress_title: 'Staging App',
+  app_publish_ipad_deploying_env_text: "Would you like to deploy the app's server-side code?",
+  app_publish_ipad_deploying_env_title: 'Server-side code deploying',
+  app_publish_ipad_deploying_progress_title: 'Deploying App',
 
-  app_publish_blackberry_staging_env_text: "Would you like to stage the app's server-side code?",
-  app_publish_blackberry_staging_env_title: 'Server-side code staging',
-  app_publish_blackberry_staging_progress_title: 'Staging App',
+  app_publish_blackberry_deploying_env_text: "Would you like to deploy the app's server-side code?",
+  app_publish_blackberry_deploying_env_title: 'Server-side code deploying',
+  app_publish_blackberry_deploying_progress_title: 'Deploying App',
 
-  app_publish_windowsphone7_staging_env_text: "Would you like to stage the app's server-side code?",
-  app_publish_windowsphone7_staging_env_title: 'Server-side code staging',
-  app_publish_windowsphone7_staging_progress_title: 'Staging App',
+  app_publish_windowsphone7_deploying_env_text: "Would you like to deploy the app's server-side code?",
+  app_publish_windowsphone7_deploying_env_title: 'Server-side code deploying',
+  app_publish_windowsphone7_deploying_progress_title: 'Deploying App',
 
   app_publish_iphone_upload_provisionings_title: 'Please upload the provisioning profile',
   app_publish_iphone_upload_progress_title: 'Uploading provisioning profile',
@@ -461,9 +461,8 @@ var Lang = {
   debug_logging_refresh_button: 'Reload',
   debug_logging_clear_button: 'Clear',
   
-  staging_header: 'Staging Server-Side',
-  staging_dev_button: 'Stage to Development',
-  staging_live_button: 'Stage to Live',
+  deploying_dev_button: 'Deploy to Development',
+  deploying_live_button: 'Deploy to Live',
 
   status_header: 'Cloud App Status',
   status_refresh_button: 'Refresh Status',

@@ -2,7 +2,6 @@ common/js/ajax/ASyncServerTask.js
 js/application/Constants.js
 js/application/Config.js
 js/application/application.js
-js/application/ShowHide.js
 js/application/ServerInteraction.js
 js/application/accordion/AccordionManager.js
 js/application/accordion/AccountAccordionManager.js
@@ -27,10 +26,6 @@ js/application/apps/preview/PreviewSupport.js
 js/application/apps/preview/PreviewManager.js
 js/application/apps/file/FileManager.js
 js/application/apps/editor/EditorManager.js
-js/application/apps/debug/DebugManager.js
-js/application/apps/staging/StagingManager.js
-js/application/apps/status/StatusManager.js
-js/application/apps/push/PushNotificationManager.js
 js/application/account/profile/ProfileManager.js
 js/application/account/keys/keys.controller.js
 js/application/account/resource/ResourceManager.js
@@ -70,7 +65,7 @@ js/application/apps/apps.configuration.controller.js
 js/application/apps/apps.push.controller.js
 js/application/apps/apps.logging.controller.js
 js/application/apps/apps.status.controller.js
-js/application/apps/apps.staging.controller.js
+js/application/apps/apps.deploy.controller.js
 js/application/apps/apps.installs.controller.js
 js/application/apps/apps.startups.controller.js
 js/application/chart/ChartManager.js

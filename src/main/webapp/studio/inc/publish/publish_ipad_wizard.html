@@ -1,22 +1,22 @@
 <form id="ipad_publish_form">
 
-      <div id="app_publish_ipad_staging_env" class="app_publish_staging_env">
-      	<div id="app_publish_ipad_staging_env_text" class="insert-lang-block"></div>
+      <div id="app_publish_ipad_deploying_env" class="app_publish_deploying_env">
+      	<div id="app_publish_ipad_deploying_env_text" class="insert-lang-block"></div>
       	<form>
         <div class="form-field ui-helper-reset ui-helper-clearfix">
-          <input type="checkbox" name="app_publish_ipad_staging" next="app_publish_ipad_versions" value="stage"><label>Stage the server-side of the app</label>
+          <input type="checkbox" name="app_publish_ipad_deploying" next="app_publish_ipad_versions" checked="checked"><label>Deploy the server-side of the app</label>
         </div>
         </form>
       </div>
       
-      <div id="app_publish_ipad_staging_progress" class="app_publish_staging_progress" track="no">
-		 <div id="app_publish_ipad_staging_env_progresslog"><textarea class="progresslog" readonly="true"></textarea></div>
+      <div id="app_publish_ipad_deploying_progress" class="app_publish_deploying_progress" track="no">
+		 <div id="app_publish_ipad_deploying_env_progresslog"><textarea class="progresslog" readonly="true"></textarea></div>
       </div>
 
       <div id="app_publish_ipad_select_provisionings">
         <div id="app_publish_ipad_select_provisionings_text" class="insert-lang-block"></div>
         <div class="form-field ui-helper-reset ui-helper-clearfix">
-          <input type="radio" name="app_publish_ipad_provisioning_radio" next="app_publish_ipad_staging_env" checked="checked" value="existing"><label>I would like to use the existing provisioning profile of this app</label>
+          <input type="radio" name="app_publish_ipad_provisioning_radio" next="app_publish_ipad_deploying_env" checked="checked" value="existing"><label>I would like to use the existing provisioning profile of this app</label>
         </div>
         
         <div class="form-field ui-helper-reset ui-helper-clearfix">

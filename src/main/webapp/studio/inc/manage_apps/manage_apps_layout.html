@@ -78,7 +78,7 @@
         </a>
       </li>
       <li>
-        <a href="#" data-controller="apps.staging.controller">
+        <a href="#" data-controller="apps.deploy.controller">
           <i class="icon-cloud"></i>
           Deploy
         </a>
@@ -154,7 +154,18 @@
        <%}%>
 
         <%@ include file="../debug/debug_logging.html"%>
-        <%@ include file="../staging/staging.html"%>
+  
+        <div id="deploying_container" class="well">
+          <p>Development Deploy</p>
+          <div id="deploying_dev_progresslog"><textarea class="progresslog"></textarea></div>
+          <br/>
+          <button id="deploying_dev_button" class="btn btn-inverse insert-lang"></button>
+          <br/><br/>
+          <p>Live Deploy</p>
+          <div id="deploying_live_progresslog"><textarea class="progresslog"></textarea></div>
+          <br/>
+          <button id="deploying_live_button" class="btn btn-inverse insert-lang"></button>
+        </div>
 
         <% if(studio.getProps().optBoolean("stats-enabled")){ %>
          <%@ include file="../status/status.html"%>

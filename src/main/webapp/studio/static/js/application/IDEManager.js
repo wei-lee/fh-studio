@@ -38,9 +38,6 @@ var IDEManager = Class.extend({
       apps: new Apps.Tab.Manager()
     };
     this.analytics = new analytics.AnalyticsIntegration();
-    this.debug = new application.DebugManager();
-    this.staging = new application.StagingManager();
-    this.status = new application.StatusManager();
     this.chart = new application.ChartManager();
         
     // setup callbacks for server calls

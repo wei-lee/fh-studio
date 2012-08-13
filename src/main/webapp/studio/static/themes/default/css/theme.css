@@ -1559,10 +1559,6 @@ table.jqplot-table-legend, table.jqplot-cursor-legend {
   margin:1em 0 0;
   border:1px solid #ccc;
 }
-
-#debug_logging_body {
-  height: 100%;
-}
 /* Destination Resources */
 .resource-div
 {

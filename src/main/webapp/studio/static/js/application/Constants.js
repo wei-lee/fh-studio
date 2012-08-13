@@ -48,7 +48,7 @@ $.extend(Constants, {
   UPDATE_APP_URL: Constants.IDE_URL_PREFIX + "app/update",
   DELETE_APP_URL: Constants.IDE_URL_PREFIX + "app/delete",
   PERMS_APP_URL: Constants.IDE_URL_PREFIX + "app/perms",
-  STAGE_APP_URL: Constants.IDE_URL_PREFIX + "app/stage",
+  DEPLOY_APP_URL: Constants.IDE_URL_PREFIX + "app/stage",
   PING_APP_URL: Constants.IDE_URL_PREFIX + "app/ping",
   STATS_APP_URL: Constants.IDE_URL_PREFIX + "app/stats",
   EXTERNAL_REQUEST_URL: Constants.IDE_URL_PREFIX + "app/external_request",
@@ -58,7 +58,7 @@ $.extend(Constants, {
   KEY_UPDATE_URL: Constants.IDE_URL_PREFIX + "api/update",
   KEY_REVOKE_URL: Constants.IDE_URL_PREFIX + "api/revoke",
 
-  RELEASE_STAGE_APP_URL: Constants.IDE_URL_PREFIX + "app/releasestage",
+  RELEASE_DEPLOY_APP_URL: Constants.IDE_URL_PREFIX + "app/releasestage",
   UPDATE_APP_FRAMEWORKS_URL : Constants.IDE_URL_PREFIX + "app/updateFrameworks",
   // TODO: use new endpoints for export
   EXPORT_APP_URL: Constants.____DEPRECATED____DEV_URL_PREFIX____DEPRECATED____ + "editor/widget/download",
