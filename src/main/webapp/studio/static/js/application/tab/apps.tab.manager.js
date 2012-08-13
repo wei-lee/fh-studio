@@ -150,8 +150,8 @@ ManageappsTabManager = Tab.Manager.extend({
       if (result.app && result.inst) {
         var inst = result.inst;
         
-        self.updateAppData(result.app, inst);
-        self.updateDetails();
+        self.setSelectedApp(result.app, inst);
+        //self.updateDetails();
 
         // Reload preview
         //$fw_manager.client.preview.show();
@@ -238,45 +238,9 @@ ManageappsTabManager = Tab.Manager.extend({
     }, is_app_name);
   },
   
-  updateAppData: function (app, inst) {
+  setSelectedApp: function (app, inst) {
     $fw.data.set('app', app);
     $fw.data.set('inst', inst);
-  },
-  
-  updateDetails: function () {
-    var self = this,
-        app = $fw.data.get('app'),
-        inst = $fw.data.get('inst'),
-        detailsContainer = $('#manage_details_container');
-    inst.w3cid = app.w3cid;
-    
-    detailsContainer.find('input,textarea').each(function () {
-      var el = $(this);
-      el.val(inst[el.attr('name')]);
-    });
-    
-    var scm = 'undefined' !== typeof app.config ? app.config.scm : undefined;
-    if ('undefined' !== typeof scm) {
-      detailsContainer.find('input[name=scmurl]').val(scm.url);
-      if ('undefined' === typeof scm.key || scm.key.length < 1) {
-        detailsContainer.find('textarea[name=scmkey]').parent().hide(); // hide scm key input as it's being deprecated
-      } else {
-        detailsContainer.find('textarea[name=scmkey]').val(scm.key);
-      }
-      detailsContainer.find('input[name=scmbranch]').val(scm.branch);
-      detailsContainer.find('input[name=postreceiveurl]').val(self.getPostReceiveUrl()).focus(function () {
-        this.select();
-      });
-    }
-    if ('undefined' !== typeof app.config && 'undefined' !== typeof app.config.keys) {
-      detailsContainer.find('textarea[name=keyspublic]').val(app.config.keys['public']);
-    }
-
-    detailsContainer.find('input[name=app_id]').val(inst.guid);
-        
-    var preview_config = inst.config.preview || {};
-    var preview_list = $('#manage_details_container #new_app_target');
-    $fw.client.preview.insertPreviewOptionsIntoSelect(preview_list, preview_config.device);
   },
   
   isScmApp: function () {
@@ -347,20 +311,6 @@ ManageappsTabManager = Tab.Manager.extend({
   },
   
   /*
-   * Gets the post receive url for the current app.
-   * e.g. https://apps.feedhenry.com/box/srv/1.1/pub/app/xzEWsLxpEp60ED-PxM8Zlc0B/refresh
-   */
-  getPostReceiveUrl: function () {
-    var postReceiveUrl,
-        host;
-    
-    host = document.location.protocol + '//' + document.location.host;
-    postReceiveUrl = host + this.getTriggerUrl();
-    
-    return postReceiveUrl;
-  },
-  
-  /*
    * Gets the scm trigger url for the current app
    * e.g. /box/srv/1.1/pub/app/xzEWsLxpEp60ED-PxM8Zlc0B/refresh
    */
@@ -371,6 +321,75 @@ ManageappsTabManager = Tab.Manager.extend({
     url = Constants.TRIGGER_SCM_URL.replace('<GUID>', app.guid);
     
     return url;
+  },
+  
+  /*
+   * Trigger an update or pull from the scm for the currently open app
+   */
+  triggerScm: function (success, fail, always) {
+    var url;
+    
+    url = this.getTriggerUrl();
+    $fw.client.dialog.info.flash($fw.client.lang.getLangString('scm_update_started'), 2500);
+        $fw.server.post(url, {}, function (result) {
+          if (result.cacheKey) {
+            var clone_task = new ASyncServerTask({
+              cacheKey: result.cacheKey
+            }, {
+              updateInterval: Properties.cache_lookup_interval,
+              maxTime: Properties.cache_lookup_timeout, // 5 minutes
+              maxRetries: Properties.cache_lookup_retries,
+              timeout: function (res) {
+                console.log('timeout error > ' + JSON.stringify(res));
+                $fw.client.dialog.error($fw.client.lang.getLangString('scm_trigger_error'));
+                // TODO: internationalise during refactor
+                // ALERT THE USER OF TIMEOUT proto.Wizard.jumpToStep(clone_app_wizard, 1, 'Clone timed out');
+                if($.isFunction(fail)) {
+                   fail();
+                }
+              },
+              update: function (res) {
+                for (var i = 0; i < res.log.length; i++) {
+                   console.log(res.log[i]);
+                }
+              },
+              complete: function (res) {
+                console.log('SCM refresh successful > ' + JSON.stringify(res));
+                $fw.client.dialog.info.flash($fw.client.lang.getLangString('scm_updated'), 2000);
+        
+                if($.isFunction(success)) {
+                   success();
+                }
+              },
+              error: function (res) {
+                console.log('clone error > ' + JSON.stringify(res));
+                $fw.client.dialog.error($fw.client.lang.getLangString('scm_trigger_error') + "<br /> Error Message:" + res.error);
+                if($.isFunction(fail)) {
+                   fail();
+                }
+              },
+              retriesLimit: function () {
+                console.log('retriesLimit exceeded: ' + Properties.cache_lookup_retries);
+            $fw.client.dialog.error($fw.client.lang.getLangString('scm_trigger_error'));
+                if($.isFunction(fail)) {
+                   fail();
+                }
+              },
+              end: function () {
+                if($.isFunction(always)) {
+                   always();
+                }
+              }
+          });
+          clone_task.run();
+        } else {
+                console.log('No CacheKey in response > ' + JSON.stringify(result));
+          $fw.client.dialog.error($fw.client.lang.getLangString('scm_trigger_error'));
+               if($.isFunction(fail)) {
+                  fail();
+            }
+        }
+    });
   }
 
 });

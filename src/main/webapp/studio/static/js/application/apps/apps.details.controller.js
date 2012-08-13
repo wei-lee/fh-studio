@@ -184,75 +184,6 @@ Apps.Details.Controller = Apps.Controller.extend({
   },
   
   /*
-   * Trigger an update or pull from the scm for the currently open app
-   */
-  triggerScm: function (success, fail, always) {
-    var url;
-    
-    url = this.getTriggerUrl();
-    $fw.client.dialog.info.flash($fw.client.lang.getLangString('scm_update_started'), 2500);
-        $fw.server.post(url, {}, function (result) {
-          if (result.cacheKey) {
-            var clone_task = new ASyncServerTask({
-              cacheKey: result.cacheKey
-            }, {
-              updateInterval: Properties.cache_lookup_interval,
-              maxTime: Properties.cache_lookup_timeout, // 5 minutes
-              maxRetries: Properties.cache_lookup_retries,
-              timeout: function (res) {
-                console.log('timeout error > ' + JSON.stringify(res));
-                $fw.client.dialog.error($fw.client.lang.getLangString('scm_trigger_error'));
-                // TODO: internationalise during refactor
-                // ALERT THE USER OF TIMEOUT proto.Wizard.jumpToStep(clone_app_wizard, 1, 'Clone timed out');
-                if($.isFunction(fail)) {
-                   fail();
-                }
-              },
-              update: function (res) {
-                for (var i = 0; i < res.log.length; i++) {
-                   console.log(res.log[i]);
-                }
-              },
-              complete: function (res) {
-                console.log('SCM refresh successful > ' + JSON.stringify(res));
-                $fw.client.dialog.info.flash($fw.client.lang.getLangString('scm_updated'), 2000);
-        
-                if($.isFunction(success)) {
-                   success();
-                }
-              },
-              error: function (res) {
-                console.log('clone error > ' + JSON.stringify(res));
-                $fw.client.dialog.error($fw.client.lang.getLangString('scm_trigger_error') + "<br /> Error Message:" + res.error);
-                if($.isFunction(fail)) {
-                   fail();
-                }
-              },
-              retriesLimit: function () {
-                console.log('retriesLimit exceeded: ' + Properties.cache_lookup_retries);
-            $fw.client.dialog.error($fw.client.lang.getLangString('scm_trigger_error'));
-                if($.isFunction(fail)) {
-                   fail();
-                }
-              },
-              end: function () {
-                if($.isFunction(always)) {
-                   always();
-                }
-              }
-          });
-          clone_task.run();
-        } else {
-                console.log('No CacheKey in response > ' + JSON.stringify(result));
-          $fw.client.dialog.error($fw.client.lang.getLangString('scm_trigger_error'));
-               if($.isFunction(fail)) {
-                  fail();
-            }
-        }
-    });
-  },
-  
-  /*
    * Gets the post receive url for the current app.
    * e.g. https://apps.feedhenry.com/box/srv/1.1/pub/app/xzEWsLxpEp60ED-PxM8Zlc0B/refresh
    */
@@ -261,22 +192,9 @@ Apps.Details.Controller = Apps.Controller.extend({
         host;
     
     host = document.location.protocol + '//' + document.location.host;
-    postReceiveUrl = host + this.getTriggerUrl();
+    postReceiveUrl = host + $fw.client.tab.apps.manageapps.getTriggerUrl();
     
     return postReceiveUrl;
-  },
-  
-  /*
-   * Gets the scm trigger url for the current app
-   * e.g. /box/srv/1.1/pub/app/xzEWsLxpEp60ED-PxM8Zlc0B/refresh
-   */
-  getTriggerUrl: function () {
-    var app = $fw.data.get('app'),
-        url;
-    
-    url = Constants.TRIGGER_SCM_URL.replace('<GUID>', app.guid);
-    
-    return url;
   }
 
 });
