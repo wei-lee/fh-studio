@@ -14,17 +14,17 @@ application.AccordionManager = Class.extend({
     var overrides = {
       change: function(event, ui){
         // update state information
-        $fw_manager.state.set(that.getSelectedItemKey(), 'selected', ui.options.active);
+        $fw.state.set(that.getSelectedItemKey(), 'selected', ui.options.active);
         
         // Call the generic change handler
-        $fw_manager.app.appAccordionChangeHandler(event, ui);
+        that.appAccordionChangeHandler(event, ui);
       },
       active: false,
       collapsible: true
     };
     // Check if we need to force a state
     // TODO: allow for UI structural changes
-    var selected = $fw_manager.state.get(this.getSelectedItemKey(), 'selected', 0);
+    var selected = $fw.state.get(this.getSelectedItemKey(), 'selected', 0);
     this.el = proto.Accordion.load(this.el, overrides);
     this.bindCallback();
     
@@ -33,12 +33,12 @@ application.AccordionManager = Class.extend({
   
   reset: function () {
     // First click the accordion item stored in state 
-    var selected = $fw_manager.state.get(this.getSelectedItemKey(), 'selected', 0);
+    var selected = $fw.state.get(this.getSelectedItemKey(), 'selected', 0);
     this.el.accordion('activate', selected);
     
     // Try reclick the state store sub-item if its visible, otherwise click the first sub-item
     var selectedAccordionItem = this.el.find(':nth-child(' + ((selected + 1) * 2) + ')');
-    var selectedIndex =  $fw_manager.state.get(this.name + '_' + selectedAccordionItem.prev().attr('id'), 'selected', 0);
+    var selectedIndex =  $fw.state.get(this.name + '_' + selectedAccordionItem.prev().attr('id'), 'selected', 0);
     var item = selectedAccordionItem.find('li:nth-child(' + (selectedIndex + 1) + '):visible');
     if (item.length > 0) { 
       item.trigger('click');
@@ -82,6 +82,49 @@ application.AccordionManager = Class.extend({
     }
   },
   
+  appAccordionChangeHandler: function(event, ui){
+    console.log('appAccordionChangeHandler');
+    var accordion = $(event.target),
+        content = ui.newContent;
+   // console.log('old header: ' + ui.oldHeader.attr('id'));
+
+    // if ('accordion_item_report' === ui.newHeader.attr('id') || 'accordion_item_debug' === ui.newHeader.attr('id')) {
+    //   // if moving to the reporting item and the preview is open then save flag and hide the preview
+    //   if ($fw.client.preview.isPreviewOpen()) {
+    //   this.previewWasOpen = true;
+    //   $fw.client.preview.hideContent();
+    //   }
+    // } else if ('accordion_item_report' === ui.oldHeader.attr('id') || 'accordion_item_debug' === ui.oldHeader.attr('id')) {
+    //   // if moving from the reporting item and the preview had previously been open then re-open it
+    //   if (this.previewWasOpen) {
+    //     console.log("reopening Preview");
+    //   $fw.client.preview.showContent();
+    //   this.previewWasOpen = undefined;   // will be reset in future by show() if required
+    //   }
+    // }
+
+    var deffn = function () {
+      // click the first list item in the accordion content
+      content.find('li:first').click();
+    };
+    // Check if we need to force a state
+    var id = accordion.attr('id');
+    var selected = $fw.state.get(id + '_' + content.prev().attr('id'), 'selected');
+    if ('number' === typeof selected) {
+      // make sure the list item exists
+      var li = content.find('li:visible:nth-child(' + (selected + 1) + ')');
+      if(li.length > 0) {
+        li.click();
+      }
+      else {
+        deffn();
+      }
+    }
+    else {
+      deffn();
+    }
+  },
+  
   bindCallback: function(){
     console.log('bindCallback');
     var that = this;
@@ -99,7 +142,7 @@ application.AccordionManager = Class.extend({
         
         // update state information
         var sub_selected = clicked_item.index();
-        $fw_manager.state.set(that.el.attr('id') + '_' + clicked_item.parent().parent().prev().attr('id'), 'selected', sub_selected);
+        $fw.state.set(that.el.attr('id') + '_' + clicked_item.parent().parent().prev().attr('id'), 'selected', sub_selected);
         
         // show only the selected container
         $('.' + accordion_name + '-container').hide();
@@ -126,7 +169,7 @@ application.AccordionManager = Class.extend({
         that.preSelect(id, container);
         
         // insert any language stuff
-        $fw_manager.client.lang.insertLangForContainer(container);
+        $fw.client.lang.insertLangForContainer(container);
         
         // show the outer container header
         $('#' + accordion_name + '_header').show();
@@ -136,7 +179,7 @@ application.AccordionManager = Class.extend({
         // Build the header unique Id
         var headerId = id + '_header';
         // Look for text in the language file corresponding to the header Id
-        var headerText = $fw_manager.client.lang.getLangString(headerId);
+        var headerText = $fw.client.lang.getLangString(headerId);
         
         var accordionContentHeader = $('#' + accordion_name + '_header_text');
         if (null !== headerText && headerText.length > 0) {
@@ -182,7 +225,7 @@ application.AccordionManager = Class.extend({
   checkForDisabled: function () {
     var that = this;
     try {
-      var hidden_items = $fw_manager.getClientProp('disabled-accordion-items');
+      var hidden_items = $fw.getClientProp('disabled-accordion-items');
       $.each(hidden_items, function (key, val) {
         that.el.find('#accordion_item_' + val).next().andSelf().remove();
       });

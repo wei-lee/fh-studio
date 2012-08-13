@@ -10,7 +10,7 @@ application.BlackberryConfigManager = application.ConfigurationManager.extend({
     var bgColor = $(".config_option[name='splash Background Color']").val();
     if(bgColor !== ""){
       if(bgColor.length != 7 || bgColor.charAt(0) != "#"){
-        $fw_manager.client.dialog.error("The background color should be hexadecimal value.");
+        $fw.client.dialog.error("The background color should be hexadecimal value.");
         return false;
       }
     }

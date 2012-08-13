@@ -44,7 +44,7 @@ Apps.Status.Controller = Apps.Controller.extend({
     this.container = this.views.status_container;
 
     // FIXME: show/hide preview could depend on a field in each sub-class of controller
-    $fw_manager.client.preview.hideContent();
+    $fw.client.preview.hideContent();
     this.stats_controller.closeAll();
     this.stats_controller.loadModels();
     this.bind();

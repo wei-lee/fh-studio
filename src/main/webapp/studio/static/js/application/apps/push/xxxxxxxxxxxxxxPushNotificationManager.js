@@ -6,7 +6,7 @@ application.PushNotificationManager = Class.extend({
     },
     
     loadSettings: function(){
-      var inst_config = {ua_push:$fw_manager.data.get('inst').config.ua_push};
+      var inst_config = {ua_push:$fw.data.get('inst').config.ua_push};
       
       if(inst_config.ua_push){
         var push_config = inst_config.ua_push;
@@ -50,17 +50,17 @@ application.PushNotificationManager = Class.extend({
       for(var i=0;i<this.options.length;i++){
         ua_config[this.options[i]] = $('#' + this.options[i]).val();
       }
-      var inst = $fw_manager.data.get('inst');
+      var inst = $fw.data.get('inst');
       inst.config = $.extend({}, true, inst.config, {ua_push: ua_config});
-      $fw_manager.data.set('inst', inst);
-      $fw_manager.client.app.doUpdate(function(){
+      $fw.data.set('inst', inst);
+      $fw.client.app.doUpdate(function(){
         
       }); 
     },
     
     
     getPackageName: function(){
-      var guid = 'fh' + $fw_manager.data.get('inst').guid;
+      var guid = 'fh' + $fw.data.get('inst').guid;
       var packageName = "com.feedhenry." + guid.replace(/\W/g, '_');
       return packageName;
     }

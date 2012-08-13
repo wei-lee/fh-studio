@@ -67,9 +67,9 @@ application.DestinationIos = application.DestinationGeneral.extend({
         dest: that.destination_id,
         resourceType: 'provisioning',
         buildType: config,
-        templateInstance: $fw_manager.data.get('inst').guid
+        templateInstance: $fw.data.get('inst').guid
       };
-      $fw_manager.app.startUpload(wizard.find("#" + that.destination_id + "_provisioning_upload_file"), upload_url, data, function (result) {
+      $fw.app.startUpload(wizard.find("#" + that.destination_id + "_provisioning_upload_file"), upload_url, data, function (result) {
         if ('undefined' !== typeof result.error && result.error.length > 0) {
           console.log('upload failed');
           proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_failed'));
@@ -90,9 +90,9 @@ application.DestinationIos = application.DestinationGeneral.extend({
     for (var i = 0; i < this.dev_resources.provisionings.length; i++) {
       console.log(JSON.stringify(this.dev_resources.provisionings[i]));
       var provisioning = this.dev_resources.provisionings[i];
-      console.log("temp:" + $fw_manager.data.get("inst").guid);
+      console.log("temp:" + $fw.data.get("inst").guid);
       console.log("config: " + config);
-      if ($fw_manager.data.get('inst').guid.toLowerCase() === provisioning.templateInstance.toLowerCase() && config.toLowerCase() === provisioning.type.toLowerCase()) {
+      if ($fw.data.get('inst').guid.toLowerCase() === provisioning.templateInstance.toLowerCase() && config.toLowerCase() === provisioning.type.toLowerCase()) {
         console.log("pro temp:" + provisioning.templateInstance);
         console.log("pro type:" + provisioning.type);
         found_prov = true;

@@ -11,7 +11,7 @@ application.PreviewConfigManager = application.ConfigurationManager.extend({
     
     // init any buttons and callbacks
     container.find('#config_preview_save_btn').bind('click', function () {
-      $fw_manager.client.config[self.destination].saveConfig();
+      $fw.client.config[self.destination].saveConfig();
     });
     
     self.showInitDone = true;
@@ -23,14 +23,14 @@ application.PreviewConfigManager = application.ConfigurationManager.extend({
     
     // use preview settings stored in 'config' object of app to populate options
     var opts = Config.app.preview;
-    var preview_config = $fw_manager.data.get('inst').config.preview || {};
+    var preview_config = $fw.data.get('inst').config.preview || {};
     var config = {};
     $.each(opts, function (key, val) {
       var temp_val = {};
       // check for choice of options so it can be formatted for <select>
       if ('object' === typeof val) {
         // set selected option
-        temp_val = HtmlUtil.optionsFromConfig(val, $fw_manager.client.preview.formatDeviceText);
+        temp_val = HtmlUtil.optionsFromConfig(val, $fw.client.preview.formatDeviceText);
         temp_val.selected = typeof preview_config[key] !== 'undefined' ? preview_config[key] : val['default'];
       }
       else {
@@ -65,9 +65,9 @@ application.PreviewConfigManager = application.ConfigurationManager.extend({
     console.log('target:' + preview_config.device);
     var device = $fw.client.preview.resolveDevice(preview_config.device);
     
-    var inst = $fw_manager.data.get('inst');
+    var inst = $fw.data.get('inst');
     var fields = {
-      app: $fw_manager.data.get('app').guid,
+      app: $fw.data.get('app').guid,
       inst: inst.guid,
       title: inst.title,
       description: inst.description,
@@ -76,15 +76,15 @@ application.PreviewConfigManager = application.ConfigurationManager.extend({
       config: $.extend(true, {}, inst.config, {preview: preview_config})
     };
     // call app update with updated 'config' object
-    $fw_manager.client.model.App.update(fields, function (result) {
+    $fw.client.model.App.update(fields, function (result) {
       console.log('update success:' + result);
-      $fw_manager.client.dialog.info.flash($fw_manager.client.lang.getLangString('config_saved'));
-      $fw_manager.client.app.updateAppData(result.app, result.inst);
-      $fw_manager.client.preview.show();
+      $fw.client.dialog.info.flash($fw.client.lang.getLangString('config_saved'));
+      $fw.client.app.updateAppData(result.app, result.inst);
+      $fw.client.preview.show();
       
     }, function (error) {
       console.log('update config failed:' + error);
-      $fw_manager.client.dialog.error(error);
+      $fw.client.dialog.error(error);
       self.show();
     });
   }

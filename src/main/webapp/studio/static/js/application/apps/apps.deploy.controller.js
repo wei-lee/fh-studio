@@ -57,13 +57,13 @@ Apps.Deploy.Controller = Apps.Controller.extend({
     console.log('deploying.liveDeploy');
     var self = this;
     if (!guid) {
-      guid = $fw_manager.data.get('app').guid;
+      guid = $fw.data.get('app').guid;
     }
     var url = Constants.RELEASE_DEPLOY_APP_URL;
     var params = {
       guid: guid
     };
-    $fw_manager.server.post(url, params, function(res) {
+    $fw.server.post(url, params, function(res) {
       if (res.status === "ok") {
         self.deployStarted("live", res.cacheKey);
       } else {
@@ -76,14 +76,14 @@ Apps.Deploy.Controller = Apps.Controller.extend({
     console.log('deploying.devDeploy');
     var self = this;
     if (!guid) {
-      guid = $fw_manager.data.get('app').guid;
+      guid = $fw.data.get('app').guid;
     }
     var url = Constants.DEPLOY_APP_URL;
     var params = {
       guid: guid
     };
 
-    $fw_manager.server.post(url, params, function(res) {
+    $fw.server.post(url, params, function(res) {
       if (res.status === "ok") {
         self.deployStarted("dev", res.cacheKey);
       } else {
@@ -159,14 +159,14 @@ Apps.Deploy.Controller = Apps.Controller.extend({
     console.log('deploying.liveDeploy');
     var self = this;
     if (!guid) {
-      guid = $fw_manager.data.get('app').guid;
+      guid = $fw.data.get('app').guid;
     }
     var url = Constants.RELEASE_DEPLOY_APP_URL;
     var params = {
       guid: guid
     };
 
-    $fw_manager.server.post(url, params, function(res) {
+    $fw.server.post(url, params, function(res) {
       if (res.status === "ok") {
         self.simpleDeployStart("live", res.cacheKey, cb);
       } else {
@@ -179,14 +179,14 @@ Apps.Deploy.Controller = Apps.Controller.extend({
     console.log('deploying.devDeploy');
     var self = this;
     if (!guid) {
-      guid = $fw_manager.data.get('app').guid;
+      guid = $fw.data.get('app').guid;
     }
     var url = Constants.DEPLOY_APP_URL;
     var params = {
       guid: guid
     };
 
-    $fw_manager.server.post(url, params, function(res) {
+    $fw.server.post(url, params, function(res) {
       if (res.status === "ok") {
         self.simpleDeployStart("dev", res.cacheKey, cb);
       } else {

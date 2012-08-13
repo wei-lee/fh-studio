@@ -4,8 +4,8 @@ application.ProfileManager = Class.extend({
   },
   
   doLoad: function(){
-    //$fw_manager.app.readUserDetails($fw_manager.client.profile.displayProfile);
-    $fw_manager.client.model.User.read($fw_manager.client.profile.displayProfile);
+    //$fw.app.readUserDetails($fw.client.profile.displayProfile);
+    $fw.client.model.User.read($fw.client.profile.displayProfile);
   },
 
   displayProfile: function(result){
@@ -20,19 +20,19 @@ application.ProfileManager = Class.extend({
     console.log("doChangePassword");
     // TODO: some of this could be made more generic and reused
     var form = $('#profile_changepassword');
-    var validated_form = $fw_manager.client.profile.validatePasswordForm(form);
+    var validated_form = $fw.client.profile.validatePasswordForm(form);
     if (form.valid()) {
       console.log('valid');
       var current_password = validated_form.findByName('current_password').val();
       var new_password = validated_form.findByName('new_password').val();
-      $fw_manager.client.model.User.changePassword(current_password, new_password, function (result) {
-        $fw_manager.client.dialog.info.flash($fw_manager.client.lang.getLangString('password_changed'));
+      $fw.client.model.User.changePassword(current_password, new_password, function (result) {
+        $fw.client.dialog.info.flash($fw.client.lang.getLangString('password_changed'));
       }, function (error) {
         if (error === 'bad-password') {
-          $fw_manager.client.dialog.error($fw_manager.client.lang.getLangString('bad_password'));
+          $fw.client.dialog.error($fw.client.lang.getLangString('bad_password'));
         }
         else {
-          $fw_manager.client.dialog.error(error);
+          $fw.client.dialog.error(error);
         }
       });
     }
@@ -53,7 +53,7 @@ application.ProfileManager = Class.extend({
   },
   
   doLogout: function() {
-    $fw_manager.server.post(Constants.LOGOUT_URL, {'feedhenry':'true'}, function () 
+    $fw.server.post(Constants.LOGOUT_URL, {'feedhenry':'true'}, function () 
       {
         document.location = document.location;
       }

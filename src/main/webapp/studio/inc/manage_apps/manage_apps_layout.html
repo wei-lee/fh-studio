@@ -6,6 +6,7 @@
 
   <div class="row-fluid">
     <ul class="nav nav-list span2 well manageapps_nav_list">
+    <div id="cloud_logo"></div>
       <li class="nav-header">????????</li>
       <li>
         <a href="#" data-controller="apps.quickstart.controller">
@@ -111,14 +112,6 @@
     </ul>
 
     <div id="app_content" class="layout-content span7">
-      <div id="manage_apps_header" style="display:none;">
-        <!-- Generic header for standard sections with plain text header -->
-        <div id="manage_apps_header_text" class="manage_apps-header section-header"></div>
-        
-        <!-- Special case for editor as it need the header to be a fixed width and the content to be 100% -->
-        <%@ include file="../editor/editor_files_header.html"%> 
-      </div>
-
       <button id="preview_toggle_open" class="btn preview_toggle pull-right"><i class="icon-chevron-left"></i>&nbsp;Show Preview</button>
 
       <!-- Hide this initially and let javascript show it when its ready -->
@@ -159,8 +152,6 @@
         <%@ include file="../configuration/configuration_ios.html"%>
         
         <%@ include file="../configuration/configuration_android.html"%>
-        
-        <%@ include file="../configuration/configuration_facebook.html"%>
         
         <%@ include file="../configuration/configuration_blackberry.html"%>
         

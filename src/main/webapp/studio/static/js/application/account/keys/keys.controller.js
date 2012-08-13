@@ -17,7 +17,7 @@ application.controller.Keys = Class.extend({
       clip.addEventListener('mouseDown', function(client) {
         var text = $(client.domElement).parent().find('.key_public').text();
         clip.setText(text);
-        $fw_manager.client.dialog.info.flash('Your key has been copied to your clipboard.');
+        $fw.client.dialog.info.flash('Your key has been copied to your clipboard.');
       });
     });
   },
@@ -47,7 +47,7 @@ application.controller.Keys = Class.extend({
 
     $('#keys_manage_body .user_key .edit, #keys_manage_body .user_key .update').unbind().click(function() {
       if ($(this).hasClass('disabled')) {
-        $fw_manager.client.dialog.info.flash('This key has been revoked and cannot be altered');
+        $fw.client.dialog.info.flash('This key has been revoked and cannot be altered');
         return;
       }
 
@@ -86,7 +86,7 @@ application.controller.Keys = Class.extend({
           label_span.show();
           self.refreshUserKeys();
         } else {
-          $fw_manager.client.dialog.info.flash('Failed to update your key. Please try again.');
+          $fw.client.dialog.info.flash('Failed to update your key. Please try again.');
         }
       });
     }
@@ -108,7 +108,7 @@ application.controller.Keys = Class.extend({
       if (res.status == 'ok') {
         self.refreshUserKeys();
       } else {
-        $fw_manager.client.dialog.info.flash('Failed to generate your key - you may need to add a label. Please try again.');
+        $fw.client.dialog.info.flash('Failed to generate your key - you may need to add a label. Please try again.');
       }
     });
   },

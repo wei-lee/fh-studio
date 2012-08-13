@@ -4,8 +4,6 @@ var IDEManager = Class.extend({
     this.accordion = new application.AccordionManager();
     this.template = new application.TemplateManager();
     this.preview = new application.PreviewManager();
-    this.file = new application.FileManager();
-    this.editor = new application.EditorManager();
     this.config = {
       studio: new application.StudioConfigManager(),
       embed: new application.EmbedConfigManager(),

@@ -28,11 +28,11 @@ application.BlackberryResourceManager = application.ResourceManager.extend({
       $('#profile_view_container').hide();
       if (resources.length > 0) {
         // have at least one resource, so show the dashboard
-        $fw_manager.client.resource[that.destination].showResources(resources);
+        $fw.client.resource[that.destination].showResources(resources);
       }
       else {
         // no resources uploaded yet, show get started
-        $fw_manager.client.resource[that.destination].showGetStarted();
+        $fw.client.resource[that.destination].showGetStarted();
       }
       
     });
@@ -69,7 +69,7 @@ application.BlackberryResourceManager = application.ResourceManager.extend({
       };
       console.log("params: " + JSON.stringify(data));
       
-      $fw_manager.app.startUpload(wizard.find('#'+file_input_id), upload_url, data, function (result) {
+      $fw.app.startUpload(wizard.find('#'+file_input_id), upload_url, data, function (result) {
         console.log('upload result > ' + JSON.stringify(result));
         if ('undefined' !== typeof result.error && result.error.length > 0) {  
           proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_failed'));
@@ -104,7 +104,7 @@ application.BlackberryResourceManager = application.ResourceManager.extend({
       };
       console.log("params: " + JSON.stringify(data));
       
-      $fw_manager.app.startUpload(wizard.find('#'+file_input_id), upload_url, data, function (result) {
+      $fw.app.startUpload(wizard.find('#'+file_input_id), upload_url, data, function (result) {
         console.log('upload result > ' + JSON.stringify(result));
         if ('undefined' !== typeof result.error && result.error.length > 0) {  
           proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_failed'));
@@ -116,7 +116,7 @@ application.BlackberryResourceManager = application.ResourceManager.extend({
             
           wizard.find('.jw-button-finish').trigger('click');     
           
-          $fw_manager.client.resource.blackberry.setupDestination();   
+          $fw.client.resource.blackberry.setupDestination();   
         }
       }, true, function(xhr, err){
         var error = $fw.client.lang.getLangString('file_upload_error');

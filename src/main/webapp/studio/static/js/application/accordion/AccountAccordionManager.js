@@ -5,28 +5,28 @@ application.AccountAccordionManager = application.AccordionManager.extend({
   },
     
   postSelectProfileDetails: function () {
-    $fw_manager.client.profile.doLoad();
+    $fw.client.profile.doLoad();
     if (change_password_button === null) {
       change_password_button = $('#change_password_button').bind('click', function (e) {
         e.preventDefault();
-        $fw_manager.client.profile.doChangePassword();
+        $fw.client.profile.doChangePassword();
       });
     }
   },
 
   postSelectKeysManage: function () {
-    $fw_manager.client.keys.show();
+    $fw.client.keys.show();
   },
   
   postSelectDestinationsApple: function () {
-    $fw_manager.client.resource.apple.setupDestination();
+    $fw.client.resource.apple.setupDestination();
   },
 
   postSelectDestinationsAndroid: function () {
-    $fw_manager.client.resource.android.setupDestination();
+    $fw.client.resource.android.setupDestination();
   },
 
   postSelectDestinationsBlackberry: function () {
-    $fw_manager.client.resource.blackberry.setupDestination();
+    $fw.client.resource.blackberry.setupDestination();
   }
 });

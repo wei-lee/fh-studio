@@ -22,9 +22,13 @@ Apps.Startups.Controller = Apps.Controller.extend({
     
   },
 
+  reset: function () {
+    // FIXME: is this necessary? carry over from $fw.app.resetApp()
+    $(".appreport-results").empty();
+  },
+
   show: function(){
     this._super();
-    
     // TODO
     this.hide();
     // this.container = this.views.report_installsdest_container;

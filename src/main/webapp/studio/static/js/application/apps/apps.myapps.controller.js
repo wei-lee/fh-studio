@@ -103,6 +103,6 @@ Apps.Myapps.Controller = Apps.Controller.extend({
       row.push(controls.join(""));
     });
     return res;
-  },
+  }
 
 });

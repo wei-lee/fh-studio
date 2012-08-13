@@ -31,13 +31,13 @@ application.StagingManager = Class.extend({
     console.log('staging.liveStage');
     var self = this;
     if (!guid) {
-      guid = $fw_manager.data.get('app').guid;
+      guid = $fw.data.get('app').guid;
     }
     var url = Constants.RELEASE_STAGE_APP_URL;
     var params = {
       guid: guid
     };
-    $fw_manager.server.post(url, params, function(res) {
+    $fw.server.post(url, params, function(res) {
       if (res.status === "ok") {
         self.stageStarted("live", res.cacheKey);
       } else {
@@ -50,14 +50,14 @@ application.StagingManager = Class.extend({
     console.log('staging.devStage');
     var self = this;
     if (!guid) {
-      guid = $fw_manager.data.get('app').guid;
+      guid = $fw.data.get('app').guid;
     }
     var url = Constants.STAGE_APP_URL;
     var params = {
       guid: guid
     };
 
-    $fw_manager.server.post(url, params, function(res) {
+    $fw.server.post(url, params, function(res) {
       if (res.status === "ok") {
         self.stageStarted("dev", res.cacheKey);
       } else {
@@ -133,14 +133,14 @@ application.StagingManager = Class.extend({
     console.log('staging.liveStage');
     var self = this;
     if (!guid) {
-      guid = $fw_manager.data.get('app').guid;
+      guid = $fw.data.get('app').guid;
     }
     var url = Constants.RELEASE_STAGE_APP_URL;
     var params = {
       guid: guid
     };
 
-    $fw_manager.server.post(url, params, function(res) {
+    $fw.server.post(url, params, function(res) {
       if (res.status === "ok") {
         self.simpleStageStart("live", res.cacheKey, cb);
       } else {
@@ -153,14 +153,14 @@ application.StagingManager = Class.extend({
     console.log('staging.devStage');
     var self = this;
     if (!guid) {
-      guid = $fw_manager.data.get('app').guid;
+      guid = $fw.data.get('app').guid;
     }
     var url = Constants.STAGE_APP_URL;
     var params = {
       guid: guid
     };
 
-    $fw_manager.server.post(url, params, function(res) {
+    $fw.server.post(url, params, function(res) {
       if (res.status === "ok") {
         self.simpleStageStart("dev", res.cacheKey, cb);
       } else {

@@ -1,4 +1,6 @@
 application.TemplateManager = Class.extend({
+
+  // FIXME: move to new apps template controller
   
   init: function () {
     this.initTemplateCloneButton();
@@ -6,13 +8,13 @@ application.TemplateManager = Class.extend({
   
   doView: function (guid) {
     console.log('template.doView');
-    $fw_manager.data.set('template_mode', true);
-    $fw_manager.client.app.doShowManage(guid);
+    $fw.data.set('template_mode', true);
+    $fw.client.app.doShowManage(guid);
   },
   
   doClone: function (guid) {
     console.log('template.doClone');
-    $fw_manager.client.app.doClone(guid);
+    $fw.client.app.doClone(guid);
   },
   
   

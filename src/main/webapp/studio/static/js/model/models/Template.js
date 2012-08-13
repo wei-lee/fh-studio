@@ -9,7 +9,7 @@ model.Template = model.Model.extend({
     var params = {
       grid: grid || false
     };
-    $fw_manager.server.post(url, params, function (result) {
+    $fw.server.post(url, params, function (result) {
       var list = result.list;
       if ($.isFunction(success)) {
         success(list);
@@ -18,6 +18,6 @@ model.Template = model.Model.extend({
   },
   
   gridList: function (success, fail) {
-    $fw_manager.client.model.Template.list(success, fail, true);
+    $fw.client.model.Template.list(success, fail, true);
   }
 });

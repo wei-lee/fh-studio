@@ -17,11 +17,11 @@ application.ConfigurationSupport = Class.extend({
         container.append(input);
       }
     });
-    container.find('.' + $fw_manager.client.lang.INSERT_HELP_ICON).each($fw_manager.client.lang.insertHelpIcon);
+    container.find('.' + $fw.client.lang.INSERT_HELP_ICON).each($fw.client.lang.insertHelpIcon);
   },
   getConfigDom: function (config_name, config_val, dest, doReplace) {
     if (config_name === "remote Debug") {
-      if ($fw_manager.getClientProp("enabled-remote-debug") === "false") {
+      if ($fw.getClientProp("enabled-remote-debug") === "false") {
         return "";
       }
     }
@@ -96,9 +96,9 @@ application.ConfigurationSupport = Class.extend({
     } else {
       div.addClass('fh-form-text-field');
       var lang_key = dest + "_" + config_name.replace(/\s/g, '_').toLowerCase() + "_notes";
-      var lang_val = $fw_manager.client.lang.getLangString(lang_key);
+      var lang_val = $fw.client.lang.getLangString(lang_key);
       if (null == lang_val) {
-        lang_val = $fw_manager.client.lang.getLangString(dest + "_configuration_replace_general_notes");
+        lang_val = $fw.client.lang.getLangString(dest + "_configuration_replace_general_notes");
       }
       input_el = $("<div>" + lang_val + "</div>");
     }
@@ -118,7 +118,7 @@ application.ConfigurationSupport = Class.extend({
 
   postProcessVal: function(config_name, config_val) {
     if (config_name === 'app Id' && config_val === '') {
-      var app_title = $fw_manager.data.get('inst').title;
+      var app_title = $fw.data.get('inst').title;
       app_title = "com.feedhenry." + app_title.replace(/[^a-zA-Z0-9\\.]/g,'.');
       return app_title;
     } else {

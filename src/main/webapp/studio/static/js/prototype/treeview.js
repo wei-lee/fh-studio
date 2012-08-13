@@ -73,7 +73,7 @@ proto.TreeviewManager = function (params) {
 
     initTreeview: function () {
       // Set up the Git message
-      $fw.client.editor.initEditorMessage();
+      $fw.client.tab.apps.manageapps.controllers['apps.editor.controller'].initEditorMessage();
       
       var is_template, opts;
       
@@ -127,9 +127,9 @@ proto.TreeviewManager = function (params) {
           path = $(temp_el).attr('path');
 
           // Git based files will not have a file_guid
-          $fw.client.editor.openFile(file_guid, file_name, null, path, app_id);
+          $fw.client.tab.apps.manageapps.controllers['apps.editor.controller'].openFile(file_guid, file_name, null, path, app_id);
 //          if (file_guid && file_name) {
-//            $fw.client.editor.openFile(file_guid, file_name, null, path, app_id);
+//            $fw.client.tab.apps.manageapps.controllers['apps.editor.controller'].openFile(file_guid, file_name, null, path, app_id);
 //          } else {
 //            $fw.client.dialog.info.flash('Please wait for operation complete...');
 //          }
@@ -185,7 +185,7 @@ proto.TreeviewManager = function (params) {
         },
         "rename": {
           "_disabled": function (obj) {
-            var scmAllowRename = $fw_manager.getClientProp('scm-file-rename') == "true";
+            var scmAllowRename = $fw.getClientProp('scm-file-rename') == "true";
             var allowRename = $fw.data.get('scm_mode') ? scmAllowRename : true;
             return self.checkContextMenuDisabled(obj, true, allowRename);
           }
@@ -193,7 +193,7 @@ proto.TreeviewManager = function (params) {
         "remove": {
           "label": "Delete",
           "_disabled": function (obj) {
-            var scmAllowDelete = $fw_manager.getClientProp('scm-file-delete') == "true";
+            var scmAllowDelete = $fw.getClientProp('scm-file-delete') == "true";
             var allowDelete = $fw.data.get('scm_mode') ? scmAllowDelete : true;
             return self.checkContextMenuDisabled(obj, true, allowDelete);
           },
@@ -363,13 +363,13 @@ proto.TreeviewManager = function (params) {
         node_id =  obj.data('fileid');
         if (node_id != null) {
           // deleting a file, make sure to close it if it's open
-          $fw.client.editor.closeTab(node_id);
+          $fw.client.tab.apps.manageapps.controllers['apps.editor.controller'].closeTab(node_id);
         } else {
           // deleting a folder, make sure to close all child files if they're open
           $(obj).find('.file_item').each(function () {
             node_id =  $(this).data('fileid');
             if (node_id != null) {
-              $fw.client.editor.closeTab(node_id);
+              $fw.client.tab.apps.manageapps.controllers['apps.editor.controller'].closeTab(node_id);
             }
           });
         }
@@ -406,7 +406,7 @@ proto.TreeviewManager = function (params) {
         } else {
           //  self.setItemPath(node, res.path);         
           // callback to editor manager
-          $fw.client.editor.renameCallback(file_id, new_name, old_name);
+          $fw.client.tab.apps.manageapps.controllers['apps.editor.controller'].renameCallback(file_id, new_name, old_name);
         }
       });
 

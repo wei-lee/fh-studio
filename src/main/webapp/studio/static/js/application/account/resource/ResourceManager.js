@@ -9,21 +9,21 @@ application.ResourceManager = Class.extend({
    * Remove all resource flags for the destination 
    */
   flushResources: function () {
-    $fw_manager.data.remove(this.destination + '_resources');
+    $fw.data.remove(this.destination + '_resources');
   },
   
   /*
    * Set the resources for this destination
    */
   setResources: function (resources) {
-    $fw_manager.data.set(this.destination + '_resources', resources);
+    $fw.data.set(this.destination + '_resources', resources);
   },
   
   /*
    * Returns the resorces for the destination, or an empty object if they don't exist
    */
   getResources: function () {
-    return $fw_manager.data.get(this.destination + '_resources') || {};
+    return $fw.data.get(this.destination + '_resources') || {};
   },
   
   // Show the uploaded resource and relevant buttons e.g. Download, Re-upload, or Upload Now if not uploaded
@@ -36,7 +36,7 @@ application.ResourceManager = Class.extend({
     destinations_container.find('.resource-uploaded').hide();
     
     // reset uploaded resources data
-    $fw_manager.client.resource[this.destination].flushResources();
+    $fw.client.resource[this.destination].flushResources();
     var destination_resources = {};
     
     for (var ri=0; ri<resources.length; ri++) {
@@ -48,11 +48,11 @@ application.ResourceManager = Class.extend({
       resource_div.find('.resource-download').data('guid', temp_resource.guid).unbind().bind('click', function () {
         var guid = $(this).data('guid');
         console.log('download clicked for resource with guid: ' + guid);
-        $fw_manager.app.startDownload(Constants.DOWNLOAD_RESOURCE_URL + '?guid=' + guid);
+        $fw.app.startDownload(Constants.DOWNLOAD_RESOURCE_URL + '?guid=' + guid);
       });
       destination_resources[temp_resource.type] = true;
     }
-    $fw_manager.client.resource[this.destination].setResources(destination_resources);
+    $fw.client.resource[this.destination].setResources(destination_resources);
     
     console.log('show resources for destination: ' + this.destination);
     $('#' + this.destination + '_resources').show();
@@ -79,7 +79,7 @@ application.ResourceManager = Class.extend({
      
     var getstarted_wizard = proto.Wizard.load(that.destination + '_getstarted_wizard', {
       cancel: function () {
-        $fw_manager.client.resource[that.destination].setupDestination();
+        $fw.client.resource[that.destination].setupDestination();
       },
       validate: true
     }, {
@@ -87,7 +87,7 @@ application.ResourceManager = Class.extend({
       container: '#' + that.destination + '_resource_wizard_container'
     });
     
-    $fw_manager.client.resource[that.destination].bindGetStartedWizardSteps( getstarted_wizard );
+    $fw.client.resource[that.destination].bindGetStartedWizardSteps( getstarted_wizard );
   },
   
   /*
@@ -106,7 +106,7 @@ application.ResourceManager = Class.extend({
       $('#' + that.destination + '_getstarted_resource').find('.resource-getstarted').data('destination', that.destination).unbind().bind('click', function () {
         var dest = $(this).data('destination');
         console.log(dest + '_getstarted_resource button clicked');
-        $fw_manager.client.resource[dest].showGetStartedWizard();
+        $fw.client.resource[dest].showGetStartedWizard();
       });
       destinations_container.find('.resource-uploadnow, .resource-reupload').data('destination', that.destination).unbind().bind('click', function () {
         var dest = $(this).data('destination');
@@ -115,16 +115,16 @@ application.ResourceManager = Class.extend({
         var resource_id = resource_div.attr('id');
         // get the cert type from the resource div id
         var resource_type = resource_id.replace(resource_id.split('_')[0] + '_','');
-        $fw_manager.client.resource[dest].showResourceWizard(resource_type);
+        $fw.client.resource[dest].showResourceWizard(resource_type);
       });
       that[that.destination + '_buttons'] = true;
     }
-    $fw_manager.client.resource[that.destination].checkResources();
+    $fw.client.resource[that.destination].checkResources();
   },
   
   checkResources: function(){  
     // get resource info from server, more specifically, whether or not a developer cert and/or distribution cert were uploaded
-    // TODO: use $fw_manager.server for this cal
+    // TODO: use $fw.server for this cal
     // TODO: code duplication of dest determination
     var that = this;
     var dest = 'apple' === that.destination ? 'iphone' : that.destination;
@@ -148,11 +148,11 @@ application.ResourceManager = Class.extend({
       $('#profile_view_container').hide();
       if (resources.length > 0) {
         // have at least one resource, so show the dashboard
-        $fw_manager.client.resource[that.destination].showResources(resources);
+        $fw.client.resource[that.destination].showResources(resources);
       }
       else {
         // no resources uploaded yet, show get started
-        $fw_manager.client.resource[that.destination].showGetStarted();
+        $fw.client.resource[that.destination].showGetStarted();
       }
       
     });
@@ -163,11 +163,11 @@ application.ResourceManager = Class.extend({
    */
   showResourceWizard: function (resource_type) {
     if ('private_key' === resource_type) {
-      $fw_manager.client.resource[this.destination].showUploadKeyWizard();
+      $fw.client.resource[this.destination].showUploadKeyWizard();
     } else if ('csk' === resource_type || 'db' === resource_type){
-      $fw_manager.client.resource[this.destination].showOtherResWizard(resource_type);
+      $fw.client.resource[this.destination].showOtherResWizard(resource_type);
     } else {
-      $fw_manager.client.resource[this.destination].showUploadCertWizard(resource_type);
+      $fw.client.resource[this.destination].showUploadCertWizard(resource_type);
     }
   },
   
@@ -183,10 +183,10 @@ application.ResourceManager = Class.extend({
     var key_wizard = proto.Wizard.load(that.destination + '_key_wizard', {
       validate: true,
       cancel: function () {
-        $fw_manager.client.resource[that.destination].setupDestination();
+        $fw.client.resource[that.destination].setupDestination();
       },
       finish: function () {
-        $fw_manager.client.resource[that.destination].setupDestination();
+        $fw.client.resource[that.destination].setupDestination();
       }
     }, {
       modal: false,
@@ -216,7 +216,7 @@ application.ResourceManager = Class.extend({
         buildType: key_wizard.find('#'+that.destination+'_key_type').val()
       };
       console.log("params: " + JSON.stringify(data));
-      $fw_manager.app.startUpload(key_wizard.find('#' + file_input_id), upload_url, data, function (result) {
+      $fw.app.startUpload(key_wizard.find('#' + file_input_id), upload_url, data, function (result) {
         console.log('upload result > ' + JSON.stringify(result));
         if ('undefined' !== typeof result.error && result.error.length > 0) {
           proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_failed'));
@@ -261,10 +261,10 @@ application.ResourceManager = Class.extend({
     var cert_wizard = proto.Wizard.load( that.destination + '_cert_wizard', {
       validate: true,
       cancel: function () {
-        $fw_manager.client.resource[that.destination].setupDestination();
+        $fw.client.resource[that.destination].setupDestination();
       },
       finish: function () {
-        $fw_manager.client.resource[that.destination].setupDestination();
+        $fw.client.resource[that.destination].setupDestination();
       }
     });
     var validation_rules = {};
@@ -291,7 +291,7 @@ application.ResourceManager = Class.extend({
         buildType: build_type
       };
       
-      $fw_manager.app.startUpload(cert_wizard.find('#' + file_input_id), upload_url, data, function (result) {
+      $fw.app.startUpload(cert_wizard.find('#' + file_input_id), upload_url, data, function (result) {
         console.log('upload result > ' + JSON.stringify(result));
         if ('undefined' !== typeof result.error && result.error.length > 0) {
           console.log('upload failed');
@@ -324,10 +324,10 @@ application.ResourceManager = Class.extend({
     var res_wizard = proto.Wizard.load(that.destination + '_'+ resource_type +'_wizard', {
       validate: true,
       cancel: function () {
-        $fw_manager.client.resource[that.destination].setupDestination();
+        $fw.client.resource[that.destination].setupDestination();
       },
       finish: function () {
-        $fw_manager.client.resource[that.destination].setupDestination();
+        $fw.client.resource[that.destination].setupDestination();
       }
     }, {
       modal: false,
@@ -357,7 +357,7 @@ application.ResourceManager = Class.extend({
         buildType: 'release'
       };
       console.log("params: " + JSON.stringify(data));
-     $fw_manager.app.startUpload(res_wizard.find('#' + file_input_id), upload_url, data, function (result) {
+     $fw.app.startUpload(res_wizard.find('#' + file_input_id), upload_url, data, function (result) {
         console.log('upload result > ' + JSON.stringify(result));
         if ('undefined' !== typeof result.error && result.error.length > 0) {  
           proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_failed'));

@@ -21,7 +21,7 @@ application.StatusManager = Class.extend({
   show: function() {
     var self = this;
     console.log('status.show');
-    $fw_manager.client.preview.hideContent();
+    $fw.client.preview.hideContent();
     this.stats_controller.closeAll();
     this.stats_controller.loadModels();
     this.bind();

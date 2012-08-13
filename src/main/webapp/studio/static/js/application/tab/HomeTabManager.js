@@ -32,8 +32,10 @@ application.HomeTabManager = application.TabManager.extend({
     $('#home_top_left_header #home_create_new_app_btn').click(function(){
         //TODO: move this function to somewhere else
         $('#apps_tab').click();
-        //$fw_manager.client.tab.apps.showListApps();
-        $fw_manager.client.app.doCreate();
+        //$fw.client.tab.apps.showListApps();
+
+        // FIXME: rewire create app
+        $fw.client.app.doCreate();
     });
   },
   

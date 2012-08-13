@@ -5,51 +5,51 @@ application.AppsAccordionManager = application.AccordionManager.extend({
   },
   
   preSelectManageExport: function () {
-    $fw_manager.app.setupAppGeneration(true);
+    $fw.app.setupAppGeneration(true);
   },
 
   preSelectManagePublish: function () {
-    $fw_manager.app.setupAppGeneration(false);
+    $fw.app.setupAppGeneration(false);
   },
 
   preSelectConfigurationStudio: function () {
-    $fw_manager.client.config.studio.show();
+    $fw.client.config.studio.show();
   },
   
   preSelectConfigurationEmbed: function () {
-    $fw_manager.client.config.embed.show();
+    $fw.client.config.embed.show();
   },
   
   preSelectConfigurationAndroid: function () {
-    $fw_manager.client.config.android.show();
+    $fw.client.config.android.show();
   },
 
   preSelectConfigurationIphone: function () {
-    $fw_manager.client.config.iphone.show();
+    $fw.client.config.iphone.show();
   },
 
   preSelectConfigurationIpad: function () {
-    $fw_manager.client.config.ipad.show();
+    $fw.client.config.ipad.show();
   },
   
   preSelectConfigurationIos: function () {
-   $fw_manager.client.config.ios.show();
+   $fw.client.config.ios.show();
   },
 
   preSelectConfigurationFacebook: function () {
-    $fw_manager.client.config.facebook.show();
+    $fw.client.config.facebook.show();
   },
   
   preSelectConfigurationBlackberry: function () {
-    $fw_manager.client.config.blackberry.show();
+    $fw.client.config.blackberry.show();
   },
   
   preSelectConfigurationWindowsphone7: function () {
-    $fw_manager.client.config.windowsphone7.show();
+    $fw.client.config.windowsphone7.show();
   },
   
   preSelectConfigurationNokiawrt: function () {
-    $fw_manager.client.config.nokiawrt.show();
+    $fw.client.config.nokiawrt.show();
   },
 
   preSelectReportApp: function(id, container) {
@@ -93,9 +93,9 @@ application.AppsAccordionManager = application.AccordionManager.extend({
     scmTriggerButtonEditor.text(scmTriggerButtonText).bind('click', function () {
       scmTriggerButtonEditor.attr('disabled', 'disabled').text(pleaseWaitText);
       $fw.client.app.triggerScm(function () {
-        $fw_manager.app.loadAppFiles($fw_manager.data.get('app').guid);
+        $fw.app.loadAppFiles($fw.data.get('app').guid);
         $fw.client.preview.show();
-        $fw_manager.client.editor.reloadFiles();
+        $fw.client.editor.reloadFiles();
       }, 
       $.noop,
       function () {
@@ -104,10 +104,10 @@ application.AppsAccordionManager = application.AccordionManager.extend({
     });
     
     console.log('setupEditorFileset');
-    $fw_manager.client.editor.setup();
+    $fw.client.editor.setup();
     var git_mode = $fw.data.get('git_mode');
-    if (null === $fw_manager.app.treeviewManager && !git_mode) {
-      $fw_manager.app.loadAppFiles($fw_manager.data.get('app').guid);
+    if (null === $fw.app.treeviewManager && !git_mode) {
+      $fw.app.loadAppFiles($fw.data.get('app').guid);
     }
   },
   
@@ -121,7 +121,7 @@ application.AppsAccordionManager = application.AccordionManager.extend({
   //         updateButton = $('#manage_details_update_button');
   //     updateButton.text(updateButtonText).bind('click', function () {
   //       updateButton.attr('disabled', 'disabled').text(pleaseWaitText);
-  //       $fw_manager.client.app.doUpdate(function () {
+  //       $fw.client.app.doUpdate(function () {
   //         updateButton.removeAttr('disabled').text(updateButtonText).removeClass('ui-state-hover');
   //       });
   //     });
@@ -132,7 +132,7 @@ application.AppsAccordionManager = application.AccordionManager.extend({
   //       scmTriggerButton.attr('disabled', 'disabled').text(pleaseWaitText);
   //       $fw.client.app.triggerScm(function () {
   //         $fw.client.preview.show();
-  //         $fw_manager.client.editor.reloadFiles();
+  //         $fw.client.editor.reloadFiles();
   //       }, 
   //       $.noop,
   //       function () {
@@ -141,49 +141,49 @@ application.AppsAccordionManager = application.AccordionManager.extend({
   //     });
   //   }
   //   console.log('updateAppDetails');
-  //   $fw_manager.client.app.updateDetails();
+  //   $fw.client.app.updateDetails();
   // },
 
   postSelectManageFrameworks: function(){
     if($fw.client.needsSetup('manage_frameworks')){
       $('#manage_frameworks_update_button').bind('click', function(){
-          $fw_manager.client.app.doUpdateFrameworks();
+          $fw.client.app.doUpdateFrameworks();
       });
     }
-    $fw_manager.client.app.showCurrentFrameworks();
+    $fw.client.app.showCurrentFrameworks();
   },
 
   postSelectManageIcons: function () {
     var container = $('#manage_icons_body');
-    $fw_manager.client.icon.setContainer(container);
-    $fw_manager.client.icon.showIcons($fw_manager.data.get('inst').guid);
+    $fw.client.icon.setContainer(container);
+    $fw.client.icon.showIcons($fw.data.get('inst').guid);
   },
 
   postSelectDebugLogging: function () {
-    $fw_manager.client.debug.show('log');
+    $fw.client.debug.show('log');
   },
   
   postSelectStaging: function () {
-    $fw_manager.client.staging.show();
+    $fw.client.staging.show();
   },
 
   postSelectStatus: function () {
-    $fw_manager.client.status.show();
+    $fw.client.status.show();
   },
 
   preSelectPreviewConfiguration: function () {
-    $fw_manager.client.config.preview.show();
+    $fw.client.config.preview.show();
   },
   
   postSelectPushUrbanairship: function() {
-    if(!$fw_manager.client.push_manager){
-      $fw_manager.client.push_manager = new application.PushNotificationManager();
+    if(!$fw.client.push_manager){
+      $fw.client.push_manager = new application.PushNotificationManager();
     }
-    $fw_manager.client.push_manager.loadSettings();
+    $fw.client.push_manager.loadSettings();
   },
   
   getSelectedItemKey: function () {
-    return this.name + '_' + ($fw_manager.data.get('template_mode') ? 'template' : 'app');
+    return this.name + '_' + ($fw.data.get('template_mode') ? 'template' : 'app');
   }
   
 });

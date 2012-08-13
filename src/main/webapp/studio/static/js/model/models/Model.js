@@ -32,8 +32,9 @@ model.Model = Class.extend({
   },
 
   postProcessList: function(res, data_model) {
+    var filtered_fields;
     try {
-      var filtered_fields = data_model.getColumnMap();
+      filtered_fields = data_model.getColumnMap();
     } catch (e) {
       console.error("Couldn't get a column map for this model, so I can't post-process it.");
       return res;

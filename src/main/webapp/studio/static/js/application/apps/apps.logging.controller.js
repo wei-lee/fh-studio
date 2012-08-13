@@ -68,7 +68,7 @@ Apps.Logging.Controller = Apps.Controller.extend({
   refreshLog: function () {
     $('#debug_logging_text').val('loading...');
 
-    var instGuid = $fw_manager.data.get('inst').guid;
+    var instGuid = $fw.data.get('inst').guid;
     var url = Constants.LOGS_URL;
     var params = {
       "guid": instGuid,
@@ -99,7 +99,7 @@ Apps.Logging.Controller = Apps.Controller.extend({
   clearLog: function () {
     var self = this, instGuid, url, params;
     
-    instGuid = $fw_manager.data.get('inst').guid;
+    instGuid = $fw.data.get('inst').guid;
     url = Constants.LOGS_URL;
     params = {
       "guid": instGuid,

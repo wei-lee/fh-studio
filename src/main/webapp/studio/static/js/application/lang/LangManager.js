@@ -24,10 +24,10 @@ LangManager = Class.extend({
     // if container with this id doesn't have lang inserted yet
     if (always || ('undefined' === typeof this.containers[id])) {
       console.log('inserting lang for:' + id);
-      container.find('.' + $fw_manager.client.lang.INSERT_LANG).each($fw_manager.client.lang.insertLang);
-      container.find('.' + $fw_manager.client.lang.INSERT_LANG_BLOCK).each($fw_manager.client.lang.insertLangBlock);
-      container.find('.' + $fw_manager.client.lang.INSERT_HELP).each($fw_manager.client.lang.insertHelp);
-      container.find('.' + $fw_manager.client.lang.INSERT_HELP_ICON).each($fw_manager.client.lang.insertHelpIcon);
+      container.find('.' + $fw.client.lang.INSERT_LANG).each($fw.client.lang.insertLang);
+      container.find('.' + $fw.client.lang.INSERT_LANG_BLOCK).each($fw.client.lang.insertLangBlock);
+      container.find('.' + $fw.client.lang.INSERT_HELP).each($fw.client.lang.insertHelp);
+      container.find('.' + $fw.client.lang.INSERT_HELP_ICON).each($fw.client.lang.insertHelpIcon);
       // record lang being inserted so it isn't done repeatedly
       this.containers[id] = true;
     }
@@ -40,10 +40,10 @@ LangManager = Class.extend({
   insertLangForElements: function (elements, id) {
     if ('undefined' === typeof this.containers[id]) {
       console.log('inserting lang for:' + id);
-      elements.filter('.' + $fw_manager.client.lang.INSERT_LANG).each($fw_manager.client.lang.insertLang);
-      elements.filter('.' + $fw_manager.client.lang.INSERT_LANG_BLOCK).each($fw_manager.client.lang.insertLangBlock);
-      elements.filter('.' + $fw_manager.client.lang.INSERT_HELP).each($fw_manager.client.lang.insertHelp);
-      elements.filter('.' + $fw_manager.client.lang.INSERT_HELP_ICON).each($fw_manager.client.lang.insertHelpIcon);
+      elements.filter('.' + $fw.client.lang.INSERT_LANG).each($fw.client.lang.insertLang);
+      elements.filter('.' + $fw.client.lang.INSERT_LANG_BLOCK).each($fw.client.lang.insertLangBlock);
+      elements.filter('.' + $fw.client.lang.INSERT_HELP).each($fw.client.lang.insertHelp);
+      elements.filter('.' + $fw.client.lang.INSERT_HELP_ICON).each($fw.client.lang.insertHelpIcon);
       // record lang being inserted so it isn't done repeatedly
       this.containers[id] = true;
     }
@@ -54,9 +54,9 @@ LangManager = Class.extend({
    */
   insertLang: function (index) {
     var el = $(this);
-    el.removeClass($fw_manager.client.lang.INSERT_LANG);
+    el.removeClass($fw.client.lang.INSERT_LANG);
     var el_id = el.attr('id');
-    var lang = $fw_manager.client.lang.getLangString(el_id);
+    var lang = $fw.client.lang.getLangString(el_id);
       
     if (null !== lang && lang.length > 0) {
       if ($('i', el).length > 0) {
@@ -72,9 +72,9 @@ LangManager = Class.extend({
    */
   insertLangBlock: function (index) {
     var el = $(this);
-    el.removeClass($fw_manager.client.lang.INSERT_LANG_BLOCK);
+    el.removeClass($fw.client.lang.INSERT_LANG_BLOCK);
     var el_id = el.attr('id');
-    var lang = $fw_manager.client.lang.getLangArrayAsBlock(el_id);
+    var lang = $fw.client.lang.getLangArrayAsBlock(el_id);
       
     if (lang.length > 0) {
       for (var li=0; li<lang.length; li++) {
@@ -89,9 +89,9 @@ LangManager = Class.extend({
    */
   insertHelp: function (index) {
     var el = $(this);
-    el.removeClass($fw_manager.client.lang.INSERT_HELP);
+    el.removeClass($fw.client.lang.INSERT_HELP);
     var el_id = el.attr('id');
-    var lang = $fw_manager.client.lang.getLangString(el_id + '_help');
+    var lang = $fw.client.lang.getLangString(el_id + '_help');
     
     if (null !== lang && lang.length > 0) {
       el.qtip({
@@ -112,9 +112,9 @@ LangManager = Class.extend({
    */
   insertHelpIcon: function (index) {
     var el = $(this);
-    el.removeClass($fw_manager.client.lang.INSERT_HELP_ICON);
+    el.removeClass($fw.client.lang.INSERT_HELP_ICON);
     var el_id = el.attr('id');
-    var lang = $fw_manager.client.lang.getLangString(el_id + '_help_icon');
+    var lang = $fw.client.lang.getLangString(el_id + '_help_icon');
       
     if (null !== lang) {
       var span = $('<span>', {

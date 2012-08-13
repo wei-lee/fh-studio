@@ -49,7 +49,7 @@ Apps.BuildExport.Support = Apps.Controller.extend({
       })
       .bind('click', self.doGeneration);
       var dest_icon = $('<span>', {id: 'dest_' + dest.id + '_icon', 'class' : 'destination_icon'});
-      var dest_name = $fw_manager.client.lang.getLangString('export_' + dest.id + '_title');
+      var dest_name = $fw.client.lang.getLangString('export_' + dest.id + '_title');
       var dest_text = $('<span>', {id: 'dest_' + dest.id + '_text','class': 'destination_text', 'text': dest_name});
       dest_li.append(dest_anchor.append(dest_icon).append(dest_text));
       dest_ul.append(dest_li);

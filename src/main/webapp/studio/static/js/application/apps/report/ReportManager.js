@@ -5,7 +5,7 @@ application.ReportManager = Class.extend({
   },
   
   show: function (metric, type, id, container) {
-    var appid = $fw_manager.data.get('app').guid;
+    var appid = $fw.data.get('app').guid;
     
     if ('undefined' === typeof $fw.client.reporting) {
       $fw.client.reporting = new application.ReportingManager();

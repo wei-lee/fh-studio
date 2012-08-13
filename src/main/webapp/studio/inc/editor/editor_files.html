@@ -1,7 +1,28 @@
-<div id="editor_files_container" class="manage_apps-container">
+<div id="editor_files_container" class="well">
+
+  <div id="editor_files_header">
+    <div id="editor_toolbar">
+      <button id="editor_save_btn" class="template-restriction">SAVE</button>
+      <button id="editor_save_all_btn" class="template-restriction">SAVE ALL</button>
+      <button id="editor_find_btn">FIND</button>
+      <button id="scm_trigger_button_editor" class="btn"></button>
+    </div>
+    <div id="editor_message">
+    </div>
+    <div id="editor_titles_wrapper">
+      <div id="editor_tabs_scroller_right" class="editor_tabs_scroller ui-state-default"> <span> << </span></div>
+      <div id="editor_tabs_scroller_left" class="editor_tabs_scroller ui-state-default"> <span> >> </span></div>
+      <ul id="editor_titles" class="ui-tabs-nav ui-helper-clearfix ui-widget-header nav_tabs"></ul>
+    </div>
+  </div>
+
+  <div id="editor_files_list"></div>
+
   <div id="editor_text_content" class="text_content">
     <textarea id="editor_textarea" ></textarea>
   </div>
+
   <div id="editor_img_content" class="img_content">
   </div>
+  
 </div>

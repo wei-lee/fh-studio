@@ -22,10 +22,19 @@ Apps.Installs.Controller = Apps.Controller.extend({
     
   },
 
+  reset: function () {
+    // FIXME: is this necessary? carry over from $fw.app.resetApp()
+    $(".appreport-results").empty();
+  },
+
   show: function(){
     this._super();
+
+    // FIXME: is this necessary? carry over from $fw.app.resetApp()
+    $(".appreport-results").empty();
     
     this.hide();
+
     // this.container = this.views.report_installsdest_container;
     // $(this.container).show();
   }

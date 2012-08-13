@@ -10,7 +10,7 @@
           var docName = this.innerText;
           console.log('Clicked Doc Link : ' + docName);
           
-          $fw_manager.analytics.trackEvent({id:'Dashboard - View Documentation', props:{'docName':docName}});
+          $fw.analytics.trackEvent({id:'Dashboard - View Documentation', props:{'docName':docName}});
         });
     
     </script>

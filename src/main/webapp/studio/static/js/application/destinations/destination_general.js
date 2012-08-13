@@ -5,7 +5,7 @@ application.DestinationGeneral = Class.extend({
 
   init: function(dest_id) {
     this.destination_id = dest_id;
-    this.base_url = Constants.WID_URL_PREFIX + this.destination_id + "/" + $fw_manager.data.get('inst').guid + "/deliver";
+    this.base_url = Constants.WID_URL_PREFIX + this.destination_id + "/" + $fw.data.get('inst').guid + "/deliver";
   },
 
   doGeneration: function(is_source) {
@@ -18,7 +18,7 @@ application.DestinationGeneral = Class.extend({
       if ($fw.getClientProp('accountType') !== 'free') {
         that['export']();
       } else {
-        $fw_manager.client.dialog.error($fw_manager.client.lang.getLangString(error_msg));
+        $fw.client.dialog.error($fw.client.lang.getLangString(error_msg));
       }
     } else {
       that.publish();
@@ -28,12 +28,12 @@ application.DestinationGeneral = Class.extend({
   'export': function() {
     console.log("generate for " + this.destination_id + ":: Type: Export");
     var url = this.base_url + "?generateSrc=true";
-    $fw_manager.app.startDownload(url);
+    $fw.app.startDownload(url);
   },
 
   publish: function() {
     var url = this.base_url + "?generateSrc=false";
-    $fw_manager.app.startDownload(url);
+    $fw.app.startDownload(url);
   },
 
   doAsyncExport: function() {
@@ -78,10 +78,10 @@ application.DestinationGeneral = Class.extend({
         wizard.find('.jw-button-finish').trigger('click');
 
         if (res.error) {
-          $fw_manager.client.dialog.error($fw_manager.client.lang.getLangString('free_source_export_disabled'));
+          $fw.client.dialog.error($fw.client.lang.getLangString('free_source_export_disabled'));
         } else if (res.action && res.action.url) {
           var source_url = res.action.url;
-          $fw_manager.app.startDownload(source_url);
+          $fw.app.startDownload(source_url);
         }
       });
     }).bind('postShow', function() {
@@ -204,8 +204,8 @@ application.DestinationGeneral = Class.extend({
   redirectToAccount: function(target) {
     // TODO: use id's instead of indexes
     // force state to show relevant accordion item
-    $fw_manager.state.set('account_accordion', 'selected', 1);
-    $fw_manager.state.set('account_accordion_accordion_item_destinations', 'selected', ((target === 'iphone') || (target === 'ipad')) ? 0 : 1);
+    $fw.state.set('account_accordion', 'selected', 1);
+    $fw.state.set('account_accordion_accordion_item_destinations', 'selected', ((target === 'iphone') || (target === 'ipad')) ? 0 : 1);
 
     $('#account_tab').click();
   },
@@ -229,7 +229,7 @@ application.DestinationGeneral = Class.extend({
     var that = this;
     $.post(Constants.LIST_RESOURCES_URL, {
       dest: this.destination_id,
-      appId: $fw_manager.data.get('inst').guid
+      appId: $fw.data.get('inst').guid
     }, function(res) {
       that.resourceCheckCallback(res, that);
       console.log('resource checked :: ' + that.destination_id);
@@ -282,13 +282,13 @@ application.DestinationGeneral = Class.extend({
   doDevDeploy: function(wizard, step) {
     console.log('destination_general.doDevDeploy');
     var self = this;
-    var guid = $fw_manager.data.get('app').guid;
+    var guid = $fw.data.get('app').guid;
     var url = Constants.DEPLOY_APP_URL;
     var params = {
       guid: guid
     };
 
-    $fw_manager.server.post(url, params, function(res) {
+    $fw.server.post(url, params, function(res) {
       if (res.status === "ok") {
         self.deployStarted("dev", res.cacheKey, wizard, step);
       } else {
@@ -300,12 +300,12 @@ application.DestinationGeneral = Class.extend({
   doLiveDeploy: function(wizard, step) {
     console.log('destination_general.doLiveDeploy');
     var self = this;
-    var guid = $fw_manager.data.get('app').guid;
+    var guid = $fw.data.get('app').guid;
     var url = Constants.RELEASE_DEPLOY_APP_URL;
     var params = {
       guid: guid
     };
-    $fw_manager.server.post(url, params, function(res) {
+    $fw.server.post(url, params, function(res) {
       if (res.status === "ok") {
         self.deployStarted("live", res.cacheKey, wizard, step);
       } else {
@@ -416,7 +416,7 @@ application.DestinationGeneral = Class.extend({
         var source_url = res.action.url;
         var ota_url = res.action.ota_url;
         var ipa_url = res.action.ipa_url;
-        //$fw_manager.app.startDownload(source_url);
+        //$fw.app.startDownload(source_url);
         var showOTA = false;
         var showIPA = false;
         if(typeof ota_url !== "undefined"){

@@ -35,13 +35,13 @@ application.EditorManager = Class.extend({
 
   initToolbar: function() {
     $('#editor_save_btn').click(function() {
-      $fw_manager.client.editor.saveCurrentFile();
+      $fw.client.editor.saveCurrentFile();
     });
     $('#editor_save_all_btn').click(function() {
-      $fw_manager.client.editor.saveAllFiles();
+      $fw.client.editor.saveAllFiles();
     });
     $('#editor_find_btn').click(function() {
-      $fw_manager.client.editor.search();
+      $fw.client.editor.search();
     });
     var that = this;
     $('#editor_titles_wrapper').bind('mouseover', function() {
@@ -70,14 +70,14 @@ application.EditorManager = Class.extend({
 
     // console.log('initEditorMessage :: initEditorMessage - is_scm = ' + is_scm);
     if (is_scm) {
-      var editorMessageText = $fw_manager.getClientProp('scm-editor-text');
+      var editorMessageText = $fw.getClientProp('scm-editor-text');
       editorMessageDiv.text(editorMessageText);
       editorMessageDiv.show();
     } else {
       editorMessageDiv.text("");
       editorMessageDiv.hide();
     }
-    var scmCrudEnabled = $fw_manager.getClientProp('scmCrudEnabled') == "true";
+    var scmCrudEnabled = $fw.getClientProp('scmCrudEnabled') == "true";
   },
 
   initSearchDialog: function() {
@@ -89,16 +89,16 @@ application.EditorManager = Class.extend({
       title: "Find/Replace",
       buttons: {
         Find: function() {
-          $fw_manager.client.editor.find(true);
+          $fw.client.editor.find(true);
         },
         Replace: function() {
-          $fw_manager.client.editor.replace(false);
+          $fw.client.editor.replace(false);
         },
         'Replace All': function() {
-          $fw_manager.client.editor.replace(true);
+          $fw.client.editor.replace(true);
         },
         Cancel: function() {
-          $fw_manager.client.editor.resetSearchDialog();
+          $fw.client.editor.resetSearchDialog();
           $(this).dialog("close");
         }
       }
@@ -159,7 +159,7 @@ application.EditorManager = Class.extend({
     } else {
       this.setWaitCursor();
       this.changeView(false);
-      $fw_manager.app.loadTextFile(data, function(res) {
+      $fw.app.loadTextFile(data, function(res) {
         var params = {
           id: file_id,
           name: file_name,
@@ -170,8 +170,8 @@ application.EditorManager = Class.extend({
           ext: ext,
           is_binary: false
         };
-        $fw_manager.client.editor.file_manager[file_id] = params;
-        $fw_manager.client.editor.editor_impl.openFile(params);
+        $fw.client.editor.file_manager[file_id] = params;
+        $fw.client.editor.editor_impl.openFile(params);
         self.modified_files[file_id] = false;
         self.removeModifiedMark(file_id);
         self.removeWaitCursor();
@@ -252,7 +252,7 @@ application.EditorManager = Class.extend({
       if (self.modified_files[file_id]) {
         //if there is, ask user what to do
         var icon_html = "<span class=\"ui-icon ui-icon-alert content_icon\"></span>";
-        $fw_manager.client.dialog.showConfirmDialog($fw_manager.client.lang.getLangString('caution'), icon_html + $fw_manager.client.lang.getLangString('reload_file_content_alert'), function() {
+        $fw.client.dialog.showConfirmDialog($fw.client.lang.getLangString('caution'), icon_html + $fw.client.lang.getLangString('reload_file_content_alert'), function() {
           self.loadSingleFile(file_obj.id, file_obj.name, file_obj.version, file_obj.path, file_obj.app_id);
         }, function() {
           file_obj.reload = false;
@@ -294,15 +294,15 @@ application.EditorManager = Class.extend({
       };
       this.server.saveTextFile(data, function(res) {
         // Turn hourglass off
-        $fw_manager.client.editor.removeWaitCursor();
+        $fw.client.editor.removeWaitCursor();
 
         if (res.message) {
           alert(res.message);
         } else {
-          $fw_manager.client.dialog.info.flash($fw_manager.client.lang.getLangString('file_saved'));
-          $fw_manager.client.editor.modified_files[current_file.id] = undefined;
-          $fw_manager.client.editor.removeModifiedMark(current_file.id);
-          $fw_manager.client.preview.show();
+          $fw.client.dialog.info.flash($fw.client.lang.getLangString('file_saved'));
+          $fw.client.editor.modified_files[current_file.id] = undefined;
+          $fw.client.editor.removeModifiedMark(current_file.id);
+          $fw.client.preview.show();
         }
       });
     } else {
@@ -345,7 +345,7 @@ application.EditorManager = Class.extend({
   saveTextFiles: function(textFiles) {
     if (textFiles.length > 0) {
       // Set cursor to hourglass
-      $fw_manager.client.editor.setWaitCursor();
+      $fw.client.editor.setWaitCursor();
 
       // Send all the files contents to the server to be saved
       this.server.saveTextFile({
@@ -353,7 +353,7 @@ application.EditorManager = Class.extend({
         appId: $fw.data.get('app').guid
       }, function(res) {
         // Turn hourglass off
-        $fw_manager.client.editor.removeWaitCursor();
+        $fw.client.editor.removeWaitCursor();
 
         if (res.message) {
           alert(res.message);
@@ -451,9 +451,9 @@ application.EditorManager = Class.extend({
       "class": "ui-icon ui-icon-close",
       text: "Remove Tab"
     }).click(function() {
-      $fw_manager.client.editor.closeTab(id);
+      $fw.client.editor.closeTab(id);
     })).bind('click', function() {
-      $fw_manager.client.editor.changeTab(id, true);
+      $fw.client.editor.changeTab(id, true);
     });
     return tab_item;
   },
@@ -601,10 +601,10 @@ application.EditorManager = Class.extend({
       // EITHER all editor callbacks should route through a single callback to
       // allow filtering for templates
       // OR initialise a readonly codemirror (if possible) for templates
-      var template_mode = $fw_manager.data.get('template_mode');
+      var template_mode = $fw.data.get('template_mode');
       if (!template_mode) {
         var url = Constants.SAVE_FILE_URL;
-        $fw_manager.client.editor.server.call("POST", url, JSON.stringify(data), callback);
+        $fw.client.editor.server.call("POST", url, JSON.stringify(data), callback);
       }
     }
   },
@@ -612,7 +612,7 @@ application.EditorManager = Class.extend({
   highlightCode: function(string, callback, parser) {
     // TODO: Editor shouldn't know about any of CodeMirrors parsers
     parser = JSParser;
-    parser = parser.make(stringStream($fw_manager.client.editor.normaliseString(string)));
+    parser = parser.make(stringStream($fw.client.editor.normaliseString(string)));
     var line = [];
     if (callback.nodeType === 1) {
       var node = callback;

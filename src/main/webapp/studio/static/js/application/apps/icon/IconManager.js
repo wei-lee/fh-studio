@@ -110,12 +110,12 @@ application.IconManager = Class.extend({
       console.log('icon path :: ' + upload_wizard.find('#icon_file_location').val());
       
       var params = {
-        'widgetGuid': $fw_manager.data.get('app').guid,
+        'widgetGuid': $fw.data.get('app').guid,
         'templateGuid': instance_guid,
         'code': type
       };
       
-      $fw_manager.client.model.App.uploadIcon( upload_wizard.find('#icon_file_location'), params,
+      $fw.client.model.App.uploadIcon( upload_wizard.find('#icon_file_location'), params,
         function () {
           proto.ProgressDialog.setProgress(step, 100);
           proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_complete'));

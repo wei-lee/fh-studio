@@ -22,10 +22,10 @@ application.AppleResourceManager = application.ResourceManager.extend({
     wizard.find('#apple_getstarted_csr_download').bind('click', function (e) {
       e.preventDefault();
       if (wizard.find('#apple_key_password').val().length > 0) {
-        var resources = $fw_manager.client.resource.apple.getResources();
-        $fw_manager.app.startDownload(Constants.GENERATE_CSR_URL + "&password=" + wizard.find('#apple_key_password').val());
+        var resources = $fw.client.resource.apple.getResources();
+        $fw.app.startDownload(Constants.GENERATE_CSR_URL + "&password=" + wizard.find('#apple_key_password').val());
         resources.private_key = true;
-        $fw_manager.client.resource.apple.setResources(resources);
+        $fw.client.resource.apple.setResources(resources);
         wizard.find('#apple_csr_downloaded').attr('value', 'downloaded');
         wizard.valid();
       }
@@ -34,10 +34,10 @@ application.AppleResourceManager = application.ResourceManager.extend({
       }
     });
     /*wizard.find('#apple_getstarted_csr').bind('leavingForward', function () {
-      var resources = $fw_manager.client.resource.apple.getResources();
-      $fw_manager.app.startDownload(Constants.GENERATE_CSR_URL + "&password=" + wizard.find('#apple_key_password').val());
+      var resources = $fw.client.resource.apple.getResources();
+      $fw.app.startDownload(Constants.GENERATE_CSR_URL + "&password=" + wizard.find('#apple_key_password').val());
       resources.private_key = true;
-      $fw_manager.client.resource.apple.setResources(resources);
+      $fw.client.resource.apple.setResources(resources);
     });*/
     wizard.find('#apple_getstarted_finish').bind('show', function () {
       console.log('apple getstarted wizard finished');
@@ -45,14 +45,14 @@ application.AppleResourceManager = application.ResourceManager.extend({
       // TODO: better way for this temporary workaround for finishing wizard after successful upload  
       wizard.find('.jw-button-finish').trigger('click');
       
-      var resources = $fw_manager.client.resource.apple.getResources();
+      var resources = $fw.client.resource.apple.getResources();
       if (resources.private_key) {
         console.log('have a private key, lets go back to the dashboard');
-        $fw_manager.client.resource.apple.setupDestination();
+        $fw.client.resource.apple.setupDestination();
       }
       else {
         console.log('dont have a key yet, lets show the upload key wizard');
-        $fw_manager.client.resource.apple.showResourceWizard('private_key');
+        $fw.client.resource.apple.showResourceWizard('private_key');
       }
     });
   }

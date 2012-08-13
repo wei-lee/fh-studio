@@ -6,8 +6,8 @@ application.DestinationFeedhenry = application.DestinationGeneral.extend({
     
     'export': function(){
         console.log("Feedhenry :: Export");
-        var url = Constants.EXPORT_APP_URL + "?guid=" + $fw_manager.data.get("app").guid;
-        $fw_manager.app.startDownload(url);
+        var url = Constants.EXPORT_APP_URL + "?guid=" + $fw.data.get("app").guid;
+        $fw.app.startDownload(url);
     },
     
     'publish': function(){

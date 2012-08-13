@@ -139,8 +139,8 @@ application.PreviewSupport = Class.extend({
   
   formatDeviceText: function (id, device) {
     return [
-      $fw_manager.client.lang.getLangString('preview_device_' + device.target), 
-      ' - ', $fw_manager.client.lang.getLangString('preview_device_' + id + '_title'), ' - ',
+      $fw.client.lang.getLangString('preview_device_' + device.target), 
+      ' - ', $fw.client.lang.getLangString('preview_device_' + id + '_title'), ' - ',
       device.width, 'x', device.height, ' - ', device.ratio
     ].join('');
   },
@@ -155,7 +155,7 @@ application.PreviewSupport = Class.extend({
     selected = selected || $fw.client.preview.getDefaultDeviceId();
     
     // iterate over devices and construct options
-    var options = HtmlUtil.optionsFromConfig(Config.app.preview.device, $fw_manager.client.preview.support.formatDeviceText, $fw.client.preview.resolveDevice, true);
+    var options = HtmlUtil.optionsFromConfig(Config.app.preview.device, $fw.client.preview.support.formatDeviceText, $fw.client.preview.resolveDevice, true);
     
     HtmlUtil.constructOptions(select, options.options, options.values, selected);
     

@@ -83,8 +83,8 @@ application.TabManager = Class.extend({
       this.doPreInit();
       // do any stuff that requires the tab content to be initialsed here
       // for lang, include every element inside the tab content, except the inner layout center pane
-      var elements = this.tab_content.find($fw_manager.client.lang.SELECTOR_STRING).not('.inner-layout .ui-layout-center *');
-      $fw_manager.client.lang.insertLangForElements(elements, this.name + '_tab');
+      var elements = this.tab_content.find($fw.client.lang.SELECTOR_STRING).not('.inner-layout .ui-layout-center *');
+      $fw.client.lang.insertLangForElements(elements, this.name + '_tab');
 
       this.bindBreadcrumbEvents();
 

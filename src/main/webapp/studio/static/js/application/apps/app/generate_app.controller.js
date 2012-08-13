@@ -276,9 +276,9 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
                 self.destroyProgressModal();
                 setTimeout(function() {
                   // Reset state back to the manage tab/build app
-                  $fw_manager.state.set('manage_apps_accordion_accordion_item_manage', 'selected', 4);
-                  $fw_manager.state.set('manage_apps_accordion_app', 'selected', 0);
-                  $fw_manager.client.app.doShowManage(new_guid);
+                  $fw.state.set('manage_apps_accordion_accordion_item_manage', 'selected', 4);
+                  $fw.state.set('manage_apps_accordion_app', 'selected', 0);
+                  $fw.client.tab.apps.showManageapps(new_guid);
                 }, 250);
               });
             }

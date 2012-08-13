@@ -11,7 +11,7 @@ proto.Accordion = {
     el.accordion($.extend({}, proto.Accordion.defaults, overrides));
     
     //Analytics Integration
-    $fw_manager.client.analytics.doAccordion(el);
+    $fw.client.analytics.doAccordion(el);
     
     return el;
   },

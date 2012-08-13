@@ -57,7 +57,7 @@ model.App = model.Model.extend({
 
   create: function(params, success, fail) {
     var url = Constants.CREATE_APP_URL;
-    $fw_manager.server.post(url, params, function(result) {
+    $fw.server.post(url, params, function(result) {
       if (result.status === 'ok') {
         if ($.isFunction(success)) {
           success(result);
@@ -78,7 +78,7 @@ model.App = model.Model.extend({
     } else {
       params.guid = guid;
     }
-    $fw_manager.server.post(url, params, function(result) {
+    $fw.server.post(url, params, function(result) {
       if (result.status && 'error' === result.status) {
         if ('function' === typeof fail) {
           fail(result.message);
@@ -100,7 +100,7 @@ model.App = model.Model.extend({
     var url = Constants.UPDATE_APP_URL;
     var params = fields;
     // TODO: error callback should also happen if update failed, not just if status wasn't 200
-    $fw_manager.server.post(url, params, function(result) {
+    $fw.server.post(url, params, function(result) {
       if (result.status && 'error' === result.status) {
         if ('function' === typeof fail) {
           fail(result.message);
@@ -123,7 +123,7 @@ model.App = model.Model.extend({
       'confirmed': true,
       'guid': guid
     };
-    $fw_manager.server.post(url, params, function(data) {
+    $fw.server.post(url, params, function(data) {
       if ($.isFunction(success)) {
         success(data);
       }
@@ -153,7 +153,7 @@ model.App = model.Model.extend({
 
   uploadIcon: function(jq_comp, params, success, fail, timeout) {
     var url = Constants.UPLOAD_ICON_URL;
-    $fw_manager.app.startUpload(jq_comp, url, params, function(res) {
+    $fw.app.startUpload(jq_comp, url, params, function(res) {
       if ("ok" === res.result) {
         if ($.isFunction(success)) {
           success(res);
@@ -176,7 +176,7 @@ model.App = model.Model.extend({
       guid: guid,
       frameworks: frameworks
     };
-    $fw_manager.server.post(url, params, function(res) {
+    $fw.server.post(url, params, function(res) {
       if ($.isFunction(success)) {
         success(res);
       }

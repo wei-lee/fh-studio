@@ -6,7 +6,7 @@ model.Resource = model.Model.extend({
   
   generateCert: function (params, success, fail) {
     var url = Constants.GENERATE_CERT_URL;
-    $fw_manager.server.post(url, params, function (response) {
+    $fw.server.post(url, params, function (response) {
       if (response.result && 'ok' === response.result) {
         if ($.isFunction(success)) {
           success(response);
