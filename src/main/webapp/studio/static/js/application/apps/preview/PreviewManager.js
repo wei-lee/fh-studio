@@ -8,7 +8,8 @@ application.PreviewManager = Class.extend({
   init: function () {
     var self = this;
     
-    $('.preview_toggle').unbind().bind('click', function () {
+    $('.preview_toggle').unbind().bind('click', function (e) {
+      e.preventDefault();
       if (self.isPreviewOpen()) {
         self.hide();
       } else {
@@ -50,16 +51,20 @@ application.PreviewManager = Class.extend({
 
     $fw.client.lang.insertLangForContainer($('#app_preview'));
     
-    $('#preview_device_open_emulator').bind('click', self.showEmulator);
+    $('#preview_device_open_emulator').bind('click', function (e) {
+      e.preventDefault();
+      self.showEmulator();
+    });
     
     $('#preview_frame_debugger_btn').button({
       'icons': {
         'primary': 'ui-icon-wrench',
         'secondary': ''
       }
-    }).bind('click', function () {
+    }).bind('click', function (e) {
+      e.preventDefault();
       // Even though we're only calling a single function, we're
-      // putting it inside an anonymous function so that the 
+      // putting it inside an anonymous function so that the
       // reference to 'this' is maintained inside showDebugger
       self.showDebugger();
     });
@@ -68,13 +73,17 @@ application.PreviewManager = Class.extend({
         'primary': 'ui-icon-newwin',
         'secondary': ''
       }
-    }).bind('click', self.showEmulator);
+    }).bind('click', function (e) {
+      e.preventDefault();
+      self.showEmulator();
+    });
     $('#preview_frame_refresh_btn').button({
       'icons': {
         'primary': 'ui-icon-refresh',
         'secondary': ''
       }
-    }).bind('click', function () {
+    }).bind('click', function (e) {
+      e.preventDefault();
       self.show();
     });
 
