@@ -1,10 +1,9 @@
 /*jshint evil:true */
 var Tab = Tab || {};
 Tab.Manager = Class.extend({
-  inited: false,
 
   init: function () {
-
+    this.initFn = _.once(this.initBindings);
   },
 
   show: function () {
@@ -12,56 +11,67 @@ Tab.Manager = Class.extend({
     var el = $('#' + this.id);
     var navList = el.find('.nav-list');
 
-    if (!this.inited) {
-      this.inited = true;
+    this.initFn();
 
-      // bind events to each navlist items
-      navList.find('a').each(function (index, element) {
-        var jqEl = $(this);
-        var controllerName = jqEl.data('controller');
+    self.updateCrumbs.call(navList.find('li.active a')[0], self);
+  },
 
-        // resolve the right controller for the navlist item
-        // NOTE: we initialise to an emtpy object here rather than have it as a field due to 
-        //       bug/feature of Class where all sub classes have a reference to the same field
-        //       http://ejohn.org/blog/simple-javascript-inheritance/
-        if (self.controllers == null) {
-          self.controllers = {};
+  initBindings: function () {
+    var self = this;
+    var el = $('#' + this.id);
+    var navList = el.find('.nav-list');
+
+    // bind events to each navlist items
+    navList.find('a').each(function (index, element) {
+      var jqEl = $(this);
+      var controllerName = jqEl.data('controller');
+
+      // resolve the right controller for the navlist item
+      var controller = self.getController(controllerName);
+
+      // handler for when navlist item is clicked
+      jqEl.on('click', function (e) {
+        e.preventDefault();
+        self.updateCrumbs.call(this, self);
+
+        // tell all controllers to hide themselves
+        for (var key in self.controllers) {
+          var temp = self.controllers[key];
+          temp.hide();
         }
-        if ('undefined' === typeof self.controllers[controllerName]) {
-          var upperName = self.toUpper(controllerName);
-          try {
-            self.controllers[controllerName] = new (eval(upperName))(); // ok to use eval here
-          } catch (e) {
-            console.error('Make sure ' + upperName + ' is loaded and defined');
-            throw e;
-          }
-        }
-        var controller = self.controllers[controllerName];
+        // tell active controller we're ready for it to do it's thing
+        controller.show(e);
 
-        // handler for when navlist item is clicked
-        jqEl.on('click', function (e) {
-          e.preventDefault();
-          self.updateCrumbs.call(this, self);
-
-          // tell all controllers to hide themselves
-          for (var key in self.controllers) {
-            var temp = self.controllers[key];
-            temp.hide();
-          }
-          // tell active controller we're ready for it to do it's thing
-          controller.show(e);
-
-          return false;
-        });
+        return false;
       });
+    });
 
-      // meh, lets start with first item
-      // TODO: state stuff here
-      el.find('.layout-content').show();
-      navList.find('a:eq(0)').trigger('click');
-    } else {
-      self.updateCrumbs.call(navList.find('li.active a')[0], self);
+    // meh, lets start with first item
+    // TODO: state stuff here
+    el.find('.layout-content').show();
+    navList.find('a:eq(0)').trigger('click');
+  },
+
+  getController: function (controllerName) {
+    var self = this;
+    
+    // NOTE: we initialise to an emtpy object here rather than have it as a field due to
+    //       bug/feature of Class where all sub classes have a reference to the same field
+    //       http://ejohn.org/blog/simple-javascript-inheritance/
+    if (self.controllers == null) {
+      self.controllers = {};
     }
+    if ('undefined' === typeof self.controllers[controllerName]) {
+      var upperName = self.toUpper(controllerName);
+      try {
+        self.controllers[controllerName] = new (eval(upperName))(); // ok to use eval here
+      } catch (e) {
+        console.error('Make sure ' + upperName + ' is loaded and defined');
+        throw e;
+      }
+    }
+
+    return self.controllers[controllerName];
   },
 
   // see http://twitter.github.com/bootstrap/components.html#breadcrumbs

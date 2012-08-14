@@ -1,8 +1,4 @@
 // TODO: remove these globals
-var my_apps_grid = null;
-var templates_grid = null;
-var list_apps_layout = null;
-var list_apps_buttons = null;
 var change_password_button = null;
 
 $(document).ready(function () {

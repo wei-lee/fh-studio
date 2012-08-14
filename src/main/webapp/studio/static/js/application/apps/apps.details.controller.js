@@ -172,7 +172,7 @@ Apps.Details.Controller = Apps.Controller.extend({
         callback();
       }
       else {
-        self.doManage(result.inst.guid);
+        $fw.client.tab.apps.manageapps.show(result.inst.guid);
       }
     }, function (error) {
       $fw.client.dialog.error(error);

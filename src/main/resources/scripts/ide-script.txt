@@ -50,6 +50,7 @@ js/application/admin/admin.stores.controller.js
 js/application/apps/apps.controller.js
 js/application/apps/apps.myapps.controller.js
 js/application/apps/apps.templates.controller.js
+js/application/apps/apps.create.controller.js
 js/application/apps/apps.quickstart.controller.js
 js/application/apps/apps.details.controller.js
 js/application/apps/apps.icons.controller.js

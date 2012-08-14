@@ -4,6 +4,8 @@ Apps.Tab = Apps.Tab || {};
 Apps.Tab.Manager = Tab.Manager.extend({
 
   init: function() {
+    this.listapps = new ListappsTabManager();
+    this.manageapps = new ManageappsTabManager();
     this.initFn = _.once(this.showListapps);
   },
 
@@ -20,18 +22,12 @@ Apps.Tab.Manager = Tab.Manager.extend({
     console.log('showListapps');
     $('#manage_apps_layout').hide();
     $('#list_apps_layout').show();
-    if ('undefined' === typeof this.listapps) {
-      this.listapps = new ListappsTabManager();
-    }
     this.listapps.show();
   },
 
   showManageapps: function(guid, success, fail, is_name, intermediate) {
     $('#list_apps_layout').hide();
     $('#manage_apps_layout').show();
-    if ('undefined' === typeof this.manageapps) {
-      this.manageapps = new ManageappsTabManager();
-    }
     this.manageapps.show(guid, success, fail, is_name, intermediate);
   }
 });
@@ -46,6 +42,9 @@ ListappsTabManager = Tab.Manager.extend({
 
   show: function() {
     this._super();
+
+    // also setup apps create controller as this isn't defined as a 'data-controller' in html
+    this.controllers['apps.create.controller'] = new Apps.Create.Controller();
 
     $('#manage_apps_layout').hide();
     $('#list_apps_layout').show();

@@ -2,7 +2,7 @@ var Apps = Apps || {};
 
 Apps.Templates = Apps.Templates || {};
 
-Apps.Templates.Controller = Apps.Controller.extend({
+Apps.Templates.Controller = Controller.extend({
 
   model: {
     //device: new model.Device()
