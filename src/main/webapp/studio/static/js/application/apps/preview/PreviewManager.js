@@ -193,7 +193,7 @@ application.PreviewManager = Class.extend({
 
     var preview_wrapper = $('#preview_wrapper');
     preview_wrapper.data('scaled', scale_preview);
-    var max_width = $('#app_preview').innerWidth(); //self.MAX_PREVIEW_WIDTH;
+    var max_width = $('#app_preview').width();//innerWidth(); //self.MAX_PREVIEW_WIDTH;
     var max_height = parseInt(preview_wrapper.height() + $('#preview_controls').height() + $('#main_layout_south').height(), 10);
 
     preview_wrapper.find('#preview_frame').hide().end().find('#preview_text').hide();

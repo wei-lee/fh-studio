@@ -623,12 +623,14 @@ Apps.Editor.Controller = Apps.Controller.extend({
   },
 
   disableEditor: function() {
-    $('#editor_files_container').hide();//.addClass("ui-helper-hidden-accessible");
+    //$('#editor_files_container').hide();//.addClass("ui-helper-hidden-accessible");
+    $('#editor_text_content').hide();
     $('#editor_toolbar').find('button').attr("disabled", "disabled");
   },
 
   enableEditor: function() {
-    $('#editor_files_container').show();//.removeClass("ui-helper-hidden-accessible");
+    //$('#editor_files_container').show();//.removeClass("ui-helper-hidden-accessible");
+    $('#editor_text_content').show();
     $('#editor_toolbar').find('button').removeAttr("disabled");
   },
 
