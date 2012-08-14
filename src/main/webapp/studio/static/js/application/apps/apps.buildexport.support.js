@@ -34,6 +34,30 @@ Apps.BuildExport.Support = Apps.Controller.extend({
     // TODO: move this presentation stuff out to preseenation layer location i.e. html
     var dest_ul = $("<ul>", {id:'app_destinations'});
     for(var i=0;i<dests.length; i++){
+      // TODO: convert to thumbnails
+      // var dest_li = $('<li>', {
+      //   id: 'dest_' + (is_source ? 'source' : 'binary') + '_' + dest.id,
+      //   'class': 'span3 insert-help'
+      // });
+      // var dest_anchor = $('<a>', {
+      //   href: '#',
+      //   'class': 'thumbnail'
+      // }).bind('click', self.doGeneration).data('data', {
+      //   is_source: is_source,
+      //   dest_id: dest.id
+      // });
+      // var dest_icon = $('<img>', {
+      //   src: '/studio/static/themes/default/img/export/' + dest.id + '.png'
+      // });
+      // var dest_name = $fw.client.lang.getLangString('export_' + dest.id + '_title');
+      // var dest_text = $('<h5>', {
+      //   id: 'dest_' + dest.id + '_text',
+      //   'class': 'destination_text',
+      //   'text': dest_name
+      // });
+      // dest_li.append(dest_anchor.append(dest_icon).append(dest_text));
+      // dest_ul.append(dest_li);
+
       var dest = dests[i];
       if(is_source && !dest.source){
           continue;
