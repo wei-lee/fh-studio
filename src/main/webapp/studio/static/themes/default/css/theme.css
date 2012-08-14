@@ -2809,16 +2809,16 @@ line-height:0.5em;
   margin-right: 10px;
 }
 
-/* App Generation */
+/* Multi step App Create/Setup/Generation */
 #generate_app {
   padding: 10px;
 }
 
-#generate_app .row-fluid {
+.multistep .row-fluid {
   position: relative;
 }
 
-#generate_app .step_number {
+.multistep .step_number {
   background: #ddd;
   position: absolute;
   top: 0;
@@ -2836,16 +2836,24 @@ line-height:0.5em;
   color: #606060;
 }
 
-#generate_app .description {
+.multistep form {
+  padding-left: 70px;
+}
+
+#generate_app form {
+  padding-left: 19px;
+}
+
+.multistep .description {
   padding-left: 50px;
   padding-bottom: 10px;
 }
 
-#generate_app .logo_hr {
+.multistep .logo_hr {
   margin: 0 0 15px 0;
 }
 
-#generate_app .form-actions {
+.multistep .form-actions {
   border-top: none;
   padding-top: 0;
   padding-bottom: 0;
@@ -2858,11 +2866,11 @@ line-height:0.5em;
   margin-bottom: 10px;
 }
 
-#generate_app .control-group.no-bottom-margin {
+.multistep .control-group.no-bottom-margin {
   margin-bottom: 0;
 }
 
-#generate_app button.generate_app {
+.multistep button.generate_app {
   margin-left: 10px;
 }
 
@@ -2886,13 +2894,21 @@ line-height:0.5em;
   margin-top: 7px;
 }
 
-#generate_app .label_spacer {
+.multistep .label_spacer {
   width: 39px;
   display: inline-block;
 }
 
-#generate_app .available_forms {
+.multistep .available_forms {
   display: inline-block;
+}
+
+/* thumbnails */
+.thumbnail h4, .thumbnail h5 {
+  text-align: center;
+}
+li.active .thumbnail, div.active .thumbnail {
+  border-color: #3223A3;
 }
 
 /* Wufoo Generator */
