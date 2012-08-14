@@ -117,17 +117,7 @@
       <!-- Hide this initially and let javascript show it when its ready -->
       <div id="manage_apps_content">
 
-        <div id="quickstart_container" class="well">
-          quickstart
-        </div>
-
-        <div id="quickstart_client_container" class="well">
-          quickstart client
-        </div>
-
-        <div id="quickstart_cloud_container" class="well">
-          quickstart cloud
-        </div>
+        <%@ include file="../manage/quickstart.html"%>
         
         <%@ include file="../manage/manage_details.html"%>
         
@@ -197,7 +187,7 @@
       <div id="preview_header">
         <button id="preview_toggle_close" class="btn preview_toggle pull-left"><i class="icon-chevron-right"></i></button><select id="preview_temporary_select" class="insert-help"></select>
       </div>
-      <div id="preview_wrapper" class="ui-layout-content">
+      <div id="preview_wrapper">
         <div id="preview_frame"></div>
         <div id="preview_text"><span id="preview_device_too_large1" class="insert-lang"></span><a id="preview_device_open_emulator" class="script-link insert-lang"></a><span id="preview_device_too_large2" class="insert-lang"></span></div>
       </div>

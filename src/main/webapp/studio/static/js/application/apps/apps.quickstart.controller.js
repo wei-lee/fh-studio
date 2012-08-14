@@ -1,6 +1,9 @@
 var Apps = Apps || {};
 
 Apps.Quickstart = Apps.Quickstart || {};
+Apps.Quickstart.Client = Apps.Quickstart.Client || {};
+Apps.Quickstart.Cloud = Apps.Quickstart.Cloud || {};
+
 
 Apps.Quickstart.Controller = Apps.Controller.extend({
 
@@ -20,53 +23,110 @@ Apps.Quickstart.Controller = Apps.Controller.extend({
     this.initFn = _.once(this.initBindings);
   },
 
-  show: function(e, view){
+  show: function(e, view, showClientCloudOptions){
     this._super();
 
-    this.initFn();
-    
-    // TODO
-    this.hide();
+    if (showClientCloudOptions != null && !showClientCloudOptions) {
+      // hide all quickstart elements
+      this.hide();
+    } else {
+      // leave big client/cloud buttons at top visible, only hiding client & cloud views
+      $(this.views.quickstart_client_container).hide();
+      $(this.views.quickstart_cloud_container).hide();
+    }
+
     if (view != null) {
       this.container = view;
     } else {
       this.container = this.views.quickstart_container;
     }
+
+    this.initFn();
+    
     $(this.container).show();
   },
 
   initBindings: function () {
+    var self = this;
     // client/cloud quickstart binding setup
+    var jqEl = $(self.container);
+
+    jqEl.find('a').bind('click', function (e) {
+      e.preventDefault();
+      var anchor = $(this);
+
+      jqEl.find('li').removeClass('active');
+      anchor.parent().addClass('active');
+
+      var controller = $fw.client.tab.apps.manageapps.getController(anchor.data('controller'));
+      controller.show(e, true);
+    });
   }
 
 });
 
-Apps.Quickstart.Client = Apps.Quickstart.Client || {};
 
 Apps.Quickstart.Client.Controller = Apps.Quickstart.Controller.extend({
   init: function () {
     this.initFn = _.once(this.initBindings);
   },
 
-  show: function (e) {
-    this._super(e, this.views.quickstart_client_container);
+  show: function (e, showClientCloudOptions) {
+    this._super(e, this.views.quickstart_client_container, showClientCloudOptions);
+
+    var jqEl = $(this.views.quickstart_client_container);
+    // hide all steps, then just show step 1
+    jqEl.find('.multistep_step').hide().end().find('.step_1').show();
   },
 
   initBindings: function () {
     // client quickstart binding setup
+
+    $('#step_1_options a').bind('click', function (e) {
+      e.preventDefault();
+      var el = $(this);
+
+      el.closest('.thumbnails').find('li').removeClass('active');
+      el.closest('li').addClass('active');
+
+      // hide all other steps at the current step number or greater
+      $('.step_2,.step_3,.step_4,.step_5').hide().find('li.active').removeClass('active');
+
+      // show succeeding step/s that are configured for this item
+      var nextsteps = el.data('nextsteps').split(',');
+      _.each(nextsteps, function (step) {
+        $('.' + step).show();
+      });
+    });
+
+    // multiple versions of step 2 with same 2 options - new/existing project
+    $('.step_2_options a').bind('click', function (e) {
+      e.preventDefault();
+      var el = $(this);
+
+      el.closest('.thumbnails').find('li').removeClass('active');
+      el.closest('li').addClass('active');
+
+      // hide all other steps at the current step number or greater
+      $('.step_3,.step_4,.step_5').hide().find('li.active').removeClass('active');
+
+      // show succeeding step/s that are configured for this item
+      var nextsteps = el.data('nextsteps').split(',');
+      _.each(nextsteps, function (step) {
+        $('.' + step).show();
+      });
+    });
   }
 });
 
-
-Apps.Quickstart.Cloud = Apps.Quickstart.Cloud || {};
 
 Apps.Quickstart.Cloud.Controller = Apps.Quickstart.Controller.extend({
   init: function () {
     this.initFn = _.once(this.initBindings);
   },
 
-  show: function (e) {
-    this._super(e, this.views.quickstart_cloud_container);
+  show: function (e, showClientCloudOptions) {
+    this._super(e, this.views.quickstart_cloud_container, showClientCloudOptions);
   },
 
   initBindings: function () {
