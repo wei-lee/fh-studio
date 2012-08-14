@@ -32,13 +32,10 @@ Tab.Manager = Class.extend({
       // handler for when navlist item is clicked
       jqEl.on('click', function (e) {
         e.preventDefault();
-        self.updateCrumbs.call(this, self);
-
         // tell all controllers to hide themselves
-        for (var key in self.controllers) {
-          var temp = self.controllers[key];
-          temp.hide();
-        }
+        self.hideAll();
+
+        self.updateCrumbs.call(this, self);
         // tell active controller we're ready for it to do it's thing
         controller.show(e);
 
@@ -72,6 +69,14 @@ Tab.Manager = Class.extend({
     }
 
     return self.controllers[controllerName];
+  },
+
+  // calls hide on all controllers
+  hideAll: function () {
+    for (var key in this.controllers) {
+      var temp = this.controllers[key];
+      temp.hide();
+    }
   },
 
   // see http://twitter.github.com/bootstrap/components.html#breadcrumbs

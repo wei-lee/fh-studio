@@ -14,7 +14,8 @@ Apps.Quickstart.Controller = Apps.Controller.extend({
   views: {
     quickstart_container: '#quickstart_container',
     quickstart_client_container: '#quickstart_client_container',
-    quickstart_cloud_container: '#quickstart_cloud_container'
+    quickstart_cloud_container: '#quickstart_cloud_container',
+    quickstart_client_hybrid_container: '#quickstart_client_hybrid_container'
   },
 
   container: null,
@@ -33,6 +34,7 @@ Apps.Quickstart.Controller = Apps.Controller.extend({
       // leave big client/cloud buttons at top visible, only hiding client & cloud views
       $(this.views.quickstart_client_container).hide();
       $(this.views.quickstart_cloud_container).hide();
+      $(this.views.quickstart_client_hybrid_container).hide();
     }
 
     if (view != null) {
@@ -61,6 +63,21 @@ Apps.Quickstart.Controller = Apps.Controller.extend({
       var controller = $fw.client.tab.apps.manageapps.getController(anchor.data('controller'));
       controller.show(e, true);
     });
+  },
+
+  // common function for binding (jQuery) elements to trigger 'show' on the corresponding controller
+  bindToControllers: function (elements) {
+    elements.bind('click', function (e) {
+      e.preventDefault();
+      var el = $(this);
+
+      el.closest('.thumbnails').find('li').removeClass('active');
+      el.closest('li').addClass('active');
+
+      // show succeeding step/s that are configured for this item
+      var controller = el.data('controller');
+      $('.manageapps_nav_list a[data-controller="' + controller + '"]').trigger('click');
+    });
   }
 
 });
@@ -72,17 +89,21 @@ Apps.Quickstart.Client.Controller = Apps.Quickstart.Controller.extend({
   },
 
   show: function (e, showClientCloudOptions) {
-    this._super(e, this.views.quickstart_client_container, showClientCloudOptions);
-
-    var jqEl = $(this.views.quickstart_client_container);
-    // hide all steps, then just show step 1
-    jqEl.find('.multistep_step').hide().end().find('.step_1').show();
+    if (e != null && e.target != null && $(e.target).data('hybrid')) {
+      // show being called from hybrid area of navlist i.e. a 'hybrid' only client view is required
+      this._super(e, this.views.quickstart_client_hybrid_container);
+    } else {
+      this._super(e, this.views.quickstart_client_container, showClientCloudOptions);
+      var jqEl = $(this.views.quickstart_client_container);
+      // hide all steps, then just show step 1
+      jqEl.find('.multistep_step').hide().end().find('.step_1').show();
+    }
   },
 
   initBindings: function () {
     // client quickstart binding setup
 
-    $('#step_1_options a').bind('click', function (e) {
+    $('.step_1_options a', this.views.quickstart_client_container).bind('click', function (e) {
       e.preventDefault();
       var el = $(this);
 
@@ -100,7 +121,7 @@ Apps.Quickstart.Client.Controller = Apps.Quickstart.Controller.extend({
     });
 
     // multiple versions of step 2 with same 2 options - new/existing project
-    $('.step_2_options a').bind('click', function (e) {
+    $('.step_2_options a', this.views.quickstart_client_container).bind('click', function (e) {
       e.preventDefault();
       var el = $(this);
 
@@ -116,6 +137,8 @@ Apps.Quickstart.Client.Controller = Apps.Quickstart.Controller.extend({
         $('.' + step).show();
       });
     });
+
+    this.bindToControllers($(this.views.quickstart_client_container + ' .step_2_hybrid_options a,' + this.views.quickstart_client_hybrid_container + ' .step_2_hybrid_options a'));
   }
 });
 
@@ -131,5 +154,6 @@ Apps.Quickstart.Cloud.Controller = Apps.Quickstart.Controller.extend({
 
   initBindings: function () {
     // cloud quickstart binding setup
+    this.bindToControllers($('.step_1_options a', this.views.quickstart_cloud_container));
   }
 });

@@ -23,7 +23,7 @@
               <div class="step_number">1</div>
               <form class="well form-horizontal">
                 <h2>Choose a Platform</h2>
-                <ul id="step_1_options" class="thumbnails">
+                <ul class="thumbnails step_1_options">
                   <li class="span2">
                     <a href="#" class="thumbnail" data-nextsteps="step_2_hybrid">
                       <img src="<%=studio.getStaticAssetPath("themes/default/img/placeholder.jpg")%>" alt="">
@@ -64,7 +64,10 @@
               <div class="step_number">2</div>
               <form class="well form-horizontal">
                 <h2>You're all set!</h2>
-                hybrid 2
+                <p>Your App is already created and good to go, so you're ready to start developing</p>
+
+                <%@ include file="./quickstart_hybrid_actions.html"%>
+                
               </form>
             </div>
           </div>
@@ -298,6 +301,38 @@
 
         <!-- start quickstart cloud -->
         <div id="quickstart_cloud_container" class="well">
-          quickstart cloud
+          <h2>Choose an Action</h2>
+          <ul class="thumbnails step_1_options">
+            <li class="span2">
+              <a href="#" class="thumbnail" data-controller="apps.editor.controller">
+                <img src="<%=studio.getStaticAssetPath("themes/default/img/placeholder.jpg")%>" alt="">
+                <h5>Develop my Cloud Code</h5>
+              </a>
+            </li>
+            <li class="span2">
+              <a href="#" class="thumbnail" data-controller="apps.deploy.controller">
+                <img src="<%=studio.getStaticAssetPath("themes/default/img/placeholder.jpg")%>" alt="">
+                <h5>Deploy my Cloud Code</h5>
+              </a>
+            </li>
+            <li class="span2">
+              <a href="#" class="thumbnail" data-controller="apps.status.controller">
+                <img src="<%=studio.getStaticAssetPath("themes/default/img/placeholder.jpg")%>" alt="">
+                <h5>Monitor Cloud Status</h5>
+              </a>
+            </li>
+            <li class="span2">
+              <a href="#" class="thumbnail" data-controller="apps.logging.controller">
+                <img src="<%=studio.getStaticAssetPath("themes/default/img/placeholder.jpg")%>" alt="">
+                <h5>Show Cloud Logs</h5>
+              </a>
+            </li>
+          </ul>
         </div>
         <!-- end quickstart cloud -->
+
+        <!-- start quickstart client (hybrid only) -->
+        <div id="quickstart_client_hybrid_container" class="well">
+          <%@ include file="./quickstart_hybrid_actions.html"%>
+        </div>
+        <!-- end quickstart client (hybrid only) -->
