@@ -277,6 +277,18 @@ Apps.Create.Controller = Controller.extend({
     console.log('finished... is_app_name = ' + is_app_name + ' app_identifier = ' + app_identifier + ' > ' + finish_option);
     
     $fw.client.tab.apps.manageapps.show(app_identifier, callback, $.noop, is_app_name, intermediate);
+  },
+
+  showTemplateDetails: function (container, template) {
+    container.find('#template_title').text(template.title);
+    container.find('#template_description').text(template.description);
+    var iconController = $fw.client.tab.apps.manageapps.getController('apps.icons.controller');
+    container.find('#template_icon').html($('<img>', {'src': iconController.getIconUrl(template.id, iconController.ICON_TYPE_LARGE)}));
+    container.find('#template_preview_button').unbind().bind('click', function (e) {
+      e.preventDefault();
+      $fw.client.preview.showInDialog($fw.client.preview.getTemplatePreviewUrl(template.id, 'studio', template.domain), template.width);
+    });
+    $fw.data.set('clone_from_app', template.id);
   }
 
 });
