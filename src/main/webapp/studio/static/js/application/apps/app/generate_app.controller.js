@@ -491,7 +491,10 @@ GenerateApp.Controllers.WufooMulti = GenerateApp.Controllers.Wufoo.extend({
   type: 'multi'
 });
 
-GenerateApp.Controller = Class.extend({
+var Apps = Apps || {};
+Apps.Generate = Apps.Generate || {};
+
+Apps.Generate.Controller = GenerateApp.Controller = Class.extend({
   config: null,
   generator_controllers: null,
 
@@ -521,6 +524,10 @@ GenerateApp.Controller = Class.extend({
         controller: this
       })
     };
+  },
+
+  hide: function () {
+    $('#generate_app').hide();
   },
 
   hideCenterViews: function() {

@@ -254,7 +254,9 @@ Apps.Create.Controller = Controller.extend({
     create_app_wizard.find('#generate_app').unbind('show').bind('show', function () {
       // Hide wizard, init App generator controller
       $('.jw-button-cancel').click();
-      $('#list_apps_button_generate_app').click();
+      //$fw.client.app.generate_app_controller.show();
+      $fw.client.tab.apps.listapps.hideAll();
+      $fw.client.tab.apps.listapps.getController('apps.generate.controller').show();
     });
     
     return create_app_wizard;
