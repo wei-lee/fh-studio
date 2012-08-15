@@ -7,7 +7,6 @@ js/application/accordion/AccountAccordionManager.js
 js/application/accordion/ReportingAccordionManager.js
 js/application/reporting/ReportingManager.js
 js/application/controller.js
-js/application/apps/app/generate_app.controller.js
 js/application/apps/configuration/ConfigurationSupport.js
 js/application/apps/configuration/ConfigurationManager.js
 js/application/apps/configuration/IosConfigManager.js
@@ -51,6 +50,8 @@ js/application/apps/apps.controller.js
 js/application/apps/apps.myapps.controller.js
 js/application/apps/apps.templates.controller.js
 js/application/apps/apps.create.controller.js
+js/application/apps/apps.import.controller.js
+js/application/apps/apps.generate.controller.js
 js/application/apps/apps.quickstart.controller.js
 js/application/apps/apps.details.controller.js
 js/application/apps/apps.icons.controller.js

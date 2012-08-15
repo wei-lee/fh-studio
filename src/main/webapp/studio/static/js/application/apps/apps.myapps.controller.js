@@ -58,9 +58,13 @@ Apps.Myapps.Controller = Controller.extend({
     // Inject Create button
     var create_button = $('<button>').addClass('btn btn-primary pull-right').text('Create an App').click(function(e) {
       e.preventDefault();
-      $fw.client.tab.apps.listapps.controllers['apps.create.controller'].show();
+      $fw.client.tab.apps.listapps.getController('apps.create.controller').show();
     });
-    $('#list_apps_grid_wrapper .span12:first').append(create_button);
+    var import_button = $('<button>').addClass('btn pull-right').text('Import an App').click(function(e) {
+      e.preventDefault();
+      $fw.client.tab.apps.listapps.getController('apps.import.controller').show();
+    });
+    $('#list_apps_grid_wrapper .span12:first').append(create_button).append(import_button);
   },
 
   rowRender: function(row, data) {

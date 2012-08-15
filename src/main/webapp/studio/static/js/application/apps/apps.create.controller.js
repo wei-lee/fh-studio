@@ -276,27 +276,6 @@ Apps.Create.Controller = Controller.extend({
     
     console.log('finished... is_app_name = ' + is_app_name + ' app_identifier = ' + app_identifier + ' > ' + finish_option);
     
-    // FIXME: readd state restoration
-    
-    // if ('edit' === finish_option) {
-    //   // force state to Editor > Files
-    //   $fw.state.set('manage_apps_accordion_app', 'selected', 1);
-    //   $fw.state.set('manage_apps_accordion_accordion_item_editor', 'selected', 0);
-    // }
-    // else {
-    //   // force state to manage > publish
-    //   $fw.state.set('manage_apps_accordion_app', 'selected', 0);
-    //   $fw.state.set('manage_apps_accordion_accordion_item_manage', 'selected', 4);
-    // }
-      
-    // have to manually set selected item to 'my apps' to ensure breadcrumb updates
-    // var list_apps_buttons = $('#list_apps_buttons');
-    // list_apps_buttons.find('li').removeClass('ui-state-active');
-    // list_apps_buttons.find('#list_apps_button_my_apps').addClass('ui-state-active');
-     
-    // TODO: As we don't know if we cloned from a git based app until after the fact,
-    //       the solution is to alert the user to change the git url when the app is
-    //       read i.e. here
     $fw.client.tab.apps.manageapps.show(app_identifier, callback, $.noop, is_app_name, intermediate);
   }
 
