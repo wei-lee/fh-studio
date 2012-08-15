@@ -59,6 +59,7 @@ Apps.List.Support = Controller.extend({
       $('td:eq(1)', row).addClass('app_title').unbind().click(function(){
         // GUID is last, TODO: Make this better
         var guid = data[6];
+        $fw.data.set('template_mode', false);
         $fw.client.tab.apps.manageapps.show(guid);
       });
     }

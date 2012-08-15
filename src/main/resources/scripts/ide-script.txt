@@ -19,7 +19,6 @@ js/application/apps/configuration/BlackberryConfigManager.js
 js/application/apps/configuration/Windowsphone7ConfigManager.js
 js/application/apps/configuration/NokiawrtConfigManager.js
 js/application/apps/report/ReportManager.js
-js/application/apps/template/TemplateManager.js
 js/application/apps/preview/PreviewManager.js
 js/application/account/profile/ProfileManager.js
 js/application/account/keys/keys.controller.js

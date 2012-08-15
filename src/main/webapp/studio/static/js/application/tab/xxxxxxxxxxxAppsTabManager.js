@@ -174,44 +174,5 @@ application.AppsTabManager = application.TabManager.extend({
       }
     }
     self.inited = true;
-  },
-
-  /*
-   * Initialise any components needed to show the manage screen for the specified app guid
-   */
-  showManageApps: function(callback) {
-    if (null === this.mode_buttons) {
-      this.mode_buttons = $('#mode_buttons').buttonset().find('#radio1').click(function() {
-        console.log('basic clicked');
-      }).end().find('#radio2').click(function() {
-        console.log('advanced clicked');
-      });
-    }
-    $fw.app.showAndHide('#manage_apps_layout', '#list_apps_layout');
-    //apps_layout.resizeAll();
-
-    var accordion_name = this.name + '_accordion',
-        manager_name = js_util.capitalise(this.name) + 'AccordionManager';
-    if (this.accordion === null) {
-      if ('undefined' !== typeof application[manager_name]) {
-        this.accordion = new application[manager_name](accordion_name);
-      } else {
-        this.accordion = new application.AccordionManager(accordion_name);
-      }
-      this.accordion.show();
-    } else {
-      this.accordion.reset();
-    }
-    // Reload preview
-    $fw.client.preview.show();
-
-    if ($.isFunction(callback)) {
-      callback();
-    }
-  },
-
-  // TODO: all show list_app_layout functionality should be build out separately from tab initialisation code
-  showListApps: function() {
-    $fw.app.showAndHide('#list_apps_layout', '#manage_apps_layout');
   }
 });

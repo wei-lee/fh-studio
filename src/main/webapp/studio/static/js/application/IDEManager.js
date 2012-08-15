@@ -2,7 +2,6 @@ var IDEManager = Class.extend({
   
   init: function () {
     this.accordion = new application.AccordionManager();
-    this.template = new application.TemplateManager();
     this.preview = new application.PreviewManager();
     this.config = {
       studio: new application.StudioConfigManager(),

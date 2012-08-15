@@ -118,7 +118,6 @@ ManageappsTabManager = Tab.Manager.extend({
    *
    */
   doManage: function(guid, success, fail, is_name, intermediate) {
-    $fw.data.set('template_mode', false);
     this.doShowManage(guid, success, fail, is_name, intermediate);
   },
 
@@ -165,7 +164,7 @@ ManageappsTabManager = Tab.Manager.extend({
               // update state information
               $fw.state.set('apps_tab_options', 'selected', 'template');
               $fw.state.set('template', 'id', inst.guid);
-              $fw.client.template.applyPreRestrictions();
+              $fw.client.tab.apps.listapps.getController('apps.templates.controller').applyPreRestrictions();
             } else {
               // make sure correct button is active on list apps layout
               // $('#list_apps_buttons li').removeClass('ui-state-active');
@@ -173,7 +172,7 @@ ManageappsTabManager = Tab.Manager.extend({
               // update state information
               $fw.state.set('apps_tab_options', 'selected', 'app');
               $fw.state.set('app', 'id', inst.guid);
-              $fw.client.template.removePreRestrictions();
+              $fw.client.tab.apps.listapps.getController('apps.templates.controller').removePreRestrictions();
             }
 
             // Check if the current app is a scm based app, and if crud operations are allowed
@@ -208,9 +207,9 @@ ManageappsTabManager = Tab.Manager.extend({
 
             // TODO: what was this doing before?? now it's an infinite loop
             if (template_mode) {
-              $fw.client.template.applyPostRestrictions();
+              $fw.client.tab.apps.listapps.getController('apps.templates.controller').applyPostRestrictions();
             } else {
-              $fw.client.template.removePostRestrictions();
+              $fw.client.tab.apps.listapps.getController('apps.templates.controller').removePostRestrictions();
             }
           };
         if ($.isFunction(intermediate)) {

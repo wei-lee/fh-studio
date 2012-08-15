@@ -46,45 +46,5 @@ Application = {
     }
     temp_form.ajaxSubmit(options);
     // TODO: clean up/remove temp_form after form submission
-  },
-  
-  initTemplatesGrid: function (data) {
-    proto.Grid.destroy(templates_grid);
-    templates_grid = proto.Grid.load($('#templates_grid'), {
-      pager: 'templates_grid_pager',
-      viewrecords: true, 
-      recordtext: 'Total Templates : {2}',
-      datatype: 'jsonstring',
-      emptyrecords: 'No templates',
-      data: data,
-      colModel : [
-        {
-          index: 'id',
-          name: 'id',
-          hidden: true
-        },
-        {                
-          index : 'title', 
-          name : 'title', 
-          editible : false,
-          title: false,
-          width:90
-        },
-        {                
-          index : 'description', 
-          name : 'description', 
-          editible : false,
-          title: false
-        }, 
-        {
-          index : 'actions', 
-          name : 'actions', 
-          editable : false,
-          title: false,
-          width: 40
-        }
-      ],
-      colNames : $fw.client.lang.getLangArray('template_apps_grid_columns')
-    });
   }
 };

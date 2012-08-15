@@ -5,7 +5,7 @@ Apps.Templates = Apps.Templates || {};
 Apps.Templates.Controller = Controller.extend({
 
   model: {
-    app: new model.App()
+    template: new model.Template()
   },
 
   views: {
@@ -16,21 +16,76 @@ Apps.Templates.Controller = Controller.extend({
   container: null,
 
   init: function () {
-    
+    this.initFn = _.once(this.initBindings);
+  },
+
+  initBindings: function () {
+    var self = this;
+
+    $('#template_clone_button').bind('click', function () {
+      self.doClone($fw.data.get('inst').guid);
+    });
+
+    $fw.client.lang.insertLangForContainer($('#template_message'));
   },
 
   show: function() {
     this._super();
+
+    this.initFn();
     
     var self = this;
     console.log('templates show');
 
-    this.model.app.list(function(res) {
+    this.model.template.list(function(res) {
       var data = self.addControls(res);
       self.renderAppListing(data);
     }, function() {
       // Failure
     }, true);
+  },
+  
+  doView: function (guid) {
+    console.log('template.doView');
+    $fw.data.set('template_mode', true);
+    //$fw.client.app.doShowManage(guid);
+    $fw.client.tab.apps.manageapps.show(guid);
+  },
+  
+  doClone: function (guid) {
+    console.log('template.doClone');
+    //$fw.client.app.doClone(guid);
+
+    // FIXME: implement
+  },
+  
+  
+  /*
+   * Hide any component or button that isn't relevant to templates,
+   * and unbind/block anything that can't be hidden and isn't relevant to templates
+   */
+  applyPreRestrictions: function () {
+    console.log('applying template restrictions');
+    $('.template-restriction').hide();
+  },
+  
+  applyPostRestrictions: function () {
+    // show the template app message
+    $('#template_message').show();
+  },
+  
+  /*
+   * Exact opposite of applyPreRestrictions
+   */
+  removePreRestrictions: function () {
+    console.log('removing template restrictions');
+    $('.template-restriction').show();
+  },
+  
+  removePostRestrictions: function () {
+    // hide the template app message
+    $('#template_message').hide();
+
   },
 
   renderAppListing: function(data) {
@@ -61,13 +116,11 @@ Apps.Templates.Controller = Controller.extend({
       var icon = $('<img>').attr('src', icon_path).addClass('app_icon');
       icon_cell.empty().append(icon);
 
-      //self.model.app.configForField('icon');
-
       // Bind row clicks to show Manage an app
       $('td:eq(1)', row).addClass('app_title').unbind().click(function(){
         // GUID is last, TODO: Make this better
         var guid = data[6];
-        $fw.client.tab.apps.manageapps.show(guid);
+        self.doView(guid);
       });
     }
   },
@@ -85,7 +138,6 @@ Apps.Templates.Controller = Controller.extend({
       // TODO: Move to clonable hidden_template
       controls.push('<button class="btn edit_app">Edit</button>&nbsp;');
       controls.push('<button class="btn clone_app">Clone</button>&nbsp;');
-      controls.push('<button class="btn btn-danger delete_app">Delete</button>');
       row.push(controls.join(""));
     });
     return res;
