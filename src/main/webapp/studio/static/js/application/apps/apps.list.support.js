@@ -1,42 +1,21 @@
 var Apps = Apps || {};
 
-Apps.Templates = Apps.Templates || {};
+Apps.List = Apps.List || {};
 
-Apps.Templates.Controller = Controller.extend({
+Apps.List.Support = Controller.extend({
 
-  model: {
-    app: new model.App()
-  },
+  init: function() {
 
-  views: {
-    templates_grid_wrapper: "#templates_grid_wrapper",
-    templates_grid: "#templates_grid"
-  },
-
-  container: null,
-
-  init: function () {
-    
   },
 
   show: function() {
     this._super();
-    
-    var self = this;
-    console.log('templates show');
-
-    this.model.app.list(function(res) {
-      var data = self.addControls(res);
-      self.renderAppListing(data);
-    }, function() {
-      // Failure
-    }, true);
   },
 
-  renderAppListing: function(data) {
+  renderAppListing: function(container, wrapper, data) {
     var self = this;
 
-    this.user_table = $('#templates_grid').show().dataTable({
+    this.user_table = $(container).show().dataTable({
       "bDestroy": true,
       "bAutoWidth": false,
       "sDom": "<'row-fluid'<'span12'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
@@ -48,6 +27,19 @@ Apps.Templates.Controller = Controller.extend({
         self.rowRender(nRow, aData);
       }
     });
+
+    // Inject Create button
+    var create_button = $('<button>').addClass('btn btn-primary pull-right').text('Create an App').click(function(e) {
+      e.preventDefault();
+      $fw.client.tab.apps.listapps.hideAll();
+      $fw.client.tab.apps.listapps.getController('apps.create.controller').show();
+    });
+    var import_button = $('<button>').addClass('btn pull-right import_app').text('Import an App').click(function(e) {
+      e.preventDefault();
+      $fw.client.tab.apps.listapps.hideAll();
+      $fw.client.tab.apps.listapps.getController('apps.import.controller').show();
+    });
+    $(wrapper + ' .span12:first').append(create_button).append(import_button);
   },
 
   rowRender: function(row, data) {

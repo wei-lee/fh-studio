@@ -278,7 +278,7 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
                   // Reset state back to the manage tab/build app
                   $fw.state.set('manage_apps_accordion_accordion_item_manage', 'selected', 4);
                   $fw.state.set('manage_apps_accordion_app', 'selected', 0);
-                  $fw.client.tab.apps.showManageapps(new_guid);
+                  $fw.client.tab.apps.manageapps.show(new_guid);
                 }, 250);
               });
             }
@@ -530,9 +530,9 @@ Apps.Generate.Controller = GenerateApp.Controller = Class.extend({
     $('#generate_app').hide();
   },
 
-  hideCenterViews: function() {
-    $('#list_apps_grid_wrapper > *').hide();
-  },
+  // hideCenterViews: function() {
+  //   $('#list_apps_grid_wrapper > *').hide();
+  // },
 
   resizeLayouts: function() {
     try {
@@ -545,7 +545,7 @@ Apps.Generate.Controller = GenerateApp.Controller = Class.extend({
   },
 
   show: function() {
-    this.hideCenterViews();
+    //this.hideCenterViews();
     // show new grid
     $('#generate_app').show();
 

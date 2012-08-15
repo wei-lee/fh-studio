@@ -47,7 +47,9 @@ js/application/admin/admin.devices.controller.js
 js/application/admin/admin.authpolicy.controller.js
 js/application/admin/admin.stores.controller.js
 js/application/apps/apps.controller.js
+js/application/apps/apps.list.support.js
 js/application/apps/apps.myapps.controller.js
+js/application/apps/apps.allapps.controller.js
 js/application/apps/apps.templates.controller.js
 js/application/apps/apps.create.controller.js
 js/application/apps/apps.import.controller.js

@@ -44,30 +44,6 @@ Apps.Editor.Controller = Apps.Controller.extend({
         scmTriggerButtonEditor.removeAttr('disabled').text(scmTriggerButtonText).removeClass('ui-state-hover');
       });
     });
-
-    console.log('setupEditorFileset');
-
-    this.initToolbar();
-    this.tabs_container = $("#editor_titles");
-    this.container = this.views.editor_files_container;
-    var container = $(this.container);
-    this.text_content_container = container.find(".text_content").hide();
-    this.img_content_container = container.find(".img_content").hide();
-    var editorProp = $fw.getClientProp('editor');
-    // always use codemirror for unsupported browsers of ace editor
-    if ('undefined' === typeof Worker || 'function' !== typeof Worker) {
-      editorProp = 'Codemirror';
-    }
-    this.editor_impl = new proto[editorProp + 'EditorImpl']({
-      container: this.text_content_container,
-      editor_manager: this
-    });
-    this.initSearchDialog();
-
-    var git_mode = $fw.data.get('git_mode');
-    if (null == self.treeviewManager && !git_mode) {
-      self.server.loadAppFiles($fw.data.get('app').guid);
-    }
   },
 
   reset: function() {
@@ -95,7 +71,30 @@ Apps.Editor.Controller = Apps.Controller.extend({
     this.hide();
     this.initFn();
 
+
+    console.log('setupEditorFileset');
+
+    this.initToolbar();
+    this.tabs_container = $("#editor_titles");
     this.container = this.views.editor_files_container;
+    var container = $(this.container);
+    this.text_content_container = container.find(".text_content").hide();
+    this.img_content_container = container.find(".img_content").hide();
+    var editorProp = $fw.getClientProp('editor');
+    // always use codemirror for unsupported browsers of ace editor
+    if ('undefined' === typeof Worker || 'function' !== typeof Worker) {
+      editorProp = 'Codemirror';
+    }
+    this.editor_impl = new proto[editorProp + 'EditorImpl']({
+      container: this.text_content_container,
+      editor_manager: this
+    });
+    this.initSearchDialog();
+
+    var git_mode = $fw.data.get('git_mode');
+    if (null == self.treeviewManager && !git_mode) {
+      this.server.loadAppFiles($fw.data.get('app').guid);
+    }
 
     $(this.container).show();
   },

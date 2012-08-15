@@ -6,7 +6,8 @@ Apps.Tab.Manager = Tab.Manager.extend({
   init: function() {
     this.listapps = new ListappsTabManager();
     this.manageapps = new ManageappsTabManager();
-    this.initFn = _.once(this.showListapps);
+    // FIXME state restoration
+    this.initFn = _.once(this.listapps.show); // show list apps first
   },
 
   show: function() {
@@ -16,35 +17,27 @@ Apps.Tab.Manager = Tab.Manager.extend({
     // - manage.apps.tab.manager
     // TODO: state restoration
     this.initFn();
-  },
-
-  showListapps: function() {
-    console.log('showListapps');
-    $('#manage_apps_layout').hide();
-    $('#list_apps_layout').show();
-    this.listapps.show();
-  },
-
-  showManageapps: function(guid, success, fail, is_name, intermediate) {
-    $('#list_apps_layout').hide();
-    $('#manage_apps_layout').show();
-    this.manageapps.show(guid, success, fail, is_name, intermediate);
   }
+
 });
 
 ListappsTabManager = Tab.Manager.extend({
   id: 'list_apps_layout',
   breadcrumbId: 'apps_breadcrumb',
+  visible: false,
 
   init: function() {
     this._super();
+    this.initFn();
   },
 
   show: function() {
     this._super();
 
-    // also setup apps create controller as this isn't defined as a 'data-controller' in html
-    this.controllers['apps.create.controller'] = new Apps.Create.Controller();
+    // also setup apps create/generate/import controller as this isn't defined as a 'data-controller' in html
+    this.getController('apps.create.controller').hide();
+    this.getController('apps.import.controller').hide();
+    this.getController('apps.generate.controller').hide();
 
     $('#manage_apps_layout').hide();
     $('#list_apps_layout').show();
@@ -63,8 +56,9 @@ ManageappsTabManager = Tab.Manager.extend({
     this._super();
 
     $('#list_apps_layout').hide();
-    $('#manage_apps_layout').show();
 
+    this.hideAll();
+    $fw.client.preview.hide();
     this.doManage(guid, success, fail, is_name, intermediate);
   },
 
@@ -92,7 +86,7 @@ ManageappsTabManager = Tab.Manager.extend({
       "text": prefixCrumb.text().trim()
     }).on('click', function(e) {
       e.preventDefault();
-      $fw.client.tab.apps.showListapps();
+      $fw.client.tab.apps.listapps.show();
     })).append($('<span>', {
       "class": "divider",
       "text": "/"
@@ -132,13 +126,15 @@ ManageappsTabManager = Tab.Manager.extend({
     var self = this;
 
     console.log('app.doManage');
-    if (!$('#apps_tab').parent().hasClass('ui-state-active')) {
-      //this function is called from home page, need to set state information to show the manage apps view
-      this.setStateForAppView(guid);
+    // FIXME: handle going in here from recent apps list
 
-      // click apps tab to trigger state restoration
-      $('#apps_tab').click();
-    }
+    // if (!$('#apps_tab').parent().hasClass('ui-state-active')) {
+    //   //this function is called from home page, need to set state information to show the manage apps view
+    //   this.setStateForAppView(guid);
+
+    //   // click apps tab to trigger state restoration
+    //   $('#apps_tab').click();
+    // }
     var is_app_name = false;
     if (typeof is_name !== "undefined" && is_name) {
       is_app_name = true;
@@ -149,23 +145,31 @@ ManageappsTabManager = Tab.Manager.extend({
         var inst = result.inst;
 
         self.setSelectedApp(result.app, inst);
+
+        // show manage apps layout
+        $('#manage_apps_layout').show();
+        
         //self.updateDetails();
         // Reload preview
-        //$fw.client.preview.show();
+        $fw.client.preview.show();
+        // reclick the currenlty active controller item, if any
+        $('.manageapps_nav_list li.active a').trigger('click');
+
         var postFn = function() {
             var template_mode = $fw.data.get('template_mode');
             if (template_mode) {
+              // FIXME: breadcrumb when in template app should be 'Templates'
               // make sure correct button is active on list apps layout
-              $('#list_apps_buttons li').removeClass('ui-state-active');
-              $('#list_apps_button_templates').addClass('ui-state-active');
+              // $('#list_apps_buttons li').removeClass('ui-state-active');
+              // $('#list_apps_button_templates').addClass('ui-state-active');
               // update state information
               $fw.state.set('apps_tab_options', 'selected', 'template');
               $fw.state.set('template', 'id', inst.guid);
               $fw.client.template.applyPreRestrictions();
             } else {
               // make sure correct button is active on list apps layout
-              $('#list_apps_buttons li').removeClass('ui-state-active');
-              $('#list_apps_button_my_apps').addClass('ui-state-active');
+              // $('#list_apps_buttons li').removeClass('ui-state-active');
+              // $('#list_apps_button_my_apps').addClass('ui-state-active');
               // update state information
               $fw.state.set('apps_tab_options', 'selected', 'app');
               $fw.state.set('app', 'id', inst.guid);
@@ -203,7 +207,6 @@ ManageappsTabManager = Tab.Manager.extend({
             }
 
             // TODO: what was this doing before?? now it's an infinite loop
-            //$fw.client.tab.apps.showManageapps(guid, success);
             if (template_mode) {
               $fw.client.template.applyPostRestrictions();
             } else {

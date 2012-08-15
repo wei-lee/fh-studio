@@ -532,7 +532,6 @@ button.ui-state-default
   margin:0;
   padding:0;
   border-width:0;
-  padding: 0 20px 0 20px;
 }
 
 .container-header-content {
@@ -664,7 +663,9 @@ label.error
   color:#666666;
   text-align:center;
 }
-
+#main_tabs_buttons {
+  padding:0;
+}
 #main_tabs_buttons a 
 {
   width:70px;
@@ -776,7 +777,6 @@ label.error
 #header_user_info {
   height:25px;
   background: transparent url(../img/top_bar.png) repeat-x 0 0;
-  margin: 0 20px 0 20px;
 }
 
 #header_user_info .ui-state-default
@@ -881,7 +881,6 @@ label.error
 
 #main_tabs_buttons.ui-widget-header {
   border: none;
-  padding: 10px 0 0 20px;
 }
 
 /* App tools */
@@ -2708,10 +2707,6 @@ line-height:0.5em;
 }
 
 /* Key Management styling */
-#account_center {
-  overflow: scroll;
-}
-
 .fh-box-outer {
   background: #efefef;
   padding: 3px;
@@ -3041,7 +3036,7 @@ table.dataTable th:active {
 }
 
 /* Fixing long descriptions */
-#my_apps_grid, #templates_grid {
+.apps_grid {
   table-layout: fixed;
 }
 
@@ -3104,10 +3099,6 @@ table.dataTable th:active {
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3380bf', endColorstr='#2e72ab',GradientType=0 ); /* IE6-9 */
 }
 
-#home_content, #apps_center {
-  padding: 0 20px 0 20px;
-}
-
 #list_apps_center {
   background: #fff;
 }
@@ -3118,7 +3109,7 @@ table.dataTable th:active {
 }
 
 
-.import_users {
+.import_users, .import_app {
   margin-right: 10px;
 }
 
@@ -3290,25 +3281,27 @@ table.dataTable th:active {
   margin-left: 5px;
 }
 
-.app_icon_cell, #my_apps_grid.table-bordered thead:first-child tr:first-child th:first-child {
+.app_icon_cell, .apps_grid.table-bordered thead:first-child tr:first-child th:first-child {
   width: 16px !important;
 }
 
-#my_apps_grid .app_title {
+.apps_grid .app_title {
   cursor: pointer;
 }
 
 /* Fix text overflow in App Listing */
-#my_apps_grid td {
+.apps_grid td {
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 /* Awesome nth item selector that works cross platform (including IE!)
   http://reference.sitepoint.com/css/adjacentsiblingselector
-  Hides App ID column (:nth(6))
+  Hides Email & App ID column (:nth(3)) (:nth(6))
 */
-#my_apps_grid td:first-child + td + td + td + td + td + td, 
-#my_apps_grid th:first-child + th + th + th + th + th + th {
+#myapps_grid td:first-child + td + td + td + td + td + td, #myapps_grid td:first-child + td + td + td,
+#allapps_grid td:first-child + td + td + td + td + td + td, 
+#myapps_grid th:first-child + th + th + th + th + th + th, #myapps_grid th:first-child + th + th + th,
+#allapps_grid th:first-child + th + th + th + th + th + th {
   display: none;
 }​

@@ -42,9 +42,17 @@ model.App = model.Model.extend({
     this._super();
   },
 
-  list: function(success, fail, post_process) {
+  listAll: function (success, fail, post_process) {
+    return this.list(success, fail, post_process, true);
+  },
+
+  list: function(success, fail, post_process, all) {
     var url = '',
       params = {};
+
+    if (all == null || all === false) {
+      params.myapps = true;
+    }
 
     url = Constants.LIST_APPS_URL;
 

@@ -15,7 +15,6 @@ Apps.Configuration.Controller = Apps.Controller.extend({
     configuration_ipad_container: "#configuration_ipad_container",
     configuration_ios_container: "#configuration_ios_container",
     configuration_android_container: "#configuration_android_container",
-    configuration_facebook_container: "#configuration_facebook_container",
     configuration_blackberry_container: "#configuration_blackberry_container",
     configuration_windowsphone7_container: "#configuration_windowsphone7_container",
     configuration_nokiawrt_container: "#configuration_nokiawrt_container"
