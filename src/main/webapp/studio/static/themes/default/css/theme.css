@@ -2277,9 +2277,6 @@ button.container-button
   background-position: 0 0 !important;
   color:#4D4D4D;
 }
-#manage_apps_content .ui-button .ui-button-text{
- line-height:1em !important;
-}
 .ui-button-text-only .ui-button-text
 {
   padding:0;

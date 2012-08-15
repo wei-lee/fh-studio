@@ -1,0 +1,37 @@
+<div id="list_apps_layout" class="container-fluid">
+
+  <div class="row-fluid">
+    <ul class="nav nav-list span2 well listapps_nav_list">
+      <li>
+        <a href="#" data-controller="apps.myapps.controller">
+          <i class="icon-user"></i>
+          My Apps
+        </a>
+      </li>
+      <li>
+        <a href="#" data-controller="apps.templates.controller">
+          <i class="icon-group"></i>
+          All Apps
+        </a>
+      </li>
+      <li>
+        <a href="#" data-controller="apps.templates.controller">
+          <i class="icon-globe"></i>
+          Template Apps
+        </a>
+      </li>
+    </ul>
+
+    <div class="span10">
+      <div id="list_apps_grid_wrapper" class="ui-layout-content">
+        <table id="my_apps_grid" cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered"></table>
+        <div id="my_apps_grid_pager"></div>
+        <table id="templates_grid"></table>
+        <div id="templates_grid_pager"></div>
+        <%@ include file="./generate_app.html"%>
+      </div>
+    </div>
+
+  </div>
+
+</div>

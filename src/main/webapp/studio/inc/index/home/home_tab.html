@@ -1,0 +1,53 @@
+<div id="tabs-4">
+  <div id="home_layout" class="inner-layout">
+    <!-- home north -->
+    <div id="home_north" class="ui-layout-north">
+      <div class="container-header">
+        <div class="container-header-content">
+          <h1 class="container-title"></h1>
+        </div>
+      </div>
+    </div>
+    <!-- end home north -->
+    
+    <!-- home west -->
+    <div id="home_west" class="ui-layout-west">
+      <div id="home_accordion" class="">
+        <h3 id="accordion_item_snippets" class="ui-accordion-header-first"><a>Home</a></h3>
+        <div>
+          <ul class="ui-menu">
+
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- end home west -->
+    
+    <!-- home center -->
+    <div id="home_center" class="ui-layout-center">
+      <div id="home_content" class="ui-layout-content ui-widget ui-widget-content">
+        <div id="home_content_top_left" class="section-container-dashboard section-container-dashboard-top section-container-dashboard-topleft section-container-dashboard-left">
+        <%@ include file="./home_content_bottom_left.html" %>
+        </div>
+        <div id="home_content_top_right" class="section-container-dashboard section-container-dashboard-top section-container-dashboard-topright section-container-dashboard-right">
+         <%@ include file="./home_content_bottom_right.html" %>
+        </div>
+        <div id="home_content_bottom_left" class="section-container-dashboard section-container-dashboard-bottom section-container-dashboard-bottomleft section-container-dashboard-left">                     
+        <%@ include file="./home_content_top_left.html" %>
+        </div>
+        <div id="home_content_bottom_right" class="section-container-dashboard section-container-dashboard-bottom section-container-dashboard-bottomright section-container-dashboard-right">       
+        <%@ include file="./home_content_top_right.html" %>
+        </div>
+      </div>
+    </div>
+    <!-- end home center -->
+    
+    <!-- home east -->
+    <div id="home_east" class="ui-layout-east"></div>
+    <!-- end home east -->
+    
+    <!-- home south -->
+    <div id="home_south" class="ui-layout-south"></div>
+    <!-- end home  south -->
+  </div>
+</div>

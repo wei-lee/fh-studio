@@ -1,0 +1,85 @@
+<div id="tabs-5">  
+  <div id="reporting_layout" class="inner-layout">
+    <!-- reporting_layout north -->
+    <div id="reporting_north" class="ui-layout-north">
+      <div class="container-header">
+        <div class="container-header-content">
+          <h1 class="container-title"></h1>
+        </div>
+      </div>
+    </div>
+    <!-- end reporting_layout north -->
+    <!-- reporting_layout west -->
+    <div id="reporting_west" class="ui-layout-west">
+      
+      <div id="reporting_accordion" class="">
+        <!--h3 id="accordion_item_template"><a>template</a></h3>
+        <div>
+          <ul class="ui-menu">
+            <li id="template_template" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>template</a></li>
+          </ul>
+        </div -->
+        <h3 id="accordion_item_flurry"><a>Reporting</a></h3>
+        <div>
+          <ul class="ui-menu">
+            <li id="reporting_flurry" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>Flurry</a></li>
+            <li id="reporting_mixpanel" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>Mixpanel</a></li>
+            <li id="reporting_google" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>Google Analytics</a></li>
+          </ul>
+        </div>
+        
+        <h3 id="accordion_item_reports"><a>Reports</a></h3>
+        <div>
+          <ul class="ui-menu">
+            <li id="reporting_activeinstalls" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>Active Installs</a></li>
+            <li id="reporting_geoview" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>Geo View</a></li>
+            <li id="reporting_devices" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>Devices</a></li>
+            <li id="reporting_carriers" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>Carriers</a></li>
+            <li id="reporting_events" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>Events</a></li>
+            <li id="reporting_userpaths" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>User Paths</a></li>
+            <li id="reporting_topusers" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>Top Users</a></li>
+          </ul>
+        </div>
+        
+        <h3 id="accordion_item_metrics"><a>Reports</a></h3>
+        <div>
+          <ul class="ui-menu">
+            <li id="reporting_installsdate" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>App Installs by Date</a></li>
+            <li id="reporting_installsdest" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>App Installs by Destination</a></li>
+            <li id="reporting_installsloc" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>App Installs by Location</a></li>
+            <li id="reporting_startupsdate" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>App Startups by Date</a></li>
+            <li id="reporting_startupsdest" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>App Startups by Destination</a></li>
+            <li id="reporting_startupsloc" class="fh_breadcrumb ui-widget ui-widget-header ui-menu-item ui-state-default"><a>App Startups by Location</a></li>
+          </ul>
+        </div>
+        
+      </div>
+      
+    </div>
+    <!-- end reporting_layout west -->
+    <!-- reporting_layout center -->
+    <div id="reporting_center" class="ui-layout-center">
+
+      <div id="reporting_header">
+        <!-- Generic header for standard sections with plain text header -->
+        <div id="reporting_header_text" class="reporting-header section-header"></div>
+      </div>    
+      
+      <!-- Hide this initially and let javascript show it when its ready -->
+      <div id="reporting_content" class="ui-layout-content ui-widget ui-widget-content" style="display:none;">
+        
+        <%@ include file="./metrics_reports_container.html" %>
+                
+        <%@ include file="./sample_reports_containers.html" %>
+      </div>
+      
+    </div>
+    <!-- end reporting_layout center -->
+    <!-- reporting_layout east -->
+    <div id="reporting_east" class="ui-layout-east"></div>
+    <!-- end reporting_layout east -->
+    <!-- reporting_layout south -->
+    <div id="reporting_south" class="ui-layout-south"></div>
+    <!-- end reporting_layout south -->
+  </div>
+</div>
