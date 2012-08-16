@@ -3,7 +3,6 @@ common/js/ui/thirdparty/underscore.js
 common/js/ui/thirdparty/jquery/jquery.js
 common/js/ui/thirdparty/jquery/plugins/jquery.throttle.js
 common/js/ui/thirdparty/jquery/plugins/jquery.transform.js
-common/js/ui/thirdparty/jquery/plugins/jquery.qtip.js
 common/js/ui/thirdparty/jquery/plugins/jquery.validate.js
 common/js/ui/thirdparty-mods/jquery/plugins/jquery.validate.fh_extensions.js
 common/js/ui/thirdparty/jquery/plugins/jquery.cookie.js
