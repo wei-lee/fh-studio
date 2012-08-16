@@ -3,17 +3,6 @@ var IDEManager = Class.extend({
   init: function () {
     this.accordion = new application.AccordionManager();
     this.preview = new application.PreviewManager();
-    this.config = {
-      studio: new application.StudioConfigManager(),
-      embed: new application.EmbedConfigManager(),
-      iphone: new application.IPhoneConfigManager(),
-      android: new application.AndroidConfigManager(),
-      ipad: new application.IPadConfigManager(),
-      ios: new application.IosConfigManager(),
-      blackberry: new application.BlackberryConfigManager(),
-      windowsphone7: new application.Windowsphone7ConfigManager(),
-      nokiawrt: new application.NokiawrtConfigManager()
-    };
     this.report = new application.ReportManager();
     this.profile = new application.ProfileManager();
     this.keys = new application.controller.Keys();
