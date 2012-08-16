@@ -2,37 +2,46 @@ var Apps = Apps || {};
 
 Apps.Startups = Apps.Startups || {};
 
-Apps.Startups.Controller = Apps.Controller.extend({
+Apps.Startups.Controller = Apps.Reports.Support.extend({
 
   model: {
     //device: new model.Device()
   },
 
   views: {
-    report_startupsdest_container: "#report_startupsdest_container",
-    report_startupsdate_container: "#report_startupsdate_container",
-    report_startupsloc_container: "#report_startupsloc_container"
-    // device_list: "#admin_devices_list",
-    // device_update: "#admin_devices_update"
+    reportingstartups_container: "#reportingstartups_container"
   },
 
   container: null,
 
   init: function () {
-    
+    this._super();
   },
 
-  reset: function () {
-    // FIXME: is this necessary? carry over from $fw.app.resetApp()
-    $(".appreport-results").empty();
+  initBindings: function () {
+    this._super(this.views.reportingstartups_container);
   },
 
   show: function(){
-    this._super();
-    // TODO
-    this.hide();
-    // this.container = this.views.report_installsdest_container;
-    // $(this.container).show();
+    this._super(this.views.reportingstartups_container);
+  },
+
+  byDate: function () {
+    var appid = $fw.data.get('app').guid;
+    var container = $('#startups_by_date');
+    this.initMetric('appstartupsdest', 'line', container, Constants.GET_SINGLE_APP_METRICS_URL, appid);
+  },
+
+  byPlatform: function () {
+    var appid = $fw.data.get('app').guid;
+    var container = $('#startups_by_platform');
+    this.initMetric('appstartupsdest', 'pie', container, Constants.GET_SINGLE_APP_METRICS_URL, appid);
+  },
+
+  byLocation: function () {
+    var appid = $fw.data.get('app').guid;
+    var container = $('#startups_by_location');
+    this.initMetric('appstartupsgeo', 'geo', container, Constants.GET_SINGLE_APP_METRICS_URL, appid);
   }
 
 });

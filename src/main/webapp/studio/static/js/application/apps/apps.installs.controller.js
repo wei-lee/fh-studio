@@ -2,41 +2,46 @@ var Apps = Apps || {};
 
 Apps.Installs = Apps.Installs || {};
 
-Apps.Installs.Controller = Apps.Controller.extend({
+Apps.Installs.Controller = Apps.Reports.Support.extend({
 
   model: {
     //device: new model.Device()
   },
 
   views: {
-    report_installsdest_container: "#report_installsdest_container",
-    report_installsdate_container: "#report_installsdate_container",
-    report_installsloc_container: "#report_installsloc_container"
-    // device_list: "#admin_devices_list",
-    // device_update: "#admin_devices_update"
+    reportinginstalls_container: "#reportinginstalls_container"
   },
 
   container: null,
 
   init: function () {
-    
+    this._super();
   },
 
-  reset: function () {
-    // FIXME: is this necessary? carry over from $fw.app.resetApp()
-    $(".appreport-results").empty();
+  initBindings: function () {
+    this._super(this.views.reportinginstalls_container);
   },
 
   show: function(){
-    this._super();
+    this._super(this.views.reportinginstalls_container);
+  },
 
-    // FIXME: is this necessary? carry over from $fw.app.resetApp()
-    $(".appreport-results").empty();
-    
-    this.hide();
+  byDate: function () {
+    var appid = $fw.data.get('app').guid;
+    var container = $('#installs_by_date');
+    this.initMetric('appinstallsdest', 'line', container, Constants.GET_SINGLE_APP_METRICS_URL, appid);
+  },
 
-    // this.container = this.views.report_installsdest_container;
-    // $(this.container).show();
+  byPlatform: function () {
+    var appid = $fw.data.get('app').guid;
+    var container = $('#installs_by_platform');
+    this.initMetric('appinstallsdest', 'pie', container, Constants.GET_SINGLE_APP_METRICS_URL, appid);
+  },
+
+  byLocation: function () {
+    var appid = $fw.data.get('app').guid;
+    var container = $('#installs_by_location');
+    this.initMetric('appinstallsgeo', 'geo', container, Constants.GET_SINGLE_APP_METRICS_URL, appid);
   }
 
 });

@@ -14,7 +14,7 @@ $(document).ready(function () {
   });
   console.log('init and set IDEManager as client of FrameworkManager');
   // $fw.client becomes available as well as $fw.app
+  $fw.clientProps['reporting-sampledata-enabled'] = 'true';
   $fw.setClient(new IDEManager());
   $fw.initClient();
-  
 });
