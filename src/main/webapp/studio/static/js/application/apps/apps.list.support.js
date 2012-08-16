@@ -31,12 +31,10 @@ Apps.List.Support = Controller.extend({
     // Inject Create button
     var create_button = $('<button>').addClass('btn btn-primary pull-right').text('Create an App').click(function(e) {
       e.preventDefault();
-      $fw.client.tab.apps.listapps.hideAll();
       $fw.client.tab.apps.listapps.getController('apps.create.controller').show();
     });
     var import_button = $('<button>').addClass('btn pull-right import_app').text('Import an App').click(function(e) {
       e.preventDefault();
-      $fw.client.tab.apps.listapps.hideAll();
       $fw.client.tab.apps.listapps.getController('apps.import.controller').show();
     });
     $(wrapper + ' .span12:first').append(create_button).append(import_button);

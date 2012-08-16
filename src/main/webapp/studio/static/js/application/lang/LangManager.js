@@ -94,15 +94,20 @@ LangManager = Class.extend({
     var lang = $fw.client.lang.getLangString(el_id + '_help');
     
     if (null !== lang && lang.length > 0) {
-      el.qtip({
+      el.popover({
         content: lang,
-        position: {
-          corner: {
-            target: 'leftTop',
-            tooltip: 'rightMiddle'
-          }
-        }
+        placement: 'left',
+        delay: 100
       });
+      // el.qtip({
+      //   content: lang,
+      //   position: {
+      //     corner: {
+      //       target: 'leftTop',
+      //       tooltip: 'rightMiddle'
+      //     }
+      //   }
+      // });
     }
   },
   
@@ -119,17 +124,23 @@ LangManager = Class.extend({
     if (null !== lang) {
       var span = $('<span>', {
         'class': 'inline-help ui-icon ui-icon-info'
-      });
+        //'class': 'label label-info'
+      });//.text('i');
       el.after(span);
-      span.qtip({
+      span.popover({
         content: lang,
-        position: {
-          corner: {
-            target: 'rightMiddle',
-            tooltip: 'leftMiddle'
-          }
-        }
+        placement: 'right',
+        delay: 100
       });
+      // span.qtip({
+      //   content: lang,
+      //   position: {
+      //     corner: {
+      //       target: 'rightMiddle',
+      //       tooltip: 'leftMiddle'
+      //     }
+      //   }
+      // });
     }
   },
   

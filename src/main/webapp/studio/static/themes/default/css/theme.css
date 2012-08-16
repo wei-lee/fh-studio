@@ -459,6 +459,9 @@ textarea { resize:none; }
 {
   font-size:0.9em;
 }
+.popover-title {
+  display:none;
+}
 html {
   overflow-y:auto;
 }

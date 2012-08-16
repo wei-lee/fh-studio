@@ -127,24 +127,48 @@
         <%@ include file="./manage_publish.html"%>
         
         <%@ include file="./editor_files.html"%>
-        
-        <%@ include file="./configuration_studio.html"%>
-        
-        <%@ include file="./configuration_embed.html"%>
-        
-        <%@ include file="./configuration_iphone.html"%>
-        
-        <%@ include file="./configuration_ipad.html"%>
-        
-        <%@ include file="./configuration_ios.html"%>
-        
-        <%@ include file="./configuration_android.html"%>
-        
-        <%@ include file="./configuration_blackberry.html"%>
-        
-        <%@ include file="./configuration_windowsphone7.html"%>
-        
-        <%@ include file="./configuration_nokiawrt.html"%>
+        <div id="configuration_container" class="tabbable tabs-left">
+          <ul class="nav nav-tabs">
+            <li>
+              <a href="#configuration_studio_container" data-toggle="tab" data-controller="apps.configuration.studio.controller">Studio Preview</a>
+            </li>
+            <li>
+              <a href="#configuration_embed_container" data-toggle="tab" data-controller="apps.configuration.embed.controller">Embed</a>
+            </li>
+            <li>
+              <a href="#configuration_iphone_container" data-toggle="tab" data-controller="apps.configuration.iphone.controller">iPhone</a>
+            </li>
+            <li>
+              <a href="#configuration_ipad_container" data-toggle="tab" data-controller="apps.configuration.ipad.controller">iPad</a>
+            </li>
+            <li>
+              <a href="#configuration_ios_container" data-toggle="tab" data-controller="apps.configuration.ios.controller">iOS Universal</a>
+            </li>
+            <li>
+              <a href="#configuration_android_container" data-toggle="tab" data-controller="apps.configuration.android.controller">Android</a>
+            </li>
+            <li>
+              <a href="#configuration_blackberry_container" data-toggle="tab" data-controller="apps.configuration.blackberry.controller">Blackberry</a>
+            </li>
+            <li>
+              <a href="#configuration_windowsphone7_container" data-toggle="tab" data-controller="apps.configuration.windowsphone.controller">Windows Phone</a>
+            </li>
+            <li>
+              <a href="#configuration_nokiawrt_container" data-toggle="tab" data-controller="apps.configuration.nokiawrt.controller">Nokia Web Runtime</a>
+            </li>
+          </ul>
+          <div class="tab-content">
+            <%@ include file="./configuration_studio.html"%>            
+            <%@ include file="./configuration_embed.html"%>            
+            <%@ include file="./configuration_iphone.html"%>            
+            <%@ include file="./configuration_ipad.html"%>            
+            <%@ include file="./configuration_ios.html"%>            
+            <%@ include file="./configuration_android.html"%>            
+            <%@ include file="./configuration_blackberry.html"%>            
+            <%@ include file="./configuration_windowsphone7.html"%>            
+            <%@ include file="./configuration_nokiawrt.html"%>
+          </div>
+        </div>
         
        <% if(studio.getProps().optBoolean("enable-per-app-metrics")){ %>
         <%@ include file="./report_installsdest.html"%>

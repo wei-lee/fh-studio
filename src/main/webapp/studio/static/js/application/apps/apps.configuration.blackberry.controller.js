@@ -1,6 +1,11 @@
-application.BlackberryConfigManager = application.ConfigurationManager.extend({
+var Apps = Apps || {};
+
+Apps.Configuration = Apps.Configuration || {};
+Apps.Configuration.Blackberry = Apps.Configuration.Blackberry || {};
+
+Apps.Configuration.Blackberry.Controller = Apps.Configuration.Support.extend({
   destination: 'blackberry',
-  
+
   init: function () {
     this._super();
     this.hiddenOptions = {'auto Rotate': true, 'flurry Application Key': true, 'orientation':true, 'status':true, 'version Name':true};
@@ -16,4 +21,5 @@ application.BlackberryConfigManager = application.ConfigurationManager.extend({
     }
     return true;
   }
+
 });

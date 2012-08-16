@@ -1,6 +1,124 @@
-application.ConfigurationSupport = Class.extend({
+var Apps = Apps || {};
+
+Apps.Configuration = Apps.Configuration || {};
+
+Apps.Configuration.Support = Controller.extend({
+
+  hiddenOptions: {},
+  replaceOptions: {},
+
   init: function () {
+    this.hiddenOptions = {'status':true};
   },
+  
+  show: function () {
+    var self = this;
+    console.log('show config for ' + self.destination);
+    
+    if (!self.showInitDone) {
+      if ($.isFunction(self.showInit)) {
+        self.showInit();
+      }
+    }
+    else {
+      if ($.isFunction(self.showReset)) {
+        self.showReset();
+      }
+    }
+    
+    if ($.isFunction(self.showPost)) {
+      self.showPost();
+    }
+  },
+  
+  /*
+   * Once-off initialisation of any required components
+   */
+  showInit: function () {
+    var self = this;
+    var container = $('#configuration_' + self.destination + '_container');
+    
+    // init any buttons and callbacks
+    container.find('#config_' + self.destination + '_save_btn').bind('click', function () {
+      self.saveConfig();
+    });
+    
+    self.showInitDone = true;
+  },
+  
+  showPost: function () {
+    var self = this;
+    console.log("Get configration for : " + self.destination);
+
+    $fw.data.set("config-dest", self.destination);
+    var container = $('#configuration_' + self.destination + '_form');
+    var template = $fw.data.get("inst").guid;
+
+    console.log("container = " + '#configuration_' + self.destination + '_form');
+
+    $fw.server.post(Constants.LIST_CONFIG_URL, {
+      template: template,
+      destination: self.destination
+    }, function (res) {
+      self.constructConfigDom(res, self.destination, container, self.hiddenOptions, self.replaceOptions);
+    });
+
+  },
+
+  saveConfig: function () {
+    var self = this,
+        data, key, val,
+        template = $fw.data.get("inst").guid,
+        dest = $fw.data.get("config-dest"),
+        form = $('#configuration_' + dest + '_form'),
+        newConfig = {};
+    
+    if(typeof self.validateForm === "function"){
+      if(!self.validateForm()){
+        return;
+      }
+    }
+    // Iterate over each config option and put it in newConfig
+    form.find('.config_option').each(function (i, el) {
+      key = $(el).attr('name');
+      console.log("key:" + key);
+      val = $(el).val();
+      if ($(el).attr("type") === "checkbox") {
+        if ($(el).prop("checked")) {
+          if (key === "accessType") {
+            val = "p";
+          } else {
+            val = "true";
+          }
+        } else {
+          if (key === "accessType") {
+            val = "s";
+          } else {
+            val = "false";
+          }
+        }
+      }
+      newConfig[key] = val;
+    });
+    
+    // Construct update data object
+    data = {
+      template: template,
+      destination: dest,
+      config: newConfig
+    };
+    
+    // Call update url, passing in data
+    $fw.server.post(Constants.UPDATE_CONFIG_URL, data, function (res) {
+      if (res.status === "ok") {
+        $fw.client.dialog.info.flash($fw.client.lang.getLangString('config_saved'));
+      } else {
+        console.log('update config failed:' + res);
+        self.show();
+      }
+    });
+  },
+
   constructConfigDom: function (configs, dest, container, hiddenOptions, replaceOptions) {
     var self = this;
     container.empty();
@@ -83,7 +201,7 @@ application.ConfigurationSupport = Class.extend({
           config_val = (typeof config_val === 'boolean') ? config_val : config_val === 'true';
           input_el = $("<input type='checkbox' class='config_option' name='" + config_name + "' " + (config_val ? "checked=checked" : "") + " >");
         }
-        // allow for 'select' objects 
+        // allow for 'select' objects
         else if ('object' === typeof config_val) {
           div.addClass('fh-form-select-field');
           input_el = self.constructSelect(config_name, config_val);
@@ -133,4 +251,5 @@ application.ConfigurationSupport = Class.extend({
     HtmlUtil.constructOptions(select, config_val.options, config_val.values, config_val.selected);
     return select;
   }
+
 });
