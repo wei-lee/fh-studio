@@ -275,6 +275,7 @@ Admin.Storeitems.Controller = Controller.extend({
         replaceFileInput: false,
         formData: binary.params,
         dropZone: input,
+        timeout: 120000,
         add: function(e, data) {
           progress_area.show();
           status.text('Uploading...');
