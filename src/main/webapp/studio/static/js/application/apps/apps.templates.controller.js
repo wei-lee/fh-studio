@@ -23,7 +23,7 @@ Apps.Templates.Controller = Controller.extend({
     var self = this;
 
     $('#template_clone_button').bind('click', function () {
-      self.doClone($fw.data.get('inst').guid);
+      $fw.client.tab.apps.manageapps.getController('apps.clone.controller').show($fw.data.get('inst').guid);
     });
 
     $fw.client.lang.insertLangForContainer($('#template_message'));
@@ -51,14 +51,6 @@ Apps.Templates.Controller = Controller.extend({
     //$fw.client.app.doShowManage(guid);
     $fw.client.tab.apps.manageapps.show(guid);
   },
-  
-  doClone: function (guid) {
-    console.log('template.doClone');
-    //$fw.client.app.doClone(guid);
-
-    // FIXME: implement
-  },
-  
   
   /*
    * Hide any component or button that isn't relevant to templates,
@@ -119,7 +111,7 @@ Apps.Templates.Controller = Controller.extend({
       // Bind row clicks to show Manage an app
       $('td:eq(1)', row).addClass('app_title').unbind().click(function(){
         // GUID is last, TODO: Make this better
-        var guid = data[6];
+        var guid = data[4];
         self.doView(guid);
       });
     }

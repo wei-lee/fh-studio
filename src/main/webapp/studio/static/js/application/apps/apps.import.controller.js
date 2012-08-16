@@ -167,6 +167,7 @@ Apps.Import.Controller = Controller.extend({
     
     console.log('finished... is_app_name = ' + is_app_name + ' app_identifier = ' + app_identifier + ' > ' + finish_option);
     
+    $fw.data.set('template_mode', false);
     $fw.client.tab.apps.manageapps.show(app_identifier, callback, $.noop, is_app_name, intermediate);
   }
 

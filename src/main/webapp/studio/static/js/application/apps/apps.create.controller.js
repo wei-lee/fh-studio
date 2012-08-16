@@ -245,10 +245,10 @@ Apps.Create.Controller = Controller.extend({
     // TODO: clone steps should be brought in as well automatically rather than chaining 2 wizards
     
     create_app_wizard.find('#create_app_clone').unbind('show').bind('show', function () {
-      // close the create app dialog, then call doClone
+      // close the create app dialog, then call show on clone controller
       
       var app_id = $fw.data.get('clone_from_app');
-      self.doClone(app_id);
+      $fw.client.tab.apps.manageapps.getController('apps.clone.controller').show(app_id);
     });
 
     create_app_wizard.find('#generate_app').unbind('show').bind('show', function () {
@@ -276,6 +276,7 @@ Apps.Create.Controller = Controller.extend({
     
     console.log('finished... is_app_name = ' + is_app_name + ' app_identifier = ' + app_identifier + ' > ' + finish_option);
     
+    $fw.data.set('template_mode', false);
     $fw.client.tab.apps.manageapps.show(app_identifier, callback, $.noop, is_app_name, intermediate);
   },
 

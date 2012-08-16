@@ -34,10 +34,11 @@ ListappsTabManager = Tab.Manager.extend({
   show: function() {
     this._super();
 
-    // also setup apps create/generate/import controller as this isn't defined as a 'data-controller' in html
+    // also setup apps create/generate/import/clone controller as this isn't defined as a 'data-controller' in html
     this.getController('apps.create.controller').hide();
     this.getController('apps.import.controller').hide();
     this.getController('apps.generate.controller').hide();
+    this.getController('apps.clone.controller').hide();
 
     $('#manage_apps_layout').hide();
     $('#list_apps_layout').show();
@@ -151,8 +152,7 @@ ManageappsTabManager = Tab.Manager.extend({
         //self.updateDetails();
         // Reload preview
         $fw.client.preview.show();
-        // reclick the currenlty active controller item, if any
-        $('.manageapps_nav_list li.active a').trigger('click');
+
 
         var postFn = function() {
             var template_mode = $fw.data.get('template_mode');
@@ -174,6 +174,14 @@ ManageappsTabManager = Tab.Manager.extend({
               $fw.state.set('app', 'id', inst.guid);
               $fw.client.tab.apps.listapps.getController('apps.templates.controller').removePreRestrictions();
             }
+
+            // reclick the currenlty active controller item, if it's visible,
+            // otherwise click the first visible item
+            var itemToClick = $('.manageapps_nav_list li.active:visible a');
+            if (itemToClick.length === 0) {
+              itemToClick = $('.manageapps_nav_list li:visible a:eq(0)');
+            }
+            itemToClick.trigger('click');
 
             // Check if the current app is a scm based app, and if crud operations are allowed
             var is_scm = self.isScmApp();

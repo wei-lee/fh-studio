@@ -22,16 +22,6 @@ model.Template = model.Model.extend({
     showable: false,
     column_title: "Email"
   }, {
-    field_name: "version",
-    editable: false,
-    showable: true,
-    column_title: "Version"
-  }, {
-    field_name: "modified",
-    editable: false,
-    showable: true,
-    column_title: "Last Modified"
-  }, {
     field_name: "id",
     editable: false,
     showable: false,

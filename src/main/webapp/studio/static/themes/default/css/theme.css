@@ -1345,8 +1345,9 @@ table.jqplot-table-legend, table.jqplot-cursor-legend {
 {
   margin: 0 0 0 1em;
 }
-#create_app_from_template
-{
+#template_message {
+  margin-bottom: 10px;
+  text-align: center;
 }
 #template_info
 {

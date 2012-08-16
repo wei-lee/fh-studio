@@ -55,9 +55,9 @@ Apps.Details.Controller = Apps.Controller.extend({
     var scmTriggerButton = $('#scm_trigger_button');
     scmTriggerButton.text(scmTriggerButtonText).bind('click', function () {
       scmTriggerButton.attr('disabled', 'disabled').text(pleaseWaitText);
-      self.triggerScm(function () {
+      $fw.client.tab.apps.manageapps.triggerScm(function () {
         $fw.client.preview.show();
-        $fw.client.editor.reloadFiles();
+        $fw.client.tab.apps.manageapps.getController('apps.editor.controller').reloadFiles();
       },
       $.noop,
       function () {
@@ -172,7 +172,9 @@ Apps.Details.Controller = Apps.Controller.extend({
         callback();
       }
       else {
-        $fw.client.tab.apps.manageapps.show(result.inst.guid);
+        // FIXME: what to set/reset here
+        
+        //$fw.client.tab.apps.manageapps.show(result.inst.guid);
       }
     }, function (error) {
       $fw.client.dialog.error(error);

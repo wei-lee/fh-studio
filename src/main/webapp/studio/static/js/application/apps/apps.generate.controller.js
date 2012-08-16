@@ -278,6 +278,7 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
                   // Reset state back to the manage tab/build app
                   $fw.state.set('manage_apps_accordion_accordion_item_manage', 'selected', 4);
                   $fw.state.set('manage_apps_accordion_app', 'selected', 0);
+                  $fw.data.set('template_mode', false);
                   $fw.client.tab.apps.manageapps.show(new_guid);
                 }, 250);
               });

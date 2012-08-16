@@ -46,7 +46,7 @@ Tab.Manager = Class.extend({
     // meh, lets start with first item
     // TODO: state stuff here
     el.find('.layout-content').show();
-    navList.find('a:eq(0)').trigger('click');
+    navList.find('li:visible a:eq(0)').trigger('click');
   },
 
   getController: function (controllerName) {
