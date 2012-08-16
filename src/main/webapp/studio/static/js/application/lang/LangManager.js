@@ -123,13 +123,13 @@ LangManager = Class.extend({
       
     if (null !== lang) {
       var span = $('<span>', {
-        'class': 'inline-help ui-icon ui-icon-info'
-        //'class': 'label label-info'
-      });//.text('i');
-      el.after(span);
+        //'class': 'inline-help ui-icon ui-icon-info'
+        'class': 'label label-info'
+      }).text('i');
+      el.append('&nbsp;').append(span);
       span.popover({
         content: lang,
-        placement: 'right',
+        placement: 'bottom',
         delay: 100
       });
       // span.qtip({

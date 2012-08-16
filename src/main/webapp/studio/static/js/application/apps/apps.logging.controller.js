@@ -31,10 +31,14 @@ Apps.Logging.Controller = Apps.Controller.extend({
     $fw.client.lang.insertLangForContainer(container);
     
     // init any buttons and callbacks
-    container.find('#debug_logging_refresh_button').bind('click', function () {
+    container.find('#debug_logging_refresh_button').bind('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
       self.refreshLog();
     });
-    container.find('#debug_logging_clear_button').bind('click', function () {
+    container.find('#debug_logging_clear_button').bind('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
       self.clearLog();
     });
   },

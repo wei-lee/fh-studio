@@ -149,7 +149,10 @@ ManageappsTabManager = Tab.Manager.extend({
         // show manage apps layout
         $('#manage_apps_layout').show();
         
-        //self.updateDetails();
+        // necessary to update the details section with this apps details to ensure any 'udpate' calls outside of the
+        // details screen work e.g. push notifications save, preview device save
+        self.getController('apps.details.controller').updateDetails();
+
         // Reload preview
         $fw.client.preview.show();
 
@@ -277,10 +280,12 @@ ManageappsTabManager = Tab.Manager.extend({
       files_div.children().hide().end().append(temp);
     }
 
-    $('#new_app_scmurl').parent().show();
-    $('#new_app_scmkey').parent().show();
-    $('#new_app_scmbranch').parent().show();
-    $('#postreceiveurl').parent().show();
+    $('#new_app_scmurl').closest('.control-group').show();
+    $('#new_app_scmbranch').closest('.control-group').show();
+    $('#postreceiveurl').closest('.control-group').show();
+    // always hid git private key as it's deprecated
+    $('#new_app_scmkey').closest('.control-group').hide();
+
     $('#scm_trigger_button').show();
     $('#scm_trigger_button_editor').show();
   },
@@ -290,10 +295,10 @@ ManageappsTabManager = Tab.Manager.extend({
 
     $('.editor_disabled_p').remove();
     $('#accordion_item_editor').next().children().show();
-    $('#new_app_scmkey').parent().hide();
-    $('#new_app_scmurl').parent().hide();
-    $('#new_app_scmbranch').parent().hide();
-    $('#postreceiveurl').parent().hide();
+    $('#new_app_scmkey').closest('.control-group').hide();
+    $('#new_app_scmurl').closest('.control-group').hide();
+    $('#new_app_scmbranch').closest('.control-group').hide();
+    $('#postreceiveurl').closest('.control-group').hide();
     $('#scm_trigger_button').hide();
     $('#scm_trigger_button_editor').hide();
   },
