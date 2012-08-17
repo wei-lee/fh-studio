@@ -107,13 +107,14 @@ Apps.Templates.Controller = Controller.extend({
       var icon_path = icon_cell.text().trim();
       var icon = $('<img>').attr('src', icon_path).addClass('app_icon');
       icon_cell.empty().append(icon);
-
+      var guid = data[4];
       // Bind row clicks to show Manage an app
       $('td:eq(1)', row).addClass('app_title').unbind().click(function(){
         // GUID is last, TODO: Make this better
-        var guid = data[4];
+
         self.doView(guid);
       });
+
     }
   },
 
@@ -128,11 +129,11 @@ Apps.Templates.Controller = Controller.extend({
     $.each(res.aaData, function(i, row) {
       var controls = [];
       // TODO: Move to clonable hidden_template
-      controls.push('<button class="btn edit_app">Edit</button>&nbsp;');
-      controls.push('<button class="btn clone_app">Clone</button>&nbsp;');
+      controls.push('<button class="btn edit_app" >Edit</button>&nbsp;');
       row.push(controls.join(""));
     });
+
     return res;
   }
 
-});
+ });

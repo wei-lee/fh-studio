@@ -54,9 +54,15 @@ Apps.List.Support = Controller.extend({
       //self.model.app.configForField('icon');
 
       // Bind row clicks to show Manage an app
-      $('td:eq(1)', row).addClass('app_title').unbind().click(function(){
+
+      var guid = data[6];
+      $('td:lt(6)', row).addClass('app_title').unbind().click(function(){
         // GUID is last, TODO: Make this better
-        var guid = data[6];
+
+        $fw.data.set('template_mode', false);
+        $fw.client.tab.apps.manageapps.show(guid);
+      });
+      $('.edit_app', row).unbind().click(function(){
         $fw.data.set('template_mode', false);
         $fw.client.tab.apps.manageapps.show(guid);
       });
@@ -64,6 +70,7 @@ Apps.List.Support = Controller.extend({
   },
 
   addControls: function(res) {
+
     // Add control column
     res.aoColumns.push({
       sTitle: "Controls",
@@ -73,11 +80,14 @@ Apps.List.Support = Controller.extend({
 
     $.each(res.aaData, function(i, row) {
       var controls = [];
+      var guid = row[6];
       // TODO: Move to clonable hidden_template
-      controls.push('<button class="btn edit_app">Edit</button>&nbsp;');
-      controls.push('<button class="btn clone_app">Clone</button>&nbsp;');
-      controls.push('<button class="btn btn-danger delete_app">Delete</button>');
+      var button = '<button class="btn edit_app">Edit</button>&nbsp;';
+      controls.push(button);
+
+
       row.push(controls.join(""));
+
     });
     return res;
   }
