@@ -3047,7 +3047,7 @@ table.dataTable th:active {
   cursor: text;
 }
 
-.manageapps_nav_list, #app_content, #app_preview {
+.row-fluid .manageapps_nav_list[class*="span"], #app_content, #app_preview {
   min-height: 625px;
 }
 

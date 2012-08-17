@@ -8,6 +8,13 @@ Apps.Tab.Manager = Tab.Manager.extend({
     this.manageapps = new ManageappsTabManager();
     // FIXME state restoration
     this.initFn = _.once(this.listapps.show); // show list apps first
+
+    var nodejs_domain = $fw.getClientProp('nodejsEnabled') == "true";
+    if (nodejs_domain) {
+      this.enableNodejsDomain();
+    } else {
+      this.enableRhinoDomain();
+    }
   },
 
   show: function() {
@@ -17,8 +24,23 @@ Apps.Tab.Manager = Tab.Manager.extend({
     // - manage.apps.tab.manager
     // TODO: state restoration
     this.initFn();
-  }
+  },
 
+  enableRhinoDomain: function () {
+    // disable nodejs stuff and enable rhino stuff at 'domain' level i.e. some apps be still be nodejs enabled inside a rhino domain
+
+    // remove generate app from create app wizard
+    $('#create_app_generator_container').hide().remove();
+  },
+
+  enableNodejsDomain: function () {
+    // disable rhino stuff and enable nodejs stuff at 'domain' level i.e. some apps be still be rhino enabled inside a nodejs domain
+    var app_generation_enabled = $fw.getClientProp('app-generation-enabled') == "true";
+    if (!app_generation_enabled) {
+      // app generation disabled, remove generate app from create app wizard
+      $('#create_app_generator_container').hide().remove();
+    }
+  }
 });
 
 ListappsTabManager = Tab.Manager.extend({
@@ -28,7 +50,7 @@ ListappsTabManager = Tab.Manager.extend({
 
   init: function() {
     this._super();
-    this.initFn();
+    this.initFn(); // ??? TODO: why is this called here??? should be in show??, but breaks if it's moved there. hmmm
   },
 
   show: function() {
@@ -201,6 +223,7 @@ ManageappsTabManager = Tab.Manager.extend({
             // Check if the current app is a Node.js one
             if (self.isNodeJsApp()) {
               console.log('Node.js based app, applying changes');
+              self.enableNodejsAppMode();
 
               // Show Node cloud logo
               $('#cloud_logo').removeClass().addClass('node').unbind().bind('click', function() {
@@ -208,7 +231,7 @@ ManageappsTabManager = Tab.Manager.extend({
               });
             } else {
               console.log('Rhino based app, applying changes');
-              self.disableNodeJsApp();
+              self.enableRhinoAppMode();
 
               // Show Rhino cloud logo
               $('#cloud_logo').removeClass().addClass('rhino').unbind().bind('click', function() {
@@ -216,7 +239,6 @@ ManageappsTabManager = Tab.Manager.extend({
               });
             }
 
-            // TODO: what was this doing before?? now it's an infinite loop
             if (template_mode) {
               $fw.client.tab.apps.listapps.getController('apps.templates.controller').applyPostRestrictions();
             } else {
@@ -314,14 +336,22 @@ ManageappsTabManager = Tab.Manager.extend({
     return isNodeJs;
   },
 
-  disableNodeJsApp: function() {
-    // FIXME: Fix these ID's
-    $('#deploying').hide();
-    $('#status').hide();
+  enableRhinoAppMode: function() {
+    $('.nodejs_mode').hide(); // hide nodejs only stuff
+    $('.rhino_mode').show(); // show rhino only stuff
 
     // Change some "next" steps in wizards
     $('input[name=app_publish_ipad_provisioning_radio]:first').attr('next', 'app_publish_ipad_versions');
     $('input[name=app_publish_iphone_provisioning_radio]:first').attr('next', 'app_publish_iphone_versions');
+  },
+
+  enableNodejsAppMode: function() {
+    $('.rhino_mode').hide(); // hide rhino only stuff
+    $('.nodejs_mode').show(); // show nodejs only stuff
+
+    // Change some "next" steps in wizards
+    $('input[name=app_publish_ipad_provisioning_radio]:first').attr('next', 'app_publish_ipad_deploying_env');
+    $('input[name=app_publish_iphone_provisioning_radio]:first').attr('next', 'app_publish_iphone_deploying_env');
   },
 
   /*
