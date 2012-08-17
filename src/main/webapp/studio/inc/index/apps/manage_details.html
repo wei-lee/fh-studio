@@ -1,35 +1,56 @@
 <div id="manage_details_container">
-	<div id="manage_details_body">
-	  <form id="manage_update_app_details">
-	    <%@ include file="./basic_app_details.html"%>
-      <div class="fh-form-field fh-form-text-field ui-helper-reset ui-helper-clearfix">
-        <label id="new_app_id_label" class="insert-lang insert-help-icon" for="new_app_id"></label>
-        <input id="new_app_id" name="app_id" type="text" disabled/>
-      </div>
-	    <div class="fh-form-field fh-form-text-field ui-helper-reset ui-helper-clearfix" style="display:none;">
-	      <label id="new_app_scmurl_label" class="insert-lang insert-help-icon" for="new_app_scmurl"></label>
-	      <input id="new_app_scmurl" name="scmurl" type="text">
-	    </div>
-      <div class="fh-form-field fh-form-text-field ui-helper-reset ui-helper-clearfix" style="display:none;">
-        <label id="new_app_scmbranch_label" class="insert-lang insert-help-icon" for="new_app_scmbranch"></label>
-        <input id="new_app_scmbranch" name="scmbranch" type="text">
-      </div>
-      <div class="fh-form-field fh-form-text-field ui-helper-reset ui-helper-clearfix" style="display:none;">
-        <label id="postreceiveurl_label" class="insert-lang insert-help-icon" for="postreceiveurl"></label>
-        <input id="postreceiveurl" name="postreceiveurl" type="text" readonly="true">
-      </div>
-      <% if("true".equals(studio.getProperty(studio.PROP_GITPRIVATEENABLED))){ %>
-        <div class="fh-form-field fh-form-textarea-field ui-helper-reset ui-helper-clearfix">
-          <label id="new_app_scmkey_label" class="insert-lang insert-help-icon" for="new_app_scmkey"></label>
-          <textarea id="new_app_scmkey" name="scmkey" type="text"></textarea>
+  <form id="manage_update_app_details" class="form-horizontal">
+    <fieldset>
+      <%@ include file="./basic_app_details.html"%>
+
+      <div class="control-group">
+        <label id="new_app_id_label" class="insert-lang insert-help-icon control-label" for="new_app_id"></label>
+        <div class="controls">
+          <input id="new_app_id" name="app_id" type="text" class="span12" disabled/>
         </div>
+      </div>
+
+      <div class="control-group">
+        <label id="new_app_scmurl_label" class="insert-lang insert-help-icon control-label" for="new_app_scmurl"></label>
+        <div class="controls">
+          <input id="new_app_scmurl" name="scmurl" type="text" class="span12"/>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label id="new_app_scmbranch_label" class="insert-lang insert-help-icon control-label" for="new_app_scmbranch"></label>
+        <div class="controls">
+          <input id="new_app_scmbranch" name="scmbranch" type="text" class="span12"/>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label id="postreceiveurl_label" class="insert-lang insert-help-icon control-label" for="postreceiveurl"></label>
+        <div class="controls">
+          <input id="postreceiveurl" name="postreceiveurl" type="text" class="span12" disabled/>
+        </div>
+      </div>
+
+      <% if("true".equals(studio.getProperty(studio.PROP_GITPRIVATEENABLED))){ %>
+      <div class="control-group">
+        <label id="new_app_scmkey_label" class="insert-lang insert-help-icon control-label" for="new_app_scmkey"></label>
+        <div class="controls">
+          <textarea id="new_app_scmkey" name="scmkey" type="text" class="span12"></textarea>
+        </div>
+      </div>
       <% } %>
-       <div class="fh-form-field fh-form-textarea-field ui-helper-reset ui-helper-clearfix">
-         <label id="new_app_keyspublic_label" class="insert-lang insert-help-icon" for="new_app_keyspublic"></label>
-         <textarea id="new_app_keyspublic" name="keyspublic" type="text" readonly="true"></textarea>
-       </div>
-	  </form>
-	  <button id="manage_details_update_button" class="template-restriction btn right"></button>
-	  <button id="scm_trigger_button" class="btn template-restriction left"></button>
-	</div>
+
+      <div class="control-group">
+        <label id="new_app_keyspublic_label" class="insert-lang insert-help-icon control-label" for="new_app_keyspublic"></label>
+        <div class="controls">
+          <textarea id="new_app_keyspublic" name="keyspublic" type="text" class="span12" readonly="true"></textarea>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button id="manage_details_update_button" class="template-restriction btn pull-right"></button>
+        <button id="scm_trigger_button" class="btn template-restriction pull-right"></button>
+      </div>
+    </fieldset>
+  </form>
 </div>

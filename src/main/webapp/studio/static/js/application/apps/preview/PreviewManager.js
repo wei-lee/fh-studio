@@ -96,15 +96,15 @@ application.PreviewManager = Class.extend({
       // If we're not viewing a template, save the preview device as the default
       if (!$fw.data.get('template_mode')) {
         self.device_id = $fw.data.get('preview_override');
-        // FIXME: app details may not have been shown yet, so calling doUpdate may fail due to validation on the
+        // app details may not have been shown yet, so calling doUpdate may fail due to validation on the
         // details fields. Need a better solution for saving selected preview
 
-        // $fw.client.tab.apps.manageapps.controllers['apps.details.controller'].doUpdate(function () {
-        //   // TODO: should AppManager handle this??
-        //   var target = $('#new_app_target');
-        //   target.find(':selected').removeAttr('selected');
-        //   target.find('[value="' + $fw.data.get('preview_override') + '"]').attr('selected', 'selected');
-        // });
+        $fw.client.tab.apps.manageapps.controllers['apps.details.controller'].doUpdate(function () {
+          // TODO: should AppManager handle this??
+          var target = $('#new_app_target');
+          target.find(':selected').removeAttr('selected');
+          target.find('[value="' + $fw.data.get('preview_override') + '"]').attr('selected', 'selected');
+        });
       }
 
       // reload the preview

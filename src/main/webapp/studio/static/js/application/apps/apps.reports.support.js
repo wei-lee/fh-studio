@@ -73,7 +73,9 @@ Apps.Reports.Support = Apps.Controller.extend({
         });
       }
       
-      container.find('.appreport-button').bind('click', function () {
+      container.find('.appreport-button').bind('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
         var params, app, tempFDate, tempTDate, days, dest;
 
         tempFDate = container.find('.appreportfrom-datepicker').datepicker('getDate');

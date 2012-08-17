@@ -22,7 +22,9 @@ Apps.Libraries.Controller = Apps.Controller.extend({
   initBindings: function () {
     var self = this;
     
-    $('#manage_frameworks_update_button').bind('click', function(){
+    $('#manage_frameworks_update_button').bind('click', function(e){
+      e.preventDefault();
+      e.stopPropagation();
       self.doUpdateFrameworks();
     });
   },
@@ -42,14 +44,14 @@ Apps.Libraries.Controller = Apps.Controller.extend({
     var self = this;
 
     var contentHtml = self.getAppFramworksHtml();
-    $(this.container).find('#manage_update_app_frameworks').html(contentHtml);
+    $(this.container).find('#app_libraries').html(contentHtml);
     var app = $fw.data.get('app');
     var frameworks = app.frameworks;
     if(frameworks && frameworks.length > 0){
       for(var i=0;i<frameworks.length;i++){
         var fw_key = frameworks[i];
         var dom_id = fw_key.replace(/\./g, "_") + "_check";
-        var dom = $('#manage_update_app_frameworks').find('#' + dom_id);
+        var dom = $('#app_libraries').find('#' + dom_id);
         $(dom).attr('checked', true);
       }
     }
@@ -82,7 +84,7 @@ Apps.Libraries.Controller = Apps.Controller.extend({
   },
   
   doUpdateFrameworks: function(){
-    var selected_fws = $('#manage_update_app_frameworks').find('input[type=checkbox]:checked');
+    var selected_fws = $('#app_libraries').find('input[type=checkbox]:checked');
     var fw_values = [];
     for(var i=0;i<selected_fws.length;i++){
         fw_values.push($(selected_fws[i]).val());

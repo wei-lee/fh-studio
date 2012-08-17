@@ -861,14 +861,6 @@ label.error
   background-position:0 -46px;
   color:#0078c9;
 }
-.button-container
-{
-  margin:1em 0;
-}
-.button-container-right button
-{
-  float:right;
-}
 #header_user_info .ui-button
 {
   background:none;
@@ -1199,6 +1191,13 @@ table.jqplot-table-legend, table.jqplot-cursor-legend {
   border:1px solid #dfdfdf;
 }
 /* Default form fields */
+span.label-info {
+  padding: 1px 5px
+}
+.controls textarea {
+  height: 8em;
+}
+
 .fh-form-field{
   padding:0 0 0.5em;
 }
@@ -1501,10 +1500,7 @@ table.jqplot-table-legend, table.jqplot-cursor-legend {
 /* Debugging */
 #debug_logging_text
 {
-  width:100%;
-  height: 80%;
-  margin:1em 0 0;
-  border:1px solid #ccc;
+  min-height:450px;
 }
 /* Destination Resources */
 .resource-div
@@ -2925,6 +2921,9 @@ li.active .thumbnail, div.active .thumbnail {
 }
 
 /* Bootstrap Overrides */
+#preview_toggle_open {
+  margin-left:15px;
+}
 button.btn {
   font-size: 11px;
   font-weight: bold;
@@ -3048,10 +3047,8 @@ table.dataTable th:active {
   cursor: text;
 }
 
-#manage_apps_west {
-  overflow: auto;
-  overflow-x: hidden;
-  overflow-y: auto;
+.manageapps_nav_list, #app_content, #app_preview {
+  min-height: 625px;
 }
 
 #cloud_logo {

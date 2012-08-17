@@ -193,6 +193,7 @@ proto.Wizard = {
       }
       step_wrapper.append(jq_step);
     }
+    step_wrapper.addClass('form-horizontal');
     
     return step_wrapper;
   },

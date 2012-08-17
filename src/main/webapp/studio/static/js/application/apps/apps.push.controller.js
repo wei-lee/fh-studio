@@ -24,7 +24,9 @@ Apps.Push.Controller = Apps.Controller.extend({
 
   initBindings: function () {
     var self = this;
-    $('#push_urbanairship_save_button').bind('click', function(){
+    $('#push_urbanairship_save_button').bind('click', function(e){
+      e.preventDefault();
+      e.stopPropagation();
       self.saveSettings();
     });
     $('#ua_push_enabled').bind('change', function(){
@@ -84,6 +86,7 @@ Apps.Push.Controller = Apps.Controller.extend({
     var inst = $fw.data.get('inst');
     inst.config = $.extend({}, true, inst.config, {ua_push: ua_config});
     $fw.data.set('inst', inst);
+    // FIXME: app details may not have been shown yet, causing 'title' validation error
     $fw.client.tab.apps.manageapps.controllers['apps.details.controller'].doUpdate($.noop);
   },
   

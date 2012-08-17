@@ -36,12 +36,6 @@ Apps.Configuration.Support = Controller.extend({
    */
   showInit: function () {
     var self = this;
-    var container = $('#configuration_' + self.destination + '_container');
-    
-    // init any buttons and callbacks
-    container.find('#config_' + self.destination + '_save_btn').bind('click', function () {
-      self.saveConfig();
-    });
     
     self.showInitDone = true;
   },
@@ -136,28 +130,56 @@ Apps.Configuration.Support = Controller.extend({
       }
     });
     container.find('.' + $fw.client.lang.INSERT_HELP_ICON).each($fw.client.lang.insertHelpIcon);
+
+    var template_mode = $fw.data.get('template_mode');
+    if (!template_mode) {
+      var form_actions = $('<div>', {
+        'class': 'form-actions'
+      });
+      var save_button = $('<button>', {
+        id: '#config_' + self.destination + '_save_btn',
+        'class': 'btn pull-right'
+      }).text('Save').bind('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        self.saveConfig();
+      });
+      form_actions.append(save_button);
+      container.append(form_actions);
+    }
   },
+
   getConfigDom: function (config_name, config_val, dest, doReplace) {
     if (config_name === "remote Debug") {
       if ($fw.getClientProp("enabled-remote-debug") === "false") {
         return "";
       }
     }
+    /*
+
+      <div class="control-group">
+        <label id="new_app_id_label" class="insert-lang insert-help-icon control-label" for="new_app_id"></label>
+        <div class="controls">
+          <input id="new_app_id" name="app_id" type="text" class="span12" disabled/>
+        </div>
+      </div>
+
+    */
     var self = this,
       div = $("<div>", {
-        'class': 'fh-form-field ui-helper-reset ui-helper-clearfix'
+        'class': 'control-group'
       }),
       add_tip = true,
       label, input_el;
     label = $("<label>", {
       id: 'configuration_' + config_name.replace(/\s/g, '_'),
       text: js_util.capitalise(self.labelMap(config_name)),
-      'class': 'insert-help-icon'
+      'class': 'insert-help-icon control-label'
     });
     if (!doReplace) {
       if (config_name === "accessType") {
         label.text('Public');
-        input_el = $("<input type='checkbox' class='config_option' name='" + config_name + "' " + (config_val === "p" ? "checked=checked" : "") + " >");
+        input_el = $("<input type='checkbox' class='config_option span12' name='" + config_name + "' " + (config_val === "p" ? "checked=checked" : "") + " >");
       } else {
         if (config_name === "orientation") {
           div.addClass('fh-form-select-field');
@@ -172,7 +194,7 @@ Apps.Configuration.Support = Controller.extend({
             'selected': config_val === "landscape" ? "selected" : undefined
           });
           input_el = $("<select>", {
-            'class': 'config_option',
+            'class': 'config_option span12',
             'name': config_name
           }).append(p_opt).append(l_opt);
         } else if (config_name === "activity Spinner") {
@@ -193,13 +215,13 @@ Apps.Configuration.Support = Controller.extend({
             'selected': config_val === "Center" ? "selected" : undefined
           });
           input_el = $("<select>", {
-            'class': 'config_option',
+            'class': 'config_option span12',
             'name': config_name
           }).append(n_opt).append(t_opt).append(c_opt);
         } else if (typeof config_val === 'boolean' || config_val === "true" || config_val === "false") {
           div.addClass('fh-form-checkbox-field');
           config_val = (typeof config_val === 'boolean') ? config_val : config_val === 'true';
-          input_el = $("<input type='checkbox' class='config_option' name='" + config_name + "' " + (config_val ? "checked=checked" : "") + " >");
+          input_el = $("<input type='checkbox' class='config_option span12' name='" + config_name + "' " + (config_val ? "checked=checked" : "") + " >");
         }
         // allow for 'select' objects
         else if ('object' === typeof config_val) {
@@ -208,7 +230,7 @@ Apps.Configuration.Support = Controller.extend({
         } else {
           div.addClass('fh-form-text-field');
           var processed_val = self.postProcessVal(config_name, config_val);
-          input_el = $("<input type='text' class='config_option' name='" + config_name + "' value='" + processed_val + "'>");
+          input_el = $("<input type='text' class='config_option span12' name='" + config_name + "' value='" + processed_val + "'>");
         }
       }
     } else {
@@ -220,7 +242,9 @@ Apps.Configuration.Support = Controller.extend({
       }
       input_el = $("<div>" + lang_val + "</div>");
     }
-    div.append(label).append(input_el);
+    div.append(label).append($('<div>', {
+      'class': 'controls'
+    }).append(input_el));
     return div;
   },
 
@@ -246,7 +270,8 @@ Apps.Configuration.Support = Controller.extend({
 
   constructSelect: function (config_name, config_val) {
     var select = $('<select>', {
-      name: config_name
+      name: config_name,
+      'class': 'span12'
     });
     HtmlUtil.constructOptions(select, config_val.options, config_val.values, config_val.selected);
     return select;
