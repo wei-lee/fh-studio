@@ -258,6 +258,10 @@ ManageappsTabManager = Tab.Manager.extend({
             } else {
               $fw.client.tab.apps.listapps.getController('apps.templates.controller').removePostRestrictions();
             }
+
+            if ($.isFunction(success)) {
+              success();
+            }
           };
         if ($.isFunction(intermediate)) {
           intermediate(postFn);

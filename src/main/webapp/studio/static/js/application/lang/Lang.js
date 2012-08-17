@@ -404,6 +404,7 @@ var Lang = {
   /*create_app_next_radio_edit_label_help_icon: '',*/
   create_app_next_radio_publish_label: 'Build my App',
   /*create_app_next_radio_publish_label_help_icon: ''*/
+  create_app_next_radio_quickstart_label: 'Quickstart',
   create_app_frameworks_text:'Choose libraries or frameworks for the app. If you don\'t need any of these, you can skip this step. ',
   create_app_publickeysetup_text: 'To allow access to your git repository, please authorise the public key below.',
   import_app_wizard_supertitle: 'Import An App',
