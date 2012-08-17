@@ -97,6 +97,9 @@ Apps.Details.Controller = Apps.Controller.extend({
     }
 
     detailsContainer.find('input[name=app_id]').val(inst.guid);
+    if (inst.apiKey != null) {
+      detailsContainer.find('input[name=app_apikey]').val(inst.apiKey);
+    }
         
     var preview_config = inst.config.preview || {};
     var preview_list = $('#manage_details_container #new_app_target');
