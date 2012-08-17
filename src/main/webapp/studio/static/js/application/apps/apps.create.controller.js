@@ -208,11 +208,12 @@ Apps.Create.Controller = Controller.extend({
     
     create_app_wizard.find('#create_app_from_template').unbind('show').bind('show', function () {
       // list template apps
-      var self = $(this);
-      var template_select = self.find('#template_select');
+      var thisStep = $(this);
+      var template_select = thisStep.find('#template_select');
       template_select.empty();
-      self.find('#template_preview_button').button({'icons': {'primary': 'ui-icon-gear'}});
-      $fw.client.model.Template.list(function (list) {
+      thisStep.find('#template_preview_button').button({'icons': {'primary': 'ui-icon-gear'}});
+      $fw.client.model.Template.list(function (data) {
+        var list = data.list;
         if (list.length === 0) {
           proto.Wizard.previousStep(create_app_wizard, $fw.client.lang.getLangString('no_templates_message'));
         }
@@ -227,14 +228,14 @@ Apps.Create.Controller = Controller.extend({
             template_select.append(item);
           }
           
-          self.showTemplateDetails(self, list[0]);
+          self.showTemplateDetails(thisStep, list[0]);
           template_select.unbind('change').bind('change', {templates: list}, function (event) {
             var templates = event.data.templates;
             var index = $(this).val();
             console.log("selected template index: " + index);
             var t = templates[index];
             console.log("selected template guid: " + t.id + ":: title: " + t.title + " :: desc:: " + t.description);
-            self.showTemplateDetails(self, t);
+            self.showTemplateDetails(thisStep, t);
           });
         }
       }, function (error) {
