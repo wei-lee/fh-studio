@@ -45,7 +45,7 @@ Apps.Quickstart.Controller = Apps.Controller.extend({
 
     this.initFn();
     
-    $(this.container).show();
+    $(this.container).find('li').removeClass('active').end().show();
   },
 
   initBindings: function () {
@@ -111,7 +111,7 @@ Apps.Quickstart.Client.Controller = Apps.Quickstart.Controller.extend({
       el.closest('li').addClass('active');
 
       // hide all other steps at the current step number or greater
-      $('.step_2,.step_3,.step_4,.step_5').hide().find('li.active').removeClass('active');
+      $('.step_2,.step_3,.step_4,.step_5').hide().find('li').removeClass('active');
 
       // show succeeding step/s that are configured for this item
       var nextsteps = el.data('nextsteps').split(',');
@@ -129,7 +129,7 @@ Apps.Quickstart.Client.Controller = Apps.Quickstart.Controller.extend({
       el.closest('li').addClass('active');
 
       // hide all other steps at the current step number or greater
-      $('.step_3,.step_4,.step_5').hide().find('li.active').removeClass('active');
+      $('.step_3,.step_4,.step_5').hide().find('li').removeClass('active');
 
       // show succeeding step/s that are configured for this item
       var nextsteps = el.data('nextsteps').split(',');
