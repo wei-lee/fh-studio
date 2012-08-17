@@ -390,6 +390,7 @@ var Lang = {
   // These 2 are used by import wizard
   create_app_next_radio1: 'Edit my App',
   create_app_next_radio2: 'Build my App',
+  create_app_next_radio3: 'Quickstart',
   
   create_app_type_text: 'Choose one of the options below to get started with a new App.',
   create_app_type_opt1: 'Create an App from scratch',
