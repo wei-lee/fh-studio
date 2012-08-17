@@ -2814,7 +2814,7 @@ line-height:0.5em;
 }
 
 .multistep .step_number {
-  background: #ddd;
+  background: #DFE0FA;
   position: absolute;
   top: 0;
   left: 0;
@@ -2887,6 +2887,10 @@ line-height:0.5em;
 
 #app_generators .well h4 {
   margin-top: 7px;
+}
+
+.multistep .well {
+  
 }
 
 .multistep .label_spacer {
