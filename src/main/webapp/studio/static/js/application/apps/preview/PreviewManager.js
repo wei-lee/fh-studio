@@ -209,6 +209,8 @@ application.PreviewManager = Class.extend({
       frameborder: '0',
       width: self.device.width + 'px',
       height: self.device.height + 'px'
+    }).hide().load(function () {
+      $(this).show();
     }));
 
     self.previewFixes(scale_preview);

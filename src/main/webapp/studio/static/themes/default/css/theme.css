@@ -1590,6 +1590,9 @@ span.label-info {
 #preview_frame {
   -webkit-transform:scale(1);
 }
+#preview_frame iframe{
+  background-color:#fff;
+}
 
 #preview_controls {
   margin-top: 10px;
