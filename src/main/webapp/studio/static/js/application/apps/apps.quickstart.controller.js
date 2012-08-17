@@ -100,6 +100,24 @@ Apps.Quickstart.Client.Controller = Apps.Quickstart.Controller.extend({
     '  </dict>',
     '</plist>'].join('\n'),
 
+  android_properties: ['apiurl = {placeholder1}',
+    'app = {placeholder2}',
+    'domain = {placeholder3}'].join('\n'),
+
+  javascript_index: ['<script src="feedhenry.js" type="text/javascript"></script>',
+    '<script type="text/javascript">',
+    'var config = {',
+    '  apiurl: "{placeholder1}",',
+    '  appid: "{placeholder2}",',
+    '  apikey: "{placeholder3}"',
+    '}',
+    '',
+    'var fh = new FeedHenry(config);',
+    'fh.init(function(res){',
+    '  // SDK initialised, callback action here',
+    '});',
+    '</script>'].join('\n'),
+
   init: function () {
     this.initFn = _.once(this.initBindings);
   },
@@ -115,7 +133,10 @@ Apps.Quickstart.Client.Controller = Apps.Quickstart.Controller.extend({
       jqEl.find('.multistep_step').hide().end().find('.step_1').show();
     }
 
+    // Update client sdk instructions for current app
     $('.ios_plist').text(this.ios_plist);
+    $('.android_properties').text(this.android_properties);
+    $('.javascript_index').text(this.javascript_index);
   },
 
   initBindings: function () {
