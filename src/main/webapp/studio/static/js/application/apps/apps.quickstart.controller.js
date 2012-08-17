@@ -84,6 +84,22 @@ Apps.Quickstart.Controller = Apps.Controller.extend({
 
 
 Apps.Quickstart.Client.Controller = Apps.Quickstart.Controller.extend({
+
+  ios_plist: ['<?xml version="1.0" encoding="UTF-8"?>',
+    '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">',
+    '<plist version="1.0">',
+    '  <dict>',
+    '    <key>apiurl</key>',
+    '    <string>{placeholder1}</string>',
+    '    <key>app</key>',
+    '    <string>{placeholder2}</string>',
+    '    <key>domain</key>',
+    '    <string>{placeholder3}</string>',
+    '    <key>inst</key>',
+    '    <string>{placeholder4}</string>',
+    '  </dict>',
+    '</plist>'].join('\n'),
+
   init: function () {
     this.initFn = _.once(this.initBindings);
   },
@@ -98,6 +114,8 @@ Apps.Quickstart.Client.Controller = Apps.Quickstart.Controller.extend({
       // hide all steps, then just show step 1
       jqEl.find('.multistep_step').hide().end().find('.step_1').show();
     }
+
+    $('.ios_plist').text(this.ios_plist);
   },
 
   initBindings: function () {
