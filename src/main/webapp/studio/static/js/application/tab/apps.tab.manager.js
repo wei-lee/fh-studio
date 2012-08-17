@@ -62,8 +62,19 @@ ListappsTabManager = Tab.Manager.extend({
     this.getController('apps.generate.controller').hide();
     this.getController('apps.clone.controller').hide();
 
+    // hide preveiw show/hide buttons
+    $('.preview_toggle').hide();
+
     $('#manage_apps_layout').hide();
     $('#list_apps_layout').show();
+  },
+
+  updateCrumbs: function (self) {
+    var breadcrumbs = $('#' + self.breadcrumbId);
+
+    var preview_buttons = breadcrumbs.find('.preview_buttons').detach(); // detach is important here
+    this._super(self);
+    breadcrumbs.append(preview_buttons);
   }
 
 });
@@ -104,6 +115,7 @@ ManageappsTabManager = Tab.Manager.extend({
       crumbs.unshift(header.text());
     }
 
+    var preview_buttons = $('#apps_breadcrumb').find('.preview_buttons').detach(); // detach is important here
     var crumb = $('#apps_breadcrumb').empty().append($('<li>').append($('<a>', {
       "href": "#",
       "text": prefixCrumb.text().trim()
@@ -135,6 +147,8 @@ ManageappsTabManager = Tab.Manager.extend({
         }));
       }
     }
+
+    crumb.append(preview_buttons);
   },
 
   /*

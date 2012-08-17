@@ -42,8 +42,8 @@ application.PreviewManager = Class.extend({
 
   hide: function () {
     this.hideContent();
-    $('#preview_toggle_open').show();
     $('#preview_toggle_close').hide();
+    $('#preview_toggle_open').show();
   },
 
   showInit: function () {
