@@ -2073,58 +2073,13 @@ p.input-form-footer, .tandc_Link{
 .current-selected-tab{
   height:25px !important;
 }
-#home_content_bottom_right #top_wrapper {
- clear: both;
- height: 3em;
-}
 
-#home_content_bottom_left, #home_content_bottom_right {
-  -webkit-border-radius: 7px;
-  -moz-border-radius: 7px;
-  border-radius: 7px;
-}
-
-#home_content_bottom_right p {
- float: left;
-}
-#home_content_bottom_right #home_create_new_app_btn {
+#dashbaord_create_new_app_btn {
   float: right;
   margin-top:-8px;
   border: 1px solid #999 !important;
 }
-#home_content_top_right{
-  display:none;
-}
-#home_content_top_left{
-  background:none repeat scroll 0 0 transparent;
-  border:medium none;
-  /*padding-left:0.8%;
-  padding-top:1%;*/
-  width:100%;
-}
-#dashboard_top{
-  height:150px;
-}
-.dashboard-create{
-  display:block;
-  background:transparent url(../img/create_app_sprite.png) no-repeat 0 0;
-  border:none!important;
-  cursor:pointer;
-  height:50px;
-}
-
-.dashboard-create-container {
-  width:250px;
-  margin: 0 auto;
-  height:50px;
-  padding-right: 608px;
-}
-
-.dashboard-create:hover{
-  background-position: 0 -100px;
-  cursor:pointer;
-}
-.dashboard-header{
+.dashboard-header {
   display:block;
   background-image:url("../img/home_page_graphic.png");
   background-color:transparent;
@@ -2135,17 +2090,24 @@ p.input-form-footer, .tandc_Link{
   -moz-border-radius: 10px;
   border-radius: 10px;
 }
-.doc_list{
-  background-image:url("../img/book_image.png");
-  background-color:transparent;
-  background-repeat:no-repeat;
-  background-position:20px 20px;
-  height: 13em;
+.dashboard-create {
+  display:block;
+  background:transparent url(../img/create_app_sprite.png) no-repeat 0 0;
+  border:none!important;
+  cursor:pointer;
+  height:50px;
 }
+.dashboard-create-container {
+  width: 250px;
+  margin: 0 auto;
+  height: 50px;
+  padding-right: 608px;
+  margin-top: 150px;
+}
+
 .doc_links{
   font-size:1.3em;
-  padding-left:22em;
-  padding-top:0.75em;
+  line-height: 2em;
 }
 .doc_links a{
   text-decoration:none;
@@ -2153,9 +2115,11 @@ p.input-form-footer, .tandc_Link{
 .doc_links a:hover{
   text-decoration:underline;
 }
-#recent_apps_grid_pager_center{
-  display:none;
+.doc_img {
+  text-align:center;
+  padding-top:10px;
 }
+
 /* App list grid icons*/
 .app_grid_icons {
  float: left;
@@ -3052,6 +3016,9 @@ table.dataTable th:active {
 .apps_grid {
   table-layout: fixed;
 }
+.apps_grid td {
+  cursor:pointer;
+}
 
 #new_app_id {
   cursor: text;
@@ -3311,8 +3278,8 @@ table.dataTable th:active {
   Hides Email & App ID column (:nth(3)) (:nth(6))
 */
 #myapps_grid td:first-child + td + td + td + td + td + td, #myapps_grid td:first-child + td + td + td,
-#allapps_grid td:first-child + td + td + td + td + td + td, 
+#allapps_grid td:first-child + td + td + td + td + td + td, #recentapps_grid td:first-child + td + td + td + td,
 #myapps_grid th:first-child + th + th + th + th + th + th, #myapps_grid th:first-child + th + th + th,
-#allapps_grid th:first-child + th + th + th + th + th + th {
+#allapps_grid th:first-child + th + th + th + th + th + th, #recentapps_grid th:first-child + th + th + th + th {
   display: none;
 }​

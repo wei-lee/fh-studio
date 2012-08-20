@@ -38,26 +38,65 @@ model.App = model.Model.extend({
     column_title: "App ID"
   }],
 
+  recent_field_config: [{
+    field_name: "icon",
+    editable: false,
+    showable: true,
+    column_title: ""
+  }, {
+    field_name: "title",
+    editable: false,
+    showable: true,
+    column_title: "Name"
+  }, {
+    field_name: "version",
+    editable: false,
+    showable: true,
+    column_title: "Version"
+  }, {
+    field_name: "modified",
+    editable: false,
+    showable: true,
+    column_title: "Last Modified"
+  }, {
+    field_name: "id",
+    editable: false,
+    showable: false,
+    column_title: "App ID"
+  }],
+
   init: function() {
     this._super();
   },
 
   listAll: function (success, fail, post_process) {
-    return this.list(success, fail, post_process, true);
+    var params = {
+      "myapps": true
+    };
+    return this.list(success, fail, post_process, params);
   },
 
-  list: function(success, fail, post_process, all) {
-    var url = '',
-      params = {};
+  listRecent: function (success, fail) {
+    var self = this;
 
-    if (all == null || all === false) {
-      params.myapps = true;
-    }
+    var params = {
+      "max": 5,
+      "order": "desc",
+      "order-by": "sysModified"
+    };
+    return this.list(success, fail, function (res, data_model) {
+      return self.postProcessList(res, data_model, self.recent_field_config);
+    }, params);
+  },
+
+  list: function(success, fail, post_process, params) {
+    var url = '',
+      params = (params != null ? params : {});
 
     url = Constants.LIST_APPS_URL;
 
-    if (post_process) {
-      return this.serverPost(url, params, success, fail, true, this.postProcessList, this);
+    if (post_process != null) {
+      return this.serverPost(url, params, success, fail, true, ($.isFunction(post_process) ? post_process : this.postProcessList), this);
     } else {
       return this.serverPost(url, params, success, fail, true);
     }

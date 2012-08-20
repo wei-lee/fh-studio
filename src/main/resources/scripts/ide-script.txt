@@ -106,12 +106,12 @@ js/application/stats/views/stats.view.list.timers.js
 js/application/stats/controllers/stats.controller.js
 common/js/ui/thirdparty/bootstrap/bootstrap.js
 js/application/tab/TabManager.js
-js/application/tab/HomeTabManager.js
 js/application/tab/AccountTabManager.js
 js/application/tab/ReportingTabManager.js
 js/application/tab/tab.manager.js
 js/application/tab/admin.tab.manager.js
 js/application/tab/apps.tab.manager.js
+js/application/tab/dashboard.tab.manager.js
 js/application/destinations/destination_general.js
 js/application/destinations/destination_feedhenry.js
 js/application/destinations/destination_blackberry.js
