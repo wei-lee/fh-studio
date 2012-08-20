@@ -29,8 +29,9 @@
     <%@ include file="./reporting/reporting_tab.html" %>
   <% } %>
   
-  <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_ARM)) { %>
+  <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_ARM) || studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_USER_ADMIN)) { %>
     <%@ include file="./admin/admin_tab.html" %>
+
   <% } %>
  
   <%@ include file="./account/account_tab.html" %>

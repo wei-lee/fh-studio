@@ -3,13 +3,13 @@
             <li class="span3"></li>
             <li class="span3">
               <a href="#" class="thumbnail client-quickstart pull-right" data-controller="apps.quickstart.client.controller">
-                <img src="<%=studio.getStaticAssetPath("themes/default/img/placeholder.jpg")%>" alt="">
+                <i class="icon-phone"></i>
                 <h4>Client Quick Start</h4>
               </a>
             </li>
             <li class="span3">
               <a href="#" class="thumbnail cloud-quickstart pull-left" data-controller="apps.quickstart.cloud.controller">
-                <img src="<%=studio.getStaticAssetPath("themes/default/img/placeholder.jpg")%>" alt="">
+                <i class="icon-cloud"></i>
                 <h4>Cloud Quick Start</h4>
               </a>
             </li>
@@ -66,7 +66,7 @@
               <form class="well form-horizontal">
                 <h2>You're all set!</h2>
                 <p>Your App is already created and good to go, so you're ready to start developing!</p>
-
+                <br/>
                 <%@ include file="./quickstart_hybrid_actions.html"%>
                 
               </form>
@@ -103,7 +103,7 @@
                 <h2>Download Template Project</h2>
                 <p>1. Download the Template Project below and open it using Xcode</p>
                 <div class="row-fluid">
-                  <a href="#" class="thumbnail span2">
+                  <a href="#" id="ios_starter_download_link" class="thumbnail span2 sdkfiles_link">
                     <img src="<%=studio.getStaticAssetPath("themes/default/img/placeholder.jpg")%>" alt="">
                     <h5>iOS Template Project</h5>
                   </a>
@@ -121,7 +121,7 @@
                 <h2>Download & Integrate the SDK</h2>
                 <p>1. To Start creating a FeedHenry powered iOS Native app, download the iOS SDK</p>
                 <div class="row-fluid">
-                  <a href="#" class="thumbnail span2">
+                  <a href="#" id="ios_sdk_download_link" class="thumbnail span2 sdkfiles_link">
                     <img src="<%=studio.getStaticAssetPath("themes/default/img/placeholder.jpg")%>" alt="">
                     <h5>iOS SDK</h5>
                   </a>
@@ -172,7 +172,7 @@
                 <h2>Download Template Project</h2>
                 <p>1. Download the Template Project below (Can be imported into Eclipse as an existing project)</p>
                 <div class="row-fluid">
-                  <a href="#" class="thumbnail span2">
+                  <a href="#" id="android_starter_download_link" class="thumbnail span2 sdkfiles_link">
                     <img src="<%=studio.getStaticAssetPath("themes/default/img/placeholder.jpg")%>" alt="">
                     <h5>Android Template Project</h5>
                   </a>
@@ -190,7 +190,7 @@
                 <h2>Download & Integrate the SDK</h2>
                 <p>1. To start creating a FeedHenry powered Android Native app, download our Android SDK</p>
                 <div class="row-fluid">
-                  <a href="#" class="thumbnail span2">
+                  <a href="#" id="android_sdk_download_link" class="thumbnail span2 sdkfiles_link">
                     <img src="<%=studio.getStaticAssetPath("themes/default/img/placeholder.jpg")%>" alt="">
                     <h5>Android SDK</h5>
                   </a>

@@ -63,6 +63,45 @@ Apps.Quickstart.Controller = Apps.Controller.extend({
       var controller = $fw.client.tab.apps.manageapps.getController(anchor.data('controller'));
       controller.show(e, true);
     });
+
+    self.bindNotYetAvailableMessages();
+    self.requestSDKFilesUrls();
+  },
+
+  setClickAction: function (linkId, osKey, fileKey, files) {
+    if(files.sdkFiles && files.sdkFiles[osKey] && files.sdkFiles[osKey][fileKey]) {
+      var target = files.sdkFiles[osKey][fileKey];
+      console.log("Setting link for " + linkId + " to: " + target);
+      $(linkId).attr("href", files.sdkFiles[osKey][fileKey]);
+      $(linkId).unbind('click').bind('click', function (e) {
+        console.log("Downloading target: " + target);
+        return true;
+      });
+    }
+  },
+
+  requestSDKFilesUrls: function () {
+    var self = this;
+    $fw.server.post(Constants.SDK_GETFILES_URL , {
+    }, function (res) {
+      if(res && res.status && res.status === "oks") {
+        self.setClickAction('#ios_sdk_download_link', 'fh-ios-sdk', 'sdk', res);
+        self.setClickAction('#ios_starter_download_link', 'fh-ios-sdk', 'starter', res);
+        self.setClickAction('#android_sdk_download_link', 'fh-android-sdk', 'sdk', res);
+        self.setClickAction('#android_starter_download_link', 'fh-android-sdk', 'starter', res);
+        self.setClickAction('#javascript_sdk_download_link', 'fh-javascript-sdk', 'sdk', res);
+        self.setClickAction('#javascript_starter_download_link', 'fh-javascript-sdk', 'starter', res);
+      }
+    });
+
+  },
+
+  bindNotYetAvailableMessages: function () {
+    $('.sdkfiles_link').each(function() {
+      $(this).unbind('click').bind('click', function (e) {
+        alert("Links for the SDK Files are currently being downloaded, please try again.");
+      });
+    });
   },
 
   // common function for binding (jQuery) elements to trigger 'show' on the corresponding controller
