@@ -3320,6 +3320,9 @@ table.dataTable th:active {
 
 #clone_button, #delete_app_button { margin-right: 5px; }
 
+#deploying_container hr {
+  border-top: 1px solid #ddd;
+}
 
 /* Awesome nth item selector that works cross platform (including IE!)
   http://reference.sitepoint.com/css/adjacentsiblingselector
