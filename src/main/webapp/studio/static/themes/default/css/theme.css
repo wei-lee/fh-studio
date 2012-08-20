@@ -3303,7 +3303,7 @@ table.dataTable th:active {
   text-decoration: none;
 }
 
-#quickstart_client_container h2, #quickstart_client_hybrid_container h2 {
+#quickstart_client_container h2, #quickstart_client_hybrid_container h2, #quickstart_cloud_container h2 {
   margin-bottom: 10px;
 }
 
@@ -3320,6 +3320,9 @@ table.dataTable th:active {
 
 #clone_button, #delete_app_button { margin-right: 5px; }
 
+#deploying_container hr {
+  border-top: 1px solid #ddd;
+}
 
 /* Awesome nth item selector that works cross platform (including IE!)
   http://reference.sitepoint.com/css/adjacentsiblingselector
