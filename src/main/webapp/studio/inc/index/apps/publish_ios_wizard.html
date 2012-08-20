@@ -1,16 +1,31 @@
 <form id="ios_publish_form">
+    <div id="app_publish_ios_deploying_env" class="app_publish_deploying_env">
+        <div id="app_publish_ios_deploying_env_text" class="insert-lang-block"></div>
+        <form>
+            <div class="form-field ui-helper-reset ui-helper-clearfix">
+                <input type="checkbox" name="app_publish_ios_deploying" next="app_publish_ios_versions" checked="checked"><label>Deploy the server-side of the app</label>
+            </div>
+        </form>
+    </div>
+
+    <div id="app_publish_ios_deploying_progress" class="app_publish_deploying_progress" track="no">
+        <div id="app_publish_ios_deploying_env_progresslog"><textarea class="progresslog" readonly="true"></textarea></div>
+    </div>
+
 
       <div id="app_publish_ios_select_provisionings">
         <div id="app_publish_ios_select_provisionings_text" class="insert-lang-block"></div>
+
         <div class="form-field ui-helper-reset ui-helper-clearfix">
-          <input type="radio" name="app_publish_ios_provisioning_radio" next="app_publish_ios_versions" checked="checked" value="existing"><label>I would like to use the existing provisioning profile of this app</label>
+          <input type="radio" name="app_publish_ios_provisioning_radio" next="app_publish_ios_deploying_env" checked="checked" value="existing"><label>I would like to use the existing provisioning profile of this app</label>
         </div>
-        
+
+
         <div class="form-field ui-helper-reset ui-helper-clearfix">
           <input type="radio" name="app_publish_ios_provisioning_radio" next="app_publish_ios_upload_provisionings" value="new"><label>I would like to upload a new provisoning profile for this app</label>
         </div>
       </div>
-      
+
       <div id="app_publish_ios_upload_provisionings">
         <div id="app_publish_ios_upload_provisionings_text" class="insert-lang-block"></div>
         <div class="form-field ui-helper-reset ui-helper-clearfix">

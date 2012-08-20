@@ -58,7 +58,7 @@ application.DestinationGeneral = Class.extend({
     });
 
     if ($.isFunction(this.bindVersionViewShow)) {
-      this.bindVersionViewShow('#app_export_device_types', '#app_export_iphone_versions, #app_export_ipad_versions', wizard, 1);
+      this.bindVersionViewShow('#app_export_device_types', '#app_export_iphone_versions, #app_export_ipad_versions, #app_publish_ios_versions', wizard, 1);
     }
 
     // call any destination specific setup
@@ -328,7 +328,7 @@ application.DestinationGeneral = Class.extend({
   deployComplete: function(wizard, step) {
     console.log('deployComplete');
 
-    if (this.destination_id == 'ipad' || this.destination_id == 'iphone') {
+    if (this.destination_id == 'ipad' || this.destination_id == 'iphone' || this.destination_id == 'ios') {
       proto.Wizard.jumpToStep(wizard, 6);
     } else {
       proto.Wizard.jumpToStep(wizard, 3);
