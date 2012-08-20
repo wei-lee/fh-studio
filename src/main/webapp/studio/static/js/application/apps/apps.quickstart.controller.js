@@ -45,7 +45,7 @@ Apps.Quickstart.Controller = Apps.Controller.extend({
 
     this.initFn();
     
-    $(this.container).find('li').removeClass('active').end().show();
+    $(this.container).find('li').removeClass('active').end().fadeIn();
   },
 
   initBindings: function () {
@@ -169,7 +169,7 @@ Apps.Quickstart.Client.Controller = Apps.Quickstart.Controller.extend({
       this._super(e, this.views.quickstart_client_container, showClientCloudOptions);
       var jqEl = $(this.views.quickstart_client_container);
       // hide all steps, then just show step 1
-      jqEl.find('.multistep_step').hide().end().find('.step_1').show();
+      jqEl.find('.multistep_step').hide().end().find('.step_1').fadeIn();
     }
 
     // Update client sdk instructions for current app
@@ -194,7 +194,7 @@ Apps.Quickstart.Client.Controller = Apps.Quickstart.Controller.extend({
       // show succeeding step/s that are configured for this item
       var nextsteps = el.data('nextsteps').split(',');
       _.each(nextsteps, function (step) {
-        $('.' + step).show();
+        $('.' + step).fadeIn();
       });
     });
 
@@ -212,7 +212,7 @@ Apps.Quickstart.Client.Controller = Apps.Quickstart.Controller.extend({
       // show succeeding step/s that are configured for this item
       var nextsteps = el.data('nextsteps').split(',');
       _.each(nextsteps, function (step) {
-        $('.' + step).show();
+        $('.' + step).fadeIn();
       });
     });
 
