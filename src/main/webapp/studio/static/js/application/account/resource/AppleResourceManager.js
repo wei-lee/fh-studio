@@ -23,7 +23,8 @@ application.AppleResourceManager = application.ResourceManager.extend({
       e.preventDefault();
       if (wizard.find('#apple_key_password').val().length > 0) {
         var resources = $fw.client.resource.apple.getResources();
-        $fw.app.startDownload(Constants.GENERATE_CSR_URL + "&password=" + wizard.find('#apple_key_password').val());
+        var url = Constants.GENERATE_CSR_URL + "&password=" + wizard.find('#apple_key_password').val();
+        document.location = url;
         resources.private_key = true;
         $fw.client.resource.apple.setResources(resources);
         wizard.find('#apple_csr_downloaded').attr('value', 'downloaded');
@@ -33,12 +34,6 @@ application.AppleResourceManager = application.ResourceManager.extend({
         wizard.valid();
       }
     });
-    /*wizard.find('#apple_getstarted_csr').bind('leavingForward', function () {
-      var resources = $fw.client.resource.apple.getResources();
-      $fw.app.startDownload(Constants.GENERATE_CSR_URL + "&password=" + wizard.find('#apple_key_password').val());
-      resources.private_key = true;
-      $fw.client.resource.apple.setResources(resources);
-    });*/
     wizard.find('#apple_getstarted_finish').bind('show', function () {
       console.log('apple getstarted wizard finished');
       
