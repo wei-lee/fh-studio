@@ -3293,6 +3293,13 @@ table.dataTable th:active {
   margin-top: 5px;
 }
 
+#quickstart_client_container pre {
+  padding: 2px 4px;
+  color: #D14;
+  background-color: #F7F7F9;
+  border: 1px solid #E1E1E8;
+}
+
 #clone_button, #delete_app_button { margin-right: 5px; }
 
 /* Awesome nth item selector that works cross platform (including IE!)
