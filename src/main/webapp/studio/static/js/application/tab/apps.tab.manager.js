@@ -81,12 +81,18 @@ ListappsTabManager = Tab.Manager.extend({
 
 ManageappsTabManager = Tab.Manager.extend({
   id: 'manage_apps_layout',
+  breadcrumbId: 'apps_breadcrumb',
 
   init: function() {
     this._super();
   },
 
   show: function(guid, success, fail, is_name, intermediate) {
+    var self = this;
+    // clear current app data
+    $fw.data.set('inst', null);
+    $fw.data.set('app', null);
+
     this._super();
 
     $('#list_apps_layout').hide();
@@ -99,7 +105,6 @@ ManageappsTabManager = Tab.Manager.extend({
   // see http://twitter.github.com/bootstrap/components.html#breadcrumbs
   updateCrumbs: function(self) {
     console.log('custom apps breadcrumbs');
-    var prefixCrumb = $('.listapps_nav_list li.active a');
 
     var el = $('#' + self.id);
     var navList = el.find('.nav-list');
@@ -115,8 +120,11 @@ ManageappsTabManager = Tab.Manager.extend({
       crumbs.unshift(header.text());
     }
 
-    var preview_buttons = $('#apps_breadcrumb').find('.preview_buttons').detach(); // detach is important here
-    var crumb = $('#apps_breadcrumb').empty().append($('<li>').append($('<a>', {
+    // get prefix from select list item in listapps view e.g. 'My Apps'
+    var prefixCrumb = $('.listapps_nav_list li.active a');
+    // assemble start of breadcrumb
+    var preview_buttons = $('#' + self.breadcrumbId).find('.preview_buttons').detach(); // detach is important here
+    var crumb = $('#' + self.breadcrumbId).empty().append($('<li>').append($('<a>', {
       "href": "#",
       "text": prefixCrumb.text().trim()
     }).on('click', function(e) {
@@ -126,6 +134,14 @@ ManageappsTabManager = Tab.Manager.extend({
       "class": "divider",
       "text": "/"
     })));
+
+    // add placeholder item for app title
+    crumb.append($('<li>', {
+      "class": "app_title_placeholder"
+    })).append($('<span>', {
+      "class": "divider",
+      "text": "/"
+    }));
 
     for (var ci = 0, cl = crumbs.length; ci < cl; ci += 1) {
       var ct = crumbs[ci];
@@ -149,6 +165,15 @@ ManageappsTabManager = Tab.Manager.extend({
     }
 
     crumb.append(preview_buttons);
+    self.updateAppTitleInCrumbs();
+  },
+
+  updateAppTitleInCrumbs: function () {
+    var inst = $fw.data.get('inst');
+    if (inst != null) {
+      var appTitle = inst.title;
+      $('.app_title_placeholder').text(appTitle);
+    }
   },
 
   /*
@@ -179,8 +204,12 @@ ManageappsTabManager = Tab.Manager.extend({
       console.log('app read result > ' + JSON.stringify(result));
       if (result.app && result.inst) {
         var inst = result.inst;
-
+        
+        // set current app details
         self.setSelectedApp(result.app, inst);
+
+        // update breadcrumb with app title, and finally show it
+        self.updateAppTitleInCrumbs();
 
         // show manage apps layout
         $('#manage_apps_layout').show();
