@@ -650,7 +650,6 @@ label.error
 }
 
 #main_layout_center .ui-tabs-nav li {
-  border: 1px solid #ccc;
   border-bottom:none;
   height:24px;
   line-height:11px;
