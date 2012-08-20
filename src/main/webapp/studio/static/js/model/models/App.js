@@ -90,8 +90,8 @@ model.App = model.Model.extend({
   },
 
   list: function(success, fail, post_process, params) {
-    var url = '',
-      params = (params != null ? params : {});
+    var url = '';
+    params = (params != null ? params : {});
 
     url = Constants.LIST_APPS_URL;
 
