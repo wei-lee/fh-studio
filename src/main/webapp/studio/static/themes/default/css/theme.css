@@ -299,7 +299,6 @@ textarea { resize:none; }
   opacity: 0.35;
   filter: alpha(opacity=35);
 }
-.jstree-classic.jstree-focused { background:white; }
 .jstree-classic .jstree-no-dots li, 
 .jstree-classic .jstree-no-dots .jstree-leaf > ins { background:transparent; }
 .jstree-classic .jstree-no-dots .jstree-open > ins { background-position:-18px 0; }
@@ -964,6 +963,10 @@ label.error
 #editor_text_content {
   min-height: 300px;
   border: 1px solid #ccc;
+}
+
+#editor_files_list {
+  padding: 5px;
 }
 
 #editor_img_content 
