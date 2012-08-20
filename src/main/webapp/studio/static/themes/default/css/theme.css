@@ -1489,14 +1489,14 @@ span.label-info {
  background-image: url("../img/export/embed.png");
 }
 /* App Configurations */
-.configuration_content {  
-  padding-left: 10%;
-  padding-right: 10%;
-  width: 100%;
+#configuration_container .control-label, #push_urbanairship_container .control-label {
+  width: 180px;
 }
-.configuration_content th, .configuration_content td {
-  height: 25px;
+
+#configuration_container .controls, #push_urbanairship_container .controls {
+  margin-left: 200px;
 }
+
 /* Debugging */
 #debug_logging_text
 {
