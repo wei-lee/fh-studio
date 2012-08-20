@@ -3306,13 +3306,20 @@ table.dataTable th:active {
   text-overflow: ellipsis;
 }
 
+#quickstart_container .cloud-quickstart i,
+#quickstart_container .client-quickstart i {
+  font-size: 128px;
+}
+
 /* Awesome nth item selector that works cross platform (including IE!)
   http://reference.sitepoint.com/css/adjacentsiblingselector
   Hides Email & App ID column (:nth(3)) (:nth(6))
 */
-#myapps_grid td:first-child + td + td + td + td + td + td, #myapps_grid td:first-child + td + td + td,
+#myapps_grid td:first-child + td + td + td + td + td + td, 
+#myapps_grid td:first-child + td + td + td,
 #allapps_grid td:first-child + td + td + td + td + td + td, 
-#myapps_grid th:first-child + th + th + th + th + th + th, #myapps_grid th:first-child + th + th + th,
+#myapps_grid th:first-child + th + th + th + th + th + th, 
+#myapps_grid th:first-child + th + th + th,
 #allapps_grid th:first-child + th + th + th + th + th + th {
   display: none;
 }​
