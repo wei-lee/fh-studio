@@ -87,12 +87,6 @@ Dashboard.Tab.Manager = Tab.Manager.extend({
     }));
   },
 
-  // loadRecentAppsGridData: function(url, data, callback) {
-  //   $fw.server.post(url, data, function(data) {
-  //     callback(data);
-  //   });
-  // },
-
   showRecentApps: function() {
     var self = this;
 
@@ -101,55 +95,7 @@ Dashboard.Tab.Manager = Tab.Manager.extend({
     }, function() {
       // Failure
     });
-
-    // // FIXME: convert to datatables and fix conclick event for each row
-    // this.initRecentAppsGrid();
-    // var self = this;
-    // this.recent_apps_grid.jqGrid('clearGridData');
-    // this.loadRecentAppsGridData(Constants.LIST_APPS_URL, {
-    //   'max': 5,
-    //   'order': 'desc',
-    //   'order-by': 'sysModified'
-    // }, function(apps) {
-    //   var entries = apps.list;
-    //   for (var di = 0; di < entries.length; di++) {
-    //     var entry = entries[di];
-    //     console.log('add Entry: ' + entry.id);
-    //     self.recent_apps_grid.jqGrid('addRowData', entry.id, entry);
-    //   }
-    //   self.recent_apps_grid.trigger('reloadGrid');
-    // });
   },
-
-  // initRecentAppsGrid: function() {
-  //   if (null == this.recent_apps_grid) {
-  //     this.recent_apps_grid = proto.Grid.load($('#recent_apps_grid'), {
-  //       pager: 'recent_apps_grid_pager',
-  //       autoWidth: true,
-  //       colModel: [{
-  //         index: 'title',
-  //         name: 'title',
-  //         editible: false
-  //       }, {
-  //         index: 'version',
-  //         name: 'version',
-  //         editible: false,
-  //         sortable: false,
-  //         fixed: true,
-  //         resizable: false,
-  //         width: 50
-  //       }, {
-  //         index: 'modified',
-  //         name: 'modified',
-  //         editible: false,
-  //         fixed: true,
-  //         resizable: false,
-  //         width: 120
-  //       }],
-  //       colNames: ['Name', 'Version', 'Last Changed']
-  //     });
-  //   }
-  // },
 
   renderAppListing: function(container, wrapper, data) {
     var self = this;
