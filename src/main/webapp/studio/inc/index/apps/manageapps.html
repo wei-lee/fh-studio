@@ -110,10 +110,10 @@
       </li>
     </ul>
 
-    <div id="app_content" class="well span7">
+    <div id="app_content" class="span7">
 
-        <%@ include file="./quickstart.html"%>
-        
+        <%@ include file="./quickstart.html"%>       
+
         <%@ include file="./manage_details.html"%>
         
         <%@ include file="./manage_frameworks.html"%>
@@ -126,10 +126,10 @@
         
         <%@ include file="./editor_files.html"%>
 
-        <div id="configuration_container" class="tabbable tabs-left">
+        <div id="configuration_container" class="tabbable ">
           <ul class="nav nav-tabs">
             <li>
-              <a href="#configuration_studio_container" data-toggle="tab" data-controller="apps.configuration.studio.controller">Studio Preview</a>
+              <a href="#configuration_studio_container" data-toggle="tab" data-controller="apps.configuration.studio.controller">Preview</a>
             </li>
             <li>
               <a href="#configuration_embed_container" data-toggle="tab" data-controller="apps.configuration.embed.controller">Embed</a>
@@ -141,7 +141,7 @@
               <a href="#configuration_ipad_container" data-toggle="tab" data-controller="apps.configuration.ipad.controller">iPad</a>
             </li>
             <li>
-              <a href="#configuration_ios_container" data-toggle="tab" data-controller="apps.configuration.ios.controller">iOS Universal</a>
+              <a href="#configuration_ios_container" data-toggle="tab" data-controller="apps.configuration.ios.controller">iOS</a>
             </li>
             <li>
               <a href="#configuration_android_container" data-toggle="tab" data-controller="apps.configuration.android.controller">Android</a>
@@ -153,7 +153,7 @@
               <a href="#configuration_windowsphone7_container" data-toggle="tab" data-controller="apps.configuration.windowsphone.controller">Windows Phone</a>
             </li>
             <li>
-              <a href="#configuration_nokiawrt_container" data-toggle="tab" data-controller="apps.configuration.nokiawrt.controller">Nokia Web Runtime</a>
+              <a href="#configuration_nokiawrt_container" data-toggle="tab" data-controller="apps.configuration.nokiawrt.controller">Nokia WRT</a>
             </li>
           </ul>
           <div class="tab-content">
@@ -212,7 +212,7 @@
 
         <%@ include file="./debug_logging.html"%>
   
-        <div id="deploying_container">
+        <div id="deploying_container" class="well">
           <p>Development Deploy</p>
           <div id="deploying_dev_progresslog"><textarea class="progresslog"></textarea></div>
           <br/>
