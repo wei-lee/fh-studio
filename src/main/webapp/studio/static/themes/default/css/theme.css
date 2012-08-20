@@ -960,6 +960,12 @@ label.error
   margin:0 auto;  
 }
 /* Editor */
+
+#editor_save_btn, #editor_save_all_btn, #editor_find_btn {
+  margin-right: 5px;
+}
+
+
 #editor_text_content {
   min-height: 300px;
   border: 1px solid #ccc;
