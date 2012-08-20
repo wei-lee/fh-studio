@@ -9,6 +9,7 @@ var Lang = {
   
   scm_editor_disabled: 'Editing of files isn\'t supported for Git based Apps',
   manage_details_update_button_text: 'Update Details',
+  delete_app_button_text: 'Delete',
   scm_trigger_button_text: 'Git Pull',
   scm_trigger_error: 'There was a problem getting the latest files for the configured repository URL. Please check that the URL is valid and try again.',
   reload_file_content_alert : 'Unsaved changes detected when trying to reload the file. Do you want to continue (Any unsaved changes will be discarded) ?',

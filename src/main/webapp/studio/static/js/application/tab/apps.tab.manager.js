@@ -67,6 +67,12 @@ ListappsTabManager = Tab.Manager.extend({
 
     $('#manage_apps_layout').hide();
     $('#list_apps_layout').show();
+
+    var itemToClick = $('.listapps_nav_list li.active:visible a');
+    if (itemToClick.length === 0) {
+      itemToClick = $('.listapps_nav_list li:visible a:eq(0)');
+    }
+    itemToClick.trigger('click');
   },
 
   updateCrumbs: function (self) {

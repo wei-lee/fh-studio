@@ -19,7 +19,6 @@ Admin.Users.Controller = Controller.extend({
   },
 
   container: null, // keeps track of currently active/visible container
-  alert_timeout: 3000,
   user_table: null,
 
   init: function(params) {

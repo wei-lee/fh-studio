@@ -4,8 +4,8 @@ Apps.Details = Apps.Details || {};
 
 Apps.Details.Controller = Apps.Controller.extend({
 
-  model: {
-    //device: new model.Device()
+  models: {
+    app: new model.App()
   },
 
   views: {
@@ -44,6 +44,7 @@ Apps.Details.Controller = Apps.Controller.extend({
     // setup update details button
     var updateButtonText = $fw.client.lang.getLangString('manage_details_update_button_text'),
         updateButton = $('#manage_details_update_button');
+
     updateButton.text(updateButtonText).bind('click', function () {
       updateButton.attr('disabled', 'disabled').text(pleaseWaitText);
       self.doUpdate(function () {
@@ -68,6 +69,13 @@ Apps.Details.Controller = Apps.Controller.extend({
     // clone button
     $fw.client.tab.apps.manageapps.getController('apps.templates.controller').bindCloneButtons();
     $fw.client.lang.insertLangForContainer($(this.views.manage_details_container));
+
+    // delete button
+    $('#delete_app_button').text($fw.client.lang.getLangString('delete_app_button_text')).bind('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      self.doDelete();
+    });
   },
   
   updateDetails: function () {
@@ -168,7 +176,7 @@ Apps.Details.Controller = Apps.Controller.extend({
       })
     };
     // submit to server
-    $fw.client.model.App.update(fields, function (result) {
+    self.models.App.update(fields, function (result) {
       console.log('update success:' + result);
       $fw.client.dialog.info.flash($fw.client.lang.getLangString('app_updated'));
       // TODO: overkill here by doing a second call to read the app
@@ -203,6 +211,55 @@ Apps.Details.Controller = Apps.Controller.extend({
     postReceiveUrl = host + $fw.client.tab.apps.manageapps.getTriggerUrl();
     
     return postReceiveUrl;
+  },
+
+  doDelete: function () {
+    var self = this;
+
+    // use guid of currently active app
+    var inst = $fw.data.get('inst');
+
+    if (inst != null) {
+      console.log('app.doDelete guid:' + inst.guid);
+
+      //$fw.client.dialog.showConfirmDialog($fw.client.lang.getLangString('caution'), icon_html + $fw.client.lang.getLangString('delete_app_confirm_text').replace('<APP>', $.trim(app_title.text())), function () {
+
+    self.showBooleanModal('Are you sure you want to delete this App (' + inst.title + ')?', function () {
+      self.showAlert('info', '<strong>Deleting App</strong> (' + inst.title + ') This may take some time.');
+      // delete app
+      self.models.app['delete'](inst.guid, function(res) {
+        // move back to listapps view
+        self.showAlert('success', '<strong>App Successfully Deleted</strong> (' + inst.title + ')');
+        setTimeout(function () {
+          $fw.client.tab.apps.listapps.show();
+        }, 1000);
+      }, function(e) {
+        self.showAlert('error', '<strong>Error Deleting App</strong> (' + inst.title + ') ' + e);
+      });
+    });
+
+
+      //   proto.ProgressDialog.reset($fw.client.dialog.progress);
+      //   proto.ProgressDialog.setTitle($fw.client.dialog.progress, 'Delete Progress');
+      //   proto.ProgressDialog.setProgress($fw.client.dialog.progress, 10);
+      //   proto.ProgressDialog.append($fw.client.dialog.progress, 'Starting delete');
+      //   proto.ProgressDialog.show($fw.client.dialog.progress);
+      //   $fw.client.model.App['delete'](inst.guid, function (data) {
+      //     if (data.inst && data.inst.id) {
+      //       proto.ProgressDialog.setProgress($fw.client.dialog.progress, 100);
+      //       proto.ProgressDialog.append($fw.client.dialog.progress, 'Delete complete');
+      //       my_apps_grid.jqGrid('delRowData', inst.guid);
+      //       my_apps_grid.trigger('reloadGrid');
+      //       setTimeout(function () {
+      //         proto.ProgressDialog.hide($fw.client.dialog.progress);
+      //       }, 1500);
+      //     } else if (data.status && data.status === "error") {
+      //       proto.ProgressDialog.hide($fw.client.dialog.progress);
+      //       $fw.client.dialog.error(data.message);
+      //     }
+      //   });
+      // });
+    }
   }
 
 });
