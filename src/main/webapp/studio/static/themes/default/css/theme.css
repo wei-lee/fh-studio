@@ -1595,6 +1595,10 @@ span.label-info {
   text-align: center;
 }
 
+#preview_controls button {
+  width: 33.33333333%;
+}
+
 #preview_text {
   text-align:center;
 }
@@ -3277,7 +3281,8 @@ table.dataTable th:active {
 
 #quickstart_container .cloud-quickstart i,
 #quickstart_container .client-quickstart i,
-#quickstart_client_container i {
+#quickstart_client_container i,
+#quickstart_client_hybrid_container i {
   font-size: 96px;
 }
 
@@ -3285,7 +3290,7 @@ table.dataTable th:active {
   text-decoration: none;
 }
 
-#quickstart_client_container h2 {
+#quickstart_client_container h2, #quickstart_client_hybrid_container h2 {
   margin-bottom: 10px;
 }
 
