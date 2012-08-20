@@ -2872,15 +2872,6 @@ line-height:0.5em;
   display: inline-block;
 }
 
-/* thumbnails */
-.thumbnail h4, .thumbnail h5 {
-  text-align: center;
-}
-
-li.active .thumbnail, div.active .thumbnail {
-  border-color: #3223A3;
-}
-
 /* Wufoo Generator */
 #wufoo_single_generator_form .wufoo_api_url, #wufoo_multi_generator_form .wufoo_api_url {
   width: 150px;
@@ -3285,7 +3276,8 @@ table.dataTable th:active {
 }
 
 #quickstart_container .cloud-quickstart i,
-#quickstart_container .client-quickstart i {
+#quickstart_container .client-quickstart i,
+#quickstart_client_container i {
   font-size: 96px;
 }
 
@@ -3293,7 +3285,15 @@ table.dataTable th:active {
   text-decoration: none;
 }
 
-#clone_button { margin-right: 5px; }
+#quickstart_client_container h2 {
+  margin-bottom: 10px;
+}
+
+#quickstart_client_container h5 {
+  margin-top: 5px;
+}
+
+#clone_button, #delete_app_button { margin-right: 5px; }
 
 /* Awesome nth item selector that works cross platform (including IE!)
   http://reference.sitepoint.com/css/adjacentsiblingselector

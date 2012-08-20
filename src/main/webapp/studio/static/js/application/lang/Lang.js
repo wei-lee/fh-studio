@@ -194,6 +194,8 @@ var Lang = {
   ios_publish_wizard_supertitle: 'iOS Universal Build',
   app_publish_ios_select_provisionings_title: 'Please select the Provisioning Profile',
   app_publish_ios_upload_provisionings_title: 'Please upload the provisioning profile',
+  app_publish_ios_deploying_env_title:'Server-side code deploying',
+  app_publish_ios_deploying_progress_title: 'Deploying App',
   app_publish_ios_upload_progress_title: 'Uploading provisioning profile',
   app_publish_ios_versions_title: 'Please select the iOS deployment target version',
   app_publish_ios_password_title: 'Please enter the passwords for your private key and certificate',
