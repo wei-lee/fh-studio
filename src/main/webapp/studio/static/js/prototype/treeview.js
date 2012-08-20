@@ -719,12 +719,20 @@ proto.TreeviewManager = function (params) {
         folder = file.parentsUntil('#editor_files_list').filter('.folder_item');
       self.container.jstree('open_node', folder, $.noop, true);
       file.find('a').trigger('click');
+    },
+
+    selectNodeByPath: function (file_path) {
+      var file = self.container.find('.file_item[path="' + file_path + '"]'),
+        folder = file.parentsUntil('#editor_files_list').filter('.folder_item');
+      self.container.jstree('open_node', folder, $.noop, true);
+      file.find('a').trigger('click');
     }
   };
   self.init();
   return {
     load: self.load,
     destroy: self.destroy,
-    selectNode: self.selectNode
+    selectNode: self.selectNode,
+    selectNodeByPath: self.selectNodeByPath
   };
 };
