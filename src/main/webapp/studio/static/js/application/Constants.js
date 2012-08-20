@@ -22,6 +22,7 @@ $.extend(Constants, {
   ARM_URL_PREFIX : "/box/srv/1.1/arm/",
   METRICS_URL_PREFIX : "/box/srv/1.1/metrics/",
   ADMIN_URL_PREFIX : "/box/srv/1.1/admin/",
+  SDK_URL_PREFIX : "/box/srv/1.1/sdk/",
 
   ____DEPRECATED____DEV_URL_PREFIX____DEPRECATED____ : "/box/srv/1.1/dev/" // dev endpoints to be moved/migrated into ide space
 
@@ -150,5 +151,7 @@ $.extend(Constants, {
   ADMIN_DEVICES_UPDATE_URL : Constants.ADMIN_URL_PREFIX + "device/update",
   ADMIN_DEVICES_READ_URL: Constants.ADMIN_URL_PREFIX + "device/read",
   ADMIN_DEVICES_LISTUSERS_URL : Constants.ADMIN_URL_PREFIX + "device/listusers",
-  ADMIN_DEVICES_LISTAPPS_URL : Constants.ADMIN_URL_PREFIX + "device/listapps"
+  ADMIN_DEVICES_LISTAPPS_URL : Constants.ADMIN_URL_PREFIX + "device/listapps",
+
+  SDK_GETFILES_URL : Constants.SDK_URL_PREFIX + "files/all"
 });
