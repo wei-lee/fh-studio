@@ -20,13 +20,8 @@ Apps.Templates.Controller = Controller.extend({
   },
 
   initBindings: function () {
-    var self = this;
-
-    $('#template_clone_button').bind('click', function () {
-      $fw.client.tab.apps.manageapps.getController('apps.clone.controller').show($fw.data.get('inst').guid);
-    });
-
     $fw.client.lang.insertLangForContainer($('#template_message'));
+    this.bindCloneButtons();
   },
 
   show: function() {
@@ -43,6 +38,14 @@ Apps.Templates.Controller = Controller.extend({
     }, function() {
       // Failure
     }, true);
+  },
+
+  bindCloneButtons: function () {
+    $('.template_clone_button').text($fw.client.lang.getLangString('template_clone_button')).unbind().bind('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      $fw.client.tab.apps.manageapps.getController('apps.clone.controller').show($fw.data.get('inst').guid);
+    });
   },
   
   doView: function (guid) {

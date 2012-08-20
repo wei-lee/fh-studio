@@ -64,6 +64,9 @@ Apps.Details.Controller = Apps.Controller.extend({
         scmTriggerButton.removeAttr('disabled').text(scmTriggerButtonText).removeClass('ui-state-hover');
       });
     });
+
+    // clone button
+    $fw.client.tab.apps.manageapps.getController('apps.templates.controller').bindCloneButtons();
     $fw.client.lang.insertLangForContainer($(this.views.manage_details_container));
   },
   

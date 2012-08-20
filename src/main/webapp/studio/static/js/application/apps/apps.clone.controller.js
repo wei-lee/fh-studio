@@ -158,7 +158,23 @@ Apps.Clone.Controller = Controller.extend({
     $fw.client.tab.apps.listapps.show();
     $('#myapps_listitem a').trigger('click');
     $fw.data.set('template_mode', false);
-    $fw.client.tab.apps.manageapps.show(app_identifier, callback, $.noop, is_app_name, intermediate);
+    $fw.client.tab.apps.manageapps.show(app_identifier, function () {
+      // TODO: Duplicated from apps create controller!!
+      //       better way of doing this as show will be called twice for 2 different controllers.
+      //       once above for manageapps show, and once below
+
+      var controller = 'apps.quickstart.controller';
+      if ('publish' === finish_option) {
+        controller = 'apps.build.controller';
+      } else if ('edit' === finish_option) {
+        controller = 'apps.editor.controller';
+      }
+      $('.manageapps_nav_list a[data-controller="' + controller + '"]').trigger('click');
+
+      if ($.isFunction(callback)) {
+        callback();
+      }
+    }, $.noop, is_app_name, intermediate);
   },
   
   deployApp: function (guid, cb) {

@@ -432,6 +432,7 @@ var Lang = {
   clone_server_error: 'The Clone process is currently experiencing difficulties. Please try again later.',
   clone_finish_radio1: 'Edit my App',
   clone_finish_radio2: 'Build my App',
+  clone_finish_radio3: 'Quickstart',
   
   manage_details_header: 'Manage App Details',
   manage_frameworks_header: 'Manage App Libraries',
