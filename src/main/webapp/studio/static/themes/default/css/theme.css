@@ -649,14 +649,16 @@ label.error
 #main_layout_center .ui-tabs-nav
 {
 }
-#main_layout_center .ui-tabs-nav li
-{
+
+#main_layout_center .ui-tabs-nav li {
+  border: 1px solid #ccc;
   border-bottom:none;
   height:24px;
   line-height:11px;
   min-width:80px;
   margin-right:0.5em;
 }
+
 #main_layout_center .ui-tabs-nav li.ui-state-default a
 {
   color:#666666;
@@ -961,7 +963,9 @@ label.error
 /* Editor */
 #editor_text_content {
   min-height: 300px;
+  border: 1px solid #ccc;
 }
+
 #editor_img_content 
 {
   overflow:auto;
@@ -976,15 +980,14 @@ label.error
    width: 100%;
    overflow: hidden;
    margin: 0px;
-   background:#fff url(../img/grey_bar.png) repeat-x 0 0;
 }
-#editor_titles
-{
-   background-color: transparent;
-   border-bottom:1px solid #CCCCCC;
-   height: 25px;
-   padding: 0px;
+#editor_titles {
+  margin-top: 10px;
+  background-color: transparent;
+  height: 25px;
+  padding: 0px;
 }
+
 #editor_titles li.ui-tabs-selected{
   padding-bottom:0px!important;
 }
@@ -3306,6 +3309,7 @@ table.dataTable th:active {
 }
 
 #clone_button, #delete_app_button { margin-right: 5px; }
+
 
 /* Awesome nth item selector that works cross platform (including IE!)
   http://reference.sitepoint.com/css/adjacentsiblingselector
