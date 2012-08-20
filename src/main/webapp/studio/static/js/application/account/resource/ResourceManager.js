@@ -48,7 +48,8 @@ application.ResourceManager = Class.extend({
       resource_div.find('.resource-download').data('guid', temp_resource.guid).unbind().bind('click', function () {
         var guid = $(this).data('guid');
         console.log('download clicked for resource with guid: ' + guid);
-        $fw.app.startDownload(Constants.DOWNLOAD_RESOURCE_URL + '?guid=' + guid);
+        var url = Constants.DOWNLOAD_RESOURCE_URL + '?guid=' + guid;
+        document.location = url;
       });
       destination_resources[temp_resource.type] = true;
     }
@@ -216,7 +217,7 @@ application.ResourceManager = Class.extend({
         buildType: key_wizard.find('#'+that.destination+'_key_type').val()
       };
       console.log("params: " + JSON.stringify(data));
-      $fw.app.startUpload(key_wizard.find('#' + file_input_id), upload_url, data, function (result) {
+      $fw.client.model.Resource.startUpload(key_wizard.find('#' + file_input_id), upload_url, data, function (result) {
         console.log('upload result > ' + JSON.stringify(result));
         if ('undefined' !== typeof result.error && result.error.length > 0) {
           proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_failed'));
@@ -291,7 +292,7 @@ application.ResourceManager = Class.extend({
         buildType: build_type
       };
       
-      $fw.app.startUpload(cert_wizard.find('#' + file_input_id), upload_url, data, function (result) {
+      $fw.client.model.Resource.startUpload(cert_wizard.find('#' + file_input_id), upload_url, data, function (result) {
         console.log('upload result > ' + JSON.stringify(result));
         if ('undefined' !== typeof result.error && result.error.length > 0) {
           console.log('upload failed');
@@ -357,7 +358,7 @@ application.ResourceManager = Class.extend({
         buildType: 'release'
       };
       console.log("params: " + JSON.stringify(data));
-     $fw.app.startUpload(res_wizard.find('#' + file_input_id), upload_url, data, function (result) {
+      $fw.client.model.Resource.startUpload(res_wizard.find('#' + file_input_id), upload_url, data, function (result) {
         console.log('upload result > ' + JSON.stringify(result));
         if ('undefined' !== typeof result.error && result.error.length > 0) {  
           proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_failed'));

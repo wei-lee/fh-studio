@@ -200,7 +200,7 @@ model.App = model.Model.extend({
 
   uploadIcon: function(jq_comp, params, success, fail, timeout) {
     var url = Constants.UPLOAD_ICON_URL;
-    $fw.app.startUpload(jq_comp, url, params, function(res) {
+    this.startUpload(jq_comp, url, params, function(res) {
       if ("ok" === res.result) {
         if ($.isFunction(success)) {
           success(res);

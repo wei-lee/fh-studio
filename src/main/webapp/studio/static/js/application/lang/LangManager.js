@@ -85,7 +85,7 @@ LangManager = Class.extend({
   },
   
   /*
-   * Apply a qtip to the element (this) if text is available for it
+   * Apply a tooltip/popover to the element (this) if text is available for it
    */
   insertHelp: function (index) {
     var el = $(this);
@@ -99,21 +99,12 @@ LangManager = Class.extend({
         placement: 'left',
         delay: 100
       });
-      // el.qtip({
-      //   content: lang,
-      //   position: {
-      //     corner: {
-      //       target: 'leftTop',
-      //       tooltip: 'rightMiddle'
-      //     }
-      //   }
-      // });
     }
   },
   
   /*
    * Insert a help icon after the element (this) 
-   *  and apply a qtip to it if text is available for it
+   *  and apply a popover/tooltip to it if text is available for it
    */
   insertHelpIcon: function (index) {
     var el = $(this);
@@ -132,15 +123,6 @@ LangManager = Class.extend({
         placement: 'bottom',
         delay: 100
       });
-      // span.qtip({
-      //   content: lang,
-      //   position: {
-      //     corner: {
-      //       target: 'rightMiddle',
-      //       tooltip: 'leftMiddle'
-      //     }
-      //   }
-      // });
     }
   },
   

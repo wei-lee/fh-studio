@@ -1,7 +1,6 @@
 common/js/ajax/ASyncServerTask.js
 js/application/Constants.js
 js/application/Config.js
-js/application/application.js
 js/application/accordion/AccordionManager.js
 js/application/accordion/AccountAccordionManager.js
 js/application/accordion/ReportingAccordionManager.js
