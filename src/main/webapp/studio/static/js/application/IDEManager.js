@@ -3,7 +3,6 @@ var IDEManager = Class.extend({
   init: function () {
     this.accordion = new application.AccordionManager();
     this.preview = new application.PreviewManager();
-    this.report = new application.ReportManager();
     this.profile = new application.ProfileManager();
     this.keys = new application.controller.Keys();
     this.resource = {
