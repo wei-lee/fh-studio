@@ -369,7 +369,7 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
 
           self.appendProgressLog('Configuring your app.');
 
-          $fw.client.tab.apps.manageapps.controllers['apps.deploy.controller'].simpleDevDeploy(guid, function(res) {
+          $fw.client.tab.apps.manageapps.getController('apps.deploy.controller').simpleDevDeploy(guid, function(res) {
             self.appendProgressLog('App configured.');
             cb();
           });

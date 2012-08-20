@@ -45,7 +45,7 @@ Apps.Quickstart.Controller = Apps.Controller.extend({
 
     this.initFn();
     
-    $(this.container).show();
+    $(this.container).find('li').removeClass('active').end().show();
   },
 
   initBindings: function () {
@@ -62,6 +62,45 @@ Apps.Quickstart.Controller = Apps.Controller.extend({
 
       var controller = $fw.client.tab.apps.manageapps.getController(anchor.data('controller'));
       controller.show(e, true);
+    });
+
+    self.bindNotYetAvailableMessages();
+    self.requestSDKFilesUrls();
+  },
+
+  setClickAction: function (linkId, osKey, fileKey, files) {
+    if(files.sdkFiles && files.sdkFiles[osKey] && files.sdkFiles[osKey][fileKey]) {
+      var target = files.sdkFiles[osKey][fileKey];
+      console.log("Setting link for " + linkId + " to: " + target);
+      $(linkId).attr("href", files.sdkFiles[osKey][fileKey]);
+      $(linkId).unbind('click').bind('click', function (e) {
+        console.log("Downloading target: " + target);
+        return true;
+      });
+    }
+  },
+
+  requestSDKFilesUrls: function () {
+    var self = this;
+    $fw.server.post(Constants.SDK_GETFILES_URL , {
+    }, function (res) {
+      if(res && res.status && res.status === "oks") {
+        self.setClickAction('#ios_sdk_download_link', 'fh-ios-sdk', 'sdk', res);
+        self.setClickAction('#ios_starter_download_link', 'fh-ios-sdk', 'starter', res);
+        self.setClickAction('#android_sdk_download_link', 'fh-android-sdk', 'sdk', res);
+        self.setClickAction('#android_starter_download_link', 'fh-android-sdk', 'starter', res);
+        self.setClickAction('#javascript_sdk_download_link', 'fh-javascript-sdk', 'sdk', res);
+        self.setClickAction('#javascript_starter_download_link', 'fh-javascript-sdk', 'starter', res);
+      }
+    });
+
+  },
+
+  bindNotYetAvailableMessages: function () {
+    $('.sdkfiles_link').each(function() {
+      $(this).unbind('click').bind('click', function (e) {
+        alert("Links for the SDK Files are currently being downloaded, please try again.");
+      });
     });
   },
 
@@ -84,6 +123,40 @@ Apps.Quickstart.Controller = Apps.Controller.extend({
 
 
 Apps.Quickstart.Client.Controller = Apps.Quickstart.Controller.extend({
+
+  ios_plist: ['<?xml version="1.0" encoding="UTF-8"?>',
+    '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">',
+    '<plist version="1.0">',
+    '  <dict>',
+    '    <key>apiurl</key>',
+    '    <string>{placeholder1}</string>',
+    '    <key>app</key>',
+    '    <string>{placeholder2}</string>',
+    '    <key>domain</key>',
+    '    <string>{placeholder3}</string>',
+    '    <key>inst</key>',
+    '    <string>{placeholder4}</string>',
+    '  </dict>',
+    '</plist>'].join('\n'),
+
+  android_properties: ['apiurl = {placeholder1}',
+    'app = {placeholder2}',
+    'domain = {placeholder3}'].join('\n'),
+
+  javascript_index: ['<script src="feedhenry.js" type="text/javascript"></script>',
+    '<script type="text/javascript">',
+    'var config = {',
+    '  apiurl: "{placeholder1}",',
+    '  appid: "{placeholder2}",',
+    '  apikey: "{placeholder3}"',
+    '}',
+    '',
+    'var fh = new FeedHenry(config);',
+    'fh.init(function(res){',
+    '  // SDK initialised, callback action here',
+    '});',
+    '</script>'].join('\n'),
+
   init: function () {
     this.initFn = _.once(this.initBindings);
   },
@@ -98,6 +171,11 @@ Apps.Quickstart.Client.Controller = Apps.Quickstart.Controller.extend({
       // hide all steps, then just show step 1
       jqEl.find('.multistep_step').hide().end().find('.step_1').show();
     }
+
+    // Update client sdk instructions for current app
+    $('.ios_plist').text(this.ios_plist);
+    $('.android_properties').text(this.android_properties);
+    $('.javascript_index').text(this.javascript_index);
   },
 
   initBindings: function () {
@@ -111,7 +189,7 @@ Apps.Quickstart.Client.Controller = Apps.Quickstart.Controller.extend({
       el.closest('li').addClass('active');
 
       // hide all other steps at the current step number or greater
-      $('.step_2,.step_3,.step_4,.step_5').hide().find('li.active').removeClass('active');
+      $('.step_2,.step_3,.step_4,.step_5').hide().find('li').removeClass('active');
 
       // show succeeding step/s that are configured for this item
       var nextsteps = el.data('nextsteps').split(',');
@@ -129,7 +207,7 @@ Apps.Quickstart.Client.Controller = Apps.Quickstart.Controller.extend({
       el.closest('li').addClass('active');
 
       // hide all other steps at the current step number or greater
-      $('.step_3,.step_4,.step_5').hide().find('li.active').removeClass('active');
+      $('.step_3,.step_4,.step_5').hide().find('li').removeClass('active');
 
       // show succeeding step/s that are configured for this item
       var nextsteps = el.data('nextsteps').split(',');

@@ -208,11 +208,12 @@ Apps.Create.Controller = Controller.extend({
     
     create_app_wizard.find('#create_app_from_template').unbind('show').bind('show', function () {
       // list template apps
-      var self = $(this);
-      var template_select = self.find('#template_select');
+      var thisStep = $(this);
+      var template_select = thisStep.find('#template_select');
       template_select.empty();
-      self.find('#template_preview_button').button({'icons': {'primary': 'ui-icon-gear'}});
-      $fw.client.model.Template.list(function (list) {
+      thisStep.find('#template_preview_button').button({'icons': {'primary': 'ui-icon-gear'}});
+      $fw.client.model.Template.list(function (data) {
+        var list = data.list;
         if (list.length === 0) {
           proto.Wizard.previousStep(create_app_wizard, $fw.client.lang.getLangString('no_templates_message'));
         }
@@ -227,14 +228,14 @@ Apps.Create.Controller = Controller.extend({
             template_select.append(item);
           }
           
-          self.showTemplateDetails(self, list[0]);
+          self.showTemplateDetails(thisStep, list[0]);
           template_select.unbind('change').bind('change', {templates: list}, function (event) {
             var templates = event.data.templates;
             var index = $(this).val();
             console.log("selected template index: " + index);
             var t = templates[index];
             console.log("selected template guid: " + t.id + ":: title: " + t.title + " :: desc:: " + t.description);
-            self.showTemplateDetails(self, t);
+            self.showTemplateDetails(thisStep, t);
           });
         }
       }, function (error) {
@@ -275,9 +276,24 @@ Apps.Create.Controller = Controller.extend({
     var app_identifier = is_app_name ? app_name : app_guid;
     
     console.log('finished... is_app_name = ' + is_app_name + ' app_identifier = ' + app_identifier + ' > ' + finish_option);
-    
+
     $fw.data.set('template_mode', false);
-    $fw.client.tab.apps.manageapps.show(app_identifier, callback, $.noop, is_app_name, intermediate);
+    $fw.client.tab.apps.manageapps.show(app_identifier, function () {
+      // TODO: better way of doing this as show will be called twice for 2 different controllers.
+      //       once above for manageapps show, and once below
+
+      var controller = 'apps.quickstart.controller';
+      if ('publish' === finish_option) {
+        controller = 'apps.build.controller';
+      } else if ('edit' === finish_option) {
+        controller = 'apps.editor.controller';
+      }
+      $('.manageapps_nav_list a[data-controller="' + controller + '"]').trigger('click');
+
+      if ($.isFunction(callback)) {
+        callback();
+      }
+    }, $.noop, is_app_name, intermediate);
   },
 
   showTemplateDetails: function (container, template) {

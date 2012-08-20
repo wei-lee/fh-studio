@@ -1,13 +1,14 @@
         <div id="quickstart_container">
           <ul class="thumbnails">
-            <li class="span2">
-              <a href="#" class="thumbnail client-quickstart" data-controller="apps.quickstart.client.controller">
+            <li class="span3"></li>
+            <li class="span3">
+              <a href="#" class="thumbnail client-quickstart pull-right" data-controller="apps.quickstart.client.controller">
                 <img src="<%=studio.getStaticAssetPath("themes/default/img/placeholder.jpg")%>" alt="">
                 <h4>Client Quick Start</h4>
               </a>
             </li>
-            <li class="span2">
-              <a href="#" class="thumbnail cloud-quickstart" data-controller="apps.quickstart.cloud.controller">
+            <li class="span3">
+              <a href="#" class="thumbnail cloud-quickstart pull-left" data-controller="apps.quickstart.cloud.controller">
                 <img src="<%=studio.getStaticAssetPath("themes/default/img/placeholder.jpg")%>" alt="">
                 <h4>Cloud Quick Start</h4>
               </a>
@@ -64,7 +65,7 @@
               <div class="step_number">2</div>
               <form class="well form-horizontal">
                 <h2>You're all set!</h2>
-                <p>Your App is already created and good to go, so you're ready to start developing</p>
+                <p>Your App is already created and good to go, so you're ready to start developing!</p>
 
                 <%@ include file="./quickstart_hybrid_actions.html"%>
                 
@@ -100,12 +101,15 @@
               <div class="step_number">3</div>
               <form class="well form-horizontal">
                 <h2>Download Template Project</h2>
-                <div class="span2">
-                  <a href="#" class="thumbnail">
+                <p>1. Download the Template Project below and open it using Xcode</p>
+                <div class="row-fluid">
+                  <a href="#" id="ios_starter_download_link" class="thumbnail span2 sdkfiles_link">
                     <img src="<%=studio.getStaticAssetPath("themes/default/img/placeholder.jpg")%>" alt="">
                     <h5>iOS Template Project</h5>
                   </a>
                 </div>
+                <p>2. Copy and paste the following into your fh.plist</p>
+                <pre class="ios_plist"></pre>
               </form>
             </div>
           </div>
@@ -115,12 +119,15 @@
               <div class="step_number">3</div>
               <form class="well form-horizontal">
                 <h2>Download & Integrate the SDK</h2>
-                <div class="span2">
-                  <a href="#" class="thumbnail">
+                <p>1. To Start creating a FeedHenry powered iOS Native app, download the iOS SDK</p>
+                <div class="row-fluid">
+                  <a href="#" id="ios_sdk_download_link" class="thumbnail span2 sdkfiles_link">
                     <img src="<%=studio.getStaticAssetPath("themes/default/img/placeholder.jpg")%>" alt="">
                     <h5>iOS SDK</h5>
                   </a>
                 </div>
+                <p>2. With the SDK downloaded, copy and paste the following into your fh.plist</p>
+                <pre class="ios_plist"></pre>
               </form>
             </div>
           </div>
@@ -130,7 +137,7 @@
               <div class="step_number">4</div>
               <form class="well form-horizontal">
                 <h2>Learn how to use the SDK</h2>
-                ios 4
+                <a href="#">Some Links to tutorials/Docs</a>
               </form>
             </div>
           </div>
@@ -163,12 +170,15 @@
               <div class="step_number">3</div>
               <form class="well form-horizontal">
                 <h2>Download Template Project</h2>
-                <div class="span2">
-                  <a href="#" class="thumbnail">
+                <p>1. Download the Template Project below (Can be imported into Eclipse as an existing project)</p>
+                <div class="row-fluid">
+                  <a href="#" id="android_starter_download_link" class="thumbnail span2 sdkfiles_link">
                     <img src="<%=studio.getStaticAssetPath("themes/default/img/placeholder.jpg")%>" alt="">
                     <h5>Android Template Project</h5>
                   </a>
                 </div>
+                <p>2. Copy and paste the following into your fh.properties</p>
+                <pre class="android_properties"></pre>
               </form>
             </div>
           </div>
@@ -178,12 +188,15 @@
               <div class="step_number">3</div>
               <form class="well form-horizontal">
                 <h2>Download & Integrate the SDK</h2>
-                <div class="span2">
-                  <a href="#" class="thumbnail">
+                <p>1. To start creating a FeedHenry powered Android Native app, download our Android SDK</p>
+                <div class="row-fluid">
+                  <a href="#" id="android_sdk_download_link" class="thumbnail span2 sdkfiles_link">
                     <img src="<%=studio.getStaticAssetPath("themes/default/img/placeholder.jpg")%>" alt="">
                     <h5>Android SDK</h5>
                   </a>
                 </div>
+                <p>2. With the SDK downloaded, copy and paste the following into your fh.properties</p>
+                <pre class="android_properties"></pre>
               </form>
             </div>
           </div>
@@ -193,7 +206,7 @@
               <div class="step_number">4</div>
               <form class="well form-horizontal">
                 <h2>Learn how to use the SDK</h2>
-                android 4
+                <a href="#">Some Links to tutorials/Docs</a>
               </form>
             </div>
           </div>
@@ -203,7 +216,8 @@
               <div class="step_number">2</div>
               <form class="well form-horizontal">
                 <h2>Download Phonegap</h2>
-                pg 2
+                <a href="http://phonegap.com/download" target="_blank">http://phonegap.com/download</a>
+                <p>Follow the instructions on the PhoneGap website to get started</p>
               </form>
             </div>
           </div>
@@ -213,12 +227,16 @@
               <div class="step_number">3</div>
               <form class="well form-horizontal">
                 <h2>Download & Integrate the SDK</h2>
-                <div class="span2">
-                  <a href="#" class="thumbnail">
+                <p>1. To start creating a FeedHenry powered PhonegGap app, download our JavaScript SDK</p>
+                <div class="row-fluid">
+                  <a href="#" class="thumbnail span2">
                     <img src="<%=studio.getStaticAssetPath("themes/default/img/placeholder.jpg")%>" alt="">
                     <h5>FeedHenry PhoneGap JavaScript SDK</h5>
                   </a>
                 </div>
+                <p>2. With the SDK downloaded, copy the JavaScript SDK source file(s) into your PhoneGap Project<br/>- These files are typically copied into the www/ directory of your PhoneGap project</p>
+                <p>3. Copy and paste the following into the &lt;head&gt; of your index.html file</p>
+                <pre class="javascript_index"></pre>
               </form>
             </div>
           </div>
@@ -228,7 +246,7 @@
               <div class="step_number">4</div>
               <form class="well form-horizontal">
                 <h2>Learn how to use the SDK</h2>
-                pg 4
+                <a href="#">Some Links to tutorials/Docs</a>
               </form>
             </div>
           </div>
@@ -261,12 +279,15 @@
               <div class="step_number">3</div>
               <form class="well form-horizontal">
                 <h2>Download Template Project</h2>
-                <div class="span2">
-                  <a href="#" class="thumbnail">
+                <p>1. Download the Template Project below</p>
+                <div class="row-fluid">
+                  <a href="#" class="thumbnail span2">
                     <img src="<%=studio.getStaticAssetPath("themes/default/img/placeholder.jpg")%>" alt="">
                     <h5>JavaScript Template Project</h5>
                   </a>
                 </div>
+                <p>2. Copy and paste the following into the index.html file</p>
+                <pre class="javascript_index"></pre>
               </form>
             </div>
           </div>
@@ -276,12 +297,15 @@
               <div class="step_number">3</div>
               <form class="well form-horizontal">
                 <h2>Download & Integrate the SDK</h2>
-                <div class="span2">
-                  <a href="#" class="thumbnail">
+                <p>1. To start creating a FeedHenry powered JavaScript app, download our JavaScript SDK</p>
+                <div class="row-fluid">
+                  <a href="#" class="thumbnail span2">
                     <img src="<%=studio.getStaticAssetPath("themes/default/img/placeholder.jpg")%>" alt="">
-                    <h5>JavaScript SDK</h5>
+                    <h5>FeedHenry JavaScript SDK</h5>
                   </a>
                 </div>
+                <p>2. With the SDK downloaded, copy and paste the following into the html file you wish to use FeedHenry from</p>
+                <pre class="javascript_index"></pre>
               </form>
             </div>
           </div>
@@ -291,7 +315,7 @@
               <div class="step_number">4</div>
               <form class="well form-horizontal">
                 <h2>Learn how to use the SDK</h2>
-                js 4
+                <a href="#">Some Links to tutorials/Docs</a>
               </form>
             </div>
           </div>
@@ -309,13 +333,13 @@
                 <h5>Develop my Cloud Code</h5>
               </a>
             </li>
-            <li class="span2">
+            <li class="span2 nodejs_mode">
               <a href="#" class="thumbnail" data-controller="apps.deploy.controller">
                 <img src="<%=studio.getStaticAssetPath("themes/default/img/placeholder.jpg")%>" alt="">
                 <h5>Deploy my Cloud Code</h5>
               </a>
             </li>
-            <li class="span2">
+            <li class="span2 nodejs_mode">
               <a href="#" class="thumbnail" data-controller="apps.status.controller">
                 <img src="<%=studio.getStaticAssetPath("themes/default/img/placeholder.jpg")%>" alt="">
                 <h5>Monitor Cloud Status</h5>

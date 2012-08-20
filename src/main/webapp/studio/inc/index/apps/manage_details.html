@@ -11,6 +11,13 @@
       </div>
 
       <div class="control-group">
+        <label id="new_app_apikey_label" class="insert-lang insert-help-icon control-label" for="new_app_apikey"></label>
+        <div class="controls">
+          <input id="new_app_apikey" name="app_apikey" type="text" class="span12" disabled/>
+        </div>
+      </div>
+
+      <div class="control-group">
         <label id="new_app_scmurl_label" class="insert-lang insert-help-icon control-label" for="new_app_scmurl"></label>
         <div class="controls">
           <input id="new_app_scmurl" name="scmurl" type="text" class="span12"/>
@@ -48,7 +55,8 @@
       </div>
 
       <div class="form-actions">
-        <button id="manage_details_update_button" class="template-restriction btn pull-right"></button>
+        <button id="manage_details_update_button" class="template-restriction btn btn-primary pull-right"></button>
+        <button id="clone_button" class="template_clone_button btn pull-right"></button>
         <button id="scm_trigger_button" class="btn template-restriction pull-right"></button>
       </div>
     </fieldset>

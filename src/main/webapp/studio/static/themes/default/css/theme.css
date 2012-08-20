@@ -1489,14 +1489,14 @@ span.label-info {
  background-image: url("../img/export/embed.png");
 }
 /* App Configurations */
-.configuration_content {  
-  padding-left: 10%;
-  padding-right: 10%;
-  width: 100%;
+#configuration_container .control-label, #push_urbanairship_container .control-label {
+  width: 180px;
 }
-.configuration_content th, .configuration_content td {
-  height: 25px;
+
+#configuration_container .controls, #push_urbanairship_container .controls {
+  margin-left: 200px;
 }
+
 /* Debugging */
 #debug_logging_text
 {
@@ -1569,6 +1569,9 @@ span.label-info {
 }
 
 /* Preview frame style */
+.preview_buttons {
+  margin-top:-3px;
+}
 #preview_header {
   margin:0 0 1em;
 }
@@ -1586,6 +1589,9 @@ span.label-info {
 }
 #preview_frame {
   -webkit-transform:scale(1);
+}
+#preview_frame iframe{
+  background-color:#fff;
 }
 
 #preview_controls {
@@ -2811,7 +2817,7 @@ line-height:0.5em;
 }
 
 .multistep .step_number {
-  background: #ddd;
+  background: #DFE0FA;
   position: absolute;
   top: 0;
   left: 0;
@@ -2884,6 +2890,10 @@ line-height:0.5em;
 
 #app_generators .well h4 {
   margin-top: 7px;
+}
+
+.multistep .well {
+  
 }
 
 .multistep .label_spacer {
@@ -3047,7 +3057,7 @@ table.dataTable th:active {
   cursor: text;
 }
 
-.manageapps_nav_list, #app_content, #app_preview {
+.row-fluid .manageapps_nav_list[class*="span"], #app_content, #app_preview {
   min-height: 625px;
 }
 

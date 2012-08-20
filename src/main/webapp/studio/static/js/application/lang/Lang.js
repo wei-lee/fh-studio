@@ -303,6 +303,8 @@ var Lang = {
   new_app_title_label_help_icon: 'This will be used as the App name on devices.',
   new_app_id_label: 'App ID',
   new_app_id_label_help_icon: 'Your App ID is used to identify your app (FHC uses this)',
+  new_app_apikey_label: 'App API Key',
+  new_app_apikey_label_help_icon: 'Your App API Key is used in conjunction with your App ID to provide access to your App\'s cloud code',
   new_app_description_label: 'Description',
   new_app_description_label_help_icon: 'A short description of the App.',
   new_app_target_label: 'Default Preview Device',
@@ -388,6 +390,7 @@ var Lang = {
   // These 2 are used by import wizard
   create_app_next_radio1: 'Edit my App',
   create_app_next_radio2: 'Build my App',
+  create_app_next_radio3: 'Quickstart',
   
   create_app_type_text: 'Choose one of the options below to get started with a new App.',
   create_app_type_opt1: 'Create an App from scratch',
@@ -402,6 +405,7 @@ var Lang = {
   /*create_app_next_radio_edit_label_help_icon: '',*/
   create_app_next_radio_publish_label: 'Build my App',
   /*create_app_next_radio_publish_label_help_icon: ''*/
+  create_app_next_radio_quickstart_label: 'Quickstart',
   create_app_frameworks_text:'Choose libraries or frameworks for the app. If you don\'t need any of these, you can skip this step. ',
   create_app_publickeysetup_text: 'To allow access to your git repository, please authorise the public key below.',
   import_app_wizard_supertitle: 'Import An App',
@@ -428,6 +432,7 @@ var Lang = {
   clone_server_error: 'The Clone process is currently experiencing difficulties. Please try again later.',
   clone_finish_radio1: 'Edit my App',
   clone_finish_radio2: 'Build my App',
+  clone_finish_radio3: 'Quickstart',
   
   manage_details_header: 'Manage App Details',
   manage_frameworks_header: 'Manage App Libraries',
