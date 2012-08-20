@@ -2898,6 +2898,13 @@ li.active .thumbnail, div.active .thumbnail {
 #preview_toggle_open {
   margin-left:15px;
 }
+
+#configuration_container .nav-tabs > li > a, 
+#configuration_container .nav-pills > li > a {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
 button.btn {
   font-size: 11px;
   font-weight: bold;
