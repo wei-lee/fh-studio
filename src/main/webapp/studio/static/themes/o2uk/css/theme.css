@@ -116,18 +116,6 @@ button.ui-state-default:hover, .input-form input[type="button"].ui-state-hover {
   color: #000 !important;
 }
 
-#editor_save_btn {
-  background: url(../img/save_icon_sprite.png) no-repeat -2px 3px !important;
-}
-
-#editor_save_all_btn {
-  background: url(../img/save_all_sprite.png) no-repeat -2px 3px !important;
-}
-
-#editor_find_btn {
-  background: url(../img/go_to_icon_sprite.png) no-repeat -2px 3px !important;
-}
-
 .resource-div:hover .resource-buttons:hover .resource-not-uploaded:hover {
   color: #ddd !important;
 }
