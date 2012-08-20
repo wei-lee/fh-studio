@@ -69,7 +69,7 @@ application.DestinationIos = application.DestinationGeneral.extend({
         buildType: config,
         templateInstance: $fw.data.get('inst').guid
       };
-      $fw.app.startUpload(wizard.find("#" + that.destination_id + "_provisioning_upload_file"), upload_url, data, function (result) {
+      $fw.client.model.Resource.startUpload(wizard.find("#" + that.destination_id + "_provisioning_upload_file"), upload_url, data, function (result) {
         if ('undefined' !== typeof result.error && result.error.length > 0) {
           console.log('upload failed');
           proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_failed'));

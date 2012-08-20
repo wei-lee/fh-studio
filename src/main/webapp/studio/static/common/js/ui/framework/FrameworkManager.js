@@ -51,8 +51,6 @@ FrameworkManager = Class.extend({
   
   setClient: function (pClient) {
     this.client = pClient;
-    // FIXME: remove this line below
-    this.app = Application;
   },
 
   

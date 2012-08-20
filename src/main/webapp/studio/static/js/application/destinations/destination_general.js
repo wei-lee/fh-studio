@@ -28,12 +28,12 @@ application.DestinationGeneral = Class.extend({
   'export': function() {
     console.log("generate for " + this.destination_id + ":: Type: Export");
     var url = this.base_url + "?generateSrc=true";
-    $fw.app.startDownload(url);
+    document.location = url;
   },
 
   publish: function() {
     var url = this.base_url + "?generateSrc=false";
-    $fw.app.startDownload(url);
+    document.location = url;
   },
 
   doAsyncExport: function() {
@@ -81,7 +81,7 @@ application.DestinationGeneral = Class.extend({
           $fw.client.dialog.error($fw.client.lang.getLangString('free_source_export_disabled'));
         } else if (res.action && res.action.url) {
           var source_url = res.action.url;
-          $fw.app.startDownload(source_url);
+          document.location = source_url;
         }
       });
     }).bind('postShow', function() {
@@ -416,7 +416,6 @@ application.DestinationGeneral = Class.extend({
         var source_url = res.action.url;
         var ota_url = res.action.ota_url;
         var ipa_url = res.action.ipa_url;
-        //$fw.app.startDownload(source_url);
         var showOTA = false;
         var showIPA = false;
         if(typeof ota_url !== "undefined"){

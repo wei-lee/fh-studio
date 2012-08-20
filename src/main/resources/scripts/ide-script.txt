@@ -1,13 +1,11 @@
 common/js/ajax/ASyncServerTask.js
 js/application/Constants.js
 js/application/Config.js
-js/application/application.js
 js/application/accordion/AccordionManager.js
 js/application/accordion/AccountAccordionManager.js
 js/application/accordion/ReportingAccordionManager.js
 js/application/reporting/ReportingManager.js
 js/application/controller.js
-js/application/apps/report/ReportManager.js
 js/application/apps/preview/PreviewManager.js
 js/application/account/profile/ProfileManager.js
 js/application/account/keys/keys.controller.js
