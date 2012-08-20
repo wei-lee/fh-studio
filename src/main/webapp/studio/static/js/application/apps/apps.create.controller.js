@@ -89,8 +89,8 @@ Apps.Create.Controller = Controller.extend({
       proto.ProgressDialog.setProgress(step, 1);
       proto.ProgressDialog.append(step, 'Starting Create');
       
-      var id = $fw.client.preview.getDefaultDeviceId();
-      var device = $fw.client.preview.resolveDevice(id);
+      var id = $fw.client.tab.apps.manageapps.getController('apps.preview.controller').getDefaultDeviceId();
+      var device = $fw.client.tab.apps.manageapps.getController('apps.preview.controller').resolveDevice(id);
       
       var params = {
         title: details_step.find('input[name=title]').val(),
@@ -303,7 +303,7 @@ Apps.Create.Controller = Controller.extend({
     container.find('#template_icon').html($('<img>', {'src': iconController.getIconUrl(template.id, iconController.ICON_TYPE_LARGE)}));
     container.find('#template_preview_button').unbind().bind('click', function (e) {
       e.preventDefault();
-      $fw.client.preview.showInDialog($fw.client.preview.getTemplatePreviewUrl(template.id, 'studio', template.domain), template.width);
+      $fw.client.tab.apps.manageapps.getController('apps.preview.controller').showInDialog($fw.client.tab.apps.manageapps.getController('apps.preview.controller').getTemplatePreviewUrl(template.id, 'studio', template.domain), template.width);
     });
     $fw.data.set('clone_from_app', template.id);
   }

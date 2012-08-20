@@ -38,7 +38,7 @@ Apps.Editor.Controller = Apps.Controller.extend({
       $fw.client.tab.apps.manageapps.triggerScm(function() {
         self.loadAppFiles($fw.data.get('app').guid);
         // FIXME: should this be .reload()??
-        $fw.client.preview.show();
+        $fw.client.tab.apps.manageapps.getController('apps.preview.controller').show();
         self.reloadFiles();
       }, $.noop, function() {
         scmTriggerButtonEditor.removeAttr('disabled').text(scmTriggerButtonText).removeClass('ui-state-hover');
@@ -395,7 +395,7 @@ Apps.Editor.Controller = Apps.Controller.extend({
           $fw.client.dialog.info.flash($fw.client.lang.getLangString('file_saved'));
           self.modified_files[current_file.id] = undefined;
           self.removeModifiedMark(current_file.id);
-          $fw.client.preview.show();
+          $fw.client.tab.apps.manageapps.getController('apps.preview.controller').show();
         }
       });
     } else {
@@ -478,7 +478,7 @@ Apps.Editor.Controller = Apps.Controller.extend({
         self.removeModifiedMark(file_id);
       }
     }
-    $fw.client.preview.show();
+    $fw.client.tab.apps.manageapps.getController('apps.preview.controller').show();
   },
 
   search: function() {

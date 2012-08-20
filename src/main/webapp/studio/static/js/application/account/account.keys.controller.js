@@ -1,43 +1,40 @@
-application.controller.Keys = Class.extend({
-  init: function() {
-    console.log('Keys controller init');
-    this.model = new application.model.UserKey();
+var Account = Account || {};
+
+Account.Keys = Account.Keys || {};
+
+Account.Keys.Controller = Controller.extend({
+
+  models: {
+    userkey: new model.UserKey()
   },
 
-  refreshClipboardPaste: function() {
-    console.log('Refreshing copy and paste.');
-    // Destroy existing agents
-    $.each(ZeroClipboard.clients, function(i, client) {
-      client.destroy();
-    });
-    $("#keys_manage_body .user_key .copy:visible").each(function() {
-      var clip = new ZeroClipboard.Client();
-      clip.glue(this);
-
-      clip.addEventListener('mouseDown', function(client) {
-        var text = $(client.domElement).parent().find('.key_public').text();
-        clip.setText(text);
-        $fw.client.dialog.info.flash('Your key has been copied to your clipboard.');
-      });
-    });
+  views: {
+    keys_manage_container: '#keys_manage_container'
   },
 
-  bind: function() {
+  container: null,
+
+  init: function () {
+
+  },
+
+  bind: function () {
     var self = this;
+
     setTimeout(function() {
       self.refreshClipboardPaste();
     }, 100); // :(
-    $('#keys_manage_body .show_generate').unbind().click(function() {
+    $(this.views.keys_manage_container + ' .show_generate').unbind().click(function() {
       self.toggleGenerateKeyForm();
     });
 
-    $('#keys_manage_body button.generate_user_key').unbind().click(function() {
+    $(this.views.keys_manage_container + ' button.generate_user_key').unbind().click(function() {
       var key_label = $('input[name=key_label]').val();
       self.generateUserKey(key_label);
       return false;
     });
 
-    $('#keys_manage_body .user_key .revoke').unbind().click(function() {
+    $(this.views.keys_manage_container + ' .user_key .revoke').unbind().click(function() {
       var confirmation = confirm("Are you sure you want to revoke this API key? This cannot be undone.");
       if (confirmation) {
         var key = $(this).parent().parent().find('.key_public').text();
@@ -45,7 +42,7 @@ application.controller.Keys = Class.extend({
       }
     });
 
-    $('#keys_manage_body .user_key .edit, #keys_manage_body .user_key .update').unbind().click(function() {
+    $(this.views.keys_manage_container + ' .user_key .edit, ' + this.views.keys_manage_container + ' .user_key .update').unbind().click(function() {
       if ($(this).hasClass('disabled')) {
         $fw.client.dialog.info.flash('This key has been revoked and cannot be altered');
         return;
@@ -57,6 +54,36 @@ application.controller.Keys = Class.extend({
       var update_button = $(this).parent().parent().find('div.operations .update');
       var key = $(this).parent().parent().find('.key_public').text();
       self.toggleLabelEdit(label_span, label_input, edit_button, update_button, key);
+    });
+  },
+
+  show: function(){
+    this._super();
+
+    this.bind();
+
+    this.container = this.views.keys_manage_container;
+    $(this.container).show();
+
+    console.log('Keys controller show');
+    this.refreshUserKeys();
+  },
+
+  refreshClipboardPaste: function() {
+    console.log('Refreshing copy and paste.');
+    // Destroy existing agents
+    $.each(ZeroClipboard.clients, function(i, client) {
+      client.destroy();
+    });
+    $(this.views.keys_manage_container + " .user_key .copy:visible").each(function() {
+      var clip = new ZeroClipboard.Client();
+      clip.glue(this);
+
+      clip.addEventListener('mouseDown', function(client) {
+        var text = $(client.domElement).parent().find('.key_public').text();
+        clip.setText(text);
+        $fw.client.dialog.info.flash('Your key has been copied to your clipboard.');
+      });
     });
   },
 
@@ -77,7 +104,7 @@ application.controller.Keys = Class.extend({
       var label = label_input.val();
       console.log('Updating key label: ' + key);
       var self = this;
-      this.model.update(key, label, function(res) {
+      this.models.userkey.update(key, label, function(res) {
         if (res.status == 'ok') {
           label_input.hide();
           edit_button.show();
@@ -95,7 +122,7 @@ application.controller.Keys = Class.extend({
   revokeUserKey: function(key) {
     console.log('revoking: ' + key);
     var self = this;
-    this.model.revoke(key, function(res) {
+    this.models.userkey.revoke(key, function(res) {
       if (res.status === 'ok') {
         self.refreshUserKeys();
       }
@@ -104,7 +131,7 @@ application.controller.Keys = Class.extend({
 
   generateUserKey: function(key_label) {
     var self = this;
-    this.model.create(key_label, function(res) {
+    this.models.userkey.create(key_label, function(res) {
       if (res.status == 'ok') {
         self.refreshUserKeys();
       } else {
@@ -130,7 +157,7 @@ application.controller.Keys = Class.extend({
 
   refreshUserKeys: function() {
     var self = this;
-    this.model.load(function(res) {
+    this.models.userkey.load(function(res) {
       console.log('Keys show - model loaded');
 
       if (res.status == 'ok') {
@@ -141,17 +168,10 @@ application.controller.Keys = Class.extend({
     });
   },
 
-  show: function() {
-    var self = this;
-    this.bind();
-    console.log('Keys controller show');
-    this.refreshUserKeys();
-  },
-
   renderUserKeys: function() {
     var list_container = $('#user_key_list');
     list_container.find('.user_key').remove();
-    var user_keys = this.model.all;
+    var user_keys = this.models.userkey.all;
 
     if (user_keys.length > 0) {
       $.each(user_keys, function(i, user_key) {
@@ -176,7 +196,6 @@ application.controller.Keys = Class.extend({
       list_item.find('span.key_public, img.copy').remove();
       list_container.append(list_item);
     }
-    // Rebind
     this.bind();
   },
 
@@ -196,4 +215,3 @@ application.controller.Keys = Class.extend({
     });
   }
 });
-

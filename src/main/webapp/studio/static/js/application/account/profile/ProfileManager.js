@@ -5,15 +5,13 @@ application.ProfileManager = Class.extend({
   
   doLoad: function(){
     //$fw.app.readUserDetails($fw.client.profile.displayProfile);
-    $fw.client.model.User.read($fw.client.profile.displayProfile);
-  },
-
-  displayProfile: function(result){
-    var accountType = $fw.client.lang.getLangString('account_type_' + $fw.getClientProp('accountType'));
-    //$('.profile_user_display').text(result.displayName + ' (' + accountType + ')');
-    $('.profile_view_name').text(result.userName);
-    $('.profile_view_email').text(result.email);
-    $('.profile_view_account').text(accountType);
+    $fw.client.model.User.read(function (res) {
+      var accountType = $fw.client.lang.getLangString('account_type_' + $fw.getClientProp('accountType'));
+      //$('.profile_user_display').text(res.displayName + ' (' + accountType + ')');
+      $('.profile_view_name').text(res.userName);
+      $('.profile_view_email').text(res.email);
+      $('.profile_view_account').text(accountType);
+    });
   },
     
   doChangePassword: function(){
