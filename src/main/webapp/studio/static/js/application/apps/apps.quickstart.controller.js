@@ -106,6 +106,7 @@ Apps.Quickstart.Controller = Apps.Controller.extend({
 
   // common function for binding (jQuery) elements to trigger 'show' on the corresponding controller
   bindToControllers: function (elements) {
+    var self = this;
     elements.bind('click', function (e) {
       e.preventDefault();
       var el = $(this);
@@ -115,7 +116,12 @@ Apps.Quickstart.Controller = Apps.Controller.extend({
 
       // show succeeding step/s that are configured for this item
       var controller = el.data('controller');
-      $('.manageapps_nav_list a[data-controller="' + controller + '"]').trigger('click');
+      var controllerBindFn = 'bindToController' + controller.replace(/\./g, '');
+      if ($.isFunction(self[controllerBindFn])) {
+        self[controllerBindFn]();
+      } else {
+        $('.manageapps_nav_list a[data-controller="' + controller + '"]').trigger('click');
+      }
     });
   }
 
@@ -217,6 +223,11 @@ Apps.Quickstart.Client.Controller = Apps.Quickstart.Controller.extend({
     });
 
     this.bindToControllers($(this.views.quickstart_client_container + ' .step_2_hybrid_options a,' + this.views.quickstart_client_hybrid_container + ' .step_2_hybrid_options a'));
+  },
+
+  bindToControllerappseditorcontroller: function () {
+    $fw.data.set('initFile', '/client/default/index.html');
+    $('.manageapps_nav_list a[data-controller="apps.editor.controller"]').trigger('click');
   }
 });
 
@@ -233,5 +244,10 @@ Apps.Quickstart.Cloud.Controller = Apps.Quickstart.Controller.extend({
   initBindings: function () {
     // cloud quickstart binding setup
     this.bindToControllers($('.step_1_options a', this.views.quickstart_cloud_container));
+  },
+
+  bindToControllerappseditorcontroller: function () {
+    $fw.data.set('initFile', '/cloud/main.js');
+    $('.manageapps_nav_list a[data-controller="apps.editor.controller"]').trigger('click');
   }
 });

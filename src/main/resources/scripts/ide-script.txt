@@ -17,6 +17,7 @@ js/application/dialog/DialogManager.js
 js/model/ModelManager.js
 js/model/models/Model.js
 js/model/models/App.js
+js/model/models/File.js
 js/model/models/Template.js
 js/model/models/User.js
 js/model/models/StoreItem.js

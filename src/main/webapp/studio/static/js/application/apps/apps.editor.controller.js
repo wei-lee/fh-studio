@@ -4,8 +4,8 @@ Apps.Editor = Apps.Editor || {};
 
 Apps.Editor.Controller = Apps.Controller.extend({
 
-  model: {
-    //device: new model.Device()
+  models: {
+    file: new model.File()
   },
 
   views: {
@@ -36,7 +36,7 @@ Apps.Editor.Controller = Apps.Controller.extend({
     scmTriggerButtonEditor.text(scmTriggerButtonText).bind('click', function() {
       scmTriggerButtonEditor.attr('disabled', 'disabled').text(pleaseWaitText);
       $fw.client.tab.apps.manageapps.triggerScm(function() {
-        self.server.loadAppFiles($fw.data.get('app').guid);
+        self.loadAppFiles($fw.data.get('app').guid);
         // FIXME: should this be .reload()??
         $fw.client.preview.show();
         self.reloadFiles();
@@ -66,6 +66,8 @@ Apps.Editor.Controller = Apps.Controller.extend({
   },
 
   show: function() {
+    var self = this;
+
     this._super();
 
     this.hide();
@@ -92,8 +94,17 @@ Apps.Editor.Controller = Apps.Controller.extend({
     this.initSearchDialog();
 
     var git_mode = $fw.data.get('git_mode');
+    var setOpenFile = function () {
+      var initFile = $fw.data.get('initFile');
+      if (initFile != null) {
+        $fw.data.set('initFile', null);
+        self.treeviewManager.selectNodeByPath(initFile);
+      }
+    };
     if (null == self.treeviewManager && !git_mode) {
-      this.server.loadAppFiles($fw.data.get('app').guid);
+      this.loadAppFiles($fw.data.get('app').guid, setOpenFile);
+    } else {
+      setOpenFile();
     }
 
     $(this.container).show();
@@ -239,7 +250,7 @@ Apps.Editor.Controller = Apps.Controller.extend({
     } else {
       this.setWaitCursor();
       this.changeView(false);
-      self.server.loadTextFile(data, function(res) {
+      self.loadTextFile(data, function(res) {
         var params = {
           id: file_id,
           name: file_name,
@@ -374,7 +385,7 @@ Apps.Editor.Controller = Apps.Controller.extend({
         files: file,
         appId: $fw.data.get('app').guid
       };
-      this.server.saveTextFile(data, function(res) {
+      this.saveTextFile(data, function(res) {
         // Turn hourglass off
         self.removeWaitCursor();
 
@@ -433,7 +444,7 @@ Apps.Editor.Controller = Apps.Controller.extend({
       self.setWaitCursor();
 
       // Send all the files contents to the server to be saved
-      this.server.saveTextFile({
+      this.saveTextFile({
         files: textFiles,
         appId: $fw.data.get('app').guid
       }, function(res) {
@@ -665,41 +676,44 @@ Apps.Editor.Controller = Apps.Controller.extend({
     tab.find('a').text(new_name);
   },
 
-  server: {
-    call: function(method, url, data, callback) {
-      // TODO: will be replaced by a globle ajax function
-      $.ajax({
-        type: method,
-        url: url,
-        data: data,
-        success: function(res) {
-          callback(res);
-        }
-      });
-    },
-
-    saveTextFile: function(data, callback) {
-      // TODO:
-      // EITHER all editor callbacks should route through a single callback to
-      // allow filtering for templates
-      // OR initialise a readonly codemirror (if possible) for templates
-      var template_mode = $fw.data.get('template_mode');
-      if (!template_mode) {
-        var url = Constants.SAVE_FILE_URL;
-        $fw.client.tab.apps.manageapps.controllers['apps.editor.controller'].server.call("POST", url, JSON.stringify(data), callback);
+  call: function(method, url, data, callback) {
+    // TODO: will be replaced by a globle ajax function
+    $.ajax({
+      type: method,
+      url: url,
+      data: data,
+      success: function(res) {
+        callback(res);
       }
-    },
+    });
+  },
 
-    loadAppFiles: function(guid){
-      var request_data = {active: 'true', app: guid};
-      $fw.server.post(Constants.LIST_FILES_URL, request_data, function(res){
-        $fw.client.tab.apps.manageapps.controllers['apps.editor.controller'].constructFileTreeView(res, guid);
-      });
-    },
-    
-    loadTextFile: function(data, success) {
-      $fw.server.post(Constants.LOAD_FILE_URL, data, success);
+  saveTextFile: function(data, callback) {
+    // TODO:
+    // EITHER all editor callbacks should route through a single callback to
+    // allow filtering for templates
+    // OR initialise a readonly codemirror (if possible) for templates
+    var template_mode = $fw.data.get('template_mode');
+    if (!template_mode) {
+      var url = Constants.SAVE_FILE_URL;
+      this.call("POST", url, JSON.stringify(data), callback);
     }
+  },
+
+  loadAppFiles: function(guid, cb){
+    var self = this;
+
+    var request_data = {active: 'true', app: guid};
+    $fw.server.post(Constants.LIST_FILES_URL, request_data, function(res){
+      self.constructFileTreeView(res, guid);
+      if ($.isFunction(cb)) {
+        cb();
+      }
+    });
+  },
+  
+  loadTextFile: function(data, success) {
+    $fw.server.post(Constants.LOAD_FILE_URL, data, success);
   },
 
   highlightCode: function(string, callback, parser) {
