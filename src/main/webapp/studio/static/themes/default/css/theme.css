@@ -2817,11 +2817,11 @@ line-height:0.5em;
 }
 
 .multistep .step_number {
-  background: #DFE0FA;
+  background: #ef1a00;
   position: absolute;
   top: 0;
   left: 0;
-  padding: 20px;
+  padding: 15px;
   font-weight: bold;
   font-size: 2em;
   -webkit-border-top-left-radius: 5px;
@@ -2830,8 +2830,8 @@ line-height:0.5em;
   -moz-border-radius-bottomright: 5px;
   border-top-left-radius: 5px;
   border-bottom-right-radius: 5px;
-  text-shadow: 0 1px 0 white;
-  color: #606060;
+  text-shadow: 0 1px 0 #530900;
+  color: #fff;
 }
 
 .multistep form {
@@ -3313,6 +3313,24 @@ table.dataTable th:active {
 
 #quickstart_container a:hover {
   text-decoration: none;
+}
+
+#quickstart_container .thumbnail,
+#quickstart_client_hybrid_container .thumbnail {
+  text-shadow: 0 1px 0 #fff;
+  background: #E9E9E9;
+  background: -moz-linear-gradient(top, #FAFAFA 0%, #E9E9E9 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FAFAFA), color-stop(100%,#E9E9E9)) !important;
+  background: -webkit-linear-gradient(top, #FAFAFA 0%,#E9E9E9 100%);
+  background: -o-linear-gradient(top, #FAFAFA 0%,#E9E9E9 100%);
+  background: -ms-linear-gradient(top, #FAFAFA 0%,#E9E9E9 100%);
+  background: linear-gradient(top, #FAFAFA 0%,#E9E9E9 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#E9E9E9');
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#E9E9E9')";
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
+  -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
+  border: 2px solid #d3d3d3;
 }
 
 /* Awesome nth item selector that works cross platform (including IE!)
