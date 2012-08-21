@@ -531,28 +531,11 @@ Apps.Generate.Controller = GenerateApp.Controller = Class.extend({
     $('#generate_app').hide();
   },
 
-  // hideCenterViews: function() {
-  //   $('#list_apps_grid_wrapper > *').hide();
-  // },
-
-  resizeLayouts: function() {
-    try {
-      //apps_layout.resizeAll();
-      //list_apps_layout.resizeAll();
-      proto.Grid.resizeVisible();
-    } catch (err) {
-      console.log("Couldn't resize layouts, elements probably not displaying right now");
-    }
-  },
-
   show: function() {
-    //this.hideCenterViews();
-    // show new grid
     $('#generate_app').show();
 
     this.bind();
     this.showGeneratorList();
-    this.resizeLayouts();
   },
 
   hideGeneratorList: function() {

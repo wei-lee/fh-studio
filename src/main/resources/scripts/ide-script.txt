@@ -66,6 +66,8 @@ js/application/apps/apps.deploy.controller.js
 js/application/apps/apps.reports.support.js
 js/application/apps/apps.installs.controller.js
 js/application/apps/apps.startups.controller.js
+js/application/reporting/reporting.installs.controller.js
+js/application/reporting/reporting.startups.controller.js
 js/application/chart/ChartManager.js
 js/application/chart/locator/ChartLocator.js
 js/application/chart/locator/MetricsChartLocator.js
@@ -86,11 +88,6 @@ js/application/stats/models/stats.model.base.js
 js/application/stats/models/stats.model.historical.js
 js/application/stats/models/stats.model.historical.timers.js
 js/application/stats/models/stats.model.historical.counters.js
-js/application/reporting/models/reports.mock.js
-js/application/reporting/models/reports.model.js
-js/application/reporting/controllers/reports.controller.js
-js/application/reporting/reporting.installs.controller.js
-js/application/reporting/reporting.startups.controller.js
 js/application/stats/views/stats.view.base.js
 js/application/stats/views/stats.view.list.js
 js/application/stats/views/stats.view.list.timers.js
