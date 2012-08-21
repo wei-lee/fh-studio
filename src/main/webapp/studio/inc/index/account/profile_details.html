@@ -1,30 +1,28 @@
-<div id="profile_details_container" class="account-container section-container">
-  <div id="profile_details_body" class="section-body">
-    <div id="profile_view_details">
-	  <div id="profile_view_name_legend" class="password-change-legend">Personal Details</div>
-	  <div id="profile_view_name_label" class="view_label">Name: <span class="profile_view_name"></span></div>
-	  <div id="profile_view_email_label" class="view_label">Email Address: <span class="profile_view_email"></span></div>
-    <div id="profile_view_account_label" class="view_label">Account Type: <span class="profile_view_account"></span></div>
-    </div>                                                  
+<div id="profile_details_container">
+  <div id="profile_view_details">
+  <div id="profile_view_name_legend" class="password-change-legend">Personal Details</div>
+  <div id="profile_view_name_label" class="view_label">Name: <span class="profile_view_name"></span></div>
+  <div id="profile_view_email_label" class="view_label">Email Address: <span class="profile_view_email"></span></div>
+  <div id="profile_view_account_label" class="view_label">Account Type: <span class="profile_view_account"></span></div>
+  </div>                                                  
 
-    <% if("local".equals(studio.getProperty(studio.PROP_AUTHTYPE))){ %>
-  	<div id="profile_edit_details">
-      <form id="profile_changepassword">
-  	    <fieldset>
-  	      <legend class="password-change-legend">Change Password</legend>
-  	      <div class="form-field ui-helper-reset ui-helper-clearfix">
-  	        <label class="password-inputs-labels" for="current_password">Current Password:</label><input class="password-inputs-fields" name="current_password" id="current_password" tabindex="4" type="password"/>
-  	      </div>
-  	      <div class="form-field ui-helper-reset ui-helper-clearfix">
-  	        <label class="password-inputs-labels" for="new_password">New Password:</label><input class="password-inputs-fields" name="new_password" id="new_password" tabindex="5" type="password"/>
-  	      </div>
-  	      <div class="form-field ui-helper-reset ui-helper-clearfix">
-  	        <label class="password-inputs-labels" for="confirm_password">Confirm Password:</label><input class="password-inputs-fields" name="confirm_password" id="confirm_password" tabindex="6" type="password"/>
-  	      </div>
-  	      <button id="change_password_button" tabindex="7" class="insert-lang btn btn"></button>
-  	    </fieldset>
-   	  </form>
-   	</div>
-   	<%}%>
-  </div>
+  <% if("local".equals(studio.getProperty(studio.PROP_AUTHTYPE))){ %>
+	<div id="profile_edit_details">
+    <form id="profile_changepassword">
+	    <fieldset>
+	      <legend class="password-change-legend">Change Password</legend>
+	      <div class="form-field ui-helper-reset ui-helper-clearfix">
+	        <label class="password-inputs-labels" for="current_password">Current Password:</label><input class="password-inputs-fields" name="current_password" id="current_password" tabindex="4" type="password"/>
+	      </div>
+	      <div class="form-field ui-helper-reset ui-helper-clearfix">
+	        <label class="password-inputs-labels" for="new_password">New Password:</label><input class="password-inputs-fields" name="new_password" id="new_password" tabindex="5" type="password"/>
+	      </div>
+	      <div class="form-field ui-helper-reset ui-helper-clearfix">
+	        <label class="password-inputs-labels" for="confirm_password">Confirm Password:</label><input class="password-inputs-fields" name="confirm_password" id="confirm_password" tabindex="6" type="password"/>
+	      </div>
+	      <button id="change_password_button" tabindex="7" class="insert-lang btn btn"></button>
+	    </fieldset>
+ 	  </form>
+ 	</div>
+ 	<%}%>
 </div>

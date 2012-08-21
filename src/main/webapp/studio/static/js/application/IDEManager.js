@@ -1,26 +1,15 @@
 var IDEManager = Class.extend({
   
   init: function () {
-    this.accordion = new application.AccordionManager();
-    this.preview = new application.PreviewManager();
-    this.profile = new application.ProfileManager();
-    this.keys = new application.controller.Keys();
-    this.resource = {
-      apple: new application.AppleResourceManager(),
-      android: new application.AndroidResourceManager(),
-      blackberry: new application.BlackberryResourceManager()
-    };
     this.lang = new LangManager();
     this.dialog = new application.DialogManager();
     this.model = new model.ModelManager();
     this.tab = {
-      account: new application.AccountTabManager(),
-      reporting: new application.ReportingTabManager(),
-
-      // new 'non-ui-layout' tabs go here
       admin: new Admin.Tab.Manager(),
       apps: new Apps.Tab.Manager(),
-      dashboard: new Dashboard.Tab.Manager()
+      dashboard: new Dashboard.Tab.Manager(),
+      account: new Account.Tab.Manager(),
+      reporting: new Reporting.Tab.Manager()
     };
     this.analytics = new analytics.AnalyticsIntegration();
     this.chart = new application.ChartManager();
@@ -60,7 +49,7 @@ var IDEManager = Class.extend({
     this.analytics.doIntegration();
     
     // Retrieving and populating appropriate fields for Profile
-    $fw.client.profile.doLoad();
+    //$fw.client.profile.doLoad();
     
     var disabled_tabs;
     try {

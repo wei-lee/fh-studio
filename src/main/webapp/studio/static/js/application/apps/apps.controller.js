@@ -10,12 +10,12 @@ Apps.Controller = Controller.extend({
 
   show: function () {
     if (this.showPreview) {
-      if (!$fw.client.preview.isPreviewOpen()) {
+      if (!$fw.client.tab.apps.manageapps.getController('apps.preview.controller').isPreviewOpen()) {
         console.log('forcing show preview by controller');
-        $fw.client.preview.show();
+        $fw.client.tab.apps.manageapps.getController('apps.preview.controller').show();
       }
     } else {
-      $fw.client.preview.hide();
+      $fw.client.tab.apps.manageapps.getController('apps.preview.controller').hide();
     }
   },
 

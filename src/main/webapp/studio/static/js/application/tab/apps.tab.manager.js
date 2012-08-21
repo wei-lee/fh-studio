@@ -8,6 +8,7 @@ Apps.Tab.Manager = Tab.Manager.extend({
     this.manageapps = new ManageappsTabManager();
     // FIXME state restoration
     this.initFn = _.once(this.listapps.show); // show list apps first
+    this.postFn = $.noop;
 
     var nodejs_domain = $fw.getClientProp('nodejsEnabled') == "true";
     if (nodejs_domain) {
@@ -50,6 +51,7 @@ ListappsTabManager = Tab.Manager.extend({
 
   init: function() {
     this._super();
+    this.postFn = $.noop;
     this.initFn(); // ??? TODO: why is this called here??? should be in show??, but breaks if it's moved there. hmmm
   },
 
@@ -91,6 +93,8 @@ ManageappsTabManager = Tab.Manager.extend({
 
   init: function() {
     this._super();
+
+    this.postFn = $.noop;
   },
 
   show: function(guid, success, fail, is_name, intermediate) {
@@ -101,10 +105,12 @@ ManageappsTabManager = Tab.Manager.extend({
 
     this._super();
 
+    // make sure preview contorller is initialised
+    this.getController('apps.preview.controller');
+
     $('#list_apps_layout').hide();
 
     this.hideAll();
-    $fw.client.preview.hide();
     this.doManage(guid, success, fail, is_name, intermediate);
   },
 
@@ -126,20 +132,30 @@ ManageappsTabManager = Tab.Manager.extend({
       crumbs.unshift(header.text());
     }
 
+    var addCrumbWithDivider = function (text) {
+      crumb.append($('<li>').append($('<a>', {
+        "href": "#",
+        "text": text
+      }).on('click', function(e) {
+        e.preventDefault();
+        $fw.client.tab.apps.listapps.show();
+      }))).append($('<span>', {
+        "class": "divider",
+        "text": "/"
+      }));
+    };
+
+    var preview_buttons = $('#' + self.breadcrumbId).find('.preview_buttons').detach(); // detach is important here
     // get prefix from select list item in listapps view e.g. 'My Apps'
+    var crumb = $('#' + self.breadcrumbId).empty();
+    var prefixHeaderCrumb = $('.listapps_nav_list li.active').prevAll('.nav-header').first();
+    if (prefixHeaderCrumb.length > 0) {
+      addCrumbWithDivider(prefixHeaderCrumb.text().trim());
+    }
+
     var prefixCrumb = $('.listapps_nav_list li.active a');
     // assemble start of breadcrumb
-    var preview_buttons = $('#' + self.breadcrumbId).find('.preview_buttons').detach(); // detach is important here
-    var crumb = $('#' + self.breadcrumbId).empty().append($('<li>').append($('<a>', {
-      "href": "#",
-      "text": prefixCrumb.text().trim()
-    }).on('click', function(e) {
-      e.preventDefault();
-      $fw.client.tab.apps.listapps.show();
-    })).append($('<span>', {
-      "class": "divider",
-      "text": "/"
-    })));
+    addCrumbWithDivider(prefixCrumb.text().trim());
 
     // add placeholder item for app title
     crumb.append($('<li>', {
@@ -225,7 +241,7 @@ ManageappsTabManager = Tab.Manager.extend({
         self.getController('apps.details.controller').updateDetails();
 
         // Reload preview
-        $fw.client.preview.show();
+        $fw.client.tab.apps.manageapps.getController('apps.preview.controller').show();
 
 
         var postFn = function() {

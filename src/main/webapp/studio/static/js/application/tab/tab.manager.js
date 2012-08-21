@@ -4,6 +4,7 @@ Tab.Manager = Class.extend({
 
   init: function () {
     this.initFn = _.once(this.initBindings);
+    this.postFn = _.after(2, this.afterBindings);
   },
 
   show: function () {
@@ -12,6 +13,7 @@ Tab.Manager = Class.extend({
     var navList = el.find('.nav-list');
 
     this.initFn();
+    this.postFn();
 
     self.updateCrumbs.call(navList.find('li.active a')[0], self);
   },
@@ -47,6 +49,12 @@ Tab.Manager = Class.extend({
     // TODO: state stuff here
     el.find('.layout-content').show();
     navList.find('li:visible a:eq(0)').trigger('click');
+  },
+
+  afterBindings: function () {
+    var el = $('#' + this.id);
+    var navList = el.find('.nav-list');
+    navList.find('li.active:visible a').trigger('click');
   },
 
   getController: function (controllerName) {

@@ -86,9 +86,9 @@ Admin.Users.Controller = Controller.extend({
 
   bindUserControls: function() {
     var self = this;
-    $('tr td .edit_user', this.user_table).unbind().click(function() {
+    $('tr td .edit_user, tr td:not(.controls,.dataTables_empty)', this.user_table).unbind().click(function() {
       var row = $(this).parent().parent();
-      var data = self.userDataForRow($(this).parent().parent().get(0));
+      var data = self.userDataForRow($(this).closest('tr').get(0));
       self.showUserUpdate(this, row, data);
       return false;
     });

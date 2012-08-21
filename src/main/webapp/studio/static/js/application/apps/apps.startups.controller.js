@@ -28,19 +28,19 @@ Apps.Startups.Controller = Apps.Reports.Support.extend({
 
   byDate: function () {
     var appid = $fw.data.get('app').guid;
-    var container = $('#startups_by_date');
+    var container = $('.startups_by_date', this.views.reportingstartups_container);
     this.initMetric('appstartupsdest', 'line', container, Constants.GET_SINGLE_APP_METRICS_URL, appid);
   },
 
   byPlatform: function () {
     var appid = $fw.data.get('app').guid;
-    var container = $('#startups_by_platform');
+    var container = $('.startups_by_platform', this.views.reportingstartups_container);
     this.initMetric('appstartupsdest', 'pie', container, Constants.GET_SINGLE_APP_METRICS_URL, appid);
   },
 
   byLocation: function () {
     var appid = $fw.data.get('app').guid;
-    var container = $('#startups_by_location');
+    var container = $('.startups_by_location', this.views.reportingstartups_container);
     this.initMetric('appstartupsgeo', 'geo', container, Constants.GET_SINGLE_APP_METRICS_URL, appid);
   }
 

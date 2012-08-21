@@ -1,8 +1,35 @@
-application.BlackberryResourceManager = application.ResourceManager.extend({
+var Account = Account || {};
+
+Account.Blackberry = Account.Blackberry || {};
+
+Account.Blackberry.Controller = Account.Resource.Support.extend({
   destination: 'blackberry',
-  
-  init: function (opts) {
-    
+
+  views: {
+    destinations_blackberry_container: '#destinations_blackberry_container'
+  },
+
+  container: null,
+
+  init: function () {
+    this.initFn = _.once(this.initBindings);
+  },
+
+  initBindings: function () {
+    var self = this;
+
+    $fw.client.lang.insertLangForContainer($(this.views.destinations_blackberry_container));
+  },
+
+  show: function(){
+    this._super();
+
+    this.initFn();
+
+    this.setupDestination();
+
+    this.container = this.views.destinations_blackberry_container;
+    $(this.container).show();
   },
   
   checkResources: function() {
@@ -28,11 +55,11 @@ application.BlackberryResourceManager = application.ResourceManager.extend({
       $('#profile_view_container').hide();
       if (resources.length > 0) {
         // have at least one resource, so show the dashboard
-        $fw.client.resource[that.destination].showResources(resources);
+        that.showResources(resources);
       }
       else {
         // no resources uploaded yet, show get started
-        $fw.client.resource[that.destination].showGetStarted();
+        that.showGetStarted();
       }
       
     });
@@ -69,7 +96,7 @@ application.BlackberryResourceManager = application.ResourceManager.extend({
       };
       console.log("params: " + JSON.stringify(data));
       
-      $fw.client.model.Resource.startUpload(wizard.find('#'+file_input_id), upload_url, data, function (result) {
+      that.models.resource.startUpload(wizard.find('#'+file_input_id), upload_url, data, function (result) {
         console.log('upload result > ' + JSON.stringify(result));
         if ('undefined' !== typeof result.error && result.error.length > 0) {  
           proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_failed'));
@@ -104,7 +131,7 @@ application.BlackberryResourceManager = application.ResourceManager.extend({
       };
       console.log("params: " + JSON.stringify(data));
       
-      $fw.client.model.Resource.startUpload(wizard.find('#'+file_input_id), upload_url, data, function (result) {
+      that.models.resource.startUpload(wizard.find('#'+file_input_id), upload_url, data, function (result) {
         console.log('upload result > ' + JSON.stringify(result));
         if ('undefined' !== typeof result.error && result.error.length > 0) {  
           proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_failed'));
@@ -116,7 +143,7 @@ application.BlackberryResourceManager = application.ResourceManager.extend({
             
           wizard.find('.jw-button-finish').trigger('click');     
           
-          $fw.client.resource.blackberry.setupDestination();   
+          that.setupDestination();   
         }
       }, true, function(xhr, err){
         var error = $fw.client.lang.getLangString('file_upload_error');
@@ -125,5 +152,4 @@ application.BlackberryResourceManager = application.ResourceManager.extend({
       });
     });
   }
-  
 });

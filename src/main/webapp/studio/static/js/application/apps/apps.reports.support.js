@@ -11,10 +11,10 @@ Apps.Reports.Support = Apps.Controller.extend({
     this.sampledataEnabled = 'true' === $fw.getClientProp('reporting-sampledata-enabled');
   },
 
-  initBindings: function (container) {
+  initBindings: function () {
     var self = this;
 
-    $(container + ' .nav li a').bind('click', function () {
+    $(this.container + ' .nav li a').bind('click', function () {
       // bind to configured callback
       var el = $(this);
       var action = el.data('action');
@@ -31,8 +31,7 @@ Apps.Reports.Support = Apps.Controller.extend({
   show: function(container){
     this._super();
 
-    // FIXME: is this necessary? carry over from $fw.app.resetApp()
-    $(".appreport-results").empty();
+    $(container + " .appreport-results").empty();
     
     this.hide();
 
@@ -60,7 +59,7 @@ Apps.Reports.Support = Apps.Controller.extend({
       self[metric + '_' + type] = true;
 
       // Populate app and date dropdown
-      self.doOptions(container, !appid);
+      self.doOptions(container, appid != null ? false : true);
       
       $fw.client.lang.insertLangForContainer(container);
       
@@ -83,11 +82,11 @@ Apps.Reports.Support = Apps.Controller.extend({
         
         days = self.daysBetweenDates(tempFDate, tempTDate);
         
-        if (self.appid) {
+        if (self.appid != null) {
           app = self.appid;
         } else {
-        app = container.find('.appreport-applist option:selected').val();
-      }
+          app = container.find('.appreport-applist option:selected').val();
+        }
 
         params = {
           id: app,//'7BmC8jo_jd4aQuvT6CSCzmWa',
@@ -122,7 +121,7 @@ Apps.Reports.Support = Apps.Controller.extend({
   },
 
   doOptions: function (container, getAppsList) {
-  if (getAppsList) {
+    if (getAppsList) {
       var appslist, url, params;
 
       url = Constants.LIST_APP_METRICS_APPS_URL;
@@ -140,7 +139,7 @@ Apps.Reports.Support = Apps.Controller.extend({
             values.push(tempResult.app);
           }
           HtmlUtil.constructOptions(appslist, options, values);
-          container.find('.appreport-button').trigger('click');
+          //container.find('.appreport-button').trigger('click');
         } else {
           $fw.client.dialog.error(result.message);
         }

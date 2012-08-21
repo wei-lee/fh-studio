@@ -1,40 +1,41 @@
-<div id="keys_manage_container" class="account-container section-container">
-  <div id="keys_manage_body" class="section-body">
-  	<div class="fh-box-outer">
-  		<h4>Your API Keys<button class="right show_generate btn">Add a new Key</button></h4>
-      <div class="fh-box-inner">
-        <ul id="user_key_list">
-          <li class="generate_user_key_form">
-            <form class="form-inline">
-              <input type="text" name="key_label" id="key_label_input" class="input-small" placeholder="Key Label (e.g. My Key)">
-              <button class="generate_user_key btn">Generate</button>
-            </form>
-          </li>
-          <li class="alert_area hidden_template">
-            <a class="close">&times;</a>
-            <strong class="alert_type"></strong>&nbsp;
-            <span class="alert_message"></span>
-          </li>
-        </ul>
+<div id="keys_manage_container">
+	<div class="fh-box-outer">
+		<h4>Your API Keys<button class="right show_generate btn">Add a new Key</button></h4>
+    <div class="fh-box-inner">
+      <ul id="user_key_list">
+        <li class="generate_user_key_form">
+          <form class="form-inline">
+            <input type="text" name="key_label" id="key_label_input" class="input-small" placeholder="Key Label (e.g. My Key)">
+            <button class="generate_user_key btn">Generate</button>
+          </form>
+        </li>
+        <li class="alert_area hidden_template">
+          <a class="close">&times;</a>
+          <strong class="alert_type"></strong>&nbsp;
+          <span class="alert_message"></span>
+        </li>
+      </ul>
+    </div>
+	</div>
+
+  <ul class="hidden_template">
+    <li class="hidden_template user_key">
+      <div class="right operations">
+        <button class="update hidden btn btn-success">Update</button>
+        <button class="edit btn">Edit</button>
+        <button class="revoke btn btn-danger">Revoke</button>
       </div>
-  	</div>
-
-    <ul class="hidden_template">
-      <li class="hidden_template user_key">
-        <div class="right operations">
-          <button class="update hidden btn btn-success">Update</button>
-          <button class="edit btn">Edit</button>
-          <button class="revoke btn btn-danger">Revoke</button>
-        </div>
-        <span class="key_label bold black"></span>
-        <input type="text" class="key_label hidden"/>
-        <span class="key_public light_grey"></span>
-        <img class="copy" src="<%=studio.getStaticAssetPath("themes/default/img/ico_clipboard.png")%>" alt="Copy to clipboard">
-        <span class="key_revoked_details light_grey italic hidden">
-          <span class="email"></span><br/> revoked <span class="timestamp"></span>
-         </span>
-      </li>
-    </ul>    
-
-  </div>
+      <span class="key_label bold black"></span>
+      <input type="text" class="key_label hidden"/>
+      <span class="key_public light_grey"></span>
+      <span class="d_clip_container">
+        <span class="d_clip_button">
+          <img class="copy" src="<%=studio.getStaticAssetPath("themes/default/img/ico_clipboard.png")%>" alt="Copy to clipboard"/>
+        </span>
+      </span>
+      <span class="key_revoked_details light_grey italic hidden">
+        <span class="email"></span><br/> revoked <span class="timestamp"></span>
+       </span>
+    </li>
+  </ul>
 </div>
