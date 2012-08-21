@@ -650,6 +650,7 @@ label.error
 }
 
 #main_layout_center .ui-tabs-nav li {
+  border: 1px solid #ccc;
   border-bottom:none;
   height:24px;
   line-height:11px;
@@ -681,6 +682,10 @@ label.error
 #main_layout_center .ui-tabs-nav li.ui-state-active a
 {
   color:#fff;
+}
+
+#main_tabs_buttons li.ui-state-active {
+  border: none;
 }
 
 #main_layout_south {
