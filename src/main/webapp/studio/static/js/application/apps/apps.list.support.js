@@ -75,7 +75,7 @@ Apps.List.Support = Controller.extend({
       sTitle: "Controls",
       "bSortable": false,
       "sClass": "controls",
-      "sWidth": "60px"
+      "sWidth": "55px"
     });
 
     $.each(res.aaData, function(i, row) {

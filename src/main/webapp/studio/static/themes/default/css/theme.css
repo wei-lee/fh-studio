@@ -3321,6 +3321,10 @@ table.dataTable th:active {
   border: 1px solid #E1E1E8;
 }
 
+.quickstart_pick_target {
+  margin-bottom: 20px;
+}
+
 #clone_button, #delete_app_button { margin-right: 5px; }
 
 #deploying_container hr {
