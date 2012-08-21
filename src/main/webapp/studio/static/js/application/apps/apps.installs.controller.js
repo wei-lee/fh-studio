@@ -28,19 +28,19 @@ Apps.Installs.Controller = Apps.Reports.Support.extend({
 
   byDate: function () {
     var appid = $fw.data.get('app').guid;
-    var container = $('#installs_by_date');
+    var container = $('.installs_by_date', $(this.views.reportinginstalls_container));
     this.initMetric('appinstallsdest', 'line', container, Constants.GET_SINGLE_APP_METRICS_URL, appid);
   },
 
   byPlatform: function () {
     var appid = $fw.data.get('app').guid;
-    var container = $('#installs_by_platform');
+    var container = $('.installs_by_platform', $(this.views.reportinginstalls_container));
     this.initMetric('appinstallsdest', 'pie', container, Constants.GET_SINGLE_APP_METRICS_URL, appid);
   },
 
   byLocation: function () {
     var appid = $fw.data.get('app').guid;
-    var container = $('#installs_by_location');
+    var container = $('.installs_by_location', $(this.views.reportinginstalls_container));
     this.initMetric('appinstallsgeo', 'geo', container, Constants.GET_SINGLE_APP_METRICS_URL, appid);
   }
 

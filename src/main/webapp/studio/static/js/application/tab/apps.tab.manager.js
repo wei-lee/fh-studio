@@ -101,10 +101,12 @@ ManageappsTabManager = Tab.Manager.extend({
 
     this._super();
 
+    // make sure preview contorller is initialised
+    this.getController('apps.preview.controller');
+
     $('#list_apps_layout').hide();
 
     this.hideAll();
-    $fw.client.preview.hide();
     this.doManage(guid, success, fail, is_name, intermediate);
   },
 
@@ -225,7 +227,7 @@ ManageappsTabManager = Tab.Manager.extend({
         self.getController('apps.details.controller').updateDetails();
 
         // Reload preview
-        $fw.client.preview.show();
+        $fw.client.tab.apps.manageapps.getController('apps.preview.controller').show();
 
 
         var postFn = function() {

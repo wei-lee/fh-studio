@@ -495,7 +495,7 @@ proto.TreeviewManager = function (params) {
         'filePath': filePath
       };
       self.server.updateIndex(data, function (res) {
-        $fw.client.preview.show();
+        $fw.client.tab.apps.manageapps.getController('apps.preview.controller').show();
       });
     },
 

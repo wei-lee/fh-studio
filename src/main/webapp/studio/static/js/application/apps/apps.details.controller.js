@@ -57,7 +57,7 @@ Apps.Details.Controller = Apps.Controller.extend({
     scmTriggerButton.text(scmTriggerButtonText).bind('click', function () {
       scmTriggerButton.attr('disabled', 'disabled').text(pleaseWaitText);
       $fw.client.tab.apps.manageapps.triggerScm(function () {
-        $fw.client.preview.show();
+        $fw.client.tab.apps.manageapps.getController('apps.preview.controller').show();
         $fw.client.tab.apps.manageapps.getController('apps.editor.controller').reloadFiles();
       },
       $.noop,
@@ -114,7 +114,7 @@ Apps.Details.Controller = Apps.Controller.extend({
         
     var preview_config = inst.config.preview || {};
     var preview_list = $('#manage_details_container #new_app_target');
-    $fw.client.preview.insertPreviewOptionsIntoSelect(preview_list, preview_config.device);
+    $fw.client.tab.apps.manageapps.getController('apps.preview.controller').insertPreviewOptionsIntoSelect(preview_list, preview_config.device);
   },
   
   /*
@@ -154,7 +154,7 @@ Apps.Details.Controller = Apps.Controller.extend({
     // TODO: take preview device option for preview area select for now, instead of in manage details section
     var target = $('#preview_temporary_select option:selected').val();
     console.log('target:' + target);
-    var device = $fw.client.preview.resolveDevice(target);
+    var device = $fw.client.tab.apps.manageapps.getController('apps.preview.controller').resolveDevice(target);
     
     var app = $fw.data.get('app'),
         inst = $fw.data.get('inst');
