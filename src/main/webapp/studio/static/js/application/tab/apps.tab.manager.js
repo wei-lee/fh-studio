@@ -128,20 +128,30 @@ ManageappsTabManager = Tab.Manager.extend({
       crumbs.unshift(header.text());
     }
 
+    var addCrumbWithDivider = function (text) {
+      crumb.append($('<li>').append($('<a>', {
+        "href": "#",
+        "text": text
+      }).on('click', function(e) {
+        e.preventDefault();
+        $fw.client.tab.apps.listapps.show();
+      }))).append($('<span>', {
+        "class": "divider",
+        "text": "/"
+      }));
+    };
+
     // get prefix from select list item in listapps view e.g. 'My Apps'
+    var crumb = $('#' + self.breadcrumbId).empty();
+    var prefixHeaderCrumb = $('.listapps_nav_list li.active').prevAll('.nav-header').first();
+    if (prefixHeaderCrumb.length > 0) {
+      addCrumbWithDivider(prefixHeaderCrumb.text().trim());
+    }
+
     var prefixCrumb = $('.listapps_nav_list li.active a');
     // assemble start of breadcrumb
     var preview_buttons = $('#' + self.breadcrumbId).find('.preview_buttons').detach(); // detach is important here
-    var crumb = $('#' + self.breadcrumbId).empty().append($('<li>').append($('<a>', {
-      "href": "#",
-      "text": prefixCrumb.text().trim()
-    }).on('click', function(e) {
-      e.preventDefault();
-      $fw.client.tab.apps.listapps.show();
-    })).append($('<span>', {
-      "class": "divider",
-      "text": "/"
-    })));
+    addCrumbWithDivider(prefixCrumb.text().trim());
 
     // add placeholder item for app title
     crumb.append($('<li>', {
