@@ -47,7 +47,7 @@ button {
   padding: 10px;
   background: #fff;
   border-radius: 10px;
-  padding-bottom: 30px;
+  padding-bottom: 50px;
 }
 
 .ui-state-active .container-header {
@@ -429,4 +429,8 @@ li.ui-state-active a {
   padding: 0;
   padding-bottom: 50px;
   font-size: 11px;
+}
+
+#connectivity_dialog, #info_dialog {
+  top: 46px;
 }
