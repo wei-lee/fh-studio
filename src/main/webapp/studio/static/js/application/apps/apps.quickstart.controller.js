@@ -100,6 +100,8 @@ Apps.Quickstart.Controller = Apps.Controller.extend({
     var self = this;
     $('.sdkfiles_link').each(function() {
       $(this).unbind('click').bind('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
         console.log('showing alert: error');
         self.showAlert('error', "Links for the SDK Files are currently being downloaded, please try again.");
       });
