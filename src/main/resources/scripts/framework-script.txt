@@ -12,9 +12,6 @@ common/js/ui/thirdparty/jquery/plugins/jquery.jstree.js
 common/js/ui/thirdparty/jquery/plugins/jquery.form.js
 common/js/ui/thirdparty/jquery/plugins/jquery.placeholder.js
 common/js/ui/thirdparty/jquery-ui/jquery-ui.js
-common/js/ui/thirdparty/jquery-ui/plugins/jquery.layout.js
-common/js/ui/thirdparty/jquery-ui/plugins/jqgrid/i18n/grid.locale-en.js 
-common/js/ui/thirdparty/jquery-ui/plugins/jqgrid/jquery.jqGrid.min.js
 common/js/ui/thirdparty-mods/jquery-ui/plugins/jquery.jWizard.fh_extensions.js
 common/js/ui/thirdparty/jquery-ui/plugins/jquery.jWizard.js
 common/js/ui/thirdparty/codemirror/codemirror.js

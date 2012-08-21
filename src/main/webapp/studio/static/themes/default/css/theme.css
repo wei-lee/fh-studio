@@ -194,12 +194,6 @@ textarea { resize:none; }
 .ui-icon-pin-s { background-position: -144px -144px; }
 .ui-icon-play { background-position: 0 -160px; }
 .ui-icon-pause { background-position: -16px -160px; }
-/* Seek icons required for jqgrid */
-.ui-icon-seek-next { background-position: -32px -160px; }
-.ui-icon-seek-prev { background-position: -48px -160px; }
-.ui-icon-seek-end { background-position: -64px -160px; }
-.ui-icon-seek-start { background-position: -80px -160px; }
-.ui-icon-seek-first { background-position: -80px -160px; }
 .ui-icon-stop { background-position: -96px -160px; }
 .ui-icon-eject { background-position: -112px -160px; }
 .ui-icon-volume-off { background-position: -128px -160px; }
@@ -403,57 +397,6 @@ textarea { resize:none; }
   margin:0.2em 0.5em;
 }
 
-/* accordion */
-.inner-layout .ui-accordion
-{
-  margin: 0 10px 0 2px;
-}
-.ui-accordion, #list_apps_buttons li:last-child
-{
-  border-bottom:solid 1px gray;
-}
-.ui-accordion .ui-accordion-content,.ui-accordion .ui-accordion-header {
-  border:none;
-  background:transparent none;
-  margin:0;
-  padding:0;
-}
-.ui-accordion-content .ui-menu li a {
-  text-decoration:none;
-  display:block;
-  padding:.2em .4em;
-  line-height:1.5;
-  zoom:1;
-}
-#list_apps_buttons li,.ui-accordion .ui-accordion-header {
-  background:transparent none;
-  border-left:none;
-  border-bottom:none;
-  border-right:none;
-  border-top:solid 1px gray;
-  display:block;
-  width:auto;
-  float:none;
-  text-indent:16px;
-  color:#324953;
-  padding:0.7em 0;
-  -moz-border-radius:0;
-  -webkit-border-radius:0;
-  border-radius:0;
-}
-.ui-accordion-icons .ui-accordion-header a {
-  padding-left:0;
-}
-.ui-accordion .ui-accordion-header .ui-icon {
-  left:-4px;
-}
-.ui-accordion .ui-menu li {
-  text-indent:1.5em;
-}
-.ui-accordion .ui-accordion-header a
-{
-  padding:0;
-}
 .popover-title {
   display:none;
 }
@@ -506,12 +449,6 @@ body {
 {
   padding:0!important;
   height:100%;
-}
-.ui-accordion-content .ui-menu .ui-menu-item
-{
-  background-color:transparent;
-  background-image:none;
-  border:none;
 }
 .ui-menu-item
 {
@@ -594,49 +531,14 @@ label.error
   font-style:italic;
 }
 
-/* jqGrid */
-.ui-jqgrid-view
-{
-  border:1px solid #e6e6e6;
-}
-.ui-jqgrid tr.jqgrow td
-{
-  border-color:#e6e6e6;
-  height: 28px;
-}
-.jqgrow td a
-{
-  margin:0 0 0 8px;
-  cursor:pointer;
-}
-.ui-jqgrid .ui-jqgrid-bdiv
-{
-  overflow:hidden;
-}
-.ui-jqgrid-btable .ui-priority-secondary
-{
-  font-weight:400;
-  opacity:1;
-}
-.ui-jqgrid .ui-jqgrid-pager
-{
-  padding:0 1px !important;
-}
+
 /* Main Layouts */
 #main_layout_north
 {
   height:78px!important;
   padding:0;
 }
-#main_layout_west
-{
-  width:0px!important;
-}
-#main_layout_east
-{
-  width:0px!important;
-}
-#main_layout_center, #main_layout_east, #main_layout_west
+#main_layout_center
 {
   background-image:none;
   background-color:transparent;
@@ -705,27 +607,6 @@ label.error
   padding-bottom: 42px;
 }
 
-/* Inner layouts*/
-.inner-layout
-{
-  width:100%;
-  height:100%;
-}
-
-.inner-layout .ui-layout-north, #apps_north { padding-bottom: 10px; }
-
-.inner-layout .ui-layout-west
-{
-  width:200px;
-}
-.inner-layout .ui-layout-center
-{
-  /*padding:0 10px;*/
-}
-.inner-layout .ui-layout-south, #apps_south
-{
-  height:15px!important;
-}
 #main_north.ui-widget
 {
   height:53px;
@@ -941,7 +822,7 @@ label.error
 }
 
 /* Manage Apps */
-.inner-layout .ui-layout-pane-center .ui-widget-header, .ui-dialog .ui-widget-header
+.ui-dialog .ui-widget-header
 {
   padding:.5em;
   background-color:#dfdfdf;
@@ -949,19 +830,6 @@ label.error
   -moz-border-radius:0;
   -webkit-border-radius:0;
   border-radius:0;
-}
-.manage_apps-container, .logging-container, .reporting-container
-{
-  height:100%;    
-  width:100%;
-  overflow:auto; 
-}
-#manage_details_buttons {
-  padding-left: 60%;
-}
-#manage_details_update_button{
-  display:block;
-  margin:0 auto;  
 }
 /* Editor */
 
@@ -1676,25 +1544,6 @@ span.label-info {
   font-size: 9pt;
 }
 
-/* Inner layout overrides */
-.inner-layout .ui-tabs
-{
-  border:none;
-  padding:0;
-}
-.inner-layout .ui-tabs .ui-tabs-nav
-{
-  margin:0;
-  padding:0.2em 0.2em 0;
-  border-top:none;
-  border-left:none;
-  border-right:none;
-  background:none;
-}
-.inner-layout .ui-tabs .ui-tabs-panel
-{
-}
-
 /* Footer */
 #footer
 {
@@ -1761,10 +1610,6 @@ span.label-info {
 #login_center_layout_north
 {
   height:50px !important;
-}
-#login_center_layout_east, #login_center_layout_west
-{
-  width:100px !important;
 }
 #login_center_layout_center
 {
@@ -2662,17 +2507,6 @@ line-height:0.5em;
   margin-right: 5px;
 }
 
-/* Reporting Areas */
-#report_installsdest_body, 
-#report_installsdate_body,
-#report_installsloc_body,
-#report_startupsdest_body,
-#report_startupsdate_body,
-#report_startupsloc_body{
-  background: #fff;
-  padding: 10px;
-}
-
 .appreport-radio {
   display: inline;
 }
@@ -2733,11 +2567,6 @@ line-height:0.5em;
 #user_key_list .operations, #user_key_list .operations button  {
   height: 24px;
 }
-
-/*#keys_manage_body button {
-  font-size: 11px;
-  font-weight: bold;
-}*/
 
 #user_key_list li:hover {
   background: #f8f8f8;
