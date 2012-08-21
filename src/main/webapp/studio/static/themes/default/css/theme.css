@@ -1644,6 +1644,9 @@ span.label-info {
   border:1px solid #dfdfdf;
   height:10em;  
 }
+.jw-counter {
+  background-color: #fff;
+}
 .ui-progressbar .ui-progressbar-value, .jw-counter-progressbar .ui-progressbar-value {
   padding: 0 !important;
   background-color:#dfdfdf;
@@ -3284,8 +3287,11 @@ table.dataTable th:active {
   width: 16px !important;
 }
 
-.apps_grid .app_title {
+.apps_grid td, #useradmin_users_table td, #auth_policies_list_table td, #admin_devices_table td {
   cursor: pointer;
+}
+#useradmin_users_table td.controls, #auth_policies_list_table td.controls, #admin_devices_table td.controls{
+  cursor: default;
 }
 
 /* Fix text overflow in App Listing */

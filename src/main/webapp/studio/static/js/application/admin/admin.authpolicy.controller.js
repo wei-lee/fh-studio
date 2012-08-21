@@ -67,9 +67,9 @@ Admin.Authpolicy.Controller = Controller.extend({
 
   bindUserControls: function() {
     var self = this;
-    $('tr td .edit_policy', this.policy_table).click(function() {
+    $('tr td .edit_policy, tr td:not(.controls,.dataTables_empty)', this.policy_table).click(function() {
       var row = $(this).parent().parent();
-      var data = self.policyDataForRow($(this).parent().parent().get(0));
+      var data = self.policyDataForRow($(this).closest('tr').get(0));
       self.showCreateUpdatePolicy(data[0]);
       return false;
     });
