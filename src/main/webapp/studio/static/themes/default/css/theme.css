@@ -2933,6 +2933,7 @@ button.btn.btn-large, input[type="submit"].btn.btn-large {
 
 input[disabled],select[disabled],textarea[disabled],input[readonly],select[readonly],textarea[readonly] {
   cursor: default;
+  background: #d9d9d9;
 }
 
 .jw-content input[type="radio"] {
@@ -3314,12 +3315,15 @@ table.dataTable th:active {
   margin-top: 5px;
 }
 
-#quickstart_client_container pre {
+#quickstart_client_container pre, #debug_logging_text {
   padding: 2px 4px;
   color: #D14;
   background-color: #F7F7F9;
   border: 1px solid #E1E1E8;
+  font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
 }
+
+#debug_logging_text { background: #fff; }
 
 .quickstart_pick_target {
   margin-bottom: 20px;
