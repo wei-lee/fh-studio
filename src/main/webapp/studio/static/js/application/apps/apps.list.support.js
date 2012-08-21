@@ -14,7 +14,6 @@ Apps.List.Support = Controller.extend({
 
   renderAppListing: function(container, wrapper, data) {
     var self = this;
-
     this.user_table = $(container).show().dataTable({
       "bDestroy": true,
       "bAutoWidth": false,
@@ -75,7 +74,8 @@ Apps.List.Support = Controller.extend({
     res.aoColumns.push({
       sTitle: "Controls",
       "bSortable": false,
-      "sClass": "controls"
+      "sClass": "controls",
+      "sWidth": "60px"
     });
 
     $.each(res.aaData, function(i, row) {
