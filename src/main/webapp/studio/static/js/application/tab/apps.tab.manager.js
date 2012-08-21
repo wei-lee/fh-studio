@@ -8,6 +8,7 @@ Apps.Tab.Manager = Tab.Manager.extend({
     this.manageapps = new ManageappsTabManager();
     // FIXME state restoration
     this.initFn = _.once(this.listapps.show); // show list apps first
+    this.postFn = $.noop;
 
     var nodejs_domain = $fw.getClientProp('nodejsEnabled') == "true";
     if (nodejs_domain) {
@@ -50,6 +51,7 @@ ListappsTabManager = Tab.Manager.extend({
 
   init: function() {
     this._super();
+    this.postFn = $.noop;
     this.initFn(); // ??? TODO: why is this called here??? should be in show??, but breaks if it's moved there. hmmm
   },
 
@@ -91,6 +93,8 @@ ManageappsTabManager = Tab.Manager.extend({
 
   init: function() {
     this._super();
+
+    this.postFn = $.noop;
   },
 
   show: function(guid, success, fail, is_name, intermediate) {

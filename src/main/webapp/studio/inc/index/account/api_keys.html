@@ -28,7 +28,11 @@
       <span class="key_label bold black"></span>
       <input type="text" class="key_label hidden"/>
       <span class="key_public light_grey"></span>
-      <img class="copy" src="<%=studio.getStaticAssetPath("themes/default/img/ico_clipboard.png")%>" alt="Copy to clipboard">
+      <span class="d_clip_container">
+        <span class="d_clip_button">
+          <img class="copy" src="<%=studio.getStaticAssetPath("themes/default/img/ico_clipboard.png")%>" alt="Copy to clipboard"/>
+        </span>
+      </span>
       <span class="key_revoked_details light_grey italic hidden">
         <span class="email"></span><br/> revoked <span class="timestamp"></span>
        </span>

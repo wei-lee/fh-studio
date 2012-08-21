@@ -33,6 +33,8 @@ Apps.Details.Controller = Apps.Controller.extend({
     this.hide();
     this.container = this.views.manage_details_container;
     $(this.container).show();
+
+    this.bindCopyButtons();
   },
 
   initBindings: function () {
@@ -75,6 +77,26 @@ Apps.Details.Controller = Apps.Controller.extend({
       e.preventDefault();
       e.stopPropagation();
       self.doDelete();
+    });
+  },
+
+  bindCopyButtons: function () {
+    // Destroy existing agents
+    $.each(ZeroClipboard.clients, function(i, client) {
+      if ($(client.domElement).is(':visible')) {
+        client.destroy();
+      }
+    });
+    $(this.views.manage_details_container + " .d_clip_container").each(function() {
+      var clip = new ZeroClipboard.Client();
+      clip.setHandCursor(true);
+      clip.glue($(this).find('.d_clip_button')[0], this);
+
+      clip.addEventListener('mouseDown', function(client) {
+        var text = $(client.domElement).closest('.controls').find('input,textarea').val();
+        clip.setText(text);
+        $fw.client.dialog.info.flash('Copied to your clipboard.');
+      });
     });
   },
   

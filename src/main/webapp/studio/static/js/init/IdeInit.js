@@ -2,6 +2,8 @@
 var change_password_button = null;
 
 $(document).ready(function () {
+  ZeroClipboard.setMoviePath( '/studio/static/common/js/ui/thirdparty/zeroclipboard/ZeroClipboard.swf' );
+
   $(document).bind('keyup', function (e) {
     try {
       if (e.altKey && e.ctrlKey && e.keyCode === 71) { // Ctrl-Alt-G

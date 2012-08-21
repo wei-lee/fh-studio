@@ -73,14 +73,17 @@ Account.Keys.Controller = Controller.extend({
     console.log('Refreshing copy and paste.');
     // Destroy existing agents
     $.each(ZeroClipboard.clients, function(i, client) {
-      client.destroy();
+      if ($(client.domElement).is(':visible')) {
+        client.destroy();
+      }
     });
-    $(this.views.keys_manage_container + " .user_key .copy:visible").each(function() {
+    $(this.views.keys_manage_container + " .user_key .d_clip_container").each(function() {
       var clip = new ZeroClipboard.Client();
-      clip.glue(this);
+      clip.setHandCursor(true);
+      clip.glue($(this).find('.d_clip_button')[0], this);
 
       clip.addEventListener('mouseDown', function(client) {
-        var text = $(client.domElement).parent().find('.key_public').text();
+        var text = $(client.domElement).closest('.user_key').find('.key_public').text();
         clip.setText(text);
         $fw.client.dialog.info.flash('Your key has been copied to your clipboard.');
       });

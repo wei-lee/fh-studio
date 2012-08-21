@@ -3341,6 +3341,19 @@ table.dataTable th:active {
   border-top: 1px solid #ddd;
 }
 
+.d_clip_container {
+  position:relative;  
+}
+
+.d_clip_container div {
+  top:0 !important;
+  left:0 !important;
+}
+
+.d_clip_container embed {
+  position:absolute !important;
+}
+
 /* Awesome nth item selector that works cross platform (including IE!)
   http://reference.sitepoint.com/css/adjacentsiblingselector
   Hides Email & App ID column (:nth(3)) (:nth(6))
