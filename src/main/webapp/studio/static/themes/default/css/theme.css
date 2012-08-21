@@ -1139,9 +1139,7 @@ span.label-info {
 {
   float:left;
 }
-.form-field label, .form-field label.error, .form-field span {
- margin-top: 3px;
-}
+
 .form-field .inline-help
 {
   float:left;
@@ -3192,6 +3190,14 @@ table.dataTable th:active {
 
 .d_clip_container embed {
   position:absolute !important;
+}
+
+.help-button {
+  font-size: 18px;
+  background: none;
+  border: none;
+  padding: 2px 5px 2px 5px !important;
+  color: #2e72ab;
 }
 
 /* Awesome nth item selector that works cross platform (including IE!)
