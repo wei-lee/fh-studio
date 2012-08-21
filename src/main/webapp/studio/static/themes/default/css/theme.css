@@ -299,7 +299,6 @@ textarea { resize:none; }
   opacity: 0.35;
   filter: alpha(opacity=35);
 }
-.jstree-classic.jstree-focused { background:white; }
 .jstree-classic .jstree-no-dots li, 
 .jstree-classic .jstree-no-dots .jstree-leaf > ins { background:transparent; }
 .jstree-classic .jstree-no-dots .jstree-open > ins { background-position:-18px 0; }
@@ -649,14 +648,15 @@ label.error
 #main_layout_center .ui-tabs-nav
 {
 }
-#main_layout_center .ui-tabs-nav li
-{
+
+#main_layout_center .ui-tabs-nav li {
   border-bottom:none;
   height:24px;
   line-height:11px;
   min-width:80px;
   margin-right:0.5em;
 }
+
 #main_layout_center .ui-tabs-nav li.ui-state-default a
 {
   color:#666666;
@@ -959,9 +959,21 @@ label.error
   margin:0 auto;  
 }
 /* Editor */
+
+#editor_save_btn, #editor_save_all_btn, #editor_find_btn {
+  margin-right: 5px;
+}
+
+
 #editor_text_content {
   min-height: 300px;
+  border: 1px solid #ccc;
 }
+
+#editor_files_list {
+  padding: 5px;
+}
+
 #editor_img_content 
 {
   overflow:auto;
@@ -976,15 +988,14 @@ label.error
    width: 100%;
    overflow: hidden;
    margin: 0px;
-   background:#fff url(../img/grey_bar.png) repeat-x 0 0;
 }
-#editor_titles
-{
-   background-color: transparent;
-   border-bottom:1px solid #CCCCCC;
-   height: 25px;
-   padding: 0px;
+#editor_titles {
+  margin-top: 10px;
+  background-color: transparent;
+  height: 25px;
+  padding: 0px;
 }
+
 #editor_titles li.ui-tabs-selected{
   padding-bottom:0px!important;
 }
@@ -1593,6 +1604,10 @@ span.label-info {
 #preview_controls {
   margin-top: 10px;
   text-align: center;
+}
+
+#preview_controls button {
+  width: 33.33333333%;
 }
 
 #preview_text {
@@ -3277,7 +3292,9 @@ table.dataTable th:active {
 
 #quickstart_container .cloud-quickstart i,
 #quickstart_container .client-quickstart i,
-#quickstart_client_container i {
+#quickstart_client_container i,
+#quickstart_client_hybrid_container i,
+#quickstart_cloud_container i {
   font-size: 96px;
 }
 
@@ -3285,7 +3302,7 @@ table.dataTable th:active {
   text-decoration: none;
 }
 
-#quickstart_client_container h2 {
+#quickstart_client_container h2, #quickstart_client_hybrid_container h2, #quickstart_cloud_container h2 {
   margin-bottom: 10px;
 }
 
@@ -3293,7 +3310,18 @@ table.dataTable th:active {
   margin-top: 5px;
 }
 
+#quickstart_client_container pre {
+  padding: 2px 4px;
+  color: #D14;
+  background-color: #F7F7F9;
+  border: 1px solid #E1E1E8;
+}
+
 #clone_button, #delete_app_button { margin-right: 5px; }
+
+#deploying_container hr {
+  border-top: 1px solid #ddd;
+}
 
 /* Awesome nth item selector that works cross platform (including IE!)
   http://reference.sitepoint.com/css/adjacentsiblingselector

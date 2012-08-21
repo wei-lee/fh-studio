@@ -1,15 +1,17 @@
         <div id="quickstart_container">
+          <div class="alerts"></div>
+
           <ul class="thumbnails">
             <li class="span3"></li>
             <li class="span3">
               <a href="#" class="btn client-quickstart pull-right" data-controller="apps.quickstart.client.controller">
-                <i class="icon-phone"></i>
+                <img src="<%=studio.getStaticAssetPath("themes/default/img/client_icon.png")%>" alt="">
                 <h4>Client Quick Start</h4>
               </a>
             </li>
             <li class="span3">
               <a href="#" class="btn cloud-quickstart pull-left" data-controller="apps.quickstart.cloud.controller">
-                <i class="icon-cloud"></i>
+                <img src="<%=studio.getStaticAssetPath("themes/default/img/cloud_icon.png")%>" alt="">
                 <h4>Cloud Quick Start</h4>
               </a>
             </li>
@@ -18,7 +20,6 @@
 
         <!-- start quickstart client -->
         <div id="quickstart_client_container" class="multistep">
-
           <div class="row-fluid multistep_step step_1">
             <div class="span12">
               <div class="step_number">1</div>
@@ -80,14 +81,14 @@
                 <h2>Project Type</h2>
                 <ul class="thumbnails step_2_options">
                   <li class="span2">
-                    <a href="#" class="thumbnail" data-nextsteps="step_3_ios_new,step_4_ios">
-                      <img src="<%=studio.getStaticAssetPath("themes/default/img/placeholder.jpg")%>" alt="">
+                    <a href="#" class="btn" data-nextsteps="step_3_ios_new,step_4_ios">
+                      <i class="icon-file"></i>
                       <h5>New Project</h5>
                     </a>
                   </li>
                   <li class="span2">
-                    <a href="#" class="thumbnail" data-nextsteps="step_3_ios_existing,step_4_ios">
-                      <img src="<%=studio.getStaticAssetPath("themes/default/img/placeholder.jpg")%>" alt="">
+                    <a href="#" class="btn" data-nextsteps="step_3_ios_existing,step_4_ios">
+                      <i class="icon-edit"></i>
                       <h5>Existing Project</h5>
                     </a>
                   </li>
@@ -103,8 +104,8 @@
                 <h2>Download Template Project</h2>
                 <p>1. Download the Template Project below and open it using Xcode</p>
                 <div class="row-fluid">
-                  <a href="#" id="ios_starter_download_link" class="thumbnail span2 sdkfiles_link">
-                    <img src="<%=studio.getStaticAssetPath("themes/default/img/placeholder.jpg")%>" alt="">
+                  <a href="#" id="ios_starter_download_link" class="btn span2 sdkfiles_link">
+                    <i class="icon-download"></i>
                     <h5>iOS Template Project</h5>
                   </a>
                 </div>
@@ -121,8 +122,8 @@
                 <h2>Download & Integrate the SDK</h2>
                 <p>1. To Start creating a FeedHenry powered iOS Native app, download the iOS SDK</p>
                 <div class="row-fluid">
-                  <a href="#" id="ios_sdk_download_link" class="thumbnail span2 sdkfiles_link">
-                    <img src="<%=studio.getStaticAssetPath("themes/default/img/placeholder.jpg")%>" alt="">
+                  <a href="#" id="ios_sdk_download_link" class="btn span2 sdkfiles_link">
+                    <i class="icon-download"></i>
                     <h5>iOS SDK</h5>
                   </a>
                 </div>
@@ -149,14 +150,14 @@
                 <h2>Project Type</h2>
                 <ul class="thumbnails step_2_options">
                   <li class="span2">
-                    <a href="#" class="thumbnail" data-nextsteps="step_3_android_new,step_4_android">
-                      <img src="<%=studio.getStaticAssetPath("themes/default/img/placeholder.jpg")%>" alt="">
+                    <a href="#" class="btn" data-nextsteps="step_3_android_new,step_4_android">
+                      <i class="icon-file"></i>
                       <h5>New Project</h5>
                     </a>
                   </li>
                   <li class="span2">
-                    <a href="#" class="thumbnail" data-nextsteps="step_3_android_existing,step_4_android">
-                      <img src="<%=studio.getStaticAssetPath("themes/default/img/placeholder.jpg")%>" alt="">
+                    <a href="#" class="btn" data-nextsteps="step_3_android_existing,step_4_android">
+                      <i class="icon-edit"></i>
                       <h5>Existing Project</h5>
                     </a>
                   </li>
@@ -172,8 +173,8 @@
                 <h2>Download Template Project</h2>
                 <p>1. Download the Template Project below (Can be imported into Eclipse as an existing project)</p>
                 <div class="row-fluid">
-                  <a href="#" id="android_starter_download_link" class="thumbnail span2 sdkfiles_link">
-                    <img src="<%=studio.getStaticAssetPath("themes/default/img/placeholder.jpg")%>" alt="">
+                  <a href="#" id="android_starter_download_link" class="btn span2 sdkfiles_link">
+                    <i class="icon-download"></i>
                     <h5>Android Template Project</h5>
                   </a>
                 </div>
@@ -190,8 +191,8 @@
                 <h2>Download & Integrate the SDK</h2>
                 <p>1. To start creating a FeedHenry powered Android Native app, download our Android SDK</p>
                 <div class="row-fluid">
-                  <a href="#" id="android_sdk_download_link" class="thumbnail span2 sdkfiles_link">
-                    <img src="<%=studio.getStaticAssetPath("themes/default/img/placeholder.jpg")%>" alt="">
+                  <a href="#" id="android_sdk_download_link" class="btn span2 sdkfiles_link">
+                    <i class="icon-download"></i>
                     <h5>Android SDK</h5>
                   </a>
                 </div>
@@ -229,8 +230,8 @@
                 <h2>Download & Integrate the SDK</h2>
                 <p>1. To start creating a FeedHenry powered PhonegGap app, download our JavaScript SDK</p>
                 <div class="row-fluid">
-                  <a href="#" class="thumbnail span2">
-                    <img src="<%=studio.getStaticAssetPath("themes/default/img/placeholder.jpg")%>" alt="">
+                  <a href="#" class="btn span2">
+                    <i class="icon-download"></i>
                     <h5>FeedHenry PhoneGap JavaScript SDK</h5>
                   </a>
                 </div>
@@ -258,14 +259,14 @@
                 <h2>Project Type</h2>
                 <ul class="thumbnails step_2_options">
                   <li class="span2">
-                    <a href="#" class="thumbnail" data-nextsteps="step_3_javascript_new,step_4_javascript">
-                      <img src="<%=studio.getStaticAssetPath("themes/default/img/placeholder.jpg")%>" alt="">
+                    <a href="#" class="btn" data-nextsteps="step_3_javascript_new,step_4_javascript">
+                      <i class="icon-file"></i>
                       <h5>New Project</h5>
                     </a>
                   </li>
                   <li class="span2">
-                    <a href="#" class="thumbnail" data-nextsteps="step_3_javascript_existing,step_4_javascript">
-                      <img src="<%=studio.getStaticAssetPath("themes/default/img/placeholder.jpg")%>" alt="">
+                    <a href="#" class="btn" data-nextsteps="step_3_javascript_existing,step_4_javascript">
+                      <i class="icon-edit"></i>
                       <h5>Existing Project</h5>
                     </a>
                   </li>
@@ -281,8 +282,8 @@
                 <h2>Download Template Project</h2>
                 <p>1. Download the Template Project below</p>
                 <div class="row-fluid">
-                  <a href="#" class="thumbnail span2">
-                    <img src="<%=studio.getStaticAssetPath("themes/default/img/placeholder.jpg")%>" alt="">
+                  <a href="#" class="btn span2">
+                    <i class="icon-download"></i>
                     <h5>JavaScript Template Project</h5>
                   </a>
                 </div>
@@ -299,8 +300,8 @@
                 <h2>Download & Integrate the SDK</h2>
                 <p>1. To start creating a FeedHenry powered JavaScript app, download our JavaScript SDK</p>
                 <div class="row-fluid">
-                  <a href="#" class="thumbnail span2">
-                    <img src="<%=studio.getStaticAssetPath("themes/default/img/placeholder.jpg")%>" alt="">
+                  <a href="#" class="btn span2">
+                    <i class="icon-download"></i>
                     <h5>FeedHenry JavaScript SDK</h5>
                   </a>
                 </div>
@@ -328,26 +329,26 @@
           <h2>Choose an Action</h2>
           <ul class="thumbnails step_1_options">
             <li class="span2">
-              <a href="#" class="thumbnail" data-controller="apps.editor.controller">
-                <img src="<%=studio.getStaticAssetPath("themes/default/img/placeholder.jpg")%>" alt="">
+              <a href="#" class="btn" data-controller="apps.editor.controller">
+                <i class="icon-file"></i>
                 <h5>Develop my Cloud Code</h5>
               </a>
             </li>
             <li class="span2 nodejs_mode">
-              <a href="#" class="thumbnail" data-controller="apps.deploy.controller">
-                <img src="<%=studio.getStaticAssetPath("themes/default/img/placeholder.jpg")%>" alt="">
+              <a href="#" class="btn" data-controller="apps.deploy.controller">
+                <i class="icon-cloud"></i>
                 <h5>Deploy my Cloud Code</h5>
               </a>
             </li>
             <li class="span2 nodejs_mode">
-              <a href="#" class="thumbnail" data-controller="apps.status.controller">
-                <img src="<%=studio.getStaticAssetPath("themes/default/img/placeholder.jpg")%>" alt="">
+              <a href="#" class="btn" data-controller="apps.status.controller">
+                <i class="icon-dashboard"></i>
                 <h5>Monitor Cloud Status</h5>
               </a>
             </li>
             <li class="span2">
-              <a href="#" class="thumbnail" data-controller="apps.logging.controller">
-                <img src="<%=studio.getStaticAssetPath("themes/default/img/placeholder.jpg")%>" alt="">
+              <a href="#" class="btn" data-controller="apps.logging.controller">
+                <i class="icon-list"></i>
                 <h5>Show Cloud Logs</h5>
               </a>
             </li>

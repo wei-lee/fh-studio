@@ -84,7 +84,7 @@ Apps.Quickstart.Controller = Apps.Controller.extend({
     var self = this;
     $fw.server.post(Constants.SDK_GETFILES_URL , {
     }, function (res) {
-      if(res && res.status && res.status === "oks") {
+      if(res && res.status && res.status === "ok") {
         self.setClickAction('#ios_sdk_download_link', 'fh-ios-sdk', 'sdk', res);
         self.setClickAction('#ios_starter_download_link', 'fh-ios-sdk', 'starter', res);
         self.setClickAction('#android_sdk_download_link', 'fh-android-sdk', 'sdk', res);
@@ -97,9 +97,11 @@ Apps.Quickstart.Controller = Apps.Controller.extend({
   },
 
   bindNotYetAvailableMessages: function () {
+    var self = this;
     $('.sdkfiles_link').each(function() {
       $(this).unbind('click').bind('click', function (e) {
-        alert("Links for the SDK Files are currently being downloaded, please try again.");
+        console.log('showing alert: error');
+        self.showAlert('error', "Links for the SDK Files are currently being downloaded, please try again.");
       });
     });
   },
