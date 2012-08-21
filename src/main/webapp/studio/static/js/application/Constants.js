@@ -153,5 +153,5 @@ $.extend(Constants, {
   ADMIN_DEVICES_LISTUSERS_URL : Constants.ADMIN_URL_PREFIX + "device/listusers",
   ADMIN_DEVICES_LISTAPPS_URL : Constants.ADMIN_URL_PREFIX + "device/listapps",
 
-  SDK_GETFILES_URL : Constants.SDK_URL_PREFIX + "files/all"
+  SDK_GETFILES_URL : Constants.SDK_URL_PREFIX + "files/read"
 });
