@@ -16,7 +16,7 @@ $(document).ready(function () {
   // $fw.client becomes available as well as $fw.app
 
   // CAUTION!!! uncomment this line to enable sample data on reports
-  $fw.clientProps['reporting-sampledata-enabled'] = 'true';
+  //$fw.clientProps['reporting-sampledata-enabled'] = 'true';
 
   $fw.setClient(new IDEManager());
   $fw.initClient();
