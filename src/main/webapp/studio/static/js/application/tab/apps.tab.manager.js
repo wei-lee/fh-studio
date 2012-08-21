@@ -145,6 +145,7 @@ ManageappsTabManager = Tab.Manager.extend({
       }));
     };
 
+    var preview_buttons = $('#' + self.breadcrumbId).find('.preview_buttons').detach(); // detach is important here
     // get prefix from select list item in listapps view e.g. 'My Apps'
     var crumb = $('#' + self.breadcrumbId).empty();
     var prefixHeaderCrumb = $('.listapps_nav_list li.active').prevAll('.nav-header').first();
@@ -154,7 +155,6 @@ ManageappsTabManager = Tab.Manager.extend({
 
     var prefixCrumb = $('.listapps_nav_list li.active a');
     // assemble start of breadcrumb
-    var preview_buttons = $('#' + self.breadcrumbId).find('.preview_buttons').detach(); // detach is important here
     addCrumbWithDivider(prefixCrumb.text().trim());
 
     // add placeholder item for app title
