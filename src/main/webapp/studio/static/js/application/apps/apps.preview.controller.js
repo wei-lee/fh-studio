@@ -2,7 +2,7 @@ var Apps = Apps || {};
 
 Apps.Preview = Apps.Preview || {};
 
-Apps.Preview.Controller = Class.extend({
+Apps.Preview.Controller = Controller.extend({
   MAX_PREVIEW_WIDTH: 400,
   EMPTY_PREVIEW_WIDTH: 320,
   

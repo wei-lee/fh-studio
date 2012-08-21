@@ -8,8 +8,8 @@ var IDEManager = Class.extend({
       admin: new Admin.Tab.Manager(),
       apps: new Apps.Tab.Manager(),
       dashboard: new Dashboard.Tab.Manager(),
-      account: new Account.Tab.Manager()
-      // reporting: new Reporting.Tab.Manager()
+      account: new Account.Tab.Manager(),
+      reporting: new Reporting.Tab.Manager()
     };
     this.analytics = new analytics.AnalyticsIntegration();
     this.chart = new application.ChartManager();

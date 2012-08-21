@@ -89,6 +89,8 @@ js/application/stats/models/stats.model.historical.counters.js
 js/application/reporting/models/reports.mock.js
 js/application/reporting/models/reports.model.js
 js/application/reporting/controllers/reports.controller.js
+js/application/reporting/reporting.installs.controller.js
+js/application/reporting/reporting.startups.controller.js
 js/application/stats/views/stats.view.base.js
 js/application/stats/views/stats.view.list.js
 js/application/stats/views/stats.view.list.timers.js
