@@ -3136,6 +3136,14 @@ table.dataTable th:active {
   font-size: 96px;
 }
 
+#quickstart_container .cloud-quickstart p,
+#quickstart_container .client-quickstart p,
+#quickstart_client_container p,
+#quickstart_client_hybrid_container p,
+#quickstart_cloud_container p  {
+  margin: 10px 0 10px 0;
+}
+
 #quickstart_container a
 #quickstart_container .cloud-quickstart a,
 #quickstart_container .client-quickstart a,

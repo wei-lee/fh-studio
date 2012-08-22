@@ -45,7 +45,7 @@ Apps.Quickstart.Controller = Apps.Controller.extend({
 
     this.initFn();
     
-    $(this.container).find('li').removeClass('active').end().fadeIn();
+    $(this.container).find('a').removeClass('active').end().fadeIn();
   },
 
   initBindings: function () {
@@ -57,8 +57,8 @@ Apps.Quickstart.Controller = Apps.Controller.extend({
       e.preventDefault();
       var anchor = $(this);
 
-      jqEl.find('li').removeClass('active');
-      anchor.parent().addClass('active');
+      jqEl.find('a').removeClass('active');
+      anchor.addClass('active');
 
       var controller = $fw.client.tab.apps.manageapps.getController(anchor.data('controller'));
       controller.show(e, true);
@@ -115,8 +115,8 @@ Apps.Quickstart.Controller = Apps.Controller.extend({
       e.preventDefault();
       var el = $(this);
 
-      el.closest('.thumbnails').find('li').removeClass('active');
-      el.closest('li').addClass('active');
+      el.closest('.thumbnails').find('a').removeClass('active');
+      el.closest('a').addClass('active');
 
       // show succeeding step/s that are configured for this item
       var controller = el.data('controller');
@@ -205,11 +205,11 @@ Apps.Quickstart.Client.Controller = Apps.Quickstart.Controller.extend({
       e.preventDefault();
       var el = $(this);
 
-      el.closest('.thumbnails').find('li').removeClass('active');
-      el.closest('li').addClass('active');
+      el.closest('.thumbnails').find('a').removeClass('active');
+      el.closest('a').addClass('active');
 
       // hide all other steps at the current step number or greater
-      $('.step_2,.step_3,.step_4,.step_5').hide().find('li').removeClass('active');
+      $('.step_2,.step_3,.step_4,.step_5').hide().find('a').removeClass('active');
 
       // show succeeding step/s that are configured for this item
       var nextsteps = el.data('nextsteps').split(',');
@@ -223,11 +223,11 @@ Apps.Quickstart.Client.Controller = Apps.Quickstart.Controller.extend({
       e.preventDefault();
       var el = $(this);
 
-      el.closest('.thumbnails').find('li').removeClass('active');
-      el.closest('li').addClass('active');
+      el.closest('.thumbnails').find('a').removeClass('active');
+      el.closest('a').addClass('active');
 
       // hide all other steps at the current step number or greater
-      $('.step_3,.step_4,.step_5').hide().find('li').removeClass('active');
+      $('.step_3,.step_4,.step_5').hide().find('a').removeClass('active');
 
       // show succeeding step/s that are configured for this item
       var nextsteps = el.data('nextsteps').split(',');
