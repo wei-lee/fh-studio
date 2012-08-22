@@ -1398,8 +1398,6 @@ span.label-info {
 {
   color:#000;
   margin:0;
-  padding:0.5em;
-  line-height:1.8em;
 }
 .resource-div h3.resource-ready
 {
@@ -1417,8 +1415,9 @@ span.label-info {
   width:22%;
   float:right;
 }
-.resource-buttons-position{
-  padding-top:5em;
+
+.resource-buttons-position {
+  padding-top: 2.4em;
 }
 .resource-div h3 .resource-buttons
 {
@@ -1445,10 +1444,11 @@ span.label-info {
 {
   font-size:0.9em;
 }
-.resource-div p
-{
-  margin: 0.5em;
+
+.resource-div p {
+  margin: 0.5em 0 0.5em 0;
 }
+
 .resource-content{
   width:70%;
 }
