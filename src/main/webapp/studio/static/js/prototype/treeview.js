@@ -81,7 +81,8 @@ proto.TreeviewManager = function (params) {
       is_template = $fw.data.get('template_mode');
       opts = {
         'core': {
-          initially_open: ['root']
+          initially_open: ['root'],
+          animation: 0
         },
         'themes': {
           theme: 'classic',
@@ -142,7 +143,7 @@ proto.TreeviewManager = function (params) {
             self.container.jstree('toggle_node', el);
             setTimeout(function () {
               that.toggling = false;
-            }, 500);
+            }, 0);
           }
 
         }

@@ -848,11 +848,11 @@ label.error
   background: #fff;
 }
 
-#editor_files_list * {
+#editor_files_list ul {
   overflow: visible !important;
 }
 
-#editor_files_list .treeview_root {
+#editor_files_list {
   overflow-x: auto !important;
 }
 
