@@ -2890,6 +2890,7 @@ table.dataTable th:active {
 .row-fluid .manageapps_nav_list[class*="span"], #app_content, #app_preview, #editor_files_container {
   min-height: 625px;
 }
+
 #app_content .well {
   min-height: 585px;
 }
