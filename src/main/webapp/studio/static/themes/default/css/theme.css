@@ -845,6 +845,7 @@ label.error
 
 #editor_files_list {
   padding: 5px;
+  background: #fff;
 }
 
 #editor_img_content 
@@ -889,8 +890,7 @@ label.error
 }
 
 .editor_tabs_scroller {
-/*  z-index: 9999;
-*/  position: absolute;
+  position: absolute;
   height: 18px;
   width: 15px;
   padding: 7px 0px 0px 0px;
@@ -2738,6 +2738,11 @@ line-height:0.5em;
 }
 
 /* Bootstrap Overrides */
+
+.well {
+  background: #fafafa;
+}
+
 #preview_toggle_open {
   margin-left:15px;
 }
@@ -2875,7 +2880,7 @@ table.dataTable th:active {
   cursor: text;
 }
 
-.row-fluid .manageapps_nav_list[class*="span"], #app_content, #app_preview {
+.row-fluid .manageapps_nav_list[class*="span"], #app_content, #app_preview, #editor_files_container {
   min-height: 625px;
 }
 
