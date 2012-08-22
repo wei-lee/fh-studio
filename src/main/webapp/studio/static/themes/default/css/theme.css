@@ -640,7 +640,7 @@ label.error
   position:absolute;
   z-index:3;
   top:33px;
-  right:13px;
+  right: 132px;
   min-width: 200px;
   height: 18px;
   text-align:center;
