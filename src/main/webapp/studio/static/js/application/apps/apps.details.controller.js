@@ -196,7 +196,7 @@ Apps.Details.Controller = Apps.Controller.extend({
       })
     };
     // submit to server
-    self.models.App.update(fields, function(result) {
+    self.models.app.update(fields, function(result) {
       console.log('update success:' + result);
       $fw.client.dialog.info.flash($fw.client.lang.getLangString('app_updated'));
       // TODO: overkill here by doing a second call to read the app
