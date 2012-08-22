@@ -723,7 +723,7 @@ proto.TreeviewManager = function (params) {
 
     selectNodeByPath: function (file_path) {
       var file = self.container.find('.file_item[path="' + file_path + '"]'),
-        folder = file.parentsUntil('#editor_files_list').filter('.folder_item');
+        folder = file.parentsUntil('#editor_files_list').filter('.folder_item.jstree-closed');
       self.container.jstree('open_node', folder, $.noop, true);
       file.find('a').trigger('click');
     }

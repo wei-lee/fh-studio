@@ -140,7 +140,7 @@ Apps.Create.Controller = Controller.extend({
                 $fw.data.set('app', {
                   "guid": app.guid
                 });
-                self.triggerScm(function () {
+                $fw.client.tab.apps.manageapps.triggerScm(function () {
                   proto.ProgressDialog.setProgress(scmProgressStep, 100);
                   proto.Wizard.jumpToStep(create_app_wizard, nextStep);
                   proto.Wizard.hidePreviousButton(create_app_wizard);
