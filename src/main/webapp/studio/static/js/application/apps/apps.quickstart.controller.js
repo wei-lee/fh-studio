@@ -149,9 +149,10 @@ Apps.Quickstart.Client.Controller = Apps.Quickstart.Controller.extend({
     '  </dict>',
     '</plist>'].join('\n'),
 
-  android_properties: ['apiurl = {placeholder1}',
-    'app = {placeholder2}',
-    'domain = {placeholder3}'].join('\n'),
+  android_properties: ['host = {host}',
+    'appID = {appID}',
+    'appKey = {appKey}',
+    'mode = {mode}'].join('\n'),
 
   javascript_index: ['<script src="feedhenry.js" type="text/javascript"></script>',
     '<script type="text/javascript">',
@@ -183,9 +184,16 @@ Apps.Quickstart.Client.Controller = Apps.Quickstart.Controller.extend({
     }
 
     // Update client sdk instructions for current app
-    $('.ios_plist').text(this.ios_plist);
-    $('.android_properties').text(this.android_properties);
-    $('.javascript_index').text(this.javascript_index);
+    $('.ios_plist').text(this.replaceSDKConfigPlaceholders(this.ios_plist));
+    $('.android_properties').text(this.replaceSDKConfigPlaceholders(this.android_properties));
+    $('.javascript_index').text(this.replaceSDKConfigPlaceholders(this.javascript_index));
+  },
+
+  replaceSDKConfigPlaceholders: function (configStr) {
+    var host = document.location.protocol + '//' + document.location.host; // .host important here so port is included, if any specified
+    var inst = $fw.data.get('inst');
+
+    return configStr.replace('{host}', host).replace('{appID}', inst.guid).replace('{appKey}', inst.apiKey).replace('{mode}', 'dev');
   },
 
   initBindings: function () {
