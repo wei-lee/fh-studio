@@ -883,12 +883,11 @@ label.error
   line-height:1.2em;
   cursor:pointer;
 }
+
 #editor_message {
-  padding: 5px;
-  background: #FAFAFA;
-  border-top: 1px solid #AAA;
   text-align: center;
 }
+
 .editor_tabs_scroller {
 /*  z-index: 9999;
 */  position: absolute;
