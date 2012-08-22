@@ -1026,10 +1026,12 @@ table.jqplot-table-legend, table.jqplot-cursor-legend {
 }
 .jw-title
 {
-  margin:0;
-  font-size:1em;
-  height:10px;
-  padding:10px;
+  margin: 0;
+  font-size: 1em;
+  height: 10px;
+  padding: 20px;
+  padding-left: 0;
+  padding-top: 0;
 }
 .jw-content
 {
@@ -1517,6 +1519,7 @@ span.label-info {
   height:10em;  
 }
 .jw-counter {
+  border:1px solid #dfdfdf;
   background-color: #fff;
 }
 .ui-progressbar .ui-progressbar-value, .jw-counter-progressbar .ui-progressbar-value {
