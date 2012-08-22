@@ -159,7 +159,7 @@ Apps.Quickstart.Client.Controller = Apps.Quickstart.Controller.extend({
     'var config = {',
     '  host: "{host}",',
     '  appid: "{appID}",',
-    '  apikey: "{appKey},"',
+    '  appkey: "{appKey}",',
     '  mode: "{mode}"',
     '};',
     '',
