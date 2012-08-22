@@ -89,8 +89,8 @@ Apps.Quickstart.Controller = Apps.Controller.extend({
         self.setClickAction('#ios_starter_download_link', 'fh-ios-sdk', 'starter', res);
         self.setClickAction('#android_sdk_download_link', 'fh-android-sdk', 'sdk', res);
         self.setClickAction('#android_starter_download_link', 'fh-android-sdk', 'starter', res);
-        self.setClickAction('#javascript_sdk_download_link', 'fh-javascript-sdk', 'sdk', res);
-        self.setClickAction('#javascript_starter_download_link', 'fh-javascript-sdk', 'starter', res);
+        self.setClickAction('#javascript_sdk_download_link', 'fh-js-sdk', 'sdk', res);
+        self.setClickAction('#javascript_starter_download_link', 'fh-js-sdk', 'starter', res);
       }
     });
 
