@@ -2879,6 +2879,9 @@ table.dataTable th:active {
 .row-fluid .manageapps_nav_list[class*="span"], #app_content, #app_preview {
   min-height: 625px;
 }
+#app_content .well {
+  min-height: 585px;
+}
 
 #cloud_logo {
   height: 35px;
