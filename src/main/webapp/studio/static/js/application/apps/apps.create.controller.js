@@ -43,6 +43,8 @@ Apps.Create.Controller = Controller.extend({
         self.finishAppWizard(finish_option);
       }
     });
+
+    create_app_wizard.find('textarea[name=description]').closest('.control-group').hide();
     
     create_app_wizard.validate({
       rules: {
@@ -94,7 +96,8 @@ Apps.Create.Controller = Controller.extend({
       
       var params = {
         title: details_step.find('input[name=title]').val(),
-        description: details_step.find('textarea[name=description]').val(),
+//        description: details_step.find('textarea[name=description]').val(),
+        description: '',
         height: device.height,
         width: device.width,
         config: {preview: {device: id}}
