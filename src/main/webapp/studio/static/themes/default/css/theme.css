@@ -844,8 +844,16 @@ label.error
 }
 
 #editor_files_list {
-  padding: 5px;
+  padding: 0;
   background: #fff;
+}
+
+#editor_files_list * {
+  overflow: visible !important;
+}
+
+#editor_files_list .treeview_root {
+  overflow-x: auto !important;
 }
 
 #editor_img_content 

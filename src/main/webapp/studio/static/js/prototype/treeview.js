@@ -33,6 +33,7 @@ proto.TreeviewManager = function (params) {
         dom_obj.append(anchor_obj);
       }
       ul_dom = $('<ul>');
+
       ul_dom.append(dom_obj);
       self.container.html(ul_dom);
       self.initTreeview();
@@ -95,6 +96,8 @@ proto.TreeviewManager = function (params) {
         };
       }
       self.container.jstree(opts);
+
+      self.container.children('ul:first').addClass('span12 treeview_root');
 
       if (!is_template) {
         self.container.bind("create.jstree", function (event, data) {
