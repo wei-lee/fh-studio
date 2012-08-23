@@ -1,6 +1,8 @@
 var IDEManager = Class.extend({
   
   init: function () {
+    $('#main_layout_wrapper').hide();
+
     this.lang = new LangManager();
     this.dialog = new application.DialogManager();
     this.model = new model.ModelManager();
@@ -36,6 +38,8 @@ var IDEManager = Class.extend({
       },
       cookie_name: 'feedhenry'
     });
+
+    $('#main_layout_wrapper').show();
   },
   
   /*
