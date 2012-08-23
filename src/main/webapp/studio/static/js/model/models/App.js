@@ -25,12 +25,14 @@ model.App = model.Model.extend({
     field_name: "version",
     editable: false,
     showable: true,
-    column_title: "Version"
+    column_title: "Version",
+    width: "40px"
   }, {
     field_name: "modified",
     editable: false,
     showable: true,
-    column_title: "Last Modified"
+    column_title: "Last Modified",
+    width: "130px"
   }, {
     field_name: "id",
     editable: false,
@@ -52,12 +54,14 @@ model.App = model.Model.extend({
     field_name: "version",
     editable: false,
     showable: true,
-    column_title: "Version"
+    column_title: "Version",
+    width: "40px"
   }, {
     field_name: "modified",
     editable: false,
     showable: true,
-    column_title: "Last Modified"
+    column_title: "Last Modified",
+    width: "130px"
   }, {
     field_name: "id",
     editable: false,
