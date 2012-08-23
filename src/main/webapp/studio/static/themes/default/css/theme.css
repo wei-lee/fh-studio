@@ -640,7 +640,7 @@ label.error
   position:absolute;
   z-index:3;
   top:33px;
-  right:13px;
+  right: 132px;
   min-width: 200px;
   height: 18px;
   text-align:center;
@@ -839,12 +839,21 @@ label.error
 
 
 #editor_text_content {
-  min-height: 300px;
+  min-height: 522px !important;
   border: 1px solid #ccc;
 }
 
 #editor_files_list {
-  padding: 5px;
+  padding: 0;
+  background: #fff;
+}
+
+#editor_files_list ul {
+  overflow: visible !important;
+}
+
+#editor_files_list {
+  overflow-x: auto !important;
 }
 
 #editor_img_content 
@@ -883,15 +892,13 @@ label.error
   line-height:1.2em;
   cursor:pointer;
 }
+
 #editor_message {
-  padding: 5px;
-  background: #FAFAFA;
-  border-top: 1px solid #AAA;
   text-align: center;
 }
+
 .editor_tabs_scroller {
-/*  z-index: 9999;
-*/  position: absolute;
+  position: absolute;
   height: 18px;
   width: 15px;
   padding: 7px 0px 0px 0px;
@@ -1019,10 +1026,12 @@ table.jqplot-table-legend, table.jqplot-cursor-legend {
 }
 .jw-title
 {
-  margin:0;
-  font-size:1em;
-  height:10px;
-  padding:10px;
+  margin: 0;
+  font-size: 1em;
+  height: 10px;
+  padding: 20px;
+  padding-left: 0;
+  padding-top: 0;
 }
 .jw-content
 {
@@ -1063,12 +1072,11 @@ table.jqplot-table-legend, table.jqplot-cursor-legend {
 .progress-step .progresslog-wrapper {
   padding:1em 0 0 0;
   margin:0;
-  width:99%;
+  width:100%;
 }
 .progress-step .progresslog {
-  border:none;
   height:10em;
-  border:1px solid #dfdfdf;
+  width: 98%;
 }
 /* Default form fields */
 span.label-info {
@@ -1390,8 +1398,6 @@ span.label-info {
 {
   color:#000;
   margin:0;
-  padding:0.5em;
-  line-height:1.8em;
 }
 .resource-div h3.resource-ready
 {
@@ -1409,8 +1415,9 @@ span.label-info {
   width:22%;
   float:right;
 }
-.resource-buttons-position{
-  padding-top:5em;
+
+.resource-buttons-position {
+  padding-top: 2.4em;
 }
 .resource-div h3 .resource-buttons
 {
@@ -1437,10 +1444,11 @@ span.label-info {
 {
   font-size:0.9em;
 }
-.resource-div p
-{
-  margin: 0.5em;
+
+.resource-div p {
+  margin: 0.5em 0 0.5em 0;
 }
+
 .resource-content{
   width:70%;
 }
@@ -1511,6 +1519,7 @@ span.label-info {
   height:10em;  
 }
 .jw-counter {
+  border:1px solid #dfdfdf;
   background-color: #fff;
 }
 .ui-progressbar .ui-progressbar-value, .jw-counter-progressbar .ui-progressbar-value {
@@ -2739,6 +2748,11 @@ line-height:0.5em;
 }
 
 /* Bootstrap Overrides */
+
+.well {
+  background: #fafafa;
+}
+
 #preview_toggle_open {
   margin-left:15px;
 }
@@ -2876,8 +2890,12 @@ table.dataTable th:active {
   cursor: text;
 }
 
-.row-fluid .manageapps_nav_list[class*="span"], #app_content, #app_preview {
+.row-fluid .manageapps_nav_list[class*="span"], #app_content, #app_preview, #editor_files_container {
   min-height: 625px;
+}
+
+#app_content .well {
+  min-height: 585px;
 }
 
 #cloud_logo {
@@ -3136,6 +3154,14 @@ table.dataTable th:active {
   font-size: 96px;
 }
 
+#quickstart_container .cloud-quickstart p,
+#quickstart_container .client-quickstart p,
+#quickstart_client_container p,
+#quickstart_client_hybrid_container p,
+#quickstart_cloud_container p  {
+  margin: 10px 0 10px 0;
+}
+
 #quickstart_container a
 #quickstart_container .cloud-quickstart a,
 #quickstart_container .client-quickstart a,
@@ -3198,6 +3224,13 @@ table.dataTable th:active {
   border: none;
   padding: 2px 5px 2px 5px !important;
   color: #2e72ab;
+}
+
+#account_layout .form-field label,
+#account_layout .form-field input,
+#account_layout .form-field select {
+  line-height: 24px;
+  margin-left: 5px;
 }
 
 /* Awesome nth item selector that works cross platform (including IE!)

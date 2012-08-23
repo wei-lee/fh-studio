@@ -45,7 +45,7 @@ Apps.Quickstart.Controller = Apps.Controller.extend({
 
     this.initFn();
     
-    $(this.container).find('li').removeClass('active').end().fadeIn();
+    $(this.container).find('a').removeClass('active').end().fadeIn();
   },
 
   initBindings: function () {
@@ -57,8 +57,8 @@ Apps.Quickstart.Controller = Apps.Controller.extend({
       e.preventDefault();
       var anchor = $(this);
 
-      jqEl.find('li').removeClass('active');
-      anchor.parent().addClass('active');
+      jqEl.find('a').removeClass('active');
+      anchor.addClass('active');
 
       var controller = $fw.client.tab.apps.manageapps.getController(anchor.data('controller'));
       controller.show(e, true);
@@ -89,8 +89,8 @@ Apps.Quickstart.Controller = Apps.Controller.extend({
         self.setClickAction('#ios_starter_download_link', 'fh-ios-sdk', 'starter', res);
         self.setClickAction('#android_sdk_download_link', 'fh-android-sdk', 'sdk', res);
         self.setClickAction('#android_starter_download_link', 'fh-android-sdk', 'starter', res);
-        self.setClickAction('#javascript_sdk_download_link', 'fh-javascript-sdk', 'sdk', res);
-        self.setClickAction('#javascript_starter_download_link', 'fh-javascript-sdk', 'starter', res);
+        self.setClickAction('#javascript_sdk_download_link', 'fh-js-sdk', 'sdk', res);
+        self.setClickAction('#javascript_starter_download_link', 'fh-js-sdk', 'starter', res);
       }
     });
 
@@ -115,8 +115,8 @@ Apps.Quickstart.Controller = Apps.Controller.extend({
       e.preventDefault();
       var el = $(this);
 
-      el.closest('.thumbnails').find('li').removeClass('active');
-      el.closest('li').addClass('active');
+      el.closest('.thumbnails').find('a').removeClass('active');
+      el.closest('a').addClass('active');
 
       // show succeeding step/s that are configured for this item
       var controller = el.data('controller');
@@ -138,32 +138,35 @@ Apps.Quickstart.Client.Controller = Apps.Quickstart.Controller.extend({
     '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">',
     '<plist version="1.0">',
     '  <dict>',
-    '    <key>apiurl</key>',
-    '    <string>{placeholder1}</string>',
-    '    <key>app</key>',
-    '    <string>{placeholder2}</string>',
-    '    <key>domain</key>',
-    '    <string>{placeholder3}</string>',
-    '    <key>inst</key>',
-    '    <string>{placeholder4}</string>',
+    '    <key>host</key>',
+    '    <string>{host}</string>',
+    '    <key>appID</key>',
+    '    <string>{appID}</string>',
+    '    <key>appKey</key>',
+    '    <string>{appKey}</string>',
+    '    <key>mode</key>',
+    '    <string>{mode}</string>',
     '  </dict>',
     '</plist>'].join('\n'),
 
-  android_properties: ['apiurl = {placeholder1}',
-    'app = {placeholder2}',
-    'domain = {placeholder3}'].join('\n'),
+  android_properties: ['host = {host}',
+    'appID = {appID}',
+    'appKey = {appKey}',
+    'mode = {mode}'].join('\n'),
 
   javascript_index: ['<script src="feedhenry.js" type="text/javascript"></script>',
     '<script type="text/javascript">',
     'var config = {',
-    '  apiurl: "{placeholder1}",',
-    '  appid: "{placeholder2}",',
-    '  apikey: "{placeholder3}"',
-    '}',
+    '  host: "{host}",',
+    '  appid: "{appID}",',
+    '  appkey: "{appKey}",',
+    '  mode: "{mode}"',
+    '};',
     '',
-    'var fh = new FeedHenry(config);',
-    'fh.init(function(res){',
+    '$fh.init(config, function(res) {',
     '  // SDK initialised, callback action here',
+    '}, function(err) {',
+    '  // SDK initialise failed, callback action here',
     '});',
     '</script>'].join('\n'),
 
@@ -183,9 +186,16 @@ Apps.Quickstart.Client.Controller = Apps.Quickstart.Controller.extend({
     }
 
     // Update client sdk instructions for current app
-    $('.ios_plist').text(this.ios_plist);
-    $('.android_properties').text(this.android_properties);
-    $('.javascript_index').text(this.javascript_index);
+    $('.ios_plist').text(this.replaceSDKConfigPlaceholders(this.ios_plist));
+    $('.android_properties').text(this.replaceSDKConfigPlaceholders(this.android_properties));
+    $('.javascript_index').text(this.replaceSDKConfigPlaceholders(this.javascript_index));
+  },
+
+  replaceSDKConfigPlaceholders: function (configStr) {
+    var host = document.location.protocol + '//' + document.location.host; // .host important here so port is included, if any specified
+    var inst = $fw.data.get('inst');
+
+    return configStr.replace('{host}', host).replace('{appID}', inst.guid).replace('{appKey}', inst.apiKey).replace('{mode}', 'dev');
   },
 
   initBindings: function () {
@@ -195,11 +205,11 @@ Apps.Quickstart.Client.Controller = Apps.Quickstart.Controller.extend({
       e.preventDefault();
       var el = $(this);
 
-      el.closest('.thumbnails').find('li').removeClass('active');
-      el.closest('li').addClass('active');
+      el.closest('.thumbnails').find('a').removeClass('active');
+      el.closest('a').addClass('active');
 
       // hide all other steps at the current step number or greater
-      $('.step_2,.step_3,.step_4,.step_5').hide().find('li').removeClass('active');
+      $('.step_2,.step_3,.step_4,.step_5').hide().find('a').removeClass('active');
 
       // show succeeding step/s that are configured for this item
       var nextsteps = el.data('nextsteps').split(',');
@@ -213,11 +223,11 @@ Apps.Quickstart.Client.Controller = Apps.Quickstart.Controller.extend({
       e.preventDefault();
       var el = $(this);
 
-      el.closest('.thumbnails').find('li').removeClass('active');
-      el.closest('li').addClass('active');
+      el.closest('.thumbnails').find('a').removeClass('active');
+      el.closest('a').addClass('active');
 
       // hide all other steps at the current step number or greater
-      $('.step_3,.step_4,.step_5').hide().find('li').removeClass('active');
+      $('.step_3,.step_4,.step_5').hide().find('a').removeClass('active');
 
       // show succeeding step/s that are configured for this item
       var nextsteps = el.data('nextsteps').split(',');
