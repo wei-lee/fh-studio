@@ -91,6 +91,7 @@ Apps.Quickstart.Controller = Apps.Controller.extend({
         self.setClickAction('#android_starter_download_link', 'fh-android-sdk', 'starter', res);
         self.setClickAction('#javascript_sdk_download_link', 'fh-js-sdk', 'sdk', res);
         self.setClickAction('#javascript_starter_download_link', 'fh-js-sdk', 'starter', res);
+        self.setClickAction('#phonegap_javascript_sdk_download_link', 'fh-js-sdk', 'sdk', res);
       }
     });
 

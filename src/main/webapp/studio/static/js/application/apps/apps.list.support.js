@@ -75,14 +75,14 @@ Apps.List.Support = Controller.extend({
       sTitle: "Controls",
       "bSortable": false,
       "sClass": "controls",
-      "sWidth": "55px"
+      "sWidth": "62px"
     });
 
     $.each(res.aaData, function(i, row) {
       var controls = [];
       var guid = row[6];
       // TODO: Move to clonable hidden_template
-      var button = '<button class="btn edit_app">Edit</button>&nbsp;';
+      var button = '<button class="btn edit_app">Edit</button>';
       controls.push(button);
 
 

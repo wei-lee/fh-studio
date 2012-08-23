@@ -3131,7 +3131,10 @@ table.dataTable th:active {
 }
 
 .app_icon_cell, .apps_grid.table-bordered thead:first-child tr:first-child th:first-child {
-  width: 16px !important;
+  width: 22px !important;
+  padding: 0 !important;
+  padding-top: 8px !important;  
+  padding-left: 3px !important;  
 }
 
 .apps_grid td, #useradmin_users_table td, #auth_policies_list_table td, #admin_devices_table td {
