@@ -1471,6 +1471,7 @@ span.label-info {
   margin: auto;
   padding: auto;
   overflow:visible;
+  position: relative;
 }
 #preview_frame {
   -webkit-transform:scale(1);
