@@ -3159,7 +3159,7 @@ table.dataTable th:active {
 #quickstart_client_container p,
 #quickstart_client_hybrid_container p,
 #quickstart_cloud_container p  {
-  margin: 10px 0 10px 0;
+  margin: 5px 0 5px 0;
 }
 
 #quickstart_container a
@@ -3173,12 +3173,22 @@ table.dataTable th:active {
   margin-right: 10px;
 }
 
+#quickstart_container .well,
+#quickstart_client_container .well,
+#quickstart_client_hybrid_container.well,
+#quickstart_cloud_container.well  {
+  min-height: 0px;
+}
+
 #quickstart_container a:hover {
   text-decoration: none;
 }
 
-#quickstart_client_container h2, #quickstart_client_hybrid_container h2, #quickstart_cloud_container h2 {
+#quickstart_client_container h2, 
+#quickstart_client_hybrid_container h2, 
+#quickstart_cloud_container h2 {
   margin-bottom: 10px;
+  margin-top: 10px;
 }
 
 #quickstart_client_container h5 {
@@ -3231,6 +3241,10 @@ table.dataTable th:active {
 #account_layout .form-field select {
   line-height: 24px;
   margin-left: 5px;
+}
+
+a.docslink {
+  color: #08C;
 }
 
 /* Awesome nth item selector that works cross platform (including IE!)
