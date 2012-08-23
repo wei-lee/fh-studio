@@ -52,7 +52,7 @@ analytics.AnalyticsIntegration = Class.extend({
     if( this.config_general.dashboardDocs ) {
       $('.doc_links').bind('click', function(evt) {
         var docName = this.innerText;
-        $fw_manager.analytics.trackEvent({id:'Dashboard - View Documentation', props:{'Document Name':docName}});
+        $fw.analytics.trackEvent({id:'Dashboard - View Documentation', props:{'Document Name':docName}});
       });
     }
   },
@@ -63,8 +63,8 @@ analytics.AnalyticsIntegration = Class.extend({
       var elementId = this.id;
       if( that.config_button[elementId] ) {
         var eventId = that.config_button[elementId];	
-        var eventProps = $fw_manager.data.getDataStore();
-        $fw_manager.analytics.trackEvent({id:eventId, props:eventProps});
+        var eventProps = $fw.data.getDataStore();
+        $fw.analytics.trackEvent({id:eventId, props:eventProps});
       }
     });
   },
@@ -75,8 +75,8 @@ analytics.AnalyticsIntegration = Class.extend({
       var elementId = this.id;
       if( that.config_div[elementId] ) {
         var eventId = that.config_div[elementId]; 
-        var eventProps = $fw_manager.data.getDataStore();
-        $fw_manager.analytics.trackEvent({id:eventId, props:eventProps});
+        var eventProps = $fw.data.getDataStore();
+        $fw.analytics.trackEvent({id:eventId, props:eventProps});
       }
     });
   },
@@ -96,11 +96,11 @@ analytics.AnalyticsIntegration = Class.extend({
         var tabItemText = tabItem.text();
 
         var eventId = that.config_tabs[tabId]; 
-        //var eventProps = $fw_manager.data.getDataStore();
+        //var eventProps = $fw.data.getDataStore();
         var eventProps = {};
         eventProps["Tab Item"] = tabItemText;
 
-        $fw_manager.analytics.trackEvent({id:eventId, props:eventProps});
+        $fw.analytics.trackEvent({id:eventId, props:eventProps});
       });      
     }
   },
@@ -119,11 +119,11 @@ analytics.AnalyticsIntegration = Class.extend({
         var eventPropText = (accordionItemParentText ? accordionItemParentText + ' - ' : '') + accordionItemText;
 
         var eventId = that.config_accordion[accordionId]; 
-        //var eventProps = $fw_manager.data.getDataStore();
+        //var eventProps = $fw.data.getDataStore();
         var eventProps = {};
         eventProps["Accordion Item"] = eventPropText;
 
-        $fw_manager.analytics.trackEvent({id:eventId, props:eventProps});
+        $fw.analytics.trackEvent({id:eventId, props:eventProps});
       });      
     }
   },
@@ -137,7 +137,7 @@ analytics.AnalyticsIntegration = Class.extend({
       var eventId = that.config_wizard[wizard_id] + ' - ' + eventPropText; 
       var eventProps = {};
 
-      $fw_manager.analytics.trackEvent({id:eventId, props:eventProps});
+      $fw.analytics.trackEvent({id:eventId, props:eventProps});
       
       // bind callbacks for cancel, finish and next
       var orig_cancel = jq_overrides.cancel;
@@ -146,7 +146,7 @@ analytics.AnalyticsIntegration = Class.extend({
         var eventId = that.config_wizard[wizard_id] + ' - ' + eventPropText; 
         var eventProps = {};
         eventProps.data = proto.Wizard.getAllData($(this));
-        $fw_manager.analytics.trackEvent({id:eventId, props:eventProps});
+        $fw.analytics.trackEvent({id:eventId, props:eventProps});
         
         if ($.isFunction(orig_cancel)) {
           orig_cancel.call(this);
@@ -158,7 +158,7 @@ analytics.AnalyticsIntegration = Class.extend({
         var eventId = that.config_wizard[wizard_id] + ' - ' + eventPropText; 
         var eventProps = {};
         eventProps.data = proto.Wizard.getAllData($(this));
-        $fw_manager.analytics.trackEvent({id:eventId, props:eventProps});
+        $fw.analytics.trackEvent({id:eventId, props:eventProps});
         
         if ($.isFunction(orig_finish)) {
           orig_finish.call(this);
@@ -172,7 +172,7 @@ analytics.AnalyticsIntegration = Class.extend({
           var eventId = that.config_wizard[wizard_id] + ' - ' + eventPropText; 
           var eventProps = {};
           eventProps.data = proto.Wizard.getAllData($(this));
-          $fw_manager.analytics.trackEvent({id:eventId, props:eventProps});
+          $fw.analytics.trackEvent({id:eventId, props:eventProps});
         }
       };
     }

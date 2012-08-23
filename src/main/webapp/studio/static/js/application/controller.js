@@ -1,6 +1,9 @@
 var Controller = Class.extend({
 
   progressModal: null,
+  views: {},
+  models: {},
+  alert_timeout: 3000,
 
   init: function () {
     // generic controller stuff
@@ -10,8 +13,10 @@ var Controller = Class.extend({
     // generic show
   },
 
-  hide: function () {
-    // generic hide
+  hide: function(){
+    $.each(this.views, function(k, v){
+      $(v).hide();
+    });
   },
 
   reset: function() {
@@ -23,6 +28,24 @@ var Controller = Class.extend({
       $.each(this.views, function(k, v) {
         $('.alerts .alert', v).remove();
       });
+    }
+  },
+
+  // type: error|success|info
+  showAlert: function (type, message) {
+    var self = this;
+    var alerts_area = $(this.container).find('.alerts');
+    var alert = $('<div>').addClass('alert fade in alert-' + type).html(message);
+    var close_button = $('<button>').addClass('close').attr("data-dismiss", "alert").text("x");
+    alert.append(close_button);
+    alerts_area.append(alert);
+    // only automatically hide alert if it's not an error
+    if ('error' !== type) {
+      setTimeout(function() {
+        alert.slideUp(function () {
+          alert.remove();
+        });
+      }, self.alert_timeout);
     }
   },
 
@@ -100,7 +123,9 @@ var Controller = Class.extend({
     modal.find('.modal-body').html(msg).end().appendTo($("body")).modal({
       "keyboard": false,
       "backdrop": "static"
-    }).find('.btn-primary').unbind().on('click', function () {
+    }).find('.btn-primary').unbind().on('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
       // confirmed delete, go ahead
       modal.modal('hide');
       success();

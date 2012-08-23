@@ -98,7 +98,7 @@ try {
       <div class="topbar-inner">
         <div class="container-fluid">
           <div class="user_info_container">
-            <%@ include file="../../inc/header_links.html"%>
+            <%@ include file="../../inc/header/header_links.html"%>
           </div>
         </div>
       </div>
@@ -128,7 +128,7 @@ try {
         <div class="span7">
           <h2>Getting Started</h2>
           <p>Here are some links to help you get started</p>
-          <a class="btn" target="_blank" href="http://developer.feedhenry.com/blog/2012/03/build-an-app-and-stage-to-cloud-foundry%E2%84%A2-in-3-easy-steps/">3 Step Guide - Create, Build & Stage &raquo;</a><br/>
+          <a class="btn" target="_blank" href="http://developer.feedhenry.com/blog/2012/03/build-an-app-and-stage-to-cloud-foundry%E2%84%A2-in-3-easy-steps/">3 Step Guide - Create, Build & Deploy &raquo;</a><br/>
           <a class="btn" target="_blank" href="<%= docLinks.get("docs_fhc")%>">Installing FHC &raquo;</a><br/>
           <a class="btn" target="_blank" href="<%= docLinks.get("docs_fhc_labs")%>">FHC Labs &raquo;</a><br/>
         </div>
@@ -155,7 +155,7 @@ try {
     <div id="installing" class="row">
           <div class="span7">
               <h2>Installing FHC</h2>
-              <p>The FHC command line utility gives access to the entire FeedHenry suite through your command line. It's a NodeJS utility which allows you to quickly get started staging your apps to Cloud Foundry.</p>
+              <p>The FHC command line utility gives access to the entire FeedHenry suite through your command line. It's a NodeJS utility which allows you to quickly get started deploying your apps to Cloud Foundry.</p>
           <pre class="code">
 $ sudo npm install -g fh-fhc 
 $ fhc -v
@@ -170,9 +170,9 @@ $ fhc login you@cloudfoundry.com password</pre>
     
     <div id="staging" class="row">
         <div class="span7">
-            <h2>Staging your first app to Cloud Foundry</h2>
+            <h2>Deploying your first app to Cloud Foundry</h2>
             <p>Learn how to stage an app you've created to public Cloud Foundry. 
-        We start with in app in GitHub, add it to the FeedHenry platform then stage it's server side to Cloud Foundry.  
+        We start with in app in GitHub, add it to the FeedHenry platform then deploy it's server side to Cloud Foundry.  
         </p>
 
       </div>

@@ -1,0 +1,53 @@
+<form id="ios_publish_form">
+    <div id="app_publish_ios_deploying_env" class="app_publish_deploying_env">
+        <div id="app_publish_ios_deploying_env_text" class="insert-lang-block"></div>
+        <form>
+            <div class="form-field ui-helper-reset ui-helper-clearfix">
+                <input type="checkbox" name="app_publish_ios_deploying" next="app_publish_ios_versions" checked="checked"><label>Deploy the server-side of the app</label>
+            </div>
+        </form>
+    </div>
+
+    <div id="app_publish_ios_deploying_progress" class="app_publish_deploying_progress" track="no">
+        <div id="app_publish_ios_deploying_env_progresslog"><textarea class="progresslog" readonly="true"></textarea></div>
+    </div>
+
+
+      <div id="app_publish_ios_select_provisionings">
+        <div id="app_publish_ios_select_provisionings_text" class="insert-lang-block"></div>
+
+        <div class="form-field ui-helper-reset ui-helper-clearfix">
+          <input type="radio" name="app_publish_ios_provisioning_radio" next="app_publish_ios_deploying_env" checked="checked" value="existing"><label>I would like to use the existing provisioning profile of this app</label>
+        </div>
+
+
+        <div class="form-field ui-helper-reset ui-helper-clearfix">
+          <input type="radio" name="app_publish_ios_provisioning_radio" next="app_publish_ios_upload_provisionings" value="new"><label>I would like to upload a new provisoning profile for this app</label>
+        </div>
+      </div>
+
+      <div id="app_publish_ios_upload_provisionings">
+        <div id="app_publish_ios_upload_provisionings_text" class="insert-lang-block"></div>
+        <div class="form-field ui-helper-reset ui-helper-clearfix">
+          <input id="ios_provisioning_upload_file" type="file" name="ios_provisioning_upload_file"><label for="ios_provisioning_upload_file">Provisioning Profile (.mobileprovision format)</label>
+        </div>
+      </div>
+      
+      <div id="app_publish_ios_upload_progress">
+        <div id="app_publish_ios_upload_progress_text" class="insert-lang-block"></div>
+      </div>
+    
+      <div id="app_publish_ios_versions" config-radio="build-options-ios"></div>
+      
+      <div id="app_publish_ios_password">
+        <div id="app_publish_ios_password_text" class="insert-lang-block"></div>
+        <div class="form-field ui-helper-reset ui-helper-clearfix">
+          <label for="app_publish_ios_pk_password" id="app_publish_ios_pk_password_text" class="insert-lang"></label><input type="password" id="app_publish_ios_pk_password" name="app_publish_ios_pk_password" class="insert-help-icon"></input>
+        </div>
+        <div class="form-field ui-helper-reset ui-helper-clearfix">
+          <label for="app_publish_ios_cert_password" id="app_publish_ios_cert_password_text" class="insert-lang"></label><input type="password" id="app_publish_ios_cert_password" name="app_publish_ios_cert_password" class="insert-help-icon"></input>
+        </div>
+      </div>
+    
+      <div id="app_publish_ios_progress" class="progress-step"></div>
+    </form>

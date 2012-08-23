@@ -1,8 +1,8 @@
 common/js/ui/thirdparty/json/json2.js
+common/js/ui/thirdparty/underscore.js
 common/js/ui/thirdparty/jquery/jquery.js
 common/js/ui/thirdparty/jquery/plugins/jquery.throttle.js
 common/js/ui/thirdparty/jquery/plugins/jquery.transform.js
-common/js/ui/thirdparty/jquery/plugins/jquery.qtip.js
 common/js/ui/thirdparty/jquery/plugins/jquery.validate.js
 common/js/ui/thirdparty-mods/jquery/plugins/jquery.validate.fh_extensions.js
 common/js/ui/thirdparty/jquery/plugins/jquery.cookie.js
@@ -12,9 +12,6 @@ common/js/ui/thirdparty/jquery/plugins/jquery.jstree.js
 common/js/ui/thirdparty/jquery/plugins/jquery.form.js
 common/js/ui/thirdparty/jquery/plugins/jquery.placeholder.js
 common/js/ui/thirdparty/jquery-ui/jquery-ui.js
-common/js/ui/thirdparty/jquery-ui/plugins/jquery.layout.js
-common/js/ui/thirdparty/jquery-ui/plugins/jqgrid/i18n/grid.locale-en.js 
-common/js/ui/thirdparty/jquery-ui/plugins/jqgrid/jquery.jqGrid.min.js
 common/js/ui/thirdparty-mods/jquery-ui/plugins/jquery.jWizard.fh_extensions.js
 common/js/ui/thirdparty/jquery-ui/plugins/jquery.jWizard.js
 common/js/ui/thirdparty/codemirror/codemirror.js

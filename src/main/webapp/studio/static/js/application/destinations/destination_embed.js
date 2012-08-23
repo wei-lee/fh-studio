@@ -11,13 +11,13 @@ application.DestinationEmbed = application.DestinationGeneral.extend({
     console.log("Embed :: Publish");
     
     // get the embed code string
-    var guid = $fw_manager.data.get('inst').guid;
+    var guid = $fw.data.get('inst').guid;
     var tag = Constants.EMBED_APP_TAG.replace('<GUID>', guid);
     
     // create modal dialog structure with textarea for embed code 
     var el = $('<div>', {
     }).append($('<p>',{
-      text: $fw_manager.client.lang.getLangString('publish_embed_text')
+      text: $fw.client.lang.getLangString('publish_embed_text')
     })).append($('<textarea>', {
       id: 'embed_code',
       value: tag,
@@ -26,7 +26,7 @@ application.DestinationEmbed = application.DestinationGeneral.extend({
     
     // setup close button
     var buttons = {};
-    buttons[$fw_manager.client.lang.getLangString('generic_close')] = function () {
+    buttons[$fw.client.lang.getLangString('generic_close')] = function () {
       $(this).dialog('close');
     };
     
@@ -37,7 +37,7 @@ application.DestinationEmbed = application.DestinationGeneral.extend({
       autoOpen: true,
       dialogClass: 'publish-dialog',
       width: 400,
-      title: $fw_manager.client.lang.getLangString('publish_embed_title'),
+      title: $fw.client.lang.getLangString('publish_embed_title'),
       buttons: buttons
     });
     

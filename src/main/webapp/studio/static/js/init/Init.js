@@ -8,15 +8,6 @@ $(document).ready(function () {
   // show body
   $('body').show();
   
-  var options = {
-    applyDefaultStyles: false,
-    resizable: false,
-    slidable: false,
-    spacing_open: 0,
-    spacing_closed: 0,
-    enableCursorHotkey: false
-  };
-  
   $.validator.addMethod("validpass", function (value, element) {
     // check the password length
     return 'string' === typeof value && value.length >= 8;

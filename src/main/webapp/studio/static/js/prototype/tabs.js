@@ -7,7 +7,7 @@ proto.Tabs = {
     el.tabs($.extend({}, proto.Tabs.defaults, overrides));
     
     //Analytics Integration
-    $fw_manager.client.analytics.doTabs(el);
+    $fw.client.analytics.doTabs(el);
     
     return el;
   }

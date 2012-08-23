@@ -132,7 +132,7 @@ Stats.Model.Base = Class.extend({
     var url, params, app;
     var self = this;
 
-    var guid = $fw_manager.data.get('inst').guid;
+    var guid = $fw.data.get('inst').guid;
     url = Constants.STATS_APP_URL;
     params = {
       guid: guid,

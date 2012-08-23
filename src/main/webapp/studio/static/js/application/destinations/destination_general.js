@@ -5,7 +5,7 @@ application.DestinationGeneral = Class.extend({
 
   init: function(dest_id) {
     this.destination_id = dest_id;
-    this.base_url = Constants.WID_URL_PREFIX + this.destination_id + "/" + $fw_manager.data.get('inst').guid + "/deliver";
+    this.base_url = Constants.WID_URL_PREFIX + this.destination_id + "/" + $fw.data.get('inst').guid + "/deliver";
   },
 
   doGeneration: function(is_source) {
@@ -18,7 +18,7 @@ application.DestinationGeneral = Class.extend({
       if ($fw.getClientProp('accountType') !== 'free') {
         that['export']();
       } else {
-        $fw_manager.client.dialog.error($fw_manager.client.lang.getLangString(error_msg));
+        $fw.client.dialog.error($fw.client.lang.getLangString(error_msg));
       }
     } else {
       that.publish();
@@ -28,12 +28,12 @@ application.DestinationGeneral = Class.extend({
   'export': function() {
     console.log("generate for " + this.destination_id + ":: Type: Export");
     var url = this.base_url + "?generateSrc=true";
-    $fw_manager.app.startDownload(url);
+    document.location = url;
   },
 
   publish: function() {
     var url = this.base_url + "?generateSrc=false";
-    $fw_manager.app.startDownload(url);
+    document.location = url;
   },
 
   doAsyncExport: function() {
@@ -58,7 +58,7 @@ application.DestinationGeneral = Class.extend({
     });
 
     if ($.isFunction(this.bindVersionViewShow)) {
-      this.bindVersionViewShow('#app_export_device_types', '#app_export_iphone_versions, #app_export_ipad_versions', wizard, 1);
+      this.bindVersionViewShow('#app_export_device_types', '#app_export_iphone_versions, #app_export_ipad_versions, #app_publish_ios_versions', wizard, 1);
     }
 
     // call any destination specific setup
@@ -78,10 +78,10 @@ application.DestinationGeneral = Class.extend({
         wizard.find('.jw-button-finish').trigger('click');
 
         if (res.error) {
-          $fw_manager.client.dialog.error($fw_manager.client.lang.getLangString('free_source_export_disabled'));
+          $fw.client.dialog.error($fw.client.lang.getLangString('free_source_export_disabled'));
         } else if (res.action && res.action.url) {
           var source_url = res.action.url;
-          $fw_manager.app.startDownload(source_url);
+          document.location = source_url;
         }
       });
     }).bind('postShow', function() {
@@ -204,8 +204,8 @@ application.DestinationGeneral = Class.extend({
   redirectToAccount: function(target) {
     // TODO: use id's instead of indexes
     // force state to show relevant accordion item
-    $fw_manager.state.set('account_accordion', 'selected', 1);
-    $fw_manager.state.set('account_accordion_accordion_item_destinations', 'selected', ((target === 'iphone') || (target === 'ipad')) ? 0 : 1);
+    $fw.state.set('account_accordion', 'selected', 1);
+    $fw.state.set('account_accordion_accordion_item_destinations', 'selected', ((target === 'iphone') || (target === 'ipad')) ? 0 : 1);
 
     $('#account_tab').click();
   },
@@ -229,7 +229,7 @@ application.DestinationGeneral = Class.extend({
     var that = this;
     $.post(Constants.LIST_RESOURCES_URL, {
       dest: this.destination_id,
-      appId: $fw_manager.data.get('inst').guid
+      appId: $fw.data.get('inst').guid
     }, function(res) {
       that.resourceCheckCallback(res, that);
       console.log('resource checked :: ' + that.destination_id);
@@ -238,11 +238,11 @@ application.DestinationGeneral = Class.extend({
     });
   },
 
-  startStage: function(config, wizard, step) {
+  startDeploy: function(config, wizard, step) {
     var self = this;
 
     // To stage or not to stage?
-    var checkbox = $(wizard).find("input[name='app_publish_" + this.destination_id + "_staging']:checked");
+    var checkbox = $(wizard).find("input[name='app_publish_" + this.destination_id + "_deploying']:checked");
 
     function skip() {
       setTimeout(function() {
@@ -259,57 +259,57 @@ application.DestinationGeneral = Class.extend({
       return skip();
     }
 
-    var staging_env;
+    var deploying_env;
     if (config == 'distribution' || config == 'release') {
-      staging_env = 'live';
+      deploying_env = 'live';
     } else {
-      staging_env = 'dev';
+      deploying_env = 'dev';
     }
 
 
     // Clear visible progresslog
     $('#wizard_dialog .progresslog:visible').val('');
 
-    console.log("Starting stage :: " + staging_env);
+    console.log("Starting deploy :: " + deploying_env);
 
-    if (staging_env == 'dev') {
-      self.doDevStage(wizard, step);
-    } else if (staging_env == 'live') {
-      self.doLiveStage(wizard, step);
+    if (deploying_env == 'dev') {
+      self.doDevDeploy(wizard, step);
+    } else if (deploying_env == 'live') {
+      self.doLiveDeploy(wizard, step);
     }
   },
 
-  doDevStage: function(wizard, step) {
-    console.log('staging.devStage');
+  doDevDeploy: function(wizard, step) {
+    console.log('destination_general.doDevDeploy');
     var self = this;
-    var guid = $fw_manager.data.get('app').guid;
-    var url = Constants.STAGE_APP_URL;
+    var guid = $fw.data.get('app').guid;
+    var url = Constants.DEPLOY_APP_URL;
     var params = {
       guid: guid
     };
 
-    $fw_manager.server.post(url, params, function(res) {
+    $fw.server.post(url, params, function(res) {
       if (res.status === "ok") {
-        self.stageStarted("dev", res.cacheKey, wizard, step);
+        self.deployStarted("dev", res.cacheKey, wizard, step);
       } else {
-        console.log('dev stage failed:' + res);
+        console.log('dev deploy failed:' + res);
       }
     }, null, true);
   },
 
-  doLiveStage: function(wizard, step) {
-    console.log('staging.liveStage');
+  doLiveDeploy: function(wizard, step) {
+    console.log('destination_general.doLiveDeploy');
     var self = this;
-    var guid = $fw_manager.data.get('app').guid;
-    var url = Constants.RELEASE_STAGE_APP_URL;
+    var guid = $fw.data.get('app').guid;
+    var url = Constants.RELEASE_DEPLOY_APP_URL;
     var params = {
       guid: guid
     };
-    $fw_manager.server.post(url, params, function(res) {
+    $fw.server.post(url, params, function(res) {
       if (res.status === "ok") {
-        self.stageStarted("live", res.cacheKey, wizard, step);
+        self.deployStarted("live", res.cacheKey, wizard, step);
       } else {
-        console.log('live stage failed:' + res);
+        console.log('live deploy failed:' + res);
       }
     }, null, true);
   },
@@ -325,10 +325,10 @@ application.DestinationGeneral = Class.extend({
     }
   },
 
-  stageComplete: function(wizard, step) {
-    console.log('stageComplete');
+  deployComplete: function(wizard, step) {
+    console.log('deployComplete');
 
-    if (this.destination_id == 'ipad' || this.destination_id == 'iphone') {
+    if (this.destination_id == 'ipad' || this.destination_id == 'iphone' || this.destination_id == 'ios') {
       proto.Wizard.jumpToStep(wizard, 6);
     } else {
       proto.Wizard.jumpToStep(wizard, 3);
@@ -336,11 +336,11 @@ application.DestinationGeneral = Class.extend({
 
   },
 
-  stageStarted: function(staging_env, cacheKey, wizard, step) {
+  deployStarted: function(deploying_env, cacheKey, wizard, step) {
     var self = this;
-    console.log('staging.stageStarted: [' + staging_env + '] [' + cacheKey + ']');
+    console.log('destination_general.deployStarted: [' + deploying_env + '] [' + cacheKey + ']');
 
-    var stage_task = new ASyncServerTask({
+    var deploy_task = new ASyncServerTask({
       cacheKey: cacheKey
     }, {
       updateInterval: Properties.cache_lookup_interval,
@@ -348,33 +348,33 @@ application.DestinationGeneral = Class.extend({
       // 5 minutes
       maxRetries: Properties.cache_lookup_retries,
       timeout: function(res) {
-        console.log('Staging timeout error > ' + JSON.stringify(res));
-        proto.Wizard.jumpToStep(import_app_wizard, 1, 'Staging timed-out');
+        console.log('Deplying timeout error > ' + JSON.stringify(res));
+        proto.Wizard.jumpToStep(import_app_wizard, 1, 'Deploying timed-out');
       },
       update: function(res) {
         for (var i = 0; i < res.log.length; i++) {
           console.log(res.log[i]);
         }
-        self.updateProgressLog(staging_env, res.log);
+        self.updateProgressLog(deploying_env, res.log);
       },
       complete: function(res) {
-        console.log('Stage successful > ' + JSON.stringify(res));
-        if ($.isFunction(self.stageComplete)) {
-          self.stageComplete(wizard, step);
+        console.log('Deploy successful > ' + JSON.stringify(res));
+        if ($.isFunction(self.deployComplete)) {
+          self.deployComplete(wizard, step);
         }
       },
       error: function(res) {
-        console.log('Stage error > ' + JSON.stringify(res));
-        self.updateProgressLog(staging_env, [res.error]);
-        proto.Wizard.jumpToStep(import_app_wizard, 1, 'Staging failed');
+        console.log('Deploy error > ' + JSON.stringify(res));
+        self.updateProgressLog(deploying_env, [res.error]);
+        proto.Wizard.jumpToStep(import_app_wizard, 1, 'Deploying failed');
       },
       retriesLimit: function() {
-        console.log('Stage retriesLimit exceeded: ' + Properties.cache_lookup_retries);
-        proto.Wizard.jumpToStep(import_app_wizard, 1, 'Staging retries exceeded');
+        console.log('Deploy retriesLimit exceeded: ' + Properties.cache_lookup_retries);
+        proto.Wizard.jumpToStep(import_app_wizard, 1, 'Deploying retries exceeded');
       },
       end: function() {}
     });
-    stage_task.run();
+    deploy_task.run();
   },
 
   startBuild: function(config) {
@@ -398,8 +398,8 @@ application.DestinationGeneral = Class.extend({
     var progress_view = wizard.find("#app_publish_" + this.destination_id + "_progress");
 
     // Binding for showing staging progress
-    wizard.find(".app_publish_staging_progress").unbind('show').bind('show', function(e) {
-      that.startStage(config, wizard, step);
+    wizard.find(".app_publish_deploying_progress").unbind('show').bind('show', function(e) {
+      that.startDeploy(config, wizard, step);
     });
 
     if ($.isFunction(this.bindExtraConfig)) {
@@ -416,7 +416,6 @@ application.DestinationGeneral = Class.extend({
         var source_url = res.action.url;
         var ota_url = res.action.ota_url;
         var ipa_url = res.action.ipa_url;
-        //$fw_manager.app.startDownload(source_url);
         var showOTA = false;
         var showIPA = false;
         if(typeof ota_url !== "undefined"){

@@ -3,7 +3,9 @@ proto.AceEditorImpl = function (params) {
     changingFile: false,
 
     init: function () {
-      self.container = params.container.empty();
+      self.container = params.container.css({
+        position: 'relative'
+      });
       self.editor_manager = params.editor_manager;
       self.defaults = {
 

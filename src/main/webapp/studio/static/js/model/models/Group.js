@@ -19,7 +19,7 @@ model.Group = model.Model.extend({
   init: function() {},
 
   create: function(name, success, fail) {
-    var url = Constants.ADMIN_GROUP_CREATE_URL.replace('<domain>', $fw_manager.getClientProp('domain'));
+    var url = Constants.ADMIN_GROUP_CREATE_URL.replace('<domain>', $fw.getClientProp('domain'));
     var params = {
       "name": name
     };
@@ -27,7 +27,7 @@ model.Group = model.Model.extend({
   },
 
   list: function(success, fail, post_process) {
-    var url = Constants.ADMIN_GROUP_LIST_URL.replace('<domain>', $fw_manager.getClientProp('domain'));
+    var url = Constants.ADMIN_GROUP_LIST_URL.replace('<domain>', $fw.getClientProp('domain'));
     var params = {};
 
     if (post_process) {
@@ -48,7 +48,7 @@ model.Group = model.Model.extend({
 
   
   update: function(params, success, fail, post_process) {
-    var url = Constants.ADMIN_GROUP_UPDATE_URL.replace('<domain>', $fw_manager.getClientProp('domain'));
+    var url = Constants.ADMIN_GROUP_UPDATE_URL.replace('<domain>', $fw.getClientProp('domain'));
 
     if (post_process) {
       return this.serverPost(url, params, success, fail, true, this.postProcessList, this);
@@ -66,7 +66,7 @@ model.Group = model.Model.extend({
       aoColumns: []
     };
 
-    // Buid Data
+    // Build Data
     $.each(rows, function(i, item) {
       var row = item;
       data.aaData.push([]);

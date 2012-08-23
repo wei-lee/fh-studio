@@ -22,6 +22,7 @@ $.extend(Constants, {
   ARM_URL_PREFIX : "/box/srv/1.1/arm/",
   METRICS_URL_PREFIX : "/box/srv/1.1/metrics/",
   ADMIN_URL_PREFIX : "/box/srv/1.1/admin/",
+  SDK_URL_PREFIX : "/box/srv/1.1/sdk/",
 
   ____DEPRECATED____DEV_URL_PREFIX____DEPRECATED____ : "/box/srv/1.1/dev/" // dev endpoints to be moved/migrated into ide space
 
@@ -48,7 +49,7 @@ $.extend(Constants, {
   UPDATE_APP_URL: Constants.IDE_URL_PREFIX + "app/update",
   DELETE_APP_URL: Constants.IDE_URL_PREFIX + "app/delete",
   PERMS_APP_URL: Constants.IDE_URL_PREFIX + "app/perms",
-  STAGE_APP_URL: Constants.IDE_URL_PREFIX + "app/stage",
+  DEPLOY_APP_URL: Constants.IDE_URL_PREFIX + "app/stage",
   PING_APP_URL: Constants.IDE_URL_PREFIX + "app/ping",
   STATS_APP_URL: Constants.IDE_URL_PREFIX + "app/stats",
   EXTERNAL_REQUEST_URL: Constants.IDE_URL_PREFIX + "app/external_request",
@@ -58,7 +59,7 @@ $.extend(Constants, {
   KEY_UPDATE_URL: Constants.IDE_URL_PREFIX + "api/update",
   KEY_REVOKE_URL: Constants.IDE_URL_PREFIX + "api/revoke",
 
-  RELEASE_STAGE_APP_URL: Constants.IDE_URL_PREFIX + "app/releasestage",
+  RELEASE_DEPLOY_APP_URL: Constants.IDE_URL_PREFIX + "app/releasestage",
   UPDATE_APP_FRAMEWORKS_URL : Constants.IDE_URL_PREFIX + "app/updateFrameworks",
   // TODO: use new endpoints for export
   EXPORT_APP_URL: Constants.____DEPRECATED____DEV_URL_PREFIX____DEPRECATED____ + "editor/widget/download",
@@ -150,5 +151,7 @@ $.extend(Constants, {
   ADMIN_DEVICES_UPDATE_URL : Constants.ADMIN_URL_PREFIX + "device/update",
   ADMIN_DEVICES_READ_URL: Constants.ADMIN_URL_PREFIX + "device/read",
   ADMIN_DEVICES_LISTUSERS_URL : Constants.ADMIN_URL_PREFIX + "device/listusers",
-  ADMIN_DEVICES_LISTAPPS_URL : Constants.ADMIN_URL_PREFIX + "device/listapps"
+  ADMIN_DEVICES_LISTAPPS_URL : Constants.ADMIN_URL_PREFIX + "device/listapps",
+
+  SDK_GETFILES_URL : Constants.SDK_URL_PREFIX + "files/read"
 });

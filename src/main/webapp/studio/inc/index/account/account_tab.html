@@ -1,0 +1,63 @@
+<div id="tabs-3">  
+  <div id="account_layout">
+
+    <div class="row-fluid">
+      <ul class="breadcrumb"></ul>
+    </div>
+
+    <div class="row-fluid">
+      <ul class="nav nav-list span2 well account_nav_list">
+        <li class="nav-header">Profile</li>
+        <li>
+          <a href="#" data-controller="account.profile.controller">
+            <i class="icon-wrench"></i>
+            Manage
+          </a>
+        </li>
+        <li>
+          <a href="#" data-controller="account.keys.controller">
+            <i class="icon-key"></i>
+            API Keys
+          </a>
+        </li>
+        <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER)) { %>
+        <li class="nav-header">Destinations</li>
+        <li>
+          <a href="#" data-controller="account.apple.controller">
+            <i class="icon-phone"></i>
+            Apple
+          </a>
+        </li>
+        <li>
+          <a href="#" data-controller="account.android.controller">
+            <i class="icon-phone"></i>
+            Android
+          </a>
+        </li>
+           <% if (studio.getProps().optBoolean("blackberry-binary-enabled", false)){%>
+        <li>
+          <a href="#" data-controller="account.blackberry.controller">
+            <i class="icon-phone"></i>
+            Blackberry
+          </a>
+        </li>
+           <% } %>          
+        <% } %>
+      </ul>
+
+      <div class="span10 well">
+        <%@ include file="./profile_details.html" %>
+
+        <%@ include file="./api_keys.html" %>
+
+        <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER)) { %>
+          <%@ include file="./destinations_apple_content.html" %>
+          
+          <%@ include file="./destinations_android_content.html" %>
+          
+          <%@ include file="./destinations_blackberry_content.html" %>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</div>

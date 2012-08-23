@@ -1,4 +1,33 @@
 ===============================================================================
+3.5.0
+-----------------------------------------------------------------------------
+###CHANGES
+* Removed legacy jquery plugins - jqgrid, ui-accordion, ui-layout
+* Converted all tabs and their content to bootstrap styles
+* Reporting tab and per-apps now have top level 'Installs' & 'Startups' section
+  with sub-section for viewing by date/platform/location
+* Added loading splash image to device previews
+* Added copy to clipboard functionality for 'readonly' app details e.g. api key
+* Moved editor file listing into main content area
+* Added new quickstart menu option in apps tab, with client & cloud specific quickstart
+  options also available from menu
+* Moved platform configuration options inside main content area i.e. preview, embed, ios
+* Fixed issue where switching between a rhino & nodejs app wouldn't update availabe options
+  i.e. deploy, status
+* Updated layout for all tables to use datatables plugin
+* Updated tooltips to use bootstrap popovers
+* Added new 'My Apps' option to apps tab which shows only apps that current user has
+  created. 'All Apps' option has old behaviour of showing all apps current user has
+  access to i.e. owned apps and group apps
+* Moved 'Clone' & 'Delete' app options into app details screen
+* Fixed issue with 'Copy to Clipboard' icons where resizing browser window wasn't updating
+  location of 'flash' embed object
+
+###NOTES
+*
+
+
+===============================================================================
 3.4.0
 -----------------------------------------------------------------------------
 ###CHANGES
