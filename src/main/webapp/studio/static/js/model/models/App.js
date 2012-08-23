@@ -26,13 +26,13 @@ model.App = model.Model.extend({
     editable: false,
     showable: true,
     column_title: "Version",
-    width: "40px"
+    width: "60px"
   }, {
     field_name: "modified",
     editable: false,
     showable: true,
     column_title: "Last Modified",
-    width: "130px"
+    width: "150px"
   }, {
     field_name: "id",
     editable: false,
@@ -55,13 +55,13 @@ model.App = model.Model.extend({
     editable: false,
     showable: true,
     column_title: "Version",
-    width: "40px"
+    width: "60px"
   }, {
     field_name: "modified",
     editable: false,
     showable: true,
     column_title: "Last Modified",
-    width: "130px"
+    width: "150px"
   }, {
     field_name: "id",
     editable: false,
