@@ -36,6 +36,7 @@ model.Model = Class.extend({
   },
 
   postProcessList: function(res, data_model, fieldConfig) {
+    var self = this;
     var filtered_fields;
     try {
       filtered_fields = data_model.getColumnMap(fieldConfig);
@@ -63,9 +64,18 @@ model.Model = Class.extend({
 
     // Build Columns
     $.each(filtered_fields, function(k, v) {
-      data.aoColumns.push({
-        sTitle: v
-      });
+      var config = data_model.configForField(k).config;
+
+      if (typeof config.width !== 'undefined') {
+        data.aoColumns.push({
+          sTitle: v,
+          sWidth: config.width
+        });
+      } else {
+        data.aoColumns.push({
+          sTitle: v
+        });
+      }
     });
 
     return data;

@@ -66,7 +66,7 @@ model.Group = model.Model.extend({
       aoColumns: []
     };
 
-    // Buid Data
+    // Build Data
     $.each(rows, function(i, item) {
       var row = item;
       data.aaData.push([]);
