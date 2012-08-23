@@ -140,9 +140,9 @@ Apps.Quickstart.Client.Controller = Apps.Quickstart.Controller.extend({
     '  <dict>',
     '    <key>host</key>',
     '    <string>{host}</string>',
-    '    <key>appID</key>',
+    '    <key>appid</key>',
     '    <string>{appID}</string>',
-    '    <key>appKey</key>',
+    '    <key>appkey</key>',
     '    <string>{appKey}</string>',
     '    <key>mode</key>',
     '    <string>{mode}</string>',
@@ -150,8 +150,8 @@ Apps.Quickstart.Client.Controller = Apps.Quickstart.Controller.extend({
     '</plist>'].join('\n'),
 
   android_properties: ['host = {host}',
-    'appID = {appID}',
-    'appKey = {appKey}',
+    'appid = {appID}',
+    'appkey = {appKey}',
     'mode = {mode}'].join('\n'),
 
   javascript_index: ['<script src="feedhenry.js" type="text/javascript"></script>',
