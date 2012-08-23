@@ -27,17 +27,17 @@ Reporting.Startups.Controller = Apps.Reports.Support.extend({
 
   byDate: function () {
     var container = $('.startups_by_date', $(this.views.reportingtabstartups_container));
-    this.initMetric('appstartupsdest', 'line', container, Constants.GET_SINGLE_APP_METRICS_URL);
+    this.initMetric('appstartupsdest', 'line', container, Constants.READ_APP_METRICS_URL);
   },
 
   byPlatform: function () {
     var container = $('.startups_by_platform', $(this.views.reportingtabstartups_container));
-    this.initMetric('appstartupsdest', 'pie', container, Constants.GET_SINGLE_APP_METRICS_URL);
+    this.initMetric('appstartupsdest', 'pie', container, Constants.READ_APP_METRICS_URL);
   },
 
   byLocation: function () {
     var container = $('.startups_by_location', $(this.views.reportingtabstartups_container));
-    this.initMetric('appstartupsgeo', 'geo', container, Constants.GET_SINGLE_APP_METRICS_URL);
+    this.initMetric('appstartupsgeo', 'geo', container, Constants.READ_APP_METRICS_URL);
   }
 });
 

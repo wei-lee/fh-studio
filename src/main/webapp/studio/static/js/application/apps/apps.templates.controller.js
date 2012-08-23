@@ -117,7 +117,9 @@ Apps.Templates.Controller = Controller.extend({
 
         self.doView(guid);
       });
-
+      $('.view_app', row).unbind().click(function(){
+        self.doView(guid);
+      });
     }
   },
 
@@ -132,7 +134,7 @@ Apps.Templates.Controller = Controller.extend({
     $.each(res.aaData, function(i, row) {
       var controls = [];
       // TODO: Move to clonable hidden_template
-      controls.push('<button class="btn edit_app" >Edit</button>&nbsp;');
+      controls.push('<button class="btn view_app" >View</button>&nbsp;');
       row.push(controls.join(""));
     });
 

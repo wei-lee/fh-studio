@@ -33,6 +33,7 @@ proto.TreeviewManager = function (params) {
         dom_obj.append(anchor_obj);
       }
       ul_dom = $('<ul>');
+
       ul_dom.append(dom_obj);
       self.container.html(ul_dom);
       self.initTreeview();
@@ -80,7 +81,8 @@ proto.TreeviewManager = function (params) {
       is_template = $fw.data.get('template_mode');
       opts = {
         'core': {
-          initially_open: ['root']
+          initially_open: ['root'],
+          animation: 0
         },
         'themes': {
           theme: 'classic',
@@ -95,6 +97,8 @@ proto.TreeviewManager = function (params) {
         };
       }
       self.container.jstree(opts);
+
+      self.container.children('ul:first').addClass('span12 treeview_root');
 
       if (!is_template) {
         self.container.bind("create.jstree", function (event, data) {
@@ -139,7 +143,7 @@ proto.TreeviewManager = function (params) {
             self.container.jstree('toggle_node', el);
             setTimeout(function () {
               that.toggling = false;
-            }, 500);
+            }, 0);
           }
 
         }
@@ -723,7 +727,7 @@ proto.TreeviewManager = function (params) {
 
     selectNodeByPath: function (file_path) {
       var file = self.container.find('.file_item[path="' + file_path + '"]'),
-        folder = file.parentsUntil('#editor_files_list').filter('.folder_item');
+        folder = file.parentsUntil('#editor_files_list').filter('.folder_item.jstree-closed');
       self.container.jstree('open_node', folder, $.noop, true);
       file.find('a').trigger('click');
     }

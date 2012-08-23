@@ -62,15 +62,19 @@
       <!-- should close and jump to clone wizard now with w3cid pre-filled -->
     </div>
     
-    <fieldset id="create_app_from_scm" class="app-details" next="create_app_progress">
+    <fieldset id="create_app_from_scm" class="app-details row-fluid" next="create_app_progress">
       <%@ include file="../apps/basic_app_details.html"%>
-      <div class="fh-form-field fh-form-text-field ui-helper-reset ui-helper-clearfix">
-        <label id="new_app_scmurl_label" class="insert-lang insert-help-icon" for="new_app_scmurl"></label>
-        <input id="new_app_scmurl" name="scmurl" type="text">
+      <div class="control-group">
+        <label id="new_app_scmurl_label" class="insert-lang insert-help-icon control-label" for="new_app_scmurl"></label>
+        <div class="controls">
+          <input id="new_app_scmurl" name="scmurl" type="text" class="span12"/>
+        </div>
       </div>
-      <div class="fh-form-field fh-form-text-field ui-helper-reset ui-helper-clearfix">
-        <label id="new_app_scmbranch_label" class="insert-lang insert-help-icon" for="new_app_scmbranch"></label>
-        <input id="new_app_scmbranch" name="scmbranch" type="text">
+      <div class="control-group">
+        <label id="new_app_scmbranch_label" class="insert-lang insert-help-icon control-label" for="new_app_scmbranch"></label>
+        <div class="controls">
+          <input id="new_app_scmbranch" name="scmbranch" type="text" class="span12"/>
+        </div>
       </div>
     </fieldset>  
     

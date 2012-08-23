@@ -45,16 +45,18 @@
         <% } %>
       </ul>
 
-      <div class="span10">
+      <div class="span10 well">
         <%@ include file="./profile_details.html" %>
-      
-        <%@ include file="./destinations_apple_content.html" %>
-        
-        <%@ include file="./destinations_android_content.html" %>
-       
-        <%@ include file="./destinations_blackberry_content.html" %>
 
         <%@ include file="./api_keys.html" %>
+
+        <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER)) { %>
+          <%@ include file="./destinations_apple_content.html" %>
+          
+          <%@ include file="./destinations_android_content.html" %>
+          
+          <%@ include file="./destinations_blackberry_content.html" %>
+        <% } %>
       </div>
     </div>
   </div>

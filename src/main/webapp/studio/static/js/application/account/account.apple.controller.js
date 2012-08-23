@@ -6,7 +6,12 @@ Account.Apple.Controller = Account.Resource.Support.extend({
   destination: 'apple',
 
   views: {
-    destinations_apple_container: '#destinations_apple_container'
+    destinations_apple_container: '#destinations_apple_container',
+    apple_getstarted: '#apple_getstarted',
+    apple_resources: '#apple_resources',
+    apple_getstarted_wizard: '#apple_getstarted_wizard',
+    apple_key_wizard: '#apple_key_wizard',
+    apple_cert_wizard: '#apple_cert_wizard'
   },
 
   container: null,
@@ -29,7 +34,7 @@ Account.Apple.Controller = Account.Resource.Support.extend({
     this.setupDestination();
 
     this.container = this.views.destinations_apple_container;
-    $(this.container).show();
+    $(this.views.destinations_apple_container).show();
   },
   
   /*

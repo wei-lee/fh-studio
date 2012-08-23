@@ -25,7 +25,7 @@ Apps.Myapps.Controller = Apps.List.Support.extend({
     var self = this;
     console.log('myapps show');
 
-    this.model.app.list(function(res) {
+    this.model.app.listMyApps(function(res) {
       var data = self.addControls(res);
       self.renderAppListing(self.views.myapps_grid, self.views.myapps_grid_wrapper, data);
     }, function() {

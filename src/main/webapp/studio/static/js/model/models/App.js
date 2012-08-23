@@ -25,12 +25,14 @@ model.App = model.Model.extend({
     field_name: "version",
     editable: false,
     showable: true,
-    column_title: "Version"
+    column_title: "Version",
+    width: "60px"
   }, {
     field_name: "modified",
     editable: false,
     showable: true,
-    column_title: "Last Modified"
+    column_title: "Last Modified",
+    width: "150px"
   }, {
     field_name: "id",
     editable: false,
@@ -52,12 +54,14 @@ model.App = model.Model.extend({
     field_name: "version",
     editable: false,
     showable: true,
-    column_title: "Version"
+    column_title: "Version",
+    width: "60px"
   }, {
     field_name: "modified",
     editable: false,
     showable: true,
-    column_title: "Last Modified"
+    column_title: "Last Modified",
+    width: "150px"
   }, {
     field_name: "id",
     editable: false,
@@ -70,6 +74,11 @@ model.App = model.Model.extend({
   },
 
   listAll: function (success, fail, post_process) {
+    var params = {};
+    return this.list(success, fail, post_process, params);
+  },
+
+  listMyApps: function (success, fail, post_process) {
     var params = {
       "myapps": true
     };

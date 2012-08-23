@@ -66,7 +66,6 @@
         <p>
           Your App is already created and good to go, so you're ready to start developing!
         </p>
-        <br/>
         <%@ include file="./quickstart_hybrid_actions.html"%></form>
     </div>
   </div>
@@ -102,7 +101,7 @@
             <h5>iOS Template</h5>
           </a>
         </div>
-        <p>2. Copy and paste the following into your fh.plist</p>
+        <p>2. Copy and paste the following into the fhconfig.plist</p>
         <pre class="ios_plist"></pre>
       </form>
     </div>
@@ -123,7 +122,10 @@
           </a>
         </div>
         <p>
-          2. With the SDK downloaded, copy and paste the following into your fh.plist
+          2. Install the SDK into your project by unzipping the contents and dragging the Framework into Xcode.
+        </p>
+        <p>
+          3. Copy and paste the following into the fhconfig.plist
         </p>
         <pre class="ios_plist"></pre>
       </form>
@@ -135,7 +137,7 @@
       <div class="step_number">4</div>
       <form class="well form-horizontal">
         <h2>Learn how to use the SDK</h2>
-        <a href="#">Some Links to tutorials/Docs</a>
+        <a class="docslink" href="http://docs.feedhenry.com/v2/sdk_ios.html">iOS SDK Documentation</a>
       </form>
     </div>
   </div>
@@ -173,7 +175,7 @@
             <h5>Android Template</h5>
           </a>
         </div>
-        <p>2. Copy and paste the following into your fh.properties</p>
+        <p>2. Copy and paste the following into your assets/fh.properties file</p>
         <pre class="android_properties"></pre>
       </form>
     </div>
@@ -193,9 +195,9 @@
             <h5>Android SDK</h5>
           </a>
         </div>
-        <p>
-          2. With the SDK downloaded, copy and paste the following into your fh.properties
-        </p>
+        <p>2. Add the SDK jar file to your application's libs directory</p>
+        <p>3. If not already added, add internet permissions in AndroidManifest.xml</p>
+        <p>4. With the SDK downloaded, create a new file in assets/ called fh.properties, with the following content</p>
         <pre class="android_properties"></pre>
       </form>
     </div>
@@ -206,7 +208,7 @@
       <div class="step_number">4</div>
       <form class="well form-horizontal">
         <h2>Learn how to use the SDK</h2>
-        <a href="#">Some Links to tutorials/Docs</a>
+        <a class="docslink" href="http://docs.feedhenry.com/v2/sdk_android.html">Android SDK Documentation</a>
       </form>
     </div>
   </div>
@@ -233,9 +235,9 @@
           1. To start creating a FeedHenry powered PhonegGap app, download our JavaScript SDK
         </p>
         <div class="row-fluid">
-          <a href="#" class="btn span2">
+          <a href="#" id="phonegap_javascript_sdk_download_link" class="btn span2">
             <i class="icon-download"></i>
-            <h5>FeedHenry PhoneGap JavaScript SDK</h5>
+            <h5>JavaScript SDK</h5>
           </a>
         </div>
         <p>
@@ -256,7 +258,7 @@
       <div class="step_number">4</div>
       <form class="well form-horizontal">
         <h2>Learn how to use the SDK</h2>
-        <a href="#">Some Links to tutorials/Docs</a>
+        <a class="docslink" href="http://docs.feedhenry.com/v2/sdk_javascript.html">JavaScript SDK Documentation</a>
       </form>
     </div>
   </div>
@@ -287,7 +289,7 @@
         <h2>Download Template Project</h2>
         <p>1. Download the Template Project below</p>
         <div class="row-fluid">
-          <a href="#" class="btn span2">
+          <a href="#" id="javascript_starter_download_link" class="btn span2">
             <i class="icon-download"></i>
             <h5>JS Template</h5>
           </a>
@@ -307,13 +309,16 @@
           1. To start creating a FeedHenry powered JavaScript app, download our JavaScript SDK
         </p>
         <div class="row-fluid">
-          <a href="#" class="btn span2">
+          <a href="#" id="javascript_sdk_download_link" class="btn span2">
             <i class="icon-download"></i>
             <h5>JavaScript SDK</h5>
           </a>
         </div>
         <p>
-          2. With the SDK downloaded, copy and paste the following into the html file you wish to use FeedHenry from
+          2. With the SDK downloaded, copy the JavaScript SDK source file(s) into your project folder
+        </p>
+        <p>
+          3. Copy and paste the following into the &lt;head&gt; of the html file you wish to use FeedHenry from, updating the script src location as necessary.
         </p>
         <pre class="javascript_index"></pre>
       </form>
@@ -325,7 +330,7 @@
       <div class="step_number">4</div>
       <form class="well form-horizontal">
         <h2>Learn how to use the SDK</h2>
-        <a href="#">Some Links to tutorials/Docs</a>
+        <a class="docslink" href="http://docs.feedhenry.com/v2/sdk_javascript.html">JavaScript SDK Documentation</a>
       </form>
     </div>
   </div>
@@ -352,8 +357,10 @@
     <a href="#" class="btn" data-controller="apps.logging.controller">
       <i class="icon-list"></i>
       <h5>Show Cloud Logs</h5>
-    </a>
+    </a>    
   </div>
+  <h2>Learn more about Developing FeedHenry Cloud Code</h2>
+  <a class="docslink" href="http://docs.feedhenry.com/v2/cloud_development.html">FeedHenry Hybrid Client Development Documentation</a>
 </div>
 <!-- end quickstart cloud -->
 
