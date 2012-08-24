@@ -208,6 +208,14 @@ application.DestinationGeneral = Class.extend({
     $fw.state.set('account_accordion_accordion_item_destinations', 'selected', ((target === 'iphone') || (target === 'ipad')) ? 0 : 1);
 
     $('#account_tab').click();
+    target = target.toLowerCase();
+    if(target === "iphone" || target === "ios" || target === "ipad"){
+      $('a#appleResource').click();
+    }else if(target === "android"){
+      $('a#androidResource').click();
+    }else if(target === "blackberry"){
+      $('#blackberryResource').click();
+    }
   },
 
   showDestinations: function() {
