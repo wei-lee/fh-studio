@@ -23,20 +23,20 @@
         <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER)) { %>
         <li class="nav-header">Destinations</li>
         <li>
-          <a href="#" data-controller="account.apple.controller">
+          <a href="#" data-controller="account.apple.controller" id="appleResource">
             <i class="icon-phone"></i>
             Apple
           </a>
         </li>
         <li>
-          <a href="#" data-controller="account.android.controller">
+          <a href="#" data-controller="account.android.controller" id="androidResource">
             <i class="icon-phone"></i>
             Android
           </a>
         </li>
            <% if (studio.getProps().optBoolean("blackberry-binary-enabled", false)){%>
         <li>
-          <a href="#" data-controller="account.blackberry.controller">
+          <a href="#" data-controller="account.blackberry.controller" id="blackberryResource">
             <i class="icon-phone"></i>
             Blackberry
           </a>
