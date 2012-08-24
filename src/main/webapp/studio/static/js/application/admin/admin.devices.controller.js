@@ -22,24 +22,6 @@ Admin.Devices.Controller = Controller.extend({
     
   },
 
-  // type: error|success|info
-  showAlert: function (type, message) {
-    var self = this;
-    var alerts_area = $(this.container).find('#alerts');
-    var alert = $('<div>').addClass('alert fade in alert-' + type).html(message);
-    var close_button = $('<button>').addClass('close').attr("data-dismiss", "alert").text("x");
-    alert.append(close_button);
-    alerts_area.append(alert);
-    // only automatically hide alert if it's not an error
-    if ('error' !== type) {
-      setTimeout(function() {
-        alert.slideUp(function () {
-          alert.remove();
-        });
-      }, self.alert_timeout);
-    }
-  },
-
   show: function(){
     this.hideAlerts();
     this.showDeviceList();
@@ -120,9 +102,9 @@ Admin.Devices.Controller = Controller.extend({
 
   bindControls: function() {
     var self = this;
-    $('tr td .edit_device, tr td .view_device_users, tr td .view_device_apps', this.device_table).unbind().click(function() {
+    $('tr td .edit_device, tr td .view_device_users, tr td .view_device_apps, tr td:not(.controls,.dataTables_empty)', this.views.device_list).unbind().click(function() {
       var row = $(this).parent().parent();
-      var data = self.dataForRow($(this).parent().parent().get(0));
+      var data = self.dataForRow($(this).closest('tr').get(0));
       self.showViewDevice(this, row, data);
       return false;
     });

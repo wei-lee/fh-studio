@@ -1,23 +1,45 @@
 model.Template = model.Model.extend({
+
+  // Field config
+  field_config: [{
+    field_name: "icon",
+    editable: false,
+    showable: true,
+    column_title: ""
+  }, {
+    field_name: "title",
+    editable: false,
+    showable: true,
+    column_title: "Name"
+  }, {
+    field_name: "description",
+    editable: false,
+    showable: true,
+    column_title: "Description"
+  }, {
+    field_name: "email",
+    editable: false,
+    showable: false,
+    column_title: "Email"
+  }, {
+    field_name: "id",
+    editable: false,
+    showable: false,
+    column_title: "App ID"
+  }],
   
   init: function () {
     
   },
   
-  list: function (success, fail, grid) {
+  list: function (success, fail, post_process) {
     var url = Constants.LIST_TEMPLATE_APPS_URL;
-    var params = {
-      grid: grid || false
-    };
-    $fw_manager.server.post(url, params, function (result) {
-      var list = result.list;
-      if ($.isFunction(success)) {
-        success(list);
-      }
-    }, fail);
-  },
-  
-  gridList: function (success, fail) {
-    $fw_manager.client.model.Template.list(success, fail, true);
+    var params = {};
+
+    if (post_process) {
+      return this.serverPost(url, params, success, fail, true, this.postProcessList, this);
+    } else {
+      return this.serverPost(url, params, success, fail, true);
+    }
   }
 });

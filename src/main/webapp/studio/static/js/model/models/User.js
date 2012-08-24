@@ -97,7 +97,7 @@ model.User = model.Model.extend({
   },
 
   resendInvite: function(email, success, fail) {
-    var url = Constants.ADMIN_USER_RESEND_INVITE_URL.replace('<domain>', $fw_manager.getClientProp('domain'));
+    var url = Constants.ADMIN_USER_RESEND_INVITE_URL.replace('<domain>', $fw.getClientProp('domain'));
     var params = {
       "email": email,
       "force": true

@@ -19,7 +19,6 @@ Admin.Users.Controller = Controller.extend({
   },
 
   container: null, // keeps track of currently active/visible container
-  alert_timeout: 3000,
   user_table: null,
 
   init: function(params) {
@@ -87,13 +86,13 @@ Admin.Users.Controller = Controller.extend({
 
   bindUserControls: function() {
     var self = this;
-    $('tr td .edit_user', this.user_table).unbind().click(function() {
+    $('tr td .edit_user, tr td:not(.controls,.dataTables_empty)', this.views.users).unbind().click(function() {
       var row = $(this).parent().parent();
-      var data = self.userDataForRow($(this).parent().parent().get(0));
+      var data = self.userDataForRow($(this).closest('tr').get(0));
       self.showUserUpdate(this, row, data);
       return false;
     });
-    $('tr td .delete_user', this.user_table).unbind().click(function() {
+    $('tr td .delete_user', this.views.users).unbind().click(function() {
       var row = $(this).parent().parent();
       var data = self.userDataForRow($(this).parent().parent().get(0));
       self.deleteUser(this, row, data);

@@ -47,7 +47,7 @@ button {
   padding: 10px;
   background: #fff;
   border-radius: 10px;
-  padding-bottom: 30px;
+  padding-bottom: 50px;
 }
 
 .ui-state-active .container-header {
@@ -114,18 +114,6 @@ button.ui-state-default:hover, .input-form input[type="button"].ui-state-hover {
 
 #editor_toolbar button {
   color: #000 !important;
-}
-
-#editor_save_btn {
-  background: url(../img/save_icon_sprite.png) no-repeat -2px 3px !important;
-}
-
-#editor_save_all_btn {
-  background: url(../img/save_all_sprite.png) no-repeat -2px 3px !important;
-}
-
-#editor_find_btn {
-  background: url(../img/go_to_icon_sprite.png) no-repeat -2px 3px !important;
 }
 
 .resource-div:hover .resource-buttons:hover .resource-not-uploaded:hover {
@@ -441,4 +429,8 @@ li.ui-state-active a {
   padding: 0;
   padding-bottom: 50px;
   font-size: 11px;
+}
+
+#connectivity_dialog, #info_dialog {
+  top: 46px;
 }

@@ -1,0 +1,265 @@
+<div id="manage_apps_layout" class="row-fluid">
+
+  <div id="template_message">
+    <span id="template_message_1" class="insert-lang"></span><button id="template_clone_button" class="template_clone_button btn insert-lang"></button><span id="template_message_2" class="insert-lang"></span>
+  </div>
+
+  <div class="row-fluid">
+    <ul class="nav nav-list span2 well manageapps_nav_list">
+      <div id="cloud_logo"></div>
+      <li class="template-restriction">
+        <a href="#" data-controller="apps.quickstart.controller">
+          <i class="icon-home"></i>
+          Quickstart
+        </a>
+      </li>
+      <li class="nav-header">Overview</li>
+      <li>
+        <a href="#" data-controller="apps.details.controller">
+          <i class="icon-list-alt"></i>
+          Details
+        </a>
+      </li>
+      <li class="template-restriction">
+        <a href="#" data-controller="apps.icons.controller">
+          <i class="icon-picture"></i>
+          Icons
+        </a>
+      </li>
+      <li class="nav-header">Source</li>
+      <li>
+        <a href="#" data-controller="apps.editor.controller">
+          <i class="icon-file"></i>
+          Editor
+        </a>
+      </li>
+      <li class="nav-header">Hybrid Client Management</li>
+      <li class="template-restriction">
+        <a href="#" data-controller="apps.quickstart.client.controller" data-hybrid="true">
+          <i class="icon-briefcase"></i>
+          Quickstart
+        </a>
+      </li>
+      <li class="template-restriction">
+        <a href="#" data-controller="apps.build.controller">
+          <i class="icon-share"></i>
+          Build
+        </a>
+      </li>
+      <li class="template-restriction">
+        <a href="#" data-controller="apps.export.controller">
+          <i class="icon-external-link"></i>
+          Export
+        </a>
+      </li>
+      <li>
+        <a href="#" data-controller="apps.configuration.controller">
+          <i class="icon-wrench"></i>
+          Configuration
+        </a>
+      </li>
+      <li class="template-restriction">
+        <a href="#" data-controller="apps.push.controller">
+          <i class="icon-hand-up"></i>
+          Push Notification
+        </a>
+      </li>
+      <li>
+        <a href="#" data-controller="apps.libraries.controller">
+          <i class="icon-briefcase"></i>
+          Libraries
+        </a>
+      </li>
+      <li class="nav-header template-restriction">Cloud Management</li>
+      <li class="template-restriction">
+        <a href="#" data-controller="apps.quickstart.cloud.controller">
+          <i class="icon-briefcase"></i>
+          Quickstart
+        </a>
+      </li>
+      <li class="template-restriction nodejs_mode">
+        <a href="#" data-controller="apps.deploy.controller">
+          <i class="icon-cloud"></i>
+          Deploy
+        </a>
+      </li>
+      <li class="template-restriction nodejs_mode">
+        <a href="#" data-controller="apps.status.controller">
+          <i class="icon-dashboard"></i>
+          Status
+        </a>
+      </li>
+      <li class="template-restriction">
+        <a href="#" data-controller="apps.logging.controller">
+          <i class="icon-list"></i>
+          Logs
+        </a>
+      </li>
+      <li class="nav-header template-restriction">Reporting</li>
+      <li class="template-restriction">
+        <a href="#" data-controller="apps.installs.controller">
+          <i class="icon-bar-chart"></i>
+          Installs
+        </a>
+      </li>
+      <li class="template-restriction">
+        <a href="#" data-controller="apps.startups.controller">
+          <i class="icon-bar-chart"></i>
+          Startups
+        </a>
+      </li>
+    </ul>
+
+    <div id="app_content" class="span7">
+
+        <%@ include file="./quickstart.html"%>       
+
+        <%@ include file="./manage_details.html"%>
+        
+        <%@ include file="./manage_frameworks.html"%>
+        
+        <%@ include file="./manage_icons.html"%>
+        
+        <%@ include file="./manage_export.html"%>
+        
+        <%@ include file="./manage_publish.html"%>
+        
+        <%@ include file="./editor_files.html"%>
+
+        <div id="configuration_container" class="tabbable ">
+          <ul class="nav nav-tabs">
+            <li>
+              <a href="#configuration_studio_container" data-toggle="tab" data-controller="apps.configuration.studio.controller">Preview</a>
+            </li>
+            <li>
+              <a href="#configuration_embed_container" data-toggle="tab" data-controller="apps.configuration.embed.controller">Embed</a>
+            </li>
+            <li>
+              <a href="#configuration_iphone_container" data-toggle="tab" data-controller="apps.configuration.iphone.controller">iPhone</a>
+            </li>
+            <li>
+              <a href="#configuration_ipad_container" data-toggle="tab" data-controller="apps.configuration.ipad.controller">iPad</a>
+            </li>
+            <li>
+              <a href="#configuration_ios_container" data-toggle="tab" data-controller="apps.configuration.ios.controller">iOS</a>
+            </li>
+            <li>
+              <a href="#configuration_android_container" data-toggle="tab" data-controller="apps.configuration.android.controller">Android</a>
+            </li>
+            <li>
+              <a href="#configuration_blackberry_container" data-toggle="tab" data-controller="apps.configuration.blackberry.controller">Blackberry</a>
+            </li>
+            <li>
+              <a href="#configuration_windowsphone7_container" data-toggle="tab" data-controller="apps.configuration.windowsphone.controller">Windows Phone</a>
+            </li>
+            <li>
+              <a href="#configuration_nokiawrt_container" data-toggle="tab" data-controller="apps.configuration.nokiawrt.controller">Nokia WRT</a>
+            </li>
+          </ul>
+          <div class="tab-content">
+            <%@ include file="./configuration_studio.html"%>            
+            <%@ include file="./configuration_embed.html"%>            
+            <%@ include file="./configuration_iphone.html"%>            
+            <%@ include file="./configuration_ipad.html"%>            
+            <%@ include file="./configuration_ios.html"%>            
+            <%@ include file="./configuration_android.html"%>            
+            <%@ include file="./configuration_blackberry.html"%>            
+            <%@ include file="./configuration_windowsphone7.html"%>            
+            <%@ include file="./configuration_nokiawrt.html"%>
+          </div>
+        </div>
+        
+       <% if(studio.getProps().optBoolean("enable-per-app-metrics")){ %>
+         <div id="reportinginstalls_container">
+           <ul class="nav nav-pills">
+            <li>
+              <a href="#installs_by_date" data-toggle="pill" data-action="byDate">By Date</a>
+            </li>
+            <li>
+              <a href="#installs_by_platform" data-toggle="pill" data-action="byPlatform">By Platform</a>
+            </li>
+            <li>
+              <a href="#installs_by_location" data-toggle="pill" data-action="byLocation">By Location</a>
+            </li>
+          </ul>
+          <div class="pill-content">
+            <div id="installs_by_date" class="installs_by_date pill-pane">
+            <%@ include file="./report_installsdest.html"%>
+            </div>
+            <div id="installs_by_platform" class="installs_by_platform pill-pane">
+            <%@ include file="./report_installsdate.html"%>
+            </div>
+            <div id="installs_by_location" class="installs_by_location pill-pane">
+            <%@ include file="./report_installsloc.html"%>
+            </div>
+          </div>
+        </div>
+
+         <div id="reportingstartups_container">
+           <ul class="nav nav-pills">
+            <li>
+              <a href="#startups_by_date" data-toggle="pill" data-action="byDate">By Date</a>
+            </li>
+            <li>
+              <a href="#startups_by_platform" data-toggle="pill" data-action="byPlatform">By Platform</a>
+            </li>
+            <li>
+              <a href="#startups_by_location" data-toggle="pill" data-action="byLocation">By Location</a>
+            </li>
+          </ul>
+          <div class="pill-content">
+            <div id="startups_by_date" class="startups_by_date pill-pane">
+            <%@ include file="./report_startupsdest.html"%>
+            </div>
+            <div id="startups_by_platform" class="startups_by_platform pill-pane">
+            <%@ include file="./report_startupsdate.html"%>
+            </div>
+            <div id="startups_by_location" class="startups_by_location pill-pane">
+            <%@ include file="./report_startupsloc.html"%>
+            </div>
+          </div>
+        </div>
+
+       <%}%>
+
+        <%@ include file="./debug_logging.html"%>
+  
+        <div id="deploying_container" class="well">
+          <h5>Development Deploy</h5>
+          <div id="deploying_dev_progresslog"><textarea class="progresslog"></textarea></div>
+          <br/>
+          <button id="deploying_dev_button" class="btn btn-inverse insert-lang"></button>
+          <hr/>
+          <h5>Live Deploy</h5>
+          <div id="deploying_live_progresslog"><textarea class="progresslog"></textarea></div>
+          <br/>
+          <button id="deploying_live_button" class="btn btn-inverse insert-lang"></button>
+        </div>
+
+        <% if(studio.getProps().optBoolean("stats-enabled")){ %>
+         <%@ include file="./status.html"%>
+        <%}%>
+        
+       <% if(studio.getProps().optBoolean("enable-push-notification")){ %>
+        <%@ include file="./push_notification.html"%>
+       <%}%>
+    </div>
+
+    <div id="app_preview" class="well span3">
+      
+      <div id="preview_header">
+        <select id="preview_temporary_select" class="insert-help"></select>
+      </div>
+      <div id="preview_wrapper">
+        <div id="preview_frame"></div>
+        <div id="preview_text"><span id="preview_device_too_large1" class="insert-lang"></span><a id="preview_device_open_emulator" class="script-link insert-lang"></a><span id="preview_device_too_large2" class="insert-lang"></span></div>
+      </div>
+      <div id="preview_controls" class="btn-group">
+        <button id="preview_frame_debugger_btn" class="preview_control_btn insert-lang insert-help btn btn-inverse"><i class="icon-share"></i></button>
+        <button id="preview_frame_emulator_btn" class="preview_control_btn insert-lang insert-help btn btn-inverse"><i class="icon-share-alt"></i></button>
+        <button id="preview_frame_refresh_btn" class="preview_control_btn insert-lang insert-help btn btn-inverse"><i class="icon-refresh"></i></button>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -51,8 +51,6 @@ FrameworkManager = Class.extend({
   
   setClient: function (pClient) {
     this.client = pClient;
-    // TODO: remove this below
-    this.app = Application;
   },
 
   
@@ -69,4 +67,4 @@ FrameworkManager = Class.extend({
   }
 });
 
-$fw = $fw_manager = new FrameworkManager();
+$fw = new FrameworkManager();
