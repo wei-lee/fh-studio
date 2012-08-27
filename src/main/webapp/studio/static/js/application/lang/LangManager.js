@@ -114,7 +114,7 @@ LangManager = Class.extend({
 
     if (null !== lang) {
       var btn = $('<button>', {
-        'class': 'btn help-button',
+        'class': 'btn help-button'
       });
       var icon = $('<i>', {
         'class': 'icon-info-sign'
