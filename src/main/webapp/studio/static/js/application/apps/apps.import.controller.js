@@ -61,7 +61,7 @@ Apps.Import.Controller = Controller.extend({
           setTimeout(function(){
             fileToUpload = data;
             return false;
-          }, 100);
+          }, 200);
         },
         timeout: 300000
     });

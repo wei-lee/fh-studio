@@ -114,7 +114,7 @@ LangManager = Class.extend({
 
     if (null !== lang) {
       var btn = $('<button>', {
-        'class': 'btn help-button'
+        'class': 'btn help-button',
       });
       var icon = $('<i>', {
         'class': 'icon-info-sign'
@@ -126,6 +126,10 @@ LangManager = Class.extend({
         content: lang,
         placement: 'bottom',
         delay: 100
+      });
+      btn.click(function(e){
+        e.preventDefault();
+        return false;
       });
     }
   },
