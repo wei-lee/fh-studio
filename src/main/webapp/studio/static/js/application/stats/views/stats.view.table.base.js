@@ -84,10 +84,13 @@ Stats.View.Table.Base = Class.extend({
   },
 
   createTableHeader: function(table_id, headers) {
-    var table = $('#' + table_id);
-    table.append('<thead><tr></tr></thead>');
-    $.each(headers, function(i, item) {
-      $('thead tr', table).append('<th>' + item + '</th>');
-    });
+    // var table = $('#' + table_id);
+    // var header_row = $('<thead>').append($('<tr>'));
+    // // table.append('<thead><tr></tr></thead>');
+    // $.each(headers, function(i, item) {
+    //   var header_item = $('<th>').text(item);
+    //   header_row.append(header_item);
+    // });
+    // table.append(header_row);
   }
 });
