@@ -206,22 +206,16 @@
             </div>
 
             <div class="control-group">
-              <label class="control-label" for="update_user_enabled">Enabled</label>
+              <label class="control-label" for="update_user_enabled">Enabled?</label>
               <div class="controls">
-                <div class="input-append">
-                  <input type="checkbox" class="input-xxlarge" id="update_user_enabled" disabled>
-                  <button class="btn enable_user_button" type="button">Enable User</button>
-                </div>
+              <input type="checkbox" class="input-xxlarge enable_user_button" id="update_user_enabled">
               </div>
             </div>
 
             <div class="control-group">
-              <label class="control-label" for="update_user_blacklisted">Not Marked for Data Purge</label>
+              <label class="control-label" for="update_user_blacklisted">Purge User Data?</label>
               <div class="controls">
-                <div class="input-append">
-                  <input type="checkbox" class="input-xxlarge" id="update_user_blacklisted" disabled>
-                  <button class="btn blacklist_user_button" type="button">Mark for Data Purge</button>
-                </div>
+                <input type="checkbox" class="input-xxlarge blacklist_user_button" id="update_user_blacklisted">
               </div>
             </div>
 
@@ -1030,17 +1024,15 @@
               </div>
             </div>
             <div class="control-group">
-              <label class="control-label" for="device_disabled">Disabled</label>
+              <label class="control-label" for="device_disabled">Disabled?</label>
               <div class="controls">
-                <input type="checkbox" disabled="disabled" class="input-xxlarge" id="device_update_disabled">
-                <button class="btn update_device_disabled_btn">Disable Authentication</button>
+                <input type="checkbox" class="input-xxlarge" id="device_update_disabled">
               </div>
             </div>
             <div class="control-group">
-              <label class="control-label" for="device_blacklisted">Purge Data</label>
+              <label class="control-label" for="device_blacklisted">Purge Device Data?</label>
               <div class="controls">
-                <input type="checkbox" disabled="disabled" class="input-xxlarge" id="device_update_blacklisted">
-                <button class="btn update_device_blacklisted_btn">Mark for Data Purge</button>
+                <input type="checkbox" class="input-xxlarge update_device_blacklisted_btn" id="device_update_blacklisted">
               </div>
             </div>
             <div class="control-group">

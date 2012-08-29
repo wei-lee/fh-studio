@@ -1486,6 +1486,7 @@ span.label-info {
 
 #preview_controls button {
   width: 33.33333333%;
+  overflow: hidden;
 }
 
 #preview_text {
