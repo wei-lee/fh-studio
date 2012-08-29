@@ -3,7 +3,6 @@ common/css/ui/framework/jquery.ui.button.css
 common/css/ui/framework/jquery.ui.dialog.css
 common/css/ui/framework/jquery.ui.tabs.css
 common/css/ui/framework/jquery.ui.progressbar.css
-common/css/ui/framework/jquery.ui.datepicker.css
 common/css/ui/framework/jWizard.base.css
 common/css/ui/framework/jqplot/jquery.jqplot.css
 common/css/ui/framework/codemirror/docs.css

@@ -77,9 +77,9 @@ Apps.Reports.Support = Apps.Controller.extend({
         e.stopPropagation();
         var params, app, tempFDate, tempTDate, days, dest;
 
-        tempFDate = container.find('.appreportfrom-datepicker').datepicker('getDate');
-        tempTDate = container.find('.appreportto-datepicker').datepicker('getDate');
-        
+        tempFDate = container.find('.appreportfrom-datepicker').data('datepicker').date;
+        tempTDate = container.find('.appreportto-datepicker').data('datepicker').date;
+
         days = self.daysBetweenDates(tempFDate, tempTDate);
         
         if (self.appid != null) {
@@ -89,7 +89,7 @@ Apps.Reports.Support = Apps.Controller.extend({
         }
 
         params = {
-          id: app,//'7BmC8jo_jd4aQuvT6CSCzmWa',
+          id: app,
           metric: metric,
           from: self.splitDate(tempFDate),
           to: self.splitDate(tempTDate),
@@ -147,18 +147,16 @@ Apps.Reports.Support = Apps.Controller.extend({
    }  else {
      container.find('.appreport-applist').hide();
    }
-    
-    container.find('.appreportfrom-datepicker').datepicker({
-      dateFormat: "yy-mm-dd",
-      maxDate: "-2",
-      defaultDate: -8
-    }).datepicker('setDate', -8);
-    
-    container.find('.appreportto-datepicker').datepicker({
-      dateFormat: "yy-mm-dd",
-      maxDate: "-1",
-      defaultDate: -1
-    }).datepicker('setDate', -1);
+
+   container.find('.appreportfrom-datepicker').datepicker({
+     format: "mm/dd/yyyy",
+     weekStart: 0
+   });
+
+   container.find('.appreportto-datepicker').datepicker({
+     format: "mm/dd/yyyy",
+     weekStart: 0
+   });
   },
   
   drawChart: function (type, container, params, url, callback) {
