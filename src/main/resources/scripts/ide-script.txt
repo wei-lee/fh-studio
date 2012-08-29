@@ -62,6 +62,7 @@ js/application/apps/apps.push.controller.js
 js/application/apps/apps.preview.controller.js
 js/application/apps/apps.logging.controller.js
 js/application/apps/apps.status.controller.js
+js/application/apps/apps.cloudresources.controller.js
 js/application/apps/apps.deploy.controller.js
 js/application/apps/apps.reports.support.js
 js/application/apps/apps.installs.controller.js
