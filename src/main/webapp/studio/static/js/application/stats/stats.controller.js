@@ -6,7 +6,6 @@ Stats.Controller = Controller.extend({
     stats_container: '#stats_container'
   },
 
-  config: null,
   deploy_target: 'live',
 
   init: function(params) {},
