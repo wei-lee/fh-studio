@@ -13,7 +13,6 @@ Stats.Controller = Controller.extend({
   show: function() {
     this._super();
     var self = this;
-    console.log('stats.show');
 
     this.hide();
     this.container = this.views.stats_container;
@@ -116,7 +115,6 @@ Stats.Controller = Controller.extend({
 
     $('.stats_area li').removeClass('active');
     $(el).addClass('active');
-    console.log('toggle Timer stats');
     var series = model.getSeries(series_name);
 
     // Empty showing containers
