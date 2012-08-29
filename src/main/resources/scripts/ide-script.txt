@@ -1,5 +1,6 @@
 common/js/ajax/ASyncServerTask.js
 common/js/ui/thirdparty/bootstrap/bootstrap.js
+common/js/ui/thirdparty/bootstrap-datepicker/bootstrap-datepicker.js
 js/application/Constants.js
 js/application/Config.js
 js/application/dialog/DialogManager.js

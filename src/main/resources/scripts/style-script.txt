@@ -8,3 +8,4 @@ common/css/ui/framework/jqplot/jquery.jqplot.css
 common/css/ui/framework/codemirror/docs.css
 common/css/ui/framework/codemirror/jscolors.css
 common/css/ui/framework/bootstrap.css
+common/css/ui/framework/bootstrap-datepicker.css
