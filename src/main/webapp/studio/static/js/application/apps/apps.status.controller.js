@@ -4,14 +4,10 @@ Apps.Status = Apps.Status || {};
 
 Apps.Status.Controller = Apps.Controller.extend({
 
-  model: {
-    //device: new model.Device()
-  },
+  model: {},
 
   views: {
     status_container: "#status_container"
-    // device_list: "#admin_devices_list",
-    // device_update: "#admin_devices_update"
   },
 
   container: null,
@@ -28,15 +24,11 @@ Apps.Status.Controller = Apps.Controller.extend({
     }
   },
 
-  init: function () {
-    // Live by default
-    this.deploy_target = 'live';
-    this.stats_controller = new Stats.Controller({deploy_target: this.deploy_target});
-  },
+  init: function() {},
 
   show: function() {
     this._super();
-    
+
     var self = this;
     console.log('status.show');
 
@@ -45,19 +37,9 @@ Apps.Status.Controller = Apps.Controller.extend({
 
     // FIXME: show/hide preview could depend on a field in each sub-class of controller
     $fw.client.tab.apps.manageapps.getController('apps.preview.controller').hideContent();
-    this.stats_controller.closeAll();
-    this.stats_controller.loadModels();
     this.bind();
     this.refreshAll();
     $(this.container).show();
-  },
-
-  changeStatsTarget: function(target) {
-    // Change targets
-    $('#deploy_target button').removeClass('btn-inverse');
-    $('#deploy_target .'+target).addClass('btn-inverse');
-    this.stats_controller.changeTarget(target);
-    this.deploy_target = target;
   },
 
   bind: function() {
@@ -71,28 +53,6 @@ Apps.Status.Controller = Apps.Controller.extend({
       console.log('live status.refresh');
       self.refreshLive();
     });
-    $('#deploy_target .dev').unbind().click(function() {
-      console.log('dev stats target');
-      self.changeStatsTarget('dev');
-    });
-    $('#deploy_target .live').unbind().click(function() {
-      console.log('live stats target');
-      self.changeStatsTarget('live');
-    });
-    $('#deploy_target .refresh').unbind().click(function() {
-      console.log('stats refresh');
-      self.refresh();
-    });
-  },
-
-  refresh: function() {
-    if ($('#deploy_target .dev').hasClass('btn-inverse')) {
-      // dev
-      this.changeStatsTarget('dev');
-    } else {
-      // live
-      this.changeStatsTarget('live');
-    }
   },
 
   refreshDev: function() {

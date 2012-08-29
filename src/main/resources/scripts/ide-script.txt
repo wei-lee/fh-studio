@@ -99,7 +99,7 @@ js/application/stats/views/stats.view.chart.base.js
 js/application/stats/views/stats.view.chart.counter.js
 js/application/stats/views/stats.view.chart.timer.js
 js/application/stats/views/stats.view.list.timers.js
-js/application/stats/controllers/stats.controller.js
+js/application/stats/stats.controller.js
 js/application/tab/tab.manager.js
 js/application/tab/admin.tab.manager.js
 js/application/tab/apps.tab.manager.js

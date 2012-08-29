@@ -89,6 +89,12 @@
           Status
         </a>
       </li>
+      <li class="template-restriction nodejs_mode">
+        <a href="#" data-controller="stats.controller">
+          <i class="icon-bar-chart"></i>
+          Stats
+        </a>
+      </li>
       <li class="template-restriction">
         <a href="#" data-controller="apps.logging.controller">
           <i class="icon-list"></i>
@@ -236,8 +242,10 @@
           <button id="deploying_live_button" class="btn btn-inverse insert-lang"></button>
         </div>
 
+        <%@ include file="./status.html"%>
+
         <% if(studio.getProps().optBoolean("stats-enabled")){ %>
-         <%@ include file="./status.html"%>
+         <%@ include file="./stats.html"%>
         <%}%>
         
        <% if(studio.getProps().optBoolean("enable-push-notification")){ %>
