@@ -1,13 +1,13 @@
 var Apps = Apps || {};
+Apps.Cloud = Apps.Cloud || {};
+Apps.Cloud.Dashboard = Apps.Cloud.Dashboard || {};
 
-Apps.Status = Apps.Status || {};
-
-Apps.Status.Controller = Apps.Controller.extend({
+Apps.Cloud.Dashboard.Controller = Controller.extend({
 
   model: {},
 
   views: {
-    status_container: "#status_container"
+    dashboard_container: "#dashboard_container"
   },
 
   container: null,
@@ -24,16 +24,16 @@ Apps.Status.Controller = Apps.Controller.extend({
     }
   },
 
-  init: function() {},
+  init: function() {
+    // this.initFn = _.once(this.initBindings);
+  },
 
-  show: function() {
-    this._super();
-
+  show: function(e, showClientCloudOptions) {
     var self = this;
     console.log('status.show');
 
     this.hide();
-    this.container = this.views.status_container;
+    this.container = this.views.dashboard_container;
 
     // FIXME: show/hide preview could depend on a field in each sub-class of controller
     $fw.client.tab.apps.manageapps.getController('apps.preview.controller').hideContent();
@@ -48,11 +48,39 @@ Apps.Status.Controller = Apps.Controller.extend({
     $('#refresh_dev_status').unbind().click(function() {
       console.log('dev status.refresh');
       self.refreshDev();
+      return false;
     });
     $('#refresh_live_status').unbind().click(function() {
       console.log('live status.refresh');
       self.refreshLive();
+      return false;
     });
+
+    // Action bindings
+    $('a.develop_cloud_code', this.container).unbind().click(function(e){
+      e.preventDefault();
+      self.openCloudEditor();
+    });
+
+    $('a.deploy_cloud_code', this.container).unbind().click(function(e){
+      e.preventDefault();
+      $('.manageapps_nav_list a[data-controller="apps.deploy.controller"]').trigger('click');
+    });
+
+    $('a.monitor_cloud_stats', this.container).unbind().click(function(e){
+      e.preventDefault();
+      $('.manageapps_nav_list a[data-controller="stats.controller"]').trigger('click');
+    });
+
+    $('a.cloud_logs', this.container).unbind().click(function(e){
+      e.preventDefault();
+      $('.manageapps_nav_list a[data-controller="apps.logging.controller"]').trigger('click');
+    });    
+  },
+
+  openCloudEditor: function () {
+    $fw.data.set('initFile', '/cloud/main.js');
+    $('.manageapps_nav_list a[data-controller="apps.editor.controller"]').trigger('click');
   },
 
   refreshDev: function() {
@@ -181,5 +209,4 @@ Apps.Status.Controller = Apps.Controller.extend({
       }
     });
   }
-
 });

@@ -71,22 +71,16 @@
         </a>
       </li>
       <li class="nav-header template-restriction">Cloud Management</li>
-      <li class="template-restriction">
-        <a href="#" data-controller="apps.quickstart.cloud.controller">
-          <i class="icon-briefcase"></i>
-          Quickstart
+      <li class="template-restriction nodejs_mode">
+        <a href="#" data-controller="apps.cloud.dashboard.controller">
+          <i class="icon-dashboard"></i>
+          Dashboard
         </a>
       </li>
       <li class="template-restriction nodejs_mode">
         <a href="#" data-controller="apps.deploy.controller">
           <i class="icon-cloud"></i>
           Deploy
-        </a>
-      </li>
-      <li class="template-restriction nodejs_mode">
-        <a href="#" data-controller="apps.status.controller">
-          <i class="icon-dashboard"></i>
-          Status
         </a>
       </li>
       <li class="template-restriction nodejs_mode">
@@ -228,6 +222,8 @@
 
        <%}%>
 
+       <%@ include file="./dashboard.html"%>
+
         <%@ include file="./debug_logging.html"%>
   
         <div id="deploying_container" class="well">
@@ -241,8 +237,6 @@
           <br/>
           <button id="deploying_live_button" class="btn btn-inverse insert-lang"></button>
         </div>
-
-        <%@ include file="./status.html"%>
 
         <% if(studio.getProps().optBoolean("stats-enabled")){ %>
          <%@ include file="./stats.html"%>

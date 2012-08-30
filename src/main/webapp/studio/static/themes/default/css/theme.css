@@ -3154,7 +3154,8 @@ table.dataTable th:active {
 #quickstart_container .client-quickstart i,
 #quickstart_client_container i,
 #quickstart_client_hybrid_container i,
-#quickstart_cloud_container i {
+#quickstart_cloud_container i,
+.actions i {
   font-size: 96px;
 }
 
@@ -3162,7 +3163,8 @@ table.dataTable th:active {
 #quickstart_container .client-quickstart p,
 #quickstart_client_container p,
 #quickstart_client_hybrid_container p,
-#quickstart_cloud_container p  {
+#quickstart_cloud_container p,
+.actions p  {
   margin: 5px 0 5px 0;
 }
 
@@ -3171,7 +3173,8 @@ table.dataTable th:active {
 #quickstart_container .client-quickstart a,
 #quickstart_client_container a,
 #quickstart_client_hybrid_container a,
-#quickstart_cloud_container a {
+#quickstart_cloud_container a,
+.actions a {
   width: 128px;
   height: 128px;
   margin-right: 10px;
@@ -3249,6 +3252,22 @@ table.dataTable th:active {
 
 a.docslink {
   color: #08C;
+}
+
+/* Env Selector */
+.cloud_env_selector button {
+  width: 100px;
+
+  /* Override overridden Bootstrap buttons! */
+  font-size: 13px;
+  font-weight: bold;
+  padding: 4px 10px 4px;
+  height: 28px;
+}
+.cloud_env_selector {
+  margin: auto;
+  width: 200px;
+  padding: 0 10px 10px 10px;
 }
 
 /* Awesome nth item selector that works cross platform (including IE!)
