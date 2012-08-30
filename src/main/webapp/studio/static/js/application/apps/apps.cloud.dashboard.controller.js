@@ -30,12 +30,10 @@ Apps.Cloud.Dashboard.Controller = Controller.extend({
 
   show: function(e, showClientCloudOptions) {
     var self = this;
-    console.log('status.show');
 
     this.hide();
     this.container = this.views.dashboard_container;
 
-    // FIXME: show/hide preview could depend on a field in each sub-class of controller
     $fw.client.tab.apps.manageapps.getController('apps.preview.controller').hideContent();
     this.bind();
     this.refreshAll();
@@ -43,7 +41,6 @@ Apps.Cloud.Dashboard.Controller = Controller.extend({
   },
 
   bind: function() {
-    console.log('status.bind');
     var self = this;
     $('#refresh_dev_status').unbind().click(function() {
       console.log('dev status.refresh');

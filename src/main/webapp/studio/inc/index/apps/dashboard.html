@@ -8,73 +8,71 @@
   </div>
 
   <div id="status_container">
-    <div id="status_body">
 
-      <table id="cloud_status" cellborder="0" cellpadding="0">
-        <thead>
-          <tr>
-            <th>Environment</th>
-            <th>Status</th>
-            <th>Description</th>
-            <th>&nbsp;</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="status_row dev">
-            <td class="environment">Development</td>
-            <td class="status" align="center">&nbsp;</td>
-            <td class="description">&nbsp;</td>
-            <td><button class="btn" id="refresh_dev_status">Refresh</button></td>
-          </tr>
-          <tr class="status_row live">
-            <td class="environment">Live</td>
-            <td class="status" align="center">&nbsp;</td>
-            <td class="description">&nbsp;</td>
-            <td><button class="btn" id="refresh_live_status">Refresh</button></td>
-          </tr>
-        </tbody>
-      </table>
+    <table id="cloud_status" cellborder="0" cellpadding="0">
+      <thead>
+        <tr>
+          <th>Environment</th>
+          <th>Status</th>
+          <th>Description</th>
+          <th>&nbsp;</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="status_row dev">
+          <td class="environment">Development</td>
+          <td class="status" align="center">&nbsp;</td>
+          <td class="description">&nbsp;</td>
+          <td>
+            <button class="btn" id="refresh_dev_status">Refresh</button>
+          </td>
+        </tr>
+        <tr class="status_row live">
+          <td class="environment">Live</td>
+          <td class="status" align="center">&nbsp;</td>
+          <td class="description">&nbsp;</td>
+          <td>
+            <button class="btn" id="refresh_live_status">Refresh</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
-      <!-- Templates -->
-      <div id="ping_status_failed_label" class="hidden_template">
-        <span class="label label-important">Ping Failed</span>
-      </div>
-
-      <div id="ping_status_failed_description" class="hidden_template">
-        Your cloud app doesn't appear to be running.
-      </div>     
-
-      <div id="ping_status_success_label" class="hidden_template">
-        <span class="label label-success">Ping OK</span>
-      </div>
-
-      <div id="ping_status_success_description" class="hidden_template">
-        Your cloud app is deployed and running.
-      </div>
-
-      <div id="ping_status_loading_description" class="hidden_template">
-        Loading ...
-      </div>
-
-      <div id="ping_status_loading_label" class="hidden_template">
-        <img src="<%=studio.getStaticAssetPath("themes/default/img/throbber.gif")%>" alt="loading">
-      </div>
-
-      <span id="stats_loading" class="hidden_template">
-        <img src="<%=studio.getStaticAssetPath("themes/default/img/throbber.gif")%>" alt="loading">
-      </span>
+    <!-- Templates -->
+    <div id="ping_status_failed_label" class="hidden_template">
+      <span class="label label-important">Ping Failed</span>
     </div>
+
+    <div id="ping_status_failed_description" class="hidden_template">Your cloud app doesn't appear to be running.</div>
+
+    <div id="ping_status_success_label" class="hidden_template">
+      <span class="label label-success">Ping OK</span>
+    </div>
+
+    <div id="ping_status_success_description" class="hidden_template">Your cloud app is deployed and running.</div>
+
+    <div id="ping_status_loading_description" class="hidden_template">Loading ...</div>
+
+    <div id="ping_status_loading_label" class="hidden_template">
+      <img src="<%=studio.getStaticAssetPath("themes/default/img/throbber.gif")%>" alt="loading"></div>
+
+    <span id="stats_loading" class="hidden_template">
+      <img src="<%=studio.getStaticAssetPath("themes/default/img/throbber.gif")%>" alt="loading"></span>
+  </div>
+
+  <hr/>
+
+  <div style="font-size: 24px;">
+    <i class="icon-camera-retro icon-large"></i> icon-camera-retro
   </div>
 
   <hr/>
 
   <div class="actions">
-    <a href="#" class="btn develop_cloud_code">
-      <i class="icon-file"></i>
+<!--     <a href="#" class="btn develop_cloud_code"> <i class="icon-file"></i>
       <h5>Develop my Cloud Code</h5>
-    </a>
-    <a href="#" class="btn nodejs_mode deploy_cloud_code">
-      <i class="icon-cloud"></i>
+    </a> -->
+    <a href="#" class="btn nodejs_mode deploy_cloud_code"> <i class="icon-cloud"></i>
       <h5>Deploy my Cloud Code</h5>
     </a>
     <a href="#" class="btn nodejs_mode monitor_cloud_stats">
@@ -84,7 +82,7 @@
     <a href="#" class="btn cloud_logs">
       <i class="icon-list"></i>
       <h5>Show Cloud Logs</h5>
-    </a>    
+    </a>
   </div>
   <hr/>
   <h3>Learn more about Developing FeedHenry Cloud Code</h3>
