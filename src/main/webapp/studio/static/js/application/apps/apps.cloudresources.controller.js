@@ -77,11 +77,11 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
 
         cb();
       } else {
-        self.showAlert('error', 'Error getting current resource data: res.data is undefined');
+        self.showAlert('error', 'Error getting resource data. Please make sure your App is deployed to \'' + cloudEnv + '\' environment (res.data is undefined)');
         cb();
       }
     }, function(err) {
-      self.showAlert('error', 'Error getting current resource data:' + err.message);
+      self.showAlert('error', 'Error getting resource data. Please make sure your App is deployed to \'' + cloudEnv + '\' environment (' + (err.message != null ? err.message : err) + ')');
       cb();
     });
 

@@ -30,6 +30,7 @@ Apps.Cloud.Controller = Apps.Controller.extend({
       $('.' + selectedEnv + '_environment_btn', envContainer).trigger('click');
     } else {
       // default to dev environment
+      $fw.data.set('cloud_environment', 'dev');
       $('.dev_environment_btn', envContainer).trigger('click');
     }
 
