@@ -58,11 +58,6 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
 
     this.initialiseCpuGauge($('#cloud_cpu .cloud_cpu_container', currentContainer)[0]);
     
-    // show all stuff in 'loading' mode while refreshing
-    $('.bar-danger', currentContainer).hide();
-    $('.bar-info', currentContainer).hide();
-    $('.barloading', currentContainer).parent().addClass('progress-striped active').end().show();
-
     var cloudEnv = $fw.data.get('cloud_environment');
     this.models.appresource.current(guid, cloudEnv, function(res) {
       if (res != null && res.data != null) {
@@ -108,10 +103,8 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
     var usedPercentage = (used / max) * 100;
     // TODO: put % value in dom too??
 
-    // remove all stuff from 'loading' mode
-    $('.barloading', container).parent().removeClass('progress-striped active').end().hide(); 
-    $('.bar-danger', container).show().css('width', usedPercentage + '%');
-    $('.bar-info', container).show().css('width', (100 - usedPercentage) + '%');
+    $('.bar-danger', container).css('width', usedPercentage + '%');
+    $('.bar-info', container).css('width', (100 - usedPercentage) + '%');
   },
 
   bytesToMB: function (bytes) {
