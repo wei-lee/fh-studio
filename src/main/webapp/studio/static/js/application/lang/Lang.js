@@ -24,8 +24,6 @@ var Lang = {
   export_blackberry_title: 'Blackberry',
   export_windowsphone7_title: 'Windows Phone 7',
   export_feedhenry_title: 'Feedhenry',
-  export_opera_title: 'Opera',
-  export_vodafone360_title: 'Vodafone 360',
   export_w3cwgt_title: 'W3C Format',
   export_embed_title: 'Embed',
 

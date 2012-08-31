@@ -1349,9 +1349,6 @@ span.label-info {
 .app_generate_destinations .destination #dest_ios_icon {
  background-image: url("../img/export/iphone.png");
 }
-.app_generate_destinations .destination #dest_opera_icon {
- background-image: url("../img/export/opera.png");
-}
 .app_generate_destinations .destination #dest_vodafone360_icon {
  background-image: url("../img/export/vodafone360.png");
 }
