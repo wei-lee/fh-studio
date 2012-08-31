@@ -23,7 +23,6 @@ textarea { resize:none; }
 ----------------------------------*/
 .ui-widget { font-size: 12px; }
 .ui-widget .ui-widget { font-size: 1em; }
-.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button { font-size: 1em; }
 .ui-widget-content { border: none; }
 .ui-widget-content a { color: #4d4d4d; }
 .ui-widget-header { border: none; background: none; font-weight: normal; }

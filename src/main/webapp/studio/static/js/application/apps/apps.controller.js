@@ -24,7 +24,6 @@ Apps.Controller = Controller.extend({
   //  i.e. each controller is responsible for cleaning up after itself before it can show data/ui
   //       for newly selected app
   reset: function () {
-    console.log('apps.controller reset');
     // n/a at generic app controller level
   }
 });
