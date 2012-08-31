@@ -49,6 +49,13 @@ LangManager = Class.extend({
     }
   },
 
+  insertLangFromData: function (container) {
+    container.find('[data-lang]').each(function () {
+      var el = $(this);
+      el.text($fw.client.lang.getLangString(el.data('lang')));
+    });
+  },
+
   /*
    * Insert text, if it is available for the element (this)
    */

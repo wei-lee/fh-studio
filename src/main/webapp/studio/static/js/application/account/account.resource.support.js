@@ -5,7 +5,7 @@ Account.Resource = Account.Resource || {};
 Account.Resource.Support = Controller.extend({
 
   models: {
-    resource: new model.Resource()
+    resource: new model.UserResource()
   },
 
   init: function () {

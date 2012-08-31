@@ -6,17 +6,17 @@ var Lang = {
   docs_build_app: 'Building Apps',
   docs_training_labs: 'Training Labs',
   docs_dev_tools: 'Developer Tools',
-  
+
   scm_editor_disabled: 'Editing of files isn\'t supported for Git based Apps',
   manage_details_update_button_text: 'Update Details',
   delete_app_button_text: 'Delete',
   scm_trigger_button_text: 'Git Pull',
   scm_trigger_error: 'There was a problem getting the latest files for the configured repository URL. Please check that the URL is valid and try again.',
-  reload_file_content_alert : 'Unsaved changes detected when trying to reload the file. Do you want to continue (Any unsaved changes will be discarded) ?',
+  reload_file_content_alert: 'Unsaved changes detected when trying to reload the file. Do you want to continue (Any unsaved changes will be discarded) ?',
   post_cloned_git_app: 'This new App has the same Git URL as the App it was cloned from. If you wish to work from a separate Git repository, please clone or fork (if based on Github) the Git project and update the URL in the Manage > Details screen.',
-  
+
   please_wait_text: 'Please wait...',
-  
+
   export_iphone_title: 'iPhone',
   export_ipad_title: 'iPad',
   export_ios_title: 'iOS Universal',
@@ -30,110 +30,58 @@ var Lang = {
   export_vodafone360_title: 'Vodafone 360',
   export_w3cwgt_title: 'W3C Format',
   export_embed_title: 'Embed',
-      
-  apple_developer_cert_text: [
-    "A Developer Certificate is used during the creation of iPhone, iPod and iPad apps.", 
-    "It is digitally signed by Apple, which means Apple has authorised the owner of the certificate to create Apps that can be installed on a developer enabled devce.",
-    "Apps created with a Developer Certificate are generally only used for debugging purposes during App Development."
-  ],
-  apple_distribution_cert_text: [
-    "A Distribution Certificate is used during the creation of iPhone, iPod and iPad apps.", 
-    "It is digitally signed by Apple, which means Apple has authorised the owner of the certificate to create Apps for distribution.",
-    "These apps can be distributed to a specific set of Devices, or submitted to the App Store."
-  ],
-  
+
+  apple_developer_cert_text: ["A Developer Certificate is used during the creation of iPhone, iPod and iPad apps.", "It is digitally signed by Apple, which means Apple has authorised the owner of the certificate to create Apps that can be installed on a developer enabled devce.", "Apps created with a Developer Certificate are generally only used for debugging purposes during App Development."],
+  apple_distribution_cert_text: ["A Distribution Certificate is used during the creation of iPhone, iPod and iPad apps.", "It is digitally signed by Apple, which means Apple has authorised the owner of the certificate to create Apps for distribution.", "These apps can be distributed to a specific set of Devices, or submitted to the App Store."],
+
   apple_key_wizard_supertitle: 'Apple Key Upload',
   apple_key_upload_title: 'Upload Private Key',
   apple_key_finish_title: 'Uploading Private Key',
-  
+
   apple_key_password_text: "Password to protect your private key",
   apple_key_password_help_icon: 'This password will be used to encrypt your private key for security reasons. Please keep a record of this password',
-  apple_private_key_text: [
-    "A Private Key is a file whose contents are secret to the owner.",
-    "During the App building process, the App is digitally signed using this key. This means the developers digital signature is left on the App, allowing the App to be tied back to the devleoper."
-  ],
-  
+  apple_private_key_text: ["A Private Key is a file whose contents are secret to the owner.", "During the App building process, the App is digitally signed using this key. This means the developers digital signature is left on the App, allowing the App to be tied back to the devleoper."],
+
   apple_getstarted_wizard_supertitle: 'Apple - Get Started',
   apple_getstarted_user_title: 'Apple Developer Account Check',
   apple_getstarted_new_title: 'New Apple Account',
   apple_getstarted_openssl_title: 'Generate CSR',
   apple_getstarted_csr_title: 'Generate CSR',
   apple_getstarted_account_help_title: 'Create Apple Account',
-  
-  apple_getstarted_resource_text: [
-    "Before you can build Apps for Apple Devices, a few resources need to be uploaded. They are a Private Key, a Developer Certificate and a Distribution Certificate.",
-    "Click on 'Get Started' for a step-by-step guide of what these resources are, how to obtain them, and how to upload them."
-  ],
-  apple_getstarted_user_text: [
-    "The first requirement before any resource can be retrieved is that you have an Apple Developer Account.",
-    "This is necessary because Apple only allow developers with an account to create and build Apps for Apple Devices.",
-    "Do you have an Apple Developer Account?"
-  ],
+
+  apple_getstarted_resource_text: ["Before you can build Apps for Apple Devices, a few resources need to be uploaded. They are a Private Key, a Developer Certificate and a Distribution Certificate.", "Click on 'Get Started' for a step-by-step guide of what these resources are, how to obtain them, and how to upload them."],
+  apple_getstarted_user_text: ["The first requirement before any resource can be retrieved is that you have an Apple Developer Account.", "This is necessary because Apple only allow developers with an account to create and build Apps for Apple Devices.", "Do you have an Apple Developer Account?"],
   apple_getstarted_user_yes: "Yes, I have an Apple Developer Account",
   apple_getstarted_user_no: "No, I don't have an Apple Developer Account",
-  apple_getstarted_new_text: [
-    "To create an Apple Developer Account, you will need to sign up to the iOS Developer Program.",
-    "As part of the Account setup, you will need to upload a CSR (Certificate Signing Request) to Apple so that they can sign a Developer and Distribution Certificate for you.",
-    "How would you like to create this CSR?"
-  ],
+  apple_getstarted_new_text: ["To create an Apple Developer Account, you will need to sign up to the iOS Developer Program.", "As part of the Account setup, you will need to upload a CSR (Certificate Signing Request) to Apple so that they can sign a Developer and Distribution Certificate for you.", "How would you like to create this CSR?"],
   apple_getstarted_new1: "I want to generate the CSR myself using openssl",
   apple_getstarted_new2: "Generate CSR for me",
   apple_getstarted_new3: "I already have a CSR",
-  apple_getstarted_csr_text1: [
-    "Here you can download a CSR that we'll generate.",
-    "As part of the generation process, a Private Key is also generated for you and saved to your resources. You don't need to do anything with this file.",
-    "Please enter a password to protect your private key. Please keep a record of this password as you will need it when building apps."
-  ],
-  apple_getstarted_csr_text2: [
-    "Please keep the downloaded CSR file as it will be needed during your Apple Developer Account setup."
-  ],
+  apple_getstarted_csr_text1: ["Here you can download a CSR that we'll generate.", "As part of the generation process, a Private Key is also generated for you and saved to your resources. You don't need to do anything with this file.", "Please enter a password to protect your private key. Please keep a record of this password as you will need it when building apps."],
+  apple_getstarted_csr_text2: ["Please keep the downloaded CSR file as it will be needed during your Apple Developer Account setup."],
   apple_getstarted_csr_download: "Download CSR",
-  apple_getstarted_account_help_text1: [
-    "To setup your Apple Developer Account, go to "
-  ],
-  apple_getstarted_account_help_text2: [
-    " and sign up for the iOS Developer Program.",
-    "After your Apple Developer Account is created, you will be able to upload the CSR file in the iPhone Provisioning Portal.",
-    "When the CSR is approved by Apple, you will be able to download your Developer and Distribution Certificates.",
-    "These certificates can be uploaded here after uploading your Private Key."
-  ],
-  apple_getstarted_openssl_text: [
-    "Here are instructions for generating your private key and CSR using openssl.",
-    "Open a terminal and run the following commands:",
-    "$ openssl genrsa -out my_key.pem -passout pass:PASSWORD -des3 2048",
-    "(Ensure you replace the PASSWORD with your own password. Please keep a record of this password as you will need it when building apps.)",
-    "$ openssl req -new -key my_key.pem -out my_csr.csr -subj \"/emailAddress=yourAddress@example.com, CN=Your Name, C=US\"",
-    " (Ensure you replace the emailAddress, CN and CC with your e-mail address, name and Country Code)",
-    "The CSR file (my_csr.csr) is used during the Apple Developer Account setup.",
-    "The Private Key (my_key.pem) can be uploaded here after your Apple Developer Account is setup."
-  ],
-  apple_key_upload_text1: [
-    "Here you can upload your Private Key. This is required during the App building process for digitally signing Apps.",
-    "A Private key usually has an extension of '.pem' or '.key'. You would have used it for generating the CSR when creating your Apple Developer Account.",
-    "Important: It is recommended that you protect your private key with a password."
-  ],
+  apple_getstarted_account_help_text1: ["To setup your Apple Developer Account, go to "],
+  apple_getstarted_account_help_text2: [" and sign up for the iOS Developer Program.", "After your Apple Developer Account is created, you will be able to upload the CSR file in the iPhone Provisioning Portal.", "When the CSR is approved by Apple, you will be able to download your Developer and Distribution Certificates.", "These certificates can be uploaded here after uploading your Private Key."],
+  apple_getstarted_openssl_text: ["Here are instructions for generating your private key and CSR using openssl.", "Open a terminal and run the following commands:", "$ openssl genrsa -out my_key.pem -passout pass:PASSWORD -des3 2048", "(Ensure you replace the PASSWORD with your own password. Please keep a record of this password as you will need it when building apps.)", "$ openssl req -new -key my_key.pem -out my_csr.csr -subj \"/emailAddress=yourAddress@example.com, CN=Your Name, C=US\"", " (Ensure you replace the emailAddress, CN and CC with your e-mail address, name and Country Code)", "The CSR file (my_csr.csr) is used during the Apple Developer Account setup.", "The Private Key (my_key.pem) can be uploaded here after your Apple Developer Account is setup."],
+  apple_key_upload_text1: ["Here you can upload your Private Key. This is required during the App building process for digitally signing Apps.", "A Private key usually has an extension of '.pem' or '.key'. You would have used it for generating the CSR when creating your Apple Developer Account.", "Important: It is recommended that you protect your private key with a password."],
   apple_key_type_text: "Please select the type of the certificate which is generated using this private key",
   apple_key_upload_text2: "Private Key",
   apple_key_upload_text3: "Password (if any)",
   apple_key_upload_password_help_icon: 'You may have set a password for the Certificate if you exported it from the Keychain Access Tool (Mac OS Only).',
   apple_key_upload_file_help_icon: "Should have a .pem or .key file extension",
-  
+
   apple_cert_wizard_supertitle: 'Apple Cert Upload',
   apple_cert_upload_title: 'Upload Certificate',
   apple_cert_finish_title: 'Uploading Certificate',
-  
-  apple_cert_upload_text1: [
-    "Here you can upload your Certificate. To get your Certificate, it can be downloaded from the iPhone Provisioning Portal in your Apple Developer Account.",
-    "Alternatively, it can be exported from your KeyChain Access Tool (Mac OS only) if you have imported it.",
-    "The accepted formats for uploading your certificate are '.cer' and '.p12'."
-  ],
+
+  apple_cert_upload_text1: ["Here you can upload your Certificate. To get your Certificate, it can be downloaded from the iPhone Provisioning Portal in your Apple Developer Account.", "Alternatively, it can be exported from your KeyChain Access Tool (Mac OS only) if you have imported it.", "The accepted formats for uploading your certificate are '.cer' and '.p12'."],
   apple_cert_upload_text2: "Certificate File",
   apple_cert_upload_file_help_icon: "Should have a .cer or .p12 file extension.",
   apple_cert_upload_text3: "Certificate Password (if any)",
   apple_cert_upload_password_help_icon: "You may have set a password for the Certificate if you exported it from the Keychain Access Tool (Mac OS Only).",
-  
+
   app_export_downlaod_message: 'Download will start very shortly. Please try again if it does not start. Click on the \'Finish\' button to go back to the Export screen.',
-  
+
   iphone_export_wizard_supertitle: 'iPhone Export',
   app_export_device_types_title: 'Please select the device type',
   app_export_iphone_versions_title: 'Please select the iOS deployment target version',
@@ -142,10 +90,10 @@ var Lang = {
   app_export_iphone_progress_title: 'Exporting App',
   app_export_ipad_progress_title: 'Exporting App',
   app_export_ios_progress_title: 'Exporting App',
-  
+
   ipad_export_wizard_supertitle: 'iPad Export',
   ios_export_wizard_supertitle: 'iOS Unversal App Export',
-  
+
   iphone_publish_wizard_supertitle: 'iPhone Build',
   app_publish_iphone_select_provisionings_title: 'Please select the Provisioning Profile',
 
@@ -178,7 +126,7 @@ var Lang = {
   app_publish_iphone_pk_password_text_help_icon: 'If you have secured your private key with a password, please enter it here.',
   app_publish_iphone_cert_password_text: 'Please enter the password for your certificate (if any)',
   app_publish_iphone_cert_password_text_help_icon: 'If you have secured your certificate with a password, please enter it here.',
-  
+
   ipad_publish_wizard_supertitle: 'iPad Build',
   app_publish_ipad_select_provisionings_title: 'Please select the Provisioning Profile',
   app_publish_ipad_upload_provisionings_title: 'Please upload the provisioning profile',
@@ -190,11 +138,11 @@ var Lang = {
   app_publish_ipad_pk_password_text_help_icon: 'If you have secured your private key with a password, please enter it here.',
   app_publish_ipad_cert_password_text: 'Please enter the password for your certificate (if any)',
   app_publish_ipad_cert_password_text_help_icon: 'If you have secured your certificate with a password, please enter it here.',
-  
+
   ios_publish_wizard_supertitle: 'iOS Universal Build',
   app_publish_ios_select_provisionings_title: 'Please select the Provisioning Profile',
   app_publish_ios_upload_provisionings_title: 'Please upload the provisioning profile',
-  app_publish_ios_deploying_env_title:'Server-side code deploying',
+  app_publish_ios_deploying_env_title: 'Server-side code deploying',
   app_publish_ios_deploying_progress_title: 'Deploying App',
   app_publish_ios_upload_progress_title: 'Uploading provisioning profile',
   app_publish_ios_versions_title: 'Please select the iOS deployment target version',
@@ -204,103 +152,68 @@ var Lang = {
   app_publish_ios_pk_password_text_help_icon: 'If you have secured your private key with a password, please enter it here.',
   app_publish_ios_cert_password_text: 'Please enter the password for your certificate (if any)',
   app_publish_ios_cert_password_text_help_icon: 'If you have secured your certificate with a password, please enter it here.',
-  
+
   android_getstarted_wizard_supertitle: 'Android Get Started',
   android_getstarted_resources_title: 'Resources Check',
   android_getstarted_generate_password_title: 'Please specify a password to protect your private key',
   android_getstarted_generate_title: 'Generating Private Key and Certificate',
-  
-  android_getstarted_resource_text: [
-    "There are 2 types of Android Apps that can be built: Debug and Release. No resources are required in order to build Debug Apps (Ok for debugging and testing).",
-    "However, if you want to build Release Apps (Apps for submission to the Android Marketplace), a Private Key and Distribution Certificate are required.",
-    "Click 'Get Started' for a step-by-step guide of how to setup these Resources."
-  ],
-  android_distribution_cert_text: [
-    "A Distribution Certificate is used to build Release Apps for submission to the Android Marketplace.",
-    "When you submit an App to the Android Marketplace, your certificate is used to identify you as the developer of the App."
-  ],
-  
+
+  android_getstarted_resource_text: ["There are 2 types of Android Apps that can be built: Debug and Release. No resources are required in order to build Debug Apps (Ok for debugging and testing).", "However, if you want to build Release Apps (Apps for submission to the Android Marketplace), a Private Key and Distribution Certificate are required.", "Click 'Get Started' for a step-by-step guide of how to setup these Resources."],
+  android_distribution_cert_text: ["A Distribution Certificate is used to build Release Apps for submission to the Android Marketplace.", "When you submit an App to the Android Marketplace, your certificate is used to identify you as the developer of the App."],
+
   android_key_wizard_supertitle: 'Android Key Upload',
   android_key_upload_title: 'Upload Private Key',
   android_key_finish_title: 'Uploading Private Key',
-  
+
   android_key_type_text: "Please select the type of the certificate which is generated using this private key",
   android_key_password_text: "Password to protect your private key",
   android_key_password_help_icon: "This password will be used to protect your private key. Please keep a record of this password",
-  android_private_key_text: [
-    "A Private Key is a file whose contents are secret to the owner.",
-    "During the App building process, this key is used to digitally sign the App."
-  ],
-  android_getstarted_resources_text: [
-    "Debug Apps can already be built without the need to upload any resources.",
-    "To build Release Apps (for submission to Android Marketplace), you must first upload your Private Key, and then your Distribution Certificate.",
-    "Do you have a Private Key and Distribution Certificate?"
-  ],
-  android_getstarted_password_text: [
-    "Please enter a password to protect your private key.",
-    "This password will be required when building your App. Please keep a record of it."
-  ],
+  android_private_key_text: ["A Private Key is a file whose contents are secret to the owner.", "During the App building process, this key is used to digitally sign the App."],
+  android_getstarted_resources_text: ["Debug Apps can already be built without the need to upload any resources.", "To build Release Apps (for submission to Android Marketplace), you must first upload your Private Key, and then your Distribution Certificate.", "Do you have a Private Key and Distribution Certificate?"],
+  android_getstarted_password_text: ["Please enter a password to protect your private key.", "This password will be required when building your App. Please keep a record of it."],
   android_getstarted_resources_opt1: "No. Generate Private Key and Developer Certificate for me",
   android_getstarted_resources_opt2: "Yes, but help me generate a Developer Certificate using this key",
   android_getstarted_resources_opt3: "Yes, let me upload these resources",
-  
+
   android_cert_wizard_supertitle: 'Android Cert Upload',
   android_cert_upload_title: 'Upload Certificate',
   android_cert_finish_title: 'Uploading Certificate',
-  
-  android_cert_upload_text: [
-    "Here you can upload your Distribution Certificate. A Certificate file typically has a file extension of .cer or .p12."
-  ],
+
+  android_cert_upload_text: ["Here you can upload your Distribution Certificate. A Certificate file typically has a file extension of .cer or .p12."],
   android_cert_upload_file_text: "Certificate File",
   android_cert_upload_file_help_icon: "Should have a .cer or .p12 file extension.",
   android_cert_upload_password_text: "Certificate Password (if any)",
   android_cert_upload_password_help_icon: "You may have set a password for the Certificate if you exported it from a Keychain tool.",
-  android_key_upload_text: [
-    "Here you can upload your Private Key. This is required during the App building process for digitally signing Apps.",
-    "A Private key usually has an extension of '.pem' or '.key'.",
-    "Important: It is recommended that you protect your private key with a password."
-  ],
+  android_key_upload_text: ["Here you can upload your Private Key. This is required during the App building process for digitally signing Apps.", "A Private key usually has an extension of '.pem' or '.key'.", "Important: It is recommended that you protect your private key with a password."],
   android_key_upload_password_text: "Private Key Password (if any)",
   android_key_upload_password_help_icon: "You may have set a password for the Private key",
   android_key_upload_file_text: "Private Key",
   android_key_upload_file_help_icon: "Should have a .pem or .key file extension",
   app_android_build_debug_text: "Ready to build a debug version of the App",
   app_android_build_release_text: "Ready to build a release version of the App",
-  
+
   android_export_wizard_supertitle: 'Android Export',
   app_export_android_versions_title: 'Please select the Android SDK version',
   app_export_android_progress_title: 'Exporting App',
-  
+
   android_publish_wizard_supertitle: 'Android Build',
   app_publish_android_versions_title: 'Please select the Android SDK version',
   app_publish_android_password_title: 'Please enter the passwords for your private key and certificate',
   app_publish_android_progress_title: 'Building App',
-  
+
   app_publish_iphone_select_provisionings_text: "Which Provisioning Profile do you want to use for this app?",
-  app_publish_iphone_upload_provisionings_text: [
-    "A Provisioning Profile is an Apple generated file that is linked to one or more Apple Apps based on the App Bundle Identifier (Unique ID).",
-    "Provisioning Profiles can be generated in the iPhone Provisioning Portal in your Apple Developer Account.",
-    "When uploading a Provisioning Profile, it is important that Bundle Identifier matches the App Id (can be set in the Configuration section)."
-  ],
+  app_publish_iphone_upload_provisionings_text: ["A Provisioning Profile is an Apple generated file that is linked to one or more Apple Apps based on the App Bundle Identifier (Unique ID).", "Provisioning Profiles can be generated in the iPhone Provisioning Portal in your Apple Developer Account.", "When uploading a Provisioning Profile, it is important that Bundle Identifier matches the App Id (can be set in the Configuration section)."],
   app_publish_iphone_upload_progress_text: "Please wait while uploading the provisioning profile...",
-  app_publish_iphone_password_text: [
-    "If you have protected your private key or certificate with a password, please enter it here.",
-    "Your password will not be saved anywhere on the system for security reasons. It will be prompted for whenever you need to build an App.",
-    "Important: It is recommended that you protect your private key with a password."
-  ],
-  app_publish_android_password_text: [
-    "If you have protected your private key or certificate with a password, please enter it here.",
-    "Your password will not be saved anywhere on the system for security reasons. It will be prompted for whenever you need to build an App.",
-    "Important: It is recommended that you protect your private key with a password."
-  ],
+  app_publish_iphone_password_text: ["If you have protected your private key or certificate with a password, please enter it here.", "Your password will not be saved anywhere on the system for security reasons. It will be prompted for whenever you need to build an App.", "Important: It is recommended that you protect your private key with a password."],
+  app_publish_android_password_text: ["If you have protected your private key or certificate with a password, please enter it here.", "Your password will not be saved anywhere on the system for security reasons. It will be prompted for whenever you need to build an App.", "Important: It is recommended that you protect your private key with a password."],
   app_publish_blackberry_note_text: "Tip: Before building apps for Blackberry, please make sure none of the app file names contains '-', otherwise the build will fail. ",
-  
+
   publish_embed_title: 'Embed Code',
   publish_embed_text: 'Paste the following code in your html to load an embedded version of the App.',
-  
+
   myapps_grid_columns: ['Id', 'Name', 'Email', 'Description', 'Version', 'Last Changed', 'Actions'],
-  template_apps_grid_columns:  ['Id', 'Name', 'Description', 'Actions'],
-  
+  template_apps_grid_columns: ['Id', 'Name', 'Description', 'Actions'],
+
   new_app_w3cid_help_icon: 'A unique identifier for the App.',
   new_app_title_label: 'Name',
   new_app_title_label_help_icon: 'This will be used as the App name on devices.',
@@ -323,7 +236,7 @@ var Lang = {
   postreceiveurl_label_help_icon: 'This URL can be added as a \'Post-Receive URL\' in the \'Service Hooks\' section of your github account. Setting this will automatically update your App in the FeedHenry platform whenever you push changes to github.',
   new_app_keyspublic_label: 'App Public Key',
   new_app_keyspublic_label_help_icon: 'Public key for this App. This is used to authorise the platform when making requests to configured external systems e.g. a Git repository',
-  
+
   preview_device_too_large1: 'Preview size too large for inline display. Click ',
   preview_device_open_emulator: 'here',
   preview_device_too_large2: ' to view the preview in the Device Emulator',
@@ -347,54 +260,54 @@ var Lang = {
   preview_device_ipad_portrait_title: 'iPad portrait (*scaled)',
   preview_device_ipad_portrait_noscale_title: 'iPad portrait',
   preview_device_htc_tattoo_title: 'Mobile Device',
-  
+
   preview_frame_debugger_btn: 'Debug',
   preview_frame_emulator_btn: 'Emulator',
   preview_frame_refresh_btn: 'Reload',
   preview_frame_debugger_btn_help: 'Opens your App in a new window allowing browser debugging tools to be used.',
   preview_frame_emulator_btn_help: 'Displays your App in the selected Device Emulator',
   preview_temporary_select_help: 'Size of your App preview. Scaled preview options use the detected monitor size to show your App at the size it would appear on device. *experimental, known issues with Chrome',
-  
+
   app_updated: 'App updated',
   app_frameworks_updated: 'Libraries updated',
   scm_update_started: 'Git pull started. This may take a moment. Your App will refresh when complete.',
   scm_updated: 'Git pull complete. Your App will now refresh.',
-  
+
   file_saved: 'File Saved',
   files_saved: 'Files Saved',
-  
+
   config_saved: 'Configuration Saved',
-    
+
   server_error: 'Server Error: ',
   client_error: 'Client Error: ',
   generic_error: 'Communication Error: ',
   connectivity_error: 'Unable to reach server. Please check your internet connection',
-  
+
   dest_source_android_help: 'Android App Source ready for import into Eclipse IDE (.zip)',
   dest_source_feedhenry_help: 'Complete Cross Platform App Source (.zip)',
   dest_source_iphone_help: 'iPhone App Source ready for import into xcode on a Mac (.zip)',
-  
+
   dest_binary_android_help: 'Compiled App ready for installation on an Android Device (.apk)',
   dest_binary_apple_help: 'Compiled App ready for installation on an Apple Device (.app)',
-  
+
   create_app_wizard_supertitle: 'Create An App',
-  create_app_type_title: 'How do you want to create an App?', 
-  create_app_details_title: 'Enter App Details', 
+  create_app_type_title: 'How do you want to create an App?',
+  create_app_details_title: 'Enter App Details',
   create_app_progress_title: 'Creating App',
   create_app_publickeysetup_title: 'Public Key Setup',
   create_app_scmprogress_title: 'Getting App Files',
   create_app_from_template_title: 'Choose a Template',
   create_app_next_title: 'What would you like to do next?',
-  create_app_from_scm_title: 'Enter App Details', 
+  create_app_from_scm_title: 'Enter App Details',
   create_app_scm_progress_title: 'Creating App',
-  create_app_frameworks_title:'Choose Libraries or Frameworks',
-  
+  create_app_frameworks_title: 'Choose Libraries or Frameworks',
+
   no_templates_message: 'Sorry. There are currently no Template Apps available.',
   // These 2 are used by import wizard
   create_app_next_radio1: 'Edit my App',
   create_app_next_radio2: 'Build my App',
   create_app_next_radio3: 'Quickstart',
-  
+
   create_app_type_text: 'Choose one of the options below to get started with a new App.',
   create_app_type_opt1: 'Create an App from scratch',
   create_app_type_opt1_help_icon: 'Creates an empty App with a placeholder start file',
@@ -409,26 +322,26 @@ var Lang = {
   create_app_next_radio_publish_label: 'Build my App',
   /*create_app_next_radio_publish_label_help_icon: ''*/
   create_app_next_radio_quickstart_label: 'Quickstart',
-  create_app_frameworks_text:'Choose libraries or frameworks for the app. If you don\'t need any of these, you can skip this step. ',
+  create_app_frameworks_text: 'Choose libraries or frameworks for the app. If you don\'t need any of these, you can skip this step. ',
   create_app_publickeysetup_text: 'To allow access to your git repository, please authorise the public key below.',
   import_app_wizard_supertitle: 'Import An App',
   import_app_details_title: 'Choose App',
   import_app_progress_title: 'Importing your App',
-  import_app_next_title: 'What would you like to do next?', 
-  
+  import_app_next_title: 'What would you like to do next?',
+
   delete_app_confirm_text: 'The app \'<APP>\' will be permanently deleted and cannot be recovered. Are you sure?',
   caution: 'Caution',
-  
+
   template_preview_button: 'Preview',
   template_title_label: 'Name',
   template_description_label: 'Description',
   template_selection_label: 'Select A Template',
-  template_icon_label : 'Icon',
+  template_icon_label: 'Icon',
   template_message_1: 'This is a Template App and cannot be modified. Click ',
   template_clone_button: 'Clone',
   template_message_2: ' if you want to use this App.',
-  
-  clone_app_wizard_supertitle: 'Clone App', 
+
+  clone_app_wizard_supertitle: 'Clone App',
   clone_app_details_title: 'Cloned App Details',
   clone_app_progress_title: 'Cloning App',
   clone_app_next_title: 'What would you like to do next?',
@@ -436,16 +349,14 @@ var Lang = {
   clone_finish_radio1: 'Edit my App',
   clone_finish_radio2: 'Build my App',
   clone_finish_radio3: 'Quickstart',
-  
+
   manage_details_header: 'Manage App Details',
   manage_frameworks_header: 'Manage App Libraries',
   manage_icons_header: 'Manage App Icons',
   manage_export_header: 'Export App Source',
   manage_publish_header: 'Build App Binary',
-  
-  update_app_frameworks_text: ['Note: Some of the libraries require resource files (for example, jQuery Mobile requires CSS files and images). Those resources will be created for your app automatically (But not for git-based apps).',
-                                'However, the resources files may not be referenced by the app\'s index file. You may need to add the references manually.',
-                                'Those resource files will NOT be deleted if the corresponding library is not required any more.'],
+
+  update_app_frameworks_text: ['Note: Some of the libraries require resource files (for example, jQuery Mobile requires CSS files and images). Those resources will be created for your app automatically (But not for git-based apps).', 'However, the resources files may not be referenced by the app\'s index file. You may need to add the references manually.', 'Those resource files will NOT be deleted if the corresponding library is not required any more.'],
 
   configuration_android_header: 'Android Configuration',
   configuration_iphone_header: 'iPhone Configuration',
@@ -456,44 +367,45 @@ var Lang = {
   configuration_studio_header: 'Studio Preview Configuration',
   configuration_blackberry_header: 'Blackberry Configuration',
   configuration_windowsphone7_header: 'Windows Phone 7 Configuration',
-  configuration_nokiawrt_header:'Nokia Web Run Time Configuration',
-  
+  configuration_nokiawrt_header: 'Nokia Web Run Time Configuration',
+
   report_installsdate_header: 'App Installs by Date',
   report_installsdest_header: 'App Installs by Destination',
   report_installsloc_header: 'App Installs by Location',
   report_startupsdate_header: 'App Startups by Date',
   report_startupsdest_header: 'App Startups by Destination',
   report_startupsloc_header: 'App Startups by Location',
-  
+
   debug_logging_header: 'Logging',
   debug_logging_refresh_button: 'Reload',
   debug_logging_clear_button: 'Clear',
-  
+
   deploying_dev_button: 'Deploy to Development',
   deploying_live_button: 'Deploy to Live',
 
   status_header: 'Cloud App Status',
   status_refresh_button: 'Refresh Status',
-  
+
   profile_details_header: 'Profile Details',
   account_type_free: 'Free',
   account_type_devadmin: 'Devadmin',
   account_type_enterprise: 'Enterprise',
-  
+
   destinations_apple_header: 'Manage Apple Resources',
   destinations_android_header: 'Manage Android Resources',
   destinations_blackberry_header: 'Manage Blackberry Resources',
-  
+
   password_changed: 'Password Changed',
   bad_password: 'An incorrect password was entered',
   password_not_match: 'Your new passwords do not match',
-  password_too_short: 'Your password is too short', // possibly unused
+  password_too_short: 'Your password is too short',
+  // possibly unused
   password_valid_check: 'Password length must be at least 8 characters',
   change_password_button: 'Change Password',
-  
+
   delete_file_confirm_text: 'Are you sure you wish to delete this file?',
   delete_folder_confirm_text: 'Are you sure you wish to delete this folder? All files in the folder will also be deleted.',
-  
+
   registration_ut: 'This email address is already registered.',
   registration_iu: 'The email address entered is not valid.',
   registration_ip: 'The password entered is not valid.',
@@ -503,7 +415,7 @@ var Lang = {
   registration_already_activated: 'This account has already been activated.',
   registration_no_such_activation: 'The activation code provided does not exist.',
   registration_activated: 'Successfully activated your account. Please log in to start creating Apps.',
-  
+
   pwd_reminder_sent: 'An email has been sent to the address provided. Please follow the instructions in the email to reset your password.',
   pwd_reset_ok: 'Your password has been reset. Please login to continue.',
   pwd_reset_failed_invalid_token: 'There was an error while resetting your password. The reset token is invalid.',
@@ -513,14 +425,14 @@ var Lang = {
   pwd_set_failed_invalid_token: 'There was an error while setting your password. The set token is invalid.',
   pwd_set_failed_token_expired: 'There was an error while setting your password. The set token has expired.',
   pwd_set_failed_no_user: 'There was an error while setting your password. Invalid User.',
-  
+
   free_source_export_disabled: 'Exporting of source code is disabled in the free account.',
-  
+
   app_publish_android_pk_password_text: 'Please enter the password for your private key',
   app_publish_android_pk_password_text_help_icon: 'If you have secured your private key with a password, please enter it here.',
   app_publish_android_cert_password_text: 'Please enter the password for your certificate (if any)',
   app_publish_android_cert_password_text_help_icon: 'If you have secured your certificate with a password, please enter it here.',
-  
+
   configuration_activity_Spinner_help_icon: 'Specify the position of the spinner which will be appeared when the splash screen is displayed',
   configuration_app_Id_help_icon: 'The iOS App Id you want to use for this app. It can be created in your iOS developer portal.',
   configuration_auto_Rotate_help_icon: 'Enable or disable auto rotation when the app is running on the device. If it\'s disabled, the app will always use the orientation you set below.',
@@ -535,33 +447,33 @@ var Lang = {
   configuration_foreground_Splash_Image_help_icon: 'The path of a image file (relative to the package name) in the app which will be used as the foreground of the splash screen. Different from the splash image, the foreground image will be centered and not scaled.',
   configuration_splash_Background_Color_help_icon: 'A hexadecimal value of a color to be used as the background color. Normally used together with the foreground splash image.',
   configuration_retina_splash_image_help_icon: 'The splash image for retina display. Will use the value of \'Splash Image\' if not specified.',
-  configuration_landscape_splash_image_help_icon:'The path of a landscape image for landscape splash screen on tablet devices.',
-  configuration_portrait_splash_image_help_icon:"Used as splash image on the iPad.",
+  configuration_landscape_splash_image_help_icon: 'The path of a landscape image for landscape splash screen on tablet devices.',
+  configuration_portrait_splash_image_help_icon: "Used as splash image on the iPad.",
   configuration_permission_Audio_help_icon: 'Add user permissions to use audio',
   configuration_permission_Camera_help_icon: 'Add user permissions to use camera',
   configuration_permission_Contacts_help_icon: 'Add user permissions to access contacts',
-  configuration_permission_Location_help_icon:'Add user permissions to access location',
-  configuration_permission_Read_Phone_State_help_icon:'Add user permissions to read phone state',
-  configuration_permission_Receive_SMS_help_icon:'Add user permissions to read SMS messages',
-  configuration_permission_Vibrate_help_icon:'Add user permissions to vibrate phone',
-  configuration_remote_Debug_help_icon:'Enable remote debugging. In this mode, the app content will be delivered from the cloud instead of being read from the device so that you don\'t need to re-install the app if any changes are made to the app.',
+  configuration_permission_Location_help_icon: 'Add user permissions to access location',
+  configuration_permission_Read_Phone_State_help_icon: 'Add user permissions to read phone state',
+  configuration_permission_Receive_SMS_help_icon: 'Add user permissions to read SMS messages',
+  configuration_permission_Vibrate_help_icon: 'Add user permissions to vibrate phone',
+  configuration_remote_Debug_help_icon: 'Enable remote debugging. In this mode, the app content will be delivered from the cloud instead of being read from the device so that you don\'t need to re-install the app if any changes are made to the app.',
   configuration_background_Audio_help_icon: "Play audio in the background",
-  configuration_tile_Image_help_icon : "The image that will be used as the background when the app is pinned to the start page",
-  ios_configuration_replace_general_notes : "Please specify this setting in iPhone and iPad's configurations.",
+  configuration_tile_Image_help_icon: "The image that will be used as the background when the app is pinned to the start page",
+  ios_configuration_replace_general_notes: "Please specify this setting in iPhone and iPad's configurations.",
   apps_list_search_text: 'Search Apps',
-  apps_list_search_title: '', 
+  apps_list_search_title: '',
   apps_list_refresh_text: 'Reload Apps',
   apps_list_refresh_title: '',
   apps_list_search_caption_text: 'Search Apps (Case sensitive)',
   windowsphone7_export_wizard_supertitle: 'Windows Phone 7 Export',
   app_export_windowsphone7_versions_title: 'Please select the Windows Phone 7 SDK version',
   app_export_windowsphone7_progress_title: 'Exporting App',
-  
+
   windowsphone7_publish_wizard_supertitle: 'Windows Phone 7 Build',
   app_publish_windowsphone7_versions_title: 'Please select the Windows Phone 7 SDK version',
   app_publish_windowsphone7_progress_title: 'Buiding App',
-  
-  
+
+
   blackberry_export_wizard_supertitle: 'Blackberry Export',
   app_export_blackberry_versions_title: 'Please select the Blackberry SDK version',
   app_export_blackberry_progress_title: 'Exporting App',
@@ -571,63 +483,46 @@ var Lang = {
   app_publish_blackberry_progress_title: 'Building App',
   app_publish_blackberry_pk_password_text: 'Password',
   app_publish_blackberry_pk_password_help_icon: 'When you applied for Blackberry code sign keys, you were required to enter a password to protect your private key. You need to provide that password here.',
-  blackberry_getstarted_resource_text: ['You can build either signed or unsigned apps for Blackberry. Unsigned apps doesn\'t require any resources and can be installed on the Blackberry emulators for debug and test. Only signed apps can be installed on an actual Blackberry device.',
-                                        'To build signed apps, you need to apply for Blackberry code sign keys first. You can go to <a href=\'http://us.blackberry.com/developers/javaappdev/codekeys.jsp\' target=\'_blank\'>Blackberry Code Signing Keys</a>  for more details.',
-                                        'After you have your code signing keys generated, you can click on the \'Get Started\' button to follow a step-by-step guid of how to upload required resources.'
-                                       ],
+  blackberry_getstarted_resource_text: ['You can build either signed or unsigned apps for Blackberry. Unsigned apps doesn\'t require any resources and can be installed on the Blackberry emulators for debug and test. Only signed apps can be installed on an actual Blackberry device.', 'To build signed apps, you need to apply for Blackberry code sign keys first. You can go to <a href=\'http://us.blackberry.com/developers/javaappdev/codekeys.jsp\' target=\'_blank\'>Blackberry Code Signing Keys</a>  for more details.', 'After you have your code signing keys generated, you can click on the \'Get Started\' button to follow a step-by-step guid of how to upload required resources.'],
   blackberry_getstarted_wizard_supertitle: 'Blackberry Get Started',
   blackberry_csk_upload_title: 'Upload sigtool.csk file',
-  blackberry_csk_upload_text: ['After applying for the Blackberry Signing Code Keys, you will receive three emails from Blackberry with three different files to register with the Blackberry signing authority.',
-                               'To do that, you need to have Blackberry Widget/JDE SDK installed and use the SignatureTool provided with the SDK to load those files. The emails also contains details of how to do that.',
-                               'After that, there will be two new files generated in the bin directory of the Blackberry SDK, one is called sigtool.csk and the other is sigtool.db. You need to upload those two files to allow us generate signed app for you.',
-                               'Here, please choose the sigtool.csk file to upload.' 
-                              ],
+  blackberry_csk_upload_text: ['After applying for the Blackberry Signing Code Keys, you will receive three emails from Blackberry with three different files to register with the Blackberry signing authority.', 'To do that, you need to have Blackberry Widget/JDE SDK installed and use the SignatureTool provided with the SDK to load those files. The emails also contains details of how to do that.', 'After that, there will be two new files generated in the bin directory of the Blackberry SDK, one is called sigtool.csk and the other is sigtool.db. You need to upload those two files to allow us generate signed app for you.', 'Here, please choose the sigtool.csk file to upload.'],
   blackberry_csk_finish_title: 'Uploading sigtool.csk file',
   blackberry_db_upload_title: 'Upload sigtool.db file',
-  blackberry_db_upload_text: ['After applying for the Blackberry Signing Code Keys, you will receive three emails from Blackberry with three different files to register with the Blackberry signing authority.',
-                               'To do that, you need to have Blackberry Widget/JDE SDK installed and use the SignatureTool provided with the SDK to load those files. The emails also contains details of how to do that.',
-                               'After that, there will be two new files generated in the bin directory of the Blackberry SDK, one is called sigtool.csk and the other is sigtool.db. You need to upload those two files to allow us genereate signed app for you.',
-                               'Here, please choose the sigtool.db file to upload.' 
-                              ],
+  blackberry_db_upload_text: ['After applying for the Blackberry Signing Code Keys, you will receive three emails from Blackberry with three different files to register with the Blackberry signing authority.', 'To do that, you need to have Blackberry Widget/JDE SDK installed and use the SignatureTool provided with the SDK to load those files. The emails also contains details of how to do that.', 'After that, there will be two new files generated in the bin directory of the Blackberry SDK, one is called sigtool.csk and the other is sigtool.db. You need to upload those two files to allow us genereate signed app for you.', 'Here, please choose the sigtool.db file to upload.'],
   blackberry_db_finish_title: 'Uploading sigtool.db file',
   blackberry_csk_wizard_supertitle: 'Upload Sigtool.csk File',
   blackberry_db_wizard_supertitle: 'Upload Sigtool.db File',
-  blackberry_csk_text: ['After applying for the Blackberry Signing Code Keys, you will receive three emails from Blackberry with three different files to register with the Blackberry signing authority.',
-                       'To do that, you need to have Blackberry Widget/JDE SDK installed and use the SignatureTool provided with the SDK to load those files. The emails also contains details of how to do that.',
-                       'After that, there will be two new files generated in the bin directory of the Blackberry SDK, one is called sigtool.csk and the other is sigtool.db. You need to upload those two files to allow us generate signed app for you.'
-                      ],
-  blackberry_db_text: ['After applying for the Blackberry Signing Code Keys, you will receive three emails from Blackberry with three different files to register with the Blackberry signing authority.',
-                       'To do that, you need to have Blackberry Widget/JDE SDK installed and use the SignatureTool provided with the SDK to load those files. The emails also contains details of how to do that.',
-                       'After that, there will be two new files generated in the bin directory of the Blackberry SDK, one is called sigtool.csk and the other is sigtool.db. You need to upload those two files to allow us generate signed app for you.'
-                      ],
+  blackberry_csk_text: ['After applying for the Blackberry Signing Code Keys, you will receive three emails from Blackberry with three different files to register with the Blackberry signing authority.', 'To do that, you need to have Blackberry Widget/JDE SDK installed and use the SignatureTool provided with the SDK to load those files. The emails also contains details of how to do that.', 'After that, there will be two new files generated in the bin directory of the Blackberry SDK, one is called sigtool.csk and the other is sigtool.db. You need to upload those two files to allow us generate signed app for you.'],
+  blackberry_db_text: ['After applying for the Blackberry Signing Code Keys, you will receive three emails from Blackberry with three different files to register with the Blackberry signing authority.', 'To do that, you need to have Blackberry Widget/JDE SDK installed and use the SignatureTool provided with the SDK to load those files. The emails also contains details of how to do that.', 'After that, there will be two new files generated in the bin directory of the Blackberry SDK, one is called sigtool.csk and the other is sigtool.db. You need to upload those two files to allow us generate signed app for you.'],
   upload_icon_wizard_supertitle: 'Change App Icon',
   upload_icon_details_title: 'Upload Icon',
   upload_icon_progress_title: 'Uploading Icon',
-  
+
   file_upload_failed: 'Upload Failed',
   file_upload_complete: 'Upload Complete',
   file_upload_error: 'An error occured while uploading the resource. Please try again.',
-  
+
   import_file_wizard_supertitle: 'Import File',
-  import_file_details_title: 'Upload File', 
+  import_file_details_title: 'Upload File',
   import_file_progress_title: 'Importing File',
   import_failed_generic: 'Import file failed. Please try again.',
   import_failed_server: 'A problem occured when uploading your file. Please try again.',
   import_failed_timeout: 'Import file timed out. Please verify you are connected to the internet and try again.',
-  
+
   read_log_error: 'Unable to read logs. Please try again later.',
   clear_log_error: 'Unable to clear the log. Please try again later.',
-  
+
   generic_ok: 'Ok',
   generic_cancel: 'Cancel',
   generic_close: 'Close',
   generic_save: 'Save',
-  generic_update: 'Update', 
-  
+  generic_update: 'Update',
+
   apps_list_header: 'Apps List',
   users_list_header: 'Users List',
   users_add_header: 'Add New User',
-  groups_list_header:'Group List',
+  groups_list_header: 'Group List',
   groups_add_header: 'Add New Group',
   devices_list_header: 'Devices List',
   devices_add_header: 'Add New Device',
@@ -712,7 +607,7 @@ var Lang = {
   credentialsuploadedgeofrom_label: 'From',
   credentialsuploadedgeoto_label: 'To',
   credentialsuploadedgeo_download_button: 'Download CSV Report',
-  
+
   metriclabel_android: 'Android',
   metriclabel_iphone: 'iPhone',
   metriclabel_blackberry: 'Blackberry',
@@ -720,7 +615,7 @@ var Lang = {
   metriclabel_studio: 'Studio',
   metriclabel_embed: 'Embed',
   metriclabel_total: 'Total',
-  
+
   reporting_activeinstalls_header: 'Active Installs',
   reporting_geoview_header: 'Geo View',
   reporting_devices_header: 'Devices',
@@ -728,7 +623,7 @@ var Lang = {
   reporting_events_header: 'Events',
   reporting_userpaths_header: 'User Paths',
   reporting_topusers_header: 'Top Users',
-  
+
   push_urbanairship_header: 'Urban Airship Configuration',
   enable_push_label: 'Enable Push Notification',
   app_android_id_label: 'Package ID (For Android)',
@@ -741,15 +636,24 @@ var Lang = {
   android_transport_label: 'Transport Protocal (For Android)',
   android_sender_label: 'Sender Email (For Android)',
   push_urbanairship_save_button: 'Save',
-  enable_push_label_help_icon:'Enable push notification for this app. You need setup your Urban Airship account first to use this function.',
-  app_android_id_label_help_icon:'This value should be used when you setup your Urban Airship app. It is for the field \'Android Package\'.',
-  dev_app_key_label_help_icon:'The Urban Airship application key. For development builds.',
+  enable_push_label_help_icon: 'Enable push notification for this app. You need setup your Urban Airship account first to use this function.',
+  app_android_id_label_help_icon: 'This value should be used when you setup your Urban Airship app. It is for the field \'Android Package\'.',
+  dev_app_key_label_help_icon: 'The Urban Airship application key. For development builds.',
   dev_app_secret_label_help_icon: 'The Urban Airship application secret key. For development builds.',
   dev_app_master_secret_label_help_icon: 'The Urban Airship application master secret key. For development builds.',
-  prod_app_key_label_help_icon:'The Urban Airship application key. For production builds.',
+  prod_app_key_label_help_icon: 'The Urban Airship application key. For production builds.',
   prod_app_secret_label_help_icon: 'The Urban Airship application secret key. For production builds.',
   prod_app_master_secret_label_help_icon: 'The Urban Airship application master secret key. For production builds.',
   android_transport_label_help_icon: 'Which transport protocal to use when using Urban Airship on Android. See Urban Airship for more details.',
-  android_sender_label_help_icon:'The sender email that is used to register Android\'s C2DM service for this app.'
-  
+  android_sender_label_help_icon: 'The sender email that is used to register Android\'s C2DM service for this app.',
+
+  cloudenvironment_label: "Selected Environment",
+  cloudenvironment_dev: "Development",
+  cloudenvironment_live: "Live",
+  cloudresource_refresh: "Refresh",
+  cloudresource_of: " of ",
+  cloudresource_cpu_header: "CPU Usage",
+  cloudresource_cpu_title: "% used",
+  cloudresource_memory_header: "Memory Usage",
+  cloudresource_storage_header: "Storage Usage"
 };

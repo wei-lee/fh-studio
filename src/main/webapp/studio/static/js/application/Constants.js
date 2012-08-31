@@ -53,6 +53,7 @@ $.extend(Constants, {
   PING_APP_URL: Constants.IDE_URL_PREFIX + "app/ping",
   STATS_APP_URL: Constants.IDE_URL_PREFIX + "app/stats",
   EXTERNAL_REQUEST_URL: Constants.IDE_URL_PREFIX + "app/external_request",
+  APP_RESOURCES_URL: Constants.IDE_URL_PREFIX + "app/resources",
 
   KEY_LIST_URL: Constants.IDE_URL_PREFIX + "api/list",
   KEY_CREATE_URL: Constants.IDE_URL_PREFIX + "api/create",

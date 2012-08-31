@@ -7,6 +7,7 @@ js/application/controller.js
 js/model/ModelManager.js
 js/model/models/Model.js
 js/model/models/App.js
+js/model/models/AppResource.js
 js/model/models/File.js
 js/model/models/Template.js
 js/model/models/User.js
@@ -15,7 +16,7 @@ js/model/models/StoreItem.js
 js/model/models/AppStore.js
 js/model/models/Group.js
 js/model/models/Role.js
-js/model/models/Resource.js
+js/model/models/UserResource.js
 js/model/models/ArmAuthPolicy.js
 js/model/models/Device.js
 js/application/account/account.profile.controller.js
@@ -62,6 +63,7 @@ js/application/apps/apps.push.controller.js
 js/application/apps/apps.preview.controller.js
 js/application/apps/apps.logging.controller.js
 js/application/apps/apps.status.controller.js
+js/application/apps/apps.cloud.controller.js
 js/application/apps/apps.cloudresources.controller.js
 js/application/apps/apps.deploy.controller.js
 js/application/apps/apps.reports.support.js
@@ -81,7 +83,8 @@ js/application/chart/painter/jqplot/LineChartPainter.js
 js/application/chart/painter/jqplot/PieChartPainter.js
 common/js/ui/thirdparty/zeroclipboard/ZeroClipboard.js
 common/js/ui/thirdparty/highcharts/highcharts.js
-common/js/ui/thirdparty/highcharts/exporting.js
+common/js/ui/thirdparty/highcharts/highcharts-more.js
+common/js/ui/thirdparty/highcharts/modules/exporting.js
 common/js/ui/thirdparty/highcharts/moment.js
 common/js/ui/thirdparty/highcharts/highcharts.theme.js
 js/application/stats/models/stats.mock.js

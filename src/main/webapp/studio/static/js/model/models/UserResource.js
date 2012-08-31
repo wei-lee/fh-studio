@@ -1,4 +1,4 @@
-model.Resource = model.Model.extend({
+model.UserResource = model.Model.extend({
   
   init: function () {
     
