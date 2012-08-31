@@ -146,7 +146,6 @@ Config = {
       {'id':'blackberry', 'name':'Blackberry', 'source': true, 'binary': "true" === $fw.getClientProp("blackberry-binary-enabled") ? true : false},
       {'id':'windowsphone7', 'name':'Windows Phone 7', 'source': true, 'binary': "true" === $fw.getClientProp("wp7-binary-enabled") ? true : false},
       {'id':'feedhenry', 'name':'Feedhenry', 'source': true, 'binary': false},
-      {'id':'jil', 'name':'Jil', 'source': true, 'binary': true},
       {'id':'opera', 'name':'Opera', 'source': true, 'binary': true},
       {'id':'w3cwgt', 'name':'W3C Application Format', 'source': true, 'binary': true},
       {'id':'embed', 'name':'Embed', 'source': false, 'binary': true}
