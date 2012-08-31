@@ -147,7 +147,10 @@ Apps.Import.Controller = Controller.extend({
       fileUploader.bind("fileuploaddone", callbacks.done);
       fileUploader.bind("fileuploadfai", callbacks.fail);
       fileUploader.bind('fileuploadalways', callbacks.always);
-      fileToUpload.submit();
+
+      setTimeout(function(){
+        fileToUpload.submit();
+      }, 300); // :(
     });
   },
   
