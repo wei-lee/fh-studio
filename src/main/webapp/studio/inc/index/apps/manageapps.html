@@ -71,10 +71,10 @@
         </a>
       </li>
       <li class="nav-header template-restriction">Cloud Management</li>
-      <li class="template-restriction">
-        <a href="#" data-controller="apps.quickstart.cloud.controller">
-          <i class="icon-briefcase"></i>
-          Quickstart
+      <li class="template-restriction nodejs_mode">
+        <a href="#" data-controller="apps.cloud.dashboard.controller">
+          <i class="icon-dashboard"></i>
+          Dashboard
         </a>
       </li>
       <li class="template-restriction nodejs_mode">
@@ -84,9 +84,9 @@
         </a>
       </li>
       <li class="template-restriction nodejs_mode">
-        <a href="#" data-controller="apps.status.controller">
-          <i class="icon-dashboard"></i>
-          Status
+        <a href="#" data-controller="stats.controller">
+          <i class="icon-bar-chart"></i>
+          Stats
         </a>
       </li>
       <li class="template-restriction nodejs_mode">
@@ -230,22 +230,14 @@
 
        <%}%>
 
+       <%@ include file="./dashboard.html"%>
+
         <%@ include file="./debug_logging.html"%>
-  
-        <div id="deploying_container" class="well">
-          <h5>Development Deploy</h5>
-          <div id="deploying_dev_progresslog"><textarea class="progresslog"></textarea></div>
-          <br/>
-          <button id="deploying_dev_button" class="btn btn-inverse insert-lang"></button>
-          <hr/>
-          <h5>Live Deploy</h5>
-          <div id="deploying_live_progresslog"><textarea class="progresslog"></textarea></div>
-          <br/>
-          <button id="deploying_live_button" class="btn btn-inverse insert-lang"></button>
-        </div>
+
+        <%@ include file="./deploy.html"%>
 
         <% if(studio.getProps().optBoolean("stats-enabled")){ %>
-         <%@ include file="./status.html"%>
+         <%@ include file="./stats.html"%>
         <%}%>
         
        <% if(studio.getProps().optBoolean("enable-push-notification")){ %>

@@ -1,5 +1,6 @@
 common/js/ajax/ASyncServerTask.js
 common/js/ui/thirdparty/bootstrap/bootstrap.js
+common/js/ui/thirdparty/bootstrap-datepicker/bootstrap-datepicker.js
 js/application/Constants.js
 js/application/Config.js
 js/application/dialog/DialogManager.js
@@ -62,9 +63,9 @@ js/application/apps/apps.configuration.nokiawrt.controller.js
 js/application/apps/apps.push.controller.js
 js/application/apps/apps.preview.controller.js
 js/application/apps/apps.logging.controller.js
-js/application/apps/apps.status.controller.js
 js/application/apps/apps.cloud.controller.js
 js/application/apps/apps.cloudresources.controller.js
+js/application/apps/apps.cloud.dashboard.controller.js
 js/application/apps/apps.deploy.controller.js
 js/application/apps/apps.reports.support.js
 js/application/apps/apps.installs.controller.js
@@ -103,7 +104,7 @@ js/application/stats/views/stats.view.chart.base.js
 js/application/stats/views/stats.view.chart.counter.js
 js/application/stats/views/stats.view.chart.timer.js
 js/application/stats/views/stats.view.list.timers.js
-js/application/stats/controllers/stats.controller.js
+js/application/stats/stats.controller.js
 js/application/tab/tab.manager.js
 js/application/tab/admin.tab.manager.js
 js/application/tab/apps.tab.manager.js

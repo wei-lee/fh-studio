@@ -1,17 +1,13 @@
 var Apps = Apps || {};
+Apps.Cloud = Apps.Cloud || {};
+Apps.Cloud.Dashboard = Apps.Cloud.Dashboard || {};
 
-Apps.Status = Apps.Status || {};
+Apps.Cloud.Dashboard.Controller = Apps.Controller.extend({
 
-Apps.Status.Controller = Apps.Controller.extend({
-
-  model: {
-    //device: new model.Device()
-  },
+  model: {},
 
   views: {
-    status_container: "#status_container"
-    // device_list: "#admin_devices_list",
-    // device_update: "#admin_devices_update"
+    dashboard_container: "#dashboard_container"
   },
 
   container: null,
@@ -28,69 +24,62 @@ Apps.Status.Controller = Apps.Controller.extend({
     }
   },
 
-  init: function () {
-    // Live by default
-    this.deploy_target = 'live';
-    this.stats_controller = new Stats.Controller({deploy_target: this.deploy_target});
+  init: function() {
+    // this.initFn = _.once(this.initBindings);
   },
 
-  show: function() {
-    this._super();
-    
+  show: function(e, showClientCloudOptions) {
     var self = this;
-    console.log('status.show');
 
     this.hide();
-    this.container = this.views.status_container;
+    this.container = this.views.dashboard_container;
 
     this.stats_controller.closeAll();
     this.stats_controller.loadModels();
+
     this.bind();
     this.refreshAll();
     $(this.container).show();
   },
 
-  changeStatsTarget: function(target) {
-    // Change targets
-    $('#deploy_target button').removeClass('btn-inverse');
-    $('#deploy_target .'+target).addClass('btn-inverse');
-    this.stats_controller.changeTarget(target);
-    this.deploy_target = target;
-  },
-
   bind: function() {
-    console.log('status.bind');
     var self = this;
     $('#refresh_dev_status').unbind().click(function() {
       console.log('dev status.refresh');
       self.refreshDev();
+      return false;
     });
     $('#refresh_live_status').unbind().click(function() {
       console.log('live status.refresh');
       self.refreshLive();
+      return false;
     });
-    $('#deploy_target .dev').unbind().click(function() {
-      console.log('dev stats target');
-      self.changeStatsTarget('dev');
+
+    // Action bindings
+    $('a.develop_cloud_code', this.container).unbind().click(function(e){
+      e.preventDefault();
+      self.openCloudEditor();
     });
-    $('#deploy_target .live').unbind().click(function() {
-      console.log('live stats target');
-      self.changeStatsTarget('live');
+
+    $('a.deploy_cloud_code', this.container).unbind().click(function(e){
+      e.preventDefault();
+      $('.manageapps_nav_list a[data-controller="apps.deploy.controller"]').trigger('click');
     });
-    $('#deploy_target .refresh').unbind().click(function() {
-      console.log('stats refresh');
-      self.refresh();
+
+    $('a.monitor_cloud_stats', this.container).unbind().click(function(e){
+      e.preventDefault();
+      $('.manageapps_nav_list a[data-controller="stats.controller"]').trigger('click');
     });
+
+    $('a.cloud_logs', this.container).unbind().click(function(e){
+      e.preventDefault();
+      $('.manageapps_nav_list a[data-controller="apps.logging.controller"]').trigger('click');
+    });    
   },
 
-  refresh: function() {
-    if ($('#deploy_target .dev').hasClass('btn-inverse')) {
-      // dev
-      this.changeStatsTarget('dev');
-    } else {
-      // live
-      this.changeStatsTarget('live');
-    }
+  openCloudEditor: function () {
+    $fw.data.set('initFile', '/cloud/main.js');
+    $('.manageapps_nav_list a[data-controller="apps.editor.controller"]').trigger('click');
   },
 
   refreshDev: function() {
@@ -219,5 +208,4 @@ Apps.Status.Controller = Apps.Controller.extend({
       }
     });
   }
-
 });

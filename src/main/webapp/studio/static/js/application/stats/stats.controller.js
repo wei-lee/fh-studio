@@ -1,17 +1,61 @@
 var Stats = Stats || {};
 
-Stats.Controller = Class.extend({
-  models: null,
-  views: [],
+Stats.Controller = Controller.extend({
+  model: null,
+  views: {
+    stats_container: '#stats_container'
+  },
 
-  config: null,
+  deploy_target: 'live',
 
-  init: function(params) {
+  init: function(params) {},
+
+  show: function() {
+    this._super();
     var self = this;
-    params = params || {};
-    this.config = params.config || null;
-    this.deploy_target = params.deploy_target;
+
+    this.hide();
+    this.container = this.views.stats_container;
     this.initModels();
+
+    $(this.container).show();
+
+    this.closeAll();
+    this.loadModels();
+    this.bind();
+  },
+
+  bind: function() {
+    var self = this;
+    $('#deploy_target .dev').unbind().click(function() {
+      console.log('dev stats target');
+      self.changeStatsTarget('dev');
+    });
+    $('#deploy_target .live').unbind().click(function() {
+      console.log('live stats target');
+      self.changeStatsTarget('live');
+    });
+    $('#deploy_target .refresh').unbind().click(function() {
+      console.log('stats refresh');
+      self.refresh();
+    });
+  },
+
+  changeStatsTarget: function(target) {
+    // Change targets
+    $('#deploy_target button').removeClass('btn-inverse');
+    $('#deploy_target .' + target).addClass('btn-inverse');
+    this.changeTarget(target);
+  },
+
+  refresh: function() {
+    if ($('#deploy_target .dev').hasClass('btn-inverse')) {
+      // dev
+      this.changeStatsTarget('dev');
+    } else {
+      // live
+      this.changeStatsTarget('live');
+    }
   },
 
   initModels: function() {
@@ -26,7 +70,7 @@ Stats.Controller = Class.extend({
 
   toggleCounterStats: function(el, model, series_name) {
     // Already open, close
-    if ($(el).hasClass('active') ) {
+    if ($(el).hasClass('active')) {
       $('.table_container, .chart_container').empty();
       $(el).removeClass('active');
       return;
@@ -63,7 +107,7 @@ Stats.Controller = Class.extend({
 
   toggleTimerStats: function(el, model, series_name) {
     // Already open, close
-    if ($(el).hasClass('active') ) {
+    if ($(el).hasClass('active')) {
       $('.table_container, .chart_container').empty();
       $(el).removeClass('active');
       return;
@@ -71,7 +115,6 @@ Stats.Controller = Class.extend({
 
     $('.stats_area li').removeClass('active');
     $(el).addClass('active');
-    console.log('toggle Timer stats');
     var series = model.getSeries(series_name);
 
     // Empty showing containers
@@ -153,7 +196,7 @@ Stats.Controller = Class.extend({
       item_number = item_number + 1;
       model.load({
         loaded: function(res) {
-          console.log('Stats loaded');          
+          console.log('Stats loaded');
 
           if (res.status == 'ok') {
             // model.applyFilter({

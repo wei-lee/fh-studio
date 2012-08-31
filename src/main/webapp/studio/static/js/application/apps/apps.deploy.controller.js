@@ -5,13 +5,10 @@ Apps.Deploy = Apps.Deploy || {};
 Apps.Deploy.Controller = Apps.Controller.extend({
 
   model: {
-    //device: new model.Device()
   },
 
   views: {
     deploying_container: "#deploying_container"
-    // device_list: "#admin_devices_list",
-    // device_update: "#admin_devices_update"
   },
 
   container: null,
