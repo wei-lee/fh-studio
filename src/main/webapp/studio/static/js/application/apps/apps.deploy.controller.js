@@ -122,6 +122,8 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
   },
 
   deployStarted: function(cache_key) {
+    $('.progress', this.views.deploying_container).slideDown();
+
     var self = this;
     this.resetProgress();
     console.log('deploying.deployStarted: [' + cache_key + ']');
@@ -289,10 +291,18 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
 
   deployCompleteSuccess: function() {
     console.log('Deploy complete - success.');
+    var self = this;
+    setTimeout(function(){
+      $('.progress', self.views.deploying_container).slideUp();
+    }, 2000);
   },
 
   deployCompleteFailed: function() {
     console.log('Deploy complete - failed.');
+    var self = this;
+    setTimeout(function(){
+      $('.progress', self.views.deploying_container).slideUp();
+    }, 2000);
   }
 
 });
