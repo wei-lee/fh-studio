@@ -124,8 +124,6 @@ Dashboard.Tab.Manager = Tab.Manager.extend({
       var icon = $('<img>').attr('src', icon_path).addClass('app_icon');
       icon_cell.empty().append(icon);
 
-      //self.model.app.configForField('icon');
-
       // Bind row clicks to show Manage an app
 
       var guid = data[4];
