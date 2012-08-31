@@ -23,6 +23,17 @@ Apps.Cloud.Controller = Apps.Controller.extend({
     $fw.client.lang.insertLangFromData(jqContainer);
 
     var envContainer = $('.cloud_environment', jqContainer);
+
+    // set selected env button first
+    var selectedEnv = $fw.data.get('cloud_environment');
+    if (selectedEnv != null) {
+      $('.' + selectedEnv + '_environment_btn', envContainer).trigger('click');
+    } else {
+      // default to dev environment
+      $('.dev_environment_btn', envContainer).trigger('click');
+    }
+
+    // bind env buttons to make necessary callback
     $('button', envContainer).bind('click', function (e) {
       e.preventDefault();
       var jqEl = $(this);
@@ -40,14 +51,6 @@ Apps.Cloud.Controller = Apps.Controller.extend({
         self.switchedEnv('live');
       }
     });
-
-    var selectedEnv = $fw.data.get('cloud_environment');
-    if (selectedEnv != null) {
-      $('.' + selectedEnv + '_environment_btn', envContainer).trigger('click');
-    } else {
-      // default to dev environment
-      $('.dev_environment_btn', envContainer).trigger('click');
-    }
   },
 
   switchedEnv: function (env) {
