@@ -143,7 +143,6 @@ Config = {
       {'id':'ipad', 'name':'iPad Application', 'source': true, 'binary': true},
       {'id':'ios', 'name':'iOS Universal Application', 'source': "true" === $fw.getClientProp("ios-universal-enabled"), 'binary': "true" === $fw.getClientProp("ios-universal-enabled")},
       {'id':'android', 'name':'Android Application', 'source': true, 'binary':true, 'versions':['1.5', '1.6', '2.0.1', '2.1']},
-      {'id':'nokiawrt', 'name':'Nokia Web Runtime', 'source': true, 'binary': true},
       {'id':'blackberry', 'name':'Blackberry', 'source': true, 'binary': "true" === $fw.getClientProp("blackberry-binary-enabled") ? true : false},
       {'id':'windowsphone7', 'name':'Windows Phone 7', 'source': true, 'binary': "true" === $fw.getClientProp("wp7-binary-enabled") ? true : false},
       {'id':'feedhenry', 'name':'Feedhenry', 'source': true, 'binary': false},

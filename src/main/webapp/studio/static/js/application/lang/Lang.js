@@ -21,7 +21,6 @@ var Lang = {
   export_ipad_title: 'iPad',
   export_ios_title: 'iOS Universal',
   export_android_title: 'Android',
-  export_nokiawrt_title: 'Nokia Web Runtime',
   export_blackberry_title: 'Blackberry',
   export_windowsphone7_title: 'Windows Phone 7',
   export_feedhenry_title: 'Feedhenry',
@@ -367,7 +366,6 @@ var Lang = {
   configuration_studio_header: 'Studio Preview Configuration',
   configuration_blackberry_header: 'Blackberry Configuration',
   configuration_windowsphone7_header: 'Windows Phone 7 Configuration',
-  configuration_nokiawrt_header: 'Nokia Web Run Time Configuration',
 
   report_installsdate_header: 'App Installs by Date',
   report_installsdest_header: 'App Installs by Destination',

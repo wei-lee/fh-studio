@@ -1352,9 +1352,6 @@ span.label-info {
 .app_generate_destinations .destination #dest_jil_icon {
  background-image: url("../img/export/jil.png");
 }
-.app_generate_destinations .destination #dest_nokiawrt_icon {
- background-image: url("../img/export/nokiawrt.png");
-}
 .app_generate_destinations .destination #dest_opera_icon {
  background-image: url("../img/export/opera.png");
 }
