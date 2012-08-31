@@ -245,3 +245,23 @@ Apps.Quickstart.Client.Controller = Apps.Quickstart.Controller.extend({
     $('.manageapps_nav_list a[data-controller="apps.editor.controller"]').trigger('click');
   }
 });
+
+Apps.Quickstart.Cloud.Controller = Apps.Quickstart.Controller.extend({
+  init: function () {
+    this.initFn = _.once(this.initBindings);
+  },
+
+  show: function (e, showClientCloudOptions) {
+    this._super(e, this.views.quickstart_cloud_container, showClientCloudOptions);
+  },
+
+  initBindings: function () {
+    // cloud quickstart binding setup
+    this.bindToControllers($('.step_1_options a', this.views.quickstart_cloud_container));
+  },
+
+  bindToControllerappseditorcontroller: function () {
+    $fw.data.set('initFile', '/cloud/main.js');
+    $('.manageapps_nav_list a[data-controller="apps.editor.controller"]').trigger('click');
+  }
+});
