@@ -24,7 +24,6 @@ var Lang = {
   export_blackberry_title: 'Blackberry',
   export_windowsphone7_title: 'Windows Phone 7',
   export_feedhenry_title: 'Feedhenry',
-  export_w3cwgt_title: 'W3C Format',
   export_embed_title: 'Embed',
 
   apple_developer_cert_text: ["A Developer Certificate is used during the creation of iPhone, iPod and iPad apps.", "It is digitally signed by Apple, which means Apple has authorised the owner of the certificate to create Apps that can be installed on a developer enabled devce.", "Apps created with a Developer Certificate are generally only used for debugging purposes during App Development."],
@@ -210,7 +209,6 @@ var Lang = {
   myapps_grid_columns: ['Id', 'Name', 'Email', 'Description', 'Version', 'Last Changed', 'Actions'],
   template_apps_grid_columns: ['Id', 'Name', 'Description', 'Actions'],
 
-  new_app_w3cid_help_icon: 'A unique identifier for the App.',
   new_app_title_label: 'Name',
   new_app_title_label_help_icon: 'This will be used as the App name on devices.',
   new_app_id_label: 'App ID',

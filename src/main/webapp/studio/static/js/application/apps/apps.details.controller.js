@@ -101,7 +101,6 @@ Apps.Details.Controller = Apps.Controller.extend({
       app = $fw.data.get('app'),
       inst = $fw.data.get('inst'),
       detailsContainer = $('#manage_details_container');
-    inst.w3cid = app.w3cid;
 
     detailsContainer.find('input,textarea').each(function() {
       var el = $(this);
