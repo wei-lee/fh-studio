@@ -66,7 +66,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
 
     $.each(targets, function(i, target) {
       var name = target.fields.name;
-      var target = target.fields.target;
+      target = target.fields.target;
 
       var button = $('<a>').addClass('btn');
       // TODO: Check active

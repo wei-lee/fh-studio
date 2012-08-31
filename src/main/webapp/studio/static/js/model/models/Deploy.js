@@ -5,9 +5,10 @@ model.Deploy = model.Model.extend({
   },
 
   list: function(app_guid, env, success, fail) {
+    var mock = {};
 
     if (env == 'live') {
-      var mock = {
+      mock = {
         "list": [{
           "fields": {
             "configurations": {
@@ -37,7 +38,7 @@ model.Deploy = model.Model.extend({
         }]
       };
     } else {
-      var mock = {
+      mock = {
         "list": [{
           "fields": {
             "configurations": {
