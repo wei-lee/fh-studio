@@ -3202,7 +3202,7 @@ table.dataTable th:active {
   margin-top: 5px;
 }
 
-#quickstart_client_container pre, #debug_logging_text {
+#quickstart_client_container pre, #debug_logging_text, .progresslog {
   padding: 2px 4px;
   color: #D14;
   background-color: #F7F7F9;

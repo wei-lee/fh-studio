@@ -33,25 +33,10 @@ body {
   border-color:#b3b3b3;
 }
 
-.ui-jqgrid.ui-widget-content{
-  border-color:#b3b3b3;
-}
 .inner-layout .ui-layout-pane-center .ui-layout-content{
   border-color:#b3b3b3;
   border-top:none;
   padding-top:2em;
-}
-
-.ui-tabs-panel .ui-widget-header .ui-jqgrid-title{
-  margin-bottom:0px;
-}
-
-.ui-jqgrid-labels th.ui-state-default{
-  background-color:#e6e6e6;
-  background-image:none;
-  line-height:26px;
-  height:26px;
-  padding:0 4px;
 }
 
 #header_logo {
