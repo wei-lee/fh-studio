@@ -20,6 +20,7 @@ js/model/models/Role.js
 js/model/models/UserResource.js
 js/model/models/ArmAuthPolicy.js
 js/model/models/Device.js
+js/model/models/Deploy.js
 js/application/account/account.profile.controller.js
 js/application/account/account.keys.controller.js
 js/application/account/account.resource.support.js

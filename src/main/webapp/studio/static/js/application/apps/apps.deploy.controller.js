@@ -5,6 +5,7 @@ Apps.Deploy = Apps.Deploy || {};
 Apps.Deploy.Controller = Apps.Controller.extend({
 
   model: {
+    deploy: new model.Deploy()
   },
 
   views: {
@@ -13,18 +14,24 @@ Apps.Deploy.Controller = Apps.Controller.extend({
 
   container: null,
 
-  init: function () {
+  init: function() {
     this.initFn = _.once(this.initBindings);
   },
 
-  show: function(){
+  show: function() {
     this._super();
-    
+
     this.hide();
     this.container = this.views.deploying_container;
     this.initFn();
 
     $(this.container).show();
+
+    this.model.deploy.list('guid', 'dev', function(data) {
+      console.log(data);
+    }, function() {
+      // List failed
+    });
   },
 
   initBindings: function() {
@@ -190,7 +197,7 @@ Apps.Deploy.Controller = Apps.Controller.extend({
       }
     }, null, true);
   },
-  
+
   simpleDeployStart: function(deploying_env, cache_key, cb) {
     var self = this;
     console.log('deploying.deployStarted: [' + deploying_env + '] [' + cache_key + ']');
@@ -268,7 +275,7 @@ Apps.Deploy.Controller = Apps.Controller.extend({
 
     if (log.length > 0) {
       var current_log = progress_log_el.val(),
-          log_value;
+        log_value;
       if (current_log === '') {
         log_value = current_log + log.join('\n');
       } else {
