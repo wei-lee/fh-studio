@@ -26,7 +26,6 @@ Apps.Cloud.Dashboard.Controller = Apps.Cloud.Controller.extend({
 
   init: function() {
     this._super();
-    // this.initFn = _.once(this.initBindings);
   },
 
   show: function(e, showClientCloudOptions) {

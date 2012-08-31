@@ -1349,15 +1349,6 @@ span.label-info {
 .app_generate_destinations .destination #dest_ios_icon {
  background-image: url("../img/export/iphone.png");
 }
-.app_generate_destinations .destination #dest_jil_icon {
- background-image: url("../img/export/jil.png");
-}
-.app_generate_destinations .destination #dest_nokiawrt_icon {
- background-image: url("../img/export/nokiawrt.png");
-}
-.app_generate_destinations .destination #dest_opera_icon {
- background-image: url("../img/export/opera.png");
-}
 .app_generate_destinations .destination #dest_vodafone360_icon {
  background-image: url("../img/export/vodafone360.png");
 }
@@ -2763,6 +2754,11 @@ line-height:0.5em;
 
 /* Bootstrap Overrides */
 
+.breadcrumb .active {
+  color: #fff;
+  font-weight: bold;
+}
+
 .well {
   background: #fafafa;
 }
@@ -2780,7 +2776,7 @@ line-height:0.5em;
 button.btn {
   font-size: 11px;
   font-weight: bold;
-  padding: 2px 10px 2px;
+  padding: 1px 10px 2px;
   height: 24px;
 }
 
@@ -3267,20 +3263,8 @@ a.docslink {
   color: #08C;
 }
 
-/* Env Selector */
-.cloud_env_selector button {
-  width: 100px;
-
-  /* Override overridden Bootstrap buttons! */
-  font-size: 13px;
-  font-weight: bold;
-  padding: 4px 10px 4px;
-  height: 28px;
-}
-.cloud_env_selector {
-  margin: auto;
-  width: 200px;
-  padding: 0 10px 10px 10px;
+#deploy_targets a {
+  margin-right: 10px;
 }
 
 /* Awesome nth item selector that works cross platform (including IE!)

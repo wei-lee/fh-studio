@@ -2,15 +2,7 @@
   <label for="import_app_location">Select an App zip file to import:</label>
   <input id="import_app_location" class="form_file" name="location" type="file" />
 </div>
-<div class="form-field ui-helper-reset ui-helper-clearfix">
-  <label for="import_app_type">Please select the type of App it is:</label>
-  <select id="import_app_type"  class="form_select" name="type" size="4" multiple="multiple">
-    <option value="feedhenry" selected="selected">FeedHenry</option>
-    <option value="jil">JIL</option>
-    <option value="jil">Opera</option>
-    <option value="nokiawrt">Nokia Web Runtime</option>
-  </select>
-</div>
+<input type="hidden" name="type" value="feedhenry"/>
 <div class="form-field ui-helper-reset ui-helper-clearfix">
   <label for="import_app_overwrite"> What would you like to do if the app already exists:</label>
   <div class="import_overwrite_choice">

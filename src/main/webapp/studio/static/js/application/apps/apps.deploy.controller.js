@@ -2,29 +2,40 @@ var Apps = Apps || {};
 
 Apps.Deploy = Apps.Deploy || {};
 
-Apps.Deploy.Controller = Apps.Controller.extend({
+Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
 
   model: {
+    deploy: new model.Deploy()
   },
 
   views: {
-    deploying_container: "#deploying_container"
+    deploying_container: "#deploying_container",
+    deploy_targets: '#deploy_targets'
   },
 
   container: null,
 
-  init: function () {
+  init: function() {
+    this._super();
     this.initFn = _.once(this.initBindings);
   },
 
-  show: function(){
-    this._super();
-    
+  show: function() {
+    this._super(this.views.deploying_container);
+    var self = this;
+
     this.hide();
     this.container = this.views.deploying_container;
     this.initFn();
 
-    $(this.container).show();
+    var cloud_env = $fw.data.get('cloud_environment');
+
+    this.model.deploy.list('guid', cloud_env, function(targets) {
+      self.renderTargets(targets);
+      $(self.container).show();
+    }, function() {
+      // List failed
+    });
   },
 
   initBindings: function() {
@@ -46,6 +57,25 @@ Apps.Deploy.Controller = Apps.Controller.extend({
     });
     $('#deploying_live_progressbar').progressbar({
       value: 0
+    });
+  },
+
+  renderTargets: function(targets) {
+    var targets_area = $(this.views.deploy_targets).show();
+    targets_area.empty();
+
+    $.each(targets, function(i, target) {
+      var name = target.fields.name;
+      target = target.fields.target;
+
+      var button = $('<a>').addClass('btn');
+      // TODO: Check active
+      var icon = $('<img>').attr('src', '/studio/static/themes/default/img/cloud_target_' + target.toLowerCase() + '.png');
+      // TODO: Check for custom
+      //var label = $('<h5>').text(target);
+      button.append(icon);
+      // button.append(label);
+      targets_area.append(button);
     });
   },
 
@@ -190,7 +220,7 @@ Apps.Deploy.Controller = Apps.Controller.extend({
       }
     }, null, true);
   },
-  
+
   simpleDeployStart: function(deploying_env, cache_key, cb) {
     var self = this;
     console.log('deploying.deployStarted: [' + deploying_env + '] [' + cache_key + ']');
@@ -268,7 +298,7 @@ Apps.Deploy.Controller = Apps.Controller.extend({
 
     if (log.length > 0) {
       var current_log = progress_log_el.val(),
-          log_value;
+        log_value;
       if (current_log === '') {
         log_value = current_log + log.join('\n');
       } else {
