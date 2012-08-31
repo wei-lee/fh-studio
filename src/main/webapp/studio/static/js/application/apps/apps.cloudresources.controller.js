@@ -63,25 +63,39 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
       if (res != null && res.data != null) {
         var data = res.data;
 
-        // CPU
-        var cpuPoint = self.cpuChart.series[0].points[0];
-        if (cpuPoint != null) {
-          cpuPoint.update(data.usage.cpu);
+        if (data.usage != null) {
+          // CPU
+          var cpuPoint = self.cpuChart.series[0].points[0];
+          if (cpuPoint != null) {
+            if (data.usage.cpu != null) {
+              cpuPoint.update(data.usage.cpu);
+            } else {
+              // TODO: show n/a ui
+            }
+          }
+
+          // Memory
+          if (data.usage.mem != null) {
+            self.updateResourceBar($('#cloud_memory', self.container), data.usage.mem, data.max.mem);
+          } else {
+            self.showNAResourceBar($('#cloud_memory', self.container));
+          }
+
+          // Storage
+          if (data.usage.disk != null) {
+            self.updateResourceBar($('#cloud_storage', self.container), data.usage.disk, data.max.disk);
+          } else {
+            self.showNAResourceBar($('#cloud_storage', self.container));
+          }
         }
-
-        // Memory
-        self.updateResourceBar($('#cloud_memory', self.container), data.usage.mem, data.max.mem);
-
-        // Storage
-        self.updateResourceBar($('#cloud_storage', self.container), data.usage.disk, data.max.disk);
 
         cb();
       } else {
-        self.showAlert('error', 'Error getting current resource data: res.data is undefined');
+        self.showAlert('error', 'Error getting resource data. Please make sure your App is deployed to \'' + cloudEnv + '\' environment (res.data is undefined)');
         cb();
       }
     }, function(err) {
-      self.showAlert('error', 'Error getting current resource data:' + err.message);
+      self.showAlert('error', 'Error getting resource data. Please make sure your App is deployed to \'' + cloudEnv + '\' environment (' + (err.message != null ? err.message : err) + ')');
       cb();
     });
 
@@ -105,6 +119,10 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
 
     $('.bar-danger', container).css('width', usedPercentage + '%');
     $('.bar-info', container).css('width', (100 - usedPercentage) + '%');
+  },
+
+  showNAResourceBar: function (container) {
+    // TODO: show n/a ui for resource bar
   },
 
   bytesToMB: function (bytes) {
