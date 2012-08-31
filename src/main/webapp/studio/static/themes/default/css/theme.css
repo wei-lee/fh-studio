@@ -2763,6 +2763,11 @@ line-height:0.5em;
 
 /* Bootstrap Overrides */
 
+.breadcrumb .active {
+  color: #fff;
+  font-weight: bold;
+}
+
 .well {
   background: #fafafa;
 }
@@ -3267,20 +3272,8 @@ a.docslink {
   color: #08C;
 }
 
-/* Env Selector */
-.cloud_env_selector button {
-  width: 100px;
-
-  /* Override overridden Bootstrap buttons! */
-  font-size: 13px;
-  font-weight: bold;
-  padding: 4px 10px 4px;
-  height: 28px;
-}
-.cloud_env_selector {
-  margin: auto;
-  width: 200px;
-  padding: 0 10px 10px 10px;
+#deploy_targets a {
+  margin-right: 10px;
 }
 
 /* Awesome nth item selector that works cross platform (including IE!)

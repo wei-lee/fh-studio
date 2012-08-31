@@ -5,35 +5,55 @@ model.Deploy = model.Model.extend({
   },
 
   list: function(app_guid, env, success, fail) {
-    var mock = {
-      "list": [{
-        "fields": {
-          "configurations": {
-            "url": "https://api.dynofarm.me:9443",
-            "username": "feedhenry"
+
+    if (env == 'live') {
+      var mock = {
+        "list": [{
+          "fields": {
+            "configurations": {
+              "url": "https://api.dynofarm.me:9443",
+              "username": "feedhenry"
+            },
+            "domain": "hpcs",
+            "env": "dev,live",
+            "id": "default",
+            "name": "default",
+            "target": "FEEDHENRY"
           },
-          "domain": "hpcs",
-          "env": "dev,live",
-          "id": "default",
-          "name": "default",
-          "target": "FEEDHENRY"
-        },
-        "type": "cm_DeployPolicy"
-      }, {
-        "fields": {
-          "configurations": {
-            "url": "http://thing.com",
-            "username": "foo@example.com"
+          "type": "cm_DeployPolicy"
+        }, {
+          "fields": {
+            "configurations": {
+              "url": "http://thing.com",
+              "username": "foo@example.com"
+            },
+            "domain": "hpcs",
+            "env": "dev,live",
+            "id": "yjEUwXsSd70VLmIXGXCBI343",
+            "name": "MyCF",
+            "target": "CLOUDFOUNDRY"
           },
-          "domain": "hpcs",
-          "env": "dev,live",
-          "id": "yjEUwXsSd70VLmIXGXCBI343",
-          "name": "MyCF",
-          "target": "CLOUDFOUNDRY"
-        },
-        "type": "cm_DeployPolicy"
-      }]
-    };
+          "type": "cm_DeployPolicy"
+        }]
+      };
+    } else {
+      var mock = {
+        "list": [{
+          "fields": {
+            "configurations": {
+              "url": "https://api.dynofarm.me:9443",
+              "username": "feedhenry"
+            },
+            "domain": "hpcs",
+            "env": "dev,live",
+            "id": "default",
+            "name": "default",
+            "target": "FEEDHENRY"
+          },
+          "type": "cm_DeployPolicy"
+        }]
+      };
+    }
 
     success(mock.list);
   },
