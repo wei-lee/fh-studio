@@ -13,14 +13,14 @@
   <h3>Choose a Cloud Deployment Target</h3>
   <div id="deploy_targets">
   </div>
+  <div class="form-actions">
+    <button id="deploy_cloud_app" class="btn btn-large btn-primary">Deploy Cloud App</button>
+  </div>
 
-  <h5>Development Deploy</h5>
-  <div id="deploying_dev_progresslog"><textarea class="progresslog"></textarea></div>
-  <br/>
-  <button id="deploying_dev_button" class="btn btn-inverse insert-lang"></button>
-  <hr/>
-  <h5>Live Deploy</h5>
-  <div id="deploying_live_progresslog"><textarea class="progresslog"></textarea></div>
-  <br/>
-  <button id="deploying_live_button" class="btn btn-inverse insert-lang"></button>
+  <div id="cloud_deploy_progress" class="hidden_template row-fluid">
+    <div class="progress progress-striped active">
+      <div class="bar" style="width: 0%;"></div>
+    </div>
+    <textarea class="progresslog span12"></textarea>
+  </div>
 </div>
