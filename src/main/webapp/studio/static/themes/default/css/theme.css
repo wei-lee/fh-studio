@@ -2536,6 +2536,19 @@ line-height:0.5em;
   clear: both;
 }
 
+/* Cloud Resources */
+.cloud_resource {
+  height: 300px;
+}
+
+.cloud_cpu_container {
+  height: 250px;
+  width: 100%;
+}
+.progress .bar.barloading {
+  width:100%;
+}
+
 /* Key Management styling */
 .fh-box-outer {
   background: #efefef;

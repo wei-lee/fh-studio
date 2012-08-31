@@ -2,7 +2,7 @@ var Apps = Apps || {};
 Apps.Cloud = Apps.Cloud || {};
 Apps.Cloud.Dashboard = Apps.Cloud.Dashboard || {};
 
-Apps.Cloud.Dashboard.Controller = Controller.extend({
+Apps.Cloud.Dashboard.Controller = Apps.Cloud.Controller.extend({
 
   model: {},
 
@@ -25,16 +25,16 @@ Apps.Cloud.Dashboard.Controller = Controller.extend({
   },
 
   init: function() {
+    this._super();
     // this.initFn = _.once(this.initBindings);
   },
 
   show: function(e, showClientCloudOptions) {
+    this._super(this.views.dashboard_container);
     var self = this;
 
     this.hide();
-    this.container = this.views.dashboard_container;
 
-    $fw.client.tab.apps.manageapps.getController('apps.preview.controller').hideContent();
     this.bind();
     this.refreshAll();
     $(this.container).show();
@@ -133,6 +133,9 @@ Apps.Cloud.Dashboard.Controller = Controller.extend({
   },
 
   refreshAll: function() {
+
+    var cloudEnv = $fw.data.get('cloud_environment');
+    
     this.refreshDev();
     this.refreshLive();
   },

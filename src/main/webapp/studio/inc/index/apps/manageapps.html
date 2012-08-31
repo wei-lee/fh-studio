@@ -89,6 +89,12 @@
           Stats
         </a>
       </li>
+      <li class="template-restriction nodejs_mode">
+        <a href="#" data-controller="apps.cloudresources.controller">
+          <i class="icon-dashboard"></i>
+          Resources
+        </a>
+      </li>
       <li class="template-restriction">
         <a href="#" data-controller="apps.logging.controller">
           <i class="icon-list"></i>
@@ -111,6 +117,8 @@
     </ul>
 
     <div id="app_content" class="span7">
+      
+        <%@ include file="./cloudresources.html"%>    
 
         <%@ include file="./quickstart.html"%>       
 
