@@ -15,7 +15,6 @@ Apps.Deploy.Controller = Apps.Controller.extend({
 
   init: function () {
     this.initFn = _.once(this.initBindings);
-    
   },
 
   show: function(){
