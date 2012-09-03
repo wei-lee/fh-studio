@@ -90,7 +90,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
 
       var button = $('<a>').addClass('btn');
       var icon = $('<img>').attr('src', '/studio/static/themes/default/img/cloud_target_' + target_name.toLowerCase() + '.png');
-
+      button.addClass('span4');
       button.append(icon);
       // button.append(label);
       targets_area.append(button);

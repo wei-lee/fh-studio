@@ -2977,12 +2977,16 @@ a.docslink {
   color: #08C;
 }
 
-#deploy_targets a {
-  margin-right: 10px;
-}
-
 .btn h5 {
   font-size: 13px;
+}
+
+.deploy_action {
+  margin-top: 80px;
+}
+
+.cloud_environment h3 {
+  text-align: center;
 }
 
 /* Awesome nth item selector that works cross platform (including IE!)
