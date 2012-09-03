@@ -28,6 +28,8 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     this.container = this.views.deploying_container;
     this.initFn();
 
+    this.resetProgress();
+
     var cloud_env = $fw.data.get('cloud_environment');
 
     this.model.deploy.list('guid', cloud_env, function(targets) {
