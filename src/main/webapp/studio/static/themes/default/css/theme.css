@@ -2997,6 +2997,10 @@ a.docslink {
   min-height: 0;
 }
 
+.cloud_target_label {
+  font-weight: bold;
+}
+
 /* Awesome nth item selector that works cross platform (including IE!)
   http://reference.sitepoint.com/css/adjacentsiblingselector
   Hides Email & App ID column (:nth(3)) (:nth(6))
