@@ -8,6 +8,14 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     deploy: new model.Deploy()
   },
 
+  target_map: {
+    FEEDHENRY: 'FeedHenry',
+    CLOUDFOUNDRY: 'Cloud Foundry',
+    STACKATO: 'ActiveState Stackato',
+    APPFOG: 'App Fog',
+    IRONFOUNDRY: 'Iron Foundry'
+  },
+
   views: {
     deploying_container: "#deploying_container",
     deploy_targets: '#deploy_targets'
@@ -93,11 +101,12 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
       var icon = $('<img>').attr('src', '/studio/static/themes/default/img/cloud_target_' + target_name.toLowerCase() + '.png');
       button.addClass('span4');
       button.append(icon);
+      var label;
       if (target.fields.id !== 'default') {
-        var label = $('<div>').text(label_name);
+        label = $('<div>').text(label_name);
         button.append(label);
       } else {
-        var label = $('<div>').text(target.fields.target);
+        label = $('<div>').text(self.target_map[target.fields.target]);
         button.append(label);
       }
       targets_area.append(button);
