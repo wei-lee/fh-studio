@@ -1,7 +1,23 @@
 <div id="stats_container" class="well">
-  <div id="deploy_target">
+  <div class="alerts"></div>
+
+  <%@ include file="./cloud_environment.html" %>
+
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#stats_counter_pane" data-toggle="tab" data-lang="stats_tabs_counter"></a></li>
+    <li><a href="#stats_timer_pane" data-toggle="tab" data-lang="stats_tabs_timer"></a></li>
+    <li><a href="#stats_gauge_pane" data-toggle="tab" data-lang="stats_tabs_gauge"></a></li>
+  </ul>
+
+  <div class="tab-content">
+    <div class="tab-pane active" id="stats_counter_pane">...</div>
+    <div class="tab-pane" id="stats_timer_pane">...</div>
+    <div class="tab-pane" id="stats_gauge_pane">...</div>
+  </div>
+
+  <!-- <div id="deploy_target">
     <h2>Cloud App Statistics</h2>
-    <img class="refresh" src="<%=studio.getStaticAssetPath("themes/default/img/ico_refresh.png")%>" alt="refresh stats">&nbsp;<button class="dev btn">Dev Stats</button>&nbsp;<button class="live btn btn-inverse">Live Stats</button>&nbsp;<span id="stats_loading_area"></span>
+    <img class="refresh" src="<%=studio.getStaticAssetPath("themes/default/img/ico_refresh.png")%>" alt="refresh stats"><span id="stats_loading_area"></span>
   </div>
 
   <hr class="clearfix"/>
@@ -16,5 +32,5 @@
     <h2>Timers</h2>
     <ul id="available_timers">
     </ul>
-  </div>
+  </div> -->
 </div>

@@ -111,4 +111,5 @@ model.Deploy = model.Model.extend({
     var params = {"guid":guid};
     return this.serverPost(Constants.DEPLOY_TARGET_DELETE_URL, params, success, fail, true);
   }
+
 });

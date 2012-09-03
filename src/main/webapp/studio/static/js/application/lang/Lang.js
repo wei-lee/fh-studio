@@ -648,5 +648,9 @@ var Lang = {
   cloudresource_cpu_header: "CPU Usage",
   cloudresource_cpu_title: "% used",
   cloudresource_memory_header: "Memory Usage",
-  cloudresource_storage_header: "Storage Usage"
+  cloudresource_storage_header: "Storage Usage",
+
+  stats_tabs_counter: "Counters",
+  stats_tabs_timer: "Timers",
+  stats_tabs_gauge: "Gauges"
 };

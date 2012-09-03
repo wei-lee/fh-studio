@@ -75,8 +75,6 @@ Dashboard.Tab.Manager = Tab.Manager.extend({
   },
 
   updateCrumbs: function(self) {
-    console.log('dashboard updateCrumbs');
-
     // get account type
     var accountType = $fw.client.lang.getLangString('account_type_' + $fw.getClientProp('accountType'));
 

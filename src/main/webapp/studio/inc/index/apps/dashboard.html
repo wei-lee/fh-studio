@@ -1,14 +1,6 @@
 <div id="dashboard_container" class="well">
 
-  <div class="cloud_environment row-fluid">
-    <div class="span4 offset4">
-      <h3 data-lang="cloudenvironment_label"></h3>
-      <div class="btn-group" data-toggle="buttons-radio">
-        <button type="button" class="btn dev_environment_btn" data-lang="cloudenvironment_dev"></button>
-        <button type="button" class="btn live_environment_btn" data-lang="cloudenvironment_live"></button>
-      </div>
-    </div>
-  </div>
+  <%@ include file="./cloud_environment.html" %>
 
   <div id="status_container">
     <table id="cloud_status" cellborder="0" cellpadding="0">
@@ -66,11 +58,11 @@
 
   <div class="actions">
     <a href="#" class="btn nodejs_mode deploy_cloud_code"> <i class="icon-cloud"></i>
-      <h5>Deploy my Cloud Code</h5>
+      <h5>Deploy Cloud Code</h5>
     </a>
     <a href="#" class="btn nodejs_mode monitor_cloud_stats">
       <i class="icon-dashboard"></i>
-      <h5>Monitor Cloud Statistics</h5>
+      <h5>Cloud Statistics</h5>
     </a>
     <a href="#" class="btn cloud_logs">
       <i class="icon-list"></i>

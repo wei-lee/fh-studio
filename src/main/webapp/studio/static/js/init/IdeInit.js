@@ -14,7 +14,6 @@ $(document).ready(function () {
       // fail silently
     }
   });
-  console.log('init and set IDEManager as client of FrameworkManager');
   // $fw.client becomes available as well as $fw.app
 
   // CAUTION!!! uncomment this line to enable sample data on reports

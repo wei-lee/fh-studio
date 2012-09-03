@@ -3,9 +3,11 @@ var Apps = Apps || {};
 Apps.Cloudresources = Apps.Cloudresources || {};
 
 Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
-  WARNING_LEVEL: 60,// ✈ 
-  DANGER_ZONE: 80,  // ✈ ✈ 
-                    // ✈
+  WARNING_LEVEL: 60,
+  DANGER_ZONE: 80,
+  // ✈
+  // ✈ ✈
+  // ✈
 
   models: {
     appresource: new model.AppResource()
@@ -37,14 +39,14 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
     var jqContainer = $(this.container);
     $fw.client.lang.insertLangFromData(jqContainer);
 
-    $('.cloud_refresh_button', jqContainer).bind('click', function (e) {
+    $('.cloud_refresh_button', jqContainer).bind('click', function(e) {
       e.preventDefault();
       e.stopPropagation();
       var jqEl = $(this);
 
       jqEl.button('loading');
 
-      self.showResources(function () {
+      self.showResources(function() {
         jqEl.button('reset');
       });
     });
@@ -57,7 +59,7 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
     var historyContainer = $('#resource_history_container', this.container);
 
     this.initialiseCpuGauge($('#cloud_cpu .cloud_cpu_container', currentContainer)[0]);
-    
+
     var cloudEnv = $fw.data.get('cloud_environment');
     this.models.appresource.current(guid, cloudEnv, function(res) {
       if (res != null && res.data != null) {
@@ -99,9 +101,8 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
       cb();
     });
 
-// TODO: if adding this back in, need to use async.parallel to ensure cb is only
-//       called when both are done
-
+    // TODO: if adding this back in, need to use async.parallel to ensure cb is only
+    //       called when both are done
     // this.models.appresource.history(guid, function (res) {
     //   historyContainer.text(JSON.stringify(res.data));
     // }, function (err) {
@@ -109,30 +110,33 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
     // });
   },
 
-  updateResourceBar: function (container, used, max) {
+  updateResourceBar: function(container, used, max) {
     $('.resource_used', container).text(this.bytesToMB(used));
     $('.resource_max', container).text(this.bytesToMB(max));
 
 
     var usedPercentage = (used / max) * 100;
     // TODO: put % value in dom too??
-
     $('.bar-danger', container).css('width', usedPercentage + '%');
     $('.bar-info', container).css('width', (100 - usedPercentage) + '%');
   },
 
   showNAResourceBar: function (container) {
-    // TODO: show n/a ui for resource bar
+    $('.resource_used', container).text('n/a');
+    $('.resource_max', container).text('n/a');
+
+    $('.bar-danger', container).css('width', '0%');
+    $('.bar-info', container).css('width', '100%');
   },
 
-  bytesToMB: function (bytes) {
+  bytesToMB: function(bytes) {
     function toFixed(num, precision) {
       return num.toFixed != null ? num.toFixed(precision) : num;
     }
     return '' + toFixed(bytes / 1000 / 1000) + ' MB';
   },
 
-  initialiseCpuGauge: function (container) {
+  initialiseCpuGauge: function(container) {
     var self = this;
 
     if (this.cpuChart == null) {
@@ -144,10 +148,14 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
         chart: {
           renderTo: container,
           type: 'gauge',
-          plotBackgroundColor: null,
+          backgroundColor: null,
           plotBackgroundImage: null,
           plotBorderWidth: 0,
           plotShadow: false
+        },
+
+        exporting: {
+          enabled: false
         },
 
         title: null,

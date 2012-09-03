@@ -1,70 +1,55 @@
 var Stats = Stats || {};
 
-Stats.Controller = Controller.extend({
+Stats.Controller = Apps.Cloud.Controller.extend({
   model: null,
   views: {
     stats_container: '#stats_container'
   },
 
-  deploy_target: 'live',
-
-  init: function(params) {},
+  init: function(params) {
+    this._super();
+    this.initFn = _.once(this.initBindings);
+  },
 
   show: function() {
-    this._super();
+    this._super(this.views.stats_container);
     var self = this;
 
     this.hide();
-    this.container = this.views.stats_container;
-    this.initModels();
+    this.initFn();
 
     $(this.container).show();
+    this.showStats();
+  },
+
+  initBindings: function() {
+    var self = this;
+
+    $('#deploy_target .refresh').unbind().click(function(e) {
+      e.preventDefault();
+      console.log('stats refresh');
+      self.showStats();
+    });
 
     this.closeAll();
+  },
+
+  showStats: function() {
+    console.log('showStats');
+    this.emptyLists();
+    this.initModels();
     this.loadModels();
-    this.bind();
-  },
-
-  bind: function() {
-    var self = this;
-    $('#deploy_target .dev').unbind().click(function() {
-      console.log('dev stats target');
-      self.changeStatsTarget('dev');
-    });
-    $('#deploy_target .live').unbind().click(function() {
-      console.log('live stats target');
-      self.changeStatsTarget('live');
-    });
-    $('#deploy_target .refresh').unbind().click(function() {
-      console.log('stats refresh');
-      self.refresh();
-    });
-  },
-
-  changeStatsTarget: function(target) {
-    // Change targets
-    $('#deploy_target button').removeClass('btn-inverse');
-    $('#deploy_target .' + target).addClass('btn-inverse');
-    this.changeTarget(target);
-  },
-
-  refresh: function() {
-    if ($('#deploy_target .dev').hasClass('btn-inverse')) {
-      // dev
-      this.changeStatsTarget('dev');
-    } else {
-      // live
-      this.changeStatsTarget('live');
-    }
   },
 
   initModels: function() {
     this.models = [];
+
+    var cloud_env = $fw.data.get('cloud_environment');
     this.models.push(new Stats.Model.Historical.Counters({
-      deploy_target: this.deploy_target
+      deploy_target: cloud_env
     }));
     this.models.push(new Stats.Model.Historical.Timers({
-      deploy_target: this.deploy_target
+      deploy_target: cloud_env
     }));
   },
 
@@ -178,13 +163,6 @@ Stats.Controller = Controller.extend({
     });
 
     list_view.render();
-  },
-
-  changeTarget: function(target) {
-    this.deploy_target = target;
-    this.emptyLists();
-    this.initModels();
-    this.loadModels();
   },
 
   loadModels: function() {

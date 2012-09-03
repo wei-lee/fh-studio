@@ -89,7 +89,6 @@ Tab.Manager = Class.extend({
 
   // see http://twitter.github.com/bootstrap/components.html#breadcrumbs
   updateCrumbs: function (self) {
-    console.log('updateCrumbs');
     var crumb;
 
     var el = $('#' + self.id);
