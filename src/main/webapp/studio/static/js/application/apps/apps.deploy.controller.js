@@ -89,10 +89,8 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
       var target_name = target.fields.target;
 
       var button = $('<a>').addClass('btn');
-      // TODO: Check active
       var icon = $('<img>').attr('src', '/studio/static/themes/default/img/cloud_target_' + target_name.toLowerCase() + '.png');
-      // TODO: Check for custom
-      //var label = $('<h5>').text(target_name);
+
       button.append(icon);
       // button.append(label);
       targets_area.append(button);
@@ -120,7 +118,6 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
 
       // Trigger switch to default target
       if (current_target_button) {
-        console.log('clicking default target!')
         current_target_button.trigger('click');
       }
     });
@@ -202,7 +199,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
         for (var i = 0; i < res.log.length; i++) {
           console.log(res.log[i]);
         }
-        progress += 3;
+        progress += 2;
 
         self.updateProgressLog(res.log);
         self.updateProgress(progress);
