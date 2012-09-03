@@ -29,6 +29,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     this.initFn();
 
     this.resetProgress();
+    $('.deploy_action', self.views.deploying_container).removeClass('hidden').addClass('hidden');
 
     var cloud_env = $fw.data.get('cloud_environment');
 
@@ -41,7 +42,6 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
   },
 
   initBindings: function() {
-    console.log('deploying.bind');
     var self = this;
     var container = $(this.views.deploying_container);
 
@@ -66,26 +66,39 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
   },
 
   renderTargets: function(targets) {
+    var self = this;
     var targets_area = $(this.views.deploy_targets).show();
     targets_area.empty();
 
     $.each(targets, function(i, target) {
-      var name = target.fields.name;
-      target = target.fields.target;
+      var target_name = target.fields.target;
 
       var button = $('<a>').addClass('btn');
       // TODO: Check active
-      var icon = $('<img>').attr('src', '/studio/static/themes/default/img/cloud_target_' + target.toLowerCase() + '.png');
+      var icon = $('<img>').attr('src', '/studio/static/themes/default/img/cloud_target_' + target_name.toLowerCase() + '.png');
       // TODO: Check for custom
-      //var label = $('<h5>').text(target);
+      //var label = $('<h5>').text(target_name);
       button.append(icon);
       // button.append(label);
       targets_area.append(button);
+
+      button.data(target);
+
+      button.click(function(e) {
+        e.preventDefault();
+        var target = $(this).data();
+        $(this).parent().find('a').removeClass('active');
+        $(this).addClass('active');
+
+        // Show the deploy button
+        if (!$('.deploy_action', self.views.deploying_container).is(':visible')) {
+          $('.deploy_action', self.views.deploying_container).removeClass('hidden');
+        }
+      });
     });
   },
 
   liveDeploy: function(guid) {
-    console.log('deploying.liveDeploy');
     var self = this;
     if (!guid) {
       guid = $fw.data.get('app').guid;
@@ -104,7 +117,6 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
   },
 
   devDeploy: function(guid) {
-    console.log('deploying.devDeploy');
     var self = this;
     if (!guid) {
       guid = $fw.data.get('app').guid;
@@ -189,7 +201,6 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
    * It doesn't track progress.
    */
   simpleLiveDeploy: function(guid, cb) {
-    console.log('deploying.liveDeploy');
     var self = this;
     if (!guid) {
       guid = $fw.data.get('app').guid;
@@ -209,7 +220,6 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
   },
 
   simpleDevDeploy: function(guid, cb) {
-    console.log('deploying.devDeploy');
     var self = this;
     if (!guid) {
       guid = $fw.data.get('app').guid;
@@ -294,7 +304,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
   deployCompleteSuccess: function() {
     console.log('Deploy complete - success.');
     var self = this;
-    setTimeout(function(){
+    setTimeout(function() {
       $('.progress', self.views.deploying_container).slideUp();
     }, 2000);
   },
@@ -302,7 +312,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
   deployCompleteFailed: function() {
     console.log('Deploy complete - failed.');
     var self = this;
-    setTimeout(function(){
+    setTimeout(function() {
       $('.progress', self.views.deploying_container).slideUp();
     }, 2000);
   }

@@ -116,8 +116,6 @@ ManageappsTabManager = Tab.Manager.extend({
 
   // see http://twitter.github.com/bootstrap/components.html#breadcrumbs
   updateCrumbs: function(self) {
-    console.log('custom apps breadcrumbs');
-
     var el = $('#' + self.id);
     var navList = el.find('.nav-list');
     var jqEl = $(this);
