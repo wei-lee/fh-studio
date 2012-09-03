@@ -6,7 +6,7 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
   WARNING_LEVEL: 60,
   DANGER_ZONE: 80,
   // ✈
-  // ✈ ✈ 
+  // ✈ ✈
   // ✈
 
   models: {
