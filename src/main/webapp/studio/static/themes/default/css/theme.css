@@ -2793,7 +2793,7 @@ input[disabled],select[disabled],textarea[disabled],input[readonly],select[reado
   margin-right: 5px;
 }
 
-form .required label:after {
+form .required .control-label:after {
   color: #e32;
   content: ' *';
   display: inline;
@@ -3264,6 +3264,10 @@ a.docslink {
 
 #deploy_targets a {
   margin-right: 10px;
+}
+
+#admin_deploytarget_edit .target-settings {
+  display: none;
 }
 
 /* Awesome nth item selector that works cross platform (including IE!)

@@ -69,11 +69,13 @@ model.Model = Class.extend({
       if (typeof config.width !== 'undefined') {
         data.aoColumns.push({
           sTitle: v,
-          sWidth: config.width
+          sWidth: config.width,
+          bVisible: config.visible
         });
       } else {
         data.aoColumns.push({
-          sTitle: v
+          sTitle: v,
+          bVisible: config.visible
         });
       }
     });

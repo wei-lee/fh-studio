@@ -23,6 +23,7 @@ $.extend(Constants, {
   METRICS_URL_PREFIX : "/box/srv/1.1/metrics/",
   ADMIN_URL_PREFIX : "/box/srv/1.1/admin/",
   SDK_URL_PREFIX : "/box/srv/1.1/sdk/",
+  DEPLOY_TARGET_MANAGE_PREFIX : "/box/srv/1.1/cm/deploy/policy/",
 
   ____DEPRECATED____DEV_URL_PREFIX____DEPRECATED____ : "/box/srv/1.1/dev/" // dev endpoints to be moved/migrated into ide space
 
@@ -154,5 +155,11 @@ $.extend(Constants, {
   ADMIN_DEVICES_LISTUSERS_URL : Constants.ADMIN_URL_PREFIX + "device/listusers",
   ADMIN_DEVICES_LISTAPPS_URL : Constants.ADMIN_URL_PREFIX + "device/listapps",
 
-  SDK_GETFILES_URL : Constants.SDK_URL_PREFIX + "files/read"
+  SDK_GETFILES_URL : Constants.SDK_URL_PREFIX + "files/read",
+  DEPLOY_TARGET_CREATE_URL : Constants.DEPLOY_TARGET_MANAGE_PREFIX + "create",
+  DEPLOY_TARGET_READ_URL : Constants.DEPLOY_TARGET_MANAGE_PREFIX + "read",
+  DEPLOY_TARGET_LIST_EDITABLE_URL : Constants.DEPLOY_TARGET_MANAGE_PREFIX + "listeditable",
+  DEPLOY_TARGET_LISTFORAPP_URL : Constants.DEPLOY_TARGET_MANAGE_PREFIX + "list",
+  DEPLOY_TARGET_UPDATE_URL : Constants.DEPLOY_TARGET_MANAGE_PREFIX + "update",
+  DEPLOY_TARGET_DELETE_URL : Constants.DEPLOY_TARGET_MANAGE_PREFIX + "delete"
 });
