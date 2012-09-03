@@ -1,7 +1,11 @@
 <div id="stats_container" class="well">
+  <div class="alerts"></div>
+
+  <%@ include file="./cloud_environment.html" %>
+
   <div id="deploy_target">
     <h2>Cloud App Statistics</h2>
-    <img class="refresh" src="<%=studio.getStaticAssetPath("themes/default/img/ico_refresh.png")%>" alt="refresh stats">&nbsp;<button class="dev btn">Dev Stats</button>&nbsp;<button class="live btn btn-inverse">Live Stats</button>&nbsp;<span id="stats_loading_area"></span>
+    <img class="refresh" src="<%=studio.getStaticAssetPath("themes/default/img/ico_refresh.png")%>" alt="refresh stats"><span id="stats_loading_area"></span>
   </div>
 
   <hr class="clearfix"/>

@@ -3,8 +3,8 @@ var Apps = Apps || {};
 Apps.Cloudresources = Apps.Cloudresources || {};
 
 Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
-  WARNING_LEVEL: 60,// ✈ 
-  DANGER_ZONE: 80,  // ✈ ✈ 
+  WARNING_LEVEL: 60,// ✈
+  DANGER_ZONE: 80,  // ✈ ✈
                     // ✈
 
   models: {
@@ -122,7 +122,11 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
   },
 
   showNAResourceBar: function (container) {
-    // TODO: show n/a ui for resource bar
+    $('.resource_used', container).text('n/a');
+    $('.resource_max', container).text('n/a');
+
+    $('.bar-danger', container).css('width', '0%');
+    $('.bar-info', container).css('width', '100%');
   },
 
   bytesToMB: function (bytes) {
