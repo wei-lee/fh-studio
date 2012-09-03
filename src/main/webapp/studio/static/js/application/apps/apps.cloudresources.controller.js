@@ -144,7 +144,7 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
         chart: {
           renderTo: container,
           type: 'gauge',
-          plotBackgroundColor: null,
+          backgroundColor: null,
           plotBackgroundImage: null,
           plotBorderWidth: 0,
           plotShadow: false
