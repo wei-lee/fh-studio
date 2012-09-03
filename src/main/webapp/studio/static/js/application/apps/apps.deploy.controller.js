@@ -87,12 +87,19 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
 
     $.each(targets, function(i, target) {
       var target_name = target.fields.target;
+      var label_name = target.fields.name;
 
       var button = $('<a>').addClass('btn');
       var icon = $('<img>').attr('src', '/studio/static/themes/default/img/cloud_target_' + target_name.toLowerCase() + '.png');
       button.addClass('span4');
       button.append(icon);
-      // button.append(label);
+      if (target.fields.id !== 'default') {
+        var label = $('<div>').text(label_name);
+        button.append(label);
+      } else {
+        var label = $('<div>').text(target.fields.target);
+        button.append(label);
+      }
       targets_area.append(button);
 
       button.data(target);
