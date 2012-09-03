@@ -2985,8 +2985,12 @@ a.docslink {
   margin-top: 80px;
 }
 
-.cloud_environment h4 {
+.cloud_environment h4, .cloud_environment h3 {
   text-align: center;
+}
+
+#cloudresources_container .progress {
+  margin-bottom: 0;
 }
 
 /* Awesome nth item selector that works cross platform (including IE!)
