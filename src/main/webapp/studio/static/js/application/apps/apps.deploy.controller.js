@@ -94,6 +94,17 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     var current_target_button;
 
     $.each(targets, function(i, target) {
+      // 3 targets per row
+
+      if (i === 0 || i % 3 === 0) {
+        // Create a new row
+        var row_el = $('<div>').addClass('target_row fluid-row');
+        targets_area.append(row_el);
+      }
+
+      // Use last row
+      var row = targets_area.find('div.target_row:last');
+
       var target_name = target.fields.target;
       var label_name = target.fields.name;
 
@@ -109,9 +120,8 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
         label.text(self.target_map[target.fields.target]);
       }
       button.append(label);
-
-      targets_area.append(button);
-
+      row.append(button);
+      
       button.data(target);
 
       // Is this target the previously used target?
