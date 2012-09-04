@@ -2989,6 +2989,10 @@ a.docslink {
   text-align: center;
 }
 
+.cloud_environment {
+  margin-bottom: 20px;
+}
+
 #cloudresources_container .progress {
   margin-bottom: 0;
 }
