@@ -2,7 +2,7 @@ var Apps = Apps || {};
 
 Apps.Logging = Apps.Logging || {};
 
-Apps.Logging.Controller = Apps.Controller.extend({
+Apps.Logging.Controller = Apps.Cloud.Controller.extend({
 
   model: {
     //device: new model.Device()
@@ -17,6 +17,7 @@ Apps.Logging.Controller = Apps.Controller.extend({
   container: null,
 
   init: function () {
+    this._super();
     this.initFn = _.once(this.initBindings);
   },
   
@@ -44,10 +45,9 @@ Apps.Logging.Controller = Apps.Controller.extend({
   },
 
   show: function(){
-    this._super();
+    this._super(this.views.debug_logging_container);
     
     this.hide();
-    this.container = this.views.debug_logging_container;
 
     this.initFn();
     this.showLogging();
@@ -74,9 +74,12 @@ Apps.Logging.Controller = Apps.Controller.extend({
 
     var instGuid = $fw.data.get('inst').guid;
     var url = Constants.LOGS_URL;
+    var cloudEnv = $fw.data.get('cloud_environment');
+    
     var params = {
       "guid": instGuid,
-      "action": "get"
+      "action": "get",
+      "deploytarget": cloudEnv
     };
 
     $fw.server.post(url, params, function (res) {

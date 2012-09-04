@@ -13,27 +13,26 @@ Apps.Cloud.Controller = Apps.Controller.extend({
     this._super();
     this.container = container;
 
-    this.initCloudFn();
-  },
+    var envContainer = $(this.container + ' .cloud_environment');
 
-  initCloudBindings: function() {
-    var self = this;
+    this.initCloudFn(envContainer);
 
-    var jqContainer = $(this.container);
-    $fw.client.lang.insertLangFromData(jqContainer);
-
-    var envContainer = $('.cloud_environment', jqContainer);
-
-    // set selected env button first
+    // set selected env button
+    $('.btn', envContainer).removeClass('active');
     var selectedEnv = $fw.data.get('cloud_environment');
     if (selectedEnv != null) {
-      $('.' + selectedEnv + '_environment_btn', envContainer).trigger('click');
+      $('.' + selectedEnv + '_environment_btn', envContainer).addClass('active');
     } else {
       // default to dev environment
       $fw.data.set('cloud_environment', 'dev');
-      $('.dev_environment_btn', envContainer).trigger('click');
+      $('.dev_environment_btn', envContainer).addClass('active');
     }
+  },
 
+  initCloudBindings: function(envContainer) {
+    var self = this;
+    
+    $fw.client.lang.insertLangFromData($(this.container));
     // bind env buttons to make necessary callback
     $('button', envContainer).bind('click', function (e) {
       e.preventDefault();
