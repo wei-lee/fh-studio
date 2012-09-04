@@ -648,5 +648,11 @@ var Lang = {
   cloudresource_cpu_header: "CPU Usage",
   cloudresource_cpu_title: "% used",
   cloudresource_memory_header: "Memory Usage",
-  cloudresource_storage_header: "Storage Usage"
+  cloudresource_storage_header: "Storage Usage",
+
+  cloudnotifications_header: "Notification Settings",
+  cloudnotifications_description: "Configure an email address to send our process monitoring alerts (by default this is the app creator)",
+  cloudnotifications_email_label: "Notification Email",
+  cloudnotifications_email_button: "Update"
+
 };
