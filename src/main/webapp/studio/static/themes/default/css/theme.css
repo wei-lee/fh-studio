@@ -2469,7 +2469,7 @@ line-height:0.5em;
   font-weight: bold;
 }
 
-.nav-list > li > a {
+.nav-list > li > a, #app_publish_destinations a {
   color: #666;
 }
 
