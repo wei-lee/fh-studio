@@ -18,7 +18,8 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
 
   views: {
     deploying_container: "#deploying_container",
-    deploy_targets: '#deploy_targets'
+    deploy_targets: '#deploy_targets',
+    progress_area: '#cloud_deploy_progress'
   },
 
   container: null,
@@ -94,6 +95,17 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     var current_target_button;
 
     $.each(targets, function(i, target) {
+      // 3 targets per row
+
+      if (i === 0 || i % 3 === 0) {
+        // Create a new row
+        var row_el = $('<div>').addClass('target_row fluid-row');
+        targets_area.append(row_el);
+      }
+
+      // Use last row
+      var row = targets_area.find('div.target_row:last');
+
       var target_name = target.fields.target;
       var label_name = target.fields.name;
 
@@ -109,8 +121,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
         label.text(self.target_map[target.fields.target]);
       }
       button.append(label);
-
-      targets_area.append(button);
+      row.append(button);
 
       button.data(target);
 
@@ -122,7 +133,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
       button.click(function(e) {
         e.preventDefault();
         var target = $(this).data();
-        $(this).parent().find('a').removeClass('active');
+        $(this).parent().parent().find('a').removeClass('active');
         $(this).addClass('active');
 
         // Show the deploy button
@@ -283,7 +294,8 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     console.log('Deploy complete - success.');
     var self = this;
     setTimeout(function() {
-      $('.progress', self.views.deploying_container).slideUp();
+      $(self.views.progress_area).slideUp();
+      self.showAlert('success', 'Your Cloud App has been deployed successfully.');
     }, 2000);
   },
 
@@ -291,7 +303,8 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     console.log('Deploy complete - failed.');
     var self = this;
     setTimeout(function() {
-      $('.progress', self.views.deploying_container).slideUp();
+      $(self.views.progress_area).slideUp();
+      self.showAlert('error', 'An error occured while deploying your Cloud App');
     }, 2000);
   },
 

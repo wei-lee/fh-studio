@@ -1,13 +1,18 @@
 <div id="deploying_container" class="well">
+  <div class="alerts"></div>
 
   <%@ include file="./cloud_environment.html" %>
 
   <h4>Choose a Cloud Deployment Target</h4>
-  <div id="deploy_targets" class="fluid-row">
+  <div id="deploy_targets">
   </div>
-  <div class="form-actions deploy_action hidden">
-    <button id="deploy_cloud_app" class="btn btn-large btn-primary pull-right">Deploy Cloud App</button>
+
+  <div class="row-fluid">
+    <div class="form-actions deploy_action hidden">
+      <button id="deploy_cloud_app" class="btn btn-large btn-primary pull-right">Deploy Cloud App</button>
+    </div>
   </div>
+
 
   <div id="cloud_deploy_progress" class="hidden_template row-fluid">
     <div class="progress progress-striped active">

@@ -10,10 +10,10 @@ Admin.Deploytarget.Controller = Controller.extend({
   STATIC_IMAGE_PREFIX : "/studio/static/themes/default/img/",
 
   valid_targets : [
-    {"id":"cloudfoundry", "name":"CloudFoundry", "icon":"target_cf.png", "configurations":{"url": true, "username":true, "password":true}},
-    {"id":"stackato", "name":"Stackato", "icon":"target_st.png", "configurations":{"url": true, "username":true, "password":true}},
-    {"id":"appfog","name":"AppFog", "icon":"target_af.png", "configurations":{"url": true, "username":true, "password":true}},
-    {"id":"ironfoundry","name":"IronFoundry", "icon":"target_if.png", "configurations":{"url": true, "username":true, "password":true}}
+    {"id":"cloudfoundry", "name":"CloudFoundry", "icon":"cloud_target_cloudfoundry.png", "configurations":{"url": true, "username":true, "password":true}},
+    {"id":"stackato", "name":"Stackato", "icon":"cloud_target_stackato.png", "configurations":{"url": true, "username":true, "password":true}},
+    {"id":"appfog","name":"AppFog", "icon":"cloud_target_appfog.png", "configurations":{"url": true, "username":true, "password":true}},
+    {"id":"ironfoundry","name":"IronFoundry", "icon":"cloud_target_ironfoundry.png", "configurations":{"url": true, "username":true, "password":true}}
   ],
 
   views: {
@@ -118,14 +118,14 @@ Admin.Deploytarget.Controller = Controller.extend({
 
   deleteTarget: function(btn, row, data){
     var self = this;
-    self.showBooleanModal("Are you sure you delete this deployment target? Any app that is using this deployment target will use the default deployment target instead unlese you re-configure.", function(){
+    self.showBooleanModal("Are you sure you want to delete this deployment target? Any app that is using this deployment target will use the default deployment target instead unlese you re-configure.", function(){
       var targetGuid = data[0];
-      self.model.deployTarget.delete(targetGuid, function(res){
+      self.model.deployTarget['delete'](targetGuid, function(res){
         self.showAlert("success", "<strong>Deletion successful</strong>");
         self.target_list_table.fnDeleteRow(row[0]);
       }, function(err){
         self.showAlert("error", "<strong>Deletion failed. Error : </strong>" + err);
-      })
+      });
     });
   },
 
@@ -134,7 +134,6 @@ Admin.Deploytarget.Controller = Controller.extend({
   },
 
   showTargetEditArea: function(data){
-    console.log(data);
     this.container = this.views.target_edit;
     var self = this;
     var isCreate = data == null;
@@ -155,7 +154,7 @@ Admin.Deploytarget.Controller = Controller.extend({
     $(self.views.target_edit).show();
     $(self.views.target_edit + " #cancel_deploy_target_btn").unbind("click").bind("click", function(){
       self.show();
-    })
+    });
     if(isCreate){
       self.resetFields();
       $(self.views.target_edit + " #save_deploy_target_btn").unbind("click").bind("click", function(){
@@ -224,7 +223,7 @@ Admin.Deploytarget.Controller = Controller.extend({
           console.log("selected target is " + $(self.views.target_edit + " #deploy_target_platform").data("selected_target"));
           var targetConf = target.configurations;
           for(var confKey in targetConf){
-            if(targetConf[confKey] == true){
+            if(targetConf[confKey] === true){
               $(self.views.target_edit + " .target-settings-" + confKey).show();
             } else {
               $(self.views.target_edit + " .target-settings-" + confKey).hide();
@@ -241,7 +240,7 @@ Admin.Deploytarget.Controller = Controller.extend({
           } else {
             $(self.views.target_edit + " .target-settings input").val("");
           }
-        }
+        };
       }(target));
     }
   },
@@ -281,17 +280,13 @@ Admin.Deploytarget.Controller = Controller.extend({
         self.showAlert("success", '<strong> Updating successful </strong>');
       }, function(err){
         self.showAlert("error", '<strong> Updating Failed. Error : '+ err +' </strong>');
-      })
+      });
     } else {
       self.model.deployTarget.create(targetName, targetId, targetEnv, config, function(res){
         self.showAlert("success", '<strong> Creation successful </strong>');
       }, function(err){
         self.showAlert("error", '<strong> Creation Failed. Error : '+ err +' </strong>');
-      })
+      });
     }
   }
-
-
-
-
-})
+});

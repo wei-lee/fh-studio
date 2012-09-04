@@ -2469,7 +2469,7 @@ line-height:0.5em;
   font-weight: bold;
 }
 
-.nav-list > li > a {
+.nav-list > li > a, #app_publish_destinations a {
   color: #666;
 }
 
@@ -2989,6 +2989,10 @@ a.docslink {
   text-align: center;
 }
 
+.cloud_environment {
+  margin-bottom: 20px;
+}
+
 #cloudresources_container .progress {
   margin-bottom: 0;
 }
@@ -3003,6 +3007,10 @@ a.docslink {
 
 #admin_deploytarget_edit .target-settings {
   display: none;
+}
+
+.target_row a {
+  margin-bottom: 20px;
 }
 
 /* Awesome nth item selector that works cross platform (including IE!)

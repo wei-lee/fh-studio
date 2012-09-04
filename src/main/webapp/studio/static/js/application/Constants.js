@@ -54,6 +54,7 @@ $.extend(Constants, {
   STATS_APP_URL: Constants.IDE_URL_PREFIX + "app/stats",
   EXTERNAL_REQUEST_URL: Constants.IDE_URL_PREFIX + "app/external_request",
   APP_RESOURCES_URL: Constants.IDE_URL_PREFIX + "app/resources",
+  APP_SETPROPERTY_URL: Constants.IDE_URL_PREFIX + "app/setconfig",
 
   KEY_LIST_URL: Constants.IDE_URL_PREFIX + "api/list",
   KEY_CREATE_URL: Constants.IDE_URL_PREFIX + "api/create",
@@ -154,13 +155,12 @@ $.extend(Constants, {
   ADMIN_DEVICES_LISTAPPS_URL: Constants.ADMIN_URL_PREFIX + "device/listapps",
 
   SDK_GETFILES_URL : Constants.SDK_URL_PREFIX + "files/read",
+  
   DEPLOY_TARGET_CREATE_URL : Constants.DEPLOY_TARGET_MANAGE_PREFIX + "create",
   DEPLOY_TARGET_READ_URL : Constants.DEPLOY_TARGET_MANAGE_PREFIX + "read",
   DEPLOY_TARGET_LIST_EDITABLE_URL : Constants.DEPLOY_TARGET_MANAGE_PREFIX + "listeditable",
   DEPLOY_TARGET_LISTFORAPP_URL : Constants.DEPLOY_TARGET_MANAGE_PREFIX + "list",
   DEPLOY_TARGET_UPDATE_URL : Constants.DEPLOY_TARGET_MANAGE_PREFIX + "update",
-  DEPLOY_TARGET_DELETE_URL : Constants.DEPLOY_TARGET_MANAGE_PREFIX + "delete",
-
-  SDK_GETFILES_URL: Constants.SDK_URL_PREFIX + "files/read"
+  DEPLOY_TARGET_DELETE_URL : Constants.DEPLOY_TARGET_MANAGE_PREFIX + "delete"
 
 });
