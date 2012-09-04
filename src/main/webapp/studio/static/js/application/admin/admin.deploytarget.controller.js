@@ -134,7 +134,6 @@ Admin.Deploytarget.Controller = Controller.extend({
   },
 
   showTargetEditArea: function(data){
-    console.log(data);
     this.container = this.views.target_edit;
     var self = this;
     var isCreate = data == null;
