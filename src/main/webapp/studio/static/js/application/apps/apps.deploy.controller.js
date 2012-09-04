@@ -18,7 +18,8 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
 
   views: {
     deploying_container: "#deploying_container",
-    deploy_targets: '#deploy_targets'
+    deploy_targets: '#deploy_targets',
+    progress_area: '#cloud_deploy_progress'
   },
 
   container: null,
@@ -293,7 +294,8 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     console.log('Deploy complete - success.');
     var self = this;
     setTimeout(function() {
-      $('.progress', self.views.deploying_container).slideUp();
+      $(self.views.progress_area).slideUp();
+      self.showAlert('success', 'Your Cloud App has been deployed successfully.');
     }, 2000);
   },
 
@@ -301,7 +303,8 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     console.log('Deploy complete - failed.');
     var self = this;
     setTimeout(function() {
-      $('.progress', self.views.deploying_container).slideUp();
+      $(self.views.progress_area).slideUp();
+      self.showAlert('error', 'An error occured while deploying your Cloud App');
     }, 2000);
   },
 
