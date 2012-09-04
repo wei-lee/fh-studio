@@ -15,6 +15,14 @@
               Users
             </a>
           </li>
+          <% if(studio.getProps().optBoolean("arm-auth-policy-enabled", false)) { %>
+            <li>
+              <a href="#" data-controller="admin.authpolicy.controller">
+                <i class="icon-key"></i>
+                Auth Policies
+              </a>
+            </li>
+          <% } %>
         <% } %>
         
         <!-- <li>
@@ -23,14 +31,6 @@
             Groups
           </a>
         </li> -->
-        <% if(studio.getProps().optBoolean("arm-auth-policy-enabled", false)) { %>
-        <li>
-          <a href="#" data-controller="admin.authpolicy.controller">
-            <i class="icon-key"></i>
-            Auth Policies
-          </a>
-        </li>
-        <% } %>
         <li>
           <a href="#" data-controller="admin.deploytarget.controller">
             <i class="icon-road"></i>

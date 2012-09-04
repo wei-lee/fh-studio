@@ -10,10 +10,10 @@ Admin.Deploytarget.Controller = Controller.extend({
   STATIC_IMAGE_PREFIX : "/studio/static/themes/default/img/",
 
   valid_targets : [
-    {"id":"cloudfoundry", "name":"CloudFoundry", "icon":"target_cf.png", "configurations":{"url": true, "username":true, "password":true}},
-    {"id":"stackato", "name":"Stackato", "icon":"target_st.png", "configurations":{"url": true, "username":true, "password":true}},
-    {"id":"appfog","name":"AppFog", "icon":"target_af.png", "configurations":{"url": true, "username":true, "password":true}},
-    {"id":"ironfoundry","name":"IronFoundry", "icon":"target_if.png", "configurations":{"url": true, "username":true, "password":true}}
+    {"id":"cloudfoundry", "name":"CloudFoundry", "icon":"cloud_target_cloudfoundry.png", "configurations":{"url": true, "username":true, "password":true}},
+    {"id":"stackato", "name":"Stackato", "icon":"cloud_target_stackato.png", "configurations":{"url": true, "username":true, "password":true}},
+    {"id":"appfog","name":"AppFog", "icon":"cloud_target_appfog.png", "configurations":{"url": true, "username":true, "password":true}},
+    {"id":"ironfoundry","name":"IronFoundry", "icon":"cloud_target_ironfoundry.png", "configurations":{"url": true, "username":true, "password":true}}
   ],
 
   views: {
@@ -118,7 +118,7 @@ Admin.Deploytarget.Controller = Controller.extend({
 
   deleteTarget: function(btn, row, data){
     var self = this;
-    self.showBooleanModal("Are you sure you delete this deployment target? Any app that is using this deployment target will use the default deployment target instead unlese you re-configure.", function(){
+    self.showBooleanModal("Are you sure you want to delete this deployment target? Any app that is using this deployment target will use the default deployment target instead unlese you re-configure.", function(){
       var targetGuid = data[0];
       self.model.deployTarget['delete'](targetGuid, function(res){
         self.showAlert("success", "<strong>Deletion successful</strong>");
