@@ -121,7 +121,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
       }
       button.append(label);
       row.append(button);
-      
+
       button.data(target);
 
       // Is this target the previously used target?
@@ -132,7 +132,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
       button.click(function(e) {
         e.preventDefault();
         var target = $(this).data();
-        $(this).parent().find('a').removeClass('active');
+        $(this).parent().parent().find('a').removeClass('active');
         $(this).addClass('active');
 
         // Show the deploy button
