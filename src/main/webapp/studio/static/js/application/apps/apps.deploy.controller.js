@@ -8,6 +8,14 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     deploy: new model.Deploy()
   },
 
+  target_map: {
+    FEEDHENRY: 'FeedHenry',
+    CLOUDFOUNDRY: 'Cloud Foundry',
+    STACKATO: 'ActiveState Stackato',
+    APPFOG: 'App Fog',
+    IRONFOUNDRY: 'Iron Foundry'
+  },
+
   views: {
     deploying_container: "#deploying_container",
     deploy_targets: '#deploy_targets'
@@ -87,12 +95,21 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
 
     $.each(targets, function(i, target) {
       var target_name = target.fields.target;
+      var label_name = target.fields.name;
 
       var button = $('<a>').addClass('btn');
       var icon = $('<img>').attr('src', '/studio/static/themes/default/img/cloud_target_' + target_name.toLowerCase() + '.png');
       button.addClass('span4');
       button.append(icon);
-      // button.append(label);
+
+      var label = $('<div>').addClass('cloud_target_label');
+      if (target.fields.id !== 'default') {
+        label.text(label_name);
+      } else {
+        label.text(self.target_map[target.fields.target]);
+      }
+      button.append(label);
+
       targets_area.append(button);
 
       button.data(target);
@@ -138,7 +155,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     var url = Constants.RELEASE_DEPLOY_APP_URL;
     var params = {
       guid: guid,
-      target_id: 'TODO'
+      target_id: target.fields.id
     };
     $fw.server.post(url, params, function(res) {
       if (res.status === "ok") {
@@ -151,7 +168,6 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
 
   devDeploy: function(guid) {
     var target = this.getTargetData();
-    console.log(target);
     var self = this;
     if (!guid) {
       guid = $fw.data.get('app').guid;
@@ -159,7 +175,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     var url = Constants.DEPLOY_APP_URL;
     var params = {
       guid: guid,
-      target_id: 'TODO'
+      target_id: target.fields.id
     };
 
     $fw.server.post(url, params, function(res) {

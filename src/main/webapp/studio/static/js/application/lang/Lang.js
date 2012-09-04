@@ -653,6 +653,9 @@ var Lang = {
   cloudnotifications_header: "Notification Settings",
   cloudnotifications_description: "Configure an email address to send our process monitoring alerts (by default this is the app creator)",
   cloudnotifications_email_label: "Notification Email",
-  cloudnotifications_email_button: "Update"
-
+  cloudnotifications_email_button: "Update",
+  
+  stats_tabs_counter: "Counters",
+  stats_tabs_timer: "Timers",
+  stats_tabs_gauge: "Gauges"
 };

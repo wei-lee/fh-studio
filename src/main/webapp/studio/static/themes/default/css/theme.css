@@ -2508,7 +2508,7 @@ input[disabled],select[disabled],textarea[disabled],input[readonly],select[reado
   margin-right: 5px;
 }
 
-form .required label:after {
+form .required .control-label:after {
   color: #e32;
   content: ' *';
   display: inline;
@@ -2982,7 +2982,7 @@ a.docslink {
 }
 
 .deploy_action {
-  margin-top: 80px;
+  margin-top: 90px;
 }
 
 .cloud_environment h4, .cloud_environment h3 {
@@ -2991,6 +2991,18 @@ a.docslink {
 
 #cloudresources_container .progress {
   margin-bottom: 0;
+}
+
+#deploying_container.well {
+  min-height: 0;
+}
+
+.cloud_target_label {
+  font-weight: bold;
+}
+
+#admin_deploytarget_edit .target-settings {
+  display: none;
 }
 
 /* Awesome nth item selector that works cross platform (including IE!)

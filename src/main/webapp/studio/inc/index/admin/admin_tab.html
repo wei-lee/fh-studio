@@ -8,45 +8,56 @@
     <div class="row-fluid">
       <ul class="nav nav-list span2 well admin_nav_list">
         <li class="nav-header">Administration</li>
-        <li>
-          <a href="#" data-controller="admin.users.controller">
-            <i class="icon-user"></i>
-            Users
-          </a>
-        </li>
+        <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_ARM) || studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_USER_ADMIN)) { %>
+          <li>
+            <a href="#" data-controller="admin.users.controller">
+              <i class="icon-user"></i>
+              Users
+            </a>
+          </li>
+          <% if(studio.getProps().optBoolean("arm-auth-policy-enabled", false)) { %>
+            <li>
+              <a href="#" data-controller="admin.authpolicy.controller">
+                <i class="icon-key"></i>
+                Auth Policies
+              </a>
+            </li>
+          <% } %>
+        <% } %>
+        
         <!-- <li>
           <a href="#" data-controller="admin.groups.controller">
             <i class="icon-group"></i>
             Groups
           </a>
         </li> -->
-        <% if(studio.getProps().optBoolean("arm-auth-policy-enabled", false)) { %>
         <li>
-          <a href="#" data-controller="admin.authpolicy.controller">
-            <i class="icon-key"></i>
-            Auth Policies
+          <a href="#" data-controller="admin.deploytarget.controller">
+            <i class="icon-road"></i>
+            Deployment Targets
           </a>
         </li>
+        <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_ARM) || studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_USER_ADMIN)) { %>
+          <li class="nav-header">Mobile App Management</li>
+          <li>
+            <a href="#" data-controller="admin.stores.controller">
+              <i class="icon-globe"></i>
+              App Store
+            </a>
+          </li>
+          <li>
+            <a href="#" data-controller="admin.storeitems.controller">
+              <i class="icon-pencil"></i>
+              Store Items
+            </a>
+          </li>
+          <li>
+            <a href="#" data-controller="admin.devices.controller">
+              <i class="icon-phone"></i>
+              Devices
+            </a>
+          </li>
         <% } %>
-        <li class="nav-header">Mobile App Management</li>
-        <li>
-          <a href="#" data-controller="admin.stores.controller">
-            <i class="icon-globe"></i>
-            App Store
-          </a>
-        </li>
-        <li>
-          <a href="#" data-controller="admin.storeitems.controller">
-            <i class="icon-pencil"></i>
-            Store Items
-          </a>
-        </li>
-        <li>
-          <a href="#" data-controller="admin.devices.controller">
-            <i class="icon-phone"></i>
-            Devices
-          </a>
-        </li>
       </ul>
 
       <!-- Hide this initially and let javascript show it when its ready -->
@@ -1058,6 +1069,71 @@
           </fieldset>
         </form>
       </div>
+
+      <!-- Deployment Targets template Start -->
+      <div id="admin_deploytarget_list" class="hidden_template row-fluid">
+        <div class="alerts"></div>
+        <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="admin_deploytargets_table"></table>
+      </div>
+
+      <div id="admin_deploytarget_edit" class="hidden_template row-fluid">
+        <div class="alerts"></div>
+        <form class="well form-horizontal">
+          <fieldset>
+            <legend id="target_edit_header"></legend>
+            <p>Here you can edit Deployment Target settings/login credentials for deploying your cloud code to various Platform-as-a-Service and Infrastructure-as-a-Service providers</p>
+            <br />
+            <div class="control-group required">
+              <label class="control-label" for="deploy_target_name">Target Name</label>
+              <div class="controls">
+                <input type="text" id="deploy_target_name" class="input-xxlarge"></input>
+              </div>
+            </div>
+            <div class="control-group required">
+              <label class="control-label" for="deploy_target_platform">Target Platform</label>
+              <div class="controls" id="deploy_target_platform">
+                <ul class="thumbnails">
+                  
+                </ul>
+              </div>
+            </div>
+            <div class="control-group required">
+              <label class="control-label" for="deploy_target_envs">Target Environment</label>
+              <div class="controls" id="deploy_target_envs">
+                <label class="checkbox">
+                  <input type="checkbox" id="deploy_target_env_dev" value="dev"> Development
+                </label>
+                <label class="checkbox">
+                  <input type="checkbox" id="deploy_target_env_live" value="live"> Live
+                </label>
+              </div>
+            </div>
+            <div class="control-group target-settings target-settings-url required">
+              <label class="control-label" for="deploy_target_setting_url">Deploy URL</label>
+              <div class="controls">
+                <input type="text" id="deploy_target_setting_url"></input>
+              </div>
+            </div>
+            <div class="control-group target-settings target-settings-username required">
+              <label class="control-label" for="deploy_target_setting_username">Username</label>
+              <div class="controls">
+                <input type="text" id="deploy_target_setting_username"></input>
+              </div>
+            </div>
+            <div class="control-group target-settings target-settings-password required">
+              <label class="control-label" for="deploy_target_setting_password">Password</label>
+              <div class="controls">
+                <input type="password" id="deploy_target_setting_password"></input>
+              </div>
+            </div>
+          </fieldset>
+          <div class="form-actions">
+            <button type="button" id="save_deploy_target_btn" class="btn btn-primary"></button> 
+            <button type="button" id="cancel_deploy_target_btn" class="btn"> Back </button> 
+          </div>
+        </form>
+      </div>
+      <!-- Deployment Targets template End -->
 
       </div>
     </div>

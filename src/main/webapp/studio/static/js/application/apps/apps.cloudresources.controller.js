@@ -4,10 +4,11 @@ Apps.Cloudresources = Apps.Cloudresources || {};
 
 Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
   WARNING_LEVEL: 60,
-  // ✈ 
   DANGER_ZONE: 80,
-  // ✈ ✈ 
   // ✈
+  // ✈ ✈
+  // ✈
+
   models: {
     appresource: new model.AppResource()
   },
@@ -120,8 +121,12 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
     $('.bar-info', container).css('width', (100 - usedPercentage) + '%');
   },
 
-  showNAResourceBar: function(container) {
-    // TODO: show n/a ui for resource bar
+  showNAResourceBar: function (container) {
+    $('.resource_used', container).text('n/a');
+    $('.resource_max', container).text('n/a');
+
+    $('.bar-danger', container).css('width', '0%');
+    $('.bar-info', container).css('width', '100%');
   },
 
   bytesToMB: function(bytes) {
