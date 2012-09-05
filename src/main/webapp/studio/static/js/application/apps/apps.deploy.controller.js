@@ -75,6 +75,11 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
       e.preventDefault();
       self.deploy();
     });
+
+    $('.create_new_deploy_target', container).unbind().click(function() {
+      $('#admin_tab').trigger('click');
+      $('.nav-list .deploy_targets').trigger('click');
+    });
   },
 
   deploy: function() {
@@ -93,10 +98,10 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     var targets_area = $(this.views.deploy_targets).show();
     targets_area.empty();
     var current_target_button;
+    var row;
 
     $.each(targets, function(i, target) {
       // 3 targets per row
-
       if (i === 0 || i % 3 === 0) {
         // Create a new row
         var row_el = $('<div>').addClass('target_row fluid-row');
@@ -104,7 +109,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
       }
 
       // Use last row
-      var row = targets_area.find('div.target_row:last');
+      row = targets_area.find('div.target_row:last');
 
       var target_name = target.fields.target;
       var label_name = target.fields.name;
