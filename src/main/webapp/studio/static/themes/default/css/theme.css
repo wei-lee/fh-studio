@@ -2185,24 +2185,28 @@ line-height:0.5em;
   box-shadow: 0 1px 2px rgba(0, 0, 0, .1), 0 1px 1px white inset;
   margin-bottom: 5px;
 }
+.available_list li h3 {
+  padding-left: 22px;
+}
+
+.available_apicalls li h3 {
+  background: url(../img/ico_counters.png) no-repeat;
+}
 
 .available_counters li h3 {
-  padding-left: 22px;
   background: url(../img/ico_counters.png) no-repeat;
 }
 
 .available_timers li h3 {
-  padding-left: 22px;
   background: url(../img/ico_timers.png) no-repeat;
 }
 
-.available_counters li h4, .available_timers li h4 {
+.available_list li h4 {
   padding-left: 10px;
 }
 
 .stats_area li h3 {
   margin: 0;
-  padding: 0;
   font-size: 12px;
   line-height: 16px;
 }

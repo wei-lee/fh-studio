@@ -50,58 +50,36 @@ Stats.Controller = Apps.Cloud.Controller.extend({
   initModels: function() {
     this.models = [];
 
-    var cloudEnv = $fw.data.get('cloud_environment');
-    var statsType = $('.stats_type_nav li.active a', this.container).data('type');
-    var statsContainer = $('.pill-pane.active', this.container);
+    this.cloudEnv = $fw.data.get('cloud_environment');
+    this.statsType = $('.stats_type_nav li.active a', this.container).data('type');
+    this.statsContainer = $('.pill-pane.active', this.container);
 
-    this.models.push(new Stats.Model.Historical.Counters({
-      deploy_target: cloudEnv,
-      stats_type: statsType,
-      stats_container: statsContainer
-    }));
-    this.models.push(new Stats.Model.Historical.Timers({
-      deploy_target: cloudEnv,
-      stats_type: statsType,
-      stats_container: statsContainer
-    }));
-  },
-
-  toggleCounterStats: function(el, model, series_name) {
-    // Already open, close
-    if ($(el).hasClass('active')) {
-      $('.chart_container', model.stats_container).empty();
-      $(el).removeClass('active');
-      return;
+    if ('api' === this.statsType) {
+      this.models.push(new Stats.Model.Historical.APICalls({
+        deploy_target: this.cloudEnv,
+        stats_type: this.statsType,
+        stats_container: this.statsContainer
+      }));
+    } else { // default is 'app'
+      this.models.push(new Stats.Model.Historical.Counters({
+        deploy_target: this.cloudEnv,
+        stats_type: this.statsType,
+        stats_container: this.statsContainer
+      }));
+      this.models.push(new Stats.Model.Historical.Timers({
+        deploy_target: this.cloudEnv,
+        stats_type: this.statsType,
+        stats_container: this.statsContainer
+      }));
     }
-
-    $('.stats_area li').removeClass('active');
-    $(el).addClass('active');
-    console.log('toggle Counter stats');
-    var series = model.getSeries(series_name);
-
-    // Empty showing containers
-    $('.chart_container', model.stats_container).empty();
-
-    var self = this;
-    var chart = new Stats.View.Chart.Counter({
-      model: model,
-      series: series,
-      controller: self
-    });
-    chart.render();
   },
 
-  closeAll: function(model) {
-    // Empty showing containers
-    $('.chart_container', model.stats_container).empty();
-  },
-
-  toggleTimerStats: function(el, model, series_name) {
+  toggleStats: function(el, model, series_name) {
     // Already open, close
     if ($(el).hasClass('active')) {
       $('.chart_container', model.stats_container).empty();
       $(el).removeClass('active');
-      return;
+      //return;
     }
 
     $('.stats_area li', model.stats_container).removeClass('active');
@@ -112,7 +90,7 @@ Stats.Controller = Apps.Cloud.Controller.extend({
     this.closeAll(model);
 
     var self = this;
-    var chart = new Stats.View.Chart.Timer({
+    var chart = new Stats.View.Chart({
       model: model,
       series: series,
       controller: self
@@ -120,17 +98,23 @@ Stats.Controller = Apps.Cloud.Controller.extend({
     chart.render();
   },
 
+  closeAll: function(model) {
+    // Empty showing containers
+    $('.chart_container', (model != null ? model.stats_container : null)).empty();
+  },
+
   buildLists: function() {
     // Models are loaded, build lists
-    var counters_model = this.models[0];
-    var timers_model = this.models[1];
-
-    this.buildCountersList(counters_model);
-    this.buildTimersList(timers_model);
+    if ('api' === this.statsType) {
+      this.buildList(this.models[0], $('.available_apicalls', this.models[0].stats_container)[0], Stats.View.List.APICalls);
+    } else { // default to 'app'
+      this.buildList(this.models[0], $('.available_counters', this.models[0].stats_container)[0]);
+      this.buildList(this.models[1], $('.available_timers', this.models[1].stats_container)[0]);
+    }
   },
 
   emptyLists: function() {
-    $('.available_counters, .available_timers', this.container).empty();
+    $('.available_list', this.container).empty();
   },
 
   showStatsLoading: function() {
@@ -142,24 +126,15 @@ Stats.Controller = Apps.Cloud.Controller.extend({
     $('#stats_loading_area').empty();
   },
 
-  buildCountersList: function(model) {
+  buildList: function (model, renderTo, listModel) {
     var self = this;
-    var list_view = new Stats.View.List.Counters({
-      controller: self,
-      model: this.models[0],
-      renderTo: $('.available_counters', model.stats_container)[0]
-    });
 
-    list_view.render();
-  },
-
-  buildTimersList: function(model) {
-    var self = this;
-    var list_view = new Stats.View.List.Timers({
+    var params = {
       controller: self,
-      model: this.models[1],
-      renderTo: $('.available_timers', model.stats_container)[0]
-    });
+      model: model, //this.models[0],
+      renderTo: renderTo //$('.available_apicalls', this.models[0].stats_container)[0]
+    };
+    var list_view = listModel != null ? (new listModel(params)) : (new Stats.View.List(params));
 
     list_view.render();
   },
@@ -168,23 +143,21 @@ Stats.Controller = Apps.Cloud.Controller.extend({
     this.showStatsLoading();
 
     var self = this;
-    $.each(self.models, function(item_number, model) {
-      var total = self.models.length;
-      item_number = item_number + 1;
+    var data = null;
+
+    async.series([function (cb) {
+      // call load on first model
+      // we can reuse the data returned by this model because the same
+      // data result set is used by every stats model. Don't want to
+      // make unnecessary calls to API
+      var model = self.models[0];
       model.load({
         loaded: function(res) {
           console.log('Stats loaded');
 
           if (res.status == 'ok') {
-            // model.applyFilter({
-            //   name: 'filterDate',
-            //   from: new Date(1333014354000),
-            //   to: new Date(1333014354000 + 30000) // 30 seconds of data
-            // });
-            if (item_number >= total) {
-              self.hideStatsLoading();
-              self.buildLists();
-            }
+            data = res.results;
+            cb(null, data);
           } else {
             console.log("Couldn't load stats: " + model.name);
             self.hideStatsLoading();
@@ -192,10 +165,49 @@ Stats.Controller = Apps.Cloud.Controller.extend({
               "class": "load_failed",
               text: "No stats data is currently available for this app."
             });
-            $('#available_' + model.name).empty().append(failed);
+            $('.available_' + model.name, model.stats_container).empty().append(failed);
+            cb(res.error);
           }
         }
       });
+
+    }, function (cb) {
+      // in series, so we should have data at this point to load
+      // into remaining models
+      var remainingModels = self.models.slice(1, self.models.length);
+
+      async.forEach(remainingModels, function (model, innerCb) {
+        model.load({
+          data: data, // specifying data so remote call isn't needed
+          loaded: function(res) {
+            console.log('Stats loaded');
+
+            if (res.status == 'ok') {
+              innerCb(null, res);
+            } else {
+              console.log("Couldn't load stats: " + model.name);
+              self.hideStatsLoading();
+              var failed = $("<li>", {
+                "class": "load_failed",
+                text: "No stats data is currently available for this app."
+              });
+              $('.available_' + model.name, model.stats_container).empty().append(failed);
+              innerCb(res.error);
+            }
+          }
+        });
+      }, function (err) {
+        cb(err);
+      });
+    }], function (err, results) {
+      if (err != null) {
+        console.log('Error loading stats:' + err);
+        // not much to do here. errors handled above
+      } else {
+        // all models loaded with data, good to go
+        self.hideStatsLoading();
+        self.buildLists();
+      }
     });
   },
 

@@ -1,8 +1,7 @@
 var Stats = Stats || {};
 Stats.View = Stats.View || {};
-Stats.View.Chart = Stats.View.Chart || {};
 
-Stats.View.Chart.Base = Class.extend({
+Stats.View.Chart = Class.extend({
   controller: null,
   model: null,
   series: null,

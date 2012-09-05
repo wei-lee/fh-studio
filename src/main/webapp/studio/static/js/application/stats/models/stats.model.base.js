@@ -67,11 +67,21 @@ Stats.Model.Base = Class.extend({
       });
     } else {
       // Remote call
-      this._loadRemote(function(res) {
-        if (typeof(params.loaded) == 'function') {
-          params.loaded(res);
-        }
-      });
+
+      // but first, check if data is provided in params (gotten elsewhere for us)
+      if (params.data != null) {
+        this._loadData(params.data, function(res) {
+          if (typeof(params.loaded) == 'function') {
+            params.loaded(res);
+          }
+        });
+      } else {
+        this._loadRemote(function(res) {
+          if (typeof(params.loaded) == 'function') {
+            params.loaded(res);
+          }
+        });
+      }
     }
   },
 
@@ -125,8 +135,15 @@ Stats.Model.Base = Class.extend({
         }, 500);
       } else {
         callback({status: 'ok'});
-      }      
+      }
     }
+  },
+
+  _loadData: function (data, callback) {
+    this._setInitialData(data);
+    callback({
+      "status": "ok"
+    });
   },
 
   _loadRemote: function(callback) {

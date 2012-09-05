@@ -96,13 +96,11 @@ js/application/stats/models/stats.model.base.js
 js/application/stats/models/stats.model.historical.js
 js/application/stats/models/stats.model.historical.timers.js
 js/application/stats/models/stats.model.historical.counters.js
+js/application/stats/models/stats.model.historical.apicalls.js
 js/application/stats/views/stats.view.base.js
 js/application/stats/views/stats.view.list.js
-js/application/stats/views/stats.view.list.timers.js
-js/application/stats/views/stats.view.list.counters.js
-js/application/stats/views/stats.view.chart.base.js
-js/application/stats/views/stats.view.chart.counter.js
-js/application/stats/views/stats.view.chart.timer.js
+js/application/stats/views/stats.view.list.apicalls.js
+js/application/stats/views/stats.view.chart.js
 js/application/stats/stats.controller.js
 js/application/tab/tab.manager.js
 js/application/tab/admin.tab.manager.js
