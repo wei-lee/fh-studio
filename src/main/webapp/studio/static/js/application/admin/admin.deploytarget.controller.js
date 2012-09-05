@@ -10,11 +10,33 @@ Admin.Deploytarget.Controller = Controller.extend({
   STATIC_IMAGE_PREFIX : "/studio/static/themes/default/img/",
 
   valid_targets : [
-    {"id":"cloudfoundry", "name":"CloudFoundry", "icon":"cloud_target_cloudfoundry.png", "configurations":{"url": true, "username":true, "password":true}},
-    {"id":"stackato", "name":"Stackato", "icon":"cloud_target_stackato.png", "configurations":{"url": true, "username":true, "password":true}},
-    {"id":"appfog","name":"AppFog", "icon":"cloud_target_appfog.png", "configurations":{"url": true, "username":true, "password":true}},
-    {"id":"ironfoundry","name":"IronFoundry", "icon":"cloud_target_ironfoundry.png", "configurations":{"url": true, "username":true, "password":true}}
+    {"id":"cloudfoundry", "name":"CloudFoundry", "icon":"cloud_target_cloudfoundry.png", "configurations":{"url": true, "username":true, "password":true, "infrastructure":false}},
+    {"id":"stackato", "name":"Stackato", "icon":"cloud_target_stackato.png", "configurations":{"url": true, "username":true, "password":true, "infrastructure":false}},
+    {"id":"appfog","name":"AppFog", "icon":"cloud_target_appfog.png", "configurations":{"url": true, "username":true, "password":true, "infrastructure":true}},
+    {"id":"ironfoundry","name":"IronFoundry", "icon":"cloud_target_ironfoundry.png", "configurations":{"url": true, "username":true, "password":true, "infrastructure":false}}
   ],
+
+  appfog_valid_infrastructures: [{
+    label:'AWS US East - Virginia',
+    name: 'aws',
+    value: 'aws.af.cm'
+  }, {
+    label:'AWS EU West - Ireland',
+    name: 'eu-aws',
+    value:'eu01.aws.af.cm'
+  }, {
+    label: 'AWS Asia SE - Singapore',
+    name: 'ap-aws',
+    value: 'ap01.aws.af.cm'
+  }, {
+    label : 'Rackspace AZ 1 - Dallas',
+    name: 'rs',
+    value: 'rs.af.cm'
+  }, {
+    label : 'HP AZ 1 - Las Vegas',
+    name: 'hp',
+    value: 'hp.af.cm'
+  }], 
 
   views: {
     target_list: "#admin_deploytarget_list",
@@ -176,6 +198,7 @@ Admin.Deploytarget.Controller = Controller.extend({
     $(self.views.target_edit + " .deploy_target_option").removeClass("active");
     $(self.views.target_edit + " #deploy_target_envs input[type=checkbox]").removeAttr("checked");
     $(self.views.target_edit + " .target-settings input").val("");
+    $(self.views.target_edit + " .target-settings select").empty();
     $(self.views.target_edit + " .target-settings").hide();
   },
 
@@ -189,13 +212,18 @@ Admin.Deploytarget.Controller = Controller.extend({
     if(data.env.indexOf("live") > -1){
       $(self.views.target_edit + " #deploy_target_envs #deploy_target_env_live").attr("checked", "checked");
     }
-    if(data.configurations.url){
-      $(self.views.target_edit + " .target-settings #deploy_target_setting_url").val(data.configurations.url);
-    }
-    if(data.configurations.username){
-      $(self.views.target_edit +" .target-settings #deploy_target_setting_username").val(data.configurations.username);
-    }
+  },
 
+  populateInfrastructureOptions: function(t){
+    var self = this;
+    if(self[t.id + "_valid_infrastructures"]){
+      $(self.views.target_edit + " .target-settings #deploy_target_setting_infrastructure").empty();
+      var providers = self[t.id + "_valid_infrastructures"];
+      for(var i=0;i<providers.length;i++){
+        var opt = $("<option>", {"text":providers[i].label, "value": providers[i].value});
+        $(self.views.target_edit + " .target-settings #deploy_target_setting_infrastructure").append(opt);
+      }
+    }
   },
 
   populateValidTargets: function(selected){
@@ -225,17 +253,23 @@ Admin.Deploytarget.Controller = Controller.extend({
           for(var confKey in targetConf){
             if(targetConf[confKey] === true){
               $(self.views.target_edit + " .target-settings-" + confKey).show();
+              if(confKey === "infrastructure"){
+                self.populateInfrastructureOptions(target);
+              }
             } else {
               $(self.views.target_edit + " .target-settings-" + confKey).hide();
             }
           }
-          if(target.id === selected.target.toLowerCase()){
+          if( selected && target.id === selected.target.toLowerCase()){
             if(selected.configurations.url){
               $(self.views.target_edit + " .target-settings #deploy_target_setting_url").val(selected.configurations.url);
             }
             if(selected.configurations.username){
               $(self.views.target_edit +" .target-settings #deploy_target_setting_username").val(selected.configurations.username);
               $(self.views.target_edit +" .target-settings #deploy_target_setting_password").val("**********");
+            }
+            if(selected.configurations.infrastructure){
+              $(self.views.target_edit + " .target-settings #deploy_target_setting_infrastructure").val(selected.configurations.infrastructure);
             }
           } else {
             $(self.views.target_edit + " .target-settings input").val("");
@@ -260,6 +294,7 @@ Admin.Deploytarget.Controller = Controller.extend({
     var url = $(self.views.target_edit + " .target-settings #deploy_target_setting_url").val();
     var username = $(self.views.target_edit +" .target-settings #deploy_target_setting_username").val();
     var password = $(self.views.target_edit +" .target-settings #deploy_target_setting_password").val();
+    var infrastructure = $(self.views.target_edit + " .target-settings #deploy_target_setting_infrastructure").val();
     if(password === "**********"){
       password = undefined;
     }
@@ -273,6 +308,9 @@ Admin.Deploytarget.Controller = Controller.extend({
     }
     if(password && password !== ""){
       config.password = password;
+    }
+    if(infrastructure && infrastructure !== ""){
+      config.infrastructure = infrastructure;
     }
 
     if(target_id){
