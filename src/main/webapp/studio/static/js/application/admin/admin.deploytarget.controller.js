@@ -309,7 +309,7 @@ Admin.Deploytarget.Controller = Controller.extend({
     if(password && password !== ""){
       config.password = password;
     }
-    if(infrastructure && infrastructure != ""){
+    if(infrastructure && infrastructure !== ""){
       config.infrastructure = infrastructure;
     }
 
