@@ -235,7 +235,7 @@ proto.Wizard = {
   getWizards: function() {
     // TODO: wizard steps should come with any necessary bindings (e.g. upload) and validation
     var wizards = {
-      create_app_wizard: ['create_app_type', 'create_app_from_template', 'create_app_clone', 'create_app_details', 'create_app_frameworks', 'create_app_from_scm', 'generate_app', 'create_app_progress', 'create_app_publickeysetup', 'create_app_scmprogress', 'create_app_next'],
+      create_app_wizard: ['create_app_type', 'create_app_from_template', 'create_app_clone', 'create_app_details', 'create_app_from_scm', 'generate_app', 'create_app_progress', 'create_app_publickeysetup', 'create_app_scmprogress', 'create_app_next'],
       clone_app_wizard: ['clone_app_details', 'clone_app_progress', 'clone_app_next'],
       import_app_wizard: ['import_app_details', 'import_app_progress', 'import_app_next'],
       upload_icon_wizard: ['upload_icon_details', 'upload_icon_progress'],
@@ -271,6 +271,7 @@ proto.Wizard = {
       wizards.ios_publish_wizard = ['app_publish_ios_select_provisionings', 'app_publish_ios_upload_provisionings', 'app_publish_ios_upload_progress', 'app_publish_ios_deploying_env', 'app_publish_ios_deploying_progress', 'app_publish_ios_versions', 'app_publish_ios_password', 'app_publish_ios_progress'];
       wizards.windowsphone7_publish_wizard = ['app_publish_windowsphone7_deploying_env', 'app_publish_windowsphone7_deploying_progress', 'app_publish_windowsphone7_versions', 'app_publish_windowsphone7_progress'];
       wizards.android_publish_wizard = ['app_publish_android_deploying_env', 'app_publish_android_deploying_progress', 'app_publish_android_versions', 'app_publish_android_password', 'app_publish_android_progress'];
+      wizards.embed_publish_wizard = ['app_publish_embed_deploying_env', 'app_publish_embed_deploying_progress', 'app_publish_embed_progress'];
     }
 
     return wizards;

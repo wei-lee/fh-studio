@@ -9,11 +9,43 @@ application.DestinationEmbed = application.DestinationGeneral.extend({
    */
   publish: function () {
     console.log("Embed :: Publish");
-    
-    // get the embed code string
     var guid = $fw.data.get('inst').guid;
-    var tag = Constants.EMBED_APP_TAG.replace('<GUID>', guid);
+    var that = this;
+    if($fw.getClientProp('nodejsEnabled') === "true"){
+      $.get(this.base_url + "?checktype=true", function(res){
+        if(res.result){
+          var main_container = $('#manage_publish_container');
+          main_container.find(".dashboard-content").hide();
+          that.enableButton(main_container.find("#app_embed_build_debug"), "dev", "Current URL is : " + res.dev_url);
+          that.enableButton(main_container.find("#app_embed_build_release"), "live", "Current URL is : " + res.live_url);
+          main_container.find('#app_publish_' + that.destination_id + '_build').show();
+          main_container.find("#app_publish_" + that.destination_id).show();
+
+        } else {
+          var tag = Constants.EMBED_APP_TAG.replace('<GUID>', guid);
+          that.generateEmbedScript(tag);
+        }
+      });
+    } else {
+      var tag = Constants.EMBED_APP_TAG.replace('<GUID>', guid);
+      that.generateEmbedScript(tag);
+    }
     
+
+  },
+
+  getPublishData: function (config, versions_select, wizard) {
+    return {
+      'env':config,
+      'generateSrc':false
+    };
+  },
+
+  handleDownload: function(res){
+    this.generateEmbedScript("<script src='" + res.action.url + "' ></script>");
+  },
+
+  generateEmbedScript: function(tag){
     // create modal dialog structure with textarea for embed code 
     var el = $('<div>', {
     }).append($('<p>',{

@@ -120,7 +120,7 @@ application.DestinationGeneral = Class.extend({
           cacheKey: cacheKey,
           complete: function(res) {
             proto.ProgressDialog.setProgress(step, 100);
-            proto.ProgressDialog.append(step, "Starting Download");
+            proto.ProgressDialog.append(step, "Completed");
             console.log('jumping to final step and hiding progress dialog');
             setTimeout(function() {
               complete(res);
@@ -420,55 +420,7 @@ application.DestinationGeneral = Class.extend({
         // TODO: better way for this temporary workaround for finishing wizard after successful upload  
         wizard.find('.jw-button-finish').trigger('click');
         console.log('publish successful: ' + JSON.stringify(res));
-
-        var source_url = res.action.url;
-        var ota_url = res.action.ota_url;
-        var ipa_url = res.action.ipa_url;
-        var showOTA = false;
-        var showIPA = false;
-        if(typeof ota_url !== "undefined"){
-          showOTA = true;
-        }
-        if(typeof ipa_url !== "undefined"){
-          showIPA = true;
-        }
-        var showDownload = function(message){
-          var dialog = $('#confirm_dialog').clone();
-          dialog.find('#confirm_dialog_text').html(message);
-          proto.Dialog.load(dialog, {
-            autoOpen: true,
-            height: 235,
-            title: 'Download',
-            stack: true,
-            dialogClass: 'success-dialog popup-dialog',
-            width: 340,
-            buttons: {
-              'OK': function () {
-                $(this).dialog('close');
-              }
-            }
-          });
-        };
-        var html = "<p> The build is ready. Please click the link below to download";
-        
-        if( showOTA ){
-          html += ", or you can use the OTA link to install the application directly on to your phone.</p>";
-        } else {
-          html += ".</p>";
-        }
-        html += "<br><ul> <li> <a target='_blank' href='"+source_url+"'> Download </a></li>";
-        if(showIPA){
-          html += "<li> <a target='_blank' href='"+ipa_url+"'> Download IPA File </a></li>";
-        }
-        if(showOTA){
-          that.getOTALink(ota_url, function(otalink){
-            html += "<li> OTA Link : <a target='_blank' href='"+otalink+"'>" + otalink + " </a></li></ul>";
-            showDownload(html);
-          });
-        } else {
-          html += "</ul>";
-          showDownload(html);
-        }
+        that.handleDownload(res);
       });
     });
 
@@ -484,6 +436,58 @@ application.DestinationGeneral = Class.extend({
 
     if ($.isFunction(this.changeWizardStep)) {
       this.changeWizardStep(config, wizard, step);
+    }
+  },
+
+  handleDownload: function(res){
+    var that = this;
+    var source_url = res.action.url;
+    var ota_url = res.action.ota_url;
+    var ipa_url = res.action.ipa_url;
+    var showOTA = false;
+    var showIPA = false;
+    if(typeof ota_url !== "undefined"){
+      showOTA = true;
+    }
+    if(typeof ipa_url !== "undefined"){
+      showIPA = true;
+    }
+    var showDownload = function(message){
+      var dialog = $('#confirm_dialog').clone();
+      dialog.find('#confirm_dialog_text').html(message);
+      proto.Dialog.load(dialog, {
+        autoOpen: true,
+        height: 235,
+        title: 'Download',
+        stack: true,
+        dialogClass: 'success-dialog popup-dialog',
+        width: 340,
+        buttons: {
+          'OK': function () {
+            $(this).dialog('close');
+          }
+        }
+      });
+    };
+    var html = "<p> The build is ready. Please click the link below to download";
+    
+    if( showOTA ){
+      html += ", or you can use the OTA link to install the application directly on to your phone.</p>";
+    } else {
+      html += ".</p>";
+    }
+    html += "<br><ul> <li> <a target='_blank' href='"+source_url+"'> Download </a></li>";
+    if(showIPA){
+      html += "<li> <a target='_blank' href='"+ipa_url+"'> Download IPA File </a></li>";
+    }
+    if(showOTA){
+      that.getOTALink(ota_url, function(otalink){
+        html += "<li> OTA Link : <a target='_blank' href='"+otalink+"'>" + otalink + " </a></li></ul>";
+        showDownload(html);
+      });
+    } else {
+      html += "</ul>";
+      showDownload(html);
     }
   },
 
