@@ -321,7 +321,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
   simpleLiveDeploy: function(guid, cb) {
     var self = this;
     if (!guid) {
-      guid = $fw.data.get('inst').guid
+      guid = $fw.data.get('inst').guid;
     }
     var url = Constants.RELEASE_DEPLOY_APP_URL;
     var params = {
@@ -341,7 +341,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
   simpleDevDeploy: function(guid, cb) {
     var self = this;
     if (!guid) {
-      guid = $fw.data.get('inst').guid
+      guid = $fw.data.get('inst').guid;
     }
     var url = Constants.DEPLOY_APP_URL;
     var params = {
