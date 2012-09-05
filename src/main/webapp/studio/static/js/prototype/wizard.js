@@ -271,6 +271,7 @@ proto.Wizard = {
       wizards.ios_publish_wizard = ['app_publish_ios_select_provisionings', 'app_publish_ios_upload_provisionings', 'app_publish_ios_upload_progress', 'app_publish_ios_deploying_env', 'app_publish_ios_deploying_progress', 'app_publish_ios_versions', 'app_publish_ios_password', 'app_publish_ios_progress'];
       wizards.windowsphone7_publish_wizard = ['app_publish_windowsphone7_deploying_env', 'app_publish_windowsphone7_deploying_progress', 'app_publish_windowsphone7_versions', 'app_publish_windowsphone7_progress'];
       wizards.android_publish_wizard = ['app_publish_android_deploying_env', 'app_publish_android_deploying_progress', 'app_publish_android_versions', 'app_publish_android_password', 'app_publish_android_progress'];
+      wizards.embed_publish_wizard = ['app_publish_embed_deploying_env', 'app_publish_embed_deploying_progress', 'app_publish_embed_progress'];
     }
 
     return wizards;
