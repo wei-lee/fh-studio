@@ -318,7 +318,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
    * callback when a cacheKey for a Deploy has completed.
    * It doesn't track progress.
    */
-  simpleLiveDeploy: function(guid, cb) {
+  simpleLiveDeploy: function(guid, target_id, cb) {
     var self = this;
     if (!guid) {
       guid = $fw.data.get('inst').guid;
@@ -326,7 +326,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     var url = Constants.RELEASE_DEPLOY_APP_URL;
     var params = {
       guid: guid,
-      target_id: 'default'
+      target_id: target_id || 'default'
     };
 
     $fw.server.post(url, params, function(res) {
@@ -338,7 +338,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     }, null, true);
   },
 
-  simpleDevDeploy: function(guid, cb) {
+  simpleDevDeploy: function(guid, target_id, cb) {
     var self = this;
     if (!guid) {
       guid = $fw.data.get('inst').guid;
@@ -346,7 +346,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     var url = Constants.DEPLOY_APP_URL;
     var params = {
       guid: guid,
-      target_id: 'default'
+      target_id: target_id || 'default'
     };
 
     $fw.server.post(url, params, function(res) {
