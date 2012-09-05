@@ -75,6 +75,11 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
       e.preventDefault();
       self.deploy();
     });
+
+    $('.create_new_deploy_target', container).unbind().click(function() {
+      $('#admin_tab').trigger('click');
+      $('.nav-list .deploy_targets').trigger('click');
+    });
   },
 
   deploy: function() {
@@ -93,10 +98,10 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     var targets_area = $(this.views.deploy_targets).show();
     targets_area.empty();
     var current_target_button;
+    var row;
 
     $.each(targets, function(i, target) {
       // 3 targets per row
-
       if (i === 0 || i % 3 === 0) {
         // Create a new row
         var row_el = $('<div>').addClass('target_row fluid-row');
@@ -104,7 +109,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
       }
 
       // Use last row
-      var row = targets_area.find('div.target_row:last');
+      row = targets_area.find('div.target_row:last');
 
       var target_name = target.fields.target;
       var label_name = target.fields.name;
@@ -161,7 +166,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     var target = this.getTargetData();
     var self = this;
     if (!guid) {
-      guid = $fw.data.get('app').guid;
+      guid = $fw.data.get('inst').guid;
     }
     var url = Constants.RELEASE_DEPLOY_APP_URL;
     var params = {
@@ -181,7 +186,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     var target = this.getTargetData();
     var self = this;
     if (!guid) {
-      guid = $fw.data.get('app').guid;
+      guid = $fw.data.get('inst').guid;
     }
     var url = Constants.DEPLOY_APP_URL;
     var params = {
@@ -313,14 +318,15 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
    * callback when a cacheKey for a Deploy has completed.
    * It doesn't track progress.
    */
-  simpleLiveDeploy: function(guid, cb) {
+  simpleLiveDeploy: function(guid, target_id, cb) {
     var self = this;
     if (!guid) {
-      guid = $fw.data.get('app').guid;
+      guid = $fw.data.get('inst').guid;
     }
     var url = Constants.RELEASE_DEPLOY_APP_URL;
     var params = {
-      guid: guid
+      guid: guid,
+      target_id: target_id || 'default'
     };
 
     $fw.server.post(url, params, function(res) {
@@ -332,14 +338,15 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     }, null, true);
   },
 
-  simpleDevDeploy: function(guid, cb) {
+  simpleDevDeploy: function(guid, target_id, cb) {
     var self = this;
     if (!guid) {
-      guid = $fw.data.get('app').guid;
+      guid = $fw.data.get('inst').guid;
     }
     var url = Constants.DEPLOY_APP_URL;
     var params = {
-      guid: guid
+      guid: guid,
+      target_id: target_id || 'default'
     };
 
     $fw.server.post(url, params, function(res) {
