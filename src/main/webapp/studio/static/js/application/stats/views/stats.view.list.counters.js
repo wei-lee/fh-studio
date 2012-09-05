@@ -9,13 +9,17 @@ Stats.View.List.Counters = Stats.View.List.extend({
     $(self.renderTo).empty();
     var all_series = this.model.getAllSeriesNames();
     $.each(all_series, function(i, series_name) {
-      var list_item = '<li id="' + series_name + '_list_item"><h3>' + series_name + '</h3></li>';
-      var list_containers = '<div id="' + series_name + '_container"><div class="chart_container"></div><div class="table_container"></div></div>';
+      var list_item = $('<li>', {
+        "id": series_name + '_list_item'
+      }).append($('<h3>', {
+        "text": series_name
+      }));
+      var list_containers = '<div class="' + series_name + '_container"><div class="chart_container"></div></div>';
       $(self.renderTo).append(list_item);
-      $('#' + series_name + '_list_item').append(list_containers);
+      list_item.append(list_containers);
 
       // Bind click
-      $('#' + series_name + '_list_item h3').unbind().click(function() {
+      $('h3', list_item).unbind().click(function() {
         self.controller.toggleCounterStats(this, self.model, series_name);
       });
     });

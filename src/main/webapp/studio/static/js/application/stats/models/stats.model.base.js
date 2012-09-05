@@ -44,6 +44,8 @@ Stats.Model.Base = Class.extend({
     }
 
     this.deploy_target = params.deploy_target || 'live';
+    this.stats_type = params.stats_type || 'app';
+    this.stats_container = params.stats_container;
 
     // Use sample data?
     this.use_sample_data = 'true' === $fw.getClientProp('stats-sampledata-enabled');
@@ -137,7 +139,7 @@ Stats.Model.Base = Class.extend({
     params = {
       guid: guid,
       deploytarget: this.deploy_target,
-      statstype: 'app',
+      statstype: this.stats_type,
       count: 360
     };
 

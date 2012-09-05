@@ -655,6 +655,8 @@ var Lang = {
   cloudnotifications_email_label: "Notification Email",
   cloudnotifications_email_button: "Update",
   
+  stats_pills_custom: "Custom Stats",
+  stats_pills_api: "App Endpoints",
   stats_tabs_counter: "Counters",
   stats_tabs_timer: "Timers",
   stats_tabs_gauge: "Gauges"

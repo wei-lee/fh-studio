@@ -100,13 +100,9 @@ js/application/stats/views/stats.view.base.js
 js/application/stats/views/stats.view.list.js
 js/application/stats/views/stats.view.list.timers.js
 js/application/stats/views/stats.view.list.counters.js
-js/application/stats/views/stats.view.table.base.js
-js/application/stats/views/stats.view.table.timer.js
-js/application/stats/views/stats.view.table.counter.js
 js/application/stats/views/stats.view.chart.base.js
 js/application/stats/views/stats.view.chart.counter.js
 js/application/stats/views/stats.view.chart.timer.js
-js/application/stats/views/stats.view.list.timers.js
 js/application/stats/stats.controller.js
 js/application/tab/tab.manager.js
 js/application/tab/admin.tab.manager.js

@@ -2186,17 +2186,17 @@ line-height:0.5em;
   margin-bottom: 5px;
 }
 
-#available_counters li h3 {
+.available_counters li h3 {
   padding-left: 22px;
   background: url(../img/ico_counters.png) no-repeat;
 }
 
-#available_timers li h3 {
+.available_timers li h3 {
   padding-left: 22px;
   background: url(../img/ico_timers.png) no-repeat;
 }
 
-#available_counters li h4, #available_timers li h4 {
+.available_counters li h4, .available_timers li h4 {
   padding-left: 10px;
 }
 

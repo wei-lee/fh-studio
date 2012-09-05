@@ -3,34 +3,61 @@
 
   <%@ include file="./cloud_environment.html" %>
 
-  <ul class="nav nav-tabs">
-    <li class="active"><a href="#stats_counter_pane" data-toggle="tab" data-lang="stats_tabs_counter"></a></li>
-    <li><a href="#stats_timer_pane" data-toggle="tab" data-lang="stats_tabs_timer"></a></li>
-    <li><a href="#stats_gauge_pane" data-toggle="tab" data-lang="stats_tabs_gauge"></a></li>
+  <ul class="stats_type_nav nav nav-pills">
+    <li class="active"><a href="#stats_api_pill" data-toggle="pill" data-lang="stats_pills_api" data-type="api"></a></li>
+    <li><a href="#stats_custom_pill" data-toggle="pill" data-lang="stats_pills_custom" data-type="app"></a></li>
   </ul>
 
-  <div class="tab-content">
-    <div class="tab-pane active" id="stats_counter_pane"></div>
-    <div class="tab-pane" id="stats_timer_pane"></div>
-    <div class="tab-pane" id="stats_gauge_pane"></div>
+  <div class="pill-content">
+    <div class="pill-pane active" id="stats_api_pill">
+
+          <div class="counters_container stats_area">
+            <h2>Counters</h2>
+            <ul class="available_counters">
+            </ul>
+          </div>
+
+          <div class="timers_container stats_area">
+            <h2>Timers</h2>
+            <ul class="available_timers">
+            </ul>
+          </div>
+          
+    </div>
+
+    <div class="pill-pane" id="stats_custom_pill">
+      <ul class="nav nav-tabs">
+        <li class="active"><a href="#stats_counter_pane" data-toggle="tab" data-lang="stats_tabs_counter"></a></li>
+        <li><a href="#stats_timer_pane" data-toggle="tab" data-lang="stats_tabs_timer"></a></li>
+        <li><a href="#stats_gauge_pane" data-toggle="tab" data-lang="stats_tabs_gauge"></a></li>
+      </ul>
+
+      <div class="tab-content">
+        <div class="tab-pane active" id="stats_counter_pane">
+          <div class="counters_container stats_area">
+            <h2>Counters</h2>
+            <ul class="available_counters">
+            </ul>
+          </div>
+        </div>
+
+        <div class="tab-pane" id="stats_timer_pane">
+          <div class="timers_container stats_area">
+            <h2>Timers</h2>
+            <ul class="available_timers">
+            </ul>
+          </div>
+        </div>
+
+        <div class="tab-pane" id="stats_gauge_pane">
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <!-- <div id="deploy_target">
     <h2>Cloud App Statistics</h2>
     <img class="refresh" src="<%=studio.getStaticAssetPath("themes/default/img/ico_refresh.png")%>" alt="refresh stats"><span id="stats_loading_area"></span>
-  </div>
-
-  <hr class="clearfix"/>
-
-  <div id="counters_container" class="stats_area">
-    <h2>Counters</h2>
-    <ul id="available_counters">
-    </ul>
-  </div>
-
-  <div id="timers_container" class="stats_area">
-    <h2>Timers</h2>
-    <ul id="available_timers">
-    </ul>
   </div> -->
 </div>

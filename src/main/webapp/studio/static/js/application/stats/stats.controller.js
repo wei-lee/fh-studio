@@ -25,13 +25,19 @@ Stats.Controller = Apps.Cloud.Controller.extend({
   initBindings: function() {
     var self = this;
 
-    $('#deploy_target .refresh').unbind().click(function(e) {
-      e.preventDefault();
-      console.log('stats refresh');
-      self.showStats();
+    // $('#deploy_target .refresh').unbind().click(function(e) {
+    //   e.preventDefault();
+    //   console.log('stats refresh');
+    //   self.showStats();
+    // });
+
+    $('.stats_type_nav a[data-toggle="pill"]', this.container).on('shown', function (e) {
+      // refresh
+      console.log('pill changed, stats screen refresh');
+      self.show();
     });
 
-    this.closeAll();
+    //this.closeAll(this.container);
   },
 
   showStats: function() {
@@ -44,19 +50,26 @@ Stats.Controller = Apps.Cloud.Controller.extend({
   initModels: function() {
     this.models = [];
 
-    var cloud_env = $fw.data.get('cloud_environment');
+    var cloudEnv = $fw.data.get('cloud_environment');
+    var statsType = $('.stats_type_nav li.active a', this.container).data('type');
+    var statsContainer = $('.pill-pane.active', this.container);
+
     this.models.push(new Stats.Model.Historical.Counters({
-      deploy_target: cloud_env
+      deploy_target: cloudEnv,
+      stats_type: statsType,
+      stats_container: statsContainer
     }));
     this.models.push(new Stats.Model.Historical.Timers({
-      deploy_target: cloud_env
+      deploy_target: cloudEnv,
+      stats_type: statsType,
+      stats_container: statsContainer
     }));
   },
 
   toggleCounterStats: function(el, model, series_name) {
     // Already open, close
     if ($(el).hasClass('active')) {
-      $('.table_container, .chart_container').empty();
+      $('.chart_container', model.stats_container).empty();
       $(el).removeClass('active');
       return;
     }
@@ -67,7 +80,7 @@ Stats.Controller = Apps.Cloud.Controller.extend({
     var series = model.getSeries(series_name);
 
     // Empty showing containers
-    $('.table_container, .chart_container').empty();
+    $('.chart_container', model.stats_container).empty();
 
     var self = this;
     var chart = new Stats.View.Chart.Counter({
@@ -76,34 +89,27 @@ Stats.Controller = Apps.Cloud.Controller.extend({
       controller: self
     });
     chart.render();
-
-    var table = new Stats.View.Table.Counter({
-      model: model,
-      series: series,
-      controller: self
-    });
-    table.render();
   },
 
-  closeAll: function() {
+  closeAll: function(model) {
     // Empty showing containers
-    $('.table_container, .chart_container').empty();
+    $('.chart_container', model.stats_container).empty();
   },
 
   toggleTimerStats: function(el, model, series_name) {
     // Already open, close
     if ($(el).hasClass('active')) {
-      $('.table_container, .chart_container').empty();
+      $('.chart_container', model.stats_container).empty();
       $(el).removeClass('active');
       return;
     }
 
-    $('.stats_area li').removeClass('active');
+    $('.stats_area li', model.stats_container).removeClass('active');
     $(el).addClass('active');
     var series = model.getSeries(series_name);
 
     // Empty showing containers
-    this.closeAll();
+    this.closeAll(model);
 
     var self = this;
     var chart = new Stats.View.Chart.Timer({
@@ -112,13 +118,6 @@ Stats.Controller = Apps.Cloud.Controller.extend({
       controller: self
     });
     chart.render();
-
-    var table = new Stats.View.Table.Timer({
-      model: model,
-      series: series,
-      controller: self
-    });
-    table.render();
   },
 
   buildLists: function() {
@@ -131,7 +130,7 @@ Stats.Controller = Apps.Cloud.Controller.extend({
   },
 
   emptyLists: function() {
-    $('#available_counters, #available_timers').empty();
+    $('.available_counters, .available_timers', this.container).empty();
   },
 
   showStatsLoading: function() {
@@ -148,7 +147,7 @@ Stats.Controller = Apps.Cloud.Controller.extend({
     var list_view = new Stats.View.List.Counters({
       controller: self,
       model: this.models[0],
-      renderTo: '#available_counters'
+      renderTo: $('.available_counters', model.stats_container)[0]
     });
 
     list_view.render();
@@ -159,7 +158,7 @@ Stats.Controller = Apps.Cloud.Controller.extend({
     var list_view = new Stats.View.List.Timers({
       controller: self,
       model: this.models[1],
-      renderTo: '#available_timers'
+      renderTo: $('.available_timers', model.stats_container)[0]
     });
 
     list_view.render();
