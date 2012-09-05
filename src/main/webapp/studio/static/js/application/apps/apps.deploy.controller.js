@@ -325,7 +325,8 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     }
     var url = Constants.RELEASE_DEPLOY_APP_URL;
     var params = {
-      guid: guid
+      guid: guid,
+      target_id: 'default'
     };
 
     $fw.server.post(url, params, function(res) {
@@ -344,7 +345,8 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     }
     var url = Constants.DEPLOY_APP_URL;
     var params = {
-      guid: guid
+      guid: guid,
+      target_id: 'default'
     };
 
     $fw.server.post(url, params, function(res) {
