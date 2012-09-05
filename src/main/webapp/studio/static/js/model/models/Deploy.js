@@ -31,58 +31,6 @@ model.Deploy = model.Model.extend({
   },
 
   list: function(app_guid, env, success, fail) {
-    /*var mock = {};
-
-    if (env == 'live') {
-      mock = {
-        "list": [{
-          "fields": {
-            "configurations": {
-              "url": "https://api.dynofarm.me:9443",
-              "username": "feedhenry"
-            },
-            "domain": "hpcs",
-            "env": "dev,live",
-            "id": "default",
-            "name": "default",
-            "target": "FEEDHENRY"
-          },
-          "type": "cm_DeployPolicy"
-        }, {
-          "fields": {
-            "configurations": {
-              "url": "http://thing.com",
-              "username": "foo@example.com"
-            },
-            "domain": "hpcs",
-            "env": "dev,live",
-            "id": "yjEUwXsSd70VLmIXGXCBI343",
-            "name": "MyCF",
-            "target": "CLOUDFOUNDRY"
-          },
-          "type": "cm_DeployPolicy"
-        }]
-      };
-    } else {
-      mock = {
-        "list": [{
-          "fields": {
-            "configurations": {
-              "url": "https://api.dynofarm.me:9443",
-              "username": "feedhenry"
-            },
-            "domain": "hpcs",
-            "env": "dev,live",
-            "id": "default",
-            "name": "default",
-            "target": "FEEDHENRY"
-          },
-          "type": "cm_DeployPolicy"
-        }]
-      };
-    }
-
-    success(mock.list);*/
     var params = {"env": env, "app": app_guid};
     return this.serverPost(Constants.DEPLOY_TARGET_LISTFORAPP_URL, params, success, fail, true);
   },
