@@ -3,55 +3,39 @@
   <%@ include file="./cloud_environment.html" %>
 
   <div id="status_container">
-    <table id="cloud_status" cellborder="0" cellpadding="0">
-      <thead>
-        <tr>
-          <th>Environment</th>
-          <th>Status</th>
-          <th>Description</th>
-          <th>&nbsp;</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="status_row dev">
-          <td class="environment">Development</td>
-          <td class="status" align="center">&nbsp;</td>
-          <td class="description">&nbsp;</td>
-          <td>
-            <button class="btn" id="refresh_dev_status">Refresh</button>
-          </td>
-        </tr>
-        <tr class="status_row live">
-          <td class="environment">Live</td>
-          <td class="status" align="center">&nbsp;</td>
-          <td class="description">&nbsp;</td>
-          <td>
-            <button class="btn" id="refresh_live_status">Refresh</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+
+    <div id="cloud_status">
+      <h4>Cloud App Status</h4>
+      <form class="form-horizontal">
+        <p>
+          Here can view the status of your currently deployed Cloud App
+        </p>
+        <br/>
+
+        <div class="control-group">
+          <label class="control-label">Cloud App Status</label>
+          <div class="controls current_cloud_app_status_container">
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label">Deployment Target</label>
+          <div class="controls current_deploy_target_container">
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label">Deployment Host</label>
+          <div class="controls current_deploy_host_container">
+          </div>
+        </div>
+      </form>
+    </div>
 
     <!-- Templates -->
-    <div id="ping_status_failed_label" class="hidden_template">
-      <span class="label label-important">Not Running</span>
-    </div>
-
-    <div id="ping_status_failed_description" class="hidden_template">Your cloud app doesn't appear to be running.</div>
-
-    <div id="ping_status_success_label" class="hidden_template">
-      <span class="label label-success">Running</span>
-    </div>
-
-    <div id="ping_status_success_description" class="hidden_template">Your cloud app is deployed and running.</div>
-
-    <div id="ping_status_loading_description" class="hidden_template">Loading ...</div>
-
     <div id="ping_status_loading_label" class="hidden_template">
-      <img src="<%=studio.getStaticAssetPath("themes/default/img/throbber.gif")%>" alt="loading"></div>
-
-    <span id="stats_loading" class="hidden_template">
-      <img src="<%=studio.getStaticAssetPath("themes/default/img/throbber.gif")%>" alt="loading"></span>
+      <img src="<%=studio.getStaticAssetPath("themes/default/img/throbber.gif")%>" alt="loading"/>
+    </div>
   </div>
 
   <hr/>
@@ -60,8 +44,7 @@
     <a href="#" class="btn nodejs_mode deploy_cloud_code"> <i class="icon-cloud"></i>
       <h5>Deploy Cloud Code</h5>
     </a>
-    <a href="#" class="btn nodejs_mode monitor_cloud_stats">
-      <i class="icon-dashboard"></i>
+    <a href="#" class="btn nodejs_mode monitor_cloud_stats"> <i class="icon-dashboard"></i>
       <h5>Cloud Statistics</h5>
     </a>
     <a href="#" class="btn cloud_logs">
@@ -70,6 +53,6 @@
     </a>
   </div>
   <hr/>
-  <h3>Learn more about Developing FeedHenry Cloud Code</h3>
+  <h4>Learn more about Developing FeedHenry Cloud Code</h4>
   <a class="docslink" href="http://docs.feedhenry.com/v2/cloud_development.html">FeedHenry Cloud Development Documentation</a>
 </div>
