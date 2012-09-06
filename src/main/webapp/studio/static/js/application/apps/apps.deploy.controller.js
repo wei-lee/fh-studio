@@ -210,8 +210,6 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
   },
 
   deployStarted: function(cache_key) {
-    $('.progress', this.views.deploying_container).slideDown();
-
     var self = this;
     this.resetProgress();
     console.log('deploying.deployStarted: [' + cache_key + ']');
@@ -282,9 +280,10 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
 
     progress_log_el.val('');
 
+    bar.css('width', '0%');
     setTimeout(function(){
       bar.css('width', '0%');
-    }, 1000);
+    }, 500);
   },
 
   updateProgressLog: function(log) {
