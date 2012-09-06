@@ -42,9 +42,10 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     var cloud_env = $fw.data.get('cloud_environment');
     var app_guid = $fw.data.get('inst').guid;
 
+    $(self.container).show();
+
     this.model.deploy.list(app_guid, cloud_env, function(targets) {
       self.renderTargets(targets.list);
-      $(self.container).show();
     }, function() {
       // List failed
     });
