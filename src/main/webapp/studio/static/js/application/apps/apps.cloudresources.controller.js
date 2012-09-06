@@ -156,8 +156,7 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
           plotBackgroundImage: null,
           plotBorderWidth: 0,
           plotShadow: false,
-          backgroundColor: null,
-          plotBackgroundImage: null,
+          backgroundColor: null
         },
 
         title: false,

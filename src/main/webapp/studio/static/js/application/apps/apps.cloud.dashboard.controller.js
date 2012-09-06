@@ -79,7 +79,7 @@ Apps.Cloud.Dashboard.Controller = Apps.Cloud.Controller.extend({
     }, function(res) {
       // Error
       self.renderStatusFail();
-    })
+    });
   },
 
   renderStatusOK: function() {
