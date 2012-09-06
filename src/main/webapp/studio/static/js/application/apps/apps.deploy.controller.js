@@ -18,11 +18,11 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
 
   views: {
     deploying_container: "#deploying_container",
-    deploy_targets: '#deploy_targets',
-    progress_area: '#cloud_deploy_progress'
+    deploy_targets: '#deploy_targets'
   },
 
   container: null,
+  active_async_task: null,
 
   init: function() {
     this._super();
@@ -38,7 +38,6 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     this.initFn();
 
     $('.deploy_action', self.views.deploying_container).removeClass('hidden').addClass('hidden');
-    this.hideProgressArea();
 
     var cloud_env = $fw.data.get('cloud_environment');
     var app_guid = $fw.data.get('inst').guid;
@@ -51,18 +50,14 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     });
   },
 
-  showProgressArea: function() {
-    $('#cloud_deploy_progress').show();
-    $('#cloud_deploy_progress .progresslog').show();
-    $('#cloud_deploy_progress textarea').show();
-    this.resetProgress();
+  disableDeployButton: function() {
+    $('#deploy_cloud_app').attr('disabled', 'disabled');
+    $('#abort_cloud_app_deploy').removeClass('hidden').show();
   },
 
-  hideProgressArea: function() {
-    $('#cloud_deploy_progress').hide();
-    $('#cloud_deploy_progress .progresslog').hide();
-    $('#cloud_deploy_progress textarea').hide();
-    this.resetProgress();
+  enableDeployButton: function() {
+    $('#deploy_cloud_app').removeAttr('disabled');
+    $('#abort_cloud_app_deploy').hide();
   },
 
   initBindings: function() {
@@ -73,6 +68,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
 
     $('#deploy_cloud_app').unbind().click(function(e) {
       e.preventDefault();
+      self.disableDeployButton();
       self.deploy();
     });
 
@@ -80,10 +76,20 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
       $('#admin_tab').trigger('click');
       $('.nav-list .deploy_targets').trigger('click');
     });
+
+    $('#abort_cloud_app_deploy').unbind().click(function() {
+      self.abort();
+    });
+  },
+
+  abort: function() {
+    this.active_async_task.cancel();
+    this.enableDeployButton();
+    this.resetProgress();
   },
 
   deploy: function() {
-    this.showProgressArea();
+    this.makeProgressStriped();
     var env = $fw.data.get('cloud_environment');
 
     if (env === 'live') {
@@ -211,7 +217,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     console.log('deploying.deployStarted: [' + cache_key + ']');
     var progress = 0;
 
-    var deploy_task = new ASyncServerTask({
+    this.active_async_task = new ASyncServerTask({
       cacheKey: cache_key
     }, {
       updateInterval: Properties.cache_lookup_interval,
@@ -260,7 +266,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
       },
       end: function() {}
     });
-    deploy_task.run();
+    this.active_async_task.run();
   },
 
   updateProgress: function(value) {
@@ -295,22 +301,24 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     }
   },
 
+  makeProgressSolid: function() {
+    $('#cloud_deploy_progress .progress').removeClass('progress-striped');
+  },
+
+  makeProgressStriped: function() {
+    $('#cloud_deploy_progress .progress').addClass('progress-striped');
+  },
+
   deployCompleteSuccess: function() {
     console.log('Deploy complete - success.');
-    var self = this;
-    setTimeout(function() {
-      $(self.views.progress_area).slideUp();
-      self.showAlert('success', 'Your Cloud App has been deployed successfully.');
-    }, 2000);
+    this.enableDeployButton();
+    this.makeProgressSolid();
   },
 
   deployCompleteFailed: function() {
     console.log('Deploy complete - failed.');
-    var self = this;
-    setTimeout(function() {
-      $(self.views.progress_area).slideUp();
-      self.showAlert('error', 'An error occured while deploying your Cloud App');
-    }, 2000);
+    this.enableDeployButton();
+    this.makeProgressSolid();
   },
 
   /*

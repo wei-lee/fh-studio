@@ -2985,10 +2985,6 @@ a.docslink {
   font-size: 13px;
 }
 
-.deploy_action {
-  margin-top: 90px;
-}
-
 .cloud_environment h4, .cloud_environment h3 {
   text-align: center;
 }
@@ -3015,6 +3011,10 @@ a.docslink {
 
 .target_row a {
   margin-bottom: 20px;
+}
+
+#abort_cloud_app_deploy {
+  margin-right: 20px;
 }
 
 /* Awesome nth item selector that works cross platform (including IE!)
