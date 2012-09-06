@@ -8,7 +8,6 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
   // ✈
   // ✈ ✈
   // ✈
-
   models: {
     appresource: new model.AppResource()
   },
@@ -121,7 +120,7 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
     $('.bar-info', container).css('width', (100 - usedPercentage) + '%');
   },
 
-  showNAResourceBar: function (container) {
+  showNAResourceBar: function(container) {
     $('.resource_used', container).text('n/a');
     $('.resource_max', container).text('n/a');
 
@@ -141,6 +140,11 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
 
     if (this.cpuChart == null) {
       this.cpuChart = new Highcharts.Chart({
+
+        exporting: {
+          enabled: false
+        },
+
         credits: {
           enabled: false
         },
@@ -148,98 +152,76 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
         chart: {
           renderTo: container,
           type: 'gauge',
-          backgroundColor: null,
+          alignTicks: false,
           plotBackgroundImage: null,
           plotBorderWidth: 0,
-          plotShadow: false
+          plotShadow: false,
+          backgroundColor: null,
+          plotBackgroundImage: null,
         },
 
-        exporting: {
-          enabled: false
-        },
-
-        title: null,
-
+        title: false,
         pane: {
-          startAngle: -140,
-          endAngle: 140,
-          background: [{
-            backgroundColor: {
-              linearGradient: {
-                x1: 0,
-                y1: 0,
-                x2: 0,
-                y2: 1
-              },
-              stops: [
-                [0, '#FFF'],
-                [1, '#333']
-              ]
-            },
-            borderWidth: 0,
-            outerRadius: '109%'
-          }, {
-            backgroundColor: {
-              linearGradient: {
-                x1: 0,
-                y1: 0,
-                x2: 0,
-                y2: 1
-              },
-              stops: [
-                [0, '#333'],
-                [1, '#FFF']
-              ]
-            },
-            borderWidth: 1,
-            outerRadius: '107%'
-          }, {
-            // default background
-          }, {
-            backgroundColor: '#DDD',
-            borderWidth: 0,
-            outerRadius: '105%',
-            innerRadius: '103%'
-          }]
+          startAngle: -90,
+          endAngle: 90,
+          background: {
+            backgroundColor: 'white',
+            borderWidth: 0
+          }
+        },
+        plotOptions: {
+          gauge: {
+            dial: {
+              rearLength: 0,
+              baseWidth: 10,
+              baseLength: 5,
+              radius: 100
+            }
+          }
         },
 
-        // the value axis
-        yAxis: {
+        yAxis: [{
           min: 0,
           max: 100,
-
-          minorTickInterval: 'auto',
-          minorTickWidth: 1,
-          minorTickLength: 10,
-          minorTickPosition: 'inside',
-          minorTickColor: '#666',
-
-          tickPixelInterval: 30,
-          tickWidth: 2,
-          tickPosition: 'inside',
-          tickLength: 10,
-          tickColor: '#666',
+          lineColor: '#339',
+          tickColor: '#339',
+          minorTickColor: '#339',
+          offset: 0,
+          lineWidth: 0,
           labels: {
-            step: 2,
-            rotation: 'auto'
+            distance: 18,
+            rotation: 'auto',
+            formatter: function() {
+              return this.value + '%';
+            }
           },
-          title: {
-            text: $fw.client.lang.getLangString('cloudresource_cpu_title')
-          },
+          title: $fw.client.lang.getLangString('cloudresource_cpu_title'),
+          tickLength: 0,
+          minorTickLength: 0,
+          endOnTick: false,
           plotBands: [{
             from: 0,
             to: self.WARNING_LEVEL,
-            color: '#55BF3B' // green
+            color: '#55BF3B',
+            // green
+            innerRadius: '100%',
+            outerRadius: '115%'
           }, {
             from: self.WARNING_LEVEL,
             to: self.DANGER_ZONE,
-            color: '#DDDF0D' // yellow
+            color: '#DDDF0D',
+            // yellow
+            innerRadius: '100%',
+            outerRadius: '115%'
           }, {
             from: self.DANGER_ZONE,
             to: 100,
-            color: '#DF5353' // red
+            color: '#DF5353',
+            // red
+            innerRadius: '100%',
+            outerRadius: '115%'
           }]
-        },
+        }],
 
         series: [{
           name: 'Usage',
@@ -248,7 +230,6 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
             valueSuffix: '%'
           }
         }]
-
       });
     }
   }
