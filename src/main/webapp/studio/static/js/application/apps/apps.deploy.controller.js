@@ -281,7 +281,10 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     var bar = $('.bar', progress_el);
 
     progress_log_el.val('');
-    bar.css('width', '0%');
+
+    setTimeout(function(){
+      bar.css('width', '0%');
+    }, 1000);
   },
 
   updateProgressLog: function(log) {
