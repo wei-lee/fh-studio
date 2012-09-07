@@ -137,13 +137,21 @@ Apps.Cloud.Dashboard.Controller = Apps.Cloud.Controller.extend({
     container.append(spinner);
   },
 
-  hideLoadIcon: function(container) {
-  },
+  hideLoadIcon: function(container) {},
 
   renderStatusOK: function() {
+    var self = this;
     var cont = $('.current_cloud_app_status_container', this.views.dashboard_container).empty();
     var status = $('<span>').addClass('label label-success cloud_app_status').text('Running');
     cont.append(status);
+    var button = $('<button>').addClass('btn').text('Refresh');
+    button.click(function() {
+      var env = $fw.data.get('cloud_environment');
+      var guid = $fw.data.get('inst').guid;
+      self.loadCurrentStatus(guid, env);
+    });
+    button.css('margin-left', '10px');
+    cont.append(button);
   },
 
   renderStatusFail: function() {
