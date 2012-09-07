@@ -1,4 +1,4 @@
-@charset 'UTF-8';
+\@charset 'UTF-8';
 @import url("font-awesome.css");
 
 /*
@@ -2441,7 +2441,7 @@ line-height:0.5em;
   font-weight: bold;
 }
 
-.nav-list > li > a, #app_publish_destinations a {
+.nav-list > li > a, #app_publish_destinations a, #app_export_destinations a {
   color: #666;
 }
 
