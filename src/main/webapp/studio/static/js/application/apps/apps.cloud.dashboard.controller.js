@@ -79,6 +79,17 @@ Apps.Cloud.Dashboard.Controller = Apps.Cloud.Controller.extend({
       e.preventDefault();
       $('.manageapps_nav_list a[data-controller="apps.logging.controller"]').trigger('click');
     });
+
+    $('a.edit_cloud_code', this.container).unbind().click(function(e) {
+      e.preventDefault();
+      $fw.data.set('initFile', '/cloud/main.js');
+      $('.manageapps_nav_list a[data-controller="apps.editor.controller"]').trigger('click');
+    });
+
+    $('a.notification_settings', this.container).unbind().click(function(e) {
+      e.preventDefault();
+      $('.manageapps_nav_list a[data-controller="apps.cloudnotifications.controller"]').trigger('click');
+    });    
   },
 
   loadCurrentStatus: function(guid, env) {
