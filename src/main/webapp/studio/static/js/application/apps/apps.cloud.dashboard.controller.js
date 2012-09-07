@@ -137,8 +137,6 @@ Apps.Cloud.Dashboard.Controller = Apps.Cloud.Controller.extend({
     container.append(spinner);
   },
 
-  hideLoadIcon: function(container) {},
-
   renderStatusOK: function() {
     this.renderStatus('label-success', 'Running');
   },
@@ -186,6 +184,10 @@ Apps.Cloud.Dashboard.Controller = Apps.Cloud.Controller.extend({
       label.text(self.target_map[target.fields.target]);
     }
     button.append(label);
+
+    button.click(function(){
+      $('.nav-list li a[data-controller="apps.deploy.controller"]').trigger('click');
+    });
 
     $('.current_deploy_target_container', dashboard_container).empty().append(button);
   },
