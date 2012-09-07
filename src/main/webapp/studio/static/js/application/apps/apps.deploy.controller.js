@@ -305,6 +305,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
         log_value = current_log + '\n' + log.join('\n');
       }
       progress_log_el.val(log_value);
+      progress_log_el.scrollTop('10000000');
     }
   },
 
