@@ -48,21 +48,74 @@ Apps.Cloud.Dashboard.Controller = Apps.Cloud.Controller.extend({
     this.bind();
     $(this.container).show();
 
-    var cloud_env = $fw.data.get('cloud_environment');
-    var app_guid = $fw.data.get('inst').guid;
+    var env = $fw.data.get('cloud_environment');
+    var guid = $fw.data.get('inst').guid;
 
-    // Check current deploy target
-    this.model.deploy.current(app_guid, cloud_env, function(current_target) {
+    this.loadCurrentTarget(guid, env);
+    this.loadCurrentHost(guid, env);
+    this.loadCurrentStatus(guid, env);
+  },
+
+  bind: function() {
+    var self = this;
+
+    // Action bindings
+    $('a.develop_cloud_code', this.container).unbind().click(function(e) {
+      e.preventDefault();
+      self.openCloudEditor();
+    });
+
+    $('a.deploy_cloud_code', this.container).unbind().click(function(e) {
+      e.preventDefault();
+      $('.manageapps_nav_list a[data-controller="apps.deploy.controller"]').trigger('click');
+    });
+
+    $('a.monitor_cloud_stats', this.container).unbind().click(function(e) {
+      e.preventDefault();
+      $('.manageapps_nav_list a[data-controller="stats.controller"]').trigger('click');
+    });
+
+    $('a.cloud_logs', this.container).unbind().click(function(e) {
+      e.preventDefault();
+      $('.manageapps_nav_list a[data-controller="apps.logging.controller"]').trigger('click');
+    });
+  },
+
+  loadCurrentStatus: function(guid, env) {
+    var container = $('.current_cloud_app_status_container', this.container);
+    container.empty();
+    this.showLoadIcon(container);
+    var self = this;
+    this.ping(guid, env, function(res) {
+      // Success
+      self.renderStatusOK();
+    }, function(res) {
+      // Error
+      self.renderStatusFail();
+    });
+  },
+
+  loadCurrentTarget: function(guid, env) {
+    var container = $('.current_deploy_target_container', this.container);
+    container.empty();
+    this.showLoadIcon(container);
+    var self = this;
+    this.model.deploy.current(guid, env, function(current_target) {
       self.renderCurrentTarget(current_target);
     }, function() {
       // Failed
     });
+  },
 
-    // Check current app host
-    this.model.app.hosts(app_guid, function(res) {
+  loadCurrentHost: function(guid, env) {
+    var container = $('.current_deploy_host_container', this.container);
+    container.empty();
+    this.showLoadIcon(container);
+    var self = this;
+    this.model.app.hosts(guid, function(res) {
       var url = null;
       // Inconsistency :(
-      if (cloud_env === 'live') {
+      if (env === 'live') {
         url = res.hosts['live-url'];
       } else {
         url = res.hosts['development-url'];
@@ -71,15 +124,20 @@ Apps.Cloud.Dashboard.Controller = Apps.Cloud.Controller.extend({
     }, function() {
       // Failed
     });
+  },
 
-    // Ping app
-    this.ping(app_guid, cloud_env, function(res) {
-      // Success
-      self.renderStatusOK();
-    }, function(res) {
-      // Error
-      self.renderStatusFail();
-    });
+  createSpinner: function() {
+    var spinner = $('.hidden_template.loading_icon', this.container).clone();
+    spinner.removeClass('hidden_template');
+    return spinner;
+  },
+
+  showLoadIcon: function(container) {
+    var spinner = this.createSpinner();
+    container.append(spinner);
+  },
+
+  hideLoadIcon: function(container) {
   },
 
   renderStatusOK: function() {
@@ -119,31 +177,6 @@ Apps.Cloud.Dashboard.Controller = Apps.Cloud.Controller.extend({
     button.append(label);
 
     $('.current_deploy_target_container', dashboard_container).empty().append(button);
-  },
-
-  bind: function() {
-    var self = this;
-
-    // Action bindings
-    $('a.develop_cloud_code', this.container).unbind().click(function(e) {
-      e.preventDefault();
-      self.openCloudEditor();
-    });
-
-    $('a.deploy_cloud_code', this.container).unbind().click(function(e) {
-      e.preventDefault();
-      $('.manageapps_nav_list a[data-controller="apps.deploy.controller"]').trigger('click');
-    });
-
-    $('a.monitor_cloud_stats', this.container).unbind().click(function(e) {
-      e.preventDefault();
-      $('.manageapps_nav_list a[data-controller="stats.controller"]').trigger('click');
-    });
-
-    $('a.cloud_logs', this.container).unbind().click(function(e) {
-      e.preventDefault();
-      $('.manageapps_nav_list a[data-controller="apps.logging.controller"]').trigger('click');
-    });
   },
 
   openCloudEditor: function() {
