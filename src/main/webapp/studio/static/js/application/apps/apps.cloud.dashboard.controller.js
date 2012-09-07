@@ -151,7 +151,7 @@ Apps.Cloud.Dashboard.Controller = Apps.Cloud.Controller.extend({
     var self = this;
     var cont = $('.current_cloud_app_status_container', this.views.dashboard_container).empty();
     var status = $('<span>').addClass('label cloud_app_status').text(message);
-    status.addClass(css_class);
+    status.addClass(label_class);
     cont.append(status);
     var button = $('<button>').addClass('btn').text('Refresh');
     button.click(function() {
