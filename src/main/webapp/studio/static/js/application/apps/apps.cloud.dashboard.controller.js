@@ -140,9 +140,18 @@ Apps.Cloud.Dashboard.Controller = Apps.Cloud.Controller.extend({
   hideLoadIcon: function(container) {},
 
   renderStatusOK: function() {
+    this.renderStatus('label-success', 'Running');
+  },
+
+  renderStatusFail: function() {
+    this.renderStatus('label-important', 'Not Running');
+  },
+
+  renderStatus: function(label_class, message) {
     var self = this;
     var cont = $('.current_cloud_app_status_container', this.views.dashboard_container).empty();
-    var status = $('<span>').addClass('label label-success cloud_app_status').text('Running');
+    var status = $('<span>').addClass('label cloud_app_status').text(message);
+    status.addClass(css_class);
     cont.append(status);
     var button = $('<button>').addClass('btn').text('Refresh');
     button.click(function() {
@@ -152,12 +161,6 @@ Apps.Cloud.Dashboard.Controller = Apps.Cloud.Controller.extend({
     });
     button.css('margin-left', '10px');
     cont.append(button);
-  },
-
-  renderStatusFail: function() {
-    var cont = $('.current_cloud_app_status_container', this.views.dashboard_container).empty();
-    var status = $('<span>').addClass('label label-important cloud_app_status').text('Not Running');
-    cont.append(status);
   },
 
   renderCurrentAppHost: function(url) {
