@@ -2872,7 +2872,7 @@ table.dataTable th:active {
 .actions a {
   width: 128px;
   height: 128px;
-  margin-right: 10px;
+  margin: 10px 10px 0 0;
 }
 
 #quickstart_container .well,
@@ -2955,10 +2955,33 @@ a.docslink {
 
 .cloud_environment h4, .cloud_environment h3 {
   text-align: center;
+  margin-top: 0;
 }
 
-.cloud_environment {
-  margin-bottom: 20px;
+.cloud_environment .well {
+  min-height: 0 !important;
+  padding: 10px !important;
+}
+
+.cloud_environment .nav-pills a {
+  border: 1px solid #ccc;
+}
+
+.cloud_environment .nav-pills li.active a {
+  border: 1px solid #08C;
+}
+
+.cloud_environment .nav {
+  margin: auto;
+  width: 200px;
+}
+.cloud_environment .nav li {
+  width: 100px;
+}
+
+.cloud_environment .nav a {
+  width: 70px;
+  text-align: center;
 }
 
 #cloudresources_container .progress {
