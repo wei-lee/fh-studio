@@ -236,7 +236,11 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
         for (var i = 0; i < res.log.length; i++) {
           console.log(res.log[i]);
         }
-        progress += 2;
+        if(res.progress){
+          progress = res.progress;
+        } else {
+          progress += 2;
+        }
 
         self.updateProgressLog(res.log);
         self.updateProgress(progress);
