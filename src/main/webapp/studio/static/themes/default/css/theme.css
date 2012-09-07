@@ -591,9 +591,9 @@ label.error
 #editor_titles li.ui-tabs-selected{
   padding-bottom:0px!important;
 }
-#editor_titles li .ui-icon-close { 
+#editor_titles li i { 
   float: left; 
-  margin: 0.1em 0.2em 0 0; 
+  margin: 7px 0 0 3px; 
   cursor: pointer; 
 }
 #editor_titles li a {
