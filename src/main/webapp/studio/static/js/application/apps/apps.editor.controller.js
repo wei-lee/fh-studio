@@ -544,9 +544,8 @@ Apps.Editor.Controller = Apps.Controller.extend({
       "data-file_id": id
     }).append($("<a>", {
       text: tab_text
-    })).append($("<span>", {
-      "class": "ui-icon ui-icon-close",
-      text: "Remove Tab"
+    })).append($("<i>", {
+      "class": "icon-remove"
     }).click(function() {
       self.closeTab(id);
     })).bind('click', function() {

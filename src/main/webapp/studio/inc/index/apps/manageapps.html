@@ -83,24 +83,28 @@
           Deploy
         </a>
       </li>
+      <% if(studio.getProps().optBoolean("stats-enabled")){ %>
       <li class="template-restriction nodejs_mode">
         <a href="#" data-controller="stats.controller">
           <i class="icon-bar-chart"></i>
           Stats
         </a>
       </li>
+      <% } %>
       <li class="template-restriction nodejs_mode">
         <a href="#" data-controller="apps.cloudnotifications.controller">
           <i class="icon-envelope"></i>
           Notifications
         </a>
       </li>
+      <% if(studio.getProps().optBoolean("cloudresources-enabled")){ %>
       <li class="template-restriction nodejs_mode">
         <a href="#" data-controller="apps.cloudresources.controller">
           <i class="icon-dashboard"></i>
           Resources
         </a>
       </li>
+      <% } %>
       <li class="template-restriction">
         <a href="#" data-controller="apps.logging.controller">
           <i class="icon-list"></i>
@@ -124,7 +128,9 @@
 
     <div id="app_content" class="span7">
       
+        <% if(studio.getProps().optBoolean("cloudresources-enabled")){ %>
         <%@ include file="./cloudresources.html"%>    
+        <% } %>
 
         <%@ include file="./cloudnotifications.html"%>    
 

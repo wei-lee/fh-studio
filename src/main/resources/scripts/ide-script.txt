@@ -86,7 +86,7 @@ js/application/chart/painter/jqplot/jQPlotChartPainter.js
 js/application/chart/painter/jqplot/LineChartPainter.js
 js/application/chart/painter/jqplot/PieChartPainter.js
 common/js/ui/thirdparty/zeroclipboard/ZeroClipboard.js
-common/js/ui/thirdparty/highcharts/highcharts.js
+common/js/ui/thirdparty/highcharts/highstock.js
 common/js/ui/thirdparty/highcharts/highcharts-more.js
 common/js/ui/thirdparty/highcharts/modules/exporting.js
 common/js/ui/thirdparty/highcharts/moment.js
@@ -101,6 +101,7 @@ js/application/stats/views/stats.view.base.js
 js/application/stats/views/stats.view.list.js
 js/application/stats/views/stats.view.list.apicalls.js
 js/application/stats/views/stats.view.chart.js
+js/application/stats/views/stats.view.chart.apicalls.js
 js/application/stats/stats.controller.js
 js/application/tab/tab.manager.js
 js/application/tab/admin.tab.manager.js

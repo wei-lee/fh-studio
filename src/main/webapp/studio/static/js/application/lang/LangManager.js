@@ -104,7 +104,8 @@ LangManager = Class.extend({
       el.popover({
         content: lang,
         placement: 'left',
-        delay: 100
+        delay: { show: 100, hide: 100 },
+        trigger: 'hover'
       });
     }
   },

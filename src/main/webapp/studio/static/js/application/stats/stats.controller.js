@@ -6,6 +6,8 @@ Stats.Controller = Apps.Cloud.Controller.extend({
     stats_container: '#stats_container'
   },
 
+  openItemId: null, // used for opening last item after refresh. id of element e.g. psdev-4dt5v7gvwiik2uo0pcd8wizw-dev_api___fh_all_list_item
+
   init: function(params) {
     this._super();
     this.initFn = _.once(this.initBindings);
@@ -34,6 +36,7 @@ Stats.Controller = Apps.Cloud.Controller.extend({
     $('.stats_type_nav a[data-toggle="pill"]', this.container).on('shown', function (e) {
       // refresh
       console.log('pill changed, stats screen refresh');
+      self.openItemId = null;
       self.show();
     });
 
@@ -74,7 +77,7 @@ Stats.Controller = Apps.Cloud.Controller.extend({
     }
   },
 
-  toggleStats: function(el, model, series_name) {
+  toggleStats: function(el, model, callback) {
     // Already open, close
     if ($(el).hasClass('active')) {
       $('.chart_container', model.stats_container).empty();
@@ -82,20 +85,11 @@ Stats.Controller = Apps.Cloud.Controller.extend({
       //return;
     }
 
-    $('.stats_area li', model.stats_container).removeClass('active');
-    $(el).addClass('active');
-    var series = model.getSeries(series_name);
-
-    // Empty showing containers
     this.closeAll(model);
 
-    var self = this;
-    var chart = new Stats.View.Chart({
-      model: model,
-      series: series,
-      controller: self
-    });
-    chart.render();
+    $('.stats_area li', model.stats_container).removeClass('active');
+    $(el).addClass('active');
+    return callback();
   },
 
   closeAll: function(model) {
@@ -173,7 +167,7 @@ Stats.Controller = Apps.Cloud.Controller.extend({
 
     }, function (cb) {
       // in series, so we should have data at this point to load
-      // into remaining models
+      // into remaining models, if any (only 1 for apicalls, 2 for custom stats (counters & timers))
       var remainingModels = self.models.slice(1, self.models.length);
 
       async.forEach(remainingModels, function (model, innerCb) {

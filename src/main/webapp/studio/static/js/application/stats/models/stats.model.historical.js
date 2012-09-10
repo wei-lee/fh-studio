@@ -12,7 +12,7 @@ Stats.Model.Historical = Stats.Model.Base.extend({
       all_series: []
     };
 
-    var base_match = data[series_name].series || null;
+    var base_match = data[series_name] ? data[series_name].series || null : null;
     if (base_match) {
       series_data.series_name = series_name;
       // Base match, flatten hash into array of series items
@@ -21,6 +21,12 @@ Stats.Model.Historical = Stats.Model.Base.extend({
       });
     }
     return series_data;
+  },
+
+  getAllSeries: function() {
+    var data = this._transform();
+
+    return data;
   },
 
   getAllSeriesNames: function() {
@@ -79,7 +85,7 @@ Stats.Model.Historical = Stats.Model.Base.extend({
     } else if (key.match(/_mean/)) {
       return "#DF5353";
     } else {
-      return "#7bb900";
+      return "#666";
     }
   }
 });

@@ -665,5 +665,22 @@ var Lang = {
   stats_pills_api: "App Endpoints",
   stats_tabs_counter: "Counters",
   stats_tabs_timer: "Timers",
-  stats_tabs_gauge: "Gauges"
+  stats_tabs_gauge: "Gauges",
+  stats_empty: "No stats are currently available for this App. For help on setting up custom stats, check out the documentation %stats_docs%",
+  stats_empty_apicalls: "No stats are currently available for this Apps endpoints. Try making some cloud calls to generate stats.",
+  stats_fh_all_name: "All Endpoints",
+  stats_refresh_button: "Refresh",
+  stats_apicalls_request_times_upper: "Longest Request Time",
+  stats_apicalls_request_times_lower: "Shortest Request Time",
+  stats_apicalls_request_times_90th_percentile_mean: "Average Request Time (90th %ile)",
+  stats_apicalls_request_times_90th_percentile_mean_short: "Average Request Time",
+  stats_apicalls_request_times_axis: "Time in milliseconds",
+  stats_apicalls_requests_active: "Active requests (at interval time)",
+  stats_apicalls_requests_average_concurrent: "Average Concurrent Requests",
+  stats_apicalls_requests_number: "Requests per second",
+  stats_apicalls_requests_number_short: "Req. in last period",
+  stats_apicalls_requests_active_short: "Active Requests",
+  stats_apicalls_requests_number_axis: "Requests per second",
+  stats_apicalls_requests_xaxis: "Time of requests (%interval% second intervals)",
+  stats_apicalls_requests_per_interval: "Requests per minute"
 };
