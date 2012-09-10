@@ -25,19 +25,19 @@ Stats.View.Chart.APICalls = Stats.View.Chart.extend({
       chart: {
         renderTo: container[0],
         zoomType: 'x',
-        spacingRight: 20,
-        events: {
-          load: function () {
-            var innerSelf = this;
-            // self.refreshInterval = setInterval(function () {
-            //   if ($(innerSelf.container).is(':visible')) {
-            //   self.updatePoints(innerSelf);
-            //   } else {
-            //     clearInterval(self.refreshInterval);
-            //   }
-            // }, self.model.interval);
-          }
-        }
+        spacingRight: 20//,
+        // events: {
+        //   load: function () {
+        //     var innerSelf = this;
+        //     self.refreshInterval = setInterval(function () {
+        //       if ($(innerSelf.container).is(':visible')) {
+        //       self.updatePoints(innerSelf);
+        //       } else {
+        //         clearInterval(self.refreshInterval);
+        //       }
+        //     }, self.model.interval);
+        //   }
+        // }
       },
       scrollbar: {
         enabled: true
@@ -151,45 +151,45 @@ Stats.View.Chart.APICalls = Stats.View.Chart.extend({
     chart.view = self;
     chart.model_series = series_data;
 
-  },
+  }//,
 
-  updatePoints: function (chart) {
-              // console.log('getting latest data');
+  // updatePoints: function (chart) {
+  //             // console.log('getting latest data');
 
-              // var x = (new Date()).getTime(), // current time
-              //     y = Math.random();
+  //             // var x = (new Date()).getTime(), // current time
+  //             //     y = Math.random();
 
-              // series.addPoint([x, y], true, true);
-    var self = this;
-    var model = self.model;
-    var series = chart.series[0];
-    var lastTimestamp = chart.series[0].data[chart.series[0].data.length - 1].x;
-    model.load({
-      count: 2,
-      loaded: function(res) {
-        console.log('Stats loaded');
-        if (res.status == 'ok') {
-          model.applyFilter({
-            name: 'filterDate',
-            from: new Date(lastTimestamp)
-          });
+  //             // series.addPoint([x, y], true, true);
+  //   var self = this;
+  //   var model = self.model;
+  //   var series = chart.series[0];
+  //   var lastTimestamp = chart.series[0].data[chart.series[0].data.length - 1].x;
+  //   model.load({
+  //     count: 2,
+  //     loaded: function(res) {
+  //       console.log('Stats loaded');
+  //       if (res.status == 'ok') {
+  //         model.applyFilter({
+  //           name: 'filterDate',
+  //           from: new Date(lastTimestamp)
+  //         });
 
-          var data = model.getSeries(self.series_name).all_series; // e.g. [{"yAxis":1,"name":"No. Requests","data":[[1346946637838,38],[1346946647838,38]],"color":"#666","type":"spline","dashStyle":"shortdot","marker":{"radius":4},"zeroes":true},{"yAxis":0,"name":"Longest Request","data":[[1346946637838,519],[1346946647838,523]],"color":"#7798BF"},{"yAxis":0,"name":"Shortest Request","data":[[1346946637838,504],[1346946647838,503]],"color":"#55BF3B"},{"yAxis":0,"name":"90th percentile mean","data":[[1346946637838,508.7352941176471],[1346946647838,510]],"color":"#DF5353"}]
-          for (var ci = 0, cl = chart.series.length; ci < cl; ci += 1) {
-            var ct = data[ci] ? data[ci].data : null;
-            if (ct != null) {
-              for (var ddi = 0, ddl = ct.length; ddi < ddl; ddi += 1) {
-                chart.series[ci].addPoint(ct[ddi], true, true);
-              }
-            } else {
-              // no data
-            }
-          }
-        } else {
-          console.log("Couldn't load stats: " + model.name);
-          // TODO: clear interval??
-        }
-      }
-    });
-  }
+  //         var data = model.getSeries(self.series_name).all_series; // e.g. [{"yAxis":1,"name":"No. Requests","data":[[1346946637838,38],[1346946647838,38]],"color":"#666","type":"spline","dashStyle":"shortdot","marker":{"radius":4},"zeroes":true},{"yAxis":0,"name":"Longest Request","data":[[1346946637838,519],[1346946647838,523]],"color":"#7798BF"},{"yAxis":0,"name":"Shortest Request","data":[[1346946637838,504],[1346946647838,503]],"color":"#55BF3B"},{"yAxis":0,"name":"90th percentile mean","data":[[1346946637838,508.7352941176471],[1346946647838,510]],"color":"#DF5353"}]
+  //         for (var ci = 0, cl = chart.series.length; ci < cl; ci += 1) {
+  //           var ct = data[ci] ? data[ci].data : null;
+  //           if (ct != null) {
+  //             for (var ddi = 0, ddl = ct.length; ddi < ddl; ddi += 1) {
+  //               chart.series[ci].addPoint(ct[ddi], true, true);
+  //             }
+  //           } else {
+  //             // no data
+  //           }
+  //         }
+  //       } else {
+  //         console.log("Couldn't load stats: " + model.name);
+  //         // TODO: clear interval??
+  //       }
+  //     }
+  //   });
+  // }
 });
