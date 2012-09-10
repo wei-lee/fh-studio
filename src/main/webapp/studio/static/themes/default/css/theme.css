@@ -1,4 +1,3 @@
-@charset 'UTF-8';
 @import url("font-awesome.css");
 
 /*
@@ -591,9 +590,9 @@ label.error
 #editor_titles li.ui-tabs-selected{
   padding-bottom:0px!important;
 }
-#editor_titles li .ui-icon-close { 
+#editor_titles li i { 
   float: left; 
-  margin: 0.1em 0.2em 0 0; 
+  margin: 7px 0 0 3px; 
   cursor: pointer; 
 }
 #editor_titles li a {
@@ -2089,46 +2088,14 @@ line-height:0.5em;
   height: 100%;
 }
 
-/* App Ping styles */
-#cloud_status {
-  width: 100% ;
-  margin-bottom: 20px;
-  border: 1px solid #CFCFCF;
-  background: #fff;
-  border-collapse: collapse;
-  font-size: 13px;
+/* Dashboard styles */
+#cloud_status .cloud_app_status {
+  line-height: 30px;
+  padding: 7px 10px 7px 10px;
 }
 
-#cloud_status th {
-  background: #ededed; /* Old browsers */
-  background: -moz-linear-gradient(top, #ffffff 0%, #ededed 100%); /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#ededed)); /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top, #ffffff 0%,#ededed 100%); /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top, #ffffff 0%,#ededed 100%); /* Opera 11.10+ */
-  background: -ms-linear-gradient(top, #ffffff 0%,#ededed 100%); /* IE10+ */
-  background: linear-gradient(top, #ffffff 0%,#ededed 100%); /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
-}
-
-#cloud_status td, th {
-  height: 14px;
-  padding: 4px 10px 4px 10px;
-}
-
-#cloud_status th {
-  text-align: left;
-}
-
-#cloud_status .status {
-  width: 90px;
-}
-
-#cloud_status .environment {
-  width: 90px;
-}
-
-#cloud_status button {
-  float: right;
+#cloud_status .cloud_app_host {
+  line-height: 30px;
 }
 
 /* App Stats styling */
@@ -2479,7 +2446,7 @@ line-height:0.5em;
   font-weight: bold;
 }
 
-.nav-list > li > a, #app_publish_destinations a {
+.nav-list > li > a, #app_publish_destinations a, #app_export_destinations a {
   color: #666;
 }
 
@@ -2910,7 +2877,7 @@ table.dataTable th:active {
 .actions a {
   width: 128px;
   height: 128px;
-  margin-right: 10px;
+  margin: 10px 10px 0 0;
 }
 
 #quickstart_container .well,
@@ -2991,16 +2958,35 @@ a.docslink {
   font-size: 13px;
 }
 
-.deploy_action {
-  margin-top: 90px;
-}
-
 .cloud_environment h4, .cloud_environment h3 {
   text-align: center;
+  margin-top: 0;
 }
 
-.cloud_environment {
-  margin-bottom: 20px;
+.cloud_environment .well {
+  min-height: 0 !important;
+  padding: 10px !important;
+}
+
+.cloud_environment .nav-pills a {
+  border: 1px solid #ccc;
+}
+
+.cloud_environment .nav-pills li.active a {
+  border: 1px solid #08C;
+}
+
+.cloud_environment .nav {
+  margin: auto;
+  width: 200px;
+}
+.cloud_environment .nav li {
+  width: 100px;
+}
+
+.cloud_environment .nav a {
+  width: 70px;
+  text-align: center;
 }
 
 #cloudresources_container .progress {
@@ -3021,6 +3007,10 @@ a.docslink {
 
 .target_row a {
   margin-bottom: 20px;
+}
+
+#abort_cloud_app_deploy {
+  margin-right: 20px;
 }
 
 /* Awesome nth item selector that works cross platform (including IE!)

@@ -14,12 +14,13 @@
   <div class="row-fluid">
     <div class="form-actions deploy_action hidden">
       <button id="deploy_cloud_app" class="btn btn-large btn-primary pull-right">Deploy Cloud App</button>
+      <button id="abort_cloud_app_deploy" class="btn btn-large btn-danger pull-right hidden">Cancel Deploy</button>
     </div>
   </div>
 
-
-  <div id="cloud_deploy_progress" class="hidden_template row-fluid">
-    <div class="progress progress-striped active">
+  <div id="cloud_deploy_progress" class="row-fluid">
+    <h4>Deployment Log</h4>
+    <div class="progress active">
       <div class="bar" style="width: 0%;"></div>
     </div>
     <textarea class="progresslog span12"></textarea>

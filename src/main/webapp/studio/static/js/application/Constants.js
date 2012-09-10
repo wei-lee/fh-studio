@@ -55,6 +55,7 @@ $.extend(Constants, {
   EXTERNAL_REQUEST_URL: Constants.IDE_URL_PREFIX + "app/external_request",
   APP_RESOURCES_URL: Constants.IDE_URL_PREFIX + "app/resources",
   APP_SETPROPERTY_URL: Constants.IDE_URL_PREFIX + "app/setconfig",
+  APP_HOSTS_URL: Constants.IDE_URL_PREFIX + "app/hosts",
 
   KEY_LIST_URL: Constants.IDE_URL_PREFIX + "api/list",
   KEY_CREATE_URL: Constants.IDE_URL_PREFIX + "api/create",
