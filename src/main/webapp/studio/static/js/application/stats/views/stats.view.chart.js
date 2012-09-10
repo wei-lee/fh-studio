@@ -37,6 +37,18 @@ Stats.View.Chart = Class.extend({
         zoomType: 'x',
         spacingRight: 20
       },
+      legend: {
+        enabled: false
+      },
+      scrollbar: {
+        enabled: true
+      },
+      navigator : {
+        enabled : true
+      },
+      rangeselector: {
+        enabled: false
+      },
       title: {
         text: series_name
       },
@@ -45,7 +57,8 @@ Stats.View.Chart = Class.extend({
         dateTimeLabelFormats: { // don't display the dummy year
           month: '%e. %b',
           year: '%b'
-        }
+        },
+        range: 600 * 1000 // 10 minutes
       },
       exporting: {
         buttons: {
@@ -103,5 +116,25 @@ Stats.View.Chart = Class.extend({
     chart.view = self;
     chart.model_series = series_data;
 
+    self.addRefreshButton(container.closest('li').find('h3'));
+  },
+
+  addRefreshButton: function (container) {
+    var self = this;
+
+    // remove refresh buttons from all other items
+    container.closest('ul').find('li h3 button').remove();
+
+    // add refresh button to current item
+    var refreshButton = $('<button>', {
+      "class": "btn pull-right",
+      "text": Lang.stats_refresh_button
+    });
+    refreshButton.bind('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      self.controller.show();
+    });
+    container.append(refreshButton);
   }
 });

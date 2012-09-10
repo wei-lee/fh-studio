@@ -669,6 +669,7 @@ var Lang = {
   stats_empty: "No stats are currently available for this App. For help on setting up custom stats, check out the documentation %stats_docs%",
   stats_empty_apicalls: "No stats are currently available for this Apps endpoints. Try making some cloud calls to generate stats.",
   stats_fh_all_name: "All Endpoints",
+  stats_refresh_button: "Refresh",
   stats_apicalls_request_times_upper: "Longest Request Time",
   stats_apicalls_request_times_lower: "Shortest Request Time",
   stats_apicalls_request_times_90th_percentile_mean: "Average Request Time (90th %ile)",

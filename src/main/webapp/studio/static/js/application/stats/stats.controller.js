@@ -6,6 +6,8 @@ Stats.Controller = Apps.Cloud.Controller.extend({
     stats_container: '#stats_container'
   },
 
+  openItemId: null, // used for opening last item after refresh. id of element e.g. psdev-4dt5v7gvwiik2uo0pcd8wizw-dev_api___fh_all_list_item
+
   init: function(params) {
     this._super();
     this.initFn = _.once(this.initBindings);
@@ -34,6 +36,7 @@ Stats.Controller = Apps.Cloud.Controller.extend({
     $('.stats_type_nav a[data-toggle="pill"]', this.container).on('shown', function (e) {
       // refresh
       console.log('pill changed, stats screen refresh');
+      self.openItemId = null;
       self.show();
     });
 

@@ -41,9 +41,17 @@ Stats.View.List = Class.extend({
 
         // Bind click
         $('h3', list_item).unbind().click(function (e) {
+          self.controller.openItemId = ($(this).parent().attr('id'));
           self.renderChart(series_name, formatted_name);
         });
       });
+
+      // try reopen last open item if it's there
+      if (self.controller.openItemId != null) {
+        $('h3', '#' + self.controller.openItemId).trigger('click');
+      } else {
+        $('li:first h3', self.renderTo).trigger('click');
+      }
     }
   },
 

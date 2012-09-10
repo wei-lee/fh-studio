@@ -5,6 +5,8 @@ Stats.View.Chart.APICalls = Stats.View.Chart.extend({
 
   init: function(params) {
     this._super(params);
+
+    this.addRefreshButtonOnce = _.once(this.addRefreshButton);
   },
 
   render: function() {
@@ -151,6 +153,7 @@ Stats.View.Chart.APICalls = Stats.View.Chart.extend({
     chart.view = self;
     chart.model_series = series_data;
 
+    self.addRefreshButton(container.closest('li').find('h3'));
   }//,
 
   // updatePoints: function (chart) {
