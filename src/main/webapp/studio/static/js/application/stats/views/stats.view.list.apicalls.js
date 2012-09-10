@@ -1,4 +1,5 @@
 Stats.View.List.APICalls = Stats.View.List.extend({
+  fh_all: '__fh_all',
 
   init: function(params) {
     this._super(params);
@@ -12,6 +13,9 @@ Stats.View.List.APICalls = Stats.View.List.extend({
       formatted = m1[1] + '()';
     }
     //console.log('formatSeriesName: ' + name + ' => ' + formatted);
+    if ((this.fh_all + '()') === formatted) {
+      formatted = Lang.stats_fh_all_name;
+    }
 
     return formatted;
   },
@@ -28,6 +32,11 @@ Stats.View.List.APICalls = Stats.View.List.extend({
         "text": Lang.stats_empty_apicalls
       }));
     } else {
+      // order alphabetically with '__fh_all' first, if it's there
+      all_series = _.sortBy(_.toArray(all_series), function (obj) {
+        return self.fh_all === obj.name ? '00000000000000000' : obj.name;
+      });
+
       $.each(all_series, function(i, series) {
         var series_name = series.name;
         var formatted_name = self.formatSeriesName(series_name);
@@ -61,13 +70,13 @@ Stats.View.List.APICalls = Stats.View.List.extend({
         })));
 
         var list_containers = '<div class="' + series_name + '_container"><div class="chart_container"></div></div>';
-        $(self.renderTo).append(list_item);
         list_item.append(list_containers);
-
         // Bind click
         $('h3', list_item).unbind().click(function (e) {
           self.renderChart(series_name, formatted_name);
         });
+
+        $(self.renderTo).append(list_item);
       });
     }
   },
