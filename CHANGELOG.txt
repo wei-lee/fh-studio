@@ -6,6 +6,7 @@
 * Deprecated old build targets: Nokia WRT, Opera Widgets, W3C.
 * Added new Deployment area for deploying your Cloud App to a number of PaaS 
   options including FeedHenry, Cloud Foundry, App Fog, Stackato and Iron Foundry
+* You can now view Cloud App logs for both Live and Dev environments
 
 
 ===============================================================================
