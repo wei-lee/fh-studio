@@ -10,8 +10,6 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
 
   views: {
     debug_logging_container: "#debug_logging_container"
-    // device_list: "#admin_devices_list",
-    // device_update: "#admin_devices_update"
   },
 
   container: null,
