@@ -12,32 +12,30 @@ Apps.Icons.Controller = Apps.Controller.extend({
 
   views: {
     manage_icons_container: "#manage_icons_container"
-    // device_list: "#admin_devices_list",
-    // device_update: "#admin_devices_update"
   },
 
   container: null,
   showPreview: true,
 
-  init: function () {
+  init: function() {
     this.icon_sizes = {
       'small': '16x16px',
       'large': '96x96px'
     };
   },
 
-  show: function(){
+  show: function() {
     this._super();
-    
+
     this.hide();
     this.container = this.views.manage_icons_container;
-    
+
     this.showIcons($fw.data.get('inst').guid);
 
     $(this.container).show();
   },
 
-  showIcons: function (instance_guid) {
+  showIcons: function(instance_guid) {
     var iconContainer = $(this.views.manage_icons_container + ' #manage_icons_body');
     iconContainer.empty();
     var icon_table = $('<table>', {
@@ -51,7 +49,7 @@ Apps.Icons.Controller = Apps.Controller.extend({
     iconContainer.html(icon_table);
   },
 
-  getIconUrl: function (instance_guid, type) {
+  getIconUrl: function(instance_guid, type) {
     var base_url = Constants.APP_ICON_URL.replace("<GUID>", instance_guid).replace("<TYPE>", type);
     // get an uncached version of the image
     base_url += ("?t=" + new Date().getTime());
@@ -59,7 +57,7 @@ Apps.Icons.Controller = Apps.Controller.extend({
   },
 
   // TODO: a lot of html construction here. Is this necessary?
-  constructIcon: function (instance_guid, type) {
+  constructIcon: function(instance_guid, type) {
     var icon_tr = $("<tr>", {
       'class': 'app_icon_div_' + type
     });
@@ -92,22 +90,22 @@ Apps.Icons.Controller = Apps.Controller.extend({
       'class': 'btn'
     });
     var that = this;
-    icon_upload_button.bind('click', function () {
+    icon_upload_button.bind('click', function() {
       that.doUploadIcon(instance_guid, type);
     });
     td_b.append(icon_upload_button);
     icon_tr.append(td_l).append(icon_img_td).append(td_b);
     return icon_tr;
   },
-  
-  reloadIcon: function(instance_guid, type){
+
+  reloadIcon: function(instance_guid, type) {
     $(this.views.manage_icons_container + ' #manage_icons_body').find('img.app_icon_img_' + type).attr('src', this.getIconUrl(instance_guid, type));
   },
 
-  doUploadIcon: function (instance_guid, type) {
+  doUploadIcon: function(instance_guid, type) {
     var that = this;
     console.log('instance::' + instance_guid + "::type::" + type);
-    
+
     var upload_wizard = proto.Wizard.load('upload_icon_wizard', {
       validate: true
     });
@@ -116,39 +114,35 @@ Apps.Icons.Controller = Apps.Controller.extend({
         location: 'required'
       }
     });
-    
+
     console.log("icon upload:: bind show events");
-    upload_wizard.find('#upload_icon_progress').unbind().bind('show', function () {
+    upload_wizard.find('#upload_icon_progress').unbind().bind('show', function() {
       console.log('doing upload');
       var step = $(this);
-      
+
       // TODO: tidy up all these calls and refactor
       proto.ProgressDialog.resetBarAndLog(step);
       proto.ProgressDialog.setProgress(step, 1);
       proto.ProgressDialog.append(step, 'Starting Upload');
       console.log('icon path :: ' + upload_wizard.find('#icon_file_location').val());
-      
+
       var params = {
         'widgetGuid': $fw.data.get('app').guid,
         'templateGuid': instance_guid,
         'code': type
       };
-      
-      $fw.client.model.App.uploadIcon( upload_wizard.find('#icon_file_location'), params,
-        function () {
-          proto.ProgressDialog.setProgress(step, 100);
-          proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_complete'));
-          
-          // TODO: better way for this temporary workaround for finishing wizard after successful upload
-          upload_wizard.find('.jw-button-finish').trigger('click');
-          that.reloadIcon(instance_guid, type);
-        },
-        function (res) {
-          proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_failed'));
-          proto.Wizard.previousStep(upload_wizard, res.error);
-        },
-        5000
-      );
+
+      $fw.client.model.App.uploadIcon(upload_wizard.find('#icon_file_location'), params, function() {
+        proto.ProgressDialog.setProgress(step, 100);
+        proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_complete'));
+
+        // TODO: better way for this temporary workaround for finishing wizard after successful upload
+        upload_wizard.find('.jw-button-finish').trigger('click');
+        that.reloadIcon(instance_guid, type);
+      }, function(res) {
+        proto.ProgressDialog.append(step, $fw.client.lang.getLangString('file_upload_failed'));
+        proto.Wizard.previousStep(upload_wizard, res.error);
+      }, 5000);
     });
   }
 

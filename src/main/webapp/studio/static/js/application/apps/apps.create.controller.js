@@ -6,46 +6,41 @@ Apps.Create.Controller = Controller.extend({
 
   model: {
     // TODO: Add models for app and template, used below
-
     //device: new model.Device()
   },
 
-  views: {
-    // manage_publish_container: "#manage_publish_container"
-    // device_list: "#admin_devices_list",
-    // device_update: "#admin_devices_update"
-  },
+  views: {},
 
   container: null,
-  
+
   EXTERNAL_APP_TYPE: 'EXTERNAL',
   DEFAULT_APP_TYPE: 'DEFAULT',
 
-  init: function () {
-    
+  init: function() {
+
   },
 
-  show: function(){
+  show: function() {
     this._super();
 
     console.log('app create show');
     this.initCreateAppWizard();
   },
 
-  initCreateAppWizard: function () {
+  initCreateAppWizard: function() {
     var self = this;
 
     var create_app_wizard = proto.Wizard.load('create_app_wizard', {
       validate: true,
-      finish: function () {
+      finish: function() {
         var finish_option = create_app_wizard.find('#create_app_next input:radio:checked').val();
-        
+
         self.finishAppWizard(finish_option);
       }
     });
 
     create_app_wizard.find('textarea[name=description]').closest('.control-group').hide();
-    
+
     create_app_wizard.validate({
       rules: {
         title: "required",
@@ -56,183 +51,190 @@ Apps.Create.Controller = Controller.extend({
         scmbranch: "required"
       }
     });
-    
-    create_app_wizard.find("#create_app_from_scm").unbind('show').bind('show', function (e) {
+
+    create_app_wizard.find("#create_app_from_scm").unbind('show').bind('show', function(e) {
       $fw.data.set('app_type', self.EXTERNAL_APP_TYPE);
     });
-    create_app_wizard.find("#create_app_details").unbind('show').bind('show', function (e) {
+    create_app_wizard.find("#create_app_details").unbind('show').bind('show', function(e) {
       $fw.data.set('app_type', self.DEFAULT_APP_TYPE);
     });
-    
-    create_app_wizard.find('#create_app_frameworks').unbind('show').bind('show', function(e){
+
+    create_app_wizard.find('#create_app_frameworks').unbind('show').bind('show', function(e) {
       var frameworksEl = $(this);
-      if(frameworksEl.find('input').length === 0){
+      if (frameworksEl.find('input').length === 0) {
         var contentHtml = $fw.client.tab.apps.manageapps.getController('apps.libraries.controller').getAppFramworksHtml();
         frameworksEl.find('#create_app_frameworks_text').after(contentHtml);
       }
     });
-        
-    create_app_wizard.find("#create_app_progress").unbind('show').bind('show', function (e) {
+
+    create_app_wizard.find("#create_app_progress").unbind('show').bind('show', function(e) {
       var step = $(this),
-          appType = $fw.data.get('app_type'),
-          details_step;
-      
+        appType = $fw.data.get('app_type'),
+        details_step;
+
       var framework_step = null;
-      
+
       if (self.EXTERNAL_APP_TYPE === appType) {
         details_step = create_app_wizard.find("#create_app_from_scm");
-      }
-      else {
+      } else {
         details_step = create_app_wizard.find("#create_app_details");
         framework_step = create_app_wizard.find('#create_app_frameworks');
       }
-      
+
       proto.ProgressDialog.resetBarAndLog(step);
       proto.ProgressDialog.setProgress(step, 1);
       proto.ProgressDialog.append(step, 'Starting Create');
-      
+
       var id = $fw.client.tab.apps.manageapps.getController('apps.preview.controller').getDefaultDeviceId();
       var device = $fw.client.tab.apps.manageapps.getController('apps.preview.controller').resolveDevice(id);
-      
+
       var params = {
         title: details_step.find('input[name=title]').val(),
-//        description: details_step.find('textarea[name=description]').val(),
+        //        description: details_step.find('textarea[name=description]').val(),
         description: '',
         height: device.height,
         width: device.width,
-        config: {preview: {device: id}}
+        config: {
+          preview: {
+            device: id
+          }
+        }
       };
       if (self.EXTERNAL_APP_TYPE === appType) {
         params.scmurl = details_step.find('input[name=scmurl]').val();
         params.scmbranch = details_step.find('input[name=scmbranch]').val();
       }
-      
-      if(null != framework_step) {
+
+      if (null != framework_step) {
         var selected_fws = framework_step.find('input[type=checkbox]:checked');
         var fw_values = [];
-        for(var i=0;i<selected_fws.length;i++){
+        for (var i = 0; i < selected_fws.length; i++) {
           fw_values.push($(selected_fws[i]).val());
         }
-        if(fw_values.length > 0){
+        if (fw_values.length > 0) {
           params.frameworks = fw_values;
         }
       }
-      
-      $fw.client.model.App.create(params,
-        function (app) {
-          console.log('create ok');
-          proto.ProgressDialog.append(step, 'App created successfully.');
-          $fw.data.set('new_app', app.guid);
-          
-          var nextStep = create_app_wizard.find('#create_app_next');
-          // Disable 'edit' as a follow on option for scm based apps
-          if (self.EXTERNAL_APP_TYPE === appType) {
-            nextStep.find('#create_app_wiz_edit').parent().hide();
-          }
-          
-          var completeFn;
-          if (app.isScmApp && app.isScmPrivate) {
-            completeFn = function () {
-              var publicKeyStep = create_app_wizard.find('#create_app_publickeysetup');
-              publicKeyStep.find('#scmpublickey').text(app.publicKey);
-              proto.Wizard.jumpToStep(create_app_wizard, publicKeyStep);
-              
-              var scmProgressStep = create_app_wizard.find('#create_app_scmprogress');
-              scmProgressStep.unbind('show').bind('show', function () {
-                // trigger scm update now that user has gone past public key setup step
-                $fw.data.set('app', {
-                  "guid": app.guid
-                });
-                $fw.client.tab.apps.manageapps.triggerScm(function () {
-                  proto.ProgressDialog.setProgress(scmProgressStep, 100);
-                  proto.Wizard.jumpToStep(create_app_wizard, nextStep);
-                  proto.Wizard.hidePreviousButton(create_app_wizard);
-                }, function () {
-                  proto.Wizard.jumpToStep(create_app_wizard, details_step, 'An error occured while creating your App. Please try again.');
-                });
-              });
-            };
-          } else {
-            completeFn = function () {
-              proto.Wizard.jumpToStep(create_app_wizard, nextStep);
-              proto.Wizard.hidePreviousButton(create_app_wizard);
-              proto.ProgressDialog.setProgress(step, 100);
-            };
-          }
-          
-          if ($.isArray(app.tasks) && app.tasks.length > 0) {
-            var keys = [];
-            for(var ti=0, tl=app.tasks.length; ti<tl; ti++) {
-              var tempTask = app.tasks[ti];
-              keys.push({
-                cacheKey: tempTask
-              });
-            }
-            
-            var createTask = new ASyncServerTask(keys, {
-              updateInterval: 2000,
-              timeout: function (res) {
-                console.log('timeout error > ' + JSON.stringify(res));
-                proto.Wizard.jumpToStep(create_app_wizard, details_step, 'Create timed out');
-              },
-              update: function (res) {
-                for (var i = 0; i < res.log.length; i++) {
-                  proto.ProgressDialog.append(step, res.log[i]);
-                }
-                if (res.progress) {
-                  proto.ProgressDialog.setProgress(step, parseInt(res.progress, 10));
-                }
-              },
-              complete: completeFn,
-              error: function (res) {
-                console.log('clone error > ' + JSON.stringify(res));
-                proto.Wizard.jumpToStep(create_app_wizard, details_step, 'An error occured while creating your App. Please try again.');
-              },
-              retriesLimit: function () {
-                proto.Wizard.jumpToStep(create_app_wizard, details_step, 'An error occured while creating your App. Please try again.');
-              },
-              end: function () {
-                // nothing to do here
-              }
-            });
-            createTask.run();
-          }
-          else {
-            completeFn();
-          }
-        },
-        function (result) {
-          console.log('create not ok > ' + result.message);
-          // Jump back to details step and show error
-          proto.Wizard.jumpToStep(create_app_wizard, details_step, result.message);
+
+      $fw.client.model.App.create(params, function(app) {
+        console.log('create ok');
+        proto.ProgressDialog.append(step, 'App created successfully.');
+        $fw.data.set('new_app', app.guid);
+
+        var nextStep = create_app_wizard.find('#create_app_next');
+        // Disable 'edit' as a follow on option for scm based apps
+        if (self.EXTERNAL_APP_TYPE === appType) {
+          nextStep.find('#create_app_wiz_edit').parent().hide();
         }
-      );
+
+        var completeFn;
+        if (app.isScmApp && app.isScmPrivate) {
+          completeFn = function() {
+            var publicKeyStep = create_app_wizard.find('#create_app_publickeysetup');
+            publicKeyStep.find('#scmpublickey').text(app.publicKey);
+            proto.Wizard.jumpToStep(create_app_wizard, publicKeyStep);
+
+            var scmProgressStep = create_app_wizard.find('#create_app_scmprogress');
+            scmProgressStep.unbind('show').bind('show', function() {
+              // trigger scm update now that user has gone past public key setup step
+              $fw.data.set('app', {
+                "guid": app.guid
+              });
+              $fw.client.tab.apps.manageapps.triggerScm(function() {
+                proto.ProgressDialog.setProgress(scmProgressStep, 100);
+                proto.Wizard.jumpToStep(create_app_wizard, nextStep);
+                proto.Wizard.hidePreviousButton(create_app_wizard);
+              }, function() {
+                proto.Wizard.jumpToStep(create_app_wizard, details_step, 'An error occured while creating your App. Please try again.');
+              });
+            });
+          };
+        } else {
+          completeFn = function() {
+            proto.Wizard.jumpToStep(create_app_wizard, nextStep);
+            proto.Wizard.hidePreviousButton(create_app_wizard);
+            proto.ProgressDialog.setProgress(step, 100);
+          };
+        }
+
+        if ($.isArray(app.tasks) && app.tasks.length > 0) {
+          var keys = [];
+          for (var ti = 0, tl = app.tasks.length; ti < tl; ti++) {
+            var tempTask = app.tasks[ti];
+            keys.push({
+              cacheKey: tempTask
+            });
+          }
+
+          var createTask = new ASyncServerTask(keys, {
+            updateInterval: 2000,
+            timeout: function(res) {
+              console.log('timeout error > ' + JSON.stringify(res));
+              proto.Wizard.jumpToStep(create_app_wizard, details_step, 'Create timed out');
+            },
+            update: function(res) {
+              for (var i = 0; i < res.log.length; i++) {
+                proto.ProgressDialog.append(step, res.log[i]);
+              }
+              if (res.progress) {
+                proto.ProgressDialog.setProgress(step, parseInt(res.progress, 10));
+              }
+            },
+            complete: completeFn,
+            error: function(res) {
+              console.log('clone error > ' + JSON.stringify(res));
+              proto.Wizard.jumpToStep(create_app_wizard, details_step, 'An error occured while creating your App. Please try again.');
+            },
+            retriesLimit: function() {
+              proto.Wizard.jumpToStep(create_app_wizard, details_step, 'An error occured while creating your App. Please try again.');
+            },
+            end: function() {
+              // nothing to do here
+            }
+          });
+          createTask.run();
+        } else {
+          completeFn();
+        }
+      }, function(result) {
+        console.log('create not ok > ' + result.message);
+        // Jump back to details step and show error
+        proto.Wizard.jumpToStep(create_app_wizard, details_step, result.message);
+      });
     });
-    
-    create_app_wizard.find('#create_app_from_template').unbind('show').bind('show', function () {
+
+    create_app_wizard.find('#create_app_from_template').unbind('show').bind('show', function() {
       // list template apps
       var thisStep = $(this);
       var template_select = thisStep.find('#template_select');
       template_select.empty();
-      thisStep.find('#template_preview_button').button({'icons': {'primary': 'ui-icon-gear'}});
-      $fw.client.model.Template.list(function (data) {
+      thisStep.find('#template_preview_button').button({
+        'icons': {
+          'primary': 'ui-icon-gear'
+        }
+      });
+      $fw.client.model.Template.list(function(data) {
         var list = data.list;
         if (list.length === 0) {
           proto.Wizard.previousStep(create_app_wizard, $fw.client.lang.getLangString('no_templates_message'));
-        }
-        else {
+        } else {
           console.log("got template app list");
           //log(template_select);
           for (var li = 0; li < list.length; li++) {
             var template = list[li];
             //log(template);
-            var item = $('<option>', {'value': li, 'text': template.title });
+            var item = $('<option>', {
+              'value': li,
+              'text': template.title
+            });
             //log(item);
             template_select.append(item);
           }
-          
+
           self.showTemplateDetails(thisStep, list[0]);
-          template_select.unbind('change').bind('change', {templates: list}, function (event) {
+          template_select.unbind('change').bind('change', {
+            templates: list
+          }, function(event) {
             var templates = event.data.templates;
             var index = $(this).val();
             console.log("selected template index: " + index);
@@ -241,35 +243,33 @@ Apps.Create.Controller = Controller.extend({
             self.showTemplateDetails(thisStep, t);
           });
         }
-      }, function (error) {
-        
+      }, function(error) {
+
       });
     });
-    
+
     // TODO: clone steps should be brought in as well automatically rather than chaining 2 wizards
-    
-    create_app_wizard.find('#create_app_clone').unbind('show').bind('show', function () {
+    create_app_wizard.find('#create_app_clone').unbind('show').bind('show', function() {
       // close the create app dialog, then call show on clone controller
-      
       var app_id = $fw.data.get('clone_from_app');
       $fw.client.tab.apps.manageapps.getController('apps.clone.controller').show(app_id);
     });
 
-    create_app_wizard.find('#generate_app').unbind('show').bind('show', function () {
+    create_app_wizard.find('#generate_app').unbind('show').bind('show', function() {
       // Hide wizard, init App generator controller
       $('.jw-button-cancel').click();
       //$fw.client.app.generate_app_controller.show();
       $fw.client.tab.apps.listapps.hideAll();
       $fw.client.tab.apps.listapps.getController('apps.generate.controller').show();
     });
-    
+
     return create_app_wizard;
   },
-  
-  finishAppWizard: function (finish_option, callback, intermediate) {
+
+  finishAppWizard: function(finish_option, callback, intermediate) {
     var app_guid = $fw.data.get('new_app');
     var app_name = $fw.data.get('new_app_name');
-    
+
     // Remove this key straight away to prevent it from being used as app to show any subsequent times an app is created.
     // This key is only ever set by the clone wizard as it doesn't have a guid to work with, only an id/name
     // e.g. com.example.devadmin.dave_test_preview_011
@@ -277,14 +277,13 @@ Apps.Create.Controller = Controller.extend({
 
     var is_app_name = app_name !== undefined;
     var app_identifier = is_app_name ? app_name : app_guid;
-    
+
     console.log('finished... is_app_name = ' + is_app_name + ' app_identifier = ' + app_identifier + ' > ' + finish_option);
 
     $fw.data.set('template_mode', false);
-    $fw.client.tab.apps.manageapps.show(app_identifier, function () {
+    $fw.client.tab.apps.manageapps.show(app_identifier, function() {
       // TODO: better way of doing this as show will be called twice for 2 different controllers.
       //       once above for manageapps show, and once below
-
       var controller = 'apps.quickstart.controller';
       if ('publish' === finish_option) {
         controller = 'apps.build.controller';
@@ -299,12 +298,14 @@ Apps.Create.Controller = Controller.extend({
     }, $.noop, is_app_name, intermediate);
   },
 
-  showTemplateDetails: function (container, template) {
+  showTemplateDetails: function(container, template) {
     container.find('#template_title').text(template.title);
     container.find('#template_description').text(template.description);
     var iconController = $fw.client.tab.apps.manageapps.getController('apps.icons.controller');
-    container.find('#template_icon').html($('<img>', {'src': iconController.getIconUrl(template.id, iconController.ICON_TYPE_LARGE)}));
-    container.find('#template_preview_button').unbind().bind('click', function (e) {
+    container.find('#template_icon').html($('<img>', {
+      'src': iconController.getIconUrl(template.id, iconController.ICON_TYPE_LARGE)
+    }));
+    container.find('#template_preview_button').unbind().bind('click', function(e) {
       e.preventDefault();
       $fw.client.tab.apps.manageapps.getController('apps.preview.controller').showInDialog($fw.client.tab.apps.manageapps.getController('apps.preview.controller').getTemplatePreviewUrl(template.id, 'studio', template.domain), template.width);
     });
