@@ -593,7 +593,8 @@ label.error
 #editor_titles li i { 
   float: left; 
   margin: 7px 0 0 3px; 
-  cursor: pointer; 
+  cursor: pointer !important;
+  padding-right: 5px;
 }
 #editor_titles li a {
   padding:0.4em 0.5em 0;
