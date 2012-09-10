@@ -93,12 +93,10 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
         }
         $('#debug_logging_text').val('').val(logText);
       } else {
-        $('#debug_logging_text').val('error loading...');
-        $fw.client.dialog.error("Error getting logs: " + res.error);
+        $('#debug_logging_text').val('Error loading Cloud App Logs. Is your App Staged for this environment?');
       }
     }, function (error) {
-      $('#debug_logging_text').val('error loading...');
-      $fw.client.dialog.error($fw.client.lang.getLangString('read_log_error'));
+      $('#debug_logging_text').val('Error loading Cloud App Logs. Is your App Staged for this environment?');
     }, true);
   },
   
