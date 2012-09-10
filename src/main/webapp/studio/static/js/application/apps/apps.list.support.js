@@ -3,7 +3,6 @@ var Apps = Apps || {};
 Apps.List = Apps.List || {};
 
 Apps.List.Support = Controller.extend({
-
   init: function() {
 
   },
