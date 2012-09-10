@@ -230,8 +230,17 @@ Admin.Deploytarget.Controller = Controller.extend({
     var self = this;
     var targetList = $(self.views.target_edit + " #deploy_target_platform ul");
     targetList.empty();
+    var globalValidTargets = $fw.getClientProp('nodejsValidTargets');
+    if(globalValidTargets){
+      globalValidTargets = globalValidTargets.split(",");
+    }
     for(var i=0;i<self.valid_targets.length;i++){
       var target = self.valid_targets[i];
+      if(globalValidTargets){
+        if(globalValidTargets.indexOf(target.id) === -1){
+          continue;
+        }
+      }
       var target_li = $("<li>");
       var target_div = $("<div>", {"class":"btn deploy_target_option target_" + target.id});
       var target_img = $("<img>", {"src": self.STATIC_IMAGE_PREFIX + target.icon, "class":"image-rounded"});
