@@ -3,7 +3,8 @@
 -------------------------------------------------------------------------------
 ###CHANGES
 * Added 'Resources' screen for monitoring an app's resources
-
+* Update UI for 'Stats' screen 
+* Added App Endpoints stats to 'Stats' screen
 
 ===============================================================================
 3.5.1
