@@ -74,7 +74,7 @@ Stats.Controller = Apps.Cloud.Controller.extend({
     }
   },
 
-  toggleStats: function(el, model, series_name) {
+  toggleStats: function(el, model, callback) {
     // Already open, close
     if ($(el).hasClass('active')) {
       $('.chart_container', model.stats_container).empty();
@@ -82,20 +82,11 @@ Stats.Controller = Apps.Cloud.Controller.extend({
       //return;
     }
 
-    $('.stats_area li', model.stats_container).removeClass('active');
-    $(el).addClass('active');
-    var series = model.getSeries(series_name);
-
-    // Empty showing containers
     this.closeAll(model);
 
-    var self = this;
-    var chart = new Stats.View.Chart({
-      model: model,
-      series: series,
-      controller: self
-    });
-    chart.render();
+    $('.stats_area li', model.stats_container).removeClass('active');
+    $(el).addClass('active');
+    return callback();
   },
 
   closeAll: function(model) {
@@ -173,7 +164,7 @@ Stats.Controller = Apps.Cloud.Controller.extend({
 
     }, function (cb) {
       // in series, so we should have data at this point to load
-      // into remaining models
+      // into remaining models, if any (only 1 for apicalls, 2 for custom stats (counters & timers))
       var remainingModels = self.models.slice(1, self.models.length);
 
       async.forEach(remainingModels, function (model, innerCb) {

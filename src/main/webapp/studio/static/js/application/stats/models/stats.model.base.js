@@ -76,7 +76,7 @@ Stats.Model.Base = Class.extend({
           }
         });
       } else {
-        this._loadRemote(function(res) {
+        this._loadRemote(params.count || 360, function(res) {
           if (typeof(params.loaded) == 'function') {
             params.loaded(res);
           }
@@ -104,7 +104,9 @@ Stats.Model.Base = Class.extend({
   applyFilter: function(params) {
     // { name: 'filterDate', from: new Date(), to: new Date() }
     // Remove existing filter
-    this.clearFilter();
+
+    // FIXME: assumes a filter was already applied
+    //this.clearFilter();
 
     // Find filter
     var filter = this.filters[params.name];
@@ -146,7 +148,7 @@ Stats.Model.Base = Class.extend({
     });
   },
 
-  _loadRemote: function(callback) {
+  _loadRemote: function(count, callback) {
     // this._loadMock(callback);
     var url, params, app;
     var self = this;
@@ -157,11 +159,12 @@ Stats.Model.Base = Class.extend({
       guid: guid,
       deploytarget: this.deploy_target,
       statstype: this.stats_type,
-      count: 360
+      count: count
     };
 
     $fw.server.post(url, params, function(res) {
       if (res.status === "ok") {
+        self.interval = res.interval;
         self._setInitialData(res.results);
         callback(res);
       } else {
@@ -214,9 +217,9 @@ Stats.Model.Base = Class.extend({
   _dateBetween: function(from, to, date) {
     var b, e, c;
     b = from.getTime();
-    e = to.getTime();
+    e = to ? to.getTime() : null;
     c = date.getTime();
-    if ((c <= e && c >= b)) {
+    if ((c >= b && ((e !== null && c <= e) || e === null))) {
       return true;
     }
     return false;

@@ -2190,7 +2190,13 @@ line-height:0.5em;
 }
 
 .available_apicalls li h3 {
+  font-family: Monaco, 'Ubuntu Mono', Consolas, monospace;
   background: url(../img/ico_counters.png) no-repeat;
+}
+
+.available_apicalls li h3 span {
+  font-family: "Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;;
+  font-weight: normal;
 }
 
 .available_counters li h3 {

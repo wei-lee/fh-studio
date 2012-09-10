@@ -12,7 +12,7 @@ Stats.Mock = {
     "test_timer": [86, 72]
   },
   history: {
-    interval: 10,
+    interval: 10000,
     results: [{
       "counters": [{
         "value": {
@@ -6414,5 +6414,8 @@ Stats.Mock = {
       }],
       "ts": 1333471856000
     }]
+  },
+  apicalls: {
+    interval: 10000
   }
 };
