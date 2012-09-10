@@ -36,7 +36,7 @@ application.DestinationEmbed = application.DestinationGeneral.extend({
 
   getPublishData: function (config, versions_select, wizard) {
     return {
-      'env':config,
+      'config':config === "dev" ? "debug" : "release",
       'generateSrc':false
     };
   },
