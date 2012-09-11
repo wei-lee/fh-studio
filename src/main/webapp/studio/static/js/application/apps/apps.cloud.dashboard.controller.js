@@ -173,6 +173,7 @@ Apps.Cloud.Dashboard.Controller = Apps.Cloud.Controller.extend({
   },
 
   renderCurrentAppHost: function(url) {
+    if (url.indexOf('http') === -1) url = "http://" + url;
     var host_link = $('<a>').addClass('cloud_app_host').attr('href', url).text(url);
     $('.current_deploy_host_container', this.views.dashboard_container).empty().append(host_link);
   },
