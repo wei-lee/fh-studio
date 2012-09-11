@@ -133,7 +133,8 @@ LangManager = Class.extend({
       btn.popover({
         content: lang,
         placement: 'bottom',
-        delay: 100
+        delay: { show: 100, hide: 100 },
+        trigger: 'hover'
       });
       btn.click(function(e){
         e.preventDefault();
