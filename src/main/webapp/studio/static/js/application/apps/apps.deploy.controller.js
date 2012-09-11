@@ -309,24 +309,28 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     }
   },
 
-  makeProgressSolid: function() {
-    $('#cloud_deploy_progress .progress').removeClass('progress-striped');
+  makeProgressGreen: function() {
+    $('#cloud_deploy_progress .progress').removeClass('progress-striped').addClass('progress-success');
+  },
+
+  makeProgressRed: function() {
+    $('#cloud_deploy_progress .progress').removeClass('progress-striped').addClass('progress-danger');
   },
 
   makeProgressStriped: function() {
-    $('#cloud_deploy_progress .progress').addClass('progress-striped');
+    $('#cloud_deploy_progress .progress').removeClass('progress-danger progress-success').addClass('progress-striped');
   },
 
   deployCompleteSuccess: function() {
     console.log('Deploy complete - success.');
     this.enableDeployButton();
-    this.makeProgressSolid();
+    this.makeProgressGreen();
   },
 
   deployCompleteFailed: function() {
     console.log('Deploy complete - failed.');
     this.enableDeployButton();
-    this.makeProgressSolid();
+    this.makeProgressRed();
   },
 
   /*
