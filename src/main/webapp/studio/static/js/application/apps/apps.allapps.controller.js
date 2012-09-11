@@ -9,6 +9,7 @@ Apps.Allapps.Controller = Apps.List.Support.extend({
   },
 
   views: {
+    myapps_grid_wrapper: '#myapps_grid_wrapper',
     allapps_grid_wrapper: "#allapps_grid_wrapper",
     allapps_grid: "#allapps_grid"
   },
@@ -27,6 +28,7 @@ Apps.Allapps.Controller = Apps.List.Support.extend({
 
     this.model.app.listAll(function(res) {
       var data = self.addControls(res);
+      $(self.views.myapps_grid_wrapper).hide();
       self.renderAppListing(self.views.allapps_grid, self.views.allapps_grid_wrapper, data);
     }, function() {
       // Failure

@@ -241,7 +241,6 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
             },
             update: function(res) {
               for (var i = 0; i < res.log.length; i++) {
-                console.log(res.log[i]);
                 if (typeof res.action.guid != 'undefined') {
                   new_guid = res.action.guid;
                   console.log('GUID for new app > ' + new_guid);
