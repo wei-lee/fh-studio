@@ -2446,7 +2446,7 @@ line-height:0.5em;
 
 /* Bootstrap Overrides */
 legend { margin-bottom: 0; }
-
+legend + .control-group { margin-top: 0; }
 .breadcrumb .active {
   color: #fff;
   font-weight: bold;
