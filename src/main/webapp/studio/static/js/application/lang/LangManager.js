@@ -105,7 +105,8 @@ LangManager = Class.extend({
         content: lang,
         placement: 'left',
         delay: { show: 100, hide: 100 },
-        trigger: 'hover'
+        trigger: 'hover',
+        template: '<div class="popover"><div class="arrow"></div><div class="popover-inner"><div class="popover-content"><p></p></div></div></div>'
       });
     }
   },
@@ -134,7 +135,8 @@ LangManager = Class.extend({
         content: lang,
         placement: 'bottom',
         delay: { show: 100, hide: 100 },
-        trigger: 'hover'
+        trigger: 'hover',
+        template: '<div class="popover"><div class="arrow"></div><div class="popover-inner"><div class="popover-content"><p></p></div></div></div>'
       });
       btn.click(function(e){
         e.preventDefault();

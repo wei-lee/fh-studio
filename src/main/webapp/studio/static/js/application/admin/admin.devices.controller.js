@@ -226,7 +226,11 @@ Admin.Devices.Controller = Controller.extend({
         li.append(a);
         a.popover({
           title: v.fields.userId,
-          content: self.getUserPopOverContent(v.fields)
+          content: self.getUserPopOverContent(v.fields),
+          placement: 'bottom',
+          delay: { show: 100, hide: 100 },
+          trigger: 'hover',
+          template: '<div class="popover"><div class="arrow"></div><div class="popover-inner"><div class="popover-content"><p></p></div></div></div>'
         });
         a.unbind('click').bind('click', function(){
           self.hide();
@@ -253,7 +257,11 @@ Admin.Devices.Controller = Controller.extend({
         li.append(a);
         a.popover({
           title : v.fields.name,
-          content: self.getStoreItemPopoverContent(v.fields)
+          content: self.getStoreItemPopoverContent(v.fields),
+          placement: 'bottom',
+          delay: { show: 100, hide: 100 },
+          trigger: 'hover',
+          template: '<div class="popover"><div class="arrow"></div><div class="popover-inner"><div class="popover-content"><p></p></div></div></div>'
         });
         a.unbind('click').bind('click', function(){
           self.hide();
