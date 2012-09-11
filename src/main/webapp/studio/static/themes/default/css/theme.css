@@ -680,6 +680,9 @@ label.error
   float:left; 
   margin:0 7px 20px 0;
 }
+.confirm_dialog li{
+  font-family: monospace;
+}
 .popup-dialog .ui-dialog-titlebar {
   font-size: 1.2em;
   background-color: #CD0A0A;
