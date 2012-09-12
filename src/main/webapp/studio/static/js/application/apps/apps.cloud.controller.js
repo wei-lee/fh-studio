@@ -54,7 +54,6 @@ Apps.Cloud.Controller = Apps.Controller.extend({
   },
 
   toggleToLiveEnv: function() {
-    $('.status_light').addClass('okay');
     $('.cloud_environment .env_toggle_button').animate({
       'left': '31px'
     }, 300);
@@ -64,7 +63,6 @@ Apps.Cloud.Controller = Apps.Controller.extend({
   },
 
   toggleToDevEnv: function() {
-    $('.status_light').removeClass('okay');
     $('.cloud_environment .env_toggle_button').animate({
       'left': '0px'
     }, 300);
