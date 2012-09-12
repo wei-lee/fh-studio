@@ -1,17 +1,22 @@
-<div id="cloudnotifications_container" class="well">
-  <h3 data-lang="cloudnotifications_header"></h3>
-  <div data-lang="cloudnotifications_description"></div>
-  <div class="alerts"></div>
-  <div id="notification_container" class="row-fluid">
-    <div class="row-fluid">
-      <form class="form-horizontal">
-        <span class="control-group">
-          <label class="control-label" for="notification_email" data-lang="cloudnotifications_email_label"></label>
-          <input id="notification_email" type="text" ></input>
-          <button type="submit" class="cloud_notification_update_button btn" data-lang="cloudnotifications_email_button"></button>
-        </span>
-      </form>
+<div id="cloudnotifications_container">
+  <div class="fh-box-outer">
+    <h4 class="fh-box-header">
+      Cloud Notification Settings
+      <%@ include file="./cloud_environment.html" %></h4>
+    <div class="fh-box-inner">
+      <div data-lang="cloudnotifications_description"></div><br/>
+      <div class="alerts"></div>
+      <div id="notification_container" class="row-fluid">
+        <div class="row-fluid">
+          <form class="form-horizontal">
+            <span class="control-group">
+              <label class="control-label" for="notification_email" data-lang="cloudnotifications_email_label"></label>
+              <input id="notification_email" type="text"/>
+              <button type="submit" class="cloud_notification_update_button btn" data-lang="cloudnotifications_email_button"></button>
+            </span>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
-
 </div>

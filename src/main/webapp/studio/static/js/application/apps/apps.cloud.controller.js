@@ -29,19 +29,55 @@ Apps.Cloud.Controller = Apps.Controller.extend({
     }
   },
 
+  toggleEnv: function() {
+    if (this.currentEnv() === 'dev') {
+      this.toggleToLiveEnv();
+    } else {
+      this.toggleToDevEnv();
+    }
+  },
+
+  toggleToLiveEnv: function() {
+    // TODO: Hook up to ping.
+    $('.status_light').addClass('okay');
+    $('.cloud_environment:visible .env_toggle_button').animate({
+      'left': '31px'
+    });
+    $('.cloud_environment:visible .env_toggle_container').removeClass('dev').addClass('live');
+  },
+
+  toggleToDevEnv: function() {
+    // TODO: Hook up to ping.
+    $('.status_light').removeClass('okay');
+    $('.cloud_environment .env_toggle_button:visible').animate({
+      'left': '0px'
+    });
+    $('.cloud_environment:visible .env_toggle_container').removeClass('live').addClass('dev');
+  },
+
+  currentEnv: function () {
+    if ($('.cloud_environment:visible .env_toggle_container').hasClass('dev')) {
+      return "dev";
+    } else {
+      return "live";
+    }
+  },
+
   initCloudBindings: function(envContainer) {
     var self = this;
     
     $fw.client.lang.insertLangFromData($(this.container));
     // bind env buttons to make necessary callback
-    $('a', envContainer).bind('click', function (e) {
+    $('.env_toggle_container', envContainer).bind('click', function (e) {
       e.preventDefault();
       var jqEl = $(this);
 
-      if (jqEl.parent().hasClass('active')) {
-        // do nothing, already active
-        return;
-      }
+      self.toggleEnv();
+
+      // if (jqEl.parent().hasClass('active')) {
+      //   // do nothing, already active
+      //   return;
+      // }
 
       if (jqEl.hasClass('dev_environment_btn')) {
         $fw.data.set('cloud_environment', 'dev');

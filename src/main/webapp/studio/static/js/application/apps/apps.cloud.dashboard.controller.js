@@ -89,7 +89,7 @@ Apps.Cloud.Dashboard.Controller = Apps.Cloud.Controller.extend({
     $('a.notification_settings', this.container).unbind().click(function(e) {
       e.preventDefault();
       $('.manageapps_nav_list a[data-controller="apps.cloudnotifications.controller"]').trigger('click');
-    });    
+    });
   },
 
   loadCurrentStatus: function(guid, env) {
@@ -197,7 +197,7 @@ Apps.Cloud.Dashboard.Controller = Apps.Cloud.Controller.extend({
     }
     button.append(label);
 
-    button.click(function(){
+    button.click(function() {
       $('.nav-list li a[data-controller="apps.deploy.controller"]').trigger('click');
     });
 

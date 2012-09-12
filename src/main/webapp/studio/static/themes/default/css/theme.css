@@ -62,6 +62,7 @@ textarea { resize:none; }
 #vakata-contextmenu.jstree-classic-context li.vakata-separator { background:white; border-top:1px solid #e0e0e0; margin:0; }
 #vakata-contextmenu.jstree-classic-context li ul { margin-left:-4px; }
 /** hide copy function for now */
+
 #vakata-contextmenu .ui-helper-hidden {
  display: none; !important
 }
@@ -111,9 +112,8 @@ textarea { resize:none; }
 html {
   overflow-y:auto;
 }
-html, body
-{
-  font-family: "Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;
+html, body {
+  font-family: Helvetica, Arial, Verdana, sans-serif;
   padding:0;
   margin:0;
   width:100%;
@@ -1283,10 +1283,9 @@ span.label-info {
 }
 .password-inputs-labels{
   width:30%;
-  padding-left:1.5em;
 }
 .view_label{
-  padding:1em 0 0 1.5em;
+  padding:1em 0 0 0;
 }
 .password-inputs-fields{
   margin-left: 20px;
@@ -2240,7 +2239,7 @@ line-height:0.5em;
   border-radius: 3px;
 }
 
-.fh-box-outer h4 {
+.fh-box-outer h4.fh-box-header {
 	height: 20px;
   line-height: 20px;
   padding: 10px;
@@ -2259,6 +2258,7 @@ line-height:0.5em;
   background: #fff;
   border: 1px solid #d8d8d8;
   border-top: none;
+  padding: 20px;
 }
 
 #user_key_list li {
@@ -2414,10 +2414,6 @@ line-height:0.5em;
   margin-top: 7px;
 }
 
-.multistep .well {
-  
-}
-
 .multistep .label_spacer {
   width: 39px;
   display: inline-block;
@@ -2445,6 +2441,9 @@ line-height:0.5em;
 }
 
 /* Bootstrap Overrides */
+label, input, button, select, textarea {
+  font-size: 12px;
+}
 legend { margin-bottom: 0; }
 legend + .control-group { margin-top: 0; }
 .breadcrumb .active {
@@ -2599,10 +2598,6 @@ table.dataTable th:active {
 
 .row-fluid .manageapps_nav_list[class*="span"], #app_content, #app_preview, #editor_files_container {
   min-height: 625px;
-}
-
-#app_content .well {
-  min-height: 585px;
 }
 
 #cloud_logo {
@@ -2969,32 +2964,6 @@ a.docslink {
   margin-top: 0;
 }
 
-.cloud_environment .well {
-  min-height: 0 !important;
-  padding: 10px !important;
-}
-
-.cloud_environment .nav-pills a {
-  border: 1px solid #ccc;
-}
-
-.cloud_environment .nav-pills li.active a {
-  border: 1px solid #08C;
-}
-
-.cloud_environment .nav {
-  margin: auto;
-  width: 200px;
-}
-.cloud_environment .nav li {
-  width: 100px;
-}
-
-.cloud_environment .nav a {
-  width: 70px;
-  text-align: center;
-}
-
 #cloudresources_container .progress {
   margin-bottom: 0;
 }
@@ -3017,6 +2986,83 @@ a.docslink {
 
 #abort_cloud_app_deploy {
   margin-right: 20px;
+}
+
+.fh-box-inner h4, .fh-box-inner h5 {
+  margin-top: 0;
+}
+
+#debug_logging_container fieldset {
+  width: 100%;
+}
+
+#app_content .fh-box-inner {
+  min-height: 631px;
+}
+
+/* Env Selector */
+.cloud_environment a {
+  text-shadow: none;
+  font-weight: normal;
+}
+
+.cloud_environment .env_toggle_container {
+  width: 52px;
+  height: 23px;
+  background: url("../img/cloud_env_toggle_bg.png") no-repeat;
+  position: relative;
+  pointer: cursor;
+}
+
+.cloud_environment .env_toggle_button {
+  height: 25px;
+  width: 25px;
+  background: url("../img/cloud_env_toggle_button.png") no-repeat;
+  margin-top: -1px;
+  margin: -1px 0 0 -2px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer: cursor;
+}
+
+.cloud_environment .status_light_container {
+  width: 12px;
+  height: 12px;
+  padding: 4px 4px 0 0;
+}
+
+.cloud_environment .status_light {
+  width: 12px;
+  height: 12px;
+  background-color: rgb(226,0,0);
+/*  box-shadow: inset 0px 1px 0px 0px rgba(250,250,250,0.5), 0px 0px 3px 2px rgba(226,0,0,0.5);*/
+  border-radius: 6px;
+  transition: background-color 350ms, box-shadow 700ms;
+  -o-transition: background-color 350ms, box-shadow 700ms;
+  -moz-transition: background-color 350ms, box-shadow 700ms;
+  -webkit-transition: background-color 350ms, box-shadow 700ms;
+}
+
+.cloud_environment .status_light.okay {
+/*  box-shadow: inset 0px 1px 0px 0px rgba(250,250,250,0.5), 0px 0px 3px 2px rgba(135,187,83,0.5);*/
+  background-color: rgb(135,187,83);
+}
+
+.cloud_environment .status_light_container,
+.cloud_environment .env_type,
+.cloud_environment .env_toggle_container,
+.cloud_environment .status_light,
+.cloud_environment .env_toggle_button {
+  float: left;
+}
+
+.cloud_environment .env_type {
+  padding: 0 10px 0 2px;
+}
+
+.cloud_environment .status_light_container.live {
+  padding-left: 10px;
 }
 
 /* Awesome nth item selector that works cross platform (including IE!)

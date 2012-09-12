@@ -1,68 +1,74 @@
-<div id="dashboard_container" class="well">
+<div id="dashboard_container">
+  <div class="fh-box-outer">
+    <h4 class="fh-box-header">
+      Cloud Dashboard
+      <%@ include file="./cloud_environment.html" %>
+    </h4>
+    <div class="fh-box-inner">
 
-  <%@ include file="./cloud_environment.html" %>
+      <div id="status_container">
 
-  <div id="status_container">
+        <div id="cloud_status">
+          <form class="form-horizontal">
+            <p>
+              Here can view the status of your currently deployed Cloud App
+            </p>
+            <br/>
 
-    <div id="cloud_status">
-      <h4>Cloud App Status</h4>
-      <form class="form-horizontal">
-        <p>
-          Here can view the status of your currently deployed Cloud App
-        </p>
-        <br/>
+            <div class="control-group">
+              <label class="control-label">Cloud App Status</label>
+              <div class="controls current_cloud_app_status_container">
+              </div>
+            </div>
 
-        <div class="control-group">
-          <label class="control-label">Cloud App Status</label>
-          <div class="controls current_cloud_app_status_container">
-          </div>
+            <div class="control-group">
+              <label class="control-label">Deployment Target</label>
+              <div class="controls current_deploy_target_container">
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label class="control-label">Deployment Host</label>
+              <div class="controls current_deploy_host_container">
+              </div>
+            </div>
+          </form>
         </div>
 
-        <div class="control-group">
-          <label class="control-label">Deployment Target</label>
-          <div class="controls current_deploy_target_container">
-          </div>
+        <!-- Templates -->
+        <div class="hidden_template loading_icon">
+          <img src="<%=studio.getStaticAssetPath("themes/default/img/throbber.gif")%>" alt="loading"/>
         </div>
+      </div>
 
-        <div class="control-group">
-          <label class="control-label">Deployment Host</label>
-          <div class="controls current_deploy_host_container">
-          </div>
-        </div>
-      </form>
-    </div>
+      <hr/>
 
-    <!-- Templates -->
-    <div class="hidden_template loading_icon">
-      <img src="<%=studio.getStaticAssetPath("themes/default/img/throbber.gif")%>" alt="loading"/>
+      <div class="actions">
+        <a href="#" class="btn nodejs_mode deploy_cloud_code"> <i class="icon-cloud"></i>
+          <h5>Deploy Cloud Code</h5>
+        </a>
+        <a href="#" class="btn edit_cloud_code">
+          <i class="icon-file"></i>
+          <h5>Edit my Cloud Code</h5>
+        </a>
+        <a href="#" class="btn nodejs_mode monitor_cloud_stats"> <i class="icon-bar-chart"></i>
+          <h5>Cloud Statistics</h5>
+        </a>
+        <a href="#" class="btn cloud_logs">
+          <i class="icon-list"></i>
+          <h5>Show Cloud Logs</h5>
+        </a>
+        <a href="#" class="btn nodejs_mode notification_settings"> <i class="icon-envelope"></i>
+          <h5>Notification Settings</h5>
+        </a>
+        <a href="#" class="btn nodejs_mode monitor_resources"> <i class="icon-dashboard"></i>
+          <h5>Monitor Resources</h5>
+        </a>
+      </div>
+      <hr/>
+      <h4>Learn more about Developing FeedHenry Cloud Code</h4>
+      <a class="docslink" href="http://docs.feedhenry.com/v2/cloud_development.html">FeedHenry Cloud Development Documentation</a>
     </div>
   </div>
 
-  <hr/>
-
-  <div class="actions">
-    <a href="#" class="btn nodejs_mode deploy_cloud_code"> <i class="icon-cloud"></i>
-      <h5>Deploy Cloud Code</h5>
-    </a>
-    <a href="#" class="btn edit_cloud_code">
-      <i class="icon-file"></i>
-      <h5>Edit my Cloud Code</h5>
-    </a>
-    <a href="#" class="btn nodejs_mode monitor_cloud_stats"> <i class="icon-bar-chart"></i>
-      <h5>Cloud Statistics</h5>
-    </a>
-    <a href="#" class="btn cloud_logs">
-      <i class="icon-list"></i>
-      <h5>Show Cloud Logs</h5>
-    </a>
-    <a href="#" class="btn nodejs_mode notification_settings"> <i class="icon-envelope"></i>
-      <h5>Notification Settings</h5>
-    </a>
-    <a href="#" class="btn nodejs_mode monitor_resources"> <i class="icon-dashboard"></i>
-      <h5>Monitor Resources</h5>
-    </a>
-  </div>
-  <hr/>
-  <h4>Learn more about Developing FeedHenry Cloud Code</h4>
-  <a class="docslink" href="http://docs.feedhenry.com/v2/cloud_development.html">FeedHenry Cloud Development Documentation</a>
 </div>

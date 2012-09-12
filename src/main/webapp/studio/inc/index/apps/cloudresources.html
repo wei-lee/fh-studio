@@ -1,37 +1,40 @@
-<div id="cloudresources_container" class="well">
-  <div class="alerts"></div>
-
-  <%@ include file="./cloud_environment.html" %>
-
-  <div id="resource_current_container" class="row-fluid">
-    <div class="span12">
-      <button type="button" class="cloud_refresh_button btn pull-right" data-lang="cloudresource_refresh" data-loading-text="Refreshing..." autocomplete="off"></button>
-    </div>
-    <div class="row-fluid">
-      <div id="cloud_cpu" class="cloud_resource span4">
-        <h3 data-lang="cloudresource_cpu_header"></h3>
-        <div class="cloud_cpu_container"></div>
-      </div>
-      <div id="cloud_memory" class="cloud_resource span4">
-        <h3 data-lang="cloudresource_memory_header"></h3>
-        <div class="progress">
-          <!-- <div class="bar barloading"></div> -->
-          <div class="bar bar-danger"></div>
-          <div class="bar bar-info"></div>
+<div id="cloudresources_container">
+  <div class="fh-box-outer">
+    <h4 class="fh-box-header">
+      Cloud App Resource Usage
+      <%@ include file="./cloud_environment.html" %></h4>
+    <div class="fh-box-inner">
+      <div id="resource_current_container" class="row-fluid">
+        <div class="span12">
+          <button type="button" class="cloud_refresh_button btn pull-right" data-lang="cloudresource_refresh" data-loading-text="Refreshing..." autocomplete="off"></button>
         </div>
-        <div class="pull-right"><span class="resource_used"></span><span data-lang="cloudresource_of"></span><span class="resource_max"></span></div>
-      </div>
-      <div id="cloud_storage" class="cloud_resource span4">
-        <h3 data-lang="cloudresource_storage_header"></h3>
-        <div class="progress">
-          <!-- <div class="bar barloading"></div> -->
-          <div class="bar bar-danger"></div>
-          <div class="bar bar-info"></div>
+        <div class="row-fluid">
+          <div id="cloud_cpu" class="cloud_resource span4">
+            <h3 data-lang="cloudresource_cpu_header"></h3>
+            <div class="cloud_cpu_container"></div>
+          </div>
+          <div id="cloud_memory" class="cloud_resource span4">
+            <h3 data-lang="cloudresource_memory_header"></h3>
+            <div class="progress">
+              <!-- <div class="bar barloading"></div> -->
+              <div class="bar bar-danger"></div>
+              <div class="bar bar-info"></div>
+            </div>
+            <div class="pull-right"><span class="resource_used"></span><span data-lang="cloudresource_of"></span><span class="resource_max"></span></div>
+          </div>
+          <div id="cloud_storage" class="cloud_resource span4">
+            <h3 data-lang="cloudresource_storage_header"></h3>
+            <div class="progress">
+              <!-- <div class="bar barloading"></div> -->
+              <div class="bar bar-danger"></div>
+              <div class="bar bar-info"></div>
+            </div>
+            <div class="pull-right"><span class="resource_used"></span><span data-lang="cloudresource_of"></span><span class="resource_max"></span></div>
+          </div>
         </div>
-        <div class="pull-right"><span class="resource_used"></span><span data-lang="cloudresource_of"></span><span class="resource_max"></span></div>
       </div>
+
+      <div id="resource_history_container"></div>
     </div>
   </div>
-
-  <div id="resource_history_container"></div>
 </div>
