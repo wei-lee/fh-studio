@@ -5,6 +5,7 @@ Apps.Cloud = Apps.Cloud || {};
 Apps.Cloud.Controller = Apps.Controller.extend({
 
   period_status_check: null,
+  period_status_check_interval: 10000,
 
   init: function() {
     this._super();
@@ -39,7 +40,7 @@ Apps.Cloud.Controller = Apps.Controller.extend({
     this.clearPeriodicStatusCheck();
     this.period_status_check = setInterval(function(){
       self.refreshStatus();
-    }, 10000);
+    }, self.period_status_check_interval);
   },
 
   clearPeriodicStatusCheck: function() {
