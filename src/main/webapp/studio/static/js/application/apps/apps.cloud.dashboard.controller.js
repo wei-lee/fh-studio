@@ -44,7 +44,6 @@ Apps.Cloud.Dashboard.Controller = Apps.Cloud.Controller.extend({
     var self = this;
 
     this._super(this.views.dashboard_container);
-    this.hide();
     this.bind();
     $(this.container).show();
 

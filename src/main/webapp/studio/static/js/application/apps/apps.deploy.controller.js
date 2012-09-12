@@ -33,7 +33,6 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     this._super(this.views.deploying_container);
     var self = this;
 
-    this.hide();
     this.container = this.views.deploying_container;
     this.initFn();
 

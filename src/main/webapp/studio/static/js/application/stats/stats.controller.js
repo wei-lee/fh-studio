@@ -17,7 +17,6 @@ Stats.Controller = Apps.Cloud.Controller.extend({
     this._super(this.views.stats_container);
     var self = this;
 
-    this.hide();
     this.initFn();
 
     $(this.container).show();

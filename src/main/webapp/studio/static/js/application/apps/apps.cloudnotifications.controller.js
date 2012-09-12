@@ -21,8 +21,6 @@ Apps.Cloudnotifications.Controller = Apps.Cloud.Controller.extend({
   show: function() {
     this._super(this.views.cloudnotifications_container);
 
-    this.hide();
-
     this.initFn();
     this.showResources();
     $(this.container).show();

@@ -24,8 +24,6 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
   show: function() {
     this._super(this.views.cloudresources_container);
 
-    this.hide();
-
     this.initFn();
     $(this.container).show();
 

@@ -45,8 +45,6 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
   show: function(){
     this._super(this.views.debug_logging_container);
     
-    this.hide();
-
     this.initFn();
     this.showLogging();
 

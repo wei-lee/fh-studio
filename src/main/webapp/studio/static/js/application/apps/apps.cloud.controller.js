@@ -4,6 +4,8 @@ Apps.Cloud = Apps.Cloud || {};
 
 Apps.Cloud.Controller = Apps.Controller.extend({
 
+  period_status_check: null,
+
   init: function() {
     this._super();
     this.initCloudFn = _.once(this.initCloudBindings);
@@ -28,6 +30,26 @@ Apps.Cloud.Controller = Apps.Controller.extend({
       $fw.data.set('cloud_environment', 'dev');
       $('.dev_environment_btn', envContainer).parent().addClass('active');
     }
+
+    this.startPeriodicStatusCheck();
+  },
+
+  startPeriodicStatusCheck: function() {
+    var self = this;
+    this.clearPeriodicStatusCheck();
+    this.period_status_check = setInterval(function(){
+      self.refreshStatus();
+      console.log('refreshStatus')
+    }, 10000);
+  },
+
+  clearPeriodicStatusCheck: function() {
+    clearInterval(this.period_status_check);
+  },
+
+  hide: function() {
+    this._super();
+    this.clearPeriodicStatusCheck();
   },
 
   toggleEnv: function() {
@@ -41,6 +63,7 @@ Apps.Cloud.Controller = Apps.Controller.extend({
   },
 
   refreshStatus: function(env) {
+    console.log('Refreshing Cloud App Status');
     var self = this;
     $.each(['dev', 'live'], function(i, env){
       self.pingCloud(env, function(){
