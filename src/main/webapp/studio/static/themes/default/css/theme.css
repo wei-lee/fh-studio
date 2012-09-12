@@ -3057,6 +3057,10 @@ a.docslink {
   float: left;
 }
 
+.cloud_environment .env_type.active {
+  color: #08C;
+}
+
 .cloud_environment .env_type {
   padding: 0 10px 0 2px;
 }

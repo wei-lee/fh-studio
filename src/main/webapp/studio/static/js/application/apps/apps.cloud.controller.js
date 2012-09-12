@@ -9,6 +9,7 @@ Apps.Cloud.Controller = Apps.Controller.extend({
     this.initCloudFn = _.once(this.initCloudBindings);
   },
 
+  // TODO: Refactor all of the Cloud Env stuff into a seperate controller
   show: function(container) {
     this._super();
     this.container = container;
@@ -16,10 +17,10 @@ Apps.Cloud.Controller = Apps.Controller.extend({
     var envContainer = $(this.container + ' .cloud_environment');
 
     this.initCloudFn(envContainer);
+    var selectedEnv = $fw.data.get('cloud_environment');
+    this.refreshStatus();
 
     // set selected env button
-    $('a', envContainer).parent().removeClass('active');
-    var selectedEnv = $fw.data.get('cloud_environment');
     if (selectedEnv != null) {
       $('.' + selectedEnv + '_environment_btn', envContainer).parent().addClass('active');
     } else {
@@ -35,24 +36,58 @@ Apps.Cloud.Controller = Apps.Controller.extend({
     } else {
       this.toggleToDevEnv();
     }
+
+    this.refreshStatus();
+  },
+
+  refreshStatus: function(env) {
+    var self = this;
+    $.each(['dev', 'live'], function(i, env){
+      self.pingCloud(env, function(){
+        // Success
+        $('.status_light.' + env).addClass('okay');
+      }, function(){
+        // Failed
+        $('.status_light.' + env).removeClass('okay');
+      });
+    });
   },
 
   toggleToLiveEnv: function() {
-    // TODO: Hook up to ping.
     $('.status_light').addClass('okay');
     $('.cloud_environment .env_toggle_button').animate({
       'left': '31px'
-    });
+    }, 300);
     $('.cloud_environment .env_toggle_container').removeClass('dev').addClass('live');
+    $('.cloud_environment .env_type.dev').removeClass('active');
+    $('.cloud_environment .env_type.live').addClass('active');
   },
 
   toggleToDevEnv: function() {
-    // TODO: Hook up to ping.
     $('.status_light').removeClass('okay');
     $('.cloud_environment .env_toggle_button').animate({
       'left': '0px'
-    });
+    }, 300);
     $('.cloud_environment .env_toggle_container').removeClass('live').addClass('dev');
+    $('.cloud_environment .env_type.live').removeClass('active');
+    $('.cloud_environment .env_type.dev').addClass('active');
+  },
+
+  pingCloud: function(env, success, failure) {
+    var guid = $fw.data.get('inst').guid;
+    var url = Constants.PING_APP_URL;
+    var params = {
+      guid: guid,
+      deploytarget: env
+    };
+
+    $fw.server.post(url, params, function(res) {
+      if (res.status === "ok") {
+        success(res);
+      } else {
+        failure(res);
+      }
+    });
   },
 
   currentEnv: function () {
