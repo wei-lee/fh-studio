@@ -39,7 +39,6 @@ Apps.Cloud.Controller = Apps.Controller.extend({
     this.clearPeriodicStatusCheck();
     this.period_status_check = setInterval(function(){
       self.refreshStatus();
-      console.log('refreshStatus')
     }, 10000);
   },
 
@@ -126,16 +125,9 @@ Apps.Cloud.Controller = Apps.Controller.extend({
     // bind env buttons to make necessary callback
     $('.env_toggle_container', envContainer).bind('click', function (e) {
       e.preventDefault();
-      var jqEl = $(this);
-
       self.toggleEnv();
 
-      // if (jqEl.parent().hasClass('active')) {
-      //   // do nothing, already active
-      //   return;
-      // }
-
-      if (jqEl.hasClass('dev_environment_btn')) {
+      if (self.currentEnv() === 'dev') {
         $fw.data.set('cloud_environment', 'dev');
         self.switchedEnv('dev');
       } else {
