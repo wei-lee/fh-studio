@@ -3040,17 +3040,37 @@ a.docslink {
   width: 12px;
   height: 12px;
   background-color: rgb(226,0,0);
-/*  box-shadow: inset 0px 1px 0px 0px rgba(250,250,250,0.5), 0px 0px 3px 2px rgba(226,0,0,0.5);*/
   border-radius: 6px;
   transition: background-color 350ms, box-shadow 700ms;
   -o-transition: background-color 350ms, box-shadow 700ms;
   -moz-transition: background-color 350ms, box-shadow 700ms;
   -webkit-transition: background-color 350ms, box-shadow 700ms;
+  background-color: #C43C35;
+  background-repeat: repeat-x;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#EE5F5B), to(#C43C35));
+  background-image: -moz-linear-gradient(top, #EE5F5B, #C43C35);
+  background-image: -ms-linear-gradient(top, #EE5F5B, #C43C35);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #EE5F5B), color-stop(100%, #C43C35));
+  background-image: -webkit-linear-gradient(top, #EE5F5B, #C43C35);
+  background-image: -o-linear-gradient(top, #EE5F5B, #C43C35);
+  background-image: linear-gradient(top, #EE5F5B, #C43C35);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ee5f5b', endColorstr='#c43c35', GradientType=0);
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
 }
 
 .cloud_environment .status_light.okay {
-/*  box-shadow: inset 0px 1px 0px 0px rgba(250,250,250,0.5), 0px 0px 3px 2px rgba(135,187,83,0.5);*/
-  background-color: rgb(135,187,83);
+  background-color: #57A957;
+  background-repeat: repeat-x;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#62C462), to(#57A957));
+  background-image: -moz-linear-gradient(top, #62C462, #57A957);
+  background-image: -ms-linear-gradient(top, #62C462, #57A957);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #62C462), color-stop(100%, #57A957));
+  background-image: -webkit-linear-gradient(top, #62C462, #57A957);
+  background-image: -o-linear-gradient(top, #62C462, #57A957);
+  background-image: linear-gradient(top, #62C462, #57A957);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#62c462', endColorstr='#57a957', GradientType=0);
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  border-color: #57A957 #57A957 #3D773D;
 }
 
 .cloud_environment .status_light_container,
