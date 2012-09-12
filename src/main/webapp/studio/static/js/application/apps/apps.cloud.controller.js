@@ -40,23 +40,23 @@ Apps.Cloud.Controller = Apps.Controller.extend({
   toggleToLiveEnv: function() {
     // TODO: Hook up to ping.
     $('.status_light').addClass('okay');
-    $('.cloud_environment:visible .env_toggle_button').animate({
+    $('.cloud_environment .env_toggle_button').animate({
       'left': '31px'
     });
-    $('.cloud_environment:visible .env_toggle_container').removeClass('dev').addClass('live');
+    $('.cloud_environment .env_toggle_container').removeClass('dev').addClass('live');
   },
 
   toggleToDevEnv: function() {
     // TODO: Hook up to ping.
     $('.status_light').removeClass('okay');
-    $('.cloud_environment .env_toggle_button:visible').animate({
+    $('.cloud_environment .env_toggle_button').animate({
       'left': '0px'
     });
-    $('.cloud_environment:visible .env_toggle_container').removeClass('live').addClass('dev');
+    $('.cloud_environment .env_toggle_container').removeClass('live').addClass('dev');
   },
 
   currentEnv: function () {
-    if ($('.cloud_environment:visible .env_toggle_container').hasClass('dev')) {
+    if ($('.cloud_environment .env_toggle_container').hasClass('dev')) {
       return "dev";
     } else {
       return "live";
