@@ -24,54 +24,69 @@
 
       <div class="span10">
         <div id="reportingtabinstalls_container">
-          <ul class="nav nav-pills">
-            <li>
-              <a href="#tab_installs_by_date" data-toggle="pill" data-action="byDate">By Date</a>
-            </li>
-            <li>
-              <a href="#tab_installs_by_platform" data-toggle="pill" data-action="byPlatform">By Platform</a>
-            </li>
-            <li>
-              <a href="#tab_installs_by_location" data-toggle="pill" data-action="byLocation">By Location</a>
-            </li>
-          </ul>
-          <div class="pill-content">
-            <div id="tab_installs_by_date" class="installs_by_date pill-pane">
-            <%@ include file="../apps/report_installsdate.html"%>
-            </div>
-            <div id="tab_installs_by_platform" class="installs_by_platform pill-pane">
-            <%@ include file="../apps/report_installsdest.html"%>
-            </div>
-            <div id="tab_installs_by_location" class="installs_by_location pill-pane">
-            <%@ include file="../apps/report_installsloc.html"%>
+          <div class="fh-box-outer">
+            <h4 class="fh-box-header">
+              Reports - App Installs
+            </h4>
+            <div class="fh-box-inner">
+              <ul class="nav nav-pills">
+                <li>
+                  <a href="#tab_installs_by_date" data-toggle="pill" data-action="byDate">By Date</a>
+                </li>
+                <li>
+                  <a href="#tab_installs_by_platform" data-toggle="pill" data-action="byPlatform">By Platform</a>
+                </li>
+                <li>
+                  <a href="#tab_installs_by_location" data-toggle="pill" data-action="byLocation">By Location</a>
+                </li>
+              </ul>
+              <div class="pill-content">
+                <div id="tab_installs_by_date" class="installs_by_date pill-pane">
+                <%@ include file="../apps/report_installsdate.html"%>
+                </div>
+                <div id="tab_installs_by_platform" class="installs_by_platform pill-pane">
+                <%@ include file="../apps/report_installsdest.html"%>
+                </div>
+                <div id="tab_installs_by_location" class="installs_by_location pill-pane">
+                <%@ include file="../apps/report_installsloc.html"%>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
-         <div id="reportingtabstartups_container">
-           <ul class="nav nav-pills">
-            <li>
-              <a href="#tab_startups_by_date" data-toggle="pill" data-action="byDate">By Date</a>
-            </li>
-            <li>
-              <a href="#tab_startups_by_platform" data-toggle="pill" data-action="byPlatform">By Platform</a>
-            </li>
-            <li>
-              <a href="#tab_startups_by_location" data-toggle="pill" data-action="byLocation">By Location</a>
-            </li>
-          </ul>
-          <div class="pill-content">
-            <div id="tab_startups_by_date" class="startups_by_date pill-pane">
-            <%@ include file="../apps/report_startupsdate.html"%>
-            </div>
-            <div id="tab_startups_by_platform" class="startups_by_platform pill-pane">
-            <%@ include file="../apps/report_startupsdest.html"%>
-            </div>
-            <div id="tab_startups_by_location" class="startups_by_location pill-pane">
-            <%@ include file="../apps/report_startupsloc.html"%>
+        <div id="reportingtabstartups_container">
+          <div class="fh-box-outer">
+            <h4 class="fh-box-header">
+              Reports - App Startups
+            </h4>
+            <div class="fh-box-inner">
+               <ul class="nav nav-pills">
+                <li>
+                  <a href="#tab_startups_by_date" data-toggle="pill" data-action="byDate">By Date</a>
+                </li>
+                <li>
+                  <a href="#tab_startups_by_platform" data-toggle="pill" data-action="byPlatform">By Platform</a>
+                </li>
+                <li>
+                  <a href="#tab_startups_by_location" data-toggle="pill" data-action="byLocation">By Location</a>
+                </li>
+              </ul>
+              <div class="pill-content">
+                <div id="tab_startups_by_date" class="startups_by_date pill-pane">
+                <%@ include file="../apps/report_startupsdate.html"%>
+                </div>
+                <div id="tab_startups_by_platform" class="startups_by_platform pill-pane">
+                <%@ include file="../apps/report_startupsdest.html"%>
+                </div>
+                <div id="tab_startups_by_location" class="startups_by_location pill-pane">
+                <%@ include file="../apps/report_startupsloc.html"%>
+                </div>
+              </div>
             </div>
           </div>
         </div>
+
       </div>
 
     </div>
