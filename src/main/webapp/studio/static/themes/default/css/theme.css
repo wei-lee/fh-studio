@@ -2261,6 +2261,10 @@ line-height:0.5em;
   padding: 20px;
 }
 
+.fh-box-inner.no-padding {
+  padding: 0;
+}
+
 #user_key_list li {
   border-bottom: 1px solid #e5e5e5;
   padding: 10px;
