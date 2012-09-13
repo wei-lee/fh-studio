@@ -1,46 +1,39 @@
 application.DialogManager = Class.extend({
 
-  init: function () {
+  init: function() {
     this.progress = proto.ProgressDialog.load($('#progress_dialog'), {});
     this.connectivity = {
-      show: function (text) {
-        $('#connectivity_dialog').queue(function () {
-          $(this).show().find('p').text(text);
-          $(this).dequeue();
-        }).fadeIn(300).delay('undefined' !== typeof timeout ? timeout : 1500).fadeOut(300);
-      },
-      hide: function () {
-        $('#connectivity_dialog').hide();
+      show: function(text) {
+        $fw.client.dialog.info.flash(text, 5000);
       }
     };
     this.info = {
-      flash: function (text, timeout) {
+      flash: function(text, timeout) {
         var t = text;
-        $('#info_dialog').queue(function () {
+        $('#info_dialog').queue(function() {
           $(this).text(t);
           $(this).dequeue();
         }).fadeIn(300).delay('undefined' !== typeof timeout ? timeout : 1500).fadeOut(300);
       }
     };
-    this.error = function (text) {
-      var error_dialog = $('#error_dialog').clone();
-      var icon_html = "<span class='ui-state-error'><span class=\"ui-icon ui-icon-alert content_icon \"></span></span>";
-      error_dialog.find('.dialog-text').html(icon_html + text);
-      proto.Dialog.load(error_dialog, {
-        autoOpen: true,
-        height: 200,
-        title: 'Error',
-        stack: true,
-        dialogClass: 'error-dialog popup-dialog',
-        width: 320,
-        buttons: {
-          'OK': function () {
-            $(this).dialog('close');
-          }
-        }
+    this.error = function(text) {
+      var modal = $('#generic_error_modal').clone();
+      modal.find('.modal-body').html(text).end().appendTo($("body")).modal({
+        "keyboard": false,
+        "backdrop": "static"
+      }).find('.btn-primary').unbind().on('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        // confirmed delete, go ahead
+        modal.modal('hide');
+      }).end().on('hidden', function() {
+        // wait a couple seconds for modal backdrop to be hidden also before removing from dom
+        setTimeout(function() {
+          modal.remove();
+        }, 2000);
       });
     };
-    this.warning = function (text) {
+    this.warning = function(text) {
       var warning_dialog = $('#warning_dialog').clone();
       var icon_html = "<span class='ui-state-error'><span class=\"ui-icon ui-icon-notice content_icon \"></span></span>";
       warning_dialog.find('.dialog-text').html(icon_html + text);
@@ -52,7 +45,7 @@ application.DialogManager = Class.extend({
         dialogClass: 'warning-dialog popup-dialog',
         width: 320,
         buttons: {
-          'OK': function () {
+          'OK': function() {
             $(this).dialog('close');
           }
         }
@@ -60,7 +53,7 @@ application.DialogManager = Class.extend({
     };
   },
 
-  showConfirmDialog: function (dialog_title, confirm_text, ok_function, cancel_function) {
+  showConfirmDialog: function(dialog_title, confirm_text, ok_function, cancel_function) {
     var confirm_dialog = $('#confirm_dialog').clone();
     confirm_dialog.find('#confirm_dialog_text').html(confirm_text);
     proto.Dialog.load(confirm_dialog, {
@@ -69,13 +62,13 @@ application.DialogManager = Class.extend({
       title: dialog_title,
       width: 320,
       buttons: {
-        'Yes': function () {
+        'Yes': function() {
           $(this).dialog('close');
           if ($.isFunction(ok_function)) {
             ok_function();
           }
         },
-        'Cancel': function () {
+        'Cancel': function() {
           $(this).dialog('close');
           if ($.isFunction(cancel_function)) {
             cancel_function();
