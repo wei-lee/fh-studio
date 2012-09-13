@@ -10,7 +10,7 @@ $(document).ready(function () {
         alert('app:' + $fw.data.get('app').guid + '\ninst:' + $fw.data.get('inst').guid);
       }
     }
-    catch (e) {
+    catch (err) {
       // fail silently
     }
   });
