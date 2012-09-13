@@ -174,6 +174,7 @@ Admin.Deploytarget.Controller = Controller.extend({
     self.populateValidTargets(data);
     self.hide();
     $(self.views.target_edit).show();
+    $(self.views.target_edit).find('.' + $fw.client.lang.INSERT_HELP_ICON).each($fw.client.lang.insertHelpIcon);
     $(self.views.target_edit + " #cancel_deploy_target_btn").unbind("click").bind("click", function(){
       self.show();
     });
