@@ -682,5 +682,13 @@ var Lang = {
   stats_apicalls_requests_active_short: "Active Requests",
   stats_apicalls_requests_number_axis: "Requests per second",
   stats_apicalls_requests_xaxis: "Time of requests (%interval% second intervals)",
-  stats_apicalls_requests_per_interval: "Requests per minute"
+  stats_apicalls_requests_per_interval: "Requests per minute",
+
+  deploy_target_name_label_help_icon : "The name of deployment target. E.g. MyCloudFoundryTarget.",
+  deploy_target_platform_label_help_icon: "The service provider for this deployment target.",
+  deploy_target_envs_label_help_icon: "Which environment this deployment target can be used for. You can check either one or both of the environments.",
+  deploy_target_setting_url_label_help_icon: "The endpoint to call to do the deploy. You can get this value from the selected service provider. For example, for CloudFoundry, the value could be https://api.cloudfoundry.com.",
+  deploy_target_setting_infrastructure_label_help_icon: "Which infrastructure provider to use for this deploy target.",
+  deploy_target_setting_username_label_help_icon: "The user name of your account with the service provider.",
+  deploy_target_setting_password_label_help_icon: "The password of your account with the service provider."
 };

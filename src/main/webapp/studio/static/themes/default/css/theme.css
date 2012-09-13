@@ -548,7 +548,7 @@ label.error
 
 
 #editor_text_content {
-  min-height: 522px !important;
+  height: 565px !important;
   border: 1px solid #ccc;
 }
 
