@@ -66,20 +66,23 @@ Apps.Cloud.Controller = Apps.Controller.extend({
     console.log('Refreshing Cloud App Status');
     var self = this;
     $.each(['dev', 'live'], function(i, env){
+      var status_light = $('.status_light.' + env);
       self.pingCloud(env, function(){
         // Success
-        $('.status_light.' + env).addClass('okay');
+        status_light.addClass('okay');
       }, function(){
         // Failed
-        $('.status_light.' + env).removeClass('okay');
+        status_light.removeClass('okay');
       });
     });
   },
 
   toggleToLiveEnv: function() {
+    // Extra css set after animate to fix some odd "Corruption" issues in Chrome
     $('.cloud_environment .env_toggle_button').animate({
       'left': '31px'
-    }, 300);
+    }, 300).css('left', '31px');
+
     $('.cloud_environment .env_toggle_container').removeClass('dev').addClass('live');
     $('.cloud_environment .env_type.dev').removeClass('active');
     $('.cloud_environment .env_type.live').addClass('active');
@@ -88,7 +91,7 @@ Apps.Cloud.Controller = Apps.Controller.extend({
   toggleToDevEnv: function() {
     $('.cloud_environment .env_toggle_button').animate({
       'left': '0px'
-    }, 300);
+    }, 300).css('left', '0px');
     $('.cloud_environment .env_toggle_container').removeClass('live').addClass('dev');
     $('.cloud_environment .env_type.live').removeClass('active');
     $('.cloud_environment .env_type.dev').addClass('active');
