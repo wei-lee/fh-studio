@@ -548,7 +548,7 @@ label.error
 
 
 #editor_text_content {
-  min-height: 522px !important;
+  height: 565px !important;
   border: 1px solid #ccc;
 }
 
@@ -3015,7 +3015,7 @@ a.docslink {
   height: 23px;
   background: url("../img/cloud_env_toggle_bg.png") no-repeat;
   position: relative;
-  pointer: cursor;
+  cursor: pointer;
 }
 
 .cloud_environment .env_toggle_button {
@@ -3027,7 +3027,7 @@ a.docslink {
   position: absolute;
   left: 0;
   top: 0;
-  pointer: cursor;
+  cursor: pointer;
 }
 
 .cloud_environment .status_light_container {
