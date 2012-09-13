@@ -2988,7 +2988,7 @@ a.docslink {
   margin-bottom: 20px;
 }
 
-#abort_cloud_app_deploy {
+.abort_cloud_app_deploy {
   margin-right: 20px;
 }
 
@@ -3002,6 +3002,12 @@ a.docslink {
 
 #app_content .fh-box-inner {
   min-height: 631px;
+}
+
+#cloud_deploy_progress textarea {
+  height: 200px;
+  background: #fafafa;
+  color: #08C;
 }
 
 /* Env Selector */

@@ -4,8 +4,6 @@ Stats.Model.Historical.APICalls = Stats.Model.Historical.extend({
    */
   name: 'apicalls',
 
-  _mock: Stats.Mock.apicalls.results,
-
   init: function(params) {
     this._super(params);
   },
@@ -244,5 +242,13 @@ Stats.Model.Historical.APICalls = Stats.Model.Historical.extend({
     });
 
     return series_data;
+  },
+
+  _initMockData: function () {
+    this._super({
+      t1name: "testid_api_getFBContacts",
+      t2name: "testid_api_postToTwitter",
+      t3name: "testid_api_storeClientData"
+    });
   }
 });

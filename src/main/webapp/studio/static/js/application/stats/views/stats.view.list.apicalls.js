@@ -51,13 +51,13 @@ Stats.View.List.APICalls = Stats.View.List.extend({
             numRequests = tempSeries.data[tempSeries.data.length - 1][1];
             var periodMS = 60000; // 1 minute
             var sampleValue = (numRequests * (periodMS / 1000));
-            latestStats.push(Lang.stats_apicalls_requests_per_interval + ':' + (Math.round(sampleValue * 100) / 100));
+            latestStats.push(Lang.stats_apicalls_requests_per_interval + ': ' + (Math.round(sampleValue * 100) / 100));
           } else if (tempSeries.name === Lang.stats_apicalls_requests_average_concurrent) {
             avgConcurrentRequests = tempSeries.data[tempSeries.data.length - 1][1];
-            latestStats.push(Lang.stats_apicalls_requests_average_concurrent + ':' + avgConcurrentRequests);
+            latestStats.push(Lang.stats_apicalls_requests_average_concurrent + ': ' + avgConcurrentRequests);
           } else if (tempSeries.name === Lang.stats_apicalls_request_times_90th_percentile_mean) {
             avgRequestTime = tempSeries.data[tempSeries.data.length - 1][1];
-            latestStats.push(Lang.stats_apicalls_request_times_90th_percentile_mean_short + ':' + Math.round(avgRequestTime) + 'ms');
+            latestStats.push(Lang.stats_apicalls_request_times_90th_percentile_mean_short + ': ' + Math.round(avgRequestTime) + 'ms');
           }
         }
 

@@ -38,7 +38,10 @@ Stats.View.Chart = Class.extend({
         spacingRight: 20
       },
       legend: {
-        enabled: false
+        layout: 'horizontal',
+        verticalAlign: 'top',
+        backgroundColor: '#FFFFFF',
+        shadow: true
       },
       scrollbar: {
         enabled: true
