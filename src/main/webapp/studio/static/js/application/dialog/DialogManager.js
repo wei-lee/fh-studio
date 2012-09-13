@@ -34,47 +34,50 @@ application.DialogManager = Class.extend({
       });
     };
     this.warning = function(text) {
-      var warning_dialog = $('#warning_dialog').clone();
-      var icon_html = "<span class='ui-state-error'><span class=\"ui-icon ui-icon-notice content_icon \"></span></span>";
-      warning_dialog.find('.dialog-text').html(icon_html + text);
-      proto.Dialog.load(warning_dialog, {
-        autoOpen: true,
-        height: 200,
-        title: 'Warning',
-        stack: true,
-        dialogClass: 'warning-dialog popup-dialog',
-        width: 320,
-        buttons: {
-          'OK': function() {
-            $(this).dialog('close');
-          }
-        }
+      var modal = $('#generic_warning_modal').clone();
+      modal.find('.modal-body').html(text).end().appendTo($("body")).modal({
+        "keyboard": false,
+        "backdrop": "static"
+      }).find('.btn-primary').unbind().on('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        // confirmed delete, go ahead
+        modal.modal('hide');
+      }).end().on('hidden', function() {
+        // wait a couple seconds for modal backdrop to be hidden also before removing from dom
+        setTimeout(function() {
+          modal.remove();
+        }, 2000);
       });
     };
   },
 
   showConfirmDialog: function(dialog_title, confirm_text, ok_function, cancel_function) {
-    var confirm_dialog = $('#confirm_dialog').clone();
-    confirm_dialog.find('#confirm_dialog_text').html(confirm_text);
-    proto.Dialog.load(confirm_dialog, {
-      autoOpen: true,
-      dialogClass: 'confirm_dialog',
-      title: dialog_title,
-      width: 320,
-      buttons: {
-        'Yes': function() {
-          $(this).dialog('close');
-          if ($.isFunction(ok_function)) {
-            ok_function();
-          }
-        },
-        'Cancel': function() {
-          $(this).dialog('close');
-          if ($.isFunction(cancel_function)) {
-            cancel_function();
-          }
-        }
+    var modal = $('#generic_confirmation_modal').clone();
+    modal.find('.modal-body').html(confirm_text).end().appendTo($("body")).modal({
+      "keyboard": false,
+      "backdrop": "static"
+    }).find('.cancel-dialog').unbind().on('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      // confirmed delete, go ahead
+      modal.modal('hide');
+      if ($.isFunction(cancel_function)) {
+        cancel_function();
       }
+    }).end().find('.ok-dialog').unbind().on('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      // confirmed delete, go ahead
+      modal.modal('hide');
+      if ($.isFunction(ok_function)) {
+        ok_function();
+      }
+    }).end().on('hidden', function() {
+      // wait a couple seconds for modal backdrop to be hidden also before removing from dom
+      setTimeout(function() {
+        modal.remove();
+      }, 2000);
     });
   }
 });
