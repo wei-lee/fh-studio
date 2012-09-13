@@ -4,13 +4,7 @@ application.DialogManager = Class.extend({
     this.progress = proto.ProgressDialog.load($('#progress_dialog'), {});
     this.connectivity = {
       show: function(text) {
-        $('#connectivity_dialog').queue(function() {
-          $(this).show().find('p').text(text);
-          $(this).dequeue();
-        }).fadeIn(300).delay('undefined' !== typeof timeout ? timeout : 1500).fadeOut(300);
-      },
-      hide: function() {
-        $('#connectivity_dialog').hide();
+        $fw.client.dialog.info.flash(text, 5000);
       }
     };
     this.info = {
