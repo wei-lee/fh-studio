@@ -6,7 +6,6 @@ Stats.Model = Stats.Model || {};
  * raw form, untransformed
  */
 Stats.Model.Base = Class.extend({
-  _mock: null,
   _revisions: [],
   _data: null,
   use_sample_data: false,
@@ -129,7 +128,9 @@ Stats.Model.Base = Class.extend({
   },
 
   _loadMock: function(callback) {
-    this._setInitialData(this._mock);
+    this._initMockData();
+    this.interval = this._mock.interval;
+    this._setInitialData(this._mock.results);
     if (typeof(callback) == 'function') {
       if (this.use_mock_delay) {
         setTimeout(function(){
