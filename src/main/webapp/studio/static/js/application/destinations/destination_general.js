@@ -187,7 +187,12 @@ application.DestinationGeneral = Class.extend({
     }).show().parent().find('button.resource-not-uploaded').hide();
 
     var content_text = text ? text : "You can start to build " + type + " version of the app";
-    button.find('.resource-content').text(content_text);
+    if(typeof text === "string"){
+      button.find('.resource-content').text(content_text);
+    } else {
+      button.find('.resource-content').html(content_text);
+    }
+
   },
 
   disableButton: function(button, type, text) {
@@ -199,7 +204,11 @@ application.DestinationGeneral = Class.extend({
     }).show().parent().find('button.resource-uploaded').hide();
 
     var content_text = text ? text : "You can not build " + type + " version of the app until you have uploaded your certificate";
-    button.find('.resource-content').text(content_text);
+    if(typeof text === "string"){
+      button.find('.resource-content').text(content_text);
+    } else {
+      button.find('.resource-content').html(content_text);
+    }
   },
   redirectToAccount: function(target) {
     // TODO: use id's instead of indexes
