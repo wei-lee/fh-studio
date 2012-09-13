@@ -81,7 +81,7 @@ Apps.Cloud.Controller = Apps.Controller.extend({
     // Extra css set after animate to fix some odd "Corruption" issues in Chrome
     $('.cloud_environment .env_toggle_button').animate({
       'left': '31px'
-    }, 300).css('left', '31px');
+    }, 300);
 
     $('.cloud_environment .env_toggle_container').removeClass('dev').addClass('live');
     $('.cloud_environment .env_type.dev').removeClass('active');
@@ -91,7 +91,7 @@ Apps.Cloud.Controller = Apps.Controller.extend({
   toggleToDevEnv: function() {
     $('.cloud_environment .env_toggle_button').animate({
       'left': '0px'
-    }, 300).css('left', '0px');
+    }, 300);
     $('.cloud_environment .env_toggle_container').removeClass('live').addClass('dev');
     $('.cloud_environment .env_type.live').removeClass('active');
     $('.cloud_environment .env_type.dev').addClass('active');
