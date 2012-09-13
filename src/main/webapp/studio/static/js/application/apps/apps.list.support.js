@@ -29,7 +29,9 @@ Apps.List.Support = Controller.extend({
     if (data.aaData.length === 0) {
       // Adjust colspan based on visible columns for new colspan
       var visible_columns = $('.dataTable:visible th:visible').length;
-      $('.dataTable:visible tbody td').attr('colspan', visible_columns);
+      var no_data_td = $('.dataTable:visible tbody td');
+      no_data_td.attr('colspan', visible_columns);
+      no_data_td.text(Lang.no_apps);
     }
 
     // Inject Create button
