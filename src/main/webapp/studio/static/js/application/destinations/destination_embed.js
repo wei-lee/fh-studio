@@ -67,7 +67,7 @@ application.DestinationEmbed = application.DestinationGeneral.extend({
     }).append($('<p>',{
       text: $fw.client.lang.getLangString('publish_embed_text')
     })).append($('<textarea>', {
-      class: 'embed_code',
+      'class': 'embed_code',
       value: tag,
       readonly: true
     })).appendTo($(document));
