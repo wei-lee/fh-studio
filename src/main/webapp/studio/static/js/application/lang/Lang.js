@@ -1,4 +1,6 @@
 var Lang = {
+  no_apps: 'You currently have no Apps. Get started by clicking the "Create an App" button above.',
+
   keys_manage_header: 'Manage Keys',
 
   docs_getting_started: 'Getting Started',
