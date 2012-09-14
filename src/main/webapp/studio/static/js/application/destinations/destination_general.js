@@ -429,7 +429,7 @@ application.DestinationGeneral = Class.extend({
         // TODO: better way for this temporary workaround for finishing wizard after successful upload  
         wizard.find('.jw-button-finish').trigger('click');
         console.log('publish successful: ' + JSON.stringify(res));
-        that.handleDownload(res);
+        that.handleDownload(res, config);
       });
     });
 
