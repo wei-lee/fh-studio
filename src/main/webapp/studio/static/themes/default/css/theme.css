@@ -100,7 +100,7 @@ textarea { resize:none; }
   font-style: italic;
 }
 
-.hidden_template, .hidden {
+.hidden_template {
   display: none;
 }
 
