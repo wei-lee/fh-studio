@@ -148,12 +148,21 @@ Apps.Reports.Support = Apps.Controller.extend({
      container.find('.appreport-applist').hide();
    }
 
-   container.find('.appreportfrom-datepicker').datepicker({
+   // set from date to 4 weeks ago, and to date to today
+   var today = new Date();
+   var fourWeeksAgo = new Date(today.getTime() - 2419200000);
+
+   function formatDate(date) {
+    return ('' + ((date.getUTCMonth() + 1) * 0.01)).substring(2,4) + '/' + ('' + (date.getUTCDate() * 0.01)).substring(2,4) + '/' + date.getUTCFullYear();
+   }
+
+   // initialise datepickers
+   container.find('.appreportfrom-datepicker').val(formatDate(fourWeeksAgo)).datepicker({
      format: "mm/dd/yyyy",
      weekStart: 0
    });
 
-   container.find('.appreportto-datepicker').datepicker({
+   container.find('.appreportto-datepicker').val(formatDate(today)).datepicker({
      format: "mm/dd/yyyy",
      weekStart: 0
    });
