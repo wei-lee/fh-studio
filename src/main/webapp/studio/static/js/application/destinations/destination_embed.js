@@ -16,8 +16,8 @@ application.DestinationEmbed = application.DestinationGeneral.extend({
         if(res.result){
           var main_container = $('#manage_publish_container');
           main_container.find(".dashboard-content").hide();
-          that.enableButton(main_container.find("#app_embed_build_debug"), "dev", that.generateNewEmbedScript(res.dev_url));
-          that.enableButton(main_container.find("#app_embed_build_release"), "live", that.generateNewEmbedScript(res.live_url));
+          that.enableButton(main_container.find("#app_embed_build_debug"), "dev", that.generateNewEmbedScript(res.dev_url, "development", false));
+          that.enableButton(main_container.find("#app_embed_build_release"), "live", that.generateNewEmbedScript(res.live_url, "live", false));
           main_container.find('#app_publish_' + that.destination_id + '_build').show();
           main_container.find("#app_publish_" + that.destination_id).show();
 
@@ -41,23 +41,36 @@ application.DestinationEmbed = application.DestinationGeneral.extend({
     };
   },
 
-  handleDownload: function(res){
-    var el = this.generateNewEmbedScript(res.action.url);
+  handleDownload: function(res, config){
+    var env = config === "dev" ? "development" : "live";
+    var el = this.generateNewEmbedScript(res.action.url, env, true);
     this.showDialog(el, 500);
   },
 
-  generateNewEmbedScript: function(url){
+  generateNewEmbedScript: function(url, env, afterdeploy){
     var el = $("<div>", {});
-    var p = $("<p>", {html:"You can view the app from <a target='_blank' href='"+url+"' >here</>"});
-    var p1 = $("<p>", {text:"To embed this app in other website, you can copy and paste any of the following code:"});
-    var pre1 = $("<pre>");
+    if(url){
+      var html = "";
+      if(!afterdeploy){
+        html += "The "+env+" embeded app has been deployed previously.";
+      } else {
+        html += "The "+env+" embeded app has been deployed.";
+      }
+      html += "You can view the app from <a target='_blank' href='"+url+"' >here</>.";
+      var p = $("<p>", {html:html});
+      var p1 = $("<p>", {text:"To embed this app in other website, you can copy and paste any of the following code:"});
+      var pre1 = $("<pre>");
       var c1 = $("<code>", {text:"<iframe src='"+url+"' border='0' frameborder='0' ></iframe>", css:{color:'black'}});
-    pre1.append(c1);
-    var p2 = $("<p>", {text:"Or"});
-    var pre2 = $("<pre>");
-    var c2 = $("<code>", {text:"<script>\ndocument.write(\"<div><iframe src='"+url+"' border='0' frameborder='0'></iframe></div>\");\n</script>", css:{color:'black'}});
-    pre2.append(c2);
-    el.append(p).append(p1).append(pre1).append(p2).append(pre2);
+      pre1.append(c1);
+      var p2 = $("<p>", {text:"Or"});
+      var pre2 = $("<pre>");
+      var c2 = $("<code>", {text:"<script>\ndocument.write(\"<div><iframe src='"+url+"' border='0' frameborder='0'></iframe></div>\");\n</script>", css:{color:'black'}});
+      pre2.append(c2);
+      el.append(p).append(p1).append(pre1).append(p2).append(pre2);
+    } else {
+      var p = $("<p>", {text:"The "+env+" embeded app hasn't been deployed."});
+      el.append(p);
+    }
     return el;
   },
 
