@@ -68,8 +68,8 @@ application.DestinationEmbed = application.DestinationGeneral.extend({
       pre2.append(c2);
       el.append(p).append(p1).append(pre1).append(p2).append(pre2);
     } else {
-      var p = $("<p>", {text:"The "+env+" embeded app hasn't been deployed."});
-      el.append(p);
+      var p3 = $("<p>", {text:"The "+env+" embeded app hasn't been deployed."});
+      el.append(p3);
     }
     return el;
   },
