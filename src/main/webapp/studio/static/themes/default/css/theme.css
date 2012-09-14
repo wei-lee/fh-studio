@@ -3010,6 +3010,11 @@ a.docslink {
   color: #08C;
 }
 
+#debug_logging_text {
+  background: #fafafa;
+  color: #08C;
+}
+
 /* Env Selector */
 .cloud_environment a {
   text-shadow: none;
