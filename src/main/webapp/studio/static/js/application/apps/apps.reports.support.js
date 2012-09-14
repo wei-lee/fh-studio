@@ -48,7 +48,7 @@ Apps.Reports.Support = Apps.Controller.extend({
     itemToClick.trigger('click');
   },
     
-  initMetric: function (metric, type, container, url, appid) {
+  initMetric: function (metric, type, container, url, appid, show_initial) {
     var self = this;
     
     self.url = url;
@@ -70,8 +70,9 @@ Apps.Reports.Support = Apps.Controller.extend({
         }
       });
     }
-    
-    container.find('.appreport-button').bind('click', function (e) {
+
+    var go_button = container.find('.appreport-button');
+    go_button.bind('click', function (e) {
       e.preventDefault();
       e.stopPropagation();
       var params, app, tempFDate, tempTDate, days, dest;
@@ -115,7 +116,13 @@ Apps.Reports.Support = Apps.Controller.extend({
         }
       });
     });
-    
+
+    if (show_initial) {
+      // :(
+      setTimeout(function(){
+        go_button.trigger('click');
+      }, 100);
+    }
   },
 
   doOptions: function (container, getAppsList) {
