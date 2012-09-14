@@ -856,8 +856,7 @@ span.label-info {
 {
   padding: 1em 0 0 3px;
 }
-.form-field label, .form-field input, .form-field select, .form-field textarea, .form-field label.error
-{
+.form-field label, .form-field input, .form-field select, .form-field textarea, .form-field label.error {
   float:left;
 }
 
