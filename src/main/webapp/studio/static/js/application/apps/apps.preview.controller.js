@@ -14,11 +14,15 @@ Apps.Preview.Controller = Controller.extend({
     
     $('.preview_toggle').unbind().bind('click', function (e) {
       e.preventDefault();
+
       if (self.isPreviewOpen()) {
         self.hide();
       } else {
         self.show();
       }
+      
+      // Trigger highcharts resize!
+      $(window).trigger('resize');
     });
   },
 
