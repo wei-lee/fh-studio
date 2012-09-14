@@ -3004,7 +3004,7 @@ a.docslink {
   min-height: 631px;
 }
 
-#cloud_deploy_progress textarea {
+.cloud_deploy_progress textarea {
   height: 200px;
   background: #fafafa;
   color: #08C;

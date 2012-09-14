@@ -272,7 +272,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
       },
       error: function(res) {
         console.log('Deploy error > ' + JSON.stringify(res));
-        self.updateProgressLog(res.error);
+        self.updateProgressLog(res.error, sub_container);
         if ($.isFunction(self.deployCompleteFailed)) {
           self.deployCompleteFailed(sub_container);
         }

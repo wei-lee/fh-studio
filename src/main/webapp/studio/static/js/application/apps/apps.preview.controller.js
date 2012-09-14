@@ -15,6 +15,7 @@ Apps.Preview.Controller = Controller.extend({
     
     $('.preview_toggle').unbind().bind('click', function (e) {
       e.preventDefault();
+
       if (self.isPreviewOpen()) {
         self.forceStayOpen = false;
         self.hide();
@@ -22,6 +23,9 @@ Apps.Preview.Controller = Controller.extend({
         self.forceStayOpen = true;
         self.show();
       }
+      
+      // Trigger highcharts resize!
+      $(window).trigger('resize');
     });
   },
 
