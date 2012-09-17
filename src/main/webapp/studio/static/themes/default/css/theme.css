@@ -2479,6 +2479,10 @@ button.btn {
   height: 24px;
 }
 
+.btn-group > .btn, .btn-group > .dropdown-menu {
+  font-size: 11px;
+}
+
 button.btn.btn-large, input[type="submit"].btn.btn-large {
   font-size: 14px;
   height: 30px;
