@@ -196,7 +196,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     };
     $fw.server.post(url, params, function(res) {
       if (res.status === "ok") {
-        self.deployStarted(res.cacheKey, self.sub_container);
+        self.deployStarted(res.cacheKey, self.sub_container, 'live');
       } else {
         console.log('live Deploy failed:' + res);
         self.sub_container.data('deploy', false);
@@ -220,7 +220,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
 
     $fw.server.post(url, params, function(res) {
       if (res.status === "ok") {
-        self.deployStarted(res.cacheKey, self.sub_container);
+        self.deployStarted(res.cacheKey, self.sub_container, 'dev');
       } else {
         console.log('dev Deploy failed:' + res);
         self.sub_container.data('deploy', false);
@@ -228,7 +228,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     }, null, true);
   },
 
-  deployStarted: function(cache_key, sub_container) {
+  deployStarted: function(cache_key, sub_container, env) {
     var self = this;
     this.resetProgress(sub_container);
     console.log('deploying.deployStarted: [' + cache_key + ']');
@@ -266,7 +266,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
       complete: function(res) {
         console.log('Deploy successful > ' + JSON.stringify(res));
         if ($.isFunction(self.deployCompleteSuccess)) {
-          self.deployCompleteSuccess(sub_container);
+          self.deployCompleteSuccess(sub_container, env);
         }
         self.updateProgress(100, sub_container);
       },
@@ -341,10 +341,11 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     $('.cloud_deploy_progress .progress', sub_container).removeClass('progress-danger progress-success').addClass('progress-striped');
   },
 
-  deployCompleteSuccess: function(sub_container) {
-    console.log('Deploy complete - success.');
+  deployCompleteSuccess: function(sub_container, env) {
+    console.log('Deploy complete - success [' + env + ']');
     this.enableDeployButton(sub_container);
     this.makeProgressGreen(sub_container);
+    $('.status_light.' + env).addClass('okay');
   },
 
   deployCompleteFailed: function(sub_container) {
