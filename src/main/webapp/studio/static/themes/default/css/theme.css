@@ -2218,10 +2218,6 @@ line-height:0.5em;
 }
 
 /* Cloud Resources */
-.cloud_resource {
-  height: 300px;
-}
-
 .cloud_cpu_container {
   height: 250px;
   width: 100%;
