@@ -127,7 +127,7 @@ Apps.Cloud.Controller = Apps.Controller.extend({
     
     $fw.client.lang.insertLangFromData($(this.container));
     // bind env buttons to make necessary callback
-    $('.env_toggle_container', envContainer).bind('click', function (e) {
+    $('.env_toggle_container', envContainer).bind('mousedown', function (e) {
       e.preventDefault();
       self.toggleEnv();
 
