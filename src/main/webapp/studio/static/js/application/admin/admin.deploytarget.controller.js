@@ -90,46 +90,49 @@ Admin.Deploytarget.Controller = Controller.extend({
     this.hideAlerts();
 
     if ($fw.getClientProp("demo-ui-enabled") === "true") {
-      _.once(this.showSample());
+      this.showSample();
     }
 
     this.showTargetList();
   },
 
   showSample: function() {
-    this.valid_targets.push({
-      "id": "amazonaws",
-      "name": "Amazon AWS",
-      "icon": "cloud_target_amazonaws.png",
-      "configurations": {
-        "username": true,
-        "password": true,
-        "infrastructure": true
-      }
-    }, {
-      "id": "hpcloud",
-      "name": "HP Cloud",
-      "icon": "cloud_target_hpcloud.png",
-      "configurations": {
-        "username": true,
-        "password": true,
-        "infrastructure": false
-      }
-    }, {
-      "id": "rackspace",
-      "name": "Rackspace",
-      "icon": "cloud_target_rackspace.png",
-      "configurations": {
-        "username": true,
-        "password": true,
-        "infrastructure": false
-      }
-    });
+    // Only once!
+    if ($fw.getClientProps().nodejsValidTargets.indexOf('hpcloud') === -1) {
+      this.valid_targets.push({
+        "id": "amazonaws",
+        "name": "Amazon AWS",
+        "icon": "cloud_target_amazonaws.png",
+        "configurations": {
+          "username": true,
+          "password": true,
+          "infrastructure": true
+        }
+      }, {
+        "id": "hpcloud",
+        "name": "HP Cloud",
+        "icon": "cloud_target_hpcloud.png",
+        "configurations": {
+          "username": true,
+          "password": true,
+          "infrastructure": false
+        }
+      }, {
+        "id": "rackspace",
+        "name": "Rackspace",
+        "icon": "cloud_target_rackspace.png",
+        "configurations": {
+          "username": true,
+          "password": true,
+          "infrastructure": false
+        }
+      });
 
-    // Update props
-    var props = $fw.getClientProps();
-    props.nodejsValidTargets = props.nodejsValidTargets + ',amazonaws,hpcloud,rackspace';
-    $fw.setClientProps(props);
+      // Update props
+      var props = $fw.getClientProps();
+      props.nodejsValidTargets = props.nodejsValidTargets + ',amazonaws,hpcloud,rackspace';
+      $fw.setClientProps(props);
+    }
   },
 
   showTargetList: function() {
