@@ -90,7 +90,7 @@ Admin.Deploytarget.Controller = Controller.extend({
     this.hideAlerts();
 
     if ($fw.getClientProp("demo-ui-enabled") === "true") {
-      this.showSample();
+      _.once(this.showSample());
     }
 
     this.showTargetList();
