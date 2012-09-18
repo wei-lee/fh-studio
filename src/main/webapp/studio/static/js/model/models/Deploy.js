@@ -24,7 +24,9 @@ model.Deploy = model.Model.extend({
   listEditable: function(success, fail, post_process) {
     var params = {};
     if (post_process) {
-      return this.serverPost(Constants.DEPLOY_TARGET_LIST_EDITABLE_URL, params, success, fail, true, this.postProcessList, this);
+      return this.serverPost(Constants.DEPLOY_TARGET_LIST_EDITABLE_URL, params, function(res) {
+        return success(res);
+      }, fail, true, this.postProcessList, this);
     } else {
       return this.serverPost(Constants.DEPLOY_TARGET_LIST_EDITABLE_URL, params, success, fail, true);
     }
@@ -35,7 +37,55 @@ model.Deploy = model.Model.extend({
       "env": env,
       "app": app_guid
     };
-    return this.serverPost(Constants.DEPLOY_TARGET_LISTFORAPP_URL, params, success, fail, true);
+    return this.serverPost(Constants.DEPLOY_TARGET_LISTFORAPP_URL, params, function(res) {
+      if ($fw.getClientProp("demo-ui-enabled") === "true") {
+        // Add sample PaaS
+        res.list.push({
+          "fields": {
+            "configurations": {
+              "url": "http://api.feedhenry.me:9080",
+              "username": "feedhenry"
+            },
+            "domain": $fw.getClientProps().domain,
+            "env": env,
+            "id": "amazonaws",
+            "name": "Amazon AWS",
+            "selected": false,
+            "target": "amazonaws"
+          },
+          "type": "cm_DeployPolicy"
+        }, {
+          "fields": {
+            "configurations": {
+              "url": "http://api.feedhenry.me:9080",
+              "username": "feedhenry"
+            },
+            "domain": $fw.getClientProps().domain,
+            "env": env,
+            "id": "rackspace",
+            "name": "Rackspace",
+            "selected": false,
+            "target": "rackspace"
+          },
+          "type": "cm_DeployPolicy"
+        }, {
+          "fields": {
+            "configurations": {
+              "url": "http://api.feedhenry.me:9080",
+              "username": "feedhenry"
+            },
+            "domain": $fw.getClientProps().domain,
+            "env": env,
+            "id": "hpcloud",
+            "name": "HP Cloud",
+            "selected": false,
+            "target": "hpcloud"
+          },
+          "type": "cm_DeployPolicy"
+        });
+      }
+      return success(res);
+    }, fail, true);
   },
 
   current: function(app_guid, env, success, fail) {
@@ -50,7 +100,7 @@ model.Deploy = model.Model.extend({
           return success(target);
         }
       });
-      
+
     }, fail, true);
   },
 

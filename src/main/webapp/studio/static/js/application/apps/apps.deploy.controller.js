@@ -96,7 +96,9 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
   },
 
   abort: function() {
-    this.active_async_task.cancel();
+    if (this.active_async_task) {
+      this.active_async_task.cancel();
+    }
     this.enableDeployButton();
     this.resetProgress(this.sub_container);
   },
