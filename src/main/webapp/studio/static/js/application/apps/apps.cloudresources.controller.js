@@ -140,6 +140,7 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
     var cloudEnv = $fw.data.get('cloud_environment');
     this.models.appresource.current(guid, cloudEnv, function(res) {
       if (res != null && res.data != null) {
+        self.hideAlerts();
         var data = res.data;
 
         if (data.usage != null) {
@@ -171,10 +172,12 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
         cb();
       } else {
         self.showAlert('error', 'Error getting resource data. Please make sure your App is deployed to \'' + cloudEnv + '\' environment (res.data is undefined)');
+        self.resetResource();
         cb();
       }
     }, function(err) {
       self.showAlert('error', 'Error getting resource data. Please make sure your App is deployed to \'' + cloudEnv + '\' environment (' + (err.message != null ? err.message : err) + ')');
+      self.resetResource();
       cb();
     });
 
@@ -204,6 +207,14 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
 
     $('.bar-danger', container).css('width', '0%');
     $('.bar-info', container).css('width', '100%');
+  },
+
+  resetResource: function() {
+    var self = this;
+    var cpuPoint = self.cpuChart.series[0].points[0];
+    cpuPoint.update(0);
+    self.showNAResourceBar($('#cloud_memory', self.container));
+    self.showNAResourceBar($('#cloud_storage', self.container));
   },
 
   bytesToMB: function(bytes) {
