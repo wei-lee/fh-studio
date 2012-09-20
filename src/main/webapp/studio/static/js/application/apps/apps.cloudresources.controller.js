@@ -28,7 +28,7 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
     $(this.container).show();
 
     if ($fw.getClientProp("demo-ui-enabled") === "true") {
-      this.showSample();
+      //this.showSample();
     }
 
     $('.cloud_refresh_button', $(this.container)).trigger('click');
