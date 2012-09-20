@@ -4,8 +4,9 @@ Apps.Cloud = Apps.Cloud || {};
 
 Apps.Cloud.Controller = Apps.Controller.extend({
 
-  period_status_check: null,
+  refresh_enabled: false,
   period_status_check_interval: 10000,
+
 
   init: function() {
     this._super();
@@ -32,19 +33,10 @@ Apps.Cloud.Controller = Apps.Controller.extend({
       $('.dev_environment_btn', envContainer).parent().addClass('active');
     }
 
-    this.startPeriodicStatusCheck();
-  },
-
-  startPeriodicStatusCheck: function() {
-    var self = this;
-    this.clearPeriodicStatusCheck();
-    this.period_status_check = setInterval(function(){
-      self.refreshStatus();
-    }, self.period_status_check_interval);
   },
 
   clearPeriodicStatusCheck: function() {
-    clearInterval(this.period_status_check);
+    this.refresh_enabled = false;
   },
 
   hide: function() {
@@ -58,22 +50,39 @@ Apps.Cloud.Controller = Apps.Controller.extend({
     } else {
       this.toggleToDevEnv();
     }
-
-    this.refreshStatus();
   },
 
-  refreshStatus: function(env) {
+  refreshStatus: function() {
     console.log('Refreshing Cloud App Status');
     var self = this;
-    $.each(['dev', 'live'], function(i, env){
-      var status_light = $('.status_light.' + env);
-      self.pingCloud(env, function(){
-        // Success
-        status_light.addClass('okay');
-      }, function(){
-        // Failed
-        status_light.removeClass('okay');
+    if (!self.refresh_enabled) {
+      self.refresh_enabled = true;
+      $.each(['dev', 'live'], function(i, env) {
+        self.refreshSingleStatus(env);
       });
+    }
+  },
+
+  refreshSingleStatus: function(env) {
+    var self = this;
+    var status_light = $('.status_light.' + env);
+    console.log('refreshSingleStatus: ' + env + self.period_status_check_interval);
+    self.pingCloud(env, function() {
+      // Success
+      status_light.addClass('okay');
+      setTimeout(function() {
+        if (self.refresh_enabled) {
+          self.refreshSingleStatus(env);
+        }
+      }, self.period_status_check_interval);
+    }, function() {
+      // Failed
+      status_light.removeClass('okay');
+      setTimeout(function() {
+        if (self.refresh_enabled) {
+          self.refreshSingleStatus(env);
+        }
+      }, self.period_status_check_interval);
     });
   },
 
@@ -114,7 +123,7 @@ Apps.Cloud.Controller = Apps.Controller.extend({
     });
   },
 
-  currentEnv: function () {
+  currentEnv: function() {
     if ($('.cloud_environment .env_toggle_container').hasClass('dev')) {
       return "dev";
     } else {
@@ -124,10 +133,10 @@ Apps.Cloud.Controller = Apps.Controller.extend({
 
   initCloudBindings: function(envContainer) {
     var self = this;
-    
+
     $fw.client.lang.insertLangFromData($(this.container));
     // bind env buttons to make necessary callback
-    $('.env_toggle_container', envContainer).bind('mousedown', function (e) {
+    $('.env_toggle_container', envContainer).bind('mousedown', function(e) {
       e.preventDefault();
       self.toggleEnv();
 
@@ -141,7 +150,7 @@ Apps.Cloud.Controller = Apps.Controller.extend({
     });
   },
 
-  switchedEnv: function (env) {
+  switchedEnv: function(env) {
     // call show again.
     // Re-implement if you want to do something different
     this.show();

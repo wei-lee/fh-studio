@@ -16,8 +16,17 @@ application.DestinationEmbed = application.DestinationGeneral.extend({
         if(res.result){
           var main_container = $('#manage_publish_container');
           main_container.find(".dashboard-content").hide();
-          that.enableButton(main_container.find("#app_embed_build_debug"), "dev", that.generateNewEmbedScript(res.dev_url, "development", false));
-          that.enableButton(main_container.find("#app_embed_build_release"), "live", that.generateNewEmbedScript(res.live_url, "live", false));
+          if(res.dev_error){
+            that.disableButton(main_container.find("#app_embed_build_debug"), "dev", res.dev_error);
+          } else {
+            that.enableButton(main_container.find("#app_embed_build_debug"), "dev", that.generateNewEmbedScript(res.dev_url, "development", false));
+          }
+
+          if(res.live_error){
+            that.disableButton(main_container.find("#app_embed_build_release"), "live", res.live_error);
+          } else {
+            that.enableButton(main_container.find("#app_embed_build_release"), "live", that.generateNewEmbedScript(res.live_url, "live", false));
+          }
           main_container.find('#app_publish_' + that.destination_id + '_build').show();
           main_container.find("#app_publish_" + that.destination_id).show();
 
@@ -108,5 +117,10 @@ application.DestinationEmbed = application.DestinationGeneral.extend({
 
     // select the embed code
     dialog.find('.embed_code').focus().select();
+  },
+
+  disableButton: function(button, type, text) {
+    button.find("h3").parent().find("button.resource-uploaded").hide();
+    button.find('.resource-content').text(text);
   }
 });
