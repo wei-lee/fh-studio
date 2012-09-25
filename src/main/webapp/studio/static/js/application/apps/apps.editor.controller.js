@@ -54,7 +54,7 @@ Apps.Editor.Controller = Apps.Controller.extend({
     this.img_content_container = container.find(".img_content").hide();
     var editorProp = $fw.getClientProp('editor');
     // always use codemirror for unsupported browsers of ace editor
-    if ('undefined' === typeof Worker || ('function' !== typeof Worker && 'object' !== typeof Worker)) {
+    if ('undefined' === typeof Worker || ('function' !== typeof Worker)) {
       editorProp = 'Codemirror';
     }
     this.editor_impl = new proto[editorProp + 'EditorImpl']({
