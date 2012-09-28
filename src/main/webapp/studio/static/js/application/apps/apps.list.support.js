@@ -3,7 +3,6 @@ var Apps = Apps || {};
 Apps.List = Apps.List || {};
 
 Apps.List.Support = Controller.extend({
-
   init: function() {
 
   },
@@ -26,6 +25,14 @@ Apps.List.Support = Controller.extend({
         self.rowRender(nRow, aData);
       }
     });
+
+    if (data.aaData.length === 0) {
+      // Adjust colspan based on visible columns for new colspan
+      var visible_columns = $('.dataTable:visible th:visible').length;
+      var no_data_td = $('.dataTable:visible tbody td');
+      no_data_td.attr('colspan', visible_columns);
+      no_data_td.text(Lang.no_apps);
+    }
 
     // Inject Create button
     var create_button = $('<button>').addClass('btn btn-primary pull-right').text('Create an App').click(function(e) {

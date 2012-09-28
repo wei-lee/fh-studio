@@ -1,11 +1,19 @@
-<div id="debug_logging_container" class="well">
-  <form class="form-horizontal">
-    <fieldset>
-    <textarea id="debug_logging_text" readonly="readonly" class="span12"></textarea>
-    <div class="form-actions">
-      <button id="debug_logging_clear_button" class="btn pull-right insert-lang"></button>
-      <button id="debug_logging_refresh_button" class="btn pull-right insert-lang"></button>
+<div id="debug_logging_container">
+  <div class="fh-box-outer">
+    <h4 class="fh-box-header">
+      Cloud Deployment
+      <%@ include file="./cloud_environment.html" %>
+    </h4>
+    <div class="fh-box-inner">
+      <form class="form-horizontal">
+        <fieldset>
+        <textarea id="debug_logging_text" readonly="readonly" class="span12"></textarea>
+        <div class="form-actions">
+          <button id="debug_logging_clear_button" class="btn pull-right insert-lang"></button>
+          <button id="debug_logging_refresh_button" class="btn pull-right insert-lang"></button>
+        </div>
+        </fieldset>
+      </form>
     </div>
-    </fieldset>
-  </form>
+  </div>
 </div>

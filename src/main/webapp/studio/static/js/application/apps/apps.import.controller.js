@@ -61,7 +61,7 @@ Apps.Import.Controller = Controller.extend({
           setTimeout(function(){
             fileToUpload = data;
             return false;
-          }, 100);
+          }, 200);
         },
         timeout: 300000
     });
@@ -147,7 +147,10 @@ Apps.Import.Controller = Controller.extend({
       fileUploader.bind("fileuploaddone", callbacks.done);
       fileUploader.bind("fileuploadfai", callbacks.fail);
       fileUploader.bind('fileuploadalways', callbacks.always);
-      fileToUpload.submit();
+
+      setTimeout(function(){
+        fileToUpload.submit();
+      }, 300); // :(
     });
   },
   

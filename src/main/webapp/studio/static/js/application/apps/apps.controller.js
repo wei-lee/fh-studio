@@ -9,13 +9,14 @@ Apps.Controller = Controller.extend({
   },
 
   show: function () {
-    if (this.showPreview) {
-      if (!$fw.client.tab.apps.manageapps.getController('apps.preview.controller').isPreviewOpen()) {
+    var previewController = $fw.client.tab.apps.manageapps.getController('apps.preview.controller');
+    if (this.showPreview || previewController.forceStayOpen) {
+      if (!previewController.isPreviewOpen()) {
         console.log('forcing show preview by controller');
-        $fw.client.tab.apps.manageapps.getController('apps.preview.controller').show();
+        previewController.show();
       }
     } else {
-      $fw.client.tab.apps.manageapps.getController('apps.preview.controller').hide();
+      previewController.hide();
     }
   },
 
@@ -24,7 +25,6 @@ Apps.Controller = Controller.extend({
   //  i.e. each controller is responsible for cleaning up after itself before it can show data/ui
   //       for newly selected app
   reset: function () {
-    console.log('apps.controller reset');
     // n/a at generic app controller level
   }
 });

@@ -162,8 +162,7 @@ Admin.Devices.Controller = Controller.extend({
   setDeviceDisabled: function(deviceId, disabled, parent){
     var self = this;
     if(disabled){
-      $('#device_update_disabled', parent).attr("checked", "checked");
-      $('.update_device_disabled_btn', parent).removeAttr("disabled").text('Enabled Authentication').unbind().bind("click", function(){
+      $('#device_update_disabled', parent).attr("checked", "checked").unbind().bind("click", function(){
         self.model.device.updateDisabled(deviceId, false, function(res){
           self.showAlert("success", "<strong>Successfully enabling device.</strong>");
           self.setDeviceDisabled(deviceId, false, parent);
@@ -173,9 +172,8 @@ Admin.Devices.Controller = Controller.extend({
         return false;
       });
     } else {
-      $('#device_update_disabled', parent).removeAttr("checked");
       var msg = "Are you sure you want to disable this device? In supported apps, users of this device will no longer be able to authenticate.";
-      $('.update_device_disabled_btn', parent).removeAttr("disabled").text('Disable Authentication').unbind().bind("click", function(){
+      $('#device_update_disabled', parent).removeAttr("checked").unbind().bind("click", function(){
         self.showBooleanModal(msg, function(){
           self.model.device.updateDisabled(deviceId, true, function(res){
             self.showAlert("success", "<strong>Successfully disabling device.</strong>");
@@ -192,8 +190,7 @@ Admin.Devices.Controller = Controller.extend({
   setDeviceBlacklisted: function(deviceId, blacklisted, parent){
     var self = this;
     if(blacklisted){
-      $('#device_update_blacklisted', parent).attr("checked", "checked");
-      $('.update_device_blacklisted_btn', parent).removeAttr("disabled").text('Unmark for Data Purge').unbind().bind("click", function(){
+      $('#device_update_blacklisted', parent).attr("checked", "checked").unbind().bind("click", function(){
         self.model.device.updateBlacklisted(deviceId, false, function(res){
           self.showAlert("success", "<strong>Successfully unmarked device for data purge.</strong>");
           self.setDeviceBlacklisted(deviceId, false, parent);
@@ -203,9 +200,8 @@ Admin.Devices.Controller = Controller.extend({
         return false;
       });
     } else {
-      $('#device_update_blacklisted', parent).removeAttr("checked");
       var msg = "Are you sure you want to purge data on this device? In supported apps, data will purged at login";
-      $('.update_device_blacklisted_btn', parent).removeAttr("disabled").text('Mark for Data Purge').unbind().bind("click", function(){
+      $('#device_update_blacklisted', parent).removeAttr("checked").unbind().bind("click", function(){
         self.showBooleanModal(msg, function(){
           self.model.device.updateBlacklisted(deviceId, true, function(res){
             self.showAlert("success", "<strong>Successfully marked device for data purge.</strong>");
@@ -230,7 +226,11 @@ Admin.Devices.Controller = Controller.extend({
         li.append(a);
         a.popover({
           title: v.fields.userId,
-          content: self.getUserPopOverContent(v.fields)
+          content: self.getUserPopOverContent(v.fields),
+          placement: 'bottom',
+          delay: { show: 100, hide: 100 },
+          trigger: 'hover',
+          template: '<div class="popover"><div class="arrow"></div><div class="popover-inner"><div class="popover-content"><p></p></div></div></div>'
         });
         a.unbind('click').bind('click', function(){
           self.hide();
@@ -257,7 +257,11 @@ Admin.Devices.Controller = Controller.extend({
         li.append(a);
         a.popover({
           title : v.fields.name,
-          content: self.getStoreItemPopoverContent(v.fields)
+          content: self.getStoreItemPopoverContent(v.fields),
+          placement: 'bottom',
+          delay: { show: 100, hide: 100 },
+          trigger: 'hover',
+          template: '<div class="popover"><div class="arrow"></div><div class="popover-inner"><div class="popover-content"><p></p></div></div></div>'
         });
         a.unbind('click').bind('click', function(){
           self.hide();

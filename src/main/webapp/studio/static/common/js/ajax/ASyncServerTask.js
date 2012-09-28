@@ -1,9 +1,9 @@
 /*
  * Class for performing an asynchronous server task e.g. importing an application
- * 
- * Expects a serverside cacheKey to be passed in the constructor params 
+ *
+ * Expects a serverside cacheKey to be passed in the constructor params
  */
-ASyncServerTask = function (params, opts) {
+ASyncServerTask = function(params, opts) {
   var self = {
     tasks: {},
     opts: {},
@@ -12,8 +12,8 @@ ASyncServerTask = function (params, opts) {
     log_timeout: null,
     read_in_progress: false,
 
-    run: function () {
-      self.log_timeout = setInterval(function () {
+    run: function() {
+      self.log_timeout = setInterval(function() {
         // If still waiting for a previous response, don't kick off another one
         if (!self.read_in_progress) {
           self.read_in_progress = true;
@@ -31,12 +31,12 @@ ASyncServerTask = function (params, opts) {
           $.ajax({
             url: url,
             type: 'GET',
-            success: function (results) {
+            success: function(results) {
               for (var ri = 0, rl = results.length; ri < rl; ri++) {
                 var res = results[ri],
-                    cacheKey = res.cacheKey,
-                    task = self.tasks[cacheKey],
-                    allComplete;
+                  cacheKey = res.cacheKey,
+                  task = self.tasks[cacheKey],
+                  allComplete;
                 if (res.log) {
                   if (res.log.length > 0) {
                     task.start_timestamp = new Date().getTime();
@@ -90,7 +90,7 @@ ASyncServerTask = function (params, opts) {
               }
               self.read_in_progress = false;
             },
-            error: function () {
+            error: function() {
               // check if the max retries has been reached
               if ((self.num_tries += 1) > self.opts.maxRetries) {
                 // max reached, clear retry function
@@ -105,7 +105,7 @@ ASyncServerTask = function (params, opts) {
       }, self.opts.updateInterval);
     },
 
-    initialise: function () {
+    initialise: function() {
       var defaultOpts = {
         updateInterval: Properties.cache_lookup_interval,
         maxTime: Properties.cache_lookup_timeout,
@@ -138,7 +138,7 @@ ASyncServerTask = function (params, opts) {
       }
     },
 
-    allTasksComplete: function () {
+    allTasksComplete: function() {
       var allComplete = true;
 
       for (var key in self.tasks) {
@@ -151,13 +151,17 @@ ASyncServerTask = function (params, opts) {
       return allComplete;
     },
 
-    execFn: function (fn, args) {
+    cancel: function() {
+      clearInterval(self.log_timeout);
+    },
+
+    execFn: function(fn, args) {
       if ($.isFunction(fn)) {
         fn(args);
       }
     },
 
-    taskFinished: function (task) {
+    taskFinished: function(task) {
       var finished = false;
 
       finished = (('complete' === task.status) || ('error' === task.status));
@@ -169,6 +173,7 @@ ASyncServerTask = function (params, opts) {
   self.initialise();
 
   return {
-    run: self.run
+    run: self.run,
+    cancel: self.cancel
   };
 };

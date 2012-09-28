@@ -246,7 +246,6 @@ Apps.Quickstart.Client.Controller = Apps.Quickstart.Controller.extend({
   }
 });
 
-
 Apps.Quickstart.Cloud.Controller = Apps.Quickstart.Controller.extend({
   init: function () {
     this.initFn = _.once(this.initBindings);

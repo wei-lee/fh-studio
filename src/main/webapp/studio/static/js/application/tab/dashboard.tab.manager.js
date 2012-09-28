@@ -75,8 +75,6 @@ Dashboard.Tab.Manager = Tab.Manager.extend({
   },
 
   updateCrumbs: function(self) {
-    console.log('dashboard updateCrumbs');
-
     // get account type
     var accountType = $fw.client.lang.getLangString('account_type_' + $fw.getClientProp('accountType'));
 
@@ -123,8 +121,6 @@ Dashboard.Tab.Manager = Tab.Manager.extend({
       var icon_path = icon_cell.text().trim();
       var icon = $('<img>').attr('src', icon_path).addClass('app_icon');
       icon_cell.empty().append(icon);
-
-      //self.model.app.configForField('icon');
 
       // Bind row clicks to show Manage an app
 

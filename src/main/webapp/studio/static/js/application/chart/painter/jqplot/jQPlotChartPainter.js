@@ -71,9 +71,21 @@
         },
         chart: {
           renderTo: container[0],
+          //type: 'area',
           zoomType: 'x',
           spacingRight: 20
         },
+        // plotOptions: {
+        //   area: {
+        //     stacking: 'normal',
+        //     lineColor: '#666666',
+        //     lineWidth: 1,
+        //     marker: {
+        //       lineWidth: 1,
+        //       lineColor: '#666666'
+        //     }
+        //   }
+        // },
         title: {
           text: ''
         },

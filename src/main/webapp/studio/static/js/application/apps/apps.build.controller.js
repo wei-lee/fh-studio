@@ -10,8 +10,6 @@ Apps.Build.Controller = Apps.BuildExport.Support.extend({
 
   views: {
     manage_publish_container: "#manage_publish_container"
-    // device_list: "#admin_devices_list",
-    // device_update: "#admin_devices_update"
   },
 
   container: null,

@@ -73,19 +73,19 @@ model.App = model.Model.extend({
     this._super();
   },
 
-  listAll: function (success, fail, post_process) {
+  listAll: function(success, fail, post_process) {
     var params = {};
     return this.list(success, fail, post_process, params);
   },
 
-  listMyApps: function (success, fail, post_process) {
+  listMyApps: function(success, fail, post_process) {
     var params = {
       "myapps": true
     };
     return this.list(success, fail, post_process, params);
   },
 
-  listRecent: function (success, fail) {
+  listRecent: function(success, fail) {
     var self = this;
 
     var params = {
@@ -93,7 +93,7 @@ model.App = model.Model.extend({
       "order": "desc",
       "order-by": "sysModified"
     };
-    return this.list(success, fail, function (res, data_model) {
+    return this.list(success, fail, function(res, data_model) {
       return self.postProcessList(res, data_model, self.recent_field_config);
     }, params);
   },
@@ -241,6 +241,13 @@ model.App = model.Model.extend({
         fail(err);
       }
     });
-  }
+  },
 
+  hosts: function(guid, success, fail) {
+    var url = Constants.APP_HOSTS_URL;
+    var params = {
+      guid: guid
+    };
+    this.serverPost(url, params, success, fail, true);
+  }
 });

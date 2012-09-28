@@ -5,16 +5,16 @@ var Controller = Class.extend({
   models: {},
   alert_timeout: 3000,
 
-  init: function () {
+  init: function() {
     // generic controller stuff
   },
 
-  show: function () {
+  show: function() {
     // generic show
   },
 
-  hide: function(){
-    $.each(this.views, function(k, v){
+  hide: function() {
+    $.each(this.views, function(k, v) {
       $(v).hide();
     });
   },
@@ -32,7 +32,7 @@ var Controller = Class.extend({
   },
 
   // type: error|success|info
-  showAlert: function (type, message) {
+  showAlert: function(type, message) {
     var self = this;
     var alerts_area = $(this.container).find('.alerts');
     var alert = $('<div>').addClass('alert fade in alert-' + type).html(message);
@@ -42,7 +42,7 @@ var Controller = Class.extend({
     // only automatically hide alert if it's not an error
     if ('error' !== type) {
       setTimeout(function() {
-        alert.slideUp(function () {
+        alert.slideUp(function() {
           alert.remove();
         });
       }, self.alert_timeout);
@@ -51,7 +51,7 @@ var Controller = Class.extend({
 
   // Generic Swap select controller
   bindSwapSelect: function(container) {
-    $(container).find('.swap-select').each(function(i, item){
+    $(container).find('.swap-select').each(function(i, item) {
       var add_button = $('.add', item);
       var remove_button = $('.remove', item);
       var swap_from = $('.swap-from', item);
@@ -75,7 +75,7 @@ var Controller = Class.extend({
   },
 
   // clears/resets all swap selects found in container
-  clearSwapSelects: function (container) {
+  clearSwapSelects: function(container) {
     $(container).find('.swap-select select').empty().html('<option>Loading...</option>');
   },
 
@@ -118,12 +118,12 @@ var Controller = Class.extend({
 
   // show a simple yes|no modal, where success is called if yes is chosen
   // TODO: allow a fail callback to be specified in event of 'no' selected
-  showBooleanModal: function (msg, success) {
+  showBooleanModal: function(msg, success) {
     var modal = $('#generic_boolean_modal').clone();
     modal.find('.modal-body').html(msg).end().appendTo($("body")).modal({
       "keyboard": false,
       "backdrop": "static"
-    }).find('.btn-primary').unbind().on('click', function (e) {
+    }).find('.btn-primary').unbind().on('click', function(e) {
       e.preventDefault();
       e.stopPropagation();
       // confirmed delete, go ahead
@@ -131,25 +131,25 @@ var Controller = Class.extend({
       success();
     }).end().on('hidden', function() {
       // wait a couple seconds for modal backdrop to be hidden also before removing from dom
-      setTimeout(function () {
+      setTimeout(function() {
         modal.remove();
       }, 2000);
     });
   },
 
   // resets all form elements (inputs etc..) in the given container
-  resetForm: function (container) {
+  resetForm: function(container) {
     $('input[type=text],input[type=email],input[type=password]', container).val('').attr('disabled');
     $('input[type=checkbox]', container).removeAttr('checked').attr('disabled');
     $('select,button', container).attr('disabled', 'disabled');
     this.clearSwapSelects(container);
   },
 
-  destroyProgressModal: function () {
+  destroyProgressModal: function() {
     var self = this;
 
     self.progressModal.modal('hide');
-    setTimeout(function(){
+    setTimeout(function() {
       self.progressModal.remove();
       self.progressModal = null;
     }, 2000);

@@ -49,6 +49,13 @@ LangManager = Class.extend({
     }
   },
 
+  insertLangFromData: function (container) {
+    container.find('[data-lang]').each(function () {
+      var el = $(this);
+      el.text($fw.client.lang.getLangString(el.data('lang')));
+    });
+  },
+
   /*
    * Insert text, if it is available for the element (this)
    */
@@ -97,7 +104,9 @@ LangManager = Class.extend({
       el.popover({
         content: lang,
         placement: 'left',
-        delay: 100
+        delay: { show: 100, hide: 100 },
+        trigger: 'hover',
+        template: '<div class="popover"><div class="arrow"></div><div class="popover-inner"><div class="popover-content"><p></p></div></div></div>'
       });
     }
   },
@@ -125,7 +134,13 @@ LangManager = Class.extend({
       btn.popover({
         content: lang,
         placement: 'bottom',
-        delay: 100
+        delay: { show: 100, hide: 100 },
+        trigger: 'hover',
+        template: '<div class="popover"><div class="arrow"></div><div class="popover-inner"><div class="popover-content"><p></p></div></div></div>'
+      });
+      btn.click(function(e){
+        e.preventDefault();
+        return false;
       });
     }
   },

@@ -616,30 +616,26 @@ Admin.Users.Controller = Controller.extend({
   setUserEnabled: function (enabled) {
     var self = this;
     if (enabled) {
-      $('#update_user_enabled').attr('checked', 'checked');
-      $('.enable_user_button').text('Disable User').unbind().on('click', function () {
+      $('#update_user_enabled').attr('checked', 'checked').unbind().on('click', function () {
         self.disableUser();
-      }).closest('.control-group').find('.control-label').text('Enabled');
+      });
     } else {
-      $('#update_user_enabled').removeAttr('checked');
-      $('.enable_user_button').text('Enable User').unbind().on('click', function () {
+      $('#update_user_enabled').removeAttr('checked').unbind().on('click', function () {
         self.enableUser();
-      }).closest('.control-group').find('.control-label').text('Disabled');
+      });
     }
   },
 
   setUserBlacklisted: function (blacklisted) {
     var self = this;
     if (blacklisted) {
-      $('#update_user_blacklisted').attr('checked', 'checked');
-      $('.blacklist_user_button').text('Unmark for Data Purge').unbind().on('click', function () {
+      $('#update_user_blacklisted').attr('checked', 'checked').unbind().on('click', function () {
         self.whitelistUser();
-      }).closest('.control-group').find('.control-label').text('Marked for Data Purge');
+      });
     } else {
-      $('#update_user_blacklisted').removeAttr('checked');
-      $('.blacklist_user_button').text('Mark for Data Purge').unbind().on('click', function () {
+      $('#update_user_blacklisted').removeAttr('checked').unbind().on('click', function () {
         self.blacklistUser();
-      }).closest('.control-group').find('.control-label').text('Not Marked for Data Purge');
+      });
     }
   },
 

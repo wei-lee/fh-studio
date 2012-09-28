@@ -18,9 +18,6 @@ var IDEManager = Class.extend({
         
     // setup callbacks for server calls
     $fw.server.setOpts({
-      connectivity_ok: function () {
-        $fw.client.dialog.connectivity.hide();
-      },
       connectivity_error: function () {
         $fw.client.dialog.connectivity.show($fw.client.lang.getLangString('connectivity_error'));
       },

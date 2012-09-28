@@ -2,7 +2,7 @@ var Apps = Apps || {};
 
 Apps.Logging = Apps.Logging || {};
 
-Apps.Logging.Controller = Apps.Controller.extend({
+Apps.Logging.Controller = Apps.Cloud.Controller.extend({
 
   model: {
     //device: new model.Device()
@@ -10,13 +10,12 @@ Apps.Logging.Controller = Apps.Controller.extend({
 
   views: {
     debug_logging_container: "#debug_logging_container"
-    // device_list: "#admin_devices_list",
-    // device_update: "#admin_devices_update"
   },
 
   container: null,
 
   init: function () {
+    this._super();
     this.initFn = _.once(this.initBindings);
   },
   
@@ -44,11 +43,8 @@ Apps.Logging.Controller = Apps.Controller.extend({
   },
 
   show: function(){
-    this._super();
+    this._super(this.views.debug_logging_container);
     
-    this.hide();
-    this.container = this.views.debug_logging_container;
-
     this.initFn();
     this.showLogging();
 
@@ -74,9 +70,12 @@ Apps.Logging.Controller = Apps.Controller.extend({
 
     var instGuid = $fw.data.get('inst').guid;
     var url = Constants.LOGS_URL;
+    var cloudEnv = $fw.data.get('cloud_environment');
+    
     var params = {
       "guid": instGuid,
-      "action": "get"
+      "action": "get",
+      "deploytarget": cloudEnv
     };
 
     $fw.server.post(url, params, function (res) {
@@ -90,12 +89,10 @@ Apps.Logging.Controller = Apps.Controller.extend({
         }
         $('#debug_logging_text').val('').val(logText);
       } else {
-        $('#debug_logging_text').val('error loading...');
-        $fw.client.dialog.error("Error getting logs: " + res.error);
+        $('#debug_logging_text').val('Error loading Cloud App Logs. Is your App Staged for this environment?');
       }
     }, function (error) {
-      $('#debug_logging_text').val('error loading...');
-      $fw.client.dialog.error($fw.client.lang.getLangString('read_log_error'));
+      $('#debug_logging_text').val('Error loading Cloud App Logs. Is your App Staged for this environment?');
     }, true);
   },
   

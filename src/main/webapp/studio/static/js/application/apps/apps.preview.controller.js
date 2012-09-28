@@ -8,39 +8,44 @@ Apps.Preview.Controller = Controller.extend({
   
   chromeWidth: 0,
   chromeHeight: 0,
+  forceStayOpen: false,
 
   init: function () {
     var self = this;
     
     $('.preview_toggle').unbind().bind('click', function (e) {
       e.preventDefault();
+
       if (self.isPreviewOpen()) {
+        self.forceStayOpen = false;
         self.hide();
       } else {
+        self.forceStayOpen = true;
         self.show();
       }
+      
+      // Trigger highcharts resize!
+      $(window).trigger('resize');
     });
   },
 
   show: function () {
-    var self = this;
-
-    if ($.isFunction(self.showPre)) {
-      self.showPre();
+    if ($.isFunction(this.showPre)) {
+      this.showPre();
     }
 
-    if (!self.showInitDone) {
-      if ($.isFunction(self.showInit)) {
-        self.showInit();
+    if (!this.showInitDone) {
+      if ($.isFunction(this.showInit)) {
+        this.showInit();
       }
     } else {
-      if ($.isFunction(self.showReset)) {
-        self.showReset();
+      if ($.isFunction(this.showReset)) {
+        this.showReset();
       }
     }
 
-    if ($.isFunction(self.showPost)) {
-      self.showPost();
+    if ($.isFunction(this.showPost)) {
+      this.showPost();
     }
   },
 

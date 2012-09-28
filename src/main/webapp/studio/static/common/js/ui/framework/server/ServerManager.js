@@ -23,9 +23,6 @@ ServerManager = function (ajax_caller, opts) {
       var data = no_payload ? params : self.initRequestData(params);
       if (self.getCookie()) {
         if (self.getConnected()) {
-          if ($.isFunction(self.opts.connectivity_ok)) {
-            self.opts.connectivity_ok();
-          }
           self.ajax_caller.doAjaxRequest(method, url, data, self.success(success), self.fail(fail));
         } else {
           if ($.isFunction(self.opts.connectivity_error)) {
@@ -54,9 +51,6 @@ ServerManager = function (ajax_caller, opts) {
 
     success: function (orig_success) {
       return function (response) {
-        if ($.isFunction(self.opts.connectivity_ok)) {
-          self.opts.connectivity_ok();
-        }
         if ('function' === typeof orig_success) {
           orig_success(response);
         }

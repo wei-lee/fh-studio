@@ -8,45 +8,56 @@
     <div class="row-fluid">
       <ul class="nav nav-list span2 well admin_nav_list">
         <li class="nav-header">Administration</li>
-        <li>
-          <a href="#" data-controller="admin.users.controller">
-            <i class="icon-user"></i>
-            Users
-          </a>
-        </li>
+        <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_ARM) || studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_USER_ADMIN)) { %>
+          <li>
+            <a href="#" data-controller="admin.users.controller">
+              <i class="icon-user"></i>
+              Users
+            </a>
+          </li>
+          <% if(studio.getProps().optBoolean("arm-auth-policy-enabled", false)) { %>
+            <li>
+              <a href="#" data-controller="admin.authpolicy.controller">
+                <i class="icon-key"></i>
+                Auth Policies
+              </a>
+            </li>
+          <% } %>
+        <% } %>
+        
         <!-- <li>
           <a href="#" data-controller="admin.groups.controller">
             <i class="icon-group"></i>
             Groups
           </a>
         </li> -->
-        <% if(studio.getProps().optBoolean("arm-auth-policy-enabled", false)) { %>
         <li>
-          <a href="#" data-controller="admin.authpolicy.controller">
-            <i class="icon-key"></i>
-            Auth Policies
+          <a href="#" data-controller="admin.deploytarget.controller" class="deploy_targets">
+            <i class="icon-road"></i>
+            Deployment Targets
           </a>
         </li>
+        <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_ARM) || studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_USER_ADMIN)) { %>
+          <li class="nav-header">Mobile App Management</li>
+          <li>
+            <a href="#" data-controller="admin.stores.controller">
+              <i class="icon-globe"></i>
+              App Store
+            </a>
+          </li>
+          <li>
+            <a href="#" data-controller="admin.storeitems.controller">
+              <i class="icon-pencil"></i>
+              Store Items
+            </a>
+          </li>
+          <li>
+            <a href="#" data-controller="admin.devices.controller">
+              <i class="icon-phone"></i>
+              Devices
+            </a>
+          </li>
         <% } %>
-        <li class="nav-header">Mobile App Management</li>
-        <li>
-          <a href="#" data-controller="admin.stores.controller">
-            <i class="icon-globe"></i>
-            App Store
-          </a>
-        </li>
-        <li>
-          <a href="#" data-controller="admin.storeitems.controller">
-            <i class="icon-pencil"></i>
-            Store Items
-          </a>
-        </li>
-        <li>
-          <a href="#" data-controller="admin.devices.controller">
-            <i class="icon-phone"></i>
-            Devices
-          </a>
-        </li>
       </ul>
 
       <!-- Hide this initially and let javascript show it when its ready -->
@@ -206,22 +217,16 @@
             </div>
 
             <div class="control-group">
-              <label class="control-label" for="update_user_enabled">Enabled</label>
+              <label class="control-label" for="update_user_enabled">Enabled?</label>
               <div class="controls">
-                <div class="input-append">
-                  <input type="checkbox" class="input-xxlarge" id="update_user_enabled" disabled>
-                  <button class="btn enable_user_button" type="button">Enable User</button>
-                </div>
+              <input type="checkbox" class="input-xxlarge enable_user_button" id="update_user_enabled">
               </div>
             </div>
 
             <div class="control-group">
-              <label class="control-label" for="update_user_blacklisted">Not Marked for Data Purge</label>
+              <label class="control-label" for="update_user_blacklisted">Purge User Data?</label>
               <div class="controls">
-                <div class="input-append">
-                  <input type="checkbox" class="input-xxlarge" id="update_user_blacklisted" disabled>
-                  <button class="btn blacklist_user_button" type="button">Mark for Data Purge</button>
-                </div>
+                <input type="checkbox" class="input-xxlarge blacklist_user_button" id="update_user_blacklisted">
               </div>
             </div>
 
@@ -1030,17 +1035,15 @@
               </div>
             </div>
             <div class="control-group">
-              <label class="control-label" for="device_disabled">Disabled</label>
+              <label class="control-label" for="device_disabled">Disabled?</label>
               <div class="controls">
-                <input type="checkbox" disabled="disabled" class="input-xxlarge" id="device_update_disabled">
-                <button class="btn update_device_disabled_btn">Disable Authentication</button>
+                <input type="checkbox" class="input-xxlarge" id="device_update_disabled">
               </div>
             </div>
             <div class="control-group">
-              <label class="control-label" for="device_blacklisted">Purge Data</label>
+              <label class="control-label" for="device_blacklisted">Purge Device Data?</label>
               <div class="controls">
-                <input type="checkbox" disabled="disabled" class="input-xxlarge" id="device_update_blacklisted">
-                <button class="btn update_device_blacklisted_btn">Mark for Data Purge</button>
+                <input type="checkbox" class="input-xxlarge update_device_blacklisted_btn" id="device_update_blacklisted">
               </div>
             </div>
             <div class="control-group">
@@ -1066,6 +1069,77 @@
           </fieldset>
         </form>
       </div>
+
+      <!-- Deployment Targets template Start -->
+      <div id="admin_deploytarget_list" class="hidden_template row-fluid">
+        <div class="alerts"></div>
+        <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="admin_deploytargets_table"></table>
+      </div>
+
+      <div id="admin_deploytarget_edit" class="hidden_template row-fluid">
+        <div class="alerts"></div>
+        <form class="well form-horizontal">
+          <fieldset>
+            <legend id="target_edit_header"></legend>
+            <p>Here you can edit Deployment Target settings/login credentials for deploying your cloud code to various Platform-as-a-Service and Infrastructure-as-a-Service providers</p>
+            <br />
+            <div class="control-group required">
+              <label id="deploy_target_name_label" class="control-label insert-help-icon" for="deploy_target_name">Target Name</label>
+              <div class="controls">
+                <input type="text" id="deploy_target_name" class="input-xxlarge"></input>
+              </div>
+            </div>
+            <div class="control-group required">
+              <label id="deploy_target_platform_label" class="control-label insert-help-icon" for="deploy_target_platform">Target Platform</label>
+              <div class="controls" id="deploy_target_platform">
+                <ul class="thumbnails">
+                  
+                </ul>
+              </div>
+            </div>
+            <div class="control-group required">
+              <label id="deploy_target_envs_label" class="control-label insert-help-icon" for="deploy_target_envs">Environment</label>
+              <div class="controls" id="deploy_target_envs">
+                <label class="checkbox">
+                  <input type="checkbox" id="deploy_target_env_dev" value="dev"> Development
+                </label>
+                <label class="checkbox">
+                  <input type="checkbox" id="deploy_target_env_live" value="live"> Live
+                </label>
+              </div>
+            </div>
+            <div class="control-group target-settings target-settings-url required">
+              <label id="deploy_target_setting_url_label" class="control-label insert-help-icon" for="deploy_target_setting_url">Deploy URL</label>
+              <div class="controls">
+                <input type="text" id="deploy_target_setting_url"></input>
+              </div>
+            </div>
+            <div class="control-group target-settings target-settings-infrastructure required">
+              <label id="deploy_target_setting_infrastructure_label" class="control-label insert-help-icon" for="deploy_target_setting_infrastructure">Infrastructure</label>
+              <div class="controls">
+                <select type="text" id="deploy_target_setting_infrastructure"></select>
+              </div>
+            </div>
+            <div class="control-group target-settings target-settings-username required">
+              <label id="deploy_target_setting_username_label" class="control-label insert-help-icon" for="deploy_target_setting_username">Username</label>
+              <div class="controls">
+                <input type="text" id="deploy_target_setting_username"></input>
+              </div>
+            </div>
+            <div class="control-group target-settings target-settings-password required">
+              <label id="deploy_target_setting_password_label" class="control-label insert-help-icon" for="deploy_target_setting_password">Password</label>
+              <div class="controls">
+                <input type="password" id="deploy_target_setting_password"></input>
+              </div>
+            </div>
+          </fieldset>
+          <div class="form-actions">
+            <button type="button" id="save_deploy_target_btn" class="btn btn-primary"></button> 
+            <button type="button" id="cancel_deploy_target_btn" class="btn"> Back </button> 
+          </div>
+        </form>
+      </div>
+      <!-- Deployment Targets template End -->
 
       </div>
     </div>

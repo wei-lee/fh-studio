@@ -1,4 +1,16 @@
 ===============================================================================
+3.6.0
+-------------------------------------------------------------------------------
+###CHANGES
+* Added 'Resources' screen for monitoring an app's resources
+* Deprecated old build targets: Nokia WRT, Opera Widgets, W3C.
+* Added new Deployment area for deploying your Cloud App to a number of PaaS 
+  options including FeedHenry, Cloud Foundry, App Fog, Stackato and Iron Foundry
+* You can now view Cloud App logs for both Live and Dev environments
+* Update UI for 'Stats' screen 
+* Added App Endpoints stats to 'Stats' screen
+
+===============================================================================
 3.5.1
 -----------------------------------------------------------------------------
 ###CHANGES
