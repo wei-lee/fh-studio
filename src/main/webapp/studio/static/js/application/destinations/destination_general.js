@@ -469,7 +469,7 @@ application.DestinationGeneral = Class.extend({
         height: 235,
         title: 'Download',
         stack: true,
-        dialogClass: 'success-dialog popup-dialog',
+        dialogClass: 'confirm_dialog success-dialog popup-dialog',
         width: 340,
         buttons: {
           'OK': function () {
@@ -491,7 +491,7 @@ application.DestinationGeneral = Class.extend({
     }
     if(showOTA){
       that.getOTALink(ota_url, function(otalink){
-        html += "<li> OTA Link : <a target='_blank' href='"+otalink+"'>" + otalink + " </a></li></ul>";
+        html += "<li> OTA Link : <a class='otalink' target='_blank' href='"+otalink+"'>" + otalink + " </a></li></ul>";
         showDownload(html);
       });
     } else {
