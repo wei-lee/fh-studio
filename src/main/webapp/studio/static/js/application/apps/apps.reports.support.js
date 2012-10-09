@@ -171,7 +171,7 @@ Apps.Reports.Support = Apps.Controller.extend({
    var fourWeeksAgo = new Date(today.getTime() - 2419200000);
 
    function formatDate(date) {
-    return ('' + ((date.getUTCMonth() + 1) * 0.01)).substring(2,4) + '/' + ('' + (date.getUTCDate() * 0.01)).substring(2,4) + '/' + date.getUTCFullYear();
+    return ('' + ((date.getUTCMonth() + 1) * 0.01).toFixed(2)).substring(2,4) + '/' + ('' + (date.getUTCDate() * 0.01).toFixed(2)).substring(2,4) + '/' + date.getUTCFullYear();
    }
 
    // initialise datepickers
