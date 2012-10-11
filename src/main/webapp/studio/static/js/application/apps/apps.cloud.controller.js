@@ -22,7 +22,10 @@ Apps.Cloud.Controller = Apps.Controller.extend({
 
     this.initCloudFn(envContainer);
     var selectedEnv = $fw.data.get('cloud_environment');
-    this.refreshStatus();
+
+    if ($fw.client.tab.apps.manageapps.isNodeJsApp()) {
+      this.refreshStatus();
+    }
 
     // set selected env button
     if (selectedEnv != null) {
@@ -32,7 +35,6 @@ Apps.Cloud.Controller = Apps.Controller.extend({
       $fw.data.set('cloud_environment', 'dev');
       $('.dev_environment_btn', envContainer).parent().addClass('active');
     }
-
   },
 
   clearPeriodicStatusCheck: function() {
