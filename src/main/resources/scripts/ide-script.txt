@@ -31,6 +31,7 @@ js/application/account/account.blackberry.controller.js
 js/application/admin/admin.storeitems.controller.js
 js/application/admin/admin.users.controller.js
 js/application/admin/admin.groups.controller.js
+js/application/admin/admin.storeitem.groups.controller.js
 js/application/admin/admin.devices.controller.js
 js/application/admin/admin.authpolicy.controller.js
 js/application/admin/admin.stores.controller.js
