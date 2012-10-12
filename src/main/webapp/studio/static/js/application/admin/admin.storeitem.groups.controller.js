@@ -59,8 +59,9 @@ Admin.Storeitem.Groups.Controller = Controller.extend({
   bindGroupControls: function() {
     var self = this;
     $('#admin_storeitem_group_create .create_group_btn').unbind().click(function() {
-      var group_name = $('.group_name').val();
-      self.createGroup(group_name);
+      var name = $('#create_group_name').val();
+      var description = $('#create_group_desc').val();
+      self.createGroup({name:name, description:description});
       return false;
     });
 
@@ -112,9 +113,9 @@ Admin.Storeitem.Groups.Controller = Controller.extend({
     });
   },
 
-  createGroup: function(group_name) {
+  createGroup: function(group) {
     var self = this;
-    this.models.group.create(group_name, function(res) {
+    this.models.group.create(group, function(res) {
       console.log('createGroup: OK');
       $fw.client.dialog.info.flash('Group created, refreshing list.');
       self.showGroupsList();
@@ -221,10 +222,11 @@ Admin.Storeitem.Groups.Controller = Controller.extend({
       console.log('populating group update form: ' + JSON.stringify(group));
       $('#update_group_id', parent).val(group.guid);
       $('#update_group_name', parent).val(group.name);
+      $('#update_group_description', parent).val(group.description);
     };
 
     clearForm();
-	parent.show();
+	  parent.show();
 
     $('.update_group_btn', parent).unbind().click(function() {
       self.updateGroup();
@@ -236,7 +238,7 @@ Admin.Storeitem.Groups.Controller = Controller.extend({
     var id = data[0];
     var oldName = data[1];
 
-    return populateForm({guid: data[0], name: data[1]});
+    return populateForm({guid: data[0], name: data[1], description: data[2]});
   },
 
   updateGroup: function() {
@@ -253,6 +255,10 @@ Admin.Storeitem.Groups.Controller = Controller.extend({
     var name = form.find('#update_group_name').val();
     if (name !== '') {
       fields.name = name;
+    }
+    var description = form.find('#update_group_description').val();
+    if (description !== '') {
+      fields.description = description;
     }
 
     this.models.group.update(fields, function(res) {

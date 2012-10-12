@@ -6,20 +6,22 @@ model.Group = model.Model.extend({
   // Field config
   field_config: [{
     field_name: "guid",
+    editable: false,
     visible: false,
     column_title: "Group ID"
   },{
     field_name: "name",
     column_title: "Group Name"
+  },{
+    field_name: "description",
+    column_title: "Group Description"
   }],
 
   init: function() {},
 
-  create: function(name, success, fail) {
+  create: function(params, success, fail) {
     var url = Constants.ADMIN_GROUP_CREATE_URL.replace('<domain>', $fw.getClientProp('domain'));
-    var params = {
-      "name": name
-    };
+
     return this.serverPost(url, params, success, fail, true);
   },
 
@@ -52,35 +54,5 @@ model.Group = model.Model.extend({
     } else {
       return this.serverPost(url, params, success, fail, true);
     }
-  },
-  
-  postProcessList: function(res, data_model) {
-    var filtered_fields = data_model.getColumnMap();
-
-    var rows = res.list;
-    var data = {
-      aaData: [],
-      aoColumns: []
-    };
-
-    // Build Data
-    $.each(rows, function(i, item) {
-      var row = item;
-      data.aaData.push([]);
-
-      $.each(filtered_fields, function(k, v) {
-        data.aaData[i].push(row[k]);
-      });
-    });
-
-    // Build Columns
-    $.each(filtered_fields, function(k, v) {
-      data.aoColumns.push({
-        sTitle: v
-      });
-    });
-
-    return data;
   }
-
 });
