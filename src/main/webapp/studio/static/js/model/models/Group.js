@@ -6,13 +6,10 @@ model.Group = model.Model.extend({
   // Field config
   field_config: [{
     field_name: "guid",
-    editable: false,
-    showable: false,
+    visible: false,
     column_title: "Group ID"
   },{
     field_name: "name",
-    editable: true,
-    showable: true,
     column_title: "Group Name"
   }],
 
