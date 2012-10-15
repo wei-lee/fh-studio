@@ -1,6 +1,6 @@
 {
   "predef": [
-    "$fw", "fw_manager", "google", "Log", "application", "HtmlUtil", "js_util", "Class", "Constants", "Highcharts", "moment"
+    "$fw", "fw_manager", "google", "console", "application", "HtmlUtil", "js_util", "Class", "Constants", "Highcharts", "moment"
   ],
   "eqeqeq": false,
   "eqnull": true,

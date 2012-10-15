@@ -4,6 +4,16 @@
 	line-height: 25px;
 }
 
+#header_user_info {
+  -webkit-border-bottom-right-radius: 5px;
+  -webkit-border-bottom-left-radius: 5px;
+  -moz-border-radius-bottomright: 5px;
+  -moz-border-radius-bottomleft: 5px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  padding-right: 10px;
+}
+
 #header_user_info a {
 	cursor: pointer;
 	text-decoration: none;

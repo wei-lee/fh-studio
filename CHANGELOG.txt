@@ -1,4 +1,134 @@
 ===============================================================================
+3.8.0
+-------------------------------------------------------------------------------
+###CHANGES
+* Using non-serif font for ota links to prevent character confusion
+
+===============================================================================
+3.7.0
+-------------------------------------------------------------------------------
+###CHANGES
+* Fixed default 'To' date for reporting graphs
+
+===============================================================================
+3.6.0
+-------------------------------------------------------------------------------
+###CHANGES
+* Added 'Resources' screen for monitoring an app's resources
+* Deprecated old build targets: Nokia WRT, Opera Widgets, W3C.
+* Added new Deployment area for deploying your Cloud App to a number of PaaS 
+  options including FeedHenry, Cloud Foundry, App Fog, Stackato and Iron Foundry
+* You can now view Cloud App logs for both Live and Dev environments
+* Update UI for 'Stats' screen 
+* Added App Endpoints stats to 'Stats' screen
+
+===============================================================================
+3.5.1
+-----------------------------------------------------------------------------
+###CHANGES
+* Swapped reports containers for installs/startups by date and by platform
+
+
+===============================================================================
+3.5.0
+-----------------------------------------------------------------------------
+###CHANGES
+* Removed legacy jquery plugins - jqgrid, ui-accordion, ui-layout
+* Converted all tabs and their content to bootstrap styles
+* Reporting tab and per-apps now have top level 'Installs' & 'Startups' section
+  with sub-section for viewing by date/platform/location
+* Added loading splash image to device previews
+* Added copy to clipboard functionality for 'readonly' app details e.g. api key
+* Moved editor file listing into main content area
+* Added new quickstart menu option in apps tab, with client & cloud specific quickstart
+  options also available from menu
+* Moved platform configuration options inside main content area i.e. preview, embed, ios
+* Fixed issue where switching between a rhino & nodejs app wouldn't update availabe options
+  i.e. deploy, status
+* Updated layout for all tables to use datatables plugin
+* Updated tooltips to use bootstrap popovers
+* Added new 'My Apps' option to apps tab which shows only apps that current user has
+  created. 'All Apps' option has old behaviour of showing all apps current user has
+  access to i.e. owned apps and group apps
+* Moved 'Clone' & 'Delete' app options into app details screen
+* Fixed issue with 'Copy to Clipboard' icons where resizing browser window wasn't updating
+  location of 'flash' embed object
+
+###NOTES
+*
+
+
+===============================================================================
+3.4.0
+-----------------------------------------------------------------------------
+###CHANGES
+* Added App Store consumption UI (/store)
+* Merged ARM Admin and Studio Admin into unified Admin tab
+* Support for MAM
+  * User UI updated with $fh.auth support (data purge/wipe)
+  * Auth Policy UI updated with LDAP and FeedHenry login support, user to policy
+    assignment, and authorisation checks
+  * New App Store Admin UI - users can create and configure an App Store
+  * New Store Item UI - users can create Store Items to associate with 
+    their App Store. These store items can have multiple binaries uploaded
+    for iOS, iPhone, Android & iPad
+  * New Devices UI - shows list of devices/apps accessing $fh.auth API
+
+###NOTES
+*
+
+
+===============================================================================
+3.3.3
+-----------------------------------------------------------------------------
+###CHANGES
+* Add app store consumption UI
+
+###NOTES
+*  update apache rewrite rules to add redirect for /store to /studio/store
+       # App Store
+       RewriteRule ^/store$ /store/ [R]
+       RewriteRule ^/store/(.*)$  /studio/store/$1 [P,L]
+
+===============================================================================
+3.3.2
+-----------------------------------------------------------------------------
+###CHANGES
+* Show OTA and download links after a build finishes instead of downloading automatically
+
+###NOTES
+*
+
+
+3.3.1
+-----------------------------------------------------------------------------
+###CHANGES
+* o2 Theming changes made. Small changes to CSS and removed ! from login form panel.
+
+###NOTES
+*
+
+
+3.3.0
+-----------------------------------------------------------------------------
+###CHANGES
+* Added intercom user tracking for logged in users
+* Added new 'email' column to app listing, shows email of original app creator (only if email is sent back in app list response)
+* Added 'ENVIRONMENT' global to studio js. Can be either 'dev' or 'prod'
+* Added new auth policy section for the portal admin, allowing the configuration of third party oauth and authentication that ties back into ARM
+
+###NOTES
+* 
+
+
+3.2.0
+-----------------------------------------------------------------------------
+###CHANGES
+* Added a new ant task to automatically merge and minify javascript and css files
+* Added support to deliver minifed js and css files if they are exist
+
+###NOTES
+* The log file for studio has changed from ${fh.logdir}/core/fhstudio.log to ${fh.logdir}/studio/studio.log The directory should exist before studio is deployed.
 
 3.1.0
 ------------------------------------------------------------------------------

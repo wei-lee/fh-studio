@@ -1,26 +1,24 @@
-// initialise globals
-var my_apps_grid = null;
-var templates_grid = null;
-var apps_layout = null;
-var list_apps_layout = null;
-var manage_apps_layout = null;
-var list_apps_buttons = null;
+// TODO: remove these globals
 var change_password_button = null;
 
 $(document).ready(function () {
+  ZeroClipboard.setMoviePath( '/studio/static/common/js/ui/thirdparty/zeroclipboard/ZeroClipboard.swf' );
+
   $(document).bind('keyup', function (e) {
     try {
       if (e.altKey && e.ctrlKey && e.keyCode === 71) { // Ctrl-Alt-G
         alert('app:' + $fw.data.get('app').guid + '\ninst:' + $fw.data.get('inst').guid);
       }
     }
-    catch (e) {
+    catch (err) {
       // fail silently
     }
   });
-  Log.append('init and set IDEManager as client of FrameworkManager');
-  // $fw_manager.client becomes available as well as $fw_manager.app
-  $fw_manager.setClient(new IDEManager());
-  $fw_manager.initClient();
-  
+  // $fw.client becomes available as well as $fw.app
+
+  // CAUTION!!! uncomment this line to enable sample data on reports
+  //$fw.clientProps['reporting-sampledata-enabled'] = 'true';
+
+  $fw.setClient(new IDEManager());
+  $fw.initClient();
 });

@@ -1,0 +1,110 @@
+<div id="main_layout_wrapper">
+
+  <div id="main_layout_north">
+    <%@ include file="../header/header.html"%>
+  </div>
+
+  <div id="main_layout_center" class="ui-layout-center ui-no-corner-bottom">
+    <%@ include file="./tabs.html"%>
+  </div>
+  
+  <div id="main_layout_south">
+    <%@ include file="../footer/footer.html"%>
+  </div>
+
+</div>
+
+
+<div id="wizard_dialog"></div>
+
+<div id="generic_boolean_modal" class="modal hide fade hidden_template">
+  <div class="alerts"></div>
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <h3>Alert</h3>
+  </div>
+  <div class="modal-body">
+    <p></p>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn" data-dismiss="modal">No</a>
+    <a href="#" class="btn btn-primary">Yes</a>
+  </div>
+</div>
+
+<div id="generic_error_modal" class="modal hide fade hidden_template">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <h3>Error</h3>
+  </div>
+  <div class="modal-body">
+    <p></p>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn btn-primary" data-dismiss="modal">OK</a>
+  </div>
+</div>
+
+<div id="generic_warning_modal" class="modal hide fade hidden_template">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <h3>Warning</h3>
+  </div>
+  <div class="modal-body">
+    <p></p>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn btn-primary" data-dismiss="modal">OK</a>
+  </div>
+</div>
+
+<div id="generic_confirmation_modal" class="modal hide fade hidden_template">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <h3>Warning</h3>
+  </div>
+  <div class="modal-body">
+    <p></p>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn cancel-dialog">Cancel</a>
+    <a href="#" class="btn btn-primary ok-dialog">OK</a>
+  </div>
+</div>
+
+<div id="generic_progress_modal" class="modal hide fade hidden_template">
+  <div class="modal-header">
+    <button class="close" data-dismiss="modal">&times;</button>
+    <h3>&lt;title goes here&gt;</h3>
+  </div>
+  <div class="modal-body">
+    <div class="progress progress-striped active">
+      <div class="bar" style="width: 0%;"></div>
+    </div>
+    <h4>&lt;initial message goes here&gt;</h4>
+    <textarea disabled></textarea>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn" data-dismiss="modal">Close</a>
+  </div>
+</div>
+
+<%@ include file="./dialogs/app_create_dialog.html"%>
+
+<%@ include file="./dialogs/app_import_dialog.html"%>
+
+<%@ include file="./dialogs/app_clone_dialog.html"%>
+
+<%@ include file="./dialogs/progress_dialog.html"%>
+
+<%@ include file="./dialogs/editor_find_dialog.html"%>
+
+<%@ include file="./dialogs/file_import_dialog.html"%>
+
+<%@ include file="./dialogs/icon_upload_dialog.html"%>
+
+<%@ include file="./dialogs/confirm_dialog.html"%>
+
+<%@ include file="./dialogs/error_dialog.html"%>
+
+<%@ include file="./dialogs/warning_dialog.html"%>

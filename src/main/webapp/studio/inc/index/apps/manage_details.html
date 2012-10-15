@@ -1,0 +1,109 @@
+<div id="manage_details_container">
+  <div class="fh-box-outer">
+    <h4 class="fh-box-header">
+      App Details
+    </h4>
+    <div class="fh-box-inner">
+      <div class="alerts"></div>
+      <form id="manage_update_app_details" class="form-horizontal">
+        <fieldset>
+          <%@ include file="./basic_app_details.html"%>
+
+          <div class="control-group">
+            <label id="new_app_id_label" class="insert-lang insert-help-icon control-label" for="new_app_id"></label>
+            <div class="controls">
+              <div class="span11">
+                <input id="new_app_id" name="app_id" type="text" class="span12" disabled/>
+              </div>
+              <span class="span1">
+                <span class="d_clip_container">
+                  <span class="d_clip_button">
+                    <img class="copy" src="<%=studio.getStaticAssetPath("themes/default/img/ico_clipboard.png")%>" alt="Copy to clipboard"/>
+                  </span>
+                </span>
+              </span>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label id="new_app_apikey_label" class="insert-lang insert-help-icon control-label" for="new_app_apikey"></label>
+            <div class="controls">
+              <div class="span11">
+                <input id="new_app_apikey" name="app_apikey" type="text" class="span12" disabled/>
+              </div>
+              <span class="span1">
+                <span class="d_clip_container">
+                  <span class="d_clip_button">
+                    <img class="copy" src="<%=studio.getStaticAssetPath("themes/default/img/ico_clipboard.png")%>" alt="Copy to clipboard"/>
+                  </span>
+                </span>
+              </span>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label id="new_app_scmurl_label" class="insert-lang insert-help-icon control-label" for="new_app_scmurl"></label>
+            <div class="controls">
+              <input id="new_app_scmurl" name="scmurl" type="text" class="span12"/>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label id="new_app_scmbranch_label" class="insert-lang insert-help-icon control-label" for="new_app_scmbranch"></label>
+            <div class="controls">
+              <input id="new_app_scmbranch" name="scmbranch" type="text" class="span12"/>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label id="postreceiveurl_label" class="insert-lang insert-help-icon control-label" for="postreceiveurl"></label>
+            <div class="controls">
+              <div class="span11">
+                <input id="postreceiveurl" name="postreceiveurl" type="text" class="span12" disabled/>
+              </div>
+              <span class="span1">
+                <span class="d_clip_container">
+                  <span class="d_clip_button">
+                    <img class="copy" src="<%=studio.getStaticAssetPath("themes/default/img/ico_clipboard.png")%>" alt="Copy to clipboard"/>
+                  </span>
+                </span>
+              </span>
+            </div>
+          </div>
+
+          <% if("true".equals(studio.getProperty(studio.PROP_GITPRIVATEENABLED))){ %>
+          <div class="control-group">
+            <label id="new_app_scmkey_label" class="insert-lang insert-help-icon control-label" for="new_app_scmkey"></label>
+            <div class="controls">
+              <textarea id="new_app_scmkey" name="scmkey" type="text" class="span12"></textarea>
+            </div>
+          </div>
+          <% } %>
+
+          <div class="control-group">
+            <label id="new_app_keyspublic_label" class="insert-lang insert-help-icon control-label" for="new_app_keyspublic"></label>
+            <div class="controls">          
+              <div class="span11">
+                <textarea id="new_app_keyspublic" name="keyspublic" type="text" class="span12" readonly="true"></textarea>
+              </div>
+              <span class="span1">
+                <span class="d_clip_container">
+                  <span class="d_clip_button">
+                    <img class="copy" src="<%=studio.getStaticAssetPath("themes/default/img/ico_clipboard.png")%>" alt="Copy to clipboard"/>
+                  </span>
+                </span>
+              </span>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button id="manage_details_update_button" class="template-restriction btn btn-primary pull-right"></button>
+            <button id="clone_button" class="template_clone_button btn pull-left"></button>
+            <button id="delete_app_button" class="template-restriction btn btn-danger pull-left"></button>
+            <button id="scm_trigger_button" class="btn template-restriction pull-left"></button>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+</div>

@@ -6,7 +6,6 @@ Stats.Model = Stats.Model || {};
  * raw form, untransformed
  */
 Stats.Model.Base = Class.extend({
-  _mock: null,
   _revisions: [],
   _data: null,
   use_sample_data: false,
@@ -44,6 +43,8 @@ Stats.Model.Base = Class.extend({
     }
 
     this.deploy_target = params.deploy_target || 'live';
+    this.stats_type = params.stats_type || 'app';
+    this.stats_container = params.stats_container;
 
     // Use sample data?
     this.use_sample_data = 'true' === $fw.getClientProp('stats-sampledata-enabled');
@@ -65,11 +66,21 @@ Stats.Model.Base = Class.extend({
       });
     } else {
       // Remote call
-      this._loadRemote(function(res) {
-        if (typeof(params.loaded) == 'function') {
-          params.loaded(res);
-        }
-      });
+
+      // but first, check if data is provided in params (gotten elsewhere for us)
+      if (params.data != null) {
+        this._loadData(params.data, function(res) {
+          if (typeof(params.loaded) == 'function') {
+            params.loaded(res);
+          }
+        });
+      } else {
+        this._loadRemote(params.count || 360, function(res) {
+          if (typeof(params.loaded) == 'function') {
+            params.loaded(res);
+          }
+        });
+      }
     }
   },
 
@@ -92,7 +103,9 @@ Stats.Model.Base = Class.extend({
   applyFilter: function(params) {
     // { name: 'filterDate', from: new Date(), to: new Date() }
     // Remove existing filter
-    this.clearFilter();
+
+    // FIXME: assumes a filter was already applied
+    //this.clearFilter();
 
     // Find filter
     var filter = this.filters[params.name];
@@ -115,7 +128,9 @@ Stats.Model.Base = Class.extend({
   },
 
   _loadMock: function(callback) {
-    this._setInitialData(this._mock);
+    this._initMockData();
+    this.interval = this._mock.interval;
+    this._setInitialData(this._mock.results);
     if (typeof(callback) == 'function') {
       if (this.use_mock_delay) {
         setTimeout(function(){
@@ -123,26 +138,34 @@ Stats.Model.Base = Class.extend({
         }, 500);
       } else {
         callback({status: 'ok'});
-      }      
+      }
     }
   },
 
-  _loadRemote: function(callback) {
+  _loadData: function (data, callback) {
+    this._setInitialData(data);
+    callback({
+      "status": "ok"
+    });
+  },
+
+  _loadRemote: function(count, callback) {
     // this._loadMock(callback);
     var url, params, app;
     var self = this;
 
-    var guid = $fw_manager.data.get('inst').guid;
+    var guid = $fw.data.get('inst').guid;
     url = Constants.STATS_APP_URL;
     params = {
       guid: guid,
       deploytarget: this.deploy_target,
-      statstype: 'app',
-      count: 360
+      statstype: this.stats_type,
+      count: count
     };
 
     $fw.server.post(url, params, function(res) {
       if (res.status === "ok") {
+        self.interval = res.interval;
         self._setInitialData(res.results);
         callback(res);
       } else {
@@ -195,9 +218,9 @@ Stats.Model.Base = Class.extend({
   _dateBetween: function(from, to, date) {
     var b, e, c;
     b = from.getTime();
-    e = to.getTime();
+    e = to ? to.getTime() : null;
     c = date.getTime();
-    if ((c <= e && c >= b)) {
+    if ((c >= b && ((e !== null && c <= e) || e === null))) {
       return true;
     }
     return false;

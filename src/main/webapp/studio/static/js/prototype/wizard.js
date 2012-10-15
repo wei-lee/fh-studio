@@ -20,7 +20,7 @@ proto.Wizard = {
   
   load: function (wizard_id, jq_overrides, fh_overrides) {
     // setup analytics callbacks
-    $fw_manager.client.analytics.doWizard(wizard_id, jq_overrides);
+    $fw.client.analytics.doWizard(wizard_id, jq_overrides);
     
     var fh_config = $.extend(true, {}, proto.Wizard.fh_defaults, fh_overrides || {});
     
@@ -28,7 +28,7 @@ proto.Wizard = {
     
     // TODO: this shouldn't have to be done every time
     // insert lang text
-    $fw_manager.client.lang.insertLangForContainer(el, true);
+    $fw.client.lang.insertLangForContainer(el, true);
     
     // Add elements from config, if needed
     el.find('*[config-radio]').each(function () {
@@ -52,7 +52,7 @@ proto.Wizard = {
           }).text(ct.label)));
         }
       } catch(e) {
-        Log.append('could not apply config for ' + parent.attr('config-radio') + ' :: ' + e.toString(), 'ERROR');
+        console.log('could not apply config for ' + parent.attr('config-radio') + ' :: ' + e.toString(), 'ERROR');
       }
       // make sure the radios aren't added every time wizard is re-used
       parent.removeAttr('config-radio');
@@ -109,7 +109,7 @@ proto.Wizard = {
     
     // turn on the modal dialog if required
     if (fh_config.modal) {
-      Log.append('set up dialog');
+      console.log('set up dialog');
       proto.Dialog.load($(fh_config.container), {}).dialog('open');
     }
     
@@ -146,19 +146,19 @@ proto.Wizard = {
     }
     
     if ('undefined' !== typeof msg) {
-      Log.append('jumpToStep ' + num + ':' + msg);
+      console.log('jumpToStep ' + num + ':' + msg);
       // TODO: show message inside wizard
       //        and specify the container to show the message in
-      $fw_manager.client.dialog.error(msg);
+      $fw.client.dialog.error(msg);
     }
   },
   
   previousStep: function (el, msg) {
     el.jWizard('previousStep');
     if ('undefined' !== typeof msg) {
-      Log.append('previousStep:' + msg);
+      console.log('previousStep:' + msg);
       // TODO: show message inside wizard
-      $fw_manager.client.dialog.error(msg);
+      $fw.client.dialog.error(msg);
     }
   },
   
@@ -171,7 +171,7 @@ proto.Wizard = {
     
     var step_wrapper = $('<form>', {
       id: id,
-      jwtitle: $fw_manager.client.lang.getLangString(id + '_supertitle'),
+      jwtitle: $fw.client.lang.getLangString(id + '_supertitle'),
       autocomplete: 'off'
     });
     
@@ -179,7 +179,7 @@ proto.Wizard = {
       var step = steps[si];
       
       var jq_step = $('#' + step).clone();
-      jq_step.attr('jwtitle', $fw_manager.client.lang.getLangString(jq_step.attr('id') + '_title'));
+      jq_step.attr('jwtitle', $fw.client.lang.getLangString(jq_step.attr('id') + '_title'));
       if (jq_step.hasClass('progress-step')) {
         jq_step.append($('<div>', {
           'class': 'progressbar'
@@ -193,6 +193,7 @@ proto.Wizard = {
       }
       step_wrapper.append(jq_step);
     }
+    step_wrapper.addClass('form-horizontal');
     
     return step_wrapper;
   },
@@ -234,7 +235,7 @@ proto.Wizard = {
   getWizards: function() {
     // TODO: wizard steps should come with any necessary bindings (e.g. upload) and validation
     var wizards = {
-      create_app_wizard: ['create_app_type', 'create_app_from_template', 'create_app_clone', 'create_app_details', 'create_app_frameworks', 'create_app_from_scm', 'generate_app', 'create_app_progress', 'create_app_publickeysetup', 'create_app_scmprogress', 'create_app_next'],
+      create_app_wizard: ['create_app_type', 'create_app_from_template', 'create_app_clone', 'create_app_details', 'create_app_from_scm', 'generate_app', 'create_app_progress', 'create_app_publickeysetup', 'create_app_scmprogress', 'create_app_next'],
       clone_app_wizard: ['clone_app_details', 'clone_app_progress', 'clone_app_next'],
       import_app_wizard: ['import_app_details', 'import_app_progress', 'import_app_next'],
       upload_icon_wizard: ['upload_icon_details', 'upload_icon_progress'],
@@ -262,13 +263,15 @@ proto.Wizard = {
       blackberry_db_wizard: ['blackberry_db_upload', 'blackberry_db_finish']
     };
 
-    if ($fw.client.app.isNodeJsApp()) {
-      Log.append('Node.js based app, applying wizard changes');
-      wizards.blackberry_publish_wizard = ['app_publish_blackberry_staging_env', 'app_publish_blackberry_staging_progress', 'app_publish_blackberry_versions', 'app_publish_blackberry_password', 'app_publish_blackberry_progress'];
-      wizards.ipad_publish_wizard = ['app_publish_ipad_select_provisionings', 'app_publish_ipad_upload_provisionings', 'app_publish_ipad_upload_progress', 'app_publish_ipad_staging_env', 'app_publish_ipad_staging_progress', 'app_publish_ipad_versions', 'app_publish_ipad_password', 'app_publish_ipad_progress'];
-      wizards.iphone_publish_wizard = ['app_publish_iphone_select_provisionings', 'app_publish_iphone_upload_provisionings', 'app_publish_iphone_upload_progress', 'app_publish_iphone_staging_env', 'app_publish_iphone_staging_progress', 'app_publish_iphone_versions', 'app_publish_iphone_password', 'app_publish_iphone_progress'];
-      wizards.windowsphone7_publish_wizard = ['app_publish_windowsphone7_staging_env', 'app_publish_windowsphone7_staging_progress', 'app_publish_windowsphone7_versions', 'app_publish_windowsphone7_progress'];
-      wizards.android_publish_wizard = ['app_publish_android_staging_env', 'app_publish_android_staging_progress', 'app_publish_android_versions', 'app_publish_android_password', 'app_publish_android_progress'];
+    if ($fw.client.tab.apps.manageapps != null && $fw.client.tab.apps.manageapps.isNodeJsApp()) {
+      console.log('Node.js based app, applying wizard changes');
+      wizards.blackberry_publish_wizard = ['app_publish_blackberry_deploying_env', 'app_publish_blackberry_deploying_progress', 'app_publish_blackberry_versions', 'app_publish_blackberry_password', 'app_publish_blackberry_progress'];
+      wizards.ipad_publish_wizard = ['app_publish_ipad_select_provisionings', 'app_publish_ipad_upload_provisionings', 'app_publish_ipad_upload_progress', 'app_publish_ipad_deploying_env', 'app_publish_ipad_deploying_progress', 'app_publish_ipad_versions', 'app_publish_ipad_password', 'app_publish_ipad_progress'];
+      wizards.iphone_publish_wizard = ['app_publish_iphone_select_provisionings', 'app_publish_iphone_upload_provisionings', 'app_publish_iphone_upload_progress', 'app_publish_iphone_deploying_env', 'app_publish_iphone_deploying_progress', 'app_publish_iphone_versions', 'app_publish_iphone_password', 'app_publish_iphone_progress'];
+      wizards.ios_publish_wizard = ['app_publish_ios_select_provisionings', 'app_publish_ios_upload_provisionings', 'app_publish_ios_upload_progress', 'app_publish_ios_deploying_env', 'app_publish_ios_deploying_progress', 'app_publish_ios_versions', 'app_publish_ios_password', 'app_publish_ios_progress'];
+      wizards.windowsphone7_publish_wizard = ['app_publish_windowsphone7_deploying_env', 'app_publish_windowsphone7_deploying_progress', 'app_publish_windowsphone7_versions', 'app_publish_windowsphone7_progress'];
+      wizards.android_publish_wizard = ['app_publish_android_deploying_env', 'app_publish_android_deploying_progress', 'app_publish_android_versions', 'app_publish_android_password', 'app_publish_android_progress'];
+      wizards.embed_publish_wizard = ['app_publish_embed_deploying_env', 'app_publish_embed_deploying_progress', 'app_publish_embed_progress'];
     }
 
     return wizards;

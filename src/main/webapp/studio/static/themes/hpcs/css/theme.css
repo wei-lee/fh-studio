@@ -1,18 +1,13 @@
 #header_logo {
-  background-image:url(../../enterprise/img/feedhenry_logo.png);
-}
-
-.ui-state-active.home-tab, #home_north .container-header
-{
-  background: transparent url(../../enterprise/img/dark_blue_bar_repeat.png) repeat-x 0 0 !important;
+  background-image:url(../../default/img/feedhenry_logo.png);
 }
 
 .dashboard-header{
-  background-image: url(../../enterprise/img/home_page_graphic.png);
+  background-image: url(../../default/img/home_page_graphic.png);
 }
 
 .dashboard-create{
-  background-image: url(../../enterprise/img/create_app_sprite.png);
+  background-image: url(../../default/img/create_app_sprite.png);
 }
 
 .hiring-link {

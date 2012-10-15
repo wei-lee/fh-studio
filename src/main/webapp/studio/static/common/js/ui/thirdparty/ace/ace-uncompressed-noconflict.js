@@ -13594,13 +13594,14 @@ var RenderLoop = function(onRender, win) {
 
 exports.RenderLoop = RenderLoop;
 });
-ace.define("text!ace/css/editor.css", [], "@import url(//fonts.googleapis.com/css?family=Droid+Sans+Mono);\n" +
+// FEEDHENRY - Removed remote font loading.
+ace.define("text!ace/css/editor.css", [], "" +
   "\n" +
   "\n" +
   ".ace_editor {\n" +
   "    position: absolute;\n" +
   "    overflow: hidden;\n" +
-  "    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', monospace;\n" +
+  "    font-family: 'Monaco', 'Ubuntu Mono', 'Consolas', monospace;\n" +
   "    font-size: 12px;\n" +
   "}\n" +
   "\n" +

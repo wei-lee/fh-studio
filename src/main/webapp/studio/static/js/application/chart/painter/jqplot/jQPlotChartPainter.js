@@ -23,7 +23,7 @@
         return '#3d96ae';
       } else if (key == 'iPad') {
         return '#aa4643';
-      } else {
+      }  else {
         var random_colours = ['#4572a7', '#aa4643', '#89a54e', '#80699b', '#3d96ae', '#db843d'];
         var random_colour = random_colours[Math.floor(Math.random() * random_colours.length)];
         return random_colour;
@@ -36,7 +36,9 @@
         "iphone": "iPhone",
         "ipad": "iPad",
         "blackberry": "BlackBerry",
-        "wp7": "Windows Phone 7"
+        "wp7": "Windows Phone 7",
+        "nokiawrt": "Nokia WRT",
+        "windowsphone7": "Windows Phone 7"
       };
       return label_map[key] || key;
     },
@@ -69,9 +71,21 @@
         },
         chart: {
           renderTo: container[0],
+          //type: 'area',
           zoomType: 'x',
           spacingRight: 20
         },
+        // plotOptions: {
+        //   area: {
+        //     stacking: 'normal',
+        //     lineColor: '#666666',
+        //     lineWidth: 1,
+        //     marker: {
+        //       lineWidth: 1,
+        //       lineColor: '#666666'
+        //     }
+        //   }
+        // },
         title: {
           text: ''
         },
@@ -112,7 +126,7 @@
               }, {
                 text: 'Export to CSV',
                 onclick: function() {
-                  Log.append('Exporting to CSV.');
+                  console.log('Exporting to CSV.');
 
                   // For all series
                   var csv = [];
@@ -240,7 +254,7 @@
               }, {
                 text: 'Export to CSV',
                 onclick: function() {
-                  Log.append('Exporting to CSV.');
+                  console.log('Exporting to CSV.');
 
                   // For all series
                   var csv = [];
@@ -290,11 +304,11 @@
         // Draw with jqPlot
         var self = this,
             di, dl, dt, yMax, yMin, ri, rl, rt;
-        Log.append('jqplot default opts:' + JSON.stringify(this.defaultOpts));
+        console.log('jqplot default opts:' + JSON.stringify(this.defaultOpts));
 
         // Determine the best no. of ticks to show
         opts.xTicks = self.optimiseXTicks(opts.xTicks || data[0].length);
-        Log.append('xTicks: ' + opts.xTicks);
+        console.log('xTicks: ' + opts.xTicks);
 
         // Figure out max value on y axis
         yMin = data[0][0][1];
@@ -314,7 +328,7 @@
         opts.yTicks = self.optimiseYTicks(yMin, yMax);
 
         opts = this.overrideOpts(opts);
-        Log.append('jqplot overriden opts:' + JSON.stringify(opts));
+        console.log('jqplot overriden opts:' + JSON.stringify(opts));
 
         // Set the size of the chart div
         container.css({

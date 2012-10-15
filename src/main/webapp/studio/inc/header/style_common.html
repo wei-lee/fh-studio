@@ -1,0 +1,13 @@
+<%= studio.getIdeStyles() %>
+
+<%
+List<String> themes = studio.getThemes();
+for (String theme: themes) {
+%>
+<link rel="stylesheet" href="<%=studio.getStaticAssetPath("themes/" + theme + "/css/theme.css")%>" type="text/css" />
+<%
+}
+%>
+
+<link rel="shortcut icon" href="<%=studio.getStaticAssetPath("themes/default/img/favicon.ico")%>" />
+<link rel="stylesheet" href="<%=studio.getStaticAssetPath("themes/default/css/header_links.css")%>" type="text/css" />

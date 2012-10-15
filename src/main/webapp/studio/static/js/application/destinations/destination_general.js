@@ -5,7 +5,7 @@ application.DestinationGeneral = Class.extend({
 
   init: function(dest_id) {
     this.destination_id = dest_id;
-    this.base_url = Constants.WID_URL_PREFIX + this.destination_id + "/" + $fw_manager.data.get('inst').guid + "/deliver";
+    this.base_url = Constants.WID_URL_PREFIX + this.destination_id + "/" + $fw.data.get('inst').guid + "/deliver";
   },
 
   doGeneration: function(is_source) {
@@ -18,7 +18,7 @@ application.DestinationGeneral = Class.extend({
       if ($fw.getClientProp('accountType') !== 'free') {
         that['export']();
       } else {
-        $fw_manager.client.dialog.error($fw_manager.client.lang.getLangString(error_msg));
+        $fw.client.dialog.error($fw.client.lang.getLangString(error_msg));
       }
     } else {
       that.publish();
@@ -26,14 +26,14 @@ application.DestinationGeneral = Class.extend({
   },
 
   'export': function() {
-    Log.append("generate for " + this.destination_id + ":: Type: Export");
+    console.log("generate for " + this.destination_id + ":: Type: Export");
     var url = this.base_url + "?generateSrc=true";
-    $fw_manager.app.startDownload(url);
+    document.location = url;
   },
 
   publish: function() {
     var url = this.base_url + "?generateSrc=false";
-    $fw_manager.app.startDownload(url);
+    document.location = url;
   },
 
   doAsyncExport: function() {
@@ -58,7 +58,7 @@ application.DestinationGeneral = Class.extend({
     });
 
     if ($.isFunction(this.bindVersionViewShow)) {
-      this.bindVersionViewShow('#app_export_device_types', '#app_export_iphone_versions, #app_export_ipad_versions', wizard, 1);
+      this.bindVersionViewShow('#app_export_device_types', '#app_export_iphone_versions, #app_export_ipad_versions, #app_publish_ios_versions', wizard, 1);
     }
 
     // call any destination specific setup
@@ -78,10 +78,10 @@ application.DestinationGeneral = Class.extend({
         wizard.find('.jw-button-finish').trigger('click');
 
         if (res.error) {
-          $fw_manager.client.dialog.error($fw_manager.client.lang.getLangString('free_source_export_disabled'));
+          $fw.client.dialog.error($fw.client.lang.getLangString('free_source_export_disabled'));
         } else if (res.action && res.action.url) {
           var source_url = res.action.url;
-          $fw_manager.app.startDownload(source_url);
+          document.location = source_url;
         }
       });
     }).bind('postShow', function() {
@@ -101,12 +101,12 @@ application.DestinationGeneral = Class.extend({
     proto.ProgressDialog.setProgress(step, 1);
     proto.ProgressDialog.append(step, 'Starting ' + type);
 
-    Log.append('sending request to server');
-    Log.append('request url ' + that.base_url);
+    console.log('sending request to server');
+    console.log('request url ' + that.base_url);
 
     $.post(that.base_url, data, function(result) {
 
-      Log.append('import result > ' + JSON.stringify(result));
+      console.log('import result > ' + JSON.stringify(result));
       var cacheKey, stageKey;
 
       cacheKey = result.cacheKey;
@@ -120,8 +120,8 @@ application.DestinationGeneral = Class.extend({
           cacheKey: cacheKey,
           complete: function(res) {
             proto.ProgressDialog.setProgress(step, 100);
-            proto.ProgressDialog.append(step, "Starting Download");
-            Log.append('jumping to final step and hiding progress dialog');
+            proto.ProgressDialog.append(step, "Completed");
+            console.log('jumping to final step and hiding progress dialog');
             setTimeout(function() {
               complete(res);
             }, 1000);
@@ -143,7 +143,7 @@ application.DestinationGeneral = Class.extend({
           updateInterval: Properties.cache_lookup_interval,
           maxTime: Properties.cache_lookup_timeout,
           timeout: function(res) {
-            Log.append('timeout error > ' + JSON.stringify(res));
+            console.log('timeout error > ' + JSON.stringify(res));
             proto.Wizard.jumpToStep(wizard, 1, type + ' timed out');
           },
           update: function(res) {
@@ -155,14 +155,14 @@ application.DestinationGeneral = Class.extend({
                 proto.ProgressDialog.append(step, res.log[i]);
               }
               if (res.log[i] && res.log[i].length > 0) {
-                Log.append("increase progress: " + progress_val);
+                console.log("increase progress: " + progress_val);
                 progress_val = progress_val + 3;
                 proto.ProgressDialog.setProgress(step, parseInt(progress_val, 10));
               }
             }
           },
           error: function(res) {
-            Log.append('export error > ' + JSON.stringify(res));
+            console.log('export error > ' + JSON.stringify(res));
             proto.Wizard.jumpToStep(wizard, 1, res.error);
           },
           end: function() {
@@ -172,7 +172,7 @@ application.DestinationGeneral = Class.extend({
         export_task.run();
       } else if (result.error) {
         // Exporting of source disabled.
-        Log.append('export error > Exporting of source disabled');
+        console.log('export error > Exporting of source disabled');
         complete(result);
       }
     });
@@ -187,7 +187,12 @@ application.DestinationGeneral = Class.extend({
     }).show().parent().find('button.resource-not-uploaded').hide();
 
     var content_text = text ? text : "You can start to build " + type + " version of the app";
-    button.find('.resource-content').text(content_text);
+    if(typeof text === "string"){
+      button.find('.resource-content').text(content_text);
+    } else {
+      button.find('.resource-content').html(content_text);
+    }
+
   },
 
   disableButton: function(button, type, text) {
@@ -199,15 +204,27 @@ application.DestinationGeneral = Class.extend({
     }).show().parent().find('button.resource-uploaded').hide();
 
     var content_text = text ? text : "You can not build " + type + " version of the app until you have uploaded your certificate";
-    button.find('.resource-content').text(content_text);
+    if(typeof text === "string"){
+      button.find('.resource-content').text(content_text);
+    } else {
+      button.find('.resource-content').html(content_text);
+    }
   },
   redirectToAccount: function(target) {
     // TODO: use id's instead of indexes
     // force state to show relevant accordion item
-    $fw_manager.state.set('account_accordion', 'selected', 1);
-    $fw_manager.state.set('account_accordion_accordion_item_destinations', 'selected', ((target === 'iphone') || (target === 'ipad')) ? 0 : 1);
+    $fw.state.set('account_accordion', 'selected', 1);
+    $fw.state.set('account_accordion_accordion_item_destinations', 'selected', ((target === 'iphone') || (target === 'ipad')) ? 0 : 1);
 
     $('#account_tab').click();
+    target = target.toLowerCase();
+    if(target === "iphone" || target === "ios" || target === "ipad"){
+      $('a#appleResource').click();
+    }else if(target === "android"){
+      $('a#androidResource').click();
+    }else if(target === "blackberry"){
+      $('#blackberryResource').click();
+    }
   },
 
   showDestinations: function() {
@@ -223,26 +240,26 @@ application.DestinationGeneral = Class.extend({
   },
 
   doAsyncPublish: function() {
-    Log.append("Publish :: " + this.destination_id);
+    console.log("Publish :: " + this.destination_id);
     var main_container = $('#manage_publish_container');
     main_container.find(".dashboard-content").hide();
     var that = this;
     $.post(Constants.LIST_RESOURCES_URL, {
       dest: this.destination_id,
-      appId: $fw_manager.data.get('inst').guid
+      appId: $fw.data.get('inst').guid
     }, function(res) {
       that.resourceCheckCallback(res, that);
-      Log.append('resource checked :: ' + that.destination_id);
+      console.log('resource checked :: ' + that.destination_id);
       main_container.find('#app_publish_' + that.destination_id + '_build').show();
       main_container.find("#app_publish_" + that.destination_id).show();
     });
   },
 
-  startStage: function(config, wizard, step) {
+  startDeploy: function(config, wizard, step) {
     var self = this;
 
     // To stage or not to stage?
-    var checkbox = $(wizard).find("input[name='app_publish_" + this.destination_id + "_staging']:checked");
+    var checkbox = $(wizard).find("input[name='app_publish_" + this.destination_id + "_deploying']:checked");
 
     function skip() {
       setTimeout(function() {
@@ -259,57 +276,57 @@ application.DestinationGeneral = Class.extend({
       return skip();
     }
 
-    var staging_env;
+    var deploying_env;
     if (config == 'distribution' || config == 'release') {
-      staging_env = 'live';
+      deploying_env = 'live';
     } else {
-      staging_env = 'dev';
+      deploying_env = 'dev';
     }
 
 
     // Clear visible progresslog
     $('#wizard_dialog .progresslog:visible').val('');
 
-    Log.append("Starting stage :: " + staging_env);
+    console.log("Starting deploy :: " + deploying_env);
 
-    if (staging_env == 'dev') {
-      self.doDevStage(wizard, step);
-    } else if (staging_env == 'live') {
-      self.doLiveStage(wizard, step);
+    if (deploying_env == 'dev') {
+      self.doDevDeploy(wizard, step);
+    } else if (deploying_env == 'live') {
+      self.doLiveDeploy(wizard, step);
     }
   },
 
-  doDevStage: function(wizard, step) {
-    Log.append('staging.devStage');
+  doDevDeploy: function(wizard, step) {
+    console.log('destination_general.doDevDeploy');
     var self = this;
-    var guid = $fw_manager.data.get('app').guid;
-    var url = Constants.STAGE_APP_URL;
+    var guid = $fw.data.get('app').guid;
+    var url = Constants.DEPLOY_APP_URL;
     var params = {
       guid: guid
     };
 
-    $fw_manager.server.post(url, params, function(res) {
+    $fw.server.post(url, params, function(res) {
       if (res.status === "ok") {
-        self.stageStarted("dev", res.cacheKey, wizard, step);
+        self.deployStarted("dev", res.cacheKey, wizard, step);
       } else {
-        Log.append('dev stage failed:' + res);
+        console.log('dev deploy failed:' + res);
       }
     }, null, true);
   },
 
-  doLiveStage: function(wizard, step) {
-    Log.append('staging.liveStage');
+  doLiveDeploy: function(wizard, step) {
+    console.log('destination_general.doLiveDeploy');
     var self = this;
-    var guid = $fw_manager.data.get('app').guid;
-    var url = Constants.RELEASE_STAGE_APP_URL;
+    var guid = $fw.data.get('app').guid;
+    var url = Constants.RELEASE_DEPLOY_APP_URL;
     var params = {
       guid: guid
     };
-    $fw_manager.server.post(url, params, function(res) {
+    $fw.server.post(url, params, function(res) {
       if (res.status === "ok") {
-        self.stageStarted("live", res.cacheKey, wizard, step);
+        self.deployStarted("live", res.cacheKey, wizard, step);
       } else {
-        Log.append('live stage failed:' + res);
+        console.log('live deploy failed:' + res);
       }
     }, null, true);
   },
@@ -325,10 +342,10 @@ application.DestinationGeneral = Class.extend({
     }
   },
 
-  stageComplete: function(wizard, step) {
-    Log.append('stageComplete');
+  deployComplete: function(wizard, step) {
+    console.log('deployComplete');
 
-    if (this.destination_id == 'ipad' || this.destination_id == 'iphone') {
+    if (this.destination_id == 'ipad' || this.destination_id == 'iphone' || this.destination_id == 'ios') {
       proto.Wizard.jumpToStep(wizard, 6);
     } else {
       proto.Wizard.jumpToStep(wizard, 3);
@@ -336,11 +353,11 @@ application.DestinationGeneral = Class.extend({
 
   },
 
-  stageStarted: function(staging_env, cacheKey, wizard, step) {
+  deployStarted: function(deploying_env, cacheKey, wizard, step) {
     var self = this;
-    Log.append('staging.stageStarted: [' + staging_env + '] [' + cacheKey + ']');
+    console.log('destination_general.deployStarted: [' + deploying_env + '] [' + cacheKey + ']');
 
-    var stage_task = new ASyncServerTask({
+    var deploy_task = new ASyncServerTask({
       cacheKey: cacheKey
     }, {
       updateInterval: Properties.cache_lookup_interval,
@@ -348,33 +365,33 @@ application.DestinationGeneral = Class.extend({
       // 5 minutes
       maxRetries: Properties.cache_lookup_retries,
       timeout: function(res) {
-        Log.append('Staging timeout error > ' + JSON.stringify(res));
-        proto.Wizard.jumpToStep(import_app_wizard, 1, 'Staging timed-out');
+        console.log('Deplying timeout error > ' + JSON.stringify(res));
+        proto.Wizard.jumpToStep(import_app_wizard, 1, 'Deploying timed-out');
       },
       update: function(res) {
         for (var i = 0; i < res.log.length; i++) {
-          Log.append(res.log[i]);
+          console.log(res.log[i]);
         }
-        self.updateProgressLog(staging_env, res.log);
+        self.updateProgressLog(deploying_env, res.log);
       },
       complete: function(res) {
-        Log.append('Stage successful > ' + JSON.stringify(res));
-        if ($.isFunction(self.stageComplete)) {
-          self.stageComplete(wizard, step);
+        console.log('Deploy successful > ' + JSON.stringify(res));
+        if ($.isFunction(self.deployComplete)) {
+          self.deployComplete(wizard, step);
         }
       },
       error: function(res) {
-        Log.append('Stage error > ' + JSON.stringify(res));
-        self.updateProgressLog(staging_env, [res.error]);
-        proto.Wizard.jumpToStep(import_app_wizard, 1, 'Staging failed');
+        console.log('Deploy error > ' + JSON.stringify(res));
+        self.updateProgressLog(deploying_env, [res.error]);
+        proto.Wizard.jumpToStep(import_app_wizard, 1, 'Deploying failed');
       },
       retriesLimit: function() {
-        Log.append('Stage retriesLimit exceeded: ' + Properties.cache_lookup_retries);
-        proto.Wizard.jumpToStep(import_app_wizard, 1, 'Staging retries exceeded');
+        console.log('Deploy retriesLimit exceeded: ' + Properties.cache_lookup_retries);
+        proto.Wizard.jumpToStep(import_app_wizard, 1, 'Deploying retries exceeded');
       },
       end: function() {}
     });
-    stage_task.run();
+    deploy_task.run();
   },
 
   startBuild: function(config) {
@@ -398,8 +415,8 @@ application.DestinationGeneral = Class.extend({
     var progress_view = wizard.find("#app_publish_" + this.destination_id + "_progress");
 
     // Binding for showing staging progress
-    wizard.find(".app_publish_staging_progress").unbind('show').bind('show', function(e) {
-      that.startStage(config, wizard, step);
+    wizard.find(".app_publish_deploying_progress").unbind('show').bind('show', function(e) {
+      that.startDeploy(config, wizard, step);
     });
 
     if ($.isFunction(this.bindExtraConfig)) {
@@ -411,9 +428,8 @@ application.DestinationGeneral = Class.extend({
       that.showGenerateProgress("Build", wizard, data, progress_view, function(res) {
         // TODO: better way for this temporary workaround for finishing wizard after successful upload  
         wizard.find('.jw-button-finish').trigger('click');
-        Log.append('publish successful: ' + JSON.stringify(res));
-        var source_url = res.action.url;
-        $fw_manager.app.startDownload(source_url);
+        console.log('publish successful: ' + JSON.stringify(res));
+        that.handleDownload(res, config);
       });
     });
 
@@ -432,12 +448,96 @@ application.DestinationGeneral = Class.extend({
     }
   },
 
+  handleDownload: function(res){
+    var that = this;
+    var source_url = res.action.url;
+    var ota_url = res.action.ota_url;
+    var ipa_url = res.action.ipa_url;
+    var showOTA = false;
+    var showIPA = false;
+    if(typeof ota_url !== "undefined"){
+      showOTA = true;
+    }
+    if(typeof ipa_url !== "undefined"){
+      showIPA = true;
+    }
+    var showDownload = function(message){
+      var dialog = $('#confirm_dialog').clone();
+      dialog.find('#confirm_dialog_text').html(message);
+      proto.Dialog.load(dialog, {
+        autoOpen: true,
+        height: 235,
+        title: 'Download',
+        stack: true,
+        dialogClass: 'confirm_dialog success-dialog popup-dialog',
+        width: 340,
+        buttons: {
+          'OK': function () {
+            $(this).dialog('close');
+          }
+        }
+      });
+    };
+    var html = "<p> The build is ready. Please click the link below to download";
+    
+    if( showOTA ){
+      html += ", or you can use the OTA link to install the application directly on to your phone.</p>";
+    } else {
+      html += ".</p>";
+    }
+    html += "<br><ul> <li> <a target='_blank' href='"+source_url+"'> Download </a></li>";
+    if(showIPA){
+      html += "<li> <a target='_blank' href='"+ipa_url+"'> Download IPA File </a></li>";
+    }
+    if(showOTA){
+      that.getOTALink(ota_url, function(otalink){
+        html += "<li> OTA Link : <a class='otalink' target='_blank' href='"+otalink+"'>" + otalink + " </a></li></ul>";
+        showDownload(html);
+      });
+    } else {
+      html += "</ul>";
+      showDownload(html);
+    }
+  },
+
   changeWizardStep: function(config, wizard, step) {
-    Log.append("changeWizardStep");
+    console.log("changeWizardStep");
   },
 
   doPublishWizardSetup: function(main_container, wizard) {
     //abstract interface
     wizard.validate({});
+  },
+
+  getOTALink: function(download_url, cb) {
+    var url = download_url;
+    this.getShortenUrl(download_url, cb);
+  },
+
+  getShortenUrl: function(url, cb){
+    var shortenerRequestBody = { "longUrl": url};
+    var req = {url: 'https://www.googleapis.com/urlshortener/v1/url', method:"POST", body: JSON.stringify(shortenerRequestBody), headers: [{"name":"Content-Type", "value":"application/json"}]};
+    $.ajax({
+      url: '/box/srv/1.1/act/wid/web', 
+      type: 'POST', 
+      contentType: "application/json",
+      dataType: 'json',
+      data: JSON.stringify(req), 
+      success: function(res){
+        if(res.status == 200){
+          var resObj = JSON.parse(res.body);
+          var shortUrl = resObj.id.replace("\\", "");
+          console.log("ota link is " + shortUrl);
+          cb(shortUrl);
+        } else {
+          console.log("Failed to get shortened link.");
+          cb(url);
+        }
+      },
+      error: function(){
+        console.log("Failed to get shortened link.");
+        cb(url);
+      }
+    });
   }
 });

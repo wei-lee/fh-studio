@@ -33,6 +33,7 @@ proto.TreeviewManager = function (params) {
         dom_obj.append(anchor_obj);
       }
       ul_dom = $('<ul>');
+
       ul_dom.append(dom_obj);
       self.container.html(ul_dom);
       self.initTreeview();
@@ -73,14 +74,15 @@ proto.TreeviewManager = function (params) {
 
     initTreeview: function () {
       // Set up the Git message
-      $fw.client.editor.initEditorMessage();
+      $fw.client.tab.apps.manageapps.controllers['apps.editor.controller'].initEditorMessage();
       
       var is_template, opts;
       
       is_template = $fw.data.get('template_mode');
       opts = {
         'core': {
-          initially_open: ['root']
+          initially_open: ['root'],
+          animation: 0
         },
         'themes': {
           theme: 'classic',
@@ -95,6 +97,8 @@ proto.TreeviewManager = function (params) {
         };
       }
       self.container.jstree(opts);
+
+      self.container.children('ul:first').addClass('span12 treeview_root');
 
       if (!is_template) {
         self.container.bind("create.jstree", function (event, data) {
@@ -127,9 +131,9 @@ proto.TreeviewManager = function (params) {
           path = $(temp_el).attr('path');
 
           // Git based files will not have a file_guid
-          $fw.client.editor.openFile(file_guid, file_name, null, path, app_id);
+          $fw.client.tab.apps.manageapps.controllers['apps.editor.controller'].openFile(file_guid, file_name, null, path, app_id);
 //          if (file_guid && file_name) {
-//            $fw.client.editor.openFile(file_guid, file_name, null, path, app_id);
+//            $fw.client.tab.apps.manageapps.controllers['apps.editor.controller'].openFile(file_guid, file_name, null, path, app_id);
 //          } else {
 //            $fw.client.dialog.info.flash('Please wait for operation complete...');
 //          }
@@ -139,7 +143,7 @@ proto.TreeviewManager = function (params) {
             self.container.jstree('toggle_node', el);
             setTimeout(function () {
               that.toggling = false;
-            }, 500);
+            }, 0);
           }
 
         }
@@ -185,7 +189,7 @@ proto.TreeviewManager = function (params) {
         },
         "rename": {
           "_disabled": function (obj) {
-            var scmAllowRename = $fw_manager.getClientProp('scm-file-rename') == "true";
+            var scmAllowRename = $fw.getClientProp('scm-file-rename') == "true";
             var allowRename = $fw.data.get('scm_mode') ? scmAllowRename : true;
             return self.checkContextMenuDisabled(obj, true, allowRename);
           }
@@ -193,7 +197,7 @@ proto.TreeviewManager = function (params) {
         "remove": {
           "label": "Delete",
           "_disabled": function (obj) {
-            var scmAllowDelete = $fw_manager.getClientProp('scm-file-delete') == "true";
+            var scmAllowDelete = $fw.getClientProp('scm-file-delete') == "true";
             var allowDelete = $fw.data.get('scm_mode') ? scmAllowDelete : true;
             return self.checkContextMenuDisabled(obj, true, allowDelete);
           },
@@ -354,7 +358,7 @@ proto.TreeviewManager = function (params) {
         // remove entry from tree
         var ori_path = self.getItemPath(obj.parent());
         obj.path = ori_path;
-        //console.log("ori path is " + ori_path);
+        //log("ori path is " + ori_path);
         self.container.jstree("remove", obj);
         //var ori_path = self.getItemPath(obj.parent());
         //obj.old_delete_folder_path = ori_path;
@@ -363,13 +367,13 @@ proto.TreeviewManager = function (params) {
         node_id =  obj.data('fileid');
         if (node_id != null) {
           // deleting a file, make sure to close it if it's open
-          $fw.client.editor.closeTab(node_id);
+          $fw.client.tab.apps.manageapps.controllers['apps.editor.controller'].closeTab(node_id);
         } else {
           // deleting a folder, make sure to close all child files if they're open
           $(obj).find('.file_item').each(function () {
             node_id =  $(this).data('fileid');
             if (node_id != null) {
-              $fw.client.editor.closeTab(node_id);
+              $fw.client.tab.apps.manageapps.controllers['apps.editor.controller'].closeTab(node_id);
             }
           });
         }
@@ -406,7 +410,7 @@ proto.TreeviewManager = function (params) {
         } else {
           //  self.setItemPath(node, res.path);         
           // callback to editor manager
-          $fw.client.editor.renameCallback(file_id, new_name, old_name);
+          $fw.client.tab.apps.manageapps.controllers['apps.editor.controller'].renameCallback(file_id, new_name, old_name);
         }
       });
 
@@ -489,13 +493,13 @@ proto.TreeviewManager = function (params) {
       if (filePath.charAt(filePath.length - 1) === "/") {
         filePath = filePath.substring(0, filePath.length - 1);
       }
-      Log.append("default file path :: " + filePath);
+      console.log("default file path :: " + filePath);
       data = {
         appId: self.app_id,
         'filePath': filePath
       };
       self.server.updateIndex(data, function (res) {
-        $fw.client.preview.show();
+        $fw.client.tab.apps.manageapps.getController('apps.preview.controller').show();
       });
     },
 
@@ -514,7 +518,7 @@ proto.TreeviewManager = function (params) {
       // When next is clicked on details page, intercept and send back to details page until 
       // import is attempted
       import_file_wizard.find('#import_file_progress').bind('show', function () {
-        Log.append('doing import file');
+        console.log('doing import file');
         step = $(this);
 
         import_file_wizard.find('#import_file_app_guid').val(self.app_id);
@@ -525,12 +529,12 @@ proto.TreeviewManager = function (params) {
           current_path = self.getItemPath(current_node.parent());
         }
 
-        Log.append("Current path is " + current_path);
+        console.log("Current path is " + current_path);
         import_file_wizard.find('#import_file_path').val(current_path);
         file_path = import_file_wizard.find("#import_file_location").val();
-        Log.append("file path:" + file_path);
+        console.log("file path:" + file_path);
         file_name = js_util.getFileNameFromPath(file_path);
-        Log.append("upload file: " + file_name);
+        console.log("upload file: " + file_name);
 
         // show import progress
         // TODO: tidy up all these calls and refactor
@@ -542,7 +546,7 @@ proto.TreeviewManager = function (params) {
           url: Constants.IMPORT_FILE_URL,
           dataType: 'json',
           success: function (result) {
-            Log.append('import result > ' + JSON.stringify(result));
+            console.log('import result > ' + JSON.stringify(result));
             if ('string' === typeof result.guid) {
               // TODO: better way for this temporary workaround for finishing wizard after successful upload  
               import_file_wizard.find('.jw-button-finish').trigger('click');
@@ -550,15 +554,15 @@ proto.TreeviewManager = function (params) {
               // All good, finish step
               proto.ProgressDialog.setProgress(step, 100);
               proto.ProgressDialog.append(step, 'Import Complete');
-              Log.append('import successful, good to go > ' + result.guid);
+              console.log('import successful, good to go > ' + result.guid);
               self.addNode(current_node, file_name, result.guid);
             } else {
-              Log.append('import failed');
+              console.log('import failed');
               self.handleImportFailed(import_file_wizard, 'server');
             }
           },
           error: function (jqXHR, textStatus, errorThrown) {
-            Log.append('import failed > ' + errorThrown);
+            console.log('import failed > ' + errorThrown);
 
             self.handleImportFailed(import_file_wizard, jqXHR.error);
           }
@@ -650,7 +654,7 @@ proto.TreeviewManager = function (params) {
         //path = item.attr('path');
         path = '/';
       }
-      //console.log("getItemPath: " + path);
+      //log("getItemPath: " + path);
       return path;
     },
 
@@ -719,12 +723,20 @@ proto.TreeviewManager = function (params) {
         folder = file.parentsUntil('#editor_files_list').filter('.folder_item');
       self.container.jstree('open_node', folder, $.noop, true);
       file.find('a').trigger('click');
+    },
+
+    selectNodeByPath: function (file_path) {
+      var file = self.container.find('.file_item[path="' + file_path + '"]'),
+        folder = file.parentsUntil('#editor_files_list').filter('.folder_item.jstree-closed');
+      self.container.jstree('open_node', folder, $.noop, true);
+      file.find('a').trigger('click');
     }
   };
   self.init();
   return {
     load: self.load,
     destroy: self.destroy,
-    selectNode: self.selectNode
+    selectNode: self.selectNode,
+    selectNodeByPath: self.selectNodeByPath
   };
 };

@@ -33,7 +33,7 @@ var AjaxCaller = function(init_params){
               catch (e) {
                 // Need to handle issues this way too for exceptions e.g. Invalid State
                 if(fail){
-                  Log.append(e);
+                  console.log(e);
                   fail(e.code, e.message);
                 }
               }

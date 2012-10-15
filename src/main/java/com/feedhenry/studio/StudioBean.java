@@ -2,8 +2,12 @@ package com.feedhenry.studio;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -104,10 +108,24 @@ public class StudioBean {
   private JSONObject mStudioProps = null;
   private JSONObject mCoreProps = null;
   private JSONObject mUserProps = null;
+  private VersionBean mVersionBean;
+  
+  private static List<String> mFrameworkScripts = null;
+  private static List<String> mIdeScripts = null;
+  private static List<String> mIdeStyles = null;
+  
+  private static final String FRAMEWORK_SCRIPTS_LIST_PATH = "/scripts/framework-script.txt";
+  private static final String IDE_SCRIPTS_LIST_PATH = "/scripts/ide-script.txt";
+  private static final String IDE_STYLE_LIST_PATH = "/scripts/style-script.txt";
+  
+  private static final String FRAMEWORK_SCRIPTS_ALL_PATH = "all/framework-script-min.js";
+  private static final String IDE_SCRIPT_ALL_PATH = "all/ide-script-min.js";
+  private static final String IDE_STYLE_ALL_PATH = "all/ide-style-min.css";
 
   public void init(ServletContext pServletContext) throws Exception {
     mServletContext = pServletContext;
-    log.info("Servlet init()");
+    log.info("StudioBean.init()");
+    mVersionBean = new VersionBean();
   }
 
   public boolean initreq(HttpServletRequest pRequest, HttpServletResponse pResponse, String pPageName) throws Exception {
@@ -160,51 +178,54 @@ public class StudioBean {
 
       HttpResponse response = client.execute(post);
       int statusCode = response.getStatusLine().getStatusCode();
-      if (200 == statusCode) {
-        HttpEntity resEntity = response.getEntity();
-        if (resEntity != null) {
-          InputStreamReader iSR = new InputStreamReader(resEntity.getContent());
-          BufferedReader br = new BufferedReader(iSR);
-          StringBuilder sb = new StringBuilder();
-          String read = br.readLine();
-          try {
-            while (read != null) {
-              sb.append(read);
-              read = br.readLine();
-            }
-            mCoreProps = JSONObject.fromObject(sb.toString());
-            log.debug("mCoreProps: " + mCoreProps.toString(2));
-            if (!"error".equals(mCoreProps.optString("status"))) {
-              mStudioProps = mCoreProps.getJSONObject("clientProps");
-              mDomain = mStudioProps.getString("domain");
-              mUserProps = mCoreProps.optJSONObject("userProps");
-              proceed = true;
-            } else if ("unknown_domain".equals(mCoreProps.optString("message"))) {
-              // issue with domain, unable to get props
-              // redirect to corporate website
-              proceed = false;
-              redirectUrl = INVALID_DOMAIN_REDIRECT_URL;
-              log.info("Invalid domain requested - redirecting to " + redirectUrl + ", Got error from props endpoint: " + mCoreProps.toString());
-            } else {
-              // unable to get props info from core, send 500
-              proceed = false;
-              log.error("Got error from props endpoint (" + mCoreProps.optString("message") + "), sending 500");
-              pResponse.sendError(500);
-            }
-          } catch (Throwable e) {
-          	proceed = false;
-          	log.error("Got exception parsing data from props endpoint", e);
-              pResponse.sendError(500, "Error connecting to server. Please try again later.");
-          } finally {
-            br.close();
-            iSR.close();
+      
+      HttpEntity resEntity = response.getEntity();
+      StringBuilder sb = new StringBuilder();
+
+      if (resEntity != null) {
+        InputStreamReader iSR = new InputStreamReader(resEntity.getContent());
+        BufferedReader br = new BufferedReader(iSR);
+        String read = br.readLine();
+        try {
+          while (read != null) {
+            sb.append(read);
+            read = br.readLine();
           }
+        } catch (Throwable e) {
+          proceed = false;
+          log.error("Got exception parsing data from props endpoint", e);
+            pResponse.sendError(500, "Error connecting to server. Please try again later.");
+        } finally {
+          br.close();
+          iSR.close();
+        }
+      }
+      
+      if (200 == statusCode) {
+        mCoreProps = JSONObject.fromObject(sb.toString());
+        log.debug("mCoreProps: " + mCoreProps.toString(2));
+        if (!"error".equals(mCoreProps.optString("status"))) {
+          mStudioProps = mCoreProps.getJSONObject("clientProps");
+          mDomain = mStudioProps.getString("domain");
+          mUserProps = mCoreProps.optJSONObject("userProps");
+          proceed = true;
+        } else if ("unknown_domain".equals(mCoreProps.optString("message"))) {
+          // issue with domain, unable to get props
+          // redirect to corporate website
+          proceed = false;
+          redirectUrl = INVALID_DOMAIN_REDIRECT_URL;
+          log.info("Invalid domain requested - redirecting to " + redirectUrl + ", Got error from props endpoint: " + mCoreProps.toString());
+        } else {
+          // unable to get props info from core, send 500
+          proceed = false;
+          log.error("Got error from props endpoint (" + mCoreProps.optString("message") + "), sending 500");
+          pResponse.sendError(500);
         }
       } else {
         // redirect to corporate site
         proceed = false;
-        log.error("Got Exception from props endpoint (" + statusCode + "), sending 500");
-        pResponse.sendError(500);
+        log.error("Got Exception from props endpoint (" + statusCode + "), redirecting to corporate site\nResponse Body:\n" + sb.toString());
+        redirectUrl = CORPORATE_WEBSITE_URL;
       }
     }
 
@@ -498,6 +519,10 @@ public class StudioBean {
   public String getProperty(String pPropName) throws Exception {
     return mStudioProps.optString(pPropName);
   }
+  
+  public String getEnvironment() throws Exception {
+    return mVersionBean.getEnvironment();
+  }
 
   public Map<String, String> getDocsLinks() throws Exception {
     Map<String, String> links = new HashMap<String, String>();
@@ -544,6 +569,93 @@ public class StudioBean {
     String fullPath = "themes/" + getThemeName() + pPath;
     String staticPath = getStaticAssetPath(fullPath);
     return staticPath;
+  }
+  
+  public String getFrameworkScripts() throws Exception {
+    if(isResourceExists(FRAMEWORK_SCRIPTS_ALL_PATH)){
+      return convertToScriptTag(getStaticAssetPath(FRAMEWORK_SCRIPTS_ALL_PATH));
+    } else {
+      if(null == mFrameworkScripts){
+        String frameworkScriptList = loadResourceAsText(FRAMEWORK_SCRIPTS_LIST_PATH);
+        String[] parts = frameworkScriptList.split(";");
+        mFrameworkScripts = Arrays.asList(parts);
+      }
+      return convertToTag(mFrameworkScripts, "script");
+    }
+  }
+  
+  public String getIdeScripts() throws Exception {
+    if(isResourceExists(IDE_SCRIPT_ALL_PATH)){
+      return convertToScriptTag(getStaticAssetPath(IDE_SCRIPT_ALL_PATH));
+    } else {
+      if(null == mIdeScripts){
+        String ideScriptList = loadResourceAsText(IDE_SCRIPTS_LIST_PATH);
+        String[] parts = ideScriptList.split(";");
+        mIdeScripts = Arrays.asList(parts);
+      }
+      return convertToTag(mIdeScripts, "script");
+    }
+  }
+  
+  public String getIdeStyles() throws Exception {
+    if(isResourceExists(IDE_STYLE_ALL_PATH)){
+      return convertToCssTag(getStaticAssetPath(IDE_STYLE_ALL_PATH));
+    } else {
+      if( null == mIdeStyles){
+        String ideStyleList = loadResourceAsText(IDE_STYLE_LIST_PATH);
+        String[] parts = ideStyleList.split(";");
+        mIdeStyles = Arrays.asList(parts);
+      }
+      return convertToTag(mIdeStyles, "style");
+    }
+  }
+  
+  public String loadResourceAsText(String pResourcePath) throws Exception {
+    StringBuffer text = new StringBuffer();
+    InputStream in = this.getClass().getResourceAsStream(pResourcePath);
+    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+    String line = null;
+    while( (line = reader.readLine()) != null){
+      text.append(line + ";");
+    }
+    reader.close();
+    return text.toString();
+  }
+  
+  private boolean isResourceExists(String pResource){
+    URL uri = this.getClass().getClassLoader().getResource("../../static/" + pResource);
+    if(null == uri){
+      return false;
+    }
+    File f = new File(uri.getPath());
+    return f.exists();
+  }
+  
+  private String convertToTag(List<String> pScripts, String pTagType) throws Exception{
+    StringBuffer value = new StringBuffer();
+    for(int i=0;i<pScripts.size();i++){
+      String path = pScripts.get(i);
+      if(!"".equals(path)){
+        path = getStaticAssetPath(path);
+        String tagString = "";
+        if("script".equalsIgnoreCase(pTagType)){
+          tagString = convertToScriptTag(path);
+        } else if("style".equalsIgnoreCase(pTagType)){
+          tagString = convertToCssTag(path);
+        }
+        value.append(tagString);
+        value.append("\n");
+      }
+    }
+    return value.toString();
+  }
+  
+  private String convertToScriptTag(String pPath){
+    return "<script type=\"text/javascript\" src=\""+pPath+"\"></script>";
+  }
+  
+  private String convertToCssTag(String pPath){
+    return "<link rel=\"stylesheet\" href=\""+pPath+"\"/>";
   }
 
   /**

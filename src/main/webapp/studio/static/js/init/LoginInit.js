@@ -29,10 +29,9 @@ function init() {
   setupRegisterForm();
   setupForgotForm();
   
-  if( doJQLayout === true ) {
-    center_layout.resizeAll();
-    main_layout.resizeAll();
-  }
+  // if( doJQLayout === true ) {
+  //   center_layout.resizeAll();
+  // }
 }
 
 function setupLayout() {
@@ -45,15 +44,11 @@ function setupLayout() {
     spacing_closed: 0,
     enableCursorHotkey: false
   };
-  
-  center_layout = $('#main_layout_center').layout($.extend({}, options, {
-    south__initClosed: true
-  }));
 
   // Set text below login area if required
   var loginFooterText = $fw.getClientProp('login-footer-text');
   if (('undefined' !== typeof loginFooterText) && (loginFooterText.length > 0)) {
-    Log.append('setting login footer text:' + loginFooterText);
+    console.log('setting login footer text:' + loginFooterText);
     // Set text as html here in case there are links
     $('.login-footer-text').html(loginFooterText).parent().show();
   }
@@ -176,7 +171,7 @@ function login() {
       },
       "error": function (jqXHR, textStatus, errorThrown) {
         // login failed, highlight the fact/show error message
-        Log.append('Login Failed: textStatus:' + textStatus + ', errorThrown:' + errorThrown , 'ERROR');
+        console.log('Login Failed: textStatus:' + textStatus + ', errorThrown:' + errorThrown , 'ERROR');
         $('#login_form_error').css('display','inline !important').text('Login failed (' + jqXHR.status + ')');
         loginButton.removeAttr('disabled').val('Login');
       }
@@ -222,7 +217,7 @@ function register() {
         }
       },
       "error": function (jqXHR, textStatus, errorThrown) {
-        Log.append('Registration Failed: textStatus:' + textStatus + ', errorThrown:' + errorThrown , 'ERROR');
+        console.log('Registration Failed: textStatus:' + textStatus + ', errorThrown:' + errorThrown , 'ERROR');
         register_form.find('#register_form_error').show().text('Registration Failed (' + jqXHR.status + ")");
         registerButton.removeAttr('disabled').val('Register');
       }

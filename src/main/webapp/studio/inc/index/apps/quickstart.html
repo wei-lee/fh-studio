@@ -1,0 +1,370 @@
+<div id="quickstart_container">
+  <div class="alerts"></div>
+
+  <div class="thumbnails quickstart_pick_target">
+    <span class="span3"></span>
+    <span class="span3">
+      <a href="#" class="btn client-quickstart pull-right" data-controller="apps.quickstart.client.controller">
+        <img src="<%=studio.getStaticAssetPath("themes/default/img/client_icon.png")%>
+        " alt="">
+        <h4>Client Quick Start</h4>
+      </a>
+    </span>
+    <span class="span3">
+      <a href="#" class="btn cloud-quickstart pull-left" data-controller="apps.quickstart.cloud.controller">
+        <img src="<%=studio.getStaticAssetPath("themes/default/img/cloud_icon.png")%>
+        " alt="">
+        <h4>Cloud Quick Start</h4>
+      </a>
+    </span>
+  </div>
+</div>
+
+<!-- start quickstart client -->
+<div id="quickstart_client_container" class="multistep">
+  <div class="row-fluid multistep_step step_1">
+    <div class="span12">
+      <div class="step_number">1</div>
+      <form class="well form-horizontal">
+        <h2>Choose a Platform</h2>
+        <div class="thumbnails step_1_options">
+          <a href="#" class="btn" data-nextsteps="step_2_hybrid">
+            <img src="<%=studio.getStaticAssetPath("themes/default/img/target_feedhenry.png")%>
+            " alt="">
+            <h5>FeedHenry Hybrid</h5>
+          </a>
+          <a href="#" class="btn" data-nextsteps="step_2_ios">
+            <img src="<%=studio.getStaticAssetPath("themes/default/img/target_ios.png")%>
+            " alt="">
+            <h5>iOS</h5>
+          </a>
+          <a href="#" class="btn" data-nextsteps="step_2_android">
+            <img src="<%=studio.getStaticAssetPath("themes/default/img/target_android.png")%>
+            " alt="">
+            <h5>Android</h5>
+          </a>
+          <a href="#" class="btn" data-nextsteps="step_2_phonegap,step_3_phonegap,step_4_phonegap">
+            <img src="<%=studio.getStaticAssetPath("themes/default/img/target_phonegap.png")%>
+            " alt="">
+            <h5>PhoneGap/Cordova</h5>
+          </a>
+          <a href="#" class="btn" data-nextsteps="step_2_javascript">
+            <img src="<%=studio.getStaticAssetPath("themes/default/img/target_js.png")%>
+            " alt="">
+            <h5>JavaScript</h5>
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="row-fluid multistep_step step_2 step_2_hybrid">
+    <div class="span12">
+      <div class="step_number">2</div>
+      <form class="well form-horizontal">
+        <h2>You're all set!</h2>
+        <p>
+          Your App is already created and good to go, so you're ready to start developing!
+        </p>
+        <%@ include file="./quickstart_hybrid_actions.html"%></form>
+    </div>
+  </div>
+
+  <div class="row-fluid multistep_step step_2 step_2_ios">
+    <div class="span12">
+      <div class="step_number">2</div>
+      <form class="well form-horizontal">
+        <h2>Project Type</h2>
+        <div class="thumbnails step_2_options">
+          <a href="#" class="btn" data-nextsteps="step_3_ios_new,step_4_ios"> <i class="icon-file"></i>
+            <h5>New Project</h5>
+          </a>
+          <a href="#" class="btn" data-nextsteps="step_3_ios_existing,step_4_ios"> <i class="icon-edit"></i>
+            <h5>Existing Project</h5>
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="row-fluid multistep_step step_3 step_3_ios_new">
+    <div class="span12">
+      <div class="step_number">3</div>
+      <form class="well form-horizontal">
+        <h2>Download Template Project</h2>
+        <p>
+          1. Download the Template Project below and open it using Xcode
+        </p>
+        <div class="row-fluid">
+          <a href="#" id="ios_starter_download_link" class="btn span2 sdkfiles_link">
+            <i class="icon-download"></i>
+            <h5>iOS Template</h5>
+          </a>
+        </div>
+        <p>2. Copy and paste the following into the fhconfig.plist</p>
+        <pre class="ios_plist"></pre>
+      </form>
+    </div>
+  </div>
+
+  <div class="row-fluid multistep_step step_3 step_3_ios_existing">
+    <div class="span12">
+      <div class="step_number">3</div>
+      <form class="well form-horizontal">
+        <h2>Download & Integrate the SDK</h2>
+        <p>
+          1. To Start creating a FeedHenry powered iOS Native app, download the iOS SDK
+        </p>
+        <div class="row-fluid">
+          <a href="#" id="ios_sdk_download_link" class="btn span2 sdkfiles_link">
+            <i class="icon-download"></i>
+            <h5>iOS SDK</h5>
+          </a>
+        </div>
+        <p>
+          2. Install the SDK into your project by unzipping the contents and dragging the Framework into Xcode.
+        </p>
+        <p>
+          3. Copy and paste the following into the fhconfig.plist
+        </p>
+        <pre class="ios_plist"></pre>
+      </form>
+    </div>
+  </div>
+
+  <div class="row-fluid multistep_step step_4 step_4_ios">
+    <div class="span12">
+      <div class="step_number">4</div>
+      <form class="well form-horizontal">
+        <h2>Learn how to use the SDK</h2>
+        <a class="docslink" href="http://docs.feedhenry.com/v2/sdk_ios.html">iOS SDK Documentation</a>
+      </form>
+    </div>
+  </div>
+
+  <div class="row-fluid multistep_step step_2 step_2_android">
+    <div class="span12">
+      <div class="step_number">2</div>
+      <form class="well form-horizontal">
+        <h2>Project Type</h2>
+        <div class="thumbnails step_2_options">
+          <a href="#" class="btn" data-nextsteps="step_3_android_new,step_4_android">
+            <i class="icon-file"></i>
+            <h5>New Project</h5>
+          </a>
+          <a href="#" class="btn" data-nextsteps="step_3_android_existing,step_4_android">
+            <i class="icon-edit"></i>
+            <h5>Existing Project</h5>
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="row-fluid multistep_step step_3 step_3_android_new">
+    <div class="span12">
+      <div class="step_number">3</div>
+      <form class="well form-horizontal">
+        <h2>Download Template Project</h2>
+        <p>
+          1. Download the Template Project below (Can be imported into Eclipse as an existing project)
+        </p>
+        <div class="row-fluid">
+          <a href="#" id="android_starter_download_link" class="btn span2 sdkfiles_link">
+            <i class="icon-download"></i>
+            <h5>Android Template</h5>
+          </a>
+        </div>
+        <p>2. Copy and paste the following into your assets/fh.properties file</p>
+        <pre class="android_properties"></pre>
+      </form>
+    </div>
+  </div>
+
+  <div class="row-fluid multistep_step step_3 step_3_android_existing">
+    <div class="span12">
+      <div class="step_number">3</div>
+      <form class="well form-horizontal">
+        <h2>Download & Integrate the SDK</h2>
+        <p>
+          1. To start creating a FeedHenry powered Android Native app, download our Android SDK
+        </p>
+        <div class="row-fluid">
+          <a href="#" id="android_sdk_download_link" class="btn span2 sdkfiles_link">
+            <i class="icon-download"></i>
+            <h5>Android SDK</h5>
+          </a>
+        </div>
+        <p>2. Add the SDK jar file to your application's libs directory</p>
+        <p>3. If not already added, add internet permissions in AndroidManifest.xml</p>
+        <p>4. With the SDK downloaded, create a new file in assets/ called fh.properties, with the following content</p>
+        <pre class="android_properties"></pre>
+      </form>
+    </div>
+  </div>
+
+  <div class="row-fluid multistep_step step_4 step_4_android">
+    <div class="span12">
+      <div class="step_number">4</div>
+      <form class="well form-horizontal">
+        <h2>Learn how to use the SDK</h2>
+        <a class="docslink" href="http://docs.feedhenry.com/v2/sdk_android.html">Android SDK Documentation</a>
+      </form>
+    </div>
+  </div>
+
+  <div class="row-fluid multistep_step step_2 step_2_phonegap">
+    <div class="span12">
+      <div class="step_number">2</div>
+      <form class="well form-horizontal">
+        <h2>Download Phonegap</h2>
+        <a href="http://phonegap.com/download" target="_blank">http://phonegap.com/download</a>
+        <p>
+          Follow the instructions on the PhoneGap website to get started
+        </p>
+      </form>
+    </div>
+  </div>
+
+  <div class="row-fluid multistep_step step_3 step_3_phonegap">
+    <div class="span12">
+      <div class="step_number">3</div>
+      <form class="well form-horizontal">
+        <h2>Download & Integrate the SDK</h2>
+        <p>
+          1. To start creating a FeedHenry powered PhonegGap app, download our JavaScript SDK
+        </p>
+        <div class="row-fluid">
+          <a href="#" id="phonegap_javascript_sdk_download_link" class="btn span2">
+            <i class="icon-download"></i>
+            <h5>JavaScript SDK</h5>
+          </a>
+        </div>
+        <p>
+          2. With the SDK downloaded, copy the JavaScript SDK source file(s) into your PhoneGap Project
+          <br/>
+          - These files are typically copied into the www/ directory of your PhoneGap project
+        </p>
+        <p>
+          3. Copy and paste the following into the &lt;head&gt; of your index.html file
+        </p>
+        <pre class="javascript_index"></pre>
+      </form>
+    </div>
+  </div>
+
+  <div class="row-fluid multistep_step step_4 step_4_phonegap">
+    <div class="span12">
+      <div class="step_number">4</div>
+      <form class="well form-horizontal">
+        <h2>Learn how to use the SDK</h2>
+        <a class="docslink" href="http://docs.feedhenry.com/v2/sdk_javascript.html">JavaScript SDK Documentation</a>
+      </form>
+    </div>
+  </div>
+
+  <div class="row-fluid multistep_step step_2 step_2_javascript">
+    <div class="span12">
+      <div class="step_number">2</div>
+      <form class="well form-horizontal">
+        <h2>Project Type</h2>
+        <div class="thumbnails step_2_options">
+          <a href="#" class="btn" data-nextsteps="step_3_javascript_new,step_4_javascript">
+            <i class="icon-file"></i>
+            <h5>New Project</h5>
+          </a>
+          <a href="#" class="btn" data-nextsteps="step_3_javascript_existing,step_4_javascript">
+            <i class="icon-edit"></i>
+            <h5>Existing Project</h5>
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="row-fluid multistep_step step_3 step_3_javascript_new">
+    <div class="span12">
+      <div class="step_number">3</div>
+      <form class="well form-horizontal">
+        <h2>Download Template Project</h2>
+        <p>1. Download the Template Project below</p>
+        <div class="row-fluid">
+          <a href="#" id="javascript_starter_download_link" class="btn span2">
+            <i class="icon-download"></i>
+            <h5>JS Template</h5>
+          </a>
+        </div>
+        <p>2. Copy and paste the following into the index.html file</p>
+        <pre class="javascript_index"></pre>
+      </form>
+    </div>
+  </div>
+
+  <div class="row-fluid multistep_step step_3 step_3_javascript_existing">
+    <div class="span12">
+      <div class="step_number">3</div>
+      <form class="well form-horizontal">
+        <h2>Download & Integrate the SDK</h2>
+        <p>
+          1. To start creating a FeedHenry powered JavaScript app, download our JavaScript SDK
+        </p>
+        <div class="row-fluid">
+          <a href="#" id="javascript_sdk_download_link" class="btn span2">
+            <i class="icon-download"></i>
+            <h5>JavaScript SDK</h5>
+          </a>
+        </div>
+        <p>
+          2. With the SDK downloaded, copy the JavaScript SDK source file(s) into your project folder
+        </p>
+        <p>
+          3. Copy and paste the following into the &lt;head&gt; of the html file you wish to use FeedHenry from, updating the script src location as necessary.
+        </p>
+        <pre class="javascript_index"></pre>
+      </form>
+    </div>
+  </div>
+
+  <div class="row-fluid multistep_step step_4 step_4_javascript">
+    <div class="span12">
+      <div class="step_number">4</div>
+      <form class="well form-horizontal">
+        <h2>Learn how to use the SDK</h2>
+        <a class="docslink" href="http://docs.feedhenry.com/v2/sdk_javascript.html">JavaScript SDK Documentation</a>
+      </form>
+    </div>
+  </div>
+
+</div>
+<!-- end quickstart client -->
+
+<!-- start quickstart cloud -->
+<div id="quickstart_cloud_container" class="well">
+  <h2>Choose an Action</h2>
+  <div class="thumbnails step_1_options">
+    <a href="#" class="btn" data-controller="apps.editor.controller">
+      <i class="icon-file"></i>
+      <h5>Develop Cloud Code</h5>
+    </a>
+    <a href="#" class="btn nodejs_mode" data-controller="apps.deploy.controller">
+      <i class="icon-cloud"></i>
+      <h5>Deploy Cloud Code</h5>
+    </a>
+    <a href="#" class="btn nodejs_mode" data-controller="apps.status.controller">
+      <i class="icon-dashboard"></i>
+      <h5>Monitor Cloud Status</h5>
+    </a>
+    <a href="#" class="btn" data-controller="apps.logging.controller">
+      <i class="icon-list"></i>
+      <h5>Show Cloud Logs</h5>
+    </a>    
+  </div>
+  <h2>Learn more about Developing FeedHenry Cloud Code</h2>
+  <a class="docslink" href="http://docs.feedhenry.com/v2/cloud_development.html">FeedHenry Hybrid Client Development Documentation</a>
+</div>
+<!-- end quickstart cloud -->
+
+<!-- start quickstart client (hybrid only) -->
+<div id="quickstart_client_hybrid_container" class="well">
+  <%@ include file="./quickstart_hybrid_actions.html"%></div>
+<!-- end quickstart client (hybrid only) -->

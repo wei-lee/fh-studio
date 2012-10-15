@@ -98,10 +98,10 @@ proto.CodemirrorEditorImpl = function(params){
     },
     
     replace: function(search_str, replace_str, match_case, info_div){
-      Log.append('do replace');
+      console.log('do replace');
       if(self.search_cursor && self.editor.selection() !== ""){
         var current_selection = self.editor.selection();
-        Log.append('current selection: ' + current_selection);
+        console.log('current selection: ' + current_selection);
         self.search_cursor.replace(replace_str);
         self.editor_manager.fileEdited(self.current_file_id);
         self.find(search_str, true, match_case, info_div);  

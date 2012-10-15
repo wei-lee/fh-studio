@@ -141,15 +141,11 @@ Config = {
     destinations: [
       {'id':'iphone', 'name':'iPhone Application', 'source': true, 'binary': true, 'versions':['3.0']},
       {'id':'ipad', 'name':'iPad Application', 'source': true, 'binary': true},
-      {'id':'ios', 'name':'iOS Universal Application', 'source': "true" === $fw_manager.getClientProp("ios-universal-enabled"), 'binary': "true" === $fw_manager.getClientProp("ios-universal-enabled")},
+      {'id':'ios', 'name':'iOS Universal Application', 'source': "true" === $fw.getClientProp("ios-universal-enabled"), 'binary': "true" === $fw.getClientProp("ios-universal-enabled")},
       {'id':'android', 'name':'Android Application', 'source': true, 'binary':true, 'versions':['1.5', '1.6', '2.0.1', '2.1']},
-      {'id':'nokiawrt', 'name':'Nokia Web Runtime', 'source': true, 'binary': true},
-      {'id':'blackberry', 'name':'Blackberry', 'source': true, 'binary': "true" === $fw_manager.getClientProp("blackberry-binary-enabled") ? true : false},
-      {'id':'windowsphone7', 'name':'Windows Phone 7', 'source': true, 'binary': "true" === $fw_manager.getClientProp("wp7-binary-enabled") ? true : false},
+      {'id':'blackberry', 'name':'Blackberry', 'source': true, 'binary': "true" === $fw.getClientProp("blackberry-binary-enabled") ? true : false},
+      {'id':'windowsphone7', 'name':'Windows Phone 7', 'source': true, 'binary': "true" === $fw.getClientProp("wp7-binary-enabled") ? true : false},
       {'id':'feedhenry', 'name':'Feedhenry', 'source': true, 'binary': false},
-      {'id':'jil', 'name':'Jil', 'source': true, 'binary': true},
-      {'id':'opera', 'name':'Opera', 'source': true, 'binary': true},
-      {'id':'w3cwgt', 'name':'W3C Application Format', 'source': true, 'binary': true},
       {'id':'embed', 'name':'Embed', 'source': false, 'binary': true}
     ]
   }

@@ -1,8 +1,5 @@
-// initialise globals
-var main_layout = null;
-
 $(document).ready(function () {
-  Log.append('main init');
+  console.log('main init');
   
   $('.dialog').hide();
   // Footer text
@@ -10,21 +7,6 @@ $(document).ready(function () {
   
   // show body
   $('body').show();
-  
-  var options = {
-    applyDefaultStyles: false,
-    resizable: false,
-    slidable: false,
-    spacing_open: 0,
-    spacing_closed: 0,
-    enableCursorHotkey: false
-  };
-  
-  main_layout = $('#main_layout_wrapper').layout($.extend({}, options, {
-    center__onresize : function () {
-      center_layout.resizeAll();
-    }
-  }));
   
   $.validator.addMethod("validpass", function (value, element) {
     // check the password length

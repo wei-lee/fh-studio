@@ -13,17 +13,10 @@ FrameworkManager = Class.extend({
     opts = opts || {};
     
     this.data = new DataManager();
-    this.event = new EventManager();
-    //this.ui = new UIManager();
     this.state = new StateManager();
     // use default ajax caller by passing in null for first param
     this.server = new ServerManager(null, opts.server);
-    this.ui = new UIManager();
     this.analytics = new AnalyticsManager();
-    
-    /*
-    this.ui.setEventManager(this.event);
-    this.ui.setStateManager(this.state);*/
   },
   
   
@@ -58,8 +51,6 @@ FrameworkManager = Class.extend({
   
   setClient: function (pClient) {
     this.client = pClient;
-    // TODO: remove this below
-    this.app = Application;
   },
 
   
@@ -70,10 +61,10 @@ FrameworkManager = Class.extend({
     catch (e) {
       // TODO: internationalise
       alert('Application failed to initialise.');
-      Log.append(e);
+      console.log(e);
       throw e;
     }
   }
 });
 
-$fw = $fw_manager = new FrameworkManager();
+$fw = new FrameworkManager();
