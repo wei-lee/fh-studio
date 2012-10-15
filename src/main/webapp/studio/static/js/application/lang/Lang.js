@@ -460,6 +460,7 @@ var Lang = {
   configuration_remote_Debug_help_icon: 'Enable remote debugging. In this mode, the app content will be delivered from the cloud instead of being read from the device so that you don\'t need to re-install the app if any changes are made to the app.',
   configuration_background_Audio_help_icon: "Play audio in the background",
   configuration_tile_Image_help_icon: "The image that will be used as the background when the app is pinned to the start page",
+  configuration_full_Screen_help_icon: 'Enable full screen. With this enabled your app will take up the full screen and the notification bar will be hidden.',
   ios_configuration_replace_general_notes: "Please specify this setting in iPhone and iPad's configurations.",
   apps_list_search_text: 'Search Apps',
   apps_list_search_title: '',
