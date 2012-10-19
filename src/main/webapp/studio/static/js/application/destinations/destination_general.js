@@ -474,7 +474,7 @@ application.DestinationGeneral = Class.extend({
     var html = "<h3>Your build is complete!</h3><br/><p> <a target='_blank' class='btn' href='"+source_url+"'> <i class='icon-download'></i> Download </a>";
 
     if(showIPA){
-      html += "<li> <a target='_blank' class='btn' href='"+ipa_url+"'><i class=''icon-download'></i> Download IPA File</a></a></li>";
+      html += "  <a target='_blank' class='btn' href='"+ipa_url+"'><i class='icon-download'></i> Download IPA File</a>";
     }
     html += "</p><br>";
 
