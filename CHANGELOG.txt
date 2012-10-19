@@ -2,7 +2,7 @@
 3.10.0
 -------------------------------------------------------------------------------
 ###CHANGES
-* Added full screen build preference for android builds
+* Use bootstrap modal dialog for binary download!
 
 ===============================================================================
 3.8.0
