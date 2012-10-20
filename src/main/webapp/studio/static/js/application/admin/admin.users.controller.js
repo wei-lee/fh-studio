@@ -1,4 +1,5 @@
 var Admin = Admin || {};
+var Admin = Admin || {};
 
 Admin.Users = Admin.Users || {};
 

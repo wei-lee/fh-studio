@@ -2673,7 +2673,7 @@ table.dataTable th:active {
 }
 
 
-.import_users, .import_app {
+.import_users, .import_app, .audit_button_margin {
   margin-right: 10px;
 }
 
