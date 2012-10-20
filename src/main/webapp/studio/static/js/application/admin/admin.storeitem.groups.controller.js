@@ -233,7 +233,7 @@ Admin.Storeitem.Groups.Controller = Controller.extend({
     function clearForm() {
       $('input[type=text]', parent).val('');
       $('input[type=hidden]', parent).val('');
-    };
+    }
 
     function populateForm(data) {
       $('#update_group_id', parent).val(data.guid);
@@ -280,7 +280,7 @@ Admin.Storeitem.Groups.Controller = Controller.extend({
       }, function(err) {
         self.showAlert('error', "Error loading App Store Store Items");
       }, false);
-    };
+    }
 
     clearForm();
     parent.show();
