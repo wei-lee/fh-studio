@@ -1,8 +1,10 @@
 <div id="debug_logging_container">
   <div class="fh-box-outer">
     <h4 class="fh-box-header">
-      Cloud Deployment
-      <%@ include file="./cloud_environment.html" %>
+      Cloud Logging
+      <% if(studio.getProperty("nodejsEnabled").equals("true")){ %>
+        <%@ include file="./cloud_environment.html" %>
+      <%}%>
     </h4>
     <div class="fh-box-inner">
       <form class="form-horizontal">
