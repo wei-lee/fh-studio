@@ -18,7 +18,7 @@ var store = {
   },
 
   authSession: null,
-  authSessionCookie: 'appStoreAuthSession',
+  authSessionCookie: 'x-fh-auth-session',
   deviceIdCookie: 'deviceId',
 
   storeInfo: null,
@@ -113,8 +113,9 @@ var store = {
     // Logout
     $('.logout_button').unbind().click(function() {
       self.authSession = null;
-      $.cookie(self.authSessionCookie, null);
-      self.showLogin();
+      $.cookie(self.authSessionCookie, null,{"path":"/"});
+      //reload page without query params
+      window.location = window.location.protocol + '//' + window.location.host + window.location.pathname;
       // TODO: remove session stuff too
     });
   },
@@ -135,7 +136,9 @@ var store = {
     console.log("store:init() - queryParams: " + JSON.stringify(queryParams));
     if (queryParams && queryParams.fh_auth_session) {
       this.authSession = queryParams.fh_auth_session;
-      $.cookie(this.authSessionCookie, this.authSession);
+      $.cookie(this.authSessionCookie, this.authSession, {
+        "path": "/"
+      });
       console.log("store:init() authSession: " + this.authSession);
     } else if ($.cookie(this.authSessionCookie) != null) {
       this.authSession = $.cookie(this.authSessionCookie);

@@ -7,13 +7,9 @@ model.ArmAuthPolicy = model.Model.extend({
   // Field config
   field_config: [{
     field_name: "policyId",
-    editable: false,
-    showable: true,
     column_title: "Policy Id"
   }, {
     field_name: "policyType",
-    editable: true,
-    showable: true,
     column_title: "Type"
   }],
 
