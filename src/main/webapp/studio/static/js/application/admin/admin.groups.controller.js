@@ -226,6 +226,8 @@ Admin.Groups.Controller = Controller.extend({
     clearForm();
 	parent.show();
 
+    self.bindSwapSelect(self.views.group_update);
+
     $('.update_group_btn', parent).unbind().click(function() {
       self.updateGroup();
       return false;

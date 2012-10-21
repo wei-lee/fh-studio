@@ -4,7 +4,8 @@ Admin.Storeitem.Groups  = Admin.Storeitem.Groups || {};
 
 Admin.Storeitem.Groups.Controller = Controller.extend({
   models: {
-    group: new model.Group()
+    group: new model.Group(),
+    store_item: new model.StoreItem()
   },
 
   views: {
@@ -223,6 +224,32 @@ Admin.Storeitem.Groups.Controller = Controller.extend({
       $('#update_group_id', parent).val(group.guid);
       $('#update_group_name', parent).val(group.name);
       $('#update_group_description', parent).val(group.description);
+
+      self.models.store_item.list(function(store_items_res) {
+        //  WILL be USERS self.models.auth_policy.list(function(auth_policy_res) {
+          // Render swap selects
+          var available_store_items = [];
+          var assigned_store_items = [];
+
+          $.each(store_items_res.list, function(i, item) {
+            available_store_items.push({guid:item.guid, name:item.name});
+            if(item.groups.indexOf(group.guid) > -1) {
+              assigned_store_items.push({guid:item.guid, name:item.name});
+            }
+          });
+
+          self.renderAvailableStoreItems(available_store_items, assigned_store_items, self.views.app_store);
+
+          // var available_auth_policies = auth_policy_res.list;
+          // var assigned_auth_policies = app_store_res.authpolicies;
+          // self.renderAvailableAuthPolicies(available_auth_policies, assigned_auth_policies, self.views.app_store);
+
+        // }, function(err) {
+        // WILL BE USERS  self.showAlert('error', "Error loading App Store Store Items");
+        // }, false);
+      }, function(err) {
+        self.showAlert('error', "Error loading App Store Store Items");
+      }, true);
     };
 
     clearForm();
@@ -239,6 +266,34 @@ Admin.Storeitem.Groups.Controller = Controller.extend({
     var oldName = data[1];
 
     return populateForm({guid: data[0], name: data[1], description: data[2]});
+  },
+
+  renderAvailableStoreItems: function(available, assigned, container) {
+    var self = this; //update_group_storeitem_swap
+    var available_select = $('.updategroup_store_items_available', container).empty();
+    var assigned_select = $('.updategroup_store_items_assigned', container).empty();
+
+    var map = {};
+
+    // Massaging into {v: name, v: name} hash for lookup
+    $.each(available, function(i, item) {
+      map[item.guid] = item.name;
+    });
+
+    // Assigned first
+    $.each(assigned, function(i, guid) {
+      var name = map[guid];
+      var option = $('<option>').val(guid).text(name);
+      assigned_select.append(option);
+    });
+
+    // Available, minus assigned
+    $.each(map, function(guid, name) {
+      if (assigned.indexOf(guid) == -1) {
+        var option = $('<option>').val(guid).text(name);
+        available_select.append(option);
+      }
+    });
   },
 
   updateGroup: function() {
