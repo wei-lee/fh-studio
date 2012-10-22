@@ -5,6 +5,7 @@ Admin.Storeitems = Admin.Storeitems || {};
 Admin.Storeitems.Controller = Controller.extend({
   models: {
     store_item: new model.StoreItem(),
+    group: new model.Group(),
     auth_policy: new model.ArmAuthPolicy()
   },
 
@@ -128,7 +129,14 @@ Admin.Storeitems.Controller = Controller.extend({
     this.models.auth_policy.list(function(res) {
       $(self.views.store_item_create).show();
       self.bind();
-      self.renderAvailableAuthPolicies(res.list, [], self.views.store_item_create);
+      self.renderAvailableAuthPolicies(res.list, [], '.store_item_auth_policies_swap');
+
+      self.models.group.list(function(res) {
+        self.renderAvailableGroups(res.list, [], '.store_item_groups_swap');
+      }, function(err){
+        console.log(err);
+      });
+
     }, function(err) {
       console.log(err);
     }, false);
@@ -151,7 +159,7 @@ Admin.Storeitems.Controller = Controller.extend({
       $('.bundle_id', update_view).val('');
 
       var assigned_auth_policies = store_item.authpolicies;
-      self.renderAvailableAuthPolicies(res.list, assigned_auth_policies, self.views.store_item_update);
+      self.renderAvailableAuthPolicies(res.list, assigned_auth_policies, '.store_item_auth_policies_swap');
 
       $('.item_guid', update_view).val(store_item.guid);
       $('.item_name', update_view).val(store_item.name);
@@ -170,6 +178,13 @@ Admin.Storeitems.Controller = Controller.extend({
     }, function(err) {
       console.log(err);
     }, false);
+
+    this.models.group.list(function(res) {
+      var assigned_groups = store_item.groups;
+      self.renderAvailableGroups(res.list, assigned_groups, '.store_item_groups_swap');
+    }, function(err){
+      console.log(err);
+    });
   },
 
   renderBinaryUploads: function(store_item) {
@@ -364,9 +379,10 @@ Admin.Storeitems.Controller = Controller.extend({
     var item_id = $('.item_id', container).val();
     var description = $('.item_description', container).val();
     var auth_policies = this._selectedAuthPolicies(container);
+    var groups = this._selectedGroups(container);
     var guid = $('.item_guid', container).val();
 
-    this.models.store_item.update(guid, name, item_id, description, auth_policies, function(res) {
+    this.models.store_item.update(guid, name, item_id, description, auth_policies, groups, function(res) {
       self.showAlert('success', "Store Item successfully updated", self.views.store_items);
       self.showStoreItems();
     }, function(err) {
@@ -384,6 +400,37 @@ Admin.Storeitems.Controller = Controller.extend({
     // Massaging into {v: name, v: name} hash for lookup
     $.each(available, function(i, item) {
       map[item.guid] = item.policyId;
+    });
+
+    // Assigned first
+    $.each(assigned, function(i, guid) {
+      var name = map[guid];
+      // Check if policy exists still
+      if (name) {
+        var option = $('<option>').val(guid).text(name);
+        assigned_select.append(option);
+      }
+    });
+
+    // Available, minus assigned
+    $.each(map, function(guid, name) {
+      if (assigned.indexOf(guid) == -1) {
+        var option = $('<option>').val(guid).text(name);
+        available_select.append(option);
+      }
+    });
+  },
+
+  renderAvailableGroups: function(available, assigned, container) {
+    var self = this;
+    var available_select = $('.store_item_available_groups', container).empty();
+    var assigned_select = $('.store_item_assigned_groups', container).empty();
+
+    var map = {};
+
+    // Massaging into {v: name, v: name} hash for lookup
+    $.each(available, function(i, item) {
+      map[item.guid] = item.name;
     });
 
     // Assigned first
@@ -449,8 +496,9 @@ Admin.Storeitems.Controller = Controller.extend({
     var item_id = $('.item_id', container).val();
     var description = $('.item_description', container).val();
     var auth_policies = this._selectedAuthPolicies(container);
+    var groups = this._selectedGroups(container);
 
-    this.models.store_item.create(name, item_id, description, auth_policies, function(res) {
+    this.models.store_item.create(name, item_id, description, auth_policies, groups, function(res) {
       self.showAlert('success', "Store Item successfully created", self.views.store_items);
       self.showStoreItems();
     }, function(err) {
@@ -465,5 +513,14 @@ Admin.Storeitems.Controller = Controller.extend({
       policies.push($(item).val());
     });
     return policies;
+  },
+
+  _selectedGroups: function(container) {
+    var options = $('.store_item_assigned_groups option', container);
+    var selected = [];
+    options.each(function(i, item) {
+      selected.push($(item).val());
+    });
+    return selected;
   }
 });
