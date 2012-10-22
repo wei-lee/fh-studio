@@ -115,7 +115,7 @@ var store = {
       self.authSession = null;
       $.cookie(self.authSessionCookie, null,{"path":"/"});
       //reload page without query params
-      window.location = window.location.origin+window.location.pathname;
+      window.location = window.location.protocol + '//' + window.location.host + window.location.pathname;
       // TODO: remove session stuff too
     });
   },
