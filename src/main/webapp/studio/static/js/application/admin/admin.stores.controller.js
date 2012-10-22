@@ -207,8 +207,10 @@ Admin.Stores.Controller = Controller.extend({
     var description = $('.store_description', container).val();
     var store_items = this._selectedStoreItems(container);
     var auth_policies = this._selectedAuthPolicies(container);
+    var authed_access = $("input[name='authed_access']",container).is(":checked");
+    console.log("authed access set to  " + authed_access);
 
-    this.models.app_store.update(guid, name, description, store_items, auth_policies, function(res) {
+    this.models.app_store.update(guid, name, description, store_items, auth_policies, authed_access, function(res) {
       self.showAlert('success', "App Store updated successfully");
     }, function(err) {
       self.showAlert('error', err);
@@ -238,6 +240,11 @@ Admin.Stores.Controller = Controller.extend({
     var container = $(this.views.app_store);
     $('.store_name', container).val(store.name);
     $('.store_description', container).val(store.description);
+    if(store.hasOwnProperty("authedaccess")){
+      var checked = (store.authedaccess === true) ? "checked" : false;
+      if(checked)
+          $("input[name='authed_access']",container).attr("checked", "checked");
+    }
     container.show();
   }
 });

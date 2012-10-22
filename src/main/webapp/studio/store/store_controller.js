@@ -113,8 +113,9 @@ var store = {
     // Logout
     $('.logout_button').unbind().click(function() {
       self.authSession = null;
-      $.cookie(self.authSessionCookie, null);
-      self.showLogin();
+      $.cookie(self.authSessionCookie, null,{"path":"/"});
+      //reload page without query params
+      window.location = window.location.origin+window.location.pathname;
       // TODO: remove session stuff too
     });
   },
