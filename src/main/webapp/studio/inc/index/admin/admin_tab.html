@@ -512,50 +512,53 @@
 
 
         <div id="admin_storeitem_group_update" class="hidden_template row-fluid">
-            <div class="alerts"></div>
-            <form class="well form-horizontal">
-                <fieldset>
-                    <legend>Update a Group</legend>
-                    <p>
-                        Groups can be used to group users and app store items together. For example, you can group users for one project together so they can see a subset of your appstore items.
-                    </p>
-                    <div class="control-group required">
-                        <label class="control-label" for="update_group_name">Name</label>
-                        <div class="controls">
-                            <input type="text" disabled="disabled" class="input-xxlarge" id="update_group_name" placeholder="Group Name"></div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label" for="update_group_description">Description (Optional)</label>
-                        <div class="controls">
-                            <input type="text" class="input-xxlarge" id="update_group_description" placeholder="Group Description"></div>
-                    </div>
+          <div class="alerts"></div>
+          <form class="well form-horizontal">
+            <input type="hidden" id="update_group_id" >        
 
-                    <div class="control-group">
-                      <label class="control-label">Store Items</label>
-                      <div class="controls swap-select update_group_storeitem_swap">
-                        <div class="span2">
-                          <span>Available</span>
-                          <select multiple="multiple" class="span12 swap-from updategroup_store_items_available">
-                          </select>
-                        </div>
-                        <div class="span1">
-                          <button class="btn btn-inverse btn-large add">&gt;</button>
-                          <button class="btn btn-inverse btn-large remove">&lt;</button>
-                        </div>
-                        <div class="span2">
-                          <span>Assigned to group</span>
-                          <select multiple="multiple" class="span12 swap-to updategroup_store_items_assigned">
-                          </select>
-                        </div>
-                        <span class="help-inline span4"><br/>These Store Items will appear in your App Store</span>
-                      </div>
-                    </div>
+            <fieldset>
+              <legend>Update a Group</legend>
+              <p>
+                Groups can be used to group users and app store items together. For example, you can group users for one project together so they can see a subset of your appstore items.
+              </p>
+              <div class="control-group required">
+                <label class="control-label" for="update_group_name">Name</label>
+                <div class="controls">
+                  <input type="text" disabled="disabled" class="input-xxlarge" id="update_group_name" placeholder="Group Name"></div>
+              </div>
+              <div class="control-group">
+                <label class="control-label" for="update_group_description">Description (Optional)</label>
+                <div class="controls">
+                  <input type="text" class="input-xxlarge" id="update_group_description" placeholder="Group Description"></div>
+              </div>
 
-                    <div class="form-actions">
-                        <button type="submit" class="btn btn-primary update_group_btn">Update Group</button>
-                    </div>
-                </fieldset>
-            </form>
+              <div class="control-group">
+                <label class="control-label">Store Items</label>
+                <div class="controls swap-select update_group_storeitem_swap">
+                  <div class="span2">
+                    <span>Available</span>
+                    <select multiple="multiple" class="span12 swap-from updategroup_store_items_available"></select>
+                  </div>
+                  <div class="span1">
+                    <button class="btn btn-inverse btn-large add">&gt;</button>
+                    <button class="btn btn-inverse btn-large remove">&lt;</button>
+                  </div>
+                  <div class="span2">
+                    <span>Assigned to group</span>
+                    <select multiple="multiple" class="span12 swap-to updategroup_store_items_assigned"></select>
+                  </div>
+                  <span class="help-inline span4">
+                    <br/>        
+                    These Store Items will appear in your App Store
+                  </span>
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary update_group_btn">Update Group</button>
+              </div>
+            </fieldset>
+          </form>
         </div>
 
 
