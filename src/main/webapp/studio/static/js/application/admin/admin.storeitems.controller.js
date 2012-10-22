@@ -504,8 +504,9 @@ Admin.Storeitems.Controller = Controller.extend({
     var description = $('.item_description', container).val();
     var auth_policies = this._selectedAuthPolicies(container);
     var groups = this._selectedGroups(container);
+    var restrictToGroups = $('.restrict_to_groups', container).is(':checked');
 
-    this.models.store_item.create(name, item_id, description, auth_policies, groups, function(res) {
+    this.models.store_item.create(name, item_id, description, auth_policies, groups, restrictToGroups, function(res) {
       self.showAlert('success', "Store Item successfully created", self.views.store_items);
       self.showStoreItems();
     }, function(err) {

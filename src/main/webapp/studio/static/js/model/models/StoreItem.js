@@ -11,14 +11,15 @@ model.StoreItem = model.Model.extend({
     return this.serverPost(url, params, success, fail);
   },
 
-  create: function(name, item_id, description, auth_policies, groups, success, fail) {
+  create: function(name, item_id, description, auth_policies, groups, restrict_to_groups, success, fail) {
     var url = Constants.ADMIN_STORE_ITEM_CREATE_URL;
     var params = {
       name: name,
       description: description,
       authToken: item_id,
       authpolicies: auth_policies,
-      groups: groups
+      groups: groups,
+      restrictToGroups: restrict_to_groups
     };
     return this.serverPost(url, params, success, fail, true);
   },
