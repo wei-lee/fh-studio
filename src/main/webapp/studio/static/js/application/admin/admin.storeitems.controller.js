@@ -96,7 +96,7 @@ Admin.Storeitems.Controller = Controller.extend({
       }
       list_item.find('.delete_store_item').unbind().click(function() {
         var guid = store_item.guid;
-        self.showBooleanModal('Are you sure you want to delete this Store Item?', function () {
+        self.showBooleanModal('Are you sure you want to delete this Store Item?', function() {
           self.deleteStoreItem(guid);
         });
       });
@@ -133,7 +133,7 @@ Admin.Storeitems.Controller = Controller.extend({
 
       self.models.group.list(function(res) {
         self.renderAvailableGroups(res.list, [], '.store_item_groups_swap');
-      }, function(err){
+      }, function(err) {
         console.log(err);
       });
 
@@ -188,7 +188,7 @@ Admin.Storeitems.Controller = Controller.extend({
     this.models.group.list(function(res) {
       var assigned_groups = store_item.groups;
       self.renderAvailableGroups(res.list, assigned_groups, '.store_item_groups_swap');
-    }, function(err){
+    }, function(err) {
       console.log(err);
     });
   },

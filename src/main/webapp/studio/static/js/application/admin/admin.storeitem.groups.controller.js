@@ -235,7 +235,6 @@ Admin.Storeitem.Groups.Controller = Controller.extend({
     };
 
     function populateForm(group) {
-      console.log('populating group update form: ' + JSON.stringify(group));
       $('#update_group_id', parent).val(group.guid);
       $('#update_group_name', parent).val(group.name);
       $('#update_group_description', parent).val(group.description);
@@ -251,10 +250,7 @@ Admin.Storeitem.Groups.Controller = Controller.extend({
             name: item.name
           });
           if (item.groups.indexOf(group.guid) > -1) {
-            assigned_store_items.push({
-              guid: item.guid,
-              name: item.name
-            });
+            assigned_store_items.push(item.guid);
           }
         });
 
@@ -273,7 +269,6 @@ Admin.Storeitem.Groups.Controller = Controller.extend({
     });
 
     // Setup group details - currently just name
-    console.log("data: " + JSON.stringify(data));
     var id = data.guid;
     var oldName = data.name;
 
