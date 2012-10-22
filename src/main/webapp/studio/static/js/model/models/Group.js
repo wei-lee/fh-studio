@@ -25,6 +25,17 @@ model.Group = model.Model.extend({
     return this.serverPost(url, params, success, fail, true);
   },
 
+  read: function(guid, success, fail, post_process) {
+    var url = Constants.ADMIN_GROUP_READ_URL.replace('<domain>', $fw.getClientProp('domain'));
+    var params = {guid: guid};
+
+    if (post_process) {
+      return this.serverPost(url, params, success, fail, true, this.postProcessList, this);
+    } else {
+      return this.serverPost(url, params, success, fail, true);
+    }
+  },
+
   list: function(success, fail, post_process) {
     var url = Constants.ADMIN_GROUP_LIST_URL.replace('<domain>', $fw.getClientProp('domain'));
     var params = {};
@@ -44,7 +55,6 @@ model.Group = model.Model.extend({
 
     return this.serverPost(url, params, success, fail, true);
   },
-
   
   update: function(params, success, fail, post_process) {
     var url = Constants.ADMIN_GROUP_UPDATE_URL.replace('<domain>', $fw.getClientProp('domain'));

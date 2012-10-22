@@ -64,16 +64,26 @@ Admin.Storeitem.Groups.Controller = Controller.extend({
       var description = $('#create_group_desc').val();
       self.createGroup({
         name: name,
-        description: description
+        description: description,
+        storeitems: null
       });
       return false;
     });
 
 
     $('tr td .edit_group', this.user_table).unbind().click(function() {
+      var el = this;
       var row = $(this).parent().parent();
       var data = self.groupDataForRow($(this).parent().parent().get(0));
-      self.showGroupUpdate(this, row, data);
+      var guid = data[0];
+
+      // Do read before showing
+      self.models.group.read(guid, function(res) {
+        self.showGroupUpdate(el, row, res);
+      }, function(err) {
+        console.log(err);
+      });
+
       return false;
     });
     $('tr td .delete_group', this.user_table).unbind().click(function() {
@@ -219,48 +229,40 @@ Admin.Storeitem.Groups.Controller = Controller.extend({
 
     this.bindSwapSelect(this.container);
 
-    var clearForm = function() {
-        $('input[type=text]', parent).val('');
-        $('input[type=hidden]', parent).val('');
-      };
+    function clearForm() {
+      $('input[type=text]', parent).val('');
+      $('input[type=hidden]', parent).val('');
+    };
 
-    var populateForm = function(group) {
-        console.log('populating group update form: ' + JSON.stringify(group));
-        $('#update_group_id', parent).val(group.guid);
-        $('#update_group_name', parent).val(group.name);
-        $('#update_group_description', parent).val(group.description);
+    function populateForm(group) {
+      console.log('populating group update form: ' + JSON.stringify(group));
+      $('#update_group_id', parent).val(group.guid);
+      $('#update_group_name', parent).val(group.name);
+      $('#update_group_description', parent).val(group.description);
 
-        self.models.store_item.list(function(store_items_res) {
-          //  WILL be USERS self.models.auth_policy.list(function(auth_policy_res) {
-          // Render swap selects
-          var available_store_items = [];
-          var assigned_store_items = [];
+      self.models.store_item.list(function(store_items_res) {
+        // Render swap selects
+        var available_store_items = [];
+        var assigned_store_items = [];
 
-          $.each(store_items_res.list, function(i, item) {
-            available_store_items.push({
+        $.each(store_items_res.list, function(i, item) {
+          available_store_items.push({
+            guid: item.guid,
+            name: item.name
+          });
+          if (item.groups.indexOf(group.guid) > -1) {
+            assigned_store_items.push({
               guid: item.guid,
               name: item.name
             });
-            if (item.groups.indexOf(group.guid) > -1) {
-              assigned_store_items.push({
-                guid: item.guid,
-                name: item.name
-              });
-            }
-          });
+          }
+        });
 
-          self.renderAvailableStoreItems(available_store_items, assigned_store_items, self.views.app_store);
-
-          // var available_auth_policies = auth_policy_res.list;
-          // var assigned_auth_policies = app_store_res.authpolicies;
-          // self.renderAvailableAuthPolicies(available_auth_policies, assigned_auth_policies, self.views.app_store);
-          // }, function(err) {
-          // WILL BE USERS  self.showAlert('error', "Error loading App Store Store Items");
-          // }, false);
-        }, function(err) {
-          self.showAlert('error', "Error loading App Store Store Items");
-        }, true);
-      };
+        self.renderAvailableStoreItems(available_store_items, assigned_store_items, self.views.app_store);
+      }, function(err) {
+        self.showAlert('error', "Error loading App Store Store Items");
+      }, true);
+    };
 
     clearForm();
     parent.show();
@@ -272,13 +274,13 @@ Admin.Storeitem.Groups.Controller = Controller.extend({
 
     // Setup group details - currently just name
     console.log("data: " + JSON.stringify(data));
-    var id = data[0];
-    var oldName = data[1];
+    var id = data.guid;
+    var oldName = data.name;
 
     return populateForm({
-      guid: data[0],
-      name: data[1],
-      description: data[2]
+      guid: data.guid,
+      name: data.name,
+      description: data.description
     });
   },
 
@@ -330,7 +332,7 @@ Admin.Storeitem.Groups.Controller = Controller.extend({
       fields.description = description;
     }
 
-    fields.groups = this._selectedGroups();
+    fields.storeitems = this._selectedStoreItems();
 
     this.models.group.update(fields, function(res) {
       console.log('updateUser: OK');
@@ -360,7 +362,7 @@ Admin.Storeitem.Groups.Controller = Controller.extend({
     return res;
   },
 
-  _selectedGroups: function(container) {
+  _selectedStoreItems: function(container) {
     var selected_options = $('.updategroup_store_items_assigned option', container);
     var selected = [];
     selected_options.each(function(i, item) {

@@ -131,6 +131,7 @@ $.extend(Constants, {
   ADMIN_USER_IMPORT_URL: Constants.ADMIN_URL_PREFIX + "user/import",
 
   ADMIN_GROUP_LIST_URL: Constants.ADMIN_URL_PREFIX + "storeitemgroup/list",
+  ADMIN_GROUP_READ_URL: Constants.ADMIN_URL_PREFIX + "storeitemgroup/read",
   ADMIN_GROUP_CREATE_URL: Constants.ADMIN_URL_PREFIX + "storeitemgroup/create",
   ADMIN_GROUP_UPDATE_URL: Constants.ADMIN_URL_PREFIX + "storeitemgroup/update",
   ADMIN_GROUP_DELETE_URL: Constants.ADMIN_URL_PREFIX + "storeitemgroup/delete",
