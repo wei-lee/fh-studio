@@ -23,7 +23,7 @@ model.StoreItem = model.Model.extend({
     return this.serverPost(url, params, success, fail, true);
   },
 
-  update: function(guid, name, item_id, description, auth_policies, groups, success, fail) {
+  update: function(guid, name, item_id, description, auth_policies, groups, restrict_to_groups, success, fail) {
     var url = Constants.ADMIN_STORE_ITEM_UPDATE_URL;
     var params = {
       guid: guid,
@@ -31,7 +31,8 @@ model.StoreItem = model.Model.extend({
       description: description,
       authToken: item_id,
       authpolicies: auth_policies,
-      groups: groups
+      groups: groups,
+      restrictToGroups: restrict_to_groups
     };
     return this.serverPost(url, params, success, fail, true);
   },

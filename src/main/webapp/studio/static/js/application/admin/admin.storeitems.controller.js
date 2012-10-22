@@ -166,6 +166,12 @@ Admin.Storeitems.Controller = Controller.extend({
       $('.item_id', update_view).val(store_item.authToken);
       $('.item_description', update_view).val(store_item.description);
 
+      if (store_item.restrictToGroups) {
+        $('.restrict_to_groups', update_view).attr('checked', 'true');
+      } else {
+        $('.restrict_to_groups', update_view).removeAttr('checked');
+      }
+
       update_view.show();
       self.renderBinaryUploads(store_item);
 
@@ -381,8 +387,9 @@ Admin.Storeitems.Controller = Controller.extend({
     var auth_policies = this._selectedAuthPolicies(container);
     var groups = this._selectedGroups(container);
     var guid = $('.item_guid', container).val();
+    var restrictToGroups = $('.restrict_to_groups', container).is(':checked');
 
-    this.models.store_item.update(guid, name, item_id, description, auth_policies, groups, function(res) {
+    this.models.store_item.update(guid, name, item_id, description, auth_policies, groups, restrictToGroups, function(res) {
       self.showAlert('success', "Store Item successfully updated", self.views.store_items);
       self.showStoreItems();
     }, function(err) {
