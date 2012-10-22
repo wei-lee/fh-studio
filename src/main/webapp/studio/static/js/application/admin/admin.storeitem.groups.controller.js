@@ -5,6 +5,7 @@ Admin.Storeitem.Groups = Admin.Storeitem.Groups || {};
 Admin.Storeitem.Groups.Controller = Controller.extend({
   models: {
     group: new model.Group(),
+    user: new model.User(),
     store_item: new model.StoreItem()
   },
 
@@ -234,10 +235,10 @@ Admin.Storeitem.Groups.Controller = Controller.extend({
       $('input[type=hidden]', parent).val('');
     };
 
-    function populateForm(group) {
-      $('#update_group_id', parent).val(group.guid);
-      $('#update_group_name', parent).val(group.name);
-      $('#update_group_description', parent).val(group.description);
+    function populateForm(data) {
+      $('#update_group_id', parent).val(data.guid);
+      $('#update_group_name', parent).val(data.name);
+      $('#update_group_description', parent).val(data.description);
 
       self.models.store_item.list(function(store_items_res) {
         // Render swap selects
@@ -249,7 +250,7 @@ Admin.Storeitem.Groups.Controller = Controller.extend({
             guid: item.guid,
             name: item.name
           });
-          if (item.groups.indexOf(group.guid) > -1) {
+          if (item.groups.indexOf(data.guid) > -1) {
             assigned_store_items.push(item.guid);
           }
         });
@@ -258,6 +259,27 @@ Admin.Storeitem.Groups.Controller = Controller.extend({
       }, function(err) {
         self.showAlert('error', "Error loading App Store Store Items");
       }, true);
+
+
+      self.models.user.list(function(users_res) {
+        // Render swap selects
+        var available_users = [];
+        var assigned_users = [];
+
+        $.each(users_res.list, function(i, item) {
+          available_users.push({
+            guid: item.guid,
+            email: item.fields.email
+          });
+          if (data.users.indexOf(item.guid) > -1) {
+            assigned_users.push(item.guid);
+          }
+        });
+
+        self.renderAvailableUsers(available_users, assigned_users, self.views.app_store);
+      }, function(err) {
+        self.showAlert('error', "Error loading App Store Store Items");
+      }, false);
     };
 
     clearForm();
@@ -272,11 +294,7 @@ Admin.Storeitem.Groups.Controller = Controller.extend({
     var id = data.guid;
     var oldName = data.name;
 
-    return populateForm({
-      guid: data.guid,
-      name: data.name,
-      description: data.description
-    });
+    return populateForm(data);
   },
 
   renderAvailableStoreItems: function(available, assigned, container) {
@@ -289,6 +307,34 @@ Admin.Storeitem.Groups.Controller = Controller.extend({
     // Massaging into {v: name, v: name} hash for lookup
     $.each(available, function(i, item) {
       map[item.guid] = item.name;
+    });
+
+    // Assigned first
+    $.each(assigned, function(i, guid) {
+      var name = map[guid];
+      var option = $('<option>').val(guid).text(name);
+      assigned_select.append(option);
+    });
+
+    // Available, minus assigned
+    $.each(map, function(guid, name) {
+      if (assigned.indexOf(guid) == -1) {
+        var option = $('<option>').val(guid).text(name);
+        available_select.append(option);
+      }
+    });
+  },
+
+  renderAvailableUsers: function(available, assigned, container) {
+    var self = this; //update_group_storeitem_swap
+    var available_select = $('.updategroup_users_available', container).empty();
+    var assigned_select = $('.updategroup_users_assigned', container).empty();
+
+    var map = {};
+
+    // Massaging into {v: name, v: name} hash for lookup
+    $.each(available, function(i, item) {
+      map[item.guid] = item.email;
     });
 
     // Assigned first
@@ -328,6 +374,7 @@ Admin.Storeitem.Groups.Controller = Controller.extend({
     }
 
     fields.storeitems = this._selectedStoreItems();
+    fields.users = this._selectedUsers();
 
     this.models.group.update(fields, function(res) {
       console.log('updateUser: OK');
@@ -359,6 +406,15 @@ Admin.Storeitem.Groups.Controller = Controller.extend({
 
   _selectedStoreItems: function(container) {
     var selected_options = $('.updategroup_store_items_assigned option', container);
+    var selected = [];
+    selected_options.each(function(i, item) {
+      selected.push($(item).val());
+    });
+    return selected;
+  },
+
+  _selectedUsers: function(container) {
+    var selected_options = $('.updategroup_users_assigned option', container);
     var selected = [];
     selected_options.each(function(i, item) {
       selected.push($(item).val());
