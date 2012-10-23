@@ -6,33 +6,21 @@ model.User = model.Model.extend({
   // Field config
   field_config: [{
     field_name: "username",
-    editable: false,
-    showable: true,
     column_title: "User ID"
   }, {
     field_name: "email",
-    editable: false,
-    showable: true,
     column_title: "Email"
   }, {
     field_name: "name",
-    editable: true,
-    showable: true,
     column_title: "Name"
   }, {
     field_name: "enabled",
-    editable: true,
-    showable: true,
     column_title: "Enabled"
   }, {
     field_name: "lastLogin",
-    editable: false,
-    showable: true,
     column_title: "Last Login"
   }, {
     field_name: "sysCreated",
-    editable: false,
-    showable: true,
     column_title: "Created"
   }],
 
