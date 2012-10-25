@@ -125,12 +125,21 @@ model.AuditLogEntry = model.Model.extend({
 
   },
 
-  list: function(success, fail, post_process) {
+  list: function(success, fail) {
+    var self = this;
+
+    var params = {};
+    return this.listLogs(success, fail, function(res, data_model) {
+      return self.postProcessList(res, data_model, self.recent_field_config);
+    }, params);
+  },
+
+  listLogs: function(success, fail, post_process,params) {
     var url = Constants.ADMIN_AUDIT_LOG_LIST_URL.replace('<domain>', $fw.getClientProp('domain'));
     var params = {};
-
-    if (post_process) {
-      return this.serverPost(url, params, success, fail, true, this.postProcessList, this);
+    var self = this;
+    if (post_process != null) {
+      return this.serverPost(url, params, success, fail, true, ($.isFunction(post_process) ? post_process : this.postProcessList), this);
     } else {
       return this.serverPost(url, params, success, fail, true);
     }
