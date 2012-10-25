@@ -131,7 +131,7 @@ var store = {
     var uuid = s.join("");
     return uuid;
   },
-  
+
   init: function(queryParams) {
     console.log("store:init() - queryParams: " + JSON.stringify(queryParams));
     if (queryParams && queryParams.fh_auth_session) {
@@ -145,21 +145,21 @@ var store = {
     } else {
       console.log("store:init() - no query params");
     }
-    
+
     this.deviceId = $.cookie(this.deviceIdCookie);
     if (!this.deviceId) {
-        this.deviceId = this.generateDeviceId();
-        $.cookie(this.deviceIdCookie, this.deviceId);
+      this.deviceId = this.generateDeviceId();
+      $.cookie(this.deviceIdCookie, this.deviceId);
     }
-    
+
     if (queryParams && queryParams.message) {
-        var message = queryParams.message;
-        var level = 'info'; // default to info
-        if(queryParams.result && (queryParams.result === 'failure')) {
-            level = 'error';
-        }
-        this.showAlert(level, message);
-    }    
+      var message = queryParams.message;
+      var level = 'info'; // default to info
+      if(queryParams.result && (queryParams.result === 'failure')) {
+        level = 'error';
+      }
+      this.showAlert(level, message);
+    }
     $fw.server = new ServerManager();
     this.bindLoginControls();
     this.allowedBinaryTypes = this.getAllowedBinaryTypes();
@@ -226,7 +226,7 @@ var store = {
     var parts = fullUri.split(/\?/);
     return parts[0];
   },
-  
+
   login: function(pol_type, pol_id) {
     var self = this;
     this.hide();
@@ -371,6 +371,8 @@ var store = {
     // iterate through store_item.targets and add a button for each iOS, iPhone, iPad...
     $('.btn_device_install', show_item_view).hide();
     $.each(store_item.binaries, function(i, v) {
+      console.log(v);
+      v.url+="&deviceId="+ self.deviceId+"&itemTitle=" + store_item.name + "&itemVers=sti";
       console.log("Store Item(" + i + "): " + JSON.stringify(v));
       $('.btn_device_install', show_item_view).filter('.' + v.type).attr("href", v.url).show().unbind().click(function(e) {
         if (v.type === 'android') {
