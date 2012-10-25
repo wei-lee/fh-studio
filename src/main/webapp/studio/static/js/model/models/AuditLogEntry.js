@@ -19,7 +19,7 @@ model.AuditLogEntry = model.Model.extend({
     field_name: "deviceId",
     column_title: "Device"
   },{
-    field_name: "storeItemBinaryGuidType",
+    field_name: "storeItemBinaryType",
     column_title: "StoreItem Type"
   },{
     field_name: "storeItemBinaryVersion",
@@ -65,65 +65,7 @@ model.AuditLogEntry = model.Model.extend({
     column_title: "User Id"
   }],
 
-  init: function() {
-    if (window.location.search.match(/mock=audit_log/)) {
-      var ppl = this.postProcessList;
-      var self = this;
-      // mocks
-      var dummyList = { "list":[
-        {
-//      "fields":{
-          "deviceId":"C322323DFDA24907A630033E792B1D11",
-          "domain":"testing",
-          "storeItemBinaryGuid":"NSCzA4t3Gl7xETCyJ3Jr0XaM",
-          "storeItemBinaryGuidType":"android",
-          "storeItemBinaryVersion":"storeItemBinaryVersion1",
-          "storeItemGuid":"",
-          "storeItemTitle":"Store Item Title1",
-          "sysCreated":"2012-10-20 18:01:34:835",
-          "sysGroupFlags":65695,
-          "sysGroupList":"",
-          "sysModified":"2012-10-20 18:01:34:835",
-          "sysShardPoint":3423094815,
-          "sysVersion":0,
-          "userGuid":"",
-          "userId":"feedhenry1.cadm@example.com",
-//      },
-          "guid":"n-W76vKGQ8uXGN37iHAWNJga",
-          "type":"mam_AuditLog"
-        },
-        {
-//      "fields":{
-          "deviceId":"C322323DFDA24907A630033E792B1D22",
-          "domain":"testing",
-          "storeItemBinaryGuid":"NSCzA4t3Gl7xETCyJ3Jr0XaM",
-          "storeItemBinaryGuidType":"iphone",
-          "storeItemBinaryVersion":"storeItemBinaryVersion2",
-          "storeItemGuid":"",
-          "storeItemTitle":"Store Item Title2",
-          "sysCreated":"2012-10-20 18:03:10:435",
-          "sysGroupFlags":65695,
-          "sysGroupList":"",
-          "sysModified":"2012-10-20 18:03:10:436",
-          "sysShardPoint":2400826183,
-          "sysVersion":0,
-          "userGuid":"",
-          "userId":"feedhenry2.cadm@example.com",
-//      },
-          "guid":"YlanGw_DNW7zK5OAZ4ZsPVN1",
-          "type":"mam_AuditLog"
-        }
-      ],
-        "status":"ok"
-      };
-
-      this.postProcessList = function (res, data_model) {
-        return ppl.call(self, dummyList, data_model, self.field_config);
-      };
-
-    }
-
-  },
+  init: function() {},
 
   list: function(success, fail) {
     var self = this;
