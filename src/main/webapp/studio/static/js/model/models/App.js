@@ -12,7 +12,7 @@ model.App = model.Model.extend({
     column_title: "Description"
   }, {
     field_name: "email",
-    visible: false,
+    visible: true,
     column_title: "Email"
   }, {
     field_name: "version",
