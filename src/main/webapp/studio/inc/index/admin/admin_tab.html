@@ -58,12 +58,6 @@
               Store Items
             </a>
           </li>
-          <li>
-            <a href="#" data-controller="admin.devices.controller">
-                <i class="icon-book"></i>
-              Audit Log
-            </a>
-          </li>
 
         <% } %>
       </ul>
@@ -457,6 +451,39 @@
     <!-- admin auditlog templates -->
         <div id="admin_audit_log_list" class="hidden_template row-fluid">
             <div class="alerts"></div>
+            <div class="pill-content">
+                <form class="inline">
+                <select name="storeItemBinaryType" id="auditlogStoreItemBinaryType">
+                    <option value="all">
+                        All Platforms
+                    </option>
+                    <option value="iphone">
+                        Iphone
+                    </option>
+                    <option value="ipad">
+                        Ipad
+                    </option>
+                    <option value="ios">
+                        ios
+                    </option>
+                    <option value="android">
+                        Android
+                    </option>
+                </select>
+                    
+                <select name="userGuid" id="auditlogUserGuid">
+                    <option value="all">All Users</option>
+                </select>
+                <select name="storeItemGuid" id="auditlogStoreItemGuid">
+                    <option value="all">All Store Items</option>
+                </select>
+                <select name="auditlogLimit" id="auditlogLimit">
+                    <option value="all">All Records</option>
+                </select>    
+                        
+                <button id="audit_log_order" class="appreport-button btn btn-inverse insert-lang">Filter</button>
+                </form>
+            </div>
             <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="admin_audit_logs_list_table"></table>
         </div>
         <!-- end auditlog templates -->

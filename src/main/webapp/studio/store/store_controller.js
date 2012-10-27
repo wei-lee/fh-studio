@@ -351,6 +351,16 @@ var store = {
     }
   },
 
+  installing: function (btn){
+    var self = this;
+    this.showLoading();
+    $(btn).attr("disabled","disabled");
+        setTimeout(function(){
+            $(self.views.loading).hide();
+            $(btn).attr("disabled","");
+        },1000);
+  },  
+
   showStoreItem: function(store_item) {
     var self = this;
     this.hide();

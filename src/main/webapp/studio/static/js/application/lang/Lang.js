@@ -550,6 +550,7 @@ var Lang = {
   installsdatefrom_label: 'From',
   installsdateto_label: 'To',
   installsdate_button: 'Go',
+  audit_log_order:'Filter',
   installsdate_download_button: 'Download',
   installsdate_radio_total_label: 'Total',
   installsdate_radio_dest_label: 'Per Platform',

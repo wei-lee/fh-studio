@@ -14,10 +14,11 @@ model.AuditLogEntry = model.Model.extend({
     column_title: "StoreItem Title"
   },{
     field_name: "userId",
-    column_title: "User Email"
+    column_title: "User Id"
   },{
     field_name: "deviceId",
-    column_title: "Device"
+    column_title: "Device",
+    visible:false
   },{
     field_name: "storeItemBinaryType",
     column_title: "StoreItem Type"
@@ -26,7 +27,7 @@ model.AuditLogEntry = model.Model.extend({
     column_title: "StoreItem Version"
   },{
     field_name: "sysCreated",
-    column_title: "Created"
+    column_title: "Date"
   },{
     field_name: "domain",
     visible: false,
@@ -39,27 +40,8 @@ model.AuditLogEntry = model.Model.extend({
     field_name: "storeItemGuid",
     visible: false,
     column_title: "StoreItem ID"
-  },{
-    field_name: "sysGroupFlags",
-    visible: false,
-    column_title: "Group Flags"
-  },{
-    field_name: "sysGroupList",
-    visible: false,
-    column_title: "Group List"
-  },{
-    field_name: "sysModified",
-    visible: false,
-    column_title: "Last Modified At"
-  },{
-    field_name: "sysShardPoint",
-    visible: false,
-    column_title: "Shard"
-  },{
-    field_name: "sysVersion",
-    visible: false,
-    column_title: "Sys Version"
-  },{
+  },
+  {
     field_name: "userGuid",
     visible: false,
     column_title: "User Id"
@@ -72,13 +54,14 @@ model.AuditLogEntry = model.Model.extend({
 
     var params = {};
     return this.listLogs(success, fail, function(res, data_model) {
-      return self.postProcessList(res, data_model, self.recent_field_config);
+       console.log(data_model);
+      return self.postProcessList(res, data_model, self.field_config);
     }, params);
   },
 
   listLogs: function(success, fail, post_process,params) {
     var url = Constants.ADMIN_AUDIT_LOG_LIST_URL.replace('<domain>', $fw.getClientProp('domain'));
-    var params = {};
+    params = params || {};
     var self = this;
     if (post_process != null) {
       return this.serverPost(url, params, success, fail, true, ($.isFunction(post_process) ? post_process : this.postProcessList), this);
