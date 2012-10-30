@@ -382,7 +382,7 @@ var store = {
     $('.btn_device_install', show_item_view).hide();
     $.each(store_item.binaries, function(i, v) {
       console.log(v);
-      v.url+="&deviceId="+ self.deviceId+"&itemTitle=" + store_item.name + "&itemVers=sti";
+      v.url+="&deviceId="+ self.deviceId;
       console.log("Store Item(" + i + "): " + JSON.stringify(v));
       $('.btn_device_install', show_item_view).filter('.' + v.type).attr("href", v.url).show().unbind().click(function(e) {
         if (v.type === 'android') {
