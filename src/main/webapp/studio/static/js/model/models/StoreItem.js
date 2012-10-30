@@ -10,6 +10,12 @@ model.StoreItem = model.Model.extend({
     var params = {};
     return this.serverPost(url, params, success, fail);
   },
+          
+  listValidItemTypes: function (success, fail){
+      var url = Constants.ADMIN_STORE_ITEM_LIST_TYPES_URL;
+      var params = {};
+      return this.serverPost(url, params, success, fail, true);
+  },        
 
   create: function(name, item_id, description, auth_policies, groups, restrict_to_groups, success, fail) {
     var url = Constants.ADMIN_STORE_ITEM_CREATE_URL;

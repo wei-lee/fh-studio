@@ -11,20 +11,22 @@ model.AuditLogEntry = model.Model.extend({
     column_title: "AuditLogEntry ID"
   },{
     field_name: "storeItemTitle",
-    column_title: "StoreItem Title"
+    column_title: "Title"
   },{
     field_name: "userId",
-    column_title: "User Id"
+    column_title: "User",
+    width:"350px"
   },{
     field_name: "deviceId",
     column_title: "Device",
     visible:false
   },{
     field_name: "storeItemBinaryType",
-    column_title: "StoreItem Type"
+    column_title: "Type"
   },{
     field_name: "storeItemBinaryVersion",
-    column_title: "StoreItem Version"
+    column_title: "Version",
+    width:"110px"
   },{
     field_name: "sysCreated",
     column_title: "Date"
@@ -44,7 +46,7 @@ model.AuditLogEntry = model.Model.extend({
   {
     field_name: "userGuid",
     visible: false,
-    column_title: "User Id"
+    column_title: "User Guid"
   }],
 
   init: function() {},

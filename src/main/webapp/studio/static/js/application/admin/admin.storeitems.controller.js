@@ -6,7 +6,8 @@ Admin.Storeitems.Controller = Controller.extend({
   models: {
     store_item: new model.StoreItem(),
     group: new model.Group(),
-    auth_policy: new model.ArmAuthPolicy()
+    auth_policy: new model.ArmAuthPolicy(),
+    audit_log : new model.AuditLogEntry()
   },
 
   views: {
@@ -15,6 +16,8 @@ Admin.Storeitems.Controller = Controller.extend({
     store_item_create: "#admin_store_item_create",
     store_item_update: "#admin_store_item_update"
   },
+  
+  audit_log_tabe:null,
 
   alert_timeout: 3000,
 
@@ -191,7 +194,40 @@ Admin.Storeitems.Controller = Controller.extend({
     }, function(err) {
       console.log(err);
     });
+    
+    
+    
+    var viewAuditLogButton = $("#store_item_view_auditlog");
+    viewAuditLogButton.text($fw.client.lang.getLangString("store_item_view_auditlog_view"));
+    viewAuditLogButton.unbind().bind("click",function(e){
+        e.preventDefault();
+        var itemGuid = $(".item_guid").first().val();
+        var auditLogTable = $('#audit_log_hide_show');
+        if(!auditLogTable.is(":visible")){
+           self.models.audit_log.listLogs(self.renderAuditLogTable, console.error, true,{"storeItemGuid":itemGuid});
+            $(this).text($fw.client.lang.getLangString("store_item_view_auditlog_hide"));
+        }else{
+             $(this).text($fw.client.lang.getLangString("store_item_view_auditlog_view"));
+            
+        }
+        
+        $('#audit_log_hide_show').toggle();
+        
+    });
   },
+          
+  renderAuditLogTable : function (data){
+      this.audit_log_table = $('#admin_audit_logs_item_list_table').dataTable({
+      "bDestroy": true,
+      "bAutoWidth": false,
+      "sDom": "<'row-fluid'<'span12'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+      "sPaginationType": "bootstrap",
+      "bLengthChange": false,
+      "aaData": data.aaData,
+      "aoColumns": data.aoColumns
+    });
+    $('#admin_audit_logs_item_list_table').show();
+  },      
 
   renderBinaryUploads: function(store_item) {
     var self = this;

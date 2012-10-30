@@ -550,7 +550,6 @@ var Lang = {
   installsdatefrom_label: 'From',
   installsdateto_label: 'To',
   installsdate_button: 'Go',
-  audit_log_order:'Filter',
   installsdate_download_button: 'Download',
   installsdate_radio_total_label: 'Total',
   installsdate_radio_dest_label: 'Per Platform',
@@ -694,5 +693,11 @@ var Lang = {
   deploy_target_setting_url_label_help_icon: "The endpoint to call to do the deploy. You can get this value from the selected service provider. For example, for CloudFoundry, the value could be https://api.cloudfoundry.com.",
   deploy_target_setting_infrastructure_label_help_icon: "Which infrastructure provider to use for this deploy target.",
   deploy_target_setting_username_label_help_icon: "The user name of your account with the service provider.",
-  deploy_target_setting_password_label_help_icon: "The password of your account with the service provider."
+  deploy_target_setting_password_label_help_icon: "The password of your account with the service provider.",
+  
+  audit_log_order:'Filter',
+  audit_log_reset: 'Reset',
+  
+  store_item_view_auditlog_view : "View Audit Log",
+  store_item_view_auditlog_hide : "Hide Audit Log"
 };
