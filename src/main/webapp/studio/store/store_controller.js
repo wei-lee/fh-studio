@@ -384,7 +384,15 @@ var store = {
       console.log(v);
       v.url+="&deviceId="+ self.deviceId;
       console.log("Store Item(" + i + "): " + JSON.stringify(v));
-      $('.btn_device_install', show_item_view).filter('.' + v.type).attr("href", v.url).show().unbind().click(function(e) {
+      //this temp unbinds the click function from href and adds a new one to return false then rebinds it after 1.5 secs to stop multiple clicks happening.
+      var linkClick = function(e) {
+        var ele = $(this);
+        $(this).unbind().click(function(){
+          return false;
+        });
+        setTimeout(function (){
+           ele.unbind().click(linkClick);
+        },1500);
         if (v.type === 'android') {
           return true;
         } else {
@@ -394,7 +402,9 @@ var store = {
           $(this).append(iframe);
           return false;
         }
-      });
+      };
+
+      $('.btn_device_install', show_item_view).filter('.' + v.type).attr("href", v.url).show().unbind().click(linkClick);
     });
 
     $('.install_store_item', show_item_view);
