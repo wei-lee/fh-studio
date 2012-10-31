@@ -57,9 +57,6 @@ model.AuditLogEntry = model.Model.extend({
     var params = {};
     return this.listLogs(success, fail, function(res, data_model) {
        //console.log(data_model);
-      if(res.status === "ok") {
-        $(res.list).each(function(idex,item){item.sysCreated = item.sysCreated.replace(/:\d+:\d+$/, "");});
-      }
       return self.postProcessList(res, data_model, self.field_config);
     }, params);
   },
@@ -68,12 +65,22 @@ model.AuditLogEntry = model.Model.extend({
     var url = Constants.ADMIN_AUDIT_LOG_LIST_URL.replace('<domain>', $fw.getClientProp('domain'));
     params = params || {};
     var self = this;
+    var s = success;
+    success = function(res){
+      self.processDate(res,"Date");
+      return s(res);
+    };
     if (post_process != null) {
       return this.serverPost(url, params, success, fail, true, ($.isFunction(post_process) ? post_process : this.postProcessList), this);
     } else {
       return this.serverPost(url, params, success, fail, true);
     }
 
+  },
+  processDate: function(res,title) {
+    var e = $.grep(res.aoColumns,function(item, i){return item.sTitle === title;});
+    var i = $(res.aoColumns).index(e[0]);
+    if(i >= 0)
+      $(res.aaData).each(function(index,item){item[i] = item[i].replace(/:\d+:\d+$/, "");});
   }
-
 });
