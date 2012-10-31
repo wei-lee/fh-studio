@@ -58,7 +58,7 @@ model.AuditLogEntry = model.Model.extend({
     return this.listLogs(success, fail, function(res, data_model) {
        //console.log(data_model);
       if(res.status === "ok") {
-        $(res.list).each(function(idex,item){item.sysCreated = item.sysCreated.replace(/:\d+$/, "");});
+        $(res.list).each(function(idex,item){item.sysCreated = item.sysCreated.replace(/:\d+:\d+$/, "");});
       }
       return self.postProcessList(res, data_model, self.field_config);
     }, params);
