@@ -58,12 +58,12 @@ Admin.Auditlogs.Controller = Controller.extend({
     var self = this;
     var limits = [10,100,1000];
     $('.selectfixedWidth').css("width","200px");
-    $(this.filterFields.logLimit + 'option:not(:first)').remove();
+    $(this.filterFields.logLimit + ' option:not(:first)').remove();
     for(var l=0; l< limits.length; l++){
        $(self.filterFields.logLimit).append(self.template("option",{val:limits[l],text:limits[l]}));
     }
     //render the binary types filter
-    $(this.filterFields.storeItemBinaryType + 'option:not(:first)').remove();
+    $(this.filterFields.storeItemBinaryType + ' option:not(:first)').remove();
     this.models.store_item.listValidItemTypes(function(res){
       if(res && res.list){
           $(res.list).each(function(index, item){
