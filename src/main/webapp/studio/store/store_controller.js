@@ -19,6 +19,7 @@ var store = {
 
   authSession: null,
   authSessionCookie: 'x-fh-auth-session',
+  feedhenryCookie:'feedhenry',
   deviceIdCookie: 'deviceId',
 
   storeInfo: null,
@@ -133,14 +134,21 @@ var store = {
   },
 
   init: function(queryParams) {
+
     console.log("store:init() - queryParams: " + JSON.stringify(queryParams));
     if (queryParams && queryParams.fh_auth_session) {
       this.authSession = queryParams.fh_auth_session;
+      //Note if the user is logged into the platform, they are resolved as that user for the auditlog entry to stop that we could remove the feedhenry cookie
+      // or set the feedhenry cookie to the authSessionCookie
+      //which would then resolve them as the user they logged into the store as.
+     // $.cookie(this.feedhenryCookie, this.authSession,{"path":"/"});
       $.cookie(this.authSessionCookie, this.authSession, {
         "path": "/"
       });
       console.log("store:init() authSession: " + this.authSession);
     } else if ($.cookie(this.authSessionCookie) != null) {
+      //unset the feedhenry cookie so that the user is resoved corectly
+     // $.cookie(this.feedhenryCookie, this.authSession,{"path":"/"});
       this.authSession = $.cookie(this.authSessionCookie);
     } else {
       console.log("store:init() - no query params");
@@ -350,16 +358,6 @@ var store = {
       iconTag.attr('src', '/studio/static/themes/default/img/store_no_icon.png');
     }
   },
-
-  installing: function (btn){
-    var self = this;
-    this.showLoading();
-    $(btn).attr("disabled","disabled");
-        setTimeout(function(){
-            $(self.views.loading).hide();
-            $(btn).attr("disabled","");
-        },1000);
-  },  
 
   showStoreItem: function(store_item) {
     var self = this;

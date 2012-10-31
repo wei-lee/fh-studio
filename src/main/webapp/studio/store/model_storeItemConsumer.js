@@ -24,7 +24,7 @@ model.StoreItemConsumer = model.Model.extend({
         list: []
     };
     // console.log("res: " + JSON.stringify(res));
-    // console.log("allowed: " + JSON.stringify(allowedTypes));
+     console.log("allowed: " + JSON.stringify(allowedTypes));
     $.each(res.list, function(itemIndex, item) {
       // console.log("item: " + JSON.stringify(item));
       var filteredItem = {};
@@ -36,7 +36,8 @@ model.StoreItemConsumer = model.Model.extend({
       });
       filteredItem.binaries = [];
       $.each(item.binaries, function (binaryIndex, binary) {
-        if(allowedTypes.indexOf(binary.type) > -1) {
+
+        if(_.indexOf(allowedTypes,binary.type) > -1) {
             isAllowed = true;
             filteredItem.binaries.push(binary);
         }
