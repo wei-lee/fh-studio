@@ -132,7 +132,9 @@ Admin.Auditlogs.Controller = Controller.extend({
   },
 
   renderAuditLogTable: function(data) {
+
     this.audit_log_table = $('#admin_audit_logs_list_table').dataTable({
+      "aaSorting":[[6,'desc']],
       "bDestroy": true,
       "bAutoWidth": false,
       "sDom": "<'row-fluid'<'span12'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
