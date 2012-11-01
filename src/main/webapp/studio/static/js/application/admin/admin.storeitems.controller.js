@@ -43,24 +43,6 @@ Admin.Storeitems.Controller = Controller.extend({
     });
   },
 
-  // type: error|success|info
-  showAlert: function(type, message, container) {
-    var self = this;
-    var alerts_area = $(container).find('.alerts');
-    var alert = $('<div>').addClass('alert fade in alert-' + type).html(message);
-    var close_button = $('<button>').addClass('close').attr("data-dismiss", "alert").text("x");
-    alert.append(close_button);
-    alerts_area.append(alert);
-    // only automatically hide alert if it's not an error
-    if ('error' !== type) {
-      setTimeout(function() {
-        alert.slideUp(function() {
-          alert.remove();
-        });
-      }, self.alert_timeout);
-    }
-  },
-
   setStoreIcon: function(data) {
     var icon = $('.store_item_icon', this.views.admin_store_item_update);
     if (data !== '') {
@@ -194,25 +176,13 @@ Admin.Storeitems.Controller = Controller.extend({
     }, function(err) {
       console.log(err);
     });
-    
-    
-    
-    var viewAuditLogButton = $("#store_item_view_auditlog");
-    viewAuditLogButton.text($fw.client.lang.getLangString("store_item_view_auditlog_view"));
-    viewAuditLogButton.unbind().bind("click",function(e){
-        e.preventDefault();
-        var itemGuid = $(".item_guid").first().val();
-        var auditLogTable = $('#audit_log_hide_show');
-        if(!auditLogTable.is(":visible")){
-           self.models.audit_log.listLogs(self.renderAuditLogTable, console.error, true,{"storeItemGuid":itemGuid});
-            $(this).text($fw.client.lang.getLangString("store_item_view_auditlog_hide"));
-        }else{
-             $(this).text($fw.client.lang.getLangString("store_item_view_auditlog_view"));
-            
-        }
-        
-        $('#audit_log_hide_show').toggle();
-        
+
+
+
+    // bind to bootstrap shown event to load table
+    $('a[data-toggle="tab"][href="#auditlogs"]').on('shown', function (e) {
+      var itemGuid = $(".item_guid").first().val();
+      self.models.audit_log.listLogs(self.renderAuditLogTable, console.error, true,{"storeItemGuid":itemGuid});
     });
   },
           
@@ -545,7 +515,7 @@ Admin.Storeitems.Controller = Controller.extend({
 
     this.models.store_item.create(name, item_id, description, auth_policies, groups, restrictToGroups, function(res) {
       self.showAlert('success', "Store Item successfully created", self.views.store_items);
-      self.showStoreItems();
+      self.showUpdateStoreItem(res);
     }, function(err) {
       self.showAlert('error', err, self.views.store_item_create);
     });
