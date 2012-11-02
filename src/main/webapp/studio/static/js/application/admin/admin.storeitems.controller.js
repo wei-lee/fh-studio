@@ -312,19 +312,20 @@ Admin.Storeitems.Controller = Controller.extend({
 
       // Does a binary already exist?
       var binary_upload_status = self._resolveUploadStatus(binary.destination, store_item);
-      var status_el = $('#binary_upload_status').clone().removeAttr('id').removeClass('hidden_template');
+      var status_el = $('.upload_status', row);
+      if(!status_el.length) {
+        status_el = $('#binary_upload_status').clone().removeAttr('id').removeClass('hidden_template');
+        input.before(status_el);
+      }
 
       if (binary_upload_status === true) {
         // Uploaded
         status_el.text('Uploaded').removeClass('label-inverse').addClass('label-success');
-        input.before(status_el);
-
         // Enable config setting
         input.parents('tr').find('.bundle_id, .update_bundle_id').removeAttr('disabled');
       } else {
         // Not uploaded
-        status_el.text('Not Uploaded');
-        input.before(status_el);
+        status_el.text('Not Uploaded').removeClass('label-success').addClass('label-inverse');
       }
 
       // Setup file upload
