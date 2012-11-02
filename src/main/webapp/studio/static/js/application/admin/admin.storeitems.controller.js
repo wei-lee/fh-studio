@@ -44,12 +44,17 @@ Admin.Storeitems.Controller = Controller.extend({
   },
 
   setStoreIcon: function(data) {
-    var icon = $('.store_item_icon', this.views.admin_store_item_update);
+    var icon = $('.store_item_icon', this.views.store_item_update);
     if (data !== '') {
       icon.attr('src', 'data:image/png;base64,' + data);
     } else {
       icon.attr('src', '/studio/static/themes/default/img/store_no_icon.png');
     }
+  },
+
+  setStoreName: function(data) {
+    var name = $(".store_item_title .store_item_name", this.views.store_item_update);
+    name.text(': \'' + data + '\'');
   },
 
   showStoreItems: function() {
@@ -132,6 +137,7 @@ Admin.Storeitems.Controller = Controller.extend({
     this.hide();
 
     self.setStoreIcon(store_item.icon);
+    self.setStoreName(store_item.name);
 
     // Disable bundle id inputs
     $('.bundle_id, .update_bundle_id', self.views.store_item_update).attr('disabled', 'disabled');
@@ -157,6 +163,7 @@ Admin.Storeitems.Controller = Controller.extend({
         $('.restrict_to_groups', update_view).removeAttr('checked');
       }
 
+      $('a[data-toggle="tab"][href="#details"]', self.views.store_item_update).tab('show') ;
       update_view.show();
       self.renderBinaryUploads(store_item);
 
@@ -180,7 +187,7 @@ Admin.Storeitems.Controller = Controller.extend({
 
 
     // bind to bootstrap shown event to load table
-    $('a[data-toggle="tab"][href="#auditlogs"]').on('shown', function (e) {
+    $('a[data-toggle="tab"][href="#auditlogs"]', self.views.store_item_update).on('shown', function (e) {
       var itemGuid = $(".item_guid").first().val();
       self.models.audit_log.listLogs(self.renderAuditLogTable, console.error, true,{"storeItemGuid":itemGuid});
     });

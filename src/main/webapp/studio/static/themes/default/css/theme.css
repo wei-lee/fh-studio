@@ -2702,6 +2702,8 @@ table.dataTable th:active {
   margin-bottom: 10px;
 }
 
+#admin_store_item_update #auditlogs { overflow: hidden; }
+
 .store_item_binaries .control-group {
   margin-bottom: 0;
 }

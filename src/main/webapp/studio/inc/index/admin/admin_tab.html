@@ -530,7 +530,7 @@
 
         <form class="well form-horizontal">
           <img src="" class="store_item_icon right">
-          <h3>Store Item</h3>
+          <h3 class="store_item_title">Store Item <span class="store_item_name"></span></h3>
           <br/>
             <div class="tabbable"> <!-- Only required for left/right tabs -->
                 <ul class="nav nav-tabs">
@@ -540,7 +540,6 @@
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active" id="details">
-                        <!--p>I'm in Section 1.</p-->
                         <div class="control-group required" style="display: inline-block;">
                             <label class="control-label">Name</label>
                             <div class="controls">
@@ -617,7 +616,6 @@
                         </div>
                     </div>
                     <div class="tab-pane" id="binaries">
-                        <!--p>Howdy, I'm in Section 2.</p-->
                         <div class="store_item_binaries">
                             <h3>Upload App Binaries & App Store Icon</h3><br/>
                             <table class="table table-bordered table-striped store_item_binaries_table">
@@ -665,8 +663,7 @@
                         </div>
 
                     </div>
-                    <div class="tab-pane" id="auditlogs">
-                        <!--p>Howdy, I'm in Section 2.</p-->
+                    <div class="tab-pane" id="auditlogs" >
                         <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="admin_audit_logs_item_list_table"></table>
                     </div>
                 </div>
