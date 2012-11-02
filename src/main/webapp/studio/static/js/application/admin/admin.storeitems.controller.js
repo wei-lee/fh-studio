@@ -23,13 +23,12 @@ Admin.Storeitems.Controller = Controller.extend({
 
   init: function() {},
 
-  show: function(e) {
-    var self = this;
+  show: function() {
     this.hideAlerts();
     this.showStoreItems();
   },
 
-  hide: function(e) {
+  hide: function() {
     $.each(this.views, function(k, v) {
       $(v).hide();
     });
@@ -69,6 +68,26 @@ Admin.Storeitems.Controller = Controller.extend({
     }, true);
   },
 
+  showStoreItemBinaries: function() {
+    this.showStoreItemTab("#binaries");
+  },
+
+  showStoreItemDetails: function() {
+    this.showStoreItemTab("#details");
+  },
+
+  showStoreItemAuditLogs: function() {
+    this.showStoreItemTab("#auditlogs");
+  },
+
+  showStoreItemTab: function(href) {
+    this.getStoreItemTab(href).tab('show') ;
+  },
+
+  getStoreItemTab: function(href) {
+    return $('a[data-toggle="tab"][href="' + href + '"]', this.views.store_item_update);
+  },
+
   renderItems: function(store_items) {
     var self = this;
     var list = $(this.views.store_items);
@@ -103,7 +122,7 @@ Admin.Storeitems.Controller = Controller.extend({
 
   deleteStoreItem: function(guid) {
     var self = this;
-    this.models.store_item.remove(guid, function(res) {
+    this.models.store_item.remove(guid, function() {
       self.showAlert('success', "Store Item successfully deleted", self.views.store_items);
       self.showStoreItems();
     }, function(err) {
@@ -145,6 +164,7 @@ Admin.Storeitems.Controller = Controller.extend({
     this.models.auth_policy.list(function(res) {
       var update_view = $(self.views.store_item_update);
 
+      //self.showStoreItemDetails();
       // Remove uploaded status labels
       $('span.label', update_view).remove();
       $('.bundle_id', update_view).val('');
@@ -163,9 +183,8 @@ Admin.Storeitems.Controller = Controller.extend({
         $('.restrict_to_groups', update_view).removeAttr('checked');
       }
 
-      $('a[data-toggle="tab"][href="#details"]', self.views.store_item_update).tab('show') ;
+      self.showStoreItemDetails();
       update_view.show();
-      self.renderBinaryUploads(store_item);
 
       $('.update_store_item', update_view).unbind().click(function(e) {
         e.preventDefault();
@@ -184,17 +203,22 @@ Admin.Storeitems.Controller = Controller.extend({
       console.log(err);
     });
 
+    // bind to bootstrap shown event to load table
+    self.getStoreItemTab("#binaries").on('shown', function () {
+      self.renderBinaryUploads(store_item);
+    });
 
 
     // bind to bootstrap shown event to load table
-    $('a[data-toggle="tab"][href="#auditlogs"]', self.views.store_item_update).on('shown', function (e) {
+    self.getStoreItemTab("#auditlogs").on('shown', function () {
       var itemGuid = $(".item_guid").first().val();
       self.models.audit_log.listLogs(self.renderAuditLogTable, console.error, true,{"storeItemGuid":itemGuid});
     });
   },
           
   renderAuditLogTable : function (data){
-      this.audit_log_table = $('#admin_audit_logs_item_list_table').dataTable({
+    var tbl = $('#admin_audit_logs_item_list_table');
+    this.audit_log_table = tbl.dataTable({
       "aaSorting":[[6,'desc']],
       "bDestroy": true,
       "bAutoWidth": false,
@@ -204,7 +228,7 @@ Admin.Storeitems.Controller = Controller.extend({
       "aaData": data.aaData,
       "aoColumns": data.aoColumns
     });
-    $('#admin_audit_logs_item_list_table').show();
+    tbl.show();
   },      
 
   renderBinaryUploads: function(store_item) {
@@ -403,16 +427,15 @@ Admin.Storeitems.Controller = Controller.extend({
     var guid = $('.item_guid', container).val();
     var restrictToGroups = $('.restrict_to_groups', container).is(':checked');
 
-    this.models.store_item.update(guid, name, item_id, description, auth_policies, groups, restrictToGroups, function(res) {
+    this.models.store_item.update(guid, name, item_id, description, auth_policies, groups, restrictToGroups, function() {
       self.showAlert('success', "Store Item successfully updated", self.views.store_items);
-      self.showStoreItems();
+      self.showStoreItemBinaries();
     }, function(err) {
       console.log(err);
     });
   },
 
   renderAvailableAuthPolicies: function(available, assigned, container) {
-    var self = this;
     var available_select = $('.store_item_available_auth_policies', container).empty();
     var assigned_select = $('.store_item_assigned_auth_policies', container).empty();
 
@@ -443,7 +466,6 @@ Admin.Storeitems.Controller = Controller.extend({
   },
 
   renderAvailableGroups: function(available, assigned, container) {
-    var self = this;
     var available_select = $('.store_item_available_groups', container).empty();
     var assigned_select = $('.store_item_assigned_groups', container).empty();
 
@@ -503,9 +525,9 @@ Admin.Storeitems.Controller = Controller.extend({
 
   updateStoreItemConfig: function(guid, destination, bundle_id) {
     var self = this;
-    this.models.store_item.updateConfig(guid, destination, bundle_id, function(res) {
+    this.models.store_item.updateConfig(guid, destination, bundle_id, function() {
       self.showAlert('success', "Store Item config updated", self.views.store_item_update);
-    }, function(err) {
+    }, function() {
       self.showAlert('error', "Store Item config couldn't be updated", self.views.store_item_update);
     });
   },
