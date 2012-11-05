@@ -7,25 +7,45 @@ Admin.Storeitems.Controller = Controller.extend({
     store_item: new model.StoreItem(),
     group: new model.Group(),
     auth_policy: new model.ArmAuthPolicy(),
-    audit_log : new model.AuditLogEntry()
+    audit_log : new model.AuditLogEntry(),
+    user : new model.User(),
+    store_item: new model.StoreItem()
+
   },
 
   views: {
     store_items: "#admin_store_items",
     store_item: "#admin_store_item",
     store_item_create: "#admin_store_item_create",
-    store_item_update: "#admin_store_item_update"
+    store_item_update: "#admin_store_item_update",
+    store_item_audit_table: '#admin_audit_logs_item_list_table'
   },
-  
+
+  filterFields :{
+    userGuid : "select#binAuditlogUserGuid",
+    //storeItemGuid : "select#binAuditlogStoreItemGuid",
+    storeItemType : "select#binAuditlogStoreItemBinaryType",
+    logLimit: "select#binAuditlogLimit",
+    storeItemBinaryType:"select#binAuditlogStoreItemBinaryType"
+  },
+
   audit_log_tabe:null,
 
   alert_timeout: 3000,
+  FORMAT:"DD/MM/YYYY HH:mm",
+  container: null,
 
+  template : function (type ,args){
+    if(type === "option"){
+      return "<option value="+args.val+">"+args.text+"</option>";
+    }
+  },
   init: function() {},
 
   show: function() {
     this.hideAlerts();
     this.showStoreItems();
+    this.container = $(this.views.store_item_update);
   },
 
   hide: function() {
@@ -61,8 +81,7 @@ Admin.Storeitems.Controller = Controller.extend({
     this.hide();
     $(this.views.store_items).show();
     this.models.store_item.list(function(res) {
-      var store_items = res.list;
-      self.renderItems(store_items);
+      self.renderItems(res.list);
     }, function(err) {
       console.error(err);
     }, true);
@@ -84,8 +103,14 @@ Admin.Storeitems.Controller = Controller.extend({
     this.getStoreItemTab(href).tab('show') ;
   },
 
-  getStoreItemTab: function(href) {
-    return $('a[data-toggle="tab"][href="' + href + '"]', this.views.store_item_update);
+  getStoreItemTab: function() {
+    var href = arguments[0];
+    if(href){
+      href = '[href="' + href + '"]';
+    } else {
+      href = "";
+    }
+    return $('a[data-toggle="tab"]' + href , this.views.store_item_update);
   },
 
   renderItems: function(store_items) {
@@ -157,6 +182,7 @@ Admin.Storeitems.Controller = Controller.extend({
 
     self.setStoreIcon(store_item.icon);
     self.setStoreName(store_item.name);
+    self.clearAuditLogTable();
 
     // Disable bundle id inputs
     $('.bundle_id, .update_bundle_id', self.views.store_item_update).attr('disabled', 'disabled');
@@ -188,9 +214,13 @@ Admin.Storeitems.Controller = Controller.extend({
 
       $('.update_store_item', update_view).unbind().click(function(e) {
         e.preventDefault();
-        self.updateStoreItem();
+        self.setStoreName(store_item.name);
+        self.updateStoreItem(store_item);
         return false;
       });
+
+      var input = $("#icon_binary");
+      self.renderIconUpload(store_item, input);
 
     }, function(err) {
       console.log(err);
@@ -203,6 +233,9 @@ Admin.Storeitems.Controller = Controller.extend({
       console.log(err);
     });
 
+    // unbind old event on all tabs
+    self.getStoreItemTab().unbind();
+
     // bind to bootstrap shown event to load table
     self.getStoreItemTab("#binaries").on('shown', function () {
       self.renderBinaryUploads(store_item);
@@ -211,13 +244,156 @@ Admin.Storeitems.Controller = Controller.extend({
 
     // bind to bootstrap shown event to load table
     self.getStoreItemTab("#auditlogs").on('shown', function () {
-      var itemGuid = $(".item_guid").first().val();
-      self.models.audit_log.listLogs(self.renderAuditLogTable, console.error, true,{"storeItemGuid":itemGuid});
+      //self.renderAuditLogFilterForm(store_item);
+      self.renderAuditLogFilterForm(store_item);
+      var cb = function(data){self.renderAuditLogTable(data,store_item);}
+      //var cb = $.proxy(self.renderAuditLogTable, self );
+      self.models.audit_log.listLogs( cb, console.error, true,{"storeItemGuid":store_item.guid});
     });
   },
-          
-  renderAuditLogTable : function (data){
-    var tbl = $('#admin_audit_logs_item_list_table');
+
+  renderIconUpload: function (store_item,input){
+    var self = this;
+    var row = input.parents('.controls');
+    var status_el = $('.upload_status', row);
+
+    // Inject binary upload progress template
+    var progress_area = $('.progress_area', row);
+    var progress_bar = $('.progress', progress_area);
+
+    // Setup file upload
+    input.fileupload('destroy').fileupload({
+      url: Constants.ADMIN_STORE_ITEM_UPLOAD_BINARY_URL,
+      dataType: 'json',
+      replaceFileInput: false,
+      formData: [{
+        name: 'guid',
+        value: store_item.guid
+      }, {
+        name: 'type',
+        value: 'icon'
+      }],
+      dropZone: input,
+      timeout: 120000,
+      add: function(e, data) {
+        input.hide();
+        progress_bar.slideDown();
+        data.submit();
+      },
+      done: function(e, data) {
+        var message;
+        var err = (data.result.status !== 'ok');
+        if (!err) {
+          // update the store item with new data
+          $.each(data.result, function(k,v){store_item[k] = v;});
+          self.setStoreIcon(store_item.icon);
+          message = 'Uploaded ' + data.files[0].name;
+        } else {
+          message = 'Error: ' + data.result.message;
+        }
+        progress_bar.hide();
+        input.show();
+        self.showAlert(err ? 'error' : 'success', message);
+      },
+      progressall: function(e, data) {
+        var progress = parseInt(data.loaded / data.total * 100, 10);
+        $('.bar', progress_bar).css('width', progress + '%');
+      }
+    });
+  },
+
+  renderAuditLogFilterForm : function (store_item) {
+    var self = this;
+    var limits = [10,100,1000];
+    $('.selectfixedWidth').css("width","200px");
+    $(this.filterFields.logLimit + ' option:not(:first)', $(self.views.store_item_audit_table)).remove();
+    for(var l=0; l< limits.length; l++){
+      $(self.filterFields.logLimit).append(self.template("option",{val:limits[l],text:limits[l]}));
+    }
+    //render the binary types filter
+    $(this.filterFields.storeItemBinaryType + ' option:not(:first)').remove();
+    this.models.store_item.listValidItemTypes(function(res){
+      if(res && res.list){
+        $(res.list).each(function(index, item){
+          $(self.filterFields.storeItemBinaryType).append(self.template("option",{val:item, text:item}));
+        });
+      }
+    },console.error);
+    //render users limit option //TODO seems like with a single page app a lot of caching could be done and events fired when something is
+    //done that would require data to update.
+    this.models.user.list(function(res) {
+      //remove elements before creating the select options
+      $(self.filterFields.userGuid +' option:not(:first)').remove();
+      $(res.list).each(function(idex,item){
+        if(item.fields.username && item.guid){
+          $(self.filterFields.userGuid).append(self.template("option",{val:item.guid, text:item.fields.username}));
+        }
+      });
+    });
+    //render storeitem filter options
+    this.models.store_item.list(function (res){
+      $(self.filterFields.storeItemGuid +' option:not(:first)').remove();
+      $(res.list).each(function(idex,item){
+
+        if(item.name && item.guid){
+          $(self.filterFields.storeItemGuid).append(self.template("option",{val:item.guid,text:item.name}));
+        }
+      });
+    });
+    self.bindFilter(store_item);
+
+  },
+  bindFilter : function (store_item){
+    var self= this;
+    //bind filter button
+    var filterButton = $('button#binAudit_log_order');
+    filterButton.text($fw.client.lang.getLangString("audit_log_order"));
+    //filterButton.unbind().bind("click",$.proxy(self.doFilter, this));
+    filterButton.unbind().bind("click",function(e){
+      e.preventDefault();
+      self.clearAuditLogTable();
+      self.doFilter(store_item);
+    });
+    var resetButton = $('button#binAudit_log_reset');
+    resetButton.text($fw.client.lang.getLangString("audit_log_reset"));
+    resetButton.unbind().bind("click",function (e){
+      e.preventDefault();
+      self.resetFilter(store_item);
+      self.clearAuditLogTable();
+      var params = {"storeItemGuid":store_item.guid}
+      self.models.audit_log.listLogs(function(data){
+        return self.renderAuditLogTable(data,store_item);
+      }, console.error, true,params);
+    });
+  },
+  resetFilter : function (store_item){
+    this.bindFilter(store_item);
+    $.each(this.filterFields, function(name, target){
+      $(target).val($(target + " option:first").val());
+    });
+  },
+  doFilter : function (store_item){
+    //build params ob and send to listlogs to filter
+    var self = this;
+    var userGuid = $(self.filterFields.userGuid).val();
+    //var storeItemGuid = $(self.filterFields.storeItemGuid).val();
+    var storeItemType = $(self.filterFields.storeItemType).val();
+    var limit = $(self.filterFields.logLimit).val();
+    var params = {"storeItemGuid":store_item.guid}
+    if(userGuid && userGuid !=="all") params.userId = userGuid;
+    //if(storeItemGuid && storeItemGuid !=="all")params.storeItemGuid = storeItemGuid;
+    if(storeItemType && storeItemType !== "all")params.storeItemBinaryType = storeItemType;
+    if(limit && limit !== "all") params.limit = limit;
+
+    this.models.audit_log.listLogs(function(data){
+      return self.renderAuditLogTable(data,store_item);
+    }, console.error, true,params);
+
+    return false;
+  },
+
+  renderAuditLogTable : function (data,store_item){
+    var tbl = $(this.views.store_item_audit_table);
     this.audit_log_table = tbl.dataTable({
       "aaSorting":[[6,'desc']],
       "bDestroy": true,
@@ -228,24 +404,24 @@ Admin.Storeitems.Controller = Controller.extend({
       "aaData": data.aaData,
       "aoColumns": data.aoColumns
     });
+
     tbl.show();
-  },      
+    //this.renderAuditLogFilterForm(store_item);
+  },
+
+  clearAuditLogTable : function (){
+    if(this.audit_log_table ){
+      this.audit_log_table.fnClearTable();
+    }
+  },
 
   renderBinaryUploads: function(store_item) {
     var self = this;
+    $('.tab-pane #binaries').hide();
 
     // Config
-    var binaries = [{
-      id: 'icon_binary',
-      destination: null,
-      params: [{
-        name: 'guid',
-        value: store_item.guid
-      }, {
-        name: 'type',
-        value: 'icon'
-      }]
-    }, {
+    var binaries = [
+    {
       id: 'android_binary',
       destination: 'android',
       params: [{
@@ -287,49 +463,81 @@ Admin.Storeitems.Controller = Controller.extend({
       }]
     }];
 
-    $.each(binaries, function(i, binary) {
-      var input = $('#' + binary.id);
-      if (input.length < 1) {
-        return console.error('Input not found: ' + binary.id);
+    self.setStoreIcon(store_item.icon);
+    self.setStoreName(store_item.name);
+    $('.bundle_id, .update_bundle_id', self.views.store_item_update).attr('disabled', 'disabled');
+
+
+    $.each(binaries, function(i, binary ) {
+      var sib= $.grep(store_item.binaries, function(sib) {
+        return binary.destination === sib.type;
+      });
+      self.renderBinaryRow(store_item,binary, sib[0]);
+    });
+    $("a[rel=popover]").popover({ trigger: "hover" });
+  },
+
+  renderBinaryRowHistory: function (store_item, binary, sib, row) {
+    var self = this;
+    $('.controls .accordion', row).remove();
+
+    var id = binary.destination + "_target";
+    var template = $("#binary_history_template").clone().removeAttr('id').removeClass('hidden_template');
+
+    var target =  $("div#template_collapse", template).attr("id", id);
+    $("div a.accordion-toggle", template).attr("href" , "#" + id);
+
+
+    if(sib) {
+      var name = "'" + store_item.name + "'";
+      var c = self._popoverContent(store_item,sib,["Download", name ].join(" "));
+      $(".history",template).append(c);
+      $.each(sib.versions, function (i,sibh){
+        var c = self._popoverContent(store_item,sibh,["Download", name].join(" "));
+        $(".history",template).append(c);
+      });
+    }
+    $('.controls .progress_area', row).after(template);
+    $('.controls .accordion .accordion-heading a', row).text("[+] History");
+    $('.controls .accordion', row).on('hidden', function () {
+      $('.accordion-heading a', this).text("[+] History");
+    });
+
+    $('.controls .accordion', row).on('shown', function () {
+      $('.accordion-heading a', this).text("[-] History");
+    });
+
+    return template;
+  },
+
+  renderBinaryRow: function (store_item,binary,sib){
+    var self = this;
+    var input = $('#' + binary.id);
+    var row = input.parents('tr');
+
+    var history = self.renderBinaryRowHistory(store_item, binary , sib, row);
+    //$('.controls .progress_area', row).after(history);
+
+    var progress_area = $('.progress', row);
+    var progress_bar = $('.bar', progress_area);
+
+    // Render Binary config
+    if ($(row).has('.bundle_id').length > 0) {
+      var bundle_config_input = $('.bundle_id', row);
+      var config = self._configForDestination(store_item, binary.destination);
+      if (config) {
+        bundle_config_input.val(config.bundle_id);
       }
+    }
 
-      // Render Binary config
-      var row = input.parents('tr');
-      if ($(row).has('.bundle_id').length > 0) {
-        var bundle_config_input = $('.bundle_id', row);
-        var config = self._configForDestination(store_item, binary.destination);
-        if (config) {
-          bundle_config_input.val(config.bundle_id);
-        }
-      }
+    // Does a binary already exist?
+    var binary_upload_status = self._resolveUploadStatus(binary.destination, store_item);
+    if (binary_upload_status === true) {
+      $('.bundle_id, .update_bundle_id', row).removeAttr('disabled');
+    }
 
-      // Inject binary upload progress template
-      var progress_area = $('#binary_upload_progress_template').clone();
-      var status = $('.status', progress_area);
-      var progress_bar = $('.progress', progress_area);
-      progress_area.removeAttr('id');
-      input.after(progress_area);
-
-      // Does a binary already exist?
-      var binary_upload_status = self._resolveUploadStatus(binary.destination, store_item);
-      var status_el = $('.upload_status', row);
-      if(!status_el.length) {
-        status_el = $('#binary_upload_status').clone().removeAttr('id').removeClass('hidden_template');
-        input.before(status_el);
-      }
-
-      if (binary_upload_status === true) {
-        // Uploaded
-        status_el.text('Uploaded').removeClass('label-inverse').addClass('label-success');
-        // Enable config setting
-        input.parents('tr').find('.bundle_id, .update_bundle_id').removeAttr('disabled');
-      } else {
-        // Not uploaded
-        status_el.text('Not Uploaded').removeClass('label-success').addClass('label-inverse');
-      }
-
-      // Setup file upload
-      input.fileupload('destroy').fileupload({
+    // Setup file upload
+    input.fileupload('destroy').fileupload({
         url: Constants.ADMIN_STORE_ITEM_UPLOAD_BINARY_URL,
         dataType: 'json',
         replaceFileInput: false,
@@ -337,48 +545,51 @@ Admin.Storeitems.Controller = Controller.extend({
         dropZone: input,
         timeout: 120000,
         add: function(e, data) {
+          input.hide();
           progress_area.show();
-          status.text('Uploading...');
-          status.slideDown();
           progress_bar.slideDown();
           data.submit();
         },
         done: function(e, data) {
-          if (data.result.status === 'ok') {
-            var filename = data.files[0].name;
-            status.text('Uploaded ' + filename);
-            status_el.text('Uploaded ' + filename).removeClass('label-inverse').addClass('label-success');
-            // Enable config setting
-            input.parents('tr').find('.bundle_id, .update_bundle_id').removeAttr('disabled');
-
-            // Set icon
-            if (typeof data.result.icon !== 'undefined') {
-              self.setStoreIcon(data.result.icon);
-            }
-
-            setTimeout(function() {
-              progress_bar.slideUp();
-              status.slideUp();
-            }, 500);
+          input.show();
+          progress_area.hide();
+          progress_bar.slideUp();
+          var message;
+          var err = (data.result.status !== 'ok');
+          if (!err) {
+            // update the store item with new data
+            $.each(data.result, function(k,v){store_item[k] = v;});
+            self.renderBinaryUploads(store_item,true);
+            message = 'Uploaded ' + data.files[0].name;
           } else {
-            // Show error
-            status.text('Error: ' + data.result.message);
-            status_el.text('Error').removeClass('label-inverse').addClass('label-danger');
-            setTimeout(function() {
-              progress_bar.slideUp();
-              status.slideUp();
-            }, 500);
+            message = 'Error: ' + data.result.message;
           }
+          self.showAlert(err ? 'error' : 'success', message);
         },
         progressall: function(e, data) {
           var progress = parseInt(data.loaded / data.total * 100, 10);
-          $('.bar', progress_bar).css('width', progress + '%');
+          $(progress_bar).css('width', progress + '%');
         }
-      });
-
     });
   },
 
+  _popoverContent: function(store_item,sib,title) {
+    var date = moment(sib.sysModified ? sib.sysModified : sib.storeItemBinaryModified);
+
+//    var content = $('<div/>');
+//    content.append($("<p/>").text("Type : " + (sib.type ? sib.type :  sib.destinationCode)));
+//    content.append($("<p/>").text("Uploaded : " + date.format(this.FORMAT)));
+//    if(sib.storeItemBinaryModified) {
+//      content.append($("<p/>").text("Note : this will not affect the audit logs"));
+//    }
+//    content.end();
+
+//    var row = $('<p/>').append($('<a/>', {href :sib.url, text:date.fromNow(), rel:"popover" , "data-content":content.html() , "data-original-title":title}));
+//    row.end();
+    var row = $('<p/>').append($('<a/>', {href :sib.url, text:date.format(this.FORMAT)}));
+    row.end();
+    return row;
+  },
   _resolveUploadStatus: function(destination, store_item) {
     var uploaded = null;
     if (destination) {
@@ -416,9 +627,9 @@ Admin.Storeitems.Controller = Controller.extend({
     return config;
   },
 
-  updateStoreItem: function() {
+  updateStoreItem: function(store_item) {
     var self = this;
-    var container = $(this.views.store_item_update);
+    //var container = $(this.views.store_item_update);
 
     var name = $('.item_name', container).val();
     var item_id = $('.item_id', container).val();
@@ -430,6 +641,10 @@ Admin.Storeitems.Controller = Controller.extend({
 
     this.models.store_item.update(guid, name, item_id, description, auth_policies, groups, restrictToGroups, function() {
       self.showAlert('success', "Store Item successfully updated", self.views.store_items);
+      store_item.name = name;
+      store_item.description = description;
+      store_item.auth_policies = auth_policies;
+      store_item.groups = groups;
       self.showStoreItemBinaries();
     }, function(err) {
       console.log(err);
