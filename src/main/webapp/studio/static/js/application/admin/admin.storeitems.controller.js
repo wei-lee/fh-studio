@@ -10,7 +10,6 @@ Admin.Storeitems.Controller = Controller.extend({
     audit_log : new model.AuditLogEntry(),
     user : new model.User(),
     store_item: new model.StoreItem()
-
   },
 
   views: {
@@ -32,6 +31,7 @@ Admin.Storeitems.Controller = Controller.extend({
   audit_log_tabe:null,
 
   alert_timeout: 3000,
+  conatiner: null,
   FORMAT:"DD/MM/YYYY HH:mm",
 
   template : function (type ,args){
@@ -145,11 +145,12 @@ Admin.Storeitems.Controller = Controller.extend({
 
   deleteStoreItem: function(guid) {
     var self = this;
+    self.container = self.views.store_items;
     this.models.store_item.remove(guid, function() {
-      self.showAlert('success', "Store Item successfully deleted", self.views.store_items);
+      self.showAlert('success', "Store Item successfully deleted");
       self.showStoreItems();
     }, function(err) {
-      self.showAlert('error', err, self.views.store_items);
+      self.showAlert('error', err);
       self.showStoreItems();
       console.log(err);
     });
@@ -176,6 +177,9 @@ Admin.Storeitems.Controller = Controller.extend({
 
   showUpdateStoreItem: function(store_item) {
     var self = this;
+    var container = $(self.views.store_item_update);
+    self.container = container;
+
     this.hide();
 
     self.setStoreIcon(store_item.icon);
@@ -186,34 +190,37 @@ Admin.Storeitems.Controller = Controller.extend({
     $('.bundle_id, .update_bundle_id', self.views.store_item_update).attr('disabled', 'disabled');
 
     this.models.auth_policy.list(function(res) {
-      var update_view = $(self.views.store_item_update);
+      //var update_view = $(self.views.store_item_update);
 
       //self.showStoreItemDetails();
       // Remove uploaded status labels
-      $('span.label', update_view).remove();
-      $('.bundle_id', update_view).val('');
+      $('span.label', container).remove();
+      $('.bundle_id', container).val('');
 
       var assigned_auth_policies = store_item.authpolicies;
       self.renderAvailableAuthPolicies(res.list, assigned_auth_policies, '.store_item_auth_policies_swap');
 
-      $('.item_guid', update_view).val(store_item.guid);
-      $('.item_name', update_view).val(store_item.name);
-      $('.item_id', update_view).val(store_item.authToken);
-      $('.item_description', update_view).val(store_item.description);
+      $('.item_guid', container).val(store_item.guid);
+      $('.item_name', container).val(store_item.name);
+      $('.item_id', container).val(store_item.authToken);
+      $('.item_description', container).val(store_item.description);
 
       if (store_item.restrictToGroups) {
-        $('.restrict_to_groups', update_view).attr('checked', 'true');
+        $('.restrict_to_groups', container).attr('checked', 'true');
       } else {
-        $('.restrict_to_groups', update_view).removeAttr('checked');
+        $('.restrict_to_groups', container).removeAttr('checked');
       }
 
       self.showStoreItemDetails();
-      update_view.show();
+      container.show();
 
-      $('.update_store_item', update_view).unbind().click(function(e) {
+      $('.update_store_item', container).unbind().click(function(e) {
         e.preventDefault();
         self.setStoreName(store_item.name);
-        self.updateStoreItem(store_item);
+        var n = $(this).attr("data-next");
+        $(this).removeAttr("data-next");
+
+        self.updateStoreItem(store_item,n);
         return false;
       });
 
@@ -369,6 +376,7 @@ Admin.Storeitems.Controller = Controller.extend({
     $.each(this.filterFields, function(name, target){
       $(target).val($(target + " option:first").val());
     });
+    this.showAlert('success', "Store Item Audit Log filter reset");
   },
   doFilter : function (store_item){
     //build params ob and send to listlogs to filter
@@ -384,6 +392,7 @@ Admin.Storeitems.Controller = Controller.extend({
     if(limit && limit !== "all") params.limit = limit;
 
     this.models.audit_log.listLogs(function(data){
+      self.showAlert('success', "Store Item Audit filter complete");
       return self.renderAuditLogTable(data,store_item);
     }, console.error, true,params);
 
@@ -625,10 +634,10 @@ Admin.Storeitems.Controller = Controller.extend({
     return config;
   },
 
-  updateStoreItem: function(store_item) {
+  updateStoreItem: function(store_item, n) {
     var self = this;
     var container = $(this.views.store_item_update);
-
+    self.container = container;
     var name = $('.item_name', container).val();
     var item_id = $('.item_id', container).val();
     var description = $('.item_description', container).val();
@@ -638,13 +647,18 @@ Admin.Storeitems.Controller = Controller.extend({
     var restrictToGroups = $('.restrict_to_groups', container).is(':checked');
 
     this.models.store_item.update(guid, name, item_id, description, auth_policies, groups, restrictToGroups, function() {
-      self.showAlert('success', "Store Item successfully updated", self.views.store_items);
+      self.showAlert('success', "Store Item successfully updated");
       store_item.name = name;
       store_item.description = description;
       store_item.auth_policies = auth_policies;
       store_item.groups = groups;
-      self.showStoreItemBinaries();
+      if(n === "binaries") {
+        self.showStoreItemBinaries();
+      } else {
+        self.showStoreItemDetails();
+      }
     }, function(err) {
+      self.showAlert('error', "Store Item config couldn't be updated");
       console.log(err);
     });
   },
@@ -739,16 +753,18 @@ Admin.Storeitems.Controller = Controller.extend({
 
   updateStoreItemConfig: function(guid, destination, bundle_id) {
     var self = this;
+    self.container = self.views.store_item_update;
     this.models.store_item.updateConfig(guid, destination, bundle_id, function() {
-      self.showAlert('success', "Store Item config updated", self.views.store_item_update);
+      self.showAlert('success', "Store Item config updated");
     }, function() {
-      self.showAlert('error', "Store Item config couldn't be updated", self.views.store_item_update);
+      self.showAlert('error', "Store Item config couldn't be updated");
     });
   },
 
   createStoreItem: function() {
     var self = this;
     var container = $(this.views.store_item_create);
+    self.container = container;
     var name = $('.item_name', container).val();
     var item_id = $('.item_id', container).val();
     var description = $('.item_description', container).val();
@@ -757,10 +773,11 @@ Admin.Storeitems.Controller = Controller.extend({
     var restrictToGroups = $('.restrict_to_groups', container).is(':checked');
 
     this.models.store_item.create(name, item_id, description, auth_policies, groups, restrictToGroups, function(res) {
-      self.showAlert('success', "Store Item successfully created", self.views.store_items);
+      $('.update_store_item', self.update_view).attr("data-next", "binaries");
+      setTimeout(function() {self.showAlert('success', "Store Item successfully created");}, 100);
       self.showUpdateStoreItem(res);
     }, function(err) {
-      self.showAlert('error', err, self.views.store_item_create);
+      self.showAlert('error', err);
     });
   },
 
