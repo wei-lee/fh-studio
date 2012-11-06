@@ -33,7 +33,6 @@ Admin.Storeitems.Controller = Controller.extend({
 
   alert_timeout: 3000,
   FORMAT:"DD/MM/YYYY HH:mm",
-  container: null,
 
   template : function (type ,args){
     if(type === "option"){
@@ -45,7 +44,6 @@ Admin.Storeitems.Controller = Controller.extend({
   show: function() {
     this.hideAlerts();
     this.showStoreItems();
-    this.container = $(this.views.store_item_update);
   },
 
   hide: function() {
@@ -629,7 +627,7 @@ Admin.Storeitems.Controller = Controller.extend({
 
   updateStoreItem: function(store_item) {
     var self = this;
-    //var container = $(this.views.store_item_update);
+    var container = $(this.views.store_item_update);
 
     var name = $('.item_name', container).val();
     var item_id = $('.item_id', container).val();
