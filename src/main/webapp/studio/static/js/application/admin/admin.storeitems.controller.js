@@ -405,6 +405,7 @@ Admin.Storeitems.Controller = Controller.extend({
       "aoColumns": data.aoColumns
     });
 
+    this.audit_log_table.fnSetColumnVis( 1, false );
     tbl.show();
     //this.renderAuditLogFilterForm(store_item);
   },
