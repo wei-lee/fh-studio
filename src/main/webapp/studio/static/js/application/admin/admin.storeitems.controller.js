@@ -491,10 +491,10 @@ Admin.Storeitems.Controller = Controller.extend({
 
     if(sib) {
       var name = "'" + store_item.name + "'";
-      var c = self._popoverContent(store_item,sib,["Download", name ].join(" "));
+      var c = self.binaryRowHistoryItem(store_item,sib,["Download", name ].join(" "));
       $(".history",template).append(c);
       $.each(sib.versions, function (i,sibh){
-        var c = self._popoverContent(store_item,sibh,["Download", name].join(" "));
+        var c = self.binaryRowHistoryItem(store_item,sibh,["Download", name].join(" "));
         $(".history",template).append(c);
       });
     }
@@ -574,20 +574,13 @@ Admin.Storeitems.Controller = Controller.extend({
     });
   },
 
-  _popoverContent: function(store_item,sib,title) {
+  binaryRowHistoryItem: function(store_item,sib,title) {
     var date = moment(sib.sysModified ? sib.sysModified : sib.storeItemBinaryModified);
 
-//    var content = $('<div/>');
-//    content.append($("<p/>").text("Type : " + (sib.type ? sib.type :  sib.destinationCode)));
-//    content.append($("<p/>").text("Uploaded : " + date.format(this.FORMAT)));
-//    if(sib.storeItemBinaryModified) {
-//      content.append($("<p/>").text("Note : this will not affect the audit logs"));
-//    }
-//    content.end();
-
-//    var row = $('<p/>').append($('<a/>', {href :sib.url, text:date.fromNow(), rel:"popover" , "data-content":content.html() , "data-original-title":title}));
-//    row.end();
-    var row = $('<p/>').append($('<a/>', {href :sib.url, text:date.format(this.FORMAT)}));
+    var version = sib.binaryVersion || sib.storeItemBinaryVersion ;
+    var row = $('<p/>')
+                .append($('<span/>', {text:(version + " : ")}))
+                .append($('<a/>', {href :sib.url, text:(date.format(this.FORMAT)),title:"click to download version " + version}));
     row.end();
     return row;
   },
