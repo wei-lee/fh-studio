@@ -214,7 +214,6 @@ Admin.Storeitems.Controller = Controller.extend({
 
       $('.update_store_item', container).unbind().click(function(e) {
         e.preventDefault();
-        self.setStoreName(store_item.name);
         var n = $(this).attr("data-next");
         $(this).removeAttr("data-next");
 
@@ -639,6 +638,8 @@ Admin.Storeitems.Controller = Controller.extend({
       store_item.description = description;
       store_item.auth_policies = auth_policies;
       store_item.groups = groups;
+      self.setStoreName(store_item.name);
+
       if(n === "binaries") {
         self.showStoreItemBinaries();
       } else {
