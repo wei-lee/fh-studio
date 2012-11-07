@@ -33,6 +33,10 @@
     </div>
   </div>
 
+  <div id="wufoo_single_generator_form" class="app_generator hidden_template">
+
+  </div>
+
   <!-- wufoo_single_generator_form -->
   <div id="wufoo_single_generator_form" class="app_generator hidden_template">
     <h3>Single-Form Wufoo App Generator</h3>
@@ -50,6 +54,8 @@
     <div id="alerts"></div>
 
     <div class="row-fluid step_1">
+      <!-- Include step 1 template -->
+
       <div class="span12">
         <div class="step_number">1</div>
         <form class="well form-horizontal">
@@ -244,9 +250,11 @@
           <div class="control-group">
             <label class="control-label" for="input01">Wufoo Password</label>
             <div class="controls">
-              <input type="text" class="input-xlarge wufoo_password" name="wufoo_password" placeholder="Wufoo Password">
+              <input type="password" class="input-xlarge wufoo_password" name="wufoo_password" placeholder="Wufoo Password">
             </div>
           </div>
+
+          <input type="hidden" class="wufoo_api_key" name="wufoo_api_key">
 
           <span class="help-inline"><button type="submit" class="btn btn-primary validate">Validate</button>
             &nbsp;<img class="loader hidden_template" src="<%=studio.getStaticAssetPath("themes/default/img/throbber.gif")%>" alt="loading"/>
@@ -265,24 +273,33 @@
             Here you can select which WuFoo forms to include in your generated your App
           </p>
 
-          <div class="control-group no-bottom-margin">
+          <div id="app_forms_swap_div" class="control-group no-bottom-margin">
             <label class="control-label">Available Forms</label>
-            <div class="controls">
-              <label class="select">
-                <select class="span3 available_forms" disabled>
-                  <option>-</option>
+            <div class="controls swap-select app_forms_swap">
+              <div class="span3">
+                <span>Available</span>
+                <select multiple="multiple" class="span12 swap-from app_forms_available">
                 </select>
-                <span class="help-inline"><button class="btn btn-primary view_selected_form" disabled>View Selected Form</button></span>
-              </label>
+              </div>
+              <div class="span1">
+                <button class="btn btn-inverse btn-large add">&gt;</button>
+                <button class="btn btn-inverse btn-large remove">&lt;</button>
+              </div>
+              <div class="span3">
+                <span>Selected</span>
+                <select multiple="multiple" class="span12 swap-to app_forms_assigned">
+                </select>
+              </div>
             </div>
           </div>
+
 
           <div class="control-group">
             <label class="control-label">Form Password</label>
             <div class="controls">
               <label class="checkbox">
                 <input type="checkbox" class="protected_password" value="password">
-                Are the selected Form password protected?
+                Are the selected Forms password protected?
               </label>
             </div>
           </div>
@@ -291,7 +308,7 @@
             <label class="control-label">Form Password</label>
             <div class="controls">
               <input type="password" class="input-xlarge wufoo_form_password" name="wufoo_form_password" placeholder="Form Password">
-              <span class="help-inline"><button class="btn btn-primary view_selected_form" disabled>All selected forms must have the same password</button></span>
+              <span class="help-inline">All selected forms must have the same password</span>
             </div>
           </div>
 
@@ -307,6 +324,6 @@
     </div>
 
   </div>
-  <!-- /wufoo_single_generator_form -->
+  <!-- /wufoo_selection_generator_form -->
 
 </div>

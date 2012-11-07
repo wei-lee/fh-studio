@@ -20,51 +20,13 @@ GenerateApp.Utils = {
 };
 
 GenerateApp.Configs = {
-  wufoo_single_form_client: {
-    config: {
-      app_type: "single_form"
-    },
+  client: {
     wrapper: 'var wufoo_config = '
   },
-  wufoo_single_form_cloud: {
-    config: {
-      app_type: "single_form"
-    },
+  cloud: {
     wrapper: 'exports.wufoo_config = '
-  },
-  wufoo_multi_form_client: {
-    config: {
-      app_type: "multi_form"
-    },
-    wrapper: 'var wufoo_config = '
-  },
-  wufoo_multi_form_cloud: {
-    config: {
-      app_type: "multi_form"
-    },
-    wrapper: 'exports.wufoo_config = '
-  },
-  wufoo_selection_form_client: {
-    config: {
-      app_type: "selection_form"
-    },
-    wrapper: 'var wufoo_config = '
-  },
-  wufoo_selection_form_cloud: {
-    config: {
-      app_type: "selection_form"
-    },
-    wrapper: 'exports.wufoo_config = '
-  },
-  getConfig: function(key, global_name, merge) {
-    var default_config = GenerateApp.Configs[key];
-
-    // Merge with custom config
-    var merged_config = GenerateApp.Utils.merge(default_config.config, merge);
-    var config = default_config.wrapper + JSON.stringify(merged_config) + ';';
-    return config;
   }
-};
+}
 
 GenerateApp.Models.Wufoo = Class.extend({
   all: null,
@@ -176,7 +138,8 @@ GenerateApp.Models.Wufoo = Class.extend({
           var json_data = JSON.parse(res.body);
           return cb({
             status: "ok",
-            data: json_data
+            data: json_data,
+            apiKey: apiKey
           });
         } catch (err) {
           return cb({
@@ -410,36 +373,10 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
       do_stage: false
     };
 
-    var custom_client_config, custom_cloud_config, client_config, cloud_config;
-    if (this.type == 'single') {
-      var url = "https://" + this.getDomain() + "/forms/" + app_config.form.Hash + "/";
+    var config = self.buildConfig(app_config);
 
-      custom_client_config = {
-        form_hash: app_config.form.Hash,
-        form_url: url
-      };
-
-      custom_cloud_config = {
-        form_hash: app_config.form.Hash,
-        form_url: url,
-        api_key: self.getApiKey(),
-        api_domain: self.getDomain()
-      };
-
-      custom_cloud_config.form_password = app_config.wufoo_form_password || null;
-
-      client_config = GenerateApp.Configs.getConfig('wufoo_single_form_client', 'wufoo_config', custom_client_config);
-      cloud_config = GenerateApp.Configs.getConfig('wufoo_single_form_cloud', 'wufoo_config', custom_cloud_config);
-    } else {
-      custom_client_config = {};
-      custom_cloud_config = {
-        api_key: self.getApiKey(),
-        api_domain: self.getDomain()
-      };
-      custom_cloud_config.form_password = app_config.wufoo_form_password || null;
-      client_config = GenerateApp.Configs.getConfig('wufoo_multi_form_client', 'wufoo_config', custom_client_config);
-      cloud_config = GenerateApp.Configs.getConfig('wufoo_multi_form_cloud', 'wufoo_config', custom_cloud_config);
-    }
+    var client_config = self.getConfig('client', config.client);
+    var cloud_config = self.getConfig('cloud', config.cloud);
 
     var update_client_config_params = {
       files: [{
@@ -475,10 +412,11 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
     });
   },
 
-  selectedFormData: function() {
-    var self = this;
-    return $(self.container).find('.available_forms option:selected').data() || null;
+  buildConfig: function(app_config) {
+    // Dummy function which should be over-ridden for each implmentation
+    throw Error("Build Config must be over written!");
   },
+
 
   getDomain: function() {
     var self = this;
@@ -494,22 +432,19 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
     var self = this;
     var app_config = {
       generated_app_type: "wufoo",
-      wufoo_api_key: $(self.container).find('.wufoo_api_key').val(),
-      wufoo_api_domain: $(self.container).find('.wufoo_api_domain').val()
+      email: $(self.container).find('.wufoo_email').val(),
+      password: $(self.container).find('.wufoo_password').val(),
+      api_key: $(self.container).find('.wufoo_api_key').val(),
+      api_domain: $(self.container).find('.wufoo_api_domain').val()
     };
 
     var password_checked = $(self.container).find('.protected_password').is(':checked');
     var password_value = $(self.container).find('.wufoo_form_password').val();
 
     if (password_checked && password_value !== '') {
-      app_config.wufoo_form_password = password_value;
+      app_config.form_password = password_value;
     }
 
-    var wufoo_form_password = $(self.container).find('.wufoo_api_key:visible');
-
-    var selected_form_data = self.selectedFormData();
-
-    app_config.form = selected_form_data;
     return app_config;
   },
 
@@ -535,6 +470,11 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
       self.hideLoader();
 
       if (res.status == "ok") {
+        // Put the API Key into the text field if it is in the res.
+        // This is required for username/password authentication where API key is not provided by user
+        if( res.apiKey ) {
+          $(self.container).find('.wufoo_api_key').val(res.apiKey);
+        }
         self.showSuccess("Your credentials look good to us, you're ready to generate your app.");
         self.updateFormListing(res.data.Forms);
         self.enableAllInputs();
@@ -575,25 +515,105 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
       $(input).attr("disabled", "disabled");
     });
     $(self.container).find('.generate_app, .view_selected_form').attr("disabled", "disabled");
+  },
+
+  getConfig: function(side, config) {
+
+    config.app_type = this.type;
+
+    var default_config = GenerateApp.Configs[side];
+
+    var config = default_config.wrapper + JSON.stringify(config, null, 2) + ';';
+    return config;
   }
 });
 
 GenerateApp.Controllers.WufooSingle = GenerateApp.Controllers.Wufoo.extend({
   template_url: "https://github.com/feedhenry/Wufoo-Template/zipball/master",
   container: '#wufoo_single_generator_form',
-  type: 'single'
+  type: 'single',
+
+  selectedFormData: function() {
+    var self = this;
+    return $(self.container).find('.available_forms option:selected').data() || null;
+  },
+
+  buildConfig: function(app_config) {
+    var self = this;
+    var res = {};
+
+    var selected_form_data = self.selectedFormData();
+    var url = "https://" + this.getDomain() + "/forms/" + selected_form_data.Hash + "/";
+
+    res.client = {
+      form_hash: selected_form_data.Hash,
+      form_url: url
+    };
+
+    res.cloud = app_config;
+    res.cloud.form_hash = selected_form_data.Hash;
+    res.cloud.form_url = url;
+    return res;
+  }
 });
 
 GenerateApp.Controllers.WufooMulti = GenerateApp.Controllers.Wufoo.extend({
   template_url: "https://github.com/feedhenry/Wufoo-Template/zipball/master",
   container: '#wufoo_multi_generator_form',
-  type: 'multi'
+  type: 'multi',
+
+  buildConfig: function(app_config) {
+    var res = {};
+    res.client = {};
+    res.cloud = app_config;
+    return res;
+  }
 });
 
 GenerateApp.Controllers.WufooSelection = GenerateApp.Controllers.Wufoo.extend({
   template_url: "https://github.com/feedhenry/Wufoo-Template/zipball/master",
   container: '#wufoo_selection_generator_form',
-  type: 'selection'
+  type: 'selection',
+  swap_select_container: '#app_forms_swap_div',
+
+  updateFormListing: function(forms) {
+
+    var from = [];
+    $.each(forms, function(i, item) {
+      from.push([item.Name, item.Hash]);
+    });
+    this.bindSwapSelect(this.swap_select_container);
+    this.updateSwapSelect(this.swap_select_container, from, []);
+  },
+
+  selectedFormData: function() {
+    var self = this;
+    var forms = [];
+
+    var formHashes = self.getSelectedItems(self.swap_select_container);
+    $.each(formHashes, function(i, item) {
+      var form = {
+        "hash" : item,
+        "url" : "https://" + self.getDomain() + "/forms/" + item + "/"
+      };
+      forms.push(form);
+    });
+
+    return forms;
+  },
+
+  buildConfig: function(app_config) {
+    var self = this;
+    var res = {};
+
+    var forms = self.selectedFormData();
+
+    res.client = {};
+
+    res.cloud = app_config;
+    res.cloud.forms = forms;
+    return res;
+  }
 });
 
 var Apps = Apps || {};
