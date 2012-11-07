@@ -577,7 +577,7 @@ Admin.Storeitems.Controller = Controller.extend({
   binaryRowHistoryItem: function(store_item,sib,title) {
     var date = moment(sib.sysModified ? sib.sysModified : sib.storeItemBinaryModified);
 
-    var version = sib.binaryVersion || sib.storeItemBinaryVersion ;
+    var version = sib.storeItemBinaryVersion ;
     var row = $('<p/>')
                 .append($('<span/>', {text:(version + " : ")}))
                 .append($('<a/>', {href :sib.url, text:(date.format(this.FORMAT)),title:"click to download version " + version}));
