@@ -8,8 +8,7 @@ Admin.Storeitems.Controller = Controller.extend({
     group: new model.Group(),
     auth_policy: new model.ArmAuthPolicy(),
     audit_log : new model.AuditLogEntry(),
-    user : new model.User(),
-    store_item: new model.StoreItem()
+    user : new model.User()
   },
 
   views: {
@@ -22,7 +21,6 @@ Admin.Storeitems.Controller = Controller.extend({
 
   filterFields :{
     userGuid : "select#binAuditlogUserGuid",
-    //storeItemGuid : "select#binAuditlogStoreItemGuid",
     storeItemType : "select#binAuditlogStoreItemBinaryType",
     logLimit: "select#binAuditlogLimit",
     storeItemBinaryType:"select#binAuditlogStoreItemBinaryType"
@@ -249,10 +247,8 @@ Admin.Storeitems.Controller = Controller.extend({
 
     // bind to bootstrap shown event to load table
     self.getStoreItemTab("#auditlogs").on('shown', function () {
-      //self.renderAuditLogFilterForm(store_item);
       self.renderAuditLogFilterForm(store_item);
-      var cb = function(data){self.renderAuditLogTable(data,store_item);}
-      //var cb = $.proxy(self.renderAuditLogTable, self );
+      var cb = function(data){self.renderAuditLogTable(data,store_item);};
       self.models.audit_log.listLogs( cb, console.error, true,{"storeItemGuid":store_item.guid});
     });
   },
@@ -365,7 +361,7 @@ Admin.Storeitems.Controller = Controller.extend({
       e.preventDefault();
       self.resetFilter(store_item);
       self.clearAuditLogTable();
-      var params = {"storeItemGuid":store_item.guid}
+      var params = {"storeItemGuid":store_item.guid};
       self.models.audit_log.listLogs(function(data){
         return self.renderAuditLogTable(data,store_item);
       }, console.error, true,params);
@@ -382,12 +378,10 @@ Admin.Storeitems.Controller = Controller.extend({
     //build params ob and send to listlogs to filter
     var self = this;
     var userGuid = $(self.filterFields.userGuid).val();
-    //var storeItemGuid = $(self.filterFields.storeItemGuid).val();
     var storeItemType = $(self.filterFields.storeItemType).val();
     var limit = $(self.filterFields.logLimit).val();
-    var params = {"storeItemGuid":store_item.guid}
+    var params = {"storeItemGuid":store_item.guid};
     if(userGuid && userGuid !=="all") params.userId = userGuid;
-    //if(storeItemGuid && storeItemGuid !=="all")params.storeItemGuid = storeItemGuid;
     if(storeItemType && storeItemType !== "all")params.storeItemBinaryType = storeItemType;
     if(limit && limit !== "all") params.limit = limit;
 
