@@ -5,7 +5,7 @@
       <h3>App Generators</h3>
       <hr class="logo_hr"/>
       <ul id="app_generators">
-        <li class="well clearfix">
+        <li id="wufoo_single_generator_option" class="well clearfix">
           <div class="span 12">
             <img class="generator_logo left" src="<%=studio.getStaticAssetPath("themes/default/img/wufoo_logo.png")%>" alt="wufoo">
             <button class="btn btn-large btn-primary generate_single_wufoo_app right">Generate</button>
@@ -13,15 +13,15 @@
             <p>Generate an app from a single <a href="http://wufoo.com/" target="_blank">WuFoo</a> form. Choose from a list of available forms, and pick the app you'd like to base your app on.</p>
           </div>
         </li>
-        <li class="well clearfix">
+        <li id="wufoo_multi_generator_option" class="well clearfix">
           <div class="span 12">
             <img class="generator_logo left" src="<%=studio.getStaticAssetPath("themes/default/img/wufoo_logo.png")%>" alt="wufoo">
             <button class="btn btn-large btn-primary generate_multi_wufoo_app right">Generate</button>
             <h4>Wufoo App - All Forms</h4>
             <p>Generate an app containing all your <a href="http://wufoo.com/" target="_blank">WuFoo</a> forms. Your users will be able to choose from a list of forms, and fill these in.</p>
-           </div>
+          </div>
         </li>
-        <li class="well clearfix">
+        <li id="wufoo_selection_generator_option" class="well clearfix">
           <div class="span 12">
             <img class="generator_logo generate_selection_wufoo_app left" src="<%=studio.getStaticAssetPath("themes/default/img/wufoo_logo.png")%>" alt="wufoo">
             <button class="btn btn-large btn-primary generate_single_wufoo_app right">Generate</button>
@@ -31,10 +31,6 @@
         </li>
       </ul>
     </div>
-  </div>
-
-  <div id="wufoo_single_generator_form" class="app_generator hidden_template">
-
   </div>
 
   <!-- wufoo_single_generator_form -->

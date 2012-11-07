@@ -450,6 +450,7 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
 
   show: function() {
     this.parent_controller.hideGeneratorList();
+
     $(this.container).show();
     this.bind();
   },
@@ -529,7 +530,7 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
 });
 
 GenerateApp.Controllers.WufooSingle = GenerateApp.Controllers.Wufoo.extend({
-  template_url: "https://github.com/feedhenry/Wufoo-Template/zipball/master",
+  li: '#wufoo_single_generator_option',
   container: '#wufoo_single_generator_form',
   type: 'single',
 
@@ -558,7 +559,7 @@ GenerateApp.Controllers.WufooSingle = GenerateApp.Controllers.Wufoo.extend({
 });
 
 GenerateApp.Controllers.WufooMulti = GenerateApp.Controllers.Wufoo.extend({
-  template_url: "https://github.com/feedhenry/Wufoo-Template/zipball/master",
+  li: '#wufoo_multi_generator_option',
   container: '#wufoo_multi_generator_form',
   type: 'multi',
 
@@ -571,7 +572,7 @@ GenerateApp.Controllers.WufooMulti = GenerateApp.Controllers.Wufoo.extend({
 });
 
 GenerateApp.Controllers.WufooSelection = GenerateApp.Controllers.Wufoo.extend({
-  template_url: "https://github.com/feedhenry/Wufoo-Template/zipball/master",
+  li: '#wufoo_selection_generator_option',
   container: '#wufoo_selection_generator_form',
   type: 'selection',
   swap_select_container: '#app_forms_swap_div',
@@ -621,7 +622,13 @@ Apps.Generate = Apps.Generate || {};
 
 Apps.Generate.Controller = GenerateApp.Controller = Class.extend({
   config: null,
-  generator_controllers: null,
+  generators: null,
+
+  available_generators : $fw.getClientProp('appforms-available'),
+  repo : $fw.getClientProp('appforms-repo'),
+  require_credentials : $fw.getClientProp('appforms-require-credentials'),
+  require_apikey : $fw.getClientProp('appforms-require-apikey'),
+
 
   init: function(params) {
     var self = this;
@@ -644,7 +651,9 @@ Apps.Generate.Controller = GenerateApp.Controller = Class.extend({
   },
 
   initGenerators: function() {
-    this.generators = {
+    var self = this;
+
+    self.all_generators = {
       wufoo_single: new GenerateApp.Controllers.WufooSingle({
         controller: this
       }),
@@ -655,6 +664,27 @@ Apps.Generate.Controller = GenerateApp.Controller = Class.extend({
         controller: this
       })
     };
+
+    self.generators = {};
+
+    var available_generators = $fw.getClientProp('appforms-available');
+
+    var gens = available_generators.split(',');
+
+    $('#app_generators li').hide();
+
+    $.each(gens, function(i, item) {
+      item = item.trim();
+      var value = self.all_generators[item];
+      if( value ) {
+        self.generators[item] = value;
+
+        var li_id = value['li']
+        $('#app_generators ' + li_id).show();
+      }
+
+    });
+
   },
 
   hide: function () {
