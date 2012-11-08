@@ -117,15 +117,7 @@ Admin.Storeitems.Controller = Controller.extend({
     $.each(store_items, function(i, store_item) {
       var list_item = $(self.views.store_item).clone().show().removeAttr('id').removeClass('hidden_template');
       list_item.data('store_item', store_item);
-      list_item.find('.details h3').html($("<span/>",{"text":store_item.name, "class":"name"}));
-      var content = $("<p/>",{"text":store_item.guid});
-      content.end();
-
-
-      list_item.find('.details h3 .name').attr('rel','popover');
-      list_item.find('.details h3 .name').attr('data-content',content.html());
-      list_item.find('.details h3 .name').attr("data-original-title",store_item.name);
-
+      list_item.find('.details h3').text(store_item.name);
       list_item.find('.details p').text(store_item.description);
       if (store_item.icon !== '') {
         list_item.find('img').attr('src', 'data:image/png;base64,' + store_item.icon);
@@ -145,7 +137,6 @@ Admin.Storeitems.Controller = Controller.extend({
 
       list_item.appendTo(list);
     });
-    $("[rel=popover]").popover({ trigger: "hover" });
 
     this.bind();
   },
