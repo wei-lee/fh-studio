@@ -609,30 +609,19 @@ GenerateApp.Controllers.WufooSelection = GenerateApp.Controllers.Wufoo.extend({
 
   selectedFormData: function() {
     var self = this;
-    var forms = [];
 
     var formHashes = self.getSelectedItems(self.swap_select_container);
-    $.each(formHashes, function(i, item) {
-      var form = {
-        "hash" : item,
-        "url" : "https://" + self.getDomain() + "/forms/" + item + "/"
-      };
-      forms.push(form);
-    });
 
-    return forms;
+    return formHashes;
   },
 
   buildConfig: function(app_config) {
     var self = this;
     var res = {};
 
-    var forms = self.selectedFormData();
-
     res.client = {};
-
     res.cloud = app_config;
-    res.cloud.forms = forms;
+    res.cloud.form_hashes = self.selectedFormData();
     return res;
   }
 });
