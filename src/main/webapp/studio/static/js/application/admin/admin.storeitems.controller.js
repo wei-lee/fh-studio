@@ -500,7 +500,7 @@ Admin.Storeitems.Controller = Controller.extend({
 
     if(sib) {
       var name = "'" + store_item.name + "'";
-      var c = self.binaryRowHistoryItem(store_item,sib,["Download", name ].join(" "));
+      var c = self.binaryRowHistoryItem(store_item,sib,["Download", name ].join(" "),true);
       $(".history",template).append(c);
       $.each(sib.versions, function (i,sibh){
         var c = self.binaryRowHistoryItem(store_item,sibh,["Download", name].join(" "));
@@ -583,13 +583,18 @@ Admin.Storeitems.Controller = Controller.extend({
     });
   },
 
-  binaryRowHistoryItem: function(store_item,sib,title) {
+  binaryRowHistoryItem: function(store_item,sib,title,current) {
     var date = moment(sib.sysModified ? sib.sysModified : sib.storeItemBinaryModified);
 
     var version = sib.storeItemBinaryVersion ;
     var link = $('<a/>', {href :sib.url, text:(date.format(this.FORMAT)),title:"click to download version " + version});
     if(sib.type !== "android") {
       $(link).attr('target', "_blank");
+      if(current === true){
+        var href = $(link).attr("href");
+        $(link).attr('href', href + "&download=true");
+      }
+
     }
 
     var row = $('<p/>')
