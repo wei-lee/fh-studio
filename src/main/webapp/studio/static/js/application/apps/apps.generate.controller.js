@@ -165,6 +165,10 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
   current_progress: 0,
   alert_timeout: 10000,
 
+  template_url : $fw.getClientProp('appforms-repo'),
+  require_credentials : $fw.getClientProp('appforms-require-credentials'),
+  require_apikey : $fw.getClientProp('appforms-require-apikey'),
+
   showError: function(message) {
     var self = this;
     var alerts_area = $(this.container).find('#alerts');
@@ -207,11 +211,15 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
       return false;
     });
 
-    $(self.container).find('.wufoo_api_domain').keyup(function() {
+    var updateApiKeyUrl = function() {
       var url = 'https://' + $(this).val() + '/api/code/';
       var link = $('<a>').attr('href', url).text(url).attr('target', '_blank');
       $(self.container).find('.wufoo_api_key_url').empty().append(link);
-    });
+    };
+
+    var api_domain_field = $(self.container).find('.wufoo_api_domain');
+    api_domain_field.keyup(updateApiKeyUrl);
+    api_domain_field.blur(updateApiKeyUrl);
 
     $(self.container).find('.validate:visible').unbind().click(function() {
       self.validate();
@@ -432,10 +440,10 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
     var self = this;
     var app_config = {
       generated_app_type: "wufoo",
-      email: $(self.container).find('.wufoo_email').val(),
-      password: $(self.container).find('.wufoo_password').val(),
-      api_key: $(self.container).find('.wufoo_api_key').val(),
-      api_domain: $(self.container).find('.wufoo_api_domain').val()
+      email: $(self.container).find('.wufoo_email').val().trim(),
+      password: $(self.container).find('.wufoo_password').val().trim(),
+      api_key: $(self.container).find('.wufoo_api_key').val().trim(),
+      api_domain: $(self.container).find('.wufoo_api_domain').val().trim()
     };
 
     var password_checked = $(self.container).find('.protected_password').is(':checked');
@@ -449,9 +457,21 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
   },
 
   show: function() {
-    this.parent_controller.hideGeneratorList();
+    var self = this;
 
-    $(this.container).show();
+    self.parent_controller.hideGeneratorList();
+
+    $(self.container + ' #wufoo_auth_group').hide();
+    $(self.container + ' #wufoo_apikey_group').hide();
+
+    if( self.require_credentials == "true") {
+      $(self.container + ' #wufoo_auth_group').show();
+    }
+    if( self.require_apikey == "true") {
+      $(self.container + ' #wufoo_apikey_group').show();
+    }
+
+    $(self.container).show();
     this.bind();
   },
 
@@ -623,12 +643,6 @@ Apps.Generate = Apps.Generate || {};
 Apps.Generate.Controller = GenerateApp.Controller = Class.extend({
   config: null,
   generators: null,
-
-  available_generators : $fw.getClientProp('appforms-available'),
-  repo : $fw.getClientProp('appforms-repo'),
-  require_credentials : $fw.getClientProp('appforms-require-credentials'),
-  require_apikey : $fw.getClientProp('appforms-require-apikey'),
-
 
   init: function(params) {
     var self = this;

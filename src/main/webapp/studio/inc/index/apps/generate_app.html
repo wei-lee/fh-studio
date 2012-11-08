@@ -7,7 +7,7 @@
       <ul id="app_generators">
         <li id="wufoo_single_generator_option" class="well clearfix">
           <div class="span 12">
-            <img class="generator_logo left" src="<%=studio.getStaticAssetPath("themes/default/img/wufoo_logo.png")%>" alt="wufoo">
+            <img class="generator_logo generate_single_wufoo_app left" src="<%=studio.getStaticAssetPath("themes/default/img/wufoo_logo.png")%>" alt="wufoo">
             <button class="btn btn-large btn-primary generate_single_wufoo_app right">Generate</button>
             <h4>Wufoo App - Single Form</h4>
             <p>Generate an app from a single <a href="http://wufoo.com/" target="_blank">WuFoo</a> form. Choose from a list of available forms, and pick the app you'd like to base your app on.</p>
@@ -15,7 +15,7 @@
         </li>
         <li id="wufoo_multi_generator_option" class="well clearfix">
           <div class="span 12">
-            <img class="generator_logo left" src="<%=studio.getStaticAssetPath("themes/default/img/wufoo_logo.png")%>" alt="wufoo">
+            <img class="generator_logo generate_multi_wufoo_app left" src="<%=studio.getStaticAssetPath("themes/default/img/wufoo_logo.png")%>" alt="wufoo">
             <button class="btn btn-large btn-primary generate_multi_wufoo_app right">Generate</button>
             <h4>Wufoo App - All Forms</h4>
             <p>Generate an app containing all your <a href="http://wufoo.com/" target="_blank">WuFoo</a> forms. Your users will be able to choose from a list of forms, and fill these in.</p>
@@ -24,7 +24,7 @@
         <li id="wufoo_selection_generator_option" class="well clearfix">
           <div class="span 12">
             <img class="generator_logo generate_selection_wufoo_app left" src="<%=studio.getStaticAssetPath("themes/default/img/wufoo_logo.png")%>" alt="wufoo">
-            <button class="btn btn-large btn-primary generate_single_wufoo_app right">Generate</button>
+            <button class="btn btn-large btn-primary generate_selection_wufoo_app right">Generate</button>
             <h4>Wufoo App - Selection of Forms</h4>
             <p>Generate an app based on one or more forms in your <a href="http://wufoo.com/" target="_blank">WuFoo</a> account. Select as many forms as you wish from the list of available forms, and generate your app.</p>
           </div>
@@ -55,27 +55,7 @@
       <div class="span12">
         <div class="step_number">1</div>
         <form class="well form-horizontal">
-
-          <div class="control-group">
-            <label class="control-label" for="input01">Wufoo URL</label>
-            <div class="controls">
-              <div class="input-prepend">
-                <span class="add-on"><strong>https://</strong></span><input type="text" class="input-xlarge wufoo_api_domain" name="wufoo_api_domain" placeholder="your_domain.wufoo.com">
-                <span class="help-inline">Your Wufoo URL</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="control-group">
-            <label class="control-label" for="input01">Wufoo API Key</label>
-            <div class="controls">
-              <input type="text" class="input-xlarge wufoo_api_key" name="wufoo_api_key" placeholder="Wufoo API Key">
-              <span class="help-inline"><button type="submit" class="btn btn-primary validate">Validate</button>
-                &nbsp;<img class="loader hidden_template" src="<%=studio.getStaticAssetPath("themes/default/img/throbber.gif")%>" alt="loading"/>
-              </span>
-              <span class="help-block">Find your API Key here: <span class="wufoo_api_key_url">https://&lt;domain&gt;.wufoo.com/api/code/</span></span>
-            </div>
-          </div>
+          <%@ include file="./generate_app_auth.html" %>
         </form>
       </div>
     </div>
@@ -151,45 +131,36 @@
       <div class="span12">
         <div class="step_number">1</div>
         <form class="well form-horizontal">
+          <%@ include file="./generate_app_auth.html" %>
+        </form>
+      </div>
+    </div>
 
-          <div class="control-group">
-            <label class="control-label" for="input01">Wufoo URL</label>
-            <div class="controls">
-              <div class="input-prepend">
-                <span class="add-on"><strong>https://</strong></span><input type="text" class="input-xlarge wufoo_api_domain" name="wufoo_api_domain" placeholder="yourdomain.wufoo.com">
-                <span class="help-inline">Your Wufoo URL - e.g. &lt;yourdomain&gt;.wufoo.com</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="control-group">
-            <label class="control-label" for="input01">Wufoo API Key</label>
-            <div class="controls">
-              <input type="text" class="input-xlarge wufoo_api_key" name="wufoo_api_key" placeholder="Wufoo API Key">
-              <span class="help-inline"><button type="submit" class="btn btn-primary validate">Validate</button>
-                &nbsp;<img class="loader hidden_template" src="<%=studio.getStaticAssetPath("themes/default/img/throbber.gif")%>" alt="loading"/>
-              </span>
-              <span class="help-block">Find your API Key here: <span class="wufoo_api_key_url">https://&lt;domain&gt;.wufoo.com/api/code/</span></span>
-            </div>
-          </div>
+    <div class="row-fluid">
+      <div class="span12">
+        <div class="step_number">2</div>
+        <form class="well form-horizontal">
+          <p class="description">
+            Here you can choose how your forms are protected
+          </p>
 
           <div class="control-group">
             <label class="control-label">Form Password</label>
             <div class="controls">
               <label class="checkbox">
                 <input type="checkbox" class="protected_password" value="password">
-                Are these forms password protected?
+                Are the Form password protected?
               </label>
             </div>
           </div>
 
           <div class="control-group form_password_container hidden_template">
-            <label class="control-label">Password for Forms</label>
+            <label class="control-label">Form Password</label>
             <div class="controls">
               <input type="password" class="input-xlarge wufoo_form_password" name="wufoo_form_password" placeholder="Form Password">
+              <span class="help-inline">All forms must have the same password</span>
             </div>
           </div>
-         
         </form>
       </div>
     </div>
@@ -225,38 +196,7 @@
       <div class="span12">
         <div class="step_number">1</div>
         <form class="well form-horizontal">
-
-          <div class="control-group">
-            <label class="control-label" for="input01">Wufoo URL</label>
-            <div class="controls">
-              <div class="input-prepend">
-                <span class="add-on"><strong>https://</strong></span><input type="text" class="input-xlarge wufoo_api_domain" name="wufoo_api_domain" placeholder="your_domain.wufoo.com">
-                <span class="help-inline">Your Wufoo URL</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="control-group">
-            <label class="control-label" for="input01">Wufoo Email Address</label>
-            <div class="controls">
-              <input type="text" class="input-xlarge wufoo_email" name="wufoo_email" placeholder="Wufoo Email Address">
-            </div>
-          </div>
-
-          <div class="control-group">
-            <label class="control-label" for="input01">Wufoo Password</label>
-            <div class="controls">
-              <input type="password" class="input-xlarge wufoo_password" name="wufoo_password" placeholder="Wufoo Password">
-            </div>
-          </div>
-
-          <input type="hidden" class="wufoo_api_key" name="wufoo_api_key">
-
-          <span class="help-inline"><button type="submit" class="btn btn-primary validate">Validate</button>
-            &nbsp;<img class="loader hidden_template" src="<%=studio.getStaticAssetPath("themes/default/img/throbber.gif")%>" alt="loading"/>
-          </span>
-
-
+          <%@ include file="./generate_app_auth.html" %>
         </form>
       </div>
     </div>

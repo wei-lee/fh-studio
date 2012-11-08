@@ -2427,8 +2427,16 @@ line-height:0.5em;
   width: 150px;
 }
 
-#wufoo_single_generator_form .wufoo_api_key, #wufoo_multi_generator_form .wufoo_api_key  {
+.app_generator textarea, .app_generator password {
   width: 319px;
+}
+
+.app_generator .wufoo_api_domain {
+  width: 209px;
+}
+
+.app_generator .validate {
+    margin-left: 375px;
 }
 
 .wufoo_api_key_url a {
