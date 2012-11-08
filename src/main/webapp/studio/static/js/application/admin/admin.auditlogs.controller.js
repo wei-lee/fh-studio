@@ -134,7 +134,7 @@ Admin.Auditlogs.Controller = Controller.extend({
   renderAuditLogTable: function(data) {
     var self = this;
     var val = $.grep(data.aoColumns,function(item, i){return item.sTitle === "AuditLogEntry ID";});
-    var col = $(data.aoColumns).index(val[0])
+    var col = $(data.aoColumns).index(val[0]);
 
     this.audit_log_table = $('#admin_audit_logs_list_table').dataTable({
       "aaSorting":[[6,'desc']],
