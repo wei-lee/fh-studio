@@ -11,10 +11,12 @@ model.AuditLogEntry = model.Model.extend({
     column_title: "AuditLogEntry ID"
   },{
     field_name: "storeItemTitle",
+    sClass: "audit_log_title",
     column_title: "Title"
   },{
     field_name: "userId",
     column_title: "User",
+    sClass: "audit_log_user",
     width:"350px"
   },{
     field_name: "deviceId",
