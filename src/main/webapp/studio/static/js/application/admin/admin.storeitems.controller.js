@@ -435,6 +435,8 @@ Admin.Storeitems.Controller = Controller.extend({
         // be carefull of the col indexes it will depend on what cols are visible
         var cells = $("td::nth-child(1):not(:empty)", tbl);
         $(cells).attr("data-controller","admin.users.controller");
+
+        $("td[data-controller]").css({cursor:"pointer"});
       }
     });
 
@@ -631,7 +633,7 @@ Admin.Storeitems.Controller = Controller.extend({
     var link = $('<a/>', {href :sib.url, text:(date.format(this.FORMAT)),title:"click to download version " + version});
     if(sib.type !== "android") {
       $(link).attr('target', "_blank");
-      if(current === true){
+      if(current){
         var href = $(link).attr("href");
         $(link).attr('href', href + "&download=true");
       }
@@ -641,7 +643,6 @@ Admin.Storeitems.Controller = Controller.extend({
     var row = $('<p/>')
                 .append($('<span/>', {text:(version + " : ")}))
                 .append(link);
-    row.end();
     return row;
   },
   _resolveUploadStatus: function(destination, store_item) {

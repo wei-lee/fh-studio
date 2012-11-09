@@ -153,6 +153,8 @@ Admin.Auditlogs.Controller = Controller.extend({
         cells = $("td::nth-child(" + userCol + "):not(:empty)", tbl);
         $(cells).attr("data-controller","admin.users.controller");
 
+        $("td[data-controller]").css({cursor:"pointer"});
+
         // apply the guid as title
         $("tr", tbl).each(function (i,row) {
           var data = self.auditLogDataForRow(tbl.dataTable(),$(row).get(0));

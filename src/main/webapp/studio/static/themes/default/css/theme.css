@@ -164,11 +164,6 @@ body {
     cursor:pointer;
 }
 
-td[data-controller]
-{
-    cursor:pointer;
-}
-
 button.ui-state-default
 {
   border:1px solid #ccc !important;
