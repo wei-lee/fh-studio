@@ -51,7 +51,9 @@ model.AuditLogEntry = model.Model.extend({
     column_title: "User Guid"
   }],
 
-  init: function() {},
+  init: function() {
+    console.log("init");
+  },
 
   list: function(success, fail) {
     var self = this;

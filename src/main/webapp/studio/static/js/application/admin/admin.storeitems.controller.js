@@ -37,11 +37,36 @@ Admin.Storeitems.Controller = Controller.extend({
       return "<option value="+args.val+">"+args.text+"</option>";
     }
   },
-  init: function() {},
+  init: function() {
+    var copy = [];
+    $.each(this.models.audit_log.field_config,function (i,v){
+      var field = $.extend({},v);
+      if(field.field_name=== "storeItemTitle") {
+        field.visible= false;
+      }
+      copy[i] = field;
+    });
+    this.models.audit_log.field_config = copy;
+  },
 
-  show: function() {
+  show: function(e) {
+    var self =this;
     this.hideAlerts();
-    this.showStoreItems();
+
+    var guid = arguments[1];
+
+    if(guid) {
+      this.models.store_item.read(guid,
+        function(res) {
+          return self.showUpdateStoreItem(res);
+        },
+        function (){
+          self.showStoreItems();
+          self.showAlert('error', "Store Item read failed");
+        });
+    } else {
+      this.showStoreItems();
+    }
   },
 
   hide: function() {
@@ -75,6 +100,7 @@ Admin.Storeitems.Controller = Controller.extend({
   showStoreItems: function() {
     var self = this;
     this.hide();
+    self.container = this.views.store_items;
     $(this.views.store_items).show();
     this.models.store_item.list(function(res) {
       self.renderItems(res.list);
@@ -393,6 +419,8 @@ Admin.Storeitems.Controller = Controller.extend({
   },
 
   renderAuditLogTable : function (data,store_item){
+    var userCol = this.getColumnIndexForField(data.aoColumns, 'sTitle', "User");
+
     var tbl = $(this.views.store_item_audit_table);
     this.audit_log_table = tbl.dataTable({
       "aaSorting":[[6,'desc']],
@@ -402,12 +430,34 @@ Admin.Storeitems.Controller = Controller.extend({
       "sPaginationType": "bootstrap",
       "bLengthChange": false,
       "aaData": data.aaData,
-      "aoColumns": data.aoColumns
+      "aoColumns": data.aoColumns,
+      "fnDrawCallback": function() {
+        // be carefull of the col indexes it will depend on what cols are visible
+        var cells = $("td::nth-child(1):not(:empty)", tbl);
+        $(cells).attr("data-controller","admin.users.controller");
+      }
     });
 
-    this.audit_log_table.fnSetColumnVis( 1, false );
     tbl.show();
-    //this.renderAuditLogFilterForm(store_item);
+    this.bindRowClicks(tbl);
+  },
+
+  bindRowClicks: function(tbl) {
+    var self = this;
+    $('tr td[data-controller]', tbl).die().live("click", function() {
+      var guid = $(this).text().trim();
+      if(guid.length !== 0) {
+        self.hide();
+        var controller = $(this).attr('data-controller');
+
+        var navlist = $(".admin_nav_list");
+        $(".active", navlist).removeClass("active");
+        $("li > [data-controller='" + controller + "']", navlist).parent().addClass("active");
+
+        $fw.client.tab.admin.getController(controller).show($(this),guid);
+      }
+      return false;
+    });
   },
 
   clearAuditLogTable : function (){

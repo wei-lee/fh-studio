@@ -45,13 +45,7 @@ Admin.Auditlogs.Controller = Controller.extend({
     this.container = this.views.audit_logs_list;
     self.renderAuditLogFilterForm();
     
-    //render the audilogs
-    this.models.audit_log.list(function(data){
-       self.renderAuditLogTable(data);
-    }, console.error, true);
-    
-    
-    
+    this.models.audit_log.list($.proxy(self.renderAuditLogTable, self), console.error, true);
   },
   
   renderAuditLogFilterForm : function () {
@@ -99,10 +93,11 @@ Admin.Auditlogs.Controller = Controller.extend({
    var resetButton = $('button#audit_log_reset');
    resetButton.text($fw.client.lang.getLangString("audit_log_reset"));
    resetButton.unbind().bind("click",function (e){
-       e.preventDefault();
-       self.models.audit_log.list(function(data){
-       self.renderAuditLogTable(data);
-    }, console.error, true);
+     e.preventDefault();
+     $.each(self.filterFields, function(name, target){
+       $(target).val($(target + " option:first").val());
+     });
+     self.models.audit_log.list($.proxy(self.renderAuditLogTable,self), console.error, true);
    });
   },
 
@@ -120,7 +115,7 @@ Admin.Auditlogs.Controller = Controller.extend({
      if(storeItemType && storeItemType !== "all")params.storeItemBinaryType = storeItemType;
      if(limit && limit !== "all") params.limit = limit;
      
-     this.models.audit_log.listLogs(this.renderAuditLogTable, console.error, true,params);
+     this.models.audit_log.listLogs($.proxy(this.renderAuditLogTable,this), console.error, true,params);
      
      return false;
   },
@@ -133,10 +128,13 @@ Admin.Auditlogs.Controller = Controller.extend({
 
   renderAuditLogTable: function(data) {
     var self = this;
-    var val = $.grep(data.aoColumns,function(item, i){return item.sTitle === "AuditLogEntry ID";});
-    var col = $(data.aoColumns).index(val[0]);
+    var titleCol = self.getColumnIndexForField(data.aoColumns, 'sTitle', "Title");
+    var userCol = self.getColumnIndexForField(data.aoColumns, 'sTitle', "User");
+    var guidCol  = self.getColumnIndexForField(data.aoColumns, 'sTitle', "StoreItem ID");
 
-    this.audit_log_table = $('#admin_audit_logs_list_table').dataTable({
+    var tbl = $('#admin_audit_logs_list_table');
+
+    this.audit_log_table = tbl.dataTable({
       "aaSorting":[[6,'desc']],
       "bDestroy": true,
       "bAutoWidth": false,
@@ -145,11 +143,56 @@ Admin.Auditlogs.Controller = Controller.extend({
       "bLengthChange": false,
       "aaData": data.aaData,
       "aoColumns": data.aoColumns,
-      "fnRowCallback": function(nRow, aData, iDisplayIndex) {
-        if(col !== undefined) {
-          $(nRow).attr("title", aData[col]);
-        }
+      // process each page as needed
+      "fnDrawCallback": function() {
+        // be carefull of the col indexes it will depend on what cols are visible
+        var cells = $("td::nth-child(" + titleCol + ")", tbl);
+        $(cells).attr("data-controller","admin.storeitems.controller");
+        $(cells).attr("data-field","title");
+
+        cells = $("td::nth-child(" + userCol + "):not(:empty)", tbl);
+        $(cells).attr("data-controller","admin.users.controller");
+
+        // apply the guid as title
+        $("tr", tbl).each(function (i,row) {
+          var data = self.auditLogDataForRow(tbl.dataTable(),$(row).get(0));
+          if(data) {
+            $(row).attr("title",data[guidCol]);
+          }
+        });
+
       }
+    });
+
+    self.bindRowClicks(tbl);
+  },
+  auditLogDataForRow: function(datatable, el) {
+    return datatable.fnGetData(el);
+  },
+
+
+  bindRowClicks: function(tbl) {
+    var self = this;
+    $('tr td[data-controller]', tbl).die().live("click", function() {
+      var guid;
+      var field = $(this).attr("data-field");
+      if(field) {
+        guid = $(this).parent("[" + field +"]").attr(field);
+      } else {
+        guid = $(this).text().trim();
+      }
+
+      if(guid && guid.length !== 0) {
+        self.hide();
+        var controller = $(this).attr('data-controller');
+
+        var navlist = $(".admin_nav_list");
+        $(".active", navlist).removeClass("active");
+        $("li > [data-controller='" + controller + "']", navlist).parent().addClass("active");
+
+        $fw.client.tab.admin.getController(controller).show($(this),guid);
+      }
+      return false;
     });
   }
 
