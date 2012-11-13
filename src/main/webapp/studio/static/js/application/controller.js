@@ -178,5 +178,12 @@ var Controller = Class.extend({
   showProgressModal: function(title, message, cb) {
     this.progressModal = $('#generic_progress_modal').clone();
     this.progressModal.find('h3').text(title).end().find('h4').text(message).end().appendTo($("body")).one('shown', cb).modal();
+  },
+
+  getColumnIndexForField: function (aoColumns,field,value){
+    var found = $.grep(aoColumns,function(item, i){return item[field] === value;});
+    var col = $(aoColumns).index(found[0]);
+    return col;
+
   }
 });

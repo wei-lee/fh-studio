@@ -7,29 +7,69 @@ Admin.Storeitems.Controller = Controller.extend({
     store_item: new model.StoreItem(),
     group: new model.Group(),
     auth_policy: new model.ArmAuthPolicy(),
-    audit_log : new model.AuditLogEntry()
+    audit_log : new model.AuditLogEntry(),
+    user : new model.User()
   },
 
   views: {
     store_items: "#admin_store_items",
     store_item: "#admin_store_item",
     store_item_create: "#admin_store_item_create",
-    store_item_update: "#admin_store_item_update"
+    store_item_update: "#admin_store_item_update",
+    store_item_audit_table: '#admin_audit_logs_item_list_table'
   },
-  
+
+  filterFields :{
+    userGuid : "select#binAuditlogUserGuid",
+    storeItemType : "select#binAuditlogStoreItemBinaryType",
+    logLimit: "select#binAuditlogLimit",
+    storeItemBinaryType:"select#binAuditlogStoreItemBinaryType"
+  },
+
   audit_log_tabe:null,
 
   alert_timeout: 3000,
+  conatiner: null,
+  FORMAT:"DD/MM/YYYY HH:mm",
 
-  init: function() {},
-
-  show: function(e) {
-    var self = this;
-    this.hideAlerts();
-    this.showStoreItems();
+  template : function (type ,args){
+    if(type === "option"){
+      return "<option value="+args.val+">"+args.text+"</option>";
+    }
+  },
+  init: function() {
+    var copy = [];
+    $.each(this.models.audit_log.field_config,function (i,v){
+      var field = $.extend({},v);
+      if(field.field_name=== "storeItemTitle") {
+        field.visible= false;
+      }
+      copy[i] = field;
+    });
+    this.models.audit_log.field_config = copy;
   },
 
-  hide: function(e) {
+  show: function(e) {
+    var self =this;
+    this.hideAlerts();
+
+    var guid = arguments[1];
+
+    if(guid) {
+      this.models.store_item.read(guid,
+        function(res) {
+          return self.showUpdateStoreItem(res);
+        },
+        function (){
+          self.showStoreItems();
+          self.showAlert('error', "Store Item read failed");
+        });
+    } else {
+      this.showStoreItems();
+    }
+  },
+
+  hide: function() {
     $.each(this.views, function(k, v) {
       $(v).hide();
     });
@@ -43,26 +83,8 @@ Admin.Storeitems.Controller = Controller.extend({
     });
   },
 
-  // type: error|success|info
-  showAlert: function(type, message, container) {
-    var self = this;
-    var alerts_area = $(container).find('.alerts');
-    var alert = $('<div>').addClass('alert fade in alert-' + type).html(message);
-    var close_button = $('<button>').addClass('close').attr("data-dismiss", "alert").text("x");
-    alert.append(close_button);
-    alerts_area.append(alert);
-    // only automatically hide alert if it's not an error
-    if ('error' !== type) {
-      setTimeout(function() {
-        alert.slideUp(function() {
-          alert.remove();
-        });
-      }, self.alert_timeout);
-    }
-  },
-
   setStoreIcon: function(data) {
-    var icon = $('.store_item_icon', this.views.admin_store_item_update);
+    var icon = $('.store_item_icon', this.views.store_item_update);
     if (data !== '') {
       icon.attr('src', 'data:image/png;base64,' + data);
     } else {
@@ -70,16 +92,47 @@ Admin.Storeitems.Controller = Controller.extend({
     }
   },
 
+  setStoreName: function(data) {
+    var name = $(".store_item_title .store_item_name", this.views.store_item_update);
+    name.text(': \'' + data + '\'');
+  },
+
   showStoreItems: function() {
     var self = this;
     this.hide();
+    self.container = this.views.store_items;
     $(this.views.store_items).show();
     this.models.store_item.list(function(res) {
-      var store_items = res.list;
-      self.renderItems(store_items);
+      self.renderItems(res.list);
     }, function(err) {
       console.error(err);
     }, true);
+  },
+
+  showStoreItemBinaries: function() {
+    this.showStoreItemTab("#binaries");
+  },
+
+  showStoreItemDetails: function() {
+    this.showStoreItemTab("#details");
+  },
+
+  showStoreItemAuditLogs: function() {
+    this.showStoreItemTab("#auditlogs");
+  },
+
+  showStoreItemTab: function(href) {
+    this.getStoreItemTab(href).tab('show') ;
+  },
+
+  getStoreItemTab: function() {
+    var href = arguments[0];
+    if(href){
+      href = '[href="' + href + '"]';
+    } else {
+      href = "";
+    }
+    return $('a[data-toggle="tab"]' + href , this.views.store_item_update);
   },
 
   renderItems: function(store_items) {
@@ -116,11 +169,12 @@ Admin.Storeitems.Controller = Controller.extend({
 
   deleteStoreItem: function(guid) {
     var self = this;
-    this.models.store_item.remove(guid, function(res) {
-      self.showAlert('success', "Store Item successfully deleted", self.views.store_items);
+    self.container = self.views.store_items;
+    this.models.store_item.remove(guid, function() {
+      self.showAlert('success', "Store Item successfully deleted");
       self.showStoreItems();
     }, function(err) {
-      self.showAlert('error', err, self.views.store_items);
+      self.showAlert('error', err);
       self.showStoreItems();
       console.log(err);
     });
@@ -147,42 +201,54 @@ Admin.Storeitems.Controller = Controller.extend({
 
   showUpdateStoreItem: function(store_item) {
     var self = this;
+    var container = $(self.views.store_item_update);
+    self.container = container;
+
     this.hide();
 
     self.setStoreIcon(store_item.icon);
+    self.setStoreName(store_item.name);
+    self.clearAuditLogTable();
 
     // Disable bundle id inputs
     $('.bundle_id, .update_bundle_id', self.views.store_item_update).attr('disabled', 'disabled');
 
     this.models.auth_policy.list(function(res) {
-      var update_view = $(self.views.store_item_update);
+      //var update_view = $(self.views.store_item_update);
 
+      //self.showStoreItemDetails();
       // Remove uploaded status labels
-      $('span.label', update_view).remove();
-      $('.bundle_id', update_view).val('');
+      $('span.label', container).remove();
+      $('.bundle_id', container).val('');
 
       var assigned_auth_policies = store_item.authpolicies;
       self.renderAvailableAuthPolicies(res.list, assigned_auth_policies, '.store_item_auth_policies_swap');
 
-      $('.item_guid', update_view).val(store_item.guid);
-      $('.item_name', update_view).val(store_item.name);
-      $('.item_id', update_view).val(store_item.authToken);
-      $('.item_description', update_view).val(store_item.description);
+      $('.item_guid', container).val(store_item.guid);
+      $('.item_name', container).val(store_item.name);
+      $('.item_id', container).val(store_item.authToken);
+      $('.item_description', container).val(store_item.description);
 
       if (store_item.restrictToGroups) {
-        $('.restrict_to_groups', update_view).attr('checked', 'true');
+        $('.restrict_to_groups', container).attr('checked', 'true');
       } else {
-        $('.restrict_to_groups', update_view).removeAttr('checked');
+        $('.restrict_to_groups', container).removeAttr('checked');
       }
 
-      update_view.show();
-      self.renderBinaryUploads(store_item);
+      self.showStoreItemDetails();
+      container.show();
 
-      $('.update_store_item', update_view).unbind().click(function(e) {
+      $('.update_store_item', container).unbind().click(function(e) {
         e.preventDefault();
-        self.updateStoreItem();
+        var n = $(this).attr("data-next");
+        $(this).removeAttr("data-next");
+
+        self.updateStoreItem(store_item,n);
         return false;
       });
+
+      var input = $("#icon_binary");
+      self.renderIconUpload(store_item, input);
 
     }, function(err) {
       console.log(err);
@@ -194,30 +260,172 @@ Admin.Storeitems.Controller = Controller.extend({
     }, function(err) {
       console.log(err);
     });
-    
-    
-    
-    var viewAuditLogButton = $("#store_item_view_auditlog");
-    viewAuditLogButton.text($fw.client.lang.getLangString("store_item_view_auditlog_view"));
-    viewAuditLogButton.unbind().bind("click",function(e){
-        e.preventDefault();
-        var itemGuid = $(".item_guid").first().val();
-        var auditLogTable = $('#audit_log_hide_show');
-        if(!auditLogTable.is(":visible")){
-           self.models.audit_log.listLogs(self.renderAuditLogTable, console.error, true,{"storeItemGuid":itemGuid});
-            $(this).text($fw.client.lang.getLangString("store_item_view_auditlog_hide"));
-        }else{
-             $(this).text($fw.client.lang.getLangString("store_item_view_auditlog_view"));
-            
-        }
-        
-        $('#audit_log_hide_show').toggle();
-        
+
+    // unbind old event on all tabs
+    self.getStoreItemTab().unbind();
+
+    // bind to bootstrap shown event to load table
+    self.getStoreItemTab("#binaries").on('shown', function () {
+      self.renderBinaryUploads(store_item);
+    });
+
+
+    // bind to bootstrap shown event to load table
+    self.getStoreItemTab("#auditlogs").on('shown', function () {
+      self.renderAuditLogFilterForm(store_item);
+      var cb = function(data){self.renderAuditLogTable(data,store_item);};
+      self.models.audit_log.listLogs( cb, console.error, true,{"storeItemGuid":store_item.guid});
     });
   },
-          
-  renderAuditLogTable : function (data){
-      this.audit_log_table = $('#admin_audit_logs_item_list_table').dataTable({
+
+  renderIconUpload: function (store_item,input){
+    var self = this;
+    var row = input.parents('.controls');
+    var status_el = $('.upload_status', row);
+
+    // Inject binary upload progress template
+    var progress_area = $('.progress_area', row);
+    var progress_bar = $('.progress', progress_area);
+
+    // Setup file upload
+    input.fileupload('destroy').fileupload({
+      url: Constants.ADMIN_STORE_ITEM_UPLOAD_BINARY_URL,
+      dataType: 'json',
+      replaceFileInput: false,
+      formData: [{
+        name: 'guid',
+        value: store_item.guid
+      }, {
+        name: 'type',
+        value: 'icon'
+      }],
+      dropZone: input,
+      timeout: 120000,
+      add: function(e, data) {
+        input.hide();
+        progress_bar.slideDown();
+        data.submit();
+      },
+      done: function(e, data) {
+        var message;
+        var err = (data.result.status !== 'ok');
+        if (!err) {
+          // update the store item with new data
+          $.each(data.result, function(k,v){store_item[k] = v;});
+          self.setStoreIcon(store_item.icon);
+          message = 'Uploaded ' + data.files[0].name;
+        } else {
+          message = 'Error: ' + data.result.message;
+        }
+        progress_bar.hide();
+        input.show();
+        self.showAlert(err ? 'error' : 'success', message);
+      },
+      progressall: function(e, data) {
+        var progress = parseInt(data.loaded / data.total * 100, 10);
+        $('.bar', progress_bar).css('width', progress + '%');
+      }
+    });
+  },
+
+  renderAuditLogFilterForm : function (store_item) {
+    var self = this;
+    var container = self.views.store_item_update;
+    var limits = [10,100,1000];
+    $('.selectfixedWidth').css("width","200px");
+
+    self.populateFilter(this.filterFields.logLimit, container, _.map(limits, function (val){ return {val:val,text:val};}));
+
+    //render the binary types filter
+    this.models.store_item.listValidItemTypes(function(res){
+      if(res && res.list){
+        self.populateFilter(self.filterFields.storeItemBinaryType, container, _.map(res.list, function (val){ return {val:val,text:val};}));
+      }
+    },console.error);
+
+    //render users limit option //TODO seems like with a single page app a lot of caching could be done and events fired when something is
+    //done that would require data to update.
+    this.models.user.list(function(res) {
+      if(res && res.list){
+        self.populateFilter(self.filterFields.userGuid, container, _.map(res.list, function (item){ return {val:item.guid,text:item.fields.username};}));
+      }
+    });
+
+    //render storeitem filter options
+    var items = $(self.filterFields.storeItemGuid,container);
+    this.models.store_item.list(function (res){
+      if(res && res.list){
+        self.populateFilter(self.filterFields.storeItemGuid, container, _.map(res.list, function (item){ return {val:item.guid,text:item.name};}));
+      }
+    });
+
+    self.bindFilter(store_item);
+
+  },
+  populateFilter: function (filter, container, values) {
+    var self = this;
+    var s = $(filter, container);
+    console.log("not first" + $(filter + ' option:not(:first)', container));
+    $(filter + ' option:not(:first)',container).remove();
+    _.each(values, function(v){
+      $(s).append(self.template("option",v));
+    });
+  },
+
+  bindFilter : function (store_item){
+    var self= this;
+    //bind filter button
+    var filterButton = $('button#binAudit_log_order');
+    filterButton.text($fw.client.lang.getLangString("audit_log_order"));
+    //filterButton.unbind().bind("click",$.proxy(self.doFilter, this));
+    filterButton.unbind().bind("click",function(e){
+      e.preventDefault();
+      self.clearAuditLogTable();
+      self.doFilter(store_item);
+    });
+    var resetButton = $('button#binAudit_log_reset');
+    resetButton.text($fw.client.lang.getLangString("audit_log_reset"));
+    resetButton.unbind().bind("click",function (e){
+      e.preventDefault();
+      self.resetFilter(store_item);
+      self.clearAuditLogTable();
+      var params = {"storeItemGuid":store_item.guid};
+      self.models.audit_log.listLogs(function(data){
+        return self.renderAuditLogTable(data,store_item);
+      }, console.error, true,params);
+    });
+  },
+  resetFilter : function (store_item){
+    this.bindFilter(store_item);
+    $.each(this.filterFields, function(name, target){
+      $(target).val($(target + " option:first").val());
+    });
+    this.showAlert('success', "Store Item Audit Log filter reset");
+  },
+  doFilter : function (store_item){
+    //build params ob and send to listlogs to filter
+    var self = this;
+    var userGuid = $(self.filterFields.userGuid).val();
+    var storeItemType = $(self.filterFields.storeItemType).val();
+    var limit = $(self.filterFields.logLimit).val();
+    var params = {"storeItemGuid":store_item.guid};
+    if(userGuid && userGuid !=="all") params.userId = userGuid;
+    if(storeItemType && storeItemType !== "all")params.storeItemBinaryType = storeItemType;
+    if(limit && limit !== "all") params.limit = limit;
+
+    this.models.audit_log.listLogs(function(data){
+      self.showAlert('success', "Store Item Audit filter complete");
+      return self.renderAuditLogTable(data,store_item);
+    }, console.error, true,params);
+
+    return false;
+  },
+
+  renderAuditLogTable : function (data,store_item){
+    var userCol = this.getColumnIndexForField(data.aoColumns, 'sTitle', "User");
+
+    var tbl = $(this.views.store_item_audit_table);
+    this.audit_log_table = tbl.dataTable({
       "aaSorting":[[6,'desc']],
       "bDestroy": true,
       "bAutoWidth": false,
@@ -225,26 +433,51 @@ Admin.Storeitems.Controller = Controller.extend({
       "sPaginationType": "bootstrap",
       "bLengthChange": false,
       "aaData": data.aaData,
-      "aoColumns": data.aoColumns
+      "aoColumns": data.aoColumns,
+      "fnDrawCallback": function() {
+        // be carefull of the col indexes it will depend on what cols are visible
+        var cells = $("td::nth-child(1):not(:empty)", tbl);
+        $(cells).attr("data-controller","admin.users.controller");
+
+        $("td[data-controller]").css({cursor:"pointer"});
+      }
     });
-    $('#admin_audit_logs_item_list_table').show();
-  },      
+
+    tbl.show();
+    this.bindRowClicks(tbl);
+  },
+
+  bindRowClicks: function(tbl) {
+    var self = this;
+    $('tr td[data-controller]', tbl).die().live("click", function() {
+      var guid = $(this).text().trim();
+      if(guid.length !== 0) {
+        self.hide();
+        var controller = $(this).attr('data-controller');
+
+        var navlist = $(".admin_nav_list");
+        $(".active", navlist).removeClass("active");
+        $("li > [data-controller='" + controller + "']", navlist).parent().addClass("active");
+
+        $fw.client.tab.admin.getController(controller).show($(this),guid);
+      }
+      return false;
+    });
+  },
+
+  clearAuditLogTable : function (){
+    if(this.audit_log_table ){
+      this.audit_log_table.fnClearTable();
+    }
+  },
 
   renderBinaryUploads: function(store_item) {
     var self = this;
+    $('.tab-pane #binaries').hide();
 
     // Config
-    var binaries = [{
-      id: 'icon_binary',
-      destination: null,
-      params: [{
-        name: 'guid',
-        value: store_item.guid
-      }, {
-        name: 'type',
-        value: 'icon'
-      }]
-    }, {
+    var binaries = [
+    {
       id: 'android_binary',
       destination: 'android',
       params: [{
@@ -286,48 +519,81 @@ Admin.Storeitems.Controller = Controller.extend({
       }]
     }];
 
-    $.each(binaries, function(i, binary) {
-      var input = $('#' + binary.id);
-      if (input.length < 1) {
-        return console.error('Input not found: ' + binary.id);
+    self.setStoreIcon(store_item.icon);
+    self.setStoreName(store_item.name);
+    $('.bundle_id, .update_bundle_id', self.views.store_item_update).attr('disabled', 'disabled');
+
+
+    $.each(binaries, function(i, binary ) {
+      var sib= $.grep(store_item.binaries, function(sib) {
+        return binary.destination === sib.type;
+      });
+      self.renderBinaryRow(store_item,binary, sib[0]);
+    });
+    $("a[rel=popover]").popover({ trigger: "hover" });
+  },
+
+  renderBinaryRowHistory: function (store_item, binary, sib, row) {
+    var self = this;
+    $('.controls .accordion', row).remove();
+
+    var id = binary.destination + "_target";
+    var template = $("#binary_history_template").clone().removeAttr('id').removeClass('hidden_template');
+
+    var target =  $("div#template_collapse", template).attr("id", id);
+    $("div a.accordion-toggle", template).attr("href" , "#" + id);
+
+
+    if(sib) {
+      var name = "'" + store_item.name + "'";
+      var c = self.binaryRowHistoryItem(store_item,sib,["Download", name ].join(" "),true);
+      $(".history",template).append(c);
+      $.each(sib.versions, function (i,sibh){
+        var c = self.binaryRowHistoryItem(store_item,sibh,["Download", name].join(" "));
+        $(".history",template).append(c);
+      });
+    }
+    $('.controls .progress_area', row).after(template);
+    $('.controls .accordion .accordion-heading a', row).text("[+] History");
+    $('.controls .accordion', row).on('hidden', function () {
+      $('.accordion-heading a', this).text("[+] History");
+    });
+
+    $('.controls .accordion', row).on('shown', function () {
+      $('.accordion-heading a', this).text("[-] History");
+    });
+
+    return template;
+  },
+
+  renderBinaryRow: function (store_item,binary,sib){
+    var self = this;
+    var input = $('#' + binary.id);
+    var row = input.parents('tr');
+
+    var history = self.renderBinaryRowHistory(store_item, binary , sib, row);
+    //$('.controls .progress_area', row).after(history);
+
+    var progress_area = $('.progress', row);
+    var progress_bar = $('.bar', progress_area);
+
+    // Render Binary config
+    if ($(row).has('.bundle_id').length > 0) {
+      var bundle_config_input = $('.bundle_id', row);
+      var config = self._configForDestination(store_item, binary.destination);
+      if (config) {
+        bundle_config_input.val(config.bundle_id);
       }
+    }
 
-      // Render Binary config
-      var row = input.parents('tr');
-      if ($(row).has('.bundle_id').length > 0) {
-        var bundle_config_input = $('.bundle_id', row);
-        var config = self._configForDestination(store_item, binary.destination);
-        if (config) {
-          bundle_config_input.val(config.bundle_id);
-        }
-      }
+    // Does a binary already exist?
+    var binary_upload_status = self._resolveUploadStatus(binary.destination, store_item);
+    if (binary_upload_status === true) {
+      $('.bundle_id, .update_bundle_id', row).removeAttr('disabled');
+    }
 
-      // Inject binary upload progress template
-      var progress_area = $('#binary_upload_progress_template').clone();
-      var status = $('.status', progress_area);
-      var progress_bar = $('.progress', progress_area);
-      progress_area.removeAttr('id');
-      input.after(progress_area);
-
-      // Does a binary already exist?
-      var binary_upload_status = self._resolveUploadStatus(binary.destination, store_item);
-      var status_el = $('#binary_upload_status').clone().removeAttr('id').removeClass('hidden_template');
-
-      if (binary_upload_status === true) {
-        // Uploaded
-        status_el.text('Uploaded').removeClass('label-inverse').addClass('label-success');
-        input.before(status_el);
-
-        // Enable config setting
-        input.parents('tr').find('.bundle_id, .update_bundle_id').removeAttr('disabled');
-      } else {
-        // Not uploaded
-        status_el.text('Not Uploaded');
-        input.before(status_el);
-      }
-
-      // Setup file upload
-      input.fileupload('destroy').fileupload({
+    // Setup file upload
+    input.fileupload('destroy').fileupload({
         url: Constants.ADMIN_STORE_ITEM_UPLOAD_BINARY_URL,
         dataType: 'json',
         replaceFileInput: false,
@@ -335,48 +601,53 @@ Admin.Storeitems.Controller = Controller.extend({
         dropZone: input,
         timeout: 120000,
         add: function(e, data) {
+          input.hide();
           progress_area.show();
-          status.text('Uploading...');
-          status.slideDown();
           progress_bar.slideDown();
           data.submit();
         },
         done: function(e, data) {
-          if (data.result.status === 'ok') {
-            var filename = data.files[0].name;
-            status.text('Uploaded ' + filename);
-            status_el.text('Uploaded ' + filename).removeClass('label-inverse').addClass('label-success');
-            // Enable config setting
-            input.parents('tr').find('.bundle_id, .update_bundle_id').removeAttr('disabled');
-
-            // Set icon
-            if (typeof data.result.icon !== 'undefined') {
-              self.setStoreIcon(data.result.icon);
-            }
-
-            setTimeout(function() {
-              progress_bar.slideUp();
-              status.slideUp();
-            }, 500);
+          input.show();
+          progress_area.hide();
+          progress_bar.slideUp();
+          var message;
+          var err = (data.result.status !== 'ok');
+          if (!err) {
+            // update the store item with new data
+            $.each(data.result, function(k,v){store_item[k] = v;});
+            self.renderBinaryUploads(store_item,true);
+            message = 'Uploaded ' + data.files[0].name;
           } else {
-            // Show error
-            status.text('Error: ' + data.result.message);
-            status_el.text('Error').removeClass('label-inverse').addClass('label-danger');
-            setTimeout(function() {
-              progress_bar.slideUp();
-              status.slideUp();
-            }, 500);
+            message = 'Error: ' + data.result.message;
           }
+          self.showAlert(err ? 'error' : 'success', message);
         },
         progressall: function(e, data) {
           var progress = parseInt(data.loaded / data.total * 100, 10);
-          $('.bar', progress_bar).css('width', progress + '%');
+          $(progress_bar).css('width', progress + '%');
         }
-      });
-
     });
   },
 
+  binaryRowHistoryItem: function(store_item,sib,title,current) {
+    var date = moment(sib.sysModified ? sib.sysModified : sib.storeItemBinaryModified);
+
+    var version = sib.storeItemBinaryVersion ;
+    var link = $('<a/>', {href :sib.url, text:(date.format(this.FORMAT)),title:"click to download version " + version});
+    if(sib.type !== "android") {
+      $(link).attr('target', "_blank");
+      if(current){
+        var href = $(link).attr("href");
+        $(link).attr('href', href + "&download=true");
+      }
+
+    }
+
+    var row = $('<p/>')
+                .append($('<span/>', {text:(version + " : ")}))
+                .append(link);
+    return row;
+  },
   _resolveUploadStatus: function(destination, store_item) {
     var uploaded = null;
     if (destination) {
@@ -414,10 +685,10 @@ Admin.Storeitems.Controller = Controller.extend({
     return config;
   },
 
-  updateStoreItem: function() {
+  updateStoreItem: function(store_item, n) {
     var self = this;
     var container = $(this.views.store_item_update);
-
+    self.container = container;
     var name = $('.item_name', container).val();
     var item_id = $('.item_id', container).val();
     var description = $('.item_description', container).val();
@@ -426,16 +697,26 @@ Admin.Storeitems.Controller = Controller.extend({
     var guid = $('.item_guid', container).val();
     var restrictToGroups = $('.restrict_to_groups', container).is(':checked');
 
-    this.models.store_item.update(guid, name, item_id, description, auth_policies, groups, restrictToGroups, function(res) {
-      self.showAlert('success', "Store Item successfully updated", self.views.store_items);
-      self.showStoreItems();
+    this.models.store_item.update(guid, name, item_id, description, auth_policies, groups, restrictToGroups, function() {
+      self.showAlert('success', "Store Item successfully updated");
+      store_item.name = name;
+      store_item.description = description;
+      store_item.auth_policies = auth_policies;
+      store_item.groups = groups;
+      self.setStoreName(store_item.name);
+
+      if(n === "binaries") {
+        self.showStoreItemBinaries();
+      } else {
+        self.showStoreItemDetails();
+      }
     }, function(err) {
+      self.showAlert('error', "Store Item config couldn't be updated");
       console.log(err);
     });
   },
 
   renderAvailableAuthPolicies: function(available, assigned, container) {
-    var self = this;
     var available_select = $('.store_item_available_auth_policies', container).empty();
     var assigned_select = $('.store_item_assigned_auth_policies', container).empty();
 
@@ -466,7 +747,6 @@ Admin.Storeitems.Controller = Controller.extend({
   },
 
   renderAvailableGroups: function(available, assigned, container) {
-    var self = this;
     var available_select = $('.store_item_available_groups', container).empty();
     var assigned_select = $('.store_item_assigned_groups', container).empty();
 
@@ -526,16 +806,18 @@ Admin.Storeitems.Controller = Controller.extend({
 
   updateStoreItemConfig: function(guid, destination, bundle_id) {
     var self = this;
-    this.models.store_item.updateConfig(guid, destination, bundle_id, function(res) {
-      self.showAlert('success', "Store Item config updated", self.views.store_item_update);
-    }, function(err) {
-      self.showAlert('error', "Store Item config couldn't be updated", self.views.store_item_update);
+    self.container = self.views.store_item_update;
+    this.models.store_item.updateConfig(guid, destination, bundle_id, function() {
+      self.showAlert('success', "Store Item config updated");
+    }, function() {
+      self.showAlert('error', "Store Item config couldn't be updated");
     });
   },
 
   createStoreItem: function() {
     var self = this;
     var container = $(this.views.store_item_create);
+    self.container = container;
     var name = $('.item_name', container).val();
     var item_id = $('.item_id', container).val();
     var description = $('.item_description', container).val();
@@ -544,10 +826,11 @@ Admin.Storeitems.Controller = Controller.extend({
     var restrictToGroups = $('.restrict_to_groups', container).is(':checked');
 
     this.models.store_item.create(name, item_id, description, auth_policies, groups, restrictToGroups, function(res) {
-      self.showAlert('success', "Store Item successfully created", self.views.store_items);
-      self.showStoreItems();
+      $('.update_store_item', self.update_view).attr("data-next", "binaries");
+      setTimeout(function() {self.showAlert('success', "Store Item successfully created");}, 100);
+      self.showUpdateStoreItem(res);
     }, function(err) {
-      self.showAlert('error', err, self.views.store_item_create);
+      self.showAlert('error', err);
     });
   },
 

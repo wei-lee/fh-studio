@@ -31,7 +31,12 @@ Admin.Users.Controller = Controller.extend({
   show: function (e) {
     // TODO: stateful restore i.e. $fw.state
     this.hideAlerts();
-    this.showUsersList();
+    var userId = arguments[1];
+    if(userId) {
+      return this.showUserUpdate(null, null,[userId]);
+    } else {
+      this.showUsersList();
+    }
   },
 
   reset: function() {    
@@ -292,10 +297,7 @@ Admin.Users.Controller = Controller.extend({
       "sPaginationType": "bootstrap",
       "bLengthChange": false,
       "aaData": data.aaData,
-      "aoColumns": data.aoColumns,
-      "fnRowCallback": function(nRow, aData, iDisplayIndex) {
-        self.rowRender(nRow, aData);
-      }
+      "aoColumns": data.aoColumns
     });
 
     // Inject Import and Create button
