@@ -330,45 +330,48 @@ Admin.Storeitems.Controller = Controller.extend({
 
   renderAuditLogFilterForm : function (store_item) {
     var self = this;
+    var container = self.views.store_item_update;
     var limits = [10,100,1000];
     $('.selectfixedWidth').css("width","200px");
-    $(this.filterFields.logLimit + ' option:not(:first)', $(self.views.store_item_audit_table)).remove();
-    for(var l=0; l< limits.length; l++){
-      $(self.filterFields.logLimit).append(self.template("option",{val:limits[l],text:limits[l]}));
-    }
+
+    self.populateFilter(this.filterFields.logLimit, container, _.map(limits, function (val){ return {val:val,text:val};}));
+
     //render the binary types filter
-    $(this.filterFields.storeItemBinaryType + ' option:not(:first)').remove();
     this.models.store_item.listValidItemTypes(function(res){
       if(res && res.list){
-        $(res.list).each(function(index, item){
-          $(self.filterFields.storeItemBinaryType).append(self.template("option",{val:item, text:item}));
-        });
+        self.populateFilter(self.filterFields.storeItemBinaryType, container, _.map(res.list, function (val){ return {val:val,text:val};}));
       }
     },console.error);
+
     //render users limit option //TODO seems like with a single page app a lot of caching could be done and events fired when something is
     //done that would require data to update.
     this.models.user.list(function(res) {
-      //remove elements before creating the select options
-      $(self.filterFields.userGuid +' option:not(:first)').remove();
-      $(res.list).each(function(idex,item){
-        if(item.fields.username && item.guid){
-          $(self.filterFields.userGuid).append(self.template("option",{val:item.guid, text:item.fields.username}));
-        }
-      });
+      if(res && res.list){
+        self.populateFilter(self.filterFields.userGuid, container, _.map(res.list, function (item){ return {val:item.guid,text:item.fields.username};}));
+      }
     });
-    //render storeitem filter options
-    this.models.store_item.list(function (res){
-      $(self.filterFields.storeItemGuid +' option:not(:first)').remove();
-      $(res.list).each(function(idex,item){
 
-        if(item.name && item.guid){
-          $(self.filterFields.storeItemGuid).append(self.template("option",{val:item.guid,text:item.name}));
-        }
-      });
+    //render storeitem filter options
+    var items = $(self.filterFields.storeItemGuid,container);
+    this.models.store_item.list(function (res){
+      if(res && res.list){
+        self.populateFilter(self.filterFields.storeItemGuid, container, _.map(res.list, function (item){ return {val:item.guid,text:item.name};}));
+      }
     });
+
     self.bindFilter(store_item);
 
   },
+  populateFilter: function (filter, container, values) {
+    var self = this;
+    var s = $(filter, container);
+    console.log("not first" + $(filter + ' option:not(:first)', container));
+    $(filter + ' option:not(:first)',container).remove();
+    _.each(values, function(v){
+      $(s).append(self.template("option",v));
+    });
+  },
+
   bindFilter : function (store_item){
     var self= this;
     //bind filter button
