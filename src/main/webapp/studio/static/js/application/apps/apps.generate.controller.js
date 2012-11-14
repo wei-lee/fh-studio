@@ -26,7 +26,7 @@ GenerateApp.Configs = {
   cloud: {
     wrapper: 'exports.wufoo_config = '
   }
-}
+};
 
 GenerateApp.Models.Wufoo = Class.extend({
   all: null,
@@ -43,7 +43,7 @@ GenerateApp.Models.Wufoo = Class.extend({
       self.getApiKeyFromCreds(domain, user, password, function(res) {
         if( res && res.status && res.status == "error") return cb(res);
         self.getFormInfoWithKey(domain, res.data.apiKey, cb);
-      })
+      });
     }
   },
 
@@ -544,8 +544,8 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
 
     var default_config = GenerateApp.Configs[side];
 
-    var config = default_config.wrapper + JSON.stringify(config, null, 2) + ';';
-    return config;
+    var ret = default_config.wrapper + JSON.stringify(config, null, 2) + ';';
+    return ret;
   }
 });
 
@@ -682,7 +682,7 @@ Apps.Generate.Controller = GenerateApp.Controller = Class.extend({
       if( value ) {
         self.generators[item] = value;
 
-        var li_id = value['li']
+        var li_id = value['li'];
         $('#app_generators ' + li_id).show();
       }
 
