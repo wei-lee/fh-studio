@@ -1,4 +1,11 @@
 ===============================================================================
+3.12.0 - IR188
+####CHANGES
+* 1535 - Support for App Forms Phase II (Username & Password Auth). Support for
+multi form swap select config.
+===============================================================================
+
+===============================================================================
 3.11.3
 ####CHANGES
 * 2634-binary-versions added binary download history to mam store items.
