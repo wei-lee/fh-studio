@@ -161,8 +161,9 @@ body {
 }
 .ui-menu-item
 {
-  cursor:pointer;
+    cursor:pointer;
 }
+
 button.ui-state-default
 {
   border:1px solid #ccc !important;
@@ -2681,7 +2682,7 @@ table.dataTable th:active {
 }
 
 
-.import_users, .import_app {
+.import_users, .import_app, .audit_button_margin {
   margin-right: 10px;
 }
 
@@ -2709,6 +2710,8 @@ table.dataTable th:active {
   text-align: right; 
   margin-bottom: 10px;
 }
+
+#admin_store_item_update #auditlogs { overflow: hidden; }
 
 .store_item_binaries .control-group {
   margin-bottom: 0;

@@ -16,6 +16,7 @@ js/model/models/UserKey.js
 js/model/models/StoreItem.js
 js/model/models/AppStore.js
 js/model/models/Group.js
+js/model/models/AuditLogEntry.js
 js/model/models/Role.js
 js/model/models/UserResource.js
 js/model/models/ArmAuthPolicy.js
@@ -31,6 +32,7 @@ js/application/account/account.blackberry.controller.js
 js/application/admin/admin.storeitems.controller.js
 js/application/admin/admin.users.controller.js
 js/application/admin/admin.storeitem.groups.controller.js
+js/application/admin/admin.auditlogs.controller.js
 js/application/admin/admin.devices.controller.js
 js/application/admin/admin.authpolicy.controller.js
 js/application/admin/admin.stores.controller.js

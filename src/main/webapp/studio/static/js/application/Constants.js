@@ -130,6 +130,8 @@ $.extend(Constants, {
   ADMIN_USER_RESEND_INVITE_URL: Constants.IDE_URL_PREFIX + "user/invite",
   ADMIN_USER_IMPORT_URL: Constants.ADMIN_URL_PREFIX + "user/import",
 
+  ADMIN_AUDIT_LOG_LIST_URL: Constants.ADMIN_URL_PREFIX + "auditlog/listlogs",
+
   ADMIN_GROUP_LIST_URL: Constants.ADMIN_URL_PREFIX + "storeitemgroup/list",
   ADMIN_GROUP_READ_URL: Constants.ADMIN_URL_PREFIX + "storeitemgroup/read",
   ADMIN_GROUP_CREATE_URL: Constants.ADMIN_URL_PREFIX + "storeitemgroup/create",
@@ -138,6 +140,7 @@ $.extend(Constants, {
 
   ADMIN_STORE_ITEM_READ_URL: Constants.ADMIN_URL_PREFIX + "storeitem/read",
   ADMIN_STORE_ITEM_LIST_URL: Constants.ADMIN_URL_PREFIX + "storeitem/list",
+  ADMIN_STORE_ITEM_LIST_TYPES_URL: Constants.ADMIN_URL_PREFIX + "storeitem/listitemtypes",
   ADMIN_STORE_ITEM_CREATE_URL: Constants.ADMIN_URL_PREFIX + "storeitem/create",
   ADMIN_STORE_ITEM_UPDATE_URL: Constants.ADMIN_URL_PREFIX + "storeitem/update",
   ADMIN_STORE_ITEM_UPDATE_CONFIG_URL: Constants.ADMIN_URL_PREFIX + "storeitem/setbinaryconfig",

@@ -19,6 +19,7 @@ var store = {
 
   authSession: null,
   authSessionCookie: 'x-fh-auth-session',
+  feedhenryCookie:'feedhenry',
   deviceIdCookie: 'deviceId',
 
   storeInfo: null,
@@ -131,35 +132,42 @@ var store = {
     var uuid = s.join("");
     return uuid;
   },
-  
+
   init: function(queryParams) {
+
     console.log("store:init() - queryParams: " + JSON.stringify(queryParams));
     if (queryParams && queryParams.fh_auth_session) {
       this.authSession = queryParams.fh_auth_session;
+      //Note if the user is logged into the platform, they are resolved as that user for the auditlog entry to stop that we could remove the feedhenry cookie
+      // or set the feedhenry cookie to the authSessionCookie
+      //which would then resolve them as the user they logged into the store as.
+     // $.cookie(this.feedhenryCookie, this.authSession,{"path":"/"});
       $.cookie(this.authSessionCookie, this.authSession, {
         "path": "/"
       });
       console.log("store:init() authSession: " + this.authSession);
     } else if ($.cookie(this.authSessionCookie) != null) {
+      //unset the feedhenry cookie so that the user is resoved corectly
+     // $.cookie(this.feedhenryCookie, this.authSession,{"path":"/"});
       this.authSession = $.cookie(this.authSessionCookie);
     } else {
       console.log("store:init() - no query params");
     }
-    
+
     this.deviceId = $.cookie(this.deviceIdCookie);
     if (!this.deviceId) {
-        this.deviceId = this.generateDeviceId();
-        $.cookie(this.deviceIdCookie, this.deviceId);
+      this.deviceId = this.generateDeviceId();
+      $.cookie(this.deviceIdCookie, this.deviceId);
     }
-    
+
     if (queryParams && queryParams.message) {
-        var message = queryParams.message;
-        var level = 'info'; // default to info
-        if(queryParams.result && (queryParams.result === 'failure')) {
-            level = 'error';
-        }
-        this.showAlert(level, message);
-    }    
+      var message = queryParams.message;
+      var level = 'info'; // default to info
+      if(queryParams.result && (queryParams.result === 'failure')) {
+        level = 'error';
+      }
+      this.showAlert(level, message);
+    }
     $fw.server = new ServerManager();
     this.bindLoginControls();
     this.allowedBinaryTypes = this.getAllowedBinaryTypes();
@@ -226,7 +234,7 @@ var store = {
     var parts = fullUri.split(/\?/);
     return parts[0];
   },
-  
+
   login: function(pol_type, pol_id) {
     var self = this;
     this.hide();
@@ -371,8 +379,18 @@ var store = {
     // iterate through store_item.targets and add a button for each iOS, iPhone, iPad...
     $('.btn_device_install', show_item_view).hide();
     $.each(store_item.binaries, function(i, v) {
+      console.log(v);
+      v.url+="&deviceId="+ self.deviceId;
       console.log("Store Item(" + i + "): " + JSON.stringify(v));
-      $('.btn_device_install', show_item_view).filter('.' + v.type).attr("href", v.url).show().unbind().click(function(e) {
+      //this temp unbinds the click function from href and adds a new one to return false then rebinds it after 1.5 secs to stop multiple clicks happening.
+      var linkClick = function(e) {
+        var ele = $(this);
+        $(this).unbind().click(function(){
+          return false;
+        });
+        setTimeout(function (){
+           ele.unbind().click(linkClick);
+        },1500);
         if (v.type === 'android') {
           return true;
         } else {
@@ -382,7 +400,9 @@ var store = {
           $(this).append(iframe);
           return false;
         }
-      });
+      };
+
+      $('.btn_device_install', show_item_view).filter('.' + v.type).attr("href", v.url).show().unbind().click(linkClick);
     });
 
     $('.install_store_item', show_item_view);

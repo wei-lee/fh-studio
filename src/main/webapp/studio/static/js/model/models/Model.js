@@ -66,18 +66,23 @@ model.Model = Class.extend({
     $.each(filtered_fields, function(k, v) {
       var config = data_model.configForField(k).config;
 
+      var col;
       if (typeof config.width !== 'undefined') {
-        data.aoColumns.push({
+        col = {
           sTitle: v,
           sWidth: config.width,
           bVisible: config.visible
-        });
+        };
       } else {
-        data.aoColumns.push({
+        col = {
           sTitle: v,
           bVisible: config.visible
-        });
+        };
       }
+      if(config.sClass) {
+        col.sClass = config.sClass;
+      }
+      data.aoColumns.push(col);
     });
 
     return data;
