@@ -552,7 +552,7 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
 GenerateApp.Controllers.WufooSingle = GenerateApp.Controllers.Wufoo.extend({
   li: '#wufoo_single_generator_option',
   container: '#wufoo_single_generator_form',
-  type: 'single',
+  type: 'single_form',
 
   selectedFormData: function() {
     var self = this;
@@ -581,7 +581,7 @@ GenerateApp.Controllers.WufooSingle = GenerateApp.Controllers.Wufoo.extend({
 GenerateApp.Controllers.WufooMulti = GenerateApp.Controllers.Wufoo.extend({
   li: '#wufoo_multi_generator_option',
   container: '#wufoo_multi_generator_form',
-  type: 'multi',
+  type: 'multi_form',
 
   buildConfig: function(app_config) {
     var res = {};
@@ -594,7 +594,7 @@ GenerateApp.Controllers.WufooMulti = GenerateApp.Controllers.Wufoo.extend({
 GenerateApp.Controllers.WufooSelection = GenerateApp.Controllers.Wufoo.extend({
   li: '#wufoo_selection_generator_option',
   container: '#wufoo_selection_generator_form',
-  type: 'selection',
+  type: 'selection_form',
   swap_select_container: '#app_forms_swap_div',
 
   updateFormListing: function(forms) {
