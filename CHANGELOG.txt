@@ -1,3 +1,34 @@
+-------------------------------------------------------------------------------
+Component: fh-studio
+-------------------------------------------------------------------------------
+
+3.12.1 - 2012-11-28 - IR189 - Jim O'Leary
+-------------------------------------------------------------------------------
+* 2759 - Add Apache configuration changes to Studio CHANGELOG
+
+The following settings should be incorporated into the Apache configuration of
+all systems where App Studio is running. They ensure that the appropriate
+headers are only removed from Studio files (but not from act() calls).
+
+In production/staging environments the file to be modified is
+/etc/apache2/feedhenry/fh-vhost-common.conf and the changes usually require
+an Apache restart (service apache2 restart).
+
+<Location /studio/static>
+ FileETag MTime Size
+ Header unset Pragma
+ Header unset Expires
+ Header unset Cache-Control
+ Header unset Last-Modified
+ Order allow,deny
+ Allow from all
+</Location>
+
+The Header unset commands may already exist elsewhere in the Apache configuration
+and the key issue here is to ensure they are only applied within the context of
+the /studio/static Location.
+
+-------------------------------------------------------------------------------
 ===============================================================================
 3.12.0 - IR188
 ####CHANGES
