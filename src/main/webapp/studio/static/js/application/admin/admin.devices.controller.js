@@ -42,6 +42,11 @@ Admin.Devices.Controller = Controller.extend({
       var data = self.addControls(res);
       self.renderDeviceTable(data);
       self.bindControls();
+      var users_button = $('<button>').addClass('btn btn-primary pull-right').text('Users');
+      var devices_buton = $('<button>').addClass('btn btn-primary pull-right audit_button_margin').text('Devices');
+      var apps_buton = $('<button>').addClass('btn btn-primary pull-right audit_button_margin').text('Apps');
+      $("#admin_devices_table_wrapper").find(".span12").append(users_button).append(devices_buton).append(apps_buton);
+
     }, function(err){
       console.log("Error showing devices");
     }, true);

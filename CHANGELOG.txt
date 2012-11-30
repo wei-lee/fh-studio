@@ -1,3 +1,70 @@
+-------------------------------------------------------------------------------
+Component: fh-studio
+-------------------------------------------------------------------------------
+
+3.12.1 - 2012-11-28 - IR189 - Jim O'Leary
+-------------------------------------------------------------------------------
+* 2759 - Add Apache configuration changes to Studio CHANGELOG
+
+The following settings should be incorporated into the Apache configuration of
+all systems where App Studio is running. They ensure that the appropriate
+headers are only removed from Studio files (but not from act() calls).
+
+In production/staging environments the file to be modified is
+/etc/apache2/feedhenry/fh-vhost-common.conf and the changes usually require
+an Apache restart (service apache2 restart).
+
+<Location /studio/static>
+ FileETag MTime Size
+ Header unset Pragma
+ Header unset Expires
+ Header unset Cache-Control
+ Header unset Last-Modified
+ Order allow,deny
+ Allow from all
+</Location>
+
+The Header unset commands may already exist elsewhere in the Apache configuration
+and the key issue here is to ensure they are only applied within the context of
+the /studio/static Location.
+
+-------------------------------------------------------------------------------
+===============================================================================
+3.12.0 - IR188
+####CHANGES
+* 1535 - Support for App Forms Phase II (Username & Password Auth). Support for
+multi form swap select config.
+===============================================================================
+
+===============================================================================
+3.11.3
+####CHANGES
+* 2634-binary-versions added binary download history to mam store items.
+===============================================================================
+
+===============================================================================
+3.11.2
+####CHANGES
+* 2599-audit-log added an auditlog for downloaded apps.
+===============================================================================
+
+3.11.1
+-------------------------------------------------------------------------------
+###CHANGES
+* Ticket 2617 [IR188] Email field now missing in fh-studio 3.11.0-24
+
+===============================================================================
+3.11.0
+-------------------------------------------------------------------------------
+###CHANGES
+* MAM Groups UI added for controlling access to Store Items
+
+===============================================================================
+3.10.0
+-------------------------------------------------------------------------------
+###CHANGES
+* Use bootstrap modal dialog for binary download!
+
 ===============================================================================
 3.8.0
 -------------------------------------------------------------------------------

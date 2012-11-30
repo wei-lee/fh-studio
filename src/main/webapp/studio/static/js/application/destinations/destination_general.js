@@ -461,41 +461,33 @@ application.DestinationGeneral = Class.extend({
     if(typeof ipa_url !== "undefined"){
       showIPA = true;
     }
-    var showDownload = function(message){
-      var dialog = $('#confirm_dialog').clone();
-      dialog.find('#confirm_dialog_text').html(message);
-      proto.Dialog.load(dialog, {
-        autoOpen: true,
-        height: 235,
-        title: 'Download',
-        stack: true,
-        dialogClass: 'confirm_dialog success-dialog popup-dialog',
-        width: 340,
-        buttons: {
-          'OK': function () {
-            $(this).dialog('close');
-          }
-        }
+
+    var showDownload = function(message) {
+      var dialog = $('#binary_download_dialog').clone();
+      modal.find(".modal-body").html(message).end().appendTo($("body")).modal({
+        "keyboard": false,
+        "backdrop": "static"
       });
     };
-    var html = "<p> The build is ready. Please click the link below to download";
-    
-    if( showOTA ){
-      html += ", or you can use the OTA link to install the application directly on to your phone.</p>";
-    } else {
-      html += ".</p>";
-    }
-    html += "<br><ul> <li> <a target='_blank' href='"+source_url+"'> Download </a></li>";
+
+    var modal = $('#binary_download_dialog').clone();
+    var html = "<h3>Your build is complete!</h3><br/><p> <a target='_blank' class='btn' href='"+source_url+"'> <i class='icon-download'></i> Download </a>";
+
     if(showIPA){
-      html += "<li> <a target='_blank' href='"+ipa_url+"'> Download IPA File </a></li>";
+      html += "  <a target='_blank' class='btn' href='"+ipa_url+"'><i class='icon-download'></i> Download IPA File</a>";
     }
-    if(showOTA){
-      that.getOTALink(ota_url, function(otalink){
-        html += "<li> OTA Link : <a class='otalink' target='_blank' href='"+otalink+"'>" + otalink + " </a></li></ul>";
+    html += "</p><br>";
+
+    if(showOTA) {
+      that.getOTALink(ota_url, function(otalink, shortened) {
+        html += "<h4>-- or --</h4><br/><p>Install directly onto a device with this OTA link</p>";
+        html += "<h4><a class='otalink' target='_blank' href='"+otalink+"'>" + otalink + " </a></h4>";
+        if(shortened) {
+          html += "<img src='"+otalink+".qr' alt='qr'>";
+        }
         showDownload(html);
       });
     } else {
-      html += "</ul>";
       showDownload(html);
     }
   },
@@ -528,15 +520,15 @@ application.DestinationGeneral = Class.extend({
           var resObj = JSON.parse(res.body);
           var shortUrl = resObj.id.replace("\\", "");
           console.log("ota link is " + shortUrl);
-          cb(shortUrl);
+          cb(shortUrl, true);
         } else {
           console.log("Failed to get shortened link.");
-          cb(url);
+          cb(url, false);
         }
       },
       error: function(){
         console.log("Failed to get shortened link.");
-        cb(url);
+        cb(url, false);
       }
     });
   }

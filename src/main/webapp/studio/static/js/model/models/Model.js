@@ -51,7 +51,7 @@ model.Model = Class.extend({
       aoColumns: []
     };
 
-    // Buid Data
+    // Build Data
     $.each(rows, function(i, item) {
       var row = item.fields || item;
       data.aaData.push([]);
@@ -66,18 +66,23 @@ model.Model = Class.extend({
     $.each(filtered_fields, function(k, v) {
       var config = data_model.configForField(k).config;
 
+      var col;
       if (typeof config.width !== 'undefined') {
-        data.aoColumns.push({
+        col = {
           sTitle: v,
           sWidth: config.width,
           bVisible: config.visible
-        });
+        };
       } else {
-        data.aoColumns.push({
+        col = {
           sTitle: v,
           bVisible: config.visible
-        });
+        };
       }
+      if(config.sClass) {
+        col.sClass = config.sClass;
+      }
+      data.aoColumns.push(col);
     });
 
     return data;
@@ -100,14 +105,14 @@ model.Model = Class.extend({
     }, fail, no_payload);
   },
 
-  startUpload : function (file_input_id, url, data, success, do_copy, fail, timeout) {
+  startUpload: function(file_input_id, url, data, success, do_copy, fail, timeout) {
     // Create a new form and copy the file input into it. 
     // We want this to be the only POST parameter initialy, and combine it with the given data
     //
     var selector = 'string' === typeof file_input_id ? $('#' + file_input_id) : file_input_id;
     var temp_form = selector.closest('form');
     var ph_div = $("<div>");
-    if(do_copy){
+    if (do_copy) {
       selector.before(ph_div);
       temp_form = $("<form>");
       temp_form.append(selector);
@@ -118,20 +123,20 @@ model.Model = Class.extend({
       url: url,
       data: data,
       dataType: 'json',
-      success: function(res){
-          success(res);
-          if(do_copy){
-            ph_div.after(selector);
-            temp_form.remove();
-            ph_div.remove();
-          }
+      success: function(res) {
+        success(res);
+        if (do_copy) {
+          ph_div.after(selector);
+          temp_form.remove();
+          ph_div.remove();
+        }
       }
     };
-    if(typeof fail == "function"){
-        options.error = fail;
+    if (typeof fail == "function") {
+      options.error = fail;
     }
-    if(typeof timeout == "number"){
-        options.timeout = timeout;
+    if (typeof timeout == "number") {
+      options.timeout = timeout;
     }
     temp_form.ajaxSubmit(options);
     // TODO: clean up/remove temp_form after form submission

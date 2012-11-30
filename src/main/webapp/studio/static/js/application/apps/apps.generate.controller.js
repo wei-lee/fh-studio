@@ -20,37 +20,11 @@ GenerateApp.Utils = {
 };
 
 GenerateApp.Configs = {
-  wufoo_single_form_client: {
-    config: {
-      app_type: "single_form"
-    },
+  client: {
     wrapper: 'var wufoo_config = '
   },
-  wufoo_single_form_cloud: {
-    config: {
-      app_type: "single_form"
-    },
+  cloud: {
     wrapper: 'exports.wufoo_config = '
-  },
-  wufoo_multi_form_client: {
-    config: {
-      app_type: "multi_form"
-    },
-    wrapper: 'var wufoo_config = '
-  },
-  wufoo_multi_form_cloud: {
-    config: {
-      app_type: "multi_form"
-    },
-    wrapper: 'exports.wufoo_config = '
-  },
-  getConfig: function(key, global_name, merge) {
-    var default_config = GenerateApp.Configs[key];
-
-    // Merge with custom config
-    var merged_config = GenerateApp.Utils.merge(default_config.config, merge);
-    var config = default_config.wrapper + JSON.stringify(merged_config) + ';';
-    return config;
   }
 };
 
@@ -59,7 +33,92 @@ GenerateApp.Models.Wufoo = Class.extend({
 
   init: function() {},
 
-  loadForms: function(api_key, domain, cb) {
+  loadForms: function(domain, apiKey, user, password, cb) {
+    var self = this;
+
+    if( apiKey ) {
+      self.getFormInfoWithKey(domain, apiKey, cb);
+    }
+    else if( user && password ) {
+      self.getApiKeyFromCreds(domain, user, password, function(res) {
+        if( res && res.status && res.status == "error") return cb(res);
+        self.getFormInfoWithKey(domain, res.data.apiKey, cb);
+      });
+    }
+  },
+
+  getApiKeyFromCreds: function(domain, user, password, cb) {
+    var local_url = Constants.EXTERNAL_REQUEST_URL;
+    var login_cookies = ["PHPSESSID", "wuSecureCookie"];
+
+    var loginParams = {
+      url: 'https://' + domain + '/login/',
+      method: "POST",
+      body: "email=" + user + "&password=" + password,
+      allowSelfSignedCert: true,
+      contentType: "application/x-www-form-urlencoded"
+    };
+
+    $fw.server.post(local_url, loginParams, function(res) {
+      if (res.status == 302) {
+        try {
+          var cookieHeader = '';
+          if( res.cookies ) {
+            for(var i=0; i < res.cookies.length; i++ ) {
+              var c = res.cookies[i];
+              if( c && c.name && $.inArray(c.name, login_cookies) != -1 ) {
+                cookieHeader += c.name + "=" + c.value + ";";
+              }
+            }
+          }
+
+          var apiKeyParams = {
+            url: 'https://' + domain + '/api/code/',
+            method: "GET",
+            headers: [{"name":"Cookie", "value" : cookieHeader}],
+            allowSelfSignedCert: true
+          };
+
+          $fw.server.post(local_url, apiKeyParams, function(res) {
+            if (res.status == 200) {
+              var apiCodeRes = res.body;
+              var apikeyText = $('#apikey', apiCodeRes);
+              var apiKey = apikeyText.text();
+              if( apiKey ) {
+                return cb({
+                  status: "ok",
+                  data: {apiKey: apiKey}
+                });
+              }
+              else {
+                return cb({
+                  status: "error",
+                  data: "Unable to login to WuFoo (not authenticated)"
+                });
+              }
+            } else {
+              return cb({
+                status: "error",
+                data: "Unable to login to WuFoo (not authenticated)"
+              });
+            }
+          });
+        } catch (err) {
+          return cb({
+            status: "error",
+            data: err
+          });
+        }
+      } else {
+        return cb({
+          status: "error",
+          data: "Unable to login to WuFoo (not authenticated)"
+        });
+      }
+    });
+  },
+
+  getFormInfoWithKey: function(domain, apiKey, cb) {
     var url = 'https://' + domain + '/api/v3/forms.json';
 
     var local_url = Constants.EXTERNAL_REQUEST_URL;
@@ -67,8 +126,8 @@ GenerateApp.Models.Wufoo = Class.extend({
       url: url,
       method: "GET",
       auth: {
-        username: api_key,
-        password: "foostatic"
+        username: apiKey,
+        password: 'footastic'
       },
       allowSelfSignedCert: true
     };
@@ -79,7 +138,8 @@ GenerateApp.Models.Wufoo = Class.extend({
           var json_data = JSON.parse(res.body);
           return cb({
             status: "ok",
-            data: json_data
+            data: json_data,
+            apiKey: apiKey
           });
         } catch (err) {
           return cb({
@@ -104,6 +164,10 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
   model: new GenerateApp.Models.Wufoo(),
   current_progress: 0,
   alert_timeout: 10000,
+
+  template_url : $fw.getClientProp('appforms-repo'),
+  require_credentials : $fw.getClientProp('appforms-require-credentials'),
+  require_apikey : $fw.getClientProp('appforms-require-apikey'),
 
   showError: function(message) {
     var self = this;
@@ -147,11 +211,15 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
       return false;
     });
 
-    $(self.container).find('.wufoo_api_domain').keyup(function() {
+    var updateApiKeyUrl = function() {
       var url = 'https://' + $(this).val() + '/api/code/';
       var link = $('<a>').attr('href', url).text(url).attr('target', '_blank');
       $(self.container).find('.wufoo_api_key_url').empty().append(link);
-    });
+    };
+
+    var api_domain_field = $(self.container).find('.wufoo_api_domain');
+    api_domain_field.keyup(updateApiKeyUrl);
+    api_domain_field.blur(updateApiKeyUrl);
 
     $(self.container).find('.validate:visible').unbind().click(function() {
       self.validate();
@@ -313,36 +381,10 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
       do_stage: false
     };
 
-    var custom_client_config, custom_cloud_config, client_config, cloud_config;
-    if (this.type == 'single') {
-      var url = "https://" + this.getDomain() + "/forms/" + app_config.form.Hash + "/";
+    var config = self.buildConfig(app_config);
 
-      custom_client_config = {
-        form_hash: app_config.form.Hash,
-        form_url: url
-      };
-
-      custom_cloud_config = {
-        form_hash: app_config.form.Hash,
-        form_url: url,
-        api_key: self.getApiKey(),
-        api_domain: self.getDomain()
-      };
-
-      custom_cloud_config.form_password = app_config.wufoo_form_password || null;
-
-      client_config = GenerateApp.Configs.getConfig('wufoo_single_form_client', 'wufoo_config', custom_client_config);
-      cloud_config = GenerateApp.Configs.getConfig('wufoo_single_form_cloud', 'wufoo_config', custom_cloud_config);
-    } else {
-      custom_client_config = {};
-      custom_cloud_config = {
-        api_key: self.getApiKey(),
-        api_domain: self.getDomain()
-      };
-      custom_cloud_config.form_password = app_config.wufoo_form_password || null;
-      client_config = GenerateApp.Configs.getConfig('wufoo_multi_form_client', 'wufoo_config', custom_client_config);
-      cloud_config = GenerateApp.Configs.getConfig('wufoo_multi_form_cloud', 'wufoo_config', custom_cloud_config);
-    }
+    var client_config = self.getConfig('client', config.client);
+    var cloud_config = self.getConfig('cloud', config.cloud);
 
     var update_client_config_params = {
       files: [{
@@ -378,10 +420,11 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
     });
   },
 
-  selectedFormData: function() {
-    var self = this;
-    return $(self.container).find('.available_forms option:selected').data() || null;
+  buildConfig: function(app_config) {
+    // Dummy function which should be over-ridden for each implmentation
+    throw Error("Build Config must be over written!");
   },
+
 
   getDomain: function() {
     var self = this;
@@ -397,28 +440,38 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
     var self = this;
     var app_config = {
       generated_app_type: "wufoo",
-      wufoo_api_key: $(self.container).find('.wufoo_api_key').val(),
-      wufoo_api_domain: $(self.container).find('.wufoo_api_domain').val()
+      email: $(self.container).find('.wufoo_email').val().trim(),
+      password: $(self.container).find('.wufoo_password').val().trim(),
+      api_key: $(self.container).find('.wufoo_api_key').val().trim(),
+      api_domain: $(self.container).find('.wufoo_api_domain').val().trim()
     };
 
     var password_checked = $(self.container).find('.protected_password').is(':checked');
     var password_value = $(self.container).find('.wufoo_form_password').val();
 
     if (password_checked && password_value !== '') {
-      app_config.wufoo_form_password = password_value;
+      app_config.form_password = password_value;
     }
 
-    var wufoo_form_password = $(self.container).find('.wufoo_api_key:visible');
-
-    var selected_form_data = self.selectedFormData();
-
-    app_config.form = selected_form_data;
     return app_config;
   },
 
   show: function() {
-    this.parent_controller.hideGeneratorList();
-    $(this.container).show();
+    var self = this;
+
+    self.parent_controller.hideGeneratorList();
+
+    $(self.container + ' #wufoo_auth_group').hide();
+    $(self.container + ' #wufoo_apikey_group').hide();
+
+    if( self.require_credentials == "true") {
+      $(self.container + ' #wufoo_auth_group').show();
+    }
+    if( self.require_apikey == "true") {
+      $(self.container + ' #wufoo_apikey_group').show();
+    }
+
+    $(self.container).show();
     this.bind();
   },
 
@@ -430,12 +483,19 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
   validate: function() {
     var self = this;
     this.showLoader();
-    var api_key = $('.wufoo_api_key:visible').val();
     var domain = $('.wufoo_api_domain:visible').val();
-    this.model.loadForms(api_key, domain, function(res) {
+    var apiKey = $('.wufoo_api_key:visible').val();
+    var email = $('.wufoo_email:visible').val();
+    var password = $('.wufoo_password:visible').val();
+    this.model.loadForms(domain, apiKey, email, password, function(res) {
       self.hideLoader();
 
       if (res.status == "ok") {
+        // Put the API Key into the text field if it is in the res.
+        // This is required for username/password authentication where API key is not provided by user
+        if( res.apiKey ) {
+          $(self.container).find('.wufoo_api_key').val(res.apiKey);
+        }
         self.showSuccess("Your credentials look good to us, you're ready to generate your app.");
         self.updateFormListing(res.data.Forms);
         self.enableAllInputs();
@@ -476,19 +536,94 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
       $(input).attr("disabled", "disabled");
     });
     $(self.container).find('.generate_app, .view_selected_form').attr("disabled", "disabled");
+  },
+
+  getConfig: function(side, config) {
+
+    config.app_type = this.type;
+
+    var default_config = GenerateApp.Configs[side];
+
+    var ret = default_config.wrapper + JSON.stringify(config, null, 2) + ';';
+    return ret;
   }
 });
 
 GenerateApp.Controllers.WufooSingle = GenerateApp.Controllers.Wufoo.extend({
-  template_url: "https://github.com/feedhenry/Wufoo-Template/zipball/master",
+  li: '#wufoo_single_generator_option',
   container: '#wufoo_single_generator_form',
-  type: 'single'
+  type: 'single_form',
+
+  selectedFormData: function() {
+    var self = this;
+    return $(self.container).find('.available_forms option:selected').data() || null;
+  },
+
+  buildConfig: function(app_config) {
+    var self = this;
+    var res = {};
+
+    var selected_form_data = self.selectedFormData();
+    var url = "https://" + this.getDomain() + "/forms/" + selected_form_data.Hash + "/";
+
+    res.client = {
+      form_hash: selected_form_data.Hash,
+      form_url: url
+    };
+
+    res.cloud = app_config;
+    res.cloud.form_hash = selected_form_data.Hash;
+    res.cloud.form_url = url;
+    return res;
+  }
 });
 
 GenerateApp.Controllers.WufooMulti = GenerateApp.Controllers.Wufoo.extend({
-  template_url: "https://github.com/feedhenry/Wufoo-Template/zipball/master",
+  li: '#wufoo_multi_generator_option',
   container: '#wufoo_multi_generator_form',
-  type: 'multi'
+  type: 'multi_form',
+
+  buildConfig: function(app_config) {
+    var res = {};
+    res.client = {};
+    res.cloud = app_config;
+    return res;
+  }
+});
+
+GenerateApp.Controllers.WufooSelection = GenerateApp.Controllers.Wufoo.extend({
+  li: '#wufoo_selection_generator_option',
+  container: '#wufoo_selection_generator_form',
+  type: 'selection_form',
+  swap_select_container: '#app_forms_swap_div',
+
+  updateFormListing: function(forms) {
+
+    var from = [];
+    $.each(forms, function(i, item) {
+      from.push([item.Name, item.Hash]);
+    });
+    this.bindSwapSelect(this.swap_select_container);
+    this.updateSwapSelect(this.swap_select_container, from, []);
+  },
+
+  selectedFormData: function() {
+    var self = this;
+
+    var formHashes = self.getSelectedItems(self.swap_select_container);
+
+    return formHashes;
+  },
+
+  buildConfig: function(app_config) {
+    var self = this;
+    var res = {};
+
+    res.client = {};
+    res.cloud = app_config;
+    res.cloud.form_hashes = self.selectedFormData();
+    return res;
+  }
 });
 
 var Apps = Apps || {};
@@ -496,7 +631,7 @@ Apps.Generate = Apps.Generate || {};
 
 Apps.Generate.Controller = GenerateApp.Controller = Class.extend({
   config: null,
-  generator_controllers: null,
+  generators: null,
 
   init: function(params) {
     var self = this;
@@ -513,17 +648,46 @@ Apps.Generate.Controller = GenerateApp.Controller = Class.extend({
     $('.generate_multi_wufoo_app').unbind().click(function() {
       self.generators.wufoo_multi.show();
     });
+    $('.generate_selection_wufoo_app').unbind().click(function() {
+      self.generators.wufoo_selection.show();
+    });
   },
 
   initGenerators: function() {
-    this.generators = {
+    var self = this;
+
+    self.all_generators = {
       wufoo_single: new GenerateApp.Controllers.WufooSingle({
         controller: this
       }),
       wufoo_multi: new GenerateApp.Controllers.WufooMulti({
         controller: this
+      }),
+      wufoo_selection: new GenerateApp.Controllers.WufooSelection({
+        controller: this
       })
     };
+
+    self.generators = {};
+
+    var available_generators = $fw.getClientProp('appforms-available');
+
+    var gens = available_generators.split(',');
+
+    $('#app_generators li').hide();
+
+    $.each(gens, function(i, item) {
+      item = item.trim();
+      var value = self.all_generators[item];
+      if( value ) {
+        self.generators[item] = value;
+
+        var li_id = value['li'];
+        $('#app_generators ' + li_id).show();
+      }
+
+    });
+
   },
 
   hide: function () {

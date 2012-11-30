@@ -1,0 +1,39 @@
+  <div class="control-group">
+    <label class="control-label" for="input01">Wufoo URL</label>
+    <div class="controls">
+      <div class="input-prepend">
+        <span class="add-on"><strong>https://</strong></span><input type="text" class="input-xlarge wufoo_api_domain" name="wufoo_api_domain" placeholder="your_domain.wufoo.com">
+        <span class="help-inline">Your Wufoo URL</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="wufoo_auth_group">
+    <div class="control-group">
+      <label class="control-label" for="input01">Wufoo Email Address</label>
+      <div class="controls">
+        <input type="text" class="input-xlarge wufoo_email" name="wufoo_email" placeholder="Wufoo Email Address">
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label class="control-label" for="input01">Wufoo Password</label>
+      <div class="controls">
+        <input type="password" class="input-xlarge wufoo_password" name="wufoo_password" placeholder="Wufoo Password">
+      </div>
+    </div>
+  </div>
+
+  <div id="wufoo_apikey_group">
+    <div class="control-group">
+      <label class="control-label" for="input01">Wufoo API Key</label>
+      <div class="controls">
+        <input type="text" class="input-xlarge wufoo_api_key" name="wufoo_api_key" placeholder="Wufoo API Key">
+        <span class="help-block">Find your API Key here: <span class="wufoo_api_key_url">https://&lt;domain&gt;.wufoo.com/api/code/</span></span>
+      </div>
+    </div>
+  </div>
+
+  <span class="help-inline"><button type="submit" class="btn btn-primary validate">Validate</button>
+    &nbsp;<img class="loader hidden_template" src="<%=studio.getStaticAssetPath("themes/default/img/throbber.gif")%>" alt="loading"/>
+  </span>

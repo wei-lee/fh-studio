@@ -6,28 +6,18 @@ model.Device = model.Model.extend({
   // Field config
   field_config: [{
     field_name: "name",
-    editable: false,
-    showable: true,
     column_title: "Label"
   }, {
     field_name: "cuid",
-    editable: false,
-    showable: true,
     column_title: "Device Id"
   }, {
     field_name: "disabled",
-    editable: false,
-    showable: true,
     column_title: "Disabled"
   }, {
     field_name: "blacklisted",
-    editable: false,
-    showable: true,
     column_title: "Purge Data"
   }, {
     field_name: "sysModified",
-    editable: false,
-    showable: true,
     column_title: "Last Access"
   }],
 

@@ -161,8 +161,9 @@ body {
 }
 .ui-menu-item
 {
-  cursor:pointer;
+    cursor:pointer;
 }
+
 button.ui-state-default
 {
   border:1px solid #ccc !important;
@@ -680,7 +681,7 @@ label.error
   float:left; 
   margin:0 7px 20px 0;
 }
-.confirm_dialog a.otalink{
+a.otalink{
   font-family: monospace;
 }
 .popup-dialog .ui-dialog-titlebar {
@@ -2427,8 +2428,16 @@ line-height:0.5em;
   width: 150px;
 }
 
-#wufoo_single_generator_form .wufoo_api_key, #wufoo_multi_generator_form .wufoo_api_key  {
+.app_generator textarea, .app_generator password {
   width: 319px;
+}
+
+.app_generator .wufoo_api_domain {
+  width: 209px;
+}
+
+.app_generator .validate {
+    margin-left: 375px;
 }
 
 .wufoo_api_key_url a {
@@ -2673,7 +2682,7 @@ table.dataTable th:active {
 }
 
 
-.import_users, .import_app {
+.import_users, .import_app, .audit_button_margin {
   margin-right: 10px;
 }
 
@@ -2701,6 +2710,8 @@ table.dataTable th:active {
   text-align: right; 
   margin-bottom: 10px;
 }
+
+#admin_store_item_update #auditlogs { overflow: hidden; }
 
 .store_item_binaries .control-group {
   margin-bottom: 0;

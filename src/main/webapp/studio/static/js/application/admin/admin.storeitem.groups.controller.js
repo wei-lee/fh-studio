@@ -1,22 +1,24 @@
 var Admin = Admin || {};
+Admin.Storeitem = Admin.Storeitem || {};
+Admin.Storeitem.Groups = Admin.Storeitem.Groups || {};
 
-Admin.Groups = Admin.Groups || {};
-
-Admin.Groups.Controller = Controller.extend({
+Admin.Storeitem.Groups.Controller = Controller.extend({
   models: {
-    group: new model.Group()
+    group: new model.Group(),
+    user: new model.User(),
+    store_item: new model.StoreItem()
   },
 
   views: {
-    groups: "#useradmin_group_list",
-    group_create: "#useradmin_group_create",
-    group_update: "#useradmin_group_update"
+    groups: "#admin_storeitem_group_list",
+    group_create: "#admin_storeitem_group_create",
+    group_update: "#admin_storeitem_group_update"
   },
 
   alert_timeout: 3000,
 
   container: null,
-  
+
   group_table: null,
 
   init: function(params) {
@@ -25,7 +27,7 @@ Admin.Groups.Controller = Controller.extend({
     this.field_config = params.field_config || null;
   },
 
-  show: function (e) {
+  show: function(e) {
     this.showGroupsList();
   },
 
@@ -58,17 +60,31 @@ Admin.Groups.Controller = Controller.extend({
 
   bindGroupControls: function() {
     var self = this;
-    $('#useradmin_group_create .create_group_btn').unbind().click(function() {
-      var group_name = $('.group_name').val();
-      self.createGroup(group_name);
+    $('#admin_storeitem_group_create .create_group_btn').unbind().click(function() {
+      var name = $('#create_group_name').val();
+      var description = $('#create_group_desc').val();
+      self.createGroup({
+        name: name,
+        description: description,
+        storeitems: null
+      });
       return false;
     });
-    
-    
+
+
     $('tr td .edit_group', this.user_table).unbind().click(function() {
+      var el = this;
       var row = $(this).parent().parent();
       var data = self.groupDataForRow($(this).parent().parent().get(0));
-      self.showGroupUpdate(this, row, data);
+      var guid = data[0];
+
+      // Do read before showing
+      self.models.group.read(guid, function(res) {
+        self.showGroupUpdate(el, row, res);
+      }, function(err) {
+        console.log(err);
+      });
+
       return false;
     });
     $('tr td .delete_group', this.user_table).unbind().click(function() {
@@ -76,21 +92,21 @@ Admin.Groups.Controller = Controller.extend({
       var data = self.groupDataForRow($(this).parent().parent().get(0));
       self.deleteGroup(this, row, data);
       return false;
-    }); 
+    });
   },
 
-  showBooleanModal: function (msg, success) {
-    var modal = $('#useradmin_group_boolean_modal').clone();
+  showBooleanModal: function(msg, success) {
+    var modal = $('#admin_storeitem_group_boolean_modal').clone();
     modal.find('.modal-body').html(msg).end().appendTo($("body")).modal({
       "keyboard": false,
       "backdrop": "static"
-    }).find('.btn-primary').unbind().on('click', function () {
+    }).find('.btn-primary').unbind().on('click', function() {
       // confirmed delete, go ahead
       modal.modal('hide');
       success();
     }).end().on('hidden', function() {
       // wait a couple seconds for modal backdrop to be hidden also before removing from dom
-      setTimeout(function () {
+      setTimeout(function() {
         modal.remove();
       }, 2000);
     });
@@ -98,7 +114,7 @@ Admin.Groups.Controller = Controller.extend({
 
   deleteGroup: function(button, row, data) {
     var self = this;
-    self.showBooleanModal('Are you sure you want to delete this Group?', function () {
+    self.showBooleanModal('Are you sure you want to delete this Group?', function() {
       self.showAlert('info', '<strong>Deleting Group</strong> This may take some time.');
       // delete user
       var guid = data[0];
@@ -112,9 +128,9 @@ Admin.Groups.Controller = Controller.extend({
     });
   },
 
-  createGroup: function(group_name) {
+  createGroup: function(group) {
     var self = this;
-    this.models.group.create(group_name, function(res) {
+    this.models.group.create(group, function(res) {
       console.log('createGroup: OK');
       $fw.client.dialog.info.flash('Group created, refreshing list.');
       self.showGroupsList();
@@ -148,7 +164,7 @@ Admin.Groups.Controller = Controller.extend({
   showGroupsList: function() {
     var self = this;
     this.hide();
-    
+
     $(this.views.groups).show();
     this.container = this.views.groups;
     this.models.group.list(function(res) {
@@ -162,7 +178,7 @@ Admin.Groups.Controller = Controller.extend({
 
   renderGroupTable: function(data) {
     var self = this;
-    this.group_table = $('#useradmin_groups_table').dataTable({
+    this.group_table = $('#admin_storeitem_groups_table').dataTable({
       "bDestroy": true,
       "bAutoWidth": false,
       "sDom": "<'row-fluid'<'span12'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
@@ -179,11 +195,11 @@ Admin.Groups.Controller = Controller.extend({
       self.showCreateGroup();
       return false;
     });
-    $('#useradmin_group_list .span12:first').append(create_button);
+    $('#admin_storeitem_group_list .span12:first').append(create_button);
   },
 
   // type: error|success|info
-  showAlert: function (type, message) {
+  showAlert: function(type, message) {
     var self = this;
     var alerts_area = $(this.container).find('.alerts');
     var alert = $('<div>').addClass('alert fade in alert-' + type).html(message);
@@ -193,16 +209,16 @@ Admin.Groups.Controller = Controller.extend({
     // only automatically hide alert if it's not an error
     if ('error' !== type) {
       setTimeout(function() {
-        alert.slideUp(function () {
+        alert.slideUp(function() {
           alert.remove();
         });
       }, self.alert_timeout);
     }
   },
-  
+
   showCreateGroup: function() {
     this.hide();
-    $('#useradmin_group_create').show();
+    $('#admin_storeitem_group_create').show();
   },
 
   showGroupUpdate: function(button, row, data) {
@@ -212,19 +228,62 @@ Admin.Groups.Controller = Controller.extend({
     var parent = $(this.views.group_update);
     this.container = this.views.group_update;
 
-    var clearForm = function () {
+    this.bindSwapSelect(this.container);
+
+    function clearForm() {
       $('input[type=text]', parent).val('');
       $('input[type=hidden]', parent).val('');
-    };
+    }
 
-    var populateForm = function (group) {
-      console.log('populating group update form: ' + JSON.stringify(group));
-      $('#update_group_id', parent).val(group.guid);
-      $('#update_group_name', parent).val(group.name);
-    };
+    function populateForm(data) {
+      $('#update_group_id', parent).val(data.guid);
+      $('#update_group_name', parent).val(data.name);
+      $('#update_group_description', parent).val(data.description);
+
+      self.models.store_item.list(function(store_items_res) {
+        // Render swap selects
+        var available_store_items = [];
+        var assigned_store_items = [];
+
+        $.each(store_items_res.list, function(i, item) {
+          available_store_items.push({
+            guid: item.guid,
+            name: item.name
+          });
+          if (item.groups.indexOf(data.guid) > -1) {
+            assigned_store_items.push(item.guid);
+          }
+        });
+
+        self.renderAvailableStoreItems(available_store_items, assigned_store_items, self.views.app_store);
+      }, function(err) {
+        self.showAlert('error', "Error loading App Store Store Items");
+      }, true);
+
+
+      self.models.user.list(function(users_res) {
+        // Render swap selects
+        var available_users = [];
+        var assigned_users = [];
+
+        $.each(users_res.list, function(i, item) {
+          available_users.push({
+            guid: item.guid,
+            email: item.fields.email
+          });
+          if (data.users.indexOf(item.guid) > -1) {
+            assigned_users.push(item.guid);
+          }
+        });
+
+        self.renderAvailableUsers(available_users, assigned_users, self.views.app_store);
+      }, function(err) {
+        self.showAlert('error', "Error loading App Store Store Items");
+      }, false);
+    }
 
     clearForm();
-	parent.show();
+    parent.show();
 
     $('.update_group_btn', parent).unbind().click(function() {
       self.updateGroup();
@@ -232,11 +291,66 @@ Admin.Groups.Controller = Controller.extend({
     });
 
     // Setup group details - currently just name
-    console.log("data: " + JSON.stringify(data));
-    var id = data[0];
-    var oldName = data[1];
-    
-    return populateForm({guid: data[0], name: data[1]});
+    var id = data.guid;
+    var oldName = data.name;
+
+    return populateForm(data);
+  },
+
+  renderAvailableStoreItems: function(available, assigned, container) {
+    var self = this; //update_group_storeitem_swap
+    var available_select = $('.updategroup_store_items_available', container).empty();
+    var assigned_select = $('.updategroup_store_items_assigned', container).empty();
+
+    var map = {};
+
+    // Massaging into {v: name, v: name} hash for lookup
+    $.each(available, function(i, item) {
+      map[item.guid] = item.name;
+    });
+
+    // Assigned first
+    $.each(assigned, function(i, guid) {
+      var name = map[guid];
+      var option = $('<option>').val(guid).text(name);
+      assigned_select.append(option);
+    });
+
+    // Available, minus assigned
+    $.each(map, function(guid, name) {
+      if (assigned.indexOf(guid) == -1) {
+        var option = $('<option>').val(guid).text(name);
+        available_select.append(option);
+      }
+    });
+  },
+
+  renderAvailableUsers: function(available, assigned, container) {
+    var self = this; //update_group_storeitem_swap
+    var available_select = $('.updategroup_users_available', container).empty();
+    var assigned_select = $('.updategroup_users_assigned', container).empty();
+
+    var map = {};
+
+    // Massaging into {v: name, v: name} hash for lookup
+    $.each(available, function(i, item) {
+      map[item.guid] = item.email;
+    });
+
+    // Assigned first
+    $.each(assigned, function(i, guid) {
+      var name = map[guid];
+      var option = $('<option>').val(guid).text(name);
+      assigned_select.append(option);
+    });
+
+    // Available, minus assigned
+    $.each(map, function(guid, name) {
+      if (assigned.indexOf(guid) == -1) {
+        var option = $('<option>').val(guid).text(name);
+        available_select.append(option);
+      }
+    });
   },
 
   updateGroup: function() {
@@ -254,6 +368,13 @@ Admin.Groups.Controller = Controller.extend({
     if (name !== '') {
       fields.name = name;
     }
+    var description = form.find('#update_group_description').val();
+    if (description !== '') {
+      fields.description = description;
+    }
+
+    fields.storeitems = this._selectedStoreItems();
+    fields.users = this._selectedUsers();
 
     this.models.group.update(fields, function(res) {
       console.log('updateUser: OK');
@@ -264,9 +385,7 @@ Admin.Groups.Controller = Controller.extend({
       self.showAlert('error', '<strong>Error updating Group</strong> ' + err);
     });
   },
-       
-       
-        
+
   addControls: function(res) {
     // Add control column
     res.aoColumns.push({
@@ -283,5 +402,23 @@ Admin.Groups.Controller = Controller.extend({
       row.push(controls.join(""));
     });
     return res;
+  },
+
+  _selectedStoreItems: function(container) {
+    var selected_options = $('.updategroup_store_items_assigned option', container);
+    var selected = [];
+    selected_options.each(function(i, item) {
+      selected.push($(item).val());
+    });
+    return selected;
+  },
+
+  _selectedUsers: function(container) {
+    var selected_options = $('.updategroup_users_assigned option', container);
+    var selected = [];
+    selected_options.each(function(i, item) {
+      selected.push($(item).val());
+    });
+    return selected;
   }
 });

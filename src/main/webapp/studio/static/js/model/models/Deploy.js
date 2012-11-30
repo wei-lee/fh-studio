@@ -7,13 +7,9 @@ model.Deploy = model.Model.extend({
     visible: false
   }, {
     field_name: "name",
-    editable: false,
-    showable: true,
     column_title: "Name"
   }, {
     field_name: "target",
-    editable: false,
-    showable: true,
     column_title: "Platform"
   }],
 

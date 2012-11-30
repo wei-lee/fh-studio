@@ -116,6 +116,15 @@ var Controller = Class.extend({
     to_list.removeAttr("disabled");
   },
 
+  getSelectedItems: function(container) {
+    var store_item_options = $('.swap-to option', container);
+    var items = [];
+    store_item_options.each(function(i, item) {
+      items.push($(item).val());
+    });
+    return items;
+  },
+
   // show a simple yes|no modal, where success is called if yes is chosen
   // TODO: allow a fail callback to be specified in event of 'no' selected
   showBooleanModal: function(msg, success) {
@@ -178,5 +187,12 @@ var Controller = Class.extend({
   showProgressModal: function(title, message, cb) {
     this.progressModal = $('#generic_progress_modal').clone();
     this.progressModal.find('h3').text(title).end().find('h4').text(message).end().appendTo($("body")).one('shown', cb).modal();
+  },
+
+  getColumnIndexForField: function (aoColumns,field,value){
+    var found = $.grep(aoColumns,function(item, i){return item[field] === value;});
+    var col = $(aoColumns).index(found[0]);
+    return col;
+
   }
 });

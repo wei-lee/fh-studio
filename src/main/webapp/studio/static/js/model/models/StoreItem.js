@@ -10,26 +10,42 @@ model.StoreItem = model.Model.extend({
     var params = {};
     return this.serverPost(url, params, success, fail);
   },
+          
+  listValidItemTypes: function (success, fail){
+      var url = Constants.ADMIN_STORE_ITEM_LIST_TYPES_URL;
+      var params = {};
+      return this.serverPost(url, params, success, fail, true);
+  },
 
-  create: function(name, item_id, description, auth_policies, success, fail) {
+  read: function(id, success, fail) {
+    var url = Constants.ADMIN_STORE_ITEM_READ_URL;
+    var params = {guid: id};
+    return this.serverPost(url, params, success, fail, true);
+  },
+
+  create: function(name, item_id, description, auth_policies, groups, restrict_to_groups, success, fail) {
     var url = Constants.ADMIN_STORE_ITEM_CREATE_URL;
     var params = {
       name: name,
       description: description,
       authToken: item_id,
-      authpolicies: auth_policies
+      authpolicies: auth_policies,
+      groups: groups,
+      restrictToGroups: restrict_to_groups
     };
     return this.serverPost(url, params, success, fail, true);
   },
 
-  update: function(guid, name, item_id, description, auth_policies, success, fail) {
+  update: function(guid, name, item_id, description, auth_policies, groups, restrict_to_groups, success, fail) {
     var url = Constants.ADMIN_STORE_ITEM_UPDATE_URL;
     var params = {
       guid: guid,
       name: name,
       description: description,
       authToken: item_id,
-      authpolicies: auth_policies
+      authpolicies: auth_policies,
+      groups: groups,
+      restrictToGroups: restrict_to_groups
     };
     return this.serverPost(url, params, success, fail, true);
   },

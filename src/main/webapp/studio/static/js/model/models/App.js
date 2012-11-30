@@ -3,69 +3,48 @@ model.App = model.Model.extend({
   // Field config
   field_config: [{
     field_name: "icon",
-    editable: false,
-    showable: true,
     column_title: ""
   }, {
     field_name: "title",
-    editable: false,
-    showable: true,
     column_title: "Name"
   }, {
     field_name: "description",
-    editable: false,
-    showable: true,
     column_title: "Description"
   }, {
     field_name: "email",
-    editable: false,
-    showable: false,
+    visible: true,
     column_title: "Email"
   }, {
     field_name: "version",
-    editable: false,
-    showable: true,
     column_title: "Version",
     width: "60px"
   }, {
     field_name: "modified",
-    editable: false,
-    showable: true,
     column_title: "Last Modified",
     width: "150px"
   }, {
     field_name: "id",
-    editable: false,
-    showable: false,
+    visible: false,
     column_title: "App ID"
   }],
 
   recent_field_config: [{
     field_name: "icon",
-    editable: false,
-    showable: true,
     column_title: ""
   }, {
     field_name: "title",
-    editable: false,
-    showable: true,
     column_title: "Name"
   }, {
     field_name: "version",
-    editable: false,
-    showable: true,
     column_title: "Version",
     width: "60px"
   }, {
     field_name: "modified",
-    editable: false,
-    showable: true,
     column_title: "Last Modified",
     width: "150px"
   }, {
     field_name: "id",
-    editable: false,
-    showable: false,
+    visible: false,
     column_title: "App ID"
   }],
 
