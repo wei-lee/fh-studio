@@ -636,7 +636,7 @@ var Lang = {
   prod_app_secret_label: 'Production Secret Key',
   prod_app_master_secret_label: 'Production Master Secret Key',
   android_transport_label: 'Transport Protocal (For Android)',
-  android_sender_label: 'Sender Email (For Android)',
+  android_sender_label: 'GCM API Key (For Android)',
   push_urbanairship_save_button: 'Save',
   enable_push_label_help_icon: 'Enable push notification for this app. You need setup your Urban Airship account first to use this function.',
   app_android_id_label_help_icon: 'This value should be used when you setup your Urban Airship app. It is for the field \'Android Package\'.',
@@ -647,7 +647,7 @@ var Lang = {
   prod_app_secret_label_help_icon: 'The Urban Airship application secret key. For production builds.',
   prod_app_master_secret_label_help_icon: 'The Urban Airship application master secret key. For production builds.',
   android_transport_label_help_icon: 'Which transport protocal to use when using Urban Airship on Android. See Urban Airship for more details.',
-  android_sender_label_help_icon: 'The sender email that is used to register Android\'s C2DM service for this app.',
+  android_sender_label_help_icon: 'The GCM API key. You can obtain this from Google API Console.',
 
   cloudenvironment_label: "Selected Environment",
   cloudenvironment_dev: "Development",
