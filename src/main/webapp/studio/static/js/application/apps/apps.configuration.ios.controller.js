@@ -8,7 +8,7 @@ Apps.Configuration.Ios.Controller = Apps.Configuration.Support.extend({
 
   init: function () {
     this._super();
-    this.replaceOptions = {"packages": true, "auto Rotate": true, "hide Status Bar": true, "landscape splash image": true, "orientation": true, "portrait splash image": true, "retina splash image": true, "splash Image": true};
+    this.replaceOptions = {"packages": true, "auto Rotate": true, "hide Status Bar": true, "landscape splash image": true, "orientation": true, "portrait splash image": true, "retina splash image": true, "splash Image": true, "iphone5 Retina Splash Image":true, "ipad Retina Splash Image":true, "ipad Landscape Retina Splash Image": true};
   }
 
 });

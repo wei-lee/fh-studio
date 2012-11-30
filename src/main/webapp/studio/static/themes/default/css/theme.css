@@ -1080,7 +1080,7 @@ span.label-info {
 }
 /* App Configurations */
 #configuration_container .control-label, #push_urbanairship_container .control-label {
-  width: 180px;
+  width: 190px;
 }
 
 #configuration_container .controls, #push_urbanairship_container .controls {
