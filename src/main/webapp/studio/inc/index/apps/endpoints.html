@@ -1,0 +1,49 @@
+<div id="endpoints_container">
+  <div class="fh-box-outer">
+    <h4 class="fh-box-header">
+      Secure Endpoints
+      <% if(studio.getProperty("nodejsEnabled").equals("true")){ %>
+        <%@ include file="./cloud_environment.html" %>
+      <%}%>
+    </h4>
+    <div class="fh-box-inner">
+      <form class="form-horizontal">
+        <fieldset class="well">
+          <legend>App Security</legend>
+          <div class="control-group">
+            <div class="controls">
+              <label class="radio"><input type="radio" name="app_https" class="input" value="HTTPS" id="endpoints_https"/>HTTPS</label>
+            </div>
+            <div class="controls">
+              <label class="radio"><input type="radio" name="app_app_api_key" class="input" value="APP_API_KEY" id="endpoints_app_api_key"/>App Api Key</label>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary update_app_security_btn">Update</button>
+            </div>
+          </div>
+        </fieldset>
+      </form>
+      <form class="form-horizontal">
+        <fieldset class="well">
+          <legend>Endpoint Security</legend>
+          <div class="control-group">
+            <div class="controls">
+              <select multiple="multiple" class="">
+                <option>getConfig</option>
+                <option>reapFeed</option>
+                <option>login</option>
+              </select>
+              <fieldset class="well">
+                <label class="radio"><input type="radio" name="endpoint_https" class="input" value="HTTPS" id="app_https"/>HTTPS</label>
+                <label class="radio"><input type="radio" name="endpoint_app_api_key" class="input" value="HTTPS" id="app_app_api_key"/>App Api Key</label>
+              </fieldset>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary update_endpoint_security_btn">Update</button>
+            </div>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+</div>
