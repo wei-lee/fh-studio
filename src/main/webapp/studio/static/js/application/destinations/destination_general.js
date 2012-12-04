@@ -67,12 +67,11 @@ application.DestinationGeneral = Class.extend({
       proto.Wizard.showCancelButton(wizard);
     });
 
-    wizard.find(progress_id).bind('show', function(e) {
+    var doGeneration = function(step){
       var data = that.getExportData(wizard, export_version_id);
       if (null === data) {
         return;
       }
-      var step = $(this);
       that.showGenerateProgress("Export", wizard, data, step, function(res) {
         // TODO: better way for this temporary workaround for finishing wizard after successful upload  
         wizard.find('.jw-button-finish').trigger('click');
@@ -84,9 +83,18 @@ application.DestinationGeneral = Class.extend({
           document.location = source_url;
         }
       });
+    }
+    if(wizard.find(progress_id).is(":visible")){
+      doGeneration($(wizard.find(progress_id)));
+      proto.Wizard.hideCancelButton(wizard);
+    } else {
+      wizard.find(progress_id).bind('show', function(e) {
+      doGeneration($(this));
     }).bind('postShow', function() {
       proto.Wizard.hideCancelButton(wizard);
     });
+    }
+    
   },
 
   doExportWizardSetup: function(main_container, wizard) {

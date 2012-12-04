@@ -35,7 +35,7 @@ application.DestinationAndroid = application.DestinationGeneral.extend({
   },
   
   getExportData: function(wizard, export_version_id){
-      var version = wizard.find( export_version_id + ' input:checked').val();
+      var version =  "4.0";//wizard.find( export_version_id + ' input:checked').val();
       console.log("Export version: " + version);
       /*if(version === "" || version === undefined){
          proto.Wizard.jumpToStep(wizard, 1, "Please select the SDK version");
@@ -47,17 +47,17 @@ application.DestinationAndroid = application.DestinationGeneral.extend({
   },
   
   doExportWizardSetup: function (main_container, wizard) {
-    wizard.validate({
+    /*wizard.validate({
       rules: {
         app_export_android_versions_radio: {
           required: true
         }
       }
-    });
+    });*/
   },
   
   getPublishData: function(config, version_select, wizard) {
-      var version = version_select.find("input:checked").val();
+      var version = "4.0"; //version_select.find("input:checked").val();
       var pk_pass = wizard.find('#app_publish_android_pk_password').val();
       var cert_pass = wizard.find('#app_publish_android_cert_password').val();
       var data = {config: config, generateSrc: false, version: version, privateKeyPass: pk_pass, certPass: cert_pass};
