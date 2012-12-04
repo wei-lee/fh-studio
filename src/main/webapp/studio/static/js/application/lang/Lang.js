@@ -194,7 +194,7 @@ var Lang = {
   app_export_android_progress_title: 'Exporting App',
 
   android_publish_wizard_supertitle: 'Android Build',
-  app_publish_android_versions_title: 'Please select the Android SDK version',
+  app_publish_android_versions_title: 'Android SDK Information',
   app_publish_android_password_title: 'Please enter the passwords for your private key and certificate',
   app_publish_android_progress_title: 'Building App',
 
@@ -203,6 +203,7 @@ var Lang = {
   app_publish_iphone_upload_progress_text: "Please wait while uploading the provisioning profile...",
   app_publish_iphone_password_text: ["If you have protected your private key or certificate with a password, please enter it here.", "Your password will not be saved anywhere on the system for security reasons. It will be prompted for whenever you need to build an App.", "Important: It is recommended that you protect your private key with a password."],
   app_publish_android_password_text: ["If you have protected your private key or certificate with a password, please enter it here.", "Your password will not be saved anywhere on the system for security reasons. It will be prompted for whenever you need to build an App.", "Important: It is recommended that you protect your private key with a password."],
+  app_publish_android_versions_text: ["The app will be built using Android SDK 4.2 and can be running on devices that are running Android 2.2 and above."],
   app_publish_blackberry_note_text: "Tip: Before building apps for Blackberry, please make sure none of the app file names contains '-', otherwise the build will fail. ",
 
   publish_embed_title: 'Embed Code',
