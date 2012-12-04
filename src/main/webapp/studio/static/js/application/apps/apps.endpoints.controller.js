@@ -13,6 +13,7 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
   },
 
   container: null,
+  endpoints_table: null,
 
   init: function () {
     this._super();
@@ -27,96 +28,34 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
     var self = this;
     var container = $(this.views.endpoints_container);
 
-    $fw.client.lang.insertLangForContainer(container);
-    
-    // init any buttons and callbacks
-    container.find('#debug_logging_refresh_button').bind('click', function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-      self.refreshLog();
-    });
-    container.find('#debug_logging_clear_button').bind('click', function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-      self.clearLog();
-    });
+    $fw.client.lang.insertLangForContainer(container);    
   },
 
   show: function(){
     this._super(this.views.endpoints_container);
     
     this.initFn();
-    this.showLogging();
+    this.renderEndpointsTable();
 
     $(this.container).show();
   },
   
-  showLogging: function () {
-    console.log('showLogging');
+  renderEndpointsTable: function(data) {
+    var self = this;
+    data = {"aaData": [["getConfig", "HTTPS", "dberesford@feedhenry.com", "5/12/20012 12:01:56"], ["login", "App Api Key", "mmurphy@feedhenry.com", "4/12/2012 10:10:23"]],
+         "aoColumns": [ {"sTitle": "Endpoint"}, {"sTitle": "Security"}, {"sTitle": "Updated By"}, {"sTitle" : "Date"}]};
 
-    // Cannot currently clear log files for node apps
-    //  /deletelog endpoint not in fh-proxy yet
-    if ($fw.client.tab.apps.manageapps.isNodeJsApp()) {
-      $('#debug_logging_clear_button').hide();
-    } else {
-      $('#debug_logging_clear_button').show();
-    }
-
-    this.refreshLog();
-  },
-  
-  refreshLog: function () {
-    $('#debug_logging_text').val('loading...');
-
-    var instGuid = $fw.data.get('inst').guid;
-    var url = Constants.LOGS_URL;
-    var cloudEnv = $fw.data.get('cloud_environment');
-    
-    var params = {
-      "guid": instGuid,
-      "action": "get",
-      "deploytarget": cloudEnv
-    };
-
-    $fw.server.post(url, params, function (res) {
-      if ("ok" === res.status) {
-        var logText = '';
-        for (var log in res.log) {
-          logText += '====> ' + log + ' START <====\n' + res.log[log] + '====> ' + log + ' END <====\n';
-        }
-        if (logText.length < 1) {
-          logText = 'n/a';
-        }
-        $('#debug_logging_text').val('').val(logText);
-      } else {
-        $('#debug_logging_text').val('Error loading Cloud App Logs. Is your App Staged for this environment?');
-      }
-    }, function (error) {
-      $('#debug_logging_text').val('Error loading Cloud App Logs. Is your App Staged for this environment?');
-    }, true);
-  },
-  
-  // TODO: move this 'model' stuff out of here
-  clearLog: function () {
-    var self = this, instGuid, url, params;
-    
-    instGuid = $fw.data.get('inst').guid;
-    url = Constants.LOGS_URL;
-    params = {
-      "guid": instGuid,
-      "action": "delete"
-    };
-    
-    $fw.server.post(url, params, function (res) {
-      if ('ok' === res.status) {
-        $('#debug_logging_text').val('');
-      }
-      else {
-        $fw.client.dialog.error("Error clearing logs: " + res.error);
-      }
-    }, function (error) {
-      $fw.client.dialog.error($fw.client.lang.getLangString('clear_log_error'));
-    }, true);
+    this.endpoints_table = $('#endpoints_endpoints_table').dataTable({
+      "bDestroy": true,
+      "bAutoWidth": false,
+      "bFilter" : false,
+      "bPaginate": false,
+      //"sDom": "<'row-fluid'<'span12'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+      "sDom": "",
+      "sPaginationType": "bootstrap",
+      "bLengthChange": false,
+      "aaData": data.aaData,
+      "aoColumns": data.aoColumns
+    });
   }
-
 });
