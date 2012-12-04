@@ -83,7 +83,8 @@ application.DestinationGeneral = Class.extend({
           document.location = source_url;
         }
       });
-    }
+    };
+    
     if(wizard.find(progress_id).is(":visible")){
       doGeneration($(wizard.find(progress_id)));
       proto.Wizard.hideCancelButton(wizard);
