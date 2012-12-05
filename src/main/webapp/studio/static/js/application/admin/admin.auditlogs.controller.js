@@ -21,9 +21,9 @@ Admin.Auditlogs.Controller = Controller.extend({
   },
   
   template : function (type ,args){
-      if(type === "option"){
-          return "<option value="+args.val+">"+args.text+"</option>";
-      }
+    if(type === "option"){
+      return "<option value="+args.val+">"+args.text+"</option>";
+    }
   },  
 
   alert_timeout: 3000,

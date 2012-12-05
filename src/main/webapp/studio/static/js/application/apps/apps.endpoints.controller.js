@@ -17,8 +17,22 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
     endpoints_container: "#endpoints_container"
   },
 
+  filterFields :{
+    endpoints : "select#endpointsAuditLogEndpoints",
+    security : "select#endpointsAuditlogSecurity",
+    users : "select#endpointsAuditlogUsers",
+    logLimit: "select#auditlogLimit"
+  },
+
+  optionTemplate : function (type, args){
+    if(type === "option"){
+        return "<option value="+args.val+">"+args.text+"</option>";
+    }
+  },  
+
   container: null,
   endpoints_table: null, // TODO - this need to be held as a variable?
+  audit_log_table: null, // TODO - ditto
   appSecureEndpoints: null, // TODO - revisit, may be a better way of doing this.. 
 
   // type: error|success|info
@@ -62,6 +76,9 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
     var guid = $fw.data.get('inst').guid;
     var cloudEnv = $fw.data.get('cloud_environment');
 
+    // TODO - which tab is visible, or does it matter.. 
+    // TODO - add 'delete override button
+
     self.models.secure_endpoints.readSecureEndpoints(guid, cloudEnv, function(secure_endpoints_res) {
       // TODO - ok to hold state here???
       self.appSecureEndpoints = secure_endpoints_res; 
@@ -74,11 +91,15 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
         $('#app_security_https_option').prop('checked', false);
       }
 
-      self.bind();
-      self.renderEndpointsTable(secure_endpoints_res);
-      self._super(self.views.endpoints_container);
-      self.initFn();
-      $(self.container).show();
+      // TODO - find out which tab selected and only render one tab..
+      self.models.secure_endpoints.readAuditLog(guid, cloudEnv, function(audit_log_res) {
+        self.bind();
+        self.renderEndpointsTable(secure_endpoints_res);
+        self.renderAuditLogTable(audit_log_res);
+        self._super(self.views.endpoints_container);
+        self.initFn();
+        $(self.container).show();
+      });
     }, function() {
       self.showAlert('error', "Error loading App Secure Endpoints");
     });
@@ -151,7 +172,6 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
 
   renderEndpointsTable: function(secure_endpoints_res) {
     var self = this;
-
     var guid = $fw.data.get('inst').guid;
     var cloudEnv = $fw.data.get('cloud_environment');
 
@@ -166,6 +186,7 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
       }
 
       // populate the endpoint overrides table.. 
+      // TODO - need to add 'delete' button
       var cols = [{"sTitle": "Endpoint"}, {"sTitle": "Security"}, {"sTitle": "Updated By"}, {"sTitle" : "Date"}];
       var rows = [];
 
@@ -181,16 +202,79 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
         "bAutoWidth": false,
         "bFilter" : false,
         "bPaginate": false,
-        //"sDom": "<'row-fluid'<'span12'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
         "sDom": "",
         "sPaginationType": "bootstrap",
         "bLengthChange": false,
-        //"aaData": data.aaData,
         "aaData": rows,
         "aoColumns": cols
       });
     }, function() {
       self.showAlert('error', "Error loading App Endpoints");
     });
+  },
+
+  // helper function to get an array of field values for all auditlog entries
+  getFieldsFromAuditLog: function(audit_log_res, field) {
+    var fields = [];
+    for (var i=0; i<audit_log_res.auditlog.length; i++) {
+      var entry = audit_log_res.auditlog[i];
+      if (fields.indexOf(entry[field]) === -1) fields.push(entry[field]);
+    }
+    return fields;
+  },
+
+  renderAuditLogTable: function(audit_log_res) {
+    var self = this;
+    var guid = $fw.data.get('inst').guid;
+    var cloudEnv = $fw.data.get('cloud_environment');
+
+    // populate the endpoint overrides table.. 
+    var cols = [{"sTitle": "Endpoint"}, {"sTitle": "Security"}, {"sTitle": "Updated By"}, {"sTitle" : "Date"}];
+    var rows = [];
+
+    // transform millicore data into table format.. 
+    for (var i=0; i<audit_log_res.auditlog.length; i++) {
+      var entry = audit_log_res.auditlog[i];
+      rows.push([entry.endpoint, entry.security, entry.updatedBy, entry.date]);
+    }
+
+    this.auditlog_table = $('#endpoints_audit_logs_list_table').dataTable({
+      "bDestroy": true,
+      "bAutoWidth": false,
+      "bFilter" : false,
+      "bPaginate": false,
+      "sDom": "",
+      "sPaginationType": "bootstrap",
+      "bLengthChange": false,
+      "aaData": rows,
+      "aoColumns": cols
+    });
+
+    // render the filters
+    var limits = [10,100,1000];
+    $('.selectfixedWidth').css("width","200px");
+    $(this.filterFields.logLimit + ' option:not(:first)').remove();
+    for(var i=0; i<limits.length; i++){
+       $(self.filterFields.logLimit).append(self.optionTemplate("option",{val:limits[i], text:limits[i]}));
+    }
+
+    var endpoints = self.getFieldsFromAuditLog(audit_log_res, 'endpoint');
+    $(this.filterFields.endpoints + ' option:not(:first)').remove();
+    for(var i=0; i< endpoints.length; i++){
+       $(self.filterFields.endpoints).append(self.optionTemplate("option",{val:endpoints[i], text:endpoints[i]}));
+    }
+
+    var securities = self.getFieldsFromAuditLog(audit_log_res, 'security');
+    $(this.filterFields.security + ' option:not(:first)').remove();
+    for(var i=0; i< securities.length; i++){
+       $(self.filterFields.security).append(self.optionTemplate("option",{val:securities[i], text:securities[i]}));
+    }
+
+    var users = self.getFieldsFromAuditLog(audit_log_res, 'updatedBy');
+    $(this.filterFields.users + ' option:not(:first)').remove();
+    for(var i=0; i< users.length; i++){
+       $(self.filterFields.users).append(self.optionTemplate("option",{val:users[i], text:users[i]}));
+    }
+
   }
 });
