@@ -220,7 +220,7 @@ Admin.Authpolicy.Controller = Controller.extend({
           users.push(u.fields.username);
         }
         return cb(null, users);
-      }, function(e) {
+      }, function(e) { 
          return cb(e);
       });
     }

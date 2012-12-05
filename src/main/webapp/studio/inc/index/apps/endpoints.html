@@ -29,13 +29,13 @@
               <legend>App Security</legend>
               <div class="control-group">
                 <div class="controls">
-                  <label class="radio"><input type="radio" name="app_options" class="input" value="HTTPS" id="endpoints_https"/>HTTPS</label>
+                  <label class="radio"><input type="radio" name="app_security_options" class="input" value="HTTPS" id="app_security_https_option"/>HTTPS</label>
                 </div>
                 <div class="controls">
-                  <label class="radio"><input type="radio" name="app_options" class="input" value="APP_API_KEY" id="endpoints_app_api_key"/>App Api Key</label>
+                  <label class="radio"><input type="radio" name="app_security_options" class="input" value="APP_API_KEY" id="app_security_app_api_key_option"/>App Api Key</label>
                 </div>
                 <div class="form-actions">
-                  <button type="submit" class="btn btn-primary update_app_security_btn">Update</button>
+                  <button type="submit" class="btn btn-primary" id="update_app_security_btn">Update</button>
                 </div>
               </div>
             </fieldset>
@@ -45,18 +45,15 @@
               <legend>Endpoint Security</legend>
               <div class="control-group">
                 <div class="controls">
-                  <select multiple="multiple" class="">
-                    <option>getConfig</option>
-                    <option>reapFeed</option>
-                    <option>login</option>
+                  <select multiple="multiple" class="" id="app_endpoints_select">
                   </select>
                   <fieldset class="well">
-                    <label class="radio"><input type="radio" name="endpoint_options" class="input" value="HTTPS" id="app_https"/>HTTPS</label>
-                    <label class="radio"><input type="radio" name="endpoint_options" class="input" value="HTTPS" id="app_app_api_key"/>App Api Key</label>
+                    <label class="radio"><input type="radio" name="endpoint_options" class="input" value="HTTPS" id="app_endpoint_override_https_option"/>HTTPS</label>
+                    <label class="radio"><input type="radio" name="endpoint_options" class="input" value="HTTPS" id="app_endpoint_override_app_api_key_option"/>App Api Key</label>
                   </fieldset>
                 </div>
                   <div class="form-actions">
-                    <button type="submit" class="btn btn-primary update_endpoint_security_btn">Update</button>
+                    <button type="submit" class="btn btn-primary" id="update_endpoint_override_btn">Update</button>
                   </div>
               </div>
               <label>Endpoint Overrides</label>

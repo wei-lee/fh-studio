@@ -15,6 +15,7 @@ js/model/models/User.js
 js/model/models/UserKey.js
 js/model/models/StoreItem.js
 js/model/models/AppStore.js
+js/model/models/SecureEndpoints.js
 js/model/models/Group.js
 js/model/models/AuditLogEntry.js
 js/model/models/Role.js
