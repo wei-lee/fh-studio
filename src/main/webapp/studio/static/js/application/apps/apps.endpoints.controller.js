@@ -17,14 +17,12 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
     endpoints_container: "#endpoints_container"
   },
 
- // TODO - review all these..
   container: null,
-  endpoints_table: null,
-  appSecureEndpoints: null,
+  endpoints_table: null, // TODO - this need to be held as a variable?
+  appSecureEndpoints: null, // TODO - revisit, may be a better way of doing this.. 
 
   // type: error|success|info
   showAlert: function(type, message) {
-// TODO - check this exists in view.. 
     var self = this;
     var alerts_area = $(this.views.endpoints_container).find('.alerts');
     var alert = $('<div>').addClass('alert fade in alert-' + type).html(message);
@@ -61,12 +59,10 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
   show: function(){
     this.hideAlerts();
     var self = this;
+    var guid = $fw.data.get('inst').guid;
+    var cloudEnv = $fw.data.get('cloud_environment');
 
-    // TODO - show called each time the dev/live toggle happens?
-    // TODO - where to get the app guid
-    // TODO - get the dev/live selected toggle..
-    
-    self.models.secure_endpoints.readSecureEndpoints(function(secure_endpoints_res) {
+    self.models.secure_endpoints.readSecureEndpoints(guid, cloudEnv, function(secure_endpoints_res) {
       // TODO - ok to hold state here???
       self.appSecureEndpoints = secure_endpoints_res; 
 
@@ -95,6 +91,7 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
       return false;
     });
 
+    $('#update_endpoint_override_btn').attr("disabled", true);
     $('#update_endpoint_override_btn').unbind().click(function(e) {
       self.setEndpointOverride();
       return false;
@@ -118,7 +115,8 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
         }
       }
 
-      // TODO enable overrides update button
+      // enable the update button
+      $('#update_endpoint_override_btn').attr("disabled", false);
     });
   },
 
@@ -145,6 +143,7 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
     var endpoints = $('#app_endpoints_select').val();
     this.models.secure_endpoints.setEndpointOverride(guid, cloudEnv, endpoints, val, function(res) {
       self.showAlert('success', "Security Endpoints set successfully");
+      self.renderEndpointsTable(res);
     }, function(err) {
       self.showAlert('error', err);
     }, true);
@@ -153,8 +152,13 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
   renderEndpointsTable: function(secure_endpoints_res) {
     var self = this;
 
-    self.models.secure_endpoints.readAppEndpoints(function(app_endpoints_res) {
+    var guid = $fw.data.get('inst').guid;
+    var cloudEnv = $fw.data.get('cloud_environment');
+
+    // TODO - this may flicker on refresh, maybe best move the appEndpoints outside this
+    self.models.secure_endpoints.readAppEndpoints(guid, cloudEnv, function(app_endpoints_res) {
       // populate the list of endpoints 
+      $('#app_endpoints_select').empty();
       for (var i=0; i<app_endpoints_res.endpoints.length; i++) {
         var endpoint = app_endpoints_res.endpoints[i];
         var opt = '<option value="' + endpoint + '">' + endpoint + "</option>"; 
@@ -166,6 +170,7 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
       var rows = [];
 
       // transform millicore data into table format.. 
+      // TODO - need to show warning for when endpoint missing
       for (var i in secure_endpoints_res.overrides) {
         var override = secure_endpoints_res.overrides[i];
         rows.push([i, override.security, override.updatedBy, override.date]);
