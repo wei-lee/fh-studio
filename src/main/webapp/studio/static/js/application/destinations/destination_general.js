@@ -272,7 +272,7 @@ application.DestinationGeneral = Class.extend({
 
     function skip() {
       setTimeout(function() {
-        if (self.destination_id == 'ipad' || self.destination_id == 'iphone') {
+        if (self.destination_id == 'ipad' || self.destination_id == 'iphone' || self.destination_id == 'ios') {
           proto.Wizard.jumpToStep(wizard, 6);
         } else {
           proto.Wizard.jumpToStep(wizard, 3);
