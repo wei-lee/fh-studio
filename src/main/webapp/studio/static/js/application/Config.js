@@ -101,6 +101,23 @@ Config = {
           mm_width: '60',
           mm_height: '118' // allow some extra width/height for buttons around edge
         },
+        iphone_5_noscale: {
+          parent: 'iphone_5',
+          img_id: 'iphone_5',
+          noscale: true
+        },
+        iphone_5: {
+          target: 'iphone',
+          width: 320,
+          height: 480,
+          ratio: '2:3', // 0.626631854
+          img_width: 379, // 606 - 379
+          img_height: 745, // 1189 - 745
+          offsetx: 32, // 51 - 561 = 510
+          offsety: 132, // 211 - 977 = 766
+          mm_width: '60',
+          mm_height: '118' // allow some extra width/height for buttons around edge
+        },
         ipad_noscale: {
           parent: 'ipad',
           img_id: 'ipad',
