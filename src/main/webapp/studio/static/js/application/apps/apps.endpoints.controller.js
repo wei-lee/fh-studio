@@ -31,9 +31,9 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
   },  
 
   container: null,
-  endpoints_table: null, // TODO - this need to be held as a variable?
-  audit_log_table: null, // TODO - ditto
-  appSecureEndpoints: null, // TODO - revisit, may be a better way of doing this.. 
+  endpoints_table: null, 
+  audit_log_table: null, 
+  appSecureEndpoints: null, 
 
   // type: error|success|info
   showAlert: function(type, message) {
@@ -72,29 +72,39 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
     var guid = $fw.data.get('inst').guid;
     var cloudEnv = $fw.data.get('cloud_environment');
     
-    
-    self.models.secure_endpoints.readSecureEndpoints(guid, cloudEnv, function(secure_endpoints_res) {
-      self.appSecureEndpoints = secure_endpoints_res; 
-
-      if(secure_endpoints_res["default"] === APP_ENDPOINTS_HTTPS) {
-        $('#app_security_https_option').prop('checked', true);
-        $('#app_security_app_api_key_option').prop('checked', false);
-      }else {
-        $('#app_security_app_api_key_option').prop('checked', true);
-        $('#app_security_https_option').prop('checked', false);
-      }
-
-      // TODO - find out which tab selected and only render one tab..
-      self.models.secure_endpoints.readAuditLog(guid, cloudEnv, null, function(audit_log_res) {
-        self.renderEndpointsTable(secure_endpoints_res);
-        self.renderAuditLogTable(audit_log_res);
-        self.bind();
-        self._super(self.views.endpoints_container);
-        self.initFn();
-        $(self.container).show();
+    // load millicore data in parallel
+    async.parallel([function(cb){
+      self.models.secure_endpoints.readSecureEndpoints(guid, cloudEnv, function(res){
+        return cb(null, res);        
+      }, function(e) {
+        return cb(e);
       });
-    }, function() {
-      self.showAlert('error', "Error loading App Secure Endpoints");
+    }, function(cb){
+      self.models.secure_endpoints.readAuditLog(guid, cloudEnv, null, function(res){
+        return cb(null, res);        
+      }, function(e) {
+        return cb(e);
+      });
+    }, function(cb){
+      self.models.secure_endpoints.readAppEndpoints(guid, cloudEnv, function(res){
+        return cb(null, res);        
+      }, function(e) {
+        return cb(e);
+      });
+    }], function(err, results){
+      if (err) return self.showAlert('error', err);
+      var secure_endpoints_res = results[0];
+      var audit_log_res = results[1];
+      var app_endpoints_res = results[2];
+
+      self.appSecureEndpoints = secure_endpoints_res; 
+      self.renderEndpointOverrides(secure_endpoints_res, app_endpoints_res);
+      self.renderAuditLog(audit_log_res);
+
+      self.bind();
+      self._super(self.views.endpoints_container);
+      self.initFn();
+      $(self.container).show();
     });
   },
 
@@ -152,7 +162,7 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
       var guid = $fw.data.get('inst').guid;
       var cloudEnv = $fw.data.get('cloud_environment');
       self.models.secure_endpoints.readAuditLog(guid, cloudEnv, null, function(audit_log_res) {
-        self.renderAuditLogTable(audit_log_res);
+        self.renderAuditLog(audit_log_res);
       }, function(err) {
         self.showAlert('error', err);
       }, true); 
@@ -161,7 +171,7 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
     // delete override button
     $('tr td .delete_override').unbind().click(function() {
       var row = $(this).parent().parent();
-      var data = endpoints_table.fnGetData($(this).parent().parent().get(0));
+      var data = self.endpoints_table.fnGetData($(this).parent().parent().get(0));
       self.deleteOverride(this, row, data);
       return false;
     });
@@ -176,8 +186,8 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
       self.showAlert('info', '<strong>Deleting Endpoint</strong> (' + endpoint + ')');
       self.models.secure_endpoints.removeEndpointOverride(guid, cloudEnv, endpoint, function(res) {
         self.showAlert('success', '<strong>Endpoint Override Successfully Deleted</strong> (' + endpoint + ')');
-        endpoints_table.fnDeleteRow(row[0]);
-        self.show(); // TODO - bit OTT to do a full show() here..
+        self.endpoints_table.fnDeleteRow(row[0]);
+        self.show(); // TODO - possibly a bit OTT to do a full show() here..
       }, function(e) {
         self.showAlert('error', '<strong>Error Deleting Endpoint Override</strong> (' + endpoint + ') ' + e);
       });
@@ -198,9 +208,9 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
      if(security && security !=="all")params.security = security;
      if(users && users !== "all") params.users = users;
      
-     // TODO - how to filter limit??
+     // TODO - how to filter limit?? passed to millicore?
      self.models.secure_endpoints.readAuditLog(guid, cloudEnv, params, function(audit_log_res) {
-       self.renderAuditLogTable(audit_log_res);
+       self.renderAuditLog(audit_log_res);
      }, function(err) {
        self.showAlert('error', err);
      }, true);
@@ -237,48 +247,52 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
     }, true);
   },
 
-  renderEndpointsTable: function(secure_endpoints_res) {
+  // render endpoint override parts of the view
+  renderEndpointOverrides: function(secure_endpoints_res, app_endpoints_res) {
     var self = this;
     var guid = $fw.data.get('inst').guid;
     var cloudEnv = $fw.data.get('cloud_environment');
 
-    // TODO - this may flicker on refresh, maybe best move the appEndpoints outside this
-    self.models.secure_endpoints.readAppEndpoints(guid, cloudEnv, function(app_endpoints_res) {
-      // populate the list of endpoints 
-      $('#app_endpoints_select').empty();
-      for (var i=0; i<app_endpoints_res.endpoints.length; i++) {
-        var endpoint = app_endpoints_res.endpoints[i];
-        var opt = '<option value="' + endpoint + '">' + endpoint + "</option>"; 
-        $('#app_endpoints_select').append(opt);
-      }
+    // Default App security radio buttons
+    if(secure_endpoints_res["default"] === APP_ENDPOINTS_HTTPS) {
+      $('#app_security_https_option').prop('checked', true);
+      $('#app_security_app_api_key_option').prop('checked', false);
+    }else {
+      $('#app_security_app_api_key_option').prop('checked', true);
+      $('#app_security_https_option').prop('checked', false);
+    }
 
-      // populate the endpoint overrides table.. 
-      // TODO - need to add 'delete' button
-      var cols = [{"sTitle": "Endpoint"}, {"sTitle": "Security"}, {"sTitle": "Updated By"}, {"sTitle" : "Date"}, {"sTitle" : "Controls", bSortable: false, sClass: "controls"}];
-      var rows = [];
+    // populate the list of app endpoints 
+    $('#app_endpoints_select').empty();
+    for (var i=0; i<app_endpoints_res.endpoints.length; i++) {
+      var endpoint = app_endpoints_res.endpoints[i];
+      var opt = '<option value="' + endpoint + '">' + endpoint + "</option>"; 
+      $('#app_endpoints_select').append(opt);
+    }
 
-      // transform millicore data into table format.. 
-      // TODO - need to show warning for when endpoint missing
-      for (var i in secure_endpoints_res.overrides) {
-        var override = secure_endpoints_res.overrides[i];
-        var btn = '<button class="btn btn-danger delete_override">Delete</button>';
-        rows.push([i, override.security, override.updatedBy, override.date, btn]);
-      }
+    // populate the endpoint overrides table.. 
+    var cols = [{"sTitle": "Endpoint"}, {"sTitle": "Security"}, {"sTitle": "Updated By"}, {"sTitle" : "Date"}, {"sTitle" : "Controls", bSortable: false, sClass: "controls"}];
+    var rows = [];
 
-      this.endpoints_table = $('#endpoints_endpoints_table').dataTable({
-        "bDestroy": true,
-        "bAutoWidth": false,
-        "bFilter" : false,
-        "bPaginate": false,
-        "sDom": "",
-        "sPaginationType": "bootstrap",
-        "bLengthChange": false,
-        "aaData": rows,
-        "aoColumns": cols
-      });
-    }, function() {
-      self.showAlert('error', "Error loading App Endpoints");
-    });
+    // transform millicore data into table format.. 
+    // TODO - need to show warning for when endpoint missing
+    for (var i in secure_endpoints_res.overrides) {
+      var override = secure_endpoints_res.overrides[i];
+      var btn = '<button class="btn btn-danger delete_override">Delete</button>';
+      rows.push([i, override.security, override.updatedBy, override.date, btn]);
+    }
+
+    this.endpoints_table = $('#endpoints_endpoints_table').dataTable({
+      "bDestroy": true,
+      "bAutoWidth": false,
+      "bFilter" : false,
+      "bPaginate": false,
+      "sDom": "",
+      "sPaginationType": "bootstrap",
+      "bLengthChange": false,
+      "aaData": rows,
+      "aoColumns": cols
+    });    
   },
 
   // helper function to get an array of field values for all auditlog entries
@@ -291,7 +305,8 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
     return fields;
   },
 
-  renderAuditLogTable: function(audit_log_res) {
+  // render our AuditLog
+  renderAuditLog: function(audit_log_res) {
     var self = this;
     var guid = $fw.data.get('inst').guid;
     var cloudEnv = $fw.data.get('cloud_environment');
