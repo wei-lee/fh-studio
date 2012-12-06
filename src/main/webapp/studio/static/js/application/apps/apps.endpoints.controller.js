@@ -58,10 +58,6 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
     this.initFn = _.once(this.initBindings);
   },
   
-  /*
-   * Initialise any UI components required for logging.
-   * Once-off initialisation
-   */
   initBindings: function () {
     var self = this;
     var container = $(this.views.endpoints_container);
@@ -75,12 +71,9 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
     var self = this;
     var guid = $fw.data.get('inst').guid;
     var cloudEnv = $fw.data.get('cloud_environment');
-
-    // TODO - which tab is visible, or does it matter.. 
-    // TODO - add 'delete override button
-
+    
+    
     self.models.secure_endpoints.readSecureEndpoints(guid, cloudEnv, function(secure_endpoints_res) {
-      // TODO - ok to hold state here???
       self.appSecureEndpoints = secure_endpoints_res; 
 
       if(secure_endpoints_res["default"] === APP_ENDPOINTS_HTTPS) {
@@ -92,10 +85,10 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
       }
 
       // TODO - find out which tab selected and only render one tab..
-      self.models.secure_endpoints.readAuditLog(guid, cloudEnv, function(audit_log_res) {
-        self.bind();
+      self.models.secure_endpoints.readAuditLog(guid, cloudEnv, null, function(audit_log_res) {
         self.renderEndpointsTable(secure_endpoints_res);
         self.renderAuditLogTable(audit_log_res);
+        self.bind();
         self._super(self.views.endpoints_container);
         self.initFn();
         $(self.container).show();
@@ -138,7 +131,81 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
 
       // enable the update button
       $('#update_endpoint_override_btn').attr("disabled", false);
+
     });
+
+    // bind filter button
+    var filterButton = $('button#endpoints_audit_log_filter');
+    // TODO filterButton.text($fw.client.lang.getLangString("endpoints_audit_log_filter"));
+    filterButton.unbind().click(function(e){
+      return self.doFilter();
+    });
+
+    // reset button..
+    var resetButton = $('button#endpoints_audit_log_reset');
+    // TODO resetButton.text($fw.client.lang.getLangString("endpoints_audit_log_reset"));
+    resetButton.unbind().bind("click",function (e){
+      e.preventDefault();
+      $.each(self.filterFields, function(name, target){
+        $(target).val($(target + " option:first").val());
+      });
+      var guid = $fw.data.get('inst').guid;
+      var cloudEnv = $fw.data.get('cloud_environment');
+      self.models.secure_endpoints.readAuditLog(guid, cloudEnv, null, function(audit_log_res) {
+        self.renderAuditLogTable(audit_log_res);
+      }, function(err) {
+        self.showAlert('error', err);
+      }, true); 
+    });
+
+    // delete override button
+    $('tr td .delete_override').unbind().click(function() {
+      var row = $(this).parent().parent();
+      var data = endpoints_table.fnGetData($(this).parent().parent().get(0));
+      self.deleteOverride(this, row, data);
+      return false;
+    });
+  },
+
+  deleteOverride: function(button, row, data) {
+    var self = this;
+    self.showBooleanModal('Are you sure you want to delete this Endpoint Override?', function () {
+      var endpoint = data[0];
+      var guid = $fw.data.get('inst').guid;
+      var cloudEnv = $fw.data.get('cloud_environment');
+      self.showAlert('info', '<strong>Deleting Endpoint</strong> (' + endpoint + ')');
+      self.models.secure_endpoints.removeEndpointOverride(guid, cloudEnv, endpoint, function(res) {
+        self.showAlert('success', '<strong>Endpoint Override Successfully Deleted</strong> (' + endpoint + ')');
+        endpoints_table.fnDeleteRow(row[0]);
+        self.show(); // TODO - bit OTT to do a full show() here..
+      }, function(e) {
+        self.showAlert('error', '<strong>Error Deleting Endpoint Override</strong> (' + endpoint + ') ' + e);
+      });
+    });
+  },
+
+  doFilter : function (){
+     var self = this;
+     var guid = $fw.data.get('inst').guid;
+     var cloudEnv = $fw.data.get('cloud_environment');
+     var endpoints = $(self.filterFields.endpoints).val();
+     var security = $(self.filterFields.security).val();
+     var users = $(self.filterFields.users).val();
+     var limit = $(self.filterFields.logLimit).val();
+     var params = {
+     };
+     if(endpoints && endpoints !=="all") params.endpoints = endpoints;
+     if(security && security !=="all")params.security = security;
+     if(users && users !== "all") params.users = users;
+     
+     // TODO - how to filter limit??
+     self.models.secure_endpoints.readAuditLog(guid, cloudEnv, params, function(audit_log_res) {
+       self.renderAuditLogTable(audit_log_res);
+     }, function(err) {
+       self.showAlert('error', err);
+     }, true);
+      
+     return false;
   },
 
   setDefaultSecureEndpoint: function() {
@@ -164,7 +231,7 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
     var endpoints = $('#app_endpoints_select').val();
     this.models.secure_endpoints.setEndpointOverride(guid, cloudEnv, endpoints, val, function(res) {
       self.showAlert('success', "Security Endpoints set successfully");
-      self.renderEndpointsTable(res);
+      self.show(); // TODO - bit OTT to do a full show() here..
     }, function(err) {
       self.showAlert('error', err);
     }, true);
@@ -187,14 +254,15 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
 
       // populate the endpoint overrides table.. 
       // TODO - need to add 'delete' button
-      var cols = [{"sTitle": "Endpoint"}, {"sTitle": "Security"}, {"sTitle": "Updated By"}, {"sTitle" : "Date"}];
+      var cols = [{"sTitle": "Endpoint"}, {"sTitle": "Security"}, {"sTitle": "Updated By"}, {"sTitle" : "Date"}, {"sTitle" : "Controls", bSortable: false, sClass: "controls"}];
       var rows = [];
 
       // transform millicore data into table format.. 
       // TODO - need to show warning for when endpoint missing
       for (var i in secure_endpoints_res.overrides) {
         var override = secure_endpoints_res.overrides[i];
-        rows.push([i, override.security, override.updatedBy, override.date]);
+        var btn = '<button class="btn btn-danger delete_override">Delete</button>';
+        rows.push([i, override.security, override.updatedBy, override.date, btn]);
       }
 
       this.endpoints_table = $('#endpoints_endpoints_table').dataTable({

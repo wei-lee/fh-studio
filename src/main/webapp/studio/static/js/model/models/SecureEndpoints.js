@@ -38,7 +38,7 @@ model.SecureEndpoints = model.Model.extend({
     return this.serverPost(url, params, success, fail);
   },
 
-  readAuditLog: function(guid, cloudEnv, success, fail) {
+  readAuditLog: function(guid, cloudEnv, params, success, fail) {
     var url = Constants.SECURE_ENDPOINTS_AUDIT_LOG_READ_URL;
     var dummy = {
       "status": "ok",
@@ -139,6 +139,18 @@ model.SecureEndpoints = model.Model.extend({
     return success(dummyResp); // TODO - dummy for now..
     var url = Constants.SECURE_ENDPOINTS_SET_DEFAULT_SECURE_ENDPOINT_URL;
     
+    return this.serverPost(url, params, success, fail, true);
+  },
+
+  removeEndpointOverride: function(guid, cloudEnv, endpoint, success, fail) {
+    console.log(arguments)
+    return success(); // TODO - dummy for now..
+    var url = Constants.SECURE_ENDPOINTS_REMOVE_SECURE_ENDPOINT_OVERRIDE_URL;
+    var params = {
+      guid: guid,
+      environment: cloudEnv,
+      endpoint: endpoint
+    };
     return this.serverPost(url, params, success, fail, true);
   }
 });
