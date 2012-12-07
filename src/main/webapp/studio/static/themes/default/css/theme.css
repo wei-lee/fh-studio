@@ -3092,6 +3092,19 @@ a.docslink {
   padding-left: 10px;
 }
 
+#app_endpoints_fieldset {
+  height:100px;
+}
+
+#app_endpoints_select{
+  height:139px;
+  margin-right: 15px;
+}
+
+.endpoint_error td{
+  color: red;
+}
+
 /* Awesome nth item selector that works cross platform (including IE!)
   http://reference.sitepoint.com/css/adjacentsiblingselector
   Hides Email & App ID column (:nth(3)) (:nth(6))
@@ -3106,3 +3119,4 @@ a.docslink {
 #recentapps_grid th:first-child + th + th + th + th {
   display: none;
 }​
+

@@ -38,7 +38,25 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
   // type: error|success|info
   showAlert: function(type, message) {
     var self = this;
-    var alerts_area = $(this.views.endpoints_container).find('.alerts');
+    //var alerts_area = $(this.views.endpoints_container).find('.alerts');
+    var alerts_area = $('#endpoints-alerts');
+    var alert = $('<div>').addClass('alert fade in alert-' + type).html(message);
+    var close_button = $('<button>').addClass('close').attr("data-dismiss", "alert").text("x");
+    alert.append(close_button);
+    alerts_area.append(alert);
+    // only automatically hide alert if it's not an error
+    if ('error' !== type) {
+      setTimeout(function() {
+        alert.slideUp(function() {
+          alert.remove();
+        });
+      }, self.alert_timeout);
+    }
+  },
+
+ showNoEndpointAlert: function(type, message) {
+    var self = this;
+    var alerts_area = $('#endpoint_override_alerts');
     var alert = $('<div>').addClass('alert fade in alert-' + type).html(message);
     var close_button = $('<button>').addClass('close').attr("data-dismiss", "alert").text("x");
     alert.append(close_button);
@@ -168,7 +186,7 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
       }, true); 
     });
 
-    // delete override button
+    // add the delete override button
     $('tr td .delete_override').unbind().click(function() {
       var row = $(this).parent().parent();
       var data = self.endpoints_table.fnGetData($(this).parent().parent().get(0));
@@ -293,6 +311,24 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
       "aaData": rows,
       "aoColumns": cols
     });    
+
+    // show red table row for any missing endpoints
+    var tr = this.endpoints_table.fnGetNodes();
+    for (var i=0; i<tr.length; i++) {
+      var ep = $(tr[i].cells[0]).text();
+      if (app_endpoints_res.endpoints.indexOf(ep) === -1) $(tr[i]).addClass("endpoint_error");
+    }
+
+    // show the error alerts for any missing endpoints
+    var errors = [];
+    for (var i in secure_endpoints_res.overrides) {
+      if (app_endpoints_res.endpoints.indexOf(i) === -1) errors.push(i);
+    }
+    
+    if (errors.length != 0) {
+      if(errors.length === 1) this.showNoEndpointAlert("error", "Missing Endpoint: " + errors[0]);
+      else this.showNoEndpointAlert("error", "Missing Endpoints: " + errors.join(' '));
+    }
   },
 
   // helper function to get an array of field values for all auditlog entries
