@@ -197,7 +197,7 @@ var Lang = {
   app_export_android_progress_title: 'Exporting App',
 
   android_publish_wizard_supertitle: 'Android Build',
-  app_publish_android_versions_title: 'Please select the Android SDK version',
+  app_publish_android_versions_title: 'Android SDK Information',
   app_publish_android_password_title: 'Please enter the passwords for your private key and certificate',
   app_publish_android_progress_title: 'Building App',
 
@@ -206,6 +206,7 @@ var Lang = {
   app_publish_iphone_upload_progress_text: "Please wait while uploading the provisioning profile...",
   app_publish_iphone_password_text: ["If you have protected your private key or certificate with a password, please enter it here.", "Your password will not be saved anywhere on the system for security reasons. It will be prompted for whenever you need to build an App.", "Important: It is recommended that you protect your private key with a password."],
   app_publish_android_password_text: ["If you have protected your private key or certificate with a password, please enter it here.", "Your password will not be saved anywhere on the system for security reasons. It will be prompted for whenever you need to build an App.", "Important: It is recommended that you protect your private key with a password."],
+  app_publish_android_versions_text: ["The app will be built using Android SDK 4.2 and can be running on devices that are running Android 2.2 and above."],
   app_publish_blackberry_note_text: "Tip: Before building apps for Blackberry, please make sure none of the app file names contains '-', otherwise the build will fail. ",
 
   publish_embed_title: 'Embed Code',
@@ -642,7 +643,7 @@ var Lang = {
   prod_app_secret_label: 'Production Secret Key',
   prod_app_master_secret_label: 'Production Master Secret Key',
   android_transport_label: 'Transport Protocal (For Android)',
-  android_sender_label: 'Sender Email (For Android)',
+  android_sender_label: 'GCM API Key (For Android)',
   push_urbanairship_save_button: 'Save',
   enable_push_label_help_icon: 'Enable push notification for this app. You need setup your Urban Airship account first to use this function.',
   app_android_id_label_help_icon: 'This value should be used when you setup your Urban Airship app. It is for the field \'Android Package\'.',
@@ -653,7 +654,7 @@ var Lang = {
   prod_app_secret_label_help_icon: 'The Urban Airship application secret key. For production builds.',
   prod_app_master_secret_label_help_icon: 'The Urban Airship application master secret key. For production builds.',
   android_transport_label_help_icon: 'Which transport protocal to use when using Urban Airship on Android. See Urban Airship for more details.',
-  android_sender_label_help_icon: 'The sender email that is used to register Android\'s C2DM service for this app.',
+  android_sender_label_help_icon: 'The GCM API key. You can obtain this from Google API Console.',
 
   cloudenvironment_label: "Selected Environment",
   cloudenvironment_dev: "Development",

@@ -251,7 +251,7 @@ proto.Wizard = {
       ios_publish_wizard: ['app_publish_ios_select_provisionings', 'app_publish_ios_upload_provisionings', 'app_publish_ios_upload_progress', 'app_publish_ios_versions', 'app_publish_ios_password', 'app_publish_ios_progress'],
       android_getstarted_wizard: ['android_getstarted_resources', 'android_getstarted_generate_password', 'android_getstarted_generate', 'android_getstarted_finish'],
       android_key_wizard: ['android_key_upload', 'android_key_finish'],
-      android_export_wizard: ['app_export_android_versions', 'app_export_android_progress'],
+      android_export_wizard: ['app_export_android_progress'],
       android_publish_wizard: ['app_publish_android_versions', 'app_publish_android_password', 'app_publish_android_progress'],
       android_cert_wizard: ['android_cert_upload', 'android_cert_finish'],
       windowsphone7_export_wizard: ['app_export_windowsphone7_versions', 'app_export_windowsphone7_progress'],
