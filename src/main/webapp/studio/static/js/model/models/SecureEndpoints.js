@@ -16,30 +16,6 @@ model.SecureEndpoints = model.Model.extend({
 
   readAuditLog: function(guid, cloudEnv, filters, success, fail) {
     var url = Constants.SECURE_ENDPOINTS_GET_AUDIT_LOG_URL;
-    var dummy = {
-      "status": "ok",
-      "auditlog": [
-        {
-          "endpoint": "foo",
-          "security": "appapikey", // can be "https" | "appapikey",
-          "updatedBy": "user@example.com",
-          "date": "2012-12-04 12:03"
-        },
-        {
-          "endpoint": "bar",
-          "security": "https", // can be "https" | "appapikey",
-          "updatedBy": "user@example.com",
-          "date": "2012-12-04 12:02"
-        },
-        {
-          "endpoint": "getConfig",
-          "security": "https", // can be "https" | "appapikey",
-          "updatedBy": "user@example.com",
-          "date": "2012-12-04 12:01"
-        }
-      ]
-    };    
-    if (true) return success(dummy); // TODO dummy data for now
     var params = {
       appId: guid,
       environment: cloudEnv

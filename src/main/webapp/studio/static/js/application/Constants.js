@@ -57,16 +57,13 @@ $.extend(Constants, {
   APP_RESOURCES_URL: Constants.IDE_URL_PREFIX + "app/resources",
   APP_SETPROPERTY_URL: Constants.IDE_URL_PREFIX + "app/setconfig",
   APP_HOSTS_URL: Constants.IDE_URL_PREFIX + "app/hosts",
+  APP_ENDPOINTS_URL: Constants.IDE_URL_PREFIX + "app/endpoints",
 
   SECURE_ENDPOINTS_GET_URL: Constants.BASE_URL_PREFIX +  "app/endpointsecurity/get",
- 
-  APP_ENDPOINTS_URL: Constants.IDE_URL_PREFIX + "app/endpoints",
   SECURE_ENDPOINTS_SET_DEFAULT_URL: Constants.BASE_URL_PREFIX + "app/endpointsecurity/setDefault",
   SECURE_ENDPOINTS_SET_OVERRIDE_URL: Constants.BASE_URL_PREFIX + "app/endpointsecurity/setOverride",
   SECURE_ENDPOINTS_REMOVE_OVERRIDE_URL: Constants.BASE_URL_PREFIX + "app/endpointsecurity/removeOverride",
-
-  // TODO 
-  SECURE_ENDPOINTS_GET_AUDIT_LOG_URL: Constants.IDE_URL_PREFIX + "app/endpointsecurity/auditLog",
+  SECURE_ENDPOINTS_GET_AUDIT_LOG_URL: Constants.BASE_URL_PREFIX + "app/endpointsecurity/auditLog",
 
   KEY_LIST_URL: Constants.IDE_URL_PREFIX + "api/list",
   KEY_CREATE_URL: Constants.IDE_URL_PREFIX + "api/create",

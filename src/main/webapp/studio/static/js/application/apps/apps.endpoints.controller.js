@@ -20,8 +20,9 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
   },
 
   filterFields :{
+    types : "select#endpointsAuditLogTypes",
     endpoints : "select#endpointsAuditLogEndpoints",
-    security : "select#endpointsAuditlogSecurity",
+    values : "select#endpointsAuditlogValues",
     users : "select#endpointsAuditlogUsers",
     logLimit: "select#auditlogLimit"
   },
@@ -227,17 +228,19 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
      var self = this;
      var guid = $fw.data.get('inst').guid;
      var cloudEnv = $fw.data.get('cloud_environment');
+     var types = $(self.filterFields.types).val();
      var endpoints = $(self.filterFields.endpoints).val();
-     var security = $(self.filterFields.security).val();
+     var values = $(self.filterFields.values).val();
      var users = $(self.filterFields.users).val();
      var limit = $(self.filterFields.logLimit).val();
-     var params = {
-     };
+     var params = {};
+
+     if(types && types !=="all") params.types = types;
      if(endpoints && endpoints !=="all") params.endpoints = endpoints;
-     if(security && security !=="all")params.security = security;
+     if(values && values !=="all")params.values = values;
      if(users && users !== "all") params.users = users;
-     
-     // TODO - how to filter limit?? passed to millicore?
+     if(limit && limit !== "all") params.limit = limit;     
+
      self.models.secure_endpoints.readAuditLog(guid, cloudEnv, params, function(audit_log_res) {
        self.renderAuditLog(audit_log_res);
      }, function(err) {
@@ -352,8 +355,8 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
   // helper function to get an array of field values for all auditlog entries
   getFieldsFromAuditLog: function(audit_log_res, field) {
     var fields = [];
-    for (var i=0; i<audit_log_res.auditlog.length; i++) {
-      var entry = audit_log_res.auditlog[i];
+    for (var i=0; i<audit_log_res.list.length; i++) {
+      var entry = audit_log_res.list[i];
       if (fields.indexOf(entry[field]) === -1) fields.push(entry[field]);
     }
     return fields;
@@ -366,14 +369,14 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
     var cloudEnv = $fw.data.get('cloud_environment');
 
     // populate the endpoint overrides table.. 
-    var cols = [{"sTitle": "Endpoint"}, {"sTitle": "Security"}, {"sTitle": "Updated By"}, {"sTitle" : "Date"}];
+    var cols = [{"sTitle": "Type"}, {"sTitle": "Endpoint"}, {"sTitle": "Value"}, {"sTitle": "Updated By"}, {"sTitle" : "Updated When"}];
     var rows = [];
 
     // transform millicore data into table format.. 
     var i = 0;
-    for (i=0; i<audit_log_res.auditlog.length; i++) {
-      var entry = audit_log_res.auditlog[i];
-      rows.push([entry.endpoint, entry.security, entry.updatedBy, entry.date]);
+    for (i=0; i<audit_log_res.list.length; i++) {
+      var entry = audit_log_res.list[i];
+      rows.push([entry.type, entry.endpoint, entry.value, entry.updatedBy, entry.updatedWhen]);
     }
 
     this.auditlog_table = $('#endpoints_audit_logs_list_table').dataTable({
@@ -388,30 +391,38 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
       "aoColumns": cols
     });
 
+    this.auditlog_table.fnSort([[4,'desc']]);
+
     // render the filters
     var limits = [10,100,1000];
     $('.selectfixedWidth').css("width","200px");
     $(this.filterFields.logLimit + ' option:not(:first)').remove();
     for(i=0; i<limits.length; i++){
-       $(self.filterFields.logLimit).append(self.optionTemplate("option",{val:limits[i], text:limits[i]}));
+      $(self.filterFields.logLimit).append(self.optionTemplate("option",{val:limits[i], text:limits[i]}));
+    }
+
+    var types = self.getFieldsFromAuditLog(audit_log_res, 'type');
+    $(this.filterFields.types + ' option:not(:first)').remove();
+    for(i=0; i< types.length; i++){
+      $(self.filterFields.types).append(self.optionTemplate("option",{val:types[i], text:types[i]}));
     }
 
     var endpoints = self.getFieldsFromAuditLog(audit_log_res, 'endpoint');
     $(this.filterFields.endpoints + ' option:not(:first)').remove();
     for(i=0; i< endpoints.length; i++){
-       $(self.filterFields.endpoints).append(self.optionTemplate("option",{val:endpoints[i], text:endpoints[i]}));
+      $(self.filterFields.endpoints).append(self.optionTemplate("option",{val:endpoints[i], text:endpoints[i]}));
     }
 
-    var securities = self.getFieldsFromAuditLog(audit_log_res, 'security');
-    $(this.filterFields.security + ' option:not(:first)').remove();
-    for(i=0; i< securities.length; i++){
-       $(self.filterFields.security).append(self.optionTemplate("option",{val:securities[i], text:securities[i]}));
+    var values = self.getFieldsFromAuditLog(audit_log_res, 'value');
+    $(this.filterFields.value + ' option:not(:first)').remove();
+    for(i=0; i< values.length; i++){
+      $(self.filterFields.values).append(self.optionTemplate("option",{val:values[i], text:values[i]}));
     }
 
     var users = self.getFieldsFromAuditLog(audit_log_res, 'updatedBy');
     $(this.filterFields.users + ' option:not(:first)').remove();
     for(i=0; i< users.length; i++){
-       $(self.filterFields.users).append(self.optionTemplate("option",{val:users[i], text:users[i]}));
+      $(self.filterFields.users).append(self.optionTemplate("option",{val:users[i], text:users[i]}));
     }
 
   }
