@@ -20,11 +20,11 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
   },
 
   filterFields :{
-    types : "select#endpointsAuditLogTypes",
+    events : "select#endpointsAuditLogEvents",
     endpoints : "select#endpointsAuditLogEndpoints",
-    values : "select#endpointsAuditlogValues",
-    users : "select#endpointsAuditlogUsers",
-    logLimit: "select#auditlogLimit"
+    security : "select#endpointsAuditLogSecurity",
+    users : "select#endpointsAuditLogUsers",
+    logLimit: "select#endpointsAuditLogLimit"
   },
 
   optionTemplate : function (type, args){
@@ -228,21 +228,22 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
      var self = this;
      var guid = $fw.data.get('inst').guid;
      var cloudEnv = $fw.data.get('cloud_environment');
-     var types = $(self.filterFields.types).val();
-     var endpoints = $(self.filterFields.endpoints).val();
-     var values = $(self.filterFields.values).val();
-     var users = $(self.filterFields.users).val();
+     var event = $(self.filterFields.events).val();
+     var endpoint = $(self.filterFields.endpoints).val();
+     var security = $(self.filterFields.security).val();
+     var user = $(self.filterFields.users).val();
      var limit = $(self.filterFields.logLimit).val();
-     var params = {};
+     var filter = {};
 
-     if(types && types !=="all") params.types = types;
-     if(endpoints && endpoints !=="all") params.endpoints = endpoints;
-     if(values && values !=="all")params.values = values;
-     if(users && users !== "all") params.users = users;
-     if(limit && limit !== "all") params.limit = limit;     
+     if(event && event !=="all") filter.event = event;
+     if(endpoint && endpoint !=="all") filter.endpoint = endpoint;
+     if(security && security !=="all") filter.security = security;
+     if(user && user !== "all") filter.user = user;
+     if(limit && limit !== "all") filter.limit = limit;     
+     var isFilter = filter.event || filter.endpoint || filter.security || filter.user || filter.limit || false;
 
-     self.models.secure_endpoints.readAuditLog(guid, cloudEnv, params, function(audit_log_res) {
-       self.renderAuditLog(audit_log_res);
+     self.models.secure_endpoints.readAuditLog(guid, cloudEnv, filter, function(audit_log_res) {       
+       self.renderAuditLog(audit_log_res, {isFilter : isFilter});
      }, function(err) {
        self.showAlert('error', err);
      }, true);
@@ -363,20 +364,23 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
   },
 
   // render our AuditLog
-  renderAuditLog: function(audit_log_res) {
+  renderAuditLog: function(audit_log_res, options) {
     var self = this;
     var guid = $fw.data.get('inst').guid;
     var cloudEnv = $fw.data.get('cloud_environment');
 
     // populate the endpoint overrides table.. 
-    var cols = [{"sTitle": "Type"}, {"sTitle": "Endpoint"}, {"sTitle": "Value"}, {"sTitle": "Updated By"}, {"sTitle" : "Updated When"}];
+    var cols = [{"sTitle": "Event"}, {"sTitle": "Endpoint"}, {"sTitle": "Security"}, {"sTitle": "Updated By"}, {"sTitle" : "Updated When"}];
     var rows = [];
 
     // transform millicore data into table format.. 
     var i = 0;
     for (i=0; i<audit_log_res.list.length; i++) {
       var entry = audit_log_res.list[i];
-      rows.push([entry.type, entry.endpoint, entry.value, entry.updatedBy, entry.updatedWhen]);
+      var security = entry.security === APP_ENDPOINTS_HTTPS ? APP_ENDPOINTS_HTTPS_DISPLAY :
+                                        APP_ENDPOINTS_APP_API_KEY_DISPLAY;
+
+      rows.push([entry.event, entry.endpoint, security, entry.updatedBy, entry.updatedWhen]);
     }
 
     this.auditlog_table = $('#endpoints_audit_logs_list_table').dataTable({
@@ -393,37 +397,44 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
 
     this.auditlog_table.fnSort([[4,'desc']]);
 
-    // render the filters
-    var limits = [10,100,1000];
-    $('.selectfixedWidth').css("width","200px");
-    $(this.filterFields.logLimit + ' option:not(:first)').remove();
-    for(i=0; i<limits.length; i++){
-      $(self.filterFields.logLimit).append(self.optionTemplate("option",{val:limits[i], text:limits[i]}));
-    }
+    if (options && options.isFilter && options.isFilter !== false) {
+      // if we're displaying filtered data, don't re-render the filters as we loose all the fields
+      console.log("Not rendering filters");
+    } else {
+      // render the filters
+      var limits = [10,100,1000];
+      $('.selectfixedWidth').css("width","200px");
+      $(this.filterFields.logLimit + ' option:not(:first)').remove();
+      for(i=0; i<limits.length; i++){
+        $(self.filterFields.logLimit).append(self.optionTemplate("option",{val:limits[i], text:limits[i]}));
+      }
+  
+      var events = self.getFieldsFromAuditLog(audit_log_res, 'event');
+      $(this.filterFields.events + ' option:not(:first)').remove();
+      for(i=0; i< events.length; i++){
+        $(self.filterFields.events).append(self.optionTemplate("option",{val:events[i], text:events[i]}));
+      }
+  
+      var endpoints = self.getFieldsFromAuditLog(audit_log_res, 'endpoint');
+      $(this.filterFields.endpoints + ' option:not(:first)').remove();
+      for(i=0; i< endpoints.length; i++){
+        if (endpoints[i] !== "") $(self.filterFields.endpoints).append(self.optionTemplate("option",{val:endpoints[i], text:endpoints[i]}));
+      }
+  
+      var securities = self.getFieldsFromAuditLog(audit_log_res, 'security');
+      $(this.filterFields.security + ' option:not(:first)').remove();
+      for(i=0; i< securities.length; i++){
+        var txt = securities[i] === APP_ENDPOINTS_HTTPS ? APP_ENDPOINTS_HTTPS_DISPLAY :
+                                    APP_ENDPOINTS_APP_API_KEY_DISPLAY;
 
-    var types = self.getFieldsFromAuditLog(audit_log_res, 'type');
-    $(this.filterFields.types + ' option:not(:first)').remove();
-    for(i=0; i< types.length; i++){
-      $(self.filterFields.types).append(self.optionTemplate("option",{val:types[i], text:types[i]}));
+        if (securities[i] !== "") $(self.filterFields.security).append(self.optionTemplate("option",{val:securities[i], text:txt}));
+      }
+  
+      var users = self.getFieldsFromAuditLog(audit_log_res, 'updatedBy');
+      $(this.filterFields.users + ' option:not(:first)').remove();
+      for(i=0; i< users.length; i++){
+        $(self.filterFields.users).append(self.optionTemplate("option",{val:users[i], text:users[i]}));
+      }
     }
-
-    var endpoints = self.getFieldsFromAuditLog(audit_log_res, 'endpoint');
-    $(this.filterFields.endpoints + ' option:not(:first)').remove();
-    for(i=0; i< endpoints.length; i++){
-      $(self.filterFields.endpoints).append(self.optionTemplate("option",{val:endpoints[i], text:endpoints[i]}));
-    }
-
-    var values = self.getFieldsFromAuditLog(audit_log_res, 'value');
-    $(this.filterFields.value + ' option:not(:first)').remove();
-    for(i=0; i< values.length; i++){
-      $(self.filterFields.values).append(self.optionTemplate("option",{val:values[i], text:values[i]}));
-    }
-
-    var users = self.getFieldsFromAuditLog(audit_log_res, 'updatedBy');
-    $(this.filterFields.users + ' option:not(:first)').remove();
-    for(i=0; i< users.length; i++){
-      $(self.filterFields.users).append(self.optionTemplate("option",{val:users[i], text:users[i]}));
-    }
-
   }
 });

@@ -14,14 +14,14 @@ model.SecureEndpoints = model.Model.extend({
     return this.serverPost(url, params, success, fail, true);
   },
 
-  readAuditLog: function(guid, cloudEnv, filters, success, fail) {
+  readAuditLog: function(guid, cloudEnv, filter, success, fail) {
     var url = Constants.SECURE_ENDPOINTS_GET_AUDIT_LOG_URL;
     var params = {
       appId: guid,
       environment: cloudEnv
     };
-    if (filters) {
-      params.filters = filters;
+    if (filter) {
+      params.filter = filter;
     }
     return this.serverPost(url, params, success, fail, true);
   },
