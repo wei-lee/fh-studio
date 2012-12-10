@@ -310,12 +310,12 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
 
     // transform millicore data into table format.. 
     // TODO - need to show warning for when endpoint missing
-    for (var i in secure_endpoints_res.overrides) {
-      var override = secure_endpoints_res.overrides[i];
+    for (var j in secure_endpoints_res.overrides) {
+      var override = secure_endpoints_res.overrides[j];
       var btn = '<button class="btn btn-danger delete_override">Delete</button>';
       var security = override.security === APP_ENDPOINTS_HTTPS ? APP_ENDPOINTS_HTTPS_DISPLAY :
                                                                  APP_ENDPOINTS_APP_API_KEY_DISPLAY;
-      rows.push([i, security, override.updatedBy, override.updatedWhen, btn]);
+      rows.push([j, security, override.updatedBy, override.updatedWhen, btn]);
     }
 
     this.endpoints_table = $('#endpoints_endpoints_table').dataTable({
@@ -332,18 +332,18 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
 
     // show red table row for any missing endpoints
     var tr = this.endpoints_table.fnGetNodes();
-    for (var i=0; i<tr.length; i++) {
-      var ep = $(tr[i].cells[0]).text();
-      if (app_endpoints_res.endpoints.indexOf(ep) === -1) $(tr[i]).addClass("endpoint_error");
+    for (var k=0; k<tr.length; k++) {
+      var ep = $(tr[k].cells[0]).text();
+      if (app_endpoints_res.endpoints.indexOf(ep) === -1) $(tr[k]).addClass("endpoint_error");
     }
 
     // show the error alerts for any missing endpoints
     var errors = [];
-    for (var i in secure_endpoints_res.overrides) {
-      if (app_endpoints_res.endpoints.indexOf(i) === -1) errors.push(i);
+    for (var over_ride in secure_endpoints_res.overrides) {
+      if (app_endpoints_res.endpoints.indexOf(over_ride) === -1) errors.push(over_ride);
     }
     
-    if (errors.length != 0) {
+    if (errors.length !== 0) {
       if(errors.length === 1) this.showNoEndpointAlert("error", "Missing Endpoint: " + errors[0]);
       else this.showNoEndpointAlert("error", "Missing Endpoints: " + errors.join(' '));
     }
@@ -370,7 +370,8 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
     var rows = [];
 
     // transform millicore data into table format.. 
-    for (var i=0; i<audit_log_res.auditlog.length; i++) {
+    var i = 0;
+    for (i=0; i<audit_log_res.auditlog.length; i++) {
       var entry = audit_log_res.auditlog[i];
       rows.push([entry.endpoint, entry.security, entry.updatedBy, entry.date]);
     }
@@ -391,25 +392,25 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
     var limits = [10,100,1000];
     $('.selectfixedWidth').css("width","200px");
     $(this.filterFields.logLimit + ' option:not(:first)').remove();
-    for(var i=0; i<limits.length; i++){
+    for(i=0; i<limits.length; i++){
        $(self.filterFields.logLimit).append(self.optionTemplate("option",{val:limits[i], text:limits[i]}));
     }
 
     var endpoints = self.getFieldsFromAuditLog(audit_log_res, 'endpoint');
     $(this.filterFields.endpoints + ' option:not(:first)').remove();
-    for(var i=0; i< endpoints.length; i++){
+    for(i=0; i< endpoints.length; i++){
        $(self.filterFields.endpoints).append(self.optionTemplate("option",{val:endpoints[i], text:endpoints[i]}));
     }
 
     var securities = self.getFieldsFromAuditLog(audit_log_res, 'security');
     $(this.filterFields.security + ' option:not(:first)').remove();
-    for(var i=0; i< securities.length; i++){
+    for(i=0; i< securities.length; i++){
        $(self.filterFields.security).append(self.optionTemplate("option",{val:securities[i], text:securities[i]}));
     }
 
     var users = self.getFieldsFromAuditLog(audit_log_res, 'updatedBy');
     $(this.filterFields.users + ' option:not(:first)').remove();
-    for(var i=0; i< users.length; i++){
+    for(i=0; i< users.length; i++){
        $(self.filterFields.users).append(self.optionTemplate("option",{val:users[i], text:users[i]}));
     }
 

@@ -39,7 +39,7 @@ model.SecureEndpoints = model.Model.extend({
         }
       ]
     };    
-    return success(dummy); // TODO dummy data for now
+    if (true) return success(dummy); // TODO dummy data for now
     var params = {
       appId: guid,
       environment: cloudEnv
@@ -65,7 +65,7 @@ model.SecureEndpoints = model.Model.extend({
     var params = {
       appId: guid,
       environment: cloudEnv,
-      default: def
+      "default": def
     };
     return this.serverPost(url, params, success, fail, true);
   },
