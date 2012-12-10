@@ -389,7 +389,7 @@ Apps.Preview.Controller = Controller.extend({
     }
 
     // Clone the preview elements into the new tab/window
-    var c_wrapper = $('#preview_wrapper').clone().find('#preview_frame').show().end().find('.preview_fix').show().end().find('iframe').show().end().find('#preview_text').hide().end();
+    var c_wrapper = $('#preview_wrapper').clone().find('#preview_frame').show().end().find('.preview_fix').show().end().find('iframe').show().css("background-color", "#FFF").end().find('#preview_text').hide().end();
     c_wrapper.css({
       height: $('#preview_wrapper').data('height') + 'px',
       overflow: 'hidden',
