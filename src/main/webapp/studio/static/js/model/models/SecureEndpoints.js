@@ -6,40 +6,16 @@ model.SecureEndpoints = model.Model.extend({
   init: function() {},
 
   readSecureEndpoints: function(guid, cloudEnv, success, fail) {
-    var url = Constants.SECURE_ENDPOINTS_READ_URL;
-    var dummy = {
-      "status": "ok",
-      "appId": "unqiue app identifier",
-      "environment": "live", // can be "live" | "dev"
-      "default": "appapikey", // can be "https" | "appapikey"
-      "overrides": {
-        "foo": {
-          "security": "appapikey", // can be "https" | "appapikey",
-          "updatedBy": "user@example.com",
-          "date": "2012-12-04 12:00"
-        },
-        "bar": {
-          "security": "https", // can be "https" | "appapikey",
-          "updatedBy": "user@example.com",
-          "date": "2012-12-04 12:00"
-        },
-        "getConfig": {
-          "security": "https", // can be "https" | "appapikey",
-          "updatedBy": "user@example.com",
-          "date": "2012-12-04 12:00"
-        }
-      }
-    };    
-    return success(dummy); // TODO dummy data for now
+    var url = Constants.SECURE_ENDPOINTS_GET_URL;
     var params = {
       appId: guid,
-      "environment": cloudEnv
+      environment: cloudEnv
     };
-    return this.serverPost(url, params, success, fail);
+    return this.serverPost(url, params, success, fail, true);
   },
 
-  readAuditLog: function(guid, cloudEnv, params, success, fail) {
-    var url = Constants.SECURE_ENDPOINTS_AUDIT_LOG_READ_URL;
+  readAuditLog: function(guid, cloudEnv, filters, success, fail) {
+    var url = Constants.SECURE_ENDPOINTS_GET_AUDIT_LOG_URL;
     var dummy = {
       "status": "ok",
       "auditlog": [
@@ -66,30 +42,28 @@ model.SecureEndpoints = model.Model.extend({
     return success(dummy); // TODO dummy data for now
     var params = {
       appId: guid,
-      "environment": cloudEnv
+      environment: cloudEnv
     };
-    return this.serverPost(url, params, success, fail);
+    if (filters) {
+      params.filters = filters;
+    }
+    return this.serverPost(url, params, success, fail, true);
   },
 
   readAppEndpoints: function(guid, cloudEnv, success, fail) {
-    var dummy = ["foo", "getConfig"];
-    return success({endpoints: dummy}); // TODO - dummy data for now
-
-    var url = Constants.APP_ENDPOINTS_READ_URL;
+    var url = Constants.APP_ENDPOINTS_URL;
     var params = {
-      appId: guid,
-      "environment": cloudEnv
+      guid: guid,
+      deploytarget: cloudEnv
     };
 
-    return this.serverPost(url, params, success, fail);
+    return this.serverPost(url, params, success, fail, true);
   },
 
   setDefaultSecureEndpoint: function(guid, cloudEnv, def, success, fail) {
-    console.log(arguments)
-    return success(); // TODO - dummy for now..
-    var url = Constants.SECURE_ENDPOINTS_SET_DEFAULT_SECURE_ENDPOINT_URL;
+    var url = Constants.SECURE_ENDPOINTS_SET_DEFAULT_URL;
     var params = {
-      guid: guid,
+      appId: guid,
       environment: cloudEnv,
       default: def
     };
@@ -97,7 +71,7 @@ model.SecureEndpoints = model.Model.extend({
   },
 
   setEndpointOverride: function(guid, cloudEnv, endpoints, val, success, fail) {
-    console.log(arguments)
+    var url = Constants.SECURE_ENDPOINTS_SET_OVERRIDE_URL;
     var overrides = {};
     
     for (var i=0; i<endpoints.length; i++) {
@@ -108,46 +82,18 @@ model.SecureEndpoints = model.Model.extend({
     }
 
     var params = {
-      guid: guid,
+      appId: guid,
       environment: cloudEnv,
       overrides: overrides
     };
 
-    var dummyResp = {
-      "status": "ok",
-      "appId": "unqiue app identifier",
-      "environment": "live", // can be "live" | "dev"
-      "default": "appapikey", // can be "https" | "appapikey"
-      "overrides": {
-        "foo": {
-          "security": "appapikey", // can be "https" | "appapikey",
-          "updatedBy": "user@example.com",
-          "date": "2012-12-04 12:00"
-        },
-        "bar": {
-          "security": "https", // can be "https" | "appapikey",
-          "updatedBy": "user@example.com",
-          "date": "2012-12-04 12:00"
-        },
-        "getConfig": {
-          "security": "https", // can be "https" | "appapikey",
-          "updatedBy": "user@example.com",
-          "date": "2012-12-04 12:00"
-        }
-      }
-    };
-    return success(dummyResp); // TODO - dummy for now..
-    var url = Constants.SECURE_ENDPOINTS_SET_DEFAULT_SECURE_ENDPOINT_URL;
-    
     return this.serverPost(url, params, success, fail, true);
   },
 
   removeEndpointOverride: function(guid, cloudEnv, endpoint, success, fail) {
-    console.log(arguments)
-    return success(); // TODO - dummy for now..
-    var url = Constants.SECURE_ENDPOINTS_REMOVE_SECURE_ENDPOINT_OVERRIDE_URL;
+    var url = Constants.SECURE_ENDPOINTS_REMOVE_OVERRIDE_URL;
     var params = {
-      guid: guid,
+      appId: guid,
       environment: cloudEnv,
       endpoint: endpoint
     };

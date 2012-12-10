@@ -4,6 +4,8 @@ Apps.Endpoints = Apps.Endpoints || {};
 
 var APP_ENDPOINTS_HTTPS = "https";
 var APP_ENDPOINTS_APP_API_KEY = "appapikey";
+var APP_ENDPOINTS_HTTPS_DISPLAY = "HTTPS";
+var APP_ENDPOINTS_APP_API_KEY_DISPLAY = "App Api Key";
 
 Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
 
@@ -38,7 +40,6 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
   // type: error|success|info
   showAlert: function(type, message) {
     var self = this;
-    //var alerts_area = $(this.views.endpoints_container).find('.alerts');
     var alerts_area = $('#endpoints-alerts');
     var alert = $('<div>').addClass('alert fade in alert-' + type).html(message);
     var close_button = $('<button>').addClass('close').attr("data-dismiss", "alert").text("x");
@@ -84,11 +85,20 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
     $fw.client.lang.insertLangForContainer(container);    
   },
 
-  show: function(){
-    this.hideAlerts();
+  show: function(options){
     var self = this;
+    self._super(self.views.endpoints_container);
+    self.initFn();
+
+    if (options && options.hideAlerts === false){
+      // don't hide the alerts.. 
+    }else {
+      this.hideAlerts();      
+    }
+
     var guid = $fw.data.get('inst').guid;
-    var cloudEnv = $fw.data.get('cloud_environment');
+    // TODO - this is sometimes undefined, need to investigate why!
+    var cloudEnv = $fw.data.get('cloud_environment') || 'dev';
     
     // load millicore data in parallel
     async.parallel([function(cb){
@@ -120,8 +130,6 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
       self.renderAuditLog(audit_log_res);
 
       self.bind();
-      self._super(self.views.endpoints_container);
-      self.initFn();
       $(self.container).show();
     });
   },
@@ -140,22 +148,25 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
     });
 
     $('#app_endpoints_select').unbind().change(function(e) {
-      var type = $('#app_endpoints_select').val();
-      var override = self.appSecureEndpoints.overrides[type];
+      var type = $('#app_endpoints_select').val()[0];
+      var override = { security: APP_ENDPOINTS_HTTPS};
+      if(self.appSecureEndpoints.overrides && self.appSecureEndpoints.overrides[type]) {
+        override = self.appSecureEndpoints.overrides[type];
+      }
 
+      // uncheck old values
       $('#app_endpoint_override_app_api_key_option').prop('checked', false);
       $('#app_endpoint_override_https_option').prop('checked', false);
 
-      // uncheck old values
-      if (override) {
-        if (override.security === APP_ENDPOINTS_HTTPS) {
-          $('#app_endpoint_override_app_api_key_option').prop('checked', false);
-          $('#app_endpoint_override_https_option').prop('checked', true);               
-        }else {
-          $('#app_endpoint_override_app_api_key_option').prop('checked', true);
-          $('#app_endpoint_override_https_option').prop('checked', false);               
-        }
+      // set new values
+      if (override.security === APP_ENDPOINTS_HTTPS) {
+        $('#app_endpoint_override_app_api_key_option').prop('checked', false);
+        $('#app_endpoint_override_https_option').prop('checked', true);               
+      }else {
+        $('#app_endpoint_override_app_api_key_option').prop('checked', true);
+        $('#app_endpoint_override_https_option').prop('checked', false);               
       }
+
 
       // enable the update button
       $('#update_endpoint_override_btn').attr("disabled", false);
@@ -201,11 +212,11 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
       var endpoint = data[0];
       var guid = $fw.data.get('inst').guid;
       var cloudEnv = $fw.data.get('cloud_environment');
-      self.showAlert('info', '<strong>Deleting Endpoint</strong> (' + endpoint + ')');
+      self.showAlert('info', '<strong>Deleting Endpoint:</strong> ' + endpoint);
       self.models.secure_endpoints.removeEndpointOverride(guid, cloudEnv, endpoint, function(res) {
-        self.showAlert('success', '<strong>Endpoint Override Successfully Deleted</strong> (' + endpoint + ')');
+        self.showAlert('success', '<strong>Endpoint Override Successfully Deleted:</strong> ' + endpoint);
         self.endpoints_table.fnDeleteRow(row[0]);
-        self.show(); // TODO - possibly a bit OTT to do a full show() here..
+        self.show({hideAlerts: false}); 
       }, function(e) {
         self.showAlert('error', '<strong>Error Deleting Endpoint Override</strong> (' + endpoint + ') ' + e);
       });
@@ -259,7 +270,7 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
     var endpoints = $('#app_endpoints_select').val();
     this.models.secure_endpoints.setEndpointOverride(guid, cloudEnv, endpoints, val, function(res) {
       self.showAlert('success', "Security Endpoints set successfully");
-      self.show(); // TODO - bit OTT to do a full show() here..
+      self.show({hideAlerts: false}); 
     }, function(err) {
       self.showAlert('error', err);
     }, true);
@@ -268,8 +279,6 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
   // render endpoint override parts of the view
   renderEndpointOverrides: function(secure_endpoints_res, app_endpoints_res) {
     var self = this;
-    var guid = $fw.data.get('inst').guid;
-    var cloudEnv = $fw.data.get('cloud_environment');
 
     // Default App security radio buttons
     if(secure_endpoints_res["default"] === APP_ENDPOINTS_HTTPS) {
@@ -280,12 +289,19 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
       $('#app_security_https_option').prop('checked', false);
     }
 
-    // populate the list of app endpoints 
+    // populate the list of app endpoints, empty out old ones and clear check boxes
     $('#app_endpoints_select').empty();
-    for (var i=0; i<app_endpoints_res.endpoints.length; i++) {
-      var endpoint = app_endpoints_res.endpoints[i];
-      var opt = '<option value="' + endpoint + '">' + endpoint + "</option>"; 
-      $('#app_endpoints_select').append(opt);
+    $('#app_endpoint_override_app_api_key_option').prop('checked', false);
+    $('#app_endpoint_override_https_option').prop('checked', false);
+
+    if (app_endpoints_res.endpoints) {          
+      for (var i=0; i<app_endpoints_res.endpoints.length; i++) {
+        var endpoint = app_endpoints_res.endpoints[i];
+        var opt = '<option value="' + endpoint + '">' + endpoint + "</option>"; 
+        $('#app_endpoints_select').append(opt);
+      }
+    }else {
+      self.showAlert("error", "No Endpoints found for App");
     }
 
     // populate the endpoint overrides table.. 
@@ -297,7 +313,9 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
     for (var i in secure_endpoints_res.overrides) {
       var override = secure_endpoints_res.overrides[i];
       var btn = '<button class="btn btn-danger delete_override">Delete</button>';
-      rows.push([i, override.security, override.updatedBy, override.date, btn]);
+      var security = override.security === APP_ENDPOINTS_HTTPS ? APP_ENDPOINTS_HTTPS_DISPLAY :
+                                                                 APP_ENDPOINTS_APP_API_KEY_DISPLAY;
+      rows.push([i, security, override.updatedBy, override.updatedWhen, btn]);
     }
 
     this.endpoints_table = $('#endpoints_endpoints_table').dataTable({
