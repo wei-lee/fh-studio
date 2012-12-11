@@ -102,6 +102,7 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
     var cloudEnv = $fw.data.get('cloud_environment') || 'dev';
     
     // load millicore data in parallel
+    self.showAlert('info', '<strong>Loading Secure Endpoint data.. </strong> ');
     async.parallel([function(cb){
       self.models.secure_endpoints.readSecureEndpoints(guid, cloudEnv, function(res){
         return cb(null, res);        
@@ -257,7 +258,7 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
     var cloudEnv = $fw.data.get('cloud_environment');
     var isHttp = $('#app_security_https_option').is(':checked');
     var def = isHttp ? APP_ENDPOINTS_HTTPS : APP_ENDPOINTS_APP_API_KEY;
-    
+    self.showAlert('info', '<strong>Setting Default Secure Endpoint..</strong> ');    
     this.models.secure_endpoints.setDefaultSecureEndpoint(guid, cloudEnv, def, function(res) {
       self.showAlert('success', "App Security updated successfully");
     }, function(err) {
@@ -272,8 +273,10 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
     var isHttp = $('#app_endpoint_override_https_option').is(':checked');
     var val = isHttp ? APP_ENDPOINTS_HTTPS : APP_ENDPOINTS_APP_API_KEY;
     var endpoints = $('#app_endpoints_select').val();
+    self.showAlert('info', '<strong>Setting Endpoint Override..</strong> ');
+      
     this.models.secure_endpoints.setEndpointOverride(guid, cloudEnv, endpoints, val, function(res) {
-      self.showAlert('success', "Security Endpoints set successfully");
+      self.showAlert('success', "Endpoint Override set successfully");
       self.show({hideAlerts: false}); 
     }, function(err) {
       self.showAlert('error', err);
