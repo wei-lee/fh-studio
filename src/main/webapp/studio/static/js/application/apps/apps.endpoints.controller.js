@@ -259,9 +259,9 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
      }
      if(endpoint && endpoint !=="all") filter.endpoint = endpoint;
      if(security && security !=="all") filter.security = security;
-     if(user && user !== "all") filter.user = user;
+     if(user && user !== "all") filter.updatedBy = user;
      if(limit && limit !== "all") filter.limit = limit;     
-     var isFilter = filter.event || filter.endpoint || filter.security || filter.user || filter.limit || false;
+     var isFilter = filter.event || filter.endpoint || filter.security || filter.updatedBy || filter.limit || false;
 
      self.models.secure_endpoints.readAuditLog(guid, cloudEnv, filter, function(audit_log_res) {       
        self.renderAuditLog(audit_log_res, {isFilter : isFilter});
