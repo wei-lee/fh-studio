@@ -338,7 +338,7 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
     }
 
     // populate the endpoint overrides table.. 
-    var cols = [{"sTitle": "Endpoint"}, {"sTitle": "Security"}, {"sTitle": "Updated By"}, {"sTitle" : "Date"}, {"sTitle" : "Controls", bSortable: false, sClass: "controls"}];
+    var cols = [{"sTitle": "Endpoint"}, {"sTitle": "Security"}, {"sTitle": "Updated By"}, {"sTitle" : "Updated When"}, {"sTitle" : "Controls", bSortable: false, sClass: "controls"}];
     var rows = [];
 
     // transform millicore data into table format.. 
