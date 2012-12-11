@@ -87,8 +87,6 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
   initBindings: function () {
     var self = this;
     var container = $(this.views.endpoints_container);
-
-    // TODO - sort out language stuff..
     $fw.client.lang.insertLangForContainer(container);    
   },
 
@@ -197,14 +195,12 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
 
     // bind filter button
     var filterButton = $('button#endpoints_audit_log_filter');
-    // TODO filterButton.text($fw.client.lang.getLangString("endpoints_audit_log_filter"));
     filterButton.unbind().click(function(e){
       return self.doFilter();
     });
 
     // reset button..
     var resetButton = $('button#endpoints_audit_log_reset');
-    // TODO resetButton.text($fw.client.lang.getLangString("endpoints_audit_log_reset"));
     resetButton.unbind().bind("click",function (e){
       e.preventDefault();
       $.each(self.filterFields, function(name, target){
@@ -343,7 +339,6 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
     var rows = [];
 
     // transform millicore data into table format.. 
-    // TODO - need to show warning for when endpoint missing
     for (var j in secure_endpoints_res.overrides) {
       var override = secure_endpoints_res.overrides[j];
       var btn = '<button class="btn btn-danger delete_override">Delete</button>';
