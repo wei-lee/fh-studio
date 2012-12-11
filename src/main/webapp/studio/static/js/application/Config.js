@@ -108,13 +108,13 @@ Config = {
         },
         iphone_5: {
           target: 'iphone',
-          width: 320,
-          height: 480,
+          width: 400,
+          height: 710,
           ratio: '2:3', // 0.626631854
-          img_width: 379, // 606 - 379
-          img_height: 745, // 1189 - 745
-          offsetx: 32, // 51 - 561 = 510
-          offsety: 132, // 211 - 977 = 766
+          img_width: 495, // 606 - 379
+          img_height: 1024, // 1189 - 745
+          offsetx: 47, // 51 - 561 = 510
+          offsety: 160, // 211 - 977 = 766
           mm_width: '60',
           mm_height: '118' // allow some extra width/height for buttons around edge
         },

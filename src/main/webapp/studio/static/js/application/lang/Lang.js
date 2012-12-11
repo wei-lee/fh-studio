@@ -261,6 +261,8 @@ var Lang = {
   preview_device_iphone_3_noscale_title: 'iPhone 3/3GS',
   preview_device_iphone_4_title: 'iPhone 4 (*scaled)',
   preview_device_iphone_4_noscale_title: 'iPhone 4',
+  preview_device_iphone_5_title: 'iPhone 5 (*scaled)',
+  preview_device_iphone_5_noscale_title: 'iPhone 5',
   preview_device_ipad_title: 'iPad (*scaled)',
   preview_device_ipad_noscale_title: 'iPad',
   preview_device_ipad_portrait_title: 'iPad portrait (*scaled)',
