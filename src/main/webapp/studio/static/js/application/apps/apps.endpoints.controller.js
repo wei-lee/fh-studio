@@ -131,7 +131,16 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
       $('#showLoadingInfoAlert').slideUp(function() { 
         $('#showLoadingInfoAlert').remove();
       });
-      if (err) return self.showAlert('error', err);
+      if (err) {        
+        self.showAlert('error', "Error loading Secure Endpoints data, please check your App is staged and running ok..");
+        console.log("Error loading Secure Endpoints data: ", err);
+        self.bind();
+        $('#endpoints_main_outer_div').hide();
+        $('#endpoints_main_pills').hide();
+        $(self.container).show();
+        return;
+      }
+
       var secure_endpoints_res = results[0];
       var audit_log_res = results[1];
       var app_endpoints_res = results[2];
@@ -139,6 +148,8 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
       self.appSecureEndpoints = secure_endpoints_res; 
       self.renderEndpointOverrides(secure_endpoints_res, app_endpoints_res);
       self.renderAuditLog(audit_log_res);
+      $('#endpoints_main_outer_div').show();
+      $('#endpoints_main_pills').show();
 
       self.bind();
       $(self.container).show();
