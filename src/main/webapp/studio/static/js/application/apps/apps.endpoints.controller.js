@@ -405,8 +405,11 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
     var i = 0;
     for (i=0; i<audit_log_res.list.length; i++) {
       var entry = audit_log_res.list[i];
-      var security = entry.security === APP_ENDPOINTS_HTTPS ? APP_ENDPOINTS_HTTPS_DISPLAY :
+      var security = "";
+      if(entry.security && entry.security !== '') {
+        security = entry.security === APP_ENDPOINTS_HTTPS ? APP_ENDPOINTS_HTTPS_DISPLAY :
                                         APP_ENDPOINTS_APP_API_KEY_DISPLAY;
+      }
 
       rows.push([entry.event, entry.endpoint, security, entry.updatedBy, entry.updatedWhen]);
     }
