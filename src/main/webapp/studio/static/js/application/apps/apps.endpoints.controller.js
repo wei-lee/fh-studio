@@ -28,8 +28,12 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
   },
 
   optionTemplate : function (type, args){
+    var val = args.val;
+    if (typeof val === 'string'){
+      val = args.val.replace(' ', '_');  
+    }
     if(type === "option"){
-        return "<option value="+args.val+">"+args.text+"</option>";
+        return "<option value="+val+">"+args.text+"</option>";
     }
   },  
 
@@ -39,15 +43,17 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
   appSecureEndpoints: null, 
 
   // type: error|success|info
-  showAlert: function(type, message) {
+  showAlert: function(type, message, id) {
     var self = this;
     var alerts_area = $('#endpoints-alerts');
     var alert = $('<div>').addClass('alert fade in alert-' + type).html(message);
     var close_button = $('<button>').addClass('close').attr("data-dismiss", "alert").text("x");
     alert.append(close_button);
+    
+    if(id) alert.attr("id", id);
     alerts_area.append(alert);
     // only automatically hide alert if it's not an error
-    if ('error' !== type) {
+    if ('error' !== type && 'info' !== type) {
       setTimeout(function() {
         alert.slideUp(function() {
           alert.remove();
@@ -102,7 +108,7 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
     var cloudEnv = $fw.data.get('cloud_environment') || 'dev';
     
     // load millicore data in parallel
-    self.showAlert('info', '<strong>Loading Secure Endpoint data.. </strong> ');
+    self.showAlert('info', '<strong>Loading Secure Endpoint data.. </strong> ', "showLoadingInfoAlert");
     async.parallel([function(cb){
       self.models.secure_endpoints.readSecureEndpoints(guid, cloudEnv, function(res){
         return cb(null, res);        
@@ -122,6 +128,9 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
         return cb(e);
       });
     }], function(err, results){
+      $('#showLoadingInfoAlert').slideUp(function() { 
+        $('#showLoadingInfoAlert').remove();
+      });
       if (err) return self.showAlert('error', err);
       var secure_endpoints_res = results[0];
       var audit_log_res = results[1];
@@ -216,10 +225,12 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
       var cloudEnv = $fw.data.get('cloud_environment');
       self.showAlert('info', '<strong>Deleting Endpoint:</strong> ' + endpoint);
       self.models.secure_endpoints.removeEndpointOverride(guid, cloudEnv, endpoint, function(res) {
+        self.hideAlerts();
         self.showAlert('success', '<strong>Endpoint Override Successfully Deleted:</strong> ' + endpoint);
         self.endpoints_table.fnDeleteRow(row[0]);
         self.show({hideAlerts: false}); 
       }, function(e) {
+        self.hideAlerts();
         self.showAlert('error', '<strong>Error Deleting Endpoint Override</strong> (' + endpoint + ') ' + e);
       });
     });
@@ -236,7 +247,9 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
      var limit = $(self.filterFields.logLimit).val();
      var filter = {};
 
-     if(event && event !=="all") filter.event = event;
+     if(event && event !=="all") {
+       filter.event = event.replace('_', ' ');
+     }
      if(endpoint && endpoint !=="all") filter.endpoint = endpoint;
      if(security && security !=="all") filter.security = security;
      if(user && user !== "all") filter.user = user;
@@ -260,8 +273,10 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
     var def = isHttp ? APP_ENDPOINTS_HTTPS : APP_ENDPOINTS_APP_API_KEY;
     self.showAlert('info', '<strong>Setting Default Secure Endpoint..</strong> ');    
     this.models.secure_endpoints.setDefaultSecureEndpoint(guid, cloudEnv, def, function(res) {
+      self.hideAlerts();
       self.showAlert('success', "App Security updated successfully");
     }, function(err) {
+      self.hideAlerts();
       self.showAlert('error', err);
     }, true);
   },
@@ -273,12 +288,13 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
     var isHttp = $('#app_endpoint_override_https_option').is(':checked');
     var val = isHttp ? APP_ENDPOINTS_HTTPS : APP_ENDPOINTS_APP_API_KEY;
     var endpoints = $('#app_endpoints_select').val();
-    self.showAlert('info', '<strong>Setting Endpoint Override..</strong> ');
-      
+    self.showAlert('info', '<strong>Setting Endpoint Override..</strong> ');      
     this.models.secure_endpoints.setEndpointOverride(guid, cloudEnv, endpoints, val, function(res) {
+      self.hideAlerts();
       self.showAlert('success', "Endpoint Override set successfully");
       self.show({hideAlerts: false}); 
     }, function(err) {
+      self.hideAlerts();
       self.showAlert('error', err);
     }, true);
   },
@@ -308,7 +324,7 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
         $('#app_endpoints_select').append(opt);
       }
     }else {
-      self.showAlert("error", "No Endpoints found for App");
+      self.showAlert("error", "No Endpoints found, please re-stage App.");
     }
 
     // populate the endpoint overrides table.. 
