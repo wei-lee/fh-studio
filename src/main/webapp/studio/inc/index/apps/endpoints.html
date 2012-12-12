@@ -51,37 +51,48 @@
         
         <div class="pill-pane active" id="endpoints_security_pill">
           <form class="form-horizontal">
-            <fieldset class="well">
+            <fieldset class="well" id="app_security_well">
               <legend>App Security</legend>
-              <div class="control-group">
-                <div class="controls">
+                <div class="indent">
                   <label class="radio"><input type="radio" name="app_security_options" class="input" value="HTTPS" id="app_security_https_option"/>HTTPS</label>
                 </div>
-                <div class="controls">
+                <div class="indent">
                   <label class="radio"><input type="radio" name="app_security_options" class="input" value="APP_API_KEY" id="app_security_app_api_key_option"/>App Api Key</label>
                 </div>
-                <div class="form-actions">
+                <div class="indent">
                   <button type="submit" class="btn btn-primary" id="update_app_security_btn">Update</button>
                 </div>
-              </div>
             </fieldset>
           </form>
           <form class="form-horizontal">
-            <fieldset class="well">
+            <fieldset class="well" id="endpoints_security_well">
               <legend>Endpoint Security</legend>
-              <div class="control-group">
-                <div class="controls clearfix">
-                  <select multiple="multiple" class="left" id="app_endpoints_select">
-                  </select>
-                  <fieldset class="well left" id="app_endpoints_fieldset">
-                    <label class="radio"><input type="radio" name="endpoint_options" class="input" value="HTTPS" id="app_endpoint_override_https_option"/>HTTPS</label>
-                    <label class="radio"><input type="radio" name="endpoint_options" class="input" value="HTTPS" id="app_endpoint_override_app_api_key_option"/>App Api Key</label>
-                  </fieldset>
-                </div>
-                  <div class="form-actions">
-                    <button type="submit" class="btn btn-primary" id="update_endpoint_override_btn">Update</button>
+                <div class="indent clearfix">
+                  <div class="row-fluid">
+                    <div class="span4">
+                      <select multiple="multiple" class="span12" id="app_endpoints_select">
+                      </select>
+                    </div>
+                    <div class="span4 well">
+                      <div class="span12" id="endpoint_security_instructions">
+                        <p>Select an endpoint from the list on the left to set security for this endpoint</p>
+                        <i class="icon-arrow-left"></i>
+                      </div>
+                      <div class="span12" id="endpoint_security_options">
+                        <fieldset class="span12" id="app_endpoints_fieldset">
+                          <label class="radio"><input type="radio" name="endpoint_options" class="input" value="HTTPS" id="app_endpoint_override_https_option"/>HTTPS</label>
+                          <label class="radio"><input type="radio" name="endpoint_options" class="input" value="HTTPS" id="app_endpoint_override_app_api_key_option"/>App Api Key</label>
+                        </fieldset>
+                        <button type="submit" class="btn btn-primary" id="update_endpoint_override_btn">Update</button>
+                      </div>
+                      <div class="span12" id="endpoint_security_updating">
+                        <p>Please wait... Setting App Security for this endpoint</p>
+                        <img src="<%=studio.getStaticAssetPath("themes/default/img/big-loader.gif")%>" id="security_spinner" alt="loading"/>
+                      </div>
+                    </div>
                   </div>
-              </div>
+                </div>
+                <br/>
               <label>Endpoint Overrides</label>
               <div class="alerts" id="endpoint_override_alerts"></div>
               <div id="endpoints_endpoints_list" class="row-fluid">

@@ -3093,7 +3093,7 @@ a.docslink {
 }
 
 #app_endpoints_fieldset {
-  height:100px;
+  height:75px;
 }
 
 #app_endpoints_select{
@@ -3103,6 +3103,42 @@ a.docslink {
 
 .endpoint_error td{
   color: red;
+}
+
+#endpoints_container legend {
+  font-size: 16px;
+  margin-left: 15px;
+}
+
+#endpoints_security_well, #app_security_well {
+  padding: 10px;
+}
+
+#app_security_well #update_app_security_btn {
+  margin-top: 10px;
+}
+
+#endpoints_security_well .indent, #app_security_well .indent {
+  margin-left: 15px;
+}
+
+#security_spinner {
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+
+#endpoint_security_updating {
+  text-align: center;
+}
+
+#endpoint_security_instructions p {
+  text-align: center;
+}
+
+#endpoint_security_instructions i {
+ font-size: 25px;
+ margin: 20px 0 17px 10px;
+ display: block;
 }
 
 /* Awesome nth item selector that works cross platform (including IE!)
