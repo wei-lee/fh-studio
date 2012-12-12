@@ -283,9 +283,14 @@ Apps.Endpoints.Controller = Apps.Cloud.Controller.extend({
     var def = isHttp ? APP_ENDPOINTS_HTTPS : APP_ENDPOINTS_APP_API_KEY;
     self.showAlert('info', '<strong>Setting Default App Security..</strong> ');    
     this.models.secure_endpoints.setDefaultSecureEndpoint(guid, cloudEnv, def, function(res) {
-      self.hideAlerts();
-      $('#endpoint_security_updating').hide();
-      self.showAlert('success', "Default App Security updated successfully");
+      self.models.secure_endpoints.readAuditLog(guid, cloudEnv, null, function(audit_log_res) {       
+        self.renderAuditLog(audit_log_res);
+        self.hideAlerts();
+        $('#endpoint_security_updating').hide();
+        self.showAlert('success', "Default App Security updated successfully");
+      }, function(err) {
+        self.showAlert('error', err);
+      }, true);     
     }, function(err) {
       self.hideAlerts();
       $('#endpoint_security_updating').hide();
