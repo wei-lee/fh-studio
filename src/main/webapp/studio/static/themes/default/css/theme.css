@@ -1092,6 +1092,13 @@ span.label-info {
 {
   min-height:450px;
 }
+
+/* Debugging Log Tables */
+#debug_logging_list {
+  margin-bottom: 20px;
+  margin-top: -25px;
+}
+
 /* Destination Resources */
 .resource-div
 {
@@ -2583,6 +2590,41 @@ table.dataTable th:active {
   -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#E9E9E9')" !important;
 }
 
+.dataTables_scrollHead table.table {
+  margin-bottom: 0px !important;
+  border-bottom: 0px !important;
+  border-bottom-right-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
+  -webkit-border-bottom-right-radius: 0px !important;
+  -webkit-border-bottom-left-radius: 0px !important;
+  -moz-border-bottom-right-radius: 0px !important;
+  -moz-border-bottom-left-radius: 0px !important;
+}
+
+.dataTables_scrollHead .table-bordered thead:last-child tr:last-child th:first-child, .table-bordered tbody:last-child tr:last-child td:first-child, .table-bordered tfoot:last-child tr:last-child td:first-child {
+    border-bottom-left-radius: 0px !important;
+    -webkit-border-bottom-left-radius: 0px !important;
+    -moz-border-bottom-left-radius: 0px !important;
+}
+
+.dataTables_scrollHead .table-bordered thead:last-child tr:last-child th:last-child, .table-bordered tbody:last-child tr:last-child td:last-child, .table-bordered tfoot:last-child tr:last-child td:last-child {
+    border-bottom-right-radius: 0px !important;
+    -webkit-border-bottom-right-radius: 0px !important;
+    -moz-border-bottom-right-radius: 0px !important;
+}
+
+.dataTables_scrollBody table.table {
+    border-top-right-radius: 0px !important;
+    border-top-left-radius: 0px !important;
+    -webkit-border-top-right-radius: 0px !important;
+    -webkit-border-top-left-radius: 0px !important;
+    -moz-border-top-right-radius: 0px !important;
+    -moz-border-top-left-radius: 0px !important;
+}
+
+.dataTables_scroll {
+  margin-bottom: 6px;
+}
 /* User Admin styling */
 #useradmin_user_list table {
   width: 100% !important;
