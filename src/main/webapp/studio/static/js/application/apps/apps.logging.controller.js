@@ -149,8 +149,12 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
   renderDate: function(row, data){
     var dateStr = data[1];
     try{
-      var date = new Date(dateStr);
-      dateStr = date.getFullYear() + "-" + this.parseNumber(date.getMonth()) + "-" + this.parseNumber(date.getDate()) + " " + this.parseNumber(date.getHours()) + ":" + this.parseNumber(date.getMinutes()) + ":" + this.parseNumber(date.getSeconds());
+      if(dateStr !== ""){
+        var date = new Date(dateStr);
+        dateStr = date.getFullYear() + "-" + this.parseNumber(date.getMonth()) + "-" + this.parseNumber(date.getDate()) + " " + this.parseNumber(date.getHours()) + ":" + this.parseNumber(date.getMinutes()) + ":" + this.parseNumber(date.getSeconds());
+      } else {
+       dateStr = "N/A";
+      }
     } catch(e){
       console.log("Failed to render date for " + dateStr);
       dateStr = 'N/A';
