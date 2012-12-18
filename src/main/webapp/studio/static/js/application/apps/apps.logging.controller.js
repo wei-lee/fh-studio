@@ -65,6 +65,7 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
         self.renderLogList($(self.container).find('#debug_logging_list_table'), data);
       }, function(error){
         console.log("Failed to get log list. Error: " + error);
+        $('#debug_logging_text').val('Error loading Cloud App Logs. Is your App Staged for this environment?');
       }, true, instGuid, cloudEnv);
     } else {
       $(this.container).find('#debug_logging_list').hide();
