@@ -69,6 +69,7 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
       }, true, instGuid, cloudEnv);
     } else {
       $(this.container).find('#debug_logging_list').hide();
+      this.refreshLog();
     }
   },
 
