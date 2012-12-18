@@ -34,7 +34,7 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
     container.find('#debug_logging_refresh_button').bind('click', function (e) {
       e.preventDefault();
       e.stopPropagation();
-      self.refreshLog();
+      self.showLogging();
       self.loadLogList();
     });
     container.find('#debug_logging_clear_button').bind('click', function (e) {
@@ -124,6 +124,9 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
       var no_data_td = $('.dataTable:visible tbody td');
       no_data_td.attr('colspan', visible_columns);
       no_data_td.text(Lang.no_logs);
+      $('#debug_logging_text').val('No log files available.');
+    } else {
+      $('.dataTable:visible td:first').trigger('click');
     }
   },
 
@@ -132,6 +135,9 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
     self.renderDate(nRow, aData);
     $(nRow).find('td:not(.controls, .dataTables_empty)').css('cursor', 'pointer').unbind().bind('click', function(){
       self.refreshLog(aData[0]);
+      $('.dataTable:visible tr.info').removeClass('info').addClass($(this).data('oriCls'));
+      var rowCls = $(nRow).attr('class');
+      $(nRow).data('orCls', rowCls).removeClass(rowCls).addClass('info');
     });
     $('.delete_log', nRow).unbind().bind('click', function(){
       self.deleteLog(nRow, aData);
@@ -159,6 +165,7 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
 
   showLogging: function () {
     console.log('showLogging');
+    $('#debug_logging_text').val('loading...');
 
     // Cannot currently clear log files for node apps
     //  /deletelog endpoint not in fh-proxy yet
@@ -168,17 +175,18 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
       $('#debug_logging_clear_button').show();
     }
 
-    this.refreshLog();
+    //this.refreshLog();
   },
   
   refreshLog: function (logname) {
+    var self = this;
     $('#debug_logging_text').val('loading...');
-
     var instGuid = $fw.data.get('inst').guid;
     var cloudEnv = $fw.data.get('cloud_environment');
 
     this.model.log.read(function(res){
       if ("ok" === res.status) {
+        self.currentLogFile = logname;
         var logText = '';
         for (var log in res.log) {
           if(log !== "name"){
@@ -228,7 +236,22 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
       var cloudEnv = $fw.data.get('cloud_environment');
       self.model.log["delete"](function(res){
         self.showAlert('success', '<strong> Log file deleted (' + logname + ')');
-        self.logTable.fnDeleteRow(row);
+        if(logname === self.currentLogFile){
+          //the current log file being displayed is deleted, we will find the closest available log file and show it
+          var nextRow = $(row).next();
+          if(nextRow.length === 0){
+            nextRow = $(row).prev();
+          }
+          self.logTable.fnDeleteRow(row);
+          nextRow.find('td:first').trigger('click');
+        } else {
+          //another log file other than the current log file is deleted, make sure the current file is still selected
+          var currentRow = $('.dataTable:visible tr.info');
+          self.logTable.fnDeleteRow(row);
+          if(currentRow && currentRow.length > 0){
+            currentRow.find('td:first').trigger('click');
+          }
+        }
       }, function(err){
         self.showAlert('error', '<strong> Failed to delete log file (' + logname + ') ' + err);
       }, instGuid, cloudEnv, logname);
