@@ -143,10 +143,11 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
     try{
       var date = new Date(dateStr);
       dateStr = date.getFullYear() + "-" + this.parseNumber(date.getMonth()) + "-" + this.parseNumber(date.getDate()) + " " + this.parseNumber(date.getHours()) + ":" + this.parseNumber(date.getMinutes()) + ":" + this.parseNumber(date.getSeconds());
-      $('td:eq(1)', row).html(dateStr);
     } catch(e){
       console.log("Failed to render date for " + dateStr);
+      dateStr = 'N/A';
     }
+    $('td:eq(1)', row).html(dateStr);
   },
 
   parseNumber: function(num){
