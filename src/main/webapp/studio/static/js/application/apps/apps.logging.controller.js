@@ -259,7 +259,7 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
           }
         }
       }, function(err){
-        self.showAlert('error', '<strong> Failed to delete log file (' + logname + ') ' + err);
+        self.showAlert('error', '<strong> Failed to delete log file (' + logname + '):' + err);
       }, instGuid, cloudEnv, logname);
     });
   }
