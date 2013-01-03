@@ -109,7 +109,7 @@ application.DestinationIos = application.DestinationGeneral.extend({
 
   getExportData: function (wizard) {
     var export_version_id = '#app_export_' + this.destination_id + '_versions';
-    var version = "4.3";//wizard.find(export_version_id + ' input:checked').val();
+    var version = "6.0";//wizard.find(export_version_id + ' input:checked').val();
     console.log("Export version: " + version);
     if (version === "" || version === undefined) {
       proto.Wizard.jumpToStep(wizard, 2, "Please select the SDK version");
@@ -126,7 +126,7 @@ application.DestinationIos = application.DestinationGeneral.extend({
 
   getPublishData: function (config, versions_select, wizard) {
     var export_version_id = '#app_publish_' + this.destination_id + '_versions';
-    var version = "4.3";//wizard.find(export_version_id + ' input:checked').val();
+    var version = "6.0";//wizard.find(export_version_id + ' input:checked').val();
     var pk_pass = wizard.find("#app_publish_" + this.destination_id + "_pk_password").val();
     var cert_pass = wizard.find("#app_publish_" + this.destination_id + "_cert_password").val();
     console.log("cert pass: " + cert_pass);
