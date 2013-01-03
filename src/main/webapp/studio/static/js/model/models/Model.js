@@ -45,7 +45,11 @@ model.Model = Class.extend({
       return res;
     }
 
-    var rows = res.list;
+    var rowsKey = "list";
+    if(data_model.list_rows_key && typeof data_model.list_rows_key === "string"){
+      rowsKey = data_model.list_rows_key;
+    }
+    var rows = res[rowsKey];
     var data = {
       aaData: [],
       aoColumns: []
@@ -81,6 +85,9 @@ model.Model = Class.extend({
       }
       if(config.sClass) {
         col.sClass = config.sClass;
+      }
+      if(config.dataType) {
+        col.sType = config.dataType;
       }
       data.aoColumns.push(col);
     });

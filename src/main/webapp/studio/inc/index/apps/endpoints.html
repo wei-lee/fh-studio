@@ -1,0 +1,107 @@
+<div id="endpoints_container">
+  <div class="fh-box-outer">
+    <h4 class="fh-box-header">
+      Secure Endpoints
+      <% if(studio.getProperty("nodejsEnabled").equals("true")){ %>
+        <%@ include file="./cloud_environment.html" %>
+      <%}%>
+    </h4>
+    <div class="fh-box-inner">
+      <div class="alerts" id="endpoints-alerts"></div>
+
+      <ul class="endpoints_type_nav nav nav-pills" id="endpoints_main_pills">
+        <li class="active">
+          <a href="#endpoints_security_pill" data-toggle="pill" data-type="security">Security</a>
+        </li>
+        <li>
+          <a href="#endpoints_auditlog_pill" data-toggle="pill" data-type="auditlog">Audit Log</a>
+        </li>
+      </ul>
+      
+      <div class="pill-content" id="endpoints_main_outer_div">        
+        <div class="pill-pane" id="endpoints_auditlog_pill">
+
+          <div id="endpoints_audit_log_list" class="row-fluid">
+            <div class="alerts"></div>
+            <div class="pill-content well">
+              <form class="inline">
+                <select class="selectfixedWidth" name="endpointsAuditLogEvents" id="endpointsAuditLogEvents">
+                  <option value="all">All Events</option>
+                </select>  
+                <select class="selectfixedWidth" name="endpointsAuditLogEndpoints" id="endpointsAuditLogEndpoints">
+                  <option value="all">All Endpoints</option>
+                </select>  
+                <select class="selectfixedWidth" name="endpointsAuditLogSecurity" id="endpointsAuditLogSecurity">
+                  <option value="all">All Security</option>
+                </select>
+                <select class="selectfixedWidth" name="endpointsAuditLogUsers" id="endpointsAuditLogUsers">
+                  <option value="all" >All Users</option>
+                </select>
+                <select class="selectfixedWidth" name="endpointsAuditLogLimit" id="endpointsAuditLogLimit">
+                  <option value="all">All Records</option>
+                </select>    
+                
+                <button id="endpoints_audit_log_filter" class="appreport-button btn btn-inverse insert-lang">Filter</button>
+                <button id="endpoints_audit_log_reset" class="appreport-button btn btn-inverse insert-lang">Reset</button>
+              </form>
+            </div>
+            <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="endpoints_audit_logs_list_table"></table>
+          </div>
+        </div>
+        
+        <div class="pill-pane active" id="endpoints_security_pill">
+          <form class="form-horizontal">
+            <fieldset class="well" id="app_security_well">
+              <legend>App Security</legend>
+                <div class="indent">
+                  <label class="radio"><input type="radio" name="app_security_options" class="input" value="HTTPS" id="app_security_https_option"/>HTTPS</label>
+                </div>
+                <div class="indent">
+                  <label class="radio"><input type="radio" name="app_security_options" class="input" value="APP_API_KEY" id="app_security_app_api_key_option"/>App Api Key</label>
+                </div>
+                <div class="indent">
+                  <button type="submit" class="btn btn-primary" id="update_app_security_btn">Update</button>
+                </div>
+            </fieldset>
+          </form>
+          <form class="form-horizontal">
+            <fieldset class="well" id="endpoints_security_well">
+              <legend>Endpoint Security</legend>
+                <div class="indent clearfix">
+                  <div class="row-fluid">
+                    <div class="span4">
+                      <select multiple="multiple" class="span12" id="app_endpoints_select">
+                      </select>
+                    </div>
+                    <div class="span4 well">
+                      <div class="span12" id="endpoint_security_instructions">
+                        <p>Select an endpoint from the list on the left to set security for this endpoint</p>
+                        <i class="icon-arrow-left"></i>
+                      </div>
+                      <div class="span12" id="endpoint_security_options">
+                        <fieldset class="span12" id="app_endpoints_fieldset">
+                          <label class="radio"><input type="radio" name="endpoint_options" class="input" value="HTTPS" id="app_endpoint_override_https_option"/>HTTPS</label>
+                          <label class="radio"><input type="radio" name="endpoint_options" class="input" value="HTTPS" id="app_endpoint_override_app_api_key_option"/>App Api Key</label>
+                        </fieldset>
+                        <button type="submit" class="btn btn-primary" id="update_endpoint_override_btn">Update</button>
+                      </div>
+                      <div class="span12" id="endpoint_security_updating">
+                        <p>Please wait... Setting App Security for this endpoint</p>
+                        <img src="<%=studio.getStaticAssetPath("themes/default/img/big-loader.gif")%>" id="security_spinner" alt="loading"/>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <br/>
+              <label>Endpoint Overrides</label>
+              <div class="alerts" id="endpoint_override_alerts"></div>
+              <div id="endpoints_endpoints_list" class="row-fluid">
+                <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="endpoints_endpoints_table"></table>
+              </div>
+        </div>
+        </fieldset>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

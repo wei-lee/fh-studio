@@ -15,6 +15,7 @@ js/model/models/User.js
 js/model/models/UserKey.js
 js/model/models/StoreItem.js
 js/model/models/AppStore.js
+js/model/models/SecureEndpoints.js
 js/model/models/Group.js
 js/model/models/AuditLogEntry.js
 js/model/models/Role.js
@@ -23,6 +24,7 @@ js/model/models/ArmAuthPolicy.js
 js/model/models/Device.js
 js/model/models/Deploy.js
 js/model/models/CloudNotifications.js
+js/model/models/CloudLog.js
 js/application/account/account.profile.controller.js
 js/application/account/account.keys.controller.js
 js/application/account/account.resource.support.js
@@ -68,6 +70,7 @@ js/application/apps/apps.push.controller.js
 js/application/apps/apps.preview.controller.js
 js/application/apps/apps.cloud.controller.js
 js/application/apps/apps.logging.controller.js
+js/application/apps/apps.endpoints.controller.js
 js/application/apps/apps.cloudresources.controller.js
 js/application/apps/apps.cloudnotifications.controller.js
 js/application/apps/apps.cloud.dashboard.controller.js

@@ -126,11 +126,20 @@ Admin.Deploytarget.Controller = Controller.extend({
           "password": true,
           "infrastructure": false
         }
+      }, {
+        "id": "vmware",
+        "name": "VMWare vSphere",
+        "icon": "cloud_target_vmware.png",
+        "configurations": {
+          "username": true,
+          "password": true,
+          "infrastructure": false
+        }
       });
 
       // Update props
       var props = $fw.getClientProps();
-      props.nodejsValidTargets = props.nodejsValidTargets + ',amazonaws,hpcloud,rackspace';
+      props.nodejsValidTargets = props.nodejsValidTargets + ',amazonaws,hpcloud,rackspace,vmware';
       $fw.setClientProps(props);
     }
   },

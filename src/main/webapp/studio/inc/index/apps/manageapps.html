@@ -111,6 +111,12 @@
           Logs
         </a>
       </li>
+      <li class="template-restriction nodejs_mode">
+        <a href="#" data-controller="apps.endpoints.controller">
+          <i class="icon-lock"></i>
+          Endpoints
+        </a>
+      </li>
       <li class="nav-header template-restriction">Reporting</li>
       <li class="template-restriction">
         <a href="#" data-controller="apps.installs.controller">
@@ -263,13 +269,15 @@
 
        <%@ include file="./dashboard.html"%>
 
-        <%@ include file="./debug_logging.html"%>
+       <%@ include file="./debug_logging.html"%>
 
-        <%@ include file="./deploy.html"%>
+       <%@ include file="./endpoints.html"%>
 
-        <% if(studio.getProps().optBoolean("stats-enabled")){ %>
+       <%@ include file="./deploy.html"%>
+
+       <% if(studio.getProps().optBoolean("stats-enabled")){ %>
          <%@ include file="./stats.html"%>
-        <%}%>
+       <%}%>
         
        <% if(studio.getProps().optBoolean("enable-push-notification")){ %>
         <%@ include file="./push_notification.html"%>

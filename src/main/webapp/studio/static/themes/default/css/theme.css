@@ -1092,6 +1092,13 @@ span.label-info {
 {
   min-height:450px;
 }
+
+/* Debugging Log Tables */
+#debug_logging_list {
+  margin-bottom: 20px;
+  margin-top: -25px;
+}
+
 /* Destination Resources */
 .resource-div
 {
@@ -2583,6 +2590,41 @@ table.dataTable th:active {
   -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#E9E9E9')" !important;
 }
 
+.dataTables_scrollHead table.table {
+  margin-bottom: 0px !important;
+  border-bottom: 0px !important;
+  border-bottom-right-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
+  -webkit-border-bottom-right-radius: 0px !important;
+  -webkit-border-bottom-left-radius: 0px !important;
+  -moz-border-bottom-right-radius: 0px !important;
+  -moz-border-bottom-left-radius: 0px !important;
+}
+
+.dataTables_scrollHead .table-bordered thead:last-child tr:last-child th:first-child, .table-bordered tbody:last-child tr:last-child td:first-child, .table-bordered tfoot:last-child tr:last-child td:first-child {
+    border-bottom-left-radius: 0px !important;
+    -webkit-border-bottom-left-radius: 0px !important;
+    -moz-border-bottom-left-radius: 0px !important;
+}
+
+.dataTables_scrollHead .table-bordered thead:last-child tr:last-child th:last-child, .table-bordered tbody:last-child tr:last-child td:last-child, .table-bordered tfoot:last-child tr:last-child td:last-child {
+    border-bottom-right-radius: 0px !important;
+    -webkit-border-bottom-right-radius: 0px !important;
+    -moz-border-bottom-right-radius: 0px !important;
+}
+
+.dataTables_scrollBody table.table {
+    border-top-right-radius: 0px !important;
+    border-top-left-radius: 0px !important;
+    -webkit-border-top-right-radius: 0px !important;
+    -webkit-border-top-left-radius: 0px !important;
+    -moz-border-top-right-radius: 0px !important;
+    -moz-border-top-left-radius: 0px !important;
+}
+
+.dataTables_scroll {
+  margin-bottom: 6px;
+}
 /* User Admin styling */
 #useradmin_user_list table {
   width: 100% !important;
@@ -3092,6 +3134,55 @@ a.docslink {
   padding-left: 10px;
 }
 
+#app_endpoints_fieldset {
+  height:75px;
+}
+
+#app_endpoints_select{
+  height:139px;
+  margin-right: 15px;
+}
+
+.endpoint_error td{
+  color: red;
+}
+
+#endpoints_container legend {
+  font-size: 16px;
+  margin-left: 15px;
+}
+
+#endpoints_security_well, #app_security_well {
+  padding: 10px;
+}
+
+#app_security_well #update_app_security_btn {
+  margin-top: 10px;
+}
+
+#endpoints_security_well .indent, #app_security_well .indent {
+  margin-left: 15px;
+}
+
+#security_spinner {
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+
+#endpoint_security_updating {
+  text-align: center;
+}
+
+#endpoint_security_instructions p {
+  text-align: center;
+}
+
+#endpoint_security_instructions i {
+ font-size: 25px;
+ margin: 20px 0 17px 10px;
+ display: block;
+}
+
 /* Awesome nth item selector that works cross platform (including IE!)
   http://reference.sitepoint.com/css/adjacentsiblingselector
   Hides Email & App ID column (:nth(3)) (:nth(6))
@@ -3106,3 +3197,4 @@ a.docslink {
 #recentapps_grid th:first-child + th + th + th + th {
   display: none;
 }​
+
