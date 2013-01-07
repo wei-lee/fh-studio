@@ -263,7 +263,10 @@ Apps.Configuration.Support = Controller.extend({
       var app_title = $fw.data.get('inst').title;
       app_title = "com.feedhenry." + app_title.replace(/[^a-zA-Z0-9\\.]/g,'.');
       return app_title;
-    } else {
+    } else if(config_name === 'android Package Name' && config_val === ''){
+      var defaultPackageName = this.getPackageName();
+      return defaultPackageName;
+    }else {
       return config_val;
     }
   },
@@ -275,6 +278,12 @@ Apps.Configuration.Support = Controller.extend({
     });
     HtmlUtil.constructOptions(select, config_val.options, config_val.values, config_val.selected);
     return select;
+  },
+
+  getPackageName: function() {
+    var guid = 'fh' + $fw.data.get('inst').guid;
+    var packageName = "com.feedhenry." + guid.replace(/\W/g, '_');
+    return packageName;
   }
 
 });

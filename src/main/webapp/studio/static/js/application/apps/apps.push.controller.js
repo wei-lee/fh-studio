@@ -30,7 +30,6 @@ Apps.Push.Controller = Apps.Controller.extend({
     $('#ua_push_enabled').bind('change', function() {
       if (this.checked) {
         $('#push_urbanairship_settings').find('.push_settings').show();
-        $('#app_android_id').val(self.getPackageName());
       } else {
         $('#push_urbanairship_settings').find('.push_settings').hide();
       }
@@ -74,7 +73,10 @@ Apps.Push.Controller = Apps.Controller.extend({
       } else {
         $('#push_urbanairship_settings').find('.push_settings').hide();
       }
-      $('#app_android_id').val(this.getPackageName());
+    } else {
+      $('#ua_push_enabled')[0].checked = false;
+      $('#push_urbanairship_settings').find('.push_settings').find('input').val('');
+      $('#push_urbanairship_settings').find('.push_settings').hide();
     }
   },
 
@@ -92,13 +94,6 @@ Apps.Push.Controller = Apps.Controller.extend({
     $fw.data.set('inst', inst);
     // FIXME: app details may not have been shown yet, causing 'title' validation error
     $fw.client.tab.apps.manageapps.controllers['apps.details.controller'].doUpdate($.noop);
-  },
-
-
-  getPackageName: function() {
-    var guid = 'fh' + $fw.data.get('inst').guid;
-    var packageName = "com.feedhenry." + guid.replace(/\W/g, '_');
-    return packageName;
   }
 
 });

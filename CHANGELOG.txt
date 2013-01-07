@@ -1,6 +1,10 @@
 -------------------------------------------------------------------------------
 Component: fh-studio
 -------------------------------------------------------------------------------
+3.14.2 - 2013-01-07 - IR192 - Wei Li
+---------------------------------------
+* 2858 - Added support to allow overriding default android package names
+
 3.14.1 - 2013-01-03 - IR192 - Wei Li
 ----------------------------------------------
 * 2718 - Removed the steps in iOS build process that prompts user to select SDK version
