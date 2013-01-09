@@ -1,0 +1,6 @@
+<% if (!"".equals(studio.getNotificationMessage())){%>
+  <div id="studio_notification" class='alert alert-info'>
+    <button type="button" class="close" onclick="$('#studio_notification').hide()">&times;</button>
+    <%= studio.getNotificationMessage()%>
+  </div>
+<%}%>

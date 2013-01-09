@@ -621,6 +621,11 @@ public class StudioBean {
     reader.close();
     return text.toString();
   }
+
+  public String getNotificationMessage() throws Exception {
+    String notificationMessage = mStudioProps.optString("notificationMessage", "");
+    return notificationMessage;
+  }
   
   private boolean isResourceExists(String pResource){
     URL uri = this.getClass().getClassLoader().getResource("../../static/" + pResource);
