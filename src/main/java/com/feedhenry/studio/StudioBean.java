@@ -626,6 +626,11 @@ public class StudioBean {
     String notificationMessage = mStudioProps.optString("notificationMessage", "");
     return notificationMessage;
   }
+
+  public String getNotificationSeverity() throws Exception {
+    String notificationSeverity = mStudioProps.optString("notificationSeverity", "warning");
+    return notificationSeverity;
+  }
   
   private boolean isResourceExists(String pResource){
     URL uri = this.getClass().getClassLoader().getResource("../../static/" + pResource);
