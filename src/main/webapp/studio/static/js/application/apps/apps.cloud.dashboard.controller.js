@@ -178,9 +178,14 @@ Apps.Cloud.Dashboard.Controller = Apps.Cloud.Controller.extend({
     var guid = $fw.data.get('inst').guid;
     var url = action === "start" ? Constants.APP_START_URL: Constants.APP_STOP_URL;
     var afterAction = action === "start" ? self.renderStatusOK : self.renderStatusFail;
+    var container = $('.current_cloud_app_controls_container', self.container);
+    var spinner = self.createSpinner();
+    spinner.css("display", "inline").css("margin-left", "10px");
+    container.append(spinner);
     $fw.server.post(url, {guid: guid, deploytarget: env}, function(res){
+      container.find('.loading_icon').remove();
       if(res.status === "ok"){
-        afterAction();
+        afterAction.apply(self);
         if(successCb){
           successCb();
         }
