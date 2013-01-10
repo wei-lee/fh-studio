@@ -58,6 +58,8 @@ $.extend(Constants, {
   APP_SETPROPERTY_URL: Constants.IDE_URL_PREFIX + "app/setconfig",
   APP_HOSTS_URL: Constants.IDE_URL_PREFIX + "app/hosts",
   APP_ENDPOINTS_URL: Constants.IDE_URL_PREFIX + "app/endpoints",
+  APP_START_URL: Constants.IDE_URL_PREFIX + "app/start",
+  APP_STOP_URL: Constants.IDE_URL_PREFIX + "app/stop",
 
   SECURE_ENDPOINTS_GET_URL: Constants.BASE_URL_PREFIX +  "app/endpointsecurity/get",
   SECURE_ENDPOINTS_SET_DEFAULT_URL: Constants.BASE_URL_PREFIX + "app/endpointsecurity/setDefault",

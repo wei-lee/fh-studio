@@ -53,6 +53,7 @@ Apps.Cloud.Dashboard.Controller = Apps.Cloud.Controller.extend({
     this.loadCurrentTarget(guid, env);
     this.loadCurrentHost(guid, env);
     this.loadCurrentStatus(guid, env);
+    this.loadAppControls(guid, env);
   },
 
   bind: function() {
@@ -146,6 +147,50 @@ Apps.Cloud.Dashboard.Controller = Apps.Cloud.Controller.extend({
     });
   },
 
+  loadAppControls: function(guid, env){
+    var self = this;
+    var container = $('.current_cloud_app_controls_container', this.container);
+    container.empty();
+    this.showLoadIcon(container);
+    var startButton = $('<button>').addClass('btn btn-success disabled start_btn').html("<i class='icon-play'></i> Start App");
+    var stopButton = $('<button>').addClass('btn btn-danger disabled stop_btn').css('margin-left', '10px').html("<i class='icon-stop'></i> Stop App");
+    var restartButton = $('<button>').addClass('btn btn-info disabled restart_btn').css('margin-left', '10px').html("<i class='icon-repeat'></i> Restart App")
+    container.empty().append(startButton).append(stopButton).append(restartButton);
+    startButton.click(function(e){
+      e.preventDefault();
+      self.appControl('start');
+    });
+    stopButton.click(function(e){
+      e.preventDefault();
+      self.appControl('stop');
+    });
+    restartButton.click(function(e){
+      e.preventDefault();
+      self.appControl('stop', function(){
+        self.appControl('start');
+      });
+    })
+  },
+
+  appControl: function(action, successCb){
+    var self = this;
+    var env = $fw.data.get('cloud_environment');
+    var guid = $fw.data.get('inst').guid;
+    var url = action === "start" ? Constants.APP_START_URL: Constants.APP_STOP_URL;
+    var afterAction = action === "start" ? self.renderStatusOK : self.renderStatusFail;
+    $fw.server.post(url, {guid: guid, deploytarget: env}, function(res){
+      if(res.status === "ok"){
+        afterAction();
+        if(successCb){
+          successCb();
+        }
+      } else {
+        console.log("Failed to " + action + " app. Message: " + res.message);
+        self.showAlert("error", "Failed to " + action + " app. Please make sure the app has been deployed and try again.");
+      }
+    }, null, true);
+  },
+
   createSpinner: function() {
     var spinner = $('.hidden_template.loading_icon', this.container).clone();
     spinner.removeClass('hidden_template');
@@ -159,10 +204,16 @@ Apps.Cloud.Dashboard.Controller = Apps.Cloud.Controller.extend({
 
   renderStatusOK: function() {
     this.renderStatus('label-success', 'Running');
+    var container = $('.current_cloud_app_controls_container', self.container);
+    container.find('.btn').addClass('disabled');
+    container.find('.stop_btn, .restart_btn').removeClass('disabled');
   },
 
   renderStatusFail: function() {
     this.renderStatus('label-important', 'Not Running');
+    var container = $('.current_cloud_app_controls_container', self.container);
+    container.find('.btn').addClass('disabled');
+    container.find('.start_btn').removeClass('disabled');
   },
 
   renderStatus: function(label_class, message) {
