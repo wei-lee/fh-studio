@@ -122,6 +122,8 @@ Apps.Cloud.Controller = Apps.Controller.extend({
       } else {
         failure(res);
       }
+    }, function(err){
+      failure(err);
     });
   },
 

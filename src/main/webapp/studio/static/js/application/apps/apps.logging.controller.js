@@ -18,6 +18,10 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
   init: function () {
     this._super();
     this.initFn = _.once(this.initBindings);
+    var self = this;
+    self.activeStdoutLog = null;
+    self.activeStderrLog = null;
+    self.streamRecords = {};
   },
   
   /*
@@ -29,31 +33,36 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
     var container = $(this.views.debug_logging_container);
 
     $fw.client.lang.insertLangForContainer(container);
-    
-    // init any buttons and callbacks
-    container.find('#debug_logging_refresh_button').bind('click', function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-      self.showLogging();
-      self.loadLogList();
-    });
-    container.find('#debug_logging_clear_button').bind('click', function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-      self.clearLog();
+    $('#log_archive_accordion').on("hide", function(){
+      $(this).find("i.icon-chevron-down").removeClass('icon-chevron-down').addClass('icon-chevron-right');
+    }).on('show', function(){
+      $(this).find("i.icon-chevron-right").removeClass('icon-chevron-right').addClass('icon-chevron-down');
     });
   },
 
   show: function(){
+    var self = this;
     this._super(this.views.debug_logging_container);
     this.initFn();
-    this.showLogging();
-    this.loadLogList();
-
+    $('#log_loading').show();
+    $('#debug_logging_list').hide();
+    $('#log_contents_form').addClass('hidden');
+    if ($fw.client.tab.apps.manageapps.isNodeJsApp()){
+      this.pingCloud(this.currentEnv(), function(res){
+        self.showLogging();
+        self.loadLogList(true);
+      },function(res){
+        self.showLogging();
+        self.loadLogList(false);
+      });
+    } else {
+      self.showLogging();
+      self.loadLog("Log.txt", true, false, false, null, true);
+    }
     $(this.container).show();
   },
 
-  loadLogList: function(){
+  loadLogList: function(is_running){
     $(this.container).find('#debug_logging_list').hide();
     if($fw.client.tab.apps.manageapps.isNodeJsApp()){
       var self = this;
@@ -61,11 +70,19 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
       var cloudEnv = $fw.data.get('cloud_environment');
       this.model.log.list(function(res){
         $(self.container).find('#debug_logging_list').show();
+        if(is_running && res.aaData.length > 0){
+          self.activeStderrLog = res.aaData[0];
+          self.activeStdoutLog = res.aaData[1];
+          //remove the current active logs
+          res.aaData = res.aaData.slice(2);
+        }
         var data = self.addControls(res);
-        self.renderLogList($(self.container).find('#debug_logging_list_table'), data);
+        self.renderLogList($(self.container).find('#debug_logging_list_table'), data, is_running);
       }, function(error){
         console.log("Failed to get log list. Error: " + error);
-        $('#debug_logging_text').val('Error loading Cloud App Logs. Is your App Staged for this environment?');
+        $('#log_contents_form').removeClass("hidden");
+        self.loadLog("Stdout.log", true, true, false, "Error loading Cloud App Stdout Logs. Is your App Staged for this environment?");
+        self.loadLog("Stderr.log", false, true, false, "Error loading Cloud App Stderr Logs. Is your App Staged for this environment?");
       }, true, instGuid, cloudEnv);
     } else {
       $(this.container).find('#debug_logging_list').hide();
@@ -79,13 +96,14 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
       sTitle: "Controls",
       "bSortable": false,
       "sClass": "controls",
-      "sWidth": "62px"
+      "sWidth": "160px"
     });
 
     $.each(res.aaData, function(i, row) {
       var controls = [];
       // TODO: Move to clonable hidden_template
-      var button = '<button class="btn btn-danger delete_log">Delete</button>';
+      var button = '<button class="btn btn-info download_log">Download</button> <button class="btn btn-danger delete_log">Delete</button>';
+
       controls.push(button);
 
 
@@ -95,7 +113,7 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
     return res;
   },
 
-  renderLogList: function(tableContainer, data){
+  renderLogList: function(tableContainer, data, is_running){
     var self = this;
     this.logTable = $(tableContainer).show().dataTable({
       "aaSorting": [[1, 'desc']],
@@ -127,22 +145,35 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
       no_data_td.attr('colspan', visible_columns);
       no_data_td.text(Lang.no_logs);
       $('#debug_logging_text').val('No log files available.');
+    } 
+
+    $('#debug_logging_list').show();
+
+    if(is_running){
+      self.loadLog(self.activeStdoutLog[0], true, true);
+      self.loadLog(self.activeStderrLog[0], false, true);
     } else {
-      $('.dataTable:visible td:first').trigger('click');
+      $('#log_contents_form').removeClass("hidden");
+      self.loadLog("Stdout.log", true, true, false, "App is not running, no live logs available.");
+      self.loadLog("Stderr.log", false, true, false, "App is not running, no live logs available.");
     }
+    
   },
 
   rowRender: function(nRow, aData){
     var self = this;
     self.renderDate(nRow, aData);
     $(nRow).find('td:not(.controls, .dataTables_empty)').css('cursor', 'pointer').unbind().bind('click', function(){
-      self.refreshLog(aData[0]);
+      self.loadLog(aData[0], true, false, true);
       $('.dataTable:visible tr.info').removeClass('info').addClass($(this).data('oriCls'));
       var rowCls = $(nRow).attr('class');
       $(nRow).data('orCls', rowCls).removeClass(rowCls).addClass('info');
     });
     $('.delete_log', nRow).unbind().bind('click', function(){
       self.deleteLog(nRow, aData);
+    });
+    $('.download_log', nRow).unbind().bind('click', function(){
+      self.downloadLog(nRow, aData);
     });
   },
 
@@ -151,7 +182,7 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
     try{
       if(dateStr !== ""){
         var date = new Date(dateStr);
-        dateStr = date.getFullYear() + "-" + this.parseNumber(date.getMonth()) + "-" + this.parseNumber(date.getDate()) + " " + this.parseNumber(date.getHours()) + ":" + this.parseNumber(date.getMinutes()) + ":" + this.parseNumber(date.getSeconds());
+        dateStr = date.getFullYear() + "-" + this.parseNumber(date.getMonth() + 1) + "-" + this.parseNumber(date.getDate()) + " " + this.parseNumber(date.getHours()) + ":" + this.parseNumber(date.getMinutes()) + ":" + this.parseNumber(date.getSeconds());
       } else {
        dateStr = "N/A";
       }
@@ -171,67 +202,165 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
 
   showLogging: function () {
     console.log('showLogging');
-    $('#debug_logging_text').val('loading...');
-
-    // Cannot currently clear log files for node apps
-    //  /deletelog endpoint not in fh-proxy yet
-    if ($fw.client.tab.apps.manageapps.isNodeJsApp()) {
-      $('#debug_logging_clear_button').hide();
-    } else {
-      $('#debug_logging_clear_button').show();
-    }
-
-    //this.refreshLog();
+    $('#log_loading').hide();
+    $('#debug_logging_clear_button').hide();
+    $('#debug_logging_tabs').empty();
+    $('#debug_logging_contents').empty();
   },
-  
-  refreshLog: function (logname) {
+
+  loadLog: function(logfile, active, streamable, removable, error, legacy_mode){
+    console.log(logfile);
     var self = this;
-    $('#debug_logging_text').val('loading...');
+    var validname = logfile.replace(/\./g, "_");
     var instGuid = $fw.data.get('inst').guid;
     var cloudEnv = $fw.data.get('cloud_environment');
-
-    this.model.log.read(function(res){
-      if ("ok" === res.status) {
-        self.currentLogFile = logname;
-        var logText = '';
-        for (var log in res.log) {
-          if(log !== "name"){
-            logText += '====> ' + log + ' START <====\n' + res.log[log] + '====> ' + log + ' END <====\n';
-          }
+    var li = $('<li>', {id: validname + "_tab"});
+    li.append($('<a>', {href: '#' + validname + "_pane", text: logfile}));
+    if(removable){
+      var icon = $('<i>', {"class":'icon-remove'});
+      li.find('a').append(icon);
+      icon.click(function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        var next = li.next() 
+        if(next.length == 0){
+          next = li.prev();
         }
-        if (logText.length < 1) {
-          logText = 'n/a';
-        }
-        $('#debug_logging_text').val('').val(logText);
+        li.remove();
+        tabPane.remove();
+        next.find("a").trigger("click");
+      })
+    }
+    $('#debug_logging_tabs').append(li);
+    var tabPane = $('.tab-pane-template').find('.tab-pane').clone();
+    tabPane.attr("id", validname + '_pane');
+    $('#debug_logging_contents').append(tabPane);
+    if(active){
+      $('#debug_logging_tabs li.active').removeClass("active");
+      $('#debug_logging_contents .tab-pane.active').removeClass("active");
+      li.addClass("active");
+      tabPane.addClass("active");
+    }
+    li.find('a').click(function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      $(this).tab('show');
+      var targetPane = $(this).attr("href");
+      self.scrollToBottom($(targetPane));
+    });
+    if(error){
+      tabPane.find('.debug_logging_text').html(error);
+      tabPane.find(".log_controls").remove();
+    } else {
+      if(legacy_mode){
+        return self.loadRhinoLog(tabPane, instGuid, cloudEnv, logfile);
       } else {
-        $('#debug_logging_text').val('Error loading Cloud App Logs. Is your App Staged for this environment?');
+        var default_lines = 1000;
+        self.loadLogChunk(default_lines, tabPane, instGuid, cloudEnv, logfile);
+      }
+    }
+    if(streamable){
+      tabPane.find('.log_stream_check').show().change(function(){
+        if($(this).is(":checked")){
+          var lastLines = tabPane.find('.log_lines').val();
+          var isValidNumber = self.checkLineNumbers(lastLines);
+          if(isValidNumber){
+            self.streamLog(instGuid, cloudEnv, logfile, lastLines, tabPane);
+            tabPane.find('#debug_logging_refresh_button').addClass("disabled");
+          }
+        } else {
+          self.stopStreamLog(logfile, tabPane);
+          tabPane.find('#debug_logging_refresh_button').removeClass("disabled");
+        }
+      });
+    } else {
+      tabPane.find(".stream_conf").remove();
+    }
+    tabPane.find("#debug_logging_refresh_button").click(function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      var lastLines = tabPane.find('.log_lines').val();
+      var isValidNumber = self.checkLineNumbers(lastLines);
+      if(isValidNumber){
+        self.loadLogChunk(lastLines, tabPane, instGuid, cloudEnv, logfile);
+      }
+    });
+  },
+
+  loadLogChunk:function(lines, tabPane, instGuid, cloudEnv, logfile){
+    var self = this;
+    this.model.log.chunk(lines, -1, function(res){
+      $('#log_contents_form').removeClass("hidden");
+      if(res.status === "ok"){
+        tabPane.find('.debug_logging_text').html('').html(res.msg.data.join("\n").replace(/\\n/g, "\n"));
+        self.scrollToBottom(tabPane);
+      } else {
+        tabPane.find('.debug_logging_text').html('Error loading Cloud App Logs. Is your App Staged for this environment?');
       }
     }, function(error){
-      $('#debug_logging_text').val('Error loading Cloud App Logs. Is your App Staged for this environment?');
-    }, instGuid, cloudEnv, logname);
+      tabPane.find('.debug_logging_text').html('').html('Error loading Cloud App Logs. Is your App Staged for this environment?');
+    }, instGuid, cloudEnv, logfile);
   },
+
+  checkLineNumbers: function(lines){
+    var isValidNumber = true;
+    try{
+      lines = parseInt(lines);
+    }catch(e){
+      isValidNumber = false;
+      self.showAlert('error', "Please enter an integer for the number of lines");
+    }
+    return isValidNumber;
+  },
+
+  scrollToBottom: function(tabPane){
+    tabPane.find('.debug_logging_text').scrollTop(tabPane.find('.debug_logging_text')[0].scrollHeight);
+  }, 
   
-  // TODO: move this 'model' stuff out of here
-  clearLog: function () {
-    var self = this, instGuid, url, params;
-    
-    instGuid = $fw.data.get('inst').guid;
-    url = Constants.LOGS_URL;
-    params = {
-      "guid": instGuid,
-      "action": "delete"
-    };
-    
-    $fw.server.post(url, params, function (res) {
-      if ('ok' === res.status) {
-        $('#debug_logging_text').val('');
+  streamLog: function(instGuid, cloudEnv, logfile, lastLines, tabPane){
+    var self = this;
+    self.streamRecords[logfile] = true;
+    self.model.log.chunk(lastLines, -1, function(res){
+      if(res.status === "ok"){
+        tabPane.find('.debug_logging_text').html(res.msg.data.join("\n").replace(/\\n/g, "\n"));
+        var spinner = $('.hidden_template.loading_icon', ".tab-pane-template").find('img').clone();
+        spinner.addClass('log_loading_spinner').css('display', 'block');
+        tabPane.find('.debug_logging_text').append(spinner);
+        self.scrollToBottom(tabPane);
+        var offset = res.msg.offset;
+        self.loadLogOffset(instGuid, cloudEnv, logfile, offset, tabPane);
       }
-      else {
-        $fw.client.dialog.error("Error clearing logs: " + res.error);
+    }, function(error){
+
+    }, instGuid, cloudEnv, logfile);
+  },
+
+  loadLogOffset: function(instGuid, cloudEnv, logfile, offset, tabPane){
+    var self = this;
+    self.model.log.chunk(-1, offset, function(res){
+      if(res.status === "ok"){
+        offset = res.msg.offset;
+        if(res.msg.data.length > 0){
+          var offsetLogs = res.msg.data.join("\n").replace(/\\n/g, '\n');
+          tabPane.find('.debug_logging_text').find('.log_loading_spinner').before("\n" + offsetLogs);
+          self.scrollToBottom(tabPane);
+        }
+        if(self.streamRecords[logfile]){
+          setTimeout(function(){
+            self.loadLogOffset(instGuid, cloudEnv, logfile, offset, tabPane);
+          }, 1000);
+        }
       }
-    }, function (error) {
-      $fw.client.dialog.error($fw.client.lang.getLangString('clear_log_error'));
-    }, true);
+    }, function(err){
+
+    }, instGuid, cloudEnv, logfile);
+  },
+
+  stopStreamLog: function(logfile, tabPane){
+    var self = this;
+    self.streamRecords[logfile] = undefined;
+    tabPane.find('.log_loading_spinner').remove();
+    self.scrollToBottom(tabPane);
   },
 
   deleteLog: function(row, data){
@@ -262,6 +391,50 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
         self.showAlert('error', '<strong> Failed to delete log file (' + logname + '):' + err);
       }, instGuid, cloudEnv, logname);
     });
-  }
+  },
 
+  downloadLog: function(row, data){
+    var self = this;
+    var logname = data[0];
+    var instGuid = $fw.data.get('inst').guid;
+    var cloudEnv = $fw.data.get('cloud_environment');
+    var url = Constants.LOGSTREAM_URL + "?guid=" + instGuid + "&deploytarget=" + cloudEnv + "&action=download&logname=" + logname;
+    document.location = url;
+  }, 
+
+  loadRhinoLog: function(tabPane, instGuid, cloudEnv, logfile){
+    var self = this;
+    $('#log_contents_form').removeClass("hidden");
+    tabPane.find(".stream_opts").hide();
+    tabPane.find("#debug_logging_clear_button").show();
+    var readLog = function(tabPane, instGuid, cloudEnv){
+      self.model.log.read(function(res){
+        tabPane.find('.debug_logging_text').html("====> fhlog START <====\n" + res.log.fhlog + "====> fhlog END <====");
+      }, function(err){
+        tabPane.find('.debug_logging_text').html("Failed to load log messages.");
+      }, instGuid, cloudEnv);
+    }
+    readLog(tabPane, instGuid, cloudEnv);
+    tabPane.find('#debug_logging_refresh_button').unbind().bind("click", function(){
+      readLog(tabPane, instGuid, cloudEnv);
+    });
+    tabPane.find('#debug_logging_clear_button').unbind().bind("click", function(){
+      var url = Constants.LOGS_URL;
+      var params = {
+        "guid": instGuid,
+        "action": "delete"
+      };
+      
+      $fw.server.post(url, params, function (res) {
+        if ('ok' === res.status) {
+          tabPane.find('.debug_logging_text').html('');
+        }
+        else {
+          $fw.client.dialog.error("Error clearing logs: " + res.error);
+        }
+      }, function (error) {
+        $fw.client.dialog.error($fw.client.lang.getLangString('clear_log_error'));
+      }, true);
+    });
+  }
 });

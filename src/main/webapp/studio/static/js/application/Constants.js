@@ -122,6 +122,8 @@ $.extend(Constants, {
 
   //debug/logging urls
   LOGS_URL: Constants.IDE_URL_PREFIX + "app/logs",
+  LOGSCHUNK_URL: Constants.IDE_URL_PREFIX + "app/logchunk",
+  LOGSTREAM_URL: Constants.IDE_URL_PREFIX + "app/logstream",
   // DEPRECATED - DO NOT USE
   // use LOGS_URL instead
   READ_SCRIPT_LOG_URL: Constants.____DEPRECATED____DEV_URL_PREFIX____DEPRECATED____ + "editor/logging/list",

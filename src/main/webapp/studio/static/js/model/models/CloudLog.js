@@ -47,5 +47,29 @@ model.CloudLog = model.Model.extend({
     var url = Constants.LOGS_URL;
     var params = {guid: appGuid, deploytarget:deployTarget, action: 'delete', logname: logName};
     return this.serverPost(url, params, success, fail, true);
-  }
+  },
+
+  "chunk": function(lastLines, offset, success, fail, appGuid, deployTarget, logName){
+    var url = Constants.LOGSCHUNK_URL;
+    var params = {guid: appGuid, deploytarget: deployTarget, action:'logchunk'};
+    if(lastLines > 0){
+      params.last = lastLines;
+    }
+    if(offset >= 0){
+      params.offset = offset;
+    }
+    if(logName){
+      params.logname = logName;
+    }
+    return this.serverPost(url, params, success, fail, true);
+  },
+
+  "stream": function(success, fail, appGuid, deployTarget, logName){
+    var url = Constants.LOGSTREAM_URL;
+    var params = {guid: appGuid, deploytarget: deployTarget, action:'logstream'};
+    if(logName){
+      params.logname = logName;
+    }
+    return this.serverPost(url, params, success, fail, true);
+  }  
 });

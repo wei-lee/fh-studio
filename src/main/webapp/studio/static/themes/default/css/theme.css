@@ -1088,17 +1088,38 @@ span.label-info {
 }
 
 /* Debugging */
-#debug_logging_text
+#debug_logging_text,.debug_logging_text
 {
-  min-height:450px;
+  overflow: auto;
+  height: 500px !important;
 }
 
 /* Debugging Log Tables */
 #debug_logging_list {
   margin-bottom: 20px;
-  margin-top: -25px;
+  display: none;
 }
 
+#debug_logging_list_table_wrapper {
+  margin-top: -20px;
+}
+
+#debug_logging_tabs > li > a {
+  display: inline-block;
+  height: 21px;
+}
+
+#debug_logging_tabs {
+  margin-bottom: 0px;
+}
+
+.stream_opts {
+  margin-right: 8px;
+}
+
+.debug_logging_text {
+  margin-bottom: 8px
+}
 /* Destination Resources */
 .resource-div
 {
