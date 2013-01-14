@@ -222,14 +222,14 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
       icon.click(function(e){
         e.preventDefault();
         e.stopPropagation();
-        var next = li.next() 
-        if(next.length == 0){
+        var next = li.next(); 
+        if(next.length === 0){
           next = li.prev();
         }
         li.remove();
         tabPane.remove();
         next.find("a").trigger("click");
-      })
+      });
     }
     $('#debug_logging_tabs').append(li);
     var tabPane = $('.tab-pane-template').find('.tab-pane').clone();
@@ -305,7 +305,7 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
   checkLineNumbers: function(lines){
     var isValidNumber = true;
     try{
-      lines = parseInt(lines);
+      lines = parseInt(lines, 10);
     }catch(e){
       isValidNumber = false;
       self.showAlert('error', "Please enter an integer for the number of lines");
@@ -413,7 +413,7 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
       }, function(err){
         tabPane.find('.debug_logging_text').html("Failed to load log messages.");
       }, instGuid, cloudEnv);
-    }
+    };
     readLog(tabPane, instGuid, cloudEnv);
     tabPane.find('#debug_logging_refresh_button').unbind().bind("click", function(){
       readLog(tabPane, instGuid, cloudEnv);
