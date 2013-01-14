@@ -22,6 +22,7 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
     self.activeStdoutLog = null;
     self.activeStderrLog = null;
     self.streamRecords = {};
+    self.LOG_INTERVAL = 2000;
   },
   
   /*
@@ -47,6 +48,7 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
     $('#log_loading').show();
     $('#debug_logging_list').hide();
     $('#log_contents_form').addClass('hidden');
+    self.streamRecords = {};
     if ($fw.client.tab.apps.manageapps.isNodeJsApp()){
       this.pingCloud(this.currentEnv(), function(res){
         self.showLogging();
@@ -57,7 +59,7 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
       });
     } else {
       self.showLogging();
-      self.loadLog("Log.txt", true, false, false, null, true);
+      self.loadLog("Log.txt", "Log.txt", true, false, false, null, true);
     }
     $(this.container).show();
   },
@@ -71,8 +73,8 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
       this.model.log.list(function(res){
         $(self.container).find('#debug_logging_list').show();
         if(is_running && res.aaData.length > 0){
-          self.activeStderrLog = res.aaData[0];
-          self.activeStdoutLog = res.aaData[1];
+          self.activeStderrLog = res.aaData[0][0].indexOf("stdout") === -1 ? res.aaData[0]: res.aaData[1];
+          self.activeStdoutLog = res.aaData[1][0].indexOf("stderr") === -1 ? res.aaData[1]: res.aaData[0];
           //remove the current active logs
           res.aaData = res.aaData.slice(2);
         }
@@ -81,8 +83,8 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
       }, function(error){
         console.log("Failed to get log list. Error: " + error);
         $('#log_contents_form').removeClass("hidden");
-        self.loadLog("Stdout.log", true, true, false, "Error loading Cloud App Stdout Logs. Is your App Staged for this environment?");
-        self.loadLog("Stderr.log", false, true, false, "Error loading Cloud App Stderr Logs. Is your App Staged for this environment?");
+        self.loadLog("Stdout.log", "Stdout.log", true, true, false, "Error loading Cloud App Stdout Logs. Is your App Staged for this environment?");
+        self.loadLog("Stderr.log", "Stderr.log", false, true, false, "Error loading Cloud App Stderr Logs. Is your App Staged for this environment?");
       }, true, instGuid, cloudEnv);
     } else {
       $(this.container).find('#debug_logging_list').hide();
@@ -150,12 +152,12 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
     $('#debug_logging_list').show();
 
     if(is_running){
-      self.loadLog(self.activeStdoutLog[0], true, true);
-      self.loadLog(self.activeStderrLog[0], false, true);
+      self.loadLog("Stdout.log", self.activeStdoutLog[0], true, true);
+      self.loadLog("Stderr.log", self.activeStderrLog[0], false, true);
     } else {
       $('#log_contents_form').removeClass("hidden");
-      self.loadLog("Stdout.log", true, true, false, "App is not running, no live logs available.");
-      self.loadLog("Stderr.log", false, true, false, "App is not running, no live logs available.");
+      self.loadLog("Stdout.log", "Stdout.log", true, true, false, "App is not running, no live logs available.");
+      self.loadLog("Stderr.log", "Stderr.log", false, true, false, "App is not running, no live logs available.");
     }
     
   },
@@ -164,7 +166,7 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
     var self = this;
     self.renderDate(nRow, aData);
     $(nRow).find('td:not(.controls, .dataTables_empty)').css('cursor', 'pointer').unbind().bind('click', function(){
-      self.loadLog(aData[0], true, false, true);
+      self.loadLog(aData[0], aData[0], true, false, true);
       $('.dataTable:visible tr.info').removeClass('info').addClass($(this).data('oriCls'));
       var rowCls = $(nRow).attr('class');
       $(nRow).data('orCls', rowCls).removeClass(rowCls).addClass('info');
@@ -208,14 +210,14 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
     $('#debug_logging_contents').empty();
   },
 
-  loadLog: function(logfile, active, streamable, removable, error, legacy_mode){
+  loadLog: function(tabname, logfile, active, streamable, removable, error, legacy_mode){
     console.log(logfile);
     var self = this;
     var validname = logfile.replace(/\./g, "_");
     var instGuid = $fw.data.get('inst').guid;
     var cloudEnv = $fw.data.get('cloud_environment');
     var li = $('<li>', {id: validname + "_tab"});
-    li.append($('<a>', {href: '#' + validname + "_pane", text: logfile}));
+    li.append($('<a>', {href: '#' + validname + "_pane", text: tabname}));
     if(removable){
       var icon = $('<i>', {"class":'icon-remove'});
       li.find('a').append(icon);
@@ -345,10 +347,14 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
           tabPane.find('.debug_logging_text').find('.log_loading_spinner').before("\n" + offsetLogs);
           self.scrollToBottom(tabPane);
         }
+        //make sure logs is currently used
+        if($("#debug_logging_container").css("display") !== "block"){
+          self.streamRecords ={};
+        }
         if(self.streamRecords[logfile]){
           setTimeout(function(){
             self.loadLogOffset(instGuid, cloudEnv, logfile, offset, tabPane);
-          }, 1000);
+          }, self.LOG_INTERVAL);
         }
       }
     }, function(err){
