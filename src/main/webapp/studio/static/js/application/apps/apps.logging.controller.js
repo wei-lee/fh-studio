@@ -23,6 +23,7 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
     self.activeStderrLog = null;
     self.streamRecords = {};
     self.LOG_INTERVAL = 2000;
+    self.openedFiles = {};
   },
   
   /*
@@ -49,6 +50,7 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
     $('#debug_logging_list').hide();
     $('#log_contents_form').addClass('hidden');
     self.streamRecords = {};
+    self.openedFiles = {};
     if ($fw.client.tab.apps.manageapps.isNodeJsApp()){
       this.pingCloud(this.currentEnv(), function(res){
         self.showLogging();
@@ -216,7 +218,12 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
     var validname = logfile.replace(/\./g, "_");
     var instGuid = $fw.data.get('inst').guid;
     var cloudEnv = $fw.data.get('cloud_environment');
-    var li = $('<li>', {id: validname + "_tab"});
+    if(self.openedFiles[validname]){
+      return $(self.openedFiles[validname]).find("a").trigger("click");
+    }
+    var tab_id = validname + "_tab";
+    var li = $('<li>', {id: tab_id});
+    self.openedFiles[validname] = "#" + tab_id;
     li.append($('<a>', {href: '#' + validname + "_pane", text: tabname}));
     if(removable){
       var icon = $('<i>', {"class":'icon-remove'});
