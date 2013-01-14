@@ -173,10 +173,14 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
       var rowCls = $(nRow).attr('class');
       $(nRow).data('orCls', rowCls).removeClass(rowCls).addClass('info');
     });
-    $('.delete_log', nRow).unbind().bind('click', function(){
+    $(nRow).find('td.controls').unbind().bind('click', function(e){
+      console.log(e.target);
+    });
+    $(nRow).find('btn.delete_log').unbind().bind('click', function(){
       self.deleteLog(nRow, aData);
     });
-    $('.download_log', nRow).unbind().bind('click', function(){
+    $(nRow).find('btn.download_log').unbind().bind('click', function(){
+      alert("Download Log");
       self.downloadLog(nRow, aData);
     });
   },
@@ -301,7 +305,7 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
     this.model.log.chunk(lines, -1, function(res){
       $('#log_contents_form').removeClass("hidden");
       if(res.status === "ok"){
-        tabPane.find('.debug_logging_text').html('').html(res.msg.data.join("\n").replace(/\\n/g, "\n"));
+        tabPane.find('.debug_logging_text').html('').html(res.msg.data.join("<p>").replace(/\\n/g, "\n"));
         self.scrollToBottom(tabPane);
       } else {
         tabPane.find('.debug_logging_text').html('Error loading Cloud App Logs. Is your App Staged for this environment?');
@@ -331,7 +335,7 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
     self.streamRecords[logfile] = true;
     self.model.log.chunk(lastLines, -1, function(res){
       if(res.status === "ok"){
-        tabPane.find('.debug_logging_text').html(res.msg.data.join("\n").replace(/\\n/g, "\n"));
+        tabPane.find('.debug_logging_text').html(res.msg.data.join("<p>").replace(/\\n/g, "\n"));
         var spinner = $('.hidden_template.loading_icon', ".tab-pane-template").find('img').clone();
         spinner.addClass('log_loading_spinner').css('display', 'block');
         tabPane.find('.debug_logging_text').append(spinner);
