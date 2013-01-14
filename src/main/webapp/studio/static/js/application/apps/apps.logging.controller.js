@@ -173,10 +173,10 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
       var rowCls = $(nRow).attr('class');
       $(nRow).data('orCls', rowCls).removeClass(rowCls).addClass('info');
     });
-    $('btn.delete_log', nRow).unbind().bind('click', function(){
+    $('.delete_log', nRow).unbind().bind('click', function(){
       self.deleteLog(nRow, aData);
     });
-    $('btn.download_log', nRow).unbind().bind('click', function(){
+    $('.download_log', nRow).unbind().bind('click', function(){
       self.downloadLog(nRow, aData);
     });
   },
