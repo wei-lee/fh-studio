@@ -152,7 +152,7 @@ Apps.Cloud.Dashboard.Controller = Apps.Cloud.Controller.extend({
     var container = $('.current_cloud_app_controls_container', this.container);
     var startButton = $('<button>').addClass('btn btn-success disabled start_btn').html("<i class='icon-play'></i> Start App");
     var stopButton = $('<button>').addClass('btn btn-danger disabled stop_btn').css('margin-left', '10px').html("<i class='icon-stop'></i> Stop App");
-    var restartButton = $('<button>').addClass('btn btn-info disabled restart_btn').css('margin-left', '10px').html("<i class='icon-repeat'></i> Restart App")
+    var restartButton = $('<button>').addClass('btn btn-info disabled restart_btn').css('margin-left', '10px').html("<i class='icon-repeat'></i> Restart App");
     container.empty().append(startButton).append(stopButton).append(restartButton);
     startButton.click(function(e){
       e.preventDefault();
@@ -167,7 +167,7 @@ Apps.Cloud.Dashboard.Controller = Apps.Cloud.Controller.extend({
       self.appControl('stop', function(){
         self.appControl('start');
       });
-    })
+    });
   },
 
   appControl: function(action, successCb){
