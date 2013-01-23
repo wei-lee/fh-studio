@@ -1100,7 +1100,7 @@ span.label-info {
   display: none;
 }
 
-#debug_logging_list_table_wrapper {
+#debug_logging_list_table_wrapper, #cloudplugins_list_table_wrapper {
   margin-top: -20px;
 }
 
