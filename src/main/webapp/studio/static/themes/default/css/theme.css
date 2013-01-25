@@ -1120,6 +1120,55 @@ span.label-info {
 .debug_logging_text {
   margin-bottom: 8px
 }
+
+/* Cloud plugins */
+#pluginsModal .modal-header {
+  border-bottom: 0px;
+  padding-bottom: 0px;
+}
+
+#pluginTabContent .span4 p:first-of-type {
+  height: 60px;
+  overflow: scroll; /* TODO: Is this a good idea? Should I just trim the descriptions? */
+}
+
+#pluginTabContent .span4 img, #pluginTabContent .span4 h2  {
+  height: 125px;
+  line-height: 125px;
+}
+
+#pluginTabContent .plugin{
+  border: 3px solid #eee;
+  padding: 8px;
+  border-radius: 16px;
+}
+
+#pluginTabContent .plugin p {
+  padding: 0px 8px;
+}
+
+#pluginTabContent .plugin hr {
+    margin: 4px 0px 2px 0px;
+}
+
+#plugins-code pre strong {
+    color: red;
+    font-weight: bold;
+}
+
+#pluginsModal .modal-body {
+    padding-top: 2px;
+}
+
+#pluginsModal .close {
+    float: right;
+    padding: 8px;
+}
+
+#pluginsModal ul {
+    padding: 3px 22px 0px 22px;
+}
+
 /* Destination Resources */
 .resource-div
 {
