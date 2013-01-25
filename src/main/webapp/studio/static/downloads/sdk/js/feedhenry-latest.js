@@ -1027,6 +1027,7 @@ if (!JSON) {
   };
 
   $fh.init = function(opts, success, fail) {
+    alert('hello!')
     if($fh.cloud_props){
       return success($fh.cloud_props);
     } 
