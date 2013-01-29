@@ -6,120 +6,125 @@ Apps.Cloudnotifications.Controller = Apps.Cloud.Controller.extend({
   alert_timeout: 3000,
 
   models: {
-    notification_email: new model.CloudNotifications()
+    notification_event: new model.CloudNotifications()
   },
 
   views: {
-    cloudnotifications_container: "#cloudnotifications_container"
+    cloudnotifications_container: "#cloudnotifications_container",
+    load_spinner: '#notifications_loading',
+    notification_table_container: '#notification_container'
   },
 
   init: function() {
     this._super();
-    this.initFn = _.once(this.initBindings);
   },
 
   show: function() {
     this._super(this.views.cloudnotifications_container);
-
-    this.initFn();
-    this.showResources();
-    $(this.container).show();
-
-    if ($fw.getClientProp("demo-ui-enabled") === "true") {
-      this.showSample();
-    }
+    $(this.views.cloudnotifications_container).show();
+    $(this.views.load_spinner).show();
+    $(this.views.notification_table_container).hide();
+    this.loadNotifications();
   },
 
-  showSample: function() {
-    function randomTS() {
-      return moment().subtract('minutes', Math.floor(Math.random() * 10 + 1)).format('MMMM Do YYYY, h:mm:ss a');
-    }
+  loadNotifications: function(){
+    var instGuid = $fw.data.get('inst').guid;
+    var self = this;
+    this.models.notification_event.list(instGuid, function(res){
+      $(self.views.load_spinner).hide();
+      $(self.views.notification_table_container).show();
+      self.showNotifications(res);
+    }, function(err){
+      $(self.views.load_spinner).hide();
+      self.showAlert('error', 'Failed to load notification events. Error: ' + err);
+    });
+  },
 
-    $('table.sample_ui', this.container).dataTable({
+  showNotifications: function(res) {
+    var self = this;
+    self.addControls(res);
+    self.notification_table = $('table.table', this.container).dataTable({
       "bDestroy": true,
+      "aaSorting": [[0, 'desc']],
       "bAutoWidth": false,
+      "sPaginationType":'bootstrap',
       "sDom": "<'row-fluid'<'span12'>r>t<'row-fluid'<'span6'i><'span6'p>>",
-      "bPaginate": false,
-      "bLengthChange": false,
+      "bLengthChange": true,
+      "iDisplayLength": 20,
       "bInfo": false,
-      "aaData": [
-        [randomTS(), '<span class="label label-warning">Restarted</span>', "App Cloud successfully restarted on FeedHenry"],
-        [randomTS(), '<span class="label label-important">Stopped</span>', "App Cloud stopped on FeedHenry"],
-        [randomTS(), '<span class="label label-success">Deployed</span>', "App Cloud successfully deployed to FeedHenry."],
-        [randomTS(), '<span class="label label-warning">Restarted</span>', "App Cloud successfully restarted on FeedHenry"],
-        [randomTS(), '<span class="label label-success">Deployed</span>', "App Cloud successfully deployed to FeedHenry."],
-        [randomTS(), '<span class="label label-warning">Restarted</span>', "App Cloud successfully restarted on FeedHenry"],
-        [randomTS(), '<span class="label label-important">Stopped</span>', "App Cloud stopped on FeedHenry"],
-        [randomTS(), '<span class="label label-success">Deployed</span>', "App Cloud successfully deployed to FeedHenry."],
-        [randomTS(), '<span class="label label-info">Stopped</span>', "App Cloud was halted after exhausting resources"],
-        [randomTS(), '<span class="label label-warning">Restarted</span>', "App Cloud successfully restarted on FeedHenry"],
-        [randomTS(), '<span class="label label-important">Stopped</span>', "App Cloud stopped on FeedHenry"],
-        [randomTS(), '<span class="label label-success">Deployed</span>', "App Cloud successfully deployed to FeedHenry."],
-        [randomTS(), '<span class="label label-info">Stopped</span>', "App Cloud was halted after exhausting resources"],
-        [randomTS(), '<span class="label label-warning">Restarted</span>', "App Cloud successfully restarted on FeedHenry"],
-        [randomTS(), '<span class="label label-important">Stopped</span>', "App Cloud stopped on FeedHenry"],
-        [randomTS(), '<span class="label label-success">Deployed</span>', "App Cloud successfully deployed to FeedHenry."],
-        [randomTS(), '<span class="label label-warning">Restarted</span>', "App Cloud successfully restarted on FeedHenry"],
-        [randomTS(), '<span class="label label-important">Stopped</span>', "App Cloud stopped on FeedHenry"]
-      ],
-      "aoColumns": [{
-        "sTitle": "Timestamp",
-        "sWidth": "200px"
-      }, {
-        "sTitle": "Notification Type",
-        "sWidth": "100px"
-      }, {
-        "sTitle": "Details"
-      }]
+      "aaData": res.aaData,
+      "aoColumns": res.aoColumns,
+      "fnRowCallback": function(nRow, aData, iDisplayIndex) {
+        self.rowRender(nRow, aData, iDisplayIndex);
+      }
     }).removeClass('hidden');
-  },
 
-  //TODO move this to apps.controller
-  // type: error|success|info
-  showAlert: function(type, message) {
-    var self = this;
-    var alerts_area = $(this.container).find('.alerts');
-    var alert = $('<div>').addClass('alert fade in alert-' + type).html(message);
-    var close_button = $('<button>').addClass('close').attr("data-dismiss", "alert").text("x");
-    alert.append(close_button);
-    alerts_area.append(alert);
-    // only automatically hide alert if it's not an error
-    if ('error' !== type) {
-      setTimeout(function() {
-        alert.slideUp(function() {
-          alert.remove();
-        });
-      }, self.alert_timeout);
+    if (res.aaData.length === 0) {
+      // Adjust colspan based on visible columns for new colspan
+      var visible_columns = $('.dataTable:visible th:visible').length;
+      var no_data_td = $('.dataTable:visible tbody td');
+      no_data_td.attr('colspan', visible_columns);
+      no_data_td.text('No notifications found.');
     }
   },
 
-  initBindings: function() {
+  addControls: function(res) {
+
+    // Add control column
+    res.aoColumns.push({
+      sTitle: "Controls",
+      "bSortable": false,
+      "sClass": "controls",
+      "sWidth": "62px"
+    });
+
+    $.each(res.aaData, function(i, row) {
+      var controls = [];
+      var button = '<button class="btn btn-danger delete-btn">Delete</button>';
+      controls.push(button);
+      row.push(controls.join(""));
+
+    });
+    return res;
+  },
+
+
+  rowRender: function(row, data, index){
     var self = this;
-
-    var jqContainer = $(this.container);
-    $fw.client.lang.insertLangFromData(jqContainer);
-
-    $('.cloud_notification_update_button', jqContainer).bind('click', function(e) {
-      e.preventDefault();
-      var jqContainer = $(self.container);
-      var email = $('#notification_email', jqContainer).val();
-      var guid = $fw.data.get('inst').guid;
-      console.log("setting email id: " + guid + ", email: " + email);
-      self.models.notification_email.setEmail(guid, email, function(res) {
-        console.log("success");
-        self.showAlert("success", "Successfully updated notification email address");
-      }, function(err) {
-        console.log("failed to set email");
-        self.showAlert("error", "Error updating notification email address");
+    var d = moment(data[0], 'YYYY-MM-DD h:mm:ss:SSS').fromNow();
+    $('td:eq(0)', row).html(d);
+    var notification = data[1];
+    var message = data[2];
+    if(message.toLowerCase().indexOf("fail") > -1){
+      $('td:eq(2)', row).attr('style', 'background-color: #f2dede !important').text(message);
+    } else {
+      $('td:eq(2)', row).attr('style', 'background-color: #dff0d8 !important').text(message);
+    }
+    var nh = "<span class='label label-"+ self.getLabelClass(notification) +"'>" + js_util.capitaliseWords(notification) + "</span>";
+    $('td:eq(1)', row).html(nh);
+    var instGuid = $fw.data.get('inst').guid;
+    $(row).find('.delete-btn').unbind().bind('click', function(){
+      self.models.notification_event.remove(instGuid, data[3], function(res){
+        self.showAlert('success', 'Notification message deleted.');
+        self.notification_table.fnDeleteRow(row);
+      }, function(err){
+        self.showAlert('error', 'Failed to delete notification. Error: ' + err);
       });
     });
   },
 
-  showResources: function(cb) {
-    var self = this;
-    var cfg = $fw.data.get('inst').config;
-    var email = cfg.notification_email;
-
-    $('#notification_email', $(this.container)).val(email);
+  getLabelClass: function(notificationType){
+    if(notificationType.indexOf("create") > -1){
+      return "info";
+    }else if(notificationType.indexOf("stage") > -1){
+      return "info";
+    } else if(notificationType.indexOf("start") > -1) {
+      return "success";
+    } else if(notificationType.indexOf("stop") > -1) {
+      return "warning";
+    } else if(notificationType.indexOf("delete") > -1) {
+      return "important";
+    }
   }
+
 });
