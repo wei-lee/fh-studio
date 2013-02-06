@@ -14,6 +14,9 @@ application.DestinationEmbed = application.DestinationGeneral.extend({
     if($fw.getClientProp('nodejsEnabled') === "true"){
       $.get(this.base_url + "?checktype=true", function(res){
         if(res.result){
+          if(that.base_url.indexOf("?node=true") === -1){
+            that.base_url = that.base_url + "?node=true";
+          }
           var main_container = $('#manage_publish_container');
           main_container.find(".dashboard-content").hide();
           if(res.dev_error){
