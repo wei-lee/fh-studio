@@ -80,7 +80,7 @@ Apps.Cloudnotifications.Controller = Apps.Cloud.Controller.extend({
 
     $.each(res.aaData, function(i, row) {
       var controls = [];
-      var button = '<button class="btn btn-danger delete-btn">Delete</button>';
+      var button = '<button class="btn btn-danger delete-btn">Dismiss</button>';
       controls.push(button);
       row.push(controls.join(""));
 
@@ -104,8 +104,8 @@ Apps.Cloudnotifications.Controller = Apps.Cloud.Controller.extend({
     $('td:eq(1)', row).html(nh);
     var instGuid = $fw.data.get('inst').guid;
     $(row).find('.delete-btn').unbind().bind('click', function(){
-      self.models.notification_event.remove(instGuid, data[3], function(res){
-        self.showAlert('success', 'Notification message deleted.');
+      self.models.notification_event.dismiss(instGuid, data[3], function(res){
+        self.showAlert('success', 'Notification message dismissed.');
         self.notification_table.fnDeleteRow(row);
       }, function(err){
         self.showAlert('error', 'Failed to delete notification. Error: ' + err);

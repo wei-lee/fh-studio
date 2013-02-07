@@ -25,9 +25,12 @@ model.CloudNotifications = model.Model.extend({
     }
   ],
 
-  list: function(appId, success, fail){
+  list: function(appId, success, fail, audit){
     var url = Constants.CLOUD_NOTIFICATIONS_LIST_URL;
     var params = {appGuid: appId, eventGroup:'NOTIFICATION'};
+    if(audit){
+      params.audit = true;
+    }
     var self = this;
     this.serverPost(url, params, success, fail, true, function(res, model){
       for(var i=0;i<res.list.length;i++){
@@ -37,8 +40,8 @@ model.CloudNotifications = model.Model.extend({
     }, this);
   },
 
-  remove: function(appId, notiId, success, fail){
-    var url = Constants.CLOUD_NOTIFICATIONS_REMOVE_URL;
+  dismiss: function(appId, notiId, success, fail){
+    var url = Constants.CLOUD_NOTIFICATIONS_DISMISS_URL;
     var params = {appGuid: appId, eventGuids:[notiId]};
     this.serverPost(url, params, success, fail, true);
   }
