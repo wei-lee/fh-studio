@@ -6775,11 +6775,11 @@ $fh.sync = (function() {
     init: self.init,
     manage: self.manage,
     notify: self.notify,
-    list: self.list,
-    create: self.create,
-    read: self.read,
-    update: self.update,
-    'delete': self['delete'],
+    doList: self.list,
+    doCreate: self.create,
+    doRead: self.read,
+    doUpdate: self.update,
+    doDelete: self['delete'],
     listCollisions: self.listCollisions,
     removeCollision: self.removeCollision
   };
