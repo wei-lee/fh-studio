@@ -11,6 +11,11 @@ model.CloudNotifications = model.Model.extend({
       width: 120
     },
     {
+      field_name: 'updatedBy',
+      column_title:'Updated By',
+      width: 160
+    },
+    {
       field_name:'eventType',
       column_title: 'Notification Type',
       width: 100
@@ -22,12 +27,22 @@ model.CloudNotifications = model.Model.extend({
     {
       field_name:'guid',
       visible: false
+    },
+    {
+      field_name:'dismissed',
+      visible: false
     }
   ],
 
-  list: function(appId, success, fail, audit){
+  list: function(appId, success, fail, audit, eventType, user){
     var url = Constants.CLOUD_NOTIFICATIONS_LIST_URL;
     var params = {appGuid: appId, eventGroup:'NOTIFICATION'};
+    if(eventType !== 'all'){
+      params.eventType = eventType;
+    }
+    if(user !== 'all'){
+      params.updatedBy = user;
+    }
     if(audit){
       params.audit = true;
     }

@@ -5,6 +5,15 @@ Apps.Cloudnotifications = Apps.Cloudnotifications || {};
 Apps.Cloudnotifications.Controller = Apps.Cloud.Controller.extend({
   alert_timeout: 3000,
 
+  indexes: {
+    when: 0,
+    updatedBy: 1,
+    eventType: 2,
+    message: 3,
+    guid: 4,
+    dissmissed: 5
+  },
+
   models: {
     notification_event: new model.CloudNotifications()
   },
@@ -30,42 +39,118 @@ Apps.Cloudnotifications.Controller = Apps.Cloud.Controller.extend({
   loadNotifications: function(){
     var instGuid = $fw.data.get('inst').guid;
     var self = this;
-    this.models.notification_event.list(instGuid, function(res){
+    self.models.notification_event.list(instGuid, function(res){
       $(self.views.load_spinner).hide();
       $(self.views.notification_table_container).show();
-      self.showNotifications(res);
+      self.renderFilters(res);
+      var notifications = {};
+      notifications.aoColumns =  [];
+      for(var k=0;k<res.aoColumns.length;k++){
+        notifications.aoColumns.push(_.clone(res.aoColumns[k]))
+      }
+      var data = [];
+      for(var i=0;i<res.aaData.length;i++){
+        if(res.aaData[i][self.indexes.dissmissed] === false){
+          data.push(_.clone(res.aaData[i]));
+        }
+      }
+      notifications.aaData = data;
+      self.showNotifications(notifications);
+      self.showAuditLog(res);
     }, function(err){
       $(self.views.load_spinner).hide();
       self.showAlert('error', 'Failed to load notification events. Error: ' + err);
+    }, true);
+  },
+
+  getFilterOptions: function(data, index){
+    var fields = [];
+    for(var i=0;i<data.length;i++){
+      var entry = data[i];
+      var val = entry[index];
+      if(fields.indexOf(val) === -1){
+        fields.push(val);
+      }
+    }
+    return fields;
+  },
+
+  getOptionTemplate: function(val, capitalise){
+    return "<option value='"+val+"'>" + (capitalise? js_util.capitaliseWords(val):val) + "</option>";
+  },
+
+  renderFilters: function(res){
+    var self = this;
+    var typeFilterField = $('#cloudNotificationsAuditLogTypeFilter', this.conatiner);
+    var userFilterField = $('#cloudNotificationsAuditLogUserFilter', this.conatiner);
+    typeFilterField.find('option:not(:first)').remove();
+    userFilterField.find('option:not(:first)').remove();
+    var typeFilters = this.getFilterOptions(res.aaData, this.indexes.eventType);
+    for(var i=0;i<typeFilters.length;i++){
+      typeFilterField.append(self.getOptionTemplate(typeFilters[i], true));
+    }
+    var userFilters = this.getFilterOptions(res.aaData, this.indexes.updatedBy);
+    for(var k=0;k<userFilters.length;k++){
+      userFilterField.append(self.getOptionTemplate(userFilters[k], false));
+    }
+    var instGuid = $fw.data.get('inst').guid;
+    var self = this;
+    $('#cloud_notifications_audit_log_filter').unbind('click').click(function(e){
+      e.preventDefault();
+      var typefilter = typeFilterField.val();
+      var userfilter = userFilterField.val();
+      self.models.notification_event.list(instGuid, function(res){
+        self.showAuditLog(res);
+      }, function(err){
+        self.showAlert('error', 'Failed to load notification events audit log. Error: ' + err);
+      }, true, typefilter, userfilter);
+    });
+    $('#cloud_notifications_audit_log_reset').unbind('click').click(function(e){
+      e.preventDefault();
+      typeFilterField.val('all');
+      userFilterField.val('all');
     });
   },
 
   showNotifications: function(res) {
     var self = this;
     self.addControls(res);
-    self.notification_table = $('table.table', this.container).dataTable({
+    self.notification_table = self.createTable('cloud_notification_events_table', res);
+  },
+
+  showAuditLog: function(res) {
+    var self = this;
+    self.notification_auditlog_table = self.createTable('cloud_notification_audit_log_table', res);
+  },
+
+  createTable: function(table_id, data){
+    var self = this;
+    var table = $('#' + table_id, this.conatiner).dataTable({
       "bDestroy": true,
-      "aaSorting": [[0, 'desc']],
+      "aaSorting": [[self.indexes.when, 'desc']],
       "bAutoWidth": false,
       "sPaginationType":'bootstrap',
       "sDom": "<'row-fluid'<'span12'>r>t<'row-fluid'<'span6'i><'span6'p>>",
       "bLengthChange": true,
       "iDisplayLength": 20,
       "bInfo": false,
-      "aaData": res.aaData,
-      "aoColumns": res.aoColumns,
+      "aaData": data.aaData,
+      "aoColumns": data.aoColumns,
       "fnRowCallback": function(nRow, aData, iDisplayIndex) {
         self.rowRender(nRow, aData, iDisplayIndex);
       }
     }).removeClass('hidden');
 
-    if (res.aaData.length === 0) {
+    if (data.aaData.length === 0) {
       // Adjust colspan based on visible columns for new colspan
       var visible_columns = $('.dataTable:visible th:visible').length;
       var no_data_td = $('.dataTable:visible tbody td');
       no_data_td.attr('colspan', visible_columns);
       no_data_td.text('No notifications found.');
     }
+
+    return table;
+
   },
 
   addControls: function(res) {
@@ -91,24 +176,24 @@ Apps.Cloudnotifications.Controller = Apps.Cloud.Controller.extend({
 
   rowRender: function(row, data, index){
     var self = this;
-    var d = moment(data[0], 'YYYY-MM-DD h:mm:ss:SSS').fromNow();
+    var d = moment(data[self.indexes.when], 'YYYY-MM-DD h:mm:ss:SSS').fromNow();
     $('td:eq(0)', row).html(d);
-    var notification = data[1];
-    var message = data[2];
+    var notification = data[self.indexes.eventType];
+    var message = data[self.indexes.message];
     if(message.toLowerCase().indexOf("fail") > -1){
-      $('td:eq(2)', row).attr('style', 'background-color: #f2dede !important').text(message);
+      $('td:eq('+self.indexes.message+')', row).attr('style', 'background-color: #f2dede !important').text(message);
     } else {
-      $('td:eq(2)', row).attr('style', 'background-color: #dff0d8 !important').text(message);
+      $('td:eq('+self.indexes.message+')', row).attr('style', 'background-color: #dff0d8 !important').text(message);
     }
     var nh = "<span class='label label-"+ self.getLabelClass(notification) +"'>" + js_util.capitaliseWords(notification) + "</span>";
-    $('td:eq(1)', row).html(nh);
+    $('td:eq('+self.indexes.eventType+')', row).html(nh);
     var instGuid = $fw.data.get('inst').guid;
     $(row).find('.delete-btn').unbind().bind('click', function(){
-      self.models.notification_event.dismiss(instGuid, data[3], function(res){
+      self.models.notification_event.dismiss(instGuid, data[self.indexes.guid], function(res){
         self.showAlert('success', 'Notification message dismissed.');
         self.notification_table.fnDeleteRow(row);
       }, function(err){
-        self.showAlert('error', 'Failed to delete notification. Error: ' + err);
+        self.showAlert('error', 'Failed to dismiss notification. Error: ' + err);
       });
     });
   },

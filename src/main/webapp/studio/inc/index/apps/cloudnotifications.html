@@ -6,15 +6,56 @@
     <div class="fh-box-inner">
       <!-- div data-lang="cloudnotifications_description"></div -->
       <div class="alerts"></div>
-      <div id="notifications_loading" class="loading_icon" style="display:block">
-        <img src="<%=studio.getStaticAssetPath("themes/default/img/throbber.gif")%>" alt="loading"/> Loading data, please wait...
-      </div>
-      <div id="notification_container" class="row-fluid">
 
-          <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered hidden">
-          </table>
+        <ul class="cloud_notifications_type_nav nav nav-pills" id="cloud_notifications_main_pills">
+            <li class="active">
+                <a href="#cloud_notifications_pill" data-toggle="pill" data-type="cloud_notifications">Cloud Notifications</a>
+            </li>
+            <li>
+                <a href="#cloud_notifications_auditlog_pill" data-toggle="pill" data-type="auditlog">Audit Log</a>
+            </li>
+        </ul>
 
-      </div>
+        <div class="pill-content" id="cloud_notifications_main_outer_div">
+            <div class="pill-pane active" id="cloud_notifications_pill">
+                <div id="notifications_loading" class="loading_icon" style="display:block">
+                    <img src="<%=studio.getStaticAssetPath("themes/default/img/throbber.gif")%>" alt="loading"/> Loading data, please wait...
+                </div>
+                <div id="notification_container" class="row-fluid">
+
+                    <table id="cloud_notification_events_table" cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered hidden">
+                    </table>
+
+                </div>
+            </div>
+
+            <div class="pill-pane" id="cloud_notifications_auditlog_pill">
+                <div class="pill-content well">
+                    <form class="inline">
+                        <select class="selectfixedWidth" name="cloudNotificationsAuditLogTypes" id="cloudNotificationsAuditLogTypeFilter">
+                            <option value="all">All Types</option>
+                        </select>
+
+
+                        <select class="selectfixedWidth" name="cloudNotificationsAuditLogUsers" id="cloudNotificationsAuditLogUserFilter">
+                            <option value="all">All Users</option>
+                        </select>
+                        <button id="cloud_notifications_audit_log_filter" class="appreport-button btn btn-inverse insert-lang">Filter</button>
+                        <button id="cloud_notifications_audit_log_reset" class="appreport-button btn btn-inverse insert-lang">Reset</button>
+                    </form>
+                </div>
+                <div id="notification_audit_log_container" class="row-fluid">
+
+                    <table id="cloud_notification_audit_log_table" cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered hidden">
+                    </table>
+
+                </div>
+            </div>
+        </div>
+
+
+
+
     </div>
   </div>
 </div>
