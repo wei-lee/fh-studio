@@ -46,7 +46,7 @@ Apps.Cloudnotifications.Controller = Apps.Cloud.Controller.extend({
       var notifications = {};
       notifications.aoColumns =  [];
       for(var k=0;k<res.aoColumns.length;k++){
-        notifications.aoColumns.push(_.clone(res.aoColumns[k]))
+        notifications.aoColumns.push(_.clone(res.aoColumns[k]));
       }
       var data = [];
       for(var i=0;i<res.aaData.length;i++){
@@ -94,7 +94,6 @@ Apps.Cloudnotifications.Controller = Apps.Cloud.Controller.extend({
       userFilterField.append(self.getOptionTemplate(userFilters[k], false));
     }
     var instGuid = $fw.data.get('inst').guid;
-    var self = this;
     $('#cloud_notifications_audit_log_filter').unbind('click').click(function(e){
       e.preventDefault();
       var typefilter = typeFilterField.val();
