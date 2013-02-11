@@ -3220,6 +3220,13 @@ a.docslink {
   background-color: #dec5c5 !important;
 }
 
+#cloud_notification_events_table_wrapper .row-fluid .span12, 
+#cloud_notification_audit_log_table_wrapper .row-fluid .span12 {
+  min-height: 0;
+}
+
+
+
 .selectfixedWidth {
   margin-bottom: 0;
 }
