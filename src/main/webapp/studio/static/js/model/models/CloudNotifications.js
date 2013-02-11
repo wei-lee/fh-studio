@@ -6,6 +6,11 @@ model.CloudNotifications = model.Model.extend({
 
   field_config: [
     {
+      field_name:'eventType',
+      column_title: 'Notification Type',
+      width: 100
+    },
+    {
       field_name: 'sysCreated',
       column_title: 'When',
       width: 120
@@ -15,11 +20,7 @@ model.CloudNotifications = model.Model.extend({
       column_title:'Updated By',
       width: 160
     },
-    {
-      field_name:'eventType',
-      column_title: 'Notification Type',
-      width: 100
-    },
+
     {
       field_name:'message',
       column_title: 'Details'
