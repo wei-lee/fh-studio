@@ -1187,7 +1187,8 @@ span.label-info {
 
 /* Preview frame style */
 .preview_buttons {
-  margin-top:-3px;
+  margin-top: -2px;
+  margin-right: -8px;
 }
 #preview_header {
   margin:0 0 1em;
