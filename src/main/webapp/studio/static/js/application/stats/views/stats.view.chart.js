@@ -7,6 +7,7 @@ Stats.View.Chart = Class.extend({
   series: null,
   series_name: null,
   renderTo: null,
+  liveChart: false,
 
   init: function(params) {
     this.controller = params.controller;
@@ -14,7 +15,10 @@ Stats.View.Chart = Class.extend({
     this.series = params.series.all_series;
     this.series_name = params.series.series_name || params.series_name;
     this.formatted_name = params.formatted_name;
-    this.renderTo = '#' + this.series_name + '_list_item .chart_container';
+    this.renderTo = params.renderTo || '#' + this.series_name + '_list_item .chart_container';
+    if(params.live){
+      this.liveChart = true;
+    }
     console.log('Initialising chart view');
   },
 
@@ -119,7 +123,9 @@ Stats.View.Chart = Class.extend({
     chart.view = self;
     chart.model_series = series_data;
 
-    self.addRefreshButton(container.closest('li').find('h3'));
+    if(!self.liveChart){
+      self.addRefreshButton(container.closest('li').find('h3'));
+    }
   },
 
   addRefreshButton: function (container) {

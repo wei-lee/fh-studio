@@ -129,6 +129,7 @@ Stats.Model.Base = Class.extend({
 
   _loadMock: function(callback) {
     this._initMockData();
+    console.log(this._mock);
     this.interval = this._mock.interval;
     this._setInitialData(this._mock.results);
     if (typeof(callback) == 'function') {
@@ -164,6 +165,7 @@ Stats.Model.Base = Class.extend({
     };
 
     $fw.server.post(url, params, function(res) {
+      console.log(res);
       if (res.status === "ok") {
         self.interval = res.interval;
         self._setInitialData(res.results);
