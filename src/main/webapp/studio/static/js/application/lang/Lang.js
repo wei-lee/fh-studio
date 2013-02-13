@@ -713,5 +713,7 @@ var Lang = {
   store_item_view_auditlog_hide : "Hide Audit Log",
 
   "resource_nav_dashboard": "Dashboard",
-  "resource_nav_memory": "Memory"
+  "resource_nav_cpu": "CPU",
+  "resource_nav_memory": "Memory",
+  "resource_nav_storage": "Storage"
 };

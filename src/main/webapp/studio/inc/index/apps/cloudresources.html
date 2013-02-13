@@ -6,17 +6,19 @@
     <div class="fh-box-inner">
 
 <% if(studio.getProperty("live-app-resource-enabled").equals("true")) {%>
-     <ul class="nav nav-tabs">
-       <li><a href="#resource_dashboard_container"  data-toggle="tab" data-lang="resource_nav_dashboard"></a></li>
-       <li><a href="#resource_memory_container" data-toggle="tab" data-lang="resource_nav_memory"></a></li>
+     <ul class="nav nav-pills">
+       <li><a href="#resource_dashboard_container"  data-toggle="pill" data-lang="resource_nav_dashboard" data-type="Dashboard"></a></li>
+       <li><a href="#resource_cpu_container" data-toggle="pill" data-lang="resource_nav_cpu" data-type="CPU"></a></li>
+       <li><a href="#resource_memory_container" data-toggle="pill" data-lang="resource_nav_memory" data-type="Memory"></a></li>
+       <li><a href="#resource_storage_container" data-toggle="pill" data-lang="resource_nav_storage" data-type="Storage"></a></li>
      </ul>
  <%}%>
 
  <% if(studio.getProperty("live-app-resource-enabled").equals("true")) {%>
-     <div class="tab-content">
+     <div class="pill-content">
  <%}%>
 
-         <div class="tab-pane active" id="resource_dashboard_container">
+         <div class="pill-pane active" id="resource_dashboard_container">
              <div class="alerts"></div>
              <div id="resource_current_container" class="row-fluid">
                  <div class="span12">
@@ -50,8 +52,20 @@
          </div>
 
 <% if(studio.getProperty("live-app-resource-enabled").equals("true")) {%>
-         <div class="tab-pane" id="resource_memory_container">
-             <div class="resources_memory_container stats_area">
+         <div class="pill-pane" id="resource_cpu_container">
+             <div class="stats_area row-fluid">
+
+             </div>
+         </div>
+
+         <div class="pill-pane" id="resource_memory_container">
+             <div class="stats_area row-fluid">
+
+             </div>
+         </div>
+
+         <div class="pill-pane" id="resource_storage_container">
+             <div class="stats_area row-fluid">
 
              </div>
          </div>

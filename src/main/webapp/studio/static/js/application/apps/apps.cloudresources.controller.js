@@ -28,7 +28,7 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
     this.initFn();
     $(this.container).show();
     if(this.enabled_live_app_resources){
-      $('a[data-toggle="tab"]:eq(0)', this.conatiner).trigger("click");
+      $('a[data-toggle="pill"]:eq(0)', this.conatiner).trigger("click");
     } else {
       this.renderDashboard();
     }
@@ -40,12 +40,14 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
     var jqContainer = $(this.container);
     $fw.client.lang.insertLangFromData(jqContainer);
     if(self.enabled_live_app_resources){
-      $('a[data-toggle="tab"]', self.conatiner).on('show', function(e){
-        var activeDivId = $(e.target).attr("href");
-        if(activeDivId === "#resource_dashboard_container"){
-          self.renderDashboard($('#resource_dashboard_container', self.conatiner));
-        } else if(activeDivId === "#resource_memory_container"){
-          self.renderLiveChart("Memory", $('#resource_memory_container', self.container));
+      $('a[data-toggle="pill"]', self.conatiner).on('shown', function(e){
+        var dataType = $(e.target).data("type");
+        var paneId = $(e.target).attr("href");
+        console.log("data type is " + dataType + "paneId is " + paneId );
+        if(dataType.toLowerCase() === "dashboard"){
+          self.renderDashboard($(paneId + ' .stats_area', self.conatiner));
+        } else {
+          self.renderLiveChart(dataType, $(paneId + " .stats_area", self.container));
         }
       });
     }
@@ -88,11 +90,7 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
               self.renderChart(model, type, pane);
             } else {
               console.log("Couldn't load stats: " + model.name);
-              var failed = $("<li>", {
-                "class": "load_failed",
-                text: "No "+ type + " data is currently available for this app."
-              });
-              $(pane).empty().append(failed);
+              self.showNoData(type, pane);
             }
           }
         });
@@ -106,6 +104,10 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
   renderChart: function(model, type, pane){
     var self = this;
     var series = model.getSeries(type);
+    if(series.all_series.length === 0){
+      self.showNoData(type, pane);
+      return;
+    }
 
     var chart = new Stats.View.Chart({
       model: model,
@@ -117,6 +119,14 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
       live: true
     });
     chart.render();
+  },
+
+  showNoData: function(type, pane){
+    var failed = $("<li>", {
+      "class": "load_failed",
+      text: "No "+ type + " data is currently available for this app."
+    });
+    $(pane).empty().append(failed);
   },
 
   showResources: function(cb) {
