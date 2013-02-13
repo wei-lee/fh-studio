@@ -3,8 +3,8 @@ var Apps = Apps || {};
 Apps.Cloudresources = Apps.Cloudresources || {};
 
 Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
-  WARNING_LEVEL: 60,
-  DANGER_ZONE: 80,
+  WARNING_LEVEL: 0.6,
+  DANGER_ZONE: 0.8,
   // ✈
   // ✈ ✈
   // ✈
@@ -26,6 +26,10 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
   show: function() {
     this._super(this.views.cloudresources_container);
     this.initFn();
+    this.dashboard_rendered = false;
+    this.models.stats = {};
+    this.gaugesCharts = {};
+    $(this.container).find('.nav-pills > li.active').removeClass('active');
     $(this.container).show();
     if(this.enabled_live_app_resources){
       $('a[data-toggle="pill"]:eq(0)', this.conatiner).trigger("click");
@@ -58,7 +62,7 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
 
       jqEl.button('loading');
 
-      self.showResources(function() {
+      self.renderDashboardPage(function() {
         jqEl.button('reset');
       });
     });
@@ -74,30 +78,40 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
   renderLiveChart: function(type, pane){
     var self = this;
     if(!self[type+"_rendered"]){
-      if(!self.models.stats.gauge){
-        var cloudEnv = $fw.data.get('cloud_environment');
-        var model = new Stats.Model.Historical.Gauges({
-          deploy_target: cloudEnv,
-          stats_type: "app",
-          stats_container: pane
-        });
-        var data = null;
-        model.load({
-          loaded: function(res) {
-            console.log(type + ' stats loaded');
-            self.models.stats.gauge = model;
-            if (res.status == 'ok') {
-              self.renderChart(model, type, pane);
-            } else {
-              console.log("Couldn't load stats: " + model.name);
-              self.showNoData(type, pane);
-            }
-          }
-        });
-      } else {
-        self.renderChart(self.models.stats.gauge, type, pane);
-      }
+      self.getModel(function(model){
+        if(model){
+          self.renderChart(self.models.stats.gauge, type, pane);
+        } else {
+          console.log("Couldn't load stats: " + model.name);
+          self.showNoData(type, pane);
+        };
+      });
       self[type+"_rendered"] = true;
+    }
+  },
+
+  getModel: function(cb){
+    var self = this;
+    if(!self.models.stats.gauge){
+      var cloudEnv = $fw.data.get('cloud_environment');
+      var model = new Stats.Model.Live.Gauges({
+        deploy_target: cloudEnv,
+        stats_type: "app",
+        stats_container: null
+      });
+      var data = null;
+      model.load({
+        loaded: function(res) {
+          if(res.status === "ok"){
+            self.models.stats.gauge = model;
+            cb(model);
+          } else {
+            cb(null);
+          }
+        }
+      });
+    } else {
+      cb(self.models.stats.gauge);
     }
   },
 
@@ -129,45 +143,58 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
     $(pane).empty().append(failed);
   },
 
-  showResources: function(cb) {
+  renderDashboardPage: function(cb){
+    var self = this;
+    var resources = {'cpu':{unit: "%", min: 0, max:100, value: 0},
+                     'memory':{unit:'MB', min:0, max:512, value: 0},
+                     'storage':{unit:'MB', min:0, max:512, value: 0}};
+    for(var resourceType in resources){
+      var container = $('#resource_dashboard_' + resourceType + '_container', this.conatiner);
+      self.initialiseGaugeChart(resourceType, container.find('.dashboard_resource_gauge')[0], resources[resourceType], true);
+    };
+
+    async.series([
+        function(callback){
+          self.loadResourcesForDashboard(resources, callback);
+        },
+        function(callback){
+          self.loadStatsDataForDashboard(resources, callback);
+        }
+    ], function(err, results){
+      cb();
+    });
+
+  },
+
+  loadResourcesForDashboard: function(resources, cb){
     var self = this;
     var guid = $fw.data.get('inst').guid;
-    var currentContainer = $('#resource_current_container', this.container);
-
-    this.initialiseCpuGauge($('#cloud_cpu .cloud_cpu_container', currentContainer)[0]);
-
     var cloudEnv = $fw.data.get('cloud_environment');
     this.models.appresource.current(guid, cloudEnv, function(res) {
+      self.hideGaugeChartsLoading();
       if (res != null && res.data != null) {
         self.hideAlerts();
         var data = res.data;
 
         if (data.usage != null) {
-          // CPU
-          var cpuPoint = self.cpuChart.series[0].points[0];
-          if (cpuPoint != null) {
-            if (data.usage.cpu != null) {
-              cpuPoint.update(data.usage.cpu);
-            } else {
-              // TODO: show n/a ui
-            }
+          if (data.usage.cpu != null){
+            self.updateGaugeChartValue('cpu', data.usage.cpu, null, resources.cpu.unit);
+          } else {
+            self.resetResource('cpu');
           }
 
-          // Memory
-          if (data.usage.mem != null) {
-            self.updateResourceBar($('#cloud_memory', self.container), data.usage.mem, data.max.mem);
+          if (data.usage.mem != null){
+            self.updateGaugeChartValue('memory', self.bytesToMB(data.usage.mem), self.bytesToMB(data.max.mem), resources.memory.unit);
           } else {
-            self.showNAResourceBar($('#cloud_memory', self.container));
+            self.resetResource('memory');
           }
 
-          // Storage
-          if (data.usage.disk != null) {
-            self.updateResourceBar($('#cloud_storage', self.container), data.usage.disk, data.max.disk);
+          if (data.usage.disk != null){
+            self.updateGaugeChartValue('storage', self.bytesToMB(data.usage.disk), self.bytesToMB(data.max.disk), resources.storage.unit);
           } else {
-            self.showNAResourceBar($('#cloud_storage', self.container));
+            self.resetResource('storage');
           }
         }
-
         cb();
       } else {
         self.showAlert('error', 'Error getting resource data. Please make sure your App is deployed to \'' + cloudEnv + '\' environment (res.data is undefined)');
@@ -179,55 +206,132 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
       self.resetResource();
       cb();
     });
-
-    // TODO: if adding this back in, need to use async.parallel to ensure cb is only
-    //       called when both are done
-    // this.models.appresource.history(guid, function (res) {
-    //   historyContainer.text(JSON.stringify(res.data));
-    // }, function (err) {
-    //   self.showAlert('error', 'Error getting resource history:' + err);
-    // });
   },
 
-  updateResourceBar: function(container, used, max) {
-    $('.resource_used', container).text(this.bytesToMB(used));
-    $('.resource_max', container).text(this.bytesToMB(max));
-
-
-    var usedPercentage = (used / max) * 100;
-    // TODO: put % value in dom too??
-    $('.bar-danger', container).css('width', usedPercentage + '%');
-    $('.bar-info', container).css('width', (100 - usedPercentage) + '%');
-  },
-
-  showNAResourceBar: function(container) {
-    $('.resource_used', container).text('n/a');
-    $('.resource_max', container).text('n/a');
-
-    $('.bar-danger', container).css('width', '0%');
-    $('.bar-info', container).css('width', '100%');
-  },
-
-  resetResource: function() {
+  loadStatsDataForDashboard: function(resources, callback){
     var self = this;
-    var cpuPoint = self.cpuChart.series[0].points[0];
-    cpuPoint.update(0);
-    self.showNAResourceBar($('#cloud_memory', self.container));
-    self.showNAResourceBar($('#cloud_storage', self.container));
+    self.getModel(function(model){
+      if(model){
+        $.each(['cpu', 'memory', 'storage'], function(k, v){
+          var typename = js_util.capitalise(v);
+          var container = $('#resource_dashboard_'+v+'_container').find('.dashboard_resource_chart');
+          var series = model.getSeries(typename).all_series;
+          if(series.length === 0){
+            self.showNoData(typename, container);
+            return;
+          } else {
+            series[0].color = undefined;
+          }
+          console.log(series);
+          var chart = new Highcharts.Chart({
+            exporting: {
+              enabled: false
+            },
+            credits: {
+              enabled: false
+            },
+            legend:false,
+            chart:{
+              renderTo: container[0],
+              spacingRight: 20,
+              type: "line"
+            },
+            title: {text: typename + ' Usage (Last Hour)'},
+            xAxis: {
+              lineWidth: 0,
+              minorGridLineWidth: 0,
+              lineColor: 'transparent',
+              labels: {
+                enabled: false
+              },
+              minorTickLength: 0,
+              tickLength: 0
+            },
+            yAxis: {
+              lineWidth: 0,
+              minorGridLineWidth: 0,
+              lineColor: 'transparent',
+              labels: {
+                enabled: false
+              },
+              minorTickLength: 0,
+              tickLength: 0,
+              title: {text: null}
+            },
+            tooltip: {
+              formatter: function() {
+                var value = this.y;
+                if(v !== 'cpu'){
+                  value += "B";
+                }
+                var timestamp = moment(this.x).format("MMM D, HH:mm:ss");
+                return '<b>' + typename + ":" + value + '</b><br/>' + timestamp;
+              }
+            },
+            series: series
+          });
+        });
+        callback();
+      } else {
+        $.each(['cpu', 'memory', 'storage'], function(k ,v){
+          self.showNoData(k, $('#resource_dashboard_'+v+'_container').find('.dashboard_resource_chart'));
+        });
+        callback();
+      }
+    });
+  },
+
+  updateGaugeChartValue: function(type, value, max, unit){
+    //we actually re-create the charts because we can't update the gauge chart's extreme values
+    var chart = this.gaugesCharts[type];
+    chart.destroy();
+    this.gaugesCharts[type] = undefined;
+    var title = value + unit;
+    if(max){
+      title += "/" + max + unit;
+    };
+    this.initialiseGaugeChart(type, $('#resource_dashboard_' + type + '_container', this.conatiner).find('.dashboard_resource_gauge')[0], {unit: unit, min: 0, max: max || 100, value:value, title: title}, false);
+
+  },
+
+  hideGaugeChartsLoading: function(){
+    for(var chart in this.gaugesCharts){
+      this.gaugesCharts[chart].hideLoading();
+    }
+  },
+
+  resetResource: function(type) {
+    var reset = function(chart){
+      var point = chart.series[0].points[0];
+      point.update(0);
+      chart.setTitle({text:'N/A'});
+    }
+    if(type){
+      var chart = this.gaugesCharts[type];
+      reset(chart);
+      return;
+    } else {
+      for(var chart in this.gaugesCharts){
+        reset(chart);
+      }
+    }
   },
 
   bytesToMB: function(bytes) {
     function toFixed(num, precision) {
       return num.toFixed != null ? num.toFixed(precision) : num;
     }
-    return '' + toFixed(bytes / 1000 / 1000) + ' MB';
+    return parseInt(toFixed(bytes / 1000 / 1000));
   },
 
-  initialiseCpuGauge: function(container) {
+  initialiseGaugeChart: function(type, container, options, loading) {
     var self = this;
+    if(!self.gaugesCharts){
+      self.gaugesCharts = {};
+    }
 
-    if (this.cpuChart == null) {
-      this.cpuChart = new Highcharts.Chart({
+    if (self.gaugesCharts[type] == null) {
+      var chart = new Highcharts.Chart({
 
         exporting: {
           enabled: false
@@ -235,6 +339,20 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
 
         credits: {
           enabled: false
+        },
+
+        lang: {
+          "loading":""
+        },
+
+        loading: {
+          labelStyle: {
+            position: "relative",
+            top: "2em"
+          },
+          style: {
+            backgroundColor: 'gray'
+          }
         },
 
         chart: {
@@ -247,10 +365,14 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
           backgroundColor: null
         },
 
-        title: false,
+        title: {
+          margin: 20,
+          text:options.title || 'Loading...'
+        },
         pane: {
           startAngle: -90,
           endAngle: 90,
+          center: ["50%", "75%"],
           background: {
             backgroundColor: 'white',
             borderWidth: 0
@@ -268,8 +390,9 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
         },
 
         yAxis: [{
-          min: 0,
-          max: 100,
+          min: options.min,
+          max: options.max,
+          showLastLabel: true,
           lineColor: '#339',
           tickColor: '#339',
           minorTickColor: '#339',
@@ -279,7 +402,7 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
             distance: 18,
             rotation: 'auto',
             formatter: function() {
-              return this.value + '%';
+              return this.value + options.unit;
             }
           },
           title: $fw.client.lang.getLangString('cloudresource_cpu_title'),
@@ -288,21 +411,21 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
           endOnTick: false,
           plotBands: [{
             from: 0,
-            to: self.WARNING_LEVEL,
+            to: options.max*self.WARNING_LEVEL,
             color: '#55BF3B',
             // green
             innerRadius: '100%',
             outerRadius: '115%'
           }, {
-            from: self.WARNING_LEVEL,
-            to: self.DANGER_ZONE,
+            from: options.max*self.WARNING_LEVEL,
+            to: options.max*self.DANGER_ZONE,
             color: '#DDDF0D',
             // yellow
             innerRadius: '100%',
             outerRadius: '115%'
           }, {
-            from: self.DANGER_ZONE,
-            to: 100,
+            from: options.max*self.DANGER_ZONE,
+            to: options.max,
             color: '#DF5353',
             // red
             innerRadius: '100%',
@@ -312,12 +435,16 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
 
         series: [{
           name: 'Usage',
-          data: [0],
+          data: [options.value],
           tooltip: {
-            valueSuffix: '%'
+            valueSuffix: options.unit
           }
         }]
       });
+      if(loading){
+        chart.showLoading();
+      }
+      self.gaugesCharts[type] = chart;
     }
   }
 });

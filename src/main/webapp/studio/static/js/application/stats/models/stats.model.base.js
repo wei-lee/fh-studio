@@ -165,7 +165,6 @@ Stats.Model.Base = Class.extend({
     };
 
     $fw.server.post(url, params, function(res) {
-      console.log(res);
       if (res.status === "ok") {
         self.interval = res.interval;
         self._setInitialData(res.results);

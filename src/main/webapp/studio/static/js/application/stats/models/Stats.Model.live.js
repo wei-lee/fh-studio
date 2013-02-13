@@ -16,13 +16,19 @@ Stats.Model.Live = Stats.Model.Historical.extend({
             var index=0;
             for(var i=0;i<results.length;i++){
               if(results[i].ts === self.last_updated){
-                index = i;
+                index = i + 1;
                 break;
               }
             }
             newdata = results.slice(index);
           }
-          callback(self._convertData(newdata));
+          if(newdata.length > 0){
+            callback(self._convertData(newdata));
+          } else{
+            callback(null);
+          }
+        } else {
+          callback(null);
         }
       }
     });

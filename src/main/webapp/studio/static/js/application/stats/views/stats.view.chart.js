@@ -8,6 +8,7 @@ Stats.View.Chart = Class.extend({
   series_name: null,
   renderTo: null,
   liveChart: false,
+  options: null,
 
   init: function(params) {
     this.controller = params.controller;
@@ -18,6 +19,9 @@ Stats.View.Chart = Class.extend({
     this.renderTo = params.renderTo || '#' + this.series_name + '_list_item .chart_container';
     if(params.live){
       this.liveChart = true;
+    }
+    if(params.options){
+      options = prams.options;
     }
     console.log('Initialising chart view');
   },
@@ -31,16 +35,40 @@ Stats.View.Chart = Class.extend({
 
     var series_data = this.series;
     var series_name = this.series_name;
+    console.log(series_data);
 
-    var chart = new Highcharts.Chart({
+    var chartOpts = {
+      renderTo: container[0],
+      zoomType: 'x',
+      spacingRight: 20
+    };
+
+    if(this.liveChart){
+      chartOpts.events = {
+        load: function(){
+          if(self.model.getDataSinceLastUpdate){
+            setInterval(function(){
+              self.model.getDataSinceLastUpdate(function(data){
+                if(null !== data){
+                  var series = chart.series[0];
+                  var dataToAdd = data[self.series_name].series[self.series_name].data;
+                  //TODO: is there a better way to do this?
+                  for(var p=0;p<dataToAdd.length;p++){
+                    series.addPoint(dataToAdd[p], true, true);
+                  };
+                };
+              });
+            }, 5000);
+          }
+        }
+      }
+    }
+
+    var chart = new Highcharts.Chart(self.options || {
       credits: {
         enabled: false
       },
-      chart: {
-        renderTo: container[0],
-        zoomType: 'x',
-        spacingRight: 20
-      },
+      chart: chartOpts,
       legend: {
         layout: 'horizontal',
         verticalAlign: 'top',
@@ -54,7 +82,7 @@ Stats.View.Chart = Class.extend({
         enabled : true
       },
       rangeselector: {
-        enabled: false
+        enabled: true
       },
       title: {
         text: series_name

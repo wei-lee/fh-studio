@@ -2247,10 +2247,15 @@ line-height:0.5em;
 }
 
 /* Cloud Resources */
-.cloud_cpu_container {
+.cloud_resource_dashboard_container {
   height: 250px;
   width: 100%;
 }
+
+.dashboard_resource_gauge, .dashboard_resource_chart {
+  height: 240px;
+}
+
 .progress .bar.barloading {
   width:100%;
 }
