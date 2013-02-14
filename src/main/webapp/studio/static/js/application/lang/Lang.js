@@ -715,5 +715,6 @@ var Lang = {
   "resource_nav_dashboard": "Dashboard",
   "resource_nav_cpu": "CPU",
   "resource_nav_memory": "Memory",
-  "resource_nav_storage": "Storage"
+  "resource_nav_storage": "Storage",
+  "resource_live_stats_link": "Live Stats >"
 };

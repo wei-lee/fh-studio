@@ -9,6 +9,7 @@ Stats.View.Chart = Class.extend({
   renderTo: null,
   liveChart: false,
   options: null,
+  highChart: null,
 
   init: function(params) {
     this.controller = params.controller;
@@ -35,7 +36,6 @@ Stats.View.Chart = Class.extend({
 
     var series_data = this.series;
     var series_name = this.series_name;
-    console.log(series_data);
 
     var chartOpts = {
       renderTo: container[0],
@@ -46,20 +46,16 @@ Stats.View.Chart = Class.extend({
     if(this.liveChart){
       chartOpts.events = {
         load: function(){
-          if(self.model.getDataSinceLastUpdate){
-            setInterval(function(){
-              self.model.getDataSinceLastUpdate(function(data){
-                if(null !== data){
-                  var series = chart.series[0];
-                  var dataToAdd = data[self.series_name].series[self.series_name].data;
-                  //TODO: is there a better way to do this?
-                  for(var p=0;p<dataToAdd.length;p++){
-                    series.addPoint(dataToAdd[p], true, true);
-                  };
-                };
-              });
-            }, 5000);
-          }
+          if(self.model.addListener){
+            self.updateListener = function(data){
+              var series = chart.series[0];
+              var dataToAdd = data[self.series_name].series[self.series_name].data;
+              for(var p=0;p<dataToAdd.length;p++){
+                series.addPoint(dataToAdd[p], true, true);
+              };
+            }
+            self.model.addListener(self.updateListener);
+          };
         }
       }
     }
@@ -153,7 +149,27 @@ Stats.View.Chart = Class.extend({
 
     if(!self.liveChart){
       self.addRefreshButton(container.closest('li').find('h3'));
+    } else {
+      //To fix a bug where if the chart become hidden before the first live point is added, there will be a DOM error thrown
+      chart.redraw();
     }
+
+    self.highChart = chart;
+
+  },
+
+  destroy: function(){
+    var self = this;
+    if(this.highChart){
+      this.highChart.destroy();
+      this.highChart = undefined;
+    }
+    if(self.updateListener){
+      if(self.model.removeListener){
+        self.model.removeListener(self.updateListener);
+      }
+    }
+    $(this.renderTo).empty();
   },
 
   addRefreshButton: function (container) {

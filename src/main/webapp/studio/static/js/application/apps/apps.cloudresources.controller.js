@@ -17,6 +17,9 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
     cloudresources_container: "#cloudresources_container"
   },
 
+  rendered_views:{},
+  live_charts: {},
+
   init: function() {
     this._super();
     this.enabled_live_app_resources = 'true' === $fw.getClientProp('live-app-resource-enabled');
@@ -26,14 +29,7 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
   show: function() {
     this._super(this.views.cloudresources_container);
     this.initFn();
-    this.dashboard_rendered = false;
-    this.models.stats = {};
-    if(this.gaugesCharts){
-      for(var ch in this.gaugesCharts){
-        ch.destroy();
-      }
-    }
-    this.gaugesCharts = {};
+    this.resetCharts();
     $(this.container).find('.nav-pills > li.active').removeClass('active');
     $(this.container).show();
     if(this.enabled_live_app_resources){
@@ -41,6 +37,28 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
     } else {
       this.renderDashboard();
     }
+  },
+
+  hide: function(){
+    this._super();
+    console.log("Leaving resource page, clear charts");
+    this.resetCharts();
+  },
+
+  resetCharts: function(){
+    this.dashboard_rendered = false;
+    this.models.stats = {};
+    this.rendered_views = {};
+    if(this.gaugesCharts){
+      for(var k in this.gaugesCharts){
+        this.gaugesCharts[k].destroy();
+      }
+    }
+    for(var c in this.live_charts){
+      this.live_charts[c].destroy();
+    }
+    this.gaugesCharts = {};
+    this.live_charts = {};
   },
 
   initBindings: function() {
@@ -65,10 +83,10 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
       e.stopPropagation();
       var jqEl = $(this);
 
-      jqEl.button('loading');
+      jqEl.addClass('disabled').find('span').text('Refreshing...');
 
       self.renderDashboardPage(function() {
-        jqEl.button('reset');
+        jqEl.removeClass('disabled').find('span').text('Refresh');
       });
     });
   },
@@ -82,7 +100,7 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
 
   renderLiveChart: function(type, pane){
     var self = this;
-    if(!self[type+"_rendered"]){
+    if(!self.rendered_views[type+"_rendered"]){
       self.getModel(function(model){
         if(model){
           self.renderChart(self.models.stats.gauge, type, pane);
@@ -91,7 +109,7 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
           self.showNoData(type, pane);
         };
       });
-      self[type+"_rendered"] = true;
+      self.rendered_views[type+"_rendered"] = true;
     }
   },
 
@@ -101,7 +119,7 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
       var cloudEnv = $fw.data.get('cloud_environment');
       var model = new Stats.Model.Live.Gauges({
         deploy_target: cloudEnv,
-        stats_type: "app",
+        stats_type: "resources",
         stats_container: null
       });
       var data = null;
@@ -123,12 +141,14 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
   renderChart: function(model, type, pane){
     var self = this;
     var series = model.getSeries(type);
+    console.log("series for type " + type);
+    console.log(series);
     if(series.all_series.length === 0){
       self.showNoData(type, pane);
       return;
     }
 
-    var chart = new Stats.View.Chart({
+    var chartView = new Stats.View.Chart({
       model: model,
       series: series,
       series_name: type,
@@ -137,7 +157,8 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
       renderTo: pane,
       live: true
     });
-    chart.render();
+    chartView.render();
+    self.live_charts[type] = chartView;
   },
 
   showNoData: function(type, pane){
@@ -215,19 +236,27 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
 
   loadStatsDataForDashboard: function(resources, callback){
     var self = this;
+    var statsnamemap = {'cpu': 'Cpu_Pct', 'memory':'VmRSS', 'storage':'Disk'};
     self.getModel(function(model){
       if(model){
-        $.each(['cpu', 'memory', 'storage'], function(k, v){
-          var typename = js_util.capitalise(v);
-          var container = $('#resource_dashboard_'+v+'_container').find('.dashboard_resource_chart');
-          var series = model.getSeries(typename).all_series;
+        $.each(statsnamemap, function(k, v){
+          var typename = js_util.capitalise(k);
+          var container = $('#resource_dashboard_'+k+'_container').find('.dashboard_resource_chart');
+          var series = model.getSeries(v).all_series;
           if(series.length === 0){
             self.showNoData(typename, container);
             return;
           } else {
             series[0].color = undefined;
           }
-          console.log(series);
+          if(self.enabled_live_app_resources){
+            $('#resource_dashboard_'+k+'_container').find('.resource_live_stats_link_container').show().find("a").unbind('click').bind('click', function(e){
+              e.preventDefault();
+              e.stopPropagation();
+              var targetContainer = $(this).attr("href");
+              $(self.container).find('.nav').find('a[href="' +targetContainer+'"]').trigger('click');
+            });
+          }
           var chart = new Highcharts.Chart({
             exporting: {
               enabled: false
@@ -266,7 +295,7 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
             tooltip: {
               formatter: function() {
                 var value = this.y;
-                if(v !== 'cpu'){
+                if(k !== 'cpu'){
                   value += "B";
                 }
                 var timestamp = moment(this.x).format("MMM D, HH:mm:ss");
@@ -278,8 +307,9 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
         });
         callback();
       } else {
-        $.each(['cpu', 'memory', 'storage'], function(k ,v){
-          self.showNoData(k, $('#resource_dashboard_'+v+'_container').find('.dashboard_resource_chart'));
+        $.each(statsnamemap, function(k ,v){
+          $('#resource_dashboard_'+k+'_container').find('.resource_live_stats_link_container').hide();
+          self.showNoData(k, $('#resource_dashboard_'+k+'_container').find('.dashboard_resource_chart'));
         });
         callback();
       }

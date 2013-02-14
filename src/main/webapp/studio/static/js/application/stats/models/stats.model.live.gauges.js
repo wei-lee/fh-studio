@@ -69,5 +69,15 @@ Stats.Model.Live.Gauges = Stats.Model.Live.extend({
     this._super({
       gauges:{key: 'testid-dev_app_Memory'}
     });
-  }
+  },
+
+  _sanitizeSeriesName: function(series_name) {
+    var split_name = series_name.split("_resources_");
+
+    if (split_name.length > 1) {
+      return split_name[1];
+    } else {
+      return split_name[0];
+    }
+  },
 });

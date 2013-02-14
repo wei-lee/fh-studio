@@ -2256,6 +2256,17 @@ line-height:0.5em;
   height: 240px;
 }
 
+.resource_live_stats_link_container {
+    margin-top: -10px;
+    height: 30px;
+    font-size: 1.5em;
+    display: none;
+}
+
+.resource_live_stats_link_container a {
+    text-decoration: underline;
+}
+
 .progress .bar.barloading {
   width:100%;
 }
