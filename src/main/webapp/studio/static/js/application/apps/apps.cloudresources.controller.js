@@ -28,6 +28,11 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
     this.initFn();
     this.dashboard_rendered = false;
     this.models.stats = {};
+    if(this.gaugesCharts){
+      for(var ch in this.gaugesCharts){
+        ch.destroy();
+      }
+    }
     this.gaugesCharts = {};
     $(this.container).find('.nav-pills > li.active').removeClass('active');
     $(this.container).show();
