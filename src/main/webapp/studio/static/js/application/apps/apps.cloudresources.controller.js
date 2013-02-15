@@ -116,7 +116,7 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
         } else {
           console.log("Couldn't load stats: " + model.name);
           self.showNoData(type, pane);
-        };
+        }
       });
       self.rendered_views[type+"_rendered"] = true;
     } else {
@@ -151,7 +151,7 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
 
   renderChart: function(model, type, pane){
     var self = this;
-    var titleMap = {"Cpu_Pct":'CPU', "VmRSS": 'Memory', "Disk":"Storage"}
+    var titleMap = {"Cpu_Pct":'CPU', "VmRSS": 'Memory', "Disk":"Storage"};
     var series = model.getSeries(type);
     console.log(series);
     if(series.all_series.length === 0){
@@ -179,7 +179,7 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
     if(type.toLowerCase().indexOf("cpu") === -1){
       opts.yAxis.labels = {
         formatter: function(){
-          return this.value/1000 + "MB"
+          return this.value/1000 + "MB";
         }
       };
 
@@ -188,7 +188,7 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
           var timestamp = moment(this.x).format("MMM D, HH:mm:ss");
           return '<b>' + timestamp + '</b><br/>' + this.series.name + ': ' + this.y/1000 + "MB";
         }
-      }
+      };
     }
 
     var chartView = new Stats.View.Chart({
@@ -223,7 +223,7 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
     for(var resourceType in resources){
       var container = $('#resource_dashboard_' + resourceType + '_container', this.conatiner);
       self.initialiseGaugeChart(resourceType, container.find('.dashboard_resource_gauge')[0], resources[resourceType], true);
-    };
+    }
 
     async.series([
         function(callback){
@@ -376,7 +376,7 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
     var title = value + unit;
     if(max){
       title += "/" + max + unit;
-    };
+    }
     this.initialiseGaugeChart(type, $('#resource_dashboard_' + type + '_container', this.conatiner).find('.dashboard_resource_gauge')[0], {unit: unit, min: 0, max: max || 100, value:value, title: title}, false);
 
   },
@@ -392,14 +392,14 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
       var point = chart.series[0].points[0];
       point.update(0);
       chart.setTitle({text:'N/A'});
-    }
+    };
     if(type){
       var chart = this.gaugesCharts[type];
       reset(chart);
       return;
     } else {
-      for(var chart in this.gaugesCharts){
-        reset(chart);
+      for(var c in this.gaugesCharts){
+        reset(c);
       }
       $.each(['cpu', 'memory', 'storage'], function(k ,v){
         $('#resource_dashboard_'+v+'_container').find('.resource_live_stats_link_container').hide();
@@ -412,7 +412,7 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
     function toFixed(num, precision) {
       return num.toFixed != null ? num.toFixed(precision) : num;
     }
-    return parseInt(toFixed(bytes / 1000 / 1000));
+    return parseInt(toFixed(bytes / 1000 / 1000), 10);
   },
 
   initialiseGaugeChart: function(type, container, options, loading) {

@@ -67,18 +67,18 @@ Stats.View.Chart = Class.extend({
                 console.log("chart is showing, add points to the chart. name: "+self.series_name+" Total points: " + dataToAdd.length);
                 for(var p=0;p<dataToAdd.length;p++){
                   series.addPoint(dataToAdd[p], false, true);
-                };
+                }
                 chart.redraw();
                 self.buffer = [];
                 if(self.showLastUpdated){
                   self.updateLastUpdated(container);
                 }
               }
-            }
+            };
             self.model.addListener(self.updateListener);
-          };
+          }
         }
-      }
+      };
     }
 
     var chart = new Highcharts.Chart({

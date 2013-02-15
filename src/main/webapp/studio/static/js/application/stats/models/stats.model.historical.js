@@ -222,7 +222,7 @@ Stats.Model.Historical = Stats.Model.Base.extend({
         if(opts.gauges && opts.gauges){
           mockRow.gauges = [];
           for(var p=0;p<opts.gauges.length;p++){
-            mockRow.gauges.push({key: opts.gauges[p].key, value: getRand(opts.gauges[p].min, opts.gauges[p].max)})
+            mockRow.gauges.push({key: opts.gauges[p].key, value: getRand(opts.gauges[p].min, opts.gauges[p].max)});
           }
         }
 
