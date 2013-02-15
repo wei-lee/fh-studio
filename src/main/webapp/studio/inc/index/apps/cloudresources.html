@@ -5,7 +5,7 @@
       <%@ include file="./cloud_environment.html" %></h4>
     <div class="fh-box-inner">
 
-<% if(studio.getProperty("live-app-resource-enabled").equals("true")) {%>
+<% if(studio.getProps().optBoolean("live-app-resource-enabled", true)) {%>
      <ul class="nav nav-pills">
        <li><a href="#resource_dashboard_container"  data-toggle="pill" data-lang="resource_nav_dashboard" data-type="Dashboard"></a></li>
        <li><a href="#resource_cpu_container" data-toggle="pill" data-lang="resource_nav_cpu" data-type="Cpu_Pct"></a></li>
@@ -14,7 +14,7 @@
      </ul>
  <%}%>
 
- <% if(studio.getProperty("live-app-resource-enabled").equals("true")) {%>
+ <% if(studio.getProps().optBoolean("live-app-resource-enabled", true)) {%>
      <div class="pill-content">
  <%}%>
 
@@ -94,7 +94,7 @@
              </div>
          </div>
 
-<% if(studio.getProperty("live-app-resource-enabled").equals("true")) {%>
+<% if(studio.getProps().optBoolean("live-app-resource-enabled", true)) {%>
          <div class="pill-pane" id="resource_cpu_container">
              <div class="stats_area row-fluid">
 

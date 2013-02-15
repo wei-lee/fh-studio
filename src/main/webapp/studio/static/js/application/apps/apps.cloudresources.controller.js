@@ -22,7 +22,7 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
 
   init: function() {
     this._super();
-    this.enabled_live_app_resources = 'true' === $fw.getClientProp('live-app-resource-enabled');
+    this.enabled_live_app_resources = $fw.getClientProp('live-app-resource-enabled') == null ? true : ($fw.getClientProp('live-app-resource-enabled') == 'true');
     this.initFn = _.once(this.initBindings);
   },
 
@@ -51,14 +51,19 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
     this.rendered_views = {};
     if(this.gaugesCharts){
       for(var k in this.gaugesCharts){
-        this.gaugesCharts[k].destroy();
+        if(this.gaugesCharts.hasOwnProperty(k)){
+          this.gaugesCharts[k].destroy();
+        }
       }
     }
     for(var c in this.live_charts){
-      this.live_charts[c].destroy();
+      if(this.live_charts.hasOwnProperty(c)){
+        this.live_charts[c].destroy();
+      }
     }
     this.gaugesCharts = {};
     this.live_charts = {};
+    $(this.container).find('.resource_live_stats_link_container').hide();
   },
 
   initBindings: function() {
@@ -95,6 +100,10 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
     if(!this.dashboard_rendered){
       $('.cloud_refresh_button', $(this.container)).trigger('click');
       this.dashboard_rendered = true;
+    } else {
+      for(var chart in this.gaugesCharts){
+        this.gaugesCharts[chart].redraw();
+      }
     }
   },
 
@@ -110,6 +119,8 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
         };
       });
       self.rendered_views[type+"_rendered"] = true;
+    } else {
+      self.live_charts[type].highChart.redraw();
     }
   },
 
@@ -140,12 +151,44 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
 
   renderChart: function(model, type, pane){
     var self = this;
+    var titleMap = {"Cpu_Pct":'CPU', "VmRSS": 'Memory', "Disk":"Storage"}
     var series = model.getSeries(type);
-    console.log("series for type " + type);
     console.log(series);
     if(series.all_series.length === 0){
-      self.showNoData(type, pane);
+      self.showNoData(titleMap[type], pane);
       return;
+    }
+
+    series.all_series[0].name = js_util.capitalise(titleMap[type]);
+    var opts = {
+      legend:{enabled:false},
+      title:  js_util.capitalise(titleMap[type]) + " Usage (Live)",
+      yAxis:{
+        title:{text: null},
+        min:0
+      },
+      tooltip: {
+        formatter: function() {
+          var timestamp = moment(this.x).format("MMM D, HH:mm:ss");
+          return '<b>' + timestamp + '</b><br/>' + this.series.name + ': ' + this.y + '%';
+        }
+      }
+    };
+
+
+    if(type.toLowerCase().indexOf("cpu") === -1){
+      opts.yAxis.labels = {
+        formatter: function(){
+          return this.value/1000 + "MB"
+        }
+      };
+
+      opts.tooltip = {
+        formatter: function() {
+          var timestamp = moment(this.x).format("MMM D, HH:mm:ss");
+          return '<b>' + timestamp + '</b><br/>' + this.series.name + ': ' + this.y/1000 + "MB";
+        }
+      }
     }
 
     var chartView = new Stats.View.Chart({
@@ -155,7 +198,9 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
       formatted_name: type,
       controller: self,
       renderTo: pane,
-      live: true
+      live: true,
+      options:opts,
+      showLastUpdated: true
     });
     chartView.render();
     self.live_charts[type] = chartView;
@@ -171,6 +216,7 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
 
   renderDashboardPage: function(cb){
     var self = this;
+    var cloudEnv = $fw.data.get('cloud_environment');
     var resources = {'cpu':{unit: "%", min: 0, max:100, value: 0},
                      'memory':{unit:'MB', min:0, max:512, value: 0},
                      'storage':{unit:'MB', min:0, max:512, value: 0}};
@@ -187,64 +233,38 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
           self.loadStatsDataForDashboard(resources, callback);
         }
     ], function(err, results){
-      cb();
-    });
-
-  },
-
-  loadResourcesForDashboard: function(resources, cb){
-    var self = this;
-    var guid = $fw.data.get('inst').guid;
-    var cloudEnv = $fw.data.get('cloud_environment');
-    this.models.appresource.current(guid, cloudEnv, function(res) {
       self.hideGaugeChartsLoading();
-      if (res != null && res.data != null) {
-        self.hideAlerts();
-        var data = res.data;
-
-        if (data.usage != null) {
-          if (data.usage.cpu != null){
-            self.updateGaugeChartValue('cpu', data.usage.cpu, null, resources.cpu.unit);
-          } else {
-            self.resetResource('cpu');
-          }
-
-          if (data.usage.mem != null){
-            self.updateGaugeChartValue('memory', self.bytesToMB(data.usage.mem), self.bytesToMB(data.max.mem), resources.memory.unit);
-          } else {
-            self.resetResource('memory');
-          }
-
-          if (data.usage.disk != null){
-            self.updateGaugeChartValue('storage', self.bytesToMB(data.usage.disk), self.bytesToMB(data.max.disk), resources.storage.unit);
-          } else {
-            self.resetResource('storage');
-          }
-        }
-        cb();
-      } else {
-        self.showAlert('error', 'Error getting resource data. Please make sure your App is deployed to \'' + cloudEnv + '\' environment (res.data is undefined)');
+      if(err){
+        self.showAlert('error', 'Error getting resource data. Please make sure your App is deployed to \'' + cloudEnv + '\' environment (' + (err.message != null ? err.message : err) + ')');
         self.resetResource();
         cb();
+        return;
       }
-    }, function(err) {
-      self.showAlert('error', 'Error getting resource data. Please make sure your App is deployed to \'' + cloudEnv + '\' environment (' + (err.message != null ? err.message : err) + ')');
-      self.resetResource();
-      cb();
-    });
-  },
-
-  loadStatsDataForDashboard: function(resources, callback){
-    var self = this;
-    var statsnamemap = {'cpu': 'Cpu_Pct', 'memory':'VmRSS', 'storage':'Disk'};
-    self.getModel(function(model){
-      if(model){
+      if(results.length  === 2){
+        var dynoresources = results[0];
+        var model = results[1];
+        var maxCpu = 100;
+        var maxMem = self.bytesToMB(dynoresources.max.mem);
+        var maxDisk = self.bytesToMB(dynoresources.max.disk);
+        var currentCpu = self.getCurrentResourceUsage(model, "Cpu_Pct", 1);
+        var currentMemory = self.bytesToMB(self.getCurrentResourceUsage(model, "VmRSS", 1)*1000);
+        var currentDisk = self.bytesToMB(self.getCurrentResourceUsage(model, "Disk", 1)*1000);
+        if(!self.enabled_live_app_resources){
+          currentCpu = dynoresources.usage.cpu;
+          currentMemory = self.bytesToMB(dynoresources.usage.mem);
+          currentDisk = self.bytesToMB(dynoresources.usage.disk);
+        }
+        self.updateGaugeChartValue('cpu', currentCpu, null, resources.cpu.unit);
+        self.updateGaugeChartValue('memory', currentMemory, maxMem, resources.memory.unit);
+        self.updateGaugeChartValue('storage', currentDisk, maxDisk, resources.storage.unit);
+        var statsnamemap = {'cpu': 'Cpu_Pct', 'memory':'VmRSS', 'storage':'Disk'};
         $.each(statsnamemap, function(k, v){
           var typename = js_util.capitalise(k);
           var container = $('#resource_dashboard_'+k+'_container').find('.dashboard_resource_chart');
           var series = model.getSeries(v).all_series;
           if(series.length === 0){
             self.showNoData(typename, container);
+            self.resetResource(k);
             return;
           } else {
             series[0].color = undefined;
@@ -305,13 +325,45 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
             series: series
           });
         });
-        callback();
+      }
+      cb();
+    });
+
+  },
+
+  getCurrentResourceUsage: function(model, resource_name, valueIndex){
+    var series = model.getSeries(resource_name).all_series;
+    if(series.length > 0){
+      var data = series[0].data;
+      var current = data[data.length - 1][valueIndex];
+      return current;
+    } else {
+      return 0;
+    }
+  },
+
+  loadResourcesForDashboard: function(resources, cb){
+    var self = this;
+    var guid = $fw.data.get('inst').guid;
+    var cloudEnv = $fw.data.get('cloud_environment');
+    this.models.appresource.current(guid, cloudEnv, function(res) {
+      if (res != null && res.data != null) {
+        cb(undefined, res.data);
       } else {
-        $.each(statsnamemap, function(k ,v){
-          $('#resource_dashboard_'+k+'_container').find('.resource_live_stats_link_container').hide();
-          self.showNoData(k, $('#resource_dashboard_'+k+'_container').find('.dashboard_resource_chart'));
-        });
-        callback();
+        cb("Can not read resources.");
+      }
+    }, function(err) {
+      cb(err);
+    });
+  },
+
+  loadStatsDataForDashboard: function(resources, callback){
+    var self = this;
+    self.getModel(function(model){
+      if(model){
+        callback(undefined, model);
+      } else {
+        callback("error loading model");
       }
     });
   },
@@ -349,6 +401,10 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
       for(var chart in this.gaugesCharts){
         reset(chart);
       }
+      $.each(['cpu', 'memory', 'storage'], function(k ,v){
+        $('#resource_dashboard_'+v+'_container').find('.resource_live_stats_link_container').hide();
+        self.showNoData(v, $('#resource_dashboard_'+v+'_container').find('.dashboard_resource_chart'));
+      });
     }
   },
 

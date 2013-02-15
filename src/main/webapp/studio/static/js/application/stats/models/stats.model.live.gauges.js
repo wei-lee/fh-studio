@@ -11,13 +11,12 @@ Stats.Model.Live.Gauges = Stats.Model.Live.extend({
   _transform: function() {
     var self = this;
 
-    if (this.transformedData == null) { // TODO: revisit if using filters
-      console.log('transforming data');
-      var data = this.getData();
+    console.log('transforming data');
+    var data = this.getData();
+    console.log("data length is " + data.length);
 
-      this.transformedData = self._convertData(data);
-      console.log(this.transformedData);
-    }
+    this.transformedData = self._convertData(data);
+    console.log(this.transformedData);
 
     return this.transformedData;
   },
@@ -67,7 +66,7 @@ Stats.Model.Live.Gauges = Stats.Model.Live.extend({
 
   _initMockData: function(opts){
     this._super({
-      gauges:{key: 'testid-dev_app_Memory'}
+      gauges:[{key: 'testid-dev_resources_Cpu_Pct', min: 0, max: 100}, {key:'testid-dev_resources_VmRSS', min: 1000, max: 100000}, {key:'testid-dev_resources_Disk', min:1000, max:100000}]
     });
   },
 
@@ -79,5 +78,5 @@ Stats.Model.Live.Gauges = Stats.Model.Live.extend({
     } else {
       return split_name[0];
     }
-  },
+  }
 });

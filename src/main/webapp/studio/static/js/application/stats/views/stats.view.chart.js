@@ -8,8 +8,10 @@ Stats.View.Chart = Class.extend({
   series_name: null,
   renderTo: null,
   liveChart: false,
-  options: null,
+  options: {},
   highChart: null,
+  showLastUpdated: false,
+  buffer:[],
 
   init: function(params) {
     this.controller = params.controller;
@@ -22,7 +24,10 @@ Stats.View.Chart = Class.extend({
       this.liveChart = true;
     }
     if(params.options){
-      options = prams.options;
+      this.options = params.options;
+    }
+    if(params.showLastUpdated){
+      this.showLastUpdated = params.showLastUpdated;
     }
     console.log('Initialising chart view');
   },
@@ -50,9 +55,25 @@ Stats.View.Chart = Class.extend({
             self.updateListener = function(data){
               var series = chart.series[0];
               var dataToAdd = data[self.series_name].series[self.series_name].data;
-              for(var p=0;p<dataToAdd.length;p++){
-                series.addPoint(dataToAdd[p], true, true);
-              };
+              if(container.parents(":hidden").length > 0){
+                //this view is hidden, do not add the point to the chart as it may cause the labels of yAxis to be missing.
+                //instead, put it in the buffer
+                console.log("chart is hidden, add to the buffer. name: " + self.series_name);
+                self.buffer = self.buffer.concat(dataToAdd);
+              } else {
+                if(self.buffer.length > 0){
+                  dataToAdd = self.buffer.concat(dataToAdd);
+                }
+                console.log("chart is showing, add points to the chart. name: "+self.series_name+" Total points: " + dataToAdd.length);
+                for(var p=0;p<dataToAdd.length;p++){
+                  series.addPoint(dataToAdd[p], false, true);
+                };
+                chart.redraw();
+                self.buffer = [];
+                if(self.showLastUpdated){
+                  self.updateLastUpdated(container);
+                }
+              }
             }
             self.model.addListener(self.updateListener);
           };
@@ -60,12 +81,12 @@ Stats.View.Chart = Class.extend({
       }
     }
 
-    var chart = new Highcharts.Chart(self.options || {
+    var chart = new Highcharts.Chart({
       credits: {
         enabled: false
       },
       chart: chartOpts,
-      legend: {
+      legend: self.options.legend || {
         layout: 'horizontal',
         verticalAlign: 'top',
         backgroundColor: '#FFFFFF',
@@ -81,9 +102,10 @@ Stats.View.Chart = Class.extend({
         enabled: true
       },
       title: {
-        text: series_name
+        text: self.options.title || series_name
       },
       xAxis: {
+        minPadding: 1,
         type: 'datetime',
         dateTimeLabelFormats: { // don't display the dummy year
           month: '%e. %b',
@@ -129,13 +151,13 @@ Stats.View.Chart = Class.extend({
           }
         }
       },
-      yAxis: {
+      yAxis: self.options.yAxis || {
         title: {
           text: 'values'
         },
         min: 0
       },
-      tooltip: {
+      tooltip: self.options.tooltip || {
         formatter: function() {
           var timestamp = moment(this.x).format("MMM D, HH:mm:ss");
           return '<b>' + this.series.name + '</b><br/>' + timestamp + ': ' + this.y;
@@ -146,6 +168,10 @@ Stats.View.Chart = Class.extend({
 
     chart.view = self;
     chart.model_series = series_data;
+
+    if(self.showLastUpdated){
+      self.addLastUpdated(container);
+    }
 
     if(!self.liveChart){
       self.addRefreshButton(container.closest('li').find('h3'));
@@ -160,7 +186,7 @@ Stats.View.Chart = Class.extend({
 
   destroy: function(){
     var self = this;
-    if(this.highChart){
+    if(this.highChart && this.highChart.destroy){
       this.highChart.destroy();
       this.highChart = undefined;
     }
@@ -189,5 +215,14 @@ Stats.View.Chart = Class.extend({
       self.controller.show();
     });
     container.append(refreshButton);
+  },
+
+  addLastUpdated: function(container){
+    var lastUpdated = $("<span>", {"class":'pull-right last_update_text', text:"Last Updated: " + moment(this.model.lastUpdated()).format("h:mm:ss a")});
+    container.append(lastUpdated);
+  },
+
+  updateLastUpdated: function(container){
+    container.find(".last_update_text").text("Last Updated: " + moment(this.model.lastUpdated()).format("h:mm:ss a"));
   }
 });

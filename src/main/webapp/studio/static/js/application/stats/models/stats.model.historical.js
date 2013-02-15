@@ -219,11 +219,11 @@ Stats.Model.Historical = Stats.Model.Base.extend({
           "ts": ts
         };
 
-        if(opts.gauges && opts.gauges.key){
-          mockRow.gauges = [{
-            key: opts.gauges.key,
-            value: getRand(10000000, 20000000)
-          }];
+        if(opts.gauges && opts.gauges){
+          mockRow.gauges = [];
+          for(var p=0;p<opts.gauges.length;p++){
+            mockRow.gauges.push({key: opts.gauges[p].key, value: getRand(opts.gauges[p].min, opts.gauges[p].max)})
+          }
         }
 
         this._mock.results.push(mockRow);

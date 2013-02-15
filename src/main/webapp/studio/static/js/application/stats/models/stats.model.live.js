@@ -19,7 +19,7 @@ Stats.Model.Live = Stats.Model.Historical.extend({
           if(self.last_updated){
             //TODO: optimise me!!
             var index=0;
-            for(var i=0;i<results.length;i++){
+            for(var i=results.length - 1;i>=0; i--){
               if(results[i].ts === self.last_updated){
                 index = i + 1;
                 break;
@@ -82,6 +82,10 @@ Stats.Model.Live = Stats.Model.Historical.extend({
         this.onReceiveData[i](data);
       }
     }
+  },
+
+  lastUpdated: function(){
+    return this.last_updated;
   }
 
 });

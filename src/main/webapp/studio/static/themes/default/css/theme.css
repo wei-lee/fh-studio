@@ -2251,6 +2251,9 @@ line-height:0.5em;
   height: 250px;
   width: 100%;
 }
+.dashboard_resource_gauge {
+  width: 230px;
+}
 
 .dashboard_resource_gauge, .dashboard_resource_chart {
   height: 240px;
