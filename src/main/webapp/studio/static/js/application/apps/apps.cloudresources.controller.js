@@ -19,6 +19,7 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
 
   rendered_views:{},
   live_charts: {},
+  titleMap: {"Cpu_Pct":'CPU', "VmRSS": 'Memory', "Disk":"Storage"},
 
   init: function() {
     this._super();
@@ -114,8 +115,8 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
         if(model){
           self.renderChart(self.models.stats.gauge, type, pane);
         } else {
-          console.log("Couldn't load stats: " + model.name);
-          self.showNoData(type, pane);
+          console.log("Couldn't load stats");
+          self.showNoData(self.titleMap[type], pane);
         }
       });
       self.rendered_views[type+"_rendered"] = true;
@@ -151,18 +152,17 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
 
   renderChart: function(model, type, pane){
     var self = this;
-    var titleMap = {"Cpu_Pct":'CPU', "VmRSS": 'Memory', "Disk":"Storage"};
     var series = model.getSeries(type);
     console.log(series);
     if(series.all_series.length === 0){
-      self.showNoData(titleMap[type], pane);
+      self.showNoData(self.titleMap[type], pane);
       return;
     }
 
-    series.all_series[0].name = js_util.capitalise(titleMap[type]);
+    series.all_series[0].name = js_util.capitalise(self.titleMap[type]);
     var opts = {
       legend:{enabled:false},
-      title:  js_util.capitalise(titleMap[type]) + " Usage (Live)",
+      title:  js_util.capitalise(self.titleMap[type]) + " Usage (Live)",
       yAxis:{
         title:{text: null},
         min:0
@@ -388,6 +388,7 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
   },
 
   resetResource: function(type) {
+    var self = this;
     var reset = function(chart){
       var point = chart.series[0].points[0];
       point.update(0);
