@@ -12,6 +12,14 @@ StringUtil = function () {
     capitalise: function (word) {
       return word.substring(0, 1).toUpperCase() + word.substring(1, word.length);
     },
+
+    capitaliseWords: function(input){
+      var words = input.split(" ");
+      for(var i=0;i<words.length;i++){
+        words[i] = self.capitalise(words[i]);
+      }
+      return words.join(" ");
+    },
     
     /*
      * Takes an array of words to be concatenated and camel cased
@@ -60,7 +68,8 @@ StringUtil = function () {
     getFileExt: self.getFileExt,
     isBinaryExt: self.isBinaryExt,
     getFileNameFromPath: self.getFileNameFromPath,
-    camelCase: self.camelCase
+    camelCase: self.camelCase,
+    capitaliseWords: self.capitaliseWords
   };
 };
 // TODO: rename to string_util

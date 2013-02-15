@@ -67,6 +67,8 @@ $.extend(Constants, {
   SECURE_ENDPOINTS_REMOVE_OVERRIDE_URL: Constants.BASE_URL_PREFIX + "app/endpointsecurity/removeOverride",
   SECURE_ENDPOINTS_GET_AUDIT_LOG_URL: Constants.BASE_URL_PREFIX + "app/endpointsecurity/auditLog",
 
+  CLOUD_NOTIFICATIONS_LIST_URL: Constants.BASE_URL_PREFIX + "app/eventlog/listEvents",
+  CLOUD_NOTIFICATIONS_DISMISS_URL: Constants.BASE_URL_PREFIX + "app/eventlog/dismissEvents",
   KEY_LIST_URL: Constants.IDE_URL_PREFIX + "api/list",
   KEY_CREATE_URL: Constants.IDE_URL_PREFIX + "api/create",
   KEY_UPDATE_URL: Constants.IDE_URL_PREFIX + "api/update",
