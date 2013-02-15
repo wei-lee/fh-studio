@@ -399,7 +399,7 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
       return;
     } else {
       for(var c in this.gaugesCharts){
-        reset(c);
+        reset(this.gaugesCharts[c]);
       }
       $.each(['cpu', 'memory', 'storage'], function(k ,v){
         $('#resource_dashboard_'+v+'_container').find('.resource_live_stats_link_container').hide();
