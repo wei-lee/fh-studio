@@ -7,5 +7,6 @@ Reporting.Tab.Manager = Tab.Manager.extend({
   
   init: function() {
     this._super();
+    this.initFn = _.once(this.initBindings);
   }
 });

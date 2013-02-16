@@ -18,7 +18,7 @@ Tab.Manager = Class.extend({
     self.updateCrumbs.call(navList.find('li.active a')[0], self);
   },
 
-  initBindings: function () {
+  enableNav : function (){
     var self = this;
     var el = $('#' + this.id);
     var navList = el.find('.nav-list');
@@ -44,10 +44,17 @@ Tab.Manager = Class.extend({
         return false;
       });
     });
+  },
+
+  initBindings: function () {
+    var self = this;
+    var el = $('#' + this.id);
+    self.enableNav();
 
     // meh, lets start with first item
     // TODO: state stuff here
     el.find('.layout-content').show();
+    var navList = el.find('.nav-list');
     navList.find('li:visible a:eq(0)').trigger('click');
   },
 
@@ -81,6 +88,7 @@ Tab.Manager = Class.extend({
 
   // calls hide on all controllers
   hideAll: function () {
+    console.log(this.controllers);
     for (var key in this.controllers) {
       var temp = this.controllers[key];
       temp.hide();

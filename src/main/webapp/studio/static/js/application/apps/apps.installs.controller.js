@@ -15,6 +15,7 @@ Apps.Installs.Controller = Apps.Reports.Support.extend({
   container: null,
 
   init: function () {
+    console.log("init called for apps installs");
     this._super();
   },
 

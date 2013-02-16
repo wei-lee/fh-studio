@@ -78,8 +78,8 @@ Apps.Reports.Support = Apps.Controller.extend({
       var params, app, tempFDate, tempTDate, days, dest;
 
       tempFDate = container.find('.appreportfrom-datepicker').data('datepicker').date;
-      tempTDate = container.find('.appreportto-datepicker').data('datepicker').date;
 
+      tempTDate = container.find('.appreportto-datepicker').data('datepicker').date;
       days = self.daysBetweenDates(tempFDate, tempTDate);
       
       if (self.appid != null) {
@@ -138,7 +138,6 @@ Apps.Reports.Support = Apps.Controller.extend({
           var ri, rl, tempResult, options = [], values = [], results;
 
           results = result.payload.results;
-
           // If no apps, hide reporting and show message
           if (results.length === 0) {
             if ($('.metrics_no_apps_warning:visible').length === 0) {
@@ -191,7 +190,7 @@ Apps.Reports.Support = Apps.Controller.extend({
     
     // Set an id on the chart container, needed later
     chartContainer = container.find('.appreport-results').attr('id', container.attr('id') + '_chartcontainer');
-           
+    console.log(chartContainer, chartContainer.width());
     // Draw a chart for the specified params
     
     $fw.client.chart.insert('metrics', type, { dest: params.dest }, params, chartContainer, url, function (err) {

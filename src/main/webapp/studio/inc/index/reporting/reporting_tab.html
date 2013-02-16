@@ -1,94 +1,286 @@
-<div id="tabs-5">  
-  <div id="reporting_layout">
+<div id="tabs-5" xmlns="http://www.w3.org/1999/html">
+<style type="text/css">
+    .reportdashboard {
+        width: 99%;
+    }
 
-    <div class="row-fluid">
-      <ul class="breadcrumb"></ul>
-    </div>
+    .reportdashboard_div {
 
-    <div class="row-fluid">
-      <ul class="nav nav-list span2 well reporting_nav_list">
-        <li class="nav-header">Reports</li>
+        margin: 1px;
+        padding: 1px;
+    }
+
+    .reportdashboard_div_boarder {
+        border-right: solid #000000 1px;
+    }
+
+    .reportingdashboard_heading {
+        text-align: center;
+        font-size: 20px;
+        color: blue;
+        text-decoration: underline
+    }
+
+    .reportingdashboard_image_container {
+        margin: 10px;
+        border-bottom: solid #a9a9a9 1px;
+        height: 150px;
+    }
+
+    li.reportdashboard_link {
+        margin-right: 20px;
+    }
+
+    input.report {
+        margin-right: 25px;
+
+    }
+
+    .no-margin {
+        margin: 0px;
+    }
+
+    #reports_dashboard_container {
+        margin: 0px;
+    }
+
+    #reporting_form{
+        background-color: #a9a9a9;
+        padding: 3px;
+    }
+</style>
+<div id="reporting_layout">
+
+<div class="row-fluid">
+    <ul class="breadcrumb"></ul>
+</div>
+
+<div class="row-fluid">
+    <ul class="nav nav-list span2 well reporting_nav_list">
         <li>
-          <a href="#" data-controller="reporting.installs.controller">
-            <i class="icon-bar-chart"></i>
-            Installs
-          </a>
+            <a href="#" data-controller="reporting.dashboard.controller">
+                <i class="icon-bar-chart"></i>
+                Aggrigated
+            </a>
         </li>
         <li>
-          <a href="#" data-controller="reporting.startups.controller">
-            <i class="icon-bar-chart"></i>
-            Startups
-          </a>
+            <a href="#" data-controller="reporting.startups.controller">
+                <i class="icon-bar-chart"></i>
+                Per App
+            </a>
         </li>
-      </ul>
+    </ul>
 
-      <div class="span10">
-        <div id="reportingtabinstalls_container">
-          <div class="fh-box-outer">
-            <h4 class="fh-box-header">
-              Reports - App Installs
-            </h4>
-            <div class="fh-box-inner">
-              <ul class="nav nav-pills">
-                <li>
-                  <a href="#tab_installs_by_date" data-toggle="pill" data-action="byDate">By Date</a>
-                </li>
-                <li>
-                  <a href="#tab_installs_by_platform" data-toggle="pill" data-action="byPlatform">By Platform</a>
-                </li>
-                <li>
-                  <a href="#tab_installs_by_location" data-toggle="pill" data-action="byLocation">By Location</a>
-                </li>
-              </ul>
-              <div class="pill-content">
+    <div class="fh-box-outer span10">
+
+
+        <form class="form-inline" id="reporting_form">
+            <input type="submit" class="btn doReport" id="lastSevenDays" data-period="7" value="Last 7 days"/>
+            <input type="submit" class="btn doReport" id="lastThirtyDays" data-period="30"
+                   value="Last 30 days"/>
+
+            <label>From:</label>
+            <input type="date" class="inline">
+            <label>To:</label>
+            <input type="date" class="inline">
+            <input type="submit" class="btn doReport" value="go"/>
+
+        </form>
+        <div class="span12" id="reports_dashboard_container">
+            <form class="form-inline" >
+                <fieldset class="well">
+                    <legend>App Client</legend>
+                    <div class="span6 reportdashboard_div reportdashboard_div_boarder" style="margin: 3px;">
+                        <h4 class="reportingdashboard_heading interactive_heading" data-heading="Installs" data-metric="appinstalls" data-target="#report_graph"></h4>
+
+                        <div class="span11 reportingdashboard_image_container">
+                            <div class="span10" style="margin-left: 80px;">
+                                <ul class="nav nav-pills">
+                                    <li class="reportdashboard_link"><a class="interactive_heading" data-target="" href="#">By Date</a></li>
+                                    <li class="reportdashboard_link"><a class="interactive_heading" data-target="" href="#">By Platform</a></li>
+                                    <li class="reportdashboard_link"><a class="interactive_heading" data-target="" href="#">By Location</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="span12">
+                            <h4>Top 5 Apps</h4>
+                        </div>
+                        <table class="table table-striped reportdashboard" id="appinstallsdest">
+                        </table>
+                    </div>
+                    <div class="span6 reportdashboard_div" style="margin: 3px;">
+                        <h4 class="reportingdashboard_heading interactive_heading" data-heading="Start Ups" data-metric="appstartups"  data-target="#report_graph"></h4>
+
+                        <div class="span11 reportingdashboard_image_container">
+                            <div class="span10" style="margin-left: 80px;">
+                                <ul class="nav nav-pills">
+                                    <li class="reportdashboard_link"><a href="#">By Date</a></li>
+                                    <li class="reportdashboard_link"><a href="#">By Platform</a></li>
+                                    <li class="reportdashboard_link"><a href="#">By Location</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="span12">
+                            <h4>Top 5 Apps</h4>
+                        </div>
+                        <table class="table table-striped reportdashboard" id="appstartupsdest">
+                        </table>
+                    </div>
+                </fieldset>
+            </form>
+
+            <form class="form-inline">
+                <fieldset class="well">
+                    <legend>App Cloud</legend>
+
+                    <div class="span6 reportdashboard_div reportdashboard_div_boarder" style="margin: 3px;">
+                        <h4 class="reportingdashboard_heading interactive_heading" data-metric="appcloudcalls" data-target="#report_graph" data-heading="Requests"></h4>
+
+                        <div class="span11 reportingdashboard_image_container">
+                            <div class="span10" style="margin-left: 80px;">
+                                <ul class="nav nav-pills">
+                                    <li class="reportdashboard_link"><a href="#">By Date</a></li>
+                                    <li class="reportdashboard_link"><a href="#">By Platform</a></li>
+                                    <li class="reportdashboard_link"><a href="#">By Location</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="span12">
+                            <h4>Top 5 Apps</h4>
+                        </div>
+                        <table class="table table-striped reportdashboard" id="appcloudcallsdest">
+                        </table>
+                    </div>
+                    <div class="span6 reportdashboard_div" style="margin: 3px;">
+                        <h4 class="reportingdashboard_heading interactive_heading" data-heading="Active Users" data-metric="appcloudcalls" data-target="#report_graph"></h4>
+
+                        <div class="span11 reportingdashboard_image_container">
+                            <div class="span10" style="margin-left: 80px;">
+                                <ul class="nav nav-pills">
+                                    <li class="reportdashboard_link"><a href="#">By Date</a></li>
+                                    <li class="reportdashboard_link"><a href="#">By Platform</a></li>
+                                    <li class="reportdashboard_link"><a href="#">By Location</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="span12">
+                            <h4>Top 5 Apps</h4>
+                        </div>
+                        <table class="table table-striped reportdashboard" id="apptransactionsdest">
+                        </table>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+        <div class="span12 hide" id="report_graph" style="margin: 0px;">
+            <h4 align="center" id="graphType"></h4>
+            <form class="form-inline span12" style="margin: 0px;" >
+                <fieldset class="well span12">
+                    <legend>By Date</legend>
+                    <div class="report_by_date span12" id="bydate">
+                        <div class="span12 appreport-results"></div>
+                    </div>
+                </fieldset>
+            </form>
+            <form class="form-inline" style="margin: 0px;" >
+                <fieldset class="well">
+                    <legend>By Device</legend>
+                    <div class="report_by_device span12" id="bydevice">
+                        <div class="span12 appreport-results"></div>
+                    </div>
+                </fieldset>
+
+            </form>
+
+            <form class="form-inline" style="margin: 0px;" >
+                <fieldset class="well">
+                    <legend>By Location</legend>
+                    <div class="report_by_location">
+                        <div class="span12 appreport-results"></div>
+                    </div>
+                </fieldset>
+
+            </form>
+            <!--<div class="pill-content">
                 <div id="tab_installs_by_date" class="installs_by_date pill-pane">
-                <%@ include file="../apps/report_installsdate.html"%>
+                    <%@ include file="../apps/report_installsdate.html"%>
                 </div>
                 <div id="tab_installs_by_platform" class="installs_by_platform pill-pane">
-                <%@ include file="../apps/report_installsdest.html"%>
+                    <%@ include file="../apps/report_installsdest.html"%>
                 </div>
                 <div id="tab_installs_by_location" class="installs_by_location pill-pane">
-                <%@ include file="../apps/report_installsloc.html"%>
-                </div>
-              </div>
-            </div>
-          </div>
+                    <%@ include file="../apps/report_installsloc.html"%>
+                </div> -->
         </div>
+    </div>
 
-        <div id="reportingtabstartups_container">
-          <div class="fh-box-outer">
-            <h4 class="fh-box-header">
-              Reports - App Startups
-            </h4>
-            <div class="fh-box-inner">
-               <ul class="nav nav-pills">
-                <li>
-                  <a href="#tab_startups_by_date" data-toggle="pill" data-action="byDate">By Date</a>
-                </li>
-                <li>
-                  <a href="#tab_startups_by_platform" data-toggle="pill" data-action="byPlatform">By Platform</a>
-                </li>
-                <li>
-                  <a href="#tab_startups_by_location" data-toggle="pill" data-action="byLocation">By Location</a>
-                </li>
-              </ul>
-              <div class="pill-content">
-                <div id="tab_startups_by_date" class="startups_by_date pill-pane">
-                <%@ include file="../apps/report_startupsdate.html"%>
-                </div>
-                <div id="tab_startups_by_platform" class="startups_by_platform pill-pane">
-                <%@ include file="../apps/report_startupsdest.html"%>
-                </div>
-                <div id="tab_startups_by_location" class="startups_by_location pill-pane">
-                <%@ include file="../apps/report_startupsloc.html"%>
-                </div>
-              </div>
-            </div>
-          </div>
+
+</div>
+
+<!-- end report dashboard -->
+<!--<div id="reportingtabinstalls_container">
+  <div class="fh-box-outer">
+    <h4 class="fh-box-header">
+      Reports - App Installs
+    </h4>
+    <div class="fh-box-inner">
+      <ul class="nav nav-pills">
+        <li>
+          <a href="#tab_installs_by_date" data-toggle="pill" data-action="byDate">By Date</a>
+        </li>
+        <li>
+          <a href="#tab_installs_by_platform" data-toggle="pill" data-action="byPlatform">By Platform</a>
+        </li>
+        <li>
+          <a href="#tab_installs_by_location" data-toggle="pill" data-action="byLocation">By Location</a>
+        </li>
+      </ul>
+      <div class="pill-content">
+        <div id="tab_installs_by_date" class="installs_by_date pill-pane">
+        <%@ include file="../apps/report_installsdate.html"%>
         </div>
-
+        <div id="tab_installs_by_platform" class="installs_by_platform pill-pane">
+        <%@ include file="../apps/report_installsdest.html"%>
+        </div>
+        <div id="tab_installs_by_location" class="installs_by_location pill-pane">
+        <%@ include file="../apps/report_installsloc.html"%>
+        </div>
       </div>
-
     </div>
   </div>
+</div>-->
+
+<!--   <div id="reportingtabstartups_container">
+     <div class="fh-box-outer">
+       <h4 class="fh-box-header">
+         Reports - App Startups
+       </h4>
+       <div class="fh-box-inner">
+          <ul class="nav nav-pills">
+           <li>
+             <a href="#tab_startups_by_date" data-toggle="pill" data-action="byDate">By Date</a>
+           </li>
+           <li>
+             <a href="#tab_startups_by_platform" data-toggle="pill" data-action="byPlatform">By Platform</a>
+           </li>
+           <li>
+             <a href="#tab_startups_by_location" data-toggle="pill" data-action="byLocation">By Location</a>
+           </li>
+         </ul>
+         <div class="pill-content">
+           <div id="tab_startups_by_date" class="startups_by_date pill-pane">
+           <%@ include file="../apps/report_startupsdate.html"%>
+           </div>
+           <div id="tab_startups_by_platform" class="startups_by_platform pill-pane">
+           <%@ include file="../apps/report_startupsdest.html"%>
+           </div>
+           <div id="tab_startups_by_location" class="startups_by_location pill-pane">
+           <%@ include file="../apps/report_startupsloc.html"%>
+           </div>
+         </div>
+       </div>
+     </div>
+   </div>-->
+
+</div>
 </div>
