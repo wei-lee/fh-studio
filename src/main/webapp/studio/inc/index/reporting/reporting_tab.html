@@ -78,11 +78,12 @@
             <input type="submit" class="btn doReport" id="lastSevenDays" data-period="7" value="Last 7 days"/>
             <input type="submit" class="btn doReport" id="lastThirtyDays" data-period="30"
                    value="Last 30 days"/>
+            <input class="metric" name="metric" type="hidden" value="dashboard" />
 
             <label>From:</label>
-            <input type="date" class="inline">
+            <input type="date" name="from" class="inline">
             <label>To:</label>
-            <input type="date" class="inline">
+            <input type="date" name="to" class="inline">
             <input type="submit" class="btn doReport" value="go"/>
 
         </form>
@@ -91,7 +92,7 @@
                 <fieldset class="well">
                     <legend>App Client</legend>
                     <div class="span6 reportdashboard_div reportdashboard_div_boarder" style="margin: 3px;">
-                        <h4 class="reportingdashboard_heading interactive_heading" data-heading="Installs" data-metric="appinstalls" data-target="#report_graph"></h4>
+                        <h4 class="reportingdashboard_heading interactive_heading" id="domaininstallsdest" data-heading="Installs" data-controller="reporting.installs.controller" data-target="#report_graph"></h4>
 
                         <div class="span11 reportingdashboard_image_container">
                             <div class="span10" style="margin-left: 80px;">
@@ -109,7 +110,7 @@
                         </table>
                     </div>
                     <div class="span6 reportdashboard_div" style="margin: 3px;">
-                        <h4 class="reportingdashboard_heading interactive_heading" data-heading="Start Ups" data-metric="appstartups"  data-target="#report_graph"></h4>
+                        <h4 class="reportingdashboard_heading interactive_heading" id="domainstartupsdest" data-controller="reporting." data-heading="Start Ups" data-metric="appstartups"  data-target="#report_graph"></h4>
 
                         <div class="span11 reportingdashboard_image_container">
                             <div class="span10" style="margin-left: 80px;">
@@ -134,7 +135,7 @@
                     <legend>App Cloud</legend>
 
                     <div class="span6 reportdashboard_div reportdashboard_div_boarder" style="margin: 3px;">
-                        <h4 class="reportingdashboard_heading interactive_heading" data-metric="appcloudcalls" data-target="#report_graph" data-heading="Requests"></h4>
+                        <h4 class="reportingdashboard_heading interactive_heading" id="domainrequestsdest" data-controller="reporting.requests.controller"  data-target="#report_graph" data-heading="Requests"></h4>
 
                         <div class="span11 reportingdashboard_image_container">
                             <div class="span10" style="margin-left: 80px;">
@@ -152,7 +153,7 @@
                         </table>
                     </div>
                     <div class="span6 reportdashboard_div" style="margin: 3px;">
-                        <h4 class="reportingdashboard_heading interactive_heading" data-heading="Active Users" data-metric="appcloudcalls" data-target="#report_graph"></h4>
+                        <h4 class="reportingdashboard_heading interactive_heading" id="domaintransactionsdest" data-heading="Active Users" data-metric="appcloudcalls" data-target="#report_graph"></h4>
 
                         <div class="span11 reportingdashboard_image_container">
                             <div class="span10" style="margin-left: 80px;">

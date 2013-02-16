@@ -28,6 +28,22 @@ Apps.Reports.Support = Apps.Controller.extend({
     $(".appreport-results").empty();
   },
 
+  buildParams : function (id, days, metric,num){
+    var self = this;
+    var to = new Date();
+    var from = moment().subtract('days',days);
+    from = new Date(from);
+    to =  self.splitDate(to);
+    from = self.splitDate(from);
+    return  {
+      "id":id || $fw.getClientProp("domain"),
+      "metric":metric,
+      "from":from,
+      "to":to,
+      "num":num || 0
+    };
+  },
+
   show: function(container){
     this._super();
 

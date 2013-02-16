@@ -292,21 +292,63 @@
       ,{"_id":{"appid":"sampleid","ts":1315414801597},"value":{"Ireland":5400,"United States":6691,"United Kingdom":3903,"Canada":2482,"Spain":1992,"France":2434,"Germany":1295,"Australia":3040,"China":3277,"Russia":1688}}
       ,{"_id":{"appid":"sampleid","ts":1315501201597},"value":{"Ireland":5156,"United States":6556,"United Kingdom":4205,"Canada":2379,"Spain":2026,"France":2493,"Germany":1340,"Australia":3449,"China":3971,"Russia":1730}}]},
 
-      domaininstallsdest:
+      domaininstallsdest:{"sampleid":
         [
           {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:200, android:100, blackberry:50}},
-          {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:500, android:150, blackberry:75}}
-        ],
+          {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:500, android:150, blackberry:75}},
+          {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:500, android:150, blackberry:75}},
+          {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:500, android:150, blackberry:75}},
+          {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:500, android:150, blackberry:75}},
+          {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:1500, android:600, blackberry:100}},
+          {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:1000, android:800, blackberry:200}},
+          {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:2000, android:200, blackberry:200}},
+          {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:3000, android:400, blackberry:200}},
+          {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:5000, android:800, blackberry:200}}
+
+        ]},
       domaininstallsgeo:
         [
           {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1000, us:10000, china:100000}},
           {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:500, japan:750, indiA:200}}
         ],
-      domaintransactionsdest:
+      domaintransactionsdest:{"sampleid":
         [
           {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:1500, android:600, blackberry:100}},
-          {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:3000, android:800, blackberry:200}}
-        ],
+          {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:1000, android:800, blackberry:200}},
+          {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:2000, android:200, blackberry:200}},
+          {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:3000, android:400, blackberry:200}},
+          {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:5000, android:800, blackberry:200}},
+          {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:1500, android:600, blackberry:100}},
+          {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:1000, android:800, blackberry:200}},
+          {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:2000, android:200, blackberry:200}},
+          {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:3000, android:400, blackberry:200}},
+          {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:5000, android:800, blackberry:200}}
+        ]},
+      domainstartupsdest:{"sampleid":[
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:1500, android:600, blackberry:100}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:3000, android:800, blackberry:200}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:1000, android:800, blackberry:200}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:3000, android:800, blackberry:200}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:8000, android:800, blackberry:200}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:1500, android:600, blackberry:100}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:1000, android:800, blackberry:200}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:2000, android:200, blackberry:200}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:3000, android:400, blackberry:200}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:5000, android:800, blackberry:200}}
+      ]},
+
+      domainrequestsdest:{"sampleid":[
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:1500, android:600, blackberry:100}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:3000, android:800, blackberry:200}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:3000, android:600, blackberry:200}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:3000, android:400, blackberry:200}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:2000, android:800, blackberry:200}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:1500, android:600, blackberry:100}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:1000, android:800, blackberry:200}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:2000, android:200, blackberry:200}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:3000, android:400, blackberry:200}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:5000, android:800, blackberry:200}}
+      ]},
       domaintransactionsgeo:
         [
           {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:550, us:1500, china:60}},
