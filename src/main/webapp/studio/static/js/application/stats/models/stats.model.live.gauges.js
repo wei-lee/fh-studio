@@ -16,7 +16,6 @@ Stats.Model.Live.Gauges = Stats.Model.Live.extend({
     console.log("data length is " + data.length);
 
     this.transformedData = self._convertData(data);
-    console.log(this.transformedData);
 
     return this.transformedData;
   },

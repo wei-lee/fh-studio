@@ -162,10 +162,16 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
     series.all_series[0].name = js_util.capitalise(self.titleMap[type]);
     var opts = {
       legend:{enabled:false},
-      title:  js_util.capitalise(self.titleMap[type]) + " Usage (Live)",
+      title:  js_util.capitalise(self.titleMap[type]) + " Usage (Real Time)",
       yAxis:{
         title:{text: null},
-        min:0
+        min:0,
+        max: self.maxValues[type],
+        labels: {
+          formatter: function(){
+            return this.value + "%";
+          }
+        }
       },
       tooltip: {
         formatter: function() {
@@ -200,7 +206,9 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
       renderTo: pane,
       live: true,
       options:opts,
-      showLastUpdated: true
+      showLastUpdated: true,
+      showDataTable: true,
+      maxValue: self.maxValues[type]
     });
     chartView.render();
     self.live_charts[type] = chartView;
@@ -246,6 +254,7 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
         var maxCpu = 100;
         var maxMem = self.bytesToMB(dynoresources.max.mem);
         var maxDisk = self.bytesToMB(dynoresources.max.disk);
+        self.maxValues = {"VmRSS": dynoresources.max.mem/1000, "Disk": dynoresources.max.disk/1000, "Cpu_Pct": 100};
         var currentCpu = self.getCurrentResourceUsage(model, "Cpu_Pct", 1);
         var currentMemory = self.bytesToMB(self.getCurrentResourceUsage(model, "VmRSS", 1)*1000);
         var currentDisk = self.bytesToMB(self.getCurrentResourceUsage(model, "Disk", 1)*1000);
@@ -302,6 +311,8 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
               tickLength: 0
             },
             yAxis: {
+              min: 0,
+              max: self.maxValues[v],
               lineWidth: 0,
               minorGridLineWidth: 0,
               lineColor: 'transparent',
