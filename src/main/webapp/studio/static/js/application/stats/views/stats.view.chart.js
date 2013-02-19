@@ -293,7 +293,7 @@ Stats.View.Chart = Class.extend({
         } else {
           $('td:eq(1)', nRow).html(aData[1]/1000 + "MB");
         }
-        $('td:eq(2)', nRow).html("<div class='progress'><div class='bar' style='width:"+ aData[2] + "%" + " '></div></div>");
+        $('td:eq(2)', nRow).html("<div class='progress'><div class='bar' style='width:"+ aData[2] + "%" + " '></div><span class='progress_bar_text'>"+js_util.toFixed(aData[2],2)+"%</span></div>");
       }
     });
     container.append($("<input>", {id:"table_min_filter", "class":'hidden', "type":"text"})).append($("<input>", {id:"table_max_filter","class":'hidden', "type":"text"}));
@@ -349,7 +349,7 @@ $(document).ready(function(){
           var container = $('#cloudresources_container').find('.pill-pane.active');
           var minEl = container.find('#table_min_filter');
           var maxEl = container.find('#table_max_filter');
-          if(minEl.length === 1 && maxEl.length === 1){
+          if(minEl.length === 1 && maxEl.length === 1 && minEl.val() !== "" && maxEl.val() !== ""){
             var minValue = $(minEl, container).val()*1;
             var maxValue = $(maxEl, container).val()*1;
             var currentValue = aData[columnIndex] == "-" ? 0 : aData[columnIndex]*1;

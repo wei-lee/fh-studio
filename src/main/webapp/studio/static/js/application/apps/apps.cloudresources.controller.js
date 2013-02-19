@@ -421,10 +421,7 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
   },
 
   bytesToMB: function(bytes) {
-    function toFixed(num, precision) {
-      return num.toFixed != null ? num.toFixed(precision) : num;
-    }
-    return parseInt(toFixed(bytes / 1000 / 1000), 10);
+    return parseInt(js_util.toFixed(bytes / 1000 / 1000), 10);
   },
 
   initialiseGaugeChart: function(type, container, options, loading) {

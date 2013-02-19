@@ -60,6 +60,10 @@ StringUtil = function () {
             }
         }
         return null;
+    },
+
+    toFixed: function(num, precision){
+      return num.toFixed != null ? num.toFixed(precision) : num;
     }
   };
   
@@ -69,7 +73,8 @@ StringUtil = function () {
     isBinaryExt: self.isBinaryExt,
     getFileNameFromPath: self.getFileNameFromPath,
     camelCase: self.camelCase,
-    capitaliseWords: self.capitaliseWords
+    capitaliseWords: self.capitaliseWords,
+    toFixed: self.toFixed
   };
 };
 // TODO: rename to string_util

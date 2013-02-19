@@ -1277,6 +1277,13 @@ span.label-info {
 {
   
 }
+
+.progress_bar_text {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding-top: 3px;
+}
 /* Codemirror */
 .CodeMirror-line-numbers
 {
