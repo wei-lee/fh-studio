@@ -19,6 +19,7 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
 
   rendered_views:{},
   live_charts: {},
+  dashboard_charts: {},
   titleMap: {"Cpu_Pct":'CPU', "VmRSS": 'Memory', "Disk":"Storage"},
 
   init: function() {
@@ -62,8 +63,16 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
         this.live_charts[c].destroy();
       }
     }
+    if(this.dashboard_charts){
+      for(var p in this.dashboard_charts){
+        if(this.dashboard_charts.hasOwnProperty(p)){
+          this.dashboard_charts[p].destroy();
+        }
+      }
+    }
     this.gaugesCharts = {};
     this.live_charts = {};
+    this.dashboard_charts = {};
     $(this.container).find('.resource_live_stats_link_container').hide();
   },
 
@@ -102,8 +111,20 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
       $('.cloud_refresh_button', $(this.container)).trigger('click');
       this.dashboard_rendered = true;
     } else {
+      //need to set the size of the charts on dashboard page incase the page has been resized
       for(var chart in this.gaugesCharts){
+        var container = $('#resource_dashboard_' + chart + '_container', this.conatiner).find('.dashboard_resource_gauge')[0];
+        var width = container.offsetWidth;
+        var height = container.offsetHeight;
+        this.gaugesCharts[chart].setSize(width, height, false);
         this.gaugesCharts[chart].redraw();
+      }
+      for(var c in this.dashboard_charts){
+        var container1 = $('#resource_dashboard_' + c + '_container', this.conatiner).find('.dashboard_resource_chart')[0];
+        var width1 = container1.offsetWidth;
+        var height1 = container1.offsetHeight;
+        this.dashboard_charts[c].setSize(width1, height1, false);
+        this.dashboard_charts[c].redraw();
       }
     }
   },
@@ -121,6 +142,7 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
       });
       self.rendered_views[type+"_rendered"] = true;
     } else {
+      self.live_charts[type].resizeView(pane);
       self.live_charts[type].highChart.redraw();
     }
   },
@@ -335,6 +357,9 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
             },
             series: series
           });
+
+          self.dashboard_charts[k] = chart;
+
         });
       }
       cb();

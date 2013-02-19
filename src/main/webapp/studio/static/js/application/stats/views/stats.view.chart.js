@@ -70,12 +70,12 @@ Stats.View.Chart = Class.extend({
           self.updateListener = function(data){
             var series = chart.series[0];
             var dataToAdd = data[self.series_name].series[self.series_name].data;
-            if(container.parents(":hidden").length > 0){
+            //if(container.parents(":hidden").length > 0){
               //this view is hidden, do not add the point to the chart as it may cause the labels of yAxis to be missing.
               //instead, put it in the buffer
-              console.log("chart is hidden, add to the buffer. name: " + self.series_name);
-              self.buffer = self.buffer.concat(dataToAdd);
-            } else {
+              //console.log("chart is hidden, add to the buffer. name: " + self.series_name);
+              //self.buffer = self.buffer.concat(dataToAdd);
+            //} else {
               if(self.buffer.length > 0){
                 dataToAdd = self.buffer.concat(dataToAdd);
               }
@@ -91,7 +91,7 @@ Stats.View.Chart = Class.extend({
               if(self.showLastUpdated){
                 self.updateLastUpdated(container);
               }
-            }
+            //}
           };
           self.model.addListener(self.updateListener);
         }
@@ -206,6 +206,10 @@ Stats.View.Chart = Class.extend({
     self.highChart = chart;
     self.startXValue = chart.xAxis[0].getExtremes().min;
 
+    $(window).bind('resize', function(){
+      self.resizeView(container);
+    });
+
   },
 
   destroy: function(){
@@ -268,7 +272,7 @@ Stats.View.Chart = Class.extend({
   addDataTable: function(container){
     var self = this;
     var data = self.series[0].data;
-    var wrapper = $("<div>", {"class":"row-fluid"});
+    var wrapper = $("<div>", {"class":"row-fluid data_table_wrapper"});
     var table = $("<table>", {"class":"table table-bordered table-striped", "cellpadding": 0, "cellspacing": 0});
     var tableColumn = [{'sTitle':'Time', 'sType':'date'}, {'sTitle':'Value'}, {'sTitle':'Percent'}, {'sTitle':'TS','bVisible':false, 'sType':'date_range'}];
     var tableData = [];
@@ -293,7 +297,7 @@ Stats.View.Chart = Class.extend({
         } else {
           $('td:eq(1)', nRow).html(aData[1]/1000 + "MB");
         }
-        $('td:eq(2)', nRow).html("<div class='progress'><div class='bar' style='width:"+ aData[2] + "%" + " '></div><span class='progress_bar_text'>"+js_util.toFixed(aData[2],2)+"%</span></div>");
+        $('td:eq(2)', nRow).html("<div class='progress' style='position: relative'><span class='progress_bar_text'>"+js_util.toFixed(aData[2],2)+"%</span><div class='bar' style='width:"+ aData[2] + "%" + " '></div></div>");
       }
     });
     container.append($("<input>", {id:"table_min_filter", "class":'hidden', "type":"text"})).append($("<input>", {id:"table_max_filter","class":'hidden', "type":"text"}));
@@ -337,6 +341,15 @@ Stats.View.Chart = Class.extend({
 
   updateLastUpdated: function(container){
     container.find(".last_update_text").text("Last Updated: " + moment(this.model.lastUpdated()).format("h:mm:ss a"));
+  },
+
+  resizeView: function(container){
+    if($(container).parents(':hidden').length === 0 ){
+      //the view is not hidden, resize the chart
+      if(this.highChart){
+        this.highChart.setSize(container.width(), container.height(), false);
+      }
+    }
   }
 });
 
