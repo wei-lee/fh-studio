@@ -95,7 +95,7 @@ Stats.View.Chart = Class.extend({
           };
           self.model.addListener(self.updateListener);
         }
-      }
+      };
     }
 
     var chart = new Highcharts.Chart({
@@ -354,15 +354,15 @@ $(document).ready(function(){
             var maxValue = $(maxEl, container).val()*1;
             var currentValue = aData[columnIndex] == "-" ? 0 : aData[columnIndex]*1;
 
-            if ( minValue == "" && maxValue == "" )
+            if ( minValue ==="" && maxValue === "" )
             {
               return true;
             }
-            else if ( minValue == "" && currentValue < maxValue )
+            else if ( minValue === "" && currentValue < maxValue )
             {
               return true;
             }
-            else if ( minValue < currentValue && "" == maxValue )
+            else if ( minValue < currentValue && "" === maxValue )
             {
               return true;
             }
