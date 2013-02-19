@@ -425,7 +425,7 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
           cb("error loading model");
         }
       });
-    }
+    };
     self.models.deploy.current(guid, cloudEnv, function(current_target){
       self.currentDeployTarget = current_target;
       if(current_target.fields.target.toLowerCase() === "feedhenry"){
