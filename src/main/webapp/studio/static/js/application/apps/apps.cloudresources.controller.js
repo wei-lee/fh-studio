@@ -272,6 +272,12 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
       }
       if(results.length  === 2){
         var dynoresources = results[0];
+        if(!dynoresources || typeof dynoresources.max === "undefined" || typeof dynoresources.usage === "undefined"){
+          self.showAlert('error', 'Error getting resource data. Please make sure your App is deployed to \'' + cloudEnv + '\' environment.');
+          self.resetResource();
+          cb();
+          return;
+        }
         var model = results[1];
         var maxCpu = 100;
         var maxMem = self.bytesToMB(dynoresources.max.mem);

@@ -70,12 +70,12 @@ Stats.View.Chart = Class.extend({
           self.updateListener = function(data){
             var series = chart.series[0];
             var dataToAdd = data[self.series_name].series[self.series_name].data;
-            //if(container.parents(":hidden").length > 0){
+            if(container.parents(":hidden").length > 0){
               //this view is hidden, do not add the point to the chart as it may cause the labels of yAxis to be missing.
               //instead, put it in the buffer
-              //console.log("chart is hidden, add to the buffer. name: " + self.series_name);
-              //self.buffer = self.buffer.concat(dataToAdd);
-            //} else {
+              console.log("chart is hidden, add to the buffer. name: " + self.series_name);
+              self.buffer = self.buffer.concat(dataToAdd);
+            } else {
               if(self.buffer.length > 0){
                 dataToAdd = self.buffer.concat(dataToAdd);
               }
@@ -91,7 +91,7 @@ Stats.View.Chart = Class.extend({
               if(self.showLastUpdated){
                 self.updateLastUpdated(container);
               }
-            //}
+            }
           };
           self.model.addListener(self.updateListener);
         }
@@ -347,7 +347,12 @@ Stats.View.Chart = Class.extend({
     if($(container).parents(':hidden').length === 0 ){
       //the view is not hidden, resize the chart
       if(this.highChart){
-        this.highChart.setSize(container.width(), container.height(), false);
+        //try{
+          this.highChart.setSize(container.width(), container.height(), false);
+        //}catch(e){
+        //  this.highChart.redraw();
+        //}
+
       }
     }
   }
