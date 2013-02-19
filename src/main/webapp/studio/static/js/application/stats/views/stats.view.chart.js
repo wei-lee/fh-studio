@@ -183,7 +183,7 @@ Stats.View.Chart = Class.extend({
       series: series_data
     });
 
-    //chart.view = self;
+    chart.view = self;
     chart.model_series = series_data;
 
     if(self.showLastUpdated){
