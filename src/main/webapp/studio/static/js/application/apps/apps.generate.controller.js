@@ -273,6 +273,8 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
     var title = "Generating Your App";
     var message = "We're generating your app...";
 
+    var name = $('.wufoo_app_name:visible').val();
+
     self.showProgressModal(title, message, function () {
       self.clearProgressModal();
       self.appendProgressLog('Cloning Wufoo app template.');
@@ -280,7 +282,8 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
       // Import template & configure
       var import_url = Constants.IMPORT_APP_VIA_URL;
       params = {
-        url: self.template_url
+        url: self.template_url,
+        title: name
       };
 
       $fw.server.post(import_url, params, function(res) {
