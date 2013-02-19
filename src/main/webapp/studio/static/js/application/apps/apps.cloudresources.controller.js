@@ -10,7 +10,8 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
   // ✈
   models: {
     appresource: new model.AppResource(),
-    stats:{}
+    stats:{},
+    deploy: new model.Deploy()
   },
 
   views: {
@@ -21,6 +22,7 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
   live_charts: {},
   dashboard_charts: {},
   titleMap: {"Cpu_Pct":'CPU', "VmRSS": 'Memory', "Disk":"Storage"},
+  currentDeployTarget: null,
 
   init: function() {
     this._super();
@@ -96,11 +98,14 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
     $('.cloud_refresh_button', jqContainer).bind('click', function(e) {
       e.preventDefault();
       e.stopPropagation();
+
+      $(self.container).find('.nav-pills li:gt(0)').addClass("disabled");
       var jqEl = $(this);
 
       jqEl.addClass('disabled').find('span').text('Refreshing...');
 
       self.renderDashboardPage(function() {
+        $(self.container).find('.nav-pills li:gt(0)').removeClass("disabled");
         jqEl.removeClass('disabled').find('span').text('Refresh');
       });
     });
@@ -132,6 +137,10 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
   renderLiveChart: function(type, pane){
     var self = this;
     if(!self.rendered_views[type+"_rendered"]){
+      if(self.currentDeployTarget.fields.target.toLowerCase() !== "feedhenry"){
+        self.showNoData(self.titleMap[type], pane);
+        return;
+      }
       self.getModel(function(model){
         if(model){
           self.renderChart(self.models.stats.gauge, type, pane);
@@ -230,7 +239,8 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
       options:opts,
       showLastUpdated: true,
       showDataTable: true,
-      maxValue: self.maxValues[type]
+      maxValue: self.maxValues[type],
+      showResetButton: true
     });
     chartView.render();
     self.live_charts[type] = chartView;
@@ -239,7 +249,7 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
   showNoData: function(type, pane){
     var failed = $("<li>", {
       "class": "load_failed",
-      text: "No "+ type + " data is currently available for this app."
+      text: "No real time "+ type + " data is currently available for this app."
     });
     $(pane).empty().append(failed);
   },
@@ -282,15 +292,15 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
         var maxCpu = 100;
         var maxMem = self.bytesToMB(dynoresources.max.mem);
         var maxDisk = self.bytesToMB(dynoresources.max.disk);
-        self.maxValues = {"VmRSS": dynoresources.max.mem/1000, "Disk": dynoresources.max.disk/1000, "Cpu_Pct": 100};
-        var currentCpu = self.getCurrentResourceUsage(model, "Cpu_Pct", 1);
-        var currentMemory = self.bytesToMB(self.getCurrentResourceUsage(model, "VmRSS", 1)*1000);
-        var currentDisk = self.bytesToMB(self.getCurrentResourceUsage(model, "Disk", 1)*1000);
-        if(!self.enabled_live_app_resources){
-          currentCpu = dynoresources.usage.cpu;
-          currentMemory = self.bytesToMB(dynoresources.usage.mem);
-          currentDisk = self.bytesToMB(dynoresources.usage.disk);
+        var currentCpu = dynoresources.usage.cpu;
+        var currentMemory = self.bytesToMB(dynoresources.usage.mem);
+        var currentDisk = self.bytesToMB(dynoresources.usage.disk);
+        if(self.enabled_live_app_resources && !model.error){
+          currentCpu = self.getCurrentResourceUsage(model, "Cpu_Pct", 1);
+          currentMemory = self.bytesToMB(self.getCurrentResourceUsage(model, "VmRSS", 1)*1000);
+          currentDisk = self.bytesToMB(self.getCurrentResourceUsage(model, "Disk", 1)*1000);
         }
+        self.maxValues = {"VmRSS": dynoresources.max.mem/1000, "Disk": dynoresources.max.disk/1000, "Cpu_Pct": 100};
         self.updateGaugeChartValue('cpu', currentCpu, null, resources.cpu.unit);
         self.updateGaugeChartValue('memory', currentMemory, maxMem, resources.memory.unit);
         self.updateGaugeChartValue('storage', currentDisk, maxDisk, resources.storage.unit);
@@ -298,6 +308,10 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
         $.each(statsnamemap, function(k, v){
           var typename = js_util.capitalise(k);
           var container = $('#resource_dashboard_'+k+'_container').find('.dashboard_resource_chart');
+          if(model.error){
+            self.showNoData(typename, container);
+            return;
+          }
           var series = model.getSeries(v).all_series;
           if(series.length === 0){
             self.showNoData(typename, container);
@@ -401,13 +415,30 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
 
   loadStatsDataForDashboard: function(resources, callback){
     var self = this;
-    self.getModel(function(model){
-      if(model){
-        callback(undefined, model);
+    var guid = $fw.data.get('inst').guid;
+    var cloudEnv = $fw.data.get('cloud_environment');
+    var getModel = function(cb){
+      self.getModel(function(model){
+        if(model){
+          cb(undefined, model);
+        } else {
+          cb("error loading model");
+        }
+      });
+    }
+    self.models.deploy.current(guid, cloudEnv, function(current_target){
+      self.currentDeployTarget = current_target;
+      if(current_target.fields.target.toLowerCase() === "feedhenry"){
+        return getModel(callback);
       } else {
-        callback("error loading model");
+        self.showAlert('warning', "Deploy target " + current_target.fields.target + " is not supported to get real time stats data.");
+        callback(undefined, {error: "Invalid deploy target"});
       }
+    }, function(){
+      //failed to find current active deploy target, there should be no stats data anyway, continue on
+      return getModel(callback);
     });
+
   },
 
   updateGaugeChartValue: function(type, value, max, unit){

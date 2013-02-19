@@ -14,6 +14,7 @@ Stats.View.Chart = Class.extend({
   buffer:[],
   showDataTable: false,
   maxValue: null,
+  showResetButton: false,
 
   init: function(params) {
     this.controller = params.controller;
@@ -36,6 +37,9 @@ Stats.View.Chart = Class.extend({
     }
     if(params.maxValue){
       this.maxValue = params.maxValue;
+    }
+    if(params.showResetButton){
+      this.showResetButton = params.showResetButton;
     }
     console.log('Initialising chart view');
   },
@@ -194,7 +198,9 @@ Stats.View.Chart = Class.extend({
       self.addDataTable(container.parent());
     }
 
-    self.addResetZoomButton(container);
+    if(self.showResetButton){
+      self.addResetZoomButton(container);
+    }
 
     if(!self.liveChart){
       self.addRefreshButton(container.closest('li').find('h3'));
