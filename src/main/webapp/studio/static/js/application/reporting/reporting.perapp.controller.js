@@ -13,6 +13,12 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
   },
 
   views: {
+    //those views will be hidden initially
+    report_per_app: '#reports_per_app_container',
+    app_list_table: '#reports_per_app_container #reports_per_app_all_apps_table',
+  },
+
+  viewnames: {
     report_per_app: '#reports_per_app_container',
     app_list_table: '#reports_per_app_container #reports_per_app_all_apps_table',
     do_report_btn: '.doReport',
@@ -22,12 +28,12 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
 
   show: function () {
     var self = this;
-    var ele = $(self.views.report_per_app);
+    var ele = $(self.viewnames.report_per_app);
     ele.show();
-    $(self.views.loading_indicator).show();
-    $(self.views.app_list_table).hide();
-    $(self.views.app_summary_metrics_container).show();
-    $(self.views.do_report_btn).addClass('disabled').unbind('click').bind('click', function(e){
+    $(self.viewnames.loading_indicator).show();
+    $(self.viewnames.app_list_table).hide();
+    $(self.viewnames.app_summary_metrics_container).show();
+    $(self.viewnames.do_report_btn).addClass('disabled').unbind('click').bind('click', function(e){
       e.preventDefault();
       var appGuid = $(this).data('selected_app');
       if(appGuid){
@@ -40,7 +46,7 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
   loadAppList: function(){
     var self = this;
     self.model.app.listMyApps(function(res) {
-      self.renderAppListing(self.views.app_list_table, res);
+      self.renderAppListing(self.viewnames.app_list_table, res);
     }, function() {
       // Failure
     }, true);
@@ -48,7 +54,7 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
 
   renderAppListing: function(table, data){
     var self = this;
-    $(self.views.loading_indicator).hide();
+    $(self.viewnames.loading_indicator).hide();
     self.appListTable = $(table).removeClass('hidden').show().dataTable({
       "bDestroy": true,
       "bAutoWidth": false,
@@ -83,7 +89,7 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
 
       var guid = data[6];
       $('td:lt(6)', row).addClass('app_title').unbind().click(function(){
-        $(self.views.do_report_btn).removeClass('disabled').data('selected_app',guid);
+        $(self.viewnames.do_report_btn).removeClass('disabled').data('selected_app',guid);
         self.showSummaryMetrics(guid);
       });
     }
@@ -91,8 +97,8 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
 
   showSummaryMetrics: function(appGuid){
     var self = this;
-    var summaryMetricsContainer = $(self.views.app_summary_metrics_container);
-    var period = $(self.views.do_report_btn).data('period');
+    var summaryMetricsContainer = $(self.viewnames.app_summary_metrics_container);
+    var period = $(self.viewnames.do_report_btn).data('period');
     summaryMetricsContainer.empty();
   }
 });
