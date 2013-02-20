@@ -28,6 +28,8 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
     this._super();
     this.enabled_live_app_resources = $fw.getClientProp('live-app-resource-enabled') == null ? true : ($fw.getClientProp('live-app-resource-enabled') == 'true');
     this.initFn = _.once(this.initBindings);
+    this.cfPollInterval = 10000;
+    this.cfTimer = null;
   },
 
   show: function() {
@@ -76,6 +78,8 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
     this.live_charts = {};
     this.dashboard_charts = {};
     $(this.container).find('.resource_live_stats_link_container').hide();
+
+    if (this.cfTimer) clearInterval(this.cfTimer);
   },
 
   initBindings: function() {
@@ -137,7 +141,8 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
   renderLiveChart: function(type, pane){
     var self = this;
     if(!self.rendered_views[type+"_rendered"]){
-      if(self.currentDeployTarget.fields.target.toLowerCase() !== "feedhenry"){
+      if(self.currentDeployTarget.fields.target.toLowerCase() !== "feedhenry" &&
+         self.currentDeployTarget.fields.target.toLowerCase() !== "cloudfoundry" ){
         self.showNoData(self.titleMap[type], pane);
         return;
       }
@@ -429,6 +434,15 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
     self.models.deploy.current(guid, cloudEnv, function(current_target){
       self.currentDeployTarget = current_target;
       if(current_target.fields.target.toLowerCase() === "feedhenry"){
+        return getModel(callback);
+      } else if(current_target.fields.target.toLowerCase() === "cloudfoundry"){
+        // Note: hack here, CF doesn't have live stats, so we prompt fh-core (via the /resrouces endpoint)
+        // to kick off its own internal timer to poll CF X number of times for X seconds
+        self.cfTimer = setInterval(function(){
+          self.loadResourcesForDashboard(null, function(){
+            // do nothing
+          });
+        }, self.cfPollInterval);
         return getModel(callback);
       } else {
         self.showAlert('warning', "Deploy target " + current_target.fields.target + " is not supported to get real time stats data.");
