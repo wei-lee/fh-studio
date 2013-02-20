@@ -71,7 +71,9 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
         if(period){
           self.initFormDates(period);
         }
-        self.showSummaryMetrics(appId, title, period);
+        if(appId && title){
+          self.showSummaryMetrics(appId, title, period);
+        }
       }
     }, function() {
       // Failure
@@ -162,7 +164,7 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
           self.hide();
           controller.displayGraphs(period, appGuid,reportSuperType, heading);
         });
-        summaryMetricsContainer.find('a.interactive_heading').click(function(e){
+        summaryMetricsContainer.find('a.interactive_heading').unbind('click').click(function(e){
           e.preventDefault();
           var active = $(this).data("target");
           console.log("active view will be", active);
@@ -174,6 +176,10 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
           controller = $fw.client.tab.admin.getController(controller);
           self.hide();
           controller.displayGraphs(period, appGuid, reportSuperType,heading);
+        });
+        summaryMetricsContainer.find('.reportdashboard_link i').unbind('click').click(function(e){
+          e.preventDefault();
+          $(this).prev('a').trigger('click');
         });
       }
     });
@@ -211,12 +217,12 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
   getTemplate: function(id, showboarder, target, heading, headingText, toptable){
     var html = '<div class="span6 reportdashboard_div ' + (showboarder?'reportdashboard_div_boarder':'') + '" style="margin: 3px;">';
     html += ' <h4 class="reportingdashboard_heading interactive_heading" id="'+id+'" data-target="'+target+'" data-heading="'+heading+'" style="cursor: pointer">'+headingText+'</h4>';
-    html += '<div class="span11 reportingdashboard_image_container">';
-    html += '<div class="span10" style="margin-left: 80px;">';
+    html += '<div class="span11 offset1 reportingdashboard_image_container">';
+    html += '<div class="span9 offset2">';
     html += '<ul class="nav nav-pills">';
-    html += '<li class="reportdashboard_link"><a class="interactive_heading" data-target="by_date" href="#">By Date</a></li>';
-    html += '<li class="reportdashboard_link"><a class="interactive_heading" data-target="by_device" href="#">By Platform</a></li>';
-    html += '<li class="reportdashboard_link"><a class="interactive_heading" data-target="by_location" href="#">By Location</a></li>';
+    html += '<li class="reportdashboard_link"><a class="interactive_heading" data-target="by_date" href="#">By Date</a><i class="icon-calendar icon-4x"></i></li>';
+    html += '<li class="reportdashboard_link"><a class="interactive_heading" data-target="by_device" href="#">By Platform</a><i class="icon-mobile-phone icon-4x"></i></li>';
+    html += '<li class="reportdashboard_link"><a class="interactive_heading" data-target="by_location" href="#">By Location</a><i class="icon-globe icon-4x"></i></li>';
     html += '</ul>';
     html += '</div>';
     html += '</div>';
