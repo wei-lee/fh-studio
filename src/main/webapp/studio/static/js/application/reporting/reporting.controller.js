@@ -125,11 +125,12 @@ Reporting.Controller = Apps.Reports.Support.extend({
     if(self.heading){
       $('#graphType').html(self.heading);
     }
+    var info;
     if(self.activeView === "dashboard"){
       for(var cont in containers){
 
         if(containers.hasOwnProperty(cont)){
-          var info = containers[cont];
+          info = containers[cont];
           var params = self.buildParamsForDays(self.context, self.period,info.metric,0);
           var container = $(info.container);
           container.show();
@@ -147,12 +148,12 @@ Reporting.Controller = Apps.Reports.Support.extend({
     }else if(self.containerConfigs[self.activeView]){
       info = self.containerConfigs[self.activeView];
       console.log(info);
-      var params = self.buildParamsForDays(self.context, self.period,info.metric,0);
-      var container = $(info.container);
-      container.show();
-      params.height = 400;
-      params.dest=true;
-      self.drawChart(info.chart, container, params, Constants.READ_APP_METRICS_URL, function (err) {
+      var params1 = self.buildParamsForDays(self.context, self.period,info.metric,0);
+      var container1 = $(info.container);
+      container1.show();
+      params1.height = 400;
+      params1.dest=true;
+      self.drawChart(info.chart, container1, params1, Constants.READ_APP_METRICS_URL, function (err) {
 
       });
     }

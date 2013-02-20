@@ -15,7 +15,7 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
   views: {
     //those views will be hidden initially
     report_per_app: '#reports_per_app_container',
-    app_list_table: '#reports_per_app_container #reports_per_app_all_apps_table',
+    app_list_table: '#reports_per_app_container #reports_per_app_all_apps_table'
   },
 
   viewnames: {

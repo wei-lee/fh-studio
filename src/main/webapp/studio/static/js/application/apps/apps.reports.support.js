@@ -242,10 +242,10 @@ Apps.Reports.Support = Apps.Controller.extend({
   splitDate: function (date) {
     var ret = {};
 
-    var date = new Date(date);
-    ret.year = date.getFullYear().toString();
-    ret.month = (date.getMonth() + 1).toString();
-    ret.date = date.getDate().toString();
+    var d = new Date(date);
+    ret.year = d.getFullYear().toString();
+    ret.month = (d.getMonth() + 1).toString();
+    ret.date = d.getDate().toString();
     
     return ret;
   },
