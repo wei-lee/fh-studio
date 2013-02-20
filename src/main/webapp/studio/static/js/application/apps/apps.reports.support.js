@@ -28,6 +28,15 @@ Apps.Reports.Support = Apps.Controller.extend({
     $(".appreport-results").empty();
   },
 
+  initFormDates : function (days){
+    var from = moment().subtract("days", days).format("YYYY-MM-DD");
+    var to = moment().format("YYYY-MM-DD");
+
+    console.log("from on show ", from);
+    $('input[name="from"]').val(from);
+    $('input[name="to"]').val(to);
+  },
+
   buildParams : function (id, days, metric,num){
     var self = this;
     var to = new Date();
@@ -206,10 +215,9 @@ Apps.Reports.Support = Apps.Controller.extend({
     
     // Set an id on the chart container, needed later
     chartContainer = container.find('.appreport-results').attr('id', container.attr('id') + '_chartcontainer');
-    console.log(chartContainer, chartContainer.width());
     // Draw a chart for the specified params
     
-    $fw.client.chart.insert('metrics', type, { dest: params.dest }, params, chartContainer, url, function (err) {
+    $fw.client.chart.insert('metrics', type, { dest: params.dest , width:params.width, height:params.height }, params, chartContainer, url, function (err) {
       callback(err);
     });
   },

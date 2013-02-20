@@ -23,8 +23,7 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
     self.initForm();
     $('.doReport:first').trigger("click");
     ele.show();
-    //trigger last seven days data
-    console.log("show called dashboard");
+
 
   },
 
@@ -46,7 +45,7 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
     var self = this;
     var dao = new application.MetricsDataLocator($fw.getClientProp("reporting-dashboard-sampledata-enabled"));
     var period = $(ele).data("period");
-
+    self.initFormDates(period);
     //build the top 5 data and the domain level install etc data
     function populateTopResults(){
       var metric = ["appinstallsdest","apptransactionsdest","appstartupsdest","apprequestsdest"];
@@ -54,6 +53,7 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
 
       var numResults = 5;
       var params = self.buildParams(id,period, metric, numResults);
+
       dao.getData(params,"list",Constants.READ_APP_METRICS_URL, function (data){
 
         for(var dbItem in data){
@@ -65,21 +65,27 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
             var hele = $(table.parent().find("h4:first"));
             hele.css("cursor","pointer");
             hele.unbind().click(function (){
-              var controller = $(this).data("controller");
-              console.log("calling controller " + controller);
+              var controller = "reporting.controller";
+              var reportSuperType = $(this).data("target");
+              var heading =  $(this).data("heading");
+              console.log("calling controller " + controller + " for report type " + reportSuperType + " over period of " + period + "days");
               controller = $fw.client.tab.admin.getController(controller);
               self.hide();
-              controller.show(period,$fw.getClientProp("domain"));
-
+              controller.show(period,$fw.getClientProp("domain"),reportSuperType, heading);
             });
             //add the specific metric for use when the heading is clicked on
             for(var i=0; i< data[dbItem].length; i++){
               var result = data[dbItem][i];
-              table.append("<tr><td class=\" appreportrow "+dbItem+"\" data-appid=\""+result.id.apid+"\">"+result.id.appname+"</td><td>"+result.value.total+"</td></tr>");
+              table.append("<tr><td class=\" appreportrow "+dbItem+"\" data-metric=\""+dbItem+"\" data-appid=\""+result.id.apid+"\">"+result.id.appname+"</td><td>"+result.value.total+"</td></tr>");
             }
 
             table.find('.appreportrow').css("cursor","pointer").unbind().click(function (){
               //call specific report type controller
+              if($(this).data("metric")=== "appinstallsdest"){
+                var controller = $fw.client.tab.admin.getController("apps.installs.controller");
+                self.hide();
+                controller.show();
+              }
               alert("will show app specific report for appid " + $(this).data("appid"));
             });
           }

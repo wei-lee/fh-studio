@@ -4,6 +4,11 @@
         width: 99%;
     }
 
+
+    .report{
+        margin-bottom: 8px;
+    }
+
     .reportdashboard_div {
 
         margin: 1px;
@@ -92,7 +97,7 @@
                 <fieldset class="well">
                     <legend>App Client</legend>
                     <div class="span6 reportdashboard_div reportdashboard_div_boarder" style="margin: 3px;">
-                        <h4 class="reportingdashboard_heading interactive_heading" id="domaininstallsdest" data-heading="Installs" data-controller="reporting.installs.controller" data-target="#report_graph"></h4>
+                        <h4 class="reportingdashboard_heading interactive_heading" id="domaininstallsdest" data-heading="Installs" data-controller="reporting.installs.controller" data-target="domaininstalls"></h4>
 
                         <div class="span11 reportingdashboard_image_container">
                             <div class="span10" style="margin-left: 80px;">
@@ -110,7 +115,7 @@
                         </table>
                     </div>
                     <div class="span6 reportdashboard_div" style="margin: 3px;">
-                        <h4 class="reportingdashboard_heading interactive_heading" id="domainstartupsdest" data-controller="reporting." data-heading="Start Ups" data-metric="appstartups"  data-target="#report_graph"></h4>
+                        <h4 class="reportingdashboard_heading interactive_heading" id="domainstartupsdest" data-controller="reporting." data-heading="Start Ups" data-metric="appstartups"  data-target="domainstartups"></h4>
 
                         <div class="span11 reportingdashboard_image_container">
                             <div class="span10" style="margin-left: 80px;">
@@ -135,7 +140,7 @@
                     <legend>App Cloud</legend>
 
                     <div class="span6 reportdashboard_div reportdashboard_div_boarder" style="margin: 3px;">
-                        <h4 class="reportingdashboard_heading interactive_heading" id="domainrequestsdest" data-controller="reporting.requests.controller"  data-target="#report_graph" data-heading="Requests"></h4>
+                        <h4 class="reportingdashboard_heading interactive_heading" id="domainrequestsdest" data-controller="reporting.requests.controller"  data-target="domainrequests" data-heading="Requests"></h4>
 
                         <div class="span11 reportingdashboard_image_container">
                             <div class="span10" style="margin-left: 80px;">
@@ -153,7 +158,7 @@
                         </table>
                     </div>
                     <div class="span6 reportdashboard_div" style="margin: 3px;">
-                        <h4 class="reportingdashboard_heading interactive_heading" id="domaintransactionsdest" data-heading="Active Users" data-metric="appcloudcalls" data-target="#report_graph"></h4>
+                        <h4 class="reportingdashboard_heading interactive_heading" id="domaintransactionsdest" data-heading="Active Users" data-metric="appcloudcalls" data-target="domaintransactions"></h4>
 
                         <div class="span11 reportingdashboard_image_container">
                             <div class="span10" style="margin-left: 80px;">
@@ -173,35 +178,38 @@
                 </fieldset>
             </form>
         </div>
-        <div class="span12 hide" id="report_graph" style="margin: 0px;">
+        <div class="span12 hide fh-box-inner" id="report_graph" style="margin: 0px; margin-top:6px;">
+            <ul class="nav nav-pills">
+                <li class="active">
+                    <a href="#dashboard" data-toggle="pill" data-action="dashboard">Dashboard</a>
+                </li>
+                <li>
+                    <a href="#installs_by_date" data-toggle="pill" data-action="byDate">By Date</a>
+                </li>
+                <li>
+                    <a href="#installs_by_platform" data-toggle="pill" data-action="byPlatform">By Device</a>
+                </li>
+                <li>
+                    <a href="#installs_by_location" data-toggle="pill" data-action="byLocation">By Location</a>
+                </li>
+            </ul>
             <h4 align="center" id="graphType"></h4>
-            <form class="form-inline span12" style="margin: 0px;" >
-                <fieldset class="well span12">
-                    <legend>By Date</legend>
-                    <div class="report_by_date span12" id="bydate">
+                    <h4>By Date</h4>
+                    <div class="report report_by_date span12"  id="bydate">
+
                         <div class="span12 appreport-results"></div>
                     </div>
-                </fieldset>
-            </form>
-            <form class="form-inline" style="margin: 0px;" >
-                <fieldset class="well">
-                    <legend>By Device</legend>
-                    <div class="report_by_device span12" id="bydevice">
+
+
+                    <h4>By Device</h4>
+                    <div class="report report_by_device span12" id="bydevice">
                         <div class="span12 appreport-results"></div>
                     </div>
-                </fieldset>
-
-            </form>
-
-            <form class="form-inline" style="margin: 0px;" >
-                <fieldset class="well">
-                    <legend>By Location</legend>
-                    <div class="report_by_location">
+                    <h4>By Location</h4>
+                    <div class="report report_by_location span12" id="bylocation">
                         <div class="span12 appreport-results"></div>
                     </div>
-                </fieldset>
 
-            </form>
             <!--<div class="pill-content">
                 <div id="tab_installs_by_date" class="installs_by_date pill-pane">
                     <%@ include file="../apps/report_installsdate.html"%>

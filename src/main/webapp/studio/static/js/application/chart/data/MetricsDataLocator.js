@@ -307,10 +307,19 @@
 
         ]},
       domaininstallsgeo:
-        [
-          {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1000, us:10000, china:100000}},
-          {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:500, japan:750, indiA:200}}
-        ],
+      {"sampleid":[
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:550, us:1500, china:60}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+      ]},
       domaintransactionsdest:{"sampleid":
         [
           {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:1500, android:600, blackberry:100}},
@@ -350,10 +359,33 @@
         {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:5000, android:800, blackberry:200}}
       ]},
       domaintransactionsgeo:
-        [
-          {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:550, us:1500, china:60}},
-          {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}}
-        ],
+      {"sampleid":[
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:550, us:1500, china:60}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        ]},
+      domainstartupsgeo:
+      {"sampleid":[
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:550, us:1500, china:60}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+      ]},
       apptransactionsdest:{
         "sampleid":[
           {"_id":{"domain":"sampleid","ts":1312909201597},"value":{"android":300,"iphone":776,"blackberry":0,"wp7":150}},
