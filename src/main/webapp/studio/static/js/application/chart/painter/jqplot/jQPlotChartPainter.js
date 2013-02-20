@@ -73,7 +73,8 @@
           renderTo: container[0],
           //type: 'area',
           zoomType: 'x',
-          spacingRight: 20
+          spacingRight: 20,
+          height:opts.height
         },
         // plotOptions: {
         //   area: {
@@ -202,7 +203,9 @@
           renderTo: container[0],
           plotBackgroundColor: null,
           plotBorderWidth: null,
-          plotShadow: false
+          plotShadow: false,
+          height:opts.height + 10,
+          width:opts.width
         },
         credits: {
           enabled: false

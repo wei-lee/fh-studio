@@ -26,11 +26,12 @@
       
       table = google.visualization.arrayToDataTable(data, false);
       options = {
-        width: 740,
-        height: 475
+        width: opts.width || 740,
+        height:opts.height || 475
       };
 
       geochart = new google.visualization.GeoChart(container[0]);
+
       geochart.draw(table, options);
       callback();
       
