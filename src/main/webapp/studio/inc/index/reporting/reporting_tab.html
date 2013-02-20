@@ -54,14 +54,20 @@
         padding: 3px;
     }
 
-    #reports_per_app_list_container, #per_app_summary_container{
+    #reports_per_app_list_container {
         height: 450px;
     }
 
-    .summary_background_text {
+    #per_app_summary_container {
+        min-height: 450px;
+    }
+
+    .summary_background_text, .app_summary_name_container{
         font-size: 2em;
         line-height: 2em;
         text-align: center;
+    }
+    .summary_background_text {
         margin-top: 15%;
     }
     #reports_per_app_list_container .table_nav{
@@ -69,6 +75,10 @@
     }
     #reports_per_app_list_container .app_search{
         padding-top: 5px;
+    }
+
+    #per_app_summary_container .reportingdashboard_image_container {
+        border-bottom: none;
     }
 </style>
 <div id="reporting_layout">
@@ -255,6 +265,9 @@
                     <legend>Summary Metrics</legend>
                     <div id="per_app_summary_container" class="row-fluid">
                         <div class='summary_background_text span6 offset3'>
+                            <span>Select an App from the list above to see summary metrics for that app</span>
+                        </div>
+                        <div class='app_summary_name_container span12 hidden'>
                             <span>Select an App from the list above to see summary metrics for that app</span>
                         </div>
                     </div>

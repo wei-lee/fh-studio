@@ -34,7 +34,7 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
     var self = this;
     $('.doReport').each(function (btn, ele){
 
-        $(ele).unbind().click(function (event){
+        $(ele).removeClass('disabled').unbind().click(function (event){
           console.log("clicked form report button");
           event.preventDefault();
           self.buildDashboard(ele);
