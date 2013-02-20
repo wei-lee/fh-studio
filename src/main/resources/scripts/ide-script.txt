@@ -79,6 +79,7 @@ js/application/apps/apps.reports.support.js
 js/application/apps/apps.installs.controller.js
 js/application/apps/apps.startups.controller.js
 js/application/reporting/reporting.controller.js
+js/application/reporting/reporting.app.controller.js
 js/application/reporting/reporting.installs.controller.js
 js/application/reporting/reporting.startups.controller.js
 js/application/reporting/reporting.dashboard.controller.js

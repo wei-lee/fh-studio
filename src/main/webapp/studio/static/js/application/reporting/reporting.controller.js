@@ -73,10 +73,11 @@ Reporting.Controller = Apps.Reports.Support.extend({
     var type = ele.data("target");
     var context = $fw.data.get('app').guid || $fw.getClientProp("domain");
     self.displayGraphs(period, context, type, heading);
+    self.initFormDates(period);
   },
   //this can be called from other controllers
   displayGraphs : function (period, context, type, heading){
-
+    console.log("display graps " , period , context , type , heading);
     var self = this;
     self.hide();
     $(self.views.reports_form).show();
