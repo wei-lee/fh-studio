@@ -116,11 +116,7 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
             var total = 0;
             for(var i=0; i < data.length; i++){
               var values = data[i].value;
-              for(var prop in values){
-                if(values.hasOwnProperty(prop)){
-                  total+=values[prop];
-                }
-              }
+              total+=values.total;
             }
             headingToUpdate.html(heading + " " + total);
             callback(undefined,data);

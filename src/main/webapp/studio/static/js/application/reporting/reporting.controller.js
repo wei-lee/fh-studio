@@ -120,6 +120,7 @@ Reporting.Controller = Apps.Reports.Support.extend({
         var container = $(info.container);
         params.dest = false;
         params.height = 210;
+        params.dest=true;
         if(info.chart === "geo"){
 
          // params.width
