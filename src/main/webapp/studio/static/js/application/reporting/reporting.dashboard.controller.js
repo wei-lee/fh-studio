@@ -36,9 +36,11 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
     var self = this;
     var ele = $(self.views.reporting_dashboard);
     self.initForm();
-    ele.show();
-    $('.doReport:first').trigger("click");
 
+
+    self.initDatepickers($('#reporting_layout .reporting_form input[name="from"]'), $('#reporting_layout .reporting_form input[name="to"]'));
+    $('.doReport:first').trigger("click");
+    ele.show();
 
   },
 
@@ -72,7 +74,7 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
   buildDashboard : function (ele){
     console.log("build dashboard");
     var self = this;
-    var sampleDataEnabled = ($fw.getClientProp("reporting-dashboard-sampledata-enabled") === "false") ? false : true;
+    var sampleDataEnabled = ($fw.getClientProp("reporting-sampledata-enabled") === "false") ? false : true;
     var dao = new application.MetricsDataLocator(sampleDataEnabled);
     var period = $(ele).data("period");
     self.period = period;
@@ -111,8 +113,16 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
                 table.append("<tr><td class=\" appreportrow "+dbItem+"\" data-metric=\""+dbItem+"\" data-appid=\""+result.id.apid+"\">"+result.id.appname+"</td><td>"+result.value.total+"</td></tr>");
               }
 
-              table.find('.appreportrow').css("cursor","pointer").unbind().click(function (){
+              table.find('.appreportrow').css("cursor","pointer").unbind().click(function (e){
                 //call specific report type controller
+                var appid = $(this).data('appid');
+                var appname = $(this).text();
+                var period = self.period;
+                console.log("show app metrics with appid = " + appid + " appname = " + appname + " period = " + period);
+                self.hide();
+                $('.reporting_nav_list').find('li.active').removeClass('active');
+                $('.reporting_nav_list').find('li:eq(1)').addClass('active');
+                $fw.client.tab.admin.getController("reporting.perapp.controller").show({guid: appid, title: appname, period: period});
               });
             }
           }

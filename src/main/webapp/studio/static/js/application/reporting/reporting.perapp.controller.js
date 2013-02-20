@@ -28,10 +28,11 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
     app_summary_metrics_container: '#per_app_summary_container'
   },
 
-  show: function () {
+  show: function (app) {
     var self = this;
     $(self.views.reports_graph).hide();
     var ele = $(self.viewnames.report_per_app);
+    self.initDatepickers($('#reporting_form input[name="from"]'), $('#reporting_form input[name="to"]'));
     self.initFormDates(7);
     ele.show();
     $(self.viewnames.loading_indicator).show();
@@ -44,17 +45,29 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
       var appGuid = $(this).data('selected_app');
       var appTitle = $(this).data('selected_appname');
       var period = $(this).data('period');
+      if(period){
+        self.initFormDates(period);
+      }
       if(appGuid){
         self.showSummaryMetrics(appGuid, appTitle, period);
       }
     });
-    self.loadAppList();
+    self.loadAppList(app);
   },
 
-  loadAppList: function(){
+  loadAppList: function(app){
     var self = this;
     self.model.app.listMyApps(function(res) {
       self.renderAppListing(self.viewnames.app_list_table, res);
+      if(app){
+        var appId = app.guid;
+        var title = app.title;
+        var period = app.period;
+        if(period){
+          self.initFormDates(period);
+        }
+        self.showSummaryMetrics(appId, title, period);
+      }
     }, function() {
       // Failure
     }, true);
@@ -98,8 +111,7 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
 
       var guid = data[6];
       var appTitle = data[1];
-      $('td:lt(6)', row).addClass('app_title').unbind().click(function(){
-        $(self.viewnames.do_report_btn).removeClass('disabled').data('selected_app',guid).data('selected_appname', appTitle);
+      $('td:lt(6)', row).addClass('app_title').attr('id', guid).unbind().click(function(){
         self.showSummaryMetrics(guid, appTitle);
       });
     }
@@ -119,6 +131,7 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
     }
     summaryMetricsContainer.find('.summary_background_text').hide();
     summaryMetricsContainer.find('div.report-well').remove();
+    $(self.viewnames.do_report_btn).removeClass('disabled').data('selected_app',appGuid).data('selected_appname', appTitle);
 
     self.populateTotals(params, function(err, data){
       if(err){
@@ -137,7 +150,7 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
           console.log("calling controller " + controller + " for report type " + reportSuperType + " over period of " + period + "days");
           controller = $fw.client.tab.admin.getController(controller);
           self.hide();
-          controller.show(period, appGuid,reportSuperType, heading);
+          controller.displayGraphs(period, appGuid,reportSuperType, heading);
         });
         summaryMetricsContainer.find('a.interactive_heading').click(function(e){
           e.preventDefault();
@@ -150,7 +163,7 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
           var controller = "reporting.controller";
           controller = $fw.client.tab.admin.getController(controller);
           self.hide();
-          controller.show(period, appGuid, reportSuperType,heading);
+          controller.displayGraphs(period, appGuid, reportSuperType,heading);
         });
       }
     });
@@ -158,7 +171,7 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
 
   populateTotals: function(params, cb){
     var self = this;
-    var dao = new application.MetricsDataLocator($fw.getClientProp("reporting-dashboard-sampledata-enabled"));
+    var dao = new application.MetricsDataLocator($fw.getClientProp("reporting-sampledata-enabled"));
     var metricsSeries = [];
     $(params.metric).each(function (indx, metric){
       metricsSeries.push(function (callback){
