@@ -125,8 +125,8 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
         summaryMetricsContainer.find('.app_summary_name_container').removeClass('hidden').show().find('span').text(appTitle);
         var appInstallsTemplate = self.getTemplate(metrics[0], true, 'appinstalls', "Installs", 'Installs: ' + data[0],null);
         var appStartTemplate = self.getTemplate(metrics[1], false, 'appstartups', 'Start Ups', 'Startups: ' + data[1], null);
-        var appRequestsTemplate = self.getTemplate(metrics[2], true, 'apprequests', 'Requests','Requests: ' + data[2], null);
-        var appTransactionsTemplate = self.getTemplate(metrics[3], false, 'apptransactions', 'Transactions', 'Transactions: ' + data[3], null);
+        var appRequestsTemplate = self.getTemplate(metrics[2], true, 'appcloudcalls', 'Requests','Requests: ' + data[2], null);
+        var appTransactionsTemplate = self.getTemplate(metrics[3], false, 'apptransactions', 'Active Uses', 'Active Users: ' + data[3], null);
         summaryMetricsContainer.append(self.getWellTemplate('App Client', [appInstallsTemplate, appStartTemplate])).append(self.getWellTemplate('App Cloud',[appRequestsTemplate, appTransactionsTemplate]));
         summaryMetricsContainer.find('.reportingdashboard_heading').unbind('click').bind('click', function(e){
           var controller = "reporting.controller";
