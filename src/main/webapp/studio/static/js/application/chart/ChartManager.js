@@ -32,6 +32,7 @@
         // Resolve data locator using chart options value for dataLoc
         dataLocator = new application[js_util.capitalise(chart.dataLoc) + 'DataLocator'](self.sampledataEnabled);
         dataLocator.getData(params, chartType, url, function (res) {
+          console.log("CHARTMANAGER ", res);
           
           // get the labels from res if there are any
           if (res.labels) {

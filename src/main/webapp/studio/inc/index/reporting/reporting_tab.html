@@ -70,6 +70,7 @@
     #reports_per_app_list_container .app_search{
         padding-top: 5px;
     }
+
 </style>
 <div id="reporting_layout">
 
@@ -113,15 +114,16 @@
             <form class="form-inline" >
                 <fieldset class="well">
                     <legend>App Client</legend>
-                    <div class="span6 reportdashboard_div reportdashboard_div_boarder" style="margin: 3px;">
-                        <h4 class="reportingdashboard_heading interactive_heading" id="domaininstallsdest" data-heading="Installs" data-controller="reporting.installs.controller" data-target="domaininstalls"></h4>
+                    <% if(studio.getProperty("reporting-reports-enabled").equals("true")){ %>
+                    <div class="span6 reportdashboard_div reportdashboard_div_boarder"  style="margin: 3px;">
+                        <h4 class="reportingdashboard_heading interactive_heading" id="domaininstallsdest" data-heading="Installs" data-target="domaininstalls"></h4>
 
                         <div class="span11 reportingdashboard_image_container">
                             <div class="span10" style="margin-left: 80px;">
                                 <ul class="nav nav-pills">
-                                    <li class="reportdashboard_link"><a class="interactive_heading" data-target="" href="#">By Date</a></li>
-                                    <li class="reportdashboard_link"><a class="interactive_heading" data-target="" href="#">By Platform</a></li>
-                                    <li class="reportdashboard_link"><a class="interactive_heading" data-target="" href="#">By Location</a></li>
+                                    <li class="reportdashboard_link"><a class="interactive_heading" data-target="by_date" href="#">By Date</a></li>
+                                    <li class="reportdashboard_link"><a class="interactive_heading" data-target="by_device" href="#">By Platform</a></li>
+                                    <li class="reportdashboard_link"><a class="interactive_heading" data-target="by_location" href="#">By Location</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -131,15 +133,17 @@
                         <table class="table table-striped reportdashboard" id="appinstallsdest">
                         </table>
                     </div>
+                    <% } %>
+                    <% if(studio.getProperty("reporting-reports-enabled").equals("true")){ %>
                     <div class="span6 reportdashboard_div" style="margin: 3px;">
-                        <h4 class="reportingdashboard_heading interactive_heading" id="domainstartupsdest" data-controller="reporting." data-heading="Start Ups" data-metric="appstartups"  data-target="domainstartups"></h4>
+                        <h4 class="reportingdashboard_heading interactive_heading" id="domainstartupsdest" data-controller="reporting." data-heading="Start Ups"  data-target="domainstartups"></h4>
 
                         <div class="span11 reportingdashboard_image_container">
                             <div class="span10" style="margin-left: 80px;">
                                 <ul class="nav nav-pills">
-                                    <li class="reportdashboard_link"><a href="#">By Date</a></li>
-                                    <li class="reportdashboard_link"><a href="#">By Platform</a></li>
-                                    <li class="reportdashboard_link"><a href="#">By Location</a></li>
+                                    <li class="reportdashboard_link"><a class="interactive_heading" data-target="by_date" href="#">By Date</a></li>
+                                    <li class="reportdashboard_link"><a class="interactive_heading" data-target="by_device" href="#">By Platform</a></li>
+                                    <li class="reportdashboard_link"><a class="interactive_heading" data-target="by_location" href="#">By Location</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -149,22 +153,23 @@
                         <table class="table table-striped reportdashboard" id="appstartupsdest">
                         </table>
                     </div>
+                    <% } %>
                 </fieldset>
             </form>
 
             <form class="form-inline">
                 <fieldset class="well">
                     <legend>App Cloud</legend>
-
+                    <% if(studio.getProperty("cloudrequest-reporting-enabled").equals("true")){ %>
                     <div class="span6 reportdashboard_div reportdashboard_div_boarder" style="margin: 3px;">
                         <h4 class="reportingdashboard_heading interactive_heading" id="domainrequestsdest" data-controller="reporting.requests.controller"  data-target="domainrequests" data-heading="Requests"></h4>
 
                         <div class="span11 reportingdashboard_image_container">
                             <div class="span10" style="margin-left: 80px;">
                                 <ul class="nav nav-pills">
-                                    <li class="reportdashboard_link"><a href="#">By Date</a></li>
-                                    <li class="reportdashboard_link"><a href="#">By Platform</a></li>
-                                    <li class="reportdashboard_link"><a href="#">By Location</a></li>
+                                    <li class="reportdashboard_link"><a class="interactive_heading" data-target="by_date" href="#">By Date</a></li>
+                                    <li class="reportdashboard_link"><a class="interactive_heading" data-target="by_device" href="#">By Platform</a></li>
+                                    <li class="reportdashboard_link"><a class="interactive_heading" data-target="by_location" href="#">By Location</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -174,15 +179,18 @@
                         <table class="table table-striped reportdashboard" id="appcloudcallsdest">
                         </table>
                     </div>
+
+                    <% } %>
+                    <% if(studio.getProperty("transaction-reporting-enabled").equals("true")){ %>
                     <div class="span6 reportdashboard_div" style="margin: 3px;">
                         <h4 class="reportingdashboard_heading interactive_heading" id="domaintransactionsdest" data-heading="Active Users" data-metric="appcloudcalls" data-target="domaintransactions"></h4>
 
                         <div class="span11 reportingdashboard_image_container">
                             <div class="span10" style="margin-left: 80px;">
                                 <ul class="nav nav-pills">
-                                    <li class="reportdashboard_link"><a href="#">By Date</a></li>
-                                    <li class="reportdashboard_link"><a href="#">By Platform</a></li>
-                                    <li class="reportdashboard_link"><a href="#">By Location</a></li>
+                                    <li class="reportdashboard_link"><a class="interactive_heading" data-target="by_date" href="#">By Date</a></li>
+                                    <li class="reportdashboard_link"><a class="interactive_heading" data-target="by_device" href="#">By Platform</a></li>
+                                    <li class="reportdashboard_link"><a class="interactive_heading" data-target="by_location" href="#">By Location</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -192,38 +200,42 @@
                         <table class="table table-striped reportdashboard" id="apptransactionsdest">
                         </table>
                     </div>
+                    <% } %>
                 </fieldset>
             </form>
         </div>
         <div class="span12 hide fh-box-inner" id="report_graph" style="margin: 0px; margin-top:6px;">
-            <ul class="nav nav-pills">
-                <li class="active">
+            <ul class="nav nav-pills reporting_pills">
+                <li class="active" id="dashboard">
                     <a href="#dashboard" data-toggle="pill" data-action="dashboard">Dashboard</a>
                 </li>
-                <li>
+                <li id="by_date" >
                     <a href="#installs_by_date" data-toggle="pill" data-action="byDate">By Date</a>
                 </li>
-                <li>
+                <li id="by_device">
                     <a href="#installs_by_platform" data-toggle="pill" data-action="byPlatform">By Device</a>
                 </li>
-                <li>
+                <li id="by_location">
                     <a href="#installs_by_location" data-toggle="pill" data-action="byLocation">By Location</a>
                 </li>
             </ul>
             <h4 align="center" id="graphType"></h4>
-                    <h4>By Date</h4>
-                    <div class="report report_by_date span12"  id="bydate">
+
+                    <div class="report report_by_date span12 hide"  id="bydate">
+                        <h4>By Date</h4>
 
                         <div class="span12 appreport-results"></div>
                     </div>
 
 
-                    <h4>By Device</h4>
-                    <div class="report report_by_device span12" id="bydevice">
+
+                    <div class="report report_by_device span12 hide" id="bydevice">
+                        <h4>By Device</h4>
                         <div class="span12 appreport-results"></div>
                     </div>
-                    <h4>By Location</h4>
-                    <div class="report report_by_location span12" id="bylocation">
+
+                    <div class="report report_by_location span12 hide" id="bylocation">
+                        <h4>By Location</h4>
                         <div class="span12 appreport-results"></div>
                     </div>
 
@@ -237,7 +249,7 @@
                 <div id="tab_installs_by_location" class="installs_by_location pill-pane">
                     <%@ include file="../apps/report_installsloc.html"%>
                 </div> -->
-        </div>
+
 
         <div class="row-fluid" id="reports_per_app_container">
             <form>
