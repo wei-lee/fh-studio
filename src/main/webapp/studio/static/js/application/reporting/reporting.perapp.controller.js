@@ -21,6 +21,7 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
   viewnames: {
     report_per_app: '#reports_per_app_container',
     app_list_table: '#reports_per_app_container #reports_per_app_all_apps_table',
+    app_list_table_wrapper: '#reports_per_app_all_apps_table_wrapper',
     do_report_btn: '.doReport',
     loading_indicator:'#reports_per_app_container #apps_loading',
     app_summary_metrics_container: '#per_app_summary_container'
@@ -29,15 +30,20 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
   show: function () {
     var self = this;
     var ele = $(self.viewnames.report_per_app);
+    self.initFormDates(7);
     ele.show();
     $(self.viewnames.loading_indicator).show();
-    $(self.viewnames.app_list_table).hide();
+    $(self.viewnames.app_list_table_wrapper).hide();
     $(self.viewnames.app_summary_metrics_container).show();
+    $(self.viewnames.app_summary_metrics_container).find('div:gt(0)').hide();
+    $(self.viewnames.app_summary_metrics_container).find('div:eq(0)').show();
     $(self.viewnames.do_report_btn).addClass('disabled').unbind('click').bind('click', function(e){
       e.preventDefault();
       var appGuid = $(this).data('selected_app');
+      var appTitle = $(this).data('selected_appname');
+      var period = $(this).data('period');
       if(appGuid){
-        self.showSummaryMetrics(appGuid);
+        self.showSummaryMetrics(appGuid, appTitle, period);
       }
     });
     self.loadAppList();
@@ -55,6 +61,7 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
   renderAppListing: function(table, data){
     var self = this;
     $(self.viewnames.loading_indicator).hide();
+    $(self.viewnames.app_list_table_wrapper).show();
     self.appListTable = $(table).removeClass('hidden').show().dataTable({
       "bDestroy": true,
       "bAutoWidth": false,
@@ -96,23 +103,30 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
     }
   },
 
-  showSummaryMetrics: function(appGuid, appTitle){
+  showSummaryMetrics: function(appGuid, appTitle, period){
     var self = this;
     var summaryMetricsContainer = $(self.viewnames.app_summary_metrics_container);
-    var period = $(self.viewnames.do_report_btn).data('period');
+    var metrics = ["appinstallsdest", "appstartupsdest", "apprequestsdest", "apptransactionsdest"];
+    var params = {};
+    if(period){
+      params = self.buildParamsForDays(appGuid, period, metrics, 0);
+    } else {
+      var from = $('input[name="from"]').val();
+      var to = $('input[name="to"]').val();
+      params = self.buildParamsForDates(appGuid, from, to, metrics, 0);
+    }
     summaryMetricsContainer.find('.summary_background_text').hide();
     summaryMetricsContainer.find('div.report-well').remove();
-    var metrics = ["appinstallsdest", "appstartupsdest", "apprequestsdest", "apptransactionsdest"];
-    var id = appGuid;
-    self.populateTotals(id, period, metrics, function(err, data){
+
+    self.populateTotals(params, function(err, data){
       if(err){
         alert(err);
       } else {
-        summaryMetricsContainer.find('.app_summary_name_container').removeClass('hidden').find('span').text(appTitle);
+        summaryMetricsContainer.find('.app_summary_name_container').removeClass('hidden').show().find('span').text(appTitle);
         var appInstallsTemplate = self.getTemplate(metrics[0], true, 'appinstalls', "Installs", 'Installs: ' + data[0],null);
         var appStartTemplate = self.getTemplate(metrics[1], false, 'appstartups', 'Start Ups', 'Startups: ' + data[1], null);
         var appRequestsTemplate = self.getTemplate(metrics[2], true, 'apprequests', 'Requests','Requests: ' + data[2], null);
-        var appTransactionsTemplate = self.getTemplate(metrics[3], false, 'apptransactions', 'Transactions', 'Transactions' + data[3], null);
+        var appTransactionsTemplate = self.getTemplate(metrics[3], false, 'apptransactions', 'Transactions', 'Transactions: ' + data[3], null);
         summaryMetricsContainer.append(self.getWellTemplate('App Client', [appInstallsTemplate, appStartTemplate])).append(self.getWellTemplate('App Cloud',[appRequestsTemplate, appTransactionsTemplate]));
         summaryMetricsContainer.find('.reportingdashboard_heading').unbind('click').bind('click', function(e){
           var controller = "reporting.controller";
@@ -121,39 +135,37 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
           console.log("calling controller " + controller + " for report type " + reportSuperType + " over period of " + period + "days");
           controller = $fw.client.tab.admin.getController(controller);
           self.hide();
-          controller.show(period,$fw.getClientProp("domain"),reportSuperType, heading);
+          controller.show(period, appGuid,reportSuperType, heading);
+        });
+        summaryMetricsContainer.find('a.interactive_heading').click(function(e){
+          e.preventDefault();
+          var active = $(this).data("target");
+          console.log("active view will be", active);
+          $('.reporting_pills > li.active').removeClass("active");
+          $('.reporting_pills > li#'+active).addClass("active");
+          var reportSuperType = $(this).closest('.reportdashboard_div').find('h4').data('target');
+          var heading = $(this).closest('.reportdashboard_div').find('h4').data('heading');
+          var controller = "reporting.controller";
+          controller = $fw.client.tab.admin.getController(controller);
+          self.hide();
+          controller.show(period, appGuid, reportSuperType,heading);
         });
       }
     });
   },
 
-  populateTotals: function(id, period, metrics, cb){
+  populateTotals: function(params, cb){
     var self = this;
     var dao = new application.MetricsDataLocator($fw.getClientProp("reporting-dashboard-sampledata-enabled"));
     var metricsSeries = [];
-    $(metrics).each(function (indx, metric){
+    $(params.metric).each(function (indx, metric){
       metricsSeries.push(function (callback){
-        var params = self.buildParams(id, period, metrics, 0);
         dao.getData(params,"list",Constants.READ_APP_METRICS_URL, function (data){
-          /*var headingToUpdate = $('#' + metric);
-          headingToUpdate.css("cursor","pointer");
-          headingToUpdate.unbind().click(function (){
-            var controller = "reporting.controller";
-            var reportSuperType = $(this).data("target");
-            var heading =  $(this).data("heading");
-            console.log("calling controller " + controller + " for report type " + reportSuperType + " over period of " + period + "days");
-            controller = $fw.client.tab.admin.getController(controller);
-            self.hide();
-            controller.show(period,$fw.getClientProp("domain"),reportSuperType, heading);
-          });*/
-          //var heading = headingToUpdate.data("heading");
-
           var total = 0;
           for(var i=0; i < data.length; i++){
             var values = data[i].value;
             total+=values.total;
           }
-          //headingToUpdate.html(heading + " " + total);
           callback(undefined,total);
         },function (err){
           callback(err);
@@ -171,9 +183,9 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
     html += '<div class="span11 reportingdashboard_image_container">';
     html += '<div class="span10" style="margin-left: 80px;">';
     html += '<ul class="nav nav-pills">';
-    html += '<li class="reportdashboard_link"><a href="#">By Date</a></li>';
-    html += '<li class="reportdashboard_link"><a href="#">By Platform</a></li>';
-    html += '<li class="reportdashboard_link"><a href="#">By Location</a></li>';
+    html += '<li class="reportdashboard_link"><a class="interactive_heading" data-target="by_date" href="#">By Date</a></li>';
+    html += '<li class="reportdashboard_link"><a class="interactive_heading" data-target="by_device" href="#">By Platform</a></li>';
+    html += '<li class="reportdashboard_link"><a class="interactive_heading" data-target="by_location" href="#">By Location</a></li>';
     html += '</ul>';
     html += '</div>';
     html += '</div>';
