@@ -58,7 +58,7 @@ Reporting.Controller = Apps.Reports.Support.extend({
     self.buildContainerConfigs(type);
     self.initForm();
     $(self.views.reporting_graphs).show();
-
+    //trigger click on activ nav element
     self.buildGraphs();
   },
 

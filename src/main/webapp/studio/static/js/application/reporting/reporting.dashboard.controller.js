@@ -17,6 +17,8 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
     "reporting_graphs":'#report_graph'
   },
 
+  tables : ["appinstallsdest","apptransactionsdest","appstartupsdest","appcloudcallsdest"],
+
   show: function () {
     var self = this;
     var ele = $(self.views.reporting_dashboard);
@@ -55,24 +57,15 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
       var params = self.buildParams(id,period, metric, numResults);
 
       dao.getData(params,"list",Constants.READ_APP_METRICS_URL, function (data){
-
+         console.log(dbItem);
         for(var dbItem in data){
+
           if(data.hasOwnProperty(dbItem)){
             console.log("dealing with item " + dbItem);
             var table = $('#'+dbItem);
             table.empty();
             table.append(" <tr><th>App Name</th><th>Total</th></tr>");
-            var hele = $(table.parent().find("h4:first"));
-            hele.css("cursor","pointer");
-            hele.unbind().click(function (){
-              var controller = "reporting.controller";
-              var reportSuperType = $(this).data("target");
-              var heading =  $(this).data("heading");
-              console.log("calling controller " + controller + " for report type " + reportSuperType + " over period of " + period + "days");
-              controller = $fw.client.tab.admin.getController(controller);
-              self.hide();
-              controller.show(period,$fw.getClientProp("domain"),reportSuperType, heading);
-            });
+
             //add the specific metric for use when the heading is clicked on
             for(var i=0; i< data[dbItem].length; i++){
               var result = data[dbItem][i];
@@ -81,12 +74,6 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
 
             table.find('.appreportrow').css("cursor","pointer").unbind().click(function (){
               //call specific report type controller
-              if($(this).data("metric")=== "appinstallsdest"){
-                var controller = $fw.client.tab.admin.getController("apps.installs.controller");
-                self.hide();
-                controller.show();
-              }
-              alert("will show app specific report for appid " + $(this).data("appid"));
             });
           }
         }
@@ -104,6 +91,9 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
       var metrics = ["domaininstallsdest","domaintransactionsdest","domainstartupsdest","domainrequestsdest"];
       var id = $fw.getClientProp("domain");
       var metricsSeries = [];
+
+
+
       $(metrics).each(function (indx, metric){
         metricsSeries.push(function (callback){
           var params = self.buildParams(id, period, metric, 0);
@@ -111,6 +101,16 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
 
           dao.getData(params,"list",Constants.READ_APP_METRICS_URL, function (data){
             var headingToUpdate = $('#' + metric);
+            headingToUpdate.css("cursor","pointer");
+            headingToUpdate.unbind().click(function (){
+              var controller = "reporting.controller";
+              var reportSuperType = $(this).data("target");
+              var heading =  $(this).data("heading");
+              console.log("calling controller " + controller + " for report type " + reportSuperType + " over period of " + period + "days");
+              controller = $fw.client.tab.admin.getController(controller);
+              self.hide();
+              controller.show(period,$fw.getClientProp("domain"),reportSuperType, heading);
+            });
             var heading = headingToUpdate.data("heading");
 
             var total = 0;
