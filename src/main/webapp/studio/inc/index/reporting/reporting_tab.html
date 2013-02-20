@@ -11,12 +11,14 @@
 
     .reportdashboard_div {
 
-        margin: 1px;
+        margin: 3px;
         padding: 1px;
+
     }
 
     .reportdashboard_div_boarder {
         border-right: solid #000000 1px;
+        margin: 3px;
     }
 
     .reportingdashboard_heading {
@@ -125,15 +127,15 @@
                 <fieldset class="well">
                     <legend>App Client</legend>
                     <% if(studio.getProperty("reporting-reports-enabled").equals("true")){ %>
-                    <div class="span6 reportdashboard_div reportdashboard_div_boarder"  style="margin: 3px;">
-                        <h4 class="reportingdashboard_heading interactive_heading" id="domaininstallsdest" data-heading="Installs" data-target="domaininstalls"></h4>
+                    <div class="span6 reportdashboard_div reportdashboard_div_boarder" style="margin: 3px;"  data-heading="Installs" data-target="domaininstalls">
+                        <h4 class="reportingdashboard_heading interactive_heading" id="domaininstallsdest"></h4>
 
                         <div class="span11 reportingdashboard_image_container">
                             <div class="span10" style="margin-left: 80px;">
                                 <ul class="nav nav-pills">
-                                    <li class="reportdashboard_link"><a class="interactive_heading" data-target="by_date" href="#">By Date</a></li>
-                                    <li class="reportdashboard_link"><a class="interactive_heading" data-target="by_device" href="#">By Platform</a></li>
-                                    <li class="reportdashboard_link"><a class="interactive_heading" data-target="by_location" href="#">By Location</a></li>
+                                    <li class="reportdashboard_link"><a  class="interactive_heading"  data-pill="by_date"  href="#">By Date</a></li>
+                                    <li class="reportdashboard_link"><a  class="interactive_heading"  data-pill="by_device" href="#">By Platform</a></li>
+                                    <li class="reportdashboard_link"><a  class="interactive_heading"  data-pill="by_location" href="#">By Location</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -145,15 +147,15 @@
                     </div>
                     <% } %>
                     <% if(studio.getProperty("reporting-reports-enabled").equals("true")){ %>
-                    <div class="span6 reportdashboard_div" style="margin: 3px;">
-                        <h4 class="reportingdashboard_heading interactive_heading" id="domainstartupsdest" data-controller="reporting." data-heading="Start Ups"  data-target="domainstartups"></h4>
+                    <div class="span6 reportdashboard_div" data-heading="Start Ups"  style="margin: 3px;"   data-target="domainstartups">
+                        <h4 class="reportingdashboard_heading interactive_heading" id="domainstartupsdest" ></h4>
 
                         <div class="span11 reportingdashboard_image_container">
                             <div class="span10" style="margin-left: 80px;">
                                 <ul class="nav nav-pills">
-                                    <li class="reportdashboard_link"><a class="interactive_heading" data-target="by_date" href="#">By Date</a></li>
-                                    <li class="reportdashboard_link"><a class="interactive_heading" data-target="by_device" href="#">By Platform</a></li>
-                                    <li class="reportdashboard_link"><a class="interactive_heading" data-target="by_location" href="#">By Location</a></li>
+                                    <li class="reportdashboard_link"><a  class="interactive_heading"  data-pill="by_date"  href="#">By Date</a></li>
+                                    <li class="reportdashboard_link"><a  class="interactive_heading"  data-pill="by_device" href="#">By Platform</a></li>
+                                    <li class="reportdashboard_link"><a  class="interactive_heading"  data-pill="by_location" href="#">By Location</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -171,15 +173,15 @@
                 <fieldset class="well">
                     <legend>App Cloud</legend>
                     <% if(studio.getProperty("cloudrequest-reporting-enabled").equals("true")){ %>
-                    <div class="span6 reportdashboard_div reportdashboard_div_boarder" style="margin: 3px;">
-                        <h4 class="reportingdashboard_heading interactive_heading" id="domainrequestsdest" data-controller="reporting.requests.controller"  data-target="domainrequests" data-heading="Requests"></h4>
+                    <div class="span6 reportdashboard_div reportdashboard_div_boarder" style="margin: 3px;" data-heading="Requests" data-target="domainrequests">
+                        <h4 class="reportingdashboard_heading interactive_heading" id="domainrequestsdest"></h4>
 
                         <div class="span11 reportingdashboard_image_container">
                             <div class="span10" style="margin-left: 80px;">
                                 <ul class="nav nav-pills">
-                                    <li class="reportdashboard_link"><a class="interactive_heading" data-target="by_date" href="#">By Date</a></li>
-                                    <li class="reportdashboard_link"><a class="interactive_heading" data-target="by_device" href="#">By Platform</a></li>
-                                    <li class="reportdashboard_link"><a class="interactive_heading" data-target="by_location" href="#">By Location</a></li>
+                                    <li class="reportdashboard_link"><a class="interactive_heading"  data-pill="by_date" href="#">By Date</a></li>
+                                    <li class="reportdashboard_link"><a class="interactive_heading"  data-pill="by_device" href="#">By Platform</a></li>
+                                    <li class="reportdashboard_link"><a class="interactive_heading"  data-pill="by_location" href="#">By Location</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -192,15 +194,15 @@
 
                     <% } %>
                     <% if(studio.getProperty("transaction-reporting-enabled").equals("true")){ %>
-                    <div class="span6 reportdashboard_div" style="margin: 3px;">
-                        <h4 class="reportingdashboard_heading interactive_heading" id="domaintransactionsdest" data-heading="Active Users" data-metric="appcloudcalls" data-target="domaintransactions"></h4>
+                    <div class="span6 reportdashboard_div" data-heading="Active Users" data-target="domaintransactions" style="margin: 3px;">
+                        <h4 class="reportingdashboard_heading interactive_heading" id="domaintransactionsdest" ></h4>
 
                         <div class="span11 reportingdashboard_image_container">
                             <div class="span10" style="margin-left: 80px;">
                                 <ul class="nav nav-pills">
-                                    <li class="reportdashboard_link"><a class="interactive_heading" data-target="by_date" href="#">By Date</a></li>
-                                    <li class="reportdashboard_link"><a class="interactive_heading" data-target="by_device" href="#">By Platform</a></li>
-                                    <li class="reportdashboard_link"><a class="interactive_heading" data-target="by_location" href="#">By Location</a></li>
+                                    <li class="reportdashboard_link"><a class="interactive_heading" data-pill="by_date" href="#">By Date</a></li>
+                                    <li class="reportdashboard_link"><a class="interactive_heading" data-pill="by_device" href="#">By Platform</a></li>
+                                    <li class="reportdashboard_link"><a class="interactive_heading" data-pill="by_location" href="#">By Location</a></li>
                                 </ul>
                             </div>
                         </div>

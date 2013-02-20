@@ -358,6 +358,21 @@
         {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:3000, android:400, blackberry:200}},
         {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:5000, android:800, blackberry:200}}
       ]},
+
+      domainrequestsgeo:{"sampleid":[
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:550, us:1500, china:60}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+      ]},
+
       domaintransactionsgeo:
       {"sampleid":[
         {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:550, us:1500, china:60}},
