@@ -81,6 +81,7 @@ js/application/apps/apps.startups.controller.js
 js/application/reporting/reporting.installs.controller.js
 js/application/reporting/reporting.startups.controller.js
 js/application/reporting/reporting.dashboard.controller.js
+js/application/reporting/reporting.perapp.controller.js
 js/application/chart/ChartManager.js
 js/application/chart/locator/ChartLocator.js
 js/application/chart/locator/MetricsChartLocator.js
