@@ -13,8 +13,8 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
   activePeriod : "",
 
   views: {
-    reporting_dashboard: '#reports_dashboard_container',
-    "reporting_graphs":'#report_graph'
+    reporting_dashboard: '#reporting_layout #reports_dashboard_container',
+    "reporting_graphs":'#reporting_layout #report_graph'
   },
 
   tables :{
@@ -36,8 +36,8 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
     var self = this;
     var ele = $(self.views.reporting_dashboard);
     self.initForm();
-    $('.doReport:first').trigger("click");
     ele.show();
+    $('.doReport:first').trigger("click");
 
 
   },
@@ -65,7 +65,7 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
       var controller = "reporting.controller";
       controller = $fw.client.tab.admin.getController(controller);
       self.hide();
-      controller.show(self.period,$fw.getClientProp("domain"),metric, heading);
+      controller.displayGraphs(self.period,$fw.getClientProp("domain"),metric, heading);
     });
   },
 
@@ -155,7 +155,7 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
               console.log("calling controller " + controller + " for report type " + reportSuperType + " over period of " + period + "days");
               controller = $fw.client.tab.admin.getController(controller);
               self.hide();
-              controller.show(period,$fw.getClientProp("domain"),reportSuperType, heading);
+              controller.displayGraphs(period,$fw.getClientProp("domain"),reportSuperType, heading);
             });
             var heading = headingToUpdate.parent('.reportdashboard_div').data("heading");
 

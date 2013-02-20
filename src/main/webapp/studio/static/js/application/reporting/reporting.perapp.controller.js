@@ -15,7 +15,8 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
   views: {
     //those views will be hidden initially
     report_per_app: '#reports_per_app_container',
-    app_list_table: '#reports_per_app_container #reports_per_app_all_apps_table'
+    app_list_table: '#reports_per_app_container #reports_per_app_all_apps_table',
+    reports_graph : '#reporting_layout .reporting_graph'
   },
 
   viewnames: {
@@ -29,6 +30,7 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
 
   show: function () {
     var self = this;
+    $(self.views.reports_graph).hide();
     var ele = $(self.viewnames.report_per_app);
     self.initFormDates(7);
     ele.show();

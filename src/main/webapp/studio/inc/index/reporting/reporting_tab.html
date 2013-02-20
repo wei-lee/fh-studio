@@ -109,19 +109,7 @@
     <div class="fh-box-outer span10">
 
 
-        <form class="form-inline" id="reporting_form">
-            <input type="submit" class="btn doReport" id="lastSevenDays" data-period="7" value="Last 7 days"/>
-            <input type="submit" class="btn doReport" id="lastThirtyDays" data-period="30"
-                   value="Last 30 days"/>
-            <input class="metric" name="metric" type="hidden" value="dashboard" />
-
-            <label>From:</label>
-            <input type="date" name="from" class="inline">
-            <label>To:</label>
-            <input type="date" name="to" class="inline">
-            <input type="submit" class="btn doReport" value="go"/>
-
-        </form>
+        <%@ include file="./reporting_form.html" %>
         <div class="span12" id="reports_dashboard_container">
             <form class="form-inline" >
                 <fieldset class="well">
@@ -216,52 +204,9 @@
                 </fieldset>
             </form>
         </div>
-        <div class="span12 hide fh-box-inner" id="report_graph" style="margin: 0px; margin-top:6px;">
-            <ul class="nav nav-pills reporting_pills">
-                <li class="active" id="dashboard">
-                    <a href="#dashboard" data-toggle="pill" data-action="dashboard">Dashboard</a>
-                </li>
-                <li id="by_date" >
-                    <a href="#installs_by_date" data-toggle="pill" data-action="byDate">By Date</a>
-                </li>
-                <li id="by_device">
-                    <a href="#installs_by_platform" data-toggle="pill" data-action="byPlatform">By Device</a>
-                </li>
-                <li id="by_location">
-                    <a href="#installs_by_location" data-toggle="pill" data-action="byLocation">By Location</a>
-                </li>
-            </ul>
-            <h4 align="center" id="graphType"></h4>
-
-                    <div class="report report_by_date span12 hide"  id="bydate">
-                        <h4>By Date</h4>
-
-                        <div class="span12 appreport-results"></div>
-                    </div>
 
 
-
-                    <div class="report report_by_device span12 hide" id="bydevice">
-                        <h4>By Device</h4>
-                        <div class="span12 appreport-results"></div>
-                    </div>
-
-                    <div class="report report_by_location span12 hide" id="bylocation">
-                        <h4>By Location</h4>
-                        <div class="span12 appreport-results"></div>
-                    </div>
-
-            <!--<div class="pill-content">
-                <div id="tab_installs_by_date" class="installs_by_date pill-pane">
-                    <%@ include file="../apps/report_installsdate.html"%>
-                </div>
-                <div id="tab_installs_by_platform" class="installs_by_platform pill-pane">
-                    <%@ include file="../apps/report_installsdest.html"%>
-                </div>
-                <div id="tab_installs_by_location" class="installs_by_location pill-pane">
-                    <%@ include file="../apps/report_installsloc.html"%>
-                </div> -->
-        </div>
+        <%@ include file="./reports_container.html" %>
 
 
         <div class="row-fluid" id="reports_per_app_container">

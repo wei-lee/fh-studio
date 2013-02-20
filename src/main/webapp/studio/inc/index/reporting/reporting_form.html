@@ -1,0 +1,14 @@
+<!--todo turn into include -->
+<form class="form-inline" id="reporting_form">
+    <input type="submit" class="btn doReport" id="lastSevenDays" data-period="7" value="Last 7 days"/>
+    <input type="submit" class="btn doReport" id="lastThirtyDays" data-period="30"
+           value="Last 30 days"/>
+    <input class="metric" name="metric" type="hidden" value="dashboard" />
+
+    <label>From:</label>
+    <input type="date" name="from" class="inline">
+    <label>To:</label>
+    <input type="date" name="to" class="inline">
+    <input type="submit" class="btn doReport" value="go"/>
+
+</form>

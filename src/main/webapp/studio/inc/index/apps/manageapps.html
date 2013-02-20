@@ -119,7 +119,7 @@
       </li>
       <li class="nav-header template-restriction">Reporting</li>
       <li class="template-restriction">
-        <a href="#" data-controller="apps.installs.controller">
+        <a href="#" data-controller="reporting.controller" data-period="7" data-pill="dashboard" data-heading="Installs" data-target="appinstalls">
           <i class="icon-bar-chart"></i>
           Client Installs
         </a>
@@ -131,7 +131,7 @@
         </a>
       </li>
         <li class="template-restriction">
-            <a href="#" data-controller="apps.startups.controller">
+            <a href="#" data-controller="apps.startups.controller" id="test">
                 <i class="icon-bar-chart"></i>
                 Cloud Requests
             </a>
@@ -213,7 +213,11 @@
         </div>
         
        <% if(studio.getProps().optBoolean("enable-per-app-metrics")){ %>
-         <div id="reportinginstalls_container">
+
+        <%@ include file="../reporting/reporting_form.html" %>
+        <%@ include file="../reporting/reports_container.html" %>
+
+         <!--<div id="reportinginstalls_container">
            <div class="fh-box-outer">
              <h4 class="fh-box-header">
                Reports - App Installs
@@ -243,7 +247,7 @@
               </div>
              </div>
            </div>
-         </div>
+         </div> -->
 
          <div id="reportingstartups_container">
            <div class="fh-box-outer">

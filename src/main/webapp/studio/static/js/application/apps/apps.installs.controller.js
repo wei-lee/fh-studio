@@ -29,7 +29,7 @@ Apps.Installs.Controller = Apps.Reports.Support.extend({
   },
 
   byDate: function () {
-    var appid = this.appid || $fw.data.get('app').guid;
+    var appid =  $fw.data.get('app').guid;
     var container = $('.installs_by_date', $(this.views.reportinginstalls_container));
     this.initMetric('appinstallsdest', 'line', container, Constants.GET_SINGLE_APP_METRICS_URL, appid, true);
   },
