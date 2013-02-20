@@ -56,21 +56,24 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
 
     $('a.interactive_heading').click(function (e){
          //set the active view to the target
-      var active = $(this).data("target");
+      var active = $(this).data("pill");
+      var heading = $(this).closest('.reportdashboard_div').data("heading");
+      var metric = $(this).closest('.reportdashboard_div').data("target");
       console.log("active view will be", active);
       $('.reporting_pills > li.active').removeClass("active");
       $('.reporting_pills > li#'+active).addClass("active");
       var controller = "reporting.controller";
       controller = $fw.client.tab.admin.getController(controller);
       self.hide();
-      controller.show(self.period,$fw.getClientProp("domain"),"domaininstalls", "installs");
+      controller.show(self.period,$fw.getClientProp("domain"),metric, heading);
     });
   },
 
   buildDashboard : function (ele){
     console.log("build dashboard");
     var self = this;
-    var dao = new application.MetricsDataLocator($fw.getClientProp("reporting-dashboard-sampledata-enabled"));
+    var sampleDataEnabled = ($fw.getClientProp("reporting-dashboard-sampledata-enabled") === "false") ? false : true;
+    var dao = new application.MetricsDataLocator(sampleDataEnabled);
     var period = $(ele).data("period");
     self.period = period;
     var from = $('input[name="from"]').val();
@@ -96,7 +99,6 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
         for(var dbItem in data){
 
           if(data.hasOwnProperty(dbItem)){
-            console.log("dealing with item " + dbItem);
             var table = self.tables[dbItem];
             if(table && table.enabled){
               table = $('#'+dbItem);
@@ -148,14 +150,14 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
               $('.reporting_pills > li.active').removeClass("active");
               $('.reporting_pills > li#dashboard').addClass("active");
               var controller = "reporting.controller";
-              var reportSuperType = $(this).data("target");
-              var heading =  $(this).data("heading");
+              var reportSuperType = $(this).parent(".reportdashboard_div").data("target");
+              var heading =  $(this).parent(".reportdashboard_div").data("heading");
               console.log("calling controller " + controller + " for report type " + reportSuperType + " over period of " + period + "days");
               controller = $fw.client.tab.admin.getController(controller);
               self.hide();
               controller.show(period,$fw.getClientProp("domain"),reportSuperType, heading);
             });
-            var heading = headingToUpdate.data("heading");
+            var heading = headingToUpdate.parent('.reportdashboard_div').data("heading");
 
             var total = 0;
             for(var i=0; i < data.length; i++){
