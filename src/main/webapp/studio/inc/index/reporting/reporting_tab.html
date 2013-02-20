@@ -131,7 +131,7 @@
             <form class="form-inline" >
                 <fieldset class="well">
                     <legend>App Client</legend>
-                    <% if(studio.getProperty("reporting-reports-enabled").equals("true")){ %>
+
                     <div class="span6 reportdashboard_div reportdashboard_div_boarder" style="margin: 3px;"  data-heading="Installs" data-target="domaininstalls">
                         <h4 class="reportingdashboard_heading interactive_heading" id="domaininstallsdest"></h4>
 
@@ -150,8 +150,9 @@
                         <table class="table table-striped reportdashboard" id="appinstallsdest">
                         </table>
                     </div>
-                    <% } %>
-                    <% if(studio.getProperty("reporting-reports-enabled").equals("true")){ %>
+
+
+
                     <div class="span6 reportdashboard_div" data-heading="Start Ups"  style="margin: 3px;"   data-target="domainstartups">
                         <h4 class="reportingdashboard_heading interactive_heading" id="domainstartupsdest" ></h4>
 
@@ -170,14 +171,14 @@
                         <table class="table table-striped reportdashboard" id="appstartupsdest">
                         </table>
                     </div>
-                    <% } %>
+
                 </fieldset>
             </form>
 
             <form class="form-inline">
                 <fieldset class="well">
                     <legend>App Cloud</legend>
-                    <% if(studio.getProperty("cloudrequest-reporting-enabled").equals("true")){ %>
+                    <% if(studio.getProps().optBoolean("cloudrequest-reporting-enabled",true)){ %>
                     <div class="span6 reportdashboard_div reportdashboard_div_boarder" style="margin: 3px;" data-heading="Requests" data-target="domainrequests">
                         <h4 class="reportingdashboard_heading interactive_heading" id="domainrequestsdest"></h4>
 
@@ -198,7 +199,7 @@
                     </div>
 
                     <% } %>
-                    <% if(studio.getProperty("transaction-reporting-enabled").equals("true")){ %>
+                    <% if(studio.getProps().optBoolean("transaction-reporting-enabled",true)){ %>
                     <div class="span6 reportdashboard_div" data-heading="Active Users" data-target="domaintransactions" style="margin: 3px;">
                         <h4 class="reportingdashboard_heading interactive_heading" id="domaintransactionsdest" ></h4>
 
