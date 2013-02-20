@@ -6,7 +6,10 @@ Reporting.Controller = Apps.Reports.Support.extend({
 
   showPreview: false,
   views: {
-    "reporting_graphs":'#report_graph'
+    "reporting_graphs":'#report_graph',
+    "report_by_date":'.report_by_date',
+    "report_by_device":'.report_by_device',
+    "report_by_location":".report_by_location"
   },
 
   containerConfigs : {
@@ -44,6 +47,18 @@ Reporting.Controller = Apps.Reports.Support.extend({
         event.preventDefault();
         self.buildGraphs(ele);
       });
+
+      $('.reporting_pills > li a').unbind().click(function (e){
+        console.log("reporting pills click");
+        e.preventDefault();
+        self.hide();
+        $(self.views.reporting_graphs).show();
+        $('.reporting_pills > li.active').removeClass("active");
+        $(this).parent('li').addClass("active");
+        self.activeView = $(this).parent('li').attr("id");
+          self.buildGraphs();
+      });
+
     });
   },
 
@@ -55,8 +70,11 @@ Reporting.Controller = Apps.Reports.Support.extend({
     self.context = context;
     self.type = type;
     self.heading = heading;
+    var activeView = $('.reporting_pills > li.active');
+    self.activeView = activeView.attr("id");
     self.buildContainerConfigs(type);
     self.initForm();
+    self.hide();
     $(self.views.reporting_graphs).show();
     //trigger click on activ nav element
     self.buildGraphs();
@@ -74,18 +92,25 @@ Reporting.Controller = Apps.Reports.Support.extend({
 
     var self = this;
 
+    //look for active pill
+
+
+
+
     if(ele){
       //get form date info
       //set period
       var p = $(ele).data("period");
       if(! p ){
         //get dates from date fields.
-        self.period=undefined;
+
         var from = $('input[name="from"]').val();
         var to = $('input[name="to"]').val();
 
         to = new Date(to);
         from = new Date(from);
+
+        self.period = self.daysBetweenDates(from,to);
 
         console.log(from.toDateString() + " : " + to.toDateString());
       }else{
@@ -95,41 +120,41 @@ Reporting.Controller = Apps.Reports.Support.extend({
       }
 
     }
+    //else use active period
     var containers = self.containerConfigs;
-    console.log(containers);
     if(self.heading){
       $('#graphType').html(self.heading);
     }
-    for(var cont in containers){
+    if(self.activeView === "dashboard"){
+      for(var cont in containers){
 
-      if(containers.hasOwnProperty(cont)){
-        var info = containers[cont];
-        var params = self.buildParams(self.context, self.period,info.metric,0);
-        if(! self.period) {
-          var days =self.daysBetweenDates(from, to);
-          params = {
-            id: self.context,
-            metric: info.metric,
-            from: self.splitDate(from),
-            to: self.splitDate(to),
-            days: days
-          };
-          console.log("report button clicked params set up ", params);
+        if(containers.hasOwnProperty(cont)){
+          var info = containers[cont];
+          var params = self.buildParamsForDays(self.context, self.period,info.metric,0);
+          var container = $(info.container);
+          container.show();
+          params.dest = false;
+          params.height = 210;
+          if(info.chart === "geo"){
+
+
+          }
+          self.drawChart(info.chart, container, params, Constants.READ_APP_METRICS_URL, function (err) {
+
+          });
         }
-
-        var container = $(info.container);
-        params.dest = false;
-        params.height = 210;
-        params.dest=true;
-        if(info.chart === "geo"){
-
-         // params.width
-
-        }
-        self.drawChart(info.chart, container, params, Constants.READ_APP_METRICS_URL, function (err) {
-
-        });
       }
+    }else if(self.containerConfigs[self.activeView]){
+      info = self.containerConfigs[self.activeView];
+      console.log(info);
+      var params = self.buildParamsForDays(self.context, self.period,info.metric,0);
+      var container = $(info.container);
+      container.show();
+      params.height = 400;
+      params.dest=true;
+      self.drawChart(info.chart, container, params, Constants.READ_APP_METRICS_URL, function (err) {
+
+      });
     }
   }
 

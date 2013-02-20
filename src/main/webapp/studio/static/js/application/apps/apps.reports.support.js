@@ -37,7 +37,7 @@ Apps.Reports.Support = Apps.Controller.extend({
     $('input[name="to"]').val(to);
   },
 
-  buildParams : function (id, days, metric,num){
+  buildParamsForDays : function (id, days, metric,num){
     var self = this;
     var to = new Date();
     var from = moment().subtract('days',days);
@@ -51,6 +51,20 @@ Apps.Reports.Support = Apps.Controller.extend({
       "to":to,
       "num":num || 0
     };
+  },
+
+  buildParamsForDates: function(id,from, to,metric,num){
+    var self = this;
+    to =  self.splitDate(to);
+    from = self.splitDate(from);
+    return  {
+      "id":id || $fw.getClientProp("domain"),
+      "metric":metric,
+      "from":from,
+      "to":to,
+      "num":num || 0
+    };
+
   },
 
   show: function(container){

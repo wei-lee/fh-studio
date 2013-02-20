@@ -17,7 +17,20 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
     "reporting_graphs":'#report_graph'
   },
 
-  tables : ["appinstallsdest","apptransactionsdest","appstartupsdest","appcloudcallsdest"],
+  tables :{
+    appinstallsdest:{
+    "enabled":$fw.getClientProp("reporting-reports-enabled")
+    },
+    "apptransactionsdest":{
+      "enabled":$fw.getClientProp("transaction-reporting-enabled")
+    },
+    "appstartupsdest":{
+      "enabled":$fw.getClientProp("reporting-reports-enabled")
+    },
+    "appcloudcallsdest":{
+      "enabled":$fw.getClientProp("cloudrequest-reporting-enabled")
+    }
+  },
 
   show: function () {
     var self = this;
@@ -40,6 +53,18 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
           self.buildDashboard(ele);
         });
     });
+
+    $('a.interactive_heading').click(function (e){
+         //set the active view to the target
+      var active = $(this).data("target");
+      console.log("active view will be", active);
+      $('.reporting_pills > li.active').removeClass("active");
+      $('.reporting_pills > li#'+active).addClass("active");
+      var controller = "reporting.controller";
+      controller = $fw.client.tab.admin.getController(controller);
+      self.hide();
+      controller.show(self.period,$fw.getClientProp("domain"),"domaininstalls", "installs");
+    });
   },
 
   buildDashboard : function (ele){
@@ -47,14 +72,24 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
     var self = this;
     var dao = new application.MetricsDataLocator($fw.getClientProp("reporting-dashboard-sampledata-enabled"));
     var period = $(ele).data("period");
-    self.initFormDates(period);
+    self.period = period;
+    var from = $('input[name="from"]').val();
+    var to = $('input[name="to"]').val();
+    to = new Date(to);
+    from = new Date(from);
+
     //build the top 5 data and the domain level install etc data
     function populateTopResults(){
       var metric = ["appinstallsdest","apptransactionsdest","appstartupsdest","apprequestsdest"];
       var id = $fw.getClientProp("domain");
-
       var numResults = 5;
-      var params = self.buildParams(id,period, metric, numResults);
+      if(period){
+        self.initFormDates(period);
+      }else{
+        period = self.daysBetweenDates(from,to);
+      }
+
+      var params = self.buildParamsForDays(id,period, metric, numResults);
 
       dao.getData(params,"list",Constants.READ_APP_METRICS_URL, function (data){
          console.log(dbItem);
@@ -62,19 +97,22 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
 
           if(data.hasOwnProperty(dbItem)){
             console.log("dealing with item " + dbItem);
-            var table = $('#'+dbItem);
-            table.empty();
-            table.append(" <tr><th>App Name</th><th>Total</th></tr>");
+            var table = self.tables[dbItem];
+            if(table && table.enabled){
+              table = $('#'+dbItem);
+              table.empty();
+              table.append(" <tr><th>App Name</th><th>Total</th></tr>");
 
-            //add the specific metric for use when the heading is clicked on
-            for(var i=0; i< data[dbItem].length; i++){
-              var result = data[dbItem][i];
-              table.append("<tr><td class=\" appreportrow "+dbItem+"\" data-metric=\""+dbItem+"\" data-appid=\""+result.id.apid+"\">"+result.id.appname+"</td><td>"+result.value.total+"</td></tr>");
+              //add the specific metric for use when the heading is clicked on
+              for(var i=0; i< data[dbItem].length; i++){
+                var result = data[dbItem][i];
+                table.append("<tr><td class=\" appreportrow "+dbItem+"\" data-metric=\""+dbItem+"\" data-appid=\""+result.id.apid+"\">"+result.id.appname+"</td><td>"+result.value.total+"</td></tr>");
+              }
+
+              table.find('.appreportrow').css("cursor","pointer").unbind().click(function (){
+                //call specific report type controller
+              });
             }
-
-            table.find('.appreportrow').css("cursor","pointer").unbind().click(function (){
-              //call specific report type controller
-            });
           }
         }
 
@@ -87,7 +125,6 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
     }
 
     function populateDashboardTotals(){
-      console.log("populate dashboard totals");
       var metrics = ["domaininstallsdest","domaintransactionsdest","domainstartupsdest","domainrequestsdest"];
       var id = $fw.getClientProp("domain");
       var metricsSeries = [];
@@ -96,13 +133,20 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
 
       $(metrics).each(function (indx, metric){
         metricsSeries.push(function (callback){
-          var params = self.buildParams(id, period, metric, 0);
+          var params = {};
+          if(period){
+            params =  self.buildParamsForDays(id, period, metric, 0);
+          }else{
+            params = self.buildParamsForDates(id, from, to, metric, 0);
+          }
 
 
           dao.getData(params,"list",Constants.READ_APP_METRICS_URL, function (data){
             var headingToUpdate = $('#' + metric);
             headingToUpdate.css("cursor","pointer");
             headingToUpdate.unbind().click(function (){
+              $('.reporting_pills > li.active').removeClass("active");
+              $('.reporting_pills > li#dashboard').addClass("active");
               var controller = "reporting.controller";
               var reportSuperType = $(this).data("target");
               var heading =  $(this).data("heading");
@@ -116,7 +160,11 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
             var total = 0;
             for(var i=0; i < data.length; i++){
               var values = data[i].value;
-              total+=values.total;
+              for(var prop in values){
+                if(values.hasOwnProperty(prop)){
+                  total+=values[prop];
+                }
+              }
             }
             headingToUpdate.html(heading + " " + total);
             callback(undefined,data);
