@@ -24,6 +24,8 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
     var self = this;
     var ele = $(self.views.report_per_app);
     ele.show();
+    $(self.views.loading_indicator).show();
+    $(self.views.app_list_table).hide();
     $(self.views.app_summary_metrics_container).show();
     $(self.views.do_report_btn).addClass('disabled').unbind('click').bind('click', function(e){
       e.preventDefault();
