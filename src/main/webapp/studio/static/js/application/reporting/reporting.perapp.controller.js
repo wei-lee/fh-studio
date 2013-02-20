@@ -25,21 +25,26 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
     app_list_table_wrapper: '#reports_per_app_all_apps_table_wrapper',
     do_report_btn: '.doReport',
     loading_indicator:'#reports_per_app_container #apps_loading',
-    app_summary_metrics_container: '#per_app_summary_container'
+    app_summary_metrics_container: '#per_app_summary_container',
+    "reports_form":"#reporting_layout .reporting_form"
   },
 
   show: function (app) {
     var self = this;
     $(self.views.reports_graph).hide();
+
     var ele = $(self.viewnames.report_per_app);
+
     self.initDatepickers($('#reporting_form input[name="from"]'), $('#reporting_form input[name="to"]'));
     self.initFormDates(7);
     ele.show();
+
     $(self.viewnames.loading_indicator).show();
     $(self.viewnames.app_list_table_wrapper).hide();
     $(self.viewnames.app_summary_metrics_container).show();
     $(self.viewnames.app_summary_metrics_container).find('div:gt(0)').hide();
     $(self.viewnames.app_summary_metrics_container).find('div:eq(0)').show();
+    $(self.viewnames.reports_form).show();
     $(self.viewnames.do_report_btn).addClass('disabled').unbind('click').bind('click', function(e){
       e.preventDefault();
       var appGuid = $(this).data('selected_app');
@@ -120,20 +125,25 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
   showSummaryMetrics: function(appGuid, appTitle, period){
     var self = this;
     var summaryMetricsContainer = $(self.viewnames.app_summary_metrics_container);
-    var metrics = ["appinstallsdest", "appstartupsdest", "apprequestsdest", "apptransactionsdest"];
+    var metrics = ["appinstallsdest", "appstartupsdest", "appcloudcallsdest", "apptransactionsdest"];
     var params = {};
     if(period){
-      params = self.buildParamsForDays(appGuid, period, metrics, 0);
+      params = self.buildParamsForDays(appGuid, period, metrics,0);
     } else {
       var from = $('input[name="from"]').val();
       var to = $('input[name="to"]').val();
+
+      period = self.daysBetweenDates(new Date(from), new Date(to));
+
       params = self.buildParamsForDates(appGuid, from, to, metrics, 0);
     }
+    console.log("SUMMART METRICS ",params);
     summaryMetricsContainer.find('.summary_background_text').hide();
     summaryMetricsContainer.find('div.report-well').remove();
     $(self.viewnames.do_report_btn).removeClass('disabled').data('selected_app',appGuid).data('selected_appname', appTitle);
 
     self.populateTotals(params, function(err, data){
+      console.log(data);
       if(err){
         alert(err);
       } else {
@@ -175,11 +185,17 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
     var metricsSeries = [];
     $(params.metric).each(function (indx, metric){
       metricsSeries.push(function (callback){
-        dao.getData(params,"list",Constants.READ_APP_METRICS_URL, function (data){
+        var p = params;
+        p.metric = metric;
+        dao.getData(p,"list",Constants.READ_APP_METRICS_URL, function (data){
           var total = 0;
           for(var i=0; i < data.length; i++){
             var values = data[i].value;
-            total+=values.total;
+            for(var prop in values){
+              if(values.hasOwnProperty(prop)){
+                total+=values[prop];
+              }
+            }
           }
           callback(undefined,total);
         },function (err){

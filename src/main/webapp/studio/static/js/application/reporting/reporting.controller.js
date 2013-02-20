@@ -10,7 +10,7 @@ Reporting.Controller = Apps.Reports.Support.extend({
     "report_by_date":'.report_by_date',
     "report_by_device":'.report_by_device',
     "report_by_location":".report_by_location",
-    "reports_form":"#reporting_layout #reporting_form"
+    "reports_form":"#reporting_layout .reporting_form"
   },
 
   containerConfigs : {

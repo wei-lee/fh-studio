@@ -14,7 +14,8 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
 
   views: {
     reporting_dashboard: '#reporting_layout #reports_dashboard_container',
-    "reporting_graphs":'#reporting_layout #report_graph'
+    "reporting_graphs":'#reporting_layout #report_graph',
+    "reporting_form":"#reporting_layout .reporting_form"
   },
 
   tables :{
@@ -40,6 +41,7 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
 
     self.initDatepickers($('#reporting_layout .reporting_form input[name="from"]'), $('#reporting_layout .reporting_form input[name="to"]'));
     $('.doReport:first').trigger("click");
+    $(self.views.reporting_form).show();
     ele.show();
 
   },
