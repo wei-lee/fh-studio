@@ -141,11 +141,6 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
   renderLiveChart: function(type, pane){
     var self = this;
     if(!self.rendered_views[type+"_rendered"]){
-      if(self.currentDeployTarget.fields.target.toLowerCase() !== "feedhenry" &&
-         self.currentDeployTarget.fields.target.toLowerCase() !== "cloudfoundry" ){
-        self.showNoData(self.titleMap[type], pane);
-        return;
-      }
       self.getModel(function(model){
         if(model){
           self.renderChart(self.models.stats.gauge, type, pane);
@@ -433,9 +428,7 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
     };
     self.models.deploy.current(guid, cloudEnv, function(current_target){
       self.currentDeployTarget = current_target;
-      if(current_target.fields.target.toLowerCase() === "feedhenry"){
-        return getModel(callback);
-      } else if(current_target.fields.target.toLowerCase() === "cloudfoundry"){
+      if(current_target.fields.target.toLowerCase() === "cloudfoundry"){
         // Note: hack here, CF doesn't have live stats, so we prompt fh-core (via the /resrouces endpoint)
         // to kick off its own internal timer to poll CF X number of times for X seconds
         self.cfTimer = setInterval(function(){
@@ -443,11 +436,8 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
             // do nothing
           });
         }, self.cfPollInterval);
-        return getModel(callback);
-      } else {
-        self.showAlert('warning', "Deploy target " + current_target.fields.target + " is not supported to get real time stats data.");
-        callback(undefined, {error: "Invalid deploy target"});
       }
+      return getModel(callback);     
     }, function(){
       //failed to find current active deploy target, there should be no stats data anyway, continue on
       return getModel(callback);
