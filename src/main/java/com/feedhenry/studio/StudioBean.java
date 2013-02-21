@@ -733,4 +733,11 @@ public class StudioBean {
 
     return scheme;
   }
+
+  public boolean showStudioVersionOption() throws Exception {
+    String showStudioVersionOptionVal = getProperty(PROP_STUDIOVERSIONOPTION);
+    boolean showStudioVersionOption = showStudioVersionOptionVal != null && showStudioVersionOptionVal.equals("true");
+
+    return showStudioVersionOption;
+  }
 }
