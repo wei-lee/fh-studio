@@ -20,16 +20,16 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
 
   tables :{
     appinstallsdest:{
-    "enabled":$fw.getClientProp("reporting-reports-enabled")
+    "enabled":true
     },
     "apptransactionsdest":{
-      "enabled":$fw.getClientProp("transaction-reporting-enabled")
+      "enabled":true
     },
     "appstartupsdest":{
-      "enabled":$fw.getClientProp("reporting-reports-enabled")
+      "enabled":true
     },
     "appcloudcallsdest":{
-      "enabled":$fw.getClientProp("cloudrequest-reporting-enabled")
+      "enabled":true
     }
   },
 
