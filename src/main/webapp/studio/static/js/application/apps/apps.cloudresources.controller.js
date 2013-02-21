@@ -369,7 +369,9 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
               formatter: function() {
                 var value = this.y;
                 if(k !== 'cpu'){
-                  value += "B";
+                  value = self.bytesToMB(this.y*1000) + "MB";
+                } else {
+                  value += "%";
                 }
                 var timestamp = moment(this.x).format("MMM D, HH:mm:ss");
                 return '<b>' + typename + ":" + value + '</b><br/>' + timestamp;
