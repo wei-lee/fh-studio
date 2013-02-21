@@ -62,7 +62,7 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
 
   loadAppList: function(app){
     var self = this;
-    self.model.app.listMyApps(function(res) {
+    self.model.app.listAll(function(res) {
       self.renderAppListing(self.viewnames.app_list_table, res);
       if(app){
         var appId = app.guid;
