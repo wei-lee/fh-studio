@@ -412,10 +412,10 @@
           {"_id":{"domain":"sampleid","ts":1312909201597},"value":{"android":5076,"iphone":1030,"blackberry":148,"wp7":60}}
         ]
       },
-      apptransactionsgeo:[
+      apptransactionsgeo:{'sampleid':[
         {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:550, us:1500, china:60}},
         {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}}
-      ],
+      ]},
       appcloudcallsdest:{"sampleid":[
         {"_id":{"domain":"sampleid","ts":1312909201597},"value":{"android":3476,"iphone":3576,"blackberry":348,"wp7":50}},
         {"_id":{"domain":"sampleid","ts":1312909201597},"value":{"android":3222,"iphone":3330,"blackberry":448,"wp7":60}},

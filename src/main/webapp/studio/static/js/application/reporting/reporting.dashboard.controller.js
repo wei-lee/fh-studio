@@ -36,6 +36,7 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
     var self = this;
     var ele = $(self.views.reporting_dashboard);
     self.initForm();
+    self.initDatepickers($('#reporting_form input[name="from"]'), $('#reporting_form input[name="to"]'));
     $('.doReport:first').trigger("click");
     ele.show();
 

@@ -28,13 +28,27 @@ Apps.Reports.Support = Apps.Controller.extend({
     $(".appreport-results").empty();
   },
 
+  initDatepickers: function(fromfield, tofield){
+
+    // set from date to 4 weeks ago, and to date to today
+    var today = new Date();
+    var fourWeeksAgo = new Date(today.getTime() - 2419200000);
+
+    function formatDate(date) {
+      return ('' + ((date.getUTCMonth() + 1) * 0.01).toFixed(2)).substring(2,4) + '/' + ('' + (date.getUTCDate() * 0.01).toFixed(2)).substring(2,4) + '/' + date.getUTCFullYear();
+    }
+
+    $(fromfield).val(formatDate(fourWeeksAgo)).datepicker({format:'mm/dd/yyyy', weekStart:0, defaultDate: today});
+    $(tofield).val(formatDate(today)).datepicker({format:'mm/dd/yyyy', weekStart:0, defaultDate: fourWeeksAgo});
+  },
+
   initFormDates : function (days){
-    var from = moment().subtract("days", days).format("YYYY-MM-DD");
-    var to = moment().format("YYYY-MM-DD");
+    var from = moment().subtract("days", days).format("MM/DD/YYYY");
+    var to = moment().format("MM/DD/YYYY");
 
     console.log("from on show ", from);
-    $('input[name="from"]').val(from);
-    $('input[name="to"]').val(to);
+    $('input[name="from"]').val(from).datepicker("setDate", from);
+    $('input[name="to"]').val(to).datepicker("setDate", to);
   },
 
   buildParamsForDays : function (id, days, metric,num){
@@ -204,16 +218,10 @@ Apps.Reports.Support = Apps.Controller.extend({
      container.find('.appreport-applist').hide();
    }
 
-   // set from date to 4 weeks ago, and to date to today
-   var today = new Date();
-   var fourWeeksAgo = new Date(today.getTime() - 2419200000);
 
-   function formatDate(date) {
-    return ('' + ((date.getUTCMonth() + 1) * 0.01).toFixed(2)).substring(2,4) + '/' + ('' + (date.getUTCDate() * 0.01).toFixed(2)).substring(2,4) + '/' + date.getUTCFullYear();
-   }
 
    // initialise datepickers
-   container.find('.appreportfrom-datepicker').val(formatDate(fourWeeksAgo)).datepicker({
+   /*container.find('.appreportfrom-datepicker').val(formatDate(fourWeeksAgo)).datepicker({
      format: "mm/dd/yyyy",
      weekStart: 0
    });
@@ -221,7 +229,7 @@ Apps.Reports.Support = Apps.Controller.extend({
    container.find('.appreportto-datepicker').val(formatDate(today)).datepicker({
      format: "mm/dd/yyyy",
      weekStart: 0
-   });
+   });*/
   },
   
   drawChart: function (type, container, params, url, callback) {

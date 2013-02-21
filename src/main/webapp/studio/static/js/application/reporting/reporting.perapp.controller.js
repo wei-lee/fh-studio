@@ -30,6 +30,7 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
   show: function () {
     var self = this;
     var ele = $(self.viewnames.report_per_app);
+    self.initDatepickers($('#reporting_form input[name="from"]'), $('#reporting_form input[name="to"]'));
     self.initFormDates(7);
     ele.show();
     $(self.viewnames.loading_indicator).show();
@@ -42,6 +43,9 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
       var appGuid = $(this).data('selected_app');
       var appTitle = $(this).data('selected_appname');
       var period = $(this).data('period');
+      if(period){
+        self.initFormDates(period);
+      }
       if(appGuid){
         self.showSummaryMetrics(appGuid, appTitle, period);
       }
