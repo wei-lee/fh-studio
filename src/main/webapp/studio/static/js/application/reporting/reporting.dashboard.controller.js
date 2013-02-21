@@ -55,7 +55,7 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
         });
     });
 
-    $('a.interactive_heading').click(function (e){
+    $('a.interactive_heading').unbind('click').click(function (e){
          //set the active view to the target
       var active = $(this).data("pill");
       var heading = $(this).closest('.reportdashboard_div').data("heading");
@@ -67,6 +67,10 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
       controller = $fw.client.tab.admin.getController(controller);
       self.hide();
       controller.show(self.period,$fw.getClientProp("domain"),metric, heading);
+    });
+    $('.reportdashboard_link i').unbind('click').click(function(e){
+      e.preventDefault();
+      $(this).prev('a').trigger('click');
     });
   },
 
