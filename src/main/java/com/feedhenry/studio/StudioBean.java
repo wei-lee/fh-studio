@@ -89,6 +89,8 @@ public class StudioBean {
   public static final String PROP_LANDINGMIXPANELKEY = "landingMixpanelKey";
   public static final String PROP_LANDINGGOOGLEENABLED = "landingGoogleEanbled";
   public static final String PROP_LANDINGGOOGLEKEY = "landingGoogleKey";
+  public static final String PROP_STUDIOVERSIONOPTION = "studioVersionOptionEnabled";
+  public static final String PROP_STUDIOVERSION = "studioVersion";
 
   public static final List<String> mAllowedActionRequest = new ArrayList<String>();
   private static ArrayList<String> sSchemeHeaders = new ArrayList<String>();
@@ -229,6 +231,8 @@ public class StudioBean {
       }
     }
 
+    String requiredProtocol = mStudioProps.getString(PROP_PROTOCOL);
+    String serverName = pRequest.getServerName();
     if (proceed) {
 
       // Allow for domain props being passed in request
@@ -238,17 +242,23 @@ public class StudioBean {
       // PropsManager.getDomainPropSet(JSONObject.SYSTEM_USERCONTEXT, mDomain);
       // }
 
-      String requiredProtocol = mStudioProps.getString(PROP_PROTOCOL);
       String selectedProtocol = resolveScheme(pRequest);
 
       // Ensure that we are using the correct protocol (https by default);
       if (!requiredProtocol.equals(selectedProtocol)) {
-        String serverName = pRequest.getServerName();
         String redirect = requiredProtocol + "://" + serverName;
         redirectUrl = redirect;
         log.info("requiredProtocol=" + requiredProtocol + ", selectedProtocol=" + selectedProtocol);
         proceed = false;
       }
+    }
+
+    // Check if user should be using a different version of studio
+    String studioVersion = mStudioProps.optString(PROP_STUDIOVERSION, null);
+    if (null == redirectUrl && studioVersion != null && studioVersion.length() > 0) {
+      String redirect = requiredProtocol + "://" + serverName + "/" + studioVersion;
+      redirectUrl = redirect;
+      proceed = false;
     }
 
     if (null != redirectUrl) {
