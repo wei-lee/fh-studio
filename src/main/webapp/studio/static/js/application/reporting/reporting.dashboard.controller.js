@@ -119,6 +119,8 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
                 var period = self.period;
                 console.log("show app metrics with appid = " + appid + " appname = " + appname + " period = " + period);
                 self.hide();
+                $('.reporting_nav_list').find('li.active').removeClass('active');
+                $('.reporting_nav_list').find('li:eq(1)').addClass('active');
                 $fw.client.tab.admin.getController("reporting.perapp.controller").show({guid: appid, title: appname, period: period});
               });
             }
