@@ -119,25 +119,25 @@
       </li>
       <li class="nav-header template-restriction">Reporting</li>
       <li class="template-restriction">
-        <a href="#" data-controller="apps.installs.controller">
+        <a href="#" data-controller="reporting.app.controller" data-period="7" data-pill="dashboard" data-heading="Installs" data-target="appinstalls">
           <i class="icon-bar-chart"></i>
           Client Installs
         </a>
       </li>
       <li class="template-restriction">
-        <a href="#" data-controller="apps.startups.controller">
+          <a href="#" data-controller="reporting.app.controller" data-period="7" data-pill="dashboard" data-heading="Client Startups" data-target="appstartups">
           <i class="icon-bar-chart"></i>
           Client Startups
         </a>
       </li>
         <li class="template-restriction">
-            <a href="#" data-controller="apps.startups.controller">
+            <a href="#" data-controller="reporting.app.controller" data-period="7" data-pill="dashboard" data-heading="Cloud Requests" data-target="apprequests">
                 <i class="icon-bar-chart"></i>
                 Cloud Requests
             </a>
         </li>
         <li class="template-restriction">
-            <a href="#" data-controller="apps.startups.controller">
+            <a href="#" data-controller="reporting.app.controller" data-period="7" data-pill="dashboard" data-heading="Active Users" data-target="apptransactions">
                 <i class="icon-bar-chart"></i>
                 Active Users
             </a>
@@ -213,7 +213,11 @@
         </div>
         
        <% if(studio.getProps().optBoolean("enable-per-app-metrics")){ %>
-         <div id="reportinginstalls_container">
+
+        <%@ include file="../reporting/reporting_form.html" %>
+        <%@ include file="../reporting/reports_container.html" %>
+
+         <!--<div id="reportinginstalls_container">
            <div class="fh-box-outer">
              <h4 class="fh-box-header">
                Reports - App Installs
@@ -243,39 +247,9 @@
               </div>
              </div>
            </div>
-         </div>
+         </div> -->
 
-         <div id="reportingstartups_container">
-           <div class="fh-box-outer">
-             <h4 class="fh-box-header">
-               Reports - App Startups
-             </h4>
-             <div class="fh-box-inner">
-               <ul class="nav nav-pills">
-                <li>
-                  <a href="#startups_by_date" data-toggle="pill" data-action="byDate">By Date</a>
-                </li>
-                <li>
-                  <a href="#startups_by_platform" data-toggle="pill" data-action="byPlatform">By Platform</a>
-                </li>
-                <li>
-                  <a href="#startups_by_location" data-toggle="pill" data-action="byLocation">By Location</a>
-                </li>
-              </ul>
-              <div class="pill-content">
-                <div id="startups_by_date" class="startups_by_date pill-pane">
-                <%@ include file="./report_startupsdate.html"%>
-                </div>
-                <div id="startups_by_platform" class="startups_by_platform pill-pane">
-                <%@ include file="./report_startupsdest.html"%>
-                </div>
-                <div id="startups_by_location" class="startups_by_location pill-pane">
-                <%@ include file="./report_startupsloc.html"%>
-                </div>
-              </div>
-             </div>
-           </div>
-         </div>
+
 
        <%}%>
 

@@ -13,8 +13,8 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
   activePeriod : "",
 
   views: {
-    reporting_dashboard: '#reports_dashboard_container',
-    "reporting_graphs":'#report_graph'
+    reporting_dashboard: '#reporting_layout #reports_dashboard_container',
+    "reporting_graphs":'#reporting_layout #report_graph'
   },
 
   tables :{
@@ -36,10 +36,11 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
     var self = this;
     var ele = $(self.views.reporting_dashboard);
     self.initForm();
-    self.initDatepickers($('#reporting_form input[name="from"]'), $('#reporting_form input[name="to"]'));
+
+
+    self.initDatepickers($('#reporting_layout .reporting_form input[name="from"]'), $('#reporting_layout .reporting_form input[name="to"]'));
     $('.doReport:first').trigger("click");
     ele.show();
-
 
   },
 
@@ -66,7 +67,7 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
       var controller = "reporting.controller";
       controller = $fw.client.tab.admin.getController(controller);
       self.hide();
-      controller.show(self.period,$fw.getClientProp("domain"),metric, heading);
+      controller.displayGraphs(self.period,$fw.getClientProp("domain"),metric, heading);
     });
     $('.reportdashboard_link i').unbind('click').click(function(e){
       e.preventDefault();
@@ -77,7 +78,7 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
   buildDashboard : function (ele){
     console.log("build dashboard");
     var self = this;
-    var sampleDataEnabled = ($fw.getClientProp("reporting-dashboard-sampledata-enabled") === "false") ? false : true;
+    var sampleDataEnabled = ($fw.getClientProp("reporting-sampledata-enabled") === "false") ? false : true;
     var dao = new application.MetricsDataLocator(sampleDataEnabled);
     var period = $(ele).data("period");
     self.period = period;
@@ -168,7 +169,7 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
               console.log("calling controller " + controller + " for report type " + reportSuperType + " over period of " + period + "days");
               controller = $fw.client.tab.admin.getController(controller);
               self.hide();
-              controller.show(period,$fw.getClientProp("domain"),reportSuperType, heading);
+              controller.displayGraphs(period,$fw.getClientProp("domain"),reportSuperType, heading);
             });
             var heading = headingToUpdate.parent('.reportdashboard_div').data("heading");
 

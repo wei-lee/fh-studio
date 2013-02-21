@@ -15,7 +15,8 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
   views: {
     //those views will be hidden initially
     report_per_app: '#reports_per_app_container',
-    app_list_table: '#reports_per_app_container #reports_per_app_all_apps_table'
+    app_list_table: '#reports_per_app_container #reports_per_app_all_apps_table',
+    reports_graph : '#reporting_layout .reporting_graph'
   },
 
   viewnames: {
@@ -29,6 +30,7 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
 
   show: function (app) {
     var self = this;
+    $(self.views.reports_graph).hide();
     var ele = $(self.viewnames.report_per_app);
     self.initDatepickers($('#reporting_form input[name="from"]'), $('#reporting_form input[name="to"]'));
     self.initFormDates(7);
@@ -150,7 +152,7 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
           console.log("calling controller " + controller + " for report type " + reportSuperType + " over period of " + period + "days");
           controller = $fw.client.tab.admin.getController(controller);
           self.hide();
-          controller.show(period, appGuid,reportSuperType, heading);
+          controller.displayGraphs(period, appGuid,reportSuperType, heading);
         });
         summaryMetricsContainer.find('a.interactive_heading').unbind('click').click(function(e){
           e.preventDefault();
@@ -163,7 +165,7 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
           var controller = "reporting.controller";
           controller = $fw.client.tab.admin.getController(controller);
           self.hide();
-          controller.show(period, appGuid, reportSuperType,heading);
+          controller.displayGraphs(period, appGuid, reportSuperType,heading);
         });
         summaryMetricsContainer.find('.reportdashboard_link i').unbind('click').click(function(e){
           e.preventDefault();
@@ -175,7 +177,7 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
 
   populateTotals: function(params, cb){
     var self = this;
-    var dao = new application.MetricsDataLocator($fw.getClientProp("reporting-dashboard-sampledata-enabled"));
+    var dao = new application.MetricsDataLocator($fw.getClientProp("reporting-sampledata-enabled"));
     var metricsSeries = [];
     $(params.metric).each(function (indx, metric){
       metricsSeries.push(function (callback){

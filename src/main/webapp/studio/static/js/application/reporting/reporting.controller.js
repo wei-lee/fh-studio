@@ -6,10 +6,11 @@ Reporting.Controller = Apps.Reports.Support.extend({
 
   showPreview: false,
   views: {
-    "reporting_graphs":'#report_graph',
+    "reporting_graphs":'#reporting_layout .reporting_graph',
     "report_by_date":'.report_by_date',
     "report_by_device":'.report_by_device',
-    "report_by_location":".report_by_location"
+    "report_by_location":".report_by_location",
+    "reports_form":"#reporting_layout #reporting_form"
   },
 
   containerConfigs : {
@@ -47,24 +48,40 @@ Reporting.Controller = Apps.Reports.Support.extend({
         event.preventDefault();
         self.buildGraphs(ele);
       });
-
-      $('.reporting_pills > li a').unbind().click(function (e){
-        console.log("reporting pills click");
-        e.preventDefault();
-        self.hide();
-        $(self.views.reporting_graphs).show();
-        $('.reporting_pills > li.active').removeClass("active");
-        $(this).parent('li').addClass("active");
-        self.activeView = $(this).parent('li').attr("id");
-          self.buildGraphs();
-      });
-
+    });
+    $('.reporting_pills > li a').unbind().click(function (e){
+      console.log("reporting pills click");
+      e.preventDefault();
+      self.hide();
+      $(self.views.reporting_graphs).show();
+      $(self.views.reports_form).show();
+      $('.reporting_pills > li.active').removeClass("active");
+      $(this).parent('li').addClass("active");
+      self.activeView = $(this).parent('li').attr("id");
+      self.buildGraphs();
     });
   },
 
-  show:function (period, context, type, heading){
+  //this uses the element to build up its data and is used for the apps tab
+  show:function (ev){
     var self = this;
-    //need defaults?? for use on its own?
+
+    var ele = $(ev.target);
+
+    var period = ele.data("period");
+    var heading = ele.data("heading");
+    var type = ele.data("target");
+    var context = $fw.data.get('app').guid || $fw.getClientProp("domain");
+    self.displayGraphs(period, context, type, heading);
+    self.initFormDates(period);
+  },
+  //this can be called from other controllers
+  displayGraphs : function (period, context, type, heading){
+    console.log("display graps " , period , context , type , heading);
+    var self = this;
+    self.hide();
+    $(self.views.reports_form).show();
+    $(self.views.reporting_graphs).show();
     self.period = period;
 
     self.context = context;
@@ -74,8 +91,6 @@ Reporting.Controller = Apps.Reports.Support.extend({
     self.activeView = activeView.attr("id");
     self.buildContainerConfigs(type);
     self.initForm();
-    self.hide();
-    $(self.views.reporting_graphs).show();
     //trigger click on activ nav element
     self.buildGraphs();
   },
@@ -91,12 +106,7 @@ Reporting.Controller = Apps.Reports.Support.extend({
   buildGraphs: function (ele){
 
     var self = this;
-
-    //look for active pill
-
-
-
-
+    console.log("ACTIVE VIEW ", self.activeView);
     if(ele){
       //get form date info
       //set period
@@ -141,7 +151,7 @@ Reporting.Controller = Apps.Reports.Support.extend({
 
           }
           self.drawChart(info.chart, container, params, Constants.READ_APP_METRICS_URL, function (err) {
-
+                 console.log(err);
           });
         }
       }
