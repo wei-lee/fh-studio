@@ -112,8 +112,14 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
                 table.append("<tr><td class=\" appreportrow "+dbItem+"\" data-metric=\""+dbItem+"\" data-appid=\""+result.id.apid+"\">"+result.id.appname+"</td><td>"+result.value.total+"</td></tr>");
               }
 
-              table.find('.appreportrow').css("cursor","pointer").unbind().click(function (){
+              table.find('.appreportrow').css("cursor","pointer").unbind().click(function (e){
                 //call specific report type controller
+                var appid = $(this).data('appid');
+                var appname = $(this).text();
+                var period = self.period;
+                console.log("show app metrics with appid = " + appid + " appname = " + appname + " period = " + period);
+                self.hide();
+                $fw.client.tab.admin.getController("reporting.perapp.controller").show({guid: appid, title: appname, period: period});
               });
             }
           }

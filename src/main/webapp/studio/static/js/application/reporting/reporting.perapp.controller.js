@@ -27,7 +27,7 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
     app_summary_metrics_container: '#per_app_summary_container'
   },
 
-  show: function () {
+  show: function (app) {
     var self = this;
     var ele = $(self.viewnames.report_per_app);
     self.initDatepickers($('#reporting_form input[name="from"]'), $('#reporting_form input[name="to"]'));
@@ -50,13 +50,22 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
         self.showSummaryMetrics(appGuid, appTitle, period);
       }
     });
-    self.loadAppList();
+    self.loadAppList(app);
   },
 
-  loadAppList: function(){
+  loadAppList: function(app){
     var self = this;
     self.model.app.listMyApps(function(res) {
       self.renderAppListing(self.viewnames.app_list_table, res);
+      if(app){
+        var appId = app.guid;
+        var title = app.title;
+        var period = app.period;
+        if(period){
+          self.initFormDates(period);
+        }
+        self.showSummaryMetrics(appId, title, period);
+      }
     }, function() {
       // Failure
     }, true);
@@ -100,8 +109,7 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
 
       var guid = data[6];
       var appTitle = data[1];
-      $('td:lt(6)', row).addClass('app_title').unbind().click(function(){
-        $(self.viewnames.do_report_btn).removeClass('disabled').data('selected_app',guid).data('selected_appname', appTitle);
+      $('td:lt(6)', row).addClass('app_title').attr('id', guid).unbind().click(function(){
         self.showSummaryMetrics(guid, appTitle);
       });
     }
@@ -121,6 +129,7 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
     }
     summaryMetricsContainer.find('.summary_background_text').hide();
     summaryMetricsContainer.find('div.report-well').remove();
+    $(self.viewnames.do_report_btn).removeClass('disabled').data('selected_app',appGuid).data('selected_appname', appTitle);
 
     self.populateTotals(params, function(err, data){
       if(err){
