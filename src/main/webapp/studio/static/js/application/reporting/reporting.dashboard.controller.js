@@ -12,6 +12,9 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
 
   activePeriod : "",
 
+  reports_controller : "reporting.controller",
+  reports_per_app_controller : "reporting.perapp.controller",
+
   views: {
     reporting_dashboard: '#reporting_layout #reports_dashboard_container',
     "reporting_graphs":'#reporting_layout #report_graph',
@@ -39,7 +42,7 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
     self.initForm();
 
 
-    self.initDatepickers($('#reporting_layout .reporting_form input[name="from"]'), $('#reporting_layout .reporting_form input[name="to"]'));
+    self.initDatepickers($(self.views.reporting_form+' input[name="from"]'), $(self.views.reporting_form + ' input[name="to"]'));
     $('.doReport:first').trigger("click");
     $(self.views.reporting_form).show();
     ele.show();
@@ -47,12 +50,10 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
   },
 
   initForm : function(){
-    console.log("init form");
     var self = this;
     $('.doReport').each(function (btn, ele){
 
         $(ele).removeClass('disabled').unbind().click(function (event){
-          console.log("clicked form report button");
           event.preventDefault();
           self.buildDashboard(ele);
         });
@@ -66,11 +67,12 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
       console.log("active view will be", active);
       $('.reporting_pills > li.active').removeClass("active");
       $('.reporting_pills > li#'+active).addClass("active");
-      var controller = "reporting.controller";
-      controller = $fw.client.tab.admin.getController(controller);
+
+      var controller = $fw.client.tab.admin.getController(self.reports_controller);
       self.hide();
       controller.displayGraphs(self.period,$fw.getClientProp("domain"),metric, heading);
     });
+
     $('.reportdashboard_link i').unbind('click').click(function(e){
       e.preventDefault();
       $(this).prev('a').trigger('click');
@@ -78,12 +80,11 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
   },
 
   buildDashboard : function (ele){
-    console.log("build dashboard");
     var self = this;
     var sampleDataEnabled = ($fw.getClientProp("reporting-sampledata-enabled") === "false") ? false : true;
     var dao = new application.MetricsDataLocator(sampleDataEnabled);
-    var period = $(ele).data("period");
-    self.period = period;
+    self.period = $(ele).data("period");
+    console.log("period is set to " + self.period);
     var from = $('input[name="from"]').val();
     var to = $('input[name="to"]').val();
     to = new Date(to);
@@ -94,16 +95,14 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
       var metric = ["appinstallsdest","apptransactionsdest","appstartupsdest","apprequestsdest"];
       var id = $fw.getClientProp("domain");
       var numResults = 5;
-      if(period){
-        self.initFormDates(period);
+      if(self.period){
+        self.initFormDates(self.period);
       }else{
-        period = self.daysBetweenDates(from,to);
+        self.period = self.daysBetweenDates(from,to);
       }
-
-      var params = self.buildParamsForDays(id,period, metric, numResults);
+      var params = self.buildParamsForDays(id,self.period, metric, numResults);
 
       dao.getData(params,"list",Constants.READ_APP_METRICS_URL, function (data){
-         console.log(dbItem);
         for(var dbItem in data){
 
           if(data.hasOwnProperty(dbItem)){
@@ -118,7 +117,6 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
                 var result = data[dbItem][i];
                 table.append("<tr><td class=\" appreportrow "+dbItem+"\" data-metric=\""+dbItem+"\" data-appid=\""+result.id.apid+"\">"+result.id.appname+"</td><td>"+result.value.total+"</td></tr>");
               }
-
               table.find('.appreportrow').css("cursor","pointer").unbind().click(function (e){
                 //call specific report type controller
                 var appid = $(this).data('appid');
@@ -126,9 +124,10 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
                 var period = self.period;
                 console.log("show app metrics with appid = " + appid + " appname = " + appname + " period = " + period);
                 self.hide();
-                $('.reporting_nav_list').find('li.active').removeClass('active');
-                $('.reporting_nav_list').find('li:eq(1)').addClass('active');
-                $fw.client.tab.admin.getController("reporting.perapp.controller").show({guid: appid, title: appname, period: period});
+                var reportingNav = $('.reporting_nav_list');
+                reportingNav.removeClass('active');
+                reportingNav.find('li:eq(1)').addClass('active');
+                $fw.client.tab.admin.getController(self.reports_per_app_controller).show({guid: appid, title: appname, period: period});
               });
             }
           }
@@ -152,8 +151,8 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
       $(metrics).each(function (indx, metric){
         metricsSeries.push(function (callback){
           var params = {};
-          if(period){
-            params =  self.buildParamsForDays(id, period, metric, 0);
+          if(self.period){
+            params =  self.buildParamsForDays(id, self.period, metric, 0);
           }else{
             params = self.buildParamsForDates(id, from, to, metric, 0);
           }
@@ -168,22 +167,14 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
               var controller = "reporting.controller";
               var reportSuperType = $(this).parent(".reportdashboard_div").data("target");
               var heading =  $(this).parent(".reportdashboard_div").data("heading");
-              console.log("calling controller " + controller + " for report type " + reportSuperType + " over period of " + period + "days");
+              console.log("calling controller " + controller + " for report type " + reportSuperType + " over period of " + self.period + "days");
               controller = $fw.client.tab.admin.getController(controller);
               self.hide();
-              controller.displayGraphs(period,$fw.getClientProp("domain"),reportSuperType, heading);
+              controller.displayGraphs(self.period,$fw.getClientProp("domain"),reportSuperType, heading);
             });
             var heading = headingToUpdate.parent('.reportdashboard_div').data("heading");
 
-            var total = 0;
-            for(var i=0; i < data.length; i++){
-              var values = data[i].value;
-              for(var prop in values){
-                if(values.hasOwnProperty(prop)){
-                  total+=values[prop];
-                }
-              }
-            }
+            var total = self.calculateTotal(data);
             headingToUpdate.html(heading + " " + total);
             callback(undefined,data);
           },function (err){

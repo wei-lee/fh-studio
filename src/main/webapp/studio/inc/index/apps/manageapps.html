@@ -117,6 +117,8 @@
           Endpoints
         </a>
       </li>
+      <% if(studio.getProps().optBoolean("reporting-reports-enabled")){ %>
+
       <li class="nav-header template-restriction">Reporting</li>
       <li class="template-restriction">
         <a href="#" data-controller="reporting.app.controller" data-period="7" data-pill="dashboard" data-heading="Installs" data-target="appinstalls">
@@ -130,20 +132,24 @@
           Client Startups
         </a>
       </li>
+        <% if(studio.getProps().optBoolean("cloudrequest-reporting-enabled")){ %>
         <li class="template-restriction">
-            <a href="#" data-controller="reporting.app.controller" data-period="7" data-pill="dashboard" data-heading="Cloud Requests" data-target="appcloudcalls">
+            <a href="#" data-controller="reporting.app.controller" data-period="7" data-pill="dashboard" data-heading="Cloud Requests" data-target="apprequests">
                 <i class="icon-bar-chart"></i>
                 Cloud Requests
             </a>
         </li>
+        <% } %>
+        <% if(studio.getProps().optBoolean("transaction-reporting-enabled")){ %>
         <li class="template-restriction">
             <a href="#" data-controller="reporting.app.controller" data-period="7" data-pill="dashboard" data-heading="Active Users" data-target="apptransactions">
                 <i class="icon-bar-chart"></i>
                 Active Users
             </a>
         </li>
+        <% } %>
     </ul>
-
+    <% } %>
     <div id="app_content" class="span7">
       
         <% if(studio.getProps().optBoolean("cloudresources-enabled")){ %>

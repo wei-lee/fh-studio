@@ -70,6 +70,9 @@ Reporting.Controller = Apps.Reports.Support.extend({
 
     var period = ele.data("period");
     var heading = ele.data("heading");
+    var activePill = ele.data("pill");
+    $('.reporting_pills > li.active').removeClass("active");
+    $('.reporting_pills > li#'+activePill).addClass("active");
     var type = ele.data("target");
     var context = $fw.data.get('app').guid || $fw.getClientProp("domain");
     self.displayGraphs(period, context, type, heading);
@@ -142,10 +145,11 @@ Reporting.Controller = Apps.Reports.Support.extend({
         if(containers.hasOwnProperty(cont)){
           info = containers[cont];
           var params = self.buildParamsForDays(self.context, self.period,info.metric,0);
+          console.log("METRICS PARAMS", params);
           var container = $(info.container);
           container.show();
           params.dest = false;
-          params.height = 210;
+          params.height = 225;
           if(info.chart === "geo"){
 
 

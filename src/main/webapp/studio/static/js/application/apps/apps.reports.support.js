@@ -257,6 +257,20 @@ Apps.Reports.Support = Apps.Controller.extend({
     
     return ret;
   },
+
+  calculateTotal : function (metricData){
+    var total = 0;
+    for(var i=0; i < metricData.length; i++){
+      var values = metricData[i].value;
+      for(var prop in values){
+        if(values.hasOwnProperty(prop)){
+          total+=values[prop];
+        }
+      }
+    }
+    return total;
+  },
+
   
   /*
    * Return the number of days between two Dates

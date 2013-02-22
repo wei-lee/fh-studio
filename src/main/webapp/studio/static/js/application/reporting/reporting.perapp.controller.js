@@ -35,7 +35,7 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
 
     var ele = $(self.viewnames.report_per_app);
 
-    self.initDatepickers($('#reporting_form input[name="from"]'), $('#reporting_form input[name="to"]'));
+    self.initDatepickers($(self.viewnames.reports_form +' input[name="from"]'), $(self.viewnames.reports_form +' input[name="to"]'));
     self.initFormDates(7);
     ele.show();
 
@@ -127,7 +127,7 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
   showSummaryMetrics: function(appGuid, appTitle, period){
     var self = this;
     var summaryMetricsContainer = $(self.viewnames.app_summary_metrics_container);
-    var metrics = ["appinstallsdest", "appstartupsdest", "appcloudcallsdest", "apptransactionsdest"];
+    var metrics = ["appinstallsdest", "appstartupsdest", "apprequestsdest", "apptransactionsdest"];
     var params = {};
     if(period){
       params = self.buildParamsForDays(appGuid, period, metrics,0);
@@ -139,22 +139,32 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
 
       params = self.buildParamsForDates(appGuid, from, to, metrics, 0);
     }
-    console.log("SUMMART METRICS ",params);
     summaryMetricsContainer.find('.summary_background_text').hide();
     summaryMetricsContainer.find('div.report-well').remove();
     $(self.viewnames.do_report_btn).removeClass('disabled').data('selected_app',appGuid).data('selected_appname', appTitle);
 
     self.populateTotals(params, function(err, data){
-      console.log(data);
+
       if(err){
         alert(err);
       } else {
         summaryMetricsContainer.find('.app_summary_name_container').removeClass('hidden').show().find('span').text(appTitle);
         var appInstallsTemplate = self.getTemplate(metrics[0], true, 'appinstalls', "Installs", 'Installs: ' + data[0],null);
         var appStartTemplate = self.getTemplate(metrics[1], false, 'appstartups', 'Start Ups', 'Startups: ' + data[1], null);
-        var appRequestsTemplate = self.getTemplate(metrics[2], true, 'appcloudcalls', 'Requests','Requests: ' + data[2], null);
-        var appTransactionsTemplate = self.getTemplate(metrics[3], false, 'apptransactions', 'Active Uses', 'Active Users: ' + data[3], null);
-        summaryMetricsContainer.append(self.getWellTemplate('App Client', [appInstallsTemplate, appStartTemplate])).append(self.getWellTemplate('App Cloud',[appRequestsTemplate, appTransactionsTemplate]));
+        var appends = [];
+
+        summaryMetricsContainer.append(self.getWellTemplate('App Client', [appInstallsTemplate, appStartTemplate]));
+        if($fw.getClientProp("cloudrequest-reporting-enabled") !== "false"){
+          var appRequestsTemplate = self.getTemplate(metrics[2], true, 'apprequests', 'Requests','Requests: ' + data[2], null);
+          appends.push(appRequestsTemplate);
+        }
+        if($fw.getClientProp("transaction-reporting-enabled") !== "false"){
+          var appTransactionsTemplate = self.getTemplate(metrics[3], false, 'apptransactions', 'Active Uses', 'Active Users: ' + data[3], null);
+          appends.push(appTransactionsTemplate);
+        }
+        if(appends.length > 0){
+            summaryMetricsContainer.append(self.getWellTemplate('App Cloud', appends));
+        }
         summaryMetricsContainer.find('.reportingdashboard_heading').unbind('click').bind('click', function(e){
           var controller = "reporting.controller";
           var reportSuperType = $(this).data("target");
@@ -194,15 +204,7 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
         var p = params;
         p.metric = metric;
         dao.getData(p,"list",Constants.READ_APP_METRICS_URL, function (data){
-          var total = 0;
-          for(var i=0; i < data.length; i++){
-            var values = data[i].value;
-            for(var prop in values){
-              if(values.hasOwnProperty(prop)){
-                total+=values[prop];
-              }
-            }
-          }
+          var total = self.calculateTotal(data);
           callback(undefined,total);
         },function (err){
           callback(err);
