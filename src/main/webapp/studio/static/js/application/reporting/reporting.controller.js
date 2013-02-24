@@ -10,7 +10,8 @@ Reporting.Controller = Apps.Reports.Support.extend({
     "report_by_date":'.report_by_date',
     "report_by_device":'.report_by_device',
     "report_by_location":".report_by_location",
-    "reports_form":"#reporting_layout .reporting_form"
+    "reports_form":"#reporting_layout .reporting_form",
+    "report_heading":"#reporting_layout .graphheading"
   },
 
   containerConfigs : {
@@ -136,7 +137,8 @@ Reporting.Controller = Apps.Reports.Support.extend({
     //else use active period
     var containers = self.containerConfigs;
     if(self.heading){
-      $('#graphType').html(self.heading);
+      console.log("heading is set " + self.heading);
+      $(self.views.report_heading).html(self.heading).show();
     }
     var info;
     if(self.activeView === "dashboard"){

@@ -31,7 +31,7 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
     "appstartupsdest":{
       "enabled":true
     },
-    "appcloudcallsdest":{
+    "apprequestsdest":{
       "enabled":true
     }
   },
@@ -59,24 +59,7 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
         });
     });
 
-    $('a.interactive_heading').unbind('click').click(function (e){
-         //set the active view to the target
-      var active = $(this).data("pill");
-      var heading = $(this).closest('.reportdashboard_div').data("heading");
-      var metric = $(this).closest('.reportdashboard_div').data("target");
-      console.log("active view will be", active);
-      $('.reporting_pills > li.active').removeClass("active");
-      $('.reporting_pills > li#'+active).addClass("active");
 
-      var controller = $fw.client.tab.admin.getController(self.reports_controller);
-      self.hide();
-      controller.displayGraphs(self.period,$fw.getClientProp("domain"),metric, heading);
-    });
-
-    $('.reportdashboard_link i').unbind('click').click(function(e){
-      e.preventDefault();
-      $(this).prev('a').trigger('click');
-    });
   },
 
   buildDashboard : function (ele){
@@ -91,7 +74,7 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
     from = new Date(from);
 
     //build the top 5 data and the domain level install etc data
-    function populateTopResults(){
+    function populateTopResults(cb){
       var metric = ["appinstallsdest","apptransactionsdest","appstartupsdest","apprequestsdest"];
       var id = $fw.getClientProp("domain");
       var numResults = 5;
@@ -109,6 +92,7 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
             var table = self.tables[dbItem];
             if(table && table.enabled){
               table = $('#'+dbItem);
+              console.log("found table " + dbItem, table);
               table.empty();
               table.append(" <tr><th>App Name</th><th>Total</th></tr>");
 
@@ -137,45 +121,57 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
         console.log("error occurred get metrics data" + err);
       });
 
+      cb();
 
 
     }
 
-    function populateDashboardTotals(){
-      var metrics = ["domaininstallsdest","domaintransactionsdest","domainstartupsdest","domainrequestsdest"];
+    function populateDashboardTotals(cb){
+      $('.reportdashboard_div').remove();
+      var metrics = [
+        {"metric":"domaininstallsdest","heading":"Installs","target":"domaininstalls","isEnabled":$fw.getClientProp("cloudrequest-reporting-enabled") || "true","container":".appcloud"},
+        {"metric":"domaintransactionsdest", "heading":"Active Users","target":"domaintransactions","isEnabled":$fw.getClientProp("transaction-reporting-enabled") || "true","container":".appcloud"},
+        {"metric":"domainstartupsdest","heading":"Start Ups","target":"domainstartups","isEnabled":$fw.getClientProp("startups-reporting-enabled") || "true" , container:".appclient"},
+        {"metric":"domainrequestsdest","heading":"Requests","target":"domainrequests","isEnabled":$fw.getClientProp("startups-reporting-enabled") || "true","container":".appclient"}
+      ];
       var id = $fw.getClientProp("domain");
       var metricsSeries = [];
 
-
-
       $(metrics).each(function (indx, metric){
+
         metricsSeries.push(function (callback){
           var params = {};
           if(self.period){
-            params =  self.buildParamsForDays(id, self.period, metric, 0);
+            params =  self.buildParamsForDays(id, self.period, metric.metric, 0);
           }else{
-            params = self.buildParamsForDates(id, from, to, metric, 0);
+            params = self.buildParamsForDates(id, from, to, metric.metric, 0);
           }
 
-
           dao.getData(params,"list",Constants.READ_APP_METRICS_URL, function (data){
-            var headingToUpdate = $('#' + metric);
-            headingToUpdate.css("cursor","pointer");
-            headingToUpdate.unbind().click(function (){
-              $('.reporting_pills > li.active').removeClass("active");
-              $('.reporting_pills > li#dashboard').addClass("active");
-              var controller = "reporting.controller";
-              var reportSuperType = $(this).parent(".reportdashboard_div").data("target");
-              var heading =  $(this).parent(".reportdashboard_div").data("heading");
-              console.log("calling controller " + controller + " for report type " + reportSuperType + " over period of " + self.period + "days");
-              controller = $fw.client.tab.admin.getController(controller);
-              self.hide();
-              controller.displayGraphs(self.period,$fw.getClientProp("domain"),reportSuperType, heading);
-            });
-            var heading = headingToUpdate.parent('.reportdashboard_div').data("heading");
+            var boarded = (indx%2 === 0);
 
             var total = self.calculateTotal(data);
-            headingToUpdate.html(heading + " " + total);
+            if("true" === metric.isEnabled){
+              var template = self.getTemplate(metric.metric, boarded,metric.target,metric.heading, metric.heading + " " + total, metric.metric.replace("domain","app"));
+
+              $(metric.container).append(template);
+
+              var headingToUpdate = $('#' + metric.metric);
+              headingToUpdate.css("cursor","pointer");
+              headingToUpdate.unbind().click(function (){
+                $('.reporting_pills > li.active').removeClass("active");
+                $('.reporting_pills > li#dashboard').addClass("active");
+                var controller = "reporting.controller";
+                var reportSuperType = $(this).data("target");
+                var heading =  $(this).data("heading");
+                console.log("calling controller " + controller + " for report type " + reportSuperType + " over period of " + self.period + "days" + " setting heading " + heading);
+                controller = $fw.client.tab.admin.getController(controller);
+                self.hide();
+                controller.displayGraphs(self.period,$fw.getClientProp("domain"),reportSuperType, heading);
+              });
+            }
+
+
             callback(undefined,data);
           },function (err){
             callback(err);
@@ -183,28 +179,76 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
         });
       });
 
-
-
-
       async.parallel(metricsSeries, function (err, data){
-        console.log("finished metrics series");
          //data is in same order as the calls were pushed into the series.
          if(err){
            //warn of error;
            alert(err);
          }
+        $('a.interactive_heading').unbind('click').click(function (e){
+          //set the active view to the target
+          var active = $(this).data("target");
+          var heading = $(this).closest('.reportingdashboard_heading').data("heading");
+          var metric = $(this).closest('.reportingdashboard_heading').data("target");
+
+          $('.reporting_pills > li.active').removeClass("active");
+          $('.reporting_pills > li#'+active).addClass("active");
+
+          var controller = $fw.client.tab.admin.getController(self.reports_controller);
+          self.hide();
+          controller.displayGraphs(self.period,$fw.getClientProp("domain"),metric, heading);
+        });
+
+        $('.reportdashboard_link i').unbind('click').click(function(e){
+          e.preventDefault();
+          $(this).prev('a').trigger('click');
+        });
 
       });
+      cb();
 
     }
 
-    async.parallel([populateTopResults,populateDashboardTotals], function (){
-       console.log("finished async populate");
+    async.series([populateDashboardTotals,populateTopResults], function (){
+       console.log("finished populate *****");
     });
 
   },
 
+  getTemplate: function(id, showboarder, target, heading, headingText, toptable){
+    var html = '<div class="span6 reportdashboard_div ' + (showboarder?'reportdashboard_div_boarder':'') + '" style="margin: 3px;">';
+    html += ' <h4 class="reportingdashboard_heading interactive_heading" id="'+id+'" data-target="'+target+'" data-heading="'+heading+'" style="cursor: pointer">'+headingText+'</h4>';
+    html += '<div class="span11 offset0 reportingdashboard_image_container">';
+    html += '<div class="span9 offset2">';
+    html += '<ul class="nav nav-pills">';
+    html += '<li class="reportdashboard_link"><a class="interactive_heading" data-target="by_date" href="#">By Date</a><i class="icon-calendar icon-4x"></i></li>';
+    html += '<li class="reportdashboard_link"><a class="interactive_heading" data-target="by_device" href="#">By Platform</a><i class="icon-mobile-phone icon-4x"></i></li>';
+    html += '<li class="reportdashboard_link"><a class="interactive_heading" data-target="by_location" href="#">By Location</a><i class="icon-globe icon-4x"></i></li>';
+    html += '</ul>';
+    html += '</div>';
+    html += '</div>';
+    if(toptable){
+      html += '<div class="span12">';
+      html += '<h4>Top 5 Apps</h4>';
+      html += '</div>';
+      html += '<table class="table table-striped reportdashboard" id="'+toptable+'">';
+      html += '</table>';
+    }
+    html += '</div>';
+    return html;
+  },
 
+  getWellTemplate: function(legendText, divs){
+    var html = '<div class="row-fluid report-well"><form class="form-inline">';
+    html += '<fieldset class="well">';
+    html += '<legend>'+legendText+'</legend>';
+    for(var i=0;i<divs.length;i++){
+      html +=  divs[i];
+    }
+    html += '</fieldset>';
+    html += '</form></div>';
+    return html;
+  },
 
 
 

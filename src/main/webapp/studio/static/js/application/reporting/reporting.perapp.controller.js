@@ -2,7 +2,7 @@ var Reporting = Reporting || {};
 
 Reporting.Perapp = Reporting.Perapp || {};
 
-Reporting.Perapp.Controller = Apps.Reports.Support.extend({
+Reporting.Perapp.Controller = Reporting.Dashboard.Controller.extend({
 
   init: function () {
     this._super();
@@ -216,38 +216,5 @@ Reporting.Perapp.Controller = Apps.Reports.Support.extend({
     });
   },
 
-  getTemplate: function(id, showboarder, target, heading, headingText, toptable){
-    var html = '<div class="span6 reportdashboard_div ' + (showboarder?'reportdashboard_div_boarder':'') + '" style="margin: 3px;">';
-    html += ' <h4 class="reportingdashboard_heading interactive_heading" id="'+id+'" data-target="'+target+'" data-heading="'+heading+'" style="cursor: pointer">'+headingText+'</h4>';
-    html += '<div class="span11 offset1 reportingdashboard_image_container">';
-    html += '<div class="span9 offset2">';
-    html += '<ul class="nav nav-pills">';
-    html += '<li class="reportdashboard_link"><a class="interactive_heading" data-target="by_date" href="#">By Date</a><i class="icon-calendar icon-4x"></i></li>';
-    html += '<li class="reportdashboard_link"><a class="interactive_heading" data-target="by_device" href="#">By Platform</a><i class="icon-mobile-phone icon-4x"></i></li>';
-    html += '<li class="reportdashboard_link"><a class="interactive_heading" data-target="by_location" href="#">By Location</a><i class="icon-globe icon-4x"></i></li>';
-    html += '</ul>';
-    html += '</div>';
-    html += '</div>';
-    if(toptable){
-      html += '<div class="span12">';
-      html += '<h4>Top 5 Apps</h4>';
-      html += '</div>';
-      html += '<table class="table table-striped reportdashboard" id="'+toptable+'">';
-      html += '</table>';
-    }
-    html += '</div>';
-    return html;
-  },
 
-  getWellTemplate: function(legendText, divs){
-    var html = '<div class="row-fluid report-well"><form class="form-inline">';
-    html += '<fieldset class="well">';
-    html += '<legend>'+legendText+'</legend>';
-    for(var i=0;i<divs.length;i++){
-      html +=  divs[i];
-    }
-    html += '</fieldset>';
-    html += '</form></div>';
-    return html;
-  }
 });

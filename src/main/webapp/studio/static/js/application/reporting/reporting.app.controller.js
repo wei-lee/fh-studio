@@ -9,7 +9,8 @@ Reporting.App.Controller = Reporting.Controller.extend({
     "report_by_date":'#app_content .report_by_date',
     "report_by_device":'#app_content .report_by_device',
     "report_by_location":"#app_content .report_by_location",
-    "reports_form":"#app_content .reporting_form"
+    "reports_form":"#app_content .reporting_form",
+    "report_heading":"#app_content .graphheading"
   },
 
   containerConfigs : {

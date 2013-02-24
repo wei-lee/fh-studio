@@ -29,96 +29,15 @@
 
         <div class="span12" id="reports_dashboard_container">
             <form class="form-inline" >
-                <fieldset class="well">
+                <fieldset class="well appclient">
                     <legend>App Client</legend>
-
-                    <div class="span6 reportdashboard_div reportdashboard_div_boarder" style="margin: 3px;"  data-heading="Installs" data-target="domaininstalls">
-                        <h4 class="reportingdashboard_heading interactive_heading" id="domaininstallsdest"></h4>
-
-                        <div class="span12 reportingdashboard_image_container">
-                            <div class="span8 offset2">
-                                <ul class="nav nav-pills">
-                                    <li class="reportdashboard_link"><a  class="interactive_heading"  data-pill="by_date"  href="#">By Date</a><i class='icon-calendar icon-4x'></i></li>
-                                    <li class="reportdashboard_link"><a  class="interactive_heading"  data-pill="by_device" href="#">By Platform</a><i class='icon-mobile-phone icon-4x'></i></li>
-                                    <li class="reportdashboard_link"><a  class="interactive_heading"  data-pill="by_location" href="#">By Location</a><i class='icon-globe icon-4x'></i></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="span12">
-                            <h4>Top 5 Apps</h4>
-                        </div>
-                        <table class="table table-striped reportdashboard" id="appinstallsdest">
-                        </table>
-                    </div>
-
-
-
-                    <div class="span6 reportdashboard_div" data-heading="Start Ups"  style="margin: 3px;"   data-target="domainstartups">
-                        <h4 class="reportingdashboard_heading interactive_heading" id="domainstartupsdest" ></h4>
-
-                        <div class="span12 reportingdashboard_image_container">
-                            <div class="span8 offset2" >
-                                <ul class="nav nav-pills">
-                                    <li class="reportdashboard_link"><a  class="interactive_heading"  data-pill="by_date"  href="#">By Date</a><i class='icon-calendar icon-4x'></i></li>
-                                    <li class="reportdashboard_link"><a  class="interactive_heading"  data-pill="by_device" href="#">By Platform</a><i class='icon-mobile-phone icon-4x'></i></li>
-                                    <li class="reportdashboard_link"><a  class="interactive_heading"  data-pill="by_location" href="#">By Location</a><i class='icon-globe icon-4x'></i></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="span12">
-                            <h4>Top 5 Apps</h4>
-                        </div>
-                        <table class="table table-striped reportdashboard" id="appstartupsdest">
-                        </table>
-                    </div>
 
                 </fieldset>
             </form>
             <% if(studio.getProps().optBoolean("cloudrequest-reporting-enabled",true) || studio.getProps().optBoolean("transaction-reporting-enabled",true)){ %>
             <form class="form-inline">
-                <fieldset class="well">
+                <fieldset class="well appcloud">
                     <legend>App Cloud</legend>
-                    <% if(studio.getProps().optBoolean("cloudrequest-reporting-enabled",true)){ %>
-                    <div class="span6 reportdashboard_div reportdashboard_div_boarder" style="margin: 3px;" data-heading="Requests" data-target="domainrequests">
-                        <h4 class="reportingdashboard_heading interactive_heading" id="domainrequestsdest"></h4>
-
-                        <div class="span12 reportingdashboard_image_container">
-                            <div class="span8 offset2" >
-                                <ul class="nav nav-pills">
-                                    <li class="reportdashboard_link"><a class="interactive_heading"  data-pill="by_date" href="#">By Date</a><i class='icon-calendar icon-4x'></i></li>
-                                    <li class="reportdashboard_link"><a class="interactive_heading"  data-pill="by_device" href="#">By Platform</a><i class='icon-mobile-phone icon-4x'></i></li>
-                                    <li class="reportdashboard_link"><a class="interactive_heading"  data-pill="by_location" href="#">By Location</a><i class='icon-globe icon-4x'></i></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="span12">
-                            <h4>Top 5 Apps</h4>
-                        </div>
-                        <table class="table table-striped reportdashboard" id="appcloudcallsdest">
-                        </table>
-                    </div>
-
-                    <% } %>
-                    <% if(studio.getProps().optBoolean("transaction-reporting-enabled",true)){ %>
-                    <div class="span6 reportdashboard_div" data-heading="Active Users" data-target="domaintransactions" style="margin: 3px;">
-                        <h4 class="reportingdashboard_heading interactive_heading" id="domaintransactionsdest" ></h4>
-
-                        <div class="span12 reportingdashboard_image_container">
-                            <div class="span8 offset2" >
-                                <ul class="nav nav-pills">
-                                    <li class="reportdashboard_link"><a class="interactive_heading" data-pill="by_date" href="#">By Date</a><i class='icon-calendar icon-4x'></i></li>
-                                    <li class="reportdashboard_link"><a class="interactive_heading" data-pill="by_device" href="#">By Platform</a><i class='icon-mobile-phone icon-4x'></i></li>
-                                    <li class="reportdashboard_link"><a class="interactive_heading" data-pill="by_location" href="#">By Location</a><i class='icon-globe icon-4x'></i></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="span12">
-                            <h4>Top 5 Apps</h4>
-                        </div>
-                        <table class="table table-striped reportdashboard" id="apptransactionsdest">
-                        </table>
-                    </div>
-                    <% } %>
                 </fieldset>
             </form>
             <% } %>

@@ -459,7 +459,7 @@
           {id: { apid:"sampleidD", appname: 'this is app D'}, value: {total:250}},
           {id: { apid:"sampleidE", appname: 'this is app E'}, value: {total:100}}
         ],
-        "appcloudcallsdest":[
+        "apprequestsdest":[
           {id: { apid:"sampleid", appname: 'this is app A'}, value: {total:4000}},
           {id: { apid:"sampleid", appname: 'this is app A'}, value: {total:3332}},
           {id: { apid:"sampleid", appname: 'this is app A'}, value: {total:3100}},
