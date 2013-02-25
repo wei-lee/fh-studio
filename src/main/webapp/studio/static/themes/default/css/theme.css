@@ -1915,6 +1915,11 @@ line-height:0.5em;
  display: none;
  clear: both;
 }
+
+li.reportdashboard_link{
+    width:100px;
+}
+
 .reporting_container_header .header_text{
   float: left;
 }
@@ -3306,13 +3311,12 @@ a.docslink {
 .reportingdashboard_heading {
     text-align: center;
     font-size: 20px;
-    color: blue;
+    color: #0088cc;
     text-decoration: underline
 }
 
 .reportingdashboard_image_container {
     margin: 10px;
-    border-bottom: solid #a9a9a9 1px;
     height: 150px;
 }
 
