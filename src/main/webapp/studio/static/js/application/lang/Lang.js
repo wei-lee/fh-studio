@@ -710,5 +710,12 @@ var Lang = {
   audit_log_reset: 'Reset',
   
   store_item_view_auditlog_view : "View Audit Log",
-  store_item_view_auditlog_hide : "Hide Audit Log"
+  store_item_view_auditlog_hide : "Hide Audit Log",
+
+  "resource_nav_dashboard": "Dashboard",
+  "resource_nav_cpu": "CPU",
+  "resource_nav_memory": "Memory",
+  "resource_nav_storage": "Storage",
+  "resource_live_stats_link": "Real Time Stats >",
+  "reset_zoom_button":'Reset'
 };

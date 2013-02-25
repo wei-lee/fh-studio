@@ -1277,6 +1277,14 @@ span.label-info {
 {
   
 }
+
+.progress_bar_text {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    top:2px;
+}
 /* Codemirror */
 .CodeMirror-line-numbers
 {
@@ -2253,12 +2261,39 @@ li.reportdashboard_link{
 }
 
 /* Cloud Resources */
-.cloud_cpu_container {
+.cloud_resource_dashboard_container {
   height: 250px;
   width: 100%;
 }
+.dashboard_resource_gauge {
+  width: 230px;
+}
+
+.dashboard_resource_gauge, .dashboard_resource_chart {
+  height: 240px;
+}
+
+.resource_live_stats_link_container {
+    margin-top: -10px;
+    height: 30px;
+    font-size: 1.5em;
+    display: none;
+}
+
+.resource_live_stats_link_container a {
+    text-decoration: underline;
+}
+
 .progress .bar.barloading {
   width:100%;
+}
+
+.resources_live_view .stats_area {
+    height: 480px;
+}
+
+.resources_live_view .data_table_wrapper {
+    margin-top: 25px;
 }
 
 /* Key Management styling */
