@@ -297,16 +297,16 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
         var currentDisk = self.bytesToMB(dynoresources.usage.disk);
         if(self.enabled_live_app_resources && !model.error){
           var statsCpu = self.getCurrentResourceUsage(model, "Cpu_Pct", 1);
-          var statsMemory = self.bytesToMB(self.getCurrentResourceUsage(model, "VmRSS", 1)*1000);
-          var statsDisk = self.bytesToMB(self.getCurrentResourceUsage(model, "Disk", 1)*1000);
-          if(statsCpu !== 0){
+          var statsMemory = self.getCurrentResourceUsage(model, "VmRSS", 1);
+          var statsDisk = self.getCurrentResourceUsage(model, "Disk", 1);
+          if(statsCpu !== -1){
             currentCpu = statsCpu;
           }
-          if(statsMemory !== 0){
-            currentMemory = statsMemory;
+          if(statsMemory !== -1){
+            currentMemory = self.bytesToMB(statsMemory*1000);
           }
-          if(statsDisk !== 0){
-            currentDisk = statsDisk;
+          if(statsDisk !== -1){
+            currentDisk = self.bytesToMB(statsDisk*1000);
           }
         }
         self.maxValues = {"VmRSS": dynoresources.max.mem/1000, "Disk": dynoresources.max.disk/1000, "Cpu_Pct": 100};
@@ -405,7 +405,7 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
       var current = data[data.length - 1][valueIndex];
       return current;
     } else {
-      return 0;
+      return -1;
     }
   },
 
