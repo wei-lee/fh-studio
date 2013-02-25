@@ -141,14 +141,16 @@ Reporting.Controller = Apps.Reports.Support.extend({
       $(self.views.report_heading).html(self.heading).show();
     }
     var info;
+    var params;
+    var container;
     if(self.activeView === "dashboard"){
       for(var cont in containers){
 
         if(containers.hasOwnProperty(cont)){
           info = containers[cont];
-          var params = self.buildParamsForDays(self.context, self.period,info.metric,0);
+          params = self.buildParamsForDays(self.context, self.period,info.metric,0);
           console.log("METRICS PARAMS", params);
-          var container = $(info.container);
+          container = $(info.container);
           container.show();
           params.dest = false;
           params.height = 225;
@@ -161,8 +163,8 @@ Reporting.Controller = Apps.Reports.Support.extend({
     }else if(self.containerConfigs[self.activeView]){
       info = self.containerConfigs[self.activeView];
       console.log(info);
-      var params = self.buildParamsForDays(self.context, self.period,info.metric,0);
-      var container = $(info.container);
+      params = self.buildParamsForDays(self.context, self.period,info.metric,0);
+      container = $(info.container);
       container.show();
       params.height = 400;
       params.dest=true;
