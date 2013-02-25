@@ -2309,7 +2309,7 @@ CryptoJS.lib.Cipher || (function (undefined) {
           invKeySchedule[invKsRow] = t;
         } else {
           invKeySchedule[invKsRow] = INV_SUB_MIX_0[SBOX[t >>> 24]] ^ INV_SUB_MIX_1[SBOX[(t >>> 16) & 0xff]] ^
-            INV_SUB_MIX_2[SBOX[(t >>> 8) & 0xff]] ^ INV_SUB_MIX_3[SBOX[t & 0xff]];
+              INV_SUB_MIX_2[SBOX[(t >>> 8) & 0xff]] ^ INV_SUB_MIX_3[SBOX[t & 0xff]];
         }
       }
     },
@@ -2430,9 +2430,9 @@ CryptoJS.lib.Cipher || (function (undefined) {
         var M_offset_i = M[offset_i];
 
         M[offset_i] = (
-          (((M_offset_i << 8)  | (M_offset_i >>> 24)) & 0x00ff00ff) |
-            (((M_offset_i << 24) | (M_offset_i >>> 8))  & 0xff00ff00)
-          );
+            (((M_offset_i << 8)  | (M_offset_i >>> 24)) & 0x00ff00ff) |
+                (((M_offset_i << 24) | (M_offset_i >>> 8))  & 0xff00ff00)
+            );
       }
 
       // Shortcuts
@@ -2551,13 +2551,13 @@ CryptoJS.lib.Cipher || (function (undefined) {
       var nBitsTotalH = Math.floor(nBitsTotal / 0x100000000);
       var nBitsTotalL = nBitsTotal;
       dataWords[(((nBitsLeft + 64) >>> 9) << 4) + 15] = (
-        (((nBitsTotalH << 8)  | (nBitsTotalH >>> 24)) & 0x00ff00ff) |
-          (((nBitsTotalH << 24) | (nBitsTotalH >>> 8))  & 0xff00ff00)
-        );
+          (((nBitsTotalH << 8)  | (nBitsTotalH >>> 24)) & 0x00ff00ff) |
+              (((nBitsTotalH << 24) | (nBitsTotalH >>> 8))  & 0xff00ff00)
+          );
       dataWords[(((nBitsLeft + 64) >>> 9) << 4) + 14] = (
-        (((nBitsTotalL << 8)  | (nBitsTotalL >>> 24)) & 0x00ff00ff) |
-          (((nBitsTotalL << 24) | (nBitsTotalL >>> 8))  & 0xff00ff00)
-        );
+          (((nBitsTotalL << 8)  | (nBitsTotalL >>> 24)) & 0x00ff00ff) |
+              (((nBitsTotalL << 24) | (nBitsTotalL >>> 8))  & 0xff00ff00)
+          );
 
       data.sigBytes = (dataWords.length + 1) * 4;
 
@@ -2574,7 +2574,7 @@ CryptoJS.lib.Cipher || (function (undefined) {
         var H_i = H[i];
 
         H[i] = (((H_i << 8)  | (H_i >>> 24)) & 0x00ff00ff) |
-          (((H_i << 24) | (H_i >>> 8))  & 0xff00ff00);
+            (((H_i << 24) | (H_i >>> 8))  & 0xff00ff00);
       }
 
       // Return final computed hash
@@ -3153,13 +3153,13 @@ CryptoJS.lib.Cipher || (function (undefined) {
         } else {
           var gamma0x = W[i - 15];
           var gamma0  = ((gamma0x << 25) | (gamma0x >>> 7))  ^
-            ((gamma0x << 14) | (gamma0x >>> 18)) ^
-            (gamma0x >>> 3);
+              ((gamma0x << 14) | (gamma0x >>> 18)) ^
+              (gamma0x >>> 3);
 
           var gamma1x = W[i - 2];
           var gamma1  = ((gamma1x << 15) | (gamma1x >>> 17)) ^
-            ((gamma1x << 13) | (gamma1x >>> 19)) ^
-            (gamma1x >>> 10);
+              ((gamma1x << 13) | (gamma1x >>> 19)) ^
+              (gamma1x >>> 10);
 
           W[i] = gamma0 + W[i - 7] + gamma1 + W[i - 16];
         }
@@ -3682,13 +3682,13 @@ CryptoJS.lib.Cipher || (function (undefined) {
 
         // Swap endian
         M2i = (
-          (((M2i << 8)  | (M2i >>> 24)) & 0x00ff00ff) |
-            (((M2i << 24) | (M2i >>> 8))  & 0xff00ff00)
-          );
+            (((M2i << 8)  | (M2i >>> 24)) & 0x00ff00ff) |
+                (((M2i << 24) | (M2i >>> 8))  & 0xff00ff00)
+            );
         M2i1 = (
-          (((M2i1 << 8)  | (M2i1 >>> 24)) & 0x00ff00ff) |
-            (((M2i1 << 24) | (M2i1 >>> 8))  & 0xff00ff00)
-          );
+            (((M2i1 << 8)  | (M2i1 >>> 24)) & 0x00ff00ff) |
+                (((M2i1 << 24) | (M2i1 >>> 8))  & 0xff00ff00)
+            );
 
         // Absorb message into state
         var lane = state[i];
@@ -3814,13 +3814,13 @@ CryptoJS.lib.Cipher || (function (undefined) {
 
         // Swap endian
         laneMsw = (
-          (((laneMsw << 8)  | (laneMsw >>> 24)) & 0x00ff00ff) |
-            (((laneMsw << 24) | (laneMsw >>> 8))  & 0xff00ff00)
-          );
+            (((laneMsw << 8)  | (laneMsw >>> 24)) & 0x00ff00ff) |
+                (((laneMsw << 24) | (laneMsw >>> 8))  & 0xff00ff00)
+            );
         laneLsw = (
-          (((laneLsw << 8)  | (laneLsw >>> 24)) & 0x00ff00ff) |
-            (((laneLsw << 24) | (laneLsw >>> 8))  & 0xff00ff00)
-          );
+            (((laneLsw << 8)  | (laneLsw >>> 24)) & 0x00ff00ff) |
+                (((laneLsw << 24) | (laneLsw >>> 8))  & 0xff00ff00)
+            );
 
         // Squeeze state to retrieve hash
         hashWords.push(laneLsw);
@@ -4668,7 +4668,7 @@ RSAKey.prototype.encrypt = RSAEncrypt;
   $fh.fh_timeout = 20000;
   $fh.boxprefix = '/box/srv/1.1/';
   $fh.sdk_version = '1.0.5';
-
+  
   var _is_initializing = false;
   var _init_failed = false;
   var _cloud_ready_listeners = [];
@@ -4740,17 +4740,17 @@ RSAKey.prototype.encrypt = RSAEncrypt;
   var getDeviceId = function(){
     //check for cordova/phonegap first
     if(typeof navigator.device !== "undefined" && typeof navigator.device.uuid !== "undefined"){
-      return navigator.device.uuid;
+        return navigator.device.uuid;
     } else {
-      var uuid = __readCookieValue(_mock_uuid_cookie_name);
-      if(null == uuid){
-        uuid = __createUUID();
-        __createCookie(_mock_uuid_cookie_name, uuid);
-      }
-      return uuid;
+        var uuid = __readCookieValue(_mock_uuid_cookie_name);
+        if(null == uuid){
+            uuid = __createUUID();
+            __createCookie(_mock_uuid_cookie_name, uuid);
+        }
+        return uuid;
     }
   };
-
+  
   $fh._getDeviceId = getDeviceId;
   var __isSmartMobile = /Android|webOS|iPhone|iPad|iPad|Blackberry|Windows Phone/i.test(navigator.userAgent);
   var __isLocalFile = window.location.protocol.indexOf("file") > -1;
@@ -4764,11 +4764,11 @@ RSAKey.prototype.encrypt = RSAEncrypt;
     var urlParts = uriParts.exec(url);
 
     return ((urlParts[1] == null || urlParts[1] === '') && // no protocol }
-      (urlParts[3] == null || urlParts[3] === '') && // no domain   } - > relative url
-      (urlParts[4] == null || urlParts[4] === ''))|| // no port       }
-      (locParts[1] === urlParts[1] && // protocol matches }
-        locParts[3] === urlParts[3] && // domain matches   }-> absolute url
-        locParts[4] === urlParts[4]); // port matches      }
+            (urlParts[3] == null || urlParts[3] === '') && // no domain   } - > relative url
+            (urlParts[4] == null || urlParts[4] === ''))|| // no port       }
+            (locParts[1] === urlParts[1] && // protocol matches }
+            locParts[3] === urlParts[3] && // domain matches   }-> absolute url
+            locParts[4] === urlParts[4]); // port matches      }
   }
 
 
@@ -4783,32 +4783,32 @@ RSAKey.prototype.encrypt = RSAEncrypt;
     this.responseText = "";
     var self = this;
     this.xdr.onload = function(){
-      self.readyState = 4;
-      self.status = 200;
-      self.statusText = "";
-      self.responseText = self.xdr.responseText;
-      if(self.onreadystatechange){
-        self.onreadystatechange();
-      }
+        self.readyState = 4;
+        self.status = 200;
+        self.statusText = "";
+        self.responseText = self.xdr.responseText;
+        if(self.onreadystatechange){
+            self.onreadystatechange();
+        }
     };
     this.xdr.onerror = function(){
-      if(self.onerror){
-        self.onerror();
-      }
-      self.readyState = 4;
-      self.status = 0;
-      self.statusText = "";
-      if(self.onreadystatechange){
-        self.onreadystatechange();
-      }
+        if(self.onerror){
+            self.onerror();
+        }
+        self.readyState = 4;
+        self.status = 0;
+        self.statusText = "";
+        if(self.onreadystatechange){
+            self.onreadystatechange();
+        }
     };
     this.xdr.ontimeout = function(){
-      self.readyState = 4;
-      self.status = 408;
-      self.statusText = "timeout";
-      if(self.onreadystatechange){
-        self.onreadystatechange();
-      }
+        self.readyState = 4;
+        self.status = 408;
+        self.statusText = "timeout";
+        if(self.onreadystatechange){
+            self.onreadystatechange();
+        }
     };
   }
 
@@ -4838,19 +4838,19 @@ RSAKey.prototype.encrypt = RSAEncrypt;
 
   //first, check if cors if supported by the browser
   /* The following code is used to detect if the browser is supporting CORS. 
-   Most of the browsers implement CORS support using XMLHttpRequest2 object.
-   The "withCredentials" property is unique in XMLHttpRequest2 object so it is the easiest way to tell if the browser support CORS. Again, IE uses XDomainRequest.
-   A very good article covering this can be found here: http://www.html5rocks.com/en/tutorials/cors/.*/
+    Most of the browsers implement CORS support using XMLHttpRequest2 object. 
+    The "withCredentials" property is unique in XMLHttpRequest2 object so it is the easiest way to tell if the browser support CORS. Again, IE uses XDomainRequest. 
+    A very good article covering this can be found here: http://www.html5rocks.com/en/tutorials/cors/.*/
   var __cors_supported = false;
   if(window.XMLHttpRequest){
     var rq = new XMLHttpRequest();
     if('withCredentials' in rq){
-      __cors_supported = true;
+        __cors_supported = true;
     }
     if(!__cors_supported){
-      if(typeof XDomainRequest !== "undefined"){
-        __cors_supported = true;
-      }
+        if(typeof XDomainRequest !== "undefined"){
+            __cors_supported = true;
+        }
     }
   }
 
@@ -4858,9 +4858,9 @@ RSAKey.prototype.encrypt = RSAEncrypt;
   var __xhr = function () {
     var xhr = null;
     if(window.XMLHttpRequest){
-      xhr = new XMLHttpRequest();
+        xhr = new XMLHttpRequest();
     } else if(window.ActiveXObject){
-      xhr = new window.ActiveXObject("Microsoft.XMLHTTP");
+        xhr = new window.ActiveXObject("Microsoft.XMLHTTP");
     }
     return xhr;
   };
@@ -4869,19 +4869,19 @@ RSAKey.prototype.encrypt = RSAEncrypt;
   var __cor = function () {
     var cor = null;
     if(window.XMLHttpRequest){
-      var rq = new XMLHttpRequest();
-      if('withCredentials' in rq){
-        cor = rq;
-      }
+        var rq = new XMLHttpRequest();
+        if('withCredentials' in rq){
+            cor = rq;
+        }
     }
     if(null == cor){
-      if(typeof XDomainRequest !== "undefined"){
-        cor = new XDomainRequestWrapper(new XDomainRequest());
-      }
+        if(typeof XDomainRequest !== "undefined"){
+            cor = new XDomainRequestWrapper(new XDomainRequest());
+        }
     }
     return cor;
   };
-
+  
   var __cb_counts = 0;
 
   var __load_script = function (url, callback) {
@@ -4917,17 +4917,17 @@ RSAKey.prototype.encrypt = RSAEncrypt;
     var o = options ? options : {};
     var sameOrigin = isSameOrigin(options.url);
     if(!sameOrigin){
-      if(typeof window.Phonegap !== "undefined" || typeof window.cordova !== "undefined"){
-        //found phonegap, it should be a hyrbid mobile app, consider as same origin
-        sameOrigin = true;
-      }
+        if(typeof window.Phonegap !== "undefined" || typeof window.cordova !== "undefined"){
+            //found phonegap, it should be a hyrbid mobile app, consider as same origin
+            sameOrigin = true;
+        }
     }
     if(!sameOrigin){
-      if(__isSmartMobile && __isLocalFile){
-        //we can't find phonegap, but we are loading the page use file protocol and the device is a smart phone,
-        //it should be a mobile hyrid app
-        sameOrigin = true;
-      }
+        if(__isSmartMobile && __isLocalFile){
+            //we can't find phonegap, but we are loading the page use file protocol and the device is a smart phone,
+            //it should be a mobile hyrid app
+            sameOrigin = true;
+        }
     }
 
     if (sameOrigin || ((!sameOrigin) && __cors_supported) ) {
@@ -5014,9 +5014,9 @@ RSAKey.prototype.encrypt = RSAEncrypt;
             }
             //the status code will be 0 if there is a network level error, including server rejecting the cors request
             if(req.status === 0){
-              if(!sameOrigin){
-                return types['jsonp']();
-              }
+                if(!sameOrigin){
+                    return types['jsonp']();
+                }
             }
             var statusText;
             try {
@@ -5192,7 +5192,7 @@ RSAKey.prototype.encrypt = RSAEncrypt;
                     }
                   } else {
                     if(fail){
-                      fail("auth_failed", {'message':qmap['message']});
+                        fail("auth_failed", {'message':qmap['message']});
                     }
                   }
                 }
@@ -5204,7 +5204,7 @@ RSAKey.prototype.encrypt = RSAEncrypt;
             success(res);
           }
         } else {
-          document.location.href = res.url;
+         document.location.href = res.url;  
         }
       } else {
         success(res);
@@ -5219,7 +5219,7 @@ RSAKey.prototype.encrypt = RSAEncrypt;
   $fh.init = function(opts, success, fail) {
     if($fh.cloud_props){
       return success($fh.cloud_props);
-    }
+    } 
     if(!_is_initializing){
       _is_initializing = true;
       if(!fail){
@@ -5260,7 +5260,7 @@ RSAKey.prototype.encrypt = RSAEncrypt;
     } else {
       _cloud_ready_listeners.push({type:'init', success: success, fail: fail});
     }
-
+    
   };
 
   $fh.act = function(opts, success, fail) {
@@ -5307,21 +5307,21 @@ RSAKey.prototype.encrypt = RSAEncrypt;
       var params = opts.req || {};
       params = _addFhParams(params);
 
-      return $fh.__ajax({
-        "url": url,
-        "type": "POST",
-        "data": JSON.stringify(params),
-        "contentType": "application/json",
-        "timeout" : opts.timeout || $fh.app_props.timeout || $fh.fh_timeout,
-        success: function(res) {
-          if(success){
-            return success(res);
-          }
-        },
-        error: function(req, statusText, error) {
-          _handleError(fail, req, statusText);
+    return $fh.__ajax({
+      "url": url,
+      "type": "POST",
+      "data": JSON.stringify(params),
+      "contentType": "application/json",
+      "timeout" : opts.timeout || $fh.app_props.timeout || $fh.fh_timeout,
+      success: function(res) {
+        if(success){
+          return success(res);
         }
-      });
+      },
+      error: function(req, statusText, error) {
+        _handleError(fail, req, statusText);
+      }
+    });
     }
   };
 
@@ -6389,7 +6389,7 @@ $fh.sync = (function() {
     },
 
     read: function(dataset_id, uid, success, failure) {
-      self.getDataSet(dataset_id, function(dataset) {
+        self.getDataSet(dataset_id, function(dataset) {
         var rec = dataset.data[uid];
         if (!rec) {
           failure("unknown_uid");
@@ -6703,9 +6703,9 @@ $fh.sync = (function() {
       self.getDataSet(dataset_id, function(dataset) {
         // save dataset to local storage
         Lawnchair({fail:onFail}, function (){
-          this.save({key:"dataset_" + dataset_id,val:JSON.stringify(dataset)}, function(){
-            //save success
-          });
+             this.save({key:"dataset_" + dataset_id,val:JSON.stringify(dataset)}, function(){
+               //save success
+             });
         });
       });
     },
@@ -6720,20 +6720,20 @@ $fh.sync = (function() {
       };
 
       Lawnchair({fail:onFail},function (){
-        this.get( "dataset_" + dataset_id, function (data){
-          if (data && data.val !== null) {
-            var dataset = JSON.parse(data.val);
-            // Datasets should not be auto initialised when loaded - the mange function should be called for each dataset
-            // the user wants sync
-            dataset.initialised = false;
-            self.datasets[dataset_id] = dataset; // TODO: do we need to handle binary data?
-            self.consoleLog('load from local storage success dataset:', dataset);
-            return success(dataset);
-          } else {
-            // no data yet, probably first time. failure calback should handle this
-            return failure();
-          }
-        });
+         this.get( "dataset_" + dataset_id, function (data){
+           if (data && data.val !== null) {
+              var dataset = JSON.parse(data.val);
+              // Datasets should not be auto initialised when loaded - the mange function should be called for each dataset
+              // the user wants sync
+              dataset.initialised = false;
+              self.datasets[dataset_id] = dataset; // TODO: do we need to handle binary data?
+              self.consoleLog('load from local storage success dataset:', dataset);
+              return success(dataset);
+            } else {
+                // no data yet, probably first time. failure calback should handle this
+                return failure();
+            }
+         });
       });
     },
 
@@ -7032,6 +7032,9 @@ $fh.sync = (function() {
 
   $fh.hash = function(p, s, f){
     var params = {};
+    if(typeof p.algorithm === "undefined"){
+      p.algorithm = "MD5";
+    }
     params.act = "hash";
     params.params = p;
     $fh.sec(params, s, f);
