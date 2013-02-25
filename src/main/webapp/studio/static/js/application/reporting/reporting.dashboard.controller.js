@@ -129,9 +129,9 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
     function populateDashboardTotals(cb){
       $('.reportdashboard_div').remove();
       var metrics = [
-        {"metric":"domainrequestsdest","heading":"Requests","target":"domainrequests","isEnabled":$fw.getClientProp("startups-reporting-enabled") || "true","container":".appcloud", "boarder":true},
-        {"metric":"domaininstallsdest","heading":"Installs","target":"domaininstalls","isEnabled":$fw.getClientProp("cloudrequest-reporting-enabled") || "true","container":".appclient",boarder:true},
-        {"metric":"domainstartupsdest","heading":"Start Ups","target":"domainstartups","isEnabled":$fw.getClientProp("startups-reporting-enabled") || "true" , container:".appclient",boarder:false},
+        {"metric":"domainrequestsdest","heading":"Requests","target":"domainrequests","isEnabled":$fw.getClientProp("cloudrequest-reporting-enabled") || "true","container":".appcloud", "boarder":true},
+        {"metric":"domaininstallsdest","heading":"Installs","target":"domaininstalls","isEnabled": "true","container":".appclient",boarder:true},
+        {"metric":"domainstartupsdest","heading":"Start Ups","target":"domainstartups","isEnabled":"true" , container:".appclient",boarder:false},
         {"metric":"domaintransactionsdest", "heading":"Active Users","target":"domaintransactions","isEnabled":$fw.getClientProp("transaction-reporting-enabled") || "true","container":".appcloud", boarder:false}
 
       ];
@@ -148,8 +148,12 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
             params = self.buildParamsForDates(id, from, to, metric.metric, 0);
           }
           var tableId = metric.metric.replace("domain","app");
-          var template = self.getTemplate(metric.metric, metric.boarder,metric.target,metric.heading, metric.heading + " ", tableId);
-          $(metric.container).append(template);
+          if("true" === metric.isEnabled){
+           var template = self.getTemplate(metric.metric, metric.boarder,metric.target,metric.heading, metric.heading + " ", tableId);
+            $(metric.container).append(template);
+          }
+
+
           dao.getData(params,"list",Constants.READ_APP_METRICS_URL, function (data){
             var total = self.calculateTotal(data);
             if("true" === metric.isEnabled){
