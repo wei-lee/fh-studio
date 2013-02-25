@@ -64,7 +64,7 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
 
   buildDashboard : function (ele){
     var self = this;
-    var sampleDataEnabled = ($fw.getClientProp("reporting-sampledata-enabled") === "false") ? false : true;
+    var sampleDataEnabled =  ($fw.getClientProp("reporting-sampledata-enabled") !== "false");
     var dao = new application.MetricsDataLocator(sampleDataEnabled);
     self.period = $(ele).data("period");
     console.log("period is set to " + self.period);
@@ -92,7 +92,7 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
             var table = self.tables[dbItem];
             if(table && table.enabled){
               table = $('#'+dbItem);
-              console.log("found table " + dbItem, table);
+
               table.empty();
               table.append(" <tr><th>App Name</th><th>Total</th></tr>");
 
@@ -121,7 +121,7 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
         console.log("error occurred get metrics data" + err);
       });
 
-      cb();
+
 
 
     }
@@ -129,10 +129,11 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
     function populateDashboardTotals(cb){
       $('.reportdashboard_div').remove();
       var metrics = [
-        {"metric":"domaininstallsdest","heading":"Installs","target":"domaininstalls","isEnabled":$fw.getClientProp("cloudrequest-reporting-enabled") || "true","container":".appcloud"},
-        {"metric":"domaintransactionsdest", "heading":"Active Users","target":"domaintransactions","isEnabled":$fw.getClientProp("transaction-reporting-enabled") || "true","container":".appcloud"},
-        {"metric":"domainstartupsdest","heading":"Start Ups","target":"domainstartups","isEnabled":$fw.getClientProp("startups-reporting-enabled") || "true" , container:".appclient"},
-        {"metric":"domainrequestsdest","heading":"Requests","target":"domainrequests","isEnabled":$fw.getClientProp("startups-reporting-enabled") || "true","container":".appclient"}
+        {"metric":"domainrequestsdest","heading":"Requests","target":"domainrequests","isEnabled":$fw.getClientProp("startups-reporting-enabled") || "true","container":".appcloud", "boarder":true},
+        {"metric":"domaininstallsdest","heading":"Installs","target":"domaininstalls","isEnabled":$fw.getClientProp("cloudrequest-reporting-enabled") || "true","container":".appclient",boarder:true},
+        {"metric":"domainstartupsdest","heading":"Start Ups","target":"domainstartups","isEnabled":$fw.getClientProp("startups-reporting-enabled") || "true" , container:".appclient",boarder:false},
+        {"metric":"domaintransactionsdest", "heading":"Active Users","target":"domaintransactions","isEnabled":$fw.getClientProp("transaction-reporting-enabled") || "true","container":".appcloud", boarder:false}
+
       ];
       var id = $fw.getClientProp("domain");
       var metricsSeries = [];
@@ -146,18 +147,15 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
           }else{
             params = self.buildParamsForDates(id, from, to, metric.metric, 0);
           }
-
+          var tableId = metric.metric.replace("domain","app");
+          var template = self.getTemplate(metric.metric, metric.boarder,metric.target,metric.heading, metric.heading + " ", tableId);
+          $(metric.container).append(template);
           dao.getData(params,"list",Constants.READ_APP_METRICS_URL, function (data){
-            var boarded = (indx%2 === 0);
-
             var total = self.calculateTotal(data);
             if("true" === metric.isEnabled){
-              var template = self.getTemplate(metric.metric, boarded,metric.target,metric.heading, metric.heading + " " + total, metric.metric.replace("domain","app"));
-
-              $(metric.container).append(template);
-
               var headingToUpdate = $('#' + metric.metric);
-              headingToUpdate.css("cursor","pointer");
+              headingToUpdate.html(metric.heading + " " + total);
+
               headingToUpdate.unbind().click(function (){
                 $('.reporting_pills > li.active').removeClass("active");
                 $('.reporting_pills > li#dashboard').addClass("active");
@@ -188,8 +186,9 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
         $('a.interactive_heading').unbind('click').click(function (e){
           //set the active view to the target
           var active = $(this).data("target");
-          var heading = $(this).closest('.reportingdashboard_heading').data("heading");
-          var metric = $(this).closest('.reportingdashboard_heading').data("target");
+          var reportingContainerDiv = $(this).closest('.reportdashboard_div');
+          var heading = reportingContainerDiv.find('.reportingdashboard_heading').data("heading");
+          var metric = reportingContainerDiv.find('.reportingdashboard_heading').data("target");
 
           $('.reporting_pills > li.active').removeClass("active");
           $('.reporting_pills > li#'+active).addClass("active");
@@ -205,21 +204,24 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
         });
 
       });
-      cb();
 
     }
 
-    async.series([populateDashboardTotals,populateTopResults], function (){
-       console.log("finished populate *****");
+    async.series([populateDashboardTotals,populateTopResults], function (errs, oks){
+      if(errs){
+        console.log("errors populating data ", errs);
+      }
+
     });
 
   },
 
   getTemplate: function(id, showboarder, target, heading, headingText, toptable){
     var html = '<div class="span6 reportdashboard_div ' + (showboarder?'reportdashboard_div_boarder':'') + '" style="margin: 3px;">';
-    html += ' <h4 class="reportingdashboard_heading interactive_heading" id="'+id+'" data-target="'+target+'" data-heading="'+heading+'" style="cursor: pointer">'+headingText+'</h4>';
+
     html += '<div class="span11 offset0 reportingdashboard_image_container">';
-    html += '<div class="span9 offset2">';
+    html += ' <h4 class="reportingdashboard_heading interactive_heading" id="'+id+'" data-target="'+target+'" data-heading="'+heading+'" style="cursor: pointer">'+headingText+'</h4>';
+    html += '<div class="span9 offset3">';
     html += '<ul class="nav nav-pills">';
     html += '<li class="reportdashboard_link"><a class="interactive_heading" data-target="by_date" href="#">By Date</a><i class="icon-calendar icon-4x"></i></li>';
     html += '<li class="reportdashboard_link"><a class="interactive_heading" data-target="by_device" href="#">By Platform</a><i class="icon-mobile-phone icon-4x"></i></li>';

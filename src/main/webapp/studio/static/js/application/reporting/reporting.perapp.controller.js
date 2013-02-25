@@ -197,7 +197,8 @@ Reporting.Perapp.Controller = Reporting.Dashboard.Controller.extend({
 
   populateTotals: function(params, cb){
     var self = this;
-    var dao = new application.MetricsDataLocator($fw.getClientProp("reporting-sampledata-enabled"));
+    var sampleDataEnabled = ($fw.getClientProp("reporting-sampledata-enabled") !== "false");
+    var dao = new application.MetricsDataLocator(sampleDataEnabled);
     var metricsSeries = [];
     $(params.metric).each(function (indx, metric){
       metricsSeries.push(function (callback){

@@ -15,7 +15,6 @@ Apps.Installs.Controller = Apps.Reports.Support.extend({
   container: null,
 
   init: function () {
-    console.log("init called for apps installs");
     this._super();
   },
 
@@ -23,8 +22,7 @@ Apps.Installs.Controller = Apps.Reports.Support.extend({
     this._super(this.views.reportinginstalls_container);
   },
 
-  show: function(appid){
-    this.appid = appid;
+  show: function(){
     this._super(this.views.reportinginstalls_container);
   },
 
@@ -35,13 +33,13 @@ Apps.Installs.Controller = Apps.Reports.Support.extend({
   },
 
   byPlatform: function () {
-    var appid = this.appid || $fw.data.get('app').guid;
+    var appid =  $fw.data.get('app').guid;
     var container = $('.installs_by_platform', $(this.views.reportinginstalls_container));
     this.initMetric('appinstallsdest', 'pie', container, Constants.GET_SINGLE_APP_METRICS_URL, appid, true);
   },
 
   byLocation: function () {
-    var appid = this.appid || $fw.data.get('app').guid;
+    var appid = $fw.data.get('app').guid;
     var container = $('.installs_by_location', $(this.views.reportinginstalls_container));
     this.initMetric('appinstallsgeo', 'geo', container, Constants.GET_SINGLE_APP_METRICS_URL, appid, true);
   }

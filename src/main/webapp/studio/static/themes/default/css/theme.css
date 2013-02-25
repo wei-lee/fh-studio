@@ -3320,8 +3320,13 @@ a.docslink {
     height: 150px;
 }
 
+.reportingdashboard_heading{
+    cursor: pointer;
+}
+
 li.reportdashboard_link {
-    margin-right: 20px;
+    margin-right: 10px;
+    width: 90px;
 }
 
 li.reportdashboard_link i {

@@ -45,7 +45,6 @@ Reporting.Controller = Apps.Reports.Support.extend({
     $('.doReport').each(function (btn, ele){
 
       $(ele).unbind().click(function (event){
-        console.log("clicked form report button");
         event.preventDefault();
         self.buildGraphs(ele);
       });
@@ -83,6 +82,7 @@ Reporting.Controller = Apps.Reports.Support.extend({
   displayGraphs : function (period, context, type, heading){
     console.log("display graps " , period , context , type , heading);
     var self = this;
+    $(".doReport").removeClass('disabled');
     self.hide();
     $(self.views.reports_form).show();
     $(self.views.reporting_graphs).show();
@@ -152,10 +152,7 @@ Reporting.Controller = Apps.Reports.Support.extend({
           container.show();
           params.dest = false;
           params.height = 225;
-          if(info.chart === "geo"){
 
-
-          }
           self.drawChart(info.chart, container, params, Constants.READ_APP_METRICS_URL, function (err) {
                  console.log(err);
           });
@@ -164,12 +161,12 @@ Reporting.Controller = Apps.Reports.Support.extend({
     }else if(self.containerConfigs[self.activeView]){
       info = self.containerConfigs[self.activeView];
       console.log(info);
-      var params1 = self.buildParamsForDays(self.context, self.period,info.metric,0);
-      var container1 = $(info.container);
-      container1.show();
-      params1.height = 400;
-      params1.dest=true;
-      self.drawChart(info.chart, container1, params1, Constants.READ_APP_METRICS_URL, function (err) {
+      var params = self.buildParamsForDays(self.context, self.period,info.metric,0);
+      var container = $(info.container);
+      container.show();
+      params.height = 400;
+      params.dest=true;
+      self.drawChart(info.chart, container, params, Constants.READ_APP_METRICS_URL, function (err) {
 
       });
     }
