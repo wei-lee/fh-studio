@@ -214,7 +214,7 @@ Reporting.Perapp.Controller = Reporting.Dashboard.Controller.extend({
     async.parallel(metricsSeries, function (err, data){
       cb(err, data);
     });
-  },
+  }
 
 
 });
