@@ -204,8 +204,9 @@
           plotBackgroundColor: null,
           plotBorderWidth: null,
           plotShadow: false,
-          height:opts.height + 10,
-          width:opts.width
+          height:opts.height,
+          width:opts.width,
+          "marginTop":20
         },
         credits: {
           enabled: false
