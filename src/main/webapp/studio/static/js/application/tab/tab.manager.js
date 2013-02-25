@@ -88,7 +88,6 @@ Tab.Manager = Class.extend({
 
   // calls hide on all controllers
   hideAll: function () {
-    console.log(this.controllers);
     for (var key in this.controllers) {
       var temp = this.controllers[key];
       temp.hide();
