@@ -128,16 +128,18 @@ Stats.Model.Base = Class.extend({
   },
 
   _loadMock: function(callback) {
+    var self = this;
     this._initMockData();
+    console.log(this._mock);
     this.interval = this._mock.interval;
     this._setInitialData(this._mock.results);
     if (typeof(callback) == 'function') {
       if (this.use_mock_delay) {
         setTimeout(function(){
-          callback({status: 'ok'});
+          callback({status: 'ok', results: self._mock.results});
         }, 500);
       } else {
-        callback({status: 'ok'});
+        callback({status: 'ok', results: self._mock.results});
       }
     }
   },
