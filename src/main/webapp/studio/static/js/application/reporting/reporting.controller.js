@@ -78,11 +78,18 @@ Reporting.Controller = Apps.Reports.Support.extend({
     var context = $fw.data.get('app').guid;
     self.displayGraphs(period, context, type, heading);
     self.initFormDates(period);
+
   },
   //this can be called from other controllers
   displayGraphs : function (period, context, type, heading){
-    console.log("display graps " , period , context , type , heading);
     var self = this;
+    if(context !== $fw.getClientProp("domain")){
+      self.mertrics_url = Constants.GET_SINGLE_APP_METRICS_URL
+    }else{
+      self.metrics_url = Constants.READ_APP_METRICS_URL;
+    }
+    console.log("display graps " , period , context , type , heading);
+
     $(".doReport").removeClass('disabled');
     self.hide();
     $(self.views.reports_form).show();
@@ -156,7 +163,7 @@ Reporting.Controller = Apps.Reports.Support.extend({
           params.dest = false;
           params.height = 225;
 
-          self.drawChart(info.chart, container, params, Constants.READ_APP_METRICS_URL, function (err) {
+          self.drawChart(info.chart, container, params, self.mertrics_url, function (err) {
                  console.log(err);
           });
         }
@@ -169,7 +176,7 @@ Reporting.Controller = Apps.Reports.Support.extend({
       container.show();
       params.height = 400;
       params.dest=true;
-      self.drawChart(info.chart, container, params, Constants.READ_APP_METRICS_URL, function (err) {
+      self.drawChart(info.chart, container, params, self.mertrics_url, function (err) {
 
       });
     }
