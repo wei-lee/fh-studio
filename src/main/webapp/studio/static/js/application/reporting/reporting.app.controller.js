@@ -13,6 +13,8 @@ Reporting.App.Controller = Reporting.Controller.extend({
     "report_heading":"#app_content .graphheading"
   },
 
+  "metrics_url":Constants.GET_SINGLE_APP_METRICS_URL,
+
   containerConfigs : {
     "by_date":{
       "chart":"line",

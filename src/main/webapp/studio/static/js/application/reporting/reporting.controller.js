@@ -31,7 +31,7 @@ Reporting.Controller = Apps.Reports.Support.extend({
       "metric":""
     }
   },
-
+  "metrics_url":Constants.READ_APP_METRICS_URL,
   "period":"",
   "context":"",
   "type":"",
@@ -83,11 +83,7 @@ Reporting.Controller = Apps.Reports.Support.extend({
   //this can be called from other controllers
   displayGraphs : function (period, context, type, heading){
     var self = this;
-    if(context !== $fw.getClientProp("domain")){
-      self.mertrics_url = Constants.GET_SINGLE_APP_METRICS_URL
-    }else{
-      self.metrics_url = Constants.READ_APP_METRICS_URL;
-    }
+
     console.log("display graps " , period , context , type , heading);
 
     $(".doReport").removeClass('disabled');
@@ -163,20 +159,20 @@ Reporting.Controller = Apps.Reports.Support.extend({
           params.dest = false;
           params.height = 225;
 
-          self.drawChart(info.chart, container, params, self.mertrics_url, function (err) {
+          self.drawChart(info.chart, container, params, self.metrics_url, function (err) {
                  console.log(err);
           });
         }
       }
     }else if(self.containerConfigs[self.activeView]){
       info = self.containerConfigs[self.activeView];
-      console.log(info);
+
       params = self.buildParamsForDays(self.context, self.period,info.metric,0);
       container = $(info.container);
       container.show();
       params.height = 400;
       params.dest=true;
-      self.drawChart(info.chart, container, params, self.mertrics_url, function (err) {
+      self.drawChart(info.chart, container, params, self.metrics_url, function (err) {
 
       });
     }
