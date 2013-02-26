@@ -38,8 +38,9 @@ Apps.Cloudnotifications.Controller = Apps.Cloud.Controller.extend({
 
   loadNotifications: function() {
     var instGuid = $fw.data.get('inst').guid;
+    var cloudEnv = $fw.data.get('cloud_environment');
     var self = this;
-    self.models.notification_event.list(instGuid, function(res) {
+    self.models.notification_event.list(instGuid, cloudEnv, function(res) {
       $(self.views.load_spinner).hide();
       $(self.views.notification_table_container).show();
       self.renderFilters(res);
@@ -94,11 +95,12 @@ Apps.Cloudnotifications.Controller = Apps.Cloud.Controller.extend({
       userFilterField.append(self.getOptionTemplate(userFilters[k], false));
     }
     var instGuid = $fw.data.get('inst').guid;
+    var cloudEnv = $fw.data.get('cloud_environment');
     $('#cloud_notifications_audit_log_filter').unbind('click').click(function(e) {
       e.preventDefault();
       var typefilter = typeFilterField.val();
       var userfilter = userFilterField.val();
-      self.models.notification_event.list(instGuid, function(res) {
+      self.models.notification_event.list(instGuid,cloudEnv, function(res) {
         self.showAuditLog(res);
       }, function(err) {
         self.showAlert('error', 'Failed to load notification events audit log. Error: ' + err);
