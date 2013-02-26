@@ -83,7 +83,7 @@ Reporting.Controller = Apps.Reports.Support.extend({
   //this can be called from other controllers
   displayGraphs : function (period, context, type, heading){
     var self = this;
-
+    self.container = self.views.reporting_graphs;
     console.log("display graps " , period , context , type , heading);
 
     $(".doReport").removeClass('disabled');
@@ -160,7 +160,9 @@ Reporting.Controller = Apps.Reports.Support.extend({
           params.height = 225;
 
           self.drawChart(info.chart, container, params, self.metrics_url, function (err) {
-                 console.log(err);
+            if(err){
+              //ignored as this error is shown by the draw chart functionality as no results for selected options.
+            }
           });
         }
       }
@@ -173,7 +175,9 @@ Reporting.Controller = Apps.Reports.Support.extend({
       params.height = 400;
       params.dest=true;
       self.drawChart(info.chart, container, params, self.metrics_url, function (err) {
-
+           if(err){
+             //ignored as this error is shown by the draw chart functionality as no results for selected options.
+           }
       });
     }
   }

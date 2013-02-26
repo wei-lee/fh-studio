@@ -41,6 +41,8 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
     var ele = $(self.views.reporting_dashboard);
     self.initForm();
 
+    self.container = self.views.reporting_dashboard;
+
 
     self.initDatepickers($(self.views.reporting_form+' input[name="from"]'), $(self.views.reporting_form + ' input[name="to"]'));
     $('.doReport:first').trigger("click");
@@ -118,7 +120,7 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
         }
 
       }, function (err){
-        console.log("error occurred get metrics data" + err);
+        self.showAlert("Warning", "Error occurred getting metrics data");
       });
 
 
@@ -185,9 +187,10 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
 
       async.parallel(metricsSeries, function (err, data){
          //data is in same order as the calls were pushed into the series.
+
          if(err){
            //warn of error;
-           alert(err);
+           self.showAlert("Warning", "Error occurred retrieving metrics data");
          }
         $('a.interactive_heading').unbind('click').click(function (e){
           //set the active view to the target

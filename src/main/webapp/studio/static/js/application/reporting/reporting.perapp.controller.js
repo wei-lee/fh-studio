@@ -34,7 +34,7 @@ Reporting.Perapp.Controller = Reporting.Dashboard.Controller.extend({
     $(self.views.reports_graph).hide();
 
     var ele = $(self.viewnames.report_per_app);
-
+    self.container = self.views.reports_graph;
     self.initDatepickers($(self.viewnames.reports_form +' input[name="from"]'), $(self.viewnames.reports_form +' input[name="to"]'));
     self.initFormDates(7);
     ele.show();
@@ -77,6 +77,7 @@ Reporting.Perapp.Controller = Reporting.Dashboard.Controller.extend({
       }
     }, function() {
       // Failure
+      self.showAlert("Warning", "failed to retrieve apps list");
     }, true);
   },
 
@@ -148,7 +149,7 @@ Reporting.Perapp.Controller = Reporting.Dashboard.Controller.extend({
       self.populateTotals(params, function(err, data){
 
         if(err){
-          alert(err);
+          self.showAlert("Warning"," Failed to retrieve all metrics");
         } else {
           summaryMetricsContainer.find('.app_summary_name_container').removeClass('hidden').show().find('span').text(appTitle);
           var appInstallsTemplate = self.getTemplate(metrics[0], true, 'appinstalls', "Installs", 'Installs: ' + data[0],null);
