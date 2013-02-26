@@ -129,70 +129,74 @@ Reporting.Perapp.Controller = Reporting.Dashboard.Controller.extend({
     var summaryMetricsContainer = $(self.viewnames.app_summary_metrics_container);
     var metrics = ["appinstallsdest", "appstartupsdest", "apprequestsdest", "apptransactionsdest"];
     var params = {};
-    if(period){
-      params = self.buildParamsForDays(appGuid, period, metrics,0);
-    } else {
-      var from = $('input[name="from"]').val();
-      var to = $('input[name="to"]').val();
-
-      period = self.daysBetweenDates(new Date(from), new Date(to));
-
-      params = self.buildParamsForDates(appGuid, from, to, metrics, 0);
-    }
-    summaryMetricsContainer.find('.summary_background_text').hide();
-    summaryMetricsContainer.find('div.report-well').remove();
-    $(self.viewnames.do_report_btn).removeClass('disabled').data('selected_app',appGuid).data('selected_appname', appTitle);
-
-    self.populateTotals(params, function(err, data){
-
-      if(err){
-        alert(err);
+    $fw.client.model.App.read(appGuid, function (data){
+      var appid = data.app.guid;
+      if(period){
+        params = self.buildParamsForDays(appid, period, metrics,0);
       } else {
-        summaryMetricsContainer.find('.app_summary_name_container').removeClass('hidden').show().find('span').text(appTitle);
-        var appInstallsTemplate = self.getTemplate(metrics[0], true, 'appinstalls', "Installs", 'Installs: ' + data[0],null);
-        var appStartTemplate = self.getTemplate(metrics[1], false, 'appstartups', 'Start Ups', 'Startups: ' + data[1], null);
-        var appends = [];
+        var from = $('input[name="from"]').val();
+        var to = $('input[name="to"]').val();
 
-        summaryMetricsContainer.append(self.getWellTemplate('App Client', [appInstallsTemplate, appStartTemplate]));
-        if($fw.getClientProp("cloudrequest-reporting-enabled") !== "false"){
-          var appRequestsTemplate = self.getTemplate(metrics[2], true, 'apprequests', 'Requests','Requests: ' + data[2], null);
-          appends.push(appRequestsTemplate);
-        }
-        if($fw.getClientProp("transaction-reporting-enabled") !== "false"){
-          var appTransactionsTemplate = self.getTemplate(metrics[3], false, 'apptransactions', 'Active Uses', 'Active Users: ' + data[3], null);
-          appends.push(appTransactionsTemplate);
-        }
-        if(appends.length > 0){
-            summaryMetricsContainer.append(self.getWellTemplate('App Cloud', appends));
-        }
-        summaryMetricsContainer.find('.reportingdashboard_heading').unbind('click').bind('click', function(e){
-          var controller = "reporting.controller";
-          var reportSuperType = $(this).data("target");
-          var heading =  $(this).data("heading");
-          console.log("calling controller " + controller + " for report type " + reportSuperType + " over period of " + period + "days");
-          controller = $fw.client.tab.admin.getController(controller);
-          self.hide();
-          controller.displayGraphs(period, appGuid,reportSuperType, heading);
-        });
-        summaryMetricsContainer.find('a.interactive_heading').unbind('click').click(function(e){
-          e.preventDefault();
-          var active = $(this).data("target");
-          console.log("active view will be", active);
-          $('.reporting_pills > li.active').removeClass("active");
-          $('.reporting_pills > li#'+active).addClass("active");
-          var reportSuperType = $(this).closest('.reportdashboard_div').find('h4').data('target');
-          var heading = $(this).closest('.reportdashboard_div').find('h4').data('heading');
-          var controller = "reporting.controller";
-          controller = $fw.client.tab.admin.getController(controller);
-          self.hide();
-          controller.displayGraphs(period, appGuid, reportSuperType,heading);
-        });
-        summaryMetricsContainer.find('.reportdashboard_link i').unbind('click').click(function(e){
-          e.preventDefault();
-          $(this).prev('a').trigger('click');
-        });
+        period = self.daysBetweenDates(new Date(from), new Date(to));
+
+        params = self.buildParamsForDates(appid, from, to, metrics, 0);
       }
+      summaryMetricsContainer.find('.summary_background_text').hide();
+      summaryMetricsContainer.find('div.report-well').remove();
+      $(self.viewnames.do_report_btn).removeClass('disabled').data('selected_app',appid).data('selected_appname', appTitle);
+
+      self.populateTotals(params, function(err, data){
+
+        if(err){
+          alert(err);
+        } else {
+          summaryMetricsContainer.find('.app_summary_name_container').removeClass('hidden').show().find('span').text(appTitle);
+          var appInstallsTemplate = self.getTemplate(metrics[0], true, 'appinstalls', "Installs", 'Installs: ' + data[0],null);
+          var appStartTemplate = self.getTemplate(metrics[1], false, 'appstartups', 'Start Ups', 'Startups: ' + data[1], null);
+          var appends = [];
+
+          summaryMetricsContainer.append(self.getWellTemplate('App Client', [appInstallsTemplate, appStartTemplate]));
+          if($fw.getClientProp("cloudrequest-reporting-enabled") !== "false"){
+            var appRequestsTemplate = self.getTemplate(metrics[2], true, 'apprequests', 'Requests','Requests: ' + data[2], null);
+            appends.push(appRequestsTemplate);
+          }
+          if($fw.getClientProp("transaction-reporting-enabled") !== "false"){
+            var appTransactionsTemplate = self.getTemplate(metrics[3], false, 'apptransactions', 'Active Uses', 'Active Users: ' + data[3], null);
+            appends.push(appTransactionsTemplate);
+          }
+          if(appends.length > 0){
+            summaryMetricsContainer.append(self.getWellTemplate('App Cloud', appends));
+          }
+          summaryMetricsContainer.find('.reportingdashboard_heading').unbind('click').bind('click', function(e){
+            var controller = "reporting.controller";
+            var reportSuperType = $(this).data("target");
+            var heading =  $(this).data("heading");
+            console.log("calling controller " + controller + " for report type " + reportSuperType + " over period of " + period + "days");
+            controller = $fw.client.tab.admin.getController(controller);
+            self.hide();
+            controller.displayGraphs(period, appid,reportSuperType, heading);
+          });
+          summaryMetricsContainer.find('a.interactive_heading').unbind('click').click(function(e){
+            e.preventDefault();
+            var active = $(this).data("target");
+            console.log("active view will be", active);
+            $('.reporting_pills > li.active').removeClass("active");
+            $('.reporting_pills > li#'+active).addClass("active");
+            var reportSuperType = $(this).closest('.reportdashboard_div').find('h4').data('target');
+            var heading = $(this).closest('.reportdashboard_div').find('h4').data('heading');
+            var controller = "reporting.controller";
+            controller = $fw.client.tab.admin.getController(controller);
+            self.hide();
+            controller.displayGraphs(period, appid, reportSuperType,heading);
+          });
+          summaryMetricsContainer.find('.reportdashboard_link i').unbind('click').click(function(e){
+            e.preventDefault();
+            $(this).prev('a').trigger('click');
+          });
+        }
+      });
     });
+
   },
 
   populateTotals: function(params, cb){

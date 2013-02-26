@@ -144,9 +144,11 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
           var params = {};
           if(self.period){
             params =  self.buildParamsForDays(id, self.period, metric.metric, 0);
+
           }else{
             params = self.buildParamsForDates(id, from, to, metric.metric, 0);
           }
+          params.domain = id;
           var tableId = metric.metric.replace("domain","app");
           if("true" === metric.isEnabled){
            var template = self.getTemplate(metric.metric, metric.boarder,metric.target,metric.heading, metric.heading + " ", tableId);

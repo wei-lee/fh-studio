@@ -74,7 +74,8 @@ Reporting.Controller = Apps.Reports.Support.extend({
     $('.reporting_pills > li.active').removeClass("active");
     $('.reporting_pills > li#'+activePill).addClass("active");
     var type = ele.data("target");
-    var context = $fw.data.get('app').guid || $fw.getClientProp("domain");
+   // console.log($fw.data.get('inst').guid;
+    var context = $fw.data.get('app').guid;
     self.displayGraphs(period, context, type, heading);
     self.initFormDates(period);
   },
