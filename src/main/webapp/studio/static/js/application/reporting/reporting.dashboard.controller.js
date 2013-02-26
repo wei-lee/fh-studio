@@ -120,6 +120,7 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
         }
 
       }, function (err){
+        console.log(err);
         self.showAlert("Warning", "Error occurred getting metrics data");
       });
 
@@ -190,6 +191,7 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
 
          if(err){
            //warn of error;
+           console.log(err);
            self.showAlert("Warning", "Error occurred retrieving metrics data");
          }
         $('a.interactive_heading').unbind('click').click(function (e){
