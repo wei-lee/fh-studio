@@ -194,6 +194,8 @@ Apps.Cloudnotifications.Controller = Apps.Cloud.Controller.extend({
     if (message.toLowerCase().indexOf("fail") > -1) {
       $('td', row).addClass('fail');
     }
+    message = message.replace(/\n/g, "<br />");
+    $('td:eq(' + self.indexes.message + ')', row).html(message);
     var nh = "<span class='label label-" + self.getLabelClass(notification) + "'>" + js_util.capitaliseWords(notification) + "</span>";
     $('td:eq(' + self.indexes.eventType + ')', row).html(nh);
     var instGuid = $fw.data.get('inst').guid;
