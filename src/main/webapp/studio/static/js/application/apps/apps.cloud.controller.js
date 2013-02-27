@@ -158,5 +158,17 @@ Apps.Cloud.Controller = Apps.Controller.extend({
     // call show again.
     // Re-implement if you want to do something different
     this.show();
+  },
+
+  doExport: function(filename, content, content_type) {
+    // Remove if it exists
+    $('#export_form').remove();
+
+    $('body').append('<form name="export_form" id="export_form" method="post" action="' + Constants.TRIGGER_DOWNLOAD_URL + '"><input type="hidden" name="content" value=""><input type="hidden" name="content_type" value=""><input type="hidden" name="filename" value=""><input type="submit" name="export_json_submit" id="export_json_submit" value="Export" style="display: none"></form>');
+    $("#export_form input[name=content]").val(content);
+    $("#export_form input[name=content_type]").val(content_type);
+    $("#export_form input[name=filename]").val(filename);
+    $('#export_form').submit();
   }
+
 });

@@ -102,6 +102,8 @@ js/application/stats/models/stats.model.historical.js
 js/application/stats/models/stats.model.historical.timers.js
 js/application/stats/models/stats.model.historical.counters.js
 js/application/stats/models/stats.model.historical.apicalls.js
+js/application/stats/models/stats.model.live.js
+js/application/stats/models/stats.model.live.gauges.js
 js/application/stats/views/stats.view.base.js
 js/application/stats/views/stats.view.list.js
 js/application/stats/views/stats.view.list.apicalls.js
