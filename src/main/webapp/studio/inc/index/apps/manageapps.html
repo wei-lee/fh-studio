@@ -78,6 +78,12 @@
         </a>
       </li>
       <li class="template-restriction nodejs_mode">
+        <a href="#" data-controller="apps.environment.controller">
+          <i class="icon-cogs"></i>
+          Environment
+        </a>
+      </li>
+      <li class="template-restriction nodejs_mode">
         <a href="#" data-controller="apps.deploy.controller">
           <i class="icon-cloud"></i>
           Deploy
@@ -274,6 +280,8 @@
        <%@ include file="./endpoints.html"%>
 
        <%@ include file="./deploy.html"%>
+
+       <%@ include file="./environment.html"%>
 
        <% if(studio.getProps().optBoolean("stats-enabled")){ %>
          <%@ include file="./stats.html"%>
