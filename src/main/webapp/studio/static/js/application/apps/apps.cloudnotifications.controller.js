@@ -194,7 +194,20 @@ Apps.Cloudnotifications.Controller = Apps.Cloud.Controller.extend({
     if (message.toLowerCase().indexOf("fail") > -1) {
       $('td', row).addClass('fail');
     }
-    message = message.replace(/\n/g, "<br />");
+    var parts = message.split("\n");
+    var processed = [parts[0]];
+    for(var n=1;n<parts.length;n++){
+      var p = parts[n];
+      var converted = p;
+      if(p.indexOf(":") > -1){
+        var firstPart = p.split(":")[0];
+        var secondPart = p.split(":")[1];
+        firstPart = "<span class='label' style='display: inline-block; width: 85px; padding: 2px;'>" + firstPart + "</span>";
+        converted = [firstPart, secondPart].join(" ");
+      }
+      processed.push("<span style='line-height: 2.em'>" + converted + "</span>");
+    }
+    message = processed.join("<br />");
     $('td:eq(' + self.indexes.message + ')', row).html(message);
     var nh = "<span class='label label-" + self.getLabelClass(notification) + "'>" + js_util.capitaliseWords(notification) + "</span>";
     $('td:eq(' + self.indexes.eventType + ')', row).html(nh);
