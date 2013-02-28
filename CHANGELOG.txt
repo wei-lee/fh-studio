@@ -1,6 +1,11 @@
 -------------------------------------------------------------------------------
 Component: fh-studio
 -------------------------------------------------------------------------------
+3.15.7 - 2013-02-28 - IR196 - Wei Li
+----------------------------------------------------------------------------
+* 3329 - Split cloud notifications between dev & live
+* 3338 - Prompt for approver info when deploy to live environment and show it in cloud notifications
+
 3.15.6 - 2013-02-19 - IR195 - Wei Li
 ----------------------------------------------------------------------------
 * 3147 - Added realtime reporting for App cloud resource usage
