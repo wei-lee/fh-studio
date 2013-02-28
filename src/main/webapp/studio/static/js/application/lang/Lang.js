@@ -95,26 +95,6 @@ var Lang = {
   iphone_publish_wizard_supertitle: 'iPhone Build',
   app_publish_iphone_select_provisionings_title: 'Please select the Provisioning Profile',
 
-  app_publish_iphone_deploying_env_text: "Would you like to deploy the app's server-side code?",
-  app_publish_iphone_deploying_env_title: 'Server-side code deploying',
-  app_publish_iphone_deploying_progress_title: 'Deploying App',
-
-  app_publish_android_deploying_env_text: "Would you like to deploy the app's server-side code?",
-  app_publish_android_deploying_env_title: 'Server-side code deploying',
-  app_publish_android_deploying_progress_title: 'Deploying App',
-
-  app_publish_ipad_deploying_env_text: "Would you like to deploy the app's server-side code?",
-  app_publish_ipad_deploying_env_title: 'Server-side code deploying',
-  app_publish_ipad_deploying_progress_title: 'Deploying App',
-
-  app_publish_blackberry_deploying_env_text: "Would you like to deploy the app's server-side code?",
-  app_publish_blackberry_deploying_env_title: 'Server-side code deploying',
-  app_publish_blackberry_deploying_progress_title: 'Deploying App',
-
-  app_publish_windowsphone7_deploying_env_text: "Would you like to deploy the app's server-side code?",
-  app_publish_windowsphone7_deploying_env_title: 'Server-side code deploying',
-  app_publish_windowsphone7_deploying_progress_title: 'Deploying App',
-
   app_publish_iphone_upload_provisionings_title: 'Please upload the provisioning profile',
   app_publish_iphone_upload_progress_title: 'Uploading provisioning profile',
   app_publish_iphone_versions_title: 'iOS SDK information',
@@ -142,8 +122,6 @@ var Lang = {
   ios_publish_wizard_supertitle: 'iOS Universal Build',
   app_publish_ios_select_provisionings_title: 'Please select the Provisioning Profile',
   app_publish_ios_upload_provisionings_title: 'Please upload the provisioning profile',
-  app_publish_ios_deploying_env_title: 'Server-side code deploying',
-  app_publish_ios_deploying_progress_title: 'Deploying App',
   app_publish_ios_upload_progress_title: 'Uploading provisioning profile',
   app_publish_ios_versions_title: 'iOS SDK information',
   app_publish_ios_password_title: 'Please enter the passwords for your private key and certificate',
@@ -213,9 +191,6 @@ var Lang = {
   publish_embed_title: 'Embed Code',
   publish_embed_text: 'Paste the following code in your html to load an embedded version of the App.',
   embed_publish_wizard_supertitle: 'Deploy Embeded App',
-  app_publish_embed_deploying_env_text: "Would you like to deploy the app's server-side code?",
-  app_publish_embed_deploying_env_title: 'Server-side code deploying',
-  app_publish_embed_deploying_progress_title: 'Deploying App',
   app_publish_embed_progress_title: 'Building App',
 
 
