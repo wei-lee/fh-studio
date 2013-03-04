@@ -17,7 +17,15 @@
             <p>Here you can <span class="crud_action">create</span> new environmental variables for controlling/configuring your cloud code</p>
             <br />
             <div class="control-group required">
-                <label id="env_var_name_label" class="control-label insert-help-icon" for="env_var_name">Name</label>
+                <label id="env_var_name_label" class="control-label insert-help-icon" for="env_var_name">
+                    Name
+                    <i class="btn help-button icon-info-sign"
+                       data-content="The name should not be blank and can't start with FH"
+                       data-placement="bottom"
+                       data-trigger="hover"
+                       rel="popover"
+                    ></i>
+                </label>
                 <div class="controls">
                     <input type="text" class="env_var name input-xxlarge"></input>
                     <input type="text" class="env_var guid hidden"></input>
@@ -32,6 +40,11 @@
             <span class="help-inline span6">
                 <label id="deploy_target_platform_label" class="control-label" >
                     Target Platform
+                    <i class="btn help-button icon-info-sign"
+                       data-content="This is the environment that this variable will be set for"
+                       data-placement="bottom"
+                       data-trigger="hover"
+                       rel="popover"></i>
                 </label>
                 <span class="control-label deploy_target_platform">Development</span>
             </span>

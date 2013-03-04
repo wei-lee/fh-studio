@@ -59,6 +59,9 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
     this.subviews.$edit.hide();
     this.$devlive.hide();
     this.subviews.$list.show();
+
+    $(".icon-info-sign", this.$container).popover({template: '<div class="popover"><div class="arrow"></div><div class="popover-inner"><div class="popover-content"><p></p></div></div></div>'});
+
   },
 
   show: function() {
