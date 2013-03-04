@@ -1,3 +1,7 @@
+<script type="text/template" class="row-controls">
+    <button class="btn edit_env_var">Edit</button>
+    <button class="btn btn-danger delete_env_var">Delete</button>
+</script>
 <div class="deploy_targets row-fluid"></div>
 
 <div class="env_var_list row-fluid subview">
@@ -37,8 +41,8 @@
             </div>
         </fieldset>
         <div class="form-actions">
-            <button type="button" class="save_env_var_btn btn btn-primary">Create</button>
-            <button type="button" class="cancel_env_var_btn btn"> Cancel </button>
+            <button type="button" class="save_env_var_btn btn btn-primary" data-loading-text="processing...">Create</button>
+            <button type="button" class="cancel_env_var_btn btn"  data-loading-text="processing..."> Cancel </button>
         </div>
     </form>
 </div>

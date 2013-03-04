@@ -44,6 +44,8 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
 
     this.$subviews = $(this.subviews.all, this.$container);
 
+    this.controls = $(".row-controls" , this.$container).html();
+
     // use with zip to get object later
     this.names = _.collect(this.models.environment.field_config, function(v){return v.field_name;});
     this.initFn = _.once(this.initBindings);
@@ -91,9 +93,9 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
     }
   },
 
-  handleError: function(type, msg) {
-    console.log('Error showing environment');
-    this.showAlert({type:type, msg:msg});
+  handleError: function(alert) {
+    this.resetButtons($("button", this.$container));
+    this.showAlert(alert);
   },
 
   showEnvironment: function(alert) {
@@ -107,15 +109,10 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
 
     // create a partial function
     var bindTableForEnv = _.bind(this.bindTable,this, this.env);
-    var handleGetEnvError = _.bind(this.handleError,this, "error", "Unexpected Error getting '" + this.env + "' env list");
+    var handleGetEnvError = _.bind(this.handleError,this, {type:"error", msg:"Unexpected Error getting '" + this.env + "' env list"});
     this.models.environment.list(this.app, this.env, bindTableForEnv, handleGetEnvError, true);
   },
 
-//  hideEnvironment: function() {
-//    this.$subviews.hide();
-//    this.subviews.$list.hide();
-//  },
-//
   addControls: function(res) {
     // Add control column
     res.aoColumns.push({
@@ -124,13 +121,8 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
       "sClass": "controls"
     });
 
-    $.each(res.aaData, function(i, row) {
-      var controls = [];
-      // TODO: Move to clonable hidden_template
-      controls.push('<button class="btn edit_env_var">Edit</button>&nbsp;');
-      controls.push('<button class="btn btn-danger delete_env_var">Delete</button>');
-      row.push(controls.join(""));
-    });
+    var controls = this.controls;
+    $.each(res.aaData, function(i, row) {row.push(controls);});
     return res;
   },
 
@@ -166,9 +158,20 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
   } ,
 
   handleDelete: function(e) {
+    var controls = $(e.target).parent().find("button");
+    controls.button('loading');
+
     var data = this.dataForRow($(e.target).closest('tr').get(0));
     this.deleteEnvVar(e, _.object(this.names, data));
     return false;
+  } ,
+
+  disableButtons: function(buttons) {
+    buttons.button('loading');
+  } ,
+
+  resetButtons: function(buttons) {
+    buttons.button('reset');
   } ,
 
   bindControls: function() {
@@ -180,11 +183,12 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
     return this.$env_table.fnGetData(el);
   },
 
-  handleCreate: function(){
+  handleCreate: function(e){
+    this.disableButtons($(e.target).parent().find("button"));
     var name = this.subviews.$edit_name.val();
     var value = this.subviews.$edit_value.val();
 
-    var handleError = _.bind(this.handleError,this, "error", "Unexpected Error creating" +'" + name + "');
+    var handleError = _.bind(this.handleError,this, {type:"error", msg:"Unexpected Error creating '" + name + "'"});
     var handleSuccess = _.bind(this.showEnvironment,this, {type:"success",msg: "'" + name + "' created" });
 
     this.models.environment.create(this.app , this.env , name, value,  handleSuccess, handleError);
@@ -196,7 +200,7 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
     var name = this.subviews.$edit_name.val();
     var value = this.subviews.$edit_value.val();
 
-    var handleError = _.bind(this.handleError,this, "error", "Unexpected Error updating '" + name + "'");
+    var handleError = _.bind(this.handleError,this, {type:"error", msg:"Unexpected Error updating '" + name + "'"});
     var handleSuccess = _.bind(this.showEnvironment,this, {type:"success",msg: "'" + name + "' updated"});
     this.models.environment.update(this.app , id, name, value,  handleSuccess, handleError);
     return false;
@@ -213,18 +217,21 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
     $('.cancel_env_var_btn', this.subviews.$edit).unbind().click(this.handleCancel);
   },
 
-  showCreateEnv: function(button) {
-    this.populateEnvVar(button, null, this.handleCreate, "Create");
+  showCreateEnv: function(e) {
+    this.populateEnvVar(e, null, this.handleCreate, "Create");
   },
 
-  showEnvVarUpdate: function(button, row, data) {
+  showEnvVarUpdate: function(e, row, data) {
     var o  = _.object(this.names, data)
     var handleUpdate= _.bind(this.handleUpdate , this, o);
-    this.populateEnvVar(button, _.object(this.names, data), handleUpdate, "Update");
+    this.populateEnvVar(e, _.object(this.names, data), handleUpdate, "Update");
 
   },
 
-  populateEnvVar: function(button, o, handler, lable) {
+  populateEnvVar: function(e, o, handler, lable) {
+    var buttons = $("button", this.subviews.$edit);
+    this.resetButtons(buttons);
+
     this.$subviews.hide();
     this.subviews.$edit.show();
 
@@ -239,7 +246,7 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
 
   deleteEnvVar: function(button, o) {
     if(o) {
-      var handleError = _.bind(this.handleError,this, "error", "Unexpected Error deleting '" + o.name + "'");
+      var handleError = _.bind(this.handleError,this, {type:"error", msg:"Unexpected Error deleting '" + o.name + "'"});
       var handleSuccess = _.bind(this.showEnvironment,this, {type:"success",msg: "'" + o.name + "' successfully deleted"});
       this.models.environment.remove(this.app ,o.guid,  handleSuccess, handleError)
     }
