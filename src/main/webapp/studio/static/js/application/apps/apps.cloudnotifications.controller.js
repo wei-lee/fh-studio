@@ -232,7 +232,9 @@ Apps.Cloudnotifications.Controller = Apps.Cloud.Controller.extend({
     } else if (notificationType.indexOf("stop") > -1) {
       return "warning";
     } else if (notificationType.indexOf("delete") > -1) {
-      return "important";
+      return "warning";
+    } else {
+      return "info";
     }
   }
 
