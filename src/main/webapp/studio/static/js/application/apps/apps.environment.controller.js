@@ -55,7 +55,6 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
 
   initBindings: function() {
     _.bindAll(this);
-    this.populateTable("dev", {aaData: [],aoColumns:this.models.environment.field_config});
 
     this.subviews.$edit.hide();
     this.$devlive.hide();
@@ -151,18 +150,19 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
   },
 
   handleEdit: function(e) {
-    var row = $(this).parent().parent();
-    var data = this.dataForRow($(e.target).closest('tr').get(0));
-    this.showEnvVarUpdate(e, row, data);
+    var $row = $(e.target).closest('tr');
+    var data = this.dataForRow($row.get(0));
+    this.showEnvVarUpdate(e, $row, data);
     return false;
   } ,
 
   handleDelete: function(e) {
-    var controls = $(e.target).parent().find("button");
-    controls.button('loading');
+    var $row = $(e.target).closest("tr");
+    var data = this.dataForRow($row.get(0));
+    var o =_.object(this.names, data);
+    var deleteEnvVar = _.bind(this.deleteEnvVar, this, e,$row,data,o);
 
-    var data = this.dataForRow($(e.target).closest('tr').get(0));
-    this.deleteEnvVar(e, _.object(this.names, data));
+    this.showBooleanModal("Are you sure you want to delete this variable '" + o.name + "'?", deleteEnvVar);
     return false;
   } ,
 
@@ -188,6 +188,8 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
     var name = this.subviews.$edit_name.val();
     var value = this.subviews.$edit_value.val();
 
+    this.showAlert({type:'info', msg:"<strong>Creating Variable</strong> '" + name + "' This may take some time."});
+
     var handleError = _.bind(this.handleError,this, {type:"error", msg:"Unexpected Error creating '" + name + "'"});
     var handleSuccess = _.bind(this.showEnvironment,this, {type:"success",msg: "'" + name + "' created" });
 
@@ -199,6 +201,8 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
     var id = this.subviews.$edit_guid.val();
     var name = this.subviews.$edit_name.val();
     var value = this.subviews.$edit_value.val();
+
+    this.showAlert({type:'info', msg:"<strong>Updating Variable</strong> ('" + name + "') This may take some time."});
 
     var handleError = _.bind(this.handleError,this, {type:"error", msg:"Unexpected Error updating '" + name + "'"});
     var handleSuccess = _.bind(this.showEnvironment,this, {type:"success",msg: "'" + name + "' updated"});
@@ -222,7 +226,7 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
   },
 
   showEnvVarUpdate: function(e, row, data) {
-    var o  = _.object(this.names, data)
+    var o  = _.object(this.names, data);
     var handleUpdate= _.bind(this.handleUpdate , this, o);
     this.populateEnvVar(e, _.object(this.names, data), handleUpdate, "Update");
 
@@ -236,20 +240,31 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
     this.subviews.$edit.show();
 
     var $action =  $(".crud_action",this.subviews.$edit);
-    this.bindButtons(handler,lable);
     $action.text(lable.toLowerCase());
+
+    var $env =  $(".deploy_target_platform",this.subviews.$edit);
+    $env.text(this.env === "dev" ? "Development" : "Live");
+
+    this.bindButtons(handler,lable);
 
     this.subviews.$edit_name.val(o ? o.name : "");
     this.subviews.$edit_value.val(o ? o.value : "");
     this.subviews.$edit_guid.val(o ? o.guid : "");
   },
 
-  deleteEnvVar: function(button, o) {
-    if(o) {
-      var handleError = _.bind(this.handleError,this, {type:"error", msg:"Unexpected Error deleting '" + o.name + "'"});
-      var handleSuccess = _.bind(this.showEnvironment,this, {type:"success",msg: "'" + o.name + "' successfully deleted"});
-      this.models.environment.remove(this.app ,o.guid,  handleSuccess, handleError)
-    }
+  deleteEnvVar: function(e, $row,data,o) {
+    var handleError = _.bind(this.handleError,this, {type:"error", msg:"Unexpected Error deleting '" + o.name + "'"});
+    var handleSuccess = _.bind(this.showEnvironment,this, {type:"success",msg: "'" + o.name + "' successfully deleted"});
+
+    var controls = $(e.target).parent().find("button");
+    controls.button('loading');
+
+    this.showAlert({type:'info', msg:"<strong>Deleting Variable</strong> ('" + o.name + "') This may take some time."});
+
+    // bootstrap loading stops this being edited
+    //this.$env_table.fnDeleteRow($row[0]);
+
+    this.models.environment.remove(this.app ,o.guid,  handleSuccess, handleError);
     return false;
   }
 

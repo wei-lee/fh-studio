@@ -24,6 +24,7 @@ model.Environment = model.Model.extend({
     },
     {
       field_name: "sysModified",
+      visible: false,
       column_title: "Modified"
     },
     {
