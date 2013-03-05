@@ -101,7 +101,7 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
               //add the specific metric for use when the heading is clicked on
               for(var i=0; i< data[dbItem].length; i++){
                 var result = data[dbItem][i];
-                table.append("<tr><td class=\" appreportrow "+dbItem+"\" data-metric=\""+dbItem+"\" data-appid=\""+result.id.apid+"\">"+result.id.appname+"</td><td>"+result.value.total+"</td></tr>");
+                table.append("<tr><td class=\" appreportrow "+dbItem+"\" data-metric=\""+dbItem+"\" data-appid=\""+result._id.appid+"\">"+result._id.appname+"</td><td>"+result.value.total+"</td></tr>");
               }
               table.find('.appreportrow').css("cursor","pointer").unbind().click(function (e){
                 //call specific report type controller
@@ -213,7 +213,8 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
           e.preventDefault();
           $(this).prev('a').trigger('click');
         });
-
+        
+        return cb();
       });
 
     }

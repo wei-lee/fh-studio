@@ -439,32 +439,32 @@
 
       topresults:{
         "appinstallsdest":[
-          {id: { apid:"sampleidA", appname: 'this is app A'}, value: {total:2000}},
-          {id: { apid:"sampleidB", appname: 'this is app B'}, value: {total:1200}},
-          {id: { apid:"sampleidC", appname: 'this is app C'}, value: {total:1000}},
-          {id: { apid:"sampleidD", appname: 'this is app D'}, value: {total:250}},
-          {id: { apid:"sampleidE", appname: 'this is app E'}, value: {total:100}}
+          {_id: { appid:"sampleidA", appname: 'this is app A'}, value: {total:2000}},
+          {_id: { appid:"sampleidB", appname: 'this is app B'}, value: {total:1200}},
+          {_id: { appid:"sampleidC", appname: 'this is app C'}, value: {total:1000}},
+          {_id: { appid:"sampleidD", appname: 'this is app D'}, value: {total:250}},
+          {_id: { appid:"sampleidE", appname: 'this is app E'}, value: {total:100}}
         ],
         "apptransactionsdest":[
-          {id: { apid:"sampleidD", appname: 'this is app D'}, value: {total:2500}},
-          {id: { apid:"sampleidE", appname: 'this is app E'}, value: {total:2000}},
-          {id: { apid:"sampleidA", appname: 'this is app A'}, value: {total:1899}},
-          {id: { apid:"sampleidB", appname: 'this is app B'}, value: {total:1533}},
-          {id: { apid:"sampleidC", appname: 'this is app C'}, value: {total:1000}}
+          {_id: { appid:"sampleidD", appname: 'this is app D'}, value: {total:2500}},
+          {_id: { appid:"sampleidE", appname: 'this is app E'}, value: {total:2000}},
+          {_id: { appid:"sampleidA", appname: 'this is app A'}, value: {total:1899}},
+          {_id: { appid:"sampleidB", appname: 'this is app B'}, value: {total:1533}},
+          {_id: { appid:"sampleidC", appname: 'this is app C'}, value: {total:1000}}
         ],
         "appstartupsdest":[
-          {id: { apid:"sampleidA", appname: 'this is app A'}, value: {total:2000}},
-          {id: { apid:"sampleidB", appname: 'this is app B'}, value: {total:1200}},
-          {id: { apid:"sampleidC", appname: 'this is app C'}, value: {total:1000}},
-          {id: { apid:"sampleidD", appname: 'this is app D'}, value: {total:250}},
-          {id: { apid:"sampleidE", appname: 'this is app E'}, value: {total:100}}
+          {_id: { appid:"sampleidA", appname: 'this is app A'}, value: {total:2000}},
+          {_id: { appid:"sampleidB", appname: 'this is app B'}, value: {total:1200}},
+          {_id: { appid:"sampleidC", appname: 'this is app C'}, value: {total:1000}},
+          {_id: { appid:"sampleidD", appname: 'this is app D'}, value: {total:250}},
+          {_id: { appid:"sampleidE", appname: 'this is app E'}, value: {total:100}}
         ],
         "apprequestsdest":[
-          {id: { apid:"sampleid", appname: 'this is app A'}, value: {total:4000}},
-          {id: { apid:"sampleid", appname: 'this is app A'}, value: {total:3332}},
-          {id: { apid:"sampleid", appname: 'this is app A'}, value: {total:3100}},
-          {id: { apid:"sampleid", appname: 'this is app A'}, value: {total:600}},
-          {id: { apid:"sampleid", appname: 'this is app A'}, value: {total:366}}
+          {_id: { appid:"sampleid", appname: 'this is app A'}, value: {total:4000}},
+          {_id: { appid:"sampleid", appname: 'this is app A'}, value: {total:3332}},
+          {_id: { appid:"sampleid", appname: 'this is app A'}, value: {total:3100}},
+          {_id: { appid:"sampleid", appname: 'this is app A'}, value: {total:600}},
+          {_id: { appid:"sampleid", appname: 'this is app A'}, value: {total:366}}
         ]
 
       }
