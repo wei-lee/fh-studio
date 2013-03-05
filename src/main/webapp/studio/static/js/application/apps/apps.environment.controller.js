@@ -53,6 +53,16 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
 
   },
 
+  switchedEnv: function(env) {
+    this.env = env;
+    if(this.subviews.$edit.is(":visible")) {
+      var name = this.subviews.$edit_name.val();
+      this.showEnvVar(name);
+    } else {
+      this.show();
+    }
+  },
+
   initBindings: function() {
     _.bindAll(this);
 
@@ -73,6 +83,27 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
 
     return this.showEnvironment();
   },
+
+  showEnvVar: function(name) {
+    var self = this;
+
+    // create a partial function
+    var handleGetEnvError = _.bind(this.handleError,this, {type:"error", msg:"Unexpected Error getting '" + this.env + "' env list"});
+    this.models.environment.list(this.app, this.env, function (res){
+      var  o = _.find(res.aaData, function(r){
+        return r[0] === name;
+      })
+      if (o) {
+        self.showEnvVarUpdate(null, null , o);
+      }  else {
+        self.showCreateEnv(null, name);
+      }
+    }, function (){
+      handleGetEnvError();
+      self.showCreateEnv(null, name);
+    }, true);
+  },
+
   // type: error|success|info
   showAlert: function (alert) {
     var type = alert.type;
@@ -224,14 +255,14 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
     $('.cancel_env_var_btn', this.subviews.$edit).unbind().click(this.handleCancel);
   },
 
-  showCreateEnv: function(e) {
-    this.populateEnvVar(e, null, this.handleCreate, "Create");
+  showCreateEnv: function(e, name) {
+    this.populateEnvVar(e, {name : name}, this.handleCreate, "Create");
   },
 
   showEnvVarUpdate: function(e, row, data) {
     var o  = _.object(this.names, data);
     var handleUpdate= _.bind(this.handleUpdate , this, o);
-    this.populateEnvVar(e, _.object(this.names, data), handleUpdate, "Update");
+    this.populateEnvVar(e, o, handleUpdate, "Update");
 
   },
 
@@ -241,9 +272,6 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
 
     this.$subviews.hide();
     this.subviews.$edit.show();
-
-    var $action =  $(".crud_action",this.subviews.$edit);
-    $action.text(lable.toLowerCase());
 
     var $env =  $(".deploy_target_platform",this.subviews.$edit);
     $env.text(this.env === "dev" ? "Development" : "Live");

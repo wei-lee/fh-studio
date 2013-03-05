@@ -1,6 +1,6 @@
 <script type="text/template" class="row-controls">
-    <button class="btn edit_env_var">Edit</button>
-    <button class="btn btn-danger delete_env_var">Delete</button>
+    <button class="btn edit_env_var" data-loading-text="Processing...">Edit</button>
+    <button class="btn btn-danger delete_env_var" data-loading-text="Processing...">Delete</button>
 </script>
 <div class="deploy_targets row-fluid"></div>
 
@@ -14,7 +14,7 @@
     <form class="well form-horizontal">
         <fieldset>
             <legend id="target_edit_header"></legend>
-            <p>Here you can <span class="crud_action">create</span> new environmental variables for controlling/configuring your cloud code</p>
+            <p>You can manage the variables for controlling or configuring your cloud on this page</p>
             <br />
             <div class="control-group required">
                 <label id="env_var_name_label" class="control-label insert-help-icon" for="env_var_name">
@@ -37,17 +37,19 @@
                     <input type="text" class="env_var value input-xxlarge"></input>
                 </div>
             </div>
-            <span class="help-inline span6">
-                <label id="deploy_target_platform_label" class="control-label" >
-                    Target Platform
+            <div class="control-group">
+                <label class="control-label" >
+                    Platform
                     <i class="btn help-button icon-info-sign"
                        data-content="This is the environment that this variable will be set for"
                        data-placement="bottom"
                        data-trigger="hover"
                        rel="popover"></i>
                 </label>
-                <span class="control-label deploy_target_platform">Development</span>
-            </span>
+                <div class="controls">
+                    <label class="control-label deploy_target_platform" style="text-align:left">Development</label>
+                </div>
+            </div>
         </fieldset>
         <div class="form-actions">
             <button type="button" class="save_env_var_btn btn btn-primary" data-loading-text="Processing...">Create</button>
