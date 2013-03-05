@@ -1,14 +1,15 @@
 <form id="ios_publish_form">
       <div id="app_publish_ios_select_provisionings">
-        <div id="app_publish_ios_select_provisionings_text" class="insert-lang-block"></div>
+        <div id="app_publish_ios_select_provisionings_text" class="insert-lang-block step_title select_provisionings"></div>
+        <div id="app_publish_ios_no_provisionings_text"     class="insert-lang-block step_title no_provisionings hide "></div>
 
         <div class="form-field ui-helper-reset ui-helper-clearfix">
-          <input type="radio" name="app_publish_ios_provisioning_radio" next="app_publish_ios_versions" checked="checked" value="existing"><label>I would like to use the existing provisioning profile of this app</label>
+          <input type="radio" name="app_publish_ios_provisioning_radio" next="app_publish_ios_versions" checked="checked" value="existing" class="select_provisionings"><label>I would like to use the existing provisioning profile of this app</label>
         </div>
 
 
         <div class="form-field ui-helper-reset ui-helper-clearfix">
-          <input type="radio" name="app_publish_ios_provisioning_radio" next="app_publish_ios_upload_provisionings" value="new"><label>I would like to upload a new provisoning profile for this app</label>
+          <input type="radio" name="app_publish_ios_provisioning_radio" next="app_publish_ios_upload_provisionings" value="new"  class="no_provisionings"><label>I would like to upload a new provisoning profile for this app</label>
         </div>
       </div>
 

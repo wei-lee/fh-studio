@@ -1,19 +1,20 @@
 <form id="iphone_publish_form">
       <div id="app_publish_iphone_select_provisionings">
-        <div id="app_publish_iphone_select_provisionings_text" class="insert-lang-block"></div>
+        <div id="app_publish_iphone_select_provisionings_text" class="insert-lang-block step_title select_provisionings"></div>
+        <div id="app_publish_iphone_no_provisionings_text" class="insert-lang-block step_title hide no_provisionings"></div>
         <div class="form-field ui-helper-reset ui-helper-clearfix">
-          <input type="radio" name="app_publish_iphone_provisioning_radio" next="app_publish_iphone_versions" checked="checked"><label>I would like to use the existing provisioning profile of this app</label>
+          <input type="radio" name="app_publish_iphone_provisioning_radio" next="app_publish_iphone_versions" checked="checked"  class="select_provisionings"><label>I would like to use the existing provisioning profile of this app</label>
         </div>
         
         <div class="form-field ui-helper-reset ui-helper-clearfix">
-          <input type="radio" name="app_publish_iphone_provisioning_radio" next="app_publish_iphone_upload_provisionings" value="new"><label>I would like to upload a new provisoning profile for this app</label>
+          <input type="radio" name="app_publish_iphone_provisioning_radio" next="app_publish_iphone_upload_provisionings" value="new" class="no_provisionings"><label>I would like to upload a new provisoning profile for this app</label>
         </div>
       </div>
       
       <div id="app_publish_iphone_upload_provisionings">
         <div id="app_publish_iphone_upload_provisionings_text" class="insert-lang-block"></div>
         <div class="form-field ui-helper-reset ui-helper-clearfix">
-          <input id="iphone_provisioning_upload_file" type="file" name="iphone_provisioning_upload_file"><label for="iphone_provisioning_upload_file">Provisioning Profile (.mobileprovision format)</label>
+          <input id="iphone_provisioning_upload_file" type="file" name="iphone_provisioning_upload_file" ><label for="iphone_provisioning_upload_file">Provisioning Profile (.mobileprovision format)</label>
         </div>
       </div>
       

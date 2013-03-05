@@ -107,7 +107,8 @@ var Lang = {
   app_publish_iphone_versions_text: 'The app will be built using iOS SDK 6 and can be installed on devices running iOS 4.3 and above.',
 
   ipad_publish_wizard_supertitle: 'iPad Build',
-  app_publish_ipad_select_provisionings_title: 'Please select the Provisioning Profile',
+  app_publish_ipad_select_provisionings_text: 'Please select the Provisioning Profile',
+  app_publish_ipad_no_provisionings_text: "You have not yet uploaded a Provisioning Profile, please click next to upload one?",
   app_publish_ipad_upload_provisionings_title: 'Please upload the provisioning profile',
   app_publish_ipad_upload_progress_title: 'Uploading provisioning profile',
   app_publish_ipad_versions_title: 'iOS SDK information',
@@ -121,6 +122,7 @@ var Lang = {
 
   ios_publish_wizard_supertitle: 'iOS Universal Build',
   app_publish_ios_select_provisionings_title: 'Please select the Provisioning Profile',
+  app_publish_ios_no_provisionings_text: "You have not yet uploaded a Provisioning Profile, please click next to upload one?",
   app_publish_ios_upload_provisionings_title: 'Please upload the provisioning profile',
   app_publish_ios_upload_progress_title: 'Uploading provisioning profile',
   app_publish_ios_versions_title: 'iOS SDK information',
@@ -181,6 +183,7 @@ var Lang = {
   app_publish_android_progress_title: 'Building App',
 
   app_publish_iphone_select_provisionings_text: "Which Provisioning Profile do you want to use for this app?",
+  app_publish_iphone_no_provisionings_text: "You have not yet uploaded a Provisioning Profile, please click next to upload one?",
   app_publish_iphone_upload_provisionings_text: ["A Provisioning Profile is an Apple generated file that is linked to one or more Apple Apps based on the App Bundle Identifier (Unique ID).", "Provisioning Profiles can be generated in the iPhone Provisioning Portal in your Apple Developer Account.", "When uploading a Provisioning Profile, it is important that Bundle Identifier matches the App Id (can be set in the Configuration section)."],
   app_publish_iphone_upload_progress_text: "Please wait while uploading the provisioning profile...",
   app_publish_iphone_password_text: ["If you have protected your private key or certificate with a password, please enter it here.", "Your password will not be saved anywhere on the system for security reasons. It will be prompted for whenever you need to build an App.", "Important: It is recommended that you protect your private key with a password."],

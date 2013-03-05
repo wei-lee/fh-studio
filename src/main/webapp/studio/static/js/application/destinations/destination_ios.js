@@ -100,10 +100,9 @@ application.DestinationIos = application.DestinationGeneral.extend({
       }
     }
     if (!found_prov) {
-      proto.Wizard.jumpToStep(wizard, 2);
-      proto.Wizard.hidePreviousButton(wizard);
-    } else {
-      proto.Wizard.jumpToStep(wizard, 1);
+      $(".step_title" , wizard).toggle();
+      $("input.select_provisionings", wizard).attr('disabled','disabled').parent().attr('style', 'color:lightgray');
+      $("input.no_provisionings", wizard).attr('checked','checked');
     }
   },
 
