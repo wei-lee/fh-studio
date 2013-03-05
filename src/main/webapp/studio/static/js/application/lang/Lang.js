@@ -194,6 +194,9 @@ var Lang = {
   publish_embed_title: 'Embed Code',
   publish_embed_text: 'Paste the following code in your html to load an embedded version of the App.',
   embed_publish_wizard_supertitle: 'Deploy Embeded App',
+  app_publish_embed_deploying_env_text: "Would you like to deploy the app's server-side code?",
+  app_publish_embed_deploying_env_title: 'Server-side code deploying',
+  app_publish_embed_deploying_progress_title: 'Deploying App',
   app_publish_embed_progress_title: 'Building App',
 
 
