@@ -22,17 +22,13 @@ application.DestinationEmbed = application.DestinationGeneral.extend({
           if(res.dev_error){
             that.disableButton(main_container.find("#app_embed_build_debug"), "dev", res.dev_error);
           } else {
-            var btn = main_container.find("#app_embed_build_debug");
-            var embed = that.generateNewEmbedScript(res.dev_url, "development", false);
-            that.enableButton(btn, "dev", embed);
+            that.enableButton(main_container.find("#app_embed_build_debug"), "dev", that.generateNewEmbedScript(res.dev_url, "development", false));
           }
 
           if(res.live_error){
             that.disableButton(main_container.find("#app_embed_build_release"), "live", res.live_error);
           } else {
-            var btn = main_container.find("#app_embed_build_release");
-            var embed =  that.generateNewEmbedScript(res.live_url, "live", false);
-            that.enableButton(btn, "live", embed);
+            that.enableButton(main_container.find("#app_embed_build_release"), "live", that.generateNewEmbedScript(res.live_url, "live", false));
           }
           main_container.find('#app_publish_' + that.destination_id + '_build').show();
           main_container.find("#app_publish_" + that.destination_id).show();
