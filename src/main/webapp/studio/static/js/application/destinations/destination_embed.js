@@ -22,13 +22,17 @@ application.DestinationEmbed = application.DestinationGeneral.extend({
           if(res.dev_error){
             that.disableButton(main_container.find("#app_embed_build_debug"), "dev", res.dev_error);
           } else {
-            that.enableButton(main_container.find("#app_embed_build_debug"), "dev", that.generateNewEmbedScript(res.dev_url, "development", false));
+            var btn = main_container.find("#app_embed_build_debug");
+            var embed = that.generateNewEmbedScript(res.dev_url, "development", false);
+            that.enableButton(btn, "dev", embed);
           }
 
           if(res.live_error){
             that.disableButton(main_container.find("#app_embed_build_release"), "live", res.live_error);
           } else {
-            that.enableButton(main_container.find("#app_embed_build_release"), "live", that.generateNewEmbedScript(res.live_url, "live", false));
+            var btn = main_container.find("#app_embed_build_release");
+            var embed =  that.generateNewEmbedScript(res.live_url, "live", false);
+            that.enableButton(btn, "live", embed);
           }
           main_container.find('#app_publish_' + that.destination_id + '_build').show();
           main_container.find("#app_publish_" + that.destination_id).show();
@@ -42,8 +46,6 @@ application.DestinationEmbed = application.DestinationGeneral.extend({
       var tag = Constants.EMBED_APP_TAG.replace('<GUID>', guid);
       that.generateOldEmbedScript(tag);
     }
-    
-
   },
 
   getPublishData: function (config, versions_select, wizard) {
@@ -64,9 +66,9 @@ application.DestinationEmbed = application.DestinationGeneral.extend({
     if(url){
       var html = "";
       if(!afterdeploy){
-        html += "The "+env+" embeded app has been deployed previously.";
+        html += "The "+env+" embeded app has been already been packaged/built.";
       } else {
-        html += "The "+env+" embeded app has been deployed.";
+        html += "The "+env+" embeded app has been packaged/built.";
       }
       html += "You can view the app from <a target='_blank' href='"+url+"' >here</>.";
       var p = $("<p>", {html:html});
@@ -77,10 +79,12 @@ application.DestinationEmbed = application.DestinationGeneral.extend({
       var p2 = $("<p>", {text:"Or"});
       var pre2 = $("<pre>");
       var c2 = $("<code>", {text:"<script>\ndocument.write(\"<div><iframe src='"+url+"' border='0' frameborder='0'></iframe></div>\");\n</script>", css:{color:'black'}});
+
+      var note = $("<p>").html($("<b>", {text: "(Note: if you have made any changes since the last build, you must be rebuild now or you will not see your changes.)"}));
       pre2.append(c2);
-      el.append(p).append(p1).append(pre1).append(p2).append(pre2);
+      el.append(p).append(p1).append(pre1).append(p2).append(pre2).append(note);
     } else {
-      var p3 = $("<p>", {text:"The "+env+" embeded app hasn't been deployed."});
+      var p3 = $("<p>", {text:"The "+env+" embeded app hasn't been  packaged/built."});
       el.append(p3);
     }
     return el;
