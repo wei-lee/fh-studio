@@ -111,7 +111,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
       if($fw.getClientProp('require-approver-for-live-stage') == 'true'){
         this.promptForApprover();
       } else {
-        this.liveDeploy()
+        this.liveDeploy();
       }
     } else {
       this.devDeploy();
