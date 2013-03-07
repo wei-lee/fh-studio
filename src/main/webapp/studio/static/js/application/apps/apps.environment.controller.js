@@ -52,7 +52,9 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
 
   $container: null,
   $sub_container: null,
-  $current_env_table: [],
+  $current_env_table: null,
+  $deployed_user_env_table: null,
+  $sys_env_table: null,
 
   /**
    * init this object
@@ -95,6 +97,8 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
     this.names = _.collect(this.models.environment.field_config, function(v){return v.field_name;});
 
     this.$current_env_table = $('#current_env_vars_table', this.$container);
+    this.$deployed_user_env_table = $('#deployed_user_env_vars_table', this.$container);
+    this.$sys_env_table = $('#sys_env_vars_table', this.$container);
     this.clearPeriodicStatusCheck();
 
     this.subviews.$edit.hide();
@@ -188,7 +192,9 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
 
     // create a partial function
     var handleGetEnvError = _.bind(this.handleError,this, {type:"error", msg:"Unexpected Error getting environment list"} , null);
-    this.models.environment.list(this.app, this.bindTable, handleGetEnvError, true);
+    this.models.environment.list(this.app, this.bindCurrentTable, handleGetEnvError, true);
+    this.models.environment.list(this.app, this.bindUserTable, handleGetEnvError, true);
+    this.models.environment.list(this.app, this.bindSysTable, handleGetEnvError, true);
   },
 
   /**
@@ -220,10 +226,11 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
   /**
    * populate the jquery table with the data
    * @param data the data to show
+   * @param $env_table the table to populate
+   * @param $button_bar the button bar to add
    */
-  populateTable: function(data){
-    var $env_table = this.$current_env_table;
-    this.$current_env_table.dataTable({
+  populateTable: function(data, $env_table, $button_bar){
+    $env_table.dataTable({
       "bScrollCollapse": true,
       "sScrollY": "100%",
       "sScrollYInner": "110%",
@@ -231,7 +238,6 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
       "bSortClasses": false,
       "bScrollInfinite": true,
       "bFilter": false,
-
       "bDestroy": true,
       "bAutoWidth": false,
       "sDom": "<'row-fluid'<'span12'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
@@ -245,18 +251,35 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
         }
       }
     });
-    var $button_bar = this.templates.$buttonBar()
-    $('.span12:first', this.$container).html($button_bar);//.css({padding:"0.5em"});
+    if($button_bar && $button_bar.length) {
+      $('.span12:first', this.$container).html($button_bar);//.css({padding:"0.5em"});
+    }
     this.bindControls();
   },
 
   /**
-   * bind the table controls and then display the data
+   * bind the table controls and then display the data for the current environment
    * @param res the table data
    */
-  bindTable: function(res) {
+  bindCurrentTable: function(res) {
     var data = this.addControls(res);
-    this.populateTable(data)
+    this.populateTable(data, this.$current_env_table, this.templates.$buttonBar());
+  },
+
+  /**
+   * bind the deployed table
+   * @param res the response
+   */
+  bindUserTable: function(res) {
+    this.populateTable(res, this.$deployed_user_env_table);
+  },
+
+  /**
+   * bind the sys env var table
+   * @param res the response
+   */
+  bindSysTable: function(res) {
+    this.populateTable(res, this.$sys_env_table);
   },
 
   /**
@@ -306,8 +329,8 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
    * bind table events (row click and button events)
    */
   bindControls: function() {
-    $('tr td .edit_env_var, tr td:not(.controls,.dataTables_empty)', this.views.environment_container).unbind().click(this.handleEdit);
-    $('tr td .delete_env_var', this.views.users).unbind().click(this.handleDelete);
+//    $('tr td .edit_env_var, tr td:not(.controls,.dataTables_empty)', this.views.environment_container).unbind().click(this.handleEdit);
+//    $('tr td .delete_env_var', this.views.users).unbind().click(this.handleDelete);
   } ,
 
   /**

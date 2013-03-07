@@ -6,17 +6,18 @@ model.Environment = model.Model.extend({
   field_config: [
     {
       field_name: "name",
-      column_title: "Environment Variable"
+      column_title: "Environment Variable",
+      "sWidth": "30%"
     },
     {
       field_name: "devValue",
       column_title: "Dev",
-      width:"350px"
+      "sWidth": "30%"
     },
     {
       field_name: "liveValue",
       column_title: "Live",
-      width:"350px"
+      "sWidth": "30%"
     },
     {
       field_name: "sysCreated",
