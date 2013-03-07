@@ -108,7 +108,11 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     var env = $fw.data.get('cloud_environment');
 
     if (env === 'live') {
-      this.promptForApprover();
+      if($fw.getClientProp('require-approver-for-live-stage') == 'true'){
+        this.promptForApprover();
+      } else {
+        this.liveDeploy()
+      }
     } else {
       this.devDeploy();
     }
@@ -228,9 +232,11 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     var url = Constants.RELEASE_DEPLOY_APP_URL;
     var params = {
       guid: guid,
-      target_id: target.fields.id,
-      approver: approverEmail
+      target_id: target.fields.id
     };
+    if(approverEmail){
+      params.approver = approverEmail;
+    }
     if(comment && comment.length > 0){
       params.comment = comment;
     }
