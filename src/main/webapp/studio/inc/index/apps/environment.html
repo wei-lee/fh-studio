@@ -2,16 +2,11 @@
   <div class="fh-box-outer">
     <h4 class="fh-box-header">
       Cloud Environment Variables
+      <%@ include file="./cloud_environment.html" %>
     </h4>
     <div class="fh-box-inner">
-      <div class="alerts"></div>
-      <div id="environment_dev_container" class="environment_devlive_container">
-          <h5>Update Your Development Cloud Environment</h5>
-      </div>
-      <div id="environment_live_container" class="environment_devlive_container">
-          <h5>Update Your Live Cloud Environment</h5>
-      </div>
-      <%@ include file="./environment_container.html" %>
+        <div class="alerts"></div>
+        <%@ include file="./environment_container.html" %>
     </div>
   </div>
 </div>

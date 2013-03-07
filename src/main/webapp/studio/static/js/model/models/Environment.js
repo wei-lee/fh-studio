@@ -6,7 +6,7 @@ model.Environment = model.Model.extend({
   field_config: [
     {
       field_name: "name",
-      column_title: "Name"
+      column_title: "Environment Variable"
     },
     {
       field_name: "devValue",
@@ -15,7 +15,7 @@ model.Environment = model.Model.extend({
     },
     {
       field_name: "liveValue",
-      column_title: "live",
+      column_title: "Live",
       width:"350px"
     },
     {

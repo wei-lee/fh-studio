@@ -20,7 +20,9 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
     actionWait:".create-wait-msg",
     actionError:".create-error-msg",
     actionComplete:".create-complete-msg",
-    cancelled:".cancelled-msg"
+    cancelled:".cancelled-msg",
+    editModal:".env-var-edit-edit-modal-template",
+    buttonBar:".button-bar-template"
 
   },
   subviews: {
@@ -50,7 +52,7 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
 
   $container: null,
   $sub_container: null,
-  $env_table: [],
+  $current_env_table: [],
 
   /**
    * init this object
@@ -86,10 +88,13 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
     this.templates.$actionError    = this.compile(this.templates.actionError);
     this.templates.$actionComplete = this.compile(this.templates.actionComplete);
     this.templates.$cancelled      = this.compile(this.templates.cancelled);
+    this.templates.$editModal      = this.compile(this.templates.editModal);
+    this.templates.$buttonBar      = this.compile(this.templates.buttonBar);
 
     // use with zip to get object later
     this.names = _.collect(this.models.environment.field_config, function(v){return v.field_name;});
 
+    this.$current_env_table = $('#current_env_vars_table', this.$container);
     this.clearPeriodicStatusCheck();
 
     this.subviews.$edit.hide();
@@ -99,6 +104,16 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
     this.subviews.$allLocks.click(this.toggleLock);
     $("[rel=popover]", this.$container).popover({template: '<div class="popover"><div class="arrow"></div><div class="popover-inner"><div class="popover-content"><p></p></div></div></div>'});
 
+  },
+
+  switchedEnv: function(env) {
+    this.env = env;
+    if(this.subviews.$edit.is(":visible")) {
+      var name = this.subviews.$edit_name.val();
+      this.showEnvVar(name);
+    } else {
+      this.show();
+    }
   },
 
   /**
@@ -115,6 +130,7 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
    * @return {*}
    */
   show: function() {
+    this.initCloudFn();
     this.app = $fw.data.get('inst').guid;
     return this.showEnvironment();
   },
@@ -199,20 +215,31 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
    * @param data the data to show
    */
   populateTable: function(data){
-    this.$env_table = $('#env_vars_table', this.$container);
-    this.$env_table.dataTable({
+    var $env_table = this.$current_env_table;
+    this.$current_env_table.dataTable({
+      "bScrollCollapse": true,
+      "sScrollY": "100%",
+      "sScrollYInner": "110%",
+      "bScrollCollapse": true,
+      "bSortClasses": false,
+      "bScrollInfinite": true,
+      "bFilter": false,
+
       "bDestroy": true,
       "bAutoWidth": false,
       "sDom": "<'row-fluid'<'span12'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
       "sPaginationType": "bootstrap",
       "bLengthChange": false,
       "aaData": data.aaData ,
-      "aoColumns": data.aoColumns // model.field_config
+      "aoColumns": data.aoColumns,  // model.field_config,
+      fnInitComplete : function(){
+        if ( $env_table.length > 0 ) {
+          $env_table.fnAdjustColumnSizing();
+        }
+      }
     });
-
-    // Inject Import and Create button
-    var create_button = $('<button>').addClass('btn btn-primary pull-right').text('Create').click(this.showCreateEnv);
-    $('.span12:first', this.$container).append(create_button);
+    var $button_bar = this.templates.$buttonBar()
+    $('.span12:first', this.$container).html($button_bar);//.css({padding:"0.5em"});
     this.bindControls();
   },
 
@@ -282,7 +309,7 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
    * @return {*}
    */
   dataForRow: function(el) {
-    return this.$env_table.fnGetData(el);
+    return this.$current_env_table.fnGetData(el);
   },
 
   /**
@@ -399,7 +426,12 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
    * @param name the var name
    */
   showCreateEnv: function(e, name) {
-    this.populateEnvVar(e, {name : name}, this.handleCreate, "Create");
+    var $modal = $(this.templates.$editModal({env:{name : name}}));
+    $('.btn-success', $modal).on('click', function(){
+      $modal.modal('hide');
+      return false;
+    });
+    $modal.modal();
   },
 
   /**
