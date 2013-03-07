@@ -1,4 +1,32 @@
+
 <div id="app_publish_destinations" class="dashboard-content">
+    <script type="text/template" class="build-wizard-deployed-template">
+        <blockquote>
+            <p>Your <\%= env \%> cloud is currently deployed?</p>
+            <br/>
+            <div class="info">
+                <strong>Click</strong> Next to build this application.
+            </div>
+        </blockquote>
+    </script>
+
+    <script type="text/template" class="build-wizard-deploy-template">
+        <blockquote>
+            <p>It looks like your <\%= env \%> cloud is not currently deployed?</p>
+            <br/>
+            <div class="info">
+                <strong>Click</strong> <a href="<\%= link \%>" class="jw-button-cancel">here</a> to deploy this application.
+            </div>
+        </blockquote>
+    </script>
+
+    <script type="text/template" class="check-deploy-template">
+        <blockquote>
+            <p>Plesae wait while I check your <\%= env \%> cloud status?</p>
+            <small>Click <cite title="Source Title"><a href="<\%= link \%>" class="jw-button-cancel">here</a></cite>  to deploy this application.</small>
+        </blockquote>
+    </script>
+
   <h5>Choose a platform to build for</h5>
   <div id="app_publish_list" class="app_generate_destinations ui-helper-clearfix"> </div>
 </div>

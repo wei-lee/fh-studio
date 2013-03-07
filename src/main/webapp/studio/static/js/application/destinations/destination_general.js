@@ -235,6 +235,21 @@ application.DestinationGeneral = Class.extend({
     }
   },
 
+  /**
+   * show the deploys page
+   * @param $cancel trigger click on thhis element to cancel current operatrion (do nothing if not supplied)
+   * @param e the trigger event
+   * @return {Boolean}
+   */
+  showDeploys: function($cancel,e) {
+    if(e) {
+      e.preventDefault();
+    }
+    $cancel.trigger("click");
+    $('a[data-controller="apps.deploy.controller"]').trigger("click");
+    return false;
+  },
+
   showDestinations: function() {
     var type;
     if (arguments.length === 0) {
@@ -263,6 +278,94 @@ application.DestinationGeneral = Class.extend({
     });
   },
 
+  /**
+   * check if the applicatin is currently running.
+   *
+   * @param config if set to 'distribution' or 'release' then this is a live build
+   * @param wizard the wizard
+   *
+   * Note: this will only be executed once per build
+   * @see startBuild
+   */
+  checkDeploy: function(config, wizard) {
+    proto.Wizard.hideNextButton(wizard);
+    var env = 'dev';
+    if (config == 'distribution' || config == 'release') {
+      env = 'live';
+    }
+    var appId = $fw.data.get('inst').guid;
+    var handleRunning = _.bind(this.renderRunning, this ,env, wizard);
+    var handleNotRunning = _.bind(this.renderNotRunning, this, appId,env, wizard);
+
+    this.renderCancelable(".check-deploy-template", env,wizard);
+    this.ping(appId,env,handleRunning,handleNotRunning);
+  },
+
+
+  /**
+   * render the running message
+   * @param env live or dev
+   * @param wizard the current wizard
+   */
+  renderRunning: function(env,wizard) {
+    var $el = this.render(".build-wizard-deployed-template",{env:env,link:"click"});
+    this.renderApplicationStatus(wizard,$el);
+  },
+
+  /**
+   * render not running message
+   * @param env live or dev
+   * @param wizard the current wizard
+   */
+  renderNotRunning: function(env,wizard) {
+    this.renderCancelable(".build-wizard-deploy-template", env,wizard);
+  },
+
+  /**
+   * render a cancelable message (either starting or in progress)
+   * @param template the template to render
+   * @param env live or dev
+   * @param wizard the current wizard
+   */
+  renderCancelable: function(template, env,wizard) {
+    var $el= this.render(template,{env:env,link:"click"});
+    var cancel = _.bind(this.showDeploys, this, $("button.jw-button-cancel",wizard));
+    $("a", $el).on("click", cancel);
+    this.renderApplicationStatus(wizard,$el);
+  },
+
+  /**
+   * render application status
+   * @param wizard the wizard
+   * @param $el the element to render into the wizard
+   */
+  renderApplicationStatus: function(wizard,$el) {
+    proto.Wizard.showNextButton(wizard);
+    $(".jw-steps-wrap .application-status", wizard).html($el);
+  },
+
+  /**
+   * render a template
+   * @param template the template to render
+   * @param vars the vars to replace in the template
+   * @return {*}
+   */
+  render: function(template ,  vars) {
+    var template = $(template).html();
+    return $(_.template(template,vars));
+  },
+
+  updateProgressLog: function(env, log) {
+    var self = this;
+    var progress_log_el = $('#wizard_dialog .progresslog:visible');
+
+    if (log.length > 0) {
+      var current_log = progress_log_el.val();
+      var log_value = current_log + '\n' + log.join('\n');
+      progress_log_el.val(log_value);
+    }
+  },
+
   startBuild: function(config) {
     var main_container = $('#manage_publish_container');
     main_container.find('#app_publish_' + this.destination_id + '_build').hide();
@@ -282,6 +385,17 @@ application.DestinationGeneral = Class.extend({
 
     var versions_select = wizard.find("#app_publish_" + this.destination_id + "_versions");
     var progress_view = wizard.find("#app_publish_" + this.destination_id + "_progress");
+
+    // Binding for checking the deploy status
+    var $deploy = wizard.find(".app_publish_deploying_env");
+    $deploy.unbind('show').bind('show', function(e) {
+      that.checkDeploy = _.once(that.checkDeploy);
+      that.checkDeploy(config, wizard, step);
+    });
+    // we need to check if the wizard has shown this page before the wizard load returned
+    if($deploy.is(":visible")) {
+      $deploy.trigger("show");
+    }
 
     if ($.isFunction(this.bindExtraConfig)) {
       this.bindExtraConfig(wizard, config);
@@ -312,6 +426,28 @@ application.DestinationGeneral = Class.extend({
     }
   },
 
+  /**
+   * ping the remote server
+   * @param appId the application id
+   * @param env live or dev
+   * @param success callback
+   * @param failure callback
+   */
+  ping: function(appId, env, success, failure) {
+    var url = Constants.PING_APP_URL;
+    var params = {
+      guid: appId,
+      deploytarget: env
+    };
+
+    $fw.server.post(url, params, function(res) {
+      if (res.status === "ok") {
+        success(res);
+      } else {
+        failure(res);
+      }
+    });
+  },
   handleDownload: function(res){
     var that = this;
     var source_url = res.action.url;

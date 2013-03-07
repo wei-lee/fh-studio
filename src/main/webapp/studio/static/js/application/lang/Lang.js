@@ -95,6 +95,22 @@ var Lang = {
   iphone_publish_wizard_supertitle: 'iPhone Build',
   app_publish_iphone_select_provisionings_title: 'Please select the Provisioning Profile',
 
+  app_publish_iphone_deploying_env_title: 'Checking cloud status',
+
+  app_publish_android_deploying_env_title: 'Checking cloud status',
+
+  app_publish_ipad_deploying_env_text: "Would you like to deploy the app's server-side code?",
+  app_publish_ipad_deploying_env_title: 'Checking cloud status',
+  app_publish_ipad_deploying_progress_title: 'Deploying App',
+
+  app_publish_blackberry_deploying_env_text: "Would you like to deploy the app's server-side code?",
+  app_publish_blackberry_deploying_env_title: 'Checking cloud status',
+  app_publish_blackberry_deploying_progress_title: 'Deploying App',
+
+  app_publish_windowsphone7_deploying_env_text: "Would you like to deploy the app's server-side code?",
+  app_publish_windowsphone7_deploying_env_title: 'Checking cloud status',
+  app_publish_windowsphone7_deploying_progress_title: 'Deploying App',
+
   app_publish_iphone_upload_provisionings_title: 'Please upload the provisioning profile',
   app_publish_iphone_upload_progress_title: 'Uploading provisioning profile',
   app_publish_iphone_versions_title: 'iOS SDK information',
@@ -108,6 +124,7 @@ var Lang = {
 
   ipad_publish_wizard_supertitle: 'iPad Build',
   app_publish_ipad_select_provisionings_text: 'Please select the Provisioning Profile',
+  app_publish_ipad_select_provisionings_title: 'Please select the Provisioning Profile',
   app_publish_ipad_no_provisionings_text: "You have not yet uploaded a Provisioning Profile, please click next to upload one?",
   app_publish_ipad_upload_provisionings_title: 'Please upload the provisioning profile',
   app_publish_ipad_upload_progress_title: 'Uploading provisioning profile',
@@ -120,6 +137,7 @@ var Lang = {
   app_publish_ipad_cert_password_text_help_icon: 'If you have secured your certificate with a password, please enter it here.',
   app_publish_ipad_versions_text: 'The app will be built using iOS SDK 6 and can be installed on devices running iOS 4.3 and above.',
 
+  app_publish_ios_deploying_env_title: 'Checking cloud status',
   ios_publish_wizard_supertitle: 'iOS Universal Build',
   app_publish_ios_select_provisionings_title: 'Please select the Provisioning Profile',
   app_publish_ios_no_provisionings_text: "You have not yet uploaded a Provisioning Profile, please click next to upload one?",
@@ -421,6 +439,11 @@ var Lang = {
   app_publish_android_pk_password_text_help_icon: 'If you have secured your private key with a password, please enter it here.',
   app_publish_android_cert_password_text: 'Please enter the password for your certificate (if any)',
   app_publish_android_cert_password_text_help_icon: 'If you have secured your certificate with a password, please enter it here.',
+
+
+  app_publish_android_deploying_env_text: "Would you like to deploy the app's server-side code?",
+  app_publish_android_deploying_env_title: 'Checking your cloud code',
+  app_publish_android_deploying_progress_title: 'Deploying App',
 
   configuration_activity_Spinner_help_icon: 'Specify the position of the spinner which will be appeared when the splash screen is displayed',
   configuration_app_Id_help_icon: 'The iOS App Id you want to use for this app. It can be created in your iOS developer portal.',

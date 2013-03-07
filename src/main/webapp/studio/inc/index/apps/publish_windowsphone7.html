@@ -26,7 +26,16 @@
 
   <div id= "app_publish_windowsphone7_wizard" class="ui-helper-hidden">
     <form id="windowsphone7_publish_form">
-      <div id="app_publish_windowsphone7_versions" config-radio="build-options-wp7">
+        <div id="app_publish_windowsphone7_deploying_env" class="app_publish_deploying_env">
+            <form>
+                <div class="form-field ui-helper-reset ui-helper-clearfix hidden">
+                    <input type="checkbox" name="app_publish_windowsphone7_deploying" next="app_publish_windowsphone7_select_provisionings" checked="checked"><label>Deploy the server-side of the app</label>
+                </div>
+                <div class="application-status"></div>
+            </form>
+        </div>
+
+        <div id="app_publish_windowsphone7_versions" config-radio="build-options-wp7">
         <div id="app_publish_windowsphone7_note_text" class="insert-lang-block"></div>
       </div>
     

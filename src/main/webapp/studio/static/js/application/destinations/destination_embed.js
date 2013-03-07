@@ -62,13 +62,13 @@ application.DestinationEmbed = application.DestinationGeneral.extend({
     if(url){
       var html = "";
       if(!afterdeploy){
-        html += "The "+env+" embeded app has been already been packaged/built.";
+        html += "The "+env+" Embed App has been already been built.";
       } else {
-        html += "The "+env+" embeded app has been packaged/built.";
+        html += "The "+env+" Embed App has been built.";
       }
       html += "You can view the app from <a target='_blank' href='"+url+"' >here</>.";
       var p = $("<p>", {html:html});
-      var p1 = $("<p>", {text:"To embed this app in other website, you can copy and paste any of the following code:"});
+      var p1 = $("<p>", {text:"To view this Embed App in other website, you can copy and paste any of the following code:"});
       var pre1 = $("<pre>");
       var c1 = $("<code>", {text:"<iframe src='"+url+"' border='0' frameborder='0' ></iframe>", css:{color:'black'}});
       pre1.append(c1);
@@ -80,7 +80,7 @@ application.DestinationEmbed = application.DestinationGeneral.extend({
       pre2.append(c2);
       el.append(p).append(p1).append(pre1).append(p2).append(pre2).append(note);
     } else {
-      var p3 = $("<p>", {text:"The "+env+" embeded app hasn't been  packaged/built."});
+      var p3 = $("<p>", {text:"The "+env+" Embed App hasn't been built."});
       el.append(p3);
     }
     return el;
