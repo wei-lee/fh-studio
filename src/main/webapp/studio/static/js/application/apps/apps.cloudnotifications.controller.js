@@ -200,8 +200,9 @@ Apps.Cloudnotifications.Controller = Apps.Cloud.Controller.extend({
       var p = parts[n];
       var converted = p;
       if(p.indexOf(":") > -1){
-        var firstPart = p.split(":")[0];
-        var secondPart = p.split(":")[1];
+        var ps = p.split(":");
+        var firstPart = ps[0];
+        var secondPart = ps.slice(1).join(":");
         firstPart = "<span class='label' style='display: inline-block; width: 85px; padding: 2px;'>" + firstPart + "</span>";
         converted = [firstPart, secondPart].join(" ");
       }
