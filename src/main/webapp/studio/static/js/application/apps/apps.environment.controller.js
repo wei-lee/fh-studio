@@ -198,14 +198,21 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
    */
   addControls: function(res) {
     // Add control column
-    res.aoColumns.push({
-      sTitle: "Controls",
+    $("table").live("click", "input.all" ,function toggleAll(e){
+      var $c = $(e.target);
+      var $table = $c.closest('.dataTables_scroll');
+      $(".row-control", $table).prop("checked" , $c.is(":checked") );
+    });
+    res.aoColumns.unshift({
+      sTitle: "<input type='checkbox' class='all'/>",
       "bSortable": false,
-      "sClass": "controls"
+      "sClass": "controls",
+      "sWidth": "2%"
+
     });
 
     var controls = this.templates.$controls();
-    $.each(res.aaData, function(i, row) {row.push(controls);});
+    $.each(res.aaData, function(i, row) {row.unshift(controls);});
     return res;
   },
 
