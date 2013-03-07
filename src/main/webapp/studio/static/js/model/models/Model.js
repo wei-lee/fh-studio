@@ -35,7 +35,7 @@ model.Model = Class.extend({
     return this.field_config[i];
   },
 
-  postProcessList: function(res, data_model, fieldConfig) {
+  postProcessList: function(res, data_model, fieldConfig, defValue) {
     var self = this;
     var filtered_fields;
     try {
@@ -61,7 +61,8 @@ model.Model = Class.extend({
       data.aaData.push([]);
 
       $.each(filtered_fields, function(k, v) {
-        var value = row[k];
+        // jquery data tables doesn't like undefined values
+        var value = row.hasOwnProperty(k) ? row[k]  : null;
         data.aaData[i].push(value);
       });
     });

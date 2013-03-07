@@ -2,6 +2,39 @@
     <button class="btn edit_env_var" data-loading-text="Processing...">Edit</button>
     <button class="btn btn-danger delete_env_var" data-loading-text="Processing...">Delete</button>
 </script>
+<script type="text/template" class="confirm-action">
+    <blockquote>
+        <p>Are you sure you want to <\%= action \%> variable '<\%= env.name  \%>'?</p>
+        <br/>
+        <div class="alert">
+            <strong>Warning!</strong> accepting this change will cause your cloud application to restart, if it is currently running.
+        </div>
+
+    </blockquote>
+</script>
+<script type="text/template" class="alert">
+    <div class="alert fade in alert-<\%= type \%>">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <\%= msg \%>
+    </div>
+</script>
+
+<script type="text/template" class="create-wait-msg">
+    <strong><\%= action \%> Variable</strong> '<\%= env.name \%>' This may take some time.
+</script>
+
+<script type="text/template" class="create-error-msg">
+    <strong>Unexpected Error <\%= action \%></strong> '<\%= env.name \%>'.
+</script>
+
+<script type="text/template" class="create-complete-msg">
+    <strong>'<\%= env.name \%>'</strong> <\%= action \%>.
+</script>
+
+<script type="text/template" class="cancelled-msg">
+    <\%= action \%> <strong>'<\%= env.name \%>'cancelled</strong>.
+</script>
+
 <div class="deploy_targets row-fluid"></div>
 
 <div class="env_var_list row-fluid subview">
@@ -14,7 +47,11 @@
     <form class="well form-horizontal">
         <fieldset>
             <legend id="target_edit_header"></legend>
-            <p>You can manage the variables for controlling or configuring your cloud on this page</p>
+            <div class="alert alert-info">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <h4>Warning!</h4>
+                If it is currently running then saving changes may cause one or both of your cloud environments to restart.
+            </div>
             <br />
             <div class="control-group required">
                 <label id="env_var_name_label" class="control-label insert-help-icon" for="env_var_name">
@@ -31,23 +68,40 @@
                     <input type="text" class="env_var guid hidden"></input>
                 </div>
             </div>
-            <div class="control-group required">
-                <label id="env_var_value_label" class="control-label insert-help-icon" for="env_var_value">Value</label>
-                <div class="controls">
-                    <input type="text" class="env_var value input-xxlarge"></input>
-                </div>
-            </div>
             <div class="control-group">
-                <label class="control-label" >
-                    Platform
+                <label id="dev_env_var_value_label" class="control-label insert-help-icon" for="dev_env_var_value">
+                    Dev
                     <i class="btn help-button icon-info-sign"
-                       data-content="This is the environment that this variable will be set for"
+                       data-content="This is the value that your dev cloud service will see"
                        data-placement="bottom"
                        data-trigger="hover"
                        rel="popover"></i>
                 </label>
                 <div class="controls">
-                    <label class="control-label deploy_target_platform" style="text-align:left">Development</label>
+                    <input type="text" class="dev_env_var value input-xxlarge"></input>
+                    <i class="lock btn help-button icon-lock  icon-white"
+                       data-content="Click to unlock/lock this variable for editing"
+                       data-placement="bottom"
+                       data-trigger="hover"
+                       rel="popover"></i>
+                </div>
+            </div>
+            <div class="control-group">
+                <label id="live_env_var_value_label" class="control-label insert-help-icon" for="live_env_var_value">
+                    Live
+                    <i class="btn help-button icon-info-sign"
+                       data-content="This is the value that your live cloud service will see"
+                       data-placement="bottom"
+                       data-trigger="hover"
+                       rel="popover"></i>
+                </label>
+                <div class="controls">
+                    <input type="text" class="live_env_var value input-xxlarge"></input>
+                    <i class="live-lock lock btn help-button icon-lock icon-white"
+                       data-content="Click to unlock/lock this variable for editing.<br/><strong>You will be asked to confirm an update to this var.</strong>"
+                       data-placement="bottom"
+                       data-trigger="hover"
+                       rel="popover"></i>
                 </div>
             </div>
         </fieldset>

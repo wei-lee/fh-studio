@@ -7,10 +7,16 @@ model.Environment = model.Model.extend({
     {
       field_name: "name",
       column_title: "Name"
-      },
+    },
     {
-      field_name: "value",
-      column_title: "Value"
+      field_name: "devValue",
+      column_title: "Dev",
+      width:"350px"
+    },
+    {
+      field_name: "liveValue",
+      column_title: "live",
+      width:"350px"
     },
     {
       field_name: "sysCreated",
@@ -35,21 +41,32 @@ model.Environment = model.Model.extend({
 
   init: function() {
     _.bindAll(this);
+
+    // wrap post process list to add null to default value
+    this.postProcessList = _.wrap(this.postProcessList, function (func,res, data_model, fieldConfig,defValue){
+      return func(res, data_model, fieldConfig, defValue === undefined  ? null : defValue);
+    })
   },
 
   /**
    * create a new env var
    * @param app the application id
-   * @param env one of dev or live
    * @param name the name of the variable
-   * @param value the value of the variable
+   * @param devValue the value of the variable
+   * @param liveValue the value of the variable
    * @param success callback
    * @param fail callback
    * @return {*}
    */
-  create: function(app, env , name, value,  success, fail) {
+  create: function(app, name, devValue,  liveValue,  success, fail) {
     var url = Constants.ENVIRONMENT_TARGET_CREATE_URL;
-    var params = {"appId": app,"env": env,"name": name, "value":value};
+    var params = {"appId": app,"name": name};
+    if(devValue != null) {
+      params.devValue = devValue;
+    }
+    if(liveValue != null) {
+      params.liveValue = liveValue;
+    }
     return this.serverPost(url, params, success, fail, true);
   },
 
@@ -58,14 +75,21 @@ model.Environment = model.Model.extend({
    * @param app the application id
    * @param id the env var guid
    * @param name the name of the variable
-   * @param value the value of the variable
+   * @param devValue the value of the variable in the dev environment. if null then don't push this value.
+   * @param liveValue the value of the variable in the live environment. if null then don't push this value.
    * @param success callback
    * @param fail callback
    * @return {*}
    */
-  update: function(app, id, name, value,  success, fail) {
+  update: function(app, id, name, devValue,liveValue,  success, fail) {
     var url = Constants.ENVIRONMENT_TARGET_UPDATE_URL;
-    var params = {"appId": app,"envVarId": id,"name": name, "value":value};
+    var params = {"appId": app,"envVarId": id,"name": name};
+    if(devValue != null) {
+      params.devValue = devValue;
+    }
+    if(liveValue != null) {
+      params.liveValue = liveValue;
+    }
     return this.serverPost(url, params, success, fail, true);
   },
 
@@ -105,14 +129,13 @@ model.Environment = model.Model.extend({
   /**
    * read all the env vars
    * @param app the application id
-   * @param env one of dev or live
    * @param success callback
    * @param fail callback
    * @param post_process function to process the results
    * @return {*}
    */
-  list: function(app, env, success, fail, post_process) {
-    var params = {"appId": app,"env": env};
+  list: function(app, success, fail, post_process) {
+    var params = {"appId": app};
     var url = Constants.ENVIRONMENT_TARGET_LISTFORAPP_URL;
     if (post_process) {
       return this.serverPost(url, params, success, fail, true, this.postProcessList, this);

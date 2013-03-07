@@ -13,6 +13,16 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
     devlive: '.environment_devlive_container'
   },
 
+  templates: {
+    controls :".row-controls",
+    confirmAction:".confirm-action",
+    alert:".alert",
+    actionWait:".create-wait-msg",
+    actionError:".create-error-msg",
+    actionComplete:".create-complete-msg",
+    cancelled:".cancelled-msg"
+
+  },
   subviews: {
     all : ".subview.row-fluid",
 
@@ -20,18 +30,34 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
 
     edit: ".env_var_edit",
     edit_name: "input.env_var.name",
-    edit_value: "input.env_var.value",
-    edit_guid: "input.env_var.guid"
+    edit_dev_value: "input.dev_env_var.value",
+    edit_live_value: "input.live_env_var.value",
+    edit_guid: "input.env_var.guid",
+    edit_dup : "input.env_var_dup",
+
+    alerts_area: ".alerts",
+
+    allLocks: ".lock",
+    liveLock: ".live-lock.lock"
 
   },
-  env: null,
+//  var $save = $('.save_env_var_btn', this.subviews.$edit);
+  controls :{
+    save : '.save_env_var_btn',
+    cancel : '.cancel_env_var_btn'
+  },
   guid: null,
 
   $container: null,
   $sub_container: null,
   $env_table: [],
 
+  /**
+   * init this object
+   */
   init: function() {
+    _.bindAll(this);
+
     this._super(this.views.environment_container);
     this.$container = $(this.views.environment_container);
     this.$devlive = $(this.devlive, this.$container);
@@ -39,98 +65,103 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
     this.subviews.$list = $(this.subviews.list, this.$container);
     this.subviews.$edit = $(this.subviews.edit, this.$container);
     this.subviews.$edit_name = $(this.subviews.edit_name,this.subviews.$edit);
-    this.subviews.$edit_value = $(this.subviews.edit_value,this.subviews.$edit);
+    this.subviews.$edit_live_value = $(this.subviews.edit_live_value,this.subviews.$edit);
+    this.subviews.$edit_dev_value = $(this.subviews.edit_dev_value,this.subviews.$edit);
     this.subviews.$edit_guid = $(this.subviews.edit_guid,this.subviews.$edit);
+    this.subviews.$edit_dup = $(this.subviews.edit_dup,this.subviews.$edit);
+
+    this.subviews.$alerts_area = $(this.subviews.alerts_area, this.$container);
+    this.subviews.$allLocks = $(this.subviews.allLocks, this.$container);
+    this.subviews.$liveLock = $(this.subviews.liveLock, this.$container);
 
     this.$subviews = $(this.subviews.all, this.$container);
 
-    this.controls = $(".row-controls" , this.$container).html();
+    this.controls.$save = $(this.controls.save, this.$container);
+    this.controls.$cancel = $(this.controls.cancel, this.$container);
+
+    this.templates.$controls       = this.compile(this.templates.controls);
+    this.templates.$confirmAction  = this.compile(this.templates.confirmAction);
+    this.templates.$alert          = this.compile(this.templates.alert);
+    this.templates.$actionWait     = this.compile(this.templates.actionWait);
+    this.templates.$actionError    = this.compile(this.templates.actionError);
+    this.templates.$actionComplete = this.compile(this.templates.actionComplete);
+    this.templates.$cancelled      = this.compile(this.templates.cancelled);
 
     // use with zip to get object later
     this.names = _.collect(this.models.environment.field_config, function(v){return v.field_name;});
-    this.initFn = _.once(this.initBindings);
-    this.initFn();
 
-  },
-
-  switchedEnv: function(env) {
-    this.env = env;
-    if(this.subviews.$edit.is(":visible")) {
-      var name = this.subviews.$edit_name.val();
-      this.showEnvVar(name);
-    } else {
-      this.show();
-    }
-  },
-
-  initBindings: function() {
-    _.bindAll(this);
+    this.clearPeriodicStatusCheck();
 
     this.subviews.$edit.hide();
     this.$devlive.hide();
     this.subviews.$list.show();
 
-    $(".icon-info-sign", this.$container).popover({template: '<div class="popover"><div class="arrow"></div><div class="popover-inner"><div class="popover-content"><p></p></div></div></div>'});
+    this.subviews.$allLocks.click(this.toggleLock);
+    $("[rel=popover]", this.$container).popover({template: '<div class="popover"><div class="arrow"></div><div class="popover-inner"><div class="popover-content"><p></p></div></div></div>'});
 
   },
 
+  /**
+   * compile a template
+   * @param template the selector for the template
+   * @return {*}
+   */
+  compile: function(template) {
+    return _.template($(template, this.$container).html());
+  },
+
+  /**
+   * get the app guid and show the env
+   * @return {*}
+   */
   show: function() {
-    this._super(this.views.environment_container);
-
-    this.initFn();
-    this.env = $fw.data.get('cloud_environment');
     this.app = $fw.data.get('inst').guid;
-
     return this.showEnvironment();
   },
 
-  showEnvVar: function(name) {
-    var self = this;
-
-    // create a partial function
-    var handleGetEnvError = _.bind(this.handleError,this, {type:"error", msg:"Unexpected Error getting '" + this.env + "' env list"});
-    this.models.environment.list(this.app, this.env, function (res){
-      var  o = _.find(res.aaData, function(r){
-        return r[0] === name;
-      })
-      if (o) {
-        self.showEnvVarUpdate(null, null , o);
-      }  else {
-        self.showCreateEnv(null, name);
-      }
-    }, function (){
-      handleGetEnvError();
-      self.showCreateEnv(null, name);
-    }, true);
-  },
-
-  // type: error|success|info
+  /**
+   * show an alert
+   * @param alert an object with the following fields :
+   *        type :error|success|info
+   *        msg : your message
+   *        timeout : *optional* timeout value
+   */
   showAlert: function (alert) {
-    var type = alert.type;
-    var message = alert.msg;
+    var type = '.alert-' + alert.type;
     var to = alert.timeout || this.alert_timeout || 5000;
 
-    var $alerts_area = this.$container.find('.alerts');
-    var $alert = $('<div>').addClass('alert fade in alert-' + type).html(message);
-    var $close_button = $('<button>').addClass('close').attr("data-dismiss", "alert").text("x");
-    $alert.append($close_button);
-    $alerts_area.append($alert);
+    if ('.alert-error' === type) {
+      $(type,this.subviews.$alerts_area).remove();
+    }
+
+    var $alert = $(this.templates.$alert(alert));
+    this.subviews.$alerts_area.append($alert);
 
     // only automatically hide alert if it's not an error
-    if ('error' !== type) {
-      setTimeout(function() {
-        $alert.slideUp(function () {
-          $alert.remove();
-        });
-      }, to);
+    if ('.alert-error' !== type) {
+        $alert.delay(to).slideUp('slow',_.bind($alert.remove,$alert));
     }
   },
 
-  handleError: function(alert) {
-    this.resetButtons($("button", this.$container));
+  /**
+   * handle an error
+   * @param alert the alert to show
+   * @param $buttons the buttons to reset, if null then reset all
+   * @param msg the error message from the millicore, if this is an object then don't show it to end user
+   * as it will probably be too technical
+   */
+  handleError: function(alert, $buttons, msg) {
+    this.resetButtons($buttons ? $buttons : $("button", this.$container));
+    if(msg && _.isString(msg) && !msg.match(/^FHCore error/)) {
+      alert.msg = alert.msg + " : <b>" + msg + "</b>";
+    }
     this.showAlert(alert);
   },
 
+  /**
+   * show the environment, display the alert first if there is one
+   * @param alert optional alert to display
+   */
   showEnvironment: function(alert) {
     if(alert) {
       this.showAlert(alert);
@@ -139,13 +170,16 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
     this.$subviews.hide();
     this.subviews.$list.show();
 
-
     // create a partial function
-    var bindTableForEnv = _.bind(this.bindTable,this, this.env);
-    var handleGetEnvError = _.bind(this.handleError,this, {type:"error", msg:"Unexpected Error getting '" + this.env + "' env list"});
-    this.models.environment.list(this.app, this.env, bindTableForEnv, handleGetEnvError, true);
+    var handleGetEnvError = _.bind(this.handleError,this, {type:"error", msg:"Unexpected Error getting environment list"} , null);
+    this.models.environment.list(this.app, this.bindTable, handleGetEnvError, true);
   },
 
+  /**
+   * add controls to each table row
+   * @param res the processed env var list
+   * @return {*}
+   */
   addControls: function(res) {
     // Add control column
     res.aoColumns.push({
@@ -154,13 +188,17 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
       "sClass": "controls"
     });
 
-    var controls = this.controls;
+    var controls = this.templates.$controls();
     $.each(res.aaData, function(i, row) {row.push(controls);});
     return res;
   },
 
 
-  populateTable: function(env,data){//} aaData, aoColumns) {
+  /**
+   * populate the jquery table with the data
+   * @param data the data to show
+   */
+  populateTable: function(data){
     this.$env_table = $('#env_vars_table', this.$container);
     this.$env_table.dataTable({
       "bDestroy": true,
@@ -178,11 +216,20 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
     this.bindControls();
   },
 
-  bindTable: function(env, res) {
+  /**
+   * bind the table controls and then display the data
+   * @param res the table data
+   */
+  bindTable: function(res) {
     var data = this.addControls(res);
-    this.populateTable(env,data)
+    this.populateTable(data)
   },
 
+  /**
+   * handle a click event and display the equivalent row for edit
+   * @param e the event (either a click on the row or the edit button)
+   * @return {Boolean}
+   */
   handleEdit: function(e) {
     var $row = $(e.target).closest('tr');
     var data = this.dataForRow($row.get(0));
@@ -190,113 +237,255 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
     return false;
   } ,
 
+  /**
+   * handle a delete click event
+   * @param e the event
+   * @return {Boolean}
+   */
   handleDelete: function(e) {
     var $row = $(e.target).closest("tr");
     var data = this.dataForRow($row.get(0));
     var o =_.object(this.names, data);
     var deleteEnvVar = _.bind(this.deleteEnvVar, this, e,$row,data,o);
 
-    this.showBooleanModal("Are you sure you want to delete this variable '" + o.name + "'?", deleteEnvVar);
+    this.showBooleanModal(this.templates.$confirmAction({action: "delete" , env:o}), deleteEnvVar);
     return false;
   } ,
 
+  /**
+   * disable the buttons while processing a request
+   * @param buttons the buttons to disable
+   */
   disableButtons: function(buttons) {
     buttons.button('loading');
   } ,
 
+  /**
+   * reset the buttons after processing a request
+   * @param buttons the buttons to reset
+   */
   resetButtons: function(buttons) {
     buttons.button('reset');
   } ,
 
+  /**
+   * bind table events (row click and button events)
+   */
   bindControls: function() {
     $('tr td .edit_env_var, tr td:not(.controls,.dataTables_empty)', this.views.environment_container).unbind().click(this.handleEdit);
     $('tr td .delete_env_var', this.views.users).unbind().click(this.handleDelete);
   } ,
 
+  /**
+   * get the raw table data for a row
+   * @param el the element to get the data for
+   * @return {*}
+   */
   dataForRow: function(el) {
     return this.$env_table.fnGetData(el);
   },
 
+  /**
+   * confirm create on live var, just do it for dev.
+   * @param e the triggering event
+   * @return {Boolean}
+   */
   handleCreate: function(e){
-    this.disableButtons($(e.target).parent().find("button"));
-    var name = this.subviews.$edit_name.val();
-    var value = this.subviews.$edit_value.val();
-
-    this.showAlert({type:'info', msg:"<strong>Creating Variable</strong> '" + name + "' This may take some time."});
-
-    var handleError = _.bind(this.handleError,this, {type:"error", msg:"Unexpected Error creating '" + name + "'"});
-    var handleSuccess = _.bind(this.showEnvironment,this, {type:"success",msg: "'" + name + "' created" });
-
-    this.models.environment.create(this.app , this.env , name, value,  handleSuccess, handleError);
+    var createEnvVar = _.bind(this.createEnvVar, this, e);
+    if(this.subviews.$liveLock.hasClass("icon-unlock")) {
+      var name = this.subviews.$edit_name.val();
+      this.showBooleanModal(this.templates.$confirmAction({action: "create", env:{name:name}}), createEnvVar);
+    } else {
+      createEnvVar();
+    }
     return false;
   },
 
-  handleUpdate: function(){
+  /**
+   * create a new variable, if not duplicating then the other (i.e. dev for live and vice versa)var will be set to ''.
+   * @param e the triggering event
+   * @return {Boolean}
+   */
+  createEnvVar: function(e){
+    var $buttons = $(e.target).siblings("button").andSelf();
+    this.disableButtons($buttons);
+
+    var name = this.subviews.$edit_name.val();
+    var devValue = this.subviews.$edit_dev_value.val();
+    var liveValue = this.subviews.$edit_live_value.val();
+
+    var env = {name:name, devValue:devValue, liveValue:liveValue};
+
+    this.showAlert({type:'info', msg: this.templates.$actionWait({env:env, action : "Creating"})});
+
+    var handleError = _.bind(this.handleError,this, {type:"error", msg: this.templates.$actionError({env:env, action : "creating"})}, $buttons);
+    var handleSuccess = _.bind(this.showEnvironment,this, {type:"success",msg: this.templates.$actionComplete({env:env, action : "created"})});
+
+    this.models.environment.create(this.app , name, devValue,  liveValue,  handleSuccess, handleError);
+    return false;
+  },
+
+  /**
+   * ask the user to confirm update and do it if ok
+   * @param o the original var value
+   * @param e the click event
+   * @return {Boolean}
+   */
+  handleUpdate: function(o ,e){
+    var updateEnvVar = _.bind(this.updateEnvVar, this,o, e);
+    if(this.subviews.$liveLock.hasClass("icon-unlock")) {
+      this.showBooleanModal(this.templates.$confirmAction({action: "update", env:o}), updateEnvVar);
+    } else {
+      updateEnvVar();
+    }
+    return false;
+  },
+
+  /**
+   * actually do the update
+   * @param o the object
+   * @param e the event
+   * @return {Boolean}
+   */
+  updateEnvVar: function(o ,e){
+    var $buttons = $(e.target).siblings("button").andSelf();
+    this.disableButtons($buttons);
+
     var id = this.subviews.$edit_guid.val();
     var name = this.subviews.$edit_name.val();
-    var value = this.subviews.$edit_value.val();
+    var liveValue = this.subviews.$edit_live_value.val();
+    var devValue = this.subviews.$edit_dev_value.val();
+    var guid = this.subviews.$edit_guid.val();
+    var env = {name:name, guid:guid, devValue:devValue, liveValue:liveValue};
 
-    this.showAlert({type:'info', msg:"<strong>Updating Variable</strong> ('" + name + "') This may take some time."});
+    this.showAlert({type:'info', msg: this.templates.$actionWait({env:env, action : "Updating"})});
 
-    var handleError = _.bind(this.handleError,this, {type:"error", msg:"Unexpected Error updating '" + name + "'"});
-    var handleSuccess = _.bind(this.showEnvironment,this, {type:"success",msg: "'" + name + "' updated"});
-    this.models.environment.update(this.app , id, name, value,  handleSuccess, handleError);
+    var handleError = _.bind(this.handleError,this, {type:"error", msg: this.templates.$actionError({env:env,action:"updating"})}, $buttons);
+    var handleSuccess = _.bind(this.showEnvironment,this, {type:"success",msg: this.templates.$actionComplete({env:env,action:"updated"})});
+
+    this.models.environment.update(this.app , id, name, devValue, liveValue,  handleSuccess, handleError);
     return false;
   },
 
-  handleCancel: function(){
-    this.showEnvironment({type:"warn", msg: 'action cancelled'});
+  /**
+   * handle an edit/create cancel event
+   * @param env the var being process
+   * @param action
+   * @return {Boolean}
+   */
+  handleCancel: function(env,action){
+    this.showEnvironment({type:"warn", msg: this.templates.$cancelled({env:env,action:action||"action"})});
     return false;
   },
 
-  bindButtons: function(saveOrUpdate,label) {
-    var $save = $('.save_env_var_btn', this.subviews.$edit);
-    $save.unbind().click(saveOrUpdate).text(label);
-    $('.cancel_env_var_btn', this.subviews.$edit).unbind().click(this.handleCancel);
+  /**
+   * bind the update/create button event handlers
+   * @param saveOrUpdate the save handler function
+   * @param env the original value of the env var
+   * @param action textual description of the action (i.e. "Create" or "Update")
+   */
+  bindButtons: function(saveOrUpdate,env, action) {
+    this.controls.$save.unbind().click(saveOrUpdate).text(action);
+    // ugh bootstrap defers its button.reset so we have to as well
+    var disable = _.bind(this.controls.$save.attr,this.controls.$save,'disabled', 'disabled');
+    _.delay(disable,0);
+    var handleCancel = _.bind(this.handleCancel,this, env, action);
+    this.controls.$cancel.unbind().click(handleCancel);
   },
 
+  /**
+   * config the edit div for var creation and this populate and show it
+   * @param e the original event
+   * @param name the var name
+   */
   showCreateEnv: function(e, name) {
     this.populateEnvVar(e, {name : name}, this.handleCreate, "Create");
   },
 
+  /**
+   * config the edit div for updating an existing var and this populate and show it
+   * @param e the original event
+   * @param row the row clicked
+   * @param data the row data
+   */
   showEnvVarUpdate: function(e, row, data) {
     var o  = _.object(this.names, data);
     var handleUpdate= _.bind(this.handleUpdate , this, o);
-    this.populateEnvVar(e, o, handleUpdate, "Update");
+    this.populateEnvVar(e, o, handleUpdate , "Update");
 
   },
 
-  populateEnvVar: function(e, o, handler, lable) {
-    var buttons = $("button", this.subviews.$edit);
-    this.resetButtons(buttons);
+  /**
+   * toggle lock buttons on edit div and enable/disable inputs
+   * @param e the originating event
+   */
+  toggleLock: function(e) {
+    var $target = $(e.target);
+    $target.toggleClass("icon-lock").toggleClass("icon-unlock");
+    var $input = $target.prev("input");
+    if ($input.attr('disabled')) {
+      $input.removeAttr('disabled');
+    } else  {
+      $input.attr('disabled', 'disabled');
+    }
+    if(this.subviews.$edit_dev_value.attr('disabled') && this.subviews.$edit_live_value.attr('disabled')) {
+      this.controls.$save.attr('disabled', 'disabled');
+    } else {
+      this.controls.$save.removeAttr('disabled');
+    }
+  },
+
+  /**
+   * setup the edit view.
+   *
+   * @param e the event
+   * @param o the initial value of the env var
+   * @param handler to save or update the value
+   * @param action textual description , either Create or Update
+   *
+   * @see initBindings for where the lock/unlock function setup
+   */
+  populateEnvVar: function(e, o, handler, action) {
+    this.resetButtons($("button", this.subviews.$edit));
+    this.subviews.$edit_dup.attr({"checked" : false});
 
     this.$subviews.hide();
     this.subviews.$edit.show();
 
-    var $env =  $(".deploy_target_platform",this.subviews.$edit);
-    $env.text(this.env === "dev" ? "Development" : "Live");
+    this.subviews.$allLocks.addClass("icon-lock").removeClass("icon-unlock");
+    this.subviews.$edit_dev_value.attr("disabled", "disabled").parents(".control-group");
+    this.subviews.$edit_live_value.attr("disabled", "disabled").parents(".control-group");
 
-    this.bindButtons(handler,lable);
+    this.bindButtons(handler,o, action);
 
     this.subviews.$edit_name.val(o ? o.name : "");
-    this.subviews.$edit_value.val(o ? o.value : "");
+    this.subviews.$edit_live_value.val(o ? o.liveValue : "");
+    this.subviews.$edit_dev_value.val(o ? o.devValue  : "");
     this.subviews.$edit_guid.val(o ? o.guid : "");
   },
 
-  deleteEnvVar: function(e, $row,data,o) {
-    var handleError = _.bind(this.handleError,this, {type:"error", msg:"Unexpected Error deleting '" + o.name + "'"});
-    var handleSuccess = _.bind(this.showEnvironment,this, {type:"success",msg: "'" + o.name + "' successfully deleted"});
+  /**
+   * delete the env var
+   * @param e the originating event
+   * @param $row the table row
+   * @param data the raw data
+   * @param env the original data as an object
+   * @return {Boolean}
+   */
+  deleteEnvVar: function(e, $row,data,env) {
+    var $buttons = $(e.target).siblings("button").andSelf();
+    this.disableButtons($buttons);
 
-    var controls = $(e.target).parent().find("button");
-    controls.button('loading');
+    var handleError = _.bind(this.handleError,this, {type:"error", msg:this.templates.$actionError({env:env,action:"Deleting"})},$buttons);
+    var handleSuccess = _.bind(this.showEnvironment,this, {type:"success",msg: this.templates.$actionComplete({env:env,action:"deleted"})});
 
-    this.showAlert({type:'info', msg:"<strong>Deleting Variable</strong> ('" + o.name + "') This may take some time."});
+    this.showAlert({type:'info',msg: this.templates.$actionWait({env:env, action : "Deleting"})});
 
-    // bootstrap loading stops this being edited
-    //this.$env_table.fnDeleteRow($row[0]);
-
-    this.models.environment.remove(this.app ,o.guid,  handleSuccess, handleError);
+    this.models.environment.remove(this.app ,env.guid,  handleSuccess, handleError);
     return false;
-  }
+  },
+
+  // TODO come back to this
+  refreshSingleStatus: function(){}
 
 });
