@@ -273,15 +273,13 @@ proto.Wizard = {
 
     if ($fw.client.tab.apps.manageapps != null && $fw.client.tab.apps.manageapps.isNodeJsApp()) {
       console.log('Node.js based app, applying wizard changes');
-      wizards.blackberry_publish_wizard = ['app_publish_blackberry_deploying_env', 'app_publish_blackberry_versions', 'app_publish_blackberry_password', 'app_publish_blackberry_progress'];
-      wizards.ipad_publish_wizard = ['app_publish_ipad_deploying_env', 'app_publish_ipad_deploying_progress','app_publish_ipad_select_provisionings', 'app_publish_ipad_upload_provisionings', 'app_publish_ipad_upload_progress', 'app_publish_ipad_versions', 'app_publish_ipad_password', 'app_publish_ipad_progress'];
-
-      wizards.iphone_publish_wizard = ['app_publish_iphone_deploying_env', 'app_publish_iphone_deploying_progress','app_publish_iphone_select_provisionings', 'app_publish_iphone_upload_provisionings', 'app_publish_iphone_upload_progress',  'app_publish_iphone_versions', 'app_publish_iphone_password', 'app_publish_iphone_progress'];
-
-      wizards.ios_publish_wizard = ['app_publish_ios_deploying_env', 'app_publish_ios_deploying_progress','app_publish_ios_select_provisionings', 'app_publish_ios_upload_provisionings', 'app_publish_ios_upload_progress', 'app_publish_ios_versions', 'app_publish_ios_password', 'app_publish_ios_progress'];
-      wizards.windowsphone7_publish_wizard = ['app_publish_windowsphone7_deploying_env', 'app_publish_windowsphone7_versions', 'app_publish_windowsphone7_progress'];
-      wizards.android_publish_wizard = ['app_publish_android_deploying_env', 'app_publish_android_deploying_progress', 'app_publish_android_versions', 'app_publish_android_password', 'app_publish_android_progress'];
-      wizards.embed_publish_wizard = ['app_publish_embed_deploying_env',  'app_publish_embed_deploying_progress','app_publish_embed_progress'];
+      wizards.iphone_publish_wizard = ['app_publish_iphone_info', 'app_publish_iphone_select_provisionings', 'app_publish_iphone_upload_provisionings', 'app_publish_iphone_upload_progress',  'app_publish_iphone_password', 'app_publish_iphone_progress'];
+      wizards.ipad_publish_wizard = ['app_publish_ipad_info','app_publish_ipad_select_provisionings', 'app_publish_ipad_upload_provisionings', 'app_publish_ipad_upload_progress', 'app_publish_ipad_password', 'app_publish_ipad_progress'];
+      wizards.ios_publish_wizard = ['app_publish_ios_info' ,'app_publish_ios_select_provisionings', 'app_publish_ios_upload_provisionings', 'app_publish_ios_upload_progress', 'app_publish_ios_password', 'app_publish_ios_progress'];
+      wizards.android_publish_wizard = ['app_publish_android_info', 'app_publish_android_versions', 'app_publish_android_password', 'app_publish_android_progress'];
+      wizards.blackberry_publish_wizard = ['app_publish_blackberry_info', 'app_publish_blackberry_password', 'app_publish_blackberry_progress'];
+      wizards.windowsphone7_publish_wizard = ['app_publish_windowsphone7_info','app_publish_windowsphone7_progress'];
+      wizards.embed_publish_wizard = ['app_publish_embed_info' ,'app_publish_embed_progress'];
     }
 
     return wizards;

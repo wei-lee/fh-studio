@@ -1,62 +1,37 @@
+<%@ include file="./basic_app_publish_templates.html"%>
 
 <div id="app_publish_destinations" class="dashboard-content">
-    <script type="text/template" class="build-wizard-deployed-template">
-        <blockquote>
-            <p>Your <\%= env \%> cloud is currently deployed?</p>
-            <br/>
-            <div class="info">
-                <strong>Click</strong> Next to build this application.
-            </div>
-        </blockquote>
-    </script>
+    <h5>Choose a platform to build for</h5>
 
-    <script type="text/template" class="build-wizard-deploy-template">
-        <blockquote>
-            <p>It looks like your <\%= env \%> cloud is not currently deployed?</p>
-            <br/>
-            <div class="info">
-                <strong>Click</strong> <a href="<\%= link \%>" class="jw-button-cancel">here</a> to deploy this application.
-            </div>
-        </blockquote>
-    </script>
-
-    <script type="text/template" class="check-deploy-template">
-        <blockquote>
-            <p>Plesae wait while I check your <\%= env \%> cloud status?</p>
-            <small>Click <cite title="Source Title"><a href="<\%= link \%>" class="jw-button-cancel">here</a></cite>  to deploy this application.</small>
-        </blockquote>
-    </script>
-
-  <h5>Choose a platform to build for</h5>
-  <div id="app_publish_list" class="app_generate_destinations ui-helper-clearfix"> </div>
+    <div id="app_publish_list" class="app_generate_destinations ui-helper-clearfix"></div>
 </div>
 
 <div id="app_publish_android" class="dashboard-content">
-  <%@ include file="./publish_android.html"%>
+    <%@ include file="./publish_android.html"%>
 </div>
 
 
 <div id="app_publish_iphone" class="dashboard-content">
-  <%@ include file="./publish_iphone.html"%>
+    <%@ include file="./publish_iphone.html"%>
 </div>
 
 <div id="app_publish_ipad" class="dashboard-content">
-  <%@ include file="./publish_ipad.html"%>
+    <%@ include file="./publish_ipad.html"%>
 </div>
 
 <div id="app_publish_ios" class="dashboard-content">
-  <%@ include file="./publish_ios.html"%>
+    <%@ include file="./publish_ios.html"%>
 </div>
 
 
 <div id="app_publish_blackberry" class="dashboard-content">
-  <%@ include file="./publish_blackberry.html"%>
+    <%@ include file="./publish_blackberry.html"%>
 </div>
 
 <div id="app_publish_windowsphone7" class="dashboard-content">
-  <%@ include file="./publish_windowsphone7.html"%>
+    <%@ include file="./publish_windowsphone7.html"%>
 </div>
 
 <div id="app_publish_embed" class="dashboard-content">
-  <%@ include file="./publish_embed.html"%>
+    <%@ include file="./publish_embed.html"%>
 </div>

@@ -26,21 +26,18 @@
 
 <div id= "app_publish_embed_wizard" class="ui-helper-hidden">
     <form id="embed_publish_form">
-        <div id="app_publish_embed_deploying_env" class="app_publish_deploying_env">
-            <!--<div id="app_publish_embed_deploying_env_text" class="insert-lang-block"></div>-->
-            <form>
-                <div class="form-field ui-helper-reset ui-helper-clearfix">
-                    <input type="checkbox" name="app_publish_embed_deploying" next="app_publish_embed_progress" checked="checked" class="hidden"><label>
-                    <p>
-                        Building an Embed Application packages up your client code as a Web Application which can then be accessed
-                        directly in a web browser or embedded via an iframe or script tag within any web page.
-                    </p>
-                    <br/>
-                    Click Next to build the Embed App
-                </label>
-                </div>
-            </form>
-        </div>
+      <div id="app_publish_embed_info" class="app_publish_info">
+        <form>
+          <h4>App Client</h4>
+          <p>
+              Building an Embed Application packages up your client code as a Web Application which can then be accessed
+              directly in a web browser or embedded via an iframe or script tag within any web page.
+          </p>
+
+          <h4>App Cloud</h4>
+          <p class="application-status"></p>
+        </form>
+      </div>
         <div id="app_publish_embed_progress" class="progress-step"></div>
     </form>
 </div>

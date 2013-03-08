@@ -1,19 +1,20 @@
 <form id="ios_publish_form">
-    <div id="app_publish_ios_deploying_env" class="app_publish_deploying_env">
+    <div id="app_publish_ios_info" class="app_publish_info">
         <form>
-            <div class="form-field ui-helper-reset ui-helper-clearfix hidden">
-                <input type="checkbox" name="app_publish_ios_deploying" next="app_publish_ios_select_provisionings" checked="checked"><label>Deploy the server-side of the app</label>
-            </div>
-            <div class="application-status"></div>
+            <h4>App Client</h4>
+            <p id="app_publish_ios_versions_text" class="insert-lang-block"></p>
+
+            <h4>App Cloud</h4>
+            <p class="application-status"></p>
         </form>
     </div>
 
-      <div id="app_publish_ios_select_provisionings">
+    <div id="app_publish_ios_select_provisionings">
         <div id="app_publish_ios_select_provisionings_text" class="insert-lang-block step_title select_provisionings"></div>
         <div id="app_publish_ios_no_provisionings_text"     class="insert-lang-block step_title no_provisionings hide "></div>
 
         <div class="form-field ui-helper-reset ui-helper-clearfix">
-          <input type="radio" name="app_publish_ios_provisioning_radio" next="app_publish_ios_versions" checked="checked" value="existing" class="select_provisionings"><label>I would like to use the existing provisioning profile of this app</label>
+          <input type="radio" name="app_publish_ios_provisioning_radio" next="app_publish_ios_password" checked="checked" value="existing" class="select_provisionings"><label>I would like to use the existing provisioning profile of this app</label>
         </div>
 
 
@@ -33,10 +34,6 @@
         <div id="app_publish_ios_upload_progress_text" class="insert-lang-block"></div>
       </div>
     
-      <div id="app_publish_ios_versions">
-         <div id="app_publish_ios_versions_text" class="insert-lang-block"></div>
-      </div>
-      
       <div id="app_publish_ios_password">
         <div id="app_publish_ios_password_text" class="insert-lang-block"></div>
         <div class="form-field ui-helper-reset ui-helper-clearfix">

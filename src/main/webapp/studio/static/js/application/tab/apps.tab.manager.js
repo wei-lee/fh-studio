@@ -408,19 +408,11 @@ ManageappsTabManager = Tab.Manager.extend({
   enableRhinoAppMode: function() {
     $('.nodejs_mode').hide(); // hide nodejs only stuff
     $('.rhino_mode').show(); // show rhino only stuff
-
-    // Change some "next" steps in wizards
-    $('input[name=app_publish_ipad_provisioning_radio]:first').attr('next', 'app_publish_ipad_versions');
-    $('input[name=app_publish_iphone_provisioning_radio]:first').attr('next', 'app_publish_iphone_versions');
   },
 
   enableNodejsAppMode: function() {
     $('.rhino_mode').hide(); // hide rhino only stuff
     $('.nodejs_mode').show(); // show nodejs only stuff
-
-    // Change some "next" steps in wizards
-    $('input[name=app_publish_ipad_provisioning_radio]:first').attr('next', 'app_publish_ipad_versions');
-    $('input[name=app_publish_iphone_provisioning_radio]:first').attr('next', 'app_publish_iphone_versions');
   },
 
   /*

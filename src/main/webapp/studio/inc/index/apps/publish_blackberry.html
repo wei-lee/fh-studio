@@ -27,20 +27,19 @@
 
   <div id= "app_publish_blackberry_wizard" class="ui-helper-hidden">
     <form id="blackberry_publish_form">
-        <div id="app_publish_blackberry_deploying_env" class="app_publish_deploying_env">
+        <div id="app_publish_blackberry_info" class="app_publish_info">
             <form>
-                <div class="form-field ui-helper-reset ui-helper-clearfix hidden">
-                    <input type="checkbox" name="app_publish_blackberry_deploying" next="app_publish_blackberry_versions" checked="checked"><label>Deploy the server-side of the app</label>
+                <h4>App Client</h4>
+                <div id="app_publish_blackberry_versions" config-radio="build-options-blackberry">
+                    <div id="app_publish_blackberry_note_text" class="insert-lang-block"></div>
                 </div>
-                <div class="application-status"></div>
+
+                <h4>App Cloud</h4>
+                <p class="application-status"></p>
             </form>
         </div>
 
 
-        <div id="app_publish_blackberry_versions" config-radio="build-options-blackberry">
-        <div id="app_publish_blackberry_note_text" class="insert-lang-block"></div>
-      </div>
-      
       <div id="app_publish_blackberry_password">
         <div id="app_publish_blackberry_password_text" class="insert-lang-block"></div>
         <div class="form-field ui-helper-reset ui-helper-clearfix">

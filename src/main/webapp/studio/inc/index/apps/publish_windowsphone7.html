@@ -26,19 +26,19 @@
 
   <div id= "app_publish_windowsphone7_wizard" class="ui-helper-hidden">
     <form id="windowsphone7_publish_form">
-        <div id="app_publish_windowsphone7_deploying_env" class="app_publish_deploying_env">
+        <div id="app_publish_windowsphone7_info" class="app_publish_info">
             <form>
-                <div class="form-field ui-helper-reset ui-helper-clearfix hidden">
-                    <input type="checkbox" name="app_publish_windowsphone7_deploying" next="app_publish_windowsphone7_select_provisionings" checked="checked"><label>Deploy the server-side of the app</label>
+                <h4>App Client</h4>
+                <div id="app_publish_windowsphone7_versions" config-radio="build-options-wp7">
+                    <div id="app_publish_windowsphone7_note_text" class="insert-lang-block"></div>
                 </div>
-                <div class="application-status"></div>
+
+                <h4>App Cloud</h4>
+                <p class="application-status"></p>
             </form>
         </div>
 
-        <div id="app_publish_windowsphone7_versions" config-radio="build-options-wp7">
-        <div id="app_publish_windowsphone7_note_text" class="insert-lang-block"></div>
-      </div>
-    
+
       <div id="app_publish_windowsphone7_progress" class="progress-step"></div>
     </form>
   </div>

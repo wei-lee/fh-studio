@@ -288,14 +288,13 @@ application.DestinationGeneral = Class.extend({
    * @see startBuild
    */
   checkDeploy: function(config, wizard) {
-    proto.Wizard.hideNextButton(wizard);
-    var env = 'dev';
+    var env = 'Dev';
     if (config == 'distribution' || config == 'release') {
-      env = 'live';
+      env = 'Live';
     }
     var appId = $fw.data.get('inst').guid;
     var handleRunning = _.bind(this.renderRunning, this ,env, wizard);
-    var handleNotRunning = _.bind(this.renderNotRunning, this, appId,env, wizard);
+    var handleNotRunning = _.bind(this.renderNotRunning, this, env, wizard);
 
     this.renderCancelable(".check-deploy-template", env,wizard);
     this.ping(appId,env,handleRunning,handleNotRunning);
@@ -340,7 +339,6 @@ application.DestinationGeneral = Class.extend({
    * @param $el the element to render into the wizard
    */
   renderApplicationStatus: function(wizard,$el) {
-    proto.Wizard.showNextButton(wizard);
     $(".jw-steps-wrap .application-status", wizard).html($el);
   },
 
@@ -387,14 +385,14 @@ application.DestinationGeneral = Class.extend({
     var progress_view = wizard.find("#app_publish_" + this.destination_id + "_progress");
 
     // Binding for checking the deploy status
-    var $deploy = wizard.find(".app_publish_deploying_env");
-    $deploy.unbind('show').bind('show', function(e) {
+    var $info = wizard.find(".app_publish_info");
+    $info.unbind('show').bind('show', function(e) {
       that.checkDeploy = _.once(that.checkDeploy);
       that.checkDeploy(config, wizard, step);
     });
     // we need to check if the wizard has shown this page before the wizard load returned
-    if($deploy.is(":visible")) {
-      $deploy.trigger("show");
+    if($info.is(":visible")) {
+      $info.trigger("show");
     }
 
     if ($.isFunction(this.bindExtraConfig)) {
