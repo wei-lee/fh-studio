@@ -16,6 +16,7 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
   templates: {
     controls :".row-controls",
     confirmAction:".confirm-action",
+    confirmPush:".confirm-push",
     alert:".alert",
     actionWait:".create-wait-msg",
     actionError:".create-error-msg",
@@ -85,6 +86,7 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
 
     this.templates.$controls       = this.compile(this.templates.controls);
     this.templates.$confirmAction  = this.compile(this.templates.confirmAction);
+    this.templates.$confirmPush    = this.compile(this.templates.confirmPush);
     this.templates.$alert          = this.compile(this.templates.alert);
     this.templates.$actionWait     = this.compile(this.templates.actionWait);
     this.templates.$actionError    = this.compile(this.templates.actionError);
@@ -108,6 +110,11 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
     this.subviews.$allLocks.click(this.toggleLock);
     $("[rel=popover]", this.$container).popover({template: '<div class="popover"><div class="arrow"></div><div class="popover-inner"><div class="popover-content"><p></p></div></div></div>'});
 
+
+    this.$container.on("click" ,".add-env", this.showCreateEnv);
+    this.$container.on("click" ,".unset-env", this.handleUnset);
+    this.$container.on("click" ,".delete-env", this.handleDelete);
+    this.$container.on("click" ,".push-env", this.handlePush);
   },
 
   switchedEnv: function(env) {
@@ -203,14 +210,13 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
    * @return {*}
    */
   addControls: function(res) {
-    // Add control column
-    $("table").live("click", "input.all" ,function toggleAll(e){
+    $("div").on("click", "input.toggle-all"  , function toggleAll(e){
       var $c = $(e.target);
       var $table = $c.closest('.dataTables_scroll');
       $(".row-control", $table).prop("checked" , $c.is(":checked") );
     });
     res.aoColumns.unshift({
-      sTitle: "<input type='checkbox' class='all'/>",
+      sTitle: "<div><input type='checkbox' class='toggle-all'/></div>",
       "bSortable": false,
       "sClass": "controls",
       "sWidth": "2%"
@@ -306,6 +312,21 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
     var deleteEnvVar = _.bind(this.deleteEnvVar, this, e,$row,data,o);
 
     this.showBooleanModal(this.templates.$confirmAction({action: "delete" , env:o}), deleteEnvVar);
+    return false;
+  } ,
+
+  /**
+   * handle an unset click event
+   * @param e the event
+   * @return {Boolean}
+   */
+  handleUnset: function(e) {
+    var $row = $(e.target).closest("tr");
+    var data = this.dataForRow($row.get(0));
+    var o =_.object(this.names, data);
+    var deleteEnvVar = _.bind(this.deleteEnvVar, this, e,$row,data,o);
+
+    this.showBooleanModal(this.templates.$confirmAction({action: "unset" , env:o}), deleteEnvVar);
     return false;
   } ,
 
@@ -524,6 +545,37 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
     this.subviews.$edit_live_value.val(o ? o.liveValue : "");
     this.subviews.$edit_dev_value.val(o ? o.devValue  : "");
     this.subviews.$edit_guid.val(o ? o.guid : "");
+  },
+
+  /**
+   * handle a push env click event
+   * @param e the event
+   * @return {Boolean}
+   */
+  handlePush: function(e) {
+    var env = this.currentEnv();
+    var pushEnv = _.bind(this.pushEnv, this, env);
+    this.showBooleanModal(this.templates.$confirmPush({env: env}), pushEnv);
+    return false;
+  } ,
+
+  /**
+   * push the current env var
+   * @param e the originating event
+   * @param env the original data as an object
+   * @return {Boolean}
+   */
+  pushEnv: function(env, e) {
+//    var $buttons = $(e.target).siblings("button").andSelf();
+//    this.disableButtons($buttons);
+//
+    var handleError = _.bind(this.handleError,this, {type:"error", msg:this.templates.$actionError({env:env,action:"Pushing"})},$buttons);
+    var handleSuccess = _.bind(this.showEnvironment,this, {type:"success",msg: this.templates.$actionComplete({env:env,action:"pushed"})});
+
+    this.showAlert({type:'info',msg: this.templates.$actionWait({env:env, action : "Pushing"})});
+
+    this.models.environment.push(this.app ,env,  handleSuccess, handleError);
+    return false;
   },
 
   /**

@@ -143,6 +143,26 @@ model.Environment = model.Model.extend({
     } else {
       return this.serverPost(url, params, success, fail, true);
     }
+  },
+
+  /**
+   * push the env vars to the environment
+   * @param app the application id
+   * @param env the environment
+   * @param success callback
+   * @param fail callback
+   * @return {*}
+   */
+  push: function(app, env, success, fail) {
+    // TODO implement
+    return this.list(app, success, fail, true);
+//    var params = {"appId": app};
+//    var url = Constants.ENVIRONMENT_TARGET_LISTFORAPP_URL;
+//    if (post_process) {
+//      return this.serverPost(url, params, success, fail, true, this.postProcessList, this);
+//    } else {
+//      return this.serverPost(url, params, success, fail, true);
+//    }
   }
 
 
