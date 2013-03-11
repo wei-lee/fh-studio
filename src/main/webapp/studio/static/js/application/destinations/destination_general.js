@@ -349,8 +349,8 @@ application.DestinationGeneral = Class.extend({
    * @return {*}
    */
   render: function(template ,  vars) {
-    var template = $(template).html();
-    return $(_.template(template,vars));
+    var t = $(template).html();
+    return $(_.template(t,vars));
   },
 
   updateProgressLog: function(env, log) {
