@@ -78,7 +78,7 @@ application.DestinationEmbed = application.DestinationGeneral.extend({
 
       var note = $("<p>").html($("<b>", {text: "(Note: if you have made any changes since the last build, you must be rebuild now or you will not see your changes.)"}));
       pre2.append(c2);
-      el.append(p).append(p1).append(pre1).append(p2).append(pre2).append(note);
+      el.append(p,p1,pre1,p2,pre2,note);
     } else {
       var p3 = $("<p>", {text:"The "+env+" Embed App hasn't been built."});
       el.append(p3);
