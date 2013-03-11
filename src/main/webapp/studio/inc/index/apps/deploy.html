@@ -13,6 +13,33 @@
         <%@ include file="./deploy_container.html" %>
       </div>
 
+      <div id="deploy_approver_template" class="modal fade hidden">
+        <div class="modal-header">
+          <h3>Enter Approver Details</h3>
+        </div>
+        <div class="modal-body">
+          <form id="deploy_approver_form" class="form-horizontal">
+            <fieldset>
+            <div class="control-group approver_email_control">
+              <label for="approver_email" class="control-label">Approver</label>
+              <div class="controls">
+                <input type="text" id="approver_email" class="approver_email" placeholder="Approver Email" required>
+                <span class="help-inline hidden">This field is required</span>
+              </div>
+            </div>
+            <div class="control-group">
+              <label for="approver_comment" class="control-label">Comment</label>
+              <div class="controls"><textarea id="approver_comment" class="approver_comment" rows="3"></textarea></div>
+            </div>
+            </fieldset>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <a href="" class="btn cancel-btn">Cancel</a>
+          <a href="" class="btn btn-success confirm-btn">Confirm</a>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
