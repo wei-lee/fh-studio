@@ -288,9 +288,9 @@ application.DestinationGeneral = Class.extend({
    * @see startBuild
    */
   checkDeploy: function(config, wizard) {
-    var env = 'Dev';
+    var env = 'dev';
     if (config == 'distribution' || config == 'release') {
-      env = 'Live';
+      env = 'live';
     }
     var appId = $fw.data.get('inst').guid;
     var handleRunning = _.bind(this.renderRunning, this ,env, wizard);
