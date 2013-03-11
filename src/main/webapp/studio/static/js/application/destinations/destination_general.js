@@ -289,7 +289,7 @@ application.DestinationGeneral = Class.extend({
    */
   checkDeploy: function(config, wizard) {
     var env = 'dev';
-    if (config == 'distribution' || config == 'release') {
+    if (config == 'distribution' || config == 'release' || config == 'live') {
       env = 'live';
     }
     var appId = $fw.data.get('inst').guid;
