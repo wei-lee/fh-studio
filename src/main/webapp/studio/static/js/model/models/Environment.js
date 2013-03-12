@@ -146,6 +146,25 @@ model.Environment = model.Model.extend({
   },
 
   /**
+   * read all the deployed env vars
+   * @param app the application id
+   * @param env the environment
+   * @param success callback
+   * @param fail callback
+   * @param post_process function to process the results
+   * @return {*}
+   */
+  listDeployed: function(app, env,success, fail, post_process) {
+    var params = {"appId": app, env:env};
+    var url = Constants.ENVIRONMENT_TARGET_LIST_DEPLOYED_URL;
+    if (post_process) {
+      return this.serverPost(url, params, success, fail, true);
+    } else {
+      return this.serverPost(url, params, success, fail, true);
+    }
+  },
+
+  /**
    * push the env vars to the environment
    * @param app the application id
    * @param env the environment
@@ -154,15 +173,9 @@ model.Environment = model.Model.extend({
    * @return {*}
    */
   push: function(app, env, success, fail) {
-    // TODO implement
-    return this.list(app, success, fail, true);
-//    var params = {"appId": app};
-//    var url = Constants.ENVIRONMENT_TARGET_LISTFORAPP_URL;
-//    if (post_process) {
-//      return this.serverPost(url, params, success, fail, true, this.postProcessList, this);
-//    } else {
-//      return this.serverPost(url, params, success, fail, true);
-//    }
+    var params = {"appId": app,env:env};
+    var url = Constants.ENVIRONMENT_TARGET_PUSH_URL;
+    return this.serverPost(url, params, success, fail, true);
   }
 
 

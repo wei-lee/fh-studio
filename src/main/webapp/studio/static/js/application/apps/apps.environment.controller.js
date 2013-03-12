@@ -199,9 +199,36 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
 
     // create a partial function
     var handleGetEnvError = _.bind(this.handleError,this, {type:"error", msg:"Unexpected Error getting environment list"} , null);
-    this.models.environment.list(this.app, this.bindCurrentTable, handleGetEnvError, true);
-    this.models.environment.list(this.app, this.bindUserTable, handleGetEnvError, true);
-    this.models.environment.list(this.app, this.bindSysTable, handleGetEnvError, true);
+
+    var loadDeployedDev = _.bind(this.models.environment.listDeployed, this,this.app, "dev");
+    var loadDeployedLive  = _.bind(this.models.environment.listDeployed, this,this.app, "live");
+    var loadEnvList  = _.bind(this.models.environment.list, this,this.app);
+
+    var bindCurrentTable = _.bind(this.bindCurrentTable, this);
+    var bindDeployedTable  = _.bind(this.bindDeployedTable,this);
+    async.series([
+      function(callback){
+        loadDeployedDev(function success(res){callback(null,res);},callback);
+      },
+      function(callback){
+        loadDeployedLive(function success(res){callback(null,res);},callback);
+      },
+      function(callback){
+        loadEnvList(function success(res){
+          callback(null,res);
+        },callback,true);
+      }
+    ],
+    function(err, results){
+      if(err) {
+        console.log("err " + err);
+        return;
+      }
+      var list = results.pop();
+      var liveUser = bindDeployedTable.apply(null,results);
+      bindCurrentTable(list, liveUser);
+    });
+
   },
 
   /**
@@ -264,12 +291,53 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
   },
 
   /**
-   * bind the table controls and then display the data for the current environment
+   * bind the current table data
    * @param res the table data
+   * @param liveUser the live user data
    */
-  bindCurrentTable: function(res) {
+  bindCurrentTable: function(res, liveUser) {
     var data = this.addControls(res);
     this.populateTable(data, this.$current_env_table, this.templates.$buttonBar());
+  },
+
+
+  /**
+   * bind the deployed table
+   * @param dev the dev deployed env
+   * @param live the live deployed env
+   * @return the current deployed user vars
+   */
+  bindDeployedTable: function(dev,live) {
+    var keys = _.union(_.keys(dev.envvars),_.keys(dev.envvars));
+    keys = _.uniq(keys);
+    var sys= [];
+    var user = [];
+    _.each(keys, function(name){
+      var lvalue = live.envvars[name];
+      var dvalue = dev.envvars[name];
+
+
+      var val = {name:name};
+      if(lvalue){
+        val.liveValue = lvalue.value;
+        val.isSystemEnv = lvalue.isSystemEnv;
+      }
+      if(dvalue){
+        val.devValue = dvalue.value;
+        val.isSystemEnv = dvalue.isSystemEnv;
+      }
+      if(val.isSystemEnv) {
+        sys.push(val);
+      } else {
+        user.push(val);
+      }
+    });
+    res = this.models.environment.postProcessList({status:"ok", list:sys}, this.models.environment, this.models.environment.recent_field_config);
+    this.bindSysTable(res);
+
+    res = this.models.environment.postProcessList({status:"ok", list:user}, this.models.environment, this.models.environment.recent_field_config);
+    this.bindUserTable(res);
+    return res;
   },
 
   /**
@@ -280,7 +348,7 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
     this.populateTable(res, this.$deployed_user_env_table);
   },
 
-  /**
+/**
    * bind the sys env var table
    * @param res the response
    */
@@ -381,25 +449,25 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
 
   /**
    * create a new variable, if not duplicating then the other (i.e. dev for live and vice versa)var will be set to ''.
+   * @param $modal the dialog
    * @param e the triggering event
    * @return {Boolean}
    */
-  createEnvVar: function(e){
-    var $buttons = $(e.target).siblings("button").andSelf();
-    this.disableButtons($buttons);
-
-    var name = this.subviews.$edit_name.val();
-    var devValue = this.subviews.$edit_dev_value.val();
-    var liveValue = this.subviews.$edit_live_value.val();
+  createEnvVar: function($modal,e){
+    var name = $(this.subviews.edit_name, $modal).val();
+    var devValue = $(this.subviews.edit_dev_value, $modal).val();
+    var liveValue = $(this.subviews.edit_live_value, $modal).val();
 
     var env = {name:name, devValue:devValue, liveValue:liveValue};
 
     this.showAlert({type:'info', msg: this.templates.$actionWait({env:env, action : "Creating"})});
 
-    var handleError = _.bind(this.handleError,this, {type:"error", msg: this.templates.$actionError({env:env, action : "creating"})}, $buttons);
+    var handleError = _.bind(this.handleError,this, {type:"error", msg: this.templates.$actionError({env:env, action : "creating"})});
     var handleSuccess = _.bind(this.showEnvironment,this, {type:"success",msg: this.templates.$actionComplete({env:env, action : "created"})});
 
     this.models.environment.create(this.app , name, devValue,  liveValue,  handleSuccess, handleError);
+
+    $modal.modal('hide');
     return false;
   },
 
@@ -478,10 +546,8 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
    */
   showCreateEnv: function(e, name) {
     var $modal = $(this.templates.$editModal({env:{name : name}}));
-    $('.btn-success', $modal).on('click', function(){
-      $modal.modal('hide');
-      return false;
-    });
+    var createEnvVar = _.bind(this.createEnvVar, this, $modal);
+    $('.btn-success', $modal).on('click', createEnvVar);
     $modal.modal();
   },
 
@@ -554,7 +620,7 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
    */
   handlePush: function(e) {
     var env = this.currentEnv();
-    var pushEnv = _.bind(this.pushEnv, this, env);
+    var pushEnv = _.bind(this.pushEnv, this, env,e);
     this.showBooleanModal(this.templates.$confirmPush({env: env}), pushEnv);
     return false;
   } ,
@@ -566,13 +632,13 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
    * @return {Boolean}
    */
   pushEnv: function(env, e) {
-//    var $buttons = $(e.target).siblings("button").andSelf();
-//    this.disableButtons($buttons);
-//
-    var handleError = _.bind(this.handleError,this, {type:"error", msg:this.templates.$actionError({env:env,action:"Pushing"})},$buttons);
-    var handleSuccess = _.bind(this.showEnvironment,this, {type:"success",msg: this.templates.$actionComplete({env:env,action:"pushed"})});
+    var $buttons = $(e.target).siblings("button").andSelf();
+    this.disableButtons($buttons);
 
-    this.showAlert({type:'info',msg: this.templates.$actionWait({env:env, action : "Pushing"})});
+    var handleError = _.bind(this.handleError,this, {type:"error", msg:this.templates.$actionError({env:env,action:"Pushing"})},$buttons);
+    var handleSuccess = _.bind(this.showEnvironment,this, {type:"success",msg: this.templates.$actionComplete({env:{name:env},action:"pushed"})});
+
+    this.showAlert({type:'info',msg: this.templates.$actionWait({env:{name:env}, action : "Pushing"})});
 
     this.models.environment.push(this.app ,env,  handleSuccess, handleError);
     return false;
