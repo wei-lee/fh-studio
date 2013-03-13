@@ -149,11 +149,12 @@ public class StudioBean {
       mTheme = (String) pRequest.getAttribute("Theme");
     }
 
+    String scheme = resolveScheme(pRequest);
+
     // Allow for domain being passed in request
     if (null == mDomain) {
 
       // TODO: if studio is deployed to separate box than millicore, need to look at this logic again
-      String scheme = resolveScheme(pRequest);
       String host = "127.0.0.1";// pRequest.getLocalName();
       String endpoint = PROPS_ENDPOINT;
       int port = pRequest.getLocalPort();
@@ -231,8 +232,14 @@ public class StudioBean {
       }
     }
 
-    String requiredProtocol = mStudioProps.getString(PROP_PROTOCOL);
+    String requiredProtocol = scheme;
     String serverName = pRequest.getServerName();
+    String studioVersion = null;
+
+    if (mStudioProps != null) {
+      studioVersion = mStudioProps.optString(PROP_STUDIOVERSION, null);
+      requiredProtocol = mStudioProps.getString(PROP_PROTOCOL);
+    }
     if (proceed) {
 
       // Allow for domain props being passed in request
@@ -253,9 +260,9 @@ public class StudioBean {
       }
     }
 
-    // Check if user should be using a different version of studio
-    String studioVersion = mStudioProps.optString(PROP_STUDIOVERSION, null);
-    if (null == redirectUrl && studioVersion != null && studioVersion.length() > 0) {
+    // Check if user should be using a different version of studio,
+    // but only for logged in users on the index page
+    if (IDE_INDEX.equals(pPageName) && mStudioProps != null && mUserProps != null && studioVersion != null && null == redirectUrl && studioVersion != null && studioVersion.length() > 0) {
       String redirect = requiredProtocol + "://" + serverName + "/" + studioVersion;
       redirectUrl = redirect;
       proceed = false;
