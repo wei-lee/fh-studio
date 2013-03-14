@@ -38,7 +38,8 @@ model.Environment = model.Model.extend({
       field_name: "guid",
       visible: false,
       column_title: "Env ID"
-    }],
+    }
+    ],
 
   init: function() {
     _.bindAll(this);

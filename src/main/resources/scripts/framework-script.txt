@@ -11,6 +11,7 @@ common/js/ui/thirdparty/jquery/plugins/jquery.dataTables.fhext.js
 common/js/ui/thirdparty/jquery/plugins/jquery.jstree.js
 common/js/ui/thirdparty/jquery/plugins/jquery.form.js
 common/js/ui/thirdparty/jquery/plugins/jquery.placeholder.js
+common/js/ui/thirdparty/jquery/plugins/jquery.editable.js
 common/js/ui/thirdparty/jquery-ui/jquery-ui.js
 common/js/ui/thirdparty-mods/jquery-ui/plugins/jquery.jWizard.fh_extensions.js
 common/js/ui/thirdparty/jquery-ui/plugins/jquery.jWizard.js

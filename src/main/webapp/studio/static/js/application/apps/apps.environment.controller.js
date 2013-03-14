@@ -193,6 +193,7 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
     if(alert) {
       this.showAlert(alert);
     }
+    var self = this;
     this.$container.show();
     this.$subviews.hide();
     this.subviews.$list.show();
@@ -206,27 +207,52 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
 
     var bindCurrentTable = _.bind(this.bindCurrentTable, this);
     var bindDeployedTable  = _.bind(this.bindDeployedTable,this);
+    var allEnvResults = {
+      devDeployed: {envvars: {}},
+      liveDeployed: {envvars: {}}
+    };
     async.series([
       function(callback){
-        loadDeployedDev(function success(res){callback(null,res);},callback);
+        loadDeployedDev(function success(res){
+          allEnvResults.devDeployed = res;
+          callback(null);
+        },function(err){
+          console.log("Error when listing dev deployed environment variables. Error: " + err);
+          callback();
+        });
       },
       function(callback){
-        loadDeployedLive(function success(res){callback(null,res);},callback);
+        loadDeployedLive(function success(res){
+          allEnvResults.liveDeployed = res;
+          callback(null);
+        },function(err){
+          console.log("Error when listing live deployed environment variables. Error: " + err);
+          callback();
+        });
       },
       function(callback){
         loadEnvList(function success(res){
-          callback(null,res);
-        },callback,true);
+          allEnvResults.envList = res.list;
+          callback(null);
+        },function(err){
+          console.log("Error when listing current environment variables. Error: " + err);
+          callback();
+        });
       }
     ],
     function(err, results){
       if(err) {
         console.log("err " + err);
-        return;
       }
-      var list = results.pop();
-      var liveUser = bindDeployedTable.apply(null,results);
-      bindCurrentTable(list, liveUser);
+
+      var list = allEnvResults.envList;
+      var currentEnvVarPair = {};
+      _.each(list, function(el){
+        currentEnvVarPair[el.fields.name] = {"devValue": el.fields.devValue, "liveValue": el.fields.liveValue};
+      });
+      var deployedEnvs = self.processDeployedEnvs(allEnvResults.devDeployed, allEnvResults.liveDeployed);
+      bindDeployedTable.apply(null, [deployedEnvs.sysEnvs, deployedEnvs.userEnvs, currentEnvVarPair]);
+      bindCurrentTable(list, deployedEnvs.userEnvs);
     });
 
   },
@@ -262,18 +288,18 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
    * @param $env_table the table to populate
    * @param $button_bar the button bar to add
    */
-  populateTable: function(data, $env_table, $button_bar){
+  populateTable: function(data, $env_table, $button_bar, comparison, allowEdit){
+    var self = this;
+    var cloudEnv = $fw.data.get('cloud_environment');
     $env_table.dataTable({
+      "bScrollAutoCss": true,
       "bScrollCollapse": true,
-      "sScrollY": "100%",
-      "sScrollYInner": "110%",
-      "bScrollCollapse": true,
+      "sScrollY": "250px",
       "bSortClasses": false,
-      "bScrollInfinite": true,
       "bFilter": false,
       "bDestroy": true,
       "bAutoWidth": false,
-      "sDom": "<'row-fluid'<'span12'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+      "sDom": "<'row-fluid'<'span12'f>r>t<'row-fluid' <'span6'i>>",
       "sPaginationType": "bootstrap",
       "bLengthChange": false,
       "aaData": data.aaData ,
@@ -282,41 +308,85 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
         if ( $env_table.length > 0 ) {
           $env_table.fnAdjustColumnSizing();
         }
+      },
+      fnRowCallback: function(nRow, aData, iDisplayIndex) {
+        self.rowRender(nRow, aData, iDisplayIndex, comparison, cloudEnv);
       }
     });
     if($button_bar && $button_bar.length) {
       $('.span12:first', this.$container).html($button_bar);//.css({padding:"0.5em"});
     }
     this.bindControls();
+    if(allowEdit){
+      self.enableInlineEdit($env_table, cloudEnv);
+    }
+  },
+
+  enableInlineEdit: function(table, cloudEnv){
+    var self = this;
+    var editIndex = cloudEnv == "live"? 3: 2;
+    table.find("tr").find('td:eq('+editIndex+')').editable(function(value, settings){
+      var that = this;
+      var row = $(this).parent();
+      var envVarData = self.dataForRow(row[0]);
+      var devValue = cloudEnv == "live" ? null: value;
+      var liveValue = cloudEnv == "live" ? value: null;
+      var oldValue = cloudEnv == "live" ? envVarData[3]: envVarData[2];
+      self.models.environment.update(self.app, envVarData[envVarData.length-1], envVarData[1], devValue, liveValue, function(res){
+
+      }, function(err){
+        $(that).text(oldValue);
+        self.showAlert({type:'error', msg:"Failed to update environment variable value"});
+      });
+      return value;
+    });
+  },
+
+  rowRender: function(nRow, aData, dIndex, comparison, env){
+    var nameIndex = 0;
+    var valueIndex = isLive?2:1;
+    if(aData[0].indexOf("<input") > -1){
+      nameIndex = nameIndex + 1;
+      valueIndex = valueIndex+1;
+    }
+    var name = aData[nameIndex];
+    var isLive = env === "live";
+    var compareValueKey = isLive?"liveValue":"devValue";
+
+    var value = aData[valueIndex];
+    var isDirty = false;
+    if(comparison){
+      if(typeof comparison[name] === "undefined" || comparison[name][compareValueKey] != value){
+        isDirty = true;
+      }
+    }
+    if(isDirty){
+      $("td:eq("+valueIndex+")", nRow).addClass("dirty");
+    } else {
+      if(comparison){
+        $("td:eq("+valueIndex+")", nRow).addClass("ok");
+      }
+    }
+    
+    var disabledIndex = isLive?valueIndex - 1 : valueIndex + 1;
+    $("td:eq("+disabledIndex+")", nRow).addClass("disabled");
   },
 
   /**
-   * bind the current table data
-   * @param res the table data
-   * @param liveUser the live user data
-   */
-  bindCurrentTable: function(res, liveUser) {
-    var data = this.addControls(res);
-    this.populateTable(data, this.$current_env_table, this.templates.$buttonBar());
-  },
-
-
-  /**
-   * bind the deployed table
+   * process deployed dev and deployed live value and figure out the deployed user env vars
    * @param dev the dev deployed env
    * @param live the live deployed env
-   * @return the current deployed user vars
+   * @return the current deployed user & sys vars
    */
-  bindDeployedTable: function(dev,live) {
-    var keys = _.union(_.keys(dev.envvars),_.keys(dev.envvars));
-    keys = _.uniq(keys);
-    var sys= [];
-    var user = [];
-    _.each(keys, function(name){
+   processDeployedEnvs: function(dev, live){
+     var keys = _.keys(dev.envvars, live.envvars);
+     _.union(_.keys(dev.envvars),_.keys(live.envvars));
+     keys = _.uniq(keys);
+     var sys= [];
+     var user = [];
+     _.each(keys, function(name){
       var lvalue = live.envvars[name];
       var dvalue = dev.envvars[name];
-
-
       var val = {name:name};
       if(lvalue){
         val.liveValue = lvalue.value;
@@ -332,20 +402,45 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
         user.push(val);
       }
     });
-    res = this.models.environment.postProcessList({status:"ok", list:sys}, this.models.environment, this.models.environment.recent_field_config);
+    return {sysEnvs: sys, userEnvs: user};
+  },
+
+  /**
+   * bind the current table data
+   * @param res the table data
+   * @param liveUser the live user data
+   */
+  bindCurrentTable: function(res, liveUser) {
+    res = this.models.environment.postProcessList({status:"ok", list: res}, this.models.environment, this.models.environment.recent_field_config);
+    var data = this.addControls(res);
+    var deployedUserVarPair = {};
+    _.each(liveUser, function(el){
+      deployedUserVarPair[el.name] = el;
+    })
+    this.populateTable(data, this.$current_env_table, this.templates.$buttonBar(), deployedUserVarPair, true);
+  },
+
+
+  /**
+   * bind the deployed table
+   * @param dev the dev deployed env
+   * @param live the live deployed env
+   * @return the current deployed user vars
+   */
+  bindDeployedTable: function(sys,user, currentUser) {
+    var res = this.models.environment.postProcessList({status:"ok", list:sys}, this.models.environment, this.models.environment.recent_field_config);
     this.bindSysTable(res);
 
     res = this.models.environment.postProcessList({status:"ok", list:user}, this.models.environment, this.models.environment.recent_field_config);
-    this.bindUserTable(res);
-    return res;
+    this.bindUserTable(res, currentUser);
   },
 
   /**
    * bind the deployed table
    * @param res the response
    */
-  bindUserTable: function(res) {
-    this.populateTable(res, this.$deployed_user_env_table);
+  bindUserTable: function(res, currentUser) {
+    this.populateTable(res, this.$deployed_user_env_table, undefined, currentUser);
   },
 
 /**
