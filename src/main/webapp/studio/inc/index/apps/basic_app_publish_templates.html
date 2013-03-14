@@ -1,0 +1,48 @@
+<div class="app_templates">
+    <script type="text/template" class="build-wizard-deployed-template">
+
+        <div class="row-fluid">
+            The app will be built to target your "<\%= env \%>" App Cloud Code.
+        </div>
+        <div class="alert alert-success">
+            <i class="icon-ok icon-white icon-2x pull-left icon-spacer"></i>
+            <p class="info-message">Your App Cloud Code is running.</p>
+        </div>
+        <div class="pull-right" >
+            <strong>Click</strong> 'Next' to continue building this application.
+        </div>
+    </script>
+
+    <script type="text/template" class="build-wizard-deploy-template">
+        <div class="row-fluid">
+            The app will be built to target your "<\%= env \%>" App Cloud Code.
+        </div>
+        <div class="alert alert-error">
+            <i class="icon-exclamation-sign icon-white icon-2x pull-left icon-spacer"></i>
+            <span class="info-message">
+                <p>Your App Cloud Code is not running.</p>
+                <p>If your App Client uses cloud logic (via the $fh.act() API), this logic will not currently work.</p>
+                <p>However, if your App Client does not uses any cloud logic, you do not need to worry about this
+                    message.</p>
+            </span>
+        </div>
+        <div class="pull-right">
+            <p><strong>Click</strong> <a href="<\%= link \%>" class="jw-button-cancel">here</a> to deploy the Cloud Code for this application.</p>
+            <p><strong>Click</strong> 'Next' to ignore this warning and continue building.</p>
+        </div>
+    </script>
+
+    <script type="text/template" class="check-deploy-template">
+        <div class="row-fluid">
+            The app will be built to target your "<\%= env \%>" App Cloud Code.
+        </div>
+        <div class="alert alert-warning">
+            <i class="icon-refresh icon-spin icon-white icon-2x pull-left icon-spacer"></i>
+            <p class="info-message">Checking status of App Cloud Code ... Please Wait</p>
+            <br/>
+        </div>
+        <div class="pull-right">
+            <p><strong>Click</strong> 'Next' to skip this check.</p>
+        </div>
+    </script>
+</div>

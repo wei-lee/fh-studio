@@ -38,8 +38,9 @@ Apps.Cloudnotifications.Controller = Apps.Cloud.Controller.extend({
 
   loadNotifications: function() {
     var instGuid = $fw.data.get('inst').guid;
+    var cloudEnv = $fw.data.get('cloud_environment');
     var self = this;
-    self.models.notification_event.list(instGuid, function(res) {
+    self.models.notification_event.list(instGuid, cloudEnv, function(res) {
       $(self.views.load_spinner).hide();
       $(self.views.notification_table_container).show();
       self.renderFilters(res);
@@ -94,11 +95,12 @@ Apps.Cloudnotifications.Controller = Apps.Cloud.Controller.extend({
       userFilterField.append(self.getOptionTemplate(userFilters[k], false));
     }
     var instGuid = $fw.data.get('inst').guid;
+    var cloudEnv = $fw.data.get('cloud_environment');
     $('#cloud_notifications_audit_log_filter').unbind('click').click(function(e) {
       e.preventDefault();
       var typefilter = typeFilterField.val();
       var userfilter = userFilterField.val();
-      self.models.notification_event.list(instGuid, function(res) {
+      self.models.notification_event.list(instGuid,cloudEnv, function(res) {
         self.showAuditLog(res);
       }, function(err) {
         self.showAlert('error', 'Failed to load notification events audit log. Error: ' + err);
@@ -192,6 +194,22 @@ Apps.Cloudnotifications.Controller = Apps.Cloud.Controller.extend({
     if (message.toLowerCase().indexOf("fail") > -1) {
       $('td', row).addClass('fail');
     }
+    var parts = message.split("\n");
+    var processed = [parts[0]];
+    for(var n=1;n<parts.length;n++){
+      var p = parts[n];
+      var converted = p;
+      if(p.indexOf(":") > -1){
+        var ps = p.split(":");
+        var firstPart = ps[0];
+        var secondPart = ps.slice(1).join(":");
+        firstPart = "<span class='label' style='display: inline-block; width: 85px; padding: 2px;'>" + firstPart + "</span>";
+        converted = [firstPart, secondPart].join(" ");
+      }
+      processed.push("<span style='line-height: 2.em'>" + converted + "</span>");
+    }
+    message = processed.join("<br />");
+    $('td:eq(' + self.indexes.message + ')', row).html(message);
     var nh = "<span class='label label-" + self.getLabelClass(notification) + "'>" + js_util.capitaliseWords(notification) + "</span>";
     $('td:eq(' + self.indexes.eventType + ')', row).html(nh);
     var instGuid = $fw.data.get('inst').guid;
@@ -215,7 +233,9 @@ Apps.Cloudnotifications.Controller = Apps.Cloud.Controller.extend({
     } else if (notificationType.indexOf("stop") > -1) {
       return "warning";
     } else if (notificationType.indexOf("delete") > -1) {
-      return "important";
+      return "warning";
+    } else {
+      return "info";
     }
   }
 
