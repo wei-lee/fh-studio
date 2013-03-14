@@ -42,8 +42,6 @@ application.DestinationEmbed = application.DestinationGeneral.extend({
       var tag = Constants.EMBED_APP_TAG.replace('<GUID>', guid);
       that.generateOldEmbedScript(tag);
     }
-    
-
   },
 
   getPublishData: function (config, versions_select, wizard) {
@@ -64,23 +62,25 @@ application.DestinationEmbed = application.DestinationGeneral.extend({
     if(url){
       var html = "";
       if(!afterdeploy){
-        html += "The "+env+" embeded app has been deployed previously.";
+        html += "The "+env+" Embed App has been already been built.";
       } else {
-        html += "The "+env+" embeded app has been deployed.";
+        html += "The "+env+" Embed App has been built.";
       }
       html += "You can view the app from <a target='_blank' href='"+url+"' >here</>.";
       var p = $("<p>", {html:html});
-      var p1 = $("<p>", {text:"To embed this app in other website, you can copy and paste any of the following code:"});
+      var p1 = $("<p>", {text:"To view this Embed App in other website, you can copy and paste any of the following code:"});
       var pre1 = $("<pre>");
       var c1 = $("<code>", {text:"<iframe src='"+url+"' border='0' frameborder='0' ></iframe>", css:{color:'black'}});
       pre1.append(c1);
       var p2 = $("<p>", {text:"Or"});
       var pre2 = $("<pre>");
       var c2 = $("<code>", {text:"<script>\ndocument.write(\"<div><iframe src='"+url+"' border='0' frameborder='0'></iframe></div>\");\n</script>", css:{color:'black'}});
+
+      var note = $("<p>").html($("<b>", {text: "(Note: if you have made any changes since the last build, you must be rebuild now or you will not see your changes.)"}));
       pre2.append(c2);
-      el.append(p).append(p1).append(pre1).append(p2).append(pre2);
+      el.append(p,p1,pre1,p2,pre2,note);
     } else {
-      var p3 = $("<p>", {text:"The "+env+" embeded app hasn't been deployed."});
+      var p3 = $("<p>", {text:"The "+env+" Embed App hasn't been built."});
       el.append(p3);
     }
     return el;

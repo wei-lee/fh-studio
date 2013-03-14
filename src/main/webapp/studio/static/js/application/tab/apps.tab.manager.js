@@ -286,6 +286,7 @@ ManageappsTabManager = Tab.Manager.extend({
             // Check if the current app is a Node.js one
             if (self.isNodeJsApp()) {
               console.log('Node.js based app, applying changes');
+              // TODO CHECK I can remove this call and method
               self.enableNodejsAppMode();
 
               // Show Node cloud logo
@@ -294,6 +295,7 @@ ManageappsTabManager = Tab.Manager.extend({
               });
             } else {
               console.log('Rhino based app, applying changes');
+              // TODO CHECK I can remove this call and method
               self.enableRhinoAppMode();
 
               // Show Rhino cloud logo
@@ -406,19 +408,11 @@ ManageappsTabManager = Tab.Manager.extend({
   enableRhinoAppMode: function() {
     $('.nodejs_mode').hide(); // hide nodejs only stuff
     $('.rhino_mode').show(); // show rhino only stuff
-
-    // Change some "next" steps in wizards
-    $('input[name=app_publish_ipad_provisioning_radio]:first').attr('next', 'app_publish_ipad_versions');
-    $('input[name=app_publish_iphone_provisioning_radio]:first').attr('next', 'app_publish_iphone_versions');
   },
 
   enableNodejsAppMode: function() {
     $('.rhino_mode').hide(); // hide rhino only stuff
     $('.nodejs_mode').show(); // show nodejs only stuff
-
-    // Change some "next" steps in wizards
-    $('input[name=app_publish_ipad_provisioning_radio]:first').attr('next', 'app_publish_ipad_deploying_env');
-    $('input[name=app_publish_iphone_provisioning_radio]:first').attr('next', 'app_publish_iphone_deploying_env');
   },
 
   /*

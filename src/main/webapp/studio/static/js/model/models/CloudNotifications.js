@@ -35,7 +35,7 @@ model.CloudNotifications = model.Model.extend({
     }
   ],
 
-  list: function(appId, success, fail, audit, eventType, user){
+  list: function(appId, cloudEnv, success, fail, audit, eventType, user){
     var url = Constants.CLOUD_NOTIFICATIONS_LIST_URL;
     var params = {appGuid: appId, eventGroup:'NOTIFICATION'};
     if(eventType !== 'all'){
@@ -43,6 +43,9 @@ model.CloudNotifications = model.Model.extend({
     }
     if(user !== 'all'){
       params.updatedBy = user;
+    }
+    if(cloudEnv){
+      params.env = cloudEnv;
     }
     if(audit){
       params.audit = true;
