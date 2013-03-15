@@ -16,6 +16,7 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
   templates: {
     controls :".row-controls",
     confirmAction:".confirm-action",
+    confirmActionMultiple:".confirm-action-multiple",
     confirmPush:".confirm-push",
     alert:".alert",
     actionWait:".create-wait-msg",
@@ -41,8 +42,8 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
     alerts_area: ".alerts",
 
     allLocks: ".lock",
-    liveLock: ".live-lock.lock"
-
+    liveLock: ".live-lock.lock",
+    loadingView: "#env_var_loading_view"
   },
 //  var $save = $('.save_env_var_btn', this.subviews.$edit);
   controls :{
@@ -74,6 +75,7 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
     this.subviews.$edit_dev_value = $(this.subviews.edit_dev_value,this.subviews.$edit);
     this.subviews.$edit_guid = $(this.subviews.edit_guid,this.subviews.$edit);
     this.subviews.$edit_dup = $(this.subviews.edit_dup,this.subviews.$edit);
+    this.subviews.$loading_view = $(this.subviews.loadingView, this.$container);
 
     this.subviews.$alerts_area = $(this.subviews.alerts_area, this.$container);
     this.subviews.$allLocks = $(this.subviews.allLocks, this.$container);
@@ -86,6 +88,7 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
 
     this.templates.$controls       = this.compile(this.templates.controls);
     this.templates.$confirmAction  = this.compile(this.templates.confirmAction);
+    this.templates.$confirmActionMultiple = this.compile(this.templates.confirmActionMultiple);
     this.templates.$confirmPush    = this.compile(this.templates.confirmPush);
     this.templates.$alert          = this.compile(this.templates.alert);
     this.templates.$actionWait     = this.compile(this.templates.actionWait);
@@ -143,6 +146,8 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
   show: function() {
     this.initCloudFn();
     this.app = $fw.data.get('inst').guid;
+    this.subviews.$list.hide();
+    this.subviews.$loading_view.show();
     return this.showEnvironment();
   },
 
@@ -178,7 +183,9 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
    * as it will probably be too technical
    */
   handleError: function(alert, $buttons, msg) {
-    this.resetButtons($buttons ? $buttons : $("button", this.$container));
+    if($buttons){
+      this.resetButtons($buttons ? $buttons : $("button", this.$container));
+    }
     if(msg && _.isString(msg) && !msg.match(/^FHCore error/)) {
       alert.msg = alert.msg + " : <b>" + msg + "</b>";
     }
@@ -195,8 +202,6 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
     }
     var self = this;
     this.$container.show();
-    this.$subviews.hide();
-    this.subviews.$list.show();
 
     // create a partial function
     var handleGetEnvError = _.bind(this.handleError,this, {type:"error", msg:"Unexpected Error getting environment list"} , null);
@@ -241,6 +246,8 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
       }
     ],
     function(err, results){
+      self.subviews.$loading_view.hide();
+      self.subviews.$list.show();
       if(err) {
         console.log("err " + err);
       }
@@ -263,10 +270,20 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
    * @return {*}
    */
   addControls: function(res) {
+    var self = this;
     $("div").on("click", "input.toggle-all"  , function toggleAll(e){
       var $c = $(e.target);
       var $table = $c.closest('.dataTables_scroll');
       $(".row-control", $table).prop("checked" , $c.is(":checked") );
+    });
+    $("div").on("click", "input[type=checkbox]", function(e){
+      var $c = $(e.target);
+      var $table = $c.closest('.dataTables_scroll');
+      if($table.find("input:checked").length > 0){
+        $table.parent().find(".btn-toolbar").find(".btn.hidden").removeClass("hidden");
+      } else {
+        $table.parent().find(".btn-toolbar").find(".unset-env, .delete-env").addClass("hidden");
+      }
     });
     res.aoColumns.unshift({
       sTitle: "<div><input type='checkbox' class='toggle-all'/></div>",
@@ -290,17 +307,27 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
    */
   populateTable: function(data, $env_table, $button_bar, comparison, allowEdit){
     var self = this;
-    var cloudEnv = $fw.data.get('cloud_environment');
+    var cloudEnv = this.currentEnv();
+    var sortCol = 0;
+    _.each(data.aoColumns, function(el, index){
+      if(el.sTitle == "Environment Variable"){
+        sortCol = index;
+      }
+    });
+    var sDom = "<'row-fluid'r>t<'row-fluid'>";
+    if($button_bar){
+      sDom = "<'row-fluid'<'span12'f>r>t<'row-fluid'>";
+    }
     $env_table.dataTable({
+      "aaSorting": [[sortCol, 'asc']],
       "bScrollAutoCss": true,
       "bScrollCollapse": true,
       "sScrollY": "250px",
       "bSortClasses": false,
       "bFilter": false,
       "bDestroy": true,
-      "bAutoWidth": false,
-      "sDom": "<'row-fluid'<'span12'f>r>t<'row-fluid' <'span6'i>>",
-      "sPaginationType": "bootstrap",
+      "bAutoWidth": true,
+      "sDom": sDom,
       "bLengthChange": false,
       "aaData": data.aaData ,
       "aoColumns": data.aoColumns,  // model.field_config,
@@ -313,8 +340,13 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
         self.rowRender(nRow, aData, iDisplayIndex, comparison, cloudEnv);
       }
     });
+    $(window).bind("resize", function(){
+      //a hack to force dataTable to resize when sScrollY is enabled
+      $(".dataTables_scrollHeadInner, .dataTables_scrollHeadInner, table", self.$container).css({ width: "100%"});
+      $env_table.fnAdjustColumnSizing();
+    });
     if($button_bar && $button_bar.length) {
-      $('.span12:first', this.$container).html($button_bar);//.css({padding:"0.5em"});
+      $('.span12:first', this.$container).html($button_bar).css("margin-bottom", "1em");
     }
     this.bindControls();
     if(allowEdit){
@@ -327,30 +359,38 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
     var editIndex = cloudEnv == "live"? 3: 2;
     table.find("tr").find('td:eq('+editIndex+')').editable(function(value, settings){
       var that = this;
+      $(this).tooltip("hide");
       var row = $(this).parent();
       var envVarData = self.dataForRow(row[0]);
       var devValue = cloudEnv == "live" ? null: value;
       var liveValue = cloudEnv == "live" ? value: null;
       var oldValue = cloudEnv == "live" ? envVarData[3]: envVarData[2];
+      var envName = envVarData[1];
+      var handleError = _.bind(self.handleError,self, {type:"error", msg: self.templates.$actionError({env:{name: envName}, action : "Updating"})});
+      var handleSuccess = _.bind(self.showEnvironment,self, {type:"success",msg: self.templates.$actionComplete({env:{name: envName}, action : "updated"})});
       self.models.environment.update(self.app, envVarData[envVarData.length-1], envVarData[1], devValue, liveValue, function(res){
-
+        handleSuccess();
       }, function(err){
         $(that).text(oldValue);
-        self.showAlert({type:'error', msg:"Failed to update environment variable value"});
+        handleError();
       });
       return value;
+    }, {
+      "tooltip": ""
     });
+    table.find("tr").find('td:eq('+editIndex+')').attr("data-toggle", "tooltip").attr("data-original-title", "Click to edit");
+    table.find("tr").find('td:eq('+editIndex+')').tooltip();
   },
 
   rowRender: function(nRow, aData, dIndex, comparison, env){
     var nameIndex = 0;
+    var isLive = env === "live";
     var valueIndex = isLive?2:1;
     if(aData[0].indexOf("<input") > -1){
       nameIndex = nameIndex + 1;
       valueIndex = valueIndex+1;
     }
     var name = aData[nameIndex];
-    var isLive = env === "live";
     var compareValueKey = isLive?"liveValue":"devValue";
 
     var value = aData[valueIndex];
@@ -367,7 +407,6 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
         $("td:eq("+valueIndex+")", nRow).addClass("ok");
       }
     }
-    
     var disabledIndex = isLive?valueIndex - 1 : valueIndex + 1;
     $("td:eq("+disabledIndex+")", nRow).addClass("disabled");
   },
@@ -469,12 +508,22 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
    * @return {Boolean}
    */
   handleDelete: function(e) {
-    var $row = $(e.target).closest("tr");
-    var data = this.dataForRow($row.get(0));
-    var o =_.object(this.names, data);
-    var deleteEnvVar = _.bind(this.deleteEnvVar, this, e,$row,data,o);
+    e.preventDefault();
+    var self = this;
+    var $rows = this.getSelectedRows();
+    if($rows.length == 0){
+      this.showAlert({type:"error", msg:"No environment variables are selected"});
+      return;
+    }
+    var envVarIds = [];
+    _.each($rows, function(el){
+      var data = self.dataForRow(el[0]);
+      envVarIds.push(data[data.length - 1]);
+    });
 
-    this.showBooleanModal(this.templates.$confirmAction({action: "delete" , env:o}), deleteEnvVar);
+    var deleteEnvVar = _.bind(this.deleteEnvVar, this, e, envVarIds);
+
+    this.showBooleanModal(this.templates.$confirmActionMultiple({action: "delete"}), deleteEnvVar);
     return false;
   } ,
 
@@ -484,21 +533,44 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
    * @return {Boolean}
    */
   handleUnset: function(e) {
-    var $row = $(e.target).closest("tr");
-    var data = this.dataForRow($row.get(0));
-    var o =_.object(this.names, data);
-    var deleteEnvVar = _.bind(this.deleteEnvVar, this, e,$row,data,o);
+    e.preventDefault();
+    var self = this;
+    var $rows = this.getSelectedRows();
+    if($rows.length == 0){
+      this.showAlert({type:"error", msg:"No environment variables are selected"});
+      return;
+    }
+    var envVarIds = [];
+    _.each($rows, function(el){
+      var data = self.dataForRow(el[0]);
+      envVarIds.push(data[data.length - 1]);
+    });
 
-    this.showBooleanModal(this.templates.$confirmAction({action: "unset" , env:o}), deleteEnvVar);
+    var unsetEnvVar = _.bind(this.unsetEnvVar, this, e, envVarIds);
+
+    this.showBooleanModal(this.templates.$confirmActionMultiple({action: "unset"}), unsetEnvVar);
     return false;
-  } ,
+  },
+
+  getSelectedRows: function(){
+    var rows = [];
+    var selected = $('#current_env_vars_table').find("tr > td > input:checked");
+    _.each(selected, function(el){
+      if(el){
+        rows.push($(el).closest("tr"));
+      }
+    });
+    return rows;
+  },
 
   /**
    * disable the buttons while processing a request
    * @param buttons the buttons to disable
    */
   disableButtons: function(buttons) {
-    buttons.button('loading');
+    if(buttons){
+      buttons.button('loading');
+    }
   } ,
 
   /**
@@ -506,7 +578,9 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
    * @param buttons the buttons to reset
    */
   resetButtons: function(buttons) {
-    buttons.button('reset');
+    if(buttons){
+      buttons.button('reset');
+    }
   } ,
 
   /**
@@ -550,11 +624,25 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
    */
   createEnvVar: function($modal,e){
     var name = $(this.subviews.edit_name, $modal).val();
-    var devValue = $(this.subviews.edit_dev_value, $modal).val();
-    var liveValue = $(this.subviews.edit_live_value, $modal).val();
-
+    if(name == ""){
+      $modal.find(".control-group:first").addClass("error").find(".help-inline").show();
+      $modal.find(".control-group:first").find("input").bind("keydown", function(){
+        $(this).closest(".control-group.error").removeClass("error");
+        $(this).next(".help-inline").hide();
+      });
+      return false;
+    }
+    var devValue = undefined;
+    if($(this.subviews.edit_dev_value, $modal).hasClass("modified")){
+      devValue = $(this.subviews.edit_dev_value, $modal).val();
+    }
+    
+    var liveValue = undefined;
+    if($(this.subviews.edit_live_value, $modal).hasClass("modified")){
+      liveValue = $(this.subviews.edit_live_value, $modal).val();
+    }
+    
     var env = {name:name, devValue:devValue, liveValue:liveValue};
-
     this.showAlert({type:'info', msg: this.templates.$actionWait({env:env, action : "Creating"})});
 
     var handleError = _.bind(this.handleError,this, {type:"error", msg: this.templates.$actionError({env:env, action : "creating"})});
@@ -640,9 +728,12 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
    * @param name the var name
    */
   showCreateEnv: function(e, name) {
+    e.preventDefault();
     var $modal = $(this.templates.$editModal({env:{name : name}}));
     var createEnvVar = _.bind(this.createEnvVar, this, $modal);
     $('.btn-success', $modal).on('click', createEnvVar);
+    $modal.find("i").popover();
+    $modal.find("i.lock").bind("click", this.toggleLock);
     $modal.modal();
   },
 
@@ -667,6 +758,7 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
     var $target = $(e.target);
     $target.toggleClass("icon-lock").toggleClass("icon-unlock");
     var $input = $target.prev("input");
+    $input.addClass("modified");
     if ($input.attr('disabled')) {
       $input.removeAttr('disabled');
     } else  {
@@ -714,6 +806,7 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
    * @return {Boolean}
    */
   handlePush: function(e) {
+    e.preventDefault();
     var env = this.currentEnv();
     var pushEnv = _.bind(this.pushEnv, this, env,e);
     this.showBooleanModal(this.templates.$confirmPush({env: env}), pushEnv);
@@ -747,17 +840,30 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
    * @param env the original data as an object
    * @return {Boolean}
    */
-  deleteEnvVar: function(e, $row,data,env) {
+  deleteEnvVar: function(e,data,env) {
     var $buttons = $(e.target).siblings("button").andSelf();
     this.disableButtons($buttons);
 
-    var handleError = _.bind(this.handleError,this, {type:"error", msg:this.templates.$actionError({env:env,action:"Deleting"})},$buttons);
-    var handleSuccess = _.bind(this.showEnvironment,this, {type:"success",msg: this.templates.$actionComplete({env:env,action:"deleted"})});
+    var handleError = _.bind(this.handleError,this, {type:"error", msg:this.templates.$actionError({env:{name:"variables"},action:"Deleting"})},$buttons);
+    var handleSuccess = _.bind(this.showEnvironment,this, {type:"success",msg: this.templates.$actionComplete({env:{name:"variables"},action:"deleted"})});
 
-    this.showAlert({type:'info',msg: this.templates.$actionWait({env:env, action : "Deleting"})});
+    this.showAlert({type:'info',msg: this.templates.$actionWait({env:{name:"variables"}, action : "Deleting"})});
 
-    this.models.environment.remove(this.app ,env.guid,  handleSuccess, handleError);
+    this.models.environment.remove(this.app, data, handleSuccess, handleError);
     return false;
+  },
+
+  unsetEnvVar: function(e, envVarIds){
+    var $buttons = $(e.target).siblings("button").andSelf();
+    this.disableButtons($buttons);
+    var cloudEnv = this.currentEnv();
+    var handleError = _.bind(this.handleError,this, {type:"error", msg:this.templates.$actionError({env:{name:"variables"},action:"Unsetting"})}, $buttons);
+    var handleSuccess = _.bind(this.showEnvironment,this, {type:"success",msg: this.templates.$actionComplete({env:{name:"variables"},action:"unset"})});
+
+    this.showAlert({type:'info',msg: this.templates.$actionWait({env:{name:""}, action : "Unsetting"})});
+    this.models.environment.unset(this.app, cloudEnv, envVarIds,  handleSuccess, handleError);
+    return false;
+
   },
 
   // TODO come back to this

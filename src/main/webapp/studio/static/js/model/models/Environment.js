@@ -7,17 +7,17 @@ model.Environment = model.Model.extend({
     {
       field_name: "name",
       column_title: "Environment Variable",
-      "sWidth": "30%"
+      "width": "20%"
     },
     {
       field_name: "devValue",
       column_title: "Dev",
-      "sWidth": "30%"
+      "width": "30%"
     },
     {
       field_name: "liveValue",
       column_title: "Live",
-      "sWidth": "30%"
+      "width": "30%"
     },
     {
       field_name: "sysCreated",
@@ -103,9 +103,9 @@ model.Environment = model.Model.extend({
    * @param fail callback
    * @return {*}
    */
-  remove: function(app, id, success, fail) {
+  remove: function(app, envVarIds, success, fail) {
     var url = Constants.ENVIRONMENT_TARGET_DELETE_URL;
-    var params = {"appId": app,"envVarId": id};
+    var params = {"appId": app,"envVarIds": envVarIds};
     return this.serverPost(url, params, success, fail, true);
   },
 
@@ -176,6 +176,17 @@ model.Environment = model.Model.extend({
   push: function(app, env, success, fail) {
     var params = {"appId": app,env:env};
     var url = Constants.ENVIRONMENT_TARGET_PUSH_URL;
+    return this.serverPost(url, params, success, fail, true);
+  },
+
+  unset: function(app, env, envVarIds, success, fail){
+    var params = {"appId": app, "envVarIds": envVarIds};
+    if(env == "live"){
+      params.liveValue = true;
+    } else {
+      params.devValue = true;
+    }
+    var url = Constants.ENVIRONMENT_TARGET_UNSET_URL;
     return this.serverPost(url, params, success, fail, true);
   }
 
