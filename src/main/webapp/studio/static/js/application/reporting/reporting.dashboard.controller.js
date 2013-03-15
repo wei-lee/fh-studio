@@ -154,7 +154,7 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
           params.domain = id;
           var tableId = metric.metric.replace("domain","app");
           if("true" === metric.isEnabled){
-           var template = self.getTemplate(metric.metric, metric.boarder,metric.target,metric.heading, metric.heading + " ", tableId);
+           var template = self.getTemplate(metric.metric, metric.boarder,metric.target,metric.heading, metric.heading + " "); /*, tableId); */
             $(metric.container).append(template);
           }
 
@@ -219,7 +219,7 @@ Reporting.Dashboard.Controller = Apps.Reports.Support.extend({
 
     }
 
-    async.series([populateDashboardTotals,populateTopResults], function (errs, oks){
+    async.series([populateDashboardTotals/*,populateTopResults*/], function (errs, oks){
       if(errs){
         console.log("errors populating data ", errs);
       }
