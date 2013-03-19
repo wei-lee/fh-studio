@@ -1,6 +1,24 @@
 -------------------------------------------------------------------------------
 Component: fh-studio
 -------------------------------------------------------------------------------
+3.15.9 - 2013-03-11 - IR197 - Jim OLeary
+----------------------------------------------------------------------------
+* 3336 - Remove option to auto deploy cloud code when building client app
+
+3.15.8 - 2013-03-06 - IR196 - Wei Li
+----------------------------------------------------------------------------
+* 3329 - Split cloud notifications between dev & live
+* 3337 - Recorded GIT info for all cloud deploys and show it in cloud notifications
+* 3338 - Prompt for approver info when deploy to live environment and show it in cloud notifications
+
+3.15.7 - 2013-02-27 - IR196 - Jim OLeary
+----------------------------------------------------------------------------
+* 1588 - App Forms Phase II : Wufoo Page should ask for App Name
+
+3.15.6 - 2013-02-19 - IR195 - Wei Li
+----------------------------------------------------------------------------
+* 3147 - Added realtime reporting for App cloud resource usage
+
 3.15.5 - 2013-02-13 - IR195 - Wei Li
 ----------------------------------------------------------------------------
 * 3186 - Updated feedhenry.js to maintain backward compatibility for $fh.hash

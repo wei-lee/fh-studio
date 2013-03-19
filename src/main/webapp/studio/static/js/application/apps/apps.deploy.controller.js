@@ -27,12 +27,12 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
   container: null,
   active_async_task: null,
 
-  init: function() {
+  init: function () {
     this._super();
     this.initFn = _.once(this.initBindings);
   },
 
-  show: function() {
+  show: function () {
     this._super(this.views.deploying_container);
     var self = this;
 
@@ -55,47 +55,47 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
 
       $(this.container).show();
 
-      this.model.deploy.list(app_guid, cloud_env, function(targets) {
+      this.model.deploy.list(app_guid, cloud_env, function (targets) {
         self.renderTargets(targets.list);
-      }, function() {
+      }, function () {
         // List failed
       });
     }
   },
 
-  disableDeployButton: function(sub_container) {
+  disableDeployButton: function (sub_container) {
     $('.deploy_cloud_app', sub_container).attr('disabled', 'disabled');
     $('.abort_cloud_app_deploy', sub_container).removeClass('hidden').show();
   },
 
-  enableDeployButton: function(sub_container) {
+  enableDeployButton: function (sub_container) {
     $('.deploy_cloud_app', sub_container).removeAttr('disabled');
     $('.abort_cloud_app_deploy', sub_container).hide();
   },
 
-  initBindings: function() {
+  initBindings: function () {
     var self = this;
     var container = $(this.views.deploying_container);
 
     $fw.client.lang.insertLangForContainer(container);
 
-    $('.deploy_cloud_app', this.sub_container).unbind().click(function(e) {
+    $('.deploy_cloud_app', this.sub_container).unbind().click(function (e) {
       e.preventDefault();
       self.disableDeployButton($(this).closest('.deploy_devlive_container'));
       self.deploy();
     });
 
-    $('.create_new_deploy_target', this.sub_container).unbind().click(function() {
+    $('.create_new_deploy_target', this.sub_container).unbind().click(function () {
       $('#admin_tab').trigger('click');
       $('.nav-list .deploy_targets', this.sub_container).trigger('click');
     });
 
-    $('.abort_cloud_app_deploy', this.sub_container).unbind().click(function() {
+    $('.abort_cloud_app_deploy', this.sub_container).unbind().click(function () {
       self.abort();
     });
   },
 
-  abort: function() {
+  abort: function () {
     if (this.active_async_task) {
       this.active_async_task.cancel();
     }
@@ -103,25 +103,29 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     this.resetProgress(this.sub_container);
   },
 
-  deploy: function() {
+  deploy: function () {
     this.makeProgressStriped(this.sub_container);
     var env = $fw.data.get('cloud_environment');
 
     if (env === 'live') {
-      this.liveDeploy();
+      if($fw.getClientProp('require-approver-for-live-stage') == 'true'){
+        this.promptForApprover();
+      } else {
+        this.liveDeploy();
+      }
     } else {
       this.devDeploy();
     }
   },
 
-  renderTargets: function(targets) {
+  renderTargets: function (targets) {
     var self = this;
     var targets_area = $(this.subviews.deploy_targets, this.sub_container).show();
     targets_area.empty();
     var current_target_button;
     var row;
 
-    $.each(targets, function(i, target) {
+    $.each(targets, function (i, target) {
       // 3 targets per row
       if (i === 0 || i % 3 === 0) {
         // Create a new row
@@ -156,7 +160,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
         current_target_button = button;
       }
 
-      button.click(function(e) {
+      button.click(function (e) {
         e.preventDefault();
         var target = $(this).data();
         $(this).parent().parent().find('a').removeClass('active');
@@ -177,13 +181,47 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     });
   },
 
-  getTargetData: function() {
+  getTargetData: function () {
     var selected_button = $(this.subviews.deploy_targets + ' a.active', this.sub_container);
     var target = selected_button.data() || null;
     return target;
   },
 
-  liveDeploy: function(guid) {
+  promptForApprover: function (guid) {
+    var self = this;
+    var promptTemp = $(self.container).find('#deploy_approver_template').clone().removeClass("hidden");
+    promptTemp.modal({
+      keyboard: false,
+      backdrop: 'static'
+    }).find('.cancel-btn').unbind('click').click(function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      promptTemp.modal("hide");
+      self.enableDeployButton(self.sub_container);
+      self.resetProgress(self.sub_container);
+    }).end().find('.confirm-btn').unbind('click').click(function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      var approverEmail = promptTemp.find('.approver_email').val();
+      if (approverEmail === "") {
+        promptTemp.find('.approver_email_control').addClass('error').find('.help-inline').removeClass('hidden');
+        promptTemp.find('.approver_email_control').find('.approver_email').bind('keydown', function (e) {
+          $(this).parents('.error').removeClass('error').end().siblings('.help-inline').addClass('hidden');
+        });
+      } else {
+        if (!guid) {
+          guid = $fw.data.get('inst').guid;
+        }
+        var comment = promptTemp.find('.approver_comment').val();
+        promptTemp.modal("hide");
+        self.liveDeploy(guid, approverEmail, comment);
+      }
+    });
+
+  },
+
+  liveDeploy: function (guid, approverEmail, comment) {
+
     this.sub_container.data('deploy', true);
 
     var target = this.getTargetData();
@@ -196,7 +234,13 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
       guid: guid,
       target_id: target.fields.id
     };
-    $fw.server.post(url, params, function(res) {
+    if(approverEmail){
+      params.approver = approverEmail;
+    }
+    if(comment && comment.length > 0){
+      params.comment = comment;
+    }
+    $fw.server.post(url, params, function (res) {
       if (res.status === "ok") {
         self.deployStarted(res.cacheKey, self.sub_container, 'live');
       } else {
@@ -206,7 +250,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     }, null, true);
   },
 
-  devDeploy: function(guid) {
+  devDeploy: function (guid) {
     this.sub_container.data('deploy', true);
 
     var target = this.getTargetData();
@@ -220,7 +264,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
       target_id: target.fields.id
     };
 
-    $fw.server.post(url, params, function(res) {
+    $fw.server.post(url, params, function (res) {
       if (res.status === "ok") {
         self.deployStarted(res.cacheKey, self.sub_container, 'dev');
       } else {
@@ -230,7 +274,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     }, null, true);
   },
 
-  deployStarted: function(cache_key, sub_container, env) {
+  deployStarted: function (cache_key, sub_container, env) {
     var self = this;
     this.resetProgress(sub_container);
     console.log('deploying.deployStarted: [' + cache_key + ']');
@@ -243,7 +287,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
       maxTime: Properties.cache_lookup_timeout,
       // 5 minutes
       maxRetries: Properties.cache_lookup_retries,
-      timeout: function(res) {
+      timeout: function (res) {
         console.log('deploying timeout error > ' + JSON.stringify(res));
         self.updateProgressLog("Deploy request timed out.", sub_container);
         if ($.isFunction(self.deployCompleteFailed)) {
@@ -251,12 +295,12 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
         }
         self.updateProgress(100, sub_container);
       },
-      update: function(res) {
+      update: function (res) {
         console.log('deploying update > ' + JSON.stringify(res));
         for (var i = 0; i < res.log.length; i++) {
           console.log(res.log[i]);
         }
-        if(res.progress){
+        if (res.progress) {
           progress = res.progress;
         } else {
           progress += 2;
@@ -265,14 +309,14 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
         self.updateProgressLog(res.log, sub_container);
         self.updateProgress(progress, sub_container);
       },
-      complete: function(res) {
+      complete: function (res) {
         console.log('Deploy successful > ' + JSON.stringify(res));
         if ($.isFunction(self.deployCompleteSuccess)) {
           self.deployCompleteSuccess(sub_container, env);
         }
         self.updateProgress(100, sub_container);
       },
-      error: function(res) {
+      error: function (res) {
         console.log('Deploy error > ' + JSON.stringify(res));
         self.updateProgressLog(res.error, sub_container);
         if ($.isFunction(self.deployCompleteFailed)) {
@@ -280,27 +324,27 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
         }
         self.updateProgress(100, sub_container);
       },
-      retriesLimit: function() {
+      retriesLimit: function () {
         console.log('Deploy retriesLimit exceeded: ' + Properties.cache_lookup_retries);
         if ($.isFunction(self.deployCompleteFailed)) {
           self.deployCompleteFailed(sub_container);
         }
         self.updateProgress(100, sub_container);
       },
-      end: function() {
+      end: function () {
         sub_container.data('deploy', false);
       }
     });
     this.active_async_task.run();
   },
 
-  updateProgress: function(value, sub_container) {
+  updateProgress: function (value, sub_container) {
     var progress_el = $('.cloud_deploy_progress .progress', sub_container);
     var bar = $('.bar', progress_el);
     bar.css('width', value + '%');
   },
 
-  resetProgress: function(sub_container) {
+  resetProgress: function (sub_container) {
     var progress_el = $('.cloud_deploy_progress .progress', sub_container);
     var progress_log_el = $('.cloud_deploy_progress textarea', sub_container);
     var bar = $('.bar', progress_el);
@@ -308,12 +352,12 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     progress_log_el.val('');
 
     bar.css('width', '0%');
-    setTimeout(function() {
+    setTimeout(function () {
       bar.css('width', '0%');
     }, 500);
   },
 
-  updateProgressLog: function(log, sub_container) {
+  updateProgressLog: function (log, sub_container) {
     // allow for string or array of strings
     log = 'string' === typeof log ? [log] : log;
     var progress_log_el = $('.cloud_deploy_progress textarea', sub_container);
@@ -331,26 +375,26 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     }
   },
 
-  makeProgressGreen: function(sub_container) {
+  makeProgressGreen: function (sub_container) {
     $('.cloud_deploy_progress .progress', sub_container).removeClass('progress-striped').addClass('progress-success');
   },
 
-  makeProgressRed: function(sub_container) {
+  makeProgressRed: function (sub_container) {
     $('.cloud_deploy_progress .progress', sub_container).removeClass('progress-striped').addClass('progress-danger');
   },
 
-  makeProgressStriped: function(sub_container) {
+  makeProgressStriped: function (sub_container) {
     $('.cloud_deploy_progress .progress', sub_container).removeClass('progress-danger progress-success').addClass('progress-striped');
   },
 
-  deployCompleteSuccess: function(sub_container, env) {
+  deployCompleteSuccess: function (sub_container, env) {
     console.log('Deploy complete - success [' + env + ']');
     this.enableDeployButton(sub_container);
     this.makeProgressGreen(sub_container);
     $('.status_light.' + env).addClass('okay');
   },
 
-  deployCompleteFailed: function(sub_container) {
+  deployCompleteFailed: function (sub_container) {
     console.log('Deploy complete - failed.');
     this.enableDeployButton(sub_container);
     this.makeProgressRed(sub_container);
@@ -361,7 +405,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
    * callback when a cacheKey for a Deploy has completed.
    * It doesn't track progress.
    */
-  simpleLiveDeploy: function(guid, target_id, cb) {
+  simpleLiveDeploy: function (guid, target_id, cb) {
     var self = this;
     if (!guid) {
       guid = $fw.data.get('inst').guid;
@@ -372,7 +416,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
       target_id: target_id || 'default'
     };
 
-    $fw.server.post(url, params, function(res) {
+    $fw.server.post(url, params, function (res) {
       if (res.status === "ok") {
         self.simpleDeployStart(res.cacheKey, cb);
       } else {
@@ -381,7 +425,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     }, null, true);
   },
 
-  simpleDevDeploy: function(guid, target_id, cb) {
+  simpleDevDeploy: function (guid, target_id, cb) {
     var self = this;
     if (!guid) {
       guid = $fw.data.get('inst').guid;
@@ -392,7 +436,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
       target_id: target_id || 'default'
     };
 
-    $fw.server.post(url, params, function(res) {
+    $fw.server.post(url, params, function (res) {
       if (res.status === "ok") {
         self.simpleDeployStart(res.cacheKey, cb);
       } else {
@@ -401,7 +445,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     }, null, true);
   },
 
-  simpleDeployStart: function(cache_key, cb) {
+  simpleDeployStart: function (cache_key, cb) {
     var self = this;
     console.log('deploying.deployStarted: [' + cache_key + ']');
 
@@ -412,22 +456,22 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
       maxTime: Properties.cache_lookup_timeout,
       // 5 minutes
       maxRetries: Properties.cache_lookup_retries,
-      timeout: function(res) {
+      timeout: function (res) {
         cb(res);
       },
-      update: function(res) {
+      update: function (res) {
         console.log('deploying update > ' + JSON.stringify(res));
       },
-      complete: function(res) {
+      complete: function (res) {
         cb(res);
       },
-      error: function(res) {
+      error: function (res) {
         cb(res);
       },
-      retriesLimit: function() {
+      retriesLimit: function () {
         cb(res);
       },
-      end: function() {}
+      end: function () {}
     });
     deploy_task.run();
   }

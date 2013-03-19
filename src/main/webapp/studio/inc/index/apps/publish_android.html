@@ -26,26 +26,17 @@
   </div>
 
   <div id= "app_publish_android_wizard" class="ui-helper-hidden">
-    <form id="android_publish_form">
-    
-      <div id="app_publish_android_deploying_env" class="app_publish_deploying_env">
-      	<div id="app_publish_android_deploying_env_text" class="insert-lang-block"></div>
-      	<form>
-        <div class="form-field ui-helper-reset ui-helper-clearfix">
-          <input type="checkbox" name="app_publish_android_deploying" next="app_publish_android_versions" checked="checked"><label>Deploy the server-side of the app</label>
+      <form id="android_publish_form">
+        <div id="app_publish_android_info" class="app_publish_info">
+            <form>
+                <h4>App Client</h4>
+                <p id="app_publish_android_versions_text" class="insert-lang-block"></p>
+
+                <h4>App Cloud</h4>
+                <p class="application-status"></p>
+            </form>
         </div>
-      	
-        </form>
-      </div>
-      
-      <div id="app_publish_android_deploying_progress" class="app_publish_deploying_progress" track="no">
-		 <div id="app_publish_android_deploying_env_progresslog"><textarea class="progresslog" readonly="true"></textarea></div>
-      </div>
-    
-      <div id="app_publish_android_versions">
-        <div id="app_publish_android_versions_text" class="insert-lang-block"></div>
-      </div>
-      
+
       <div id="app_publish_android_password">
         <div id="app_publish_android_password_text" class="insert-lang-block"></div>
         <div class="form-field ui-helper-reset ui-helper-clearfix">

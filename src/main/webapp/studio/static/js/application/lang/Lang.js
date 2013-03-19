@@ -95,25 +95,11 @@ var Lang = {
   iphone_publish_wizard_supertitle: 'iPhone Build',
   app_publish_iphone_select_provisionings_title: 'Please select the Provisioning Profile',
 
-  app_publish_iphone_deploying_env_text: "Would you like to deploy the app's server-side code?",
-  app_publish_iphone_deploying_env_title: 'Server-side code deploying',
-  app_publish_iphone_deploying_progress_title: 'Deploying App',
+  app_publish_iphone_info_title: 'Information',
 
-  app_publish_android_deploying_env_text: "Would you like to deploy the app's server-side code?",
-  app_publish_android_deploying_env_title: 'Server-side code deploying',
-  app_publish_android_deploying_progress_title: 'Deploying App',
-
-  app_publish_ipad_deploying_env_text: "Would you like to deploy the app's server-side code?",
-  app_publish_ipad_deploying_env_title: 'Server-side code deploying',
-  app_publish_ipad_deploying_progress_title: 'Deploying App',
-
-  app_publish_blackberry_deploying_env_text: "Would you like to deploy the app's server-side code?",
-  app_publish_blackberry_deploying_env_title: 'Server-side code deploying',
-  app_publish_blackberry_deploying_progress_title: 'Deploying App',
-
-  app_publish_windowsphone7_deploying_env_text: "Would you like to deploy the app's server-side code?",
-  app_publish_windowsphone7_deploying_env_title: 'Server-side code deploying',
-  app_publish_windowsphone7_deploying_progress_title: 'Deploying App',
+  app_publish_ipad_info_title: 'Information',
+  app_publish_blackberry_info_title: 'Information',
+  app_publish_windowsphone7_info_title: 'Information',
 
   app_publish_iphone_upload_provisionings_title: 'Please upload the provisioning profile',
   app_publish_iphone_upload_progress_title: 'Uploading provisioning profile',
@@ -127,7 +113,9 @@ var Lang = {
   app_publish_iphone_versions_text: 'The app will be built using iOS SDK 6 and can be installed on devices running iOS 4.3 and above.',
 
   ipad_publish_wizard_supertitle: 'iPad Build',
+  app_publish_ipad_select_provisionings_text: 'Please select the Provisioning Profile',
   app_publish_ipad_select_provisionings_title: 'Please select the Provisioning Profile',
+  app_publish_ipad_no_provisionings_text: "You have not yet uploaded a Provisioning Profile, please click next to upload one?",
   app_publish_ipad_upload_provisionings_title: 'Please upload the provisioning profile',
   app_publish_ipad_upload_progress_title: 'Uploading provisioning profile',
   app_publish_ipad_versions_title: 'iOS SDK information',
@@ -139,11 +127,11 @@ var Lang = {
   app_publish_ipad_cert_password_text_help_icon: 'If you have secured your certificate with a password, please enter it here.',
   app_publish_ipad_versions_text: 'The app will be built using iOS SDK 6 and can be installed on devices running iOS 4.3 and above.',
 
+  app_publish_ios_info_title: 'Information',
   ios_publish_wizard_supertitle: 'iOS Universal Build',
   app_publish_ios_select_provisionings_title: 'Please select the Provisioning Profile',
+  app_publish_ios_no_provisionings_text: "You have not yet uploaded a Provisioning Profile, please click next to upload one?",
   app_publish_ios_upload_provisionings_title: 'Please upload the provisioning profile',
-  app_publish_ios_deploying_env_title: 'Server-side code deploying',
-  app_publish_ios_deploying_progress_title: 'Deploying App',
   app_publish_ios_upload_progress_title: 'Uploading provisioning profile',
   app_publish_ios_versions_title: 'iOS SDK information',
   app_publish_ios_password_title: 'Please enter the passwords for your private key and certificate',
@@ -203,6 +191,7 @@ var Lang = {
   app_publish_android_progress_title: 'Building App',
 
   app_publish_iphone_select_provisionings_text: "Which Provisioning Profile do you want to use for this app?",
+  app_publish_iphone_no_provisionings_text: "You have not yet uploaded a Provisioning Profile, please click next to upload one?",
   app_publish_iphone_upload_provisionings_text: ["A Provisioning Profile is an Apple generated file that is linked to one or more Apple Apps based on the App Bundle Identifier (Unique ID).", "Provisioning Profiles can be generated in the iPhone Provisioning Portal in your Apple Developer Account.", "When uploading a Provisioning Profile, it is important that Bundle Identifier matches the App Id (can be set in the Configuration section)."],
   app_publish_iphone_upload_progress_text: "Please wait while uploading the provisioning profile...",
   app_publish_iphone_password_text: ["If you have protected your private key or certificate with a password, please enter it here.", "Your password will not be saved anywhere on the system for security reasons. It will be prompted for whenever you need to build an App.", "Important: It is recommended that you protect your private key with a password."],
@@ -212,10 +201,9 @@ var Lang = {
 
   publish_embed_title: 'Embed Code',
   publish_embed_text: 'Paste the following code in your html to load an embedded version of the App.',
-  embed_publish_wizard_supertitle: 'Deploy Embeded App',
-  app_publish_embed_deploying_env_text: "Would you like to deploy the app's server-side code?",
-  app_publish_embed_deploying_env_title: 'Server-side code deploying',
-  app_publish_embed_deploying_progress_title: 'Deploying App',
+  embed_publish_wizard_supertitle: 'Build Embeded App',
+  app_publish_embed_info_text: "Would you like to build the app's server-side code?",
+  app_publish_embed_info_title: 'Information',
   app_publish_embed_progress_title: 'Building App',
 
 
@@ -440,6 +428,9 @@ var Lang = {
   app_publish_android_pk_password_text_help_icon: 'If you have secured your private key with a password, please enter it here.',
   app_publish_android_cert_password_text: 'Please enter the password for your certificate (if any)',
   app_publish_android_cert_password_text_help_icon: 'If you have secured your certificate with a password, please enter it here.',
+
+
+  app_publish_android_info_title: 'Information',
 
   configuration_activity_Spinner_help_icon: 'Specify the position of the spinner which will be appeared when the splash screen is displayed',
   configuration_app_Id_help_icon: 'The iOS App Id you want to use for this app. It can be created in your iOS developer portal.',
@@ -710,5 +701,12 @@ var Lang = {
   audit_log_reset: 'Reset',
   
   store_item_view_auditlog_view : "View Audit Log",
-  store_item_view_auditlog_hide : "Hide Audit Log"
+  store_item_view_auditlog_hide : "Hide Audit Log",
+
+  "resource_nav_dashboard": "Dashboard",
+  "resource_nav_cpu": "CPU",
+  "resource_nav_memory": "Memory",
+  "resource_nav_storage": "Storage",
+  "resource_live_stats_link": "Real Time Stats >",
+  "reset_zoom_button":'Reset'
 };

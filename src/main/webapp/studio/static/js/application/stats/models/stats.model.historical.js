@@ -153,7 +153,7 @@ Stats.Model.Historical = Stats.Model.Base.extend({
         var t3Upper = t3Stats.upper;
         var t3Mean = t3Stats.mean;
 
-        this._mock.results.push({
+        var mockRow = {
           "counters": [{
             "value": {
               "valuePerSecond": c1 / intervalSeconds,
@@ -217,7 +217,16 @@ Stats.Model.Historical = Stats.Model.Base.extend({
             "key": opts.t3name || "test_timer_3"
           }],
           "ts": ts
-        });
+        };
+
+        if(opts.gauges && opts.gauges){
+          mockRow.gauges = [];
+          for(var p=0;p<opts.gauges.length;p++){
+            mockRow.gauges.push({key: opts.gauges[p].key, value: getRand(opts.gauges[p].min, opts.gauges[p].max)});
+          }
+        }
+
+        this._mock.results.push(mockRow);
       }
     }
   }

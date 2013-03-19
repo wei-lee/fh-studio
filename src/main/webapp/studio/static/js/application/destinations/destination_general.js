@@ -235,6 +235,21 @@ application.DestinationGeneral = Class.extend({
     }
   },
 
+  /**
+   * show the deploys page
+   * @param $cancel trigger click on thhis element to cancel current operatrion (do nothing if not supplied)
+   * @param e the trigger event
+   * @return {Boolean}
+   */
+  showDeploys: function($cancel,e) {
+    if(e) {
+      e.preventDefault();
+    }
+    $cancel.trigger("click");
+    $('a[data-controller="apps.deploy.controller"]').trigger("click");
+    return false;
+  },
+
   showDestinations: function() {
     var type;
     if (arguments.length === 0) {
@@ -263,80 +278,79 @@ application.DestinationGeneral = Class.extend({
     });
   },
 
-  startDeploy: function(config, wizard, step) {
-    var self = this;
-
-    // To stage or not to stage?
-    var checkbox = $(wizard).find("input[name='app_publish_" + this.destination_id + "_deploying']:checked");
-
-    function skip() {
-      setTimeout(function() {
-        if (self.destination_id == 'ipad' || self.destination_id == 'iphone' || self.destination_id == 'ios') {
-          proto.Wizard.jumpToStep(wizard, 6);
-        } else {
-          proto.Wizard.jumpToStep(wizard, 3);
-        }
-      }, 0);
+  /**
+   * check if the applicatin is currently running.
+   *
+   * @param config if set to 'distribution' or 'release' then this is a live build
+   * @param wizard the wizard
+   *
+   * Note: this will only be executed once per build
+   * @see startBuild
+   */
+  checkDeploy: function(config, wizard) {
+    var env = 'dev';
+    if (config == 'distribution' || config == 'release' || config == 'live') {
+      env = 'live';
     }
-    
-    if (checkbox.length < 1) {
-      // Don't stage
-      return skip();
-    }
+    var appId = $fw.data.get('inst').guid;
+    var handleRunning = _.bind(this.renderRunning, this ,env, wizard);
+    var handleNotRunning = _.bind(this.renderNotRunning, this, env, wizard);
 
-    var deploying_env;
-    if (config == 'distribution' || config == 'release') {
-      deploying_env = 'live';
-    } else {
-      deploying_env = 'dev';
-    }
-
-
-    // Clear visible progresslog
-    $('#wizard_dialog .progresslog:visible').val('');
-
-    console.log("Starting deploy :: " + deploying_env);
-
-    if (deploying_env == 'dev') {
-      self.doDevDeploy(wizard, step);
-    } else if (deploying_env == 'live') {
-      self.doLiveDeploy(wizard, step);
-    }
+    this.renderCancelable(".check-deploy-template", env,wizard);
+    this.ping(appId,env,handleRunning,handleNotRunning);
   },
 
-  doDevDeploy: function(wizard, step) {
-    console.log('destination_general.doDevDeploy');
-    var self = this;
-    var guid = $fw.data.get('app').guid;
-    var url = Constants.DEPLOY_APP_URL;
-    var params = {
-      guid: guid
-    };
 
-    $fw.server.post(url, params, function(res) {
-      if (res.status === "ok") {
-        self.deployStarted("dev", res.cacheKey, wizard, step);
-      } else {
-        console.log('dev deploy failed:' + res);
-      }
-    }, null, true);
+  /**
+   * render the running message
+   * @param env live or dev
+   * @param wizard the current wizard
+   */
+  renderRunning: function(env,wizard) {
+    var $el = this.render(".build-wizard-deployed-template",{env:env,link:"click"});
+    this.renderApplicationStatus(wizard,$el);
   },
 
-  doLiveDeploy: function(wizard, step) {
-    console.log('destination_general.doLiveDeploy');
-    var self = this;
-    var guid = $fw.data.get('app').guid;
-    var url = Constants.RELEASE_DEPLOY_APP_URL;
-    var params = {
-      guid: guid
-    };
-    $fw.server.post(url, params, function(res) {
-      if (res.status === "ok") {
-        self.deployStarted("live", res.cacheKey, wizard, step);
-      } else {
-        console.log('live deploy failed:' + res);
-      }
-    }, null, true);
+  /**
+   * render not running message
+   * @param env live or dev
+   * @param wizard the current wizard
+   */
+  renderNotRunning: function(env,wizard) {
+    this.renderCancelable(".build-wizard-deploy-template", env,wizard);
+  },
+
+  /**
+   * render a cancelable message (either starting or in progress)
+   * @param template the template to render
+   * @param env live or dev
+   * @param wizard the current wizard
+   */
+  renderCancelable: function(template, env,wizard) {
+    var $el= this.render(template,{env:env,link:"click"});
+    var cancel = _.bind(this.showDeploys, this, $("button.jw-button-cancel",wizard));
+    $("a", $el).on("click", cancel);
+    this.renderApplicationStatus(wizard,$el);
+  },
+
+  /**
+   * render application status
+   * @param wizard the wizard
+   * @param $el the element to render into the wizard
+   */
+  renderApplicationStatus: function(wizard,$el) {
+    $(".jw-steps-wrap .application-status", wizard).html($el);
+  },
+
+  /**
+   * render a template
+   * @param template the template to render
+   * @param vars the vars to replace in the template
+   * @return {*}
+   */
+  render: function(template ,  vars) {
+    var t = $(template).html();
+    return $(_.template(t,vars));
   },
 
   updateProgressLog: function(env, log) {
@@ -348,58 +362,6 @@ application.DestinationGeneral = Class.extend({
       var log_value = current_log + '\n' + log.join('\n');
       progress_log_el.val(log_value);
     }
-  },
-
-  deployComplete: function(wizard, step) {
-    console.log('deployComplete');
-
-    if (this.destination_id == 'ipad' || this.destination_id == 'iphone' || this.destination_id == 'ios') {
-      proto.Wizard.jumpToStep(wizard, 6);
-    } else {
-      proto.Wizard.jumpToStep(wizard, 3);
-    }
-
-  },
-
-  deployStarted: function(deploying_env, cacheKey, wizard, step) {
-    var self = this;
-    console.log('destination_general.deployStarted: [' + deploying_env + '] [' + cacheKey + ']');
-
-    var deploy_task = new ASyncServerTask({
-      cacheKey: cacheKey
-    }, {
-      updateInterval: Properties.cache_lookup_interval,
-      maxTime: Properties.cache_lookup_timeout,
-      // 5 minutes
-      maxRetries: Properties.cache_lookup_retries,
-      timeout: function(res) {
-        console.log('Deplying timeout error > ' + JSON.stringify(res));
-        proto.Wizard.jumpToStep(import_app_wizard, 1, 'Deploying timed-out');
-      },
-      update: function(res) {
-        for (var i = 0; i < res.log.length; i++) {
-          console.log(res.log[i]);
-        }
-        self.updateProgressLog(deploying_env, res.log);
-      },
-      complete: function(res) {
-        console.log('Deploy successful > ' + JSON.stringify(res));
-        if ($.isFunction(self.deployComplete)) {
-          self.deployComplete(wizard, step);
-        }
-      },
-      error: function(res) {
-        console.log('Deploy error > ' + JSON.stringify(res));
-        self.updateProgressLog(deploying_env, [res.error]);
-        proto.Wizard.jumpToStep(import_app_wizard, 1, 'Deploying failed');
-      },
-      retriesLimit: function() {
-        console.log('Deploy retriesLimit exceeded: ' + Properties.cache_lookup_retries);
-        proto.Wizard.jumpToStep(import_app_wizard, 1, 'Deploying retries exceeded');
-      },
-      end: function() {}
-    });
-    deploy_task.run();
   },
 
   startBuild: function(config) {
@@ -422,10 +384,16 @@ application.DestinationGeneral = Class.extend({
     var versions_select = wizard.find("#app_publish_" + this.destination_id + "_versions");
     var progress_view = wizard.find("#app_publish_" + this.destination_id + "_progress");
 
-    // Binding for showing staging progress
-    wizard.find(".app_publish_deploying_progress").unbind('show').bind('show', function(e) {
-      that.startDeploy(config, wizard, step);
+    // Binding for checking the deploy status
+    var $info = wizard.find(".app_publish_info");
+    $info.unbind('show').bind('show', function(e) {
+      that.checkDeploy = _.once(that.checkDeploy);
+      that.checkDeploy(config, wizard, step);
     });
+    // we need to check if the wizard has shown this page before the wizard load returned
+    if($info.is(":visible")) {
+      $info.trigger("show");
+    }
 
     if ($.isFunction(this.bindExtraConfig)) {
       this.bindExtraConfig(wizard, config);
@@ -456,6 +424,28 @@ application.DestinationGeneral = Class.extend({
     }
   },
 
+  /**
+   * ping the remote server
+   * @param appId the application id
+   * @param env live or dev
+   * @param success callback
+   * @param failure callback
+   */
+  ping: function(appId, env, success, failure) {
+    var url = Constants.PING_APP_URL;
+    var params = {
+      guid: appId,
+      deploytarget: env
+    };
+
+    $fw.server.post(url, params, function(res) {
+      if (res.status === "ok") {
+        success(res);
+      } else {
+        failure(res);
+      }
+    });
+  },
   handleDownload: function(res){
     var that = this;
     var source_url = res.action.url;
