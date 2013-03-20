@@ -47,7 +47,7 @@ model.Environment = model.Model.extend({
     // wrap post process list to add null to default value
     this.postProcessList = _.wrap(this.postProcessList, function (func,res, data_model, fieldConfig,defValue){
       return func(res, data_model, fieldConfig, defValue === undefined  ? null : defValue);
-    })
+    });
   },
 
   /**

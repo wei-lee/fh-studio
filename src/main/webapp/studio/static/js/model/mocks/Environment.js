@@ -13,10 +13,10 @@ if(results) {
         return null;
       }
     });
-  }
+  };
 
   var createMock = function(name, count) {
-    var num = parseInt(count);
+    var num = parseInt(count, 10);
     var c = function(num) {
       return {
         "fields":
@@ -29,9 +29,9 @@ if(results) {
         "guid":num + "h4xjJpaA2VIs5oqICtR-Q31",
         "type":"ten_Environment"
       };
-    }
+    };
     var list;
-    if(num === NaN) {
+    if(isNaN(num)) {
       list = [c(0)];
     } else {
       var range = _.range(num);
@@ -68,12 +68,12 @@ if(results) {
   if(results[1] === "reset") {
     var keys = lsKeys();
     _.each(keys, function(key){
-      console.log("removing " + key)
+      console.log("removing " + key);
       localStorage.removeItem(key);
     });
   } else {
     if(!localStorage.getItem("EnvVarsConfigured")) {
-      localStorage.setItem("EnvVarsConfigured", true)
+      localStorage.setItem("EnvVarsConfigured", true);
       var app = new model.App();
       var names = _.collect(app.field_config, function(v){return v.field_name;});
 
@@ -82,7 +82,7 @@ if(results) {
           var a = _.object(names,data);
           localStorage.setItem(envName({env : "dev" , app :a.id}), JSON.stringify(createMock("dev_" + a.id,results[1])));
           localStorage.setItem(envName({env : "live" , app :a.id}), JSON.stringify(createMock("live_" + a.id,results[1])));
-        })
+        });
       }, function() {
         // Failure
       }, true);
@@ -177,4 +177,4 @@ if(results) {
 
 
   })(results);
-};
+}

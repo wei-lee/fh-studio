@@ -455,7 +455,7 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
     var deployedUserVarPair = {};
     _.each(liveUser, function(el){
       deployedUserVarPair[el.name] = el;
-    })
+    });
     this.populateTable(data, this.$current_env_table, this.templates.$buttonBar(), deployedUserVarPair, true);
   },
 
@@ -511,7 +511,7 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
     e.preventDefault();
     var self = this;
     var $rows = this.getSelectedRows();
-    if($rows.length == 0){
+    if($rows.length === 0){
       this.showAlert({type:"error", msg:"No environment variables are selected"});
       return;
     }
@@ -536,7 +536,7 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
     e.preventDefault();
     var self = this;
     var $rows = this.getSelectedRows();
-    if($rows.length == 0){
+    if($rows.length === 0){
       this.showAlert({type:"error", msg:"No environment variables are selected"});
       return;
     }
@@ -624,7 +624,7 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
    */
   createEnvVar: function($modal,e){
     var name = $(this.subviews.edit_name, $modal).val();
-    if(name == ""){
+    if(name === ""){
       $modal.find(".control-group:first").addClass("error").find(".help-inline").show();
       $modal.find(".control-group:first").find("input").bind("keydown", function(){
         $(this).closest(".control-group.error").removeClass("error");
@@ -632,12 +632,12 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
       });
       return false;
     }
-    var devValue = undefined;
+    var devValue;
     if($(this.subviews.edit_dev_value, $modal).hasClass("modified")){
       devValue = $(this.subviews.edit_dev_value, $modal).val();
     }
     
-    var liveValue = undefined;
+    var liveValue;
     if($(this.subviews.edit_live_value, $modal).hasClass("modified")){
       liveValue = $(this.subviews.edit_live_value, $modal).val();
     }
