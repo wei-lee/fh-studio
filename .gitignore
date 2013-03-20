@@ -17,3 +17,4 @@ node_modules
 TAGS
 .DS_Store
 .*DS_Store
+hs_err_pid12896.log hs_err_pid2943.log

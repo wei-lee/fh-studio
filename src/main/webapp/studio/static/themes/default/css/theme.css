@@ -1918,6 +1918,11 @@ line-height:0.5em;
  display: none;
  clear: both;
 }
+
+li.reportdashboard_link{
+    width:100px;
+}
+
 .reporting_container_header .header_text{
   float: left;
 }
@@ -3371,3 +3376,100 @@ a.docslink {
 #recentapps_grid th:first-child + th + th + th + th {
   display: none;
 }​
+
+
+ /*
+   resource styles
+ */
+ .reportdashboard {
+     width: 99%;
+ }
+
+.reportdashboard_div {
+
+    margin: 3px;
+    padding: 1px;
+
+}
+
+.reportdashboard_div_boarder {
+    border-right: solid #000000 1px;
+    margin: 3px;
+}
+
+.reportingdashboard_heading {
+    text-align: center;
+    font-size: 20px;
+    color: #0088cc;
+    text-decoration: underline
+}
+
+.reportingdashboard_image_container {
+    margin: 10px;
+    height: 150px;
+}
+
+.reportingdashboard_heading{
+    cursor: pointer;
+}
+
+li.reportdashboard_link {
+    margin-right: 10px;
+    width: 90px;
+}
+
+li.reportdashboard_link i {
+    cursor: pointer;
+}
+
+li.reportdashboard_link .icon-mobile-phone {
+    font-size: 4.7em;
+    margin-left: 0.2em;
+    margin-top: -2px;
+}
+
+li.reportdashboard_link .icon-calendar {
+    margin-left: 0.1em;
+    margin-top: 2px;
+}
+
+li.reportdashboard_link .icon-globe {
+    margin-left: 0.3em;
+}
+
+
+#reports_dashboard_container {
+    margin: 0px;
+}
+
+.reporting_form{
+    background-color: #a9a9a9;
+    padding: 3px;
+}
+
+#reports_per_app_list_container {
+    min-height: 450px;
+}
+
+#per_app_summary_container {
+    min-height: 450px;
+}
+
+.summary_background_text, .app_summary_name_container{
+    font-size: 2em;
+    line-height: 2em;
+    text-align: center;
+}
+.summary_background_text {
+    margin-top: 15%;
+}
+#reports_per_app_list_container .table_nav{
+    height: 45px;
+}
+#reports_per_app_list_container .app_search{
+    padding-top: 5px;
+}
+
+#per_app_summary_container .reportingdashboard_image_container {
+    border-bottom: none;
+}

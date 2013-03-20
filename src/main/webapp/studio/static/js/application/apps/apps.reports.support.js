@@ -28,6 +28,59 @@ Apps.Reports.Support = Apps.Controller.extend({
     $(".appreport-results").empty();
   },
 
+  initDatepickers: function(fromfield, tofield){
+
+    // set from date to 4 weeks ago, and to date to today
+    var today = new Date();
+    var fourWeeksAgo = new Date(today.getTime() - 2419200000);
+
+    function formatDate(date) {
+      return ('' + ((date.getUTCMonth() + 1) * 0.01).toFixed(2)).substring(2,4) + '/' + ('' + (date.getUTCDate() * 0.01).toFixed(2)).substring(2,4) + '/' + date.getUTCFullYear();
+    }
+
+    $(fromfield).val(formatDate(fourWeeksAgo)).datepicker({format:'mm/dd/yyyy', weekStart:0, defaultDate: today});
+    $(tofield).val(formatDate(today)).datepicker({format:'mm/dd/yyyy', weekStart:0, defaultDate: fourWeeksAgo});
+  },
+
+  initFormDates : function (days){
+    var from = moment().subtract("days", days).format("MM/DD/YYYY");
+    var to = moment().format("MM/DD/YYYY");
+
+    console.log("from on show ", from);
+    $('input[name="from"]').val(from).datepicker("setDate", from);
+    $('input[name="to"]').val(to).datepicker("setDate", to);
+  },
+
+  buildParamsForDays : function (id, days, metric,num){
+    var self = this;
+    var to = new Date();
+    var from = moment().subtract('days',days);
+    from = new Date(from);
+    to =  self.splitDate(to);
+    from = self.splitDate(from);
+    return  {
+      "id":id || $fw.getClientProp("domain"),
+      "metric":metric,
+      "from":from,
+      "to":to,
+      "num":num || 0
+    };
+  },
+
+  buildParamsForDates: function(id,from, to,metric,num){
+    var self = this;
+    to =  self.splitDate(to);
+    from = self.splitDate(from);
+    return  {
+      "id":id || $fw.getClientProp("domain"),
+      "metric":metric,
+      "from":from,
+      "to":to,
+      "num":num || 0
+    };
+
+  },
+
   show: function(container){
     this._super();
 
@@ -78,8 +131,8 @@ Apps.Reports.Support = Apps.Controller.extend({
       var params, app, tempFDate, tempTDate, days, dest;
 
       tempFDate = container.find('.appreportfrom-datepicker').data('datepicker').date;
-      tempTDate = container.find('.appreportto-datepicker').data('datepicker').date;
 
+      tempTDate = container.find('.appreportto-datepicker').data('datepicker').date;
       days = self.daysBetweenDates(tempFDate, tempTDate);
       
       if (self.appid != null) {
@@ -138,7 +191,6 @@ Apps.Reports.Support = Apps.Controller.extend({
           var ri, rl, tempResult, options = [], values = [], results;
 
           results = result.payload.results;
-
           // If no apps, hide reporting and show message
           if (results.length === 0) {
             if ($('.metrics_no_apps_warning:visible').length === 0) {
@@ -166,16 +218,10 @@ Apps.Reports.Support = Apps.Controller.extend({
      container.find('.appreport-applist').hide();
    }
 
-   // set from date to 4 weeks ago, and to date to today
-   var today = new Date();
-   var fourWeeksAgo = new Date(today.getTime() - 2419200000);
 
-   function formatDate(date) {
-    return ('' + ((date.getUTCMonth() + 1) * 0.01).toFixed(2)).substring(2,4) + '/' + ('' + (date.getUTCDate() * 0.01).toFixed(2)).substring(2,4) + '/' + date.getUTCFullYear();
-   }
 
    // initialise datepickers
-   container.find('.appreportfrom-datepicker').val(formatDate(fourWeeksAgo)).datepicker({
+   /*container.find('.appreportfrom-datepicker').val(formatDate(fourWeeksAgo)).datepicker({
      format: "mm/dd/yyyy",
      weekStart: 0
    });
@@ -183,7 +229,7 @@ Apps.Reports.Support = Apps.Controller.extend({
    container.find('.appreportto-datepicker').val(formatDate(today)).datepicker({
      format: "mm/dd/yyyy",
      weekStart: 0
-   });
+   });*/
   },
   
   drawChart: function (type, container, params, url, callback) {
@@ -191,10 +237,9 @@ Apps.Reports.Support = Apps.Controller.extend({
     
     // Set an id on the chart container, needed later
     chartContainer = container.find('.appreport-results').attr('id', container.attr('id') + '_chartcontainer');
-           
     // Draw a chart for the specified params
     
-    $fw.client.chart.insert('metrics', type, { dest: params.dest }, params, chartContainer, url, function (err) {
+    $fw.client.chart.insert('metrics', type, { dest: params.dest , width:params.width, height:params.height }, params, chartContainer, url, function (err) {
       callback(err);
     });
   },
@@ -204,13 +249,28 @@ Apps.Reports.Support = Apps.Controller.extend({
    */
   splitDate: function (date) {
     var ret = {};
-    
-    ret.year = date.getFullYear().toString();
-    ret.month = (date.getMonth() + 1).toString();
-    ret.date = date.getDate().toString();
+
+    var d = new Date(date);
+    ret.year = d.getFullYear().toString();
+    ret.month = (d.getMonth() + 1).toString();
+    ret.date = d.getDate().toString();
     
     return ret;
   },
+
+  calculateTotal : function (metricData){
+    var total = 0;
+    for(var i=0; i < metricData.length; i++){
+      var values = metricData[i].value;
+      for(var prop in values){
+        if(values.hasOwnProperty(prop)){
+          total+=values[prop];
+        }
+      }
+    }
+    return total;
+  },
+
   
   /*
    * Return the number of days between two Dates

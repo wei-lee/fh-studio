@@ -290,9 +290,195 @@
       ,{"_id":{"appid":"sampleid","ts":1315242001597},"value":{"Ireland":5053,"United States":6520,"United Kingdom":4535,"Canada":2439,"Spain":1741,"France":2610,"Germany":1103,"Australia":3211,"China":3257,"Russia":1768}}
       ,{"_id":{"appid":"sampleid","ts":1315328401597},"value":{"Ireland":6023,"United States":6687,"United Kingdom":4001,"Canada":2684,"Spain":1884,"France":2160,"Germany":1158,"Australia":2674,"China":3311,"Russia":1545}}
       ,{"_id":{"appid":"sampleid","ts":1315414801597},"value":{"Ireland":5400,"United States":6691,"United Kingdom":3903,"Canada":2482,"Spain":1992,"France":2434,"Germany":1295,"Australia":3040,"China":3277,"Russia":1688}}
-      ,{"_id":{"appid":"sampleid","ts":1315501201597},"value":{"Ireland":5156,"United States":6556,"United Kingdom":4205,"Canada":2379,"Spain":2026,"France":2493,"Germany":1340,"Australia":3449,"China":3971,"Russia":1730}}]}
+      ,{"_id":{"appid":"sampleid","ts":1315501201597},"value":{"Ireland":5156,"United States":6556,"United Kingdom":4205,"Canada":2379,"Spain":2026,"France":2493,"Germany":1340,"Australia":3449,"China":3971,"Russia":1730}}]},
+
+      domaininstallsdest:{"sampleid":
+        [
+          {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:200, android:100, blackberry:50}},
+          {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:500, android:150, blackberry:75}},
+          {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:500, android:150, blackberry:75}},
+          {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:500, android:150, blackberry:75}},
+          {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:500, android:150, blackberry:75}},
+          {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:1500, android:600, blackberry:100}},
+          {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:1000, android:800, blackberry:200}},
+          {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:2000, android:200, blackberry:200}},
+          {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:3000, android:400, blackberry:200}},
+          {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:5000, android:800, blackberry:200}}
+
+        ]},
+      domaininstallsgeo:
+      {"sampleid":[
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:550, us:1500, china:60}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}}
+      ]},
+      domaintransactionsdest:{"sampleid":
+        [
+          {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:1500, android:600, blackberry:100}},
+          {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:1000, android:800, blackberry:200}},
+          {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:2000, android:200, blackberry:200}},
+          {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:3000, android:400, blackberry:200}},
+          {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:5000, android:800, blackberry:200}},
+          {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:1500, android:600, blackberry:100}},
+          {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:1000, android:800, blackberry:200}},
+          {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:2000, android:200, blackberry:200}},
+          {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:3000, android:400, blackberry:200}},
+          {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:5000, android:800, blackberry:200}}
+        ]},
+      domainstartupsdest:{"sampleid":[
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:1500, android:600, blackberry:100}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:3000, android:800, blackberry:200}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:1000, android:800, blackberry:200}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:3000, android:800, blackberry:200}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:8000, android:800, blackberry:200}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:1500, android:600, blackberry:100}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:1000, android:800, blackberry:200}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:2000, android:200, blackberry:200}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:3000, android:400, blackberry:200}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:5000, android:800, blackberry:200}}
+      ]},
+
+      domainrequestsdest:{"sampleid":[
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:1500, android:600, blackberry:100}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:3000, android:800, blackberry:200}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:3000, android:600, blackberry:200}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:3000, android:400, blackberry:200}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:2000, android:800, blackberry:200}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:1500, android:600, blackberry:100}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:1000, android:800, blackberry:200}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:2000, android:200, blackberry:200}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:3000, android:400, blackberry:200}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {iphone:5000, android:800, blackberry:200}}
+      ]},
+
+      domainrequestsgeo:{"sampleid":[
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:550, us:1500, china:60}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}}
+      ]},
+
+      domaintransactionsgeo:
+      {"sampleid":[
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:550, us:1500, china:60}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}}
+        ]},
+      domainstartupsgeo:
+      {"sampleid":[
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:550, us:1500, china:60}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}}
+      ]},
+      apptransactionsdest:{
+        "sampleid":[
+          {"_id":{"domain":"sampleid","ts":1312909201597},"value":{"android":300,"iphone":776,"blackberry":0,"wp7":150}},
+          {"_id":{"domain":"sampleid","ts":1312909201597},"value":{"android":3222,"iphone":3330,"blackberry":448,"wp7":60}},
+          {"_id":{"domain":"sampleid","ts":1312909201597},"value":{"android":3476,"iphone":1030,"blackberry":248,"wp7":70}},
+          {"_id":{"domain":"sampleid","ts":1312909201597},"value":{"android":3876,"iphone":2330,"blackberry":148,"wp7":90}},
+          {"_id":{"domain":"sampleid","ts":1312909201597},"value":{"android":4076,"iphone":1530,"blackberry":548,"wp7":100}},
+          {"_id":{"domain":"sampleid","ts":1312909201597},"value":{"android":3176,"iphone":2030,"blackberry":248,"wp7":80}},
+          {"_id":{"domain":"sampleid","ts":1312909201597},"value":{"android":5076,"iphone":1030,"blackberry":148,"wp7":60}}
+        ]
+      },
+      apptransactionsgeo:{'sampleid':[
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:550, us:1500, china:60}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:1112, japan:25, indiA:1111}}
+      ]},
+      apprequestsdest:{"sampleid":[
+        {"_id":{"domain":"sampleid","ts":1312909201597},"value":{"android":3476,"iphone":3576,"blackberry":348,"wp7":50}},
+        {"_id":{"domain":"sampleid","ts":1312909201597},"value":{"android":3222,"iphone":3330,"blackberry":448,"wp7":60}},
+        {"_id":{"domain":"sampleid","ts":1312909201597},"value":{"android":3476,"iphone":1030,"blackberry":248,"wp7":70}},
+        {"_id":{"domain":"sampleid","ts":1312909201597},"value":{"android":3876,"iphone":2330,"blackberry":148,"wp7":90}},
+        {"_id":{"domain":"sampleid","ts":1312909201597},"value":{"android":4076,"iphone":1530,"blackberry":548,"wp7":100}},
+        {"_id":{"domain":"sampleid","ts":1312909201597},"value":{"android":3176,"iphone":2030,"blackberry":248,"wp7":80}},
+        {"_id":{"domain":"sampleid","ts":1312909201597},"value":{"android":5076,"iphone":1030,"blackberry":148,"wp7":60}}
+      ]},
+      apprequestsgeo:{"sampleid":[
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:220, us:1500, china:60}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:550, us:2000, china:80}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:650, us:1200, china:100}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:450, us:1650, china:150}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:350, us:1540, china:200}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:150, us:1980, china:220}},
+        {_id:{domain:"sampleid", ts:1315501201597}, value: {ireland:250, us:1200, china:180}}
+      ]},
+
+
+
+      topresults:{
+        "appinstallsdest":[
+          {_id: { appid:"sampleidA", appname: 'this is app A'}, value: {total:2000}},
+          {_id: { appid:"sampleidB", appname: 'this is app B'}, value: {total:1200}},
+          {_id: { appid:"sampleidC", appname: 'this is app C'}, value: {total:1000}},
+          {_id: { appid:"sampleidD", appname: 'this is app D'}, value: {total:250}},
+          {_id: { appid:"sampleidE", appname: 'this is app E'}, value: {total:100}}
+        ],
+        "apptransactionsdest":[
+          {_id: { appid:"sampleidD", appname: 'this is app D'}, value: {total:2500}},
+          {_id: { appid:"sampleidE", appname: 'this is app E'}, value: {total:2000}},
+          {_id: { appid:"sampleidA", appname: 'this is app A'}, value: {total:1899}},
+          {_id: { appid:"sampleidB", appname: 'this is app B'}, value: {total:1533}},
+          {_id: { appid:"sampleidC", appname: 'this is app C'}, value: {total:1000}}
+        ],
+        "appstartupsdest":[
+          {_id: { appid:"sampleidA", appname: 'this is app A'}, value: {total:2000}},
+          {_id: { appid:"sampleidB", appname: 'this is app B'}, value: {total:1200}},
+          {_id: { appid:"sampleidC", appname: 'this is app C'}, value: {total:1000}},
+          {_id: { appid:"sampleidD", appname: 'this is app D'}, value: {total:250}},
+          {_id: { appid:"sampleidE", appname: 'this is app E'}, value: {total:100}}
+        ],
+        "apprequestsdest":[
+          {_id: { appid:"sampleid", appname: 'this is app A'}, value: {total:4000}},
+          {_id: { appid:"sampleid", appname: 'this is app A'}, value: {total:3332}},
+          {_id: { appid:"sampleid", appname: 'this is app A'}, value: {total:3100}},
+          {_id: { appid:"sampleid", appname: 'this is app A'}, value: {total:600}},
+          {_id: { appid:"sampleid", appname: 'this is app A'}, value: {total:366}}
+        ]
+
+      }
+
     },
-    
+
+
+
+
+
+
+
+
+
     init: function (sampledataEnabled) {
       var self = this;
       
@@ -315,7 +501,8 @@
           metric: params.metric,
           from: params.from,
           to: params.to,
-          type: type
+          type: type,
+          "num":params.num || 0
         };
         
         $fw.server.post(url, params, function (result) {
@@ -338,18 +525,37 @@
       var days = Math.round(difference_ms/ONE_DAY);
       
       // We want inclusive days so incr by 1
+      tempData  = undefined;
       days ++;
-      
-      tempData = self.data[params.metric][id];
-      
+      result = {
+        status: 'ok',
+        payload: {
+          results: {}
+        }
+      };
+      console.log(params.metric instanceof Array);
+      if(params.metric instanceof Array){
+
+        tempData = self.data["topresults"];
+        console.log("metric is array ", tempData);
+        //dont need any dates etc for this data just send it back
+        result.payload.results = tempData;
+        return callback(result);
+      }else{
+
+        console.log("metric sample data ", self.data, params.metric);
+        tempData = self.data[params.metric][id];
+      }
+
       if ('undefined' === typeof tempData) {
         tempData = self.data[params.metric].sampleid;
       }
+      console.log("tempdata is ", tempData);
       
       var spliceFrom = days > tempData.length ? 0 : tempData.length - days; 
       var spliceTo = tempData.length;
-      data = tempData.slice(spliceFrom, spliceTo);
-      
+
+      data = (tempData.slice !== undefined) ? tempData.slice(spliceFrom, spliceTo) : data;
       var curDataDay = to;
       
       // Set the timestamps relative to the curent date
@@ -360,24 +566,22 @@
         curDataDay -= ONE_DAY;
       }
             
-      result = {
-        status: 'ok',
-        payload: {
-          results: data
-        }
-      };
-      
+      console.log("metrics get data ", data);
+      result.payload.results = data;
       callback(result);
     },
     
     handleData: function (result, params, sum, type, success, fail) {
       var self = this, payload, data;
+
+      console.log("handleData ", result);
       
       if ('ok' === result.status) {
         // Show results
         payload = result.payload;
         console.log('metrics results: ' + payload.results.length);
-        data = payload.results; 
+
+        data = payload.results;
           
         if ('undefined' !== typeof data) {
           self.transformData(data, params, sum, type, function (res) {
@@ -401,6 +605,8 @@
         self.transformToPieData(data, callback);
       } else if ('geo' === type) {
         self.transformToGeoData(data, callback);
+      } else {
+        callback(data);
       }
     },
     
