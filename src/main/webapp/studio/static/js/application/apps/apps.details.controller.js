@@ -54,7 +54,8 @@ Apps.Details.Controller = Apps.Controller.extend({
 
     // also enable the scm trigger button
     var scmTriggerButton = $('#scm_trigger_button');
-    scmTriggerButton.text(scmTriggerButtonText).bind('click', function() {
+    scmTriggerButton.text(scmTriggerButtonText).bind('click', function(e) {
+      e.preventDefault();
       scmTriggerButton.attr('disabled', 'disabled').text(pleaseWaitText);
       $fw.client.tab.apps.manageapps.triggerScm(function() {
         $fw.client.tab.apps.manageapps.getController('apps.preview.controller').show();
@@ -62,6 +63,7 @@ Apps.Details.Controller = Apps.Controller.extend({
       }, $.noop, function() {
         scmTriggerButton.removeAttr('disabled').text(scmTriggerButtonText).removeClass('ui-state-hover');
       });
+      return false;
     });
 
     // clone button
