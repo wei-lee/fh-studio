@@ -35,7 +35,7 @@ model.Model = Class.extend({
     return this.field_config[i];
   },
 
-  postProcessList: function(res, data_model, fieldConfig, defValue) {
+  postProcessList: function(res, data_model, fieldConfig) {
     var self = this;
     var filtered_fields;
     try {

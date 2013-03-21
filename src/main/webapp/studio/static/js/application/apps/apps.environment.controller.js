@@ -795,8 +795,8 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
     this.subviews.$edit.show();
 
     this.subviews.$allLocks.addClass("icon-lock").removeClass("icon-unlock");
-    this.subviews.$edit_dev_value.attr("disabled", "disabled").parents(".control-group");
-    this.subviews.$edit_live_value.attr("disabled", "disabled").parents(".control-group");
+    this.subviews.$edit_dev_value.attr("disabled", "disabled");
+    this.subviews.$edit_live_value.attr("disabled", "disabled");
 
     this.bindButtons(handler,o, action);
 
