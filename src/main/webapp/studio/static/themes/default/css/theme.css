@@ -3338,9 +3338,6 @@ a.docslink {
   100% { transform: rotate(359deg); }
 }
 
-#environment_container table {
-  width: 100%;
-}
 
 #environment_container table td.ok {
   background-color: #57A957 !important;

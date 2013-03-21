@@ -340,11 +340,17 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
         self.rowRender(nRow, aData, iDisplayIndex, comparison, cloudEnv);
       }
     });
-    $(window).bind("resize", function(){
+
+    var resizeTables = function(){
       //a hack to force dataTable to resize when sScrollY is enabled
       $(".dataTables_scrollHeadInner, .dataTables_scrollHeadInner, table", self.$container).css({ width: "100%"});
       $env_table.fnAdjustColumnSizing();
+    }
+    $(window).bind("resize", function(){
+      resizeTables()
     });
+    //for unknown reason, when switch between the dev and live view, if the window has been resized, the tables are shown in wrong size
+    resizeTables(); 
     if($button_bar && $button_bar.length) {
       $('.span12:first', this.$container).html($button_bar).css("margin-bottom", "1em");
     }
