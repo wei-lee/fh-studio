@@ -345,9 +345,9 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
       //a hack to force dataTable to resize when sScrollY is enabled
       $(".dataTables_scrollHeadInner, .dataTables_scrollHeadInner, table", self.$container).css({ width: "100%"});
       $env_table.fnAdjustColumnSizing();
-    }
+    };
     $(window).bind("resize", function(){
-      resizeTables()
+      resizeTables();
     });
     //for unknown reason, when switch between the dev and live view, if the window has been resized, the tables are shown in wrong size
     resizeTables(); 
