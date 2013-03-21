@@ -145,6 +145,9 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
    */
   show: function() {
     this.initCloudFn();
+    if ($fw.client.tab.apps.manageapps.isNodeJsApp()) {
+      this.refreshStatus();
+    }
     this.app = $fw.data.get('inst').guid;
     this.subviews.$list.hide();
     this.subviews.$loading_view.show();
@@ -870,9 +873,6 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
     this.models.environment.unset(this.app, cloudEnv, envVarIds,  handleSuccess, handleError);
     return false;
 
-  },
-
-  // TODO come back to this
-  refreshSingleStatus: function(){}
+  }
 
 });
