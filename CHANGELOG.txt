@@ -4,6 +4,7 @@ Component: fh-studio
 3.15.11 - 2013-03-20 - IR197 - Wei Li
 ---------------------------------------------------------------------------
 * 3339 - Added support for app cloud environment variables
+* 3465 - fh-studio : git pull button on the details page dumps the user back onto the "All Apps" screen (in FireFox)
 
 3.15.10 - 2013-03-14 - IR195 - Craig Brookes
 ----------------------------------------------------------------------------
