@@ -427,8 +427,7 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
    * @return the current deployed user & sys vars
    */
    processDeployedEnvs: function(dev, live){
-     var keys = _.keys(dev.envvars, live.envvars);
-     _.union(_.keys(dev.envvars),_.keys(live.envvars));
+     var keys = _.union(_.keys(dev.envvars),_.keys(live.envvars));
      keys = _.uniq(keys);
      var sys= [];
      var user = [];
