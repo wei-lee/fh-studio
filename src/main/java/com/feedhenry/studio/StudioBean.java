@@ -262,7 +262,7 @@ public class StudioBean {
 
     // Check if user should be using a different version of studio,
     // but only for logged in users on the index page
-    if (IDE_INDEX.equals(pPageName) && mStudioProps != null && mUserProps != null && studioVersion != null && null == redirectUrl && studioVersion != null && studioVersion.length() > 0) {
+    if (IDE_INDEX.equals(pPageName) && mStudioProps != null && mUserProps != null && studioVersion != null && null == redirectUrl && studioVersion.length() > 0) {
       String redirect = requiredProtocol + "://" + serverName + "/" + studioVersion;
       redirectUrl = redirect;
       proceed = false;
