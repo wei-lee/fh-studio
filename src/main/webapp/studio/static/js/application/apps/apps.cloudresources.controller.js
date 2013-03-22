@@ -296,9 +296,18 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
         var currentMemory = self.bytesToMB(dynoresources.usage.mem);
         var currentDisk = self.bytesToMB(dynoresources.usage.disk);
         if(self.enabled_live_app_resources && !model.error){
-          currentCpu = self.getCurrentResourceUsage(model, "Cpu_Pct", 1);
-          currentMemory = self.bytesToMB(self.getCurrentResourceUsage(model, "VmRSS", 1)*1000);
-          currentDisk = self.bytesToMB(self.getCurrentResourceUsage(model, "Disk", 1)*1000);
+          var statsCpu = self.getCurrentResourceUsage(model, "Cpu_Pct", 1);
+          var statsMemory = self.getCurrentResourceUsage(model, "VmRSS", 1);
+          var statsDisk = self.getCurrentResourceUsage(model, "Disk", 1);
+          if(statsCpu !== -1){
+            currentCpu = statsCpu;
+          }
+          if(statsMemory !== -1){
+            currentMemory = self.bytesToMB(statsMemory*1000);
+          }
+          if(statsDisk !== -1){
+            currentDisk = self.bytesToMB(statsDisk*1000);
+          }
         }
         self.maxValues = {"VmRSS": dynoresources.max.mem/1000, "Disk": dynoresources.max.disk/1000, "Cpu_Pct": 100};
         self.updateGaugeChartValue('cpu', currentCpu, null, resources.cpu.unit);
@@ -314,8 +323,8 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
           }
           var series = model.getSeries(v).all_series;
           if(series.length === 0){
+            $('#resource_dashboard_'+k+'_container').find('.resource_live_stats_link_container').hide();
             self.showNoData(typename, container);
-            self.resetResource(k);
             return;
           } else {
             series[0].color = undefined;
@@ -396,7 +405,7 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
       var current = data[data.length - 1][valueIndex];
       return current;
     } else {
-      return 0;
+      return -1;
     }
   },
 

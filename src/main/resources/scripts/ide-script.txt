@@ -23,6 +23,8 @@ js/model/models/UserResource.js
 js/model/models/ArmAuthPolicy.js
 js/model/models/Device.js
 js/model/models/Deploy.js
+js/model/models/Environment.js
+js/model/mocks/Environment.js
 js/model/models/CloudNotifications.js
 js/model/models/CloudLog.js
 js/application/account/account.profile.controller.js
@@ -74,12 +76,15 @@ js/application/apps/apps.endpoints.controller.js
 js/application/apps/apps.cloudresources.controller.js
 js/application/apps/apps.cloudnotifications.controller.js
 js/application/apps/apps.cloud.dashboard.controller.js
+js/application/apps/apps.environment.controller.js
 js/application/apps/apps.deploy.controller.js
 js/application/apps/apps.reports.support.js
 js/application/apps/apps.installs.controller.js
 js/application/apps/apps.startups.controller.js
-js/application/reporting/reporting.installs.controller.js
-js/application/reporting/reporting.startups.controller.js
+js/application/reporting/reporting.controller.js
+js/application/reporting/reporting.app.controller.js
+js/application/reporting/reporting.dashboard.controller.js
+js/application/reporting/reporting.perapp.controller.js
 js/application/chart/ChartManager.js
 js/application/chart/locator/ChartLocator.js
 js/application/chart/locator/MetricsChartLocator.js

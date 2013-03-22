@@ -1,9 +1,19 @@
 -------------------------------------------------------------------------------
 Component: fh-studio
 -------------------------------------------------------------------------------
-3.15.x - 2013-03-19 - IR197 - David Martin
+3.15.12 - 2013-03-19 - IR197 - David Martin
 * 3309 Call to user props endpoint when New UI is loaded, updating property
 * 3310 Call to user props endpoint when switching back to Old UI, updating property
+
+
+3.15.11 - 2013-03-20 - IR197 - Wei Li
+---------------------------------------------------------------------------
+* 3339 - Added support for app cloud environment variables
+* 3465 - fh-studio : git pull button on the details page dumps the user back onto the "All Apps" screen (in FireFox)
+
+3.15.10 - 2013-03-14 - IR195 - Craig Brookes
+----------------------------------------------------------------------------
+* 3138 transaction reporting and redesign of reporting tab
 
 3.15.9 - 2013-03-11 - IR197 - Jim OLeary
 ----------------------------------------------------------------------------
