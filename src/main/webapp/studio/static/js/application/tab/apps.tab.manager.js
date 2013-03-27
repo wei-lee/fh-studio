@@ -435,7 +435,10 @@ ManageappsTabManager = Tab.Manager.extend({
     var url;
 
     url = this.getTriggerUrl();
-    $fw.client.dialog.info.flash($fw.client.lang.getLangString('scm_update_started'), 2500);
+    //$fw.client.dialog.info.flash($fw.client.lang.getLangString('scm_update_started'), 2500);
+    var gitPullProgressContainer = $('.git_pull_progress').clone();
+    $(gitPullProgressContainer).modal({backdrop: true});
+
     $fw.server.post(url, {}, function(result) {
       if (result.cacheKey) {
         var clone_task = new ASyncServerTask({
