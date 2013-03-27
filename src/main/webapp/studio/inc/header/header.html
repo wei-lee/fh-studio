@@ -1,5 +1,9 @@
 <%@ include file="header_links.html"%>
 <div id="main_north" class="ui-widget ui-widget-content">
   <div id="header_logo"></div>
+<%
+if(studio.showStudioVersionOption()) { %>
+<a href="/beta/?sticky=beta" style="margin-top:15px" class="btn pull-right">Try the new look Studio</a>
+<% } %>
   <div id="header_logo_east"></div>
 </div>

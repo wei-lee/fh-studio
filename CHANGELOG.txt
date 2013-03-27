@@ -1,6 +1,11 @@
 -------------------------------------------------------------------------------
 Component: fh-studio
 -------------------------------------------------------------------------------
+3.15.12 - 2013-03-19 - IR197 - David Martin
+* 3309 Call to user props endpoint when New UI is loaded, updating property
+* 3310 Call to user props endpoint when switching back to Old UI, updating property
+
+
 3.15.11 - 2013-03-20 - IR197 - Wei Li
 ---------------------------------------------------------------------------
 * 3339 - Added support for app cloud environment variables
