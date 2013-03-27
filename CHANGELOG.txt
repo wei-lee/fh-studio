@@ -1,6 +1,10 @@
 -------------------------------------------------------------------------------
 Component: fh-studio
 -------------------------------------------------------------------------------
+3.15.13 - 2013-03-27 - IR198 - Wei Li
+---------------------------------------------------------------------------
+* 3547 - Update fh-js-sdk file to fix an issue with wrong uuid being used
+
 3.15.12 - 2013-03-19 - IR197 - David Martin
 * 3309 Call to user props endpoint when New UI is loaded, updating property
 * 3310 Call to user props endpoint when switching back to Old UI, updating property
