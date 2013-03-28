@@ -431,16 +431,24 @@ ManageappsTabManager = Tab.Manager.extend({
   /*
    * Trigger an update or pull from the scm for the currently open app
    */
-  triggerScm: function(success, fail, always) {
+  triggerScm: function(success, fail, always, progress_ui) {
     var url;
 
     url = this.getTriggerUrl();
     //$fw.client.dialog.info.flash($fw.client.lang.getLangString('scm_update_started'), 2500);
-    var gitPullProgressContainer = $('.git_pull_progress').clone();
-    $(gitPullProgressContainer).modal({backdrop: true});
+    var gitPullProgressContainer = progress_ui || $('.git_pull_progress').clone();
+    if(!progress_ui){
+      $(gitPullProgressContainer).modal({backdrop: "static", keyboard: false});
+    }
+    var progress = 0;
+    var self = this;
+    self.resetProgress(gitPullProgressContainer);
 
     $fw.server.post(url, {}, function(result) {
       if (result.cacheKey) {
+        progress = 20;
+        self.updateProgress(progress, gitPullProgressContainer);
+        self.updateProgressLog("Git pull started...", gitPullProgressContainer);
         var clone_task = new ASyncServerTask({
           cacheKey: result.cacheKey
         }, {
@@ -450,39 +458,53 @@ ManageappsTabManager = Tab.Manager.extend({
           maxRetries: Properties.cache_lookup_retries,
           timeout: function(res) {
             console.log('timeout error > ' + JSON.stringify(res));
-            $fw.client.dialog.error($fw.client.lang.getLangString('scm_trigger_error'));
-            // TODO: internationalise during refactor
-            // ALERT THE USER OF TIMEOUT proto.Wizard.jumpToStep(clone_app_wizard, 1, 'Clone timed out');
+            self.updateProgressLog("request timed out.", gitPullProgressContainer);
             if ($.isFunction(fail)) {
               fail();
             }
+            self.updateProgress(100, gitPullProgressContainer);
+            self.triggerScmFailed(gitPullProgressContainer);
           },
           update: function(res) {
+            console.log('scm update > ' + JSON.stringify(res));
             for (var i = 0; i < res.log.length; i++) {
               console.log(res.log[i]);
             }
+            if (res.progress) {
+              progress = res.progress;
+            } else {
+              if(res.log && res.log.length > 0){
+                progress += 2;
+              }
+            }
+
+            self.updateProgressLog(res.log, gitPullProgressContainer);
+            self.updateProgress(progress, gitPullProgressContainer);
           },
           complete: function(res) {
-            console.log('SCM refresh successful > ' + JSON.stringify(res));
-            $fw.client.dialog.info.flash($fw.client.lang.getLangString('scm_updated'), 2000);
-
+            console.log('scm update successful > ' + JSON.stringify(res));
             if ($.isFunction(success)) {
               success();
             }
+            self.updateProgress(100, gitPullProgressContainer);
+            self.triggerScmFinished(gitPullProgressContainer);
           },
           error: function(res) {
-            console.log('clone error > ' + JSON.stringify(res));
-            $fw.client.dialog.error($fw.client.lang.getLangString('scm_trigger_error') + "<br /> Error Message:" + res.error);
+            console.log('scm error > ' + JSON.stringify(res));
+            self.updateProgressLog(res.error, gitPullProgressContainer);
             if ($.isFunction(fail)) {
               fail();
             }
+            self.updateProgress(100, gitPullProgressContainer);
+            self.triggerScmFailed(gitPullProgressContainer);
           },
           retriesLimit: function() {
             console.log('retriesLimit exceeded: ' + Properties.cache_lookup_retries);
-            $fw.client.dialog.error($fw.client.lang.getLangString('scm_trigger_error'));
             if ($.isFunction(fail)) {
               fail();
             }
+            self.updateProgress(100, gitPullProgressContainer);
+            self.triggerScmFailed(gitPullProgressContainer);
           },
           end: function() {
             if ($.isFunction(always)) {
@@ -493,11 +515,93 @@ ManageappsTabManager = Tab.Manager.extend({
         clone_task.run();
       } else {
         console.log('No CacheKey in response > ' + JSON.stringify(result));
-        $fw.client.dialog.error($fw.client.lang.getLangString('scm_trigger_error'));
+        self.updateProgressLog($fw.client.lang.getLangString('scm_trigger_error'), gitPullProgressContainer);
+        self.updateProgress(100, gitPullProgressContainer);
+        self.triggerScmFailed(gitPullProgressContainer);
         if ($.isFunction(fail)) {
           fail();
         }
       }
     });
+  },
+
+  resetProgress: function(sub_container){
+    if($(sub_container).is(".progress-step")){
+      proto.ProgressDialog.resetBarAndLog(sub_container);
+    } else {
+      $('.progress', sub_container).removeClass('progress-danger progress-success').addClass('progress-striped');
+    }
+    
+  },
+
+  updateProgress: function (value, sub_container) {
+    if($(sub_container).is(".progress-step")){
+      proto.ProgressDialog.setProgress(sub_container, value);
+    } else {
+      var progress_el = $('.progress', sub_container);
+      var bar = $('.bar', progress_el);
+      bar.css('width', value + '%');
+    }
+  },
+
+  updateProgressLog: function (log, sub_container) {
+    // allow for string or array of strings
+    log = 'string' === typeof log ? [log] : log;
+    if($(sub_container).is(".progress-step")){
+      for(var i=0;i<log.length;i++){
+        proto.ProgressDialog.append(sub_container, log[i]);
+      }
+    } else {
+      var progress_log_el = $('textarea', sub_container);
+
+      if (log.length > 0) {
+        var current_log = progress_log_el.val(),
+          log_value;
+        if (current_log === '') {
+          log_value = current_log + log.join('\n');
+        } else {
+          log_value = current_log + '\n' + log.join('\n');
+        }
+        progress_log_el.val(log_value);
+        progress_log_el.scrollTop('10000000');
+      }
+    }
+    
+  },
+
+  triggerScmFinished: function(sub_container){
+    if($(sub_container).is(".progress-step")){
+      //do nothing
+    } else {
+      $('.progress', sub_container).removeClass('progress-striped').addClass('progress-success');
+      this.showScmCloseBtn(sub_container);
+    }
+  },
+
+  triggerScmFailed: function(sub_container){
+    if($(sub_container).is(".progress-step")){
+      //do nothing
+    } else {
+      $('.progress', sub_container).removeClass('progress-striped').addClass('progress-danger');
+      this.showScmCloseBtn(sub_container);
+    }
+  },
+
+  showScmCloseBtn: function(sub_container){
+    if($(sub_container).is(".progress-step")){
+      //do nothing
+    } else {
+      $('.close', sub_container).removeClass("hidden").bind("click", function(e){
+        e.preventDefault();
+        //$(sub_container).on("hidden", $(sub_container).remove());
+        $(sub_container).modal('hide');
+        $(sub_container).on("hidden", function(){
+          setTimeout(function(){
+            $(sub_container).remove();
+          }, 1000);
+        });
+      });
+    }
   }
+
 });
