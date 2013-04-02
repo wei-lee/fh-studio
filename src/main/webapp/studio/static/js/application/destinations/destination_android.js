@@ -66,9 +66,9 @@ application.DestinationAndroid = application.DestinationGeneral.extend({
   
   bindExtraConfig: function(wizard, config) {
       if(config !== "debug"){
-          wizard.find("#app_publish_android_versions").attr('next', 'app_publish_android_password');
+          wizard.find("#app_publish_android_info").attr('next', 'app_publish_android_password');
       } else {
-          wizard.find("#app_publish_android_versions").attr('next', 'app_publish_android_progress');
+          wizard.find("#app_publish_android_info").attr('next', 'app_publish_android_progress');
       }
   }
 });

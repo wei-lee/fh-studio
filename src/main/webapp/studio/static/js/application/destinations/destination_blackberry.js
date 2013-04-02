@@ -67,9 +67,9 @@ application.DestinationBlackberry = application.DestinationGeneral.extend({
   
   bindExtraConfig: function(wizard, config) {
       if(config !== "debug"){
-          wizard.find("#app_publish_blackberry_versions").attr('next', 'app_publish_blackberry_password');
+          wizard.find("#app_publish_blackberry_info").attr('next', 'app_publish_blackberry_password');
       } else {
-          wizard.find("#app_publish_blackberry_versions").attr('next', 'app_publish_blackberry_progress');
+          wizard.find("#app_publish_blackberry_info").attr('next', 'app_publish_blackberry_progress');
       }
   }
 });

@@ -119,17 +119,6 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
     this.$container.on("click" ,".delete-env", this.handleDelete);
     this.$container.on("click" ,".push-env", this.handlePush);
   },
-
-  switchedEnv: function(env) {
-    this.env = env;
-    if(this.subviews.$edit.is(":visible")) {
-      var name = this.subviews.$edit_name.val();
-      this.showEnvVar(name);
-    } else {
-      this.show();
-    }
-  },
-
   /**
    * compile a template
    * @param template the selector for the template
@@ -144,10 +133,8 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
    * @return {*}
    */
   show: function() {
-    this.initCloudFn();
-    if ($fw.client.tab.apps.manageapps.isNodeJsApp()) {
-      this.refreshStatus();
-    }
+    var self = this;
+    this._super(this.views.environment_container);
     this.app = $fw.data.get('inst').guid;
     this.subviews.$list.hide();
     this.subviews.$loading_view.show();
@@ -187,10 +174,14 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
    */
   handleError: function(alert, $buttons, msg) {
     if($buttons){
-      this.resetButtons($buttons ? $buttons : $("button", this.$container));
+      if(_.isString($buttons)){
+        msg = $buttons;
+      } else {
+        this.resetButtons($buttons ? $buttons : $("button", this.$container));
+      }
     }
     if(msg && _.isString(msg) && !msg.match(/^FHCore error/)) {
-      alert.msg = alert.msg + " : <b>" + msg + "</b>";
+      alert.msg = alert.msg + " <b>" + msg + "</b>";
     }
     this.showAlert(alert);
   },
@@ -330,6 +321,7 @@ Apps.Environment.Controller = Apps.Cloud.Controller.extend({
       "bFilter": false,
       "bDestroy": true,
       "bAutoWidth": true,
+      "bPaginate": false,
       "sDom": sDom,
       "bLengthChange": false,
       "aaData": data.aaData ,
