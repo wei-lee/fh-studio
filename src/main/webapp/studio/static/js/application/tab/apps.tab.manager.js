@@ -575,6 +575,9 @@ ManageappsTabManager = Tab.Manager.extend({
     } else {
       $('.progress', sub_container).removeClass('progress-striped').addClass('progress-success');
       this.showScmCloseBtn(sub_container);
+      setTimeout(function(){
+        $('.close', sub_container).trigger("click");
+      }, 1000);
     }
   },
 
