@@ -1,6 +1,14 @@
 -------------------------------------------------------------------------------
 Component: fh-studio
 -------------------------------------------------------------------------------
+3.15.14 - 2013-04-02 - IR198 - Wei Li
+---------------------------------------------------------------------------
+* 3577 - various studio bugs
+    * Environment Variables - name contains space cause problems
+    * Android Debug Build Wizard - unnecessary extra step required to enter password
+    * Dev/live toggle issue
+* 3478 - git pull displays proper status update
+
 3.15.13 - 2013-03-27 - IR198 - Wei Li
 ---------------------------------------------------------------------------
 * 3547 - Update fh-js-sdk file to fix an issue with wrong uuid being used
