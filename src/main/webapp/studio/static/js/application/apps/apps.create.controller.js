@@ -146,7 +146,7 @@ Apps.Create.Controller = Controller.extend({
                 proto.Wizard.hidePreviousButton(create_app_wizard);
               }, function() {
                 proto.Wizard.jumpToStep(create_app_wizard, details_step, 'An error occured while creating your App. Please try again.');
-              });
+              }, null, scmProgressStep);
             });
           };
         } else {

@@ -4,9 +4,9 @@ proto.ProgressDialog = {
     modal: true
   },
   
-  load: function (el, overrides) {
+  load: function (el, overrides, width) {
     el = proto.Dialog.load(el, {
-      width:350,
+      width: width || 350,
       dialogClass: 'ui-dialog-noclose ui-dialog-notitle ui-dialog-progress'
     });
     el.find('.progressbar').progressbar($.extend({}, proto.ProgressDialog.defaults, overrides));
