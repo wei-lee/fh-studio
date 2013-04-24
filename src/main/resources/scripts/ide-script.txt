@@ -1,10 +1,16 @@
 common/js/ajax/ASyncServerTask.js
 common/js/ui/thirdparty/bootstrap/bootstrap.js
+common/js/ui/thirdparty/backbone/backbone.js
+common/js/ui/thirdparty/handlebars/handlebars.js
+common/js/ui/thirdparty/handlebars/helpers.js
 common/js/ui/thirdparty/bootstrap-datepicker/bootstrap-datepicker.js
 js/application/Constants.js
 js/application/Config.js
 js/application/dialog/DialogManager.js
 js/application/controller.js
+js/model/backbone/event.model.js
+js/views/common/datatable.view.js
+js/views/app/cloud/cloud.notifications.view.js
 js/model/ModelManager.js
 js/model/models/Model.js
 js/model/models/App.js
