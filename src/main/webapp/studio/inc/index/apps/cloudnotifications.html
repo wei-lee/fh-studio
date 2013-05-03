@@ -10,63 +10,63 @@
   <div class="fh-box-outer">
     <h4 class="fh-box-header">
       Cloud Notifications
-        <%@ include file="./cloud_environment.html" %>
+      <%@ include file="./cloud_environment.html" %>
     </h4>
     <div class="fh-box-inner">
       <!-- div data-lang="cloudnotifications_description"></div -->
       <div class="alerts"></div>
+      
+      <ul class="cloud_notifications_type_nav nav nav-pills" id="cloud_notifications_main_pills">
+        <li class="active">
+          <a href="#cloud_notifications_pill" data-toggle="pill" data-type="cloud_notifications">System Logs</a>
+        </li>
+        <li>
+          <a href="#event_alert_pill" data-toggle="pill" data-type="alerts">Alerts</a>
+        </li>
+        <li>
+          <a href="#event_alert_notifications_pill" data-toggle="pill" data-type="alertnotifications">Notifications</a>
+        </li>
+      </ul>
 
-        <ul class="cloud_notifications_type_nav nav nav-pills" id="cloud_notifications_main_pills">
-            <li class="active">
-                <a href="#cloud_notifications_pill" data-toggle="pill" data-type="cloud_notifications">System Logs</a>
-            </li>
-            <li>
-                <a href="#event_alert_pill" data-toggle="pill" data-type="alerts">Alerts</a>
-            </li>
-            <li>
-                <a href="#event_alert_notifications_pill" data-toggle="pill" data-type="alertnotifications">Notifications</a>
-            </li>
-        </ul>
-
-        <div class="pill-content" id="cloud_notifications_main_outer_div">
-            <div class="pill-pane active" id="cloud_notifications_pill">
-                <div id="notifications_loading" class="loading_icon" style="display:block">
-                    <img src="<%=studio.getStaticAssetPath("themes/default/img/throbber.gif")%>" alt="loading"/> Loading data, please wait...
-                </div>
-                <div id="notification_container" class="row-fluid">
-
-                </div>
-            </div>
-
-            <div class="pill-pane" id="event_alert_pill">
-                <!-- div class="pill-content well">
-                    <form class="inline">
-                        <select class="selectfixedWidth" name="cloudNotificationsAuditLogTypes" id="cloudNotificationsAuditLogTypeFilter">
-                            <option value="all">All Types</option>
-                        </select>
-
-
-                        <select class="selectfixedWidth" name="cloudNotificationsAuditLogUsers" id="cloudNotificationsAuditLogUserFilter">
-                            <option value="all">All Users</option>
-                        </select>
-                        <button id="cloud_notifications_audit_log_filter" class="appreport-button btn btn-inverse insert-lang">Filter</button>
-                        <button id="cloud_notifications_audit_log_reset" class="appreport-button btn btn-inverse insert-lang">Reset</button>
-                    </form>
-                </div-->
-                <div id="event_alerts_container" class="row-fluid">
-
-
-                </div>
-            </div>
-
-            <div class="pill-pane" id="event_alert_notifications_pill">
-                <div id="alerts_notifications_container" class="row-fluid">
-
-
-                </div>
-            </div>
+      <div class="pill-content" id="cloud_notifications_main_outer_div">
+        <div class="pill-pane active" id="cloud_notifications_pill">
+          <div id="notifications_loading" class="loading_icon" style="display:block">
+            <img src="<%=studio.getStaticAssetPath("themes/default/img/throbber.gif")%>" alt="loading"/> Loading data, please wait...
+          </div>
+          <div id="notification_container" class="row-fluid">
+            
+          </div>
         </div>
 
+        <div class="pill-pane" id="event_alert_pill">
+          <!-- div class="pill-content well">
+               <form class="inline">
+                 <select class="selectfixedWidth" name="cloudNotificationsAuditLogTypes" id="cloudNotificationsAuditLogTypeFilter">
+                   <option value="all">All Types</option>
+                 </select>
+                 
+                 
+                 <select class="selectfixedWidth" name="cloudNotificationsAuditLogUsers" id="cloudNotificationsAuditLogUserFilter">
+                   <option value="all">All Users</option>
+                 </select>
+                 <button id="cloud_notifications_audit_log_filter" class="appreport-button btn btn-inverse insert-lang">Filter</button>
+                 <button id="cloud_notifications_audit_log_reset" class="appreport-button btn btn-inverse insert-lang">Reset</button>
+               </form>
+          </div-->
+          <div id="event_alerts_container" class="row-fluid">
+            
+            
+          </div>
+        </div>
 
+        <div class="pill-pane" id="event_alert_notifications_pill">
+          <div id="alerts_notifications_container" class="row-fluid">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
 <div id="modal_details" class="modal hide fade in" style="display: none; ">
 </div>
