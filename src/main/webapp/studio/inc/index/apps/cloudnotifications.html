@@ -1,13 +1,9 @@
 <script id="cloud-notifications-template" type="text/x-handlebars-template">
-<div class="fh-box-outer">
-  <h4 class="fh-box-header">
-    Cloud Notifications
-      <%@ include file="./cloud_environment.html" %>
-  </h4>
-  <div class="fh-box-inner">
-  <div class="cloud_notifications"></div>
-  </div>
-</div>
+    <div class="cloud_notifications"></div>
+</script>
+
+<script id="event-alerts-template" type="text/x-handlebars-template">
+    <div class="event_alerts"></div>
 </script>
 
 <div id="cloudnotifications_container" class="hidden_template">
@@ -22,10 +18,13 @@
 
         <ul class="cloud_notifications_type_nav nav nav-pills" id="cloud_notifications_main_pills">
             <li class="active">
-                <a href="#cloud_notifications_pill" data-toggle="pill" data-type="cloud_notifications">Cloud Notifications</a>
+                <a href="#cloud_notifications_pill" data-toggle="pill" data-type="cloud_notifications">System Logs</a>
             </li>
             <li>
-                <a href="#cloud_notifications_auditlog_pill" data-toggle="pill" data-type="auditlog">Audit Log</a>
+                <a href="#event_alert_pill" data-toggle="pill" data-type="alerts">Alerts</a>
+            </li>
+            <li>
+                <a href="#event_alert_notifications_pill" data-toggle="pill" data-type="alertnotifications">Notifications</a>
             </li>
         </ul>
 
@@ -36,14 +35,11 @@
                 </div>
                 <div id="notification_container" class="row-fluid">
 
-                    <table id="cloud_notification_events_table" cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered hidden">
-                    </table>
-
                 </div>
             </div>
 
-            <div class="pill-pane" id="cloud_notifications_auditlog_pill">
-                <div class="pill-content well">
+            <div class="pill-pane" id="event_alert_pill">
+                <!-- div class="pill-content well">
                     <form class="inline">
                         <select class="selectfixedWidth" name="cloudNotificationsAuditLogTypes" id="cloudNotificationsAuditLogTypeFilter">
                             <option value="all">All Types</option>
@@ -56,11 +52,16 @@
                         <button id="cloud_notifications_audit_log_filter" class="appreport-button btn btn-inverse insert-lang">Filter</button>
                         <button id="cloud_notifications_audit_log_reset" class="appreport-button btn btn-inverse insert-lang">Reset</button>
                     </form>
-                </div>
-                <div id="notification_audit_log_container" class="row-fluid">
+                </div-->
+                <div id="event_alerts_container" class="row-fluid">
 
-                    <table id="cloud_notification_audit_log_table" cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered hidden">
-                    </table>
+
+                </div>
+            </div>
+
+            <div class="pill-pane" id="event_alert_notifications_pill">
+                <div id="alerts_notifications_container" class="row-fluid">
+
 
                 </div>
             </div>

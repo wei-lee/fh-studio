@@ -26,21 +26,42 @@ Apps.Cloudnotifications.Controller = Apps.Cloud.Controller.extend({
   // },
 
   views: {
-    cloudnotifications_container: "#cloudnotifications_container"
+    cloudnotifications_container: "#cloudnotifications_container",
+    systemlog_container: "#cloud_notifications_pill",
+    event_alerts_container: "#event_alerts_container"
     // load_spinner: '#notifications_loading',
     // notification_table_container: '#notification_container'
   },
 
   init: function() {
     this._super();
+    this.initFn = _.once(this.initBindings);
+  },
+
+  initBindings: function(){
+    var container = $(this.views.cloudnotifications_container);
+    var self = this;
+    $('a[data-toggle="pill"]', container).on('shown', function(e){
+      $('.pill-pane', container).hide();
+      var dataType = $(e.target).data("type");
+      var paneId = $(e.target).attr("href");
+      console.log("data type is " + dataType + "paneId is " + paneId );
+      $(paneId, container).show();
+      if(dataType.toLowerCase() === "cloud_notifications"){
+        self.renderSystemlogs();
+      } else if(dataType.toLowerCase() === "alerts"){
+        self.renderAlerts();
+      } else {
+        self.renderAlertNotifications();
+      }
+    });
+
+    $('a[data-toggle="pill"]:first', container).trigger('shown');
+
   },
 
   show: function() {
-    this.view = new App.View.CloudNotifications({
-      el: this.views.cloudnotifications_container
-    });
-    this.view.render();
-
+    this.initFn();
     $(this.views.cloudnotifications_container).show();
     this._super(this.views.cloudnotifications_container);
 
@@ -48,6 +69,24 @@ Apps.Cloudnotifications.Controller = Apps.Cloud.Controller.extend({
     // $(this.views.notification_table_container).hide();
     // this.loadNotifications();
   },
+
+  renderSystemlogs : function(){
+    this.view = new App.View.CloudNotifications({
+      el: this.views.systemlog_container
+    });
+    this.view.render();
+  },
+
+  renderAlerts: function(){
+    this.alertsView = new App.View.EventAlerts({
+      el: this.views.event_alerts_container
+    });
+    this.alertsView.render();
+  },
+
+  renderAlertNotifications: function(){
+
+  }
 
   // loadNotifications: function() {
   //   var instGuid = $fw.data.get('inst').guid;
