@@ -2,68 +2,75 @@
   "count": 5,
   "list": [{
     "fields": {
-      "appGuid": "dhMu3RzdPkkmj3fD2HhFyMXP",
-      "dismissed": false,
-      "eventGroup": "NOTIFICATION",
-      "eventType": "app stage",
-      "message": "Dev app successfully staged to FEEDHENRY",
-      "sysCreated": "2013-03-11 13:03:37:249",
-      "title": "App staged",
-      "updatedBy": "testing-df.dev@example.com"
+        "appGuid": "DtTTIHQLiyvUy8T_QxD5iHrH",
+        "category": "RUN_STATE",
+        "dismissed": false,
+        "env": "dev",
+        "eventDetails": {
+          "Message Code": 45,
+          "Component": "MILLICORE",
+          "Filename": "/opt/feedhenry/...",
+          "Line Number": 324
+        },
+        "eventType": "START_REQUESTED",
+        "guid": "P3M89BuNuKslD9rCNzdNg4pV",
+        "message": "App start requested.",
+        "severity": "INFO",
+        "sysCreated": "1970-01-01 00:00:00:000",
+        "timestamp": "1970-01-01 00:00:00:000",
+        "title": "START_REQUESTED",
+        "uid": "DtTTIHQLiyvUy8T_QxD5iHrH",
+        "updatedBy": ""
     },
-    "guid": "F1gEfc5J9C7B5Nho5uxt61dG",
+    "guid": "P3M89BuNuKslD9rCNzdNg4pV",
     "type": "eventlog_EventLog"
   }, {
     "fields": {
-      "appGuid": "dhMu3RzdPkkmj3fD2HhFyMXP",
-      "dismissed": false,
-      "eventGroup": "NOTIFICATION",
-      "eventType": "app stage",
-      "message": "Dev app successfully staged to FEEDHENRY",
-      "sysCreated": "2013-03-11 12:33:18:403",
-      "title": "App staged",
-      "updatedBy": "testing-df.dev@example.com"
+        "appGuid": "DtTTIHQLiyvUy8T_QxD5iHrH",
+        "category": "RUN_STATE",
+        "dismissed": false,
+        "env": "dev",
+        "eventDetails": {
+          "Message Code": 45,
+          "Component": "MILLICORE",
+          "Filename": "/opt/feedhenry/...",
+          "Line Number": 324
+        },
+        "eventType": "START_REQUESTED",
+        "guid": "P3M89BuNuKslD9rCNzdNg4pV",
+        "message": "App start requested.",
+        "severity": "INFO",
+        "sysCreated": "1970-01-01 00:00:00:000",
+        "timestamp": "1970-01-01 00:00:00:000",
+        "title": "START_REQUESTED",
+        "uid": "DtTTIHQLiyvUy8T_QxD5iHrH",
+        "updatedBy": ""
     },
-    "guid": "gGy5s8hEe4g0zQ6XwkR2ntup",
+    "guid": "P3M89BuNuKslD9rCNzdNg4pV",
     "type": "eventlog_EventLog"
   }, {
     "fields": {
-      "appGuid": "dhMu3RzdPkkmj3fD2HhFyMXP",
-      "dismissed": false,
-      "eventGroup": "NOTIFICATION",
-      "eventType": "app start",
-      "message": "Dev app started  successfully.",
-      "sysCreated": "2013-03-11 12:32:45:828",
-      "title": "App started",
-      "updatedBy": "testing-df.dev@example.com"
+        "appGuid": "DtTTIHQLiyvUy8T_QxD5iHrH",
+        "category": "RUN_STATE",
+        "dismissed": false,
+        "env": "dev",
+        "eventDetails": {
+          "Message Code": 45,
+          "Component": "MILLICORE",
+          "Filename": "/opt/feedhenry/...",
+          "Line Number": 324
+        },
+        "eventType": "START_REQUESTED",
+        "guid": "P3M89BuNuKslD9rCNzdNg4pV",
+        "message": "App start requested.",
+        "severity": "INFO",
+        "sysCreated": "1970-01-01 00:00:00:000",
+        "timestamp": "1970-01-01 00:00:00:000",
+        "title": "START_REQUESTED",
+        "uid": "DtTTIHQLiyvUy8T_QxD5iHrH",
+        "updatedBy": ""
     },
-    "guid": "QFJAZVTUhdJQTfDpjpwkoHDL",
-    "type": "eventlog_EventLog"
-  }, {
-    "fields": {
-      "appGuid": "dhMu3RzdPkkmj3fD2HhFyMXP",
-      "dismissed": false,
-      "eventGroup": "NOTIFICATION",
-      "eventType": "app stage",
-      "message": "Dev app successfully staged to FEEDHENRY",
-      "sysCreated": "2013-03-11 12:32:45:274",
-      "title": "App staged",
-      "updatedBy": "testing-df.dev@example.com"
-    },
-    "guid": "AGzcuAfoEd1EPyp738k4mYgb",
-    "type": "eventlog_EventLog"
-  }, {
-    "fields": {
-      "appGuid": "dhMu3RzdPkkmj3fD2HhFyMXP",
-      "dismissed": false,
-      "eventGroup": "NOTIFICATION",
-      "eventType": "app stage",
-      "message": "Dev app successfully staged to FEEDHENRY",
-      "sysCreated": "2013-03-11 12:31:53:509",
-      "title": "App staged",
-      "updatedBy": "testing-df.dev@example.com"
-    },
-    "guid": "AyJHWUevYrV9mSuwbW_2ddYI",
+    "guid": "P3M89BuNuKslD9rCNzdNg4pV",
     "type": "eventlog_EventLog"
   }],
   "status": "ok"
