@@ -36,11 +36,11 @@ App.Collection.EventAlerts = Backbone.Collection.extend({
       $fw.server.post(url, {uid: instGuid, env: cloudEnv}, function(res){
         if (res.status === "ok") {
           if ($.isFunction(options.success)) {
-            options.success(model, res, options);
+            options.success(res);
           }
         } else {
           if ($.isFunction(options.error)) {
-            options.error(model, res.message, options);
+            options.error(res);
           }
         }
       }, options.error, true );

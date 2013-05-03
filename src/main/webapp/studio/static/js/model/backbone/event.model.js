@@ -4,26 +4,40 @@ App.Collection = App.Collection || {};
 App.collections = App.collections || {};
 
 
-App.Model.Event = Backbone.Model.extend({});
+App.Model.CloudEvent = Backbone.Model.extend({
+
+});
 
 App.Collection.CloudEvents = Backbone.Collection.extend({
-  model: App.Model.Event,
+  model: App.Model.CloudEvent,
 
-  url: '/studio/static/js/model/backbone/mocks/cloud_notifications.json',
+  //url: '/studio/static/js/model/backbone/mocks/cloud_notifications.json',
 
   initialize: function() {},
 
-  // sync: function(method, collection, options) {
-  //   options || (options = {});
-  //   options.url = this.url;
-  //   var instGuid = $fw.data.get('inst').guid;
-  //   // var cloudEnv = $fw.data.get('cloud_environment');
-  //   options.data = {
-  //     appGuid: instGuid
-  //   };
-  //   options.type = "POST";
-  //   return Backbone.sync(method, collection, options);
-  // },
+  sync: function(method, model, options){
+    var url = '/box/srv/1.1/app/eventlog/listEvents';
+    if("read" === method){
+      var instGuid = $fw.data.get('inst').guid;
+      var cloudEnv = $fw.data.get('cloud_environment');
+      $fw.server.post(url, {uid: instGuid, env: cloudEnv}, function(res){
+        if (res.status === "ok") {
+          if ($.isFunction(options.success)) {
+            options.success(res);
+          }
+        } else {
+          if ($.isFunction(options.error)) {
+            options.error(res);
+          }
+        }
+      }, options.error, true );
+    } else {
+      console.log("EventLog collection do not support" + method);
+      if($.isFunction(options.error)){
+        options.error(model, "not_supported", options);
+      }
+    }
+  },
 
   parse: function(response) {
     // Need to munge slightly, since this endpoint returns params nested in a "fields" key
