@@ -21,7 +21,6 @@ App.View.CloudNotifications = Backbone.View.extend({
 
     this.table_view = new App.View.DataTable({
       "aaData": this.collection.toJSON(),
-      "fnRowCallback": $.noop,
       "bFilter": false,
       "fnRowCallback": function(nTr, sData, oData, iRow, iCol) {
         // Append guid data
@@ -62,7 +61,7 @@ App.View.CloudNotifications = Backbone.View.extend({
     // TODO - where best to put this? (or is there an equivalent function elsewhere?)
     function capitaliseFirstLetter(string) {
       return string.charAt(0).toUpperCase() + string.slice(1);
-    };
+    }
 
     for (var prop in obj.attributes.eventDetails){
       // TODO - some eventDetails objects at the moment have a 'message' field
