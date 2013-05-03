@@ -51,6 +51,7 @@ App.View.CloudNotifications = Backbone.View.extend({
     this.collection.findWhere({guid: guid});
     var guid = $(e.currentTarget).closest('tr').data('guid');
     var obj = this.collection.findWhere({guid: guid});
+    console.log(obj.attributes);
     var html = $("#log-details-template").html();
     var template = Handlebars.compile(html);
 
@@ -58,16 +59,24 @@ App.View.CloudNotifications = Backbone.View.extend({
     // so we create an array of the 'eventDetails' and use it in the template
     obj.attributes.eventDetailsArray = [];
 
+    // TODO - where best to put this? (or is there an equivalent function elsewhere?)
+    function capitaliseFirstLetter(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1);
+    };
+
     for (var prop in obj.attributes.eventDetails){
-      if (obj.attributes.eventDetails.hasOwnProperty(prop)){
+      // TODO - some eventDetails objects at the moment have a 'message' field
+      // which is the exact same as the main 'message' field. Filtering these out
+      // for now, but we really need to tidy up the eventDetails object!!
+      if (obj.attributes.eventDetails.hasOwnProperty(prop) && prop !== 'message'){
         obj.attributes.eventDetailsArray.push({
-          'key' : prop,
+          'key' : capitaliseFirstLetter(prop),
           'value' : obj.attributes.eventDetails[prop]
         });
       }
     }
 
     $('#modal_details').html(template(obj.attributes));
-    $('#modal_details').modal({}); 
+    $('#modal_details').modal({});
   }
 });
