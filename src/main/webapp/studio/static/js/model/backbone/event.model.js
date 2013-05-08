@@ -15,6 +15,8 @@ App.Collection.CloudEvents = Backbone.Collection.extend({
 
   initialize: function() {},
 
+  eventFilters: {'eventCategories':[], 'eventNames':[], 'eventSeverities':[]},
+
   sync: function(method, model, options){
     var url = '/box/srv/1.1/app/eventlog/listEvents';
     if("read" === method){
@@ -45,12 +47,22 @@ App.Collection.CloudEvents = Backbone.Collection.extend({
 
     var list = response.list;
     var parsed_list = [];
+    var self = this;
 
     _.each(list, function(item) {
       var fields = item.fields;
       var merged = _.extend(item, fields);
       delete merged.fields;
       parsed_list.push(merged);
+      if(self.eventFilters.eventCategories.indexOf(merged.category) === -1){
+        self.eventFilters.eventCategories.push(merged.category);
+      }
+      if(self.eventFilters.eventNames.indexOf(merged.eventType) === -1){
+        self.eventFilters.eventNames.push(merged.eventType);
+      }
+      if(self.eventFilters.eventSeverities.indexOf(merged.severity) === -1){
+        self.eventFilters.eventSeverities.push(merged.severity);
+      }
     });
 
     return parsed_list;

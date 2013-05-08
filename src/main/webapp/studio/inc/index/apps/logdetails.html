@@ -4,13 +4,10 @@
     <h3>Log Details</h3>
   </div>
   <div class="modal-body">
-    <form class="form-horizontal" id="modal_details_form">    
-      <div class="control-group"><label class="control-label" for="inputTimsStamp">TimeStamp</label><div class="controls"><span class="input-xlarge uneditable-input" id="inputTimeStamp">{{timestamp}}</span></div></div>
-      <div class="control-group"><label class="control-label" for="inputSeverity">Severity</label><div class="controls"><span class="input-xlarge uneditable-input" id="inputSeverity">{{severity}}</span></div></div>
-      <div class="control-group"><label class="control-label" for="inputMessage">Message</label><div class="controls"><span class="input-xlarge uneditable-input" id="inputMessage">{{message}}</span></div></div>
-      {{#eventDetailsArray}}
-      <div class="control-group"><label class="control-label" for="input{{key}}">{{key}}</label><div class="controls"><span class="input-xlarge uneditable-input" id="input{{key}}">{{value}}</span></div></div>
-      {{/eventDetailsArray}}
+    <form class="form-horizontal" id="modal_details_form">
+      {{#each eventDetailsArray}}
+       {{#details this}}{{/details}}
+      {{/each}}
     </form>
   </div>
   <div class="modal-footer">

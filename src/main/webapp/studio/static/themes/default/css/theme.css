@@ -3252,21 +3252,25 @@ a.docslink {
   margin-bottom: 0px;
 }
 
-#cloud_notification_audit_log_table span.label, 
-#cloud_notification_events_table span.label {
+#cloudnotifications_container table span.label {
   display: block;
   text-align: center;
   padding: 5px;
 }
 
-#cloud_notification_audit_log_table td.fail, 
-#cloud_notification_events_table td.fail {
-  background-color: #dec5c5 !important;
+
+#cloudnotifications_container .dataTable tr {
+  cursor: pointer;
 }
 
-#cloud_notification_events_table_wrapper .row-fluid .span12, 
-#cloud_notification_audit_log_table_wrapper .row-fluid .span12 {
-  min-height: 0;
+.filter_options {
+   width: 855px;
+   margin-left: auto;
+   margin-right: auto;
+}
+
+.filter_options_forms .btn {
+  margin-bottom: 9px;
 }
 
 

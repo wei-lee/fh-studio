@@ -1,4 +1,17 @@
 <script id="cloud-notifications-template" type="text/x-handlebars-template">
+    <div class="filter_options">
+        <form class="filter_options_forms">
+          <select class="eventCategories_filters" data-toggle="tooltip" title="Filter By Event Class">
+          </select>
+          <select class="eventNames_filters" data-toggle="tooltip" title="Filter By Event State">
+          </select>
+          <select class="eventSeverities_filters" data-toggle="tooltip" title="Filter By Event Severity">
+          </select>
+          <button class="btn filterEventsBtn">Filter</button>
+          <button class="btn filterResetBtn">Reset</button>
+          <button class="btn reloadBtn">Reload</button>
+        </form>
+    </div>
     <div class="system_log"></div>
 </script>
 
@@ -17,7 +30,7 @@
       <div class="alerts"></div>
       
       <ul class="cloud_notifications_type_nav nav nav-pills" id="cloud_notifications_main_pills">
-        <li class="active">
+        <li>
           <a href="#cloud_notifications_pill" data-toggle="pill" data-type="cloud_notifications">System Logs</a>
         </li>
         <li>
