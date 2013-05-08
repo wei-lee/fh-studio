@@ -11,6 +11,7 @@ js/application/controller.js
 js/model/backbone/event.model.js
 js/model/backbone/alert.model.js
 js/views/common/datatable.view.js
+js/views/common/swap_select.view.js
 js/views/app/cloud/cloud.notifications.view.js
 js/views/app/cloud/cloud.alerts.view.js
 js/model/ModelManager.js

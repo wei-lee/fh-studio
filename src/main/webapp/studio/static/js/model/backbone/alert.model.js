@@ -3,12 +3,18 @@ App.Model = App.Model || {};
 App.Collection = App.Collection || {};
 App.collections = App.collections || {};
 
+App.models = App.models || {};
+
 
 App.Model.EventAlert = Backbone.Model.extend({
   idAttribute: "guid",
   rootUrl: '/box/srv/1.1/cm/eventlog/alert',
   sync: function (method, model, options) {
-    var url = this.get("rootUrl") + "/" + method;
+    var url = this.rootUrl + "/" + method;
+    var instGuid = $fw.data.get('inst').guid;
+    var cloudEnv = $fw.data.get('cloud_environment');
+    model.set("uid", instGuid);
+    model.set("env", cloudEnv);
     $fw.server.post(url, model.toJSON(), function(res) {
       if (res.status === "ok") {
         if ($.isFunction(options.success)) {
@@ -22,6 +28,32 @@ App.Model.EventAlert = Backbone.Model.extend({
     }, options.error, true);
   }
 });
+
+App.Model.AlertFilter = Backbone.Model.extend({
+  loaded: false,
+  sync: function (method, model, options) {
+    var self = this;
+    if(!self.loaded){
+      var url = '/box/srv/1.1/cm/eventlog/alert/listOptions';
+      $fw.server.post(url, {}, function(res) {
+        if (res.status === "ok") {
+          self.loaded = true
+          if ($.isFunction(options.success)) {
+            options.success(res, options);
+          }
+        } else {
+          if ($.isFunction(options.error)) {
+            options.error(res, options);
+          }
+        }
+      }, options.error, true);
+    } else {
+      self.trigger("sync");
+    }
+  }
+});
+
+App.models.alertFilters = new App.Model.AlertFilter();
 
 App.Collection.EventAlerts = Backbone.Collection.extend({
   model: App.Model.EventAlert,
@@ -58,6 +90,12 @@ App.Collection.EventAlerts = Backbone.Collection.extend({
     return list;
   }
 
+});
+
+App.Collection.AlertFilters = Backbone.Collection.extend({
+   fetch: function(){
+     this.trigger("sync");
+   }
 });
 
 App.collections.event_alerts = new App.Collection.EventAlerts();

@@ -71,16 +71,26 @@ Apps.Cloudnotifications.Controller = Apps.Cloud.Controller.extend({
   },
 
   renderSystemlogs : function(){
-    this.view = new App.View.CloudNotifications({
-      el: this.views.systemlog_container
-    });
+    if(!this.view){
+      this.view = new App.View.CloudNotifications({
+        el: this.views.systemlog_container
+      });
+    } else {
+      this.view.render();
+    }
+
     //this.view.render();
   },
 
   renderAlerts: function(){
-    this.alertsView = new App.View.EventAlerts({
-      el: this.views.event_alerts_container
-    });
+    if(!this.alertsView){
+      this.alertsView = new App.View.EventAlerts({
+        el: this.views.event_alerts_container
+      });
+    } else {
+      this.alertsView.render();
+    }
+
     //this.alertsView.render();
   },
 
