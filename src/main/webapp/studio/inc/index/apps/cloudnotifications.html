@@ -19,6 +19,27 @@
     <div class="event_alerts"></div>
 </script>
 
+<script id="event-alerts-controls-template" type="text/x-handlebars-template">
+    <button class="btn btn-primary pull-right alert_create_btn">Create An Alert</button>
+</script>
+
+<script id="event-alert-template" type="text/x-handlebars-template">
+    <div class="modal-header">
+        <a class="close" data-dismiss="modal">x</a>
+        <h3>{{header}}</h3>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" id="modal_alert_details_form">
+        {{#alertDetails alert}}
+        {{/alertDetails}}
+        </form>
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="btn" data-dismiss="modal">Close</a>
+        <a href="#" class="btn">Save</a>
+    </div>
+</script>
+
 <div id="cloudnotifications_container" class="hidden_template">
   <div class="fh-box-outer">
     <h4 class="fh-box-header">

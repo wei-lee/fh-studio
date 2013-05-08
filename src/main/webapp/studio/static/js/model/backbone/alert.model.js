@@ -5,6 +5,7 @@ App.collections = App.collections || {};
 
 
 App.Model.EventAlert = Backbone.Model.extend({
+  idAttribute: "guid",
   rootUrl: '/box/srv/1.1/cm/eventlog/alert',
   sync: function (method, model, options) {
     var url = this.get("rootUrl") + "/" + method;
