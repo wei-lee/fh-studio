@@ -21,6 +21,7 @@ App.View.EventAlertNotifications = Backbone.View.extend({
   },
 
   render: function(){
+    this.$el.show();
     if(!this.table_view){
       this.table_container = this.$el.find('.alert_notifications_table_container');
       this.table_view = new App.View.DataTable({
@@ -30,7 +31,6 @@ App.View.EventAlertNotifications = Backbone.View.extend({
         "fnRowCallback": function(nTr, sData, oData, iRow, iCol) {
           // Append guid data
           $(nTr).attr('data-guid', sData.guid);
-          //self.rowRender(nTr, sData, oData);
 
         },
         "aoColumns": [{
@@ -72,7 +72,8 @@ App.View.EventAlertNotifications = Backbone.View.extend({
 
 App.View.AlertNotification = Backbone.View.extend({
   tagName: "div",
-  className:"modal hide fade in",
+  className:"modal hide fade in alert_notification_details",
+
 
   render: function(){
     var self = this;

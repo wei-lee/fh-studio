@@ -79,7 +79,8 @@ App.View.EventAlerts = Backbone.View.extend({
         "bDestroy": true,
         "sDom":"<'row-fluid'<'span12'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
         "bLengthChange": false,
-        "iDisplayLength": 5
+        "iDisplayLength": 5,
+        "bInfo": false
       });
       this.$table_container.append(this.table_view.render().el);
       var controls = $('#event-alerts-controls-template').html();
@@ -153,6 +154,9 @@ App.View.EventAlerts = Backbone.View.extend({
           success: function(){
             obj.destroy({success: function(){
               self.$el.find('.alert_delete_btn').addClass("disabled").attr("disabled");
+              if(self.filteredNotifications){
+                self.filteredNotifications.reset(self.notifications.toJSON());
+              }
             }});
           }
         });

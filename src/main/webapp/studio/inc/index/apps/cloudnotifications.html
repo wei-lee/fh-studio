@@ -77,31 +77,31 @@
             <div class="control-group timeStamp_control">
                 <label class="control-label" for="input_timeStamp">Time Stamp</label>
                 <div class="controls">
-                  <input type="text" class="input-xlarge uneditable-input" id="input_timeStamp" value="{{sysCreated}}"></input>
+                  <span  class="input-xxlarge uneditable-input" id="input_timeStamp"">{{sysCreated}}</span>
                </div>
             </div>
             <div class="control-group alertName_control">
                 <label class="control-label" for="input_alertName">Alert Name</label>
                 <div class="controls">
-                    <input type="text" class="input-xlarge uneditable-input" id="input_alertName" value="{{alertName}}"></input>
+                    <span  class="input-xxlarge uneditable-input" id="input_alertName">{{alertName}}</span>
                 </div>
             </div>
             <div class="control-group recipients_control">
                 <label class="control-label" for="input_recipients">Recipients</label>
                 <div class="controls">
-                    <input type="text" class="input-xlarge uneditable-input" id="input_recipients" value="{{recipients}}"></input>
+                    <span class="input-xxlarge uneditable-input" id="input_recipients">{{recipients}}</span>
                 </div>
             </div>
             <div class="control-group subject_control">
                 <label class="control-label" for="input_subject">Subject</label>
                 <div class="controls">
-                    <input type="text" class="input-xlarge uneditable-input" id="input_subject" value="{{subject}}"></input>
+                    <span class="input-xxlarge uneditable-input" id="input_subject">{{subject}}</span>
                 </div>
             </div>
             <div class="control-group body_control">
                 <label class="control-label" for="input_body">Body</label>
                 <div class="controls">
-                    <textarea class="input-block-level uneditable-input" id="input_body" rows="5">{{body}}</textarea>
+                    <textarea class="input-block-level uneditable-input" id="input_body" rows="5" style="overflow:auto">{{{body}}}</textarea>
                 </div>
             </div>
         </form>

@@ -3273,6 +3273,48 @@ a.docslink {
   margin-bottom: 9px;
 }
 
+.event_notifications_table_container {
+    margin-top: 1em;
+}
+
+.test_emails_btn {
+  margin-left: 3px;
+}
+
+.alert_notification_details {
+  width: 700px;
+  left:45%;
+}
+
+.alert_notification_details .form-horizontal .controls {
+  margin-left: 110px;
+}
+
+.alert_notification_details .form-horizontal .control-label {
+  width: 100px;
+}
+
+#modal_details.large {
+  width: 900px;
+  left: 40%;
+}
+
+#modal_details.large .form-horizontal .input-xlarge {
+  width: 695px;
+}
+
+.controls .select2-choices {
+  padding: 0px 6px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  width: 270px;
+}
+
+.alert_create_btn {
+  margin-right: 1em;
+}
+
 
 
 .selectfixedWidth {

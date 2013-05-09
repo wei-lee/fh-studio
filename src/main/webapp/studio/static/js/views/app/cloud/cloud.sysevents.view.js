@@ -208,8 +208,13 @@ App.View.CloudNotifications = Backbone.View.extend({
     context.eventDetailsArray.push({key: "Timestamp", value: obj.attributes.timestamp});
     context.eventDetailsArray.push({key: "Severity", value: obj.attributes.severity});
 
+    var hasStacktrace = false;
+
     for (var prop in obj.attributes.eventDetails){
       if (obj.attributes.eventDetails.hasOwnProperty(prop)){
+        if(prop.toLowerCase() === "stacktrace"){
+          hasStacktrace = true;
+        }
         context.eventDetailsArray.push({
           'key' : js_util.capitaliseWords(prop),
           'value' : obj.attributes.eventDetails[prop]
@@ -218,7 +223,12 @@ App.View.CloudNotifications = Backbone.View.extend({
     }
 
     $('#modal_details').html(template(context));
-    $('#modal_details').modal({});
+    if(hasStacktrace){
+      $('#modal_details').addClass("large").modal({});
+    } else {
+      $('#modal_details').removeClass("large").modal({});
+    }
+
   }
 
 
