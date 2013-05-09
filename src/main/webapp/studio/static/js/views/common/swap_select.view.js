@@ -42,7 +42,7 @@ App.View.SwapSelect = Backbone.View.extend({
       });
 
       this.$select.select2({
-        placeHolder: "Select an Item",
+        placeHolder: "Select an Item"
       });
     }
 

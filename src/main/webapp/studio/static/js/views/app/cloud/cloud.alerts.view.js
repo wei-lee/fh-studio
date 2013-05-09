@@ -249,7 +249,7 @@ App.View.Alert = Backbone.View.extend({
        var fields = [{field:"alertName",name:"Alert Name"}, {field:"eventCategories",name:"Event Classes"}, {field:"eventNames", name:"Events"}, {field:"eventSeverities", name:"Severities"}, {field:"emails", name:"Emails"}];
        for(var i=0;i<fields.length;i++){
          var key = fields[i].field;
-         var fieldName = fields[i].name
+         var fieldName = fields[i].name;
          var value = alert.get(key);
          html.push('<div class="control-group '+key+'_control"><label class="control-label" for="input_'+key+'">'+fieldName+'</label><div class="controls">');
          html.push('<input type="text" class="input-xlarge" id="input_'+key+'" value="'+value+'"></input>');

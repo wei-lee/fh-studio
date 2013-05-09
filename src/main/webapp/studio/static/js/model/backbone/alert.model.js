@@ -79,7 +79,7 @@ App.Model.AlertFilter = Backbone.Model.extend({
       var url = '/box/srv/1.1/cm/eventlog/alert/listOptions';
       $fw.server.post(url, {}, function(res) {
         if (res.status === "ok") {
-          self.loaded = true
+          self.loaded = true;
           if ($.isFunction(options.success)) {
             options.success(res, options);
           }
