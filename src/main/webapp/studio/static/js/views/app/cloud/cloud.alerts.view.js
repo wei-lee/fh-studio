@@ -25,6 +25,9 @@ App.View.EventAlerts = Backbone.View.extend({
     this.notifications =  App.collections.cloud_events;
     this.notifications.bind("sync", this.renderNotifications, this);
     this.notifications.fetch();
+    var html = $("#event-alerts-template").html();
+    var template = Handlebars.compile(html);
+    this.$el.html(template()).show();
   },
 
   reload: function(){
@@ -39,9 +42,6 @@ App.View.EventAlerts = Backbone.View.extend({
     });
 
     if(!this.table_view){
-      var html = $("#event-alerts-template").html();
-      var template = Handlebars.compile(html);
-      this.$el.html(template()).show();
 
       this.$table_container = this.$el.find('.event_alerts');
       this.table_view = new App.View.DataTable({

@@ -26,7 +26,13 @@ App.View.CloudNotificationsTable = Backbone.View.extend({
         "aoColumns": [{
           "sTitle": "TimeStamp",
           "mDataProp": "sysCreated"
-        }, {
+        },
+        {
+          "sTitle":"Updated By",
+          "mDataProp": "updatedBy"
+        },
+
+        {
           "sTitle": "Event Class",
           "mDataProp": "category"
         }, {
@@ -215,10 +221,23 @@ App.View.CloudNotifications = Backbone.View.extend({
         if(prop.toLowerCase() === "stacktrace"){
           hasStacktrace = true;
         }
-        context.eventDetailsArray.push({
-          'key' : js_util.capitaliseWords(prop),
-          'value' : obj.attributes.eventDetails[prop]
-        });
+        var value = obj.attributes.eventDetails[prop];
+        if(typeof value === "string"){
+          context.eventDetailsArray.push({
+            'key' : js_util.capitaliseWords(prop),
+            'value' : obj.attributes.eventDetails[prop]
+          });
+        } else if(typeof value === "object"){
+          for(var valueProp in value){
+            if(value.hasOwnProperty(valueProp)){
+              context.eventDetailsArray.push({
+                'key' : js_util.capitaliseWords(valueProp),
+                'value' : value[valueProp]
+              });
+            }
+          }
+        }
+
       }
     }
 
