@@ -101,10 +101,11 @@ App.View.EventAlerts = Backbone.View.extend({
         collection: this.filteredNotifications,
         displayLength: 5
       });
-      this.$el.find('.event_notifications_table_container').html(this.notificationsView.render().el);
+      this.notificationsView.render();
     } else {
       this.filteredNotifications.reset(this.notifications.clone().toJSON());
     }
+    this.$el.find('.event_notifications_table_container').html(this.notificationsView.el);
 
 
   },
