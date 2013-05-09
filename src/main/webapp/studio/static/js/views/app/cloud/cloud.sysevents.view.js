@@ -94,7 +94,7 @@ App.View.CloudNotifications = Backbone.View.extend({
     'click table tbody tr': 'showDetails',
     'click .filterEventsBtn' : 'filterEvents',
     'click .filterResetBtn' : 'resetFilters',
-    'click .reloadBtn': 'reloadEvents'
+    'click .reloadBtn': 'reload'
   },
 
 
@@ -108,8 +108,10 @@ App.View.CloudNotifications = Backbone.View.extend({
     this.collection.fetch();
   },
 
-  reloadEvents: function(e){
-    e.preventDefault();
+  reload: function(e){
+    if(e){
+      e.preventDefault();
+    }
     this.collection.fetch();
   },
 

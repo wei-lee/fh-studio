@@ -64,8 +64,13 @@ Apps.Cloudnotifications.Controller = Apps.Cloud.Controller.extend({
     var container = $(this.views.cloudnotifications_container);
     container.show();
     this._super(this.views.cloudnotifications_container);
-    $('a[data-toggle="pill"]:first', container).parent('li').removeClass('active');
-    $('a[data-toggle="pill"]:first', container).trigger('click');
+    var selected = $('li.active', container);
+    if(selected.length > 0){
+      selected.removeClass('active').find("a[data-toggle='pill']").trigger("click");
+    } else {
+      $("a[data-toggle='pill']:first", container).trigger("click");
+    }
+
 
     // $(this.views.load_spinner).show();
     // $(this.views.notification_table_container).hide();
@@ -78,7 +83,7 @@ Apps.Cloudnotifications.Controller = Apps.Cloud.Controller.extend({
         el: this.views.systemlog_container
       });
     } else {
-      this.view.render();
+      this.view.reload();
     }
 
     //this.view.render();
@@ -90,7 +95,7 @@ Apps.Cloudnotifications.Controller = Apps.Cloud.Controller.extend({
         el: this.views.event_alerts_container
       });
     } else {
-      this.alertsView.render();
+      this.alertsView.reload();
     }
 
     //this.alertsView.render();
@@ -102,7 +107,7 @@ Apps.Cloudnotifications.Controller = Apps.Cloud.Controller.extend({
         el: this.views.alerts_notification_container
       });
     } else {
-      this.alertNotificationView.render();
+      this.alertNotificationView.reload();
     }
   }
 

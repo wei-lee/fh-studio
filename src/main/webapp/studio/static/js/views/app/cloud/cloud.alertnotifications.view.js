@@ -16,6 +16,10 @@ App.View.EventAlertNotifications = Backbone.View.extend({
     this.collection.fetch();
   },
 
+  reload: function(){
+    this.collection.fetch();
+  },
+
   render: function(){
     if(!this.table_view){
       this.table_container = this.$el.find('.alert_notifications_table_container');
@@ -51,6 +55,9 @@ App.View.EventAlertNotifications = Backbone.View.extend({
       });
       this.table_view.render();
       this.table_container.html(this.table_view.el);
+    } else {
+      this.table_view.table.fnClearTable();
+      this.table_view.table.fnAddData(this.collection.toJSON());
     }
   },
 

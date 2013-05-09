@@ -27,6 +27,11 @@ App.View.EventAlerts = Backbone.View.extend({
     this.notifications.fetch();
   },
 
+  reload: function(){
+    this.collection.fetch();
+    this.notifications.fetch();
+  },
+
   render: function() {
     var data = this.collection.toJSON();
     _.each(data, function(el, index){
@@ -89,13 +94,15 @@ App.View.EventAlerts = Backbone.View.extend({
   },
 
   renderNotifications: function(){
-    this.filteredNotifications = this.notifications.clone();
     if(!this.notificationsView){
+      this.filteredNotifications = this.notifications.clone();
       this.notificationsView = new App.View.CloudNotificationsTable({
         collection: this.filteredNotifications,
         displayLength: 5
       });
       this.$el.find('.event_notifications_table_container').html(this.notificationsView.render().el);
+    } else {
+      this.filteredNotifications.reset(this.notifications.clone().toJSON());
     }
 
 
