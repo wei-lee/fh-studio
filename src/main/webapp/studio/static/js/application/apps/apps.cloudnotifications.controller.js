@@ -28,7 +28,8 @@ Apps.Cloudnotifications.Controller = Apps.Cloud.Controller.extend({
   views: {
     cloudnotifications_container: "#cloudnotifications_container",
     systemlog_container: "#cloud_notifications_pill",
-    event_alerts_container: "#event_alerts_container"
+    event_alerts_container: "#event_alerts_container",
+    alerts_notification_container: "#alerts_notifications_container"
     // load_spinner: '#notifications_loading',
     // notification_table_container: '#notification_container'
   },
@@ -63,6 +64,7 @@ Apps.Cloudnotifications.Controller = Apps.Cloud.Controller.extend({
     var container = $(this.views.cloudnotifications_container);
     container.show();
     this._super(this.views.cloudnotifications_container);
+    $('a[data-toggle="pill"]:first', container).parent('li').removeClass('active');
     $('a[data-toggle="pill"]:first', container).trigger('click');
 
     // $(this.views.load_spinner).show();
@@ -95,7 +97,13 @@ Apps.Cloudnotifications.Controller = Apps.Cloud.Controller.extend({
   },
 
   renderAlertNotifications: function(){
-
+    if(!this.alertNotificationView){
+      this.alertNotificationView = new App.View.EventAlertNotifications({
+        el: this.views.alerts_notification_container
+      });
+    } else {
+      this.alertNotificationView.render();
+    }
   }
 
   // loadNotifications: function() {

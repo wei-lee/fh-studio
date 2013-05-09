@@ -26,6 +26,48 @@ App.Model.EventAlert = Backbone.Model.extend({
         }
       }
     }, options.error, true);
+  },
+
+  validate: function(attrs, options){
+    if(attrs.alertName === ""){
+      return "Alert name can not be empty";
+    }
+    if(attrs.emails === ""){
+      return "Emails can not be empty";
+    } else {
+      var invalidEmail = this.checkEmailAddresses(attrs.emails);
+      if(invalidEmail){
+        return invalidEmail + " is not a valid email address";
+      }
+    }
+    if(attrs.eventCategories === "" && attrs.eventNames === "" && attrs.eventSeverities === ""){
+      return "None of event classes, event states or event serverities is set";
+    }
+  },
+
+  checkEmailAddresses: function(emails){
+    var adds = emails.split(",");
+    for(var i=0;i<adds.length;i++){
+      if(!/^.+@.+/.test(adds[i])){
+        return adds[i];
+      }
+    }
+    return null;
+  },
+
+  testEmails: function(emails, options){
+    var url = this.rootUrl + "/testEmails";
+    $fw.server.post(url, {emails: emails}, function(res) {
+      if (res.status === "ok") {
+        if ($.isFunction(options.success)) {
+          options.success(res, options);
+        }
+      } else {
+        if ($.isFunction(options.error)) {
+          options.error(res, options);
+        }
+      }
+    }, options.error, true);
   }
 });
 
