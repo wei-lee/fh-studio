@@ -1,7 +1,17 @@
 {
-  "predef": [
-    "$fw", "fw_manager", "google", "console", "application", "HtmlUtil", "js_util", "Class", "Constants", "Highcharts", "moment"
-  ],
+  "globals": {
+    "$fw": true,
+    "fw_manager": false,
+    "google": false,
+    "console": false,
+    "application": true,
+    "HtmlUtil": true,
+    "js_util": true,
+    "Class": false,
+    "Constants": true,
+    "Highcharts": false,
+    "moment": false
+  },
   "eqeqeq": false,
   "eqnull": true,
   "sub": true,
