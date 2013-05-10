@@ -165,6 +165,7 @@
   </target>
 
   <target name="test" depends="jshint">
+    <exec executable="grunt" dir="${basedir}" failonerror="true"/>
   </target>
 		
 	<target name="concat_framework_scripts">

@@ -11,13 +11,13 @@ App.Model.CloudEvent = Backbone.Model.extend({
 App.Collection.CloudEvents = Backbone.Collection.extend({
   model: App.Model.CloudEvent,
 
-  //url: '/studio/static/js/model/backbone/mocks/cloud_notifications.json',
+  url: '/studio/static/js/model/backbone/mocks/cloud_notifications.json',
 
   initialize: function() {},
 
   eventFilters: {'eventCategories':[], 'eventNames':[], 'eventSeverities':[]},
 
-  sync: function(method, model, options){
+  Xsync: function(method, model, options){
     var url = '/box/srv/1.1/app/eventlog/listEvents';
     if("read" === method){
       var instGuid = $fw.data.get('inst').guid;

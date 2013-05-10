@@ -10,10 +10,12 @@ App.Model.AlertNotification = Backbone.Model.extend({
 App.Collection.AlertNotifications = Backbone.Collection.extend({
   model: App.Model.AlertNotification,
 
+  url: '/studio/static/js/model/backbone/mocks/event_audits.json',
+
   initialize: function () {
   },
 
-  sync: function(method, model, options){
+  Xsync: function(method, model, options){
     var url = '/box/srv/1.1/cm/eventlog/alert/listAudits';
     if("read" === method){
       var instGuid = $fw.data.get('inst').guid;
