@@ -153,8 +153,8 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
     $('#debug_logging_list').show();
 
     if (is_running) {
-      self.loadLog("Stdout.log", self.activeStdoutLog[0], true, true);
-      self.loadLog("Stderr.log", self.activeStderrLog[0], false, true);
+      self.loadLog(self.activeStdoutLog[0], self.activeStdoutLog[0], true, true);
+      self.loadLog(self.activeStderrLog[0], self.activeStderrLog[0], false, true);
     } else {
       $('#log_contents_form').removeClass("hidden");
       self.loadLog("Stdout.log", "Stdout.log", true, true, false, "App is not running, no live logs available.");
