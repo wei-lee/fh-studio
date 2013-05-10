@@ -16,13 +16,12 @@ App.View.EventAlerts = Backbone.View.extend({
   },
 
   initialize: function() {
-    this.collection = App.collections.event_alerts;
     this.collection.bind('sync add destroy', this.render, this);
     this.collection.fetch();
-    this.alertFilter = App.models.alertFilters;
+    this.alertFilter = this.options.alertFilter;
     this.alertFilter.bind('sync', this.renderFilters, this);
     this.alertFilter.fetch();
-    this.notifications =  App.collections.cloud_events;
+    this.notifications =  this.options.sysEvents;
     this.notifications.bind("sync", this.renderNotifications, this);
     this.notifications.fetch();
     var html = $("#event-alerts-template").html();
@@ -183,8 +182,8 @@ App.View.EventAlerts = Backbone.View.extend({
             callback();
           }, error: function(){
             callback(guid);
-          }})
-        }
+          }});
+        };
       }(guid));
     }
     async.parallel(guids, function(err, results){

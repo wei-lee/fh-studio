@@ -116,6 +116,9 @@ App.View.CloudNotificationsTable = Backbone.View.extend({
     });
     var guid = $(e.currentTarget).closest('tr').data('guid');
     var obj = this.collection.findWhere({guid: guid});
+    if(!obj){
+      return;
+    }
     console.log(obj.attributes);
     var html = $("#log-details-template").html();
     var template = Handlebars.compile(html);
@@ -180,7 +183,6 @@ App.View.CloudNotifications = Backbone.View.extend({
     var html = $("#cloud-notifications-template").html();
     var template = Handlebars.compile(html);
     this.$el.show().html(template());
-    this.collection = App.collections.cloud_events;
     this.collection.bind('sync', this.render, this);
     this.collection.fetch();
   },

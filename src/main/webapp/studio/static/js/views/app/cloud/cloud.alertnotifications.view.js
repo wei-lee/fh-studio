@@ -11,7 +11,6 @@ App.View.EventAlertNotifications = Backbone.View.extend({
     var html = $("#alert-notifications-template").html();
     var template = Handlebars.compile(html);
     this.$el.show().html(template());
-    this.collection = App.collections.alerts_notifications;
     this.collection.bind("sync", this.render, this);
     this.collection.fetch();
   },

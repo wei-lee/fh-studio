@@ -80,7 +80,8 @@ Apps.Cloudnotifications.Controller = Apps.Cloud.Controller.extend({
   renderSystemlogs : function(){
     if(!this.view){
       this.view = new App.View.CloudNotifications({
-        el: this.views.systemlog_container
+        el: this.views.systemlog_container,
+        collection: App.collections.cloud_events
       });
     } else {
       this.view.reload();
@@ -92,7 +93,10 @@ Apps.Cloudnotifications.Controller = Apps.Cloud.Controller.extend({
   renderAlerts: function(){
     if(!this.alertsView){
       this.alertsView = new App.View.EventAlerts({
-        el: this.views.event_alerts_container
+        el: this.views.event_alerts_container,
+        collection: App.collections.event_alerts,
+        alertFilter: App.models.alertFilters,
+        sysEvents: App.collections.cloud_events
       });
     } else {
       this.alertsView.reload();
@@ -104,7 +108,8 @@ Apps.Cloudnotifications.Controller = Apps.Cloud.Controller.extend({
   renderAlertNotifications: function(){
     if(!this.alertNotificationView){
       this.alertNotificationView = new App.View.EventAlertNotifications({
-        el: this.views.alerts_notification_container
+        el: this.views.alerts_notification_container,
+        collection: App.collections.alerts_notifications
       });
     } else {
       this.alertNotificationView.reload();

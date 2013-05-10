@@ -10,9 +10,9 @@ App.Model.EventAlert = Backbone.Model.extend({
   idAttribute: "guid",
   rootUrl: '/box/srv/1.1/cm/eventlog/alert',
 
-  url: '/studio/static/js/model/backbone/mocks/event_alert.json',
+  //url: '/studio/static/js/model/backbone/mocks/event_alert.json',
 
-  Xsync: function (method, model, options) {
+  sync: function (method, model, options) {
     var url = this.rootUrl + "/" + method;
     var instGuid = $fw.data.get('inst').guid;
     var cloudEnv = $fw.data.get('cloud_environment');
@@ -77,9 +77,9 @@ App.Model.EventAlert = Backbone.Model.extend({
 App.Model.AlertFilter = Backbone.Model.extend({
   loaded: false,
 
-  url: '/studio/static/js/model/backbone/mocks/event_options.json',
+  //url: '/studio/static/js/model/backbone/mocks/event_options.json',
 
-  Xsync: function (method, model, options) {
+  sync: function (method, model, options) {
     var self = this;
     if(!self.loaded){
       var url = '/box/srv/1.1/cm/eventlog/alert/listOptions';
@@ -106,12 +106,12 @@ App.models.alertFilters = new App.Model.AlertFilter();
 App.Collection.EventAlerts = Backbone.Collection.extend({
   model: App.Model.EventAlert,
 
-  url: '/studio/static/js/model/backbone/mocks/event_alerts.json',
+  //url: '/studio/static/js/model/backbone/mocks/event_alerts.json',
 
   initialize: function () {
   },
 
-  Xsync: function(method, model, options){
+  sync: function(method, model, options){
     var url = '/box/srv/1.1/cm/eventlog/alert/list';
     if("read" === method){
       var instGuid = $fw.data.get('inst').guid;
