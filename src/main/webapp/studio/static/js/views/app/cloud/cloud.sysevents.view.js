@@ -4,10 +4,10 @@ App.View = App.View || {};
 App.View.CloudNotificationsTable = Backbone.View.extend({
   indexes: {
     when: 0,
-    eventClass: 1,
-    eventType: 2,
-    eventSeverity: 3,
-    message: 4
+    eventClass: 2,
+    eventType: 3,
+    eventSeverity: 4,
+    message: 5
   },
 
   render: function(){
@@ -85,7 +85,7 @@ App.View.CloudNotificationsTable = Backbone.View.extend({
 
   getLabelClass: function(severity) {
     if(severity.toLowerCase() === "error" ||severity.toLowerCase() === "fatal"){
-      return "error";
+      return "important";
     } else if(severity.toLowerCase() === "warning"){
       return "warning";
     } else {

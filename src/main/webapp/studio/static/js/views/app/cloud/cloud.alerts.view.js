@@ -237,7 +237,8 @@ App.View.ConfirmView = Backbone.View.extend({
 App.View.Alert = Backbone.View.extend({
    events:{
      'click .save_alert_btn': "saveAlert",
-     'click .test_emails_btn':'testEmail'
+     'click .test_emails_btn':'testEmail',
+     'click .clone_alert_btn' : "cloneAlert"
    },
 
    tagName: "div",
@@ -264,8 +265,8 @@ App.View.Alert = Backbone.View.extend({
      var temp = $("#event-alert-template").html();
      var template = Handlebars.compile(temp);
      var header = this.model.isNew()? "Create An Alert" : "Update An Alert";
-     var deletable = this.model.isNew() ? false: true;
-     this.$el.html(template({alert: this.model, header:header}));
+     var enableClone = this.model.isNew() ? false: true;
+     this.$el.html(template({alert: this.model, header:header, enableClone: enableClone}));
      var categoryFilter = this.$el.find('.eventCategories_control');
      categoryFilter.replaceWith(new App.View.SwapSelect({
        to : self.model.attributes.eventCategories,
@@ -317,6 +318,19 @@ App.View.Alert = Backbone.View.extend({
      }, error: function(model, res){
        self.showError(res.error);
      }});
+   },
+
+   cloneAlert: function(e){
+     e.preventDefault();
+     this.$el.modal("hide");
+     var self = this;
+     setTimeout(function(){
+       var obj = self.model.clone();
+       obj.unset("guid");
+       obj.set("alertName", self.model.get("alertName") + "_cloned");
+       var clonedView = new App.View.Alert({model: obj});
+       clonedView.render();
+     },500);
    },
 
    showError: function(error){

@@ -37,10 +37,10 @@
         </form>
     </div>
     <div class="modal-footer">
-        {{#if deletable}}
-        <a href="#" class="btn btn-danger delete_alert_btn">Delete</a>
-        {{/if}}
         <a href="#" class="btn" data-dismiss="modal">Close</a>
+        {{#if enableClone}}
+        <a href="#" class="btn clone_alert_btn">Clone</a>
+        {{/if}}
         <a href="#" class="btn save_alert_btn">Save</a>
     </div>
 </script>
