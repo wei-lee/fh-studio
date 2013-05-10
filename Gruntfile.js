@@ -35,7 +35,7 @@ module.exports = function(grunt) {
         'src/main/webapp/studio/static/common/js/ui/thirdparty/handlebars/helpers.js',
         'src/main/webapp/studio/static/common/js/util/StringUtil.js'
         ],
-        /*template: require('grunt-template-jasmine-istanbul'),
+        template: require('grunt-template-jasmine-istanbul'),
         templateOptions: {
           coverage: 'coverage.json',
           report: [{
@@ -51,7 +51,7 @@ module.exports = function(grunt) {
           }, {
             type: 'text-summary'
           }]
-        },  */
+        },
         junit: {
           path: 'test-report',
           consolidate: true
