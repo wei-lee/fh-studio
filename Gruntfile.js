@@ -12,6 +12,8 @@ module.exports = function(grunt) {
       'src/main/webapp/studio/static/js/model/backbone/event.model.js',
       'src/main/webapp/studio/static/js/model/backbone/alert.model.js',
       'src/main/webapp/studio/static/js/model/backbone/alertnotification.model.js',
+      'src/main/webapp/studio/static/js/views/common/datatable.view.js',
+      'src/main/webapp/studio/static/js/views/common/swap_select.view.js',
       'src/main/webapp/studio/static/js/views/app/cloud/cloud.sysevents.view.js',
       'src/main/webapp/studio/static/js/views/app/cloud/cloud.alerts.view.js',
       'src/main/webapp/studio/static/js/views/app/cloud/cloud.alertnotifications.view.js'
@@ -23,11 +25,17 @@ module.exports = function(grunt) {
         vendor: [
         'src/main/webapp/studio/static/common/js/ui/thirdparty/underscore.js',
         'src/main/webapp/studio/static/common/js/ui/thirdparty/jquery/jquery.js',
+        'src/main/webapp/studio/static/common/js/ui/thirdparty/bootstrap/bootstrap.js',
+        'src/main/webapp/studio/static/common/js/ui/thirdparty/jquery/plugins/jquery.dataTables.min.js',
+        'src/main/webapp/studio/static/common/js/ui/thirdparty/jquery/plugins/jquery.dataTables.fhext.js',
+        'src/main/webapp/studio/static/common/js/ui/thirdparty/select2/select2.js',
         'src/main/webapp/studio/static/common/js/ui/thirdparty/backbone/backbone.js',
+        'src/main/webapp/studio/static/common/js/ui/thirdparty/highcharts/moment.js',
         'src/main/webapp/studio/static/common/js/ui/thirdparty/handlebars/handlebars.js',
-        'src/main/webapp/studio/static/common/js/ui/thirdparty/handlebars/helpers.js'
+        'src/main/webapp/studio/static/common/js/ui/thirdparty/handlebars/helpers.js',
+        'src/main/webapp/studio/static/common/js/util/StringUtil.js'
         ],
-        template: require('grunt-template-jasmine-istanbul'),
+        /*template: require('grunt-template-jasmine-istanbul'),
         templateOptions: {
           coverage: 'coverage.json',
           report: [{
@@ -43,7 +51,7 @@ module.exports = function(grunt) {
           }, {
             type: 'text-summary'
           }]
-        },
+        },  */
         junit: {
           path: 'test-report',
           consolidate: true

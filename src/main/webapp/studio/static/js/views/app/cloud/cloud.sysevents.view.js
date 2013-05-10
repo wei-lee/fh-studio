@@ -183,7 +183,9 @@ App.View.CloudNotifications = Backbone.View.extend({
     var html = $("#cloud-notifications-template").html();
     var template = Handlebars.compile(html);
     this.$el.show().html(template());
-    this.collection.bind('sync', this.render, this);
+    this.collection.bind('sync', function(){
+      this.render();
+    }, this);
     this.collection.fetch();
   },
 
