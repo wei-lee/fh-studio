@@ -120,18 +120,16 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
   renderLogList: function(tableContainer, data, is_running){
     var self = this;
     this.logTable = $(tableContainer).show().dataTable({
+      "iDisplayLength": 5,
       "aaSorting": [[1, 'desc']],
       "bDestroy": true,
       "bAutoWidth": true,
       "bFilter": false,
-      "bScrollAutoCss": true,
       "sPaginationType": "bootstrap",
       "sDom": "<'row-fluid'<'span12'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
       "bLengthChange": false,
       "aaData": data.aaData,
       "aoColumns": data.aoColumns,
-      "sScrollY": "200px",
-      "bScrollCollapse": true,
       "fnRowCallback": function(nRow, aData, iDisplayIndex) {
         self.rowRender(nRow, aData);
       }
