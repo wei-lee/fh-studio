@@ -27,7 +27,6 @@ App.View.EventAlertNotifications = Backbone.View.extend({
       this.table_view = new App.View.DataTable({
         "aaData": this.collection.toJSON(),
         "aaSorting": [[0, 'desc']],
-        "bFilter": false,
         "fnRowCallback": function(nTr, sData, oData, iRow, iCol) {
           // Append guid data
           $(nTr).attr('data-guid', sData.guid);
@@ -48,10 +47,10 @@ App.View.EventAlertNotifications = Backbone.View.extend({
         }],
         "bAutoWidth": false,
         "sPaginationType": 'bootstrap',
-        "sDom": "<'row-fluid'r>t<'row-fluid'<'span6'i><'span6'p>>",
+        "sDom": "<'row-fluid'<'span12'f>r>t<'row-fluid'<'pull-left'i><'pull-right'p>>",
         "bLengthChange": false,
         "iDisplayLength": 10,
-        "bInfo": false
+        "bInfo": true
       });
       this.table_view.render();
       this.table_container.html(this.table_view.el);

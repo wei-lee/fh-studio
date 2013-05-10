@@ -2,6 +2,10 @@ var App = App || {};
 App.View = App.View || {};
 
 App.View.CloudNotificationsTable = Backbone.View.extend({
+  events: {
+    'click table tbody tr': 'showDetails'
+  },
+
   indexes: {
     when: 0,
     eventClass: 2,
@@ -16,7 +20,6 @@ App.View.CloudNotificationsTable = Backbone.View.extend({
       this.table_view = new App.View.DataTable({
         "aaData": this.collection.toJSON(),
         "aaSorting": [[0, 'desc']],
-        "bFilter": false,
         "fnRowCallback": function(nTr, sData, oData, iRow, iCol) {
           // Append guid data
           $(nTr).attr('data-guid', sData.guid);
@@ -31,12 +34,11 @@ App.View.CloudNotificationsTable = Backbone.View.extend({
           "sTitle":"Updated By",
           "mDataProp": "updatedBy"
         },
-
         {
-          "sTitle": "Event Class",
+          "sTitle": "Event Category",
           "mDataProp": "category"
         }, {
-          "sTitle": "Event State",
+          "sTitle": "Event Name",
           "mDataProp": "eventType"
         }, {
           "sTitle": "Severity",
@@ -47,10 +49,11 @@ App.View.CloudNotificationsTable = Backbone.View.extend({
         }],
         "bAutoWidth": false,
         "sPaginationType": 'bootstrap',
-        "sDom": "<'row-fluid'r>t<'row-fluid'<'span6'i><'span6'p>>",
+        "sDom": "<'row-fluid'<'span12'f>r>t<'row-fluid'<'pull-left'i><'pull-right'p>>",
         "bLengthChange": false,
         "iDisplayLength": self.options.displayLength || 10,
-        "bInfo": false
+        "bInfo": true,
+        "oLanguage": self.options.oLanguage || {}
       });
       this.table_view.render();
       this.collection.on("reset", function(collection){
@@ -59,6 +62,11 @@ App.View.CloudNotificationsTable = Backbone.View.extend({
           if(collection.models.length > 0){
             self.table_view.table.fnAddData(collection.toJSON());
           }
+        }
+      });
+      this.collection.on("add", function(model){
+        if(self.table_view && self.table_view.table){
+          self.table_view.table.fnAddData(model.toJSON());
         }
       });
       this.$el.html(this.table_view.el);
@@ -91,102 +99,6 @@ App.View.CloudNotificationsTable = Backbone.View.extend({
     } else {
       return "info";
     }
-  }
-});
-
-
-App.View.CloudNotifications = Backbone.View.extend({
-  events: {
-    'click table tbody tr': 'showDetails',
-    'click .filterEventsBtn' : 'filterEvents',
-    'click .filterResetBtn' : 'resetFilters',
-    'click .reloadBtn': 'reload'
-  },
-
-
-
-  initialize: function() {
-    var html = $("#cloud-notifications-template").html();
-    var template = Handlebars.compile(html);
-    this.$el.show().html(template());
-    this.collection = App.collections.cloud_events;
-    this.collection.bind('sync', this.render, this);
-    this.collection.fetch();
-  },
-
-  reload: function(e){
-    if(e){
-      e.preventDefault();
-    }
-    this.collection.fetch();
-  },
-
-  render: function() {
-    var self = this;
-    this.renderFilters();
-    if(!this.filtered_collection){
-      this.filtered_collection = this.collection.clone();
-    } else {
-      this.filtered_collection.reset(this.collection.toJSON());
-    }
-    if(!this.table_view){
-      this.$table_container = this.$el.find('.system_log');
-      this.table_view = new App.View.CloudNotificationsTable({
-        collection: self.filtered_collection
-      });
-      this.$table_container.append(this.table_view.render().el);
-    }
-  },
-
-  renderFilters: function(){
-    var attrs = this.collection.eventFilters;
-    for(var attr in attrs){
-      if(attrs.hasOwnProperty(attr)){
-        var options = attrs[attr];
-        var sle = this.$el.find("." + attr + "_filters");
-        sle.empty();
-        sle.tooltip({trigger: "hover"});
-        sle.append("<option value='all' selected> All </option>");
-        for(var i=0;i<options.length;i++){
-          sle.append("<option value='"+options[i]+"'>" + options[i] + "</options>");
-        }
-      }
-    }
-  },
-
-  resetFilters: function(e){
-    e.preventDefault();
-    this.$el.find("select").val('all');
-    this.filterEvents(e);
-  },
-
-  filterEvents: function(e){
-    e.preventDefault();
-    var categoryFilter = this.$el.find(".eventCategories_filters").val();
-    var eventFilter = this.$el.find(".eventNames_filters").val();
-    var severityFilter = this.$el.find(".eventSeverities_filters").val();
-    var filters = {};
-    var hasFilter = false;
-    if(categoryFilter && categoryFilter != "all"){
-      filters.category = categoryFilter;
-      hasFilter = true;
-    }
-    if(eventFilter && eventFilter != "all"){
-      filters.eventType = eventFilter;
-      hasFilter = true;
-    }
-    if(severityFilter && severityFilter != "all"){
-      filters.severity = severityFilter;
-      hasFilter = true;
-    }
-
-    if(hasFilter){
-      var data = this.collection.where(filters);
-      this.filtered_collection.reset(data);
-    } else {
-      this.filtered_collection.reset(this.collection.toJSON());
-    }
-
   },
 
   showDetails: function(e) {
@@ -212,7 +124,10 @@ App.View.CloudNotifications = Backbone.View.extend({
     // so we create an array of the 'eventDetails' and use it in the template
     var context = {eventDetailsArray : []};
     context.eventDetailsArray.push({key: "Timestamp", value: obj.attributes.timestamp});
+    context.eventDetailsArray.push({key: "Event Category", value: obj.attributes.category});
+    context.eventDetailsArray.push({key: "Event Name", value: obj.attributes.eventType});
     context.eventDetailsArray.push({key: "Severity", value: obj.attributes.severity});
+
 
     var hasStacktrace = false;
 
@@ -249,6 +164,104 @@ App.View.CloudNotifications = Backbone.View.extend({
     }
 
   }
+});
 
+
+App.View.CloudNotifications = Backbone.View.extend({
+  events: {
+    'click .filterEventsBtn' : 'filterEvents',
+    'click .filterResetBtn' : 'resetFilters',
+    'click .reloadBtn': 'reload'
+  },
+
+
+
+  initialize: function() {
+    var html = $("#cloud-notifications-template").html();
+    var template = Handlebars.compile(html);
+    this.$el.show().html(template());
+    this.collection = App.collections.cloud_events;
+    this.collection.bind('sync', this.render, this);
+    this.collection.fetch();
+  },
+
+  reload: function(e){
+    if(e){
+      e.preventDefault();
+    }
+    this.collection.fetch();
+  },
+
+  render: function() {
+    var self = this;
+    if(!this.filtered_collection){
+      this.filtered_collection = this.collection.clone();
+    } else {
+      this.filtered_collection.reset(this.collection.toJSON());
+    }
+    if(!this.table_view){
+      this.$table_container = this.$el.find('.system_log');
+      this.table_view = new App.View.CloudNotificationsTable({
+        collection: self.filtered_collection
+      });
+      this.$table_container.append(this.table_view.render().el);
+    }
+    this.$table_container.find(".span12:first").find(".filter_options").remove().end().append(this.renderFilters());
+  },
+
+  renderFilters: function(){
+    var attrs = this.collection.eventFilters;
+    var filterHtml = $('#cloud-notifications-filter-template').html();
+    var template = Handlebars.compile(filterHtml);
+    var filterEl = $(template());
+    for(var attr in attrs){
+      if(attrs.hasOwnProperty(attr)){
+        var options = attrs[attr];
+        var sle = filterEl.find("." + attr + "_filters");
+        sle.empty();
+        sle.tooltip({trigger: "hover"});
+        sle.append("<option value='all' selected> All </option>");
+        for(var i=0;i<options.length;i++){
+          sle.append("<option value='"+options[i]+"'>" + options[i] + "</options>");
+        }
+      }
+    }
+    return filterEl;
+  },
+
+  resetFilters: function(e){
+    e.preventDefault();
+    this.$el.find("select").val('all');
+    this.filterEvents(e);
+  },
+
+  filterEvents: function(e){
+    e.preventDefault();
+    var categoryFilter = this.$el.find(".eventCategories_filters").val();
+    var eventFilter = this.$el.find(".eventNames_filters").val();
+    var severityFilter = this.$el.find(".eventSeverities_filters").val();
+    var filters = {};
+    var hasFilter = false;
+    if(categoryFilter && categoryFilter != "all"){
+      filters.category = categoryFilter;
+      hasFilter = true;
+    }
+    if(eventFilter && eventFilter != "all"){
+      filters.eventType = eventFilter;
+      hasFilter = true;
+    }
+    if(severityFilter && severityFilter != "all"){
+      filters.severity = severityFilter;
+      hasFilter = true;
+    }
+
+    if(hasFilter){
+      var data = this.collection.where(filters);
+      this.filtered_collection.reset(data);
+    } else {
+      this.filtered_collection.reset(this.collection.toJSON());
+    }
+
+  }
 
 });

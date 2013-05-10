@@ -3263,14 +3263,9 @@ a.docslink {
   cursor: pointer;
 }
 
-.filter_options {
-   width: 855px;
-   margin-left: auto;
-   margin-right: auto;
-}
 
 .filter_options_forms .btn {
-  margin-bottom: 9px;
+  margin-bottom: 4px;
 }
 
 .event_notifications_table_container {
@@ -3315,7 +3310,23 @@ a.docslink {
   margin-right: 1em;
 }
 
+.form-search .btn {
+  padding: 4px 14px;
+  height: auto;
+}
 
+.filter_div {
+  margin-bottom: .8em;
+}
+
+.alert_notification_body_field {
+  height: 220px;
+  overflow: auto;
+}
+
+.alert_notification_body_field pre {
+  font-size: .8em;
+}
 
 .selectfixedWidth {
   margin-bottom: 0;
