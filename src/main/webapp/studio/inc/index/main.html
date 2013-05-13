@@ -91,26 +91,6 @@
   </div>
 </div>
 
-<script id="swap-select-template" type="text/x-handlebars-template">
-    <div class="control-group">
-        <label class="control-label">{{options.label}}</label>
-        <div class="controls swap-select">
-            <select class="swap-select input-xlarge" id="{{options.id}}" multiple></select>
-            {{#if options.inline_help}}
-            <span class="help-inline">{{options.inline_help}}</span>
-            {{/if}}
-        </div>
-    </div>
-</script>
-
-<script id="swap-select-option-template" type="text/x-handlebars-template">
-    {{#if selected}}
-    <option value="{{value}}" selected>{{name}}</option>
-    {{else}}
-    <option value="{{value}}">{{name}}</option>
-    {{/if}}
-</script>
-
 <%@ include file="./dialogs/app_create_dialog.html"%>
 
 <%@ include file="./dialogs/app_import_dialog.html"%>

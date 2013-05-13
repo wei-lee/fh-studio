@@ -3,7 +3,7 @@ App.View = App.View || {};
 
 App.View.CloudNotificationsTable = Backbone.View.extend({
   events: {
-    'click table tbody tr': 'showDetails'
+    'click table tr': 'showDetails'
   },
 
   indexes: {
@@ -115,7 +115,9 @@ App.View.CloudNotificationsTable = Backbone.View.extend({
       return ret.join("");
     });
     var guid = $(e.currentTarget).closest('tr').data('guid');
+    console.log("event guid is " +guid);
     var obj = this.collection.findWhere({guid: guid});
+    console.log("obj is " + obj.toJSON());
     if(!obj){
       return;
     }

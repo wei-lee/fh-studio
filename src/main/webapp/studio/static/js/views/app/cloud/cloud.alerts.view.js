@@ -16,13 +16,19 @@ App.View.EventAlerts = Backbone.View.extend({
   },
 
   initialize: function() {
-    this.collection.bind('sync add destroy', this.render, this);
+    this.collection.bind('sync', function(){
+      this.render();
+    }, this);
     this.collection.fetch();
     this.alertFilter = this.options.alertFilter;
-    this.alertFilter.bind('sync', this.renderFilters, this);
+    this.alertFilter.bind('sync', function(){
+      this.renderFilters();
+    }, this);
     this.alertFilter.fetch();
     this.notifications =  this.options.sysEvents;
-    this.notifications.bind("sync", this.renderNotifications, this);
+    this.notifications.bind("sync", function(){
+      this.renderNotifications();
+    }, this);
     this.notifications.fetch();
     var html = $("#event-alerts-template").html();
     var template = Handlebars.compile(html);
@@ -35,6 +41,9 @@ App.View.EventAlerts = Backbone.View.extend({
   },
 
   render: function() {
+    this.collection.off("add destroy").on("add destroy", function(){
+      this.render();
+    }, this);
     var data = this.collection.toJSON();
     _.each(data, function(el, index){
       el.control = "<input type='checkbox' class='row_control'>";
@@ -105,10 +114,11 @@ App.View.EventAlerts = Backbone.View.extend({
         }
       });
       this.notificationsView.render();
+      this.$el.find('.event_notifications_table_container').html(this.notificationsView.el);
     } else {
       this.filteredNotifications.reset(emptyNotifications.toJSON());
     }
-    this.$el.find('.event_notifications_table_container').html(this.notificationsView.el);
+
 
 
   },
@@ -145,10 +155,10 @@ App.View.EventAlerts = Backbone.View.extend({
 
   alertSelected: function(e){
     var self = this;
-    if(this.$el.find("table td input:checked").length > 0){
+    if(self.$el.find("table td input:checked").length > 0){
       var guid = $(e.currentTarget).closest('tr').data('guid');
-      var obj = this.collection.findWhere({guid: guid});
-      this.$el.find('.alert_delete_btn').removeClass("disabled").removeAttr("disabled").unbind('click').bind('click', function(event){
+      var obj = self.collection.findWhere({guid: guid});
+      self.$el.find('.alert_delete_btn').removeClass("disabled").removeAttr("disabled").unbind('click').bind('click', function(event){
         event.preventDefault();
         var confirm = new App.View.ConfirmView({
           message: "Are you sure you want to delete these alerts?",
@@ -158,13 +168,13 @@ App.View.EventAlerts = Backbone.View.extend({
         });
         confirm.render();
       });
-      if(this.filteredNotifications){
-        this.filterEvents(obj);
+      if(self.filteredNotifications){
+        self.filterEvents(obj);
       }
     } else {
       self.$el.find('.alert_delete_btn').unbind("click").addClass("disabled").attr("disabled", "disabled");
-      if(this.filteredNotifications){
-        this.filteredNotifications.reset(new App.Collection.CloudEvents([]).toJSON());
+      if(self.filteredNotifications){
+        self.filteredNotifications.reset(new App.Collection.CloudEvents([]).toJSON());
       }
     }
   },
