@@ -25,12 +25,15 @@
           <% } %>
         <% } %>
 
-        <li>
-          <a href="#" data-controller="admin.deploytarget.controller" class="deploy_targets">
-            <i class="icon-road"></i>
-            Deployment Targets
-          </a>
-        </li>
+        <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER)) { %>
+          <li>
+            <a href="#" data-controller="admin.deploytarget.controller" class="deploy_targets">
+              <i class="icon-road"></i>
+              Deployment Targets
+            </a>
+          </li>
+        <%}%>
+
         <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_ARM) || studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_USER_ADMIN)) { %>
           <li class="nav-header">Mobile App Management</li>
           <li>

@@ -5,7 +5,6 @@ Apps.Logging = Apps.Logging || {};
 Apps.Logging.Controller = Apps.Cloud.Controller.extend({
 
   model: {
-    //device: new model.Device()
     log: new model.CloudLog()
   },
 
@@ -77,8 +76,6 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
         if (is_running && res.aaData.length > 0) {
           self.activeStderrLog = res.aaData[0][0].indexOf("stdout") === -1 ? res.aaData[0] : res.aaData[1];
           self.activeStdoutLog = res.aaData[1][0].indexOf("stderr") === -1 ? res.aaData[1] : res.aaData[0];
-          //remove the current active logs
-          //res.aaData = res.aaData.slice(2);
         }
         var data = self.addControls(res);
         self.renderLogList($(self.container).find('#debug_logging_list_table'), data, is_running);
