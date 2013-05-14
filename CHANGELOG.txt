@@ -8,6 +8,8 @@ Component: fh-studio
 * 3234 - Studio find function not working correctly in editor
 * 3381 - Customeradmins cannot see the admin tab without the dev role
 * 3892 - Whitelabel favicons
+* 3798 - Log list is scrollable
+* 3799 - Current app logs not downloadable
 
 3.15.15 - 2013-04-24 - IR200 - David Martin
 ---------------------------------------------------------------------------
