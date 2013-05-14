@@ -509,7 +509,7 @@ public class StudioBean {
     return themes;
   }
 
-  private String getThemeName() throws Exception {
+  public String getThemeName() throws Exception {
     return mStudioProps.getString("theme");
   }
 
