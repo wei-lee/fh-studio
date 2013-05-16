@@ -240,14 +240,19 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     if(comment && comment.length > 0){
       params.comment = comment;
     }
-    $fw.server.post(url, params, function (res) {
-      if (res.status === "ok") {
-        self.deployStarted(res.cacheKey, self.sub_container, 'live');
-      } else {
-        console.log('live Deploy failed:' + res);
-        self.sub_container.data('deploy', false);
-      }
-    }, null, true);
+	  $.ajax({"url":url,"type":"POST","data":params,"dataType":"json","timeout":60000,
+		  "success":function (res) {
+			  if (res.status === "ok") {
+				  self.deployStarted(res.cacheKey, self.sub_container, 'dev');
+			  } else {
+				  console.log('live Deploy failed:' + res);
+				  self.sub_container.data('deploy', false);
+			  }
+		  },
+		  "error":function(request, status, err) {
+			  console.log("error ", status, err);
+		  }
+	  });
   },
 
   devDeploy: function (guid) {
@@ -263,15 +268,20 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
       guid: guid,
       target_id: target.fields.id
     };
-
-    $fw.server.post(url, params, function (res) {
-      if (res.status === "ok") {
-        self.deployStarted(res.cacheKey, self.sub_container, 'dev');
-      } else {
-        console.log('dev Deploy failed:' + res);
-        self.sub_container.data('deploy', false);
-      }
-    }, null, true);
+	  debugger
+	  $.ajax({"url":url,"type":"POST","data":params,"dataType":"json","timeout":60000,
+	  "success":function (res) {
+		  if (res.status === "ok") {
+			  self.deployStarted(res.cacheKey, self.sub_container, 'dev');
+		  } else {
+			  console.log('dev Deploy failed:' + res);
+			  self.sub_container.data('deploy', false);
+		  }
+	  },
+		"error":function(request, status, err) {
+			 console.log("error ", status, err);
+		}
+	  });
   },
 
   deployStarted: function (cache_key, sub_container, env) {
