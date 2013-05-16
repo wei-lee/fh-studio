@@ -268,7 +268,6 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
       guid: guid,
       target_id: target.fields.id
     };
-	  debugger
 	  $.ajax({"url":url,"type":"POST","data":params,"dataType":"json","timeout":60000,
 	  "success":function (res) {
 		  if (res.status === "ok") {
