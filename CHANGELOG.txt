@@ -1,9 +1,12 @@
 -------------------------------------------------------------------------------
 Component: fh-studio
 -------------------------------------------------------------------------------
-3.16.2 - 2013-05-16 - IR201 - Craig Brookes
-3774 fh-core memory exhaustion as part of this ticket a small change to studio was made
-to use $.ajax as our own methods have a 20 sec timeout
+
+
+3.16.2 - 2013-05-20 - IR202 - Jason Madigan
+---------------------------------------------------------------------------
+* 3942 - Fixed an issue where default stdout/stderr could point to the wrong file
+* 3774 - Increase stage timeout from 20 seconds
 
 3.16.1 - 2013-05-15 - IR201 - Jason Madigan
 ---------------------------------------------------------------------------
