@@ -112,3 +112,24 @@
 <%@ include file="./dialogs/warning_dialog.html"%>
 
 <%@ include file="./dialogs/binary_download_dialog.html"%>
+
+
+<script id="swap-select-template" type="text/x-handlebars-template">
+    <div class="control-group">
+        <label class="control-label">{{options.label}}</label>
+        <div class="controls swap-select">
+            <select class="swap-select input-xxlarge" id="{{options.id}}" multiple></select>
+            {{#if options.inline_help}}
+            <span class="help-inline">{{options.inline_help}}</span>
+            {{/if}}
+        </div>
+    </div>
+</script>
+
+<script id="swap-select-option-template" type="text/x-handlebars-template">
+    {{#if selected}}
+    <option value="{{value}}" selected>{{name}}</option>
+    {{else}}
+    <option value="{{value}}">{{name}}</option>
+    {{/if}}
+</script>

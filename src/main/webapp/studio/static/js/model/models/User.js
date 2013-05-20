@@ -28,7 +28,7 @@ model.User = model.Model.extend({
 
   },
 
-  create: function(id, email, name, roles, policies, groups, storeitems, password, activated, invite,  success, fail) {
+  create: function(id, email, name, roles, policies, groups, storeitems, password, activated, invite, customerRoles, resellerRoles,  success, fail) {
     var url = Constants.ADMIN_USER_CREATE_URL;
     var params = {
       "username": id,
@@ -66,6 +66,14 @@ model.User = model.Model.extend({
       params.storeitems = storeitems;
     }
 
+    if (customerRoles != null){
+      params.customerRoles = customerRoles;
+    }
+
+    if (resellerRoles != null){
+      params.resellerRoles = resellerRoles;
+    }
+
     return this.serverPost(url, params, success, fail, true);
   },
 
@@ -95,7 +103,7 @@ model.User = model.Model.extend({
   },
 
   // purposely called imports due to keyword 'import'
-  imports: function (invite, roles, authpolicies, groups, fileField, success, fail, progress) {
+  imports: function (invite, roles, authpolicies, groups, fileField, customerRoles, resellerRoles, success, fail, progress) {
     var url = Constants.ADMIN_USER_IMPORT_URL;
     var formData = [];
 
@@ -116,6 +124,20 @@ model.User = model.Model.extend({
         "name": "authpolicies",
         "value": authpolicies
       });
+    }
+
+    if (customerRoles != null){
+      formData.push({
+        "name": "customerRoles",
+        "value": customerRoles
+      })
+    }
+
+    if (resellerRoles != null){
+      formData.push({
+        "name": "resellerRoles",
+        "value": resellerRoles
+      })
     }
 
     fileField.fileupload('option', {
