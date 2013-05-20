@@ -11,19 +11,19 @@ ServerManager = function (ajax_caller, opts) {
       self.opts = new_opts;
     },
 
-    get: function (url, params, success, fail, no_payload) {
-      self.ajax('GET', url, params, success, fail, no_payload);
+    get: function (url, params, success, fail, no_payload, timeout) {
+      self.ajax('GET', url, params, success, fail, no_payload, timeout);
     },
 
-    post: function (url, params, success, fail, no_payload) {
-      self.ajax('POST', url, params, success, fail, no_payload);
+    post: function (url, params, success, fail, no_payload, timeout) {
+      self.ajax('POST', url, params, success, fail, no_payload, timeout);
     },
 
-    ajax: function (method, url, params, success, fail, no_payload) {
+    ajax: function (method, url, params, success, fail, no_payload, timeout) {
       var data = no_payload ? params : self.initRequestData(params);
       if (self.getCookie()) {
         if (self.getConnected()) {
-          self.ajax_caller.doAjaxRequest(method, url, data, self.success(success), self.fail(fail));
+          self.ajax_caller.doAjaxRequest(method, url, data, self.success(success), self.fail(fail), timeout);
         } else {
           if ($.isFunction(self.opts.connectivity_error)) {
             self.opts.connectivity_error();

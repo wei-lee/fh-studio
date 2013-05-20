@@ -221,7 +221,6 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
   },
 
   liveDeploy: function (guid, approverEmail, comment) {
-
     this.sub_container.data('deploy', true);
 
     var target = this.getTargetData();
@@ -240,19 +239,14 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     if(comment && comment.length > 0){
       params.comment = comment;
     }
-	  $.ajax({"url":url,"type":"POST","data":params,"dataType":"json","timeout":60000,
-		  "success":function (res) {
-			  if (res.status === "ok") {
-				  self.deployStarted(res.cacheKey, self.sub_container, 'dev');
-			  } else {
-				  console.log('live Deploy failed:' + res);
-				  self.sub_container.data('deploy', false);
-			  }
-		  },
-		  "error":function(request, status, err) {
-			  console.log("error ", status, err);
-		  }
-	  });
+    $fw.server.post(url, params, function (res) {
+      if (res.status === "ok") {
+        self.deployStarted(res.cacheKey, self.sub_container, 'live');
+      } else {
+        console.log('live Deploy failed:' + res);
+        self.sub_container.data('deploy', false);
+      }
+    }, null, true, 60000);
   },
 
   devDeploy: function (guid) {
@@ -268,19 +262,14 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
       guid: guid,
       target_id: target.fields.id
     };
-	  $.ajax({"url":url,"type":"POST","data":params,"dataType":"json","timeout":60000,
-	  "success":function (res) {
-		  if (res.status === "ok") {
-			  self.deployStarted(res.cacheKey, self.sub_container, 'dev');
-		  } else {
-			  console.log('dev Deploy failed:' + res);
-			  self.sub_container.data('deploy', false);
-		  }
-	  },
-		"error":function(request, status, err) {
-			 console.log("error ", status, err);
-		}
-	  });
+    $fw.server.post(url, params, function (res) {
+      if (res.status === "ok") {
+        self.deployStarted(res.cacheKey, self.sub_container, 'dev');
+      } else {
+        console.log('dev Deploy failed:' + res);
+        self.sub_container.data('deploy', false);
+      }
+    }, null, true, 60000);
   },
 
   deployStarted: function (cache_key, sub_container, env) {
