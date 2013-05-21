@@ -3439,11 +3439,6 @@ li.reportdashboard_link .icon-globe {
     margin: 0px;
 }
 
-.reporting_form{
-    background-color: #a9a9a9;
-    padding: 3px;
-}
-
 #reports_per_app_list_container {
     min-height: 450px;
 }
@@ -3469,4 +3464,20 @@ li.reportdashboard_link .icon-globe {
 
 #per_app_summary_container .reportingdashboard_image_container {
     border-bottom: none;
+}
+
+.from_date, .to_date {
+  width: 80px;
+}
+
+#app_analytics .nav {
+  margin-left: 0;
+}
+
+#app_analytics .reporting_form {
+  float: right;
+}
+
+#app_analytics button, #app_analytics input, #app_analytics label {
+  font-size: 12px;
 }
