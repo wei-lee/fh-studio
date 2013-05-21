@@ -39,7 +39,7 @@ App.View.ProjectAppAnalytics = Backbone.View.extend({
   },
 
   activePill: function() {
-    var active_pill = $('.nav-pills li.active').attr('id');
+    var active_pill = $('.nav-pills li.active', this.el).attr('id');
     return active_pill;
   },
 
