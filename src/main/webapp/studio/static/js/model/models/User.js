@@ -130,14 +130,14 @@ model.User = model.Model.extend({
       formData.push({
         "name": "customerRoles",
         "value": customerRoles
-      })
+      });
     }
 
     if (resellerRoles != null){
       formData.push({
         "name": "resellerRoles",
         "value": resellerRoles
-      })
+      });
     }
 
     fileField.fileupload('option', {
