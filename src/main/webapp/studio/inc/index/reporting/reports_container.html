@@ -1,4 +1,132 @@
-<div class="span12 hide fh-box-inner reporting_graph" style="margin: 0px; margin-top:6px;">
+<div id="reports_in_app_container" class="hidden_template"></div>
+
+<script id="project-app-analytics-date-picker-template" type="text/x-handlebars-template">
+  <form class="form-inline reporting_form">
+    <button class="btn doReport" id="last_week" data-period="7">7 days</button>
+    <button class="btn doReport" id="last_month" data-period="30">30 days</button>
+    <input class="metric" name="metric" type="hidden" value="dashboard" />
+
+    <label>From:</label>
+    <input type="text" name="from" class="inline from_date">
+    <label>To:</label>
+    <input type="text" name="to" class="inline to_date">
+    <input type="submit" id="go_render_analytics" class="btn doReport" value="Go"/>
+  </form>
+</script>
+
+<script id="project-app-analytics-template" type="text/x-handlebars-template">
+  <div id="app_analytics">
+    <h4>App Analytics</h4>
+
+    <ul class="nav nav-pills reporting_pills span6">
+      <li>
+        <select id="analytics_type">
+          <option value="installs">Installs</option>
+          <option value="startups">Startups</option>
+          <option value="cloud_requests">Cloud Requests</option>
+          <option value="active_users">Active Users</option>
+        </select>
+      </li>
+      <li class="active" id="dashboard">
+        <a id="client_analytics_dashboard" href="#"><i class="icon-home"></i> Overview</a>
+      </li>
+      <li id="by_date">
+        <a id="client_analytics_by_date" href="#"><i class="icon-calendar"></i> By Date</a>
+      </li>
+      <li id="by_device">
+        <a id="client_analytics_by_platform" href="#"><i class="icon-mobile-phone"></i> By Platform</a>
+      </li>
+      <li id="by_location">
+        <a href="#" id="client_analytics_by_location"><i class="icon-globe"></i> By Location</a>
+      </li>
+    </ul>
+
+    <div class="datepicker_container span6"></div>
+
+    <hr class="row-fluid"/>
+
+    <div id="client_analytics_container"></div>
+  </div>
+</script>
+
+<script id="project-app-analytics-installs-template" type="text/x-handlebars-template">
+</script>
+
+<script id="project-app-analytics-startups-template" type="text/x-handlebars-template">
+</script>
+
+<script id="project-app-analytics-cloud-requests-template" type="text/x-handlebars-template">
+</script>
+
+<script id="project-app-analytics-active-users-template" type="text/x-handlebars-template">
+</script>
+
+<script id="project-app-analytics-client-installs-dashboard-template" type="text/x-handlebars-template">
+<h5>App Installs</h5>
+  <div class="row-fluid">
+    <div class="by_date span4"></div>
+    <div class="by_platform span4"></div>
+    <div class="by_location span4"></div>
+  </div>
+</script>
+
+<script id="project-app-analytics-client-startups-dashboard-template" type="text/x-handlebars-template">
+  <h5>App Startups</h5>
+  <div class="row-fluid">
+    <div class="by_date span4"></div>
+    <div class="by_platform span4"></div>
+    <div class="by_location span4"></div>
+  </div>
+</script>
+
+<script id="project-app-analytics-cloud-requests-dashboard-template" type="text/x-handlebars-template">
+  <h5>Cloud Requests</h5>
+  <div class="row-fluid">
+    <div class="by_date span4"></div>
+    <div class="by_platform span4"></div>
+    <div class="by_location span4"></div>
+  </div>
+</script>
+
+<script id="project-app-analytics-active-users-dashboard-template" type="text/x-handlebars-template">
+  <h5>Active Users</h5>
+  <div class="row-fluid">
+    <div class="by_date span4"></div>
+    <div class="by_platform span4"></div>
+    <div class="by_location span4"></div>
+  </div>
+</script>
+
+<script id="project-app-analytics-client-installs-bydate-template" type="text/x-handlebars-template">
+Client Installs By Date
+</script>
+
+<script id="project-app-analytics-client-installs-byplatform-template" type="text/x-handlebars-template">
+  <div class="chart_container"></div>
+</script>
+
+<script id="project-app-analytics-client-installs-bylocation-template" type="text/x-handlebars-template">
+  <h4 class="text-center text-normal by_location">Installs by Location</h4>
+  <div class="geo_chart_container"></div>
+</script>
+
+<script id="project-app-analytics-client-startups-bylocation-template" type="text/x-handlebars-template">
+  <h4 class="text-center text-normal by_location">Startups by Location</h4>
+  <div class="geo_chart_container"></div>
+</script>
+
+<script id="project-app-analytics-cloud-requests-bylocation-template" type="text/x-handlebars-template">
+  <h4 class="text-center text-normal by_location">Cloud Requests by Location</h4>
+  <div class="geo_chart_container"></div>
+</script>
+
+<script id="project-app-analytics-active-users-bylocation-template" type="text/x-handlebars-template">
+  <h4 class="text-center text-normal by_location">Active Users by Location</h4>
+  <div class="geo_chart_container"></div>
+</script>
+
+
+<!-- <div class="span12 hide fh-box-inner reporting_graph" style="margin: 0px; margin-top:6px;">
     <div class="alerts"></div>
     <ul class="nav nav-pills reporting_pills">
 
@@ -34,4 +162,4 @@
         <h4>By Location</h4>
         <div class="span12 appreport-results"></div>
     </div>
-</div>
+</div> -->

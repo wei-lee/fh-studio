@@ -19,6 +19,9 @@ try {
     
     <!--[if lt IE 9]><script src="<%=studio.getStaticAssetPath("common/js/ui/thirdparty/jquery/plugins/jqplot/excanvas.js")%>" type="text/javascript"></script><![endif]-->
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type='text/javascript'>
+     google.load('visualization', '1', {'packages': ['geochart']});
+     </script>
 
     <%= studio.getIdeScripts() %>
   </head>
