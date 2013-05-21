@@ -300,7 +300,7 @@ Admin.Storeitems.Controller = Controller.extend({
         value: 'icon'
       }],
       dropZone: input,
-      timeout: 120000,
+      timeout: Properties.fileupload_timeout,
       add: function(e, data) {
         input.hide();
         progress_bar.slideDown();
@@ -599,7 +599,7 @@ Admin.Storeitems.Controller = Controller.extend({
         replaceFileInput: false,
         formData: binary.params,
         dropZone: input,
-        timeout: 120000,
+        timeout: Properties.fileupload_timeout,
         add: function(e, data) {
           input.hide();
           progress_area.show();
