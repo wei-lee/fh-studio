@@ -13,6 +13,47 @@ App.Collection.AppInstallsDate = Backbone.Collection.extend({
     }
   },
 
+  sync: function(method, model, options) {
+    var url = '/box/srv/1.1/ide/testing-df/app/getsingleappmetrics';
+
+    // TODO: Endpoint accepts widget ID rather than template instance. Why?
+    var params = {
+      "id": $fw.data.get('app').guid,
+      "metric": "appinstallsdest",
+      "from": {
+        "year": "2013",
+        "month": "4",
+        "date": "21"
+      },
+      "to": {
+        "year": "2013",
+        "month": "5",
+        "date": "21"
+      },
+      "type": "line",
+      "num": 0
+    };
+
+    if ("read" === method) {
+      $fw.server.post(url, params, function(res) {
+        if (res.status === "ok") {
+          if ($.isFunction(options.success)) {
+            options.success(res);
+          }
+        } else {
+          if ($.isFunction(options.error)) {
+            options.error(res);
+          }
+        }
+      }, options.error, true);
+    } else {
+      console.log("EventLog collection do not support" + method);
+      if ($.isFunction(options.error)) {
+        options.error(model, "not_supported", options);
+      }
+    }
+  },
+
   parse: function(response) {
     var data = response.payload.results;
 
