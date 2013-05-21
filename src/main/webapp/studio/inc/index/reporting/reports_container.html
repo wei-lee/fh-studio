@@ -2,8 +2,6 @@
 
 <script id="project-app-analytics-date-picker-template" type="text/x-handlebars-template">
   <form class="form-inline reporting_form">
-    <button class="btn doReport" id="last_week" data-period="7">7 days</button>
-    <button class="btn doReport" id="last_month" data-period="30">30 days</button>
     <input class="metric" name="metric" type="hidden" value="dashboard" />
 
     <label>From:</label>
@@ -11,6 +9,8 @@
     <label>To:</label>
     <input type="text" name="to" class="inline to_date">
     <input type="submit" id="go_render_analytics" class="btn doReport" value="Go"/>
+    <button class="btn doReport" id="last_week" data-period="7">7 days</button>
+    <button class="btn doReport" id="last_month" data-period="30">30 days</button>
   </form>
 </script>
 
@@ -127,42 +127,3 @@ Client Installs By Date
   <h4 class="text-center text-normal by_location">Active Users by Location</h4>
   <div class="geo_chart_container"></div>
 </script>
-
-
-<!-- <div class="span12 hide fh-box-inner reporting_graph" style="margin: 0px; margin-top:6px;">
-    <div class="alerts"></div>
-    <ul class="nav nav-pills reporting_pills">
-
-        <li class="active" id="dashboard">
-            <a href="#dashboard" data-toggle="pill" data-action="dashboard">Dashboard</a>
-        </li>
-        <li id="by_date" >
-            <a href="#installs_by_date" data-toggle="pill" data-action="byDate">By Date</a>
-        </li>
-        <li id="by_device">
-            <a href="#installs_by_platform" data-toggle="pill" data-action="byPlatform">By Platform</a>
-        </li>
-        <li id="by_location">
-            <a href="#installs_by_location" data-toggle="pill" data-action="byLocation">By Location</a>
-        </li>
-    </ul>
-    <h4 align="center" class="graphheading" id="graphType"></h4>
-
-    <div class="report report_by_date span12 hide"  id="bydate">
-        <h4>By Date</h4>
-
-        <div class="span12 appreport-results"></div>
-    </div>
-
-
-
-    <div class="report report_by_device span12 hide" id="bydevice">
-        <h4>By Platform</h4>
-        <div class="span12 appreport-results"></div>
-    </div>
-
-    <div class="report report_by_location span12 hide" id="bylocation">
-        <h4>By Location</h4>
-        <div class="span12 appreport-results"></div>
-    </div>
-</div> -->
