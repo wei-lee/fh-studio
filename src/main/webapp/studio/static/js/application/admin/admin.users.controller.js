@@ -376,8 +376,8 @@ Admin.Users.Controller = Controller.extend({
       if($('#create_user_customer_role_swap').length > 0){
         self.updateRolesSwapSelect('#create_user_customer_role_swap', self.convertRoles(roles, "customer"), undefined, "customer");
       }
-      if($('#create_user_resller_role_swap').length > 0){
-        self.updateRolesSwapSelect('#create_user_resller_role_swap', self.convertRoles(roles), undefined, "reseller");
+      if($('#create_user_reseller_role_swap').length > 0){
+        self.updateRolesSwapSelect('#create_user_reseller_role_swap', self.convertRoles(roles), undefined, "reseller");
       }
     }, function(e) {
       self.showAlert('error', '<strong>Error loading Roles</strong> ' + e);
