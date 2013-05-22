@@ -116,35 +116,38 @@
               </div>
 
               <div class="control-group">
-                <label class="control-label">Roles (Domain Level)</label>
-                <div class="controls swap-select" id="create_user_role_swap">
-                </div>
-              </div>
-
-              <% if(studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_CUSTOMERADMIN) || studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_RESELLERADMIN)) {%>
-                <div class="control-group">
-                    <label class="control-label">Roles (Customer Level)</label>
-                    <div class="controls swap-select" id="create_user_customer_role_swap">
+                    <label class="control-label">Auth Policies</label>
+                    <div class="controls swap-select" id="create_user_policy_swap">
 
                     </div>
-                </div>
-              <%}%>
-
-              <% if(studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_RESELLERADMIN)) {%>
-                <div class="control-group">
-                    <label class="control-label">Roles (Reseller Level)</label>
-                    <div class="controls swap-select" id="create_user_resller_role_swap">
-
-                    </div>
-                </div>
-              <%}%>
-
-              <div class="control-group">
-                <label class="control-label">Auth Policies</label>
-                <div class="controls swap-select" id="create_user_policy_swap">
-
-                </div>
               </div>
+
+              <fieldset class="well">
+                  <legend>Assign Roles</legend>
+                  <div class="control-group">
+                      <label class="control-label">This Domain</label>
+                      <div class="controls swap-select" id="create_user_role_swap">
+                      </div>
+                  </div>
+
+                  <% if(studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_CUSTOMERADMIN) || studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_RESELLERADMIN)) {%>
+                  <div class="control-group">
+                      <label class="control-label">All Domains</label>
+                      <div class="controls swap-select" id="create_user_customer_role_swap">
+
+                      </div>
+                  </div>
+                  <%}%>
+
+                  <% if(studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_RESELLERADMIN)) {%>
+                  <div class="control-group">
+                      <label class="control-label">All Customers</label>
+                      <div class="controls swap-select" id="create_user_resller_role_swap">
+
+                      </div>
+                  </div>
+                  <%}%>
+              </fieldset>
 
             <div class="form-actions">
               <button type="submit" class="btn btn-primary create_user_btn">Create User</button>
@@ -197,37 +200,40 @@
               </div>
             </div>
 
-            <div class="control-group">
-              <label class="control-label">Roles (Domain Level)</label>
-              <div class="controls swap-select" id="update_user_role_swap">
-
-              </div>
-            </div>
-
-            <% if(studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_CUSTOMERADMIN) || studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_RESELLERADMIN)) {%>
               <div class="control-group">
-                  <label class="control-label">Roles (Customer Level)</label>
-                  <div class="controls swap-select" id="update_user_customer_role_swap">
+                  <label class="control-label">Auth Policies</label>
+                  <div class="controls swap-select" id="update_user_policy_swap">
 
                   </div>
               </div>
-            <%}%>
 
-            <% if(studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_RESELLERADMIN)) {%>
-              <div class="control-group">
-                  <label class="control-label">Roles (Reseller Level)</label>
-                  <div class="controls swap-select" id="update_user_reseller_role_swap">
+              <fieldset class="well">
+                  <legend>Assign Roles</legend>
+                  <div class="control-group">
+                      <label class="control-label">This Domain</label>
+                      <div class="controls swap-select" id="update_user_role_swap">
 
+                      </div>
                   </div>
-              </div>
-            <%}%>
 
-            <div class="control-group">
-              <label class="control-label">Auth Policies</label>
-              <div class="controls swap-select" id="update_user_policy_swap">
+                  <% if(studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_CUSTOMERADMIN) || studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_RESELLERADMIN)) {%>
+                  <div class="control-group">
+                      <label class="control-label">All Domains</label>
+                      <div class="controls swap-select" id="update_user_customer_role_swap">
 
-              </div>
-            </div>
+                      </div>
+                  </div>
+                  <%}%>
+
+                  <% if(studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_RESELLERADMIN)) {%>
+                  <div class="control-group">
+                      <label class="control-label">All Customers</label>
+                      <div class="controls swap-select" id="update_user_reseller_role_swap">
+
+                      </div>
+                  </div>
+                  <%}%>
+              </fieldset>
 
             <div class="form-actions">
               <button type="submit" class="btn btn-primary update_user_btn">Update User</button>
@@ -275,37 +281,40 @@
               </div>
             </div>
 
-            <div class="control-group">
-              <label class="control-label">Roles (Domain Level)</label>
-              <div class="controls swap-select" id="import_users_role_swap">
-
-              </div>
-            </div>
-
-              <% if(studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_CUSTOMERADMIN) || studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_RESELLERADMIN)) {%>
               <div class="control-group">
-                  <label class="control-label">Roles (Customer Level)</label>
-                  <div class="controls swap-select" id="import_user_customer_role_swap">
+                  <label class="control-label">Auth Policies</label>
+                  <div class="controls swap-select" id="import_users_policy_swap">
 
                   </div>
               </div>
-              <%}%>
 
-              <% if(studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_RESELLERADMIN)) {%>
-              <div class="control-group">
-                  <label class="control-label">Roles (Reseller Level)</label>
-                  <div class="controls swap-select" id="import_user_reseller_role_swap">
+              <fieldset class="well">
+                  <legend>Assign Roles</legend>
+                  <div class="control-group">
+                      <label class="control-label">This Domain</label>
+                      <div class="controls swap-select" id="import_users_role_swap">
 
+                      </div>
                   </div>
-              </div>
-              <%}%>
 
-            <div class="control-group">
-              <label class="control-label">Auth Policies</label>
-              <div class="controls swap-select" id="import_users_policy_swap">
+                  <% if(studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_CUSTOMERADMIN) || studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_RESELLERADMIN)) {%>
+                  <div class="control-group">
+                      <label class="control-label">All Domains</label>
+                      <div class="controls swap-select" id="import_user_customer_role_swap">
 
-              </div>
-            </div>
+                      </div>
+                  </div>
+                  <%}%>
+
+                  <% if(studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_RESELLERADMIN)) {%>
+                  <div class="control-group">
+                      <label class="control-label">All Customers</label>
+                      <div class="controls swap-select" id="import_user_reseller_role_swap">
+
+                      </div>
+                  </div>
+                  <%}%>
+              </fieldset>
 
             <div class="form-actions">
               <button type="submit" class="btn btn-primary import_user_btn">Import Users</button>

@@ -19,8 +19,36 @@ Admin.Users.Controller = Controller.extend({
     user_import: "#useradmin_user_import"
   },
 
+  rolesTextMap: {
+    "reselleradmin": "Reseller Administrator",
+    "customeradmin": "Customer Administrator",
+    "portaladmin": "Domain Administrator",
+    "devadmin": "Developer Administrator",
+    "analytics": "Analytics",
+    "dev": "Developer"
+  },
+
+  rolesToRemove: {
+    "domain": ["reselleradmin", "customeradmin"],
+    "customer": ["reselleradmin"]
+  },
+
   container: null, // keeps track of currently active/visible container
   user_table: null,
+
+  convertRoles: function(roleArr, level){
+    var self = this;
+    var removeRoles;
+    if(level){
+      removeRoles = self.rolesToRemove[level];
+    }
+    if(removeRoles){
+      roleArr = _.difference(roleArr, removeRoles);
+    }
+    return _.map(roleArr, function(role){
+       return [self.rolesTextMap[role], role];
+    });_
+  },
 
   init: function(params) {
     var self = this;
@@ -159,14 +187,14 @@ Admin.Users.Controller = Controller.extend({
         policiesTo.push([policyIdGuidMap[user.authpolicies[pi]] || ('Unknown Policy - ' + user.authpolicies[pi]), user.authpolicies[pi]]);
       }
 
-      self.updateSwapSelect('#update_user_role_swap', results[1], rolesTo);
+      self.updateRolesSwapSelect('#update_user_role_swap', self.convertRoles(results[1], "domain"), rolesTo, "domain");
       if(customerRoles && $('#update_user_customer_role_swap').length > 0){
-        self.updateSwapSelect('#update_user_customer_role_swap', results[1], customerRoles);
+        self.updateRolesSwapSelect('#update_user_customer_role_swap', self.convertRoles(results[1], "customer"), customerRoles, "customer");
       }
       if(resellerRoles && $('#update_user_reseller_role_swap').length > 0){
-        self.updateSwapSelect('#update_user_reseller_role_swap', results[1], resellerRoles);
+        self.updateRolesSwapSelect('#update_user_reseller_role_swap', self.convertRoles(results[1]), resellerRoles, "reseller");
       }
-      self.updateSwapSelect('#update_user_policy_swap', policiesFrom, policiesTo);
+      self.updateAuthPolicySwapSelect('#update_user_policy_swap', policiesFrom, policiesTo);
       self.bindSwapSelect(parent);
 
       $('input,select,button', parent).not('#update_user_id,#update_user_enabled,#update_user_blacklisted,.invite_user_btn').removeAttr('disabled');
@@ -344,12 +372,12 @@ Admin.Users.Controller = Controller.extend({
       console.log('Role list OK.');
       var roles = res.list;
       var container = '#create_user_role_swap';
-      self.updateSwapSelect(container, roles);
+      self.updateRolesSwapSelect(container, self.convertRoles(roles, "domain"), undefined, "domain");
       if($('#create_user_customer_role_swap').length > 0){
-        self.updateSwapSelect('#create_user_customer_role_swap', roles);
+        self.updateRolesSwapSelect('#create_user_customer_role_swap', self.convertRoles(roles, "customer"), undefined, "customer");
       }
       if($('#create_user_resller_role_swap').length > 0){
-        self.updateSwapSelect('#create_user_resller_role_swap', roles);
+        self.updateRolesSwapSelect('#create_user_resller_role_swap', self.convertRoles(roles), undefined, "reseller");
       }
     }, function(e) {
       self.showAlert('error', '<strong>Error loading Roles</strong> ' + e);
@@ -364,7 +392,7 @@ Admin.Users.Controller = Controller.extend({
       for (var pi = 0, pl = policies.length; pi < pl; pi += 1) {
         itemsFrom.push([policies[pi].policyId, policies[pi].guid]);
       }
-      self.updateSwapSelect(container, itemsFrom);
+      self.updateAuthPolicySwapSelect(container, itemsFrom, undefined);
     }, function(e) {
       self.showAlert('error', '<strong>Error loading Groups</strong> ' + e);
     });
@@ -421,14 +449,14 @@ Admin.Users.Controller = Controller.extend({
         policiesFrom.push([results[1][pi].policyId, results[1][pi].guid]);
       }
 
-      self.updateSwapSelect('#import_users_role_swap', results[0]);
+      self.updateRolesSwapSelect('#import_users_role_swap', self.convertRoles(results[0], "domain"), undefined, "domain");
       if($('#import_user_customer_role_swap').length > 0){
-        self.updateSwapSelect('#import_user_customer_role_swap', results[0]);
+        self.updateRolesSwapSelect('#import_user_customer_role_swap', self.convertRoles(results[0], "customer"), undefined, "customer");
       }
       if($('#import_user_reseller_role_swap').length > 0){
-        self.updateSwapSelect('#import_user_reseller_role_swap', results[0]);
+        self.updateRolesSwapSelect('#import_user_reseller_role_swap', self.convertRoles(results[0]), undefined, "reseller" );
       }
-      self.updateSwapSelect('#import_users_policy_swap', policiesFrom);
+      self.updateAuthPolicySwapSelect('#import_users_policy_swap', policiesFrom, undefined);
       self.bindSwapSelect(parent);
       $('input,select,button', parent).not('input[type=file]').removeAttr('disabled');
     });
@@ -648,7 +676,10 @@ Admin.Users.Controller = Controller.extend({
       var controls = [];
       // TODO: Move to clonable hidden_template
       controls.push('<button class="btn edit_user">Edit</button>&nbsp;');
-      controls.push('<button class="btn btn-danger delete_user">Delete</button>');
+      //a user exists in either reseller or customer scope and portaladmin user should have no permission to delete them
+      if($fw.getUserProp("roles").indexOf("customeradmin") > -1 || $fw.getUserProp("roles").indexOf("reselleradmin") > -1){
+        controls.push('<button class="btn btn-danger delete_user">Delete</button>');
+      }
       row.push(controls.join(""));
     });
     return res;
@@ -761,12 +792,29 @@ Admin.Users.Controller = Controller.extend({
     $(container).find('.swap-select select').empty().html('<option>Loading...</option>');
   },
 
+  updateRolesSwapSelect: function(container, from, to, level){
+    var placeholder = "Click to Assign Roles";
+    var block_helps_map = {
+      "domain": "These roles are active for the domain represented by the current host name only - " + window.DOMAIN,
+      "customer": "These roles are active for all domains owned by customer " + $fw.getClientProp("customer") + " <a href='#' class='customer_roles_help' data-toggle='popover'><i class='icon-question-sign'></i></a>",
+      "reseller": "These roles are active for all domains owned by all customers who are managed by reseller " + $fw.getClientProp("reseller") + " <a href='#' class='reseller_roles_help' data-toggle='popover'><i class='icon-question-sign'></i></a>"
+    };
+    var blockHelp = block_helps_map[level];
+    this.updateSwapSelect(container, from, to, placeholder, blockHelp);
+    this.updateHelpPopover(container, ".customer_roles_help", "getDomains", "The following domains are owned by customer " + $fw.getClientProp("customer"));
+    this.updateHelpPopover(container, ".reseller_roles_help", "getCustomers", "The following customers are managed by reseller " + $fw.getClientProp("reseller"));
+  },
+
+  updateAuthPolicySwapSelect: function(container, from, to){
+    this.updateSwapSelect(container, from, to, "Click to Select Policies");
+  },
+
   // updates the swap select, given as the container, with the form and to values.
   // to values are optional
   // from/to values can be:
   // - array of values to use as text and 'value' e.g. [['TEST'], ...] ==> <option value="TEST">TEST</option>...
   // - or array of arrays, where each sub-array has 2 values, the text and the 'value' e.g. [['TEST','testid'], ...] ==> <option value="testid">TEST</option>...
-  updateSwapSelect: function(container, from, to) {
+  updateSwapSelect: function(container, from, to, placeholder, blockhelp) {
     var fromModels = [];
     $.each(from, function(i, from_item) {
       if(typeof from_item === "string"){
@@ -787,18 +835,94 @@ Admin.Users.Controller = Controller.extend({
     }
     var fromCollection = new App.Collection.SwapSelectItems(fromModels);
     var swapSelect = new App.View.SwapSelect({
+      el: container,
       to: toModels,
       from: fromCollection,
       from_name_key: "text",
       uid: "value",
-      id: $(container).attr("id") + "_select"
+      id: $(container).attr("id") + "_select",
+      placeholder: placeholder,
+      block_help: blockhelp
     });
     swapSelect.render();
-    console.log(swapSelect.$el);
-    $(container).html(swapSelect.$el.find(".swap-select"));
+
   },
 
   getSelectedItems: function(container) {
     return $(container).find('select').val() || [];
+  },
+
+  updateHelpPopover: function(container, selector, functionName, title){
+    if($(container).find(selector).length > 0){
+      this[functionName](function(list){
+        var helpcontent = [];
+        helpcontent.push("<ul>");
+        for(var i=0;i<list.length;i++){
+          helpcontent.push("<li>" + list[i] + "</li>");
+        }
+        helpcontent.push("</ul>");
+        $(container).find(selector).click(function(e){
+          e.preventDefault();
+        }).popover({
+            trigger: "hover",
+            content: helpcontent.join(""),
+            html: true,
+            title: title
+          })
+      }, function(){
+        $(container).find(selector).click(function(e){
+          e.preventDefault();
+        }).popover({
+            trigger: "hover",
+            content: "Failed to load list",
+            html: true,
+            title: ""
+          })
+      });
+    }
+  },
+
+  getDomains: function(success, fail){
+    var domains = $fw.data.get("customerdomains");
+    if(domains){
+      success(domains);
+    } else {
+      $fw.server.post('/box/srv/1.1/admin/customer/domain/list', {name: $fw.getClientProp("customer")}, function(res){
+        if("ok" === res.status){
+          var domainList  = res.list;
+          var domains = [];
+          for(var i=0;i<domainList.length;i++){
+            domains.push(domainList[i].fields.domain);
+          }
+          $fw.data.set("customerdomains", domains);
+          success(domains);
+        } else {
+          fail();
+        }
+      }, fail, true);
+    }
+
+  },
+
+  getCustomers: function(success, fail){
+    var customers = $fw.data.get("resellercustomers");
+    if(customers){
+      success(customers);
+    } else {
+      $fw.server.post('/box/srv/1.1/admin/reseller/customer/list', {reseller: $fw.getClientProp("reseller")}, function(res){
+        if("ok" === res.status){
+          var customerList  = res.list;
+          var customers = [];
+          for(var i=0;i<customerList.length;i++){
+            customers.push(customerList[i].fields.name);
+          }
+          $fw.data.set("resellercustomers", customers);
+          success(customers);
+        } else {
+          fail();
+        }
+      }, fail, true);
+    }
+
   }
 });

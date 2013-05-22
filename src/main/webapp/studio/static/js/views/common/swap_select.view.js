@@ -2,6 +2,7 @@ var App = App || {};
 App.View = App.View || {};
 App.View.SwapSelect = Backbone.View.extend({
   options: null,
+  tagName: "div",
 
   initialize: function(options) {
     _.bindAll(this);
@@ -28,6 +29,10 @@ App.View.SwapSelect = Backbone.View.extend({
         options: this.options
       }));
       this.$select = this.$el.find('select.swap-select');
+      //an empty option is required to allow placeholder to work
+      if(this.options.placeholder){
+        this.$select.append("<option></option>");
+      }
 
       // Build to & from
       _.each(this.collection.models, function(item) {
@@ -42,7 +47,7 @@ App.View.SwapSelect = Backbone.View.extend({
       });
 
       this.$select.select2({
-        placeHolder: "Select an Item"
+        placeholder: this.options.placeholder || "Select an Item"
       });
     }
 
