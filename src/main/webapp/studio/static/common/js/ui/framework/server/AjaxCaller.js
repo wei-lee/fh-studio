@@ -13,11 +13,12 @@ var AjaxCaller = function(init_params){
       $.ajaxSetup(ajax_params);
     },
     
-    doAjaxRequest: function(method, url, params, success, fail){
+    doAjaxRequest: function(method, url, params, success, fail, timeout){
       $.ajax({
         type: method,
         url: url,
         data: JSON.stringify(params),
+        timeout: timeout || self.default_params.timeout,
         success: function(res){
           if(success){
             success(res);
