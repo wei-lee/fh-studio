@@ -65,6 +65,21 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
     $(this.container).show();
   },
 
+  findActiveLog: function(match, aaData) {
+    var log = null;
+    $.each(aaData, function(i, item) {
+      var filename = item[0];
+
+      if (filename.indexOf(match) != -1) {
+        log = item;
+        // Break loop
+        return false;
+      }
+    });
+
+    return log;
+  },
+
   loadLogList: function(is_running) {
     $(this.container).find('#debug_logging_list').hide();
     if ($fw.client.tab.apps.manageapps.isNodeJsApp()) {
@@ -74,8 +89,8 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
       this.model.log.list(function(res) {
         $(self.container).find('#debug_logging_list').show();
         if (is_running && res.aaData.length > 0) {
-          self.activeStderrLog = res.aaData[0][0].indexOf("stdout") === -1 ? res.aaData[0] : res.aaData[1];
-          self.activeStdoutLog = res.aaData[1][0].indexOf("stderr") === -1 ? res.aaData[1] : res.aaData[0];
+          self.activeStderrLog = self.findActiveLog("stderr", res.aaData);
+          self.activeStdoutLog = self.findActiveLog("stdout", res.aaData);
         }
         var data = self.addControls(res);
         self.renderLogList($(self.container).find('#debug_logging_list_table'), data, is_running);
@@ -267,7 +282,7 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
       if (legacy_mode) {
         return self.loadRhinoLog(tabPane, instGuid, cloudEnv, logfile);
       } else {
-        var default_lines = 1000;
+        var default_lines = 500;
         self.loadLogChunk(default_lines, tabPane, instGuid, cloudEnv, logfile);
       }
     }
