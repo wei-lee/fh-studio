@@ -47,7 +47,7 @@ Admin.Users.Controller = Controller.extend({
     }
     return _.map(roleArr, function(role){
        return [self.rolesTextMap[role], role];
-    });_
+    });
   },
 
   init: function(params) {
@@ -868,7 +868,7 @@ Admin.Users.Controller = Controller.extend({
             content: helpcontent.join(""),
             html: true,
             title: title
-          })
+          });
       }, function(){
         $(container).find(selector).click(function(e){
           e.preventDefault();
@@ -877,7 +877,7 @@ Admin.Users.Controller = Controller.extend({
             content: "Failed to load list",
             html: true,
             title: ""
-          })
+          });
       });
     }
   },
