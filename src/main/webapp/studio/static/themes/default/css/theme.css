@@ -3514,3 +3514,8 @@ li.reportdashboard_link .icon-globe {
 .margin-left {
   margin-left: 10px;
 }
+
+.geo_chart_container, .geochart {
+  min-height: 300px;
+  font-size: 12px;
+}

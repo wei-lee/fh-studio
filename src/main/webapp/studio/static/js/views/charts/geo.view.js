@@ -15,7 +15,16 @@ App.View.Geo = Backbone.View.extend({
     var options = {
       width: this.options.width || "350"
     };
+
+    if (this.collection.models.length === 0) {
+      console.log('No collection data');
+      // TODO: Nicer loading template
+      this.$el.append("Loading...");
+      return this;
+    }
+
     var chart = new google.visualization.GeoChart(this.el);
+
     chart.draw(data, options);
     return this;
   }

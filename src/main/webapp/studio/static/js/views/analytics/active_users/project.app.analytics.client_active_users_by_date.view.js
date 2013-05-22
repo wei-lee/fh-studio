@@ -19,7 +19,7 @@ App.View.ProjectAppAnalyticsActiveUsersByDate = App.View.LineChart.extend({
 
   initialize: function(options) {
     options = $.extend(true, {}, this.defaultOptions, options) || {};
-    this.collection = new App.Collection.AppActiveUsersDate({
+    this.collection = new App.Collection.AppActiveUsersDate([], {
       total: options.total
     });
     var from = App.views.picker.currentFrom();

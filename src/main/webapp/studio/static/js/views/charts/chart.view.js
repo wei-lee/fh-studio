@@ -39,6 +39,13 @@ App.View.Chart = Backbone.View.extend({
       return this;
     }
 
+    if (this.collection.models.length === 0 && !this.model) {
+      console.log('No collection data');
+      // TODO: Nicer loading template
+      this.$el.append("Loading...");
+      return this;
+    }
+
     if (this.chart) {
       this.chart.destroy();
     }
@@ -61,6 +68,7 @@ App.View.Chart = Backbone.View.extend({
     }
 
     this.options.chart.renderTo = this.el;
+
     this.chart = new Highcharts.Chart(this.options);
 
     // :(
