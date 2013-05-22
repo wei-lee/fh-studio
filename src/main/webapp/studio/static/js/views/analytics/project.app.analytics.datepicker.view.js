@@ -5,8 +5,7 @@ App.View.ProjectAppAnalyticsDatepicker = Backbone.View.extend({
     'click #go_render_analytics': 'go'
   },
 
-  initialize: function() {
-  },
+  initialize: function() {},
 
   render: function() {
     var html = $("#project-app-analytics-date-picker-template").html();
@@ -40,19 +39,44 @@ App.View.ProjectAppAnalyticsDatepicker = Backbone.View.extend({
     this._setDates(from, to);
   },
 
-  _setDates: function(from, to) {
-    //this.trigger("rangeChange", {from: from, to: to});
+  currentFrom: function() {
+    return new moment(this.$from_field.val());
+  },
 
-    this.$from_field.val(from.format('DD/MM/YYYY'));
+  currentTo: function() {
+    return new moment(this.$to_field.val());
+  },
+
+  _setDates: function(from, to) {
+    var self = this;
+
+    this.dateChanged(from, to);
+
+    // Without localisation, stick to ISO_8601 for date formats
+    this.$from_field.val(from.format('YYYY-MM-DD'));
     this.$from_field.datepicker({
-      format: 'dd/mm/yyyy',
+      format: 'yyyy-mm-dd',
       weekStart: 0
+    }).on('changeDate', function(ev) {
+      var updated_from = new moment(ev.date);
+      self.dateChanged(updated_from, self.currentTo());
     });
 
-    this.$to_field.val(to.format('DD/MM/YYYY'));
+    this.$to_field.val(to.format('YYYY-MM-DD'));
     this.$to_field.datepicker({
-      format: 'dd/mm/yyyy',
+      format: 'yyyy-mm-dd',
       weekStart: 0
+    }).on('changeDate', function(ev) {
+      var updated_to = new moment(ev.date);
+      self.dateChanged(self.currentFrom(), updated_to);
+    });
+  },
+
+  dateChanged: function(from, to) {
+    // Fanout this event to any listeners
+    App.vent.trigger('app-analytics-datechange', {
+      from: from,
+      to: to
     });
   }
 });

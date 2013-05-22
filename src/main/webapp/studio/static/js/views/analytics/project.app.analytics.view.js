@@ -30,12 +30,15 @@ App.View.ProjectAppAnalytics = Backbone.View.extend({
     this.$datepicker_container = this.$el.find('.datepicker_container');
     this.$analytics_container = this.$el.find('#client_analytics_container');
 
-    var picker = new App.View.ProjectAppAnalyticsDatepicker();
-    picker.render();
-    this.$datepicker_container.append(picker.el);
-
     // Render dashboard by default
     this.dashboard();
+
+
+    // Render the picker last so that its initial 
+    // datechange events bubble to views properly
+    this.picker = new App.View.ProjectAppAnalyticsDatepicker();
+    this.picker.render();
+    this.$datepicker_container.append(this.picker.el);
   },
 
   activePill: function() {

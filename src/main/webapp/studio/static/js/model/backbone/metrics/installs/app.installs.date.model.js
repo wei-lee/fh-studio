@@ -5,32 +5,60 @@ App.Collection.AppInstallsDate = Backbone.Collection.extend({
 
   url: "/beta/static/mocks/metrics/app_installs_date.json",
 
+  from: null,
+  to: null,
+
   initialize: function(options) {
+    var self = this;
+
     if (options) {
       this.total = options.total || false;
     } else {
       this.total = false;
     }
+
+    // React to datepicker date changes
+    App.vent.on('app-analytics-datechange', function(e) {
+      self.from = e.from;
+      self.to = e.to;
+      self.fetch();
+    });
+  },
+
+  dateParamsForDate: function(date) {
+    if (!date) {
+      return console.log('No date input');
+    }
+
+    // Months are 0-indexed
+    var ret = {
+      date: date.date(),
+      month: date.month() + 1,
+      year: date.year()
+    };
+
+    return ret;
   },
 
   sync: function(method, model, options) {
-    // debugger;
+
+    // If from & to explicitly passed in a fetch(), set and use them
+    if (options.from) {
+      this.from = options.from;
+    }
+
+    if (options.to) {
+      this.to = options.to;
+    }
+
     var url = '/box/srv/1.1/ide/testing-df/app/getsingleappmetrics';
 
     // TODO: Endpoint accepts widget ID rather than template instance. Why?
     var params = {
       "id": $fw.data.get('app').guid,
       "metric": "appinstallsdest",
-      "from": {
-        "year": "2013",
-        "month": "4",
-        "date": "21"
-      },
-      "to": {
-        "year": "2013",
-        "month": "5",
-        "date": "21"
-      },
+      "from": this.dateParamsForDate(this.from),
+      "to": this.dateParamsForDate(this.to),
       "type": "line",
       "num": 0
     };
