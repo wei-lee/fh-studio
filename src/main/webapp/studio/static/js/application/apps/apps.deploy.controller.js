@@ -221,7 +221,6 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
   },
 
   liveDeploy: function (guid, approverEmail, comment) {
-
     this.sub_container.data('deploy', true);
 
     var target = this.getTargetData();
@@ -247,7 +246,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
         console.log('live Deploy failed:' + res);
         self.sub_container.data('deploy', false);
       }
-    }, null, true);
+    }, null, true, 60000);
   },
 
   devDeploy: function (guid) {
@@ -263,7 +262,6 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
       guid: guid,
       target_id: target.fields.id
     };
-
     $fw.server.post(url, params, function (res) {
       if (res.status === "ok") {
         self.deployStarted(res.cacheKey, self.sub_container, 'dev');
@@ -271,7 +269,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
         console.log('dev Deploy failed:' + res);
         self.sub_container.data('deploy', false);
       }
-    }, null, true);
+    }, null, true, 60000);
   },
 
   deployStarted: function (cache_key, sub_container, env) {
