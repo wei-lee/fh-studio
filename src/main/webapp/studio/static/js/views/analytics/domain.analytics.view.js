@@ -1,4 +1,4 @@
-App.View.ProjectAppAnalytics = Backbone.View.extend({
+App.View.DomainAnalytics = Backbone.View.extend({
   type: "installs", // Default to installs
 
   subviews: {
