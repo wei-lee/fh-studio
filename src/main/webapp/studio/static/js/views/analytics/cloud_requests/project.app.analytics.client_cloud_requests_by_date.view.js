@@ -22,7 +22,12 @@ App.View.ProjectAppAnalyticsCloudRequestsByDate = App.View.LineChart.extend({
     this.collection = new App.Collection.AppCloudRequestsDate({
       total: options.total
     });
-    this.collection.fetch();
+    var from = App.views.picker.currentFrom();
+    var to = App.views.picker.currentTo();
+    this.collection.fetch({
+      from: from,
+      to: to
+    });
     options.collection = this.collection;
     App.View.LineChart.prototype.initialize.call(this, options);
   }

@@ -1,8 +1,8 @@
 App.Model.AppStartupsGeo = Backbone.Model.extend({});
 
-App.Collection.AppStartupsGeo = Backbone.Collection.extend({
+App.Collection.AppStartupsGeo = App.Collection.Metrics.extend({
   model: App.Model.AppStartupsGeo,
-
+  metric: "appstartupsgeo",
   url: "/beta/static/mocks/metrics/app_startups_geo.json",
 
   parse: function(response) {

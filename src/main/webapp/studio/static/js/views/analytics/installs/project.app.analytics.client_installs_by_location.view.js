@@ -6,7 +6,12 @@ App.View.ProjectAppAnalyticsClientInstallsByLocation = Backbone.View.extend({
       this.width = 350;
     }
     this.collection = new App.Collection.AppInstallsGeo();
-    this.collection.fetch();
+    var from = App.views.picker.currentFrom();
+    var to = App.views.picker.currentTo();
+    this.collection.fetch({
+      from: from,
+      to: to
+    });
   },
 
   render: function(width) {

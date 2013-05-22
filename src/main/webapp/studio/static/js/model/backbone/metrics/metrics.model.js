@@ -86,6 +86,9 @@ App.Collection.Metrics = Backbone.Collection.extend({
       "studio": "App Cloud IDE",
       "embed": "Web"
     };
+
+    if (key === '') key = "Other";
+
     return label_map[key] || key;
   },
 

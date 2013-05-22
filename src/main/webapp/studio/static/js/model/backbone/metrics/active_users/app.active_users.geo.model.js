@@ -1,8 +1,8 @@
 App.Model.AppActiveUsersGeo = Backbone.Model.extend({});
 
-App.Collection.AppActiveUsersGeo = Backbone.Collection.extend({
+App.Collection.AppActiveUsersGeo = App.Collection.Metrics.extend({
   model: App.Model.AppActiveUsersGeo,
-
+  metric: "apptransactionsgeo",
   url: "/beta/static/mocks/metrics/app_active_users_geo.json",
 
   parse: function(response) {

@@ -19,6 +19,9 @@ App.Model.AppCloudRequestsPlatform = Backbone.Model.extend({
       "studio": "App Cloud IDE",
       "embed": "Web"
     };
+
+    if (key === '') key = "Other";
+
     return label_map[key] || key;
   },
 
@@ -45,9 +48,9 @@ App.Model.AppCloudRequestsPlatform = Backbone.Model.extend({
   }
 });
 
-App.Collection.AppCloudRequestsPlatform = Backbone.Collection.extend({
+App.Collection.AppCloudRequestsPlatform = App.Collection.Metrics.extend({
   model: App.Model.AppCloudRequestsPlatform,
-
+  metric: "apprequestsdest",
   url: "/beta/static/mocks/metrics/app_cloud_requests_dest.json",
 
   parse: function(response) {

@@ -45,9 +45,9 @@ App.Model.AppStartupsPlatform = Backbone.Model.extend({
   }
 });
 
-App.Collection.AppStartupsPlatform = Backbone.Collection.extend({
+App.Collection.AppStartupsPlatform = App.Collection.Metrics.extend({
   model: App.Model.AppStartupsPlatform,
-
+  metric: "appstartupsdest",
   url: "/beta/static/mocks/metrics/app_startups_dest.json",
 
   parse: function(response) {

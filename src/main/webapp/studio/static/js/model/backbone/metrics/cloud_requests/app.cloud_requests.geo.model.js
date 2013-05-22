@@ -1,8 +1,8 @@
 App.Model.AppCloudRequestsGeo = Backbone.Model.extend({});
 
-App.Collection.AppCloudRequestsGeo = Backbone.Collection.extend({
+App.Collection.AppCloudRequestsGeo = App.Collection.Metrics.extend({
   model: App.Model.AppCloudRequestsGeo,
-
+  metric: "apprequestsgeo",
   url: "/beta/static/mocks/metrics/app_cloud_requests_geo.json",
 
   parse: function(response) {

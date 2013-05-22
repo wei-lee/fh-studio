@@ -27,7 +27,12 @@ App.View.ProjectAppAnalyticsClientInstallsByPlatform = App.View.PieChart.extend(
   initialize: function(options) {
     options = $.extend(true, {}, this.defaultOptions, options) || {};
     this.collection = new App.Collection.AppInstallsPlatform();
-    this.collection.fetch();
+    var from = App.views.picker.currentFrom();
+    var to = App.views.picker.currentTo();
+    this.collection.fetch({
+      from: from,
+      to: to
+    });
     options.collection = this.collection;
     App.View.PieChart.prototype.initialize.call(this, options);
   }

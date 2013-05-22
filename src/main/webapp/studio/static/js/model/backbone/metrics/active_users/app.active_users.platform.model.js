@@ -19,6 +19,9 @@ App.Model.AppActiveUsersPlatform = Backbone.Model.extend({
       "studio": "App Cloud IDE",
       "embed": "Web"
     };
+
+    if (key === '') key = "Other";
+    
     return label_map[key] || key;
   },
 
@@ -45,10 +48,10 @@ App.Model.AppActiveUsersPlatform = Backbone.Model.extend({
   }
 });
 
-App.Collection.AppActiveUsersPlatform = Backbone.Collection.extend({
+App.Collection.AppActiveUsersPlatform = App.Collection.Metrics.extend({
   model: App.Model.AppActiveUsersPlatform,
-
   url: "/beta/static/mocks/metrics/app_active_users_dest.json",
+  metric: 'apptransactionsdest',
 
   parse: function(response) {
     var res;
