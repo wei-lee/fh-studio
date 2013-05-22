@@ -9,6 +9,7 @@ js/application/Constants.js
 js/application/Config.js
 js/application/dialog/DialogManager.js
 js/application/controller.js
+js/model/backbone/metrics/metrics.model.js
 js/model/backbone/metrics/active_users/app.active_users.date.model.js
 js/model/backbone/metrics/active_users/app.active_users.geo.model.js
 js/model/backbone/metrics/active_users/app.active_users.platform.model.js
