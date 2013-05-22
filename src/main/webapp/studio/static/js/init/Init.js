@@ -1,6 +1,6 @@
 $(document).ready(function () {
   console.log('main init');
-  
+
   $('.dialog').hide();
   // Footer text
   $('#footer_year').text(new Date().getFullYear() + ' ');

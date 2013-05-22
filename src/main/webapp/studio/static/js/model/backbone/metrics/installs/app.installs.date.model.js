@@ -14,6 +14,7 @@ App.Collection.AppInstallsDate = Backbone.Collection.extend({
   },
 
   sync: function(method, model, options) {
+    // debugger;
     var url = '/box/srv/1.1/ide/testing-df/app/getsingleappmetrics';
 
     // TODO: Endpoint accepts widget ID rather than template instance. Why?

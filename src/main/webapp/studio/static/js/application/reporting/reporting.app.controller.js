@@ -12,5 +12,12 @@ Reporting.App.Controller = Apps.Controller.extend({
     this.view = new App.View.ProjectAppAnalytics();
     this.view.render();
     $(this.views.container).append(this.view.el);
-  }
+  },
+
+  hide: function (){
+    if (this.view) {
+      this.view.undelegateEvents();
+      this.view.remove();
+    }
+  } 
 });
