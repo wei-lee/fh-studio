@@ -53,6 +53,11 @@ js/views/analytics/startups/project.app.analytics.client_startups_by_location.vi
 js/views/analytics/startups/project.app.analytics.client_startups_by_platform.view.js
 js/views/analytics/startups/project.app.analytics.client_startups_dashboard.view.js
 js/views/analytics/project.app.analytics.datepicker.view.js
+js/views/analytics/overview.area.installs.view.js
+js/views/analytics/overview.area.startups.view.js
+js/views/analytics/overview.area.cloud_requests.view.js
+js/views/analytics/overview.area.active_users.view.js
+js/views/analytics/domain.analytics.overview.view.js
 js/views/analytics/perapp.analytics.view.js
 js/views/analytics/domain.analytics.view.js
 js/views/analytics/project.app.analytics.view.js

@@ -31,14 +31,64 @@
 </div>
 
 <script id="project-per-app-analytics-template" type="text/x-handlebars-template">
-<h4>Apps</h4>
-<p>Select an App from the list below</p>
+<div class="row-fluid">
+  <div class="span6">
+    <h4>Per-App analytics</h4>
+  </div>
+  <div class="right">
+    <div class="datepicker_container"></div>
+  </div>
+</div>
+
+<hr class="small"/>
 
 <div class="row-fluid">
   <div class="span3">
-    <hr/>
-    <div class="apps_list"></div>
+    <div id="analytics_apps_list" class="apps_list"></div>
   </div>
-  <div class="span9 overview_container">Overview</div>
+  <div class="span9 overview_container"></div>
 </div>
+</script>
+
+<script id="project-analytics-overview-template" type="text/x-handlebars-template">
+<h4>{{app.title}}</h4>
+
+<div class="boxed-group" title="Client">
+  <div class="row-fluid">
+    <div class="span6 installs_container"></div>
+    <div class="span6 startups_container"></div>
+  </div>
+</div>
+
+<div class="boxed-group" title="Cloud">
+  <div class="row-fluid">
+    <div class="span6 cloud_requests_container"></div>
+    <div class="span6 active_users_container"></div>
+  </div>
+</div>
+</script>
+
+
+<script id="overview-area-installs-template" type="text/x-handlebars-template">
+<h2>{{count}}</h2>
+<h5>Installs</h5>
+<div class="chart"></div>
+</script>
+
+<script id="overview-area-startups-template" type="text/x-handlebars-template">
+<h2>{{count}}</h2>
+<h5>Startups</h5>
+<div class="chart"></div>
+</script>
+
+<script id="overview-area-cloud-requests-template" type="text/x-handlebars-template">
+<h2>{{count}}</h2>
+<h5>Cloud Requests</h5>
+<div class="chart"></div>
+</script>
+
+<script id="overview-area-active-users-template" type="text/x-handlebars-template">
+<h2>{{count}}</h2>
+<h5>Active Users</h5>
+<div class="chart"></div>
 </script>

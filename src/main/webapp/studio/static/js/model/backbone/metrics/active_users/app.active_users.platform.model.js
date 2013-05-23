@@ -21,7 +21,7 @@ App.Model.AppActiveUsersPlatform = Backbone.Model.extend({
     };
 
     if (key === '') key = "Other";
-    
+
     return label_map[key] || key;
   },
 

@@ -44,9 +44,13 @@ App.Collection.Metrics = Backbone.Collection.extend({
       this.to = options.to;
     }
 
+    if (options.guid) {
+      this.guid = options.guid;
+    }
+
     // TODO: Endpoint accepts widget ID rather than template instance. Why?
     var params = {
-      "id": $fw.data.get('app').guid,
+      "id": this.guid || $fw.data.get('app').guid,
       "metric": this.metric,
       "from": this.dateParamsForDate(this.from),
       "to": this.dateParamsForDate(this.to),
