@@ -6,6 +6,10 @@ Apps.Configuration.Support = Controller.extend({
 
   hiddenOptions: {},
   replaceOptions: {},
+  featuredConfigOptions: {
+    "remote Debug" : "enabled-remote-debug",
+    "enable MonkeyTalk" : "enabled-monkey-talk"
+  },
 
   init: function () {
     this.hiddenOptions = {'status':true};
@@ -150,8 +154,8 @@ Apps.Configuration.Support = Controller.extend({
   },
 
   getConfigDom: function (config_name, config_val, dest, doReplace) {
-    if (config_name === "remote Debug") {
-      if ($fw.getClientProp("enabled-remote-debug") === "false") {
+    if (this.featuredConfigOptions[config_name]) {
+      if ($fw.getClientProp(this.featuredConfigOptions[config_name]) === "false") {
         return "";
       }
     }
