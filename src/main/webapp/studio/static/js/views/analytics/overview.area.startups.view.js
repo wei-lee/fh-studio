@@ -8,5 +8,35 @@ App.View.AnalyticsOverviewStartups = Backbone.View.extend({
       app: this.model.toJSON(),
       count: 1000
     }));
+
+    this.$chart = $(".chart", this.el)
+
+    this.$chart.html(new App.View.ProjectAppAnalyticsClientStartupsByPlatform({
+      chart: {
+        width: 150,
+        height: 200,
+        backgroundColor:'rgba(255, 255, 255, 0.1)'
+      },
+      plotOptions: {
+        pie: {
+          dataLabels: {
+            enabled: false
+          }
+        }
+      },
+      exporting: {
+        enabled: false
+      },
+      legend: {
+        margin: 0,
+        itemStyle: {
+          fontSize: '10px'
+        }
+      },
+      title: {
+        text: null
+      },
+      guid: this.model.get('id')
+    }).render().$el);
   }
 });

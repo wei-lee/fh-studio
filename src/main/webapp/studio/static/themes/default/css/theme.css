@@ -3584,3 +3584,7 @@ hr.small {
 #reports_per_app_container .highcharts-container {
   margin-top: -120px;
 }
+
+#reports_per_app_container .installs_container {
+  border-right: 1px solid #ccc;
+}

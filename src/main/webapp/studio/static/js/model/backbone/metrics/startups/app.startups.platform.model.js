@@ -81,6 +81,8 @@ App.Collection.AppStartupsPlatform = App.Collection.Metrics.extend({
   toJSON: function() {
     var options = _.clone(this.options) || {};
     options.data = Backbone.Collection.prototype.toJSON.call(this);
+    options.innerSize = '70%';
+    options.showInLegend = true;
     return options;
   }
 });
