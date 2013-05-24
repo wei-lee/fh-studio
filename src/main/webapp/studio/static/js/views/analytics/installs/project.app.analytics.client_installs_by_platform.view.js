@@ -18,7 +18,7 @@ App.View.ProjectAppAnalyticsClientInstallsByPlatform = App.View.PieChart.extend(
     },
     tooltip: {
       formatter: function() {
-        return this.y + ' installs';
+        return '<b>' + this.key + '</b> ' + this.y + ' installs - <b>' + _.str.numberFormat(this.percentage, 2, '.') + '%</b>';
       }
     },
     series: []

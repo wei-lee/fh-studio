@@ -18,7 +18,7 @@ App.View.ProjectAppAnalyticsCloudRequestsByPlatform = App.View.PieChart.extend({
     },
     tooltip: {
       formatter: function() {
-        return this.y + ' cloud requests';
+        return '<b>' + this.key + '</b> ' + this.y + ' requests - <b>' + _.str.numberFormat(this.percentage, 2, '.') + '%</b>';
       }
     },
     series: []

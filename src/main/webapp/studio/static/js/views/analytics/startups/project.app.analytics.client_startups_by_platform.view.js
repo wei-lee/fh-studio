@@ -18,7 +18,7 @@ App.View.ProjectAppAnalyticsClientStartupsByPlatform = App.View.PieChart.extend(
     },
     tooltip: {
       formatter: function() {
-        return this.y + ' startups';
+        return '<b>' + this.key + '</b> ' + this.y + ' startups - <b>' + _.str.numberFormat(this.percentage, 2, '.') + '%</b>';
       }
     },
     series: []

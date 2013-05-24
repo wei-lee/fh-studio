@@ -18,7 +18,7 @@ App.View.ProjectAppAnalyticsActiveUsersByPlatform = App.View.PieChart.extend({
     },
     tooltip: {
       formatter: function() {
-        return this.y + ' active users';
+        return '<b>' +this.key + '</b> ' + this.y + ' users - <b>' + _.str.numberFormat(this.percentage, 2, '.') + '%</b>';
       }
     },
     series: []
