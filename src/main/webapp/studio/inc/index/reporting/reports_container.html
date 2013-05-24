@@ -1,6 +1,24 @@
 <div id="reports_in_app_container" class="hidden_template"></div>
 
 <script id="project-app-analytics-date-picker-template" type="text/x-handlebars-template">
+
+<form class="form-horizontal">
+   <fieldset>
+    <div class="control-group">
+      <label class="control-label" for="reservation">Date range:</label>
+      <div class="controls">
+       <div class="input-prepend">
+         <span class="add-on">
+            <i class="icon-calendar"></i>
+          </span>
+          <input type="text" name="analytics_picker" id="analytics_picker" />
+       </div>
+      </div>
+    </div>
+   </fieldset>
+ </form>
+  
+  <!--
   <form class="form-inline reporting_form">
     <input class="metric" name="metric" type="hidden" value="dashboard" />
 
@@ -11,7 +29,7 @@
     <input type="submit" id="go_render_analytics" class="btn doReport" value="Go"/>
     <button class="btn doReport" id="last_week" data-period="7">7 days</button>
     <button class="btn doReport" id="last_month" data-period="30">30 days</button>
-  </form>
+  </form>-->
 </script>
 
 <script id="project-app-analytics-template" type="text/x-handlebars-template">
