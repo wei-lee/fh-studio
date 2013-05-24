@@ -40,7 +40,6 @@ App.View.Chart = Backbone.View.extend({
     }
 
     if (this.collection.models.length === 0 && !this.model) {
-      console.log('No collection data');
       this.$el.html("No data available for selected date range.");
       return this;
     }

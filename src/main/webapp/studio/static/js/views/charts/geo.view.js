@@ -17,7 +17,6 @@ App.View.Geo = Backbone.View.extend({
     };
 
     if (this.collection.models.length === 0) {
-      console.log('No collection data');
       // TODO: Nicer loading template
       this.$el.append("Loading...");
       return this;

@@ -14,8 +14,6 @@ App.View.PerAppAnalytics = Backbone.View.extend({
   render: function() {
     var html = $("#project-per-app-analytics-template").html();
     var template = Handlebars.compile(html);
-    console.log(this.collection.toJSON());
-
 
     this.$el.html(template());
 
