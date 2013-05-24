@@ -1,3 +1,5 @@
+// TODO: These overviews can be made more DRY
+
 App.View.AnalyticsOverviewInstalls = Backbone.View.extend({
   initialize: function() {
     var self = this;
@@ -15,6 +17,7 @@ App.View.AnalyticsOverviewInstalls = Backbone.View.extend({
 
     this.$chart = $(".chart", this.el);
     this.$count = $(".count", this.el);
+    this.$metrics_type = $(".metrics_type", this.el);
     this.$spinner = $(".spinner", this.el);
     this.showLoading();
 
@@ -66,10 +69,16 @@ App.View.AnalyticsOverviewInstalls = Backbone.View.extend({
   },
 
   showLoading: function() {
+    this.$chart.hide();
+    this.$count.hide();
+    this.$metrics_type.hide();
     this.$spinner.html(new App.View.Spinner().render().el);
   },
 
   hideLoading: function() {
+    this.$chart.show();
+    this.$count.show();
+    this.$metrics_type.show();
     this.$spinner.empty();
   }
 });

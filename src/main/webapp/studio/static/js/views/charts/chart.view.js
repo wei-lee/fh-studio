@@ -25,7 +25,7 @@ App.View.Chart = Backbone.View.extend({
 
   resize: function() {
     if (this.chart) {
-      this.chart.setSize($(this.chart.container).width(), $(this.chart.container).height(), false);
+      this.chart.setSize($(this.chart.container).width(), $(this.chart.container).height(), true);
     }
   },
 

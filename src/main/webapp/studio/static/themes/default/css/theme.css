@@ -3589,3 +3589,8 @@ hr.small {
 #reports_per_app_container .cloud_requests_container {
   border-right: 1px solid #ccc;
 }
+
+#reports_per_app_container .installs_container, 
+#reports_per_app_container .cloud_requests_container {
+  min-height: 160px;
+}
