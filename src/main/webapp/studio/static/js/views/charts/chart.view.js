@@ -35,14 +35,13 @@ App.View.Chart = Backbone.View.extend({
     // Collection/Model might be empty
     if (!this.collection && !this.model) {
       console.log('No model or collection');
-      this.$el.append("Loading...");
+      this.$el.html("No model/collection set.");
       return this;
     }
 
     if (this.collection.models.length === 0 && !this.model) {
       console.log('No collection data');
-      // TODO: Nicer loading template
-      this.$el.append("Loading...");
+      this.$el.html("No data available for selected date range.");
       return this;
     }
 

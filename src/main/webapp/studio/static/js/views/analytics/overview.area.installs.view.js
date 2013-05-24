@@ -1,21 +1,28 @@
 App.View.AnalyticsOverviewInstalls = Backbone.View.extend({
-  initialize: function() {},
+  initialize: function() {
+    var self = this;
+    App.vent.on('app-analytics-datechange', function(e) {
+      self.showLoading();
+    });
+  },
 
   render: function() {
     var html = $("#overview-area-installs-template").html();
     var template = Handlebars.compile(html);
     this.$el.html(template({
-      app: this.model.toJSON(),
-      count: 1000
+      app: this.model.toJSON()
     }));
 
-    this.$chart = $(".chart", this.el)
+    this.$chart = $(".chart", this.el);
+    this.$count = $(".count", this.el);
+    this.$spinner = $(".spinner", this.el);
+    this.showLoading();
 
-    this.$chart.html(new App.View.ProjectAppAnalyticsClientInstallsByPlatform({
+    this.chart_view = new App.View.ProjectAppAnalyticsClientInstallsByPlatform({
       chart: {
         width: 150,
         height: 200,
-        backgroundColor:'rgba(255, 255, 255, 0.1)'
+        backgroundColor: 'rgba(255, 255, 255, 0.1)'
       },
       plotOptions: {
         pie: {
@@ -37,6 +44,32 @@ App.View.AnalyticsOverviewInstalls = Backbone.View.extend({
         text: null
       },
       guid: this.model.get('id')
-    }).render().$el);
+    });
+
+    this.chart_view.collection.bind('sync', this.updateTotal, this);
+
+    this.$chart.html(this.chart_view.render().$el);
+  },
+
+  updateTotal: function(collection) {
+    // Calculate total
+    var total = 0;
+    $.each(collection.models, function(i, model) {
+      var value = model.get('y');
+      total = total + value;
+    });
+
+    this.$count.text(_.str.numberFormat(total, 0, '.', ','));
+
+    // Sync done, hide loader
+    this.hideLoading();
+  },
+
+  showLoading: function() {
+    this.$spinner.html(new App.View.Spinner().render().el);
+  },
+
+  hideLoading: function() {
+    this.$spinner.empty();
   }
 });

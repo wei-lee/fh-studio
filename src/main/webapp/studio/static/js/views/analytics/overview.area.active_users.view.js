@@ -9,13 +9,14 @@ App.View.AnalyticsOverviewActiveUsers = Backbone.View.extend({
       count: 1000
     }));
 
-    this.$chart = $(".chart", this.el)
+    this.$chart = $(".chart", this.el);
+    this.$count = $(".count", this.el);
 
-    this.$chart.html(new App.View.ProjectAppAnalyticsActiveUsersByPlatform({
+    this.chart_view = new App.View.ProjectAppAnalyticsActiveUsersByPlatform({
       chart: {
         width: 150,
         height: 200,
-        backgroundColor:'rgba(255, 255, 255, 0.1)'
+        backgroundColor: 'rgba(255, 255, 255, 0.1)'
       },
       plotOptions: {
         pie: {
@@ -37,6 +38,21 @@ App.View.AnalyticsOverviewActiveUsers = Backbone.View.extend({
         text: null
       },
       guid: this.model.get('id')
-    }).render().$el);
+    });
+
+    this.chart_view.collection.bind('sync', this.updateTotal, this);
+
+    this.$chart.html(this.chart_view.render().$el);
+  },
+
+  updateTotal: function(collection) {
+    // Calculate total
+    var total = 0;
+    $.each(collection.models, function(i, model) {
+      var value = model.get('y');
+      total = total + value;
+    });
+
+    this.$count.text(_.str.numberFormat(total, 0, '.', ','));
   }
 });

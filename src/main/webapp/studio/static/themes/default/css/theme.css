@@ -3571,8 +3571,8 @@ hr.small {
 }
 
 #reports_per_app_container h2 {
-  font-size: 40px;
-  margin-bottom: 5px;
+  font-size: 33px;
+  margin-bottom: 0px;
 }
 
 #reports_per_app_container h5 {
@@ -3585,6 +3585,7 @@ hr.small {
   margin-top: -120px;
 }
 
-#reports_per_app_container .installs_container {
+#reports_per_app_container .installs_container, 
+#reports_per_app_container .cloud_requests_container {
   border-right: 1px solid #ccc;
 }
