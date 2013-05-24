@@ -65,12 +65,9 @@ App.View.ProjectAppAnalyticsDatepicker = Backbone.View.extend({
       maxDate: moment(),
       showWeekNumbers: true,
       ranges: {
-         'Today': [new Date(), new Date()],
-         'Yesterday': [moment().subtract('days', 1), moment().subtract('days', 1)],
          'Last 7 Days': [moment().subtract('days', 6), new Date()],
          'Last 30 Days': [moment().subtract('days', 29), new Date()],
-         'This Month': [moment().startOf('month'), moment().endOf('month')],
-         'Last Month': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')]
+         'Previous Month': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')]
       },
       dateLimit: false
     }, function(start, end) {
