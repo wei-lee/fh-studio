@@ -100,7 +100,6 @@
                       '<input class="input-mini" type="text" name="daterangepicker_end" value="" disabled="disabled" />' +
                     '</div>' +
                     '<button class="' + this.applyClass + ' applyBtn" disabled="disabled">' + this.locale.applyLabel + '</button>&nbsp;' +
-                    '<button class="' + this.clearClass + ' clearBtn">' + this.locale.clearLabel + '</button>' +
                   '</div>' +
                 '</div>' +
               '</div>';
@@ -247,10 +246,10 @@
             right.removeClass('right').addClass('left');
         }
 
-        if (typeof options == 'undefined' || typeof options.ranges == 'undefined') {
+        //if (typeof options == 'undefined' || typeof options.ranges == 'undefined') {
             this.container.find('.calendar').show();
             this.move();
-        }
+        //}
 
         if (typeof cb == 'function')
             this.cb = cb;
@@ -444,9 +443,9 @@
 
                 this.changed = true;
 
-                this.container.find('.calendar').hide();
+                this.container.find('.calendar').show();
                 this.move();
-                this.hide();
+                //this.hide();
             }
         },
 

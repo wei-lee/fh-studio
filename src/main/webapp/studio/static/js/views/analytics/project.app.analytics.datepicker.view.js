@@ -12,8 +12,7 @@ App.View.ProjectAppAnalyticsDatepicker = Backbone.View.extend({
     var template = Handlebars.compile(html);
     this.$el.html(template());
 
-    this.$from_field = this.$el.find('[name="from"]');
-    this.$to_field = this.$el.find('[name="to"]');
+    this.$picker = this.$el.find('#analytics_picker');
 
     // Init datepickers
     this.lastMonth();
@@ -40,11 +39,15 @@ App.View.ProjectAppAnalyticsDatepicker = Backbone.View.extend({
   },
 
   currentFrom: function() {
-    return new moment(this.$from_field.val());
+    var vals = this.$picker.val();
+    var val = vals.split(' - ')[0];
+    return new moment(val, 'MMMM D, YYYY');
   },
 
   currentTo: function() {
-    return new moment(this.$to_field.val());
+    var vals = this.$picker.val();
+    var val = vals.split(' - ')[1];
+    return new moment(val, 'MMMM D, YYYY');
   },
 
   _setDates: function(from, to) {
@@ -52,24 +55,31 @@ App.View.ProjectAppAnalyticsDatepicker = Backbone.View.extend({
 
     this.dateChanged(from, to);
 
-    // Without localisation, stick to ISO_8601 for date formats
-    this.$from_field.val(from.format('YYYY-MM-DD'));
-    this.$from_field.datepicker({
-      format: 'yyyy-mm-dd',
-      weekStart: 0
-    }).on('changeDate', function(ev) {
-      var updated_from = new moment(ev.date);
-      self.dateChanged(updated_from, self.currentTo());
+    this.$picker.daterangepicker({
+      opens: 'left',
+      format: 'MM/DD/YYYY',
+      separator: ' - ',
+      startDate: from,
+      endDate: to,
+      minDate: '01/01/2009',
+      maxDate: moment(),
+      showWeekNumbers: true,
+      ranges: {
+         'Today': [new Date(), new Date()],
+         'Yesterday': [moment().subtract('days', 1), moment().subtract('days', 1)],
+         'Last 7 Days': [moment().subtract('days', 6), new Date()],
+         'Last 30 Days': [moment().subtract('days', 29), new Date()],
+         'This Month': [moment().startOf('month'), moment().endOf('month')],
+         'Last Month': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')]
+      },
+      dateLimit: false
+    }, function(start, end) {
+      self.$picker.val(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+      self.dateChanged(self.currentFrom(), self.currentTo());
     });
 
-    this.$to_field.val(to.format('YYYY-MM-DD'));
-    this.$to_field.datepicker({
-      format: 'yyyy-mm-dd',
-      weekStart: 0
-    }).on('changeDate', function(ev) {
-      var updated_to = new moment(ev.date);
-      self.dateChanged(self.currentFrom(), updated_to);
-    });
+    // Inital set
+    this.$picker.val(from.format('MMMM D, YYYY') + ' - ' + to.format('MMMM D, YYYY'));
   },
 
   dateChanged: function(from, to) {
