@@ -3594,3 +3594,7 @@ hr.small {
 #reports_per_app_container .cloud_requests_container {
   min-height: 160px;
 }
+
+#reports_per_app_container .dataTables_filter input{
+  width: 100%;
+}

@@ -42,6 +42,8 @@ App.View.PerAppAnalytics = Backbone.View.extend({
       ]
     });
     this.$table_container.append(this.table_view.render().el);
+
+    this.$table_container.find('.dataTables_filter input').attr('placeholder', 'Search...');
     this.$overview_container = this.$el.find('.overview_container');
 
     this.$datepicker_container = this.$el.find('.datepicker_container');
