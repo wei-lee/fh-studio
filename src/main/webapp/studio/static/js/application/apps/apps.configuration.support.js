@@ -8,7 +8,8 @@ Apps.Configuration.Support = Controller.extend({
   replaceOptions: {},
   featuredConfigOptions: {
     "remote Debug" : "enabled-remote-debug",
-    "enable MonkeyTalk" : "enabled-monkey-talk"
+    "enable MonkeyTalk" : "enable-monkey-talk",
+    "simulator Only": "enable-build-ios-simulator"
   },
 
   init: function () {
