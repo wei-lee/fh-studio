@@ -3556,11 +3556,6 @@ li.reportdashboard_link .icon-globe {
   border-radius: 4px 0 4px 0;
 }
 
-
-hr.small {
-  margin: 10px 0 10px 0;
-}
-
 #analytics_apps_list tr:hover {
   cursor: pointer;
 }
@@ -3581,7 +3576,7 @@ hr.small {
   margin-top: 0;
 }
 
-@media screen and (max-width: 1400px){
+@media screen and (max-width: 1200px){
   #reports_per_app_container h2 {
     font-size: 23px;
   }
@@ -3609,3 +3604,20 @@ hr.small {
 #reports_per_app_container .dataTables_filter input{
   width: 100%;
 }
+
+.datepicker-title-container {
+  /*  Move up beside pills */
+  margin-top: -37px;
+  z-index: 0;
+  margin-bottom: 0;
+}
+
+.reporting_nav_list {
+  margin-bottom: 0;
+}
+
+hr.small {
+  margin: 10px 0 0 0 !important;
+  width: 100%;
+}
+
