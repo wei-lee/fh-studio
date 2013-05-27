@@ -4778,6 +4778,7 @@ RSAKey.prototype.encrypt = RSAEncrypt;
   //IE 8/9 use XDomainRequest for cors requests
   function XDomainRequestWrapper(xdr){
     this.xdr = xdr;
+    this.isWrapper = true;
     this.readyState = 0;
     this.onreadystatechange = null;
     this.status = 0;
@@ -5004,7 +5005,13 @@ RSAKey.prototype.encrypt = RSAEncrypt;
         } else {
           req = __cor();
         }
-        req.open(method, url, true);
+        // if IE8 XrequestWrapper then change 
+        // method to get and add json encoded params
+        if(req.isWrapper){
+          req.open("GET", url + "?params=" + encodeURIComponent(data), true);
+        } else {
+          req.open(method, url, true);
+        }
         if (o.contentType) {
           req.setRequestHeader('Content-Type', o.contentType);
         }
@@ -5375,6 +5382,7 @@ RSAKey.prototype.encrypt = RSAEncrypt;
 
   };
 })(this);
+
 /**
  * Lawnchair!
  * ---

@@ -1,6 +1,31 @@
 -------------------------------------------------------------------------------
 Component: fh-studio
 -------------------------------------------------------------------------------
+
+
+3.16.2 - 2013-05-20 - IR202 - Jason Madigan
+---------------------------------------------------------------------------
+* 3942 - Fixed an issue where default stdout/stderr could point to the wrong file
+* 3774 - Increase stage timeout from 20 seconds
+
+3.16.1 - 2013-05-15 - IR201 - Jason Madigan
+---------------------------------------------------------------------------
+* 3936 - IE JS SDK Error
+
+3.16.0 - 2013-05-14 - IR201 - Jason Madigan
+---------------------------------------------------------------------------
+* 3744 - JS SDK error - IE8 firing multiple callbacks
+* 3234 - Studio find function not working correctly in editor
+* 3381 - Customeradmins cannot see the admin tab without the dev role
+* 3892 - Whitelabel favicons
+* 3798 - Log list is scrollable
+* 3799 - Current app logs not downloadable
+
+3.15.15 - 2013-04-24 - IR200 - David Martin
+---------------------------------------------------------------------------
+* 3784 - Increased storeitem binary upload timeout from 2 to 5 minutes
+
+-------------------------------------------------------------------------------
 3.15.14 - 2013-04-02 - IR198 - Wei Li
 ---------------------------------------------------------------------------
 * 3577 - various studio bugs

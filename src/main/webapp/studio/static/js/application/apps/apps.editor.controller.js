@@ -488,7 +488,7 @@ Apps.Editor.Controller = Apps.Controller.extend({
   find: function(start_at_cursor) {
     var search_str = this.find_dialog.find('#editor_find_text').val();
     if (search_str.length > 0) {
-      var match_case = !this.find_dialog.find("#editor_find_match_case").attr("checked");
+      var match_case = this.find_dialog.find("#editor_find_match_case").attr("checked");
       this.editor_impl.find(search_str, start_at_cursor, match_case, this.find_dialog.find("#search_info"));
     }
   },
