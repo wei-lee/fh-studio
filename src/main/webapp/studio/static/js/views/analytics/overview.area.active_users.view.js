@@ -19,6 +19,8 @@ App.View.AnalyticsOverviewActiveUsers = Backbone.View.extend({
     this.$spinner = $(".spinner", this.el);
     this.showLoading();
 
+
+
     this.chart_view = new App.View.ProjectAppAnalyticsActiveUsersByPlatform({
       chart: {
         width: ($('.span9:visible').width() / 2),
@@ -27,9 +29,7 @@ App.View.AnalyticsOverviewActiveUsers = Backbone.View.extend({
       },
       plotOptions: {
         pie: {
-          dataLabels: {
-            enabled: false
-          }
+          dataLabels: false
         }
       },
       exporting: {

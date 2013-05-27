@@ -111,8 +111,11 @@ App.Collection.Metrics = Backbone.Collection.extend({
       return '#aa4643';
     } else if (key == 'embed') {
       return '#4572a7';
+    } else if (key == '') {
+      // Other
+      return '#db843d';
     } else {
-      var random_colours = ['#aa4643', '#89a54e', '#80699b', '#3d96ae', '#db843d'];
+      var random_colours = ['#aa4643', '#89a54e', '#80699b', '#3d96ae'];
       var random_colour = random_colours[Math.floor(Math.random() * random_colours.length)];
       return random_colour;
     }
