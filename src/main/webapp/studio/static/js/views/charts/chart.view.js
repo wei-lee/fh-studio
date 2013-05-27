@@ -18,7 +18,7 @@ App.View.Chart = Backbone.View.extend({
       self.render();
     }
 
-    $(window).unbind('resizeEnd').bind('resizeEnd', function() {
+    $(window).bind('resizeEnd', function() {
       self.resize();
     });
   },

@@ -21,7 +21,7 @@ App.View.AnalyticsOverviewActiveUsers = Backbone.View.extend({
 
     this.chart_view = new App.View.ProjectAppAnalyticsActiveUsersByPlatform({
       chart: {
-        width: 150,
+        width: ($('.span9:visible').width() / 2),
         height: 200,
         backgroundColor: 'rgba(255, 255, 255, 0.1)'
       },
@@ -36,7 +36,6 @@ App.View.AnalyticsOverviewActiveUsers = Backbone.View.extend({
         enabled: false
       },
       legend: {
-        margin: 0,
         itemStyle: {
           fontSize: '10px'
         }

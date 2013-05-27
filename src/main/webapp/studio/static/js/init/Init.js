@@ -14,6 +14,15 @@ $(document).ready(function () {
     
   }, Lang['password_valid_check']);
 
+  // Handy event emitter for a "resizeEnd" event
+  // fired after a resize has finished
+  $(window).resize(function() {
+    if (this.resizeTO) clearTimeout(this.resizeTO);
+    this.resizeTO = setTimeout(function() {
+      $(this).trigger('resizeEnd');
+    }, 250);
+  });
+
   // Custom validation plugin functions
   $.validator.addMethod("giturl", function(value, element) {
     var pub1, priv1, priv2;

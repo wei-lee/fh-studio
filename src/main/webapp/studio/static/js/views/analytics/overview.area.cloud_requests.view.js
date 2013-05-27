@@ -21,7 +21,7 @@ App.View.AnalyticsOverviewCloudRequests = Backbone.View.extend({
 
     this.chart_view = new App.View.ProjectAppAnalyticsCloudRequestsByPlatform({
       chart: {
-        width: 150,
+        width: ($('.span9:visible').width() / 2),
         height: 200,
         backgroundColor: 'rgba(255, 255, 255, 0.1)'
       },

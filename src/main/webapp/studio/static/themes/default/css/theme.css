@@ -3581,8 +3581,19 @@ hr.small {
   margin-top: 0;
 }
 
-#reports_per_app_container .highcharts-container {
-  margin-top: -120px;
+@media screen and (max-width: 1400px){
+  #reports_per_app_container h2 {
+    font-size: 23px;
+  }
+
+  #reports_per_app_container h5 {
+    font-size: 12px;
+  }
+}
+
+#reports_per_app_container .overview_text {
+  float: left;
+  margin-bottom: -90px;
 }
 
 #reports_per_app_container .installs_container, 
