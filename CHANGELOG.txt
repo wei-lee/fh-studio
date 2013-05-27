@@ -1,14 +1,15 @@
 -------------------------------------------------------------------------------
 Component: fh-studio
 -------------------------------------------------------------------------------
-3.16.3 - 2013-05-27 - IR102 - Wei Li
+3.16.3 - 2013-05-21 - IR202 - Damian Beresford
 ---------------------------------------------------------------------------
-* 3688 - Added support for showing per-app resource usage
+* 3677 Investigate the resources issues being seen in vmware
 
 3.16.2 - 2013-05-20 - IR202 - Jason Madigan
 ---------------------------------------------------------------------------
 * 3942 - Fixed an issue where default stdout/stderr could point to the wrong file
 * 3774 - Increase stage timeout from 20 seconds
+
 
 3.16.1 - 2013-05-15 - IR201 - Jason Madigan
 ---------------------------------------------------------------------------
