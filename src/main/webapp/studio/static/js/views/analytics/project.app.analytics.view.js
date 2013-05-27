@@ -1,11 +1,13 @@
 App.View.ProjectAppAnalytics = Backbone.View.extend({
-  type: "installs", // Default to installs
+  defaultOptions: {
+    type: "installs" // Default to installs
+  },
 
   subviews: {
-    "installs": new App.View.ProjectAppAnalyticsInstalls(),
-    "startups": new App.View.ProjectAppAnalyticsStartups(),
-    "cloud_requests": new App.View.ProjectAppAnalyticsCloudRequests(),
-    "active_users": new App.View.ProjectAppAnalyticsActiveUsers()
+    "installs": new App.View.ProjectAppAnalyticsInstalls(this.options),
+    "startups": new App.View.ProjectAppAnalyticsStartups(this.options),
+    "cloud_requests": new App.View.ProjectAppAnalyticsCloudRequests(this.options),
+    "active_users": new App.View.ProjectAppAnalyticsActiveUsers(this.options)
   },
 
   events: {
@@ -16,7 +18,9 @@ App.View.ProjectAppAnalytics = Backbone.View.extend({
     'change #analytics_type': 'typeChange'
   },
 
-  initialize: function() {},
+  initialize: function(options) {
+    this.options = $.extend(true, {}, this.defaultOptions, options) || {};
+  },
 
   render: function() {
     var html = $("#project-app-analytics-template").html();
@@ -25,14 +29,19 @@ App.View.ProjectAppAnalytics = Backbone.View.extend({
 
     this.$datepicker_container = this.$el.find('.datepicker_container');
     this.$analytics_container = this.$el.find('#client_analytics_container');
+    this.$metrics_select = this.$el.find('#analytics_type');
 
     // I'd rather this wasn't a global, but...
-    App.views.picker = new App.View.ProjectAppAnalyticsDatepicker();
-    App.views.picker.render();
-    this.$datepicker_container.append(App.views.picker.el);
+    if (!this.options.hidePicker) {
+      App.views.picker = new App.View.ProjectAppAnalyticsDatepicker();
+      App.views.picker.render();
+      this.$datepicker_container.append(App.views.picker.el);
+    }
 
     // Render dashboard by default
     this.dashboard();
+
+    return this;
   },
 
   activePill: function() {
@@ -42,7 +51,7 @@ App.View.ProjectAppAnalytics = Backbone.View.extend({
 
   typeChange: function(e) {
     var type = $(e.target).val();
-    this.type = type;
+    this.options.type = type;
 
     var active_pill = this.activePill();
 
@@ -76,8 +85,11 @@ App.View.ProjectAppAnalytics = Backbone.View.extend({
       this.setActivePill(e);
     }
 
-    this.subviews[this.type].renderDashboard();
-    this.$analytics_container.html(this.subviews[this.type].el);
+    this.subviews[this.options.type].renderDashboard({
+      guid: this.options.guid
+    });
+    this.$analytics_container.html(this.subviews[this.options.type].el);
+    this.selectMetric(this.options.type);
   },
 
   byDate: function(e) {
@@ -86,8 +98,11 @@ App.View.ProjectAppAnalytics = Backbone.View.extend({
       this.setActivePill(e);
     }
 
-    this.subviews[this.type].renderByDate();
-    this.$analytics_container.html(this.subviews[this.type].el);
+    this.subviews[this.options.type].renderByDate({
+      guid: this.options.guid
+    });
+    this.$analytics_container.html(this.subviews[this.options.type].el);
+    this.selectMetric(this.options.type);
   },
 
   byPlatform: function(e) {
@@ -96,8 +111,11 @@ App.View.ProjectAppAnalytics = Backbone.View.extend({
       this.setActivePill(e);
     }
 
-    this.subviews[this.type].renderByPlatform();
-    this.$analytics_container.html(this.subviews[this.type].el);
+    this.subviews[this.options.type].renderByPlatform({
+      guid: this.options.guid
+    });
+    this.$analytics_container.html(this.subviews[this.options.type].el);
+    this.selectMetric(this.options.type);
   },
 
   byLocation: function(e) {
@@ -106,7 +124,18 @@ App.View.ProjectAppAnalytics = Backbone.View.extend({
       this.setActivePill(e);
     }
 
-    this.subviews[this.type].renderByLocation();
-    this.$analytics_container.html(this.subviews[this.type].el);
+    this.subviews[this.options.type].renderByLocation({
+      guid: this.options.guid
+    });
+    this.$analytics_container.html(this.subviews[this.options.type].el);
+    this.selectMetric(this.options.type);
+  },
+
+  selectMetric: function(metric_type) {
+    // Clear
+    this.$metrics_select.find('option').removeAttr('selected');
+
+    // Set
+    this.$metrics_select.find('[value="'+metric_type+'"]').attr('selected', 'selected');
   }
 });

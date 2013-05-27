@@ -1,5 +1,7 @@
 App.View.ProjectAppAnalyticsStartups = Backbone.View.extend({
-  initialize: function() {},
+  initialize: function(options) {
+    this.options = $.extend(true, {}, this.defaultOptions, options) || {};
+  },
 
   render: function() {
     var html = $("#project-app-analytics-startups-template").html();
@@ -11,50 +13,55 @@ App.View.ProjectAppAnalyticsStartups = Backbone.View.extend({
     return this;
   },
 
-  renderDashboard: function() {
+  renderDashboard: function(options) {
     if (this.dashboard_view) {
       this.dashboard_view.remove();
     }
-    this.dashboard_view = new App.View.ProjectAppAnalyticsClientStartupsDashboard();
+    this.dashboard_view = new App.View.ProjectAppAnalyticsClientStartupsDashboard({
+      guid: options.guid || this.options.guid
+    });
     this.dashboard_view.render();
     this.$el.empty();
     this.$el.append(this.dashboard_view.el);
   },
 
-  renderByDate: function() {
+  renderByDate: function(options) {
     if (this.by_date_view) {
       this.by_date_view.remove();
     }
     this.by_date_view = new App.View.ProjectAppAnalyticsClientStartupsByDate({
       chart: {
         width: $('.container').width()
-      }
+      },
+      guid: options.guid || this.options.guid
     });
     this.by_date_view.render();
     this.$el.empty();
     this.$el.append(this.by_date_view.el);
   },
 
-  renderByPlatform: function() {
+  renderByPlatform: function(options) {
     if (this.by_platform_view) {
       this.by_platform_view.remove();
     }
     this.by_platform_view = new App.View.ProjectAppAnalyticsClientStartupsByPlatform({
       chart: {
         width: $('.container').width()
-      }
+      },
+      guid: options.guid || this.options.guid
     });
     this.by_platform_view.render();
     this.$el.empty();
     this.$el.append(this.by_platform_view.el);
   },
 
-  renderByLocation: function() {
+  renderByLocation: function(options) {
     if (this.by_location_view) {
       this.by_location_view.remove();
     }
     this.by_location_view = new App.View.ProjectAppAnalyticsClientStartupsByLocation({
-      width: $('.container').width()
+      width: $('.container').width(),
+      guid: options.guid || this.options.guid
     });
     this.by_location_view.render();
     this.$el.empty();

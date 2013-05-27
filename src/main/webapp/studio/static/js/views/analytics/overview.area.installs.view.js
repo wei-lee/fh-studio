@@ -9,6 +9,7 @@ App.View.AnalyticsOverviewInstalls = Backbone.View.extend({
   },
 
   render: function() {
+    var self = this;
     var html = $("#overview-area-installs-template").html();
     var template = Handlebars.compile(html);
     this.$el.html(template({
@@ -17,6 +18,7 @@ App.View.AnalyticsOverviewInstalls = Backbone.View.extend({
 
     this.$chart = $(".chart", this.el);
     this.$count = $(".count", this.el);
+    this.$view_details = $(".view_details", this.el);
     this.$metrics_type = $(".metrics_type", this.el);
     this.$spinner = $(".spinner", this.el);
     this.showLoading();
@@ -50,7 +52,6 @@ App.View.AnalyticsOverviewInstalls = Backbone.View.extend({
     });
 
     this.chart_view.collection.bind('sync', this.updateTotal, this);
-
     this.$chart.html(this.chart_view.render().$el);
   },
 
@@ -71,6 +72,7 @@ App.View.AnalyticsOverviewInstalls = Backbone.View.extend({
   showLoading: function() {
     this.$chart.hide();
     this.$count.hide();
+    this.$view_details.hide();
     this.$metrics_type.hide();
     this.$spinner.html(new App.View.Spinner().render().el);
   },
@@ -79,6 +81,7 @@ App.View.AnalyticsOverviewInstalls = Backbone.View.extend({
     this.$chart.show();
     this.$count.show();
     this.$metrics_type.show();
+    this.$view_details.show();
     this.$spinner.empty();
   }
 });

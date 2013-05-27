@@ -1,6 +1,7 @@
 App.View.PerAppAnalytics = Backbone.View.extend({
   events: {
-    'click table tbody tr': 'show'
+    'click table tbody tr': 'show',
+    'click .view_details': 'showDetails'
   },
 
   initialize: function() {
@@ -65,5 +66,17 @@ App.View.PerAppAnalytics = Backbone.View.extend({
     });
     this.overview.render();
     this.$overview_container.html(this.overview.el);
+  },
+
+  showDetails: function(e) {
+    var guid = $(e.currentTarget).data('guid');
+    var metric_type = $(e.currentTarget).data('metric-type');; // Metric to show
+    this.detail_view = new App.View.ProjectAppAnalytics({
+      guid: guid,
+      hidePicker: true,
+      type: metric_type
+    });
+    this.$overview_container.html(this.detail_view.render().el);
+    console.log('showDetailView', guid);
   }
 });

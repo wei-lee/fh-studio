@@ -3534,7 +3534,7 @@ li.reportdashboard_link .icon-globe {
 }
 
 .boxed-group::after {
-  content: attr(title);
+  content: attr(data-title);
   position: absolute;
   top: -1px;
   left: -1px;
@@ -3586,9 +3586,17 @@ li.reportdashboard_link .icon-globe {
   }
 }
 
+.installs_container, 
+.startups_container,
+.active_users_container,
+.cloud_requests_container {
+  position: relative;
+}
+
 #reports_per_app_container .overview_text {
-  float: left;
-  margin-bottom: -90px;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 #reports_per_app_container .installs_container, 
@@ -3616,8 +3624,13 @@ li.reportdashboard_link .icon-globe {
   margin-bottom: 0;
 }
 
-hr.small {
-  margin: 10px 0 0 0 !important;
-  width: 100%;
+#analytics_picker {
+  font-weight: bold;
+  text-align: center;
+  width: 250px;
 }
 
+hr.small {
+  margin: 10px 0 -10px 0 !important;
+  width: 100%;
+}

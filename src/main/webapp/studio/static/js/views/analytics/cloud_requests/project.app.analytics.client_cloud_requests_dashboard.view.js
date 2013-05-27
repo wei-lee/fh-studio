@@ -1,5 +1,7 @@
 App.View.ProjectAppAnalyticsCloudRequestsDashboard = Backbone.View.extend({
-  initialize: function() {},
+  initialize: function(options) {
+    this.options = $.extend(true, {}, this.defaultOptions, options) || {};
+  },
 
   render: function() {
     var html = $("#project-app-analytics-cloud-requests-dashboard-template").html();
@@ -11,8 +13,14 @@ App.View.ProjectAppAnalyticsCloudRequestsDashboard = Backbone.View.extend({
     this.$by_location = this.$el.find('.by_location');
 
     // TODO: Normally, collection passed in
-    this.$by_date.append(new App.View.ProjectAppAnalyticsCloudRequestsByDate().render().$el);
-    this.$by_platform.append(new App.View.ProjectAppAnalyticsCloudRequestsByPlatform().render().$el);
-    this.$by_location.append(new App.View.ProjectAppAnalyticsCloudRequestsByLocation().render().$el);
+    this.$by_date.append(new App.View.ProjectAppAnalyticsCloudRequestsByDate({
+      guid: this.options.guid
+    }).render().$el);
+    this.$by_platform.append(new App.View.ProjectAppAnalyticsCloudRequestsByPlatform({
+      guid: this.options.guid
+    }).render().$el);
+    this.$by_location.append(new App.View.ProjectAppAnalyticsCloudRequestsByLocation({
+      guid: this.options.guid
+    }).render().$el);
   }
 });

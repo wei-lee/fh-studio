@@ -23,7 +23,8 @@ App.View.ProjectAppAnalyticsClientStartupsByDate = App.View.LineChart.extend({
     var to = App.views.picker.currentTo();
     this.collection.fetch({
       from: from,
-      to: to
+      to: to,
+      guid: options.guid
     });
     options.collection = this.collection;
     App.View.LineChart.prototype.initialize.call(this, options);

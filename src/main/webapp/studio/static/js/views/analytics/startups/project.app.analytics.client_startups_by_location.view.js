@@ -1,5 +1,7 @@
 App.View.ProjectAppAnalyticsClientStartupsByLocation = Backbone.View.extend({
   initialize: function(options) {
+    options = $.extend(true, {}, this.defaultOptions, options) || {};
+
     if (options) {
       this.width = options.width || 350;
     } else {
@@ -10,7 +12,8 @@ App.View.ProjectAppAnalyticsClientStartupsByLocation = Backbone.View.extend({
     var to = App.views.picker.currentTo();
     this.collection.fetch({
       from: from,
-      to: to
+      to: to,
+      guid: options.guid
     });
   },
 

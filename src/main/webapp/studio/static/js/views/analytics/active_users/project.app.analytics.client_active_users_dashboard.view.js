@@ -1,5 +1,7 @@
 App.View.ProjectAppAnalyticsActiveUsersDashboard = Backbone.View.extend({
-  initialize: function() {},
+  initialize: function(options) {
+    this.options = $.extend(true, {}, this.defaultOptions, options) || {};
+  },
 
   render: function() {
     var html = $("#project-app-analytics-active-users-dashboard-template").html();
@@ -11,8 +13,16 @@ App.View.ProjectAppAnalyticsActiveUsersDashboard = Backbone.View.extend({
     this.$by_location = this.$el.find('.by_location');
 
     // TODO: Normally, collection passed in
-    this.$by_date.append(new App.View.ProjectAppAnalyticsActiveUsersByDate().render().$el);
-    this.$by_platform.append(new App.View.ProjectAppAnalyticsActiveUsersByPlatform().render().$el);
-    this.$by_location.append(new App.View.ProjectAppAnalyticsActiveUsersByLocation().render().$el);
+    this.$by_date.append(new App.View.ProjectAppAnalyticsActiveUsersByDate({
+      guid: this.options.guid
+    }).render().$el);
+    this.$by_platform.append(new App.View.ProjectAppAnalyticsActiveUsersByPlatform({
+      guid: this.options.guid
+    }).render().$el);
+    this.$by_location.append(new App.View.ProjectAppAnalyticsActiveUsersByLocation({
+      guid: this.options.guid
+    }).render().$el);
+
+    return this;
   }
 });

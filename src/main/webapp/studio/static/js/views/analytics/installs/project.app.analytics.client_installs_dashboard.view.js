@@ -1,8 +1,6 @@
 App.View.ProjectAppAnalyticsClientInstallsDashboard = Backbone.View.extend({
-  initialize: function() {},
-
-  rangeChange: function() {
-    console.log('range changed!');
+  initialize: function(options) {
+    this.options = $.extend(true, {}, this.defaultOptions, options) || {};
   },
 
   render: function() {
@@ -15,8 +13,16 @@ App.View.ProjectAppAnalyticsClientInstallsDashboard = Backbone.View.extend({
     this.$by_location = this.$el.find('.by_location');
 
     // TODO: Normally, collection passed in
-    this.$by_date.append(new App.View.ProjectAppAnalyticsClientInstallsByDate().render().$el);
-    this.$by_platform.append(new App.View.ProjectAppAnalyticsClientInstallsByPlatform().render().$el);
-    this.$by_location.append(new App.View.ProjectAppAnalyticsClientInstallsByLocation().render().$el);
+    this.$by_date.append(new App.View.ProjectAppAnalyticsClientInstallsByDate({
+      guid: this.options.guid
+    }).render().$el);
+    this.$by_platform.append(new App.View.ProjectAppAnalyticsClientInstallsByPlatform({
+      guid: this.options.guid
+    }).render().$el);
+    this.$by_location.append(new App.View.ProjectAppAnalyticsClientInstallsByLocation({
+      guid: this.options.guid
+    }).render().$el);
+
+    return this;
   }
 });

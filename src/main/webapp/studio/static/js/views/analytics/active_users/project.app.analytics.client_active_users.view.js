@@ -1,5 +1,7 @@
 App.View.ProjectAppAnalyticsActiveUsers = Backbone.View.extend({
-  initialize: function() {},
+  initialize: function(options) {
+    this.options = $.extend(true, {}, this.defaultOptions, options) || {};
+  },
 
   render: function() {
     var html = $("#project-app-analytics-active-users-template").html();
@@ -11,50 +13,55 @@ App.View.ProjectAppAnalyticsActiveUsers = Backbone.View.extend({
     return this;
   },
 
-  renderDashboard: function() {
+  renderDashboard: function(options) {
     if (this.dashboard_view) {
       this.dashboard_view.remove();
     }
-    this.dashboard_view = new App.View.ProjectAppAnalyticsActiveUsersDashboard();
+    this.dashboard_view = new App.View.ProjectAppAnalyticsActiveUsersDashboard({
+      guid: options.guid || this.options.guid
+    });
     this.dashboard_view.render();
     this.$el.empty();
     this.$el.append(this.dashboard_view.el);
   },
 
-  renderByDate: function() {
+  renderByDate: function(options) {
     if (this.by_date_view) {
       this.by_date_view.remove();
     }
     this.by_date_view = new App.View.ProjectAppAnalyticsActiveUsersByDate({
       chart: {
         width: $('.container').width()
-      }
+      },
+      guid: options.guid || this.options.guid
     });
     this.by_date_view.render();
     this.$el.empty();
     this.$el.append(this.by_date_view.el);
   },
 
-  renderByPlatform: function() {
+  renderByPlatform: function(options) {
     if (this.by_platform_view) {
       this.by_platform_view.remove();
     }
     this.by_platform_view = new App.View.ProjectAppAnalyticsActiveUsersByPlatform({
       chart: {
         width: $('.container').width()
-      }
+      },
+      guid: options.guid || this.options.guid
     });
     this.by_platform_view.render();
     this.$el.empty();
     this.$el.append(this.by_platform_view.el);
   },
 
-  renderByLocation: function() {
+  renderByLocation: function(options) {
     if (this.by_location_view) {
       this.by_location_view.remove();
     }
     this.by_location_view = new App.View.ProjectAppAnalyticsActiveUsersByLocation({
-      width: $('.container').width()
+      width: $('.container').width(),
+      guid: options.guid || this.options.guid
     });
     this.by_location_view.render();
     this.$el.empty();
