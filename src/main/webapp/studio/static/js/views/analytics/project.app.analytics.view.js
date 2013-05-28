@@ -104,10 +104,12 @@ App.View.ProjectAppAnalytics = Backbone.View.extend({
       this.setActivePill(e);
     }
 
-    this.subviews[this.options.type].renderByDate({
-      guid: this.options.guid
+    var view = new this.subviews[this.options.type]({
+      guid: this.options.guid,
+      picker_model: this.picker.model
     });
-    this.$analytics_container.html(this.subviews[this.options.type].el);
+    view.renderByDate();
+    this.$analytics_container.html(view.el);
     this.selectMetric(this.options.type);
   },
 
@@ -117,10 +119,12 @@ App.View.ProjectAppAnalytics = Backbone.View.extend({
       this.setActivePill(e);
     }
 
-    this.subviews[this.options.type].renderByPlatform({
-      guid: this.options.guid
+    var view = new this.subviews[this.options.type]({
+      guid: this.options.guid,
+      picker_model: this.picker.model
     });
-    this.$analytics_container.html(this.subviews[this.options.type].el);
+    view.renderByPlatform();
+    this.$analytics_container.html(view.el);
     this.selectMetric(this.options.type);
   },
 
@@ -130,10 +134,12 @@ App.View.ProjectAppAnalytics = Backbone.View.extend({
       this.setActivePill(e);
     }
 
-    this.subviews[this.options.type].renderByLocation({
-      guid: this.options.guid
+    var view = new this.subviews[this.options.type]({
+      guid: this.options.guid,
+      picker_model: this.picker.model
     });
-    this.$analytics_container.html(this.subviews[this.options.type].el);
+    view.renderByLocation();
+    this.$analytics_container.html(view.el);
     this.selectMetric(this.options.type);
   },
 

@@ -1,10 +1,10 @@
-App.View.ProjectAppAnalyticsClientInstallsDashboard = Backbone.View.extend({
+App.View.ProjectAppAnalyticsDashboard = Backbone.View.extend({
   initialize: function(options) {
     this.options = $.extend(true, {}, this.defaultOptions, options) || {};
   },
 
   render: function() {
-    var html = $("#project-app-analytics-client-installs-dashboard-template").html();
+    var html = $(this.template).html();
     var template = Handlebars.compile(html);
     this.$el.html(template());
 
@@ -12,17 +12,17 @@ App.View.ProjectAppAnalyticsClientInstallsDashboard = Backbone.View.extend({
     this.$by_platform = this.$el.find('.by_platform');
     this.$by_location = this.$el.find('.by_location');
 
-    this.$by_date.append(new App.View.ProjectAppAnalyticsClientInstallsByDate({
+    this.$by_date.append(new this.views.byDate({
       guid: this.options.guid,
       picker_model: this.options.picker_model
     }).render().$el);
 
-    this.$by_platform.append(new App.View.ProjectAppAnalyticsClientInstallsByPlatform({
+    this.$by_platform.append(new this.views.byPlatform({
       guid: this.options.guid,
       picker_model: this.options.picker_model
     }).render().$el);
     
-    this.$by_location.append(new App.View.ProjectAppAnalyticsClientInstallsByLocation({
+    this.$by_location.append(new this.views.byLocation({
       guid: this.options.guid,
       picker_model: this.options.picker_model
     }).render().$el);

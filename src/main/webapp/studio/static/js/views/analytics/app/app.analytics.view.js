@@ -1,10 +1,10 @@
-App.View.ProjectAppAnalyticsInstalls = Backbone.View.extend({
+App.View.AppAnalytics = Backbone.View.extend({
   initialize: function(options) {
     this.options = $.extend(true, {}, this.defaultOptions, options) || {};
   },
 
   render: function() {
-    var html = $("#project-app-analytics-installs-template").html();
+    var html = $(this.template).html();
     var template = Handlebars.compile(html);
     this.$el.html(template());
 
@@ -17,7 +17,7 @@ App.View.ProjectAppAnalyticsInstalls = Backbone.View.extend({
     if (this.dashboard_view) {
       this.dashboard_view.remove();
     }
-    this.dashboard_view = new App.View.ProjectAppAnalyticsClientInstallsDashboard({
+    this.dashboard_view = new this.views.dashboard({
       guid: this.options.guid,
       picker_model: this.options.picker_model
     });
@@ -34,7 +34,8 @@ App.View.ProjectAppAnalyticsInstalls = Backbone.View.extend({
       chart: {
         width: $('.container').width()
       },
-      guid: this.options.guid
+      guid: this.options.guid,
+      picker_model: this.options.picker_model
     });
     this.by_date_view.render();
     this.$el.empty();
@@ -49,7 +50,8 @@ App.View.ProjectAppAnalyticsInstalls = Backbone.View.extend({
       chart: {
         width: $('.container').width()
       },
-      guid: this.options.guid
+      guid: this.options.guid,
+      picker_model: this.options.picker_model
     });
     this.by_platform_view.render();
     this.$el.empty();
@@ -62,7 +64,8 @@ App.View.ProjectAppAnalyticsInstalls = Backbone.View.extend({
     }
     this.by_location_view = new App.View.ProjectAppAnalyticsClientInstallsByLocation({
       width: $('.container').width(),
-      guid: this.options.guid
+      guid: this.options.guid,
+      picker_model: this.options.picker_model
     });
     this.by_location_view.render();
     this.$el.empty();
