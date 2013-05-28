@@ -52,6 +52,7 @@ App.Collection.AppInstallsPlatform = App.Collection.Metrics.extend({
 
   initialize: function(collection, options) {
     this.picker_model = options.picker_model;
+    App.Collection.Metrics.prototype.initialize.apply(this, arguments);
   },
 
   parse: function(response) {

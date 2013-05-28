@@ -13,19 +13,20 @@ App.View.ProjectAppAnalyticsInstalls = Backbone.View.extend({
     return this;
   },
 
-  renderDashboard: function(options) {
+  renderDashboard: function() {
     if (this.dashboard_view) {
       this.dashboard_view.remove();
     }
     this.dashboard_view = new App.View.ProjectAppAnalyticsClientInstallsDashboard({
-      guid: options.guid || this.options.guid
+      guid: this.options.guid,
+      picker_model: this.options.picker_model
     });
     this.dashboard_view.render();
     this.$el.empty();
     this.$el.append(this.dashboard_view.el);
   },
 
-  renderByDate: function(options) {
+  renderByDate: function() {
     if (this.by_date_view) {
       this.by_date_view.remove();
     }
@@ -33,14 +34,14 @@ App.View.ProjectAppAnalyticsInstalls = Backbone.View.extend({
       chart: {
         width: $('.container').width()
       },
-      guid: options.guid || this.options.guid
+      guid: this.options.guid
     });
     this.by_date_view.render();
     this.$el.empty();
     this.$el.append(this.by_date_view.el);
   },
 
-  renderByPlatform: function(options) {
+  renderByPlatform: function() {
     if (this.by_platform_view) {
       this.by_platform_view.remove();
     }
@@ -48,20 +49,20 @@ App.View.ProjectAppAnalyticsInstalls = Backbone.View.extend({
       chart: {
         width: $('.container').width()
       },
-      guid: options.guid || this.options.guid
+      guid: this.options.guid
     });
     this.by_platform_view.render();
     this.$el.empty();
     this.$el.append(this.by_platform_view.el);
   },
 
-  renderByLocation: function(options) {
+  renderByLocation: function() {
     if (this.by_location_view) {
       this.by_location_view.remove();
     }
     this.by_location_view = new App.View.ProjectAppAnalyticsClientInstallsByLocation({
       width: $('.container').width(),
-      guid: options.guid || this.options.guid
+      guid: this.options.guid
     });
     this.by_location_view.render();
     this.$el.empty();

@@ -25,16 +25,19 @@ App.View.ProjectAppAnalyticsCloudRequestsByPlatform = App.View.PieChart.extend({
   },
 
   initialize: function(options) {
-    options = $.extend(true, {}, this.defaultOptions, options) || {};
-    this.collection = new App.Collection.AppCloudRequestsPlatform();
-    var from = App.views.picker.currentFrom();
-    var to = App.views.picker.currentTo();
+    this.options = $.extend(true, {}, this.defaultOptions, options) || {};
+    this.collection = new App.Collection.AppCloudRequestsPlatform([], {
+      picker_model: this.options.picker_model
+    });
+    var from = this.options.picker_model.get('from');
+    var to = this.options.picker_model.get('to');
+    // TODO: Pass models directly
     this.collection.fetch({
       from: from,
       to: to,
-      guid: options.guid
+      guid: this.options.guid
     });
-    options.collection = this.collection;
-    App.View.PieChart.prototype.initialize.call(this, options);
+    this.options.collection = this.collection;
+    App.View.PieChart.prototype.initialize.call(this, this.options);
   }
 });

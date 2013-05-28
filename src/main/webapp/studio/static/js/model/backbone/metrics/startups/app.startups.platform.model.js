@@ -47,8 +47,8 @@ App.Model.AppStartupsPlatform = Backbone.Model.extend({
 
 App.Collection.AppStartupsPlatform = App.Collection.Metrics.extend({
   model: App.Model.AppStartupsPlatform,
-  metric: "appstartupsdest",
   url: "/beta/static/mocks/metrics/app_startups_dest.json",
+  metric: "appstartupsdest",
 
   initialize: function(collection, options) {
     this.picker_model = options.picker_model;

@@ -4,10 +4,10 @@ App.View.ProjectAppAnalytics = Backbone.View.extend({
   },
 
   subviews: {
-    "installs": new App.View.ProjectAppAnalyticsInstalls(this.options),
-    "startups": new App.View.ProjectAppAnalyticsStartups(this.options),
-    "cloud_requests": new App.View.ProjectAppAnalyticsCloudRequests(this.options),
-    "active_users": new App.View.ProjectAppAnalyticsActiveUsers(this.options)
+    "installs": App.View.ProjectAppAnalyticsInstalls,
+    "startups": App.View.ProjectAppAnalyticsStartups,
+    "cloud_requests": App.View.ProjectAppAnalyticsCloudRequests,
+    "active_users": App.View.ProjectAppAnalyticsActiveUsers
   },
 
   events: {
@@ -20,6 +20,7 @@ App.View.ProjectAppAnalytics = Backbone.View.extend({
 
   initialize: function(options) {
     this.options = $.extend(true, {}, this.defaultOptions, options) || {};
+    this.options.guid = $fw.data.get('app').guid;
   },
 
   render: function() {
@@ -31,17 +32,20 @@ App.View.ProjectAppAnalytics = Backbone.View.extend({
     this.$analytics_container = this.$el.find('#client_analytics_container');
     this.$metrics_select = this.$el.find('#analytics_type');
 
-    // I'd rather this wasn't a global, but...
-    if (!this.options.hidePicker) {
-      App.views.picker = new App.View.ProjectAppAnalyticsDatepicker();
-      App.views.picker.render();
-      this.$datepicker_container.append(App.views.picker.el);
-    }
+    this.renderDatePicker();
 
     // Render dashboard by default
     this.dashboard();
 
     return this;
+  },
+
+  renderDatePicker: function() {
+    if (!this.options.hidePicker) {
+      this.picker = new App.View.ProjectAppAnalyticsDatepicker();
+      this.picker.render();
+      this.$datepicker_container.append(this.picker.el);
+    }
   },
 
   activePill: function() {
@@ -85,10 +89,12 @@ App.View.ProjectAppAnalytics = Backbone.View.extend({
       this.setActivePill(e);
     }
 
-    this.subviews[this.options.type].renderDashboard({
-      guid: this.options.guid
+    var view = new this.subviews[this.options.type]({
+      guid: this.options.guid,
+      picker_model: this.picker.model
     });
-    this.$analytics_container.html(this.subviews[this.options.type].el);
+    view.renderDashboard();
+    this.$analytics_container.html(view.el);
     this.selectMetric(this.options.type);
   },
 
@@ -136,6 +142,6 @@ App.View.ProjectAppAnalytics = Backbone.View.extend({
     this.$metrics_select.find('option').removeAttr('selected');
 
     // Set
-    this.$metrics_select.find('[value="'+metric_type+'"]').attr('selected', 'selected');
+    this.$metrics_select.find('[value="' + metric_type + '"]').attr('selected', 'selected');
   }
 });

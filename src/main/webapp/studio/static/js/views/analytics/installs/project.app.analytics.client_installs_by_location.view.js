@@ -7,9 +7,12 @@ App.View.ProjectAppAnalyticsClientInstallsByLocation = Backbone.View.extend({
       this.width = 350;
     }
 
-    this.collection = new App.Collection.AppInstallsGeo();
-    var from = App.views.picker.currentFrom();
-    var to = App.views.picker.currentTo();
+    this.collection = new App.Collection.AppInstallsGeo([], {
+      guid: options.guid,
+      picker_model: options.picker_model
+    });
+    var from = options.picker_model.get('from');
+    var to = options.picker_model.get('to');
     this.collection.fetch({
       from: from,
       to: to,

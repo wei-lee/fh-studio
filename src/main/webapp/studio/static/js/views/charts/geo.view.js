@@ -18,7 +18,7 @@ App.View.Geo = Backbone.View.extend({
 
     if (this.collection.models.length === 0) {
       // TODO: Nicer loading template
-      this.$el.append("Loading...");
+      this.$el.html("Loading...");
       return this;
     }
 

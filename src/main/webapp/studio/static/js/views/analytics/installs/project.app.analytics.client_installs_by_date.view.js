@@ -20,10 +20,11 @@ App.View.ProjectAppAnalyticsClientInstallsByDate = App.View.LineChart.extend({
   initialize: function(options) {
     options = $.extend(true, {}, this.defaultOptions, options) || {};
     this.collection = new App.Collection.AppInstallsDate([], {
-      total: options.total
+      total: options.total,
+      picker_model: this.options.picker_model
     });
-    var from = App.views.picker.currentFrom();
-    var to = App.views.picker.currentTo();
+    var from = this.options.picker_model.get('from');
+    var to = this.options.picker_model.get('to');
     this.collection.fetch({
       from: from,
       to: to,

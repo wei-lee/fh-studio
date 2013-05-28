@@ -12,15 +12,19 @@ App.View.ProjectAppAnalyticsClientInstallsDashboard = Backbone.View.extend({
     this.$by_platform = this.$el.find('.by_platform');
     this.$by_location = this.$el.find('.by_location');
 
-    // TODO: Normally, collection passed in
     this.$by_date.append(new App.View.ProjectAppAnalyticsClientInstallsByDate({
-      guid: this.options.guid
+      guid: this.options.guid,
+      picker_model: this.options.picker_model
     }).render().$el);
+
     this.$by_platform.append(new App.View.ProjectAppAnalyticsClientInstallsByPlatform({
-      guid: this.options.guid
+      guid: this.options.guid,
+      picker_model: this.options.picker_model
     }).render().$el);
+    
     this.$by_location.append(new App.View.ProjectAppAnalyticsClientInstallsByLocation({
-      guid: this.options.guid
+      guid: this.options.guid,
+      picker_model: this.options.picker_model
     }).render().$el);
 
     return this;
