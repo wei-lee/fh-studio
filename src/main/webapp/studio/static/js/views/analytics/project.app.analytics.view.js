@@ -1,4 +1,6 @@
 App.View.ProjectAppAnalytics = Backbone.View.extend({
+  picker_model: null,
+
   defaultOptions: {
     type: "installs" // Default to installs
   },
@@ -20,7 +22,7 @@ App.View.ProjectAppAnalytics = Backbone.View.extend({
 
   initialize: function(options) {
     this.options = $.extend(true, {}, this.defaultOptions, options) || {};
-    this.options.guid = $fw.data.get('app').guid;
+    this.options.guid = this.options.guid || $fw.data.get('app').guid;
   },
 
   render: function() {
@@ -44,7 +46,13 @@ App.View.ProjectAppAnalytics = Backbone.View.extend({
     if (!this.options.hidePicker) {
       this.picker = new App.View.ProjectAppAnalyticsDatepicker();
       this.picker.render();
-      this.$datepicker_container.append(this.picker.el);
+      this.$datepicker_container.html(this.picker.el);
+      this.picker_model = this.picker.model;
+    } else {
+      if (this.picker) this.picker.remove();      
+      this.$datepicker_container.empty();
+      delete this.picker;
+      this.picker_model = this.options.picker_model;
     }
   },
 
@@ -91,7 +99,7 @@ App.View.ProjectAppAnalytics = Backbone.View.extend({
 
     var view = new this.subviews[this.options.type]({
       guid: this.options.guid,
-      picker_model: this.picker.model
+      picker_model: this.picker_model
     });
     view.renderDashboard();
     this.$analytics_container.html(view.el);
@@ -106,7 +114,7 @@ App.View.ProjectAppAnalytics = Backbone.View.extend({
 
     var view = new this.subviews[this.options.type]({
       guid: this.options.guid,
-      picker_model: this.picker.model
+      picker_model: this.picker_model
     });
     view.renderByDate();
     this.$analytics_container.html(view.el);
@@ -121,7 +129,7 @@ App.View.ProjectAppAnalytics = Backbone.View.extend({
 
     var view = new this.subviews[this.options.type]({
       guid: this.options.guid,
-      picker_model: this.picker.model
+      picker_model: this.picker_model
     });
     view.renderByPlatform();
     this.$analytics_container.html(view.el);
@@ -136,7 +144,7 @@ App.View.ProjectAppAnalytics = Backbone.View.extend({
 
     var view = new this.subviews[this.options.type]({
       guid: this.options.guid,
-      picker_model: this.picker.model
+      picker_model: this.picker_model
     });
     view.renderByLocation();
     this.$analytics_container.html(view.el);
