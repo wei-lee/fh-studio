@@ -5,22 +5,6 @@ App.Collection.AppCloudRequestsDate = App.Collection.Metrics.extend({
   metric: "apprequestsdest",
   url: "/beta/static/mocks/metrics/app_cloud_requests_date.json",
 
-  initialize: function(options) {
-    var self = this;
-    if (options) {
-      this.total = options.total || false;
-    } else {
-      this.total = false;
-    }
-
-    // React to datepicker date changes
-    App.vent.on('app-analytics-datechange', function(e) {
-      self.from = e.from;
-      self.to = e.to;
-      self.fetch();
-    });
-  },
-
   parse: function(response) {
     var data = response.payload.results;
 

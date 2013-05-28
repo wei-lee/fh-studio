@@ -1,4 +1,5 @@
-App.View.ProjectAppAnalyticsActiveUsersByDate = App.View.LineChart.extend({
+App.View.ProjectAppAnalyticsActiveUsersByDate = App.View.AppAnalyticsByDate.extend({
+  collection_type: App.Collection.AppActiveUsersDate,
   defaultOptions: {
     total: false,
     chart: {
@@ -15,21 +16,5 @@ App.View.ProjectAppAnalyticsActiveUsersByDate = App.View.LineChart.extend({
     title: {
       text: 'Active Users by Date'
     }
-  },
-
-  initialize: function(options) {
-    options = $.extend(true, {}, this.defaultOptions, options) || {};
-    this.collection = new App.Collection.AppActiveUsersDate([], {
-      total: options.total
-    });
-    var from = App.views.picker.currentFrom();
-    var to = App.views.picker.currentTo();
-    this.collection.fetch({
-      from: from,
-      to: to,
-      guid: options.guid
-    });
-    options.collection = this.collection;
-    App.View.LineChart.prototype.initialize.call(this, options);
   }
 });
