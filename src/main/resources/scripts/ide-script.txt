@@ -38,6 +38,9 @@ js/views/charts/geo.view.js
 js/views/charts/line_chart.view.js
 js/views/charts/pie_chart.view.js
 js/views/analytics/app/app.analytics.dashboard.view.js
+js/views/analytics/app/app.analytics.by_platform.view.js
+js/views/analytics/app/app.analytics.by_date.view.js
+js/views/analytics/app/app.analytics.by_location.view.js
 js/views/analytics/app/active_users/project.app.analytics.client_active_users_by_date.view.js
 js/views/analytics/app/active_users/project.app.analytics.client_active_users_by_location.view.js
 js/views/analytics/app/active_users/project.app.analytics.client_active_users_by_platform.view.js

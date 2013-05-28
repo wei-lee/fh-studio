@@ -30,7 +30,7 @@ App.View.AppAnalytics = Backbone.View.extend({
     if (this.by_date_view) {
       this.by_date_view.remove();
     }
-    this.by_date_view = new App.View.ProjectAppAnalyticsClientInstallsByDate({
+    this.by_date_view = new this.views.byDate({
       chart: {
         width: $('.container').width()
       },
@@ -46,7 +46,7 @@ App.View.AppAnalytics = Backbone.View.extend({
     if (this.by_platform_view) {
       this.by_platform_view.remove();
     }
-    this.by_platform_view = new App.View.ProjectAppAnalyticsClientInstallsByPlatform({
+    this.by_platform_view = new this.views.byPlatform({
       chart: {
         width: $('.container').width()
       },
@@ -62,7 +62,7 @@ App.View.AppAnalytics = Backbone.View.extend({
     if (this.by_location_view) {
       this.by_location_view.remove();
     }
-    this.by_location_view = new App.View.ProjectAppAnalyticsClientInstallsByLocation({
+    this.by_location_view = new this.views.byLocation({
       width: $('.container').width(),
       guid: this.options.guid,
       picker_model: this.options.picker_model
