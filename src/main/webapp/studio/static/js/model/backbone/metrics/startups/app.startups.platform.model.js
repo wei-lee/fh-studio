@@ -50,6 +50,11 @@ App.Collection.AppStartupsPlatform = App.Collection.Metrics.extend({
   metric: "appstartupsdest",
   url: "/beta/static/mocks/metrics/app_startups_dest.json",
 
+  initialize: function(collection, options) {
+    this.picker_model = options.picker_model;
+    App.Collection.Metrics.prototype.initialize.apply(this, arguments);
+  },
+
   parse: function(response) {
     var res;
     var parsed = [];

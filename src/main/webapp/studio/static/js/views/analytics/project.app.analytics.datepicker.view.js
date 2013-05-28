@@ -1,11 +1,10 @@
 App.View.ProjectAppAnalyticsDatepicker = Backbone.View.extend({
-  events: {
-    'click #last_week': 'lastWeek',
-    'click #last_month': 'lastMonth',
-    'click #go_render_analytics': 'go'
+  initialize: function(options) {
+    if (!options || !options.model) {
+      console.log('No model passed, init');
+      this.model = new App.Model.DatePicker();
+    }
   },
-
-  initialize: function() {},
 
   render: function() {
     var html = $("#project-app-analytics-date-picker-template").html();
@@ -16,18 +15,6 @@ App.View.ProjectAppAnalyticsDatepicker = Backbone.View.extend({
 
     // Init datepickers
     this.lastMonth();
-  },
-
-  go: function(e) {
-    if (e) e.preventDefault();
-  },
-
-  lastWeek: function(e) {
-    if (e) e.preventDefault();
-
-    var to = new moment();
-    var from = new moment().subtract('days', 7);
-    this._setDates(from, to);
   },
 
   lastMonth: function(e) {
@@ -53,7 +40,10 @@ App.View.ProjectAppAnalyticsDatepicker = Backbone.View.extend({
   _setDates: function(from, to) {
     var self = this;
 
-    this.dateChanged(from, to);
+    this.model.set({
+      from: from.valueOf(),
+      to: to.valueOf()
+    });
 
     this.$picker.daterangepicker({
       opens: 'left',
@@ -65,25 +55,20 @@ App.View.ProjectAppAnalyticsDatepicker = Backbone.View.extend({
       maxDate: moment(),
       showWeekNumbers: true,
       ranges: {
-         'Last 7 Days': [moment().subtract('days', 6), new Date()],
-         'Last 30 Days': [moment().subtract('days', 29), new Date()],
-         'Previous Month': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')]
+        'Last 7 Days': [moment().subtract('days', 6), new Date()],
+        'Last 30 Days': [moment().subtract('days', 29), new Date()],
+        'Previous Month': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')]
       },
       dateLimit: false
-    }, function(start, end) {
-      self.$picker.val(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-      self.dateChanged(self.currentFrom(), self.currentTo());
+    }, function(from, to) {
+      self.$picker.val(from.format('MMMM D, YYYY') + ' - ' + to.format('MMMM D, YYYY'));
+      self.model.set({
+        from: from.valueOf(),
+        to: to.valueOf()
+      });
     });
 
     // Inital set
     this.$picker.val(from.format('MMMM D, YYYY') + ' - ' + to.format('MMMM D, YYYY'));
-  },
-
-  dateChanged: function(from, to) {
-    // Fanout this event to any listeners
-    App.vent.trigger('app-analytics-datechange', {
-      from: from,
-      to: to
-    });
   }
 });

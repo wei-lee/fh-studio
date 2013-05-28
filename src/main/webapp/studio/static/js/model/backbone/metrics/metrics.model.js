@@ -2,19 +2,16 @@
 // calls for metrics endpoints are very similar
 
 App.Collection.Metrics = Backbone.Collection.extend({
-  from: null,
-  to: null,
   metric: null,
 
-  initialize: function(options) {
+  initialize: function(collection, options) {
     var self = this;
 
-    // React to datepicker date changes
-    App.vent.on('app-analytics-datechange', function(e) {
-      self.from = e.from;
-      self.to = e.to;
+    // React to date changes on picker model
+    this.picker_model = options.picker_model;
+    this.picker_model.on('change', function() {
       self.fetch();
-    });
+    }, this);
   },
 
   dateParamsForDate: function(date) {
@@ -36,14 +33,6 @@ App.Collection.Metrics = Backbone.Collection.extend({
     var url = '/box/srv/1.1/ide/' + $fw.clientProps.domain + '/app/getsingleappmetrics';
 
     // If from & to explicitly passed in a fetch(), set and use them
-    if (options.from) {
-      this.from = options.from;
-    }
-
-    if (options.to) {
-      this.to = options.to;
-    }
-
     if (options.guid) {
       this.guid = options.guid;
     }
@@ -52,8 +41,8 @@ App.Collection.Metrics = Backbone.Collection.extend({
     var params = {
       "id": this.guid || $fw.data.get('app').guid,
       "metric": this.metric,
-      "from": this.dateParamsForDate(this.from),
-      "to": this.dateParamsForDate(this.to),
+      "from": this.dateParamsForDate(this.picker_model.get('from')),
+      "to": this.dateParamsForDate(this.picker_model.get('to')),
       "type": "pie",
       "num": 0
     };

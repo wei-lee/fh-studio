@@ -44,15 +44,17 @@ App.View.PerAppAnalytics = Backbone.View.extend({
 
     this.$table_container.find('.dataTables_filter input').attr('placeholder', 'Search...');
     this.$overview_container = this.$el.find('.overview_container');
-
     this.$datepicker_container = this.$el.find('.datepicker_container');
+  },
 
-    App.views.picker = new App.View.ProjectAppAnalyticsDatepicker();
-    App.views.picker.render();
-    this.$datepicker_container.append(App.views.picker.el);
+  renderDatePicker: function() {
+    this.picker = new App.View.ProjectAppAnalyticsDatepicker();
+    this.picker.render();
+    this.$datepicker_container.html(this.picker.el);
   },
 
   show: function(e) {
+    this.renderDatePicker();
     $('table tbody tr', this.$el).removeClass('active');
     $(e.currentTarget).addClass('active');
 
@@ -62,7 +64,8 @@ App.View.PerAppAnalytics = Backbone.View.extend({
       id: guid
     });
     this.overview = new App.View.AnalyticsOverview({
-      model: app
+      model: app,
+      picker_model: this.picker.model
     });
     this.overview.render();
     this.$overview_container.html(this.overview.el);
@@ -70,7 +73,7 @@ App.View.PerAppAnalytics = Backbone.View.extend({
 
   showDetails: function(e) {
     var guid = $(e.currentTarget).data('guid');
-    var metric_type = $(e.currentTarget).data('metric-type');; // Metric to show
+    var metric_type = $(e.currentTarget).data('metric-type'); // Metric to show
     this.detail_view = new App.View.ProjectAppAnalytics({
       guid: guid,
       hidePicker: true,

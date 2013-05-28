@@ -50,6 +50,10 @@ App.Collection.AppInstallsPlatform = App.Collection.Metrics.extend({
   url: "/beta/static/mocks/metrics/app_installs_dest.json",
   metric: "appinstallsdest",
 
+  initialize: function(collection, options) {
+    this.picker_model = options.picker_model;
+  },
+
   parse: function(response) {
     var res;
     var parsed = [];
