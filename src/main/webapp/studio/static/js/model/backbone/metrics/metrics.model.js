@@ -100,7 +100,7 @@ App.Collection.Metrics = Backbone.Collection.extend({
       return '#aa4643';
     } else if (key == 'embed') {
       return '#4572a7';
-    } else if (key == '') {
+    } else if (key === '') {
       // Other
       return '#db843d';
     } else {
