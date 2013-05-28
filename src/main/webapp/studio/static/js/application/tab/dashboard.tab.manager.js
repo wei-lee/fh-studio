@@ -88,11 +88,14 @@ Dashboard.Tab.Manager = Tab.Manager.extend({
   showRecentApps: function() {
     var self = this;
 
-    this.model.app.listRecent(function(res) {
-      self.renderAppListing(self.views.recentapps_grid, self.views.recentapps_grid_wrapper, res);
-    }, function() {
-      // Failure
-    });
+    // only try show recent apps list if the template is in the dom i.e. hasn't been removed by jsp
+    if ($('#recentapps_grid').length) {
+      this.model.app.listRecent(function(res) {
+        self.renderAppListing(self.views.recentapps_grid, self.views.recentapps_grid_wrapper, res);
+      }, function() {
+        // Failure
+      });
+    }
   },
 
   renderAppListing: function(container, wrapper, data) {
