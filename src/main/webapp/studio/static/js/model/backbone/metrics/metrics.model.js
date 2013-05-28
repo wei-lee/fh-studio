@@ -6,6 +6,7 @@ App.Collection.Metrics = Backbone.Collection.extend({
 
   initialize: function(collection, options) {
     var self = this;
+    this.guid = options.guid;
 
     // React to date changes on picker model
     this.picker_model = options.picker_model;
@@ -31,11 +32,6 @@ App.Collection.Metrics = Backbone.Collection.extend({
 
   sync: function(method, model, options) {
     var url = '/box/srv/1.1/ide/' + $fw.clientProps.domain + '/app/getsingleappmetrics';
-
-    // If from & to explicitly passed in a fetch(), set and use them
-    if (options.guid) {
-      this.guid = options.guid;
-    }
 
     // TODO: Endpoint accepts widget ID rather than template instance. Why?
     var params = {

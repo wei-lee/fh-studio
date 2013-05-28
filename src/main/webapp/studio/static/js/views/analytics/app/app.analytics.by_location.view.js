@@ -11,13 +11,7 @@ App.View.AppAnalyticsByLocation = Backbone.View.extend({
       guid: options.guid,
       picker_model: options.picker_model
     });
-    var from = options.picker_model.get('from');
-    var to = options.picker_model.get('to');
-    this.collection.fetch({
-      from: from,
-      to: to,
-      guid: options.guid
-    });
+    this.collection.fetch();
   },
 
   render: function(width) {
