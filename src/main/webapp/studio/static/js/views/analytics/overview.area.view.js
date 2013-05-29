@@ -1,4 +1,4 @@
-App.View.AnalyticsOverview = Backbone.View.extend({
+App.View.AnalyticsOverviewArea = Backbone.View.extend({
   initialize: function(options) {
     var self = this;
     this.model = options.model;

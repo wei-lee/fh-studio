@@ -9,9 +9,9 @@ Reporting.Dashboard.Controller = Apps.Controller.extend({
 
   show: function(el) {
     $(this.views.container).empty().show();
-    // this.view = new App.View.DomainAnalytics();
-    // this.view.render();
-    $(this.views.container).append('domain');
+    this.view = new App.View.DomainAnalytics();
+    this.view.render();
+    $(this.views.container).append(this.view.el);
   },
 
   hide: function() {

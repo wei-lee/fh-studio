@@ -27,6 +27,7 @@ js/model/backbone/metrics/installs/app.installs.platform.model.js
 js/model/backbone/metrics/startups/app.startups.date.model.js
 js/model/backbone/metrics/startups/app.startups.geo.model.js
 js/model/backbone/metrics/startups/app.startups.platform.model.js
+js/model/backbone/metrics/installs/domain.installs.platform.model.js
 js/views/common/datatable.view.js
 js/views/common/spinner.view.js
 js/views/charts/chart.view.js
