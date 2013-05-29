@@ -292,9 +292,17 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
         var maxCpu = 100;
         var maxMem = self.bytesToMB(dynoresources.max.mem);
         var maxDisk = self.bytesToMB(dynoresources.max.disk);
-        var currentCpu = dynoresources.usage.cpu;
-        var currentMemory = self.bytesToMB(dynoresources.usage.mem);
-        var currentDisk = self.bytesToMB(dynoresources.usage.disk);
+        var currentCpu, currentMemory, currentDisk;
+        if(dynoresources.app && dynoresources.app.resources){
+          currentCpu = parseFloat(dynoresources.app.resources.Cpu_Pct);
+          currentMemory = self.bytesToMB(dynoresources.app.resources.VmRSS*1000);
+          currentDisk = self.bytesToMB(dynoresources.app.resources.Disk*1000);
+        } else {
+          currentCpu = dynoresources.usage.cpu;
+          currentMemory = self.bytesToMB(dynoresources.usage.mem);
+          currentDisk = self.bytesToMB(dynoresources.usage.disk);
+        }
+        
         if(self.enabled_live_app_resources && !model.error){
           var statsCpu = self.getCurrentResourceUsage(model, "Cpu_Pct", 1);
           var statsMemory = self.getCurrentResourceUsage(model, "VmRSS", 1);
@@ -433,7 +441,7 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
         if(model){
           cb(undefined, model);
         } else {
-          cb("error loading model");
+          cb(undefined, {error:"error loading model"});
         }
       });
     };
