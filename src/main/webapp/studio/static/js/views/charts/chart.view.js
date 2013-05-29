@@ -65,7 +65,12 @@ App.View.Chart = Backbone.View.extend({
       // is a Series instance (as defined above), treat it as a single
       // series. Otherwise assume it is a collection of multiple series
       // TODO: Base collection class for pie charts
-      if (this.collection instanceof App.Collection.AppInstallsPlatform || this.collection instanceof App.Collection.AppStartupsPlatform || this.collection instanceof App.Collection.AppCloudRequestsPlatform || this.collection instanceof App.Collection.AppActiveUsersPlatform || this.collection instanceof App.Collection.DomainInstallsPlatform) {
+      if (this.collection instanceof App.Collection.AppInstallsPlatform 
+        || this.collection instanceof App.Collection.AppStartupsPlatform 
+        || this.collection instanceof App.Collection.AppCloudRequestsPlatform 
+        || this.collection instanceof App.Collection.AppActiveUsersPlatform 
+        || this.collection instanceof App.Collection.DomainInstallsPlatform
+        || this.collection instanceof App.Collection.DomainStartupsPlatform) {
         this.options.series = [this.collection.toJSON()];
       } else {
         console.log('If your chart is not showing, check here and add collection type.');

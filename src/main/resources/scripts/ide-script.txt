@@ -27,6 +27,7 @@ js/model/backbone/metrics/installs/app.installs.platform.model.js
 js/model/backbone/metrics/startups/app.startups.date.model.js
 js/model/backbone/metrics/startups/app.startups.geo.model.js
 js/model/backbone/metrics/startups/app.startups.platform.model.js
+js/model/backbone/metrics/startups/domain.startups.platform.model.js
 js/model/backbone/metrics/installs/domain.installs.platform.model.js
 js/views/common/datatable.view.js
 js/views/common/spinner.view.js
@@ -59,6 +60,7 @@ js/views/analytics/app/startups/project.app.analytics.client_startups_by_locatio
 js/views/analytics/app/startups/project.app.analytics.client_startups_by_platform.view.js
 js/views/analytics/app/startups/project.app.analytics.client_startups_dashboard.view.js
 js/views/analytics/app/app.analytics.view.js
+js/views/analytics/app/startups/domain.analytics.client_startups_by_platform.view.js
 js/views/analytics/app/installs/domain.analytics.client_installs_by_platform.view.js
 js/views/analytics/app/installs/project.app.analytics.client_installs.view.js
 js/views/analytics/app/cloud_requests/project.app.analytics.client_cloud_requests.view.js
@@ -67,6 +69,7 @@ js/views/analytics/app/startups/project.app.analytics.client_startups.view.js
 js/views/analytics/project.app.analytics.datepicker.view.js
 js/views/analytics/domain.overview.area.view.js
 js/views/analytics/overview.area.view.js
+js/views/analytics/app/domain.overview.area.startups.view.js
 js/views/analytics/app/domain.overview.area.installs.view.js
 js/views/analytics/overview.area.installs.view.js
 js/views/analytics/overview.area.startups.view.js
