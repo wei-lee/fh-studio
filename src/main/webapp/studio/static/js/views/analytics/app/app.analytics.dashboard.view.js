@@ -15,17 +15,17 @@ App.View.ProjectAppAnalyticsDashboard = Backbone.View.extend({
     this.$by_date.append(new this.views.byDate({
       guid: this.options.guid,
       picker_model: this.options.picker_model
-    }).render().$el);
+    }).$el);
 
     this.$by_platform.append(new this.views.byPlatform({
       guid: this.options.guid,
       picker_model: this.options.picker_model
-    }).render().$el);
+    }).$el);
     
     this.$by_location.append(new this.views.byLocation({
       guid: this.options.guid,
       picker_model: this.options.picker_model
-    }).render().$el);
+    }).$el);
 
     return this;
   }

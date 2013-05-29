@@ -1,8 +1,8 @@
 App.View.ProjectAppAnalyticsActiveUsersByPlatform = App.View.AppAnalyticsByPlatform.extend({
-  collection_type: App.Collection.AppActiveUsersPlatform,
+  collection_type: "App.Collection.AppActiveUsersPlatform",
   defaultOptions: {
     chart: {
-      width: 350,
+      width: 300,
       height: 300
     },
     title: {

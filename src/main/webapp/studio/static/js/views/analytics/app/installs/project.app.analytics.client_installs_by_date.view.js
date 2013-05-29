@@ -1,9 +1,9 @@
 App.View.ProjectAppAnalyticsClientInstallsByDate = App.View.AppAnalyticsByDate.extend({
-  collection_type: App.Collection.AppInstallsDate,
+  collection_type: "App.Collection.AppInstallsDate",
   defaultOptions: {
     total: false,
     chart: {
-      width: 350,
+      width: 300,
       height: 300
     },
     xAxis: {

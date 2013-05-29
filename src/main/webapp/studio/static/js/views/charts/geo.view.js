@@ -17,8 +17,7 @@ App.View.Geo = Backbone.View.extend({
     };
 
     if (this.collection.models.length === 0) {
-      // TODO: Nicer loading template
-      this.$el.html("Loading...");
+      this.$el.html("No data available for selected date range.");
       return this;
     }
 

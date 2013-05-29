@@ -3478,10 +3478,6 @@ li.reportdashboard_link .icon-globe {
   float: right;
 }
 
-#app_analytics button, #app_analytics input, #app_analytics label {
-  font-size: 12px;
-}
-
 #analytics_type {
   width: 120px;
   margin: 2px 10px 0 0;
@@ -3519,7 +3515,6 @@ li.reportdashboard_link .icon-globe {
   min-height: 300px;
   font-size: 12px;
 }
-
 
 .boxed-group {
   position: relative;
@@ -3633,4 +3628,13 @@ li.reportdashboard_link .icon-globe {
 hr.small {
   margin: 10px 0 -10px 0 !important;
   width: 100%;
+}
+
+.spinner_text {
+  font-size: 12px;
+}
+
+h4.by_location {
+  color: #274b6d;
+  font-family: 'Lucida Grande', 'Lucida Sans Unicode', Verdana, Arial, Helvetica, sans-serif;
 }

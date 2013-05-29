@@ -22,7 +22,16 @@ $(document).ready(function() {
       $(this).trigger('resizeEnd');
     }, 250);
   });
-  
+
+  // Emit a beforeFetch event, prior to fetching on a collection
+  (function() {
+    var fetch = Backbone.Collection.prototype.fetch;
+    Backbone.Collection.prototype.fetch = function() {
+      this.trigger('beforeFetch');
+      return fetch.apply(this, arguments);
+    }
+  })();
+
   // Custom validation plugin functions
   $.validator.addMethod("giturl", function(value, element) {
     var pub1, priv1, priv2;

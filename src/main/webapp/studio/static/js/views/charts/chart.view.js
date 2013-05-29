@@ -8,9 +8,13 @@ App.View.Chart = Backbone.View.extend({
     this.collection = this.options.collection;
 
     if (this.collection) {
+      this.collection.on('beforeFetch', function() {
+        self.render(true);
+      }, this);
+
       this.collection.bind("sync", function() {
         self.render();
-      });
+      }, this);
 
       delete this.options.collection;
     } else {
@@ -29,7 +33,12 @@ App.View.Chart = Backbone.View.extend({
     }
   },
 
-  render: function() {
+  render: function(loading) {
+    if (loading) {
+      this.$el.html(new App.View.Spinner().render().el);
+      return this;
+    }
+
     var self = this;
 
     // Collection/Model might be empty
