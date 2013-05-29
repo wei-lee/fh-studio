@@ -27,13 +27,13 @@ App.View.DomainAnalytics = Backbone.View.extend({
     this.startups.render();
     this.$startups_container.html(this.startups.el);
 
-    // this.$cloud_requests_container = $('.cloud_requests_container', this.$el);
-    // this.cloud_requests = new App.View.AnalyticsOverviewCloudRequests({
-    //   model: this.model,
-    //   picker_model: this.picker_model
-    // });
-    // this.cloud_requests.render();
-    // this.$cloud_requests_container.html(this.cloud_requests.el);
+    this.$cloud_requests_container = $('.cloud_requests_container', this.$el);
+    this.cloud_requests = new App.View.DomainAnalyticsOverviewCloudRequests({
+      model: this.model,
+      picker_model: this.picker.model
+    });
+    this.cloud_requests.render();
+    this.$cloud_requests_container.html(this.cloud_requests.el);
 
     // this.$active_users_container = $('.active_users_container', this.$el);
     // this.active_users = new App.View.AnalyticsOverviewActiveUsers({

@@ -70,7 +70,8 @@ App.View.Chart = Backbone.View.extend({
         || this.collection instanceof App.Collection.AppCloudRequestsPlatform 
         || this.collection instanceof App.Collection.AppActiveUsersPlatform 
         || this.collection instanceof App.Collection.DomainInstallsPlatform
-        || this.collection instanceof App.Collection.DomainStartupsPlatform) {
+        || this.collection instanceof App.Collection.DomainStartupsPlatform
+        || this.collection instanceof App.Collection.DomainCloudRequestsPlatform) {
         this.options.series = [this.collection.toJSON()];
       } else {
         console.log('If your chart is not showing, check here and add collection type.');
