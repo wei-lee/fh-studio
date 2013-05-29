@@ -7,7 +7,10 @@ App.View.AppAnalyticsByLocation = Backbone.View.extend({
       this.width = 300;
     }
 
-    this.collection = new (eval(this.collection_type))([], {
+    var collection_class = this.collection_type.split(".")[2];
+
+    // Dynamic invokation - a bit blergh
+    this.collection = new window["App"]["Collection"][collection_class]([], {
       guid: options.guid,
       picker_model: options.picker_model
     });

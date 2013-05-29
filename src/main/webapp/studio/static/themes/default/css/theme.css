@@ -257,9 +257,6 @@ label.error
 {
   padding:0;
 }
-#main_layout_center .ui-tabs-nav
-{
-}
 
 #main_layout_center .ui-tabs-nav li {
   border: 1px solid #ccc;

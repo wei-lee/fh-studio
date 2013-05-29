@@ -29,7 +29,7 @@ $(document).ready(function() {
     Backbone.Collection.prototype.fetch = function() {
       this.trigger('beforeFetch');
       return fetch.apply(this, arguments);
-    }
+    };
   })();
 
   // Custom validation plugin functions
