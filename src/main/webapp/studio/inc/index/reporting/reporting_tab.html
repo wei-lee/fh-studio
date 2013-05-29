@@ -39,19 +39,23 @@
 
 <hr class="small span12"/>
 
-<div class="boxed-group" data-title="Client">
-  <div class="row-fluid">
-    <div class="span6 installs_container"></div>
-    <div class="span6 startups_container"></div>
+<div class="row-fluid">
+  <div class="boxed-group" data-title="Client">
+    <div class="row-fluid">
+      <div class="span6 installs_container"></div>
+      <div class="span6 startups_container"></div>
+    </div>
+  </div>
+
+  <div class="boxed-group" data-title="Cloud">
+    <div class="row-fluid">
+      <div class="span6 cloud_requests_container"></div>
+      <div class="span6 active_users_container"></div>
+    </div>
   </div>
 </div>
 
-<div class="boxed-group" data-title="Cloud">
-  <div class="row-fluid">
-    <div class="span6 cloud_requests_container"></div>
-    <div class="span6 active_users_container"></div>
-  </div>
-</div>
+
 </script>
 
 <script id="project-per-app-analytics-template" type="text/x-handlebars-template">
@@ -86,6 +90,16 @@
     <div class="span6 cloud_requests_container"></div>
     <div class="span6 active_users_container"></div>
   </div>
+</div>
+</script>
+
+<script id="domain-overview-area-installs-template" type="text/x-handlebars-template">
+<div class="chart"></div>
+<div class="overview_text">
+  <div class="spinner"></div>
+  <h2 class="count"></h2>
+  <h5 class="metrics_type">Installs</h5>
+  <button class="btn btn-small view_details" data-metric-type="installs">View Details</button>
 </div>
 </script>
 

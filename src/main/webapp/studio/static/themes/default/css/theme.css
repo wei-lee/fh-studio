@@ -3557,23 +3557,23 @@ li.reportdashboard_link .icon-globe {
   color: #fff !important;
 }
 
-#reports_per_app_container h2 {
+#reports_per_app_container h2, #reports_domain_container h2 {
   font-size: 33px;
   margin-bottom: 0px;
 }
 
-#reports_per_app_container h5 {
+#reports_per_app_container h5, #reports_domain_container h5 {
   font-size: 13px;
   color: #828282;
   margin-top: 0;
 }
 
 @media screen and (max-width: 1200px){
-  #reports_per_app_container h2 {
+  #reports_per_app_container h2, #reports_domain_container h2 {
     font-size: 23px;
   }
 
-  #reports_per_app_container h5 {
+  #reports_per_app_container h5, #reports_domain_container h5 {
     font-size: 12px;
   }
 }
@@ -3585,23 +3585,28 @@ li.reportdashboard_link .icon-globe {
   position: relative;
 }
 
-#reports_per_app_container .overview_text {
+#reports_per_app_container .overview_text, #reports_domain_container .overview_text {
   position: absolute;
   top: 0;
   left: 0;
 }
 
 #reports_per_app_container .installs_container, 
-#reports_per_app_container .cloud_requests_container {
+#reports_per_app_container .cloud_requests_container,
+#reports_domain_container .installs_container, 
+#reports_domain_container .cloud_requests_container {
   border-right: 1px solid #ccc;
 }
 
 #reports_per_app_container .installs_container, 
-#reports_per_app_container .cloud_requests_container {
+#reports_per_app_container .cloud_requests_container,
+#reports_domain_container .installs_container, 
+#reports_domain_container .cloud_requests_container {
   min-height: 160px;
 }
 
-#reports_per_app_container .dataTables_filter input{
+#reports_per_app_container .dataTables_filter input,
+#reports_domain_container .dataTables_filter input {
   width: 100%;
 }
 

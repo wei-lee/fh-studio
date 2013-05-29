@@ -12,6 +12,13 @@ App.View.DomainAnalytics = Backbone.View.extend({
     this.picker.render();
     this.$datepicker_container.html(this.picker.el);
 
+    this.$installs_container = $('.installs_container', this.$el);
+    this.installs = new App.View.DomainAnalyticsOverviewInstalls({
+      picker_model: this.picker.model
+    });
+    this.installs.render();
+    this.$installs_container.html(this.installs.el);
+
     // this.$installs_container = $('.installs_container', this.$el);
     // this.installs = new App.View.AnalyticsOverviewInstalls({
     //   model: this.model,
