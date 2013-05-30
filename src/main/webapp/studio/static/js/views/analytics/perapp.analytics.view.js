@@ -13,6 +13,7 @@ App.View.PerAppAnalytics = Backbone.View.extend({
   },
 
   render: function() {
+    var self = this;
     var html = $("#project-per-app-analytics-template").html();
     var template = Handlebars.compile(html);
 
@@ -41,6 +42,16 @@ App.View.PerAppAnalytics = Backbone.View.extend({
       ]
     });
     this.$table_container.append(this.table_view.render().el);
+
+    // Pick first app (if none selected)
+    if (this.collection.models.length > 0) {
+      var active = $('table tbody tr.active', this.$el);
+      if (active.length === 0) {
+        setTimeout(function(){
+          $('table tbody tr:first', self.$el).trigger('click');
+        }, 0);
+      }
+    }
 
     this.$table_container.find('.dataTables_filter input').attr('placeholder', 'Search...');
     this.$overview_container = this.$el.find('.overview_container');
