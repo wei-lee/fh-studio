@@ -4,6 +4,8 @@ common/js/ui/thirdparty/backbone/backbone.js
 common/js/ui/thirdparty/handlebars/handlebars.js
 common/js/ui/thirdparty/handlebars/helpers.js
 common/js/ui/thirdparty/bootstrap-datepicker/bootstrap-datepicker.js
+common/js/ui/thirdparty/jquery-qrcode/qrcode.js
+common/js/ui/thirdparty/jquery-qrcode/jquery.qrcode.js
 js/application/Constants.js
 js/application/Config.js
 js/application/dialog/DialogManager.js

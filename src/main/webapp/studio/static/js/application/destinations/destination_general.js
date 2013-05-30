@@ -67,7 +67,7 @@ application.DestinationGeneral = Class.extend({
       proto.Wizard.showCancelButton(wizard);
     });
 
-    var doGeneration = function(step){
+    var doGeneration = function(step) {
       var data = that.getExportData(wizard, export_version_id);
       if (null === data) {
         return;
@@ -84,16 +84,16 @@ application.DestinationGeneral = Class.extend({
         }
       });
     };
-    
-    if(wizard.find(progress_id).is(":visible")){
+
+    if (wizard.find(progress_id).is(":visible")) {
       doGeneration($(wizard.find(progress_id)));
       proto.Wizard.hideCancelButton(wizard);
     } else {
       wizard.find(progress_id).bind('show', function(e) {
-      doGeneration($(this));
-    }).bind('postShow', function() {
-      proto.Wizard.hideCancelButton(wizard);
-    });
+        doGeneration($(this));
+      }).bind('postShow', function() {
+        proto.Wizard.hideCancelButton(wizard);
+      });
     }
   },
 
@@ -125,15 +125,15 @@ application.DestinationGeneral = Class.extend({
       var progress_val = 3;
       if ('undefined' !== typeof cacheKey && cacheKey.length > 0) {
         var cacheKeys = [{
-          cacheKey: cacheKey,
-          complete: function(res) {
-            proto.ProgressDialog.setProgress(step, 100);
-            proto.ProgressDialog.append(step, "Completed");
-            console.log('jumping to final step and hiding progress dialog');
-            setTimeout(function() {
-              complete(res);
-            }, 1000);
-          }
+            cacheKey: cacheKey,
+            complete: function(res) {
+              proto.ProgressDialog.setProgress(step, 100);
+              proto.ProgressDialog.append(step, "Completed");
+              console.log('jumping to final step and hiding progress dialog');
+              setTimeout(function() {
+                complete(res);
+              }, 1000);
+            }
         }];
         var taskNames = {};
         taskNames[cacheKey] = 'BUILD';
@@ -195,7 +195,7 @@ application.DestinationGeneral = Class.extend({
     }).show().parent().find('button.resource-not-uploaded').hide();
 
     var content_text = text ? text : "You can start to build " + type + " version of the app";
-    if(typeof text === "string"){
+    if (typeof text === "string") {
       button.find('.resource-content').text(content_text);
     } else {
       button.find('.resource-content').html(content_text);
@@ -212,7 +212,7 @@ application.DestinationGeneral = Class.extend({
     }).show().parent().find('button.resource-uploaded').hide();
 
     var content_text = text ? text : "You can not build " + type + " version of the app until you have uploaded your certificate";
-    if(typeof text === "string"){
+    if (typeof text === "string") {
       button.find('.resource-content').text(content_text);
     } else {
       button.find('.resource-content').html(content_text);
@@ -226,11 +226,11 @@ application.DestinationGeneral = Class.extend({
 
     $('#account_tab').click();
     target = target.toLowerCase();
-    if(target === "iphone" || target === "ios" || target === "ipad"){
+    if (target === "iphone" || target === "ios" || target === "ipad") {
       $('a#appleResource').click();
-    }else if(target === "android"){
+    } else if (target === "android") {
       $('a#androidResource').click();
-    }else if(target === "blackberry"){
+    } else if (target === "blackberry") {
       $('#blackberryResource').click();
     }
   },
@@ -241,8 +241,8 @@ application.DestinationGeneral = Class.extend({
    * @param e the trigger event
    * @return {Boolean}
    */
-  showDeploys: function($cancel,e) {
-    if(e) {
+  showDeploys: function($cancel, e) {
+    if (e) {
       e.preventDefault();
     }
     $cancel.trigger("click");
@@ -293,11 +293,11 @@ application.DestinationGeneral = Class.extend({
       env = 'live';
     }
     var appId = $fw.data.get('inst').guid;
-    var handleRunning = _.bind(this.renderRunning, this ,env, wizard);
+    var handleRunning = _.bind(this.renderRunning, this, env, wizard);
     var handleNotRunning = _.bind(this.renderNotRunning, this, env, wizard);
 
-    this.renderCancelable(".check-deploy-template", env,wizard);
-    this.ping(appId,env,handleRunning,handleNotRunning);
+    this.renderCancelable(".check-deploy-template", env, wizard);
+    this.ping(appId, env, handleRunning, handleNotRunning);
   },
 
 
@@ -306,9 +306,12 @@ application.DestinationGeneral = Class.extend({
    * @param env live or dev
    * @param wizard the current wizard
    */
-  renderRunning: function(env,wizard) {
-    var $el = this.render(".build-wizard-deployed-template",{env:env,link:"click"});
-    this.renderApplicationStatus(wizard,$el);
+  renderRunning: function(env, wizard) {
+    var $el = this.render(".build-wizard-deployed-template", {
+      env: env,
+      link: "click"
+    });
+    this.renderApplicationStatus(wizard, $el);
   },
 
   /**
@@ -316,8 +319,8 @@ application.DestinationGeneral = Class.extend({
    * @param env live or dev
    * @param wizard the current wizard
    */
-  renderNotRunning: function(env,wizard) {
-    this.renderCancelable(".build-wizard-deploy-template", env,wizard);
+  renderNotRunning: function(env, wizard) {
+    this.renderCancelable(".build-wizard-deploy-template", env, wizard);
   },
 
   /**
@@ -326,11 +329,14 @@ application.DestinationGeneral = Class.extend({
    * @param env live or dev
    * @param wizard the current wizard
    */
-  renderCancelable: function(template, env,wizard) {
-    var $el= this.render(template,{env:env,link:"click"});
-    var cancel = _.bind(this.showDeploys, this, $("button.jw-button-cancel",wizard));
+  renderCancelable: function(template, env, wizard) {
+    var $el = this.render(template, {
+      env: env,
+      link: "click"
+    });
+    var cancel = _.bind(this.showDeploys, this, $("button.jw-button-cancel", wizard));
     $("a", $el).on("click", cancel);
-    this.renderApplicationStatus(wizard,$el);
+    this.renderApplicationStatus(wizard, $el);
   },
 
   /**
@@ -338,7 +344,7 @@ application.DestinationGeneral = Class.extend({
    * @param wizard the wizard
    * @param $el the element to render into the wizard
    */
-  renderApplicationStatus: function(wizard,$el) {
+  renderApplicationStatus: function(wizard, $el) {
     $(".jw-steps-wrap .application-status", wizard).html($el);
   },
 
@@ -348,9 +354,9 @@ application.DestinationGeneral = Class.extend({
    * @param vars the vars to replace in the template
    * @return {*}
    */
-  render: function(template ,  vars) {
+  render: function(template, vars) {
     var t = $(template).html();
-    return $(_.template(t,vars));
+    return $(_.template(t, vars));
   },
 
   updateProgressLog: function(env, log) {
@@ -391,7 +397,7 @@ application.DestinationGeneral = Class.extend({
       that.checkDeploy(config, wizard, step);
     });
     // we need to check if the wizard has shown this page before the wizard load returned
-    if($info.is(":visible")) {
+    if ($info.is(":visible")) {
       $info.trigger("show");
     }
 
@@ -446,17 +452,17 @@ application.DestinationGeneral = Class.extend({
       }
     });
   },
-  handleDownload: function(res){
+  handleDownload: function(res) {
     var that = this;
     var source_url = res.action.url;
     var ota_url = res.action.ota_url;
     var ipa_url = res.action.ipa_url;
     var showOTA = false;
     var showIPA = false;
-    if(typeof ota_url !== "undefined"){
+    if (typeof ota_url !== "undefined") {
       showOTA = true;
     }
-    if(typeof ipa_url !== "undefined"){
+    if (typeof ipa_url !== "undefined") {
       showIPA = true;
     }
 
@@ -466,22 +472,32 @@ application.DestinationGeneral = Class.extend({
         "keyboard": false,
         "backdrop": "static"
       });
+
+      var url = $('#qr_code').data('url');
+      if (url) {
+        $('#qr_code').qrcode({
+          text: url
+        });
+      }
     };
 
     var modal = $('#binary_download_dialog').clone();
-    var html = "<h3>Your build is complete!</h3><br/><p> <a target='_blank' class='btn' href='"+source_url+"'> <i class='icon-download'></i> Download </a>";
+    var html = "<h3>Your build is complete!</h3><br/><p> <a target='_blank' class='btn' href='" + source_url + "'> <i class='icon-download'></i> Download </a>";
 
-    if(showIPA){
-      html += "  <a target='_blank' class='btn' href='"+ipa_url+"'><i class='icon-download'></i> Download IPA File</a>";
+    if (showIPA) {
+      html += "  <a target='_blank' class='btn' href='" + ipa_url + "'><i class='icon-download'></i> Download IPA File</a>";
     }
     html += "</p><br>";
 
-    if(showOTA) {
+    if (showOTA) {
       that.getOTALink(ota_url, function(otalink, shortened) {
         html += "<h4>-- or --</h4><br/><p>Install directly onto a device with this OTA link</p>";
-        html += "<h4><a class='otalink' target='_blank' href='"+otalink+"'>" + otalink + " </a></h4>";
-        if(shortened) {
-          html += "<img src='"+otalink+".qr' alt='qr'>";
+        html += "<h4><a class='otalink' target='_blank' href='" + otalink + "'>" + otalink + " </a></h4>";
+        if (shortened) {
+          html += "<img src='" + otalink + ".qr' alt='qr'>";
+        } else {
+          // Generate our own
+          html += '<div id="qr_code" data-url="' + otalink + '"></div>';
         }
         showDownload(html);
       });
@@ -504,17 +520,27 @@ application.DestinationGeneral = Class.extend({
     this.getShortenUrl(download_url, cb);
   },
 
-  getShortenUrl: function(url, cb){
-    var shortenerRequestBody = { "longUrl": url};
-    var req = {url: 'https://www.googleapis.com/urlshortener/v1/url', method:"POST", body: JSON.stringify(shortenerRequestBody), headers: [{"name":"Content-Type", "value":"application/json"}]};
+  getShortenUrl: function(url, cb) {
+    var shortenerRequestBody = {
+      "longUrl": url
+    };
+    var req = {
+      url: 'https://www.googleapis.com/urlshortener/v1/url',
+      method: "POST",
+      body: JSON.stringify(shortenerRequestBody),
+      headers: [{
+          "name": "Content-Type",
+          "value": "application/json"
+        }]
+    };
     $.ajax({
-      url: '/box/srv/1.1/act/wid/web', 
-      type: 'POST', 
+      url: '/box/srv/1.1/act/wid/web',
+      type: 'POST',
       contentType: "application/json",
       dataType: 'json',
-      data: JSON.stringify(req), 
-      success: function(res){
-        if(res.status == 200){
+      data: JSON.stringify(req),
+      success: function(res) {
+        if (res.status == 200) {
           var resObj = JSON.parse(res.body);
           var shortUrl = resObj.id.replace("\\", "");
           console.log("ota link is " + shortUrl);
@@ -524,7 +550,7 @@ application.DestinationGeneral = Class.extend({
           cb(url, false);
         }
       },
-      error: function(){
+      error: function() {
         console.log("Failed to get shortened link.");
         cb(url, false);
       }
