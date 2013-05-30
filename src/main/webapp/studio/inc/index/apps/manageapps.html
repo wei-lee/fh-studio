@@ -20,6 +20,14 @@
           Details
         </a>
       </li>
+      <% if(studio.getProps().optBoolean("reporting-reports-enabled")){ %>
+      <li class="template-restriction">
+        <a href="#" data-controller="reporting.app.controller">
+          <i class="icon-bar-chart"></i>
+          App Analytics
+        </a>
+      </li>
+      <% } %>
       <li class="template-restriction">
         <a href="#" data-controller="apps.icons.controller">
           <i class="icon-picture"></i>
@@ -123,17 +131,8 @@
           Endpoints
         </a>
       </li>
-      <% if(studio.getProps().optBoolean("reporting-reports-enabled")){ %>
-
-      <li class="nav-header template-restriction">Reporting</li>
-      <li class="template-restriction">
-        <a href="#" data-controller="reporting.app.controller">
-          <i class="icon-bar-chart"></i>
-          App Analytics
-        </a>
-      </li>
     </ul>
-    <% } %>
+
     <div id="app_content" class="span7">
       
         <% if(studio.getProps().optBoolean("cloudresources-enabled")){ %>

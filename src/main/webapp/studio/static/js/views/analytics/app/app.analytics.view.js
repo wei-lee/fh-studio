@@ -37,7 +37,6 @@ App.View.AppAnalytics = Backbone.View.extend({
       guid: this.options.guid,
       picker_model: this.options.picker_model
     });
-    this.by_date_view.render();
     this.$el.empty();
     this.$el.append(this.by_date_view.el);
   },
@@ -53,7 +52,6 @@ App.View.AppAnalytics = Backbone.View.extend({
       guid: this.options.guid,
       picker_model: this.options.picker_model
     });
-    this.by_platform_view.render();
     this.$el.empty();
     this.$el.append(this.by_platform_view.el);
   },
@@ -67,29 +65,7 @@ App.View.AppAnalytics = Backbone.View.extend({
       guid: this.options.guid,
       picker_model: this.options.picker_model
     });
-    this.by_location_view.render();
     this.$el.empty();
     this.$el.append(this.by_location_view.el);
-  },
-
-  dashboard: function(e) {
-    e.preventDefault();
-    this.renderInstallsDashboard();
-  },
-
-  byDate: function(e) {
-    e.preventDefault();
-    this.renderInstallsByDate();
-  },
-
-  byPlatform: function(e) {
-    e.preventDefault();
-    this.renderInstallsByPlatform();
-  },
-
-  byLocation: function(e) {
-    e.preventDefault();
-    this.setActivePill(e);
-    this.renderInstallsByLocation();
   }
 });

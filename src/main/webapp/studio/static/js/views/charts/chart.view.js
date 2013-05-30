@@ -64,10 +64,11 @@ App.View.Chart = Backbone.View.extend({
       // There are two potential usages of a collection. If the collection
       // is a Series instance (as defined above), treat it as a single
       // series. Otherwise assume it is a collection of multiple series
+      
+      // Pie charts are "special"
       if (this.collection instanceof App.Collection.PieMetrics) {
         this.options.series = [this.collection.toJSON()];
       } else {
-        console.log('If your chart is not showing, check here and add collection type.');
         this.options.series = this.collection.toJSON();
       }
     } else {
