@@ -478,6 +478,7 @@ application.DestinationGeneral = Class.extend({
         $('#qr_code').qrcode({
           text: url
         });
+        $('.modal.fade.in:visible').css('top', '40%');
       }
     };
 
