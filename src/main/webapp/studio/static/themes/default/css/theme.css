@@ -3471,3 +3471,7 @@ li.reportdashboard_link .icon-globe {
 #per_app_summary_container .reportingdashboard_image_container {
     border-bottom: none;
 }
+
+.modal-body {
+  max-height: 800px !important;
+}
