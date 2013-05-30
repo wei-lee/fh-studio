@@ -3640,3 +3640,8 @@ h4.by_location {
   color: #274b6d;
   font-family: 'Lucida Grande', 'Lucida Sans Unicode', Verdana, Arial, Helvetica, sans-serif;
 }
+
+#reports_domain_container .chart,
+#reports_per_app_container .chart {
+  width: 350px;
+}

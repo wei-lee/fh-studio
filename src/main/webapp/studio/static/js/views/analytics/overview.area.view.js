@@ -22,7 +22,7 @@ App.View.AnalyticsOverviewArea = Backbone.View.extend({
 
     this.chart_view = new this.chart_view_type({
       chart: {
-        width: ($('.span9:visible').width() / 2),
+        width: 350,
         height: 200,
         backgroundColor: 'rgba(255, 255, 255, 0.1)'
       },
