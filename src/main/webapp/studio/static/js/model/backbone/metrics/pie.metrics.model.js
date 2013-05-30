@@ -28,9 +28,12 @@ App.Model.PieMetric = Backbone.Model.extend({
       "nokiawrt": "Nokia WRT",
       "windowsphone7": "Windows Phone 7",
       "wp7": "Windows Phone 7",
-      "studio": "App Cloud IDE",
-      "embed": "Web"
+      "studio": "App Studio",
+      "embed": "Web",
+      "fhc": "FHC"
     };
+
+    if (key === '') key = "Other";
     return label_map[key] || key;
   },
 
@@ -49,8 +52,13 @@ App.Model.PieMetric = Backbone.Model.extend({
       return '#aa4643';
     } else if (key == 'embed') {
       return '#4572a7';
+    } else if (key == 'fhc') {
+      return '#89a54e';
+    } else if (key === '') {
+      // Other
+      return '#db843d';
     } else {
-      var random_colours = ['#aa4643', '#89a54e', '#80699b', '#3d96ae', '#db843d'];
+      var random_colours = ['#aa4643', '#80699b', '#db843d'];
       var random_colour = random_colours[Math.floor(Math.random() * random_colours.length)];
       return random_colour;
     }
