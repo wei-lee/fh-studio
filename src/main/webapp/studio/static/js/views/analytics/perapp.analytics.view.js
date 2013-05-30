@@ -47,9 +47,9 @@ App.View.PerAppAnalytics = Backbone.View.extend({
     if (this.collection.models.length > 0) {
       var active = $('table tbody tr.active', this.$el);
       if (active.length === 0) {
-        setTimeout(function(){
+        setTimeout(function() {
           $('table tbody tr:first', self.$el).trigger('click');
-        }, 0);
+        }, 100);
       }
     }
 
