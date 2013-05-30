@@ -42,5 +42,5 @@ App.View.DomainAnalytics = Backbone.View.extend({
     });
     this.active_users.render();
     this.$active_users_container.html(this.active_users.el);
-  },
+  }
 });
