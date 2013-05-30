@@ -15,6 +15,7 @@ js/application/controller.js
 js/model/backbone/app.model.js
 js/model/backbone/metrics/datepicker.model.js
 js/model/backbone/metrics/metrics.model.js
+js/model/backbone/metrics/pie.metrics.model.js
 js/model/backbone/metrics/active_users/app.active_users.date.model.js
 js/model/backbone/metrics/active_users/app.active_users.geo.model.js
 js/model/backbone/metrics/active_users/app.active_users.platform.model.js
