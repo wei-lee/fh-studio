@@ -142,5 +142,5 @@ App.Collection.DomainPieMetrics = App.Collection.PieMetrics.extend({
         options.error(model, "not_supported", options);
       }
     }
-  },
+  }
 });
