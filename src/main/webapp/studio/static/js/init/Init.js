@@ -25,11 +25,13 @@ $(document).ready(function() {
 
   // Emit a beforeFetch event, prior to fetching on a collection
   (function() {
-    var fetch = Backbone.Collection.prototype.fetch;
-    Backbone.Collection.prototype.fetch = function() {
-      this.trigger('beforeFetch');
-      return fetch.apply(this, arguments);
-    };
+    if ('undefined' !== typeof Backbone) { // backbone may not be loaded for some pages e.g. login/reset/activate
+      var fetch = Backbone.Collection.prototype.fetch;
+      Backbone.Collection.prototype.fetch = function() {
+        this.trigger('beforeFetch');
+        return fetch.apply(this, arguments);
+      };
+    }
   })();
 
   // Custom validation plugin functions
