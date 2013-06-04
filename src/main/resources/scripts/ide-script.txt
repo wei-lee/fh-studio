@@ -84,6 +84,7 @@ js/views/analytics/overview.area.cloud_requests.view.js
 js/views/analytics/overview.area.active_users.view.js
 js/views/analytics/analytics.overview.view.js
 js/views/analytics/perapp.analytics.view.js
+js/views/analytics/domain.analytics.overview.view.js
 js/views/analytics/domain.analytics.view.js
 js/views/analytics/project.app.analytics.view.js
 js/model/ModelManager.js

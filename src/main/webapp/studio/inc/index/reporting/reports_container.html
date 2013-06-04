@@ -56,6 +56,44 @@
   </div>
 </script>
 
+<script id="aggregated-analytics-template" type="text/x-handlebars-template">
+  <div id="app_analytics">
+    <h4>Aggregated Analytics</h4>
+
+    <div class="row-fluid">
+      
+      <ul class="nav nav-pills reporting_pills span7">
+        <li>
+          <select id="analytics_type">
+            <option value="installs">Installs</option>
+            <option value="startups">Startups</option>
+            <option value="cloud_requests">Cloud Requests</option>
+            <option value="active_users">Active Users</option>
+          </select>
+        </li>
+        <li class="active" id="dashboard">
+          <a id="client_analytics_dashboard" href="#"><i class="icon-home"></i> Overview</a>
+        </li>
+        <li id="by_date">
+          <a id="client_analytics_by_date" href="#"><i class="icon-calendar"></i> By Date</a>
+        </li>
+        <li id="by_device">
+          <a id="client_analytics_by_platform" href="#"><i class="icon-mobile-phone"></i> By Platform</a>
+        </li>
+        <li id="by_location">
+          <a href="#" id="client_analytics_by_location"><i class="icon-globe"></i> By Location</a>
+        </li>
+      </ul>
+
+      <div class="datepicker_container span5"></div>
+    </div>
+
+    <hr class="row-fluid"/>
+
+    <div id="client_analytics_container"></div>
+  </div>
+</script>
+
 <script id="project-app-analytics-installs-template" type="text/x-handlebars-template">
 </script>
 
