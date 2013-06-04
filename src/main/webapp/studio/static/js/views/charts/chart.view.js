@@ -83,12 +83,18 @@ App.View.Chart = Backbone.View.extend({
 
     this.options.chart.renderTo = this.el;
     this.options.chart.reflow = false;
-    this.chart = new Highcharts.Chart(this.options);
 
-    //:(
-    // setTimeout(function() {
-    //   self.resize(true);
-    // }, 0);
+    // Show subtitle or not?
+    // Overview areas have a hideSubtitle property to hide subtitles on charts
+    if (typeof this.collection.getSubtitle !== 'undefined' && !this.options.hideSubtitle) {
+      // Use subtitle if available on collection
+      this.options.subtitle = {
+        text: this.collection.getSubtitle(),
+        y: 40
+      }
+    }
+
+    this.chart = new Highcharts.Chart(this.options);
     return this;
   }
 });

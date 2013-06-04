@@ -15,6 +15,27 @@ App.Collection.Metrics = Backbone.Collection.extend({
     }, this);
   },
 
+  getSubtitle: function() {
+    var from = App.models.datepicker.from();
+    var to = App.models.datepicker.to();
+    var total = this.getTotal();
+    return from.format("DD/MM/YY") + " - " + to.format("DD/MM/YY") + "    Total: " + total;
+  },
+
+  getTotal: function() {
+    var total = 0;
+
+    $.each(this.models, function(i, model) {
+      $.each(model.get('data'), function(i, data_point){
+        var value = data_point[1];
+        total = total + value;
+      })
+
+    });
+
+    return total;
+  },
+
   dateParamsForDate: function(date) {
     if (!date) {
       return console.log('No date input');

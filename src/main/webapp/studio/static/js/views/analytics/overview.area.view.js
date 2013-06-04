@@ -26,6 +26,7 @@ App.View.AnalyticsOverviewArea = Backbone.View.extend({
         height: 200,
         backgroundColor: 'rgba(255, 255, 255, 0.1)'
       },
+      hideSubtitle: true, // hide subtitle - checked in chart.view
       plotOptions: {
         pie: {
           dataLabels: {

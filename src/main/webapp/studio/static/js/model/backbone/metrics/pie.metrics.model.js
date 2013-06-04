@@ -70,6 +70,23 @@ App.Collection.PieMetrics = App.Collection.Metrics.extend({
   url: null,
   metric: null,
 
+  getSubtitle: function() {
+    var from = App.models.datepicker.from();
+    var to = App.models.datepicker.to();
+    var total = this.getTotal();
+    return from.format("DD/MM/YY") + " - " + to.format("DD/MM/YY") + "    Total: " + total;
+  },
+
+  getTotal: function() {
+    var total = 0;
+    $.each(this.models, function(i, model) {
+      var value = model.get('y');
+      total = total + value;
+    });
+
+    return total;
+  },
+
   initialize: function(collection, options) {
     this.picker_model = options.picker_model;
     App.Collection.Metrics.prototype.initialize.apply(this, arguments);
@@ -98,6 +115,7 @@ App.Collection.PieMetrics = App.Collection.Metrics.extend({
         name: k
       });
     });
+
     return parsed;
   },
 

@@ -23,6 +23,7 @@ App.View.AnalyticsDomainOverviewArea = Backbone.View.extend({
         height: 200,
         backgroundColor: 'rgba(255, 255, 255, 0.1)'
       },
+      hideSubtitle: true, // hide subtitle - checked in chart.view
       plotOptions: {
         pie: {
           dataLabels: {
@@ -53,12 +54,7 @@ App.View.AnalyticsDomainOverviewArea = Backbone.View.extend({
 
   updateTotal: function(collection) {
     // Calculate total
-    var total = 0;
-    $.each(collection.models, function(i, model) {
-      var value = model.get('y');
-      total = total + value;
-    });
-
+    var total = collection.getTotal();
     this.$count.text(_.str.numberFormat(total, 0, '.', ','));
 
     // Sync done, hide loader
