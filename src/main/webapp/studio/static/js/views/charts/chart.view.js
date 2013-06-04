@@ -91,7 +91,7 @@ App.View.Chart = Backbone.View.extend({
       this.options.subtitle = {
         text: this.collection.getSubtitle(),
         y: 40
-      }
+      };
     }
 
     this.chart = new Highcharts.Chart(this.options);

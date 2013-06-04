@@ -29,8 +29,7 @@ App.Collection.Metrics = Backbone.Collection.extend({
       $.each(model.get('data'), function(i, data_point){
         var value = data_point[1];
         total = total + value;
-      })
-
+      });
     });
 
     return total;

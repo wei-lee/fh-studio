@@ -58,7 +58,7 @@ App.View.LineChart = App.View.Chart.extend({
             null, null]
           }
         }
-      },
+      }
     }, options);
 
     App.View.Chart.prototype.initialize.call(this, options);
