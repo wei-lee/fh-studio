@@ -27,12 +27,12 @@ App.View.Chart = Backbone.View.extend({
     });
   },
 
-  resize: function(animate) {
+  resize: function() {
     var self = this;
 
     if (this.chart) {
       // Will resize with animation
-      this.chart.setSize($(this.chart.container).width(), $(this.chart.container).height(), animate || false);
+      this.chart.setSize($(this.chart.container).width(), $(this.chart.container).height(), false);
       // setTimeout(function() {
       //   self.chart.redraw();
       // }, 1000);
@@ -87,9 +87,9 @@ App.View.Chart = Backbone.View.extend({
     this.chart = new Highcharts.Chart(this.options);
 
     //:(
-    setTimeout(function() {
-      self.resize(true);
-    }, 0);
+    // setTimeout(function() {
+    //   self.resize(true);
+    // }, 0);
     return this;
   }
 });
