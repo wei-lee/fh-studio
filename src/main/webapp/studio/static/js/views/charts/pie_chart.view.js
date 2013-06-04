@@ -19,7 +19,8 @@ App.View.PieChart = App.View.Chart.extend({
                   var self = this;
                   this.exportChart({
                     type: 'application/pdf',
-                    filename: 'chart'
+                    filename: 'chart',
+                    width: 2000
                   });
                 }
             }, {
@@ -28,7 +29,8 @@ App.View.PieChart = App.View.Chart.extend({
                   var self = this;
                   this.exportChart({
                     type: 'image/png',
-                    filename: 'chart'
+                    filename: 'chart',
+                    width: 2000
                   });
                 }
             }, {
