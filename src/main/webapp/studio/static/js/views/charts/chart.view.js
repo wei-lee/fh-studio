@@ -27,9 +27,15 @@ App.View.Chart = Backbone.View.extend({
     });
   },
 
-  resize: function() {
+  resize: function(animate) {
+    var self = this;
+
     if (this.chart) {
-      this.chart.setSize($(this.chart.container).width(), $(this.chart.container).height(), true);
+      // Will resize with animation
+      this.chart.setSize($(this.chart.container).width(), $(this.chart.container).height(), animate || false);
+      // setTimeout(function() {
+      //   self.chart.redraw();
+      // }, 1000);
     }
   },
 
@@ -64,7 +70,7 @@ App.View.Chart = Backbone.View.extend({
       // There are two potential usages of a collection. If the collection
       // is a Series instance (as defined above), treat it as a single
       // series. Otherwise assume it is a collection of multiple series
-      
+
       // Pie charts are "special"
       if (this.collection instanceof App.Collection.PieMetrics) {
         this.options.series = [this.collection.toJSON()];
@@ -76,12 +82,13 @@ App.View.Chart = Backbone.View.extend({
     }
 
     this.options.chart.renderTo = this.el;
+    this.options.chart.reflow = false;
 
     this.chart = new Highcharts.Chart(this.options);
 
-    // :(
+    //:(
     setTimeout(function() {
-      self.resize();
+      self.resize(true);
     }, 0);
     return this;
   }
