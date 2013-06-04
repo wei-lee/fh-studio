@@ -26,7 +26,7 @@ App.View.DomainAnalytics = Backbone.View.extend({
   },
 
   render: function() {
-    var html = $("#project-app-analytics-template").html();
+    var html = $("#aggregated-analytics-template").html();
     var template = Handlebars.compile(html);
     this.$el.html(template());
 
