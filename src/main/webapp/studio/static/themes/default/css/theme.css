@@ -3612,7 +3612,7 @@ li.reportdashboard_link .icon-globe {
 
 .datepicker-title-container {
   /*  Move up beside pills */
-  margin-top: -37px;
+  margin-top: -40px;
   z-index: 0;
   margin-bottom: 0;
 }
