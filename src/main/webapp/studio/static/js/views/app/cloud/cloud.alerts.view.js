@@ -278,13 +278,18 @@ App.View.Alert = Backbone.View.extend({
      var self = this;
      Handlebars.registerHelper("alertDetails", function(alert){
        var html = [];
-       var fields = [{field:"alertName",name:"Alert Name"}, {field:"eventCategories",name:"Event Classes"}, {field:"eventNames", name:"Events"}, {field:"eventSeverities", name:"Severities"}, {field:"emails", name:"Emails"}];
+       var fields = [{field:"alertName",name:"Alert Name"}, {field:"eventCategories",name:"Event Classes", tag:"select"}, {field:"eventSeverities", name:"Severities",  tag:"select"}, {field:"eventNames", name:"Events",  tag:"select"}, {field:"emails", name:"Emails"}];
        for(var i=0;i<fields.length;i++){
          var key = fields[i].field;
          var fieldName = fields[i].name;
          var value = alert.get(key);
+         var tag = fields[i].tag || "input";
          html.push('<div class="control-group '+key+'_control"><label class="control-label" for="input_'+key+'">'+fieldName+'</label><div class="controls">');
-         html.push('<input type="text" class="input-xlarge" id="input_'+key+'" value="'+value+'"></input>');
+         if(tag === "select"){
+           html.push('<select class="input-xlarge" id="input_'+key+'"></select>');
+         } else {
+           html.push('<input type="text" class="input-xlarge" id="input_'+key+'" value="'+value+'"></input>');
+         }
          if(key === "emails"){
            html.push('<button class="btn test_emails_btn"> Test Emails </button>');
          }
@@ -297,33 +302,61 @@ App.View.Alert = Backbone.View.extend({
      var header = this.model.isNew()? "Create An Alert" : "Update An Alert";
      var enableClone = this.model.isNew() ? false: true;
      this.$el.html(template({alert: this.model, header:header, enableClone: enableClone}));
-     var categoryFilter = this.$el.find('.eventCategories_control');
-     categoryFilter.replaceWith(new App.View.SwapSelect({
+
+     //init swap selects
+     var categorySelector =  new App.View.SwapSelect({
        to : self.model.attributes.eventCategories,
        from: App.collections.categoryFilters,
        from_name_key: "name",
        uid: "name",
-       label:"Event Classes",
-       id:"input_eventCategories"
-     }).render().$el.find('div.control-group'));
-     var eventFilter = this.$el.find('.eventNames_control');
-     eventFilter.replaceWith(new App.View.SwapSelect({
+       label:"Event Categories",
+       id:"input_eventCategories",
+       el: self.$el.find('#input_eventCategories').parent().parent()[0]
+     }).render();
+
+     var eventNameCollection = App.collections.eventNameFilters.clone();
+     var eventNameSelector =  new App.View.SwapSelect({
        to : self.model.attributes.eventNames,
-       from: App.collections.eventNameFilters,
+       from: eventNameCollection,
        from_name_key: "name",
        uid: "name",
-       label:"Event States",
-       id:"input_eventNames"
-     }).render().$el.find('div.control-group'));
-     var severitiesFilter = this.$el.find('.eventSeverities_control');
-     severitiesFilter.replaceWith(new App.View.SwapSelect({
+       label:"Event Names",
+       id:"input_eventNames",
+       el:self.$el.find('#input_eventNames').parent().parent()[0],
+       groupBy: "category"
+     }).render();
+
+     var severitiesFilterSelector = new App.View.SwapSelect({
        to : self.model.attributes.eventSeverities,
        from: App.collections.severityFilters,
        from_name_key: "name",
        uid: "name",
        label:"Severities",
-       id:"input_eventSeverities"
-     }).render().$el.find('div.control-group'));
+       id:"input_eventSeverities",
+       el:self.$el.find('#input_eventSeverities').parent().parent()[0]
+     }).render();
+
+     //bind change event to the category select so that the event names will be filtered
+     categorySelector.$select.on('change', function(event){
+       console.log("Selected : " + event.val);
+       var parts = event.val;
+       if(parts && parts.length > 0){
+         var results = [];
+         _.each(parts, function(el){
+           var filtered = App.collections.eventNameFilters.where({category: el});
+           _.each(filtered, function(model){
+             results.push(model.toJSON());
+           });
+         });
+         eventNameCollection.reset(results);
+       } else {
+         eventNameCollection.reset(App.collections.eventNameFilters.clone().toJSON());
+       }
+     });
+     var changeEvent = $.Event("change");
+     changeEvent.val = categorySelector.$select.val();
+     categorySelector.$select.trigger(changeEvent);
+
 
      this.$el.modal({keyboard:false, backdrop:"static"});
      this.$el.on("hidden", function(){

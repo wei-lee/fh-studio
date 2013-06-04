@@ -10,7 +10,7 @@ App.View.SwapSelect = Backbone.View.extend({
     this.uid = options.uid || 'guid';
     this.collection = options.from;
     this.collection.fetch();
-    this.collection.bind('sync', this.render, this);
+    this.collection.bind('sync reset', this.render, this);
   },
 
   render: function() {
@@ -29,17 +29,39 @@ App.View.SwapSelect = Backbone.View.extend({
       }));
       this.$select = this.$el.find('select.swap-select');
 
-      // Build to & from
-      _.each(this.collection.models, function(item) {
-        var guid = item.get(self.uid);
-        var selected = (self.to.indexOf(guid) !== -1);
+      var renderOptions = function(models, el){
+        _.each(models, function(item) {
+          var guid = item.get(self.uid);
+          var selected = (self.to.indexOf(guid) !== -1);
 
-        self.$select.append(option_template({
-          name: item.get(self.options.from_name_key),
-          value: guid,
-          selected: selected
-        }));
-      });
+          el.append(option_template({
+            name: item.get(self.options.from_name_key),
+            value: guid,
+            selected: selected
+          }));
+        });
+      };
+
+      if(self.options.groupBy){
+        var groups = {};
+        _.each(this.collection.models, function(item){
+           var group = item.get([self.options.groupBy]);
+           if(groups[group]){
+             groups[group].push(item);
+           } else {
+             groups[group] = [item];
+           }
+        });
+        _.each(groups, function(value, key){
+          console.log(key);
+           var optgroup = $("<optgroup>", {label: key});
+           renderOptions(value, optgroup);
+           self.$select.append(optgroup);
+        });
+      } else {
+        // Build to & from
+        renderOptions(this.collection.models, self.$select);
+      }
 
       this.$select.select2({
         placeHolder: "Select an Item"

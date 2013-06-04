@@ -128,14 +128,12 @@
 </script>
 
 <script id="swap-select-template" type="text/x-handlebars-template">
-    <div class="control-group">
-        <label class="control-label">{{options.label}}</label>
-        <div class="controls swap-select">
-            <select class="swap-select input-xlarge" id="{{options.id}}" multiple></select>
-            {{#if options.inline_help}}
-            <span class="help-inline">{{options.inline_help}}</span>
-            {{/if}}
-        </div>
+    <label class="control-label">{{options.label}}</label>
+    <div class="controls swap-select">
+        <select class="swap-select input-xlarge" id="{{options.id}}" multiple></select>
+        {{#if options.inline_help}}
+        <span class="help-inline">{{options.inline_help}}</span>
+        {{/if}}
     </div>
 </script>
 

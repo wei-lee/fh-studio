@@ -78,7 +78,7 @@ App.Model.AlertFilter = Backbone.Model.extend({
   loaded: false,
 
   //url: '/studio/static/js/model/backbone/mocks/event_options.json',
-
+  idAttribute: "name",
   sync: function (method, model, options) {
     var self = this;
     if(!self.loaded){
