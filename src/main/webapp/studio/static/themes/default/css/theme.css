@@ -3645,3 +3645,7 @@ h4.by_location {
 #reports_per_app_container .chart {
   width: 350px;
 }
+
+.custom_range_label {
+  display: none;
+}
