@@ -6,3 +6,4 @@ App.View = App.View || {};
 App.Collection = App.Collection || {};
 App.collections = App.collections || {};
 App.views = App.views || {};
+App.models = App.models || {};

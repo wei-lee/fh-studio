@@ -1,8 +1,17 @@
 App.View.ProjectAppAnalyticsDatepicker = Backbone.View.extend({
+  freshInit: true,
+
   initialize: function(options) {
     if (!options || !options.model) {
-      console.log('No model passed, init');
-      this.model = new App.Model.DatePicker();
+      if (App.models.datepicker) {
+        console.log('No model passed, re-using existing model');
+        this.model = App.models.datepicker;
+        this.freshInit = false;
+      } else {
+        console.log('No model passed, init');
+        this.model = new App.Model.DatePicker();
+        App.models.datepicker = this.model;
+      }
     }
   },
 
@@ -13,8 +22,18 @@ App.View.ProjectAppAnalyticsDatepicker = Backbone.View.extend({
 
     this.$picker = this.$el.find('#analytics_picker');
 
-    // Init datepickers
-    this.lastMonth();
+
+    if (this.freshInit) {
+      console.log('Fresh datepicker init');
+      // Init datepickers
+      this.lastMonth();
+    } else {
+      // Re-use existing model values
+      console.log('re-init with existing from and to,');
+      var from = this.model.get('from');
+      var to = this.model.get('to');
+      this._setDates(from, to);
+    }
   },
 
   lastMonth: function(e) {
