@@ -83,7 +83,6 @@ App.View.Chart = Backbone.View.extend({
 
     this.options.chart.renderTo = this.el;
     this.options.chart.reflow = false;
-
     this.chart = new Highcharts.Chart(this.options);
 
     //:(
