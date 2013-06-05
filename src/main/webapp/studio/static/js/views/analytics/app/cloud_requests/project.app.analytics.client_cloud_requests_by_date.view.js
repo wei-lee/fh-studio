@@ -3,7 +3,7 @@ App.View.ProjectAppAnalyticsCloudRequestsByDate = App.View.AppAnalyticsByDate.ex
   defaultOptions: {
     total: false,
     chart: {
-      height: 300
+      height: 400
     },
     xAxis: {
       type: 'datetime',

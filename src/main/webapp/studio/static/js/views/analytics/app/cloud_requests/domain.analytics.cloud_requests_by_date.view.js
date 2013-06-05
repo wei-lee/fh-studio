@@ -3,7 +3,7 @@ App.View.DomainAnalyticsCloudRequestsByDate = App.View.DomainAnalyticsByDate.ext
   defaultOptions: {
     total: false,
     chart: {
-      height: 300
+      height: 400
     },
     xAxis: {
       type: 'datetime',

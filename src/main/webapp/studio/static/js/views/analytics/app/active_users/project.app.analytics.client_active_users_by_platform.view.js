@@ -2,7 +2,7 @@ App.View.ProjectAppAnalyticsActiveUsersByPlatform = App.View.AppAnalyticsByPlatf
   collection_type: "App.Collection.AppActiveUsersPlatform",
   defaultOptions: {
     chart: {
-      height: 300
+      height: 400
     },
     title: {
       text: 'Active Users by Platform'

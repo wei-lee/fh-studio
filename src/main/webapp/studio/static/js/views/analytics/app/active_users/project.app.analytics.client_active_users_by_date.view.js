@@ -3,7 +3,7 @@ App.View.ProjectAppAnalyticsActiveUsersByDate = App.View.AppAnalyticsByDate.exte
   defaultOptions: {
     total: false,
     chart: {
-      height: 300
+      height: 400
     },
     xAxis: {
       type: 'datetime',

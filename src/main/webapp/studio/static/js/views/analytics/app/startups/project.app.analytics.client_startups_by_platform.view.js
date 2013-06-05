@@ -2,7 +2,7 @@ App.View.ProjectAppAnalyticsClientStartupsByPlatform = App.View.AppAnalyticsByPl
   collection_type: "App.Collection.AppStartupsPlatform",
   defaultOptions: {
     chart: {
-      height: 300
+      height: 400
     },
     title: {
       text: 'Startups by Platform'

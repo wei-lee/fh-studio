@@ -2,7 +2,7 @@ App.View.DomainAnalyticsClientInstallsByPlatform = App.View.DomainAnalyticsByPla
   collection_type: "App.Collection.DomainInstallsPlatform",
   defaultOptions: {
     chart: {
-      height: 300
+      height: 400
     },
     title: {
       text: 'Domain Installs by Platform'

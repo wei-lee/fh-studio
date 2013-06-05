@@ -2,7 +2,7 @@ App.View.DomainAnalyticsClientStartupsByDate = App.View.DomainAnalyticsByDate.ex
   collection_type: "App.Collection.DomainStartupsDate",
   defaultOptions: {
     chart: {
-      height: 300
+      height: 400
     },
     xAxis: {
       type: 'datetime',

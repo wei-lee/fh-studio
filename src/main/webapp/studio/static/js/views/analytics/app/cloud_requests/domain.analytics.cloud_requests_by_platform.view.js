@@ -2,7 +2,7 @@ App.View.DomainAnalyticsCloudRequestsByPlatform = App.View.AppAnalyticsByPlatfor
   collection_type: "App.Collection.DomainCloudRequestsPlatform",
   defaultOptions: {
     chart: {
-      height: 300
+      height: 400
     },
     title: {
       text: 'Domain Cloud Requests by Platform'

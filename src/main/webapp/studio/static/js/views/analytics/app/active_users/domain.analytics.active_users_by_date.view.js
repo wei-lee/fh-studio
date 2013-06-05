@@ -3,7 +3,7 @@ App.View.DomainAnalyticsActiveUsersByDate = App.View.DomainAnalyticsByDate.exten
   defaultOptions: {
     total: false,
     chart: {
-      height: 300
+      height: 400
     },
     xAxis: {
       type: 'datetime',
