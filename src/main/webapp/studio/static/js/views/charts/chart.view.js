@@ -23,7 +23,7 @@ App.View.Chart = Backbone.View.extend({
     }
 
     $(window).bind('resizeEnd', function() {
-      self.resize();
+      self.render(false, true);
     });
   },
 
@@ -36,7 +36,7 @@ App.View.Chart = Backbone.View.extend({
     }
   },
 
-  render: function(loading) {
+  render: function(loading, resize) {
     var self = this;
 
     if (loading) {
@@ -93,8 +93,13 @@ App.View.Chart = Backbone.View.extend({
       };
     }
 
-    // Some doughnuts may need adjusting
+    // Set width to container width (if not overridden) 
+    // or on a resize event (since container already drawn)
+    if (!this.options.chart.width || resize) {
+      this.options.chart.width = $(this.options.chart.renderTo).width();
+    }
 
+    // Some doughnuts may need adjusting
     this.chart = new Highcharts.Chart(this.options);
     return this;
   }

@@ -2,7 +2,6 @@ App.View.ProjectAppAnalyticsCloudRequestsByPlatform = App.View.AppAnalyticsByPla
   collection_type: "App.Collection.AppCloudRequestsPlatform",
   defaultOptions: {
     chart: {
-      width: 300,
       height: 300
     },
     title: {

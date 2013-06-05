@@ -3,7 +3,6 @@ App.View.DomainAnalyticsClientInstallsByDate = App.View.DomainAnalyticsByDate.ex
   defaultOptions: {
     total: false,
     chart: {
-      width: 300,
       height: 300
     },
     xAxis: {

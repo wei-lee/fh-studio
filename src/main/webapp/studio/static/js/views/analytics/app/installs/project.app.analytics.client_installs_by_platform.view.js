@@ -2,7 +2,6 @@ App.View.ProjectAppAnalyticsClientInstallsByPlatform = App.View.AppAnalyticsByPl
   collection_type: "App.Collection.AppInstallsPlatform",
   defaultOptions: {
     chart: {
-      width: 300,
       height: 300
     },
     title: {

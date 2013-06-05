@@ -2,7 +2,6 @@ App.View.ProjectAppAnalyticsClientStartupsByDate = App.View.AppAnalyticsByDate.e
   collection_type: "App.Collection.AppStartupsDate",
   defaultOptions: {
     chart: {
-      width: 300,
       height: 300
     },
     xAxis: {

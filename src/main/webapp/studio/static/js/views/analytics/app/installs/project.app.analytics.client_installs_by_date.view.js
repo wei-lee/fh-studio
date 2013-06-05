@@ -3,7 +3,6 @@ App.View.ProjectAppAnalyticsClientInstallsByDate = App.View.AppAnalyticsByDate.e
   defaultOptions: {
     total: false,
     chart: {
-      width: 300,
       height: 300
     },
     xAxis: {
