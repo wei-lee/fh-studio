@@ -13,7 +13,7 @@ App.View.Geo = Backbone.View.extend({
   render: function() {
     var data = google.visualization.arrayToDataTable(this.collection.toArray());
     var options = {
-      width: this.options.width || "350"
+      width: this.options.width
     };
 
     if (this.collection.models.length === 0) {

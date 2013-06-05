@@ -1,12 +1,7 @@
 App.View.AppAnalyticsByLocation = Backbone.View.extend({
   initialize: function(options) {
     options = $.extend(true, {}, this.defaultOptions, options) || {};
-    if (options) {
-      this.width = options.width || 300;
-    } else {
-      this.width = 300;
-    }
-
+    
     var collection_class = this.collection_type.split(".")[2];
 
     // Dynamic invokation - a bit blergh

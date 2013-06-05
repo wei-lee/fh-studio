@@ -1,11 +1,6 @@
 App.View.DomainAnalyticsByLocation = Backbone.View.extend({
   initialize: function(options) {
     options = $.extend(true, {}, this.defaultOptions, options) || {};
-    if (options) {
-      this.width = options.width || 300;
-    } else {
-      this.width = 300;
-    }
 
     var collection_class = this.collection_type.split(".")[2];
 
@@ -43,10 +38,17 @@ App.View.DomainAnalyticsByLocation = Backbone.View.extend({
       this.$title.text(this.title);
     }
 
+    if (this.$el.width() > 500) {
+      // Full screen container, resize to 600
+      this.$geochart.width('750');
+      this.$geochart.css({margin: '0 auto'});
+    }
+
     this.$geochart.html(new App.View.Geo({
       collection: this.collection,
-      width: this.$el.width()
+      width: this.$geochart.width()
     }).render().$el);
+
     return this;
   }
 });
