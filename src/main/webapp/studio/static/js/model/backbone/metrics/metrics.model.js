@@ -163,5 +163,5 @@ App.Collection.DomainMetrics = App.Collection.Metrics.extend({
         options.error(model, "not_supported", options);
       }
     }
-  },
+  }
 });
