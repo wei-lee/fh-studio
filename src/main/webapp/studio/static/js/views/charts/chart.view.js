@@ -23,7 +23,10 @@ App.View.Chart = Backbone.View.extend({
     }
 
     $(window).bind('resizeEnd', function() {
-      self.render(false, true);
+      // Only resize if visible
+      if ($(self.options.chart.renderTo).is(':visible')) {
+        self.render(false, true);
+      }
     });
   },
 
