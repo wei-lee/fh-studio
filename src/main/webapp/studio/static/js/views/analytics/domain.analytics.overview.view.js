@@ -54,7 +54,7 @@ App.View.DomainAnalyticsOverview = Backbone.View.extend({
 
   showDetails: function(e) {
     this.$overview_container.hide();
-    this.domain_analytics = new App.View.DomainAnalytics({
+    this.domain_analytics = new App.View.DomainAnalyticsController({
       hidePicker: true,
       picker_model: this.picker.model
     });

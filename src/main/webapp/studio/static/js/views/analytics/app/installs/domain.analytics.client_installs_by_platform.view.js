@@ -1,4 +1,4 @@
-App.View.DomainAnalyticsClientInstallsByPlatform = App.View.AppAnalyticsByPlatform.extend({
+App.View.DomainAnalyticsClientInstallsByPlatform = App.View.DomainAnalyticsByPlatform.extend({
   collection_type: "App.Collection.DomainInstallsPlatform",
   defaultOptions: {
     chart: {

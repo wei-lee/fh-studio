@@ -1,4 +1,4 @@
-App.View.DomainAnalytics = Backbone.View.extend({
+App.View.DomainAnalyticsController = Backbone.View.extend({
   picker_model: null,
 
   defaultOptions: {
@@ -6,11 +6,18 @@ App.View.DomainAnalytics = Backbone.View.extend({
   },
 
   subviews: {
-    "installs": App.View.ProjectAppAnalyticsInstalls,
-    "startups": App.View.ProjectAppAnalyticsStartups,
-    "cloud_requests": App.View.ProjectAppAnalyticsCloudRequests,
-    "active_users": App.View.ProjectAppAnalyticsActiveUsers
+    "installs": App.View.DomainAnalyticsInstalls
+    // "startups": App.View.DomainAnalyticsStartups,
+    // "cloud_requests": App.View.DomainAnalyticsCloudRequests,
+    // "active_users": App.View.DomainAnalyticsActiveUsers
   },
+
+  // subviews: {
+  //   "installs": App.View.ProjectAppAnalyticsInstalls,
+  //   "startups": App.View.ProjectAppAnalyticsStartups,
+  //   "cloud_requests": App.View.ProjectAppAnalyticsCloudRequests,
+  //   "active_users": App.View.ProjectAppAnalyticsActiveUsers
+  // },
 
   events: {
     'click #client_analytics_dashboard': 'dashboard',

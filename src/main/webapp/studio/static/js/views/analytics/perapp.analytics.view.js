@@ -85,7 +85,7 @@ App.View.PerAppAnalytics = Backbone.View.extend({
   showDetails: function(e) {
     var guid = $(e.currentTarget).data('guid');
     var metric_type = $(e.currentTarget).data('metric-type'); // Metric to show
-    this.detail_view = new App.View.ProjectAppAnalytics({
+    this.detail_view = new App.View.ProjectAppAnalyticsController({
       guid: guid,
       picker_model: this.picker.model,
       hidePicker: true,

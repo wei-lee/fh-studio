@@ -128,3 +128,40 @@ App.Collection.Metrics = Backbone.Collection.extend({
     }
   }
 });
+
+
+// Domain analytics use a different endpoint
+App.Collection.DomainMetrics = App.Collection.Metrics.extend({
+  sync: function(method, model, options) {
+    var url = '/box/srv/1.1/metrics/app/read';
+
+    // TODO: Endpoint accepts widget ID rather than template instance. Why?
+    var params = {
+      "id": this.guid || $fw.clientProps.domain,
+      "metric": this.metric,
+      "from": this.dateParamsForDate(this.picker_model.get('from')),
+      "to": this.dateParamsForDate(this.picker_model.get('to')),
+      "type": "line",
+      "num": 0
+    };
+
+    if ("read" === method) {
+      $fw.server.post(url, params, function(res) {
+        if (res.status === "ok") {
+          if ($.isFunction(options.success)) {
+            options.success(res);
+          }
+        } else {
+          if ($.isFunction(options.error)) {
+            options.error(res);
+          }
+        }
+      }, options.error, true);
+    } else {
+      console.log("EventLog collection do not support" + method);
+      if ($.isFunction(options.error)) {
+        options.error(model, "not_supported", options);
+      }
+    }
+  },
+});

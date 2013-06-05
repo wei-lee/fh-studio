@@ -8,7 +8,7 @@ Reporting.Controller = Apps.Controller.extend({
   show: function(el) {
     $(this.views.container).empty();
     $(this.views.container).show();
-    this.view = new App.View.ProjectAppAnalytics();
+    this.view = new App.View.ProjectAppAnalyticsController();
     this.view.render();
     $(this.views.container).append(this.view.el);
   }

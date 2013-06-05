@@ -1,4 +1,4 @@
-App.View.ProjectAppAnalytics = Backbone.View.extend({
+App.View.ProjectAppAnalyticsController = Backbone.View.extend({
   picker_model: null,
 
   defaultOptions: {
