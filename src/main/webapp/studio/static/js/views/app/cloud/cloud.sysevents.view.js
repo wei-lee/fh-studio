@@ -105,7 +105,7 @@ App.View.CloudNotificationsTable = Backbone.View.extend({
     e.preventDefault();
 
     Handlebars.registerHelper("details", function(item){
-      var ret = ['<div class="control-group"><label class="control-label" for="input'+item.key+'">'+item.key+'</label><div class="controls">'];
+      var ret = ['<div class="control-group"><label id="input_'+item.key+'_label" class="control-label insert-lang insert-help-icon" for="input'+item.key+'">'+item.key +'</label><div class="controls">'];
       if(item.key.toLowerCase() === "stacktrace"){
         ret.push('<textarea class="input-block-level uneditable-input" id="input'+item.key+'" rows="5" style="overflow:auto">'+item.value+'</textarea>');
       } else {
@@ -161,7 +161,10 @@ App.View.CloudNotificationsTable = Backbone.View.extend({
       }
     }
 
-    $('#modal_details').html(template(context));
+    var detailsHtml = template(context);
+    if($fw && $fw.client){
+      $fw.client.lang.insertLangForContainer($('#modal_details').html(detailsHtml), "event_details", true);
+    }
     if(hasStacktrace){
       $('#modal_details').addClass("large").modal({});
     } else {

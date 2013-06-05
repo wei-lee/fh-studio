@@ -28,7 +28,10 @@ App.View.SwapSelect = Backbone.View.extend({
         options: this.options
       }));
       this.$select = this.$el.find('select.swap-select');
-
+      if(this.options.placeholder){
+        self.$select.attr("data-placeholder", this.options.placeholder);
+        self.$select.append("<option></option>");
+      }
       var renderOptions = function(models, el){
         _.each(models, function(item) {
           var guid = item.get(self.uid);
@@ -63,8 +66,10 @@ App.View.SwapSelect = Backbone.View.extend({
         renderOptions(this.collection.models, self.$select);
       }
 
+      var placeholder = this.options.placeholder || "Select an Item";
+
       this.$select.select2({
-        placeHolder: "Select an Item"
+        //placeholder:placeholder
       });
     }
 

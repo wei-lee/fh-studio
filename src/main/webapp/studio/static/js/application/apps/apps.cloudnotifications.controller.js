@@ -29,7 +29,8 @@ Apps.Cloudnotifications.Controller = Apps.Cloud.Controller.extend({
     cloudnotifications_container: "#cloudnotifications_container",
     systemlog_container: "#cloud_notifications_pill",
     event_alerts_container: "#event_alerts_container",
-    alerts_notification_container: "#alerts_notifications_container"
+    alerts_notification_container: "#alerts_notifications_container",
+    helper_text_container: "#cloud_notifications_helper_text"
     // load_spinner: '#notifications_loading',
     // notification_table_container: '#notification_container'
   },
@@ -42,6 +43,22 @@ Apps.Cloudnotifications.Controller = Apps.Cloud.Controller.extend({
   initBindings: function(){
     var container = $(this.views.cloudnotifications_container);
     var self = this;
+    $('a[data-toggle="pill"]', container).each(function(el){
+       var params = {
+         trigger:"hover",
+         placement:"bottom"
+       };
+      var title = "";
+      if($(this).data("type").toLowerCase() === "cloud_notifications"){
+        title = $fw.client.lang.getLangString("system_logs_helper_text");
+      } else if($(this).data("type").toLowerCase() === "alerts") {
+        title = $fw.client.lang.getLangString("alerts_helper_text");
+      } else {
+        title = $fw.client.lang.getLangString("notifications_helper_text");
+      }
+      params.title = title;
+      $(this).tooltip(params);
+    });
     $('a[data-toggle="pill"]', container).on('shown', function(e){
       $('.pill-pane', container).hide();
       var dataType = $(e.target).data("type");
@@ -78,6 +95,7 @@ Apps.Cloudnotifications.Controller = Apps.Cloud.Controller.extend({
   },
 
   renderSystemlogs : function(){
+
     if(!this.view){
       this.view = new App.View.CloudNotifications({
         el: this.views.systemlog_container,
@@ -91,6 +109,7 @@ Apps.Cloudnotifications.Controller = Apps.Cloud.Controller.extend({
   },
 
   renderAlerts: function(){
+
     if(!this.alertsView){
       this.alertsView = new App.View.EventAlerts({
         el: this.views.event_alerts_container,

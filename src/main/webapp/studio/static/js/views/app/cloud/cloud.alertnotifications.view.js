@@ -80,6 +80,9 @@ App.View.AlertNotification = Backbone.View.extend({
     var temp = $("#event-alert-notification-template").html();
     var template = Handlebars.compile(temp);
     this.$el.html(template(this.model.toJSON()));
+    if($fw && $fw.client){
+      $fw.client.lang.insertLangForContainer(this.$el, "alert_notification_details", true);
+    }
     this.$el.modal({keyboard:false, backdrop:"static"});
     this.$el.on("hidden", function(){
       console.log("Remove view for model: " + self.model.cid);

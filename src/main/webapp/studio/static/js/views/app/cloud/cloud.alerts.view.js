@@ -81,6 +81,9 @@ App.View.EventAlerts = Backbone.View.extend({
           }, {
             "sTitle": "Emails",
             "mDataProp": "emails"
+          }, {
+            "sTitle" : "Enabled",
+            "mDataProp": "enabled"
           }],
         "bAutoWidth": false,
         "sPaginationType": 'bootstrap',
@@ -110,7 +113,7 @@ App.View.EventAlerts = Backbone.View.extend({
         collection: this.filteredNotifications,
         displayLength: 5,
         oLanguage: {
-          sEmptyTable: "Please select alerts in the table above to view events."
+          sEmptyTable: "Please use the checkboxes to select alerts in the table above to view events."
         }
       });
       this.notificationsView.render();
@@ -155,27 +158,28 @@ App.View.EventAlerts = Backbone.View.extend({
 
   alertSelected: function(e){
     var self = this;
-    if(self.$el.find("table td input:checked").length > 0){
-      var guid = $(e.currentTarget).closest('tr').data('guid');
+    var objs = [];
+    var checked = self.$el.find("table td input:checked");
+    _.each(checked, function(el){
+      var guid = $(el).closest('tr').data('guid');
       var obj = self.collection.findWhere({guid: guid});
-      self.$el.find('.alert_delete_btn').removeClass("disabled").removeAttr("disabled").unbind('click').bind('click', function(event){
-        event.preventDefault();
-        var confirm = new App.View.ConfirmView({
-          message: "Are you sure you want to delete these alerts?",
-          success: function(){
-            self.deleteAlerts();
-          }
-        });
-        confirm.render();
+      objs.push(obj);
+    });
+
+    self.$el.find('.alert_delete_btn').removeClass("disabled").removeAttr("disabled").unbind('click').bind('click', function(event){
+      event.preventDefault();
+      var confirm = new App.View.ConfirmView({
+        message: "Are you sure you want to delete these alerts?",
+        success: function(){
+          self.deleteAlerts();
+        }
       });
-      if(self.filteredNotifications){
-        self.filterEvents(obj);
-      }
-    } else {
-      self.$el.find('.alert_delete_btn').unbind("click").addClass("disabled").attr("disabled", "disabled");
-      if(self.filteredNotifications){
-        self.filteredNotifications.reset(new App.Collection.CloudEvents([]).toJSON());
-      }
+      confirm.render();
+    });
+
+    if(self.filteredNotifications){
+      self.filteredNotifications.reset(new App.Collection.CloudEvents([]).toJSON());
+      self.filterEvents(objs);
     }
   },
 
@@ -204,35 +208,38 @@ App.View.EventAlerts = Backbone.View.extend({
     });
   },
 
-  filterEvents : function(filter){
-    var eventClasses = filter.get("eventCategories");
-    var eventStates = filter.get("eventNames");
-    var severities = filter.get("eventSeverities");
-    var models = this.notifications.models;
-    for(var i=0;i<models.length;i++){
-      var model = models[i];
-      var match = false;
-      if(eventClasses === "" || eventClasses.indexOf(model.get("category")) > -1){
-        match = true;
-      } else {
-        match = false;
-      }
-      if(match && (eventStates === "" || eventStates.indexOf(model.get("eventType")) > -1)){
-        match = true;
-      } else {
-        match = false;
-      }
-      if(match && (severities === "" ||severities.indexOf(model.get("severity")) > -1 )){
-        match = true;
-      } else {
-        match = false;
-      }
-      if( match ){
-        if(!this.filteredNotifications.findWhere({guid: model.get('guid')})){
-          this.filteredNotifications.add(model);
+  filterEvents : function(filters){
+    var self = this;
+    _.each(filters, function(filter){
+      var eventClasses = filter.get("eventCategories");
+      var eventStates = filter.get("eventNames");
+      var severities = filter.get("eventSeverities");
+      var models = self.notifications.models;
+      for(var i=0;i<models.length;i++){
+        var model = models[i];
+        var match = false;
+        if(eventClasses === "" || eventClasses.indexOf(model.get("category")) > -1){
+          match = true;
+        } else {
+          match = false;
+        }
+        if(match && (eventStates === "" || eventStates.indexOf(model.get("eventType")) > -1)){
+          match = true;
+        } else {
+          match = false;
+        }
+        if(match && (severities === "" ||severities.indexOf(model.get("severity")) > -1 )){
+          match = true;
+        } else {
+          match = false;
+        }
+        if( match ){
+          if(!self.filteredNotifications.findWhere({guid: model.get('guid')})){
+            self.filteredNotifications.add(model);
+          }
         }
       }
-    }
+    });
   }
 });
 
@@ -268,41 +275,27 @@ App.View.Alert = Backbone.View.extend({
    events:{
      'click .save_alert_btn': "saveAlert",
      'click .test_emails_btn':'testEmail',
-     'click .clone_alert_btn' : "cloneAlert"
+     'click .clone_alert_btn' : "cloneAlert",
+     'click .disable_btn' : "disableAlert",
+     'click .enable_btn': "enableAlert"
    },
 
    tagName: "div",
-   className:"modal hide fade in",
+   className:"modal fade in",
 
    render: function(){
      var self = this;
-     Handlebars.registerHelper("alertDetails", function(alert){
-       var html = [];
-       var fields = [{field:"alertName",name:"Alert Name"}, {field:"eventCategories",name:"Event Classes", tag:"select"}, {field:"eventSeverities", name:"Severities",  tag:"select"}, {field:"eventNames", name:"Events",  tag:"select"}, {field:"emails", name:"Emails"}];
-       for(var i=0;i<fields.length;i++){
-         var key = fields[i].field;
-         var fieldName = fields[i].name;
-         var value = alert.get(key);
-         var tag = fields[i].tag || "input";
-         html.push('<div class="control-group '+key+'_control"><label class="control-label" for="input_'+key+'">'+fieldName+'</label><div class="controls">');
-         if(tag === "select"){
-           html.push('<select class="input-xlarge" id="input_'+key+'"></select>');
-         } else {
-           html.push('<input type="text" class="input-xlarge" id="input_'+key+'" value="'+value+'"></input>');
-         }
-         if(key === "emails"){
-           html.push('<button class="btn test_emails_btn"> Test Emails </button>');
-         }
-         html.push('</div></div>');
-       }
-       return html.join("");
-     });
      var temp = $("#event-alert-template").html();
      var template = Handlebars.compile(temp);
      var header = this.model.isNew()? "Create An Alert" : "Update An Alert";
      var enableClone = this.model.isNew() ? false: true;
-     this.$el.html(template({alert: this.model, header:header, enableClone: enableClone}));
+     this.$el.html($(template({alertName: this.model.get("alertName"), emails: this.model.get("emails"), enabled: this.model.get("enabled"), header:header, enableClone: enableClone})));
 
+     //need to append the view to the DOM so that select2 can render placeholders properly
+     $("body").append(self.$el);
+     if($fw && $fw.client){
+       $fw.client.lang.insertLangForContainer(self.$el, "alert_details", true );
+     }
      //init swap selects
      var categorySelector =  new App.View.SwapSelect({
        to : self.model.attributes.eventCategories,
@@ -311,7 +304,8 @@ App.View.Alert = Backbone.View.extend({
        uid: "name",
        label:"Event Categories",
        id:"input_eventCategories",
-       el: self.$el.find('#input_eventCategories').parent().parent()[0]
+       el: self.$el.find('#input_eventCategories').parent()[0],
+       placeholder: "Any Event Category"
      }).render();
 
      var eventNameCollection = App.collections.eventNameFilters.clone();
@@ -322,8 +316,9 @@ App.View.Alert = Backbone.View.extend({
        uid: "name",
        label:"Event Names",
        id:"input_eventNames",
-       el:self.$el.find('#input_eventNames').parent().parent()[0],
-       groupBy: "category"
+       el:self.$el.find('#input_eventNames').parent()[0],
+       groupBy: "category",
+       placeholder: "Any Event Name"
      }).render();
 
      var severitiesFilterSelector = new App.View.SwapSelect({
@@ -333,30 +328,48 @@ App.View.Alert = Backbone.View.extend({
        uid: "name",
        label:"Severities",
        id:"input_eventSeverities",
-       el:self.$el.find('#input_eventSeverities').parent().parent()[0]
+       el:self.$el.find('#input_eventSeverities').parent()[0],
+       placeholder: "Any Level of Severity"
      }).render();
 
-     //bind change event to the category select so that the event names will be filtered
-     categorySelector.$select.on('change', function(event){
-       console.log("Selected : " + event.val);
-       var parts = event.val;
+     var filterEvents = function(collection, filterKey, filterValues){
+       var parts = filterValues;
        if(parts && parts.length > 0){
          var results = [];
          _.each(parts, function(el){
-           var filtered = App.collections.eventNameFilters.where({category: el});
+           var f = {};
+           f[filterKey] = el;
+           var filtered = collection.where(f);
            _.each(filtered, function(model){
              results.push(model.toJSON());
            });
          });
-         eventNameCollection.reset(results);
-       } else {
-         eventNameCollection.reset(App.collections.eventNameFilters.clone().toJSON());
+         collection.reset(results);
        }
-     });
-     var changeEvent = $.Event("change");
-     changeEvent.val = categorySelector.$select.val();
-     categorySelector.$select.trigger(changeEvent);
+     };
 
+     var doFilter = function(){
+       var categoeis = categorySelector.$select.val();
+       var severities = severitiesFilterSelector.$select.val();
+       var allEvents = App.collections.eventNameFilters.clone();
+       filterEvents(allEvents, "category", categoeis);
+       filterEvents(allEvents, "severity", severities);
+       eventNameCollection.reset(allEvents.models);
+     };
+
+     //bind change event to the category select so that the event names will be filtered
+     categorySelector.$select.on('change', function(event){
+       console.log("Selected categories : " + event.val);
+       doFilter();
+     });
+
+     severitiesFilterSelector.$select.on('change', function(event){
+       console.log("Selected severites: " + event.val);
+       doFilter();
+     });
+
+     var changeEvent = $.Event("change");
+     severitiesFilterSelector.$select.trigger(changeEvent);
 
      this.$el.modal({keyboard:false, backdrop:"static"});
      this.$el.on("hidden", function(){
@@ -365,7 +378,7 @@ App.View.Alert = Backbone.View.extend({
      });
    },
 
-   saveAlert: function(e){
+   saveAlert: function(e, enabled){
      e.preventDefault();
      var self = this;
      this.model.off("invalid").on("invalid", function(m, error){
@@ -376,6 +389,10 @@ App.View.Alert = Backbone.View.extend({
      this.model.set("eventNames", (this.$el.find('#input_eventNames').val() || []).join(","));
      this.model.set("eventSeverities", (this.$el.find('#input_eventSeverities').val() || []).join(","));
      this.model.set("emails", this.$el.find('#input_emails').val());
+     this.model.set("enabled", true);
+     if(typeof enabled !== "undefined" && false === enabled){
+       this.model.set("enabled", false);
+     }
      this.model.save(undefined, {success: function(model, response, options){
        if(self.collection){
          self.collection.add(model);
@@ -385,6 +402,14 @@ App.View.Alert = Backbone.View.extend({
        self.showError(res.error);
      }});
    },
+
+  disableAlert: function(e){
+    this.saveAlert(e, false);
+  },
+
+  enableAlert: function(e){
+    this.saveAlert(e, true);
+  },
 
    cloneAlert: function(e){
      e.preventDefault();
