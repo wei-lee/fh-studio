@@ -2,7 +2,7 @@ App.View.DomainAnalyticsClientStartupsByPlatform = App.View.AppAnalyticsByPlatfo
   collection_type: "App.Collection.DomainStartupsPlatform",
   defaultOptions: {
     chart: {
-      width: 5000,
+      width: 300,
       height: 300
     },
     title: {

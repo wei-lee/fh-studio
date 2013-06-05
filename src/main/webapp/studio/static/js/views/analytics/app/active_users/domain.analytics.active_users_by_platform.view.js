@@ -2,7 +2,7 @@ App.View.DomainAnalyticsActiveUsersByPlatform = App.View.AppAnalyticsByPlatform.
   collection_type: "App.Collection.DomainActiveUsersPlatform",
   defaultOptions: {
     chart: {
-      width: 350,
+      width: 300,
       height: 300
     },
     title: {

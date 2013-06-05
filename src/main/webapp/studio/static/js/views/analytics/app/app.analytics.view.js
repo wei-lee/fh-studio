@@ -37,6 +37,7 @@ App.View.AppAnalytics = Backbone.View.extend({
       guid: this.options.guid,
       picker_model: this.options.picker_model
     });
+    debugger;
     this.$el.empty();
     this.$el.append(this.by_date_view.el);
   },
