@@ -45,7 +45,7 @@ App.View.AppAnalyticsByLocation = Backbone.View.extend({
 
     this.$geochart.html(new App.View.Geo({
       collection: this.collection,
-      width: this.width
+      width: this.$el.width()
     }).render().$el);
     return this;
   }

@@ -120,6 +120,7 @@ html, body {
   min-height:755px;
   background: #fff;
   font-size: 12px;
+  padding-bottom: 40px;
 }
 body {
   height:100%;
