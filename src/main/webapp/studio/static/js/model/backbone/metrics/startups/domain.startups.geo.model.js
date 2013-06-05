@@ -1,9 +1,9 @@
-App.Model.DomainStartupsGeo = Backbone.Model.extend({});
+App.Model.DomainInstallsGeo = Backbone.Model.extend({});
 
-App.Collection.DomainStartupsGeo = App.Collection.DomainMetrics.extend({
-  model: App.Model.DomainStartupsGeo,
-  metric: "domainstartupsgeo",
-  url: "/beta/static/mocks/metrics/domain_startups_geo.json",
+App.Collection.DomainInstallsGeo = App.Collection.DomainMetrics.extend({
+  model: App.Model.DomainInstallsGeo,
+  metric: "domaininstallsgeo",
+  url: "/beta/static/mocks/metrics/domain_installs_geo.json",
   
   parse: function(response) {
     var self = this;

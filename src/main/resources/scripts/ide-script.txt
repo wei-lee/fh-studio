@@ -27,6 +27,8 @@ js/model/backbone/metrics/installs/domain.installs.date.model.js
 js/model/backbone/metrics/installs/app.installs.date.model.js
 js/model/backbone/metrics/installs/app.installs.geo.model.js
 js/model/backbone/metrics/installs/app.installs.platform.model.js
+js/model/backbone/metrics/startups/domain.startups.geo.model.js
+js/model/backbone/metrics/startups/domain.startups.date.model.js
 js/model/backbone/metrics/startups/app.startups.date.model.js
 js/model/backbone/metrics/startups/app.startups.geo.model.js
 js/model/backbone/metrics/startups/app.startups.platform.model.js
@@ -67,7 +69,6 @@ js/views/analytics/app/startups/project.app.analytics.client_startups_dashboard.
 js/views/analytics/app/app.analytics.view.js
 js/views/analytics/app/active_users/domain.analytics.active_users_by_platform.view.js
 js/views/analytics/app/cloud_requests/domain.analytics.cloud_requests_by_platform.view.js
-js/views/analytics/app/startups/domain.analytics.client_startups_by_platform.view.js
 js/views/analytics/app/installs/project.app.analytics.client_installs.view.js
 js/views/analytics/app/cloud_requests/project.app.analytics.client_cloud_requests.view.js
 js/views/analytics/app/active_users/project.app.analytics.client_active_users.view.js
@@ -85,6 +86,11 @@ js/views/analytics/app/installs/domain.analytics.client_installs_by_platform.vie
 js/views/analytics/app/installs/domain.analytics.client_installs_by_location.view.js
 js/views/analytics/app/installs/domain.analytics.client_installs_dashboard.view.js
 js/views/analytics/app/installs/domain.analytics.client_installs.view.js
+js/views/analytics/app/startups/domain.analytics.client_startups_by_date.view.js
+js/views/analytics/app/startups/domain.analytics.client_startups_by_platform.view.js
+js/views/analytics/app/startups/domain.analytics.client_startups_by_location.view.js
+js/views/analytics/app/startups/domain.analytics.client_startups_dashboard.view.js
+js/views/analytics/app/startups/domain.analytics.client_startups.view.js
 js/views/analytics/domain.analytics.controller.view.js
 js/views/analytics/app/domain.overview.area.active_users.view.js
 js/views/analytics/app/domain.overview.area.cloud_requests.view.js

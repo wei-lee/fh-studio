@@ -1,7 +1,6 @@
-App.View.DomainAnalyticsClientInstallsByDate = App.View.DomainAnalyticsByDate.extend({
-  collection_type: "App.Collection.DomainInstallsDate",
+App.View.DomainAnalyticsClientStartupsByDate = App.View.DomainAnalyticsByDate.extend({
+  collection_type: "App.Collection.DomainStartupsDate",
   defaultOptions: {
-    total: false,
     chart: {
       height: 300
     },
@@ -13,7 +12,7 @@ App.View.DomainAnalyticsClientInstallsByDate = App.View.DomainAnalyticsByDate.ex
       }
     },
     title: {
-      text: 'Domain Installs by Date'
+      text: 'Domain Startups by Date'
     }
   }
 });

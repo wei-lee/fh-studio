@@ -6,8 +6,8 @@ App.View.DomainAnalyticsController = Backbone.View.extend({
   },
 
   subviews: {
-    "installs": App.View.DomainAnalyticsInstalls
-    // "startups": App.View.DomainAnalyticsStartups,
+    "installs": App.View.DomainAnalyticsInstalls,
+    "startups": App.View.DomainAnalyticsStartups
     // "cloud_requests": App.View.DomainAnalyticsCloudRequests,
     // "active_users": App.View.DomainAnalyticsActiveUsers
   },
