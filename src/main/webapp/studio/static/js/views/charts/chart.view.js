@@ -93,11 +93,9 @@ App.View.Chart = Backbone.View.extend({
       };
     }
 
-    this.chart = new Highcharts.Chart(this.options);
+    // Some doughnuts may need adjusting
 
-    // setTimeout(function() {
-    //   self.resize()
-    // }, 0);
+    this.chart = new Highcharts.Chart(this.options);
     return this;
   }
 });
