@@ -14,7 +14,7 @@ App.View.DomainAnalyticsClientInstallsByDate = App.View.DomainAnalyticsByDate.ex
       }
     },
     title: {
-      text: 'Installs by Date'
+      text: 'Domain Installs by Date'
     }
   }
 });
