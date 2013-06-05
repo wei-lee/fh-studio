@@ -76,6 +76,16 @@ App.Collection.DomainInstallsDate = App.Collection.DomainMetrics.extend({
       parsed.push(series);
     });
 
+    // Sort by timestamp
+    _.each(parsed, function(item) {
+      var unsorted_data = item.data;
+      var sorted_data = _.sortBy(unsorted_data, function(d) {
+        // ts
+        return d[0];
+      });
+      item.data = sorted_data;
+    });
+
     return parsed;
   },
 
