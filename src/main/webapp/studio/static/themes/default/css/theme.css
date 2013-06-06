@@ -3470,6 +3470,11 @@ li.reportdashboard_link .icon-globe {
 
 #app_analytics .nav {
   margin-left: 0;
+  margin-bottom: 0;
+}
+
+#app_analytics .datepicker_container .control-group {
+  margin-bottom: 0;
 }
 
 #app_analytics .reporting_form {

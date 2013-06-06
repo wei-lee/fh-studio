@@ -124,7 +124,7 @@ App.Collection.PieMetrics = App.Collection.Metrics.extend({
     options.data = Backbone.Collection.prototype.toJSON.call(this);
 
     // Make Doughnut
-    options.innerSize = '80%';
+    options.innerSize = '60%';
     options.showInLegend = true;
     return options;
   }

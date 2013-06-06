@@ -54,9 +54,12 @@ App.View.DomainAnalyticsOverview = Backbone.View.extend({
 
   showDetails: function(e) {
     this.$overview_container.hide();
+    var metric_type = $(e.currentTarget).data('metric-type'); // Metric to show
+
     this.domain_analytics = new App.View.DomainAnalyticsController({
       hidePicker: true,
-      picker_model: this.picker.model
+      picker_model: this.picker.model,
+      type: metric_type
     });
     this.domain_analytics.render();
     this.$totals_container.html(this.domain_analytics.el);
