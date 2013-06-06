@@ -2,36 +2,49 @@
   <%@ include file="./dialogs/info_dialog.html"%>
   <%@ include file="./dialogs/connectivity_dialog.html"%>
 </div>
+
 <ul id="main_tabs_buttons" class="ui-no-corner-bottom">
- <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER)) { %>
- <li class="dashboard-tab"><a id="dashboard_tab" href="#tabs-4">Dashboard</a></li>
- <li class="apps-tab"><a id="apps_tab" href="#tabs-1">Apps</a></li>
- <% if(studio.getProperty("nodejsEnabled").equals("true")){ %>
-   <li class="admin-tab"><a id="admin_tab" href="#tabs-6">Admin</a></li>
- <%}%>
- <%}%>
-  
+  <li class="dashboard-tab">
+    <a id="dashboard_tab" href="#tabs-4">Dashboard</a>
+  </li>
+
+  <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER)) { %>
+    <li class="apps-tab">
+      <a id="apps_tab" href="#tabs-1">Apps</a>
+    </li>
+  <%}%>
+
+  <% if(studio.getProperty("nodejsEnabled").equals("true")){ %>
+  <li class="admin-tab">
+    <a id="admin_tab" href="#tabs-6">Admin</a>
+  </li>
+  <%}%>
+
   <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_REPORTING)) { %>
-    <li class="reporting-tab"><a id="reporting_tab" href="#tabs-5">Reporting</a></li>
+    <li class="reporting-tab">
+      <a id="reporting_tab" href="#tabs-5">Reporting</a>
+    </li>
   <% } %>
 
-  <li class="account-tab"><a id="account_tab" href="#tabs-3">My Account</a></li>
+  <li class="account-tab">
+    <a id="account_tab" href="#tabs-3">My Account</a>
+  </li>
 </ul>
+
 <div id="main_tabs_panels" class="ui-layout-content">
- <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER)) { %>
   <%@ include file="./dashboard/dashboard_tab.html" %>
-  
-  <%@ include file="./apps/apps_tab.html" %>
+
+  <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER)) { %>
+    <%@ include file="./apps/apps_tab.html" %>
+  <%}%>
 
   <% if(studio.getProperty("nodejsEnabled").equals("true")){ %>
     <%@ include file="./admin/admin_tab.html" %>
   <%}%>
- <%}%>
-  
+
   <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_REPORTING)) { %>
     <%@ include file="./reporting/reporting_tab.html" %>
   <% } %>
- 
+
   <%@ include file="./account/account_tab.html" %>
-  
 </div>

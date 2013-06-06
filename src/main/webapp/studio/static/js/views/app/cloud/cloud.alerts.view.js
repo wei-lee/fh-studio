@@ -281,7 +281,7 @@ App.View.Alert = Backbone.View.extend({
    },
 
    tagName: "div",
-   className:"modal fade in",
+   className:"modal fade in alert_details_view",
 
    render: function(){
      var self = this;

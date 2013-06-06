@@ -19,8 +19,36 @@ Admin.Users.Controller = Controller.extend({
     user_import: "#useradmin_user_import"
   },
 
+  rolesTextMap: {
+    "reselleradmin": "Reseller Administrator",
+    "customeradmin": "Customer Administrator",
+    "portaladmin": "Domain Administrator",
+    "devadmin": "Developer Administrator",
+    "analytics": "Analytics",
+    "dev": "Developer"
+  },
+
+  rolesToRemove: {
+    "domain": ["reselleradmin", "customeradmin"],
+    "customer": ["reselleradmin"]
+  },
+
   container: null, // keeps track of currently active/visible container
   user_table: null,
+
+  convertRoles: function(roleArr, level){
+    var self = this;
+    var removeRoles;
+    if(level){
+      removeRoles = self.rolesToRemove[level];
+    }
+    if(removeRoles){
+      roleArr = _.difference(roleArr, removeRoles);
+    }
+    return _.map(roleArr, function(role){
+       return [self.rolesTextMap[role], role];
+    });
+  },
 
   init: function(params) {
     var self = this;
@@ -145,6 +173,8 @@ Admin.Users.Controller = Controller.extend({
       if (rolesTo.indexOf('sub') > -1) {
         rolesTo.splice(rolesTo.indexOf('sub'), 1);
       }
+      var customerRoles = user.customerRoles;
+      var resellerRoles = user.resellerRoles;
 
       var policiesFrom = [];
       var policyIdGuidMap = {};
@@ -157,8 +187,14 @@ Admin.Users.Controller = Controller.extend({
         policiesTo.push([policyIdGuidMap[user.authpolicies[pi]] || ('Unknown Policy - ' + user.authpolicies[pi]), user.authpolicies[pi]]);
       }
 
-      self.updateSwapSelect('#update_user_role_swap', results[1], rolesTo);
-      self.updateSwapSelect('#update_user_policy_swap', policiesFrom, policiesTo);
+      self.updateRolesSwapSelect('#update_user_role_swap', self.convertRoles(results[1], "domain"), rolesTo, "domain");
+      if(customerRoles && $('#update_user_customer_role_swap').length > 0){
+        self.updateRolesSwapSelect('#update_user_customer_role_swap', self.convertRoles(results[1], "customer"), customerRoles, "customer");
+      }
+      if(resellerRoles && $('#update_user_reseller_role_swap').length > 0){
+        self.updateRolesSwapSelect('#update_user_reseller_role_swap', self.convertRoles(results[1]), resellerRoles, "reseller");
+      }
+      self.updateAuthPolicySwapSelect('#update_user_policy_swap', policiesFrom, policiesTo);
       self.bindSwapSelect(parent);
 
       $('input,select,button', parent).not('#update_user_id,#update_user_enabled,#update_user_blacklisted,.invite_user_btn').removeAttr('disabled');
@@ -239,17 +275,22 @@ Admin.Users.Controller = Controller.extend({
       fields.name = name;
     }
     // select fields
-    var rolesArr = [];
-    $('#update_user_role_swap .swap-to option', this.views.user_update).each(function (i, item) {
-      rolesArr.push($(item).val());
-    });
+    var rolesArr = self.getSelectedItems('#update_user_role_swap');
     fields.roles = (rolesArr.length > 0) ? rolesArr.join(', ') : '';
 
+    var customerRolesField = $('#update_user_customer_role_swap');
+    if(customerRolesField.length > 0){
+      var customerRolesArr = self.getSelectedItems('#update_user_customer_role_swap');
+      fields.customerRoles = (customerRolesArr.length > 0) ? customerRolesArr.join(", "): "";
+    }
+    var resellerRolesField = $('#update_user_reseller_role_swap');
+    if(resellerRolesField.length > 0){
+      var resellerRolesArr = self.getSelectedItems('#update_user_reseller_role_swap');
+      fields.resellerRoles = resellerRolesArr.length > 0 ? resellerRolesArr.join(", "): "";
+    }
+
     // select fields
-    var policiesArr = [];
-    $('#update_user_policy_swap .swap-to option', this.views.user_update).each(function (i, item) {
-      policiesArr.push($(item).val());
-    });
+    var policiesArr = self.getSelectedItems('#update_user_policy_swap');
     fields.authpolicies = (policiesArr.length > 0) ? policiesArr.join(', ') : '';
 
     this.models.user.update(fields, function(res) {
@@ -331,7 +372,13 @@ Admin.Users.Controller = Controller.extend({
       console.log('Role list OK.');
       var roles = res.list;
       var container = '#create_user_role_swap';
-      self.updateSwapSelect(container, roles);
+      self.updateRolesSwapSelect(container, self.convertRoles(roles, "domain"), undefined, "domain");
+      if($('#create_user_customer_role_swap').length > 0){
+        self.updateRolesSwapSelect('#create_user_customer_role_swap', self.convertRoles(roles, "customer"), undefined, "customer");
+      }
+      if($('#create_user_reseller_role_swap').length > 0){
+        self.updateRolesSwapSelect('#create_user_reseller_role_swap', self.convertRoles(roles), undefined, "reseller");
+      }
     }, function(e) {
       self.showAlert('error', '<strong>Error loading Roles</strong> ' + e);
     });
@@ -345,7 +392,7 @@ Admin.Users.Controller = Controller.extend({
       for (var pi = 0, pl = policies.length; pi < pl; pi += 1) {
         itemsFrom.push([policies[pi].policyId, policies[pi].guid]);
       }
-      self.updateSwapSelect(container, itemsFrom);
+      self.updateAuthPolicySwapSelect(container, itemsFrom, undefined);
     }, function(e) {
       self.showAlert('error', '<strong>Error loading Groups</strong> ' + e);
     });
@@ -402,8 +449,14 @@ Admin.Users.Controller = Controller.extend({
         policiesFrom.push([results[1][pi].policyId, results[1][pi].guid]);
       }
 
-      self.updateSwapSelect('#import_users_role_swap', results[0]);
-      self.updateSwapSelect('#import_users_policy_swap', policiesFrom);
+      self.updateRolesSwapSelect('#import_users_role_swap', self.convertRoles(results[0], "domain"), undefined, "domain");
+      if($('#import_user_customer_role_swap').length > 0){
+        self.updateRolesSwapSelect('#import_user_customer_role_swap', self.convertRoles(results[0], "customer"), undefined, "customer");
+      }
+      if($('#import_user_reseller_role_swap').length > 0){
+        self.updateRolesSwapSelect('#import_user_reseller_role_swap', self.convertRoles(results[0]), undefined, "reseller" );
+      }
+      self.updateAuthPolicySwapSelect('#import_users_policy_swap', policiesFrom, undefined);
       self.bindSwapSelect(parent);
       $('input,select,button', parent).not('input[type=file]').removeAttr('disabled');
     });
@@ -434,16 +487,25 @@ Admin.Users.Controller = Controller.extend({
     }
     var invite = form.find('#create_user_invite').is(':checked');
 
-    var rolesArr = [];
-    $('#create_user_role_swap .swap-to option', this.views.user_create).each(function (i, item) {
-      rolesArr.push($(item).val());
-    });
-    var roles = rolesArr.length > 0 ? rolesArr.join(', ') : null;
+    // select fields
+    var rolesArr = self.getSelectedItems('#create_user_role_swap');
+    var roles = (rolesArr.length > 0) ? rolesArr.join(', ') : null;
 
-    var policiesArr = [];
-    $('#create_user_policy_swap .swap-to option', this.views.user_create).each(function (i, item) {
-      policiesArr.push($(item).val());
-    });
+    var customerRoles = null;
+    var customerRolesField = $('#create_user_customer_role_swap');
+    if(customerRolesField.length > 0){
+      var customerRolesArr = self.getSelectedItems('#create_user_customer_role_swap');
+      customerRoles = (customerRolesArr.length > 0) ? customerRolesArr.join(", "): null;
+    }
+
+    var resellerRoles = null;
+    var resellerRolesField = $('#create_user_reseller_role_swap');
+    if(resellerRolesField.length > 0){
+      var resellerRolesArr = self.getSelectedItems('#create_user_reseller_role_swap');
+      resellerRoles = resellerRolesArr.length > 0 ? resellerRolesArr.join(", "): null;
+    }
+
+    var policiesArr = self.getSelectedItems('#create_user_policy_swap');
     var policies = policiesArr.length > 0 ? policiesArr.join(', ') : null;
 
     var storeitems = null;
@@ -451,7 +513,7 @@ Admin.Users.Controller = Controller.extend({
 
     var activated = true;
     self.showAlert('info', '<strong>Creating User</strong> (' + id + ')');
-    this.models.user.create(id, email, name, roles, policies, groups, storeitems, password, activated, invite, function(res) {
+    this.models.user.create(id, email, name, roles, policies, groups, storeitems, password, activated, invite, customerRoles, resellerRoles, function(res) {
       self.showUsersList();
       if (res.message === 'user_invalid_email') {
         self.showAlert('info', '<strong>Warning - invalid user email</strong> (' + id + ')');
@@ -467,15 +529,19 @@ Admin.Users.Controller = Controller.extend({
     var form = $(this.views.user_import + ' form');
 
     var invite = form.find('#import_users_invite').is(':checked');
-    var rolesArr = [];
-    $('#import_users_role_swap .swap-to option', this.views.user_import).each(function (i, item) {
-      rolesArr.push($(item).val());
-    });
+    var rolesArr = self.getSelectedItems('#import_users_role_swap');
     var roles = rolesArr.length > 0 ? rolesArr.join(', ') : ''; // important to send '' here if no roles selected to ensure roles updated to remove all
-    var policiesArr = [];
-    $('#import_users_policy_swap .swap-to option', this.views.user_import).each(function (i, item) {
-      policiesArr.push($(item).val());
-    });
+    var customerRoles = null;
+    var resellerRoles = null;
+    if($('#import_user_customer_role_swap').length > 0){
+      var customerRolesArr = self.getSelectedItems('#import_user_customer_role_swap');
+      customerRoles = customerRolesArr.length > 0 ? customerRolesArr.join(', '): '';
+    }
+    if($('#import_user_reseller_role_swap').length > 0){
+      var resellerRolesArr = self.getSelectedItems('#import_user_reseller_role_swap');
+      resellerRoles =  resellerRolesArr.length > 0 ? resellerRolesArr.join(', '): '';
+    }
+    var policiesArr = self.getSelectedItems('#import_users_policy_swap');
     var policies = policiesArr.length > 0 ? policiesArr.join(', ') : ''; // same as above ^^^
     var groups = null;
     var fileField = form.find('#import_users_file');
@@ -496,7 +562,7 @@ Admin.Users.Controller = Controller.extend({
       self.clearProgressModal();
       self.appendProgressLog('Uploading file.');
 
-      self.models.user.imports(invite, roles, policies, groups, fileField, function(data) {
+      self.models.user.imports(invite, roles, policies, groups, fileField, customerRoles, resellerRoles, function(data) {
         // file upload success
         var res = data.result;
         if (res.cachekey != null) {
@@ -610,7 +676,10 @@ Admin.Users.Controller = Controller.extend({
       var controls = [];
       // TODO: Move to clonable hidden_template
       controls.push('<button class="btn edit_user">Edit</button>&nbsp;');
-      controls.push('<button class="btn btn-danger delete_user">Delete</button>');
+      //a user exists in either reseller or customer scope and portaladmin user should have no permission to delete them
+      if($fw.getUserProp("roles").indexOf("customeradmin") > -1 || $fw.getUserProp("roles").indexOf("reselleradmin") > -1){
+        controls.push('<button class="btn btn-danger delete_user">Delete</button>');
+      }
       row.push(controls.join(""));
     });
     return res;
@@ -711,5 +780,150 @@ Admin.Users.Controller = Controller.extend({
       console.log(err);
       self.showAlert('error', '<strong>Error ' + actionDesc + '</strong> ' + err);
     });
+  },
+
+  //the following methods override the ones in controller.js files
+  bindSwapSelect: function(container) {
+
+  },
+
+  // clears/resets all swap selects found in container
+  clearSwapSelects: function(container) {
+    $(container).find('.swap-select select').empty().html('<option>Loading...</option>');
+  },
+
+  updateRolesSwapSelect: function(container, from, to, level){
+    var placeholder = "Click to Assign Roles";
+    var block_helps_map = {
+      "domain": "These roles are active for the domain represented by the current host name only - " + window.DOMAIN,
+      "customer": "These roles are active for all domains owned by customer " + $fw.getClientProp("customer") + " <a href='#' class='customer_roles_help' data-toggle='popover'><i class='icon-question-sign'></i></a>",
+      "reseller": "These roles are active for all domains owned by all customers who are managed by reseller " + $fw.getClientProp("reseller") + " <a href='#' class='reseller_roles_help' data-toggle='popover'><i class='icon-question-sign'></i></a>"
+    };
+    var blockHelp = block_helps_map[level];
+    this.updateSwapSelect(container, from, to, placeholder, blockHelp);
+    this.updateHelpPopover(container, ".customer_roles_help", "getDomains", "The following domains are owned by customer " + $fw.getClientProp("customer"));
+    this.updateHelpPopover(container, ".reseller_roles_help", "getCustomers", "The following customers are managed by reseller " + $fw.getClientProp("reseller"));
+  },
+
+  updateAuthPolicySwapSelect: function(container, from, to){
+    this.updateSwapSelect(container, from, to, "Click to Select Policies");
+  },
+
+  // updates the swap select, given as the container, with the form and to values.
+  // to values are optional
+  // from/to values can be:
+  // - array of values to use as text and 'value' e.g. [['TEST'], ...] ==> <option value="TEST">TEST</option>...
+  // - or array of arrays, where each sub-array has 2 values, the text and the 'value' e.g. [['TEST','testid'], ...] ==> <option value="testid">TEST</option>...
+  updateSwapSelect: function(container, from, to, placeholder, blockhelp) {
+    var fromModels = [];
+    $.each(from, function(i, from_item) {
+      if(typeof from_item === "string"){
+        fromModels.push({text: from_item, value: from_item});
+      } else {
+        fromModels.push({text: from_item[0], value: from_item[1]});
+      }
+    });
+    var toModels = [];
+    if ('undefined' !== typeof to) {
+      $.each(to, function(i, to_item) {
+        if ('string' === typeof to_item) {
+          toModels.push(to_item);
+        } else {
+          toModels.push(to_item[1]);
+        }
+      });
+    }
+    var fromCollection = new App.Collection.SwapSelectItems(fromModels);
+    var swapSelect = new App.View.SwapSelect({
+      el: container,
+      to: toModels,
+      from: fromCollection,
+      from_name_key: "text",
+      uid: "value",
+      id: $(container).attr("id") + "_select",
+      placeholder: placeholder,
+      block_help: blockhelp,
+      className: "input-xxlarge"
+    });
+    swapSelect.render();
+
+  },
+
+  getSelectedItems: function(container) {
+    return $(container).find('select').val() || [];
+  },
+
+  updateHelpPopover: function(container, selector, functionName, title){
+    if($(container).find(selector).length > 0){
+      this[functionName](function(list){
+        var helpcontent = [];
+        helpcontent.push("<ul>");
+        for(var i=0;i<list.length;i++){
+          helpcontent.push("<li>" + list[i] + "</li>");
+        }
+        helpcontent.push("</ul>");
+        $(container).find(selector).click(function(e){
+          e.preventDefault();
+        }).popover({
+            trigger: "hover",
+            content: helpcontent.join(""),
+            html: true,
+            title: title
+          });
+      }, function(){
+        $(container).find(selector).click(function(e){
+          e.preventDefault();
+        }).popover({
+            trigger: "hover",
+            content: "Failed to load list",
+            html: true,
+            title: ""
+          });
+      });
+    }
+  },
+
+  getDomains: function(success, fail){
+    var domains = $fw.data.get("customerdomains");
+    if(domains){
+      success(domains);
+    } else {
+      $fw.server.post('/box/srv/1.1/admin/customer/domain/list', {name: $fw.getClientProp("customer")}, function(res){
+        if("ok" === res.status){
+          var domainList  = res.list;
+          var domains = [];
+          for(var i=0;i<domainList.length;i++){
+            domains.push(domainList[i].fields.domain);
+          }
+          $fw.data.set("customerdomains", domains);
+          success(domains);
+        } else {
+          fail();
+        }
+      }, fail, true);
+    }
+
+  },
+
+  getCustomers: function(success, fail){
+    var customers = $fw.data.get("resellercustomers");
+    if(customers){
+      success(customers);
+    } else {
+      $fw.server.post('/box/srv/1.1/admin/reseller/customer/list', {reseller: $fw.getClientProp("reseller")}, function(res){
+        if("ok" === res.status){
+          var customerList  = res.list;
+          var customers = [];
+          for(var i=0;i<customerList.length;i++){
+            customers.push(customerList[i].fields.name);
+          }
+          $fw.data.set("resellercustomers", customers);
+          success(customers);
+        } else {
+          fail();
+        }
+      }, fail, true);
+    }
+
   }
 });

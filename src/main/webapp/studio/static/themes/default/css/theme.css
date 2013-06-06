@@ -1,4 +1,5 @@
 @import url("font-awesome.css");
+@import url("select2.css");
 
 /*
  * DEFAULT IDE THEME
@@ -3303,6 +3304,9 @@ a.docslink {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
+}
+
+.alert_details_view .controls .select2-choices {
   width: 270px;
 }
 
@@ -3526,4 +3530,8 @@ li.reportdashboard_link .icon-globe {
 
 #per_app_summary_container .reportingdashboard_image_container {
     border-bottom: none;
+}
+
+.modal-body {
+  max-height: 800px !important;
 }

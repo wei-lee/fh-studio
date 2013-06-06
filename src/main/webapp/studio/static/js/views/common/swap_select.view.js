@@ -8,6 +8,7 @@ App.View.SwapSelect = Backbone.View.extend({
     this.options = options;
     this.to = options.to;
     this.uid = options.uid || 'guid';
+    this.options.className = options.className || "input-xlarge";
     this.collection = options.from;
     this.collection.fetch();
     this.collection.bind('sync reset', this.render, this);
