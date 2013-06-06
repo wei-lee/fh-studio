@@ -53,7 +53,7 @@ App.Model.PieMetric = Backbone.Model.extend({
     } else if (key == 'embed') {
       return '#4572a7';
     } else if (key == 'fhc') {
-      return '#89a54e';
+      return '#492970';
     } else if (key === '') {
       // Other
       return '#db843d';

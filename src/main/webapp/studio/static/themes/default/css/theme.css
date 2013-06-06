@@ -3650,3 +3650,7 @@ h4.by_location {
 .custom_range_label {
   display: none;
 }
+
+.text-right {
+  text-align: right;
+}

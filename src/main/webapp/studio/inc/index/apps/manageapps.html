@@ -20,6 +20,13 @@
           Details
         </a>
       </li>
+      <li class="template-restriction">
+        <a href="#" data-controller="apps.icons.controller">
+          <i class="icon-picture"></i>
+          Icons
+        </a>
+      </li>
+      <li class="nav-header">Analytics</li>
       <% if(studio.getProps().optBoolean("reporting-reports-enabled")){ %>
       <li class="template-restriction">
         <a href="#" data-controller="reporting.app.controller">
@@ -28,12 +35,14 @@
         </a>
       </li>
       <% } %>
-      <li class="template-restriction">
-        <a href="#" data-controller="apps.icons.controller">
-          <i class="icon-picture"></i>
-          Icons
+      <% if(studio.getProps().optBoolean("stats-enabled")){ %>
+      <li class="template-restriction nodejs_mode">
+        <a href="#" data-controller="stats.controller">
+          <i class="icon-bar-chart"></i>
+          Stats
         </a>
       </li>
+      <% } %>
       <li class="nav-header">Source</li>
       <li>
         <a href="#" data-controller="apps.editor.controller">
@@ -97,14 +106,6 @@
           Deploy
         </a>
       </li>
-      <% if(studio.getProps().optBoolean("stats-enabled")){ %>
-      <li class="template-restriction nodejs_mode">
-        <a href="#" data-controller="stats.controller">
-          <i class="icon-bar-chart"></i>
-          Stats
-        </a>
-      </li>
-      <% } %>
       <li class="template-restriction nodejs_mode">
         <a href="#" data-controller="apps.cloudnotifications.controller">
           <i class="icon-envelope"></i>
