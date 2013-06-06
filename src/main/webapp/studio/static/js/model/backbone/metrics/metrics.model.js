@@ -16,8 +16,8 @@ App.Collection.Metrics = Backbone.Collection.extend({
   },
 
   getSubtitle: function() {
-    var from = App.models.datepicker.from();
-    var to = App.models.datepicker.to();
+    var from = App.picker_from;
+    var to = App.picker_to;
     var total = this.getTotal();
     return from.format("DD/MM/YY") + " - " + to.format("DD/MM/YY") + "    Total: " + total;
   },

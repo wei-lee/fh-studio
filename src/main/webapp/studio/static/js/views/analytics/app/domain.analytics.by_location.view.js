@@ -48,9 +48,9 @@ App.View.DomainAnalyticsByLocation = Backbone.View.extend({
     // Resize "fullscreen" geocharts to be bigger
     // Although don't expand them to their container size, since these 
     // charts are very vertically long
-    if (this.options.fullscreen) {
-      width = 600;
-    }
+    // if (this.options.fullscreen) {
+    //   width = 600;
+    // }
 
     this.$geochart.html(new App.View.Geo({
       collection: this.collection,

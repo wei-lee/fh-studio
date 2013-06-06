@@ -2,16 +2,19 @@ App.View.ProjectAppAnalyticsDatepicker = Backbone.View.extend({
   freshInit: true,
 
   initialize: function(options) {
-    if (!options || !options.model) {
-      if (App.models.datepicker) {
-        console.log('No model passed, re-using existing model');
-        this.model = App.models.datepicker;
-        this.freshInit = false;
-      } else {
-        console.log('No model passed, init');
-        this.model = new App.Model.DatePicker();
-        App.models.datepicker = this.model;
-      }
+    // Globals available (picker previously used)
+    // init with these values
+
+    if (App.picker_from && App.picker_to) {
+      console.log('Globals available, initialising with these');
+      this.model = new App.Model.DatePicker({
+        from: App.picker_from,
+        to: App.picker_to
+      });
+      this.freshInit = false;
+    } else {
+      console.log('No globals available, initialising fresh');
+      this.model = new App.Model.DatePicker();
     }
   },
 
@@ -21,7 +24,6 @@ App.View.ProjectAppAnalyticsDatepicker = Backbone.View.extend({
     this.$el.html(template());
 
     this.$picker = this.$el.find('#analytics_picker');
-
 
     if (this.freshInit) {
       console.log('Fresh datepicker init');
@@ -64,6 +66,9 @@ App.View.ProjectAppAnalyticsDatepicker = Backbone.View.extend({
       to: to.valueOf()
     });
 
+    App.picker_from = from;
+    App.picker_to = to;
+
     this.$picker.daterangepicker({
       opens: 'left',
       format: 'MM/DD/YYYY',
@@ -85,6 +90,8 @@ App.View.ProjectAppAnalyticsDatepicker = Backbone.View.extend({
         from: from.valueOf(),
         to: to.valueOf()
       });
+      App.picker_from = from;
+      App.picker_to = to;
     });
 
     // Inital set
