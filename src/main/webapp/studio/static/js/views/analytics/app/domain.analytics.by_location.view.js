@@ -1,6 +1,10 @@
 App.View.DomainAnalyticsByLocation = Backbone.View.extend({
+  defaultOptions: {
+    fullscreen: false
+  },
+
   initialize: function(options) {
-    options = $.extend(true, {}, this.defaultOptions, options) || {};
+    this.options = $.extend(true, {}, this.defaultOptions, options) || {};
 
     var collection_class = this.collection_type.split(".")[2];
 
@@ -38,17 +42,20 @@ App.View.DomainAnalyticsByLocation = Backbone.View.extend({
       this.$title.text(this.title);
     }
 
-    if (this.$el.width() > 500) {
-      // Full screen container, resize to 600
-      this.$geochart.width('750');
-      this.$geochart.css({margin: '0 auto'});
+    // Default to container width
+    var width = this.$el.width();
+
+    // Resize "fullscreen" geocharts to be bigger
+    // Although don't expand them to their container size, since these 
+    // charts are very vertically long
+    if (this.options.fullscreen) {
+      width = 600;
     }
 
     this.$geochart.html(new App.View.Geo({
       collection: this.collection,
-      width: this.$geochart.width()
+      width: width
     }).render().$el);
-
     return this;
   }
 });

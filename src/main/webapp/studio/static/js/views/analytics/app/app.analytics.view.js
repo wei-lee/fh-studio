@@ -61,7 +61,7 @@ App.View.AppAnalytics = Backbone.View.extend({
       this.by_location_view.remove();
     }
     this.by_location_view = new this.views.byLocation({
-      width: $('.container').width(),
+      fullscreen: true,
       guid: this.options.guid,
       picker_model: this.options.picker_model
     });
