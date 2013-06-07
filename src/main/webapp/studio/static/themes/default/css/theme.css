@@ -3659,3 +3659,7 @@ h4.by_location {
 .text-right {
   text-align: right;
 }
+
+.highcharts-title tspan {
+  cursor: pointer;
+}
