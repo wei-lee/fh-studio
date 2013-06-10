@@ -4,6 +4,7 @@ App.View.DomainAnalyticsByLocation = Backbone.View.extend({
   },
 
   initialize: function(options) {
+    var self = this;
     this.options = $.extend(true, {}, this.defaultOptions, options) || {};
 
     var collection_class = this.collection_type.split(".")[2];
@@ -20,6 +21,13 @@ App.View.DomainAnalyticsByLocation = Backbone.View.extend({
       this.render();
     }, this);
     this.collection.fetch();
+
+    $(window).bind('resizeEnd', function() {
+      // Only resize if visible
+      if ($(self.$el).is(':visible')) {
+        self.render(false);
+      }
+    });
   },
 
   render: function(loading) {
