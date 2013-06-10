@@ -3664,3 +3664,7 @@ h4.by_location {
 .highcharts-title tspan {
   cursor: pointer;
 }
+
+.top-margin {
+  margin-top: 10px;
+}

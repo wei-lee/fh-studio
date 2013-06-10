@@ -8,6 +8,11 @@ App.View.DomainAnalyticsOverview = Backbone.View.extend({
     var template = Handlebars.compile(html);
     this.$el.html(template());
 
+    // Sample data enabled?
+    if ($fw.getClientProp('reporting-sampledata-enabled') === 'true') {
+      this.$el.find('.alert').removeClass('hidden_template');
+    }
+
     this.$datepicker_container = this.$el.find('.datepicker_container');
     this.$overview_container = this.$el.find('.overview_container');
     this.$totals_container = this.$el.find('.domain_totals_container');
