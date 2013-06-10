@@ -75,7 +75,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
 		var guid = $fw.data.get('inst').guid;
 		var targetInfo = self.getTargetData();
 		var depTarget = targetInfo.fields.target;
-		var select = $('select.nodevers');
+		var select = $('select.nodevers:visible');
 		var runtimesEnabled = $fw.getClientProp("nodejs.runtimes."+env+".show");
 		if(!runtimesEnabled || runtimesEnabled === "false"){
 			select.hide();
@@ -95,7 +95,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
 				callback(null, runtimes);
 			}, function (runtimes, callback){
 				if(! runtimes){
-					console.log("fresh call to runtimes");
+
 					$fw.server.post(Constants.RUNTIMES_URL,{"platform":depTarget,"runtime":"nodejs","deploytarget":env}, function (data){
 						$fw.data.set("runtimes",data);
 						callback(undefined,data);
@@ -116,7 +116,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
 				var appConfig = app.inst.config;
 				var runtime = (appConfig["nodejs"]) ? appConfig["nodejs"]["app"]["runtime"][env] :undefined;
 
-				select.children().remove();
+				select.empty();
 
 				for(var i = 0; i < runtimes.result.length; i++ ){
 					var rtime = runtimes.result[i];
