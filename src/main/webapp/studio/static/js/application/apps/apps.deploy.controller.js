@@ -5,7 +5,8 @@ Apps.Deploy = Apps.Deploy || {};
 Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
 
   model: {
-    deploy: new model.Deploy()
+    deploy: new model.Deploy(),
+	  app : new model.App()
   },
 
   target_map: {
@@ -45,6 +46,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     $('.deploy_devlive_container', this.container).hide();
     this.sub_container.show();
 
+
     if (this.sub_container.data('deploy')) {
       $(this.container).show();
     } else {
@@ -53,15 +55,86 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
 
       var app_guid = $fw.data.get('inst').guid;
 
+
+
       $(this.container).show();
 
       this.model.deploy.list(app_guid, cloud_env, function (targets) {
         self.renderTargets(targets.list);
+	      self.setRuntimes();
       }, function () {
         // List failed
       });
     }
+
   },
+
+	setRuntimes : function (){
+		var self = this;
+		var env = $fw.data.get('cloud_environment');
+		var guid = $fw.data.get('inst').guid;
+		var targetInfo = self.getTargetData();
+		var depTarget = targetInfo.fields.target;
+		var select = $('select.nodevers');
+		var runtimesEnabled = $fw.getClientProp("nodejs.runtimes."+env+".show");
+		if(!runtimesEnabled || runtimesEnabled === "false"){
+			select.hide();
+			return;
+		}
+		var enabledTargets = $fw.getClientProp("nodejs.runtimes.supported");
+		if(enabledTargets){
+			if(enabledTargets.indexOf(depTarget) == -1){
+				select.hide();
+				return;
+			}
+		}
+		select.show();
+		async.waterfall([
+			function (callback){
+				var runtimes = $fw.data.get("runtimes");
+				callback(null, runtimes);
+			}, function (runtimes, callback){
+				if(! runtimes){
+					console.log("fresh call to runtimes");
+					$fw.server.post(Constants.RUNTIMES_URL,{"platform":depTarget,"runtime":"nodejs","deploytarget":env}, function (data){
+						$fw.data.set("runtimes",data);
+						callback(undefined,data);
+					}, function (err){
+						 callback(err);
+					});
+				}
+				else callback(undefined, runtimes);
+			},function (runtimes, callback){
+				//should now have runtimes need to get a fresh read of the app as the app may have been staged from fhc and the runtime changed
+				self.model.app.read(guid, function (app){
+					callback(undefined,runtimes,app);
+				},function (err){
+					  console.log(err);
+				});
+			}, function (runtimes, app, callback){
+
+				var appConfig = app.inst.config;
+				var runtime = (appConfig["nodejs"]) ? appConfig["nodejs"]["app"]["runtime"][env] :undefined;
+
+				select.children().remove();
+
+				for(var i = 0; i < runtimes.result.length; i++ ){
+					var rtime = runtimes.result[i];
+					var selected="";
+					if(runtime && runtime === rtime.name)selected = "selected";
+					else if(! runtime && rtime.default)selected = "selected";
+
+					select.append("<option "+selected+" value='"+rtime.name+"' >"+rtime.name+"</option>");
+				}
+				callback();
+			}
+		],function (err, ok){
+			if(err){
+				//hide the runtimes option essentially disabling any changes to an apps runtime?
+				select.hide();
+			}
+		});
+	},
 
   disableDeployButton: function (sub_container) {
     $('.deploy_cloud_app', sub_container).attr('disabled', 'disabled');
@@ -93,6 +166,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     $('.abort_cloud_app_deploy', this.sub_container).unbind().click(function () {
       self.abort();
     });
+
   },
 
   abort: function () {
@@ -106,6 +180,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
   deploy: function () {
     this.makeProgressStriped(this.sub_container);
     var env = $fw.data.get('cloud_environment');
+
 
     if (env === 'live') {
       if($fw.getClientProp('require-approver-for-live-stage') == 'true'){
@@ -162,6 +237,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
 
       button.click(function (e) {
         e.preventDefault();
+
         var target = $(this).data();
         $(this).parent().parent().find('a').removeClass('active');
         $(this).addClass('active');
@@ -172,6 +248,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
         }
 
         //self.resetProgress();
+	      self.setRuntimes();
       });
 
       // Trigger switch to default target
@@ -229,6 +306,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
       guid = $fw.data.get('inst').guid;
     }
     var url = Constants.RELEASE_DEPLOY_APP_URL;
+
     var params = {
       guid: guid,
       target_id: target.fields.id
@@ -239,6 +317,10 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     if(comment && comment.length > 0){
       params.comment = comment;
     }
+	  var runtime = $('select.nodevers:visible option:selected').val();
+	  if(runtime){
+		  params.runtime = runtime;
+	  }
     $fw.server.post(url, params, function (res) {
       if (res.status === "ok") {
         self.deployStarted(res.cacheKey, self.sub_container, 'live');
@@ -262,6 +344,11 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
       guid: guid,
       target_id: target.fields.id
     };
+	  var runtime = $('select.nodevers:visible option:selected').val();
+	  console.log(runtime);
+	  if(runtime){
+		  params.runtime = runtime;
+	  }
     $fw.server.post(url, params, function (res) {
       if (res.status === "ok") {
         self.deployStarted(res.cacheKey, self.sub_container, 'dev');
