@@ -3,7 +3,7 @@ App.Model.DomainStartupsDate = Backbone.Model.extend({});
 App.Collection.DomainStartupsDate = App.Collection.DomainMetrics.extend({
   model: App.Model.DomainStartupsDate,
   metric: "domainstartupsdest",
-  url: "/beta/static/mocks/metrics/domain_statups_date.json",
+  url: "/studio/static/js/model/mocks/metrics/domain_startups_date.json",
 
   parse: function(response) {
     var data = response.payload.results;

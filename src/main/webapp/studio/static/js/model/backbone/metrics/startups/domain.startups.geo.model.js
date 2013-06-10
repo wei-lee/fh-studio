@@ -3,7 +3,7 @@ App.Model.DomainInstallsGeo = Backbone.Model.extend({});
 App.Collection.DomainInstallsGeo = App.Collection.DomainMetrics.extend({
   model: App.Model.DomainInstallsGeo,
   metric: "domaininstallsgeo",
-  url: "/beta/static/mocks/metrics/domain_installs_geo.json",
+  url: "/studio/static/js/model/mocks/metrics/domain_installs_geo.json",
   
   parse: function(response) {
     var self = this;

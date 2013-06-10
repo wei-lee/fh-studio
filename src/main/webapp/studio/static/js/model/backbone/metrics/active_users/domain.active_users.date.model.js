@@ -3,7 +3,7 @@ App.Model.DomainActiveUsersDate = Backbone.Model.extend({});
 App.Collection.DomainActiveUsersDate = App.Collection.DomainMetrics.extend({
   model: App.Model.DomainActiveUsersDate,
   metric: "domaintransactionsdest",
-  url: "/beta/static/mocks/metrics/domain_active_users_date.json",
+  url: "/studio/static/js/model/mocks/metrics/domain_active_users_date.json",
 
   parse: function(response) {
     var data = response.payload.results;

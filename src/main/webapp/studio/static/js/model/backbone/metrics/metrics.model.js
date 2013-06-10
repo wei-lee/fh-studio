@@ -26,7 +26,7 @@ App.Collection.Metrics = Backbone.Collection.extend({
     var total = 0;
 
     $.each(this.models, function(i, model) {
-      $.each(model.get('data'), function(i, data_point){
+      $.each(model.get('data'), function(i, data_point) {
         var value = data_point[1];
         total = total + value;
       });
@@ -51,6 +51,11 @@ App.Collection.Metrics = Backbone.Collection.extend({
   },
 
   sync: function(method, model, options) {
+    if ($fw.getClientProp('reporting-sampledata-enabled') === 'true') {
+      // Use mocks - use generic sync (this.url will be location of static mock)
+      return Backbone.Collection.prototype.sync.apply(this, arguments);
+    }
+
     var url = '/box/srv/1.1/ide/' + $fw.clientProps.domain + '/app/getsingleappmetrics';
 
     // TODO: Endpoint accepts widget ID rather than template instance. Why?
@@ -133,6 +138,11 @@ App.Collection.Metrics = Backbone.Collection.extend({
 // Domain analytics use a different endpoint
 App.Collection.DomainMetrics = App.Collection.Metrics.extend({
   sync: function(method, model, options) {
+    if ($fw.getClientProp('reporting-sampledata-enabled') === 'true') {
+      // Use mocks - use generic sync (this.url will be location of static mock)
+      return Backbone.Collection.prototype.sync.apply(this, arguments);
+    }
+
     var url = '/box/srv/1.1/metrics/app/read';
 
     // TODO: Endpoint accepts widget ID rather than template instance. Why?

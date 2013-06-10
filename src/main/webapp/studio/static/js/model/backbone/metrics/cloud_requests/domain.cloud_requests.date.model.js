@@ -3,7 +3,7 @@ App.Model.DomainCloudRequestsDate = Backbone.Model.extend({});
 App.Collection.DomainCloudRequestsDate = App.Collection.DomainMetrics.extend({
   model: App.Model.DomainCloudRequestsDate,
   metric: "domainrequestsdest",
-  url: "/beta/static/mocks/metrics/domain_requests_date.json",
+  url: "/studio/static/js/model/mocks/metrics/domain_requests_date.json",
 
   parse: function(response) {
     var data = response.payload.results;

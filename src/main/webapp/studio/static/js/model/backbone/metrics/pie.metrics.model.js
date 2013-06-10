@@ -135,6 +135,13 @@ App.Collection.DomainPieMetrics = App.Collection.PieMetrics.extend({
   sync: function(method, model, options) {
     var url = 'box/srv/1.1/metrics/app/read';
 
+    if ($fw.getClientProp('reporting-sampledata-enabled') === 'true') {
+      // Use mocks - use generic sync (this.url will be location of static mock)
+      url = this.url;
+      // return Backbone.Collection.prototype.sync.apply(this, arguments);
+    }
+
+
     var params = {
       "id": $fw.clientProps.domain,
       "metric": this.metric,
@@ -145,7 +152,7 @@ App.Collection.DomainPieMetrics = App.Collection.PieMetrics.extend({
     };
 
     if ("read" === method) {
-      $fw.server.post(url, params, function(res) {
+      $fw.server.get(url, params, function(res) {
         if (res.status === "ok") {
           if ($.isFunction(options.success)) {
             options.success(res);
