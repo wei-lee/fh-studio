@@ -30,6 +30,11 @@ App.View.ProjectAppAnalyticsController = Backbone.View.extend({
     var template = Handlebars.compile(html);
     this.$el.html(template());
 
+    // Sample data enabled?
+    if ($fw.getClientProp('reporting-sampledata-enabled') === 'true') {
+      this.$el.find('.alert').removeClass('hidden_template');
+    }
+
     this.$datepicker_container = this.$el.find('.datepicker_container');
     this.$analytics_container = this.$el.find('#client_analytics_container');
     this.$metrics_select = this.$el.find('#analytics_type');
