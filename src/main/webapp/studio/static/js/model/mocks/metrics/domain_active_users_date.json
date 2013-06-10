@@ -1,0 +1,116 @@
+{
+  "payload": {
+    "results": [{
+        "_id": {
+          "domain": "sampleid",
+          "ts": 1315501201597
+        },
+        "value": {
+          "android": 600,
+          "blackberry": 100,
+          "iphone": 1500
+        }
+          },
+      {
+        "_id": {
+          "domain": "sampleid",
+          "ts": 1315501301597
+        },
+        "value": {
+          "android": 800,
+          "blackberry": 200,
+          "iphone": 1000
+        }
+          },
+      {
+        "_id": {
+          "domain": "sampleid",
+          "ts": 1315501401597
+        },
+        "value": {
+          "android": 200,
+          "blackberry": 200,
+          "iphone": 2000
+        }
+          },
+      {
+        "_id": {
+          "domain": "sampleid",
+          "ts": 1315501501597
+        },
+        "value": {
+          "android": 400,
+          "blackberry": 200,
+          "iphone": 3000
+        }
+          },
+      {
+        "_id": {
+          "domain": "sampleid",
+          "ts": 1315501601597
+        },
+        "value": {
+          "android": 800,
+          "blackberry": 200,
+          "iphone": 5000
+        }
+          },
+      {
+        "_id": {
+          "domain": "sampleid",
+          "ts": 1315501701597
+        },
+        "value": {
+          "android": 600,
+          "blackberry": 100,
+          "iphone": 1500
+        }
+          },
+      {
+        "_id": {
+          "domain": "sampleid",
+          "ts": 1315501801597
+        },
+        "value": {
+          "android": 800,
+          "blackberry": 200,
+          "iphone": 1000
+        }
+          },
+      {
+        "_id": {
+          "domain": "sampleid",
+          "ts": 1315501901597
+        },
+        "value": {
+          "android": 200,
+          "blackberry": 200,
+          "iphone": 2000
+        }
+          },
+      {
+        "_id": {
+          "domain": "sampleid",
+          "ts": 1315502001597
+        },
+        "value": {
+          "android": 400,
+          "blackberry": 200,
+          "iphone": 3000
+        }
+          },
+      {
+        "_id": {
+          "domain": "sampleid",
+          "ts": 1315501211597
+        },
+        "value": {
+          "android": 800,
+          "blackberry": 200,
+          "iphone": 5000
+        }
+          }
+    ]
+  },
+  "status": "ok"
+}
