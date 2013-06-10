@@ -3644,6 +3644,7 @@ hr.small {
 
 h4.by_location {
   color: #274b6d;
+  cursor: pointer;
   font-family: 'Lucida Grande', 'Lucida Sans Unicode', Verdana, Arial, Helvetica, sans-serif;
 }
 

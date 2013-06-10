@@ -4,6 +4,7 @@ App.View.DomainAnalyticsDashboard = Backbone.View.extend({
   },
 
   render: function() {
+    var self = this;
     var html = $(this.template).html();
     var template = Handlebars.compile(html);
     this.$el.html(template());
@@ -27,6 +28,27 @@ App.View.DomainAnalyticsDashboard = Backbone.View.extend({
       picker_model: this.options.picker_model
     }).$el);
 
+    // Title links
+    this.$el.find('.highcharts-title tspan').unbind().livequery('click', function(e) {
+      self.show(e);
+    });
+
+    this.$el.find('h4.by_location').unbind().livequery('click', function(e) {
+      self.show(e);
+    });
+
     return this;
+  },
+
+  show: function(e) {
+    // TODO: This is a bit ghetto
+    try {
+      var title = $(e.currentTarget).text();
+      var match = title.split('by ')[1];
+      var nav_el = $('.nav.reporting_pills li a:contains(' + match + ')');
+      nav_el.trigger('click');
+    } catch (e) {
+      console.log("Couldn't find a nav item to trigger.");
+    }
   }
 });

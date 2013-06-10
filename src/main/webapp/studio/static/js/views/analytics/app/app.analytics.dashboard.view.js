@@ -36,6 +36,10 @@ App.View.ProjectAppAnalyticsDashboard = Backbone.View.extend({
       self.show(e);
     });
 
+    this.$el.find('h4.by_location').unbind().livequery('click', function(e) {
+      self.show(e);
+    });
+
     return this;
   },
 
