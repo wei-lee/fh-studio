@@ -19,6 +19,11 @@ App.View.PerAppAnalytics = Backbone.View.extend({
 
     this.$el.html(template());
 
+    // Sample data enabled?
+    if ($fw.getClientProp('reporting-sampledata-enabled') === 'true') {
+      this.$el.find('.alert').removeClass('hidden_template');
+    }
+
     this.$table_container = this.$el.find('.apps_list');
     this.table_view = new App.View.DataTable({
       "aaData": this.collection.toJSON(),
