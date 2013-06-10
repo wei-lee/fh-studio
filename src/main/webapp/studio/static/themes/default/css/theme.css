@@ -1,4 +1,5 @@
 @import url("font-awesome.css");
+@import url("select2.css");
 
 /*
  * DEFAULT IDE THEME
@@ -3464,6 +3465,7 @@ li.reportdashboard_link .icon-globe {
     border-bottom: none;
 }
 
+<<<<<<< HEAD
 .from_date, .to_date {
   width: 80px;
 }
@@ -3667,4 +3669,8 @@ h4.by_location {
 
 .top-margin {
   margin-top: 10px;
+}
+
+.modal-body {
+  max-height: 800px !important;
 }

@@ -8,6 +8,11 @@ common/js/ui/thirdparty/handlebars/handlebars.js
 common/js/ui/thirdparty/handlebars/helpers.js
 common/js/ui/thirdparty/bootstrap-datepicker/bootstrap-datepicker.js
 common/js/ui/thirdparty/bootstrap-daterangepicker/daterangepicker.js
+common/js/ui/thirdparty/handlebars/handlebars.js
+common/js/ui/thirdparty/handlebars/helpers.js
+common/js/ui/thirdparty/bootstrap-datepicker/bootstrap-datepicker.js
+common/js/ui/thirdparty/jquery-qrcode/qrcode.js
+common/js/ui/thirdparty/jquery-qrcode/jquery.qrcode.js
 js/application/Constants.js
 js/application/Config.js
 js/application/dialog/DialogManager.js
@@ -118,6 +123,7 @@ js/views/analytics/analytics.overview.view.js
 js/views/analytics/perapp.analytics.view.js
 js/views/analytics/domain.analytics.overview.view.js
 js/views/analytics/project.app.analytics.controller.view.js
+js/views/common/swap_select.view.js
 js/model/ModelManager.js
 js/model/models/Model.js
 js/model/models/App.js
@@ -140,6 +146,7 @@ js/model/models/Environment.js
 js/model/mocks/Environment.js
 js/model/models/CloudNotifications.js
 js/model/models/CloudLog.js
+js/model/backbone/swapselectitem.model.js
 js/application/account/account.profile.controller.js
 js/application/account/account.keys.controller.js
 js/application/account/account.resource.support.js
