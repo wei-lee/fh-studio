@@ -117,6 +117,12 @@
           Logs
         </a>
       </li>
+      <li class="template-restriction"><!-- TODO: Restrict to NodeJS -->
+            <a href="#" data-controller="apps.plugins.controller">
+                <i class="icon-th"></i>
+                Plugins
+            </a>
+      </li>
       <li class="template-restriction nodejs_mode">
         <a href="#" data-controller="apps.endpoints.controller">
           <i class="icon-lock"></i>
@@ -162,7 +168,9 @@
         <%@ include file="./cloudresources.html"%>    
         <% } %>
 
-        <%@ include file="./cloudnotifications.html"%>    
+        <%@ include file="./cloudnotifications.html"%>
+
+        <%@ include file="./cloudplugins.html"%>
 
         <%@ include file="./quickstart.html"%>       
 

@@ -81,6 +81,7 @@ js/application/apps/apps.cloud.controller.js
 js/application/apps/apps.logging.controller.js
 js/application/apps/apps.endpoints.controller.js
 js/application/apps/apps.cloudresources.controller.js
+js/application/apps/apps.plugins.controller.js
 js/application/apps/apps.cloudnotifications.controller.js
 js/application/apps/apps.cloud.dashboard.controller.js
 js/application/apps/apps.environment.controller.js
