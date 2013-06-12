@@ -35,7 +35,31 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
   '</a>'+
   '</div><!--/span4-->',
 
-  plugins: [{
+  plugins: [
+    {
+      name: 'Twilio',
+      desc: 'Connects to the Twilio telephony API',
+      image: 'twilio.png',
+      category: 'Communication',
+      version : 'git://github.com/cianclarke/twilio-node.git',
+      config: {
+        accountSID : "Twilio account SID",
+        authToken: "Twilio Auth Token"
+      }
+    },
+    {
+      name: 'Sendgrid',
+      desc: 'Connects to the Sendgrid emailer API',
+      image: 'sendgrid.png',
+      category: 'Communication',
+      version : '0.2.5',
+      config: {
+        username: "Your SendGrid username",
+        password: "Your SendGrid password"
+      }
+    },
+
+    {
     name: 'Salesforce',
     desc: 'Connects to the SalesForce CRM Api',
     image: 'salesforce.png',
@@ -125,14 +149,18 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
 
     //$('a.configureSave').unbind().on('click', self.onConfigureSave);
     //$('a.configureCancel').unbind().on('click', self.onConfigureCancel);
+    //TODO: Do this bettar, pass scope in jquery event handler rather than silly inline handlers
     $('a.addButton').unbind().on('click', function(){
       var el = this;
       self.onPluginAdd.apply(self, [el]);
     });
-
     $('#plugins-cancel').unbind().on('click', self.onPluginCancel);
-    $('#plugins-save').unbind().on('click', self.onPluginSave);
-    $('#plugins-done').unbind().on('click', self.onPluginDone);
+    $('#plugins-save').unbind().on('click', function(){
+      self.onPluginSave.apply(self, this);
+    });
+    $('#plugins-done').unbind().on('click', function(){
+      self.onPluginDone.apply(self, this);
+    });
 
   },
 
@@ -188,6 +216,7 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
     return -1;
   },
   onPluginAdd: function(el){
+
     var self = this,
     pluginName = $(el).attr('data-plugin'),
     // TODO: POST to /plugin, creating a new instance of this plugin.
@@ -212,6 +241,8 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
     });
   },
   onPluginSave: function(){
+    var config = $('#plugins-configure form fieldset').serializeArray(); // TODO: Use these as deploy vars or something
+
     $('#plugins-configure').fadeOut('fast', function() {
       $('#plugins-code').fadeIn('fast');
     });
@@ -226,7 +257,9 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
     var fieldset = $('#plugins-configure form fieldset');
     fieldset.empty();
 
-    var config = this.getPlugin(id).config;
+    var plugin = this.getPlugin(id),
+    config = plugin.config,
+    pluginname = plugin.name.toLowerCase();
     for (var key in config){
       if (config.hasOwnProperty(key)){
         var name = key,
@@ -243,5 +276,20 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
     $('#plugins-intro').fadeOut('fast', function(){
       $('#plugins-configure').fadeIn('fast');
     });
+
+    // Add the entries to the package.json template
+    var tpl = $('#packageTemplate').html();
+    tpl = tpl.replace("{pluginName}", pluginname);
+    tpl = tpl.replace("{version}", plugin.version);
+    $('#packagejson').html(tpl);
+
+    // Replace the Using string //TODO less nasty
+    var h3 = $('#plugins-code h3'),
+    h3Replaced = h3.html().replace(/{pluginName}/g, plugin.name); // plugin.name not pluginname as pluginname is .toLowerCase()
+    h3.html(h3Replaced);
+
+    // Add the code snippet
+    $('.pluginSnippet').hide();
+    $('#snippet-' + pluginname).show();
   }
 });

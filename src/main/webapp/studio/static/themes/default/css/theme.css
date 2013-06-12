@@ -1173,6 +1173,15 @@ span.label-info {
     padding: 3px 22px 0px 22px;
 }
 
+.pluginsPre {
+    padding: 10px 14px;
+    margin: 12px 0px;
+}
+
+.pluginSnippet {
+    display : none;
+}
+
 /* Destination Resources */
 .resource-div
 {

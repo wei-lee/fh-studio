@@ -25,27 +25,97 @@
         <h3>Using {pluginName}</h3>
         <p>To get started with your plugin, follow these simple steps:</p>
         <h4>1) Add the following line to cloud/package.json:</h4>
-        <pre>
+<pre class="pluginsPre" id="packageTemplate" style="display : none;">
 {
   "name": "Your Cloud App",
   "version": "1.0.0",
   "dependencies" : {
     "fh-nodeapp" : "*",
-<strong>    "yourchosenplugin" : "1.0.0"</strong>
+<strong>    "{pluginName}" : "{version}"</strong>
   }
 }
 
-        </pre>
+</pre>
+<pre class="pluginsPre" id="packagejson">
+
+</pre>
         <br />
         <h4>2) Add the following code where you want to use your plugin:</h4>
-        <pre>
+<pre class="pluginsPre pluginSnippet" id="snippet-request">
 var request = require('request');
 request('http://www.google.com', function (error, response, body) {
   if (!error && response.statusCode == 200) {
     console.log(body) // Print the google web page.
   }
 });
-        </pre>
+</pre>
+<pre class="pluginsPre pluginSnippet" id="snippet-sendgrid">
+/*
+  @param to : recipient
+  @param subject : email subjecrt
+  @param body : message body
+ */
+exports.email = function(params, cb){
+  var SendGrid = require('sendgrid').SendGrid;
+  var sendgrid = new SendGrid(process.env.SENDGRID_USERNAME, process.env.SENDGRID_PASSWORD);
+  sendgrid.send({
+    to: params.to || 'cian.clarke@feedhenry.com',
+    from: 'mobile@feedhenry.com',
+    fromname : 'FeedHenry mBaaS',
+    subject: params.subject || "FeedHenry Email",
+    text: params.body || "Here is an email from a FeedHenry app!"
+  }, function(success, message) {
+    if (!success) {
+      return cb(message);
+    }
+    return cb(null, { ok : true});
+  });
+};
+</pre>
+<pre class="pluginsPre pluginSnippet" id="snippet-twilio">
+/*
+  Sends an SMS with the twilio API
+  @param to : recipient
+  @param body : message body
+ */
+exports.sms = function(params, cb){
+  // Your accountSid and authToken from twilio.com/user/account
+  var accountSid = process.env.TWILIO_SID,
+  authToken = process.env.TWILIO_AUTH,
+  client = require('twilio')(accountSid, authToken);
+
+  client.sms.messages.create({
+    body: params.body,
+    to: params.to,
+    from: "+12345678" //TODO: Replace with your twilio out number
+  }, function(err, message) {
+    return cb(err, message);
+  });
+};
+</pre>
+<pre class="pluginsPre pluginSnippet" id="snippet-s3">
+/*
+  Connects to amazon S3 bucket
+*/
+exports.s3 = function(params, callback){
+  var s3 = require('knox'),
+  client = s3.createClient({
+    key: process.env.S3_KEY,
+    secret: process.env.S3_SECRET,
+    bucket: process.env.S3_BUCKET
+  });
+  client.list({}, function(err, data){
+    if (err) {
+      return callback(err);
+    }
+    var contents = data && data.Contents;
+    if (!contents){
+      return callback({err : "No files found" });
+    }
+    return callback(null, contents);
+  });
+};
+</pre>
 
         <a id="plugins-done" class="btn btn-primary">Done!</a>
 
