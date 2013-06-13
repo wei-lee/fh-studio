@@ -42,10 +42,18 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
       image: 'twilio.png',
       category: 'Communication',
       version : 'git://github.com/cianclarke/twilio-node.git',
-      config: {
-        accountSID : "Twilio account SID",
-        authToken: "Twilio Auth Token"
-      }
+      config : [
+        {
+          name : 'accountSID',
+          desc : 'Twilio account SID',
+          varName : 'TWILIO_SID'
+        },
+        {
+          name : 'authToken',
+          desc : 'Twilio Auth Token',
+          varName : 'TWILIO_AUTH'
+        }
+      ]
     },
     {
       name: 'Sendgrid',
@@ -53,12 +61,155 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
       image: 'sendgrid.png',
       category: 'Communication',
       version : '0.2.5',
+      config : [
+        {
+          name : 'username',
+          desc : 'Your SendGrid username',
+          varName : 'SENDGRID_USERNAME'
+
+        },
+        {
+          name : 'password',
+          desc : 'Your SendGrid password',
+          varName : 'SENDGRID_PASSWORD',
+          field : 'password'
+        },
+        {
+          name : 'from',
+          desc : 'From email address',
+          varName : 'SENDGRID_FROM'
+        },
+        {
+
+          name : 'fromName',
+          desc : 'From descriptive name',
+          varName : 'SENDGRID_FROMNAME'
+        }
+      ]
+    },
+    {
+      name: 'Amazon S3',
+      desc: 'Connector to S3 bucket storage',
+      image: 's3.png',
+      category: 'Storage',
+      npmName : 'knox',
+      version : '0.5.2',
+      config : [
+        {
+          name : 'key',
+          desc : 'Your S3 key',
+          varName : 'S3_KEY'
+        },
+        {
+          name : 'secret',
+          desc : 'Your S3 secret',
+          varName : 'S3_SECRET',
+          field : 'password'
+        },
+        {
+          name : 'bucket',
+          desc : 'Your S3 bucket name',
+          varName : 'S3_BUCKET'
+        }
+      ]
+    },
+    {
+      name: 'OpenStack',
+      desc: 'Connect to any OpenStack data storage platform',
+      image: 'openstack.png',
+      version : '0.1.0',
+      npmName : 'openstack-storage',
+      category: 'Storage',
+      config : [
+        {
+          name : 'instanceUrl',
+          desc : 'Your OpenStack instance URL - e.g. storage.openstack.com',
+          varName : 'OPENSTACK_INSTANCE'
+        },
+        {
+          name : 'apiKey',
+          desc : 'API Key',
+          varName : 'OPENSTACK_APIKEY'
+        }
+      ]
+    },
+    {
+      name: 'Rackspace',
+      desc: 'Rackspace Cloud Open Stack storage provider',
+      image: 'rackspace.png',
+      category: 'Storage',
       config: {
-        username: "Your SendGrid username",
-        password: "Your SendGrid password"
+        instanceUrl: "Your Racekspace instance URL - e.g. storage.rackspace.com",
+        apiKey: 'Your Rackspace API Key'
       }
     },
-
+    {
+      name: 'MongoDB',
+      desc: 'Connector to MongoDB Database',
+      image: 'mongodb.png',
+      category: 'DB',
+      version : '~1.3.9',
+      config : [
+        {
+          name : 'hostname',
+          desc : 'Your MongoDB hostname',
+          varName : 'MONGODB_HOSTNAME'
+        },
+        {
+          name : 'username',
+          desc : 'Your MongoDB Username',
+          varName : 'MONGODB_USER'
+        },
+        {
+          name : 'password',
+          desc : 'Your MongoDB Password',
+          varName : 'MONGODB_PASSWORD',
+          field : 'password'
+        },
+        {
+          name : 'port',
+          desc : 'Your MongoDB Port Number',
+          varName : 'MONGODB_PORT',
+          field : 'number'
+        }
+      ]
+    },
+    {
+      name: 'Oracle 11g',
+      desc: 'Connector to an Oracle database',
+      image: 'oracle.png',
+      category: 'DB',
+      version : '~0.3.1',
+      config : [
+        {
+          name : 'hostname',
+          desc : 'Your Oracle 11g hostname',
+          varName : 'ORACLE_HOSTNAME'
+        },
+        {
+          name : 'database',
+          desc : 'The Oracle 11g database you want to connect to',
+          varName : 'ORACLE_DATABASE'
+        },
+        {
+          name : 'username',
+          desc : 'Your Oracle 11g Username',
+          varName : 'ORACLE_USER'
+        },
+        {
+          name : 'password',
+          desc : 'Your Oracle 11g Password',
+          varName : 'ORACLE_PASSWORD',
+          field : 'password'
+        },
+        {
+          name : 'port',
+          desc : 'Your Oracle 11g Port Number',
+          varName : 'ORACLE_PORT',
+          field : 'number'
+        }
+      ]
+    },
     {
     name: 'Salesforce',
     desc: 'Connects to the SalesForce CRM Api',
@@ -87,36 +238,6 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
       config: {
         apiKey: "Your facebook API key - you can find this in...",
         OAuthToekn: 'OAuth token - you can'
-      }
-    },
-    {
-      name: 'Amazon S3',
-      desc: 'Connector to S3 bucket storage',
-      image: 's3.png',
-      category: 'Storage',
-      config: {
-        instanceUrl: "Your S3 instance URL - e.g. s3.aws.com",
-        apiKey: 'Your S3 API Key'
-      }
-    },
-    {
-      name: 'OpenStack',
-      desc: 'Connect to any OpenStack data storage platform',
-      image: 'openstack.png',
-      category: 'Storage',
-      config: {
-        instanceUrl: "Your OpenStack instance URL - e.g. storage.openstack.com",
-        apiKey: 'Your OpenStack API Key'
-      }
-    },
-    {
-      name: 'Rackspace',
-      desc: 'Rackspace Cloud Open Stack storage provider',
-      image: 'rackspace.png',
-      category: 'Storage',
-      config: {
-        instanceUrl: "Your Racekspace instance URL - e.g. storage.rackspace.com",
-        apiKey: 'Your Rackspace API Key'
       }
     },
     {
@@ -216,7 +337,6 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
     return -1;
   },
   onPluginAdd: function(el){
-
     var self = this,
     pluginName = $(el).attr('data-plugin'),
     // TODO: POST to /plugin, creating a new instance of this plugin.
@@ -229,11 +349,8 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
     $('.pluginList tbody').prepend(tpl);
     this.initBindings();
     var pluginsModalEl = $('#pluginsModal');
-    pluginsModalEl.on('hidden', function () {
-      pluginsModalEl.unbind();
-      self.onConfigure(plugin.name);
-    });
-    pluginsModalEl.modal('hide');
+    $('#pluginsModal').modal()
+    self.onConfigure(plugin.name);
   },
   onPluginCancel: function(){
     $('#plugins-configure').fadeOut('fast', function() {
@@ -242,6 +359,15 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
   },
   onPluginSave: function(){
     var config = $('#plugins-configure form fieldset').serializeArray(); // TODO: Use these as deploy vars or something
+
+    var env_vars = {
+      "appId":"TODO",
+      "name":"TEST",
+      "devValue":"0",
+      "liveValue":"0"
+    };
+
+
 
     $('#plugins-configure').fadeOut('fast', function() {
       $('#plugins-code').fadeIn('fast');
@@ -254,21 +380,24 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
 
   },
   onConfigure: function(id){
+    debugger
     var fieldset = $('#plugins-configure form fieldset');
     fieldset.empty();
 
     var plugin = this.getPlugin(id),
     config = plugin.config,
-    pluginname = plugin.name.toLowerCase();
-    for (var key in config){
-      if (config.hasOwnProperty(key)){
-        var name = key,
-        label = config[key];
-        var row = "<label>{label}</label>"+
-        '<input name="{name}" type="text" placeholder=""><br />';
-        row = row.replace(/\{name\}/g, name).replace(/\{label\}/g, label);
-        fieldset.append(row);
-      }
+    pluginname = plugin.name.toLowerCase().replace(" ", ""),
+    npmName = plugin.npmName || pluginname; // Optionally override the package name that it's published under in NPM
+    for (var i=0; i<plugin.config.length; i++){
+      var field = plugin.config[i];
+      var name = field.name,
+      label = field.desc,
+      type = field.field || 'text';
+      var row = "<label>{label}</label>"+
+      '<input name="{name}" type="' + type + '" placeholder=""><br />';
+      row = row.replace(/\{name\}/g, name).replace(/\{label\}/g, label);
+      fieldset.append(row);
+
     }
 
     $('#plugins-configure h3').html('Configure ' + id);
@@ -279,7 +408,7 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
 
     // Add the entries to the package.json template
     var tpl = $('#packageTemplate').html();
-    tpl = tpl.replace("{pluginName}", pluginname);
+    tpl = tpl.replace("{pluginName}", npmName);
     tpl = tpl.replace("{version}", plugin.version);
     $('#packagejson').html(tpl);
 

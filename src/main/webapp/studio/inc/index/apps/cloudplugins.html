@@ -59,10 +59,10 @@ exports.email = function(params, cb){
   var SendGrid = require('sendgrid').SendGrid;
   var sendgrid = new SendGrid(process.env.SENDGRID_USERNAME, process.env.SENDGRID_PASSWORD);
   sendgrid.send({
-    to: params.to || 'cian.clarke@feedhenry.com',
-    from: 'mobile@feedhenry.com',
-    fromname : 'FeedHenry mBaaS',
-    subject: params.subject || "FeedHenry Email",
+    to: params.to,
+    from: process.env.SENDGRID_FROM,
+    fromname : process.env.SENDGRID_FROMNAME,
+    subject: params.subject,
     text: params.body || "Here is an email from a FeedHenry app!"
   }, function(success, message) {
     if (!success) {
@@ -116,6 +116,72 @@ exports.s3 = function(params, callback){
   });
 };
 </pre>
+<pre class="pluginsPre pluginSnippet" id="snippet-oracle11g">
+/*
+  Connects to Oracle 11g
+*/
+exports.oracle = function(params, callback){
+  var oracledb = require('oracle');
+  oracledb.connect({
+    "hostname": process.env.ORACLE_HOSTNAME,
+    "database": process.env.ORACLE_DATABASE,
+    "user":     process.env.ORACLE_USER,
+    "password": process.env.ORACLE_PASSWORD,
+    "port":     process.env.ORACLE_PORT
+  }, callback);
+}
+</pre>
+<pre class="pluginsPre pluginSnippet" id="snippet-mongodb">
+/*
+  Connects to a MongoDB Instance
+*/
+exports.mongo = function(params, callback){
+  var mongodb = require('mongodb');
+  var client = new mongodb.Db(process.env.MONGODB_DATABASE, new mongodb.Server(process.env.MONGODB_HOSTNAME, process.env.MONGODB_PORT, {}), { w: 1 });
+  return callback(null, client);
+}
+</pre>
+<pre class="pluginsPre pluginSnippet" id="snippet-s3">
+/*
+  Connects to a S3 instance
+*/
+exports.s3 = function(params, callback){
+  var s3 = require('knox'),
+  client = s3.createClient({
+    key: process.env.S3_KEY,
+    secret: process.env.S3_SECRET,
+    bucket: process.env.S3_BUCKET
+  });
+  client.list({}, function(err, data){
+    if (err) {
+      return callback(err);
+    }
+
+    var contents = data && data.Contents;
+
+    if (!contents){
+      return callback({err : "No files found" });
+    }
+    return callback(null, contents);
+  });
+};
+
+</pre>
+<pre class="pluginsPre pluginSnippet" id="snippet-openstack">
+/*
+  Connects to a OpenStack swift storage instance
+*/
+exports.openstack = function(params, callback){
+  var storage = require('openstack-storage');
+  var storageSwift = new storage.OpenStackStorage (authFn, function(err, res, tokens) {
+
+  });
+
+}
+</pre>
+
+
+
 
         <a id="plugins-done" class="btn btn-primary">Done!</a>
 
