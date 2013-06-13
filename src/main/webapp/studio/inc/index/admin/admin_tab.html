@@ -116,42 +116,38 @@
               </div>
 
               <div class="control-group">
-                <label class="control-label">Roles</label>
-                <div class="controls swap-select" id="create_user_role_swap">
-                  <div class="span3">
-                    <select multiple="multiple" class="span12 swap-from">
-                      <option>Loading...</option>
-                    </select>
-                  </div>
-                  <div class="span1">
-                    <button class="btn btn-inverse btn-large add">&gt;</button>
-                    <button class="btn btn-inverse btn-large remove">&lt;</button>
-                  </div>
-                  <div class="span3">
-                    <select multiple="multiple" class="span12 swap-to">
-                    </select>
-                  </div>
-                </div>
+                    <label class="control-label">Auth Policies</label>
+                    <div class="controls swap-select" id="create_user_policy_swap">
+
+                    </div>
               </div>
 
-              <div class="control-group">
-                <label class="control-label">Auth Policies</label>
-                <div class="controls swap-select" id="create_user_policy_swap">
-                  <div class="span3">
-                    <select multiple="multiple" class="span12 swap-from">
-                      <option>Loading...</option>
-                    </select>
+              <fieldset class="well">
+                  <legend>Assign Roles</legend>
+                  <div class="control-group">
+                      <label class="control-label">This Domain</label>
+                      <div class="controls swap-select" id="create_user_role_swap">
+                      </div>
                   </div>
-                  <div class="span1">
-                    <button class="btn btn-inverse btn-large add">&gt;</button>
-                    <button class="btn btn-inverse btn-large remove">&lt;</button>
+
+                  <% if(studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_CUSTOMERADMIN) || studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_RESELLERADMIN)) {%>
+                  <div class="control-group">
+                      <label class="control-label">All Domains</label>
+                      <div class="controls swap-select" id="create_user_customer_role_swap">
+
+                      </div>
                   </div>
-                  <div class="span3">
-                    <select multiple="multiple" class="span12 swap-to">
-                    </select>
+                  <%}%>
+
+                  <% if(studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_RESELLERADMIN)) {%>
+                  <div class="control-group">
+                      <label class="control-label">All Customers</label>
+                      <div class="controls swap-select" id="create_user_reseller_role_swap">
+
+                      </div>
                   </div>
-                </div>
-              </div>
+                  <%}%>
+              </fieldset>
 
             <div class="form-actions">
               <button type="submit" class="btn btn-primary create_user_btn">Create User</button>
@@ -204,45 +200,40 @@
               </div>
             </div>
 
-            <div class="control-group">
-              <label class="control-label">Roles</label>
-              <div class="controls swap-select" id="update_user_role_swap">
-                <div class="span3">
-                  <select multiple="multiple" class="span12 swap-from">
-                    <option>Loading...</option>
-                  </select>
-                </div>
-                <div class="span1">
-                  <button class="btn btn-inverse btn-large add">&gt;</button>
-                  <button class="btn btn-inverse btn-large remove">&lt;</button>
-                </div>
-                <div class="span3">
-                  <select multiple="multiple" class="span12 swap-to">
-                    <option>Loading...</option>
-                  </select>
-                </div>
-              </div>
-            </div>
+              <div class="control-group">
+                  <label class="control-label">Auth Policies</label>
+                  <div class="controls swap-select" id="update_user_policy_swap">
 
-            <div class="control-group">
-              <label class="control-label">Auth Policies</label>
-              <div class="controls swap-select" id="update_user_policy_swap">
-                <div class="span3">
-                  <select multiple="multiple" class="span12 swap-from">
-                    <option>Loading...</option>
-                  </select>
-                </div>
-                <div class="span1">
-                  <button class="btn btn-inverse btn-large add">&gt;</button>
-                  <button class="btn btn-inverse btn-large remove">&lt;</button>
-                </div>
-                <div class="span3">
-                  <select multiple="multiple" class="span12 swap-to">
-                    <option>Loading...</option>
-                  </select>
-                </div>
+                  </div>
               </div>
-            </div>
+
+              <fieldset class="well">
+                  <legend>Assign Roles</legend>
+                  <div class="control-group">
+                      <label class="control-label">This Domain</label>
+                      <div class="controls swap-select" id="update_user_role_swap">
+
+                      </div>
+                  </div>
+
+                  <% if(studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_CUSTOMERADMIN) || studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_RESELLERADMIN)) {%>
+                  <div class="control-group">
+                      <label class="control-label">All Domains</label>
+                      <div class="controls swap-select" id="update_user_customer_role_swap">
+
+                      </div>
+                  </div>
+                  <%}%>
+
+                  <% if(studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_RESELLERADMIN)) {%>
+                  <div class="control-group">
+                      <label class="control-label">All Customers</label>
+                      <div class="controls swap-select" id="update_user_reseller_role_swap">
+
+                      </div>
+                  </div>
+                  <%}%>
+              </fieldset>
 
             <div class="form-actions">
               <button type="submit" class="btn btn-primary update_user_btn">Update User</button>
@@ -290,43 +281,40 @@
               </div>
             </div>
 
-            <div class="control-group">
-              <label class="control-label">Roles</label>
-              <div class="controls swap-select" id="import_users_role_swap">
-                <div class="span3">
-                  <select multiple="multiple" class="span12 swap-from">
-                    <option>Loading...</option>
-                  </select>
-                </div>
-                <div class="span1">
-                  <button class="btn btn-inverse btn-large add">&gt;</button>
-                  <button class="btn btn-inverse btn-large remove">&lt;</button>
-                </div>
-                <div class="span3">
-                  <select multiple="multiple" class="span12 swap-to">
-                  </select>
-                </div>
-              </div>
-            </div>
+              <div class="control-group">
+                  <label class="control-label">Auth Policies</label>
+                  <div class="controls swap-select" id="import_users_policy_swap">
 
-            <div class="control-group">
-              <label class="control-label">Auth Policies</label>
-              <div class="controls swap-select" id="import_users_policy_swap">
-                <div class="span3">
-                  <select multiple="multiple" class="span12 swap-from">
-                    <option>Loading...</option>
-                  </select>
-                </div>
-                <div class="span1">
-                  <button class="btn btn-inverse btn-large add">&gt;</button>
-                  <button class="btn btn-inverse btn-large remove">&lt;</button>
-                </div>
-                <div class="span3">
-                  <select multiple="multiple" class="span12 swap-to">
-                  </select>
-                </div>
+                  </div>
               </div>
-            </div>
+
+              <fieldset class="well">
+                  <legend>Assign Roles</legend>
+                  <div class="control-group">
+                      <label class="control-label">This Domain</label>
+                      <div class="controls swap-select" id="import_users_role_swap">
+
+                      </div>
+                  </div>
+
+                  <% if(studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_CUSTOMERADMIN) || studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_RESELLERADMIN)) {%>
+                  <div class="control-group">
+                      <label class="control-label">All Domains</label>
+                      <div class="controls swap-select" id="import_user_customer_role_swap">
+
+                      </div>
+                  </div>
+                  <%}%>
+
+                  <% if(studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_RESELLERADMIN)) {%>
+                  <div class="control-group">
+                      <label class="control-label">All Customers</label>
+                      <div class="controls swap-select" id="import_user_reseller_role_swap">
+
+                      </div>
+                  </div>
+                  <%}%>
+              </fieldset>
 
             <div class="form-actions">
               <button type="submit" class="btn btn-primary import_user_btn">Import Users</button>

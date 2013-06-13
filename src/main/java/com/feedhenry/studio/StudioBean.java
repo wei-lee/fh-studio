@@ -705,6 +705,20 @@ public class StudioBean {
     return inGroup;
   }
 
+  /**
+   * Check if the currently logged in user has a specified role
+   */
+
+  public boolean hasRole(String pRole) throws Exception {
+    boolean hasRole = false;
+    if(null != mUserProps){
+      if(mUserProps.getJSONArray("roles").contains(pRole)){
+        hasRole = true;
+      }
+    }
+    return hasRole;
+  }
+
   public void error(Exception pException) throws Exception {
     log.error("error called", pException);
     if (null != pException) {
