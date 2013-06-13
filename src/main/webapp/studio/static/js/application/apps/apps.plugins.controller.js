@@ -337,6 +337,7 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
     return -1;
   },
   onPluginAdd: function(el){
+
     var self = this,
     pluginName = $(el).attr('data-plugin'),
     // TODO: POST to /plugin, creating a new instance of this plugin.
@@ -349,8 +350,11 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
     $('.pluginList tbody').prepend(tpl);
     this.initBindings();
     var pluginsModalEl = $('#pluginsModal');
-    $('#pluginsModal').modal()
-    self.onConfigure(plugin.name);
+    pluginsModalEl.on('hidden', function () {
+      pluginsModalEl.unbind();
+      self.onConfigure(plugin.name);
+    });
+    pluginsModalEl.modal('hide');
   },
   onPluginCancel: function(){
     $('#plugins-configure').fadeOut('fast', function() {
@@ -380,7 +384,6 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
 
   },
   onConfigure: function(id){
-    debugger
     var fieldset = $('#plugins-configure form fieldset');
     fieldset.empty();
 
