@@ -6,7 +6,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
 
   model: {
     deploy: new model.Deploy(),
-	  app : new model.App()
+    app : new model.App()
   },
 
   target_map: {
@@ -61,7 +61,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
 
       this.model.deploy.list(app_guid, cloud_env, function (targets) {
         self.renderTargets(targets.list);
-	      self.setRuntimes();
+        self.setRuntimes();
       }, function () {
         // List failed
       });
@@ -100,7 +100,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
 						$fw.data.set("runtimes",data);
 						callback(undefined,data);
 					}, function (err){
-						 callback(err);
+            callback(err);
 					});
 				}
 				else callback(undefined, runtimes);
@@ -109,7 +109,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
 				self.model.app.read(guid, function (app){
 					callback(undefined,runtimes,app);
 				},function (err){
-					  console.log(err);
+          console.log(err);
 				});
 			}, function (runtimes, app, callback){
 
@@ -122,7 +122,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
 					var rtime = runtimes.result[i];
 					var selected="";
 					if(runtime && runtime === rtime.name)selected = "selected";
-					else if(! runtime && rtime.default)selected = "selected";
+					else if(! runtime && rtime["default"])selected = "selected";
 
 					select.append("<option "+selected+" value='"+rtime.name+"' >"+rtime.name+"</option>");
 				}
@@ -248,7 +248,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
         }
 
         //self.resetProgress();
-	      self.setRuntimes();
+        self.setRuntimes();
       });
 
       // Trigger switch to default target
@@ -317,10 +317,10 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     if(comment && comment.length > 0){
       params.comment = comment;
     }
-	  var runtime = $('select.nodevers:visible option:selected').val();
-	  if(runtime){
-		  params.runtime = runtime;
-	  }
+    var runtime = $('select.nodevers:visible option:selected').val();
+    if(runtime){
+      params.runtime = runtime;
+    }
     $fw.server.post(url, params, function (res) {
       if (res.status === "ok") {
         self.deployStarted(res.cacheKey, self.sub_container, 'live');
@@ -344,11 +344,10 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
       guid: guid,
       target_id: target.fields.id
     };
-	  var runtime = $('select.nodevers:visible option:selected').val();
-	  console.log(runtime);
-	  if(runtime){
-		  params.runtime = runtime;
-	  }
+    var runtime = $('select.nodevers:visible option:selected').val();
+    if(runtime){
+      params.runtime = runtime;
+    }
     $fw.server.post(url, params, function (res) {
       if (res.status === "ok") {
         self.deployStarted(res.cacheKey, self.sub_container, 'dev');
