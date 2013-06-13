@@ -6,23 +6,38 @@
     <div class="fh-box-inner">
       <div class="alerts"></div>
 
-      <div id="plugins-intro" class="hero-unit">
-        <h2>Cloud Plugins</h2>
-        <p>Cloud plugins allow you to easily build integrations with third party API's, storage providers and database technologies. Choose a plugin to get started.</p>
-        <p><a href="#pluginsModal" data-toggle="modal" class="btn btn-primary btn-large addPlugin">Add a plugin &raquo;</a></p>
+      <div id="plugins-intro" class="">
+        <ul id="plugins-tabs" class="nav nav-tabs">
+          <!-- Dynamically generated -->
+        </ul>
+
+        <div class="">
+          <div class="plugins-home">
+            <div id="pluginTabContent" class="tab-content">
+              <!-- Dynamically generated -->
+            </div>
+          </div>
+        </div>
       </div>
 
       <div id="plugins-configure" class="container-fluid" style="display: none;">
-        <h3>Configure {pluginName}</h3>
-        <form>
-          <fieldset>
-          </fieldset>
-          <a id="plugins-save" class="btn btn-primary configureSave">Give me the code &raquo;</a> <a id="plugins-cancel" class="btn">Cancel</a>
-        </form>
+        <div class="span3">
+          <h3>Configure {pluginName}</h3>
+          <form>
+            <fieldset>
+            </fieldset>
+            <a id="plugins-save" class="btn btn-primary configureSave">Give me the code &raquo;</a> <a id="plugins-cancel" class="btn">Cancel</a>
+          </form>
+        </div>
+        <div class="span3">
+          <img class="pluginConfigureImage" src="" alt="Plugin configure image">
+        </div>
       </div>
 
       <div id="plugins-code" class="container-fluid" style="display: none;">
+        <img src="" class="pluginsCodeImage">
         <h3>Using {pluginName}</h3>
+
         <p>To get started with your plugin, follow these simple steps:</p>
         <h4>1) Add the following line to cloud/package.json:</h4>
 <pre class="pluginsPre" id="packageTemplate" style="display : none;">
@@ -87,7 +102,7 @@ exports.sms = function(params, cb){
   client.sms.messages.create({
     body: params.body,
     to: params.to,
-    from: "+12345678" //TODO: Replace with your twilio out number
+    from: process.env.TWILIO_NUMBER
   }, function(err, message) {
     return cb(err, message);
   });
@@ -141,32 +156,6 @@ exports.mongo = function(params, callback){
   return callback(null, client);
 }
 </pre>
-<pre class="pluginsPre pluginSnippet" id="snippet-s3">
-/*
-  Connects to a S3 instance
-*/
-exports.s3 = function(params, callback){
-  var s3 = require('knox'),
-  client = s3.createClient({
-    key: process.env.S3_KEY,
-    secret: process.env.S3_SECRET,
-    bucket: process.env.S3_BUCKET
-  });
-  client.list({}, function(err, data){
-    if (err) {
-      return callback(err);
-    }
-
-    var contents = data && data.Contents;
-
-    if (!contents){
-      return callback({err : "No files found" });
-    }
-    return callback(null, contents);
-  });
-};
-
-</pre>
 <pre class="pluginsPre pluginSnippet" id="snippet-openstack">
 /*
   Connects to a OpenStack swift storage instance
@@ -179,6 +168,25 @@ exports.openstack = function(params, callback){
 
 }
 </pre>
+<pre class="pluginsPre pluginSnippet" id="snippet-salesforce">
+/*
+ Creates a connection into Salesforce CRM
+ */
+exports.salesforce = function(params, callback){
+  var sf = require('node-salesforce');
+  var conn = new sf.Connection({
+    serverUrl : process.env.SALESFORCE_SERVER
+  });
+  conn.login(username, password, function(err, userInfo) {
+    if (err) {
+        return console.error(err);
+    }
+    console.log(conn.accessToken);
+    console.log("User ID: " + userInfo.id);
+    console.log("Org ID: " + userInfo.organizationId);
+  });
+}
+</pre>
 
 
 
@@ -186,32 +194,6 @@ exports.openstack = function(params, callback){
         <a id="plugins-done" class="btn btn-primary">Done!</a>
 
       </div>
-
-      <!--
-      <div id="cloud_plugins_list">
-        <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="cloudplugins_list_table"></table>
-      </div>
-      -->
     </div>
   </div>
-
-  <!-- Modal -->
-  <div id="pluginsModal" class="modal hide fade" tabindex="-1" role="dialog">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
-
-      <ul id="plugins-tabs" class="nav nav-tabs">
-          <!-- Dynamically generated -->
-      </ul>
-
-      <div class="modal-body">
-          <div class="plugins-home">
-              <div id="pluginTabContent" class="tab-content">
-                  <!-- Dynamically generated -->
-              </div>
-          </div>
-      </div><!--/modal-body-->
-
-  </div><!--/modal-->
 </div>

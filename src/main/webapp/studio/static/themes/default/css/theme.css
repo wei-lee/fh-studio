@@ -1131,6 +1131,16 @@ span.label-info {
   padding-bottom: 0px;
 }
 
+#plugins-tabs {
+  margin-bottom: 0px;
+}
+
+.plugins-home {
+  padding: 20px;
+  border: 1px solid #ccc;
+  margin-top: -1px;
+}
+
 #pluginTabContent .span4 p:first-of-type {
   height: 60px;
   overflow: scroll; /* TODO: Is this a good idea? Should I just trim the descriptions? */
@@ -1145,6 +1155,7 @@ span.label-info {
   border: 3px solid #eee;
   padding: 8px;
   border-radius: 16px;
+  max-width: 200px;
 }
 
 #pluginTabContent .plugin p {
@@ -1155,9 +1166,29 @@ span.label-info {
     margin: 4px 0px 2px 0px;
 }
 
+#pluginTabContent .plugin .pluginThumb {
+    text-align : center;
+}
+
+#pluginTabContent .plugin .addButton {
+    width: 146px;
+    margin-top: 8px;
+}
+
 #plugins-code pre strong {
     color: red;
     font-weight: bold;
+}
+
+#plugins-configure .pluginConfigureImage {
+    max-height: 220px;
+    margin-left: 30px;
+}
+
+#plugins-code .pluginsCodeImage {
+    float : right;
+    height: 90px;
+    width: auto;
 }
 
 #pluginsModal .modal-body {

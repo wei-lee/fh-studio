@@ -5,7 +5,6 @@ Apps.Plugins = Apps.Plugins || {};
 Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
 
   model: {
-    //device: new model.Device()
     log: new model.CloudLog()
   },
 
@@ -14,25 +13,20 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
   },
 
   container: null,
-  pluginRowTpl:
-  '<tr class="pluginRow" data-id="{id}" data-name="{name}">'+
-  '<td>{name}</td>'+
-  '<td>{desc}</td>'+
-  '<td><a class="configure" href="#">Configure &raquo;</a></td>'+
-  '<td><a class="connectivity" href="#">Test connectivity &raquo;</a></td>'+
-  '<td><a class="delete" href="#">Delete</a></td>'+
-  '</tr>',
-  pluginModalTabTpl: '<li class="tab-{category}"><a href="#tab-body-{category}" data-toggle="tab">{category}</a></li>',
-  pluginModalTabBody: '<div class="tab-pane fade in" id="tab-body-{category}"><div class="row-fluid"></div></div>',
-  pluginModalImage: '<img src="/studio/static/themes/default/img/cloud_plugins/{image}">',
-  pluginModalItemTpl:
+  pluginPaneTabTpl: '<li class="tab-{category}"><a href="#tab-body-{category}" data-toggle="tab">{category}</a></li>',
+  pluginPaneTabBody: '<div class="tab-pane fade in" id="tab-body-{category}"><div class="row-fluid"></div></div>',
+  pluginPaneImage: '<div class="pluginThumb"><img src="/studio/static/themes/default/img/cloud_plugins/{image}"></div>',
+  pluginPaneItemTpl:
   '<div class="span4 plugin">'+
-  '{title}'+
-  '<hr />' +
-  '<p>{desc}</p>'+
-  '<a class="btn btn-success addButton" data-plugin="{name}" href="#">Add '+
-  '<i class="icon-white icon-plus-sign"></i>' +
-  '</a>'+
+    '{title}'+
+    '<hr />' +
+    '<p>' +
+      '<i>{version}</i><br />' +
+      '{desc}' +
+    '</p>'+
+    '<a class="btn btn-success addButton" data-plugin="{name}" href="#">Add '+
+    '<i class="icon-white icon-plus-sign"></i>' +
+    '</a>'+
   '</div><!--/span4-->',
 
   plugins: [
@@ -52,6 +46,11 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
           name : 'authToken',
           desc : 'Twilio Auth Token',
           varName : 'TWILIO_AUTH'
+        },
+        {
+          name : 'number',
+          desc : 'Your Twilio number you\'ve been assigned',
+          varName : 'TWILIO_NUMBER',
         }
       ]
     },
@@ -138,10 +137,21 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
       desc: 'Rackspace Cloud Open Stack storage provider',
       image: 'rackspace.png',
       category: 'Storage',
-      config: {
-        instanceUrl: "Your Racekspace instance URL - e.g. storage.rackspace.com",
-        apiKey: 'Your Rackspace API Key'
-      }
+      version : '0.1.0',
+      npmName : 'openstack-storage',
+      category: 'Storage',
+      config : [
+        {
+          name : 'instanceUrl',
+          desc : 'Your OpenStack instance URL - e.g. storage.openstack.com',
+          varName : 'OPENSTACK_INSTANCE'
+        },
+        {
+          name : 'apiKey',
+          desc : 'API Key',
+          varName : 'OPENSTACK_APIKEY'
+        }
+      ]
     },
     {
       name: 'MongoDB',
@@ -215,30 +225,56 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
     desc: 'Connects to the SalesForce CRM Api',
     image: 'salesforce.png',
     category: 'APIs',
-    config: {
-      instanceURL : "Your salesforce instance URL - e.g. http://na1.salesforce.com",
-      username: "Your salesforce.com login",
-      password: "Your salesforce.com password"
-    }
+    version : '0.5.1',
+    npmName : 'node-salesforce',
+    config : [
+      {
+        name : 'instanceURL',
+        desc : 'Your salesforce instance URL - e.g. http://na1.salesforce.com',
+        varName : 'SALESFORCE_INSTANCE_URL'
+      },
+      {
+        name : 'username',
+        desc : 'Your salesforce.com login',
+        varName : 'SALESFORCE_USERNAME'
+      },
+      {
+        name : 'password',
+        desc : 'Your salesforce.com password',
+        varName : 'SALESFORCE_PASSWORD'
+      }
+    ]
   },
     {
       name: 'Twitter',
       desc: 'Connects to the Twitter social network',
       image: 'twitter.png',
       category: 'Social',
-      config: {
-        username : "The twitter account you want to retrieve tweets from"
-      }
+      config : [
+        {
+          name : 'username',
+          desc : 'Your twitter username',
+          varName : 'TWITTER_USERNAME'
+        }
+      ]
     },
     {
       name: 'Facebook',
       desc: 'Facebook OAuth connector',
       image: 'facebook.png',
       category: 'Social',
-      config: {
-        apiKey: "Your facebook API key - you can find this in...",
-        OAuthToekn: 'OAuth token - you can'
-      }
+      config : [
+        {
+          name : 'apiKey',
+          desc : 'Your facebook API key - you can find this in...',
+          varName : ''
+        },
+        {
+          name : 'OAuthToekn',
+          desc : 'OAuth token - you can',
+          varName : ''
+        }
+      ]
     },
     {
       name: 'Request',
@@ -256,8 +292,9 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
   init: function () {
     this._super();
     this.initFn = _.once(this.initBindings);
-    this.renderPluginsModal();
+    this.renderPluginsPane();
     this.container = this.views.cloudplugins_container;
+
   },
 
   /*
@@ -266,19 +303,11 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
    */
   initBindings: function () {
     var self = this;
-    var container = $(this.views.cloudplugins_container);
-
-    //$('a.configureSave').unbind().on('click', self.onConfigureSave);
-    //$('a.configureCancel').unbind().on('click', self.onConfigureCancel);
-    //TODO: Do this bettar, pass scope in jquery event handler rather than silly inline handlers
     $('a.addButton').unbind().on('click', function(){
       var el = this;
       self.onPluginAdd.apply(self, [el]);
     });
     $('#plugins-cancel').unbind().on('click', self.onPluginCancel);
-    $('#plugins-save').unbind().on('click', function(){
-      self.onPluginSave.apply(self, this);
-    });
     $('#plugins-done').unbind().on('click', function(){
       self.onPluginDone.apply(self, this);
     });
@@ -291,25 +320,16 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
     this.initFn();
     this.hide();
     this.container = this.views.cloudplugins_container;
-    self.loadPluginList();
     $(this.container).show();
   },
-
-  loadPluginList: function(){
-    var self = this;
-    var instGuid = $fw.data.get('inst').guid;
-
-    // TODO: Call out to the model this.model.plugins.list()
-    var data = this.plugins;
-  },
-  renderPluginsModal: function(plugins){
+  renderPluginsPane: function(plugins){
     var categories = [];
     for (var i=0; i<this.plugins.length; i++){
       var p = this.plugins[i];
       if (categories.indexOf(p.category)===-1){
         // Add the top tab, and the container for this categories tab body
-        var tab = this.pluginModalTabTpl.replace(/\{category\}/g, p.category);
-        tabBody = this.pluginModalTabBody.replace(/\{category\}/g, p.category);
+        var tab = this.pluginPaneTabTpl.replace(/\{category\}/g, p.category);
+        tabBody = this.pluginPaneTabBody.replace(/\{category\}/g, p.category);
         $('#plugins-tabs').append(tab);
         $('#pluginTabContent').append(tabBody);
 
@@ -317,11 +337,15 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
 
 
       } // At this point, we deffo have a container to put the plugin in
-      //TODO: Add the plugin row itself
       //image name desc
-      var pluginItem = this.pluginModalItemTpl.replace(/\{name\}/g, p.name);
-      var title = (p.image) ? this.pluginModalImage.replace(/\{image\}/g, p.image) : '<h2>' + p.name +'</h2>';
-      pluginItem = pluginItem.replace(/\{desc\}/g, p.desc).replace(/\{title\}/g, title);
+      var pluginItem = this.pluginPaneItemTpl.replace(/\{name\}/g, p.name);
+      var title = (p.image) ? this.pluginPaneImage.replace(/\{image\}/g, p.image) : '<h2>' + p.name +'</h2>';
+      var version = "";
+      // Only add in version string if it's not git backed or nonexistant
+      if (p.version && p.version.toLowerCase().indexOf("git")===-1){
+        version = "v" + p.version
+      }
+      pluginItem = pluginItem.replace(/\{desc\}/g, p.desc).replace(/\{title\}/g, title).replace(/\{version\}/g, version);;
       $('#tab-body-' + p.category + ' .row-fluid').append(pluginItem);
     }
     $('#plugins-tabs li:first').addClass('active');
@@ -337,40 +361,30 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
     return -1;
   },
   onPluginAdd: function(el){
-
     var self = this,
     pluginName = $(el).attr('data-plugin'),
-    // TODO: POST to /plugin, creating a new instance of this plugin.
-    // it's config will be returned, along with a unique instance of the plugin specific to this app
-    //then, we can...
     plugin = this.getPlugin(pluginName);
-    var tpl = this.pluginRowTpl.replace(/\{name\}/g, plugin.name);
-    tpl = tpl.replace(/\{desc\}/g, plugin.desc);
-    tpl = tpl.replace(/\{id\}/g, ''); // TODO - After POST, we get back this id..
-    $('.pluginList tbody').prepend(tpl);
     this.initBindings();
-    var pluginsModalEl = $('#pluginsModal');
-    pluginsModalEl.on('hidden', function () {
-      pluginsModalEl.unbind();
-      self.onConfigure(plugin.name);
-    });
-    pluginsModalEl.modal('hide');
+    self.onConfigure(plugin.name);
   },
   onPluginCancel: function(){
     $('#plugins-configure').fadeOut('fast', function() {
       $('#plugins-intro').fadeIn('fast');
     });
   },
-  onPluginSave: function(){
-    var config = $('#plugins-configure form fieldset').serializeArray(); // TODO: Use these as deploy vars or something
+  onPluginSave: function(el, name){
+    var self = this,
+    plugin = this.getPlugin(name),
+    formValues = this.getConfigFormValues();
 
-    var env_vars = {
-      "appId":"TODO",
-      "name":"TEST",
-      "devValue":"0",
-      "liveValue":"0"
-    };
-
+    for (var i=0; i<plugin.config.length; i++){
+      var configEntry = plugin.config[i],
+      envVar = configEntry.varName,
+      envVal = formValues[configEntry.name];
+      console.log(envVar + " : " + envVal);
+    }
+    //TODO: Post the env variables to the server
+    $fw.data.get('inst').guid;
 
 
     $('#plugins-configure').fadeOut('fast', function() {
@@ -384,6 +398,8 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
 
   },
   onConfigure: function(id){
+    var self = this;
+
     var fieldset = $('#plugins-configure form fieldset');
     fieldset.empty();
 
@@ -403,7 +419,11 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
 
     }
 
+    // Setup the H3 and image on the configure page, and the image on the code page
     $('#plugins-configure h3').html('Configure ' + id);
+    $('#plugins-configure img.pluginConfigureImage').attr('src', '/studio/static/themes/default/img/cloud_plugins/' + plugin.image);
+    $('#plugins-code img.pluginsCodeImage').attr('src', '/studio/static/themes/default/img/cloud_plugins/' + plugin.image);
+
 
     $('#plugins-intro').fadeOut('fast', function(){
       $('#plugins-configure').fadeIn('fast');
@@ -415,13 +435,25 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
     tpl = tpl.replace("{version}", plugin.version);
     $('#packagejson').html(tpl);
 
-    // Replace the Using string //TODO less nasty
-    var h3 = $('#plugins-code h3'),
-    h3Replaced = h3.html().replace(/{pluginName}/g, plugin.name); // plugin.name not pluginname as pluginname is .toLowerCase()
-    h3.html(h3Replaced);
+    // Replace the Using string
+    var h3 = $('#plugins-code h3').html("Using " + plugin.name); // plugin.name not pluginname as pluginname is .toLowerCase()
 
     // Add the code snippet
     $('.pluginSnippet').hide();
     $('#snippet-' + pluginname).show();
+
+    // Bind the save event
+    $('#plugins-save').unbind().on('click', function(){
+      self.onPluginSave.apply(self, [this, pluginname]);
+    });
+  },
+  getConfigFormValues : function(){
+    var fields = $('#plugins-configure form fieldset').serializeArray(),
+      obj = {};
+    for (var i=0; i<fields.length; i++){
+      var f = fields[i];
+      obj[f.name] = f.value;
+    }
+    return obj;
   }
 });
