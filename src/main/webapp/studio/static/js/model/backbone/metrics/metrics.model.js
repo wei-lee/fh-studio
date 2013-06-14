@@ -95,6 +95,7 @@ App.Collection.Metrics = Backbone.Collection.extend({
       "ipad": "iPad",
       "blackberry": "BlackBerry",
       "nokiawrt": "Nokia WRT",
+      "ios": "iOS",
       "windowsphone7": "Windows Phone 7",
       "wp7": "Windows Phone 7",
       "studio": "App Studio",
@@ -119,6 +120,8 @@ App.Collection.Metrics = Backbone.Collection.extend({
       return '#3d96ae';
     } else if (key == 'ipad') {
       return '#aa4643';
+    } else if (key == 'ios') {
+      return '#484848';
     } else if (key == 'embed') {
       return '#4572a7';
     } else if (key == 'fhc') {
@@ -127,7 +130,7 @@ App.Collection.Metrics = Backbone.Collection.extend({
       // Other
       return '#db843d';
     } else {
-      var random_colours = ['#aa4643', '#80699b', '#db843d'];
+      var random_colours = ['#aa4643', '#80699b', '#db843d', '#4572A7', '#AA4643', '#89A54E', '#80699B', '#3D96AE', '#DB843D', '#92A8CD', '#A47D7C', '#B5CA92'];
       var random_colour = random_colours[Math.floor(Math.random() * random_colours.length)];
       return random_colour;
     }
