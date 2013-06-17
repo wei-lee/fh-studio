@@ -296,8 +296,15 @@
         this.container.find('.calendar').on('change', 'select.yearselect', $.proxy(this.updateYear, this));
         this.container.find('.calendar').on('change', 'select.monthselect', $.proxy(this.updateMonth, this));
 
-        this.element.on('keyup', $.proxy(this.updateFromControl, this));
-
+        // FH
+        this.element.on('keydown', function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            return false;
+        });
+        // this.element.on('keyup', $.proxy(this.updateFromControl, this));
+        // /FH
+        
         this.updateView();
         this.updateCalendars();
 
