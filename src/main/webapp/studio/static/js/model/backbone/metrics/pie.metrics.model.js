@@ -146,9 +146,7 @@ App.Collection.DomainPieMetrics = App.Collection.PieMetrics.extend({
       "id": $fw.clientProps.domain,
       "metric": this.metric,
       "from": this.dateParamsForDate(this.picker_model.get('from')),
-      "to": this.dateParamsForDate(this.picker_model.get('to')),
-      "type": "list",
-      "num": 0
+      "to": this.dateParamsForDate(this.picker_model.get('to'))
     };
 
     if ("read" === method) {

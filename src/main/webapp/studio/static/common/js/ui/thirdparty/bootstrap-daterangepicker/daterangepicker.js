@@ -99,7 +99,11 @@
                       '<label for="daterangepicker_end">' + this.locale.toLabel + '</label>' +
                       '<input class="input-mini" type="text" name="daterangepicker_end" value="" disabled="disabled" />' +
                     '</div>' +
+                    // FH
+                    // '<button class="' + this.applyClass + ' applyBtn" disabled="disabled">' + this.locale.applyLabel + '</button>&nbsp;' +
+                    // '<button class="' + this.clearClass + ' clearBtn">' + this.locale.clearLabel + '</button>' +
                     '<button class="' + this.applyClass + ' applyBtn pull-right" disabled="disabled">' + this.locale.applyLabel + '</button>&nbsp;' +
+                    // /FH
                   '</div>' +
                 '</div>' +
               '</div>';
@@ -187,7 +191,10 @@
                 for (var range in this.ranges) {
                     list += '<li>' + range + '</li>';
                 }
+                // FH
+                // list += '<li>' + this.locale.customRangeLabel + '</li>';
                 list += '<li class="custom_range_label">' + this.locale.customRangeLabel + '</li>';
+                // /FH
                 list += '</ul>';
                 this.container.find('.ranges').prepend(list);
             }
@@ -246,10 +253,12 @@
             right.removeClass('right').addClass('left');
         }
 
+        // FH
         //if (typeof options == 'undefined' || typeof options.ranges == 'undefined') {
             this.container.find('.calendar').show();
             this.move();
         //}
+        // /FH
 
         if (typeof cb == 'function')
             this.cb = cb;
@@ -443,9 +452,11 @@
 
                 this.changed = true;
 
+                // FH
                 this.container.find('.calendar').show();
                 this.move();
                 //this.hide();
+                // /FH
             }
         },
 

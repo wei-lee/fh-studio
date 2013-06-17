@@ -49,8 +49,7 @@ App.View.Chart = Backbone.View.extend({
 
     // Collection/Model might be empty
     if (!this.collection && !this.model) {
-      console.log('No model or collection');
-      this.$el.html("No model/collection set.");
+      console.error('No model or collection');
       return this;
     }
 

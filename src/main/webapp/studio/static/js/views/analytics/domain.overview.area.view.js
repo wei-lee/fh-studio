@@ -48,7 +48,6 @@ App.View.AnalyticsDomainOverviewArea = Backbone.View.extend({
     
     this.chart_view.collection.bind('sync', this.updateTotal, this);
     this.chart_view.collection.bind('beforeFetch', this.showLoading, this);
-    this.chart_view.collection.bind('sync', this.updateTotal, this);
     this.$chart.html(this.chart_view.render().$el);
   },
 

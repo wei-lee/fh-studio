@@ -82,7 +82,7 @@ App.View.DomainAnalyticsController = Backbone.View.extend({
 
   // Events
   setActivePill: function(e) {
-    var current_pill = $(e.target);
+    var current_pill = $(e.currentTarget);
 
     // Remove active
     var nav = current_pill.closest('ul');

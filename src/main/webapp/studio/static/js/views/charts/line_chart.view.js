@@ -2,7 +2,8 @@ App.View.LineChart = App.View.Chart.extend({
   initialize: function(options) {
     options = $.extend(true, {}, {
       chart: {
-        type: "line"
+        type: "line",
+        zoomType: 'x'
       },
       credits: {
         enabled: false

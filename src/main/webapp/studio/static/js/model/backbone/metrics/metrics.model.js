@@ -63,9 +63,7 @@ App.Collection.Metrics = Backbone.Collection.extend({
       "id": this.guid || $fw.data.get('app').guid,
       "metric": this.metric,
       "from": this.dateParamsForDate(this.picker_model.get('from')),
-      "to": this.dateParamsForDate(this.picker_model.get('to')),
-      "type": "pie",
-      "num": 0
+      "to": this.dateParamsForDate(this.picker_model.get('to'))
     };
 
     if ("read" === method) {
@@ -153,9 +151,7 @@ App.Collection.DomainMetrics = App.Collection.Metrics.extend({
       "id": this.guid || $fw.clientProps.domain,
       "metric": this.metric,
       "from": this.dateParamsForDate(this.picker_model.get('from')),
-      "to": this.dateParamsForDate(this.picker_model.get('to')),
-      "type": "line",
-      "num": 0
+      "to": this.dateParamsForDate(this.picker_model.get('to'))
     };
 
     if ("read" === method) {

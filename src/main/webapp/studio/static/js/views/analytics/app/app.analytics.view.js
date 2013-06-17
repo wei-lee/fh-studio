@@ -31,9 +31,6 @@ App.View.AppAnalytics = Backbone.View.extend({
       this.by_date_view.remove();
     }
     this.by_date_view = new this.views.byDate({
-      chart: {
-        width: $('.container').width()
-      },
       guid: this.options.guid,
       picker_model: this.options.picker_model
     });
@@ -46,9 +43,6 @@ App.View.AppAnalytics = Backbone.View.extend({
       this.by_platform_view.remove();
     }
     this.by_platform_view = new this.views.byPlatform({
-      chart: {
-        width: $('.container').width()
-      },
       guid: this.options.guid,
       picker_model: this.options.picker_model
     });
