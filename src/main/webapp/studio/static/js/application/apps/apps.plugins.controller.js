@@ -17,7 +17,11 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
     pluginPaneTabTpl: '.pluginPaneTabTpl',
     pluginPaneTabBody: '.pluginPaneTabBody',
     pluginPaneImage: '.pluginPaneImage',
-    pluginPaneItemTpl: '.pluginPaneItemTpl'
+    pluginPaneItemTpl: '.pluginPaneItemTpl',
+    pluginConfigRow: '.pluginConfigRow',
+    packageTemplate: '.packageTemplate',
+    pluginsCode : '.pluginsCode',
+    pluginToolCode : '.pluginToolCode'
   },
   plugins: [
     {
@@ -268,12 +272,16 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
     {
       name: 'Request',
       desc: 'The de facto standard for doing all HTTP requests in Node.js - recommended over using the HTTP module standalone.',
-      category: 'Tools'
+      category: 'Tools',
+      version : '2.11.4',
+      docs : 'https://github.com/mikeal/request'
     },
     {
       name: 'Async',
       desc: 'Callback hell? Async helps you overcome this',
-      category: 'Tools'
+      category: 'Tools',
+      version : '0.2.5',
+      docs : 'https://github.com/caolan/async'
     }
 
   ], // TODO: Ajax these in..
@@ -298,9 +306,20 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
       self.onPluginAdd.apply(self, [el]);
     });
     $('#plugins-cancel').unbind().on('click', self.onPluginCancel);
-    $('#plugins-done').unbind().on('click', function(){
-      self.onPluginDone.apply(self, this);
+
+    // Setup the slider events on the carousel
+    $('.carousel.plugin-carousel').carousel({
+      interval: false, pause : false
     });
+
+    $('#pluginTabContent .plugin').on('hover', function(){
+      var self = this;
+      $(this).find('.carousel').carousel(1);
+    });
+    $('#pluginTabContent .plugin').on('mouseleave', function(){
+      $(this).find('.carousel').carousel(0);
+    });
+
 
   },
 
@@ -336,7 +355,7 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
       // At this point, we deffo have a container to put the plugin in
 
       // Setup the version so it's blank if git backed, or else "v 1.0" style
-      p.version = (!p.version || p.version === "" || p.version.indexOf("git")>=-1) ? "" : "v" + p.version;
+      p.versionLabel = (!p.version || p.version === "" || p.version.indexOf("git")>-1) ? "Custom version" : "v" + p.version;
       p.title = (p.image) ? this.templates.$pluginPaneImage(p) : '<h2>' + p.name +'</h2>';
       var pluginItem = this.templates.$pluginPaneItemTpl(p);
 
@@ -367,7 +386,17 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
     plugin = this.getPlugin(name),
     formValues = this.getConfigFormValues();
 
-    for (var i=0; i<plugin.config.length; i++){
+    if (plugin.config){
+      // Instruct which env. variables to add
+      $('#plugin-env-variables').show();
+      _.each(plugin.config, function(f){
+        var value = formValues[f.varName];
+        $('#plugin-env-variables').append(f.varName + " : " + value + "<br />");
+      });
+    }
+
+
+    for (var i=0; plugin.config && i<plugin.config.length; i++){
       var configEntry = plugin.config[i],
       envVar = configEntry.varName,
       envVal = formValues[configEntry.name];
@@ -397,56 +426,77 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
     plugin = this.getPlugin(pluginName),
     config = plugin.config,
     pluginname = plugin.name.toLowerCase().replace(" ", ""),
-    npmName = plugin.npmName || pluginname, // Optionally override the package name that it's published under in NPM
     fieldset = $('#plugins-configure form fieldset');
+
+    // Optionally override the package name that it's published under in NPM
+    plugin.npmName = plugin.npmName || pluginname;
+
+
+    // For tools, skip the middle page straight to the code
+    if (!plugin.config){
+      $('#plugins-intro').fadeOut('fast');
+      this.setupGiveMeTheCodePage(plugin);
+      $('#plugin-env-variables').hide(); // No ENV Variables for tools
+      return self.onPluginSave.apply(self, [this, pluginname]);
+    }
+
+
+
+    /*
+      Setup the plugin configuration page
+     */
 
     // Clear out any previous plugin's form configure content
     fieldset.empty();
 
-    // Why?
+    for (var i=0; plugin.config && i<plugin.config.length; i++){
+      var field = plugin.config[i];
+      field.type = field.field || 'text';
 
-
-    for (var i=0; i<plugin.config.length; i++){
-      var field = plugin.config[i],
-      type = field.field || 'text';
-      var row = "<label>{label}</label>"+
-      '<input name="{varName}" type="' + type + '" placeholder=""><br />';
-      row = row.replace(/\{varName\}/g, field.varName).replace(/\{label\}/g, field.label);
+      var row = this.templates.$pluginConfigRow(field);
       fieldset.append(row);
-
     }
 
     // Setup the H3 and image on the configure page, and the image on the code page
     $('#plugins-configure h3').html('Configure ' + plugin.name);
     $('#plugins-configure img.pluginConfigureImage').attr('src', '/studio/static/themes/default/img/cloud_plugins/' + plugin.image);
-    $('#plugins-code img.pluginsCodeImage').attr('src', '/studio/static/themes/default/img/cloud_plugins/' + plugin.image);
 
+
+    this.setupGiveMeTheCodePage(plugin);
 
     // Transition pages
     $('#plugins-intro').fadeOut('fast', function(){
       $('#plugins-configure').fadeIn('fast');
     });
 
-    /*
-      Setup the following page
-     */
+    // Bind the save event
+    $('#plugins-save').unbind().on('click', function(){
+      self.onPluginSave.apply(self, [this, pluginname]);
+    });
+
+  },
+  /*
+   Setup the following 'give me the code' page
+   */
+  setupGiveMeTheCodePage : function(plugin){
+    var self = this,
+    pluginname = plugin.name.toLowerCase().replace(" ", ""),
+    packageJsonTpl = this.templates.$packageTemplate(plugin);
 
     // Add the entries to the package.json template on the following page
-    var tpl = $('#packageTemplate').html();
-    tpl = tpl.replace("{pluginName}", npmName);
-    tpl = tpl.replace("{version}", plugin.version);
-    $('#packagejson').html(tpl);
+    plugin.packageJsonString = packageJsonTpl;
+    plugin.envVariablesString = "";
 
-    // Replace the Using string on the following page
-    var h3 = $('#plugins-code h3').html("Using " + plugin.name); // plugin.name not pluginname as pluginname is .toLowerCase()
+    var tpl = (!plugin.config || plugin.category.toLowerCase() === "tools") ? this.templates.$pluginToolCode(plugin) : this.templates.$pluginsCode(plugin);
+    $('#plugins-code').html(tpl);
 
     // Add the code snippet
     $('.pluginSnippet').hide();
     $('#snippet-' + pluginname).show();
 
-    // Bind the save event
-    $('#plugins-save').unbind().on('click', function(){
-      self.onPluginSave.apply(self, [this, pluginname]);
+    // Bind the done event
+    $('.plugins-done').unbind().on('click', function(){
+      self.onPluginDone.apply(self, this);
     });
   },
   getConfigFormValues : function(){

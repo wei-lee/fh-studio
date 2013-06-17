@@ -9,18 +9,71 @@
 <script type="text/template" class="pluginPaneImage">
   <div class="pluginThumb"><img src="/studio/static/themes/default/img/cloud_plugins/<\%= image \%>"></div>
 </script>
+<script type="text/template" class="pluginConfigRow">
+  <label><\%= desc \%></label>
+  <input name="<\%= varName \%>" type="<\%= type \%>" placeholder="">
+  <br />
+</script>
 <script type="text/template" class="pluginPaneItemTpl">
   <div class="span4 plugin">
-    <\%= title \%>
-  <hr />
-  <p>
-    <i><\%= version \%></i><br />
-    <\%= desc \%>
-  </p>
+    <div id="" class="carousel plugin-carousel slide">
+      <div class="carousel-inner">
+        <div class="active item">
+          <\%= title \%>
+        </div>
+        <div class="item">
+          <h3><\%= name \%></h3>
+          <p>
+            <strong>Version: </strong><i><\%= versionLabel \%></i><br />
+            <\%= desc \%>
+          </p>
+        </div>
+      </div>
+    </div>
+    <hr />
   <a class="btn btn-success addButton" data-plugin="<\%= name \%>" href="#">
     Add <i class="icon-white icon-plus-sign"></i>
   </a>
   </div><!--/span4-->
+</script>
+<script type="text/template" class="packageTemplate">
+{
+  "name": "Your Cloud App",
+  "version": "1.0.0",
+  "dependencies" : {
+    "fh-nodeapp" : "*",
+<strong>    "<\%= npmName \%>" : "<\%= version \%>"</strong>
+  }
+}
+</script>
+<script type="text/template" class="pluginsCode">
+  <img src="/studio/static/themes/default/img/cloud_plugins/<\%= image \%>" class="pluginsCodeImage">
+          <h3>Using <\%= name \%></h3>
+
+          <p>To get started with your plugin, follow these simple steps:</p>
+          <h4>1) Add the following line to cloud/package.json:</h4>
+<pre class="pluginsPre" id="packagejson">
+<\%= packageJsonString \%>
+</pre>
+          <h4>2) Add the following code where you want to use your plugin:</h4>
+<%@ include file="./cloudplugins-snippets.html" %>
+          <br />
+
+          <h4>3) Add environment variables for your plugin:</h4>
+          <div id="plugin-env-variables">
+            <\%= envVariablesString \%>
+          </div>
+          <br />
+          <a id="plugins-done" class="btn btn-primary plugins-done">Done!</a>
+</script>
+<!-- This is for a tool with no individual config e.g. request, async -->
+<script type="text/template" class="pluginToolCode">
+  <h4>To get started with your tool, simply add the following line to cloud/package.json:</h4>
+<pre class="pluginsPre">
+<\%= packageJsonString \%>
+</pre>
+Now, check out <a href="<\%= docs \%>"> the docs page for this tool.</a><br />
+  <a class="btn btn-primary plugins-done">Done!</a>
 </script>
 
 <div id="cloudplugins_container">
@@ -48,7 +101,7 @@
       <div id="plugins-configure" class="container-fluid" style="display: none;">
         <div class="row">
           <div class="span6">
-            <h3>Configure {pluginName}</h3>
+            <h3>Configure Plugin Name</h3>
             <form>
               <fieldset>
               </fieldset>
@@ -62,164 +115,7 @@
       </div>
 
       <div id="plugins-code" class="container-fluid" style="display: none;">
-        <img src="" class="pluginsCodeImage">
-        <h3>Using {pluginName}</h3>
-
-        <p>To get started with your plugin, follow these simple steps:</p>
-        <h4>1) Add the following line to cloud/package.json:</h4>
-<pre class="pluginsPre" id="packageTemplate" style="display : none;">
-{
-  "name": "Your Cloud App",
-  "version": "1.0.0",
-  "dependencies" : {
-    "fh-nodeapp" : "*",
-<strong>    "{pluginName}" : "{version}"</strong>
-  }
-}
-
-</pre>
-<pre class="pluginsPre" id="packagejson">
-
-</pre>
-        <br />
-        <h4>2) Add the following code where you want to use your plugin:</h4>
-<pre class="pluginsPre pluginSnippet" id="snippet-request">
-var request = require('request');
-request('http://www.google.com', function (error, response, body) {
-  if (!error && response.statusCode == 200) {
-    console.log(body) // Print the google web page.
-  }
-});
-</pre>
-<pre class="pluginsPre pluginSnippet" id="snippet-sendgrid">
-/*
-  @param to : recipient
-  @param subject : email subjecrt
-  @param body : message body
- */
-exports.email = function(params, cb){
-  var SendGrid = require('sendgrid').SendGrid;
-  var sendgrid = new SendGrid(process.env.SENDGRID_USERNAME, process.env.SENDGRID_PASSWORD);
-  sendgrid.send({
-    to: params.to,
-    from: process.env.SENDGRID_FROM,
-    fromname : process.env.SENDGRID_FROMNAME,
-    subject: params.subject,
-    text: params.body || "Here is an email from a FeedHenry app!"
-  }, function(success, message) {
-    if (!success) {
-      return cb(message);
-    }
-    return cb(null, { ok : true});
-  });
-};
-</pre>
-<pre class="pluginsPre pluginSnippet" id="snippet-twilio">
-/*
-  Sends an SMS with the twilio API
-  @param to : recipient
-  @param body : message body
- */
-exports.sms = function(params, cb){
-  // Your accountSid and authToken from twilio.com/user/account
-  var accountSid = process.env.TWILIO_SID,
-  authToken = process.env.TWILIO_AUTH,
-  client = require('twilio')(accountSid, authToken);
-
-  client.sms.messages.create({
-    body: params.body,
-    to: params.to,
-    from: process.env.TWILIO_NUMBER
-  }, function(err, message) {
-    return cb(err, message);
-  });
-};
-</pre>
-<pre class="pluginsPre pluginSnippet" id="snippet-s3">
-/*
-  Connects to amazon S3 bucket
-*/
-exports.s3 = function(params, callback){
-  var s3 = require('knox'),
-  client = s3.createClient({
-    key: process.env.S3_KEY,
-    secret: process.env.S3_SECRET,
-    bucket: process.env.S3_BUCKET
-  });
-  client.list({}, function(err, data){
-    if (err) {
-      return callback(err);
-    }
-    var contents = data && data.Contents;
-    if (!contents){
-      return callback({err : "No files found" });
-    }
-    return callback(null, contents);
-  });
-};
-</pre>
-<pre class="pluginsPre pluginSnippet" id="snippet-oracle11g">
-/*
-  Connects to Oracle 11g
-*/
-exports.oracle = function(params, callback){
-  var oracledb = require('oracle');
-  oracledb.connect({
-    "hostname": process.env.ORACLE_HOSTNAME,
-    "database": process.env.ORACLE_DATABASE,
-    "user":     process.env.ORACLE_USER,
-    "password": process.env.ORACLE_PASSWORD,
-    "port":     process.env.ORACLE_PORT
-  }, callback);
-}
-</pre>
-<pre class="pluginsPre pluginSnippet" id="snippet-mongodb">
-/*
-  Connects to a MongoDB Instance
-*/
-exports.mongo = function(params, callback){
-  var mongodb = require('mongodb');
-  var client = new mongodb.Db(process.env.MONGODB_DATABASE, new mongodb.Server(process.env.MONGODB_HOSTNAME, process.env.MONGODB_PORT, {}), { w: 1 });
-  return callback(null, client);
-}
-</pre>
-<pre class="pluginsPre pluginSnippet" id="snippet-openstack">
-/*
-  Connects to a OpenStack swift storage instance
-*/
-exports.openstack = function(params, callback){
-  var storage = require('openstack-storage');
-  var storageSwift = new storage.OpenStackStorage (authFn, function(err, res, tokens) {
-
-  });
-
-}
-</pre>
-<pre class="pluginsPre pluginSnippet" id="snippet-salesforce">
-/*
- Creates a connection into Salesforce CRM
- */
-exports.salesforce = function(params, callback){
-  var sf = require('node-salesforce');
-  var conn = new sf.Connection({
-    serverUrl : process.env.SALESFORCE_SERVER
-  });
-  conn.login(username, password, function(err, userInfo) {
-    if (err) {
-        return console.error(err);
-    }
-    console.log(conn.accessToken);
-    console.log("User ID: " + userInfo.id);
-    console.log("Org ID: " + userInfo.organizationId);
-  });
-}
-</pre>
-
-
-
-
-        <a id="plugins-done" class="btn btn-primary">Done!</a>
-
+        <!-- Generated by template pluginCode -->
       </div>
     </div>
   </div>

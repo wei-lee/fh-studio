@@ -1146,9 +1146,14 @@ span.label-info {
   overflow: scroll; /* TODO: Is this a good idea? Should I just trim the descriptions? */
 }
 
-#pluginTabContent .span4 img, #pluginTabContent .span4 h2  {
+#pluginTabContent .span4 img, #pluginTabContent .span4 h2, #pluginTabContent .item  {
   height: 125px;
-  line-height: 125px;
+}
+#pluginTabContent .span4 h2 {
+  line-height : 125px;
+}
+#pluginTabContent .span4 h2, #pluginTabContent .span4 h3 {
+    margin: 0 4px;
 }
 
 #pluginTabContent .plugin{
