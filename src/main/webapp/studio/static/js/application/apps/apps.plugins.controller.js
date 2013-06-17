@@ -13,22 +13,12 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
   },
 
   container: null,
-  pluginPaneTabTpl: '<li class="tab-{category}"><a href="#tab-body-{category}" data-toggle="tab">{category}</a></li>',
-  pluginPaneTabBody: '<div class="tab-pane fade in" id="tab-body-{category}"><div class="row-fluid"></div></div>',
-  pluginPaneImage: '<div class="pluginThumb"><img src="/studio/static/themes/default/img/cloud_plugins/{image}"></div>',
-  pluginPaneItemTpl:
-  '<div class="span4 plugin">'+
-    '{title}'+
-    '<hr />' +
-    '<p>' +
-      '<i>{version}</i><br />' +
-      '{desc}' +
-    '</p>'+
-    '<a class="btn btn-success addButton" data-plugin="{name}" href="#">Add '+
-    '<i class="icon-white icon-plus-sign"></i>' +
-    '</a>'+
-  '</div><!--/span4-->',
-
+  templates : {
+    pluginPaneTabTpl: '.pluginPaneTabTpl',
+    pluginPaneTabBody: '.pluginPaneTabBody',
+    pluginPaneImage: '.pluginPaneImage',
+    pluginPaneItemTpl: '.pluginPaneItemTpl'
+  },
   plugins: [
     {
       name: 'Twilio',
@@ -50,7 +40,7 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
         {
           name : 'number',
           desc : 'Your Twilio number you\'ve been assigned',
-          varName : 'TWILIO_NUMBER',
+          varName : 'TWILIO_NUMBER'
         }
       ]
     },
@@ -139,7 +129,6 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
       category: 'Storage',
       version : '0.1.0',
       npmName : 'openstack-storage',
-      category: 'Storage',
       config : [
         {
           name : 'instanceUrl',
@@ -292,6 +281,7 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
   init: function () {
     this._super();
     this.initFn = _.once(this.initBindings);
+    this.compileTemplates();
     this.renderPluginsPane();
     this.container = this.views.cloudplugins_container;
 
@@ -322,35 +312,42 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
     this.container = this.views.cloudplugins_container;
     $(this.container).show();
   },
-  renderPluginsPane: function(plugins){
+  /*
+   Renders a grid of plugins on the front plugins screen from this.plugins
+   First builds the categories from every tab seen, then creates tab pane bodies
+   */
+  renderPluginsPane: function(){
     var categories = [];
     for (var i=0; i<this.plugins.length; i++){
       var p = this.plugins[i];
       if (categories.indexOf(p.category)===-1){
         // Add the top tab, and the container for this categories tab body
-        var tab = this.pluginPaneTabTpl.replace(/\{category\}/g, p.category);
-        tabBody = this.pluginPaneTabBody.replace(/\{category\}/g, p.category);
+
+
+        var tab = $(this.templates.$pluginPaneTabTpl(p)),
+        tabBody = this.templates.$pluginPaneTabBody(p);
         $('#plugins-tabs').append(tab);
         $('#pluginTabContent').append(tabBody);
 
         categories.push(p.category);
 
 
-      } // At this point, we deffo have a container to put the plugin in
-      //image name desc
-      var pluginItem = this.pluginPaneItemTpl.replace(/\{name\}/g, p.name);
-      var title = (p.image) ? this.pluginPaneImage.replace(/\{image\}/g, p.image) : '<h2>' + p.name +'</h2>';
-      var version = "";
-      // Only add in version string if it's not git backed or nonexistant
-      if (p.version && p.version.toLowerCase().indexOf("git")===-1){
-        version = "v" + p.version
       }
-      pluginItem = pluginItem.replace(/\{desc\}/g, p.desc).replace(/\{title\}/g, title).replace(/\{version\}/g, version);;
+      // At this point, we deffo have a container to put the plugin in
+
+      // Setup the version so it's blank if git backed, or else "v 1.0" style
+      p.version = (!p.version || p.version === "" || p.version.indexOf("git")>=-1) ? "" : "v" + p.version;
+      p.title = (p.image) ? this.templates.$pluginPaneImage(p) : '<h2>' + p.name +'</h2>';
+      var pluginItem = this.templates.$pluginPaneItemTpl(p);
+
       $('#tab-body-' + p.category + ' .row-fluid').append(pluginItem);
     }
     $('#plugins-tabs li:first').addClass('active');
     $('#pluginTabContent div.tab-pane:first').addClass('active');
   },
+  /*
+    Get the config of a plugin from this.plugins by name
+   */
   getPlugin: function(name){
     for (var i=0; i<this.plugins.length; i++){
       var p = this.plugins[i];
@@ -359,13 +356,6 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
       }
     }
     return -1;
-  },
-  onPluginAdd: function(el){
-    var self = this,
-    pluginName = $(el).attr('data-plugin'),
-    plugin = this.getPlugin(pluginName);
-    this.initBindings();
-    self.onConfigure(plugin.name);
   },
   onPluginCancel: function(){
     $('#plugins-configure').fadeOut('fast', function() {
@@ -384,7 +374,7 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
       console.log(envVar + " : " + envVal);
     }
     //TODO: Post the env variables to the server
-    $fw.data.get('inst').guid;
+    //$fw.data.get('inst').guid;
 
 
     $('#plugins-configure').fadeOut('fast', function() {
@@ -397,45 +387,57 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
     });
 
   },
-  onConfigure: function(id){
-    var self = this;
-
-    var fieldset = $('#plugins-configure form fieldset');
-    fieldset.empty();
-
-    var plugin = this.getPlugin(id),
+  /*
+   After adding a plugin, draw the config screen
+   @param el : The add button clicked
+   */
+  onPluginAdd: function(el){
+    var self = this,
+    pluginName = $(el).attr('data-plugin'),
+    plugin = this.getPlugin(pluginName),
     config = plugin.config,
     pluginname = plugin.name.toLowerCase().replace(" ", ""),
-    npmName = plugin.npmName || pluginname; // Optionally override the package name that it's published under in NPM
+    npmName = plugin.npmName || pluginname, // Optionally override the package name that it's published under in NPM
+    fieldset = $('#plugins-configure form fieldset');
+
+    // Clear out any previous plugin's form configure content
+    fieldset.empty();
+
+    // Why?
+
+
     for (var i=0; i<plugin.config.length; i++){
-      var field = plugin.config[i];
-      var name = field.name,
-      label = field.desc,
+      var field = plugin.config[i],
       type = field.field || 'text';
       var row = "<label>{label}</label>"+
-      '<input name="{name}" type="' + type + '" placeholder=""><br />';
-      row = row.replace(/\{name\}/g, name).replace(/\{label\}/g, label);
+      '<input name="{varName}" type="' + type + '" placeholder=""><br />';
+      row = row.replace(/\{varName\}/g, field.varName).replace(/\{label\}/g, field.label);
       fieldset.append(row);
 
     }
 
     // Setup the H3 and image on the configure page, and the image on the code page
-    $('#plugins-configure h3').html('Configure ' + id);
+    $('#plugins-configure h3').html('Configure ' + plugin.name);
     $('#plugins-configure img.pluginConfigureImage').attr('src', '/studio/static/themes/default/img/cloud_plugins/' + plugin.image);
     $('#plugins-code img.pluginsCodeImage').attr('src', '/studio/static/themes/default/img/cloud_plugins/' + plugin.image);
 
 
+    // Transition pages
     $('#plugins-intro').fadeOut('fast', function(){
       $('#plugins-configure').fadeIn('fast');
     });
 
-    // Add the entries to the package.json template
+    /*
+      Setup the following page
+     */
+
+    // Add the entries to the package.json template on the following page
     var tpl = $('#packageTemplate').html();
     tpl = tpl.replace("{pluginName}", npmName);
     tpl = tpl.replace("{version}", plugin.version);
     $('#packagejson').html(tpl);
 
-    // Replace the Using string
+    // Replace the Using string on the following page
     var h3 = $('#plugins-code h3').html("Using " + plugin.name); // plugin.name not pluginname as pluginname is .toLowerCase()
 
     // Add the code snippet
@@ -455,5 +457,19 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
       obj[f.name] = f.value;
     }
     return obj;
+  },
+  /**
+   compile all templates
+   */
+  compileTemplates: function() {
+
+    for (var key in this.templates){
+      if (this.templates.hasOwnProperty(key)){
+        var tpl = this.templates[key],
+        compiled = _.template($(tpl, this.$container).html());
+        // Compiled templates get added to same prop with a $ infront
+        this.templates['$' + key] = compiled;
+      }
+    }
   }
 });
