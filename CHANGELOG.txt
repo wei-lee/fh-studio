@@ -4,6 +4,23 @@ Component: fh-studio
 3.16.9 - 2013-05-31 - IR203 - Jason Madigan
 ---------------------------------------------------------------------------
 * 3954 - Backported everglade reporting UI
+* 3956 - Backport models and collections for Analytics back to existing studio
+* 3959 - Implement Per-App (domain view) and aggregated analytics
+* 3957 - Backport existing views from Everglade analytics
+* 3737 - In the devices section of MAM in studio some of the buttons don't work
+* 3901 - Analytics Data not displaying correctly
+* 3910 - Improve the information displayed on exported reports (png/pdf etc)
+* 358  - Remember date selections
+* 4108 - Sample data for collections
+* 3944 - Colour for "embed" analytics not set - so appears random
+* 3963 - Per app domain reports - list of apps should display next to dashboard
+* 3964 - Charts should display totals
+* 3966 - Stats should be available under reporting
+* 3969 - Aggregate/domain level dashboard could do with some UI polish
+* 3970 - Change date format in analytics from MM/DD/YYYY to the more universal YYYY/MM/DD
+* 3972 - All destinations should have a fixed colour per series
+* 3737 - In the devices section of MAM in studio some of the buttons don't work
+* 4071 - Embedded typo
 
 3.16.8- 2013-06-13 - IR203 - Wei Li
 ---------------------------------------------------------------------------
