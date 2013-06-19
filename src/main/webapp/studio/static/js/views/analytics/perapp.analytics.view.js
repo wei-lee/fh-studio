@@ -38,14 +38,14 @@ App.View.PerAppAnalytics = Backbone.View.extend({
         var icon = $('<img>').attr('src', sData.icon);
         icon_cell.empty().append(icon);
 
-        $(nTr).attr('data-toggle', 'tooltip');
 
         var tooltip_text = [];
         tooltip_text.push("<b>Description: </b>" + (sData.description || "N/A"));
         tooltip_text.push("<b>Email: </b>" + sData.email);
         tooltip_text.push("<b>Last Modified: </b>" + sData.modified);
+        $(nTr).attr('data-toggle', 'tooltip');
 
-        $(nTr).attr('title', tooltip_text.join("<br/>"));
+        $(nTr).attr('data-title', tooltip_text.join("<br/>"));
         $(nTr).tooltip({
           delay: {
             show: 500
