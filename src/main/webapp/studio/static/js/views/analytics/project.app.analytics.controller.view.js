@@ -38,6 +38,7 @@ App.View.ProjectAppAnalyticsController = Backbone.View.extend({
     this.$datepicker_container = this.$el.find('.datepicker_container');
     this.$analytics_container = this.$el.find('#client_analytics_container');
     this.$metrics_select = this.$el.find('#analytics_type');
+    this.$nav = this.$el.find('.nav');
 
     this.renderDatePicker();
 
@@ -54,8 +55,11 @@ App.View.ProjectAppAnalyticsController = Backbone.View.extend({
       this.$datepicker_container.html(this.picker.el);
       this.picker_model = this.picker.model;
     } else {
-      if (this.picker) this.picker.remove();      
+      if (this.picker) this.picker.remove();    
       this.$datepicker_container.empty();
+
+      // Expand the nav
+      this.$nav.removeClass('span7').addClass('span12');
       delete this.picker;
       this.picker_model = this.options.picker_model;
     }
