@@ -112,7 +112,7 @@ App.View.PerAppAnalytics = Backbone.View.extend({
     this.overview.render();
     this.$overview_container.html(this.overview.el);
 
-    this.$el.find('.analytics_overview_tooltip').tooltip();
+    this.$el.find('.analytics_overview_tooltip').popover({trigger: 'hover', delay: { show: 100, hide: 500 }});
   },
 
   showDetails: function(e) {

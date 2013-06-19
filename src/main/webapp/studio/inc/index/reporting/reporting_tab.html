@@ -106,7 +106,7 @@ Domain Totals
 <div class="overview_text">
   <div class="spinner"></div>
   <h2 class="count"></h2>
-  <h5 class="metrics_type">Installs <i class="analytics_overview_tooltip icon-info-sign" data-toggle="tooltip" title="An App install is tracked the first time an App starts up on a new device and makes a call back to the cloud."/>
+  <h5 class="metrics_type">Device Installs <i class="analytics_overview_tooltip icon icon-info-sign" data-title="Device Installs" data-toggle="popover" data-placement="right" data-content="A Device Install is tracked the first time an App starts up on a new device and makes a call back to the cloud. Note that Device Installs differ from User Installs as tracked by App Stores in the following ways:<ul><li>App Stores count an install as a user account performing a download - regardless of how many devices the user installs the app on. </li><li>App stores typically report daily figures in PST time zone, while we report in UTC.</li><li>An app must be started up at least once with a valid internet conection before we track the app install. We track the install as having happened at the time of the first startup, not the time of download.</li></ul>"></i>
   </h5>
   <button class="btn btn-small view_details" data-metric-type="installs">View Details</button>
 </div>
@@ -117,7 +117,7 @@ Domain Totals
 <div class="overview_text">
   <div class="spinner"></div>
   <h2 class="count"></h2>
-  <h5 class="metrics_type">Startups <i class="analytics_overview_tooltip icon-info-sign" data-toggle="tooltip" title="An App startup is tracked every time a previously seen device has an App start and make a call back to the cloud."/></h5>
+  <h5 class="metrics_type">App Startups <i class="analytics_overview_tooltip icon-info-sign" data-title="App Startups" data-toggle="popover" data-placement="left" data-content="An App startup is tracked every time a previously seen device has an App start and make a call back to the cloud.</br>Note that app startups are only tracked for apps starting up 'from cold' - i.e. if an app which is running in the background is brought to the foreground, this is not tracked as an 'App Startup'."></i></h5>
   <button class="btn btn-small view_details" data-metric-type="startups">View Details</button>
 </div>
 </script>
@@ -127,7 +127,7 @@ Domain Totals
 <div class="overview_text">
   <div class="spinner"></div>
   <h2 class="count"></h2>
-  <h5 class="metrics_type">Cloud Requests <i class="analytics_overview_tooltip icon-info-sign" data-toggle="tooltip" title="Cloud Request reports show the number of Requests made to your Cloud Application."/></h5>
+  <h5 class="metrics_type">Cloud Requests <i class="analytics_overview_tooltip icon-info-sign" data-title="Cloud Requests" data-toggle="popover" data-placement="right" data-content="A Cloud Request is tracked each time an App Client makes a request (using $fh.act) to the App Cloud."></i></h5>
   <button class="btn btn-small view_details" data-metric-type="cloud_requests">View Details</button>
 </div>
 </script>
@@ -137,7 +137,7 @@ Domain Totals
 <div class="overview_text">
   <div class="spinner"></div>
   <h2 class="count"></h2>
-  <h5 class="metrics_type">Active Users <i class="analytics_overview_tooltip icon-info-sign" data-toggle="tooltip" title="An Active User is defined as user who makes one or more cloud calls from a specific app on a specific device in a 24 hour period (midnight to midnight GMT).."/></h5>
+  <h5 class="metrics_type">Active Users <i class="analytics_overview_tooltip icon-info-sign" data-title="Active Users" data-toggle="popover" data-placement="left" data-content="An Active User is tracked as one or more requests (via $fh.act) made from a unique app on a unique device in a 24 hour period (midnight to midnight GMT)."></i></h5>
   <button class="btn btn-small view_details" data-metric-type="active_users">View Details</button>
 </div>
 </script>
@@ -147,7 +147,7 @@ Domain Totals
 <div class="overview_text">
   <div class="spinner"></div>
   <h2 class="count"></h2>
-  <h5 class="metrics_type">Installs  <i class="analytics_overview_tooltip icon-info-sign" data-toggle="tooltip" title="An App install is tracked the first time an App starts up on a new device and makes a call back to the cloud."/></h5>
+  <h5 class="metrics_type">Device Installs  <i class="analytics_overview_tooltip icon icon-info-sign" data-title="Device Installs" data-toggle="popover" data-placement="right" data-content="A Device Install is tracked the first time an App starts up on a new device and makes a call back to the cloud. Note that Device Installs differ from User Installs as tracked by App Stores in the following ways:<ul><li>App Stores count an install as a user account performing a download - regardless of how many devices the user installs the app on. </li><li>App stores typically report daily figures in PST time zone, while we report in UTC.</li><li>An app must be started up at least once with a valid internet conection before we track the app install. We track the install as having happened at the time of the first startup, not the time of download.</li></ul>"></i></h5>
   <button class="btn btn-small view_details" data-guid="{{app.id}}" data-metric-type="installs">View Details</button>
 </div>
 </script>
@@ -157,7 +157,7 @@ Domain Totals
 <div class="overview_text">
   <div class="spinner"></div>
   <h2 class="count"></h2>
-  <h5 class="metrics_type">Startups <i class="analytics_overview_tooltip icon-info-sign" data-toggle="tooltip" title="An App startup is tracked every time a previously seen device has an App start and make a call back to the cloud."/></h5>
+  <h5 class="metrics_type">App Startups <i class="analytics_overview_tooltip icon-info-sign" data-title="App Startups" data-toggle="popover" data-placement="left" data-content="An App startup is tracked every time a previously seen device has an App start and make a call back to the cloud.</br>Note that app startups are only tracked for apps starting up 'from cold' - i.e. if an app which is running in the background is brought to the foreground, this is not tracked as an 'App Startup'."></i></h5>
   <button class="btn btn-small view_details" data-guid="{{app.id}}" data-metric-type="startups">View Details</button>
 </div>
 </script>
@@ -167,7 +167,7 @@ Domain Totals
 <div class="overview_text">
   <div class="spinner"></div>
   <h2 class="count"></h2>
-  <h5 class="metrics_type">Cloud Requests <i class="analytics_overview_tooltip icon-info-sign" data-toggle="tooltip" title="Cloud Request reports show the number of Requests made to your Cloud Application."/></h5>
+  <h5 class="metrics_type">Cloud Requests <i class="analytics_overview_tooltip icon-info-sign" data-title="Cloud Requests" data-toggle="popover" data-placement="right" data-content="A Cloud Request is tracked each time an App Client makes a request (using $fh.act) to the App Cloud."></i></h5>
   <button class="btn btn-small view_details" data-guid="{{app.id}}" data-metric-type="cloud_requests">View Details</button>
 </div>
 </script>
@@ -177,7 +177,7 @@ Domain Totals
 <div class="overview_text">
   <div class="spinner"></div>
   <h2 class="count"></h2>
-  <h5 class="metrics_type">Active Users <i class="analytics_overview_tooltip icon-info-sign" data-toggle="tooltip" title="An Active User is defined as user who makes one or more cloud calls from a specific app on a specific device in a 24 hour period (midnight to midnight GMT).."/></h5>
+  <h5 class="metrics_type">Active Users <i class="analytics_overview_tooltip icon-info-sign" data-title="Active Users" data-toggle="popover" data-placement="left" data-content="An Active User is tracked as one or more requests (via $fh.act) made from a unique app on a unique device in a 24 hour period (midnight to midnight GMT)."></i></h5>
   <button class="btn btn-small view_details" data-guid="{{app.id}}" data-metric-type="active_users">View Details</button>
 </div>
 </script>

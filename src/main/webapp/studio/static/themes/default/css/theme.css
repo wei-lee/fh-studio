@@ -3696,3 +3696,12 @@ h4.by_location {
 #reports_per_app_container .pagination a, .pagination span {
   padding: 0 6px;
 }
+
+.popover ul li {
+  list-style: circle;
+  margin-left: 15px;
+}
+
+.popover {
+  width: 350px;
+}

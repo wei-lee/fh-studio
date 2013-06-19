@@ -54,7 +54,7 @@ App.View.DomainAnalyticsOverview = Backbone.View.extend({
     this.active_users.render();
     this.$active_users_container.html(this.active_users.el);
 
-    this.$el.find('.analytics_overview_tooltip').tooltip();
+    this.$el.find('.analytics_overview_tooltip').popover({trigger: 'hover', delay: { show: 100, hide: 500 }});
 
     this.delegateEvents();
   },
