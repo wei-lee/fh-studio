@@ -3565,17 +3565,17 @@ li.reportdashboard_link .icon-globe {
 }
 
 #reports_per_app_container h2, #reports_domain_container h2 {
-  font-size: 33px;
+  font-size: 23px;
   margin-bottom: 0px;
 }
 
 #reports_per_app_container h5, #reports_domain_container h5 {
-  font-size: 13px;
+  font-size: 12px;
   color: #828282;
   margin-top: 0;
 }
 
-@media screen and (max-width: 1200px){
+/*@media screen and (max-width: 1200px){
   #reports_per_app_container h2, #reports_domain_container h2 {
     font-size: 23px;
   }
@@ -3583,7 +3583,7 @@ li.reportdashboard_link .icon-globe {
   #reports_per_app_container h5, #reports_domain_container h5 {
     font-size: 12px;
   }
-}
+}*/
 
 .installs_container, 
 .startups_container,
