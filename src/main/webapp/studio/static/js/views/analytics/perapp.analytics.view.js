@@ -61,6 +61,7 @@ App.View.PerAppAnalytics = Backbone.View.extend({
     this.$table_container.find('.dataTables_filter input').attr('placeholder', 'Search...');
     this.$overview_container = this.$el.find('.overview_container');
     this.$datepicker_container = this.$el.find('.datepicker_container');
+
   },
 
   renderDatePicker: function() {
@@ -85,6 +86,8 @@ App.View.PerAppAnalytics = Backbone.View.extend({
     });
     this.overview.render();
     this.$overview_container.html(this.overview.el);
+
+    this.$el.find('.analytics_overview_tooltip').tooltip();
   },
 
   showDetails: function(e) {

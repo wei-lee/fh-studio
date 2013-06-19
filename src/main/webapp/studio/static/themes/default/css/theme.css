@@ -3675,7 +3675,23 @@ h4.by_location {
 }
 
 .analytics_overview {
-  width: 350px;
+  width: 370px;
   margin: 0 auto;
   position: relative;
+}
+
+.analytics_overview i {
+  cursor: pointer;
+}
+
+.analytics_overview i:hover {
+  color: #0082bf;
+}
+
+.tooltip-inner {
+  line-height: 14px;
+}
+
+#reports_per_app_container .pagination a, .pagination span {
+  padding: 0 6px;
 }
