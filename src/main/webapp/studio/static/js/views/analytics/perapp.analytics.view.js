@@ -31,8 +31,7 @@ App.View.PerAppAnalytics = Backbone.View.extend({
         // Append guid data
         $(nTr).attr('data-guid', sData.id);
         $(nTr).attr('data-description', sData.description);
-        console.log(sData.icon);
-
+        
         var icon_cell = $('td:first', nTr);
         icon_cell.addClass('app_icon_cell');
         var icon = $('<img>').attr('src', sData.icon);
