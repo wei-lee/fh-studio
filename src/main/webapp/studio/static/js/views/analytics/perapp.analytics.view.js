@@ -30,6 +30,27 @@ App.View.PerAppAnalytics = Backbone.View.extend({
       "fnRowCallback": function(nTr, sData, oData, iRow, iCol) {
         // Append guid data
         $(nTr).attr('data-guid', sData.id);
+        $(nTr).attr('data-description', sData.description);
+        console.log(sData.icon);
+
+        var icon_cell = $('td:first', nTr);
+        icon_cell.addClass('app_icon_cell');
+        var icon = $('<img>').attr('src', sData.icon);
+        icon_cell.empty().append(icon);
+
+        $(nTr).attr('data-toggle', 'tooltip');
+
+        var tooltip_text = [];
+        tooltip_text.push("<b>Description: </b>" + (sData.description || "N/A"));
+        tooltip_text.push("<b>Email: </b>" + sData.email);
+        tooltip_text.push("<b>Last Modified: </b>" + sData.modified);
+
+        $(nTr).attr('title', tooltip_text.join("<br/>"));
+        $(nTr).tooltip({
+          delay: {
+            show: 500
+          }
+        });
       },
       oLanguage: {
         sEmptyTable: "Nothing to display."
@@ -39,6 +60,11 @@ App.View.PerAppAnalytics = Backbone.View.extend({
           "sTitle": "GUID",
           "mDataProp": "id",
           "bVisible": false
+        },
+        {
+          "sTitle": "",
+          "sWidth": "16px",
+          "mDataProp": "icon"
         },
         {
           "sTitle": "App",
