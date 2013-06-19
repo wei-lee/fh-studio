@@ -30,7 +30,9 @@ App.Model.PieMetric = Backbone.Model.extend({
       "windowsphone7": "Windows Phone 7",
       "wp7": "Windows Phone 7",
       "studio": "App Studio",
-      "embed": "Web",
+      "embed": "Embed",
+      "mobile": "Mobile Web",
+      "web": "Web",
       "fhc": "FHC"
     };
 
@@ -57,11 +59,15 @@ App.Model.PieMetric = Backbone.Model.extend({
       return '#4572a7';
     } else if (key == 'fhc') {
       return '#492970';
-    } else if (key === '') {
+    } else if (key == 'web') {
+      return '#92A8CD';
+    } else if (key == 'mobile') {
+      return '#80699B';
+    }else if (key === '') {
       // Other
       return '#db843d';
     } else {
-      var random_colours = ['#aa4643', '#80699b', '#db843d', '#4572A7', '#AA4643', '#89A54E', '#80699B', '#3D96AE', '#DB843D', '#92A8CD', '#A47D7C', '#B5CA92'];
+      var random_colours = ['#aa4643', '#80699b', '#db843d', '#4572A7', '#AA4643', '#89A54E', '#3D96AE', '#DB843D', '#A47D7C', '#B5CA92'];
       var random_colour = random_colours[Math.floor(Math.random() * random_colours.length)];
       return random_colour;
     }

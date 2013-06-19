@@ -3673,3 +3673,9 @@ h4.by_location {
 .modal-body {
   max-height: 800px !important;
 }
+
+.analytics_overview {
+  width: 350px;
+  margin: 0 auto;
+  position: relative;
+}

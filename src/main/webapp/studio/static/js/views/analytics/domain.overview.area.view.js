@@ -1,4 +1,6 @@
 App.View.AnalyticsDomainOverviewArea = Backbone.View.extend({
+  className: 'analytics_overview',
+
   initialize: function(options) {
     var self = this;
     this.picker_model = options.picker_model;
