@@ -121,7 +121,7 @@
             for (j = 0, k = events.length; j < k; j++) {
               ev = events[j];
               if ((callback && callback !== ev.callback && callback !== ev.callback._callback) ||
-                (context && context !== ev.context)) {
+                  (context && context !== ev.context)) {
                 retain.push(ev);
               }
             }
@@ -685,7 +685,7 @@
             if (sortable && !sort && existing.hasChanged(sortAttr)) sort = true;
           }
 
-          // This is a new model, push it to the `toAdd` list.
+        // This is a new model, push it to the `toAdd` list.
         } else if (options.add) {
           toAdd.push(model);
 
@@ -1175,7 +1175,7 @@
     // that still has ActiveX enabled by default, override jQuery to use that
     // for XHR instead. Remove this line when jQuery supports `PATCH` on IE8.
     if (params.type === 'PATCH' && window.ActiveXObject &&
-      !(window.external && window.external.msActiveXFilteringEnabled)) {
+          !(window.external && window.external.msActiveXFilteringEnabled)) {
       params.xhr = function() {
         return new ActiveXObject("Microsoft.XMLHTTP");
       };
@@ -1274,11 +1274,11 @@
     // against the current location hash.
     _routeToRegExp: function(route) {
       route = route.replace(escapeRegExp, '\\$&')
-        .replace(optionalParam, '(?:$1)?')
-        .replace(namedParam, function(match, optional){
-          return optional ? match : '([^\/]+)';
-        })
-        .replace(splatParam, '(.*?)');
+                   .replace(optionalParam, '(?:$1)?')
+                   .replace(namedParam, function(match, optional){
+                     return optional ? match : '([^\/]+)';
+                   })
+                   .replace(splatParam, '(.*?)');
       return new RegExp('^' + route + '$');
     },
 
@@ -1406,8 +1406,8 @@
         // Return immediately as browser will do redirect to new url
         return true;
 
-        // Or if we've started out with a hash-based route, but we're currently
-        // in a browser where it could be `pushState`-based instead...
+      // Or if we've started out with a hash-based route, but we're currently
+      // in a browser where it could be `pushState`-based instead...
       } else if (this._wantsPushState && this._hasPushState && atRoot && loc.hash) {
         this.fragment = this.getHash().replace(routeStripper, '');
         this.history.replaceState({}, document.title, this.root + this.fragment + loc.search);
@@ -1475,8 +1475,8 @@
       if (this._hasPushState) {
         this.history[options.replace ? 'replaceState' : 'pushState']({}, document.title, url);
 
-        // If hash changes haven't been explicitly disabled, update the hash
-        // fragment to store history.
+      // If hash changes haven't been explicitly disabled, update the hash
+      // fragment to store history.
       } else if (this._wantsHashChange) {
         this._updateHash(this.location, fragment, options.replace);
         if (this.iframe && (fragment !== this.getFragment(this.getHash(this.iframe)))) {
@@ -1487,8 +1487,8 @@
           this._updateHash(this.iframe.location, fragment, options.replace);
         }
 
-        // If you've told us that you explicitly don't want fallback hashchange-
-        // based history, then `navigate` becomes a page refresh.
+      // If you've told us that you explicitly don't want fallback hashchange-
+      // based history, then `navigate` becomes a page refresh.
       } else {
         return this.location.assign(url);
       }

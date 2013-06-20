@@ -39,36 +39,11 @@ Admin.Devices.Controller = Controller.extend({
     $(self.views.device_list).show();
     self.container = self.views.device_list;
     self.model.device.list(function(res){
-      var data = self.addControls(res);
-      self.renderDeviceTable(data);
+      self.renderDeviceTable(res);
       self.bindControls();
-      var users_button = $('<button>').addClass('btn btn-primary pull-right').text('Users');
-      var devices_buton = $('<button>').addClass('btn btn-primary pull-right audit_button_margin').text('Devices');
-      var apps_buton = $('<button>').addClass('btn btn-primary pull-right audit_button_margin').text('Apps');
-      $("#admin_devices_table_wrapper").find(".span12").append(users_button).append(devices_buton).append(apps_buton);
-
     }, function(err){
       console.log("Error showing devices");
     }, true);
-  },
-
-  addControls: function(res){
-    // Add control column
-    res.aoColumns.push({
-      sTitle: "Controls",
-      "bSortable": false,
-      "sClass": "controls"
-    });
-
-    $.each(res.aaData, function(i, row) {
-      var controls = [];
-      // TODO: Move to clonable hidden_template
-      controls.push('<button class="btn edit_device">Edit</button>&nbsp;');
-      controls.push('<button class="btn view_device_users">View Users</button>&nbsp;');
-      controls.push('<button class="btn view_device_apps">View Apps</button>');
-      row.push(controls.join(""));
-    });
-    return res;
   },
 
   renderDeviceTable: function(data) {
@@ -107,7 +82,8 @@ Admin.Devices.Controller = Controller.extend({
 
   bindControls: function() {
     var self = this;
-    $('tr td .edit_device, tr td .view_device_users, tr td .view_device_apps, tr td:not(.controls,.dataTables_empty)', this.views.device_list).unbind().click(function() {
+    $('tr td:not(.controls,.dataTables_empty)', this.views.device_list).unbind().live('click', function() {
+      console.log('MM click handler');
       var row = $(this).parent().parent();
       var data = self.dataForRow($(this).closest('tr').get(0));
       self.showViewDevice(this, row, data);
