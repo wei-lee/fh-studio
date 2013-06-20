@@ -201,7 +201,7 @@ var Lang = {
 
   publish_embed_title: 'Embed Code',
   publish_embed_text: 'Paste the following code in your html to load an embedded version of the App.',
-  embed_publish_wizard_supertitle: 'Build Embeded App',
+  embed_publish_wizard_supertitle: 'Build Embedded App',
   app_publish_embed_info_text: "Would you like to build the app's server-side code?",
   app_publish_embed_info_title: 'Information',
   app_publish_embed_progress_title: 'Building App',
@@ -463,6 +463,8 @@ var Lang = {
   configuration_ipad_Retina_Splash_Image_help_icon: "The portrait retina splash image for the new iPad. Default value is '/client/default/Default-Portrait@2x~ipad.png'. If the file specified can not be found, a default image will be provided.",
   configuration_ipad_Landscape_Retina_Splash_Image_help_icon: "The landscape retina splash image for the new iPad. Default value is '/client/default/Default-Landscape@2x~ipad.png'. If the file specified can not be found, a default image will be provided.",
   configuration_android_Package_Name_help_icon: "The Java package name of the application. Please follow the convention of Java package names. A default unique package name is provided.",
+  configuration_enable_MonkeyTalk_help_icon: "Once enabled, the <a href='http://www.gorillalogic.com/monkeytalk' target='_blank'>MonkeyTalk</a> client agent will be included automatically. MonkeyTalk is a powerful automated testing tool.",
+  configuration_simulator_Only_help_icon: "Once enabled, the binary will be built for simulator only.",
   ios_configuration_replace_general_notes: "Please specify this setting in iPhone and iPad's configurations.",
   apps_list_search_text: 'Search Apps',
   apps_list_search_title: '',

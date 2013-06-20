@@ -67,14 +67,14 @@ Admin.Authpolicy.Controller = Controller.extend({
 
   bindUserControls: function() {
     var self = this;
-    $('tr td .edit_policy, tr td:not(.controls,.dataTables_empty)', this.policy_table).click(function() {
+    $('tr td .edit_policy, tr td:not(.controls,.dataTables_empty)', this.policy_table).unbind().live('click', function() {
       var row = $(this).parent().parent();
       var data = self.policyDataForRow($(this).closest('tr').get(0));
       self.showCreateUpdatePolicy(data[0]);
       return false;
     });
 
-    $('tr td .delete_policy', this.policy_table).click(function() {
+    $('tr td .delete_policy', this.policy_table).unbind().live('click', function() {
       var row = $(this).parent().parent();
       var data = self.policyDataForRow($(this).parent().parent().get(0));
       self.deletePolicy(this, row, data);

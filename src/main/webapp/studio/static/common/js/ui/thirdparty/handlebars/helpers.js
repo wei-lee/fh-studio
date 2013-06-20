@@ -13,7 +13,7 @@
  *  @courtesy - https://github.com/umdjs/umd/blob/master/returnExports.js
  */
 
-(function (root, factory) {
+(function(root, factory) {
   if (typeof exports === 'object') {
     // Node. Does not work with strict CommonJS, but
     // only CommonJS-like enviroments that support module.exports,
@@ -26,7 +26,7 @@
     // Browser globals (root is window)
     root.returnExports = factory(root.Handlebars);
   }
-}(this, function (Handlebars) {
+}(this, function(Handlebars) {
 
   /**
    * If Equals
