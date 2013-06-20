@@ -60,7 +60,7 @@ Admin.Storeitem.Groups.Controller = Controller.extend({
 
   bindGroupControls: function() {
     var self = this;
-    $('#admin_storeitem_group_create .create_group_btn').unbind().click(function() {
+    $(this.views.groups + ' #admin_storeitem_group_create .create_group_btn').unbind().live('click', function() {
       var name = $('#create_group_name').val();
       var description = $('#create_group_desc').val();
       self.createGroup({
@@ -72,7 +72,7 @@ Admin.Storeitem.Groups.Controller = Controller.extend({
     });
 
 
-    $('tr td .edit_group', this.user_table).unbind().click(function() {
+    $(this.views.groups + ' tr td .edit_group').unbind().live('click', function() {
       var el = this;
       var row = $(this).parent().parent();
       var data = self.groupDataForRow($(this).parent().parent().get(0));
@@ -87,7 +87,8 @@ Admin.Storeitem.Groups.Controller = Controller.extend({
 
       return false;
     });
-    $('tr td .delete_group', this.user_table).unbind().click(function() {
+
+    $(this.views.groups + ' tr td .delete_group').unbind().live('click', function() {
       var row = $(this).parent().parent();
       var data = self.groupDataForRow($(this).parent().parent().get(0));
       self.deleteGroup(this, row, data);

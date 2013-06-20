@@ -6,7 +6,7 @@ var OAUTH2 = 'OAUTH2';
 var LDAP = 'LDAP';
 
 Admin.Authpolicy.Controller = Controller.extend({
-  
+
   init: function() {},
 
   show: function(e) {
@@ -67,14 +67,14 @@ Admin.Authpolicy.Controller = Controller.extend({
 
   bindUserControls: function() {
     var self = this;
-    $('tr td .edit_policy, tr td:not(.controls,.dataTables_empty)', this.policy_table).unbind().live('click', function() {
+    $(this.views.policies + ' tr td .edit_policy, ' + this.views.policies + ' tr td:not(.controls,.dataTables_empty)').unbind().live('click', function() {
       var row = $(this).parent().parent();
       var data = self.policyDataForRow($(this).closest('tr').get(0));
       self.showCreateUpdatePolicy(data[0]);
       return false;
     });
 
-    $('tr td .delete_policy', this.policy_table).unbind().live('click', function() {
+    $(this.views.policies + ' tr td .delete_policy').unbind().live('click', function() {
       var row = $(this).parent().parent();
       var data = self.policyDataForRow($(this).parent().parent().get(0));
       self.deletePolicy(this, row, data);
@@ -124,7 +124,7 @@ Admin.Authpolicy.Controller = Controller.extend({
           self.createOrUpdatePolicy(action);
           return false;
         });
-      }else {
+      } else {
         $(view).find('#create_policy_btn').unbind().click(function() {
           self.createOrUpdatePolicy(action);
           return false;
@@ -136,7 +136,7 @@ Admin.Authpolicy.Controller = Controller.extend({
       if (action === 'update') {
         $(view).find('#update_policy_type').unbind().change(function(e) {
           var type = $('#update_policy_type').val();
-          switch(type) {
+          switch (type) {
             case OAUTH2:
               $('#update_oauth2_div').show();
               $('#update_ldap_div').hide();
@@ -152,16 +152,16 @@ Admin.Authpolicy.Controller = Controller.extend({
               $('#update_feedhenry_div').show();
               $('#update_ldap_div').hide();
               break;
-            default: 
-             console.error("Unknown policy type: " + type);
-             break;
+            default:
+              console.error("Unknown policy type: " + type);
+              break;
           }
           return false;
-        });    
-      }else {
+        });
+      } else {
         $(view).find('#create_policy_type').unbind().change(function(e) {
           var type = $('#create_policy_type').val();
-          switch(type) {
+          switch (type) {
             case OAUTH2:
               $('#create_oauth2_div').show();
               $('#create_ldap_div').hide();
@@ -177,9 +177,9 @@ Admin.Authpolicy.Controller = Controller.extend({
               $('#create_feedhenry_div').show();
               $('#create_ldap_div').hide();
               break;
-            default: 
-             console.error("Unknown policy type: " + type);
-             break;
+            default:
+              console.error("Unknown policy type: " + type);
+              break;
           }
           return false;
         });
@@ -192,79 +192,79 @@ Admin.Authpolicy.Controller = Controller.extend({
         $(view).find('#update_check_user_approved_id').unbind().change(function(e) {
           var check = $('#update_check_user_approved_id').is(':checked');
           if (check === true) {
-            $('#update_approved_users').show();            
-          }else {
+            $('#update_approved_users').show();
+          } else {
             $('#update_approved_users').hide();
           }
           return false;
-        });    
-      }else {
+        });
+      } else {
         $(view).find('#create_check_user_approved_id').unbind().change(function(e) {
           var check = $('#create_check_user_approved_id').is(':checked');
           if (check === true) {
-            $('#create_approved_users').show();            
-          }else {
+            $('#create_approved_users').show();
+          } else {
             $('#create_approved_users').hide();
           }
           return false;
-        });    
+        });
       }
     };
 
-    function getUserList (cb) {
+    function getUserList(cb) {
       self.models.user.list(function(res) {
         // create an array of userids from the users return json
         var users = [];
-        for (var i=0; i<res.list.length; i++) {
+        for (var i = 0; i < res.list.length; i++) {
           var u = res.list[i];
           users.push(u.fields.username);
         }
         return cb(null, users);
-      }, function(e) { 
-         return cb(e);
+      }, function(e) {
+        return cb(e);
       });
     }
 
     var readPolicy = function(id) {
       async.parallel([
         getUserList,
-        function (cb) {
+        function(cb) {
           self.models.policy.read(id, function(res) {
             return cb(null, res);
           }, function(e) {
             return cb(e);
           });
-        }], function(err, results){
-          if (err != null) {
-            return self.showAlert('error', '<strong>Error loading user data</strong> ' + err);
-          }       
-          self.hide();
-          self.showEditPolicy(results[0], results[1]);
-          $(view).show();
-          bindEvent();
-          bindPolicyTypeChangeEvent();
-          bindUserApprovedCheckEvent();          
-        });
-      };
+        }], function(err, results) {
+        if (err != null) {
+          return self.showAlert('error', '<strong>Error loading user data</strong> ' + err);
+        }
+        self.hide();
+        self.showEditPolicy(results[0], results[1]);
+        $(view).show();
+        bindEvent();
+        bindPolicyTypeChangeEvent();
+        bindUserApprovedCheckEvent();
+      });
+    };
 
     if (policy_id) {
       // existing policy
-      readPolicy(policy_id);      
+      readPolicy(policy_id);
     } else {
       // new policy
       async.parallel([
         getUserList,
-        function (cb) {
+        function(cb) {
           self.models.policy.getConfig(function(conf) {
             return cb(null, conf);
           }, function(e) {
             return cb(e);
           });
         }
-      ], function(err, results){
+      ], function(err, results) {
         self.hide();
         self.updateSwapSelect('#create_approved_users_auth_policies_swap', results[0], []);
-        self.bindSwapSelect(self.views.policies_create);      
+        self.bindSwapSelect(self.views.policies_create);
 
         $('#create_oauth_callback', self.views.policies_create).val(results[1].url);
         $('#create_oauth2_div', self.views.policies_create).show();
@@ -273,13 +273,13 @@ Admin.Authpolicy.Controller = Controller.extend({
         $('#create_approved_users').hide();
         $(view).show();
         bindEvent();
-        bindPolicyTypeChangeEvent();  
-        bindUserApprovedCheckEvent();          
-      });      
+        bindPolicyTypeChangeEvent();
+        bindUserApprovedCheckEvent();
+      });
     }
   },
-  
-  showAlert: function (type, message) {
+
+  showAlert: function(type, message) {
     var self = this;
     var alerts_area = $('#auth_policies_alerts');
     var alert = $('<div>').addClass('alert fade in alert-' + type).html(message);
@@ -289,7 +289,7 @@ Admin.Authpolicy.Controller = Controller.extend({
     // only automatically hide alert if it's not an error
     if ('error' !== type) {
       setTimeout(function() {
-        alert.slideUp(function () {
+        alert.slideUp(function() {
           alert.remove();
         });
       }, self.alert_timeout);
@@ -298,7 +298,7 @@ Admin.Authpolicy.Controller = Controller.extend({
 
   deletePolicy: function(button, row, data) {
     var self = this;
-    self.showBooleanModal('Are you sure you want to delete this Policy?', function () {
+    self.showBooleanModal('Are you sure you want to delete this Policy?', function() {
       var id = data[0];
       self.showAlert('info', '<strong>Deleting Profile</strong> (' + id + ').. ');
       // delete user
@@ -321,19 +321,19 @@ Admin.Authpolicy.Controller = Controller.extend({
       acting = "Updating";
       $('#update_guid', self.views.policies_update).val(policy.guid);
       $('#update_policy_id', self.views.policies_update).val(policy.policyId).attr("disabled", "true");
-      $('#update_policy_type', self.views.policies_update).val(policy.policyType);   
+      $('#update_policy_type', self.views.policies_update).val(policy.policyType);
       $('#update_check_user_exists_id', self.views.policies_update).prop("checked", policy.checkUserExists === true);
       $('#update_check_user_approved_id', self.views.policies_update).prop("checked", policy.checkUserApproved === true);
-       
+
       // create an array of user names from the users return json
       var pusers = [];
-      for (var i=0; i<policy.users.length; i++) {
+      for (var i = 0; i < policy.users.length; i++) {
         var u = policy.users[i];
         pusers.push(u.userId);
       }
 
       self.updateSwapSelect('#update_approved_users_auth_policies_swap', users, pusers);
-      self.bindSwapSelect(self.views.policies_update);      
+      self.bindSwapSelect(self.views.policies_update);
 
       // do various show/hides
       if (policy.checkUserApproved === true) {
@@ -342,33 +342,33 @@ Admin.Authpolicy.Controller = Controller.extend({
         $('#update_approved_users').hide();
       }
 
-      switch(policy.policyType) {
-      case OAUTH2:
-        $('#update_oauth2_div', self.views.policies_update).show();
-        $('#update_ldap_div', self.views.policies_update).hide();
-        $('#update_feedhenry_div', self.views.policies_update).hide();
-        $('#update_policy_conf_provider', self.views.policies_update).val(policy.configurations.provider);
-        $('#update_client_id', self.views.policies_update).val(policy.configurations.clientId);
-        $('#update_client_secret', self.views.policies_update).val(policy.configurations.clientSecret);
-        $('#update_oauth_callback', self.views.policies_update).val(policy.configurations.callbackUrl);
-        break;
-      case LDAP:
-        $('#update_oauth2_div', self.views.policies_update).hide();
-        $('#update_feedhenry_div', self.views.policies_update).hide();
-        $('#update_ldap_div', self.views.policies_update).show();
-        $('#update_authmethod_id', self.views.policies_update).val(policy.configurations.authmethod);
-        $('#update_ldap_url_id', self.views.policies_update).val(policy.configurations.url);
-        $('#update_dn_prefix_id', self.views.policies_update).val(policy.configurations.dn_prefix);
-        $('#update_dn_id', self.views.policies_update).val(policy.configurations.dn);
-        break;
-      case FEEDHENRY:
-        $('#update_oauth2_div', self.views.policies_update).hide();
-        $('#update_feedhenry_div', self.views.policies_update).show();
-        $('#update_ldap_div', self.views.policies_update).hide();
-        break;
-      default: 
-        console.error("Unknown policy type: " + type);
-        break;
+      switch (policy.policyType) {
+        case OAUTH2:
+          $('#update_oauth2_div', self.views.policies_update).show();
+          $('#update_ldap_div', self.views.policies_update).hide();
+          $('#update_feedhenry_div', self.views.policies_update).hide();
+          $('#update_policy_conf_provider', self.views.policies_update).val(policy.configurations.provider);
+          $('#update_client_id', self.views.policies_update).val(policy.configurations.clientId);
+          $('#update_client_secret', self.views.policies_update).val(policy.configurations.clientSecret);
+          $('#update_oauth_callback', self.views.policies_update).val(policy.configurations.callbackUrl);
+          break;
+        case LDAP:
+          $('#update_oauth2_div', self.views.policies_update).hide();
+          $('#update_feedhenry_div', self.views.policies_update).hide();
+          $('#update_ldap_div', self.views.policies_update).show();
+          $('#update_authmethod_id', self.views.policies_update).val(policy.configurations.authmethod);
+          $('#update_ldap_url_id', self.views.policies_update).val(policy.configurations.url);
+          $('#update_dn_prefix_id', self.views.policies_update).val(policy.configurations.dn_prefix);
+          $('#update_dn_id', self.views.policies_update).val(policy.configurations.dn);
+          break;
+        case FEEDHENRY:
+          $('#update_oauth2_div', self.views.policies_update).hide();
+          $('#update_feedhenry_div', self.views.policies_update).show();
+          $('#update_ldap_div', self.views.policies_update).hide();
+          break;
+        default:
+          console.error("Unknown policy type: " + type);
+          break;
       }
     }
   },
@@ -379,7 +379,7 @@ Admin.Authpolicy.Controller = Controller.extend({
     var guid, id, type, provider, checkUserExists, checkUserApproved, conf;
     var users = [];
     if (action == "update") {
-      view = self.views.policies_update;    
+      view = self.views.policies_update;
 
       guid = $('#update_guid', view).val() === "" ? undefined : $('#update_guid', view).val();
       id = $('#update_policy_id', view).val();
@@ -387,32 +387,32 @@ Admin.Authpolicy.Controller = Controller.extend({
       provider = $('#update_policy_conf_provider', view).val();
       checkUserExists = $('#update_check_user_exists_id', view).prop("checked");
       checkUserApproved = $('#update_check_user_approved_id', view).prop("checked");
-      
-      $('#update_approved_users_auth_policies_swap .swap-to option', view).each(function (i, item) {
+
+      $('#update_approved_users_auth_policies_swap .swap-to option', view).each(function(i, item) {
         users.push($(item).text());
       });
 
-      if (type === OAUTH2) {          
+      if (type === OAUTH2) {
         conf = {
           "provider": provider,
           "clientId": $('#update_client_id', view).val(),
           "clientSecret": $('#update_client_secret', view).val(),
           "callbackUrl": $('#update_oauth_callback', view).val()
         };
-      }else if (type === LDAP) {
+      } else if (type === LDAP) {
         conf = {
-          "provider" : LDAP,
+          "provider": LDAP,
           "authmethod": $('#update_authmethod_id', view).val(),
           "url": $('#update_ldap_url_id', view).val(),
           "dn_prefix": $('#update_dn_prefix_id', view).val(),
           "dn": $('#update_dn_id', view).val()
         };
-      }else {
+      } else {
         conf = {
-           "provider": FEEDHENRY
+          "provider": FEEDHENRY
         };
       }
-    }else {
+    } else {
       view = self.views.policies_create;
 
       id = $('#create_policy_id', view).val();
@@ -420,20 +420,20 @@ Admin.Authpolicy.Controller = Controller.extend({
       provider = $('#create_policy_conf_provider', view).val();
       checkUserExists = $('#create_check_user_exists_id', view).prop("checked");
       checkUserApproved = $('#create_check_user_approved_id', view).prop("checked");
-      
-      $('#create_approved_users_auth_policies_swap .swap-to option', view).each(function (i, item) {
+
+      $('#create_approved_users_auth_policies_swap .swap-to option', view).each(function(i, item) {
         users.push($(item).text());
       });
-      if (type === OAUTH2) {          
+      if (type === OAUTH2) {
         conf = {
           "provider": provider,
           "clientId": $('#create_client_id', view).val(),
           "clientSecret": $('#create_client_secret', view).val(),
           "callbackUrl": $('#create_oauth_callback', view).val()
         };
-      }else if (type === LDAP) {
+      } else if (type === LDAP) {
         conf = {
-          "provider" : LDAP,
+          "provider": LDAP,
           "authmethod": $('#create_authmethod_id', view).val(),
           "url": $('#create_ldap_url_id', view).val(),
           "dn_prefix": $('#create_dn_prefix_id', view).val(),
@@ -441,7 +441,7 @@ Admin.Authpolicy.Controller = Controller.extend({
         };
       } else {
         conf = {
-           "provider": FEEDHENRY
+          "provider": FEEDHENRY
         };
       }
     }
@@ -459,10 +459,10 @@ Admin.Authpolicy.Controller = Controller.extend({
       }
     }
 
-    if(action === 'update') {
-      this.models.policy.update(guid, id, type, conf, checkUserExists, checkUserApproved, users, onSuccess, onFailure); 
-    }else {
-      this.models.policy.create(id, type, conf, checkUserExists, checkUserApproved, users, onSuccess, onFailure); 
+    if (action === 'update') {
+      this.models.policy.update(guid, id, type, conf, checkUserExists, checkUserApproved, users, onSuccess, onFailure);
+    } else {
+      this.models.policy.create(id, type, conf, checkUserExists, checkUserApproved, users, onSuccess, onFailure);
     }
   }
 });
