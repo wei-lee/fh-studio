@@ -7,26 +7,30 @@
 </script>
 
 <script id="cloud-notifications-filter-template" type="text/x-handlebars-template">
-    <div class="filter_options pull-right">
-        <form class="filter_options_forms">
-            <select class="eventCategories_filters" data-toggle="tooltip" title="Filter By Event Class">
+    <div class="filter_options span9">
+        <form class="filter_options_forms span12">
+            <div class="span9">
+            <select class="eventCategories_filters span4" data-toggle="tooltip" title="Filter By Event Class">
             </select>
-            <select class="eventNames_filters" data-toggle="tooltip" title="Filter By Event State">
+            <select class="eventNames_filters span4" data-toggle="tooltip" title="Filter By Event State">
             </select>
-            <select class="eventSeverities_filters" data-toggle="tooltip" title="Filter By Event Severity">
+            <select class="eventSeverities_filters span4" data-toggle="tooltip" title="Filter By Event Severity">
             </select>
-            <button class="btn filterEventsBtn">Filter</button>
-            <button class="btn filterResetBtn">Reset</button>
-            <button class="btn reloadBtn">Reload</button>
+            </div>
+            <div class="span3">
+            <button class="btn filterEventsBtn span4">Filter</button>
+            <button class="btn filterResetBtn span4">Reset</button>
+            <button class="btn reloadBtn span4">Reload</button>
+            </div>
         </form>
     </div>
 </script>
 
 <script id="datatable-search-query-template" type="text/x-handlebars-template">
-    <form class="form-search">
-        <div class="input-prepend">
+    <form class="form-search span12">
+        <div class="input-prepend span12">
             <button class="btn"><i class="icon-search"></i></button>
-            <input type="text" class="search-query">
+            <input type="text" class="search-query span10">
         </div>
     </form>
 </script>
@@ -111,6 +115,10 @@
 <script id="alert-notifications-template" type="text/x-handlebars-template">
     <div class="alert_notifications_table_container">
     </div>
+</script>
+
+<script id="alert-checkbox-template" type="text/x-handlebars-template">
+    <input type='checkbox' class='row_control'>
 </script>
 
 <script id="event-alert-notification-template" type="text/x-handlebars-template">

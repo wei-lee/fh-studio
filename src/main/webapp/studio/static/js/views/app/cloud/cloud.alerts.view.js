@@ -46,7 +46,7 @@ App.View.EventAlerts = Backbone.View.extend({
     }, this);
     var data = this.collection.toJSON();
     _.each(data, function(el, index){
-      el.control = "<input type='checkbox' class='row_control'>";
+      el.control = Handlebars.compile($('#alert-checkbox-template').html())();
     });
 
     if(!this.table_view){
@@ -210,34 +210,10 @@ App.View.EventAlerts = Backbone.View.extend({
 
   filterEvents : function(filters){
     var self = this;
-    _.each(filters, function(filter){
-      var eventClasses = filter.get("eventCategories");
-      var eventStates = filter.get("eventNames");
-      var severities = filter.get("eventSeverities");
-      var models = self.notifications.models;
-      for(var i=0;i<models.length;i++){
-        var model = models[i];
-        var match = false;
-        if(eventClasses === "" || eventClasses.indexOf(model.get("category")) > -1){
-          match = true;
-        } else {
-          match = false;
-        }
-        if(match && (eventStates === "" || eventStates.indexOf(model.get("eventType")) > -1)){
-          match = true;
-        } else {
-          match = false;
-        }
-        if(match && (severities === "" ||severities.indexOf(model.get("severity")) > -1 )){
-          match = true;
-        } else {
-          match = false;
-        }
-        if( match ){
-          if(!self.filteredNotifications.findWhere({guid: model.get('guid')})){
-            self.filteredNotifications.add(model);
-          }
-        }
+    var matched = self.notifications.filterEvents(filters);
+    _.each(matched, function(model){
+      if(!self.filteredNotifications.findWhere({guid: model.get('guid')})){
+        self.filteredNotifications.add(model);
       }
     });
   }

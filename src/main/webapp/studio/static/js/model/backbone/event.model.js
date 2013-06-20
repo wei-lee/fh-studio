@@ -66,6 +66,40 @@ App.Collection.CloudEvents = Backbone.Collection.extend({
     });
 
     return parsed_list;
+  },
+
+  filterEvents: function(filters){
+    var matched = [];
+    var self = this;
+    _.each(filters, function(filter){
+      var eventClasses = filter.get("eventCategories");
+      var eventStates = filter.get("eventNames");
+      var severities = filter.get("eventSeverities");
+      var models = self.models;
+      for(var i=0;i<models.length;i++){
+        var model = models[i];
+        var match = false;
+        if(eventClasses === "" || eventClasses.indexOf(model.get("category")) > -1){
+          match = true;
+        } else {
+          match = false;
+        }
+        if(match && (eventStates === "" || eventStates.indexOf(model.get("eventType")) > -1)){
+          match = true;
+        } else {
+          match = false;
+        }
+        if(match && (severities === "" ||severities.indexOf(model.get("severity")) > -1 )){
+          match = true;
+        } else {
+          match = false;
+        }
+        if( match ){
+          matched.push(model);
+        }
+      }
+    });
+    return matched;
   }
 });
 
