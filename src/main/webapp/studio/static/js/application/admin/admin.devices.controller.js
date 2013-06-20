@@ -83,7 +83,6 @@ Admin.Devices.Controller = Controller.extend({
   bindControls: function() {
     var self = this;
     $(this.views.device_list + ' tr td:not(.controls,.dataTables_empty)').unbind().live('click', function() {
-      console.log('MM click handler');
       var row = $(this).parent().parent();
       var data = self.dataForRow($(this).closest('tr').get(0));
       self.showViewDevice(this, row, data);
@@ -96,7 +95,6 @@ Admin.Devices.Controller = Controller.extend({
   },
 
   showViewDevice: function(button, row, data) {
-    console.log(data);
     var self = this;
     self.hide();
     var parent = $(self.views.device_update);
