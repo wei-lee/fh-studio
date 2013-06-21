@@ -10,67 +10,67 @@ Admin.Deploytarget.Controller = Controller.extend({
   STATIC_IMAGE_PREFIX: "/studio/static/themes/default/img/",
 
   valid_targets: [{
-    "id": "cloudfoundry",
-    "name": "CloudFoundry",
-    "icon": "cloud_target_cloudfoundry.png",
-    "configurations": {
-      "url": true,
-      "username": true,
-      "password": true,
-      "infrastructure": false
-    }
+      "id": "cloudfoundry",
+      "name": "CloudFoundry",
+      "icon": "cloud_target_cloudfoundry.png",
+      "configurations": {
+        "url": true,
+        "username": true,
+        "password": true,
+        "infrastructure": false
+      }
   }, {
-    "id": "stackato",
-    "name": "Stackato",
-    "icon": "cloud_target_stackato.png",
-    "configurations": {
-      "url": true,
-      "username": true,
-      "password": true,
-      "infrastructure": false
-    }
+      "id": "stackato",
+      "name": "Stackato",
+      "icon": "cloud_target_stackato.png",
+      "configurations": {
+        "url": true,
+        "username": true,
+        "password": true,
+        "infrastructure": false
+      }
   }, {
-    "id": "appfog",
-    "name": "AppFog",
-    "icon": "cloud_target_appfog.png",
-    "configurations": {
-      "url": true,
-      "username": true,
-      "password": true,
-      "infrastructure": true
-    }
+      "id": "appfog",
+      "name": "AppFog",
+      "icon": "cloud_target_appfog.png",
+      "configurations": {
+        "url": true,
+        "username": true,
+        "password": true,
+        "infrastructure": true
+      }
   }, {
-    "id": "ironfoundry",
-    "name": "IronFoundry",
-    "icon": "cloud_target_ironfoundry.png",
-    "configurations": {
-      "url": true,
-      "username": true,
-      "password": true,
-      "infrastructure": false
-    }
+      "id": "ironfoundry",
+      "name": "IronFoundry",
+      "icon": "cloud_target_ironfoundry.png",
+      "configurations": {
+        "url": true,
+        "username": true,
+        "password": true,
+        "infrastructure": false
+      }
   }],
 
   appfog_valid_infrastructures: [{
-    label: 'AWS US East - Virginia',
-    name: 'aws',
-    value: 'aws.af.cm'
+      label: 'AWS US East - Virginia',
+      name: 'aws',
+      value: 'aws.af.cm'
   }, {
-    label: 'AWS EU West - Ireland',
-    name: 'eu-aws',
-    value: 'eu01.aws.af.cm'
+      label: 'AWS EU West - Ireland',
+      name: 'eu-aws',
+      value: 'eu01.aws.af.cm'
   }, {
-    label: 'AWS Asia SE - Singapore',
-    name: 'ap-aws',
-    value: 'ap01.aws.af.cm'
+      label: 'AWS Asia SE - Singapore',
+      name: 'ap-aws',
+      value: 'ap01.aws.af.cm'
   }, {
-    label: 'Rackspace AZ 1 - Dallas',
-    name: 'rs',
-    value: 'rs.af.cm'
+      label: 'Rackspace AZ 1 - Dallas',
+      name: 'rs',
+      value: 'rs.af.cm'
   }, {
-    label: 'HP AZ 1 - Las Vegas',
-    name: 'hp',
-    value: 'hp.af.cm'
+      label: 'HP AZ 1 - Las Vegas',
+      name: 'hp',
+      value: 'hp.af.cm'
   }],
 
   views: {
@@ -198,13 +198,13 @@ Admin.Deploytarget.Controller = Controller.extend({
 
   bindControls: function() {
     var self = this;
-    $('tr td .edit_deploy_target, tr td:not(.controls,.dataTables_empty)', this.views.target_list).unbind().live('click', function() {
+    $(this.views.target_list + ' tr td .edit_deploy_target, ' + this.views.target_list + ' tr td:not(.controls,.dataTables_empty)').unbind().live('click', function() {
       var row = $(this).parent().parent();
       var data = self.dataForRow($(this).closest('tr').get(0));
       self.showEditTarget(this, row, data);
       return false;
     });
-    $('tr td .delete_deploy_target', this.views.target_list).unbind().live('click', function() {
+    $(this.views.target_list +' tr td .delete_deploy_target').unbind().live('click', function() {
       var row = $(this).parent().parent();
       var data = self.dataForRow($(this).closest('tr').get(0));
       self.deleteTarget(this, row, data);
