@@ -186,9 +186,9 @@ body {
   background: url(img/auth_google.png) #fff no-repeat 50% 50%;
 }
 
-.auth_policy_select_btn.feedhenry {
+/*.auth_policy_select_btn.feedhenry {
   background: url(img/auth_feedhenry.png) #fff no-repeat 50% 50%;
-}
+}*/
 
 .auth_policy_select_btn.ldap {
   background: url(img/auth_ldap.png) #fff no-repeat 50% 50%;
