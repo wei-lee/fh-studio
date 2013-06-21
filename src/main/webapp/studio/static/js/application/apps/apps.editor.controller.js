@@ -337,7 +337,7 @@ Apps.Editor.Controller = Apps.Controller.extend({
   checkReloadFile: function(file_id) {
     var self = this;
     var file_obj = self.file_manager[file_id];
-    if (file_obj.reload) {
+    if (file_obj && file_obj.reload) {
       //if the file need to be reloaded, check if there is any local changes
       if (self.modified_files[file_id]) {
         //if there is, ask user what to do
