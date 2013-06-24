@@ -19,7 +19,7 @@ App.View.CloudNotificationsTable = Backbone.View.extend({
     if(!this.table_view){
       this.table_view = new App.View.DataTable({
         "aaData": this.collection.toJSON(),
-        "aaSorting": [[0, 'desc']],
+        "aaSorting": [[6, 'desc']],
         "fnRowCallback": function(nTr, sData, oData, iRow, iCol) {
           // Append guid data
           $(nTr).attr('data-guid', sData.guid);
@@ -28,7 +28,7 @@ App.View.CloudNotificationsTable = Backbone.View.extend({
         },
         "aoColumns": [{
           "sTitle": "TimeStamp",
-          "mDataProp": "sysCreated"
+          "mDataProp": "timestamp"
         },
         {
           "sTitle":"Updated By",
@@ -46,6 +46,9 @@ App.View.CloudNotificationsTable = Backbone.View.extend({
         }, {
           "sTitle": "Message",
           "mDataProp": "message"
+        }, {
+          "mDataProp": "sysCreated",
+          "bVisible": false
         }],
         "bAutoWidth": false,
         "sPaginationType": 'bootstrap',
