@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------------
 Component: fh-studio
 -------------------------------------------------------------------------------
-3.16.11 - 2013-06-11 - IR203 - Craig Brookes
+3.16.11 - 2013-06-11 - IR203 - Craig Brookes, Martin Murphy
 * 4117  add support for multiple node versions to studio
 Studio makes use of 3 new props in millicore
 studio-js-nodejs.runtimes.release.show = false
@@ -10,6 +10,8 @@ studio-js-nodejs.runtimes.supported = ["FEEDHENRY"]
 
 these control which env to show runtimes on the deploy screen for and also which platforms to show
 the runtimes options for.
+
+* 4198 fix git pull modal issue (martin murphy)
 
 3.16.10 - 2013-06-20 - IR203 - Jason Madigan
 ---------------------------------------------------------------------------
