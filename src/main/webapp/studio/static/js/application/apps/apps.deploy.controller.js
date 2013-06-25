@@ -61,7 +61,6 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
 
       this.model.deploy.list(app_guid, cloud_env, function (targets) {
         self.renderTargets(targets.list);
-        self.setRuntimes();
       }, function () {
         // List failed
       });
@@ -75,16 +74,25 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
 		var guid = $fw.data.get('inst').guid;
 		var targetInfo = self.getTargetData();
 		var depTarget = targetInfo.fields.target;
-		var select = $('select.nodevers:visible');
+		console.log(" jquery select " + env+'nodevers');
+		var controlDiv = $('div#nodevers');
+		$('select.nodevers').hide();
+		var select = $('select#'+env+'nodevers');
 		var runtimesEnabled = $fw.getClientProp("nodejs.runtimes."+env+".show");
+		console.log("runtimes enabeld = " + runtimesEnabled);
 		if(!runtimesEnabled || runtimesEnabled === "false"){
-			select.hide();
+			controlDiv.hide();
 			return;
 		}
+		else{
+			controlDiv.show();
+		}
 		var enabledTargets = $fw.getClientProp("nodejs.runtimes.supported");
+		console.log("enabled targets set to ", enabledTargets);
 		if(enabledTargets){
 			if(enabledTargets.indexOf(depTarget) == -1){
-				select.hide();
+				console.log("hiding select");
+				controlDiv.hide();
 				return;
 			}
 		}
@@ -94,8 +102,9 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
 				var runtimes = $fw.data.get("runtimes");
 				callback(null, runtimes);
 			}, function (runtimes, callback){
+				console.log("runtimes from data", runtimes);
 				if(! runtimes){
-
+					 console.log("got no runtimes making fresh call", runtimes);
 					$fw.server.post(Constants.RUNTIMES_URL,{"platform":depTarget,"runtime":"nodejs","deploytarget":env}, function (data){
 						$fw.data.set("runtimes",data);
 						callback(undefined,data);
@@ -130,7 +139,6 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
 			}
 		],function (err, ok){
 			if(err){
-				//hide the runtimes option essentially disabling any changes to an apps runtime?
 				select.hide();
 			}
 		});
@@ -236,6 +244,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
       }
 
       button.click(function (e) {
+	      console.log("click target");
         e.preventDefault();
 
         var target = $(this).data();
@@ -253,6 +262,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
 
       // Trigger switch to default target
       if (current_target_button) {
+	      console.log("triggering click");
         current_target_button.trigger('click');
       }
     });
