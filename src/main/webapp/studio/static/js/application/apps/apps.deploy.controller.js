@@ -74,12 +74,10 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
 		var guid = $fw.data.get('inst').guid;
 		var targetInfo = self.getTargetData();
 		var depTarget = targetInfo.fields.target;
-		console.log(" jquery select " + env+'nodevers');
 		var controlDiv = $('div#nodevers');
 		$('select.nodevers').hide();
 		var select = $('select#'+env+'nodevers');
 		var runtimesEnabled = $fw.getClientProp("nodejs.runtimes."+env+".show");
-		console.log("runtimes enabeld = " + runtimesEnabled);
 		if(!runtimesEnabled || runtimesEnabled === "false"){
 			controlDiv.hide();
 			return;
@@ -88,10 +86,8 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
 			controlDiv.show();
 		}
 		var enabledTargets = $fw.getClientProp("nodejs.runtimes.supported");
-		console.log("enabled targets set to ", enabledTargets);
 		if(enabledTargets){
 			if(enabledTargets.indexOf(depTarget) == -1){
-				console.log("hiding select");
 				controlDiv.hide();
 				return;
 			}
@@ -102,9 +98,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
 				var runtimes = $fw.data.get("runtimes");
 				callback(null, runtimes);
 			}, function (runtimes, callback){
-				console.log("runtimes from data", runtimes);
 				if(! runtimes){
-					 console.log("got no runtimes making fresh call", runtimes);
 					$fw.server.post(Constants.RUNTIMES_URL,{"platform":depTarget,"runtime":"nodejs","deploytarget":env}, function (data){
 						$fw.data.set("runtimes",data);
 						callback(undefined,data);
@@ -139,7 +133,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
 			}
 		],function (err, ok){
 			if(err){
-				select.hide();
+				controlDiv.hide();
 			}
 		});
 	},
@@ -244,7 +238,6 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
       }
 
       button.click(function (e) {
-	      console.log("click target");
         e.preventDefault();
 
         var target = $(this).data();
@@ -262,7 +255,6 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
 
       // Trigger switch to default target
       if (current_target_button) {
-	      console.log("triggering click");
         current_target_button.trigger('click');
       }
     });
