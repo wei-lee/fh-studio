@@ -1,6 +1,9 @@
 -------------------------------------------------------------------------------
 Component: fh-studio
 -------------------------------------------------------------------------------
+3.17.0 - 2013-06-26 - IR204 - Martin Murphy, Jason Madigan
+* 4213  Reporting screens not displayed for users without dev role
+
 3.16.11 - 2013-06-11 - IR203 - Craig Brookes, Martin Murphy
 * 4117  add support for multiple node versions to studio
 Studio makes use of 3 new props in millicore
