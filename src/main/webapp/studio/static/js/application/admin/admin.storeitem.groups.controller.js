@@ -60,7 +60,7 @@ Admin.Storeitem.Groups.Controller = Controller.extend({
 
   bindGroupControls: function() {
     var self = this;
-    $(this.views.groups + ' #admin_storeitem_group_create .create_group_btn').unbind().live('click', function() {
+    $('#admin_storeitem_group_create .create_group_btn').unbind().live('click', function() {
       var name = $('#create_group_name').val();
       var description = $('#create_group_desc').val();
       self.createGroup({
