@@ -1,6 +1,6 @@
 common/js/ui/thirdparty/json/json2.js
-common/js/ui/thirdparty/underscore.js
 common/js/ui/thirdparty/jquery/jquery.js
+common/js/ui/thirdparty/jquery/plugins/jquery.livequery.js
 common/js/ui/thirdparty/jquery/plugins/jquery.throttle.js
 common/js/ui/thirdparty/jquery/plugins/jquery.transform.js
 common/js/ui/thirdparty/jquery/plugins/jquery.validate.js

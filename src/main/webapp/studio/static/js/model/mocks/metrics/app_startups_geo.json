@@ -1,0 +1,1052 @@
+{
+  "payload": {
+    "results": [{
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1309626001597
+        },
+        "value": {
+          "Ireland": 86,
+          "United States": 97
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1309712401597
+        },
+        "value": {
+          "Ireland": 181,
+          "United States": 173
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1309798801597
+        },
+        "value": {
+          "Ireland": 236,
+          "United States": 247
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1309885201597
+        },
+        "value": {
+          "Ireland": 334,
+          "United States": 399
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1309971601597
+        },
+        "value": {
+          "Ireland": 401,
+          "United States": 459
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1310058001597
+        },
+        "value": {
+          "Ireland": 523,
+          "United States": 589,
+          "United Kingdom": 60,
+          "Canada": 36
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1310144401597
+        },
+        "value": {
+          "Ireland": 569,
+          "United States": 603,
+          "United Kingdom": 143,
+          "Canada": 86
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1310230801597
+        },
+        "value": {
+          "Ireland": 607,
+          "United States": 659,
+          "United Kingdom": 221,
+          "Canada": 129
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1310317201597
+        },
+        "value": {
+          "Ireland": 771,
+          "United States": 813,
+          "United Kingdom": 287,
+          "Canada": 142
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1310403601597
+        },
+        "value": {
+          "Ireland": 849,
+          "United States": 860,
+          "United Kingdom": 356,
+          "Canada": 190
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1310490001597
+        },
+        "value": {
+          "Ireland": 938,
+          "United States": 1091,
+          "United Kingdom": 432,
+          "Canada": 261
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1310576401597
+        },
+        "value": {
+          "Ireland": 901,
+          "United States": 1204,
+          "United Kingdom": 531,
+          "Canada": 269
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1310662801597
+        },
+        "value": {
+          "Ireland": 1036,
+          "United States": 1211,
+          "United Kingdom": 493,
+          "Canada": 326
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1310749201597
+        },
+        "value": {
+          "Ireland": 1231,
+          "United States": 1150,
+          "United Kingdom": 681,
+          "Canada": 365
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1310835601597
+        },
+        "value": {
+          "Ireland": 1170,
+          "United States": 1465,
+          "United Kingdom": 707,
+          "Canada": 431
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1310922001597
+        },
+        "value": {
+          "Ireland": 1370,
+          "United States": 1456,
+          "United Kingdom": 762,
+          "Canada": 466,
+          "Spain": 37
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1311008401597
+        },
+        "value": {
+          "Ireland": 1525,
+          "United States": 1467,
+          "United Kingdom": 832,
+          "Canada": 500,
+          "Spain": 76
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1311094801597
+        },
+        "value": {
+          "Ireland": 1330,
+          "United States": 1585,
+          "United Kingdom": 809,
+          "Canada": 481,
+          "Spain": 108
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1311181201597
+        },
+        "value": {
+          "Ireland": 1537,
+          "United States": 1800,
+          "United Kingdom": 1054,
+          "Canada": 611,
+          "Spain": 131
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1311267601597
+        },
+        "value": {
+          "Ireland": 1516,
+          "United States": 1671,
+          "United Kingdom": 925,
+          "Canada": 549,
+          "Spain": 190
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1311354001597
+        },
+        "value": {
+          "Ireland": 1554,
+          "United States": 2036,
+          "United Kingdom": 1000,
+          "Canada": 602,
+          "Spain": 189
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1311440401597
+        },
+        "value": {
+          "Ireland": 1729,
+          "United States": 2003,
+          "United Kingdom": 1195,
+          "Canada": 686,
+          "Spain": 217
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1311526801597
+        },
+        "value": {
+          "Ireland": 1762,
+          "United States": 1954,
+          "United Kingdom": 1336,
+          "Canada": 723,
+          "Spain": 288,
+          "France": 54
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1311613201597
+        },
+        "value": {
+          "Ireland": 2056,
+          "United States": 2363,
+          "United Kingdom": 1314,
+          "Canada": 785,
+          "Spain": 285,
+          "France": 111
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1311699601597
+        },
+        "value": {
+          "Ireland": 1946,
+          "United States": 2204,
+          "United Kingdom": 1306,
+          "Canada": 831,
+          "Spain": 368,
+          "France": 146
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1311786001597
+        },
+        "value": {
+          "Ireland": 2096,
+          "United States": 2634,
+          "United Kingdom": 1575,
+          "Canada": 790,
+          "Spain": 397,
+          "France": 190
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1311872401597
+        },
+        "value": {
+          "Ireland": 2354,
+          "United States": 2227,
+          "United Kingdom": 1554,
+          "Canada": 906,
+          "Spain": 444,
+          "France": 269
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1311958801597
+        },
+        "value": {
+          "Ireland": 2151,
+          "United States": 2291,
+          "United Kingdom": 1476,
+          "Canada": 962,
+          "Spain": 496,
+          "France": 335,
+          "Germany": 31
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1312045201597
+        },
+        "value": {
+          "Ireland": 2164,
+          "United States": 2769,
+          "United Kingdom": 1744,
+          "Canada": 908,
+          "Spain": 466,
+          "France": 414,
+          "Germany": 59
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1312131601597
+        },
+        "value": {
+          "Ireland": 2198,
+          "United States": 2676,
+          "United Kingdom": 1686,
+          "Canada": 949,
+          "Spain": 494,
+          "France": 388,
+          "Germany": 93
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1312218001597
+        },
+        "value": {
+          "Ireland": 2768,
+          "United States": 3027,
+          "United Kingdom": 1630,
+          "Canada": 931,
+          "Spain": 586,
+          "France": 489,
+          "Germany": 115
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1312304401597
+        },
+        "value": {
+          "Ireland": 2343,
+          "United States": 2714,
+          "United Kingdom": 1918,
+          "Canada": 1158,
+          "Spain": 545,
+          "France": 518,
+          "Germany": 157,
+          "Australia": 87
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1312390801597
+        },
+        "value": {
+          "Ireland": 2547,
+          "United States": 3199,
+          "United Kingdom": 1859,
+          "Canada": 1135,
+          "Spain": 634,
+          "France": 548,
+          "Germany": 167,
+          "Australia": 151
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1312477201597
+        },
+        "value": {
+          "Ireland": 2724,
+          "United States": 3296,
+          "United Kingdom": 1909,
+          "Canada": 1247,
+          "Spain": 726,
+          "France": 686,
+          "Germany": 227,
+          "Australia": 222
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1312563601597
+        },
+        "value": {
+          "Ireland": 2556,
+          "United States": 3226,
+          "United Kingdom": 2031,
+          "Canada": 1181,
+          "Spain": 740,
+          "France": 620,
+          "Germany": 251,
+          "Australia": 315
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1312650001597
+        },
+        "value": {
+          "Ireland": 2813,
+          "United States": 3649,
+          "United Kingdom": 2131,
+          "Canada": 1100,
+          "Spain": 660,
+          "France": 761,
+          "Germany": 261,
+          "Australia": 443
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1312736401597
+        },
+        "value": {
+          "Ireland": 2956,
+          "United States": 3491,
+          "United Kingdom": 2180,
+          "Canada": 1233,
+          "Spain": 752,
+          "France": 854,
+          "Germany": 291,
+          "Australia": 497
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1312822801597
+        },
+        "value": {
+          "Ireland": 3000,
+          "United States": 3730,
+          "United Kingdom": 2387,
+          "Canada": 1174,
+          "Spain": 728,
+          "France": 769,
+          "Germany": 335,
+          "Australia": 562
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1312909201597
+        },
+        "value": {
+          "Ireland": 3471,
+          "United States": 3287,
+          "United Kingdom": 2483,
+          "Canada": 1239,
+          "Spain": 850,
+          "France": 997,
+          "Germany": 373,
+          "Australia": 628
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1312995601597
+        },
+        "value": {
+          "Ireland": 3051,
+          "United States": 3261,
+          "United Kingdom": 2224,
+          "Canada": 1501,
+          "Spain": 929,
+          "France": 934,
+          "Germany": 356,
+          "Australia": 725
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1313082001597
+        },
+        "value": {
+          "Ireland": 3733,
+          "United States": 3560,
+          "United Kingdom": 2677,
+          "Canada": 1463,
+          "Spain": 933,
+          "France": 1083,
+          "Germany": 420,
+          "Australia": 758
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1313168401597
+        },
+        "value": {
+          "Ireland": 3201,
+          "United States": 3629,
+          "United Kingdom": 2274,
+          "Canada": 1407,
+          "Spain": 876,
+          "France": 1084,
+          "Germany": 472,
+          "Australia": 983,
+          "China": 128
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1313254801597
+        },
+        "value": {
+          "Ireland": 3848,
+          "United States": 3944,
+          "United Kingdom": 2510,
+          "Canada": 1492,
+          "Spain": 1068,
+          "France": 1243,
+          "Germany": 519,
+          "Australia": 931,
+          "China": 239
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1313341201597
+        },
+        "value": {
+          "Ireland": 3616,
+          "United States": 3743,
+          "United Kingdom": 2921,
+          "Canada": 1674,
+          "Spain": 975,
+          "France": 1166,
+          "Germany": 466,
+          "Australia": 1109,
+          "China": 392
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1313427601597
+        },
+        "value": {
+          "Ireland": 4001,
+          "United States": 4352,
+          "United Kingdom": 2517,
+          "Canada": 1702,
+          "Spain": 1050,
+          "France": 1162,
+          "Germany": 565,
+          "Australia": 1081,
+          "China": 514
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1313514001597
+        },
+        "value": {
+          "Ireland": 4068,
+          "United States": 4360,
+          "United Kingdom": 2718,
+          "Canada": 1668,
+          "Spain": 1203,
+          "France": 1402,
+          "Germany": 551,
+          "Australia": 1363,
+          "China": 671
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1313600401597
+        },
+        "value": {
+          "Ireland": 3611,
+          "United States": 4299,
+          "United Kingdom": 2688,
+          "Canada": 1667,
+          "Spain": 1234,
+          "France": 1205,
+          "Germany": 574,
+          "Australia": 1335,
+          "China": 784
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1313686801597
+        },
+        "value": {
+          "Ireland": 3908,
+          "United States": 3910,
+          "United Kingdom": 3259,
+          "Canada": 1565,
+          "Spain": 1248,
+          "France": 1443,
+          "Germany": 563,
+          "Australia": 1456,
+          "China": 866
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1313773201597
+        },
+        "value": {
+          "Ireland": 4081,
+          "United States": 4334,
+          "United Kingdom": 3178,
+          "Canada": 1788,
+          "Spain": 1180,
+          "France": 1498,
+          "Germany": 674,
+          "Australia": 1648,
+          "China": 1065
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1313859601597
+        },
+        "value": {
+          "Ireland": 4191,
+          "United States": 4129,
+          "United Kingdom": 3267,
+          "Canada": 1794,
+          "Spain": 1247,
+          "France": 1511,
+          "Germany": 732,
+          "Australia": 1560,
+          "China": 1111,
+          "Russia": 98
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1313946001597
+        },
+        "value": {
+          "Ireland": 4623,
+          "United States": 5102,
+          "United Kingdom": 2876,
+          "Canada": 1985,
+          "Spain": 1276,
+          "France": 1611,
+          "Germany": 749,
+          "Australia": 1775,
+          "China": 1447,
+          "Russia": 183
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1314032401597
+        },
+        "value": {
+          "Ireland": 4630,
+          "United States": 4464,
+          "United Kingdom": 3377,
+          "Canada": 2007,
+          "Spain": 1352,
+          "France": 1655,
+          "Germany": 755,
+          "Australia": 1838,
+          "China": 1471,
+          "Russia": 288
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1314118801597
+        },
+        "value": {
+          "Ireland": 4003,
+          "United States": 4725,
+          "United Kingdom": 3667,
+          "Canada": 1837,
+          "Spain": 1313,
+          "France": 1551,
+          "Germany": 758,
+          "Australia": 1911,
+          "China": 1545,
+          "Russia": 377
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1314205201597
+        },
+        "value": {
+          "Ireland": 4875,
+          "United States": 4410,
+          "United Kingdom": 3554,
+          "Canada": 1844,
+          "Spain": 1406,
+          "France": 1573,
+          "Germany": 737,
+          "Australia": 1702,
+          "China": 1821,
+          "Russia": 501
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1314291601597
+        },
+        "value": {
+          "Ireland": 4021,
+          "United States": 4502,
+          "United Kingdom": 3790,
+          "Canada": 1893,
+          "Spain": 1360,
+          "France": 1600,
+          "Germany": 799,
+          "Australia": 1964,
+          "China": 1731,
+          "Russia": 611
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1314378001597
+        },
+        "value": {
+          "Ireland": 4960,
+          "United States": 4677,
+          "United Kingdom": 3135,
+          "Canada": 1928,
+          "Spain": 1537,
+          "France": 1726,
+          "Germany": 960,
+          "Australia": 2205,
+          "China": 1978,
+          "Russia": 662
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1314464401597
+        },
+        "value": {
+          "Ireland": 4391,
+          "United States": 5121,
+          "United Kingdom": 3784,
+          "Canada": 1850,
+          "Spain": 1511,
+          "France": 1890,
+          "Germany": 913,
+          "Australia": 2188,
+          "China": 2362,
+          "Russia": 798
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1314550801597
+        },
+        "value": {
+          "Ireland": 4408,
+          "United States": 5204,
+          "United Kingdom": 3623,
+          "Canada": 2292,
+          "Spain": 1563,
+          "France": 1914,
+          "Germany": 992,
+          "Australia": 2006,
+          "China": 2544,
+          "Russia": 846
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1314637201597
+        },
+        "value": {
+          "Ireland": 4813,
+          "United States": 5236,
+          "United Kingdom": 4068,
+          "Canada": 2257,
+          "Spain": 1636,
+          "France": 1902,
+          "Germany": 1038,
+          "Australia": 2328,
+          "China": 2291,
+          "Russia": 931
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1314723601597
+        },
+        "value": {
+          "Ireland": 5179,
+          "United States": 5771,
+          "United Kingdom": 3654,
+          "Canada": 2232,
+          "Spain": 1406,
+          "France": 2182,
+          "Germany": 1075,
+          "Australia": 2577,
+          "China": 2596,
+          "Russia": 1128
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1314810001597
+        },
+        "value": {
+          "Ireland": 4616,
+          "United States": 5162,
+          "United Kingdom": 3693,
+          "Canada": 2128,
+          "Spain": 1554,
+          "France": 1944,
+          "Germany": 1094,
+          "Australia": 2525,
+          "China": 2671,
+          "Russia": 1065
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1314896401597
+        },
+        "value": {
+          "Ireland": 5617,
+          "United States": 5902,
+          "United Kingdom": 3971,
+          "Canada": 2297,
+          "Spain": 1532,
+          "France": 2189,
+          "Germany": 942,
+          "Australia": 2313,
+          "China": 3018,
+          "Russia": 1198
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1314982801597
+        },
+        "value": {
+          "Ireland": 5357,
+          "United States": 6028,
+          "United Kingdom": 4138,
+          "Canada": 2264,
+          "Spain": 1800,
+          "France": 1957,
+          "Germany": 971,
+          "Australia": 2631,
+          "China": 2921,
+          "Russia": 1354
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1315069201597
+        },
+        "value": {
+          "Ireland": 5744,
+          "United States": 5871,
+          "United Kingdom": 4253,
+          "Canada": 2525,
+          "Spain": 1569,
+          "France": 2122,
+          "Germany": 1077,
+          "Australia": 2602,
+          "China": 3039,
+          "Russia": 1435
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1315155601597
+        },
+        "value": {
+          "Ireland": 5596,
+          "United States": 6288,
+          "United Kingdom": 4592,
+          "Canada": 2380,
+          "Spain": 1709,
+          "France": 2119,
+          "Germany": 1075,
+          "Australia": 2806,
+          "China": 3191,
+          "Russia": 1430
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1315242001597
+        },
+        "value": {
+          "Ireland": 5053,
+          "United States": 6520,
+          "United Kingdom": 4535,
+          "Canada": 2439,
+          "Spain": 1741,
+          "France": 2610,
+          "Germany": 1103,
+          "Australia": 3211,
+          "China": 3257,
+          "Russia": 1768
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1315328401597
+        },
+        "value": {
+          "Ireland": 6023,
+          "United States": 6687,
+          "United Kingdom": 4001,
+          "Canada": 2684,
+          "Spain": 1884,
+          "France": 2160,
+          "Germany": 1158,
+          "Australia": 2674,
+          "China": 3311,
+          "Russia": 1545
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1315414801597
+        },
+        "value": {
+          "Ireland": 5400,
+          "United States": 6691,
+          "United Kingdom": 3903,
+          "Canada": 2482,
+          "Spain": 1992,
+          "France": 2434,
+          "Germany": 1295,
+          "Australia": 3040,
+          "China": 3277,
+          "Russia": 1688
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1315501201597
+        },
+        "value": {
+          "Ireland": 5156,
+          "United States": 6556,
+          "United Kingdom": 4205,
+          "Canada": 2379,
+          "Spain": 2026,
+          "France": 2493,
+          "Germany": 1340,
+          "Australia": 3449,
+          "China": 3971,
+          "Russia": 1730
+        }
+      }]
+  },
+  "status": "ok"
+}

@@ -12,6 +12,16 @@ Tab.Manager = Class.extend({
     var el = $('#' + this.id);
     var navList = el.find('.nav-list');
 
+    if (navList.length < 1) {
+      // May be a pill nav
+      navList = el.find('.nav-pills');
+    }
+
+    if (navList.length < 1) {
+      // May be a tab-nav
+      navList = el.find('.nav-tabs');
+    }
+
     this.initFn();
     this.postFn();
 
@@ -22,6 +32,16 @@ Tab.Manager = Class.extend({
     var self = this;
     var el = $('#' + this.id);
     var navList = el.find('.nav-list');
+
+    if (navList.length < 1) {
+      // May be a pill nav
+      navList = el.find('.nav-pills');
+    }
+
+    if (navList.length < 1) {
+      // May be a tab-nav
+      navList = el.find('.nav-tabs');
+    }
 
     // bind events to each navlist items
     navList.find('a').each(function (index, element) {
@@ -55,12 +75,34 @@ Tab.Manager = Class.extend({
     // TODO: state stuff here
     el.find('.layout-content').show();
     var navList = el.find('.nav-list');
+
+    if (navList.length < 1) {
+      // May be a pill nav
+      navList = el.find('.nav-pills');
+    }
+
+    if (navList.length < 1) {
+      // May be a tab-nav
+      navList = el.find('.nav-tabs');
+    }
+
     navList.find('li:visible a:eq(0)').trigger('click');
   },
 
   afterBindings: function () {
     var el = $('#' + this.id);
     var navList = el.find('.nav-list');
+
+    if (navList.length < 1) {
+      // May be a pill nav
+      navList = el.find('.nav-pills');
+    }
+
+    if (navList.length < 1) {
+      // May be a tab-nav
+      navList = el.find('.nav-tabs');
+    }
+
     navList.find('li.active:visible a').trigger('click');
   },
 
@@ -100,6 +142,17 @@ Tab.Manager = Class.extend({
 
     var el = $('#' + self.id);
     var navList = el.find('.nav-list');
+
+    if (navList.length < 1) {
+      // May be a pill nav
+      navList = el.find('.nav-pills');
+    }
+
+    if (navList.length < 1) {
+      // May be a tab-nav
+      navList = el.find('.nav-tabs');
+    }
+    
     var jqEl = $(this);
     // update active status of navlist
     navList.find('li').removeClass('active');
