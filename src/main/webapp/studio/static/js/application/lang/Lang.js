@@ -218,6 +218,8 @@ var Lang = {
   new_app_apikey_label_help_icon: 'Your App API Key is used in conjunction with your App ID to provide access to your App\'s cloud code',
   new_app_description_label: 'Description',
   new_app_description_label_help_icon: 'A short description of the App.',
+  analytics_tag_label: 'Analytics Tag',
+  analytics_tag_label_help_icon: 'A tag for Analytics - use this to tag releases of your App as they are released.',
   new_app_target_label: 'Default Preview Device',
   new_app_target_label_help_icon: 'Choose the default device to display the App preview in. For example, choosing the iPhone 3 will show the preview in a container 320 by 480 pixels.',
   new_app_scmurl_label: 'Git URL',
