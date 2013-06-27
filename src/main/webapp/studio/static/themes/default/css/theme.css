@@ -2732,6 +2732,11 @@ table.dataTable th:active {
   background: url('../img/cloud_logo_rhino.png') no-repeat top center;
 }
 
+.node_logo_cropped{
+    background: url('../img/cloud_logo_node_cropped.png') no-repeat;
+    background-size: 100px 30px;
+}
+
 .container-header-content, .breadcrumb {
   background: #2e72ab; /* Old browsers */
   background: -moz-linear-gradient(top,  #2e72ab 0%, #285f96 100%); /* FF3.6+ */
@@ -3704,4 +3709,9 @@ h4.by_location {
 
 .popover {
   width: 350px;
+}
+
+h5.steps{
+    padding-bottom: 10px;
+    padding-top:10px;
 }
