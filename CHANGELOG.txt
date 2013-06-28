@@ -1,11 +1,21 @@
 -------------------------------------------------------------------------------
 Component: fh-studio
 -------------------------------------------------------------------------------
+
+3.17.1 - 2013-07-01 - IR205 - Jason Madigan
+---------------------------------------------------------------------------
+* 4141 - fh-js-sdk changes for resiliency
+* 4142 - fh-ios-sdk changes for resiliency
+* 4143 - fh-android-sdk changes for resiliency
+* 4228 - Studio changes for Analytics Tag
+
 3.17.0 - 2013-06-26 - IR204 - Martin Murphy, Jason Madigan
+---------------------------------------------------------------------------
 * 4213  Reporting screens not displayed for users without dev role
 * 4218  Create group button broken in studio
 
 3.16.11 - 2013-06-11 - IR203 - Craig Brookes, Martin Murphy
+---------------------------------------------------------------------------
 * 4117  add support for multiple node versions to studio
 Studio makes use of 3 new props in millicore
 studio-js-nodejs.runtimes.release.show = false
