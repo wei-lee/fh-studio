@@ -144,9 +144,11 @@ App.View.EventAlerts = Backbone.View.extend({
     e.preventDefault();
     var self = this;
     var guid = $(e.currentTarget).closest('tr').data('guid');
-    var obj = this.collection.findWhere({guid: guid});
-    var alertView = new App.View.Alert({model: obj,  collection:self.collection});
-    alertView.render();
+    if(guid){
+      var obj = this.collection.findWhere({guid: guid});
+      var alertView = new App.View.Alert({model: obj,  collection:self.collection});
+      alertView.render();
+    }
   },
 
   renderFilters: function(){
@@ -160,22 +162,28 @@ App.View.EventAlerts = Backbone.View.extend({
     var self = this;
     var objs = [];
     var checked = self.$el.find("table td input:checked");
-    _.each(checked, function(el){
-      var guid = $(el).closest('tr').data('guid');
-      var obj = self.collection.findWhere({guid: guid});
-      objs.push(obj);
-    });
-
-    self.$el.find('.alert_delete_btn').removeClass("disabled").removeAttr("disabled").unbind('click').bind('click', function(event){
-      event.preventDefault();
-      var confirm = new App.View.ConfirmView({
-        message: "Are you sure you want to delete these alerts?",
-        success: function(){
-          self.deleteAlerts();
-        }
+    if(checked && checked.length > 0){
+      _.each(checked, function(el){
+        var guid = $(el).closest('tr').data('guid');
+        var obj = self.collection.findWhere({guid: guid});
+        objs.push(obj);
       });
-      confirm.render();
-    });
+      self.$el.find('.alert_delete_btn').removeClass("disabled").removeAttr("disabled").unbind('click').bind('click', function(event){
+        event.preventDefault();
+        var confirm = new App.View.ConfirmView({
+          message: "Are you sure you want to delete these alerts?",
+          success: function(){
+            self.deleteAlerts();
+          }
+        });
+        confirm.render();
+      });
+    } else {
+      if(!self.$el.find('.alert_delete_btn').hasClass("disabled")){
+        self.$el.find('.alert_delete_btn').addClass("disabled").attr("disabled", "disabled").unbind("click");
+      }
+    }
+    
 
     if(self.filteredNotifications){
       self.filteredNotifications.reset(new App.Collection.CloudEvents([]).toJSON());

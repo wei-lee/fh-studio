@@ -64,9 +64,11 @@ App.View.EventAlertNotifications = Backbone.View.extend({
   showDetails: function(e){
     e.preventDefault();
     var guid = $(e.currentTarget).closest('tr').data('guid');
-    var obj = this.collection.findWhere({guid: guid});
-    var detailView = new App.View.AlertNotification({model: obj});
-    detailView.render();
+    if(guid){
+      var obj = this.collection.findWhere({guid: guid});
+      var detailView = new App.View.AlertNotification({model: obj});
+      detailView.render();
+    }
   }
 });
 

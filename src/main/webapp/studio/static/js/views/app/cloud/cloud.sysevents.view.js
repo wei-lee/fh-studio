@@ -14,6 +14,8 @@ App.View.CloudNotificationsTable = Backbone.View.extend({
     message: 5
   },
 
+  MAX_MESSAGE_LENGTH: 50,
+
   render: function(){
     var self = this;
     if(!this.table_view){
@@ -92,6 +94,13 @@ App.View.CloudNotificationsTable = Backbone.View.extend({
     var severity = data.severity;
     var nh = "<span class='label label-" + self.getLabelClass(severity) + "'>" + severity + "</span>";
     $('td:eq(' + self.indexes.eventSeverity + ')', row).html(nh);
+
+    var message = data.message;
+    if(message.length > self.MAX_MESSAGE_LENGTH){
+      message = message.substring(0, self.MAX_MESSAGE_LENGTH) + "...";
+      $('td:eq(' + self.indexes.message + ')', row).text(message);
+    }
+
   },
 
   getLabelClass: function(severity) {
@@ -120,10 +129,10 @@ App.View.CloudNotificationsTable = Backbone.View.extend({
     var guid = $(e.currentTarget).closest('tr').data('guid');
     console.log("event guid is " +guid);
     var obj = this.collection.findWhere({guid: guid});
-    console.log("obj is " + obj.toJSON());
     if(!obj){
       return;
     }
+    console.log("obj is " + obj.toJSON());
     console.log(obj.attributes);
     var html = $("#log-details-template").html();
     var template = Handlebars.compile(html);
