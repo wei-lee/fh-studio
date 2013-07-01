@@ -274,6 +274,7 @@ public class StudioBean {
       pResponse.sendRedirect(redirectUrl);
     } else {
       setNoCacheHeaders(pResponse);
+      setXFrameOptionHeaders(pResponse);
       mInput = JSONObject.fromObject(pRequest.getParameterMap());
       log.debug(mInput.toString(2));
     }
@@ -492,6 +493,13 @@ public class StudioBean {
     pResponse.setHeader("Cache-Control", "no-cache");
     pResponse.setHeader("Pragma", "no-cache");
     pResponse.setDateHeader("Expires", -1);
+  }
+
+  /**
+  * Set headers for clickjacking defense - see https://www.owasp.org/index.php/Clickjacking_Defense_Cheat_Sheet
+  */
+  private void setXFrameOptionHeaders(HttpServletResponse pResponse){
+    pResponse.setHeader("X-Frame-Options", "DENY");
   }
 
   public List<String> getThemes() throws Exception {
