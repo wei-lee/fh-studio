@@ -21,7 +21,7 @@ ServerManager = function (ajax_caller, opts) {
 
     ajax: function (method, url, params, success, fail, no_payload, timeout) {
       var data = no_payload ? params : self.initRequestData(params);
-      if (self.getCookie()) {
+
         if (self.getConnected()) {
           self.ajax_caller.doAjaxRequest(method, url, data, self.success(success), self.fail(fail), timeout);
         } else {
@@ -29,12 +29,6 @@ ServerManager = function (ajax_caller, opts) {
             self.opts.connectivity_error();
           }
         }
-      } else {
-        // no feedhenry cookie anymore, refresh page so login is shown
-        if ($.isFunction(self.opts.cookie_error)) {
-          self.opts.cookie_error();
-        }
-      }
     },
 
     initRequestData: function (payload) {
@@ -60,9 +54,22 @@ ServerManager = function (ajax_caller, opts) {
     fail: function (orig_fail) {
       return function (status, statusText) {
         if (status >= 400 && status < 500) {
-          if ($.isFunction(self.opts.client_error)) {
-            self.opts.client_error(status, statusText);
-          }
+	        // there was an error calling the api. we need to assertain whether it is a cookie issue.
+	        //would prefer to have used a 401 status code here.
+	        //call cookie validation if that fails reload else continue
+	        self.validateCookie(function (val){
+		        if(! val){
+			        if($.isFunction(self.opts.cookie_error)){
+				        self.opts.cookie_error();
+			        }
+		        }
+		        else{
+		          if ($.isFunction(self.opts.client_error)) {
+			          self.opts.client_error(status, statusText);
+		          }
+		        }
+	        });
+
         } else if (status >= 500 && status < 600) {
           if ($.isFunction(self.opts.server_error)) {
             self.opts.server_error(status, statusText);
@@ -78,6 +85,15 @@ ServerManager = function (ajax_caller, opts) {
         }
       };
     },
+
+	  validateCookie : function (cb){
+		  self.post(Constants.VALIDATE_COOKIE,{}, function (data){
+			  cb(data.valid);
+		  },function failure(err){
+			  console.log("failed to call the validate endpoint ");
+			  cb();
+		  });
+	  },
 
     getConnected: function () {
 // TODO: re-enable this check
