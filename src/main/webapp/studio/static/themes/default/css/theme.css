@@ -250,11 +250,13 @@ label.error
   height:78px!important;
   padding:0;
 }
-#main_layout_center
-{
+
+#main_layout_center {
   background-image:none;
   background-color:transparent;
+  clear: both;
 }
+
 #main_layout_center.ui-tabs
 {
   padding:0;
