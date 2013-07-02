@@ -1,0 +1,43 @@
+#header_logo {
+  background-image: url(../img/corplogo.png) !important;
+  margin-left: 0 !important;
+  width: 115px;
+  height: 66px;
+  margin-bottom: 10px;
+}
+
+.container-header-content, .breadcrumb {
+  background: #28903a !important;
+}
+
+.nav-list .active a {
+  background: #28903a  !important;
+}
+
+#main_tabs_buttons .ui-state-active {
+  background: #28903a  !important;
+}
+
+.boxed-group::after {
+  background: #28903a  !important;
+}
+
+.nav-pills > .active > a, .nav-pills > .active > a:hover {
+  background: #28903a  !important;
+}
+
+a {
+  color: #28903a;
+}
+
+#analytics_apps_list tr.active td {
+  background: #28903a  !important;
+}
+
+.dashboard-create {
+  background:transparent url(../img/create_app_sprite.png) no-repeat 0 0 !important;
+}
+
+.dashboard-header {
+  background-image: url("../img/home_page_graphic.png");
+}

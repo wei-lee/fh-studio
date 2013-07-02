@@ -2,12 +2,16 @@
 Component: fh-studio
 -------------------------------------------------------------------------------
 
-3.17.1 - 2013-07-01 - IR205 - Jason Madigan
+3.17.2 - 2013-07-01 - IR205 - Jason Madigan
 ---------------------------------------------------------------------------
 * 4141 - fh-js-sdk changes for resiliency
 * 4142 - fh-ios-sdk changes for resiliency
 * 4143 - fh-android-sdk changes for resiliency
 * 4228 - Studio changes for Analytics Tag
+
+3.17.1 - 2013-06-26 - IR205 - Jason Madigan
+---------------------------------------------------------------------------
+* 4213 - New Mobistar theme
 
 3.17.0 - 2013-06-26 - IR204 - Martin Murphy, Jason Madigan
 ---------------------------------------------------------------------------
