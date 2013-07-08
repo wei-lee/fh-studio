@@ -1,0 +1,77 @@
+{
+  "count": 5,
+  "list": [{
+    "fields": {
+        "appGuid": "DtTTIHQLiyvUy8T_QxD5iHrH",
+        "category": "RUN_STATE",
+        "dismissed": false,
+        "env": "dev",
+        "eventDetails": {
+          "Message Code": 45,
+          "Component": "MILLICORE",
+          "Filename": "/opt/feedhenry/...",
+          "Line Number": 324
+        },
+        "eventType": "START_REQUESTED",
+        "guid": "P3M89BuNuKslD9rCNzdNg4pV",
+        "message": "App start requested.",
+        "severity": "INFO",
+        "sysCreated": "1970-01-01 00:00:00:000",
+        "timestamp": "1970-01-01 00:00:00:000",
+        "title": "START_REQUESTED",
+        "uid": "DtTTIHQLiyvUy8T_QxD5iHrH",
+        "updatedBy": ""
+    },
+    "guid": "P3M89BuNuKslD9rCNzdNg4pV",
+    "type": "eventlog_EventLog"
+  }, {
+    "fields": {
+        "appGuid": "DtTTIHQLiyvUy8T_QxD5iHrH",
+        "category": "RUN_STATE",
+        "dismissed": false,
+        "env": "dev",
+        "eventDetails": {
+          "Message Code": 45,
+          "Component": "MILLICORE",
+          "Filename": "/opt/feedhenry/...",
+          "Line Number": 324
+        },
+        "eventType": "START_REQUESTED",
+        "guid": "P3M89BuNuKslD9rCNzdNg4pV",
+        "message": "App start requested.",
+        "severity": "INFO",
+        "sysCreated": "1970-01-01 00:00:00:000",
+        "timestamp": "1970-01-01 00:00:00:000",
+        "title": "START_REQUESTED",
+        "uid": "DtTTIHQLiyvUy8T_QxD5iHrH",
+        "updatedBy": ""
+    },
+    "guid": "P3M89BuNuKslD9rCNzdNg4pV",
+    "type": "eventlog_EventLog"
+  }, {
+    "fields": {
+        "appGuid": "DtTTIHQLiyvUy8T_QxD5iHrH",
+        "category": "RUN_STATE",
+        "dismissed": false,
+        "env": "dev",
+        "eventDetails": {
+          "Message Code": 45,
+          "Component": "MILLICORE",
+          "Filename": "/opt/feedhenry/...",
+          "Line Number": 324
+        },
+        "eventType": "START_REQUESTED",
+        "guid": "P3M89BuNuKslD9rCNzdNg4pV",
+        "message": "App start requested.",
+        "severity": "INFO",
+        "sysCreated": "1970-01-01 00:00:00:000",
+        "timestamp": "1970-01-01 00:00:00:000",
+        "title": "START_REQUESTED",
+        "uid": "DtTTIHQLiyvUy8T_QxD5iHrH",
+        "updatedBy": ""
+    },
+    "guid": "P3M89BuNuKslD9rCNzdNg4pV",
+    "type": "eventlog_EventLog"
+  }],
+  "status": "ok"
+}

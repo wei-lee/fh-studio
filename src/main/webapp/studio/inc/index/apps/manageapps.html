@@ -109,7 +109,7 @@
       <li class="template-restriction nodejs_mode">
         <a href="#" data-controller="apps.cloudnotifications.controller">
           <i class="icon-envelope"></i>
-          Notifications
+          Events & Alerts
         </a>
       </li>
       <% if(studio.getProps().optBoolean("cloudresources-enabled")){ %>
@@ -141,6 +141,7 @@
         <% } %>
 
         <%@ include file="./cloudnotifications.html"%>    
+        <%@ include file="./logdetails.html"%>    
 
         <%@ include file="./quickstart.html"%>       
 

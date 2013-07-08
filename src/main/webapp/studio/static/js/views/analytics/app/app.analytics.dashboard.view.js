@@ -50,7 +50,7 @@ App.View.ProjectAppAnalyticsDashboard = Backbone.View.extend({
       var match = title.split('by ')[1];
       var nav_el = $('.nav.reporting_pills li a:contains(' + match + ')');
       nav_el.trigger('click');
-    } catch (e) {
+    } catch (ex) {
       console.log("Couldn't find a nav item to trigger.");
     }
   }

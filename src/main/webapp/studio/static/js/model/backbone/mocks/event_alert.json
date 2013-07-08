@@ -1,0 +1,13 @@
+{
+  "alertName": "TestAlert",
+  "emails": "test@example.com",
+  "env": "dev",
+  "eventCategories": "",
+  "eventNames": "",
+  "eventSeverities": "ERROR",
+  "guid": "NNen-LC6QRPy3BOrzEKXZlt_",
+  "status": "ok",
+  "sysCreated": "2013-05-10 10:09:30",
+  "sysModified": "2013-05-10 10:09:30",
+  "uid": "YXNfpkMh1vI1astjJJjHjYrQ"
+}
