@@ -1,6 +1,12 @@
 -------------------------------------------------------------------------------
 Component: fh-studio
 -------------------------------------------------------------------------------
+3.18.0 - 2013-07-10 - IR205 - Craig Brookes
+
+* 4196-minor-security-fixes
+we now set a csrf cookie which is sent with each request and value of the cookie 
+is also sent as a param in post request to be checked by millicore
+
 3.17.0 - 2013-06-26 - IR204 - Martin Murphy, Jason Madigan
 * 4213  Reporting screens not displayed for users without dev role
 * 4218  Create group button broken in studio
