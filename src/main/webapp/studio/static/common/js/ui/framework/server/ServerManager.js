@@ -93,7 +93,7 @@ ServerManager = function (ajax_caller, opts) {
         cb(data.valid);
       },function failure(err){
         console.log("failed to call the validate endpoint ");
-        cb();
+          cb();
       });
     },
 
