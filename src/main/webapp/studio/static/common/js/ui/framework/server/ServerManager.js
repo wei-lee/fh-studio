@@ -16,6 +16,8 @@ ServerManager = function (ajax_caller, opts) {
     },
 
     post: function (url, params, success, fail, no_payload, timeout) {
+	    //add in csrf token
+	    params["csrftoken"] = $('input[name="csrftoken"]').val();
       self.ajax('POST', url, params, success, fail, no_payload, timeout);
     },
 
@@ -59,9 +61,9 @@ ServerManager = function (ajax_caller, opts) {
 	        //call cookie validation if that fails reload else continue
 	        self.validateCookie(function (val){
 		        if(! val){
-			        if($.isFunction(self.opts.cookie_error)){
-				        self.opts.cookie_error();
-			        }
+              if($.isFunction(self.opts.cookie_error)){
+                      self.opts.cookie_error();
+              }
 		        }
 		        else{
 		          if ($.isFunction(self.opts.client_error)) {
@@ -91,7 +93,6 @@ ServerManager = function (ajax_caller, opts) {
 			  cb(data.valid);
 		  },function failure(err){
 			  console.log("failed to call the validate endpoint ");
-			  cb();
 		  });
 	  },
 
