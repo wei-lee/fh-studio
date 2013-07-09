@@ -1,6 +1,6 @@
 describe("test alerts view", function(){
   beforeEach(function(){
-    loadFixtures('index/apps/swap_select_template.html','index/apps/cloudnotifications.html','index/apps/logdetails.html');
+    loadFixtures('../common.html','index/apps/swap_select_template.html','index/apps/cloudnotifications.html','index/apps/logdetails.html');
     jasmine.Clock.useMock();
     //override $fw.server.post function so that it will return mock data
     window.$fw = {
