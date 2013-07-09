@@ -94,6 +94,7 @@ App.View.EventAlerts = Backbone.View.extend({
         "bInfo": true
       });
       this.$table_container.append(this.table_view.render().el);
+      this.table_view.$el.find(".dataTables_filter").addClass("span3");
       var controls = $('#event-alerts-controls-template').html();
       var controlsTemp = Handlebars.compile(controls);
       this.$table_container.find('.span12:first').append(controlsTemp());

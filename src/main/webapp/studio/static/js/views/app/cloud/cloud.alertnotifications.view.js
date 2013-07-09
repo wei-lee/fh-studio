@@ -54,6 +54,7 @@ App.View.EventAlertNotifications = Backbone.View.extend({
         "bInfo": true
       });
       this.table_view.render();
+      this.table_view.$el.find(".dataTables_filter").addClass("span3");
       this.table_container.html(this.table_view.el);
     } else {
       this.table_view.table.fnClearTable();
