@@ -1,17 +1,31 @@
 -------------------------------------------------------------------------------
 Component: fh-studio
 -------------------------------------------------------------------------------
-3.18.0 - 2013-07-10 - IR205 - Craig Brookes
+
+3.17.4- 2013-07-10 - IR205 - Craig Brookes
 
 * 4196-minor-security-fixes
 we now set a csrf cookie which is sent with each request and value of the cookie 
 is also sent as a param in post request to be checked by millicore
+3.17.3 - 2013-07-09 - IR205 - Wei Li
+---------------------------------------------------------------------------
+* 4284 - Fixed perapp report view error for analytics users
+
+3.17.2 - 2013-06-27 - IR204 - Wei Li
+---------------------------------------------------------------------------
+* 3616 - Added support for app events and alerts
+
+3.17.1 - 2013-06-26 - IR205 - Jason Madigan
+---------------------------------------------------------------------------
+* 4213 - New Mobistar theme
 
 3.17.0 - 2013-06-26 - IR204 - Martin Murphy, Jason Madigan
+---------------------------------------------------------------------------
 * 4213  Reporting screens not displayed for users without dev role
 * 4218  Create group button broken in studio
 
 3.16.11 - 2013-06-11 - IR203 - Craig Brookes, Martin Murphy
+---------------------------------------------------------------------------
 * 4117  add support for multiple node versions to studio
 Studio makes use of 3 new props in millicore
 studio-js-nodejs.runtimes.release.show = false

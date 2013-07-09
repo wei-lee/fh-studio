@@ -17,6 +17,9 @@ js/application/Constants.js
 js/application/Config.js
 js/application/dialog/DialogManager.js
 js/application/controller.js
+js/model/backbone/event.model.js
+js/model/backbone/alert.model.js
+js/model/backbone/alertnotification.model.js
 js/model/backbone/app.model.js
 js/model/backbone/metrics/datepicker.model.js
 js/model/backbone/metrics/metrics.model.js
@@ -124,6 +127,9 @@ js/views/analytics/perapp.analytics.view.js
 js/views/analytics/domain.analytics.overview.view.js
 js/views/analytics/project.app.analytics.controller.view.js
 js/views/common/swap_select.view.js
+js/views/app/cloud/cloud.sysevents.view.js
+js/views/app/cloud/cloud.alerts.view.js
+js/views/app/cloud/cloud.alertnotifications.view.js
 js/model/ModelManager.js
 js/model/models/Model.js
 js/model/models/App.js

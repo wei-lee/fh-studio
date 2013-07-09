@@ -159,12 +159,13 @@
 
   <target name="jshint" depends="mkdirs, npminstall">
     <exec executable="${basedir}/build/genjshintignore.sh" dir="${basedir}" failonerror="true" output="${basedir}/.jshintignore"/>
-    <exec executable="${basedir}/node_modules/jshint/bin/hint" dir="${basedir}" failonerror="true">
+    <exec executable="${basedir}/node_modules/jshint/bin/jshint" dir="${basedir}" failonerror="true">
       <arg value="src/main/webapp/studio/static/"/>
     </exec>
   </target>
 
   <target name="test" depends="jshint">
+    <exec executable="grunt" dir="${basedir}" failonerror="true"/>
   </target>
 		
 	<target name="concat_framework_scripts">

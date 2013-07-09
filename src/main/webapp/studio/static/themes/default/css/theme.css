@@ -250,11 +250,13 @@ label.error
   height:78px!important;
   padding:0;
 }
-#main_layout_center
-{
+
+#main_layout_center {
   background-image:none;
   background-color:transparent;
+  clear: both;
 }
+
 #main_layout_center.ui-tabs
 {
   padding:0;
@@ -1637,10 +1639,8 @@ p.input-form-footer, .tandc_Link{
   width: 90px;
 }
 #manage_icons_container #app_icons_table .app_icom_img_bg_div {
- border: 1px solid #CCCCCC;
  margin-left: auto;
  margin-right: auto;
- background-color: #DDDDDD;
 }
 #manage_icons_container #app_icons_table img {
   border: 1px solid #CCCCCC;
@@ -3256,24 +3256,84 @@ a.docslink {
   margin-bottom: 0px;
 }
 
-#cloud_notification_audit_log_table span.label, 
-#cloud_notification_events_table span.label {
+#cloudnotifications_container table span.label {
   display: block;
   text-align: center;
   padding: 5px;
 }
 
-#cloud_notification_audit_log_table td.fail, 
-#cloud_notification_events_table td.fail {
-  background-color: #dec5c5 !important;
-}
 
-#cloud_notification_events_table_wrapper .row-fluid .span12, 
-#cloud_notification_audit_log_table_wrapper .row-fluid .span12 {
-  min-height: 0;
+#cloudnotifications_container .dataTable tr {
+  cursor: pointer;
 }
 
 
+.filter_options_forms .btn {
+  margin-bottom: 4px;
+}
+
+.event_notifications_table_container {
+    margin-top: 1em;
+}
+
+.test_emails_btn {
+  margin-left: 3px;
+}
+
+.alert_notification_details {
+  width: 700px;
+  left:45%;
+}
+
+.alert_notification_details .form-horizontal .controls {
+  margin-left: 110px;
+}
+
+.alert_notification_details .form-horizontal .control-label {
+  width: 100px;
+}
+
+#modal_details.large {
+  width: 900px;
+  left: 40%;
+}
+
+#modal_details.large .form-horizontal .input-xlarge {
+  width: 695px;
+}
+
+.controls .select2-choices {
+  padding: 0px 6px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+
+.alert_details_view .controls .select2-choices {
+  width: 270px;
+}
+
+.alert_create_btn {
+  margin-right: 1em;
+}
+
+.form-search .btn {
+  padding: 4px 14px;
+  height: auto;
+}
+
+.filter_div {
+  margin-bottom: .8em;
+}
+
+.alert_notification_body_field {
+  height: 220px;
+  overflow: auto;
+}
+
+.alert_notification_body_field pre {
+  font-size: .8em;
+}
 
 .selectfixedWidth {
   margin-bottom: 0;

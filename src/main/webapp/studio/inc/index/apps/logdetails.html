@@ -1,0 +1,16 @@
+<script id="log-details-template" type="text/x-handlebars-template">
+  <div class="modal-header">
+    <a class="close" data-dismiss="modal">x</a>
+    <h3>Event Details</h3>
+  </div>
+  <div class="modal-body">
+    <form class="form-horizontal" id="modal_details_form">
+      {{#each eventDetailsArray}}
+       {{#details this}}{{/details}}
+      {{/each}}
+    </form>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn" data-dismiss="modal">Close</a>
+  </div>
+</script>

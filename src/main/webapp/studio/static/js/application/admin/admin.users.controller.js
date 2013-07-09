@@ -854,7 +854,8 @@ Admin.Users.Controller = Controller.extend({
       uid: "value",
       id: $(container).attr("id") + "_select",
       placeholder: placeholder,
-      block_help: blockhelp
+      block_help: blockhelp,
+      className: "input-xxlarge"
     });
     swapSelect.render();
 
