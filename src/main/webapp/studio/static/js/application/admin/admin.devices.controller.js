@@ -18,57 +18,32 @@ Admin.Devices.Controller = Controller.extend({
 
   alert_timeout: 10000,
 
-  init: function () {
-    
+  init: function() {
+
   },
 
-  show: function(){
+  show: function() {
     this.hideAlerts();
     this.showDeviceList();
   },
 
-  hide: function(){
-    $.each(this.views, function(k, v){
+  hide: function() {
+    $.each(this.views, function(k, v) {
       $(v).hide();
     });
   },
 
-  showDeviceList: function(){
+  showDeviceList: function() {
     var self = this;
     self.hide();
     $(self.views.device_list).show();
     self.container = self.views.device_list;
-    self.model.device.list(function(res){
-      var data = self.addControls(res);
-      self.renderDeviceTable(data);
+    self.model.device.list(function(res) {
+      self.renderDeviceTable(res);
       self.bindControls();
-      var users_button = $('<button>').addClass('btn btn-primary pull-right').text('Users');
-      var devices_buton = $('<button>').addClass('btn btn-primary pull-right audit_button_margin').text('Devices');
-      var apps_buton = $('<button>').addClass('btn btn-primary pull-right audit_button_margin').text('Apps');
-      $("#admin_devices_table_wrapper").find(".span12").append(users_button).append(devices_buton).append(apps_buton);
-
-    }, function(err){
+    }, function(err) {
       console.log("Error showing devices");
     }, true);
-  },
-
-  addControls: function(res){
-    // Add control column
-    res.aoColumns.push({
-      sTitle: "Controls",
-      "bSortable": false,
-      "sClass": "controls"
-    });
-
-    $.each(res.aaData, function(i, row) {
-      var controls = [];
-      // TODO: Move to clonable hidden_template
-      controls.push('<button class="btn edit_device">Edit</button>&nbsp;');
-      controls.push('<button class="btn view_device_users">View Users</button>&nbsp;');
-      controls.push('<button class="btn view_device_apps">View Apps</button>');
-      row.push(controls.join(""));
-    });
-    return res;
   },
 
   renderDeviceTable: function(data) {
@@ -107,7 +82,7 @@ Admin.Devices.Controller = Controller.extend({
 
   bindControls: function() {
     var self = this;
-    $('tr td .edit_device, tr td .view_device_users, tr td .view_device_apps, tr td:not(.controls,.dataTables_empty)', this.views.device_list).unbind().click(function() {
+    $(this.views.device_list + ' tr td:not(.controls,.dataTables_empty)').unbind().live('click', function() {
       var row = $(this).parent().parent();
       var data = self.dataForRow($(this).closest('tr').get(0));
       self.showViewDevice(this, row, data);
@@ -119,15 +94,14 @@ Admin.Devices.Controller = Controller.extend({
     return this.device_table.fnGetData(el);
   },
 
-  showViewDevice: function(button, row, data){
-    console.log(data);
+  showViewDevice: function(button, row, data) {
     var self = this;
     self.hide();
     var parent = $(self.views.device_update);
     self.container = self.views.device_update;
     self.resetForm(parent);
     self.resetLists(parent);
-    var populateForm = function(device){
+    var populateForm = function(device) {
       var fields = device.fields;
       $('#update_device_name', parent).val(fields.name).removeAttr("disabled");
       $('#device_cuid', parent).val(fields.cuid);
@@ -137,53 +111,53 @@ Admin.Devices.Controller = Controller.extend({
       self.setDeviceBlacklisted(fields.cuid, fields.blacklisted, parent);
     };
     var cuid = data[1];
-    $('.update_device_name_btn', parent).removeAttr("disabled").unbind().bind("click", function(){
+    $('.update_device_name_btn', parent).removeAttr("disabled").unbind().bind("click", function() {
       var newname = $('#update_device_name', parent).val();
-      self.model.device.updateLabel(cuid, newname, function(res){
+      self.model.device.updateLabel(cuid, newname, function(res) {
         self.showAlert("success", "<strong>Successfully updated device detail.<strong>");
-      }, function(){
+      }, function() {
         self.showAlert("error", "Failed to update device detail.");
       });
       return false;
     });
-    self.model.device.read(cuid, function(res){
+    self.model.device.read(cuid, function(res) {
       populateForm(res);
-    }, function(err){
+    }, function(err) {
       self.showAlert("error", "Failed to load device details " + err);
     });
-    self.model.device.readUsers(cuid, function(res){
+    self.model.device.readUsers(cuid, function(res) {
       self.showDeviceUsers(res);
-    }, function(err){
+    }, function(err) {
       self.showAlert("error", "Failed to read users");
     });
-    self.model.device.readApps(cuid, function(res){
+    self.model.device.readApps(cuid, function(res) {
       self.showStoreItems(res);
-    }, function(err){
+    }, function(err) {
       self.showAlert("error", "Failed to list store items");
     });
     parent.show();
   },
 
-  setDeviceDisabled: function(deviceId, disabled, parent){
+  setDeviceDisabled: function(deviceId, disabled, parent) {
     var self = this;
-    if(disabled){
-      $('#device_update_disabled', parent).attr("checked", "checked").unbind().bind("click", function(){
-        self.model.device.updateDisabled(deviceId, false, function(res){
+    if (disabled) {
+      $('#device_update_disabled', parent).attr("checked", "checked").unbind().bind("click", function() {
+        self.model.device.updateDisabled(deviceId, false, function(res) {
           self.showAlert("success", "<strong>Successfully enabling device.</strong>");
           self.setDeviceDisabled(deviceId, false, parent);
-        }, function(err){
+        }, function(err) {
           self.showAlert("error", "Failed to enable device.");
         });
         return false;
       });
     } else {
       var msg = "Are you sure you want to disable this device? In supported apps, users of this device will no longer be able to authenticate.";
-      $('#device_update_disabled', parent).removeAttr("checked").unbind().bind("click", function(){
-        self.showBooleanModal(msg, function(){
-          self.model.device.updateDisabled(deviceId, true, function(res){
+      $('#device_update_disabled', parent).removeAttr("checked").unbind().bind("click", function() {
+        self.showBooleanModal(msg, function() {
+          self.model.device.updateDisabled(deviceId, true, function(res) {
             self.showAlert("success", "<strong>Successfully disabling device.</strong>");
             self.setDeviceDisabled(deviceId, true, parent);
-          }, function(err){
+          }, function(err) {
             self.showAlert("error", "Failed to disable device.");
           });
         });
@@ -192,26 +166,26 @@ Admin.Devices.Controller = Controller.extend({
     }
   },
 
-  setDeviceBlacklisted: function(deviceId, blacklisted, parent){
+  setDeviceBlacklisted: function(deviceId, blacklisted, parent) {
     var self = this;
-    if(blacklisted){
-      $('#device_update_blacklisted', parent).attr("checked", "checked").unbind().bind("click", function(){
-        self.model.device.updateBlacklisted(deviceId, false, function(res){
+    if (blacklisted) {
+      $('#device_update_blacklisted', parent).attr("checked", "checked").unbind().bind("click", function() {
+        self.model.device.updateBlacklisted(deviceId, false, function(res) {
           self.showAlert("success", "<strong>Successfully unmarked device for data purge.</strong>");
           self.setDeviceBlacklisted(deviceId, false, parent);
-        }, function(err){
+        }, function(err) {
           self.showAlert("error", "Failed to unmark data purge for device.");
         });
         return false;
       });
     } else {
       var msg = "Are you sure you want to purge data on this device? In supported apps, data will purged at login";
-      $('#device_update_blacklisted', parent).removeAttr("checked").unbind().bind("click", function(){
-        self.showBooleanModal(msg, function(){
-          self.model.device.updateBlacklisted(deviceId, true, function(res){
+      $('#device_update_blacklisted', parent).removeAttr("checked").unbind().bind("click", function() {
+        self.showBooleanModal(msg, function() {
+          self.model.device.updateBlacklisted(deviceId, true, function(res) {
             self.showAlert("success", "<strong>Successfully marked device for data purge.</strong>");
             self.setDeviceBlacklisted(deviceId, true, parent);
-          }, function(err){
+          }, function(err) {
             self.showAlert("error", "Failed to mark data purge for device.");
           });
         });
@@ -220,24 +194,30 @@ Admin.Devices.Controller = Controller.extend({
     }
   },
 
-  showDeviceUsers: function(users){
+  showDeviceUsers: function(users) {
     var self = this;
     var userlist = users.list;
-    if(userlist.length > 0){
+    if (userlist.length > 0) {
       $('#device_users').empty();
-      $.each(userlist, function(k, v){
-        var a = $("<a>", {"text": v.fields.userId, "href": "#"});
+      $.each(userlist, function(k, v) {
+        var a = $("<a>", {
+          "text": v.fields.userId,
+          "href": "#"
+        });
         var li = $("<li>");
         li.append(a);
         a.popover({
           title: v.fields.userId,
           content: self.getUserPopOverContent(v.fields),
           placement: 'bottom',
-          delay: { show: 100, hide: 100 },
+          delay: {
+            show: 100,
+            hide: 100
+          },
           trigger: 'hover',
           template: '<div class="popover"><div class="arrow"></div><div class="popover-inner"><div class="popover-content"><p></p></div></div></div>'
         });
-        a.unbind('click').bind('click', function(){
+        a.unbind('click').bind('click', function() {
           self.hide();
           $fw.client.tab.admin.controllers['admin.users.controller'].showUserUpdate(null, null, [v.fields.userId]);
         });
@@ -245,30 +225,38 @@ Admin.Devices.Controller = Controller.extend({
 
       });
     } else {
-      var userhtml = $("<li>", {"text":"No users found"});
+      var userhtml = $("<li>", {
+        "text": "No users found"
+      });
       $('#device_users').html(userhtml);
     }
   },
 
-  showStoreItems: function(storeitems){
+  showStoreItems: function(storeitems) {
     var self = this;
     var storeitemlist = storeitems.list;
-    
-    if(storeitemlist.length > 0){
+
+    if (storeitemlist.length > 0) {
       $('#device_storeitems').empty();
-      $.each(storeitemlist, function(k, v){
-        var a = $("<a>", {"text": v.fields.name, "href":"#"});
+      $.each(storeitemlist, function(k, v) {
+        var a = $("<a>", {
+          "text": v.fields.name,
+          "href": "#"
+        });
         var li = $("<li>");
         li.append(a);
         a.popover({
-          title : v.fields.name,
+          title: v.fields.name,
           content: self.getStoreItemPopoverContent(v.fields),
           placement: 'bottom',
-          delay: { show: 100, hide: 100 },
+          delay: {
+            show: 100,
+            hide: 100
+          },
           trigger: 'hover',
           template: '<div class="popover"><div class="arrow"></div><div class="popover-inner"><div class="popover-content"><p></p></div></div></div>'
         });
-        a.unbind('click').bind('click', function(){
+        a.unbind('click').bind('click', function() {
           self.hide();
           var fields = v.fields;
           fields.guid = v.guid;
@@ -277,26 +265,28 @@ Admin.Devices.Controller = Controller.extend({
         $('#device_storeitems').append(li);
       });
     } else {
-      var storeitemhtml =$("<li>", {"text":"No store items found"});
+      var storeitemhtml = $("<li>", {
+        "text": "No store items found"
+      });
       $('#device_storeitems').html(storeitemhtml);
     }
   },
 
-  resetLists: function(parent){
+  resetLists: function(parent) {
     $('#device_users').empty().html('<li>Loading...</li>');
     $('#device_storeitems').empty().html('<li>Loading...</li>');
   },
 
-  getUserPopOverContent: function(user){
-    return "<ul><li> <strong>User Id - </strong>  " + user.userId+ "</li><li> <strong>Email - </strong> " + user.email + "</li><li> <strong>Name - </strong>" + user.name + "</li></ul>";
+  getUserPopOverContent: function(user) {
+    return "<ul><li> <strong>User Id - </strong>  " + user.userId + "</li><li> <strong>Email - </strong> " + user.email + "</li><li> <strong>Name - </strong>" + user.name + "</li></ul>";
   },
 
-  getStoreItemPopoverContent: function(item){
+  getStoreItemPopoverContent: function(item) {
     var iconsrc = "/studio/static/themes/default/img/store_no_icon.png";
-    if(item.icon !== ''){
-      iconsrc = "data:image/png;base64,"+ item.icon;
+    if (item.icon !== '') {
+      iconsrc = "data:image/png;base64," + item.icon;
     }
-    return "<div class='device_store_item_popover'><div class='icon_container'><img class='icon' src='"+ iconsrc + "'></div>" + "<div class='details'> <h3 class='name'> " + item.name + "</h3> <p>" + item.description + "</p></div></div>"; 
+    return "<div class='device_store_item_popover'><div class='icon_container'><img class='icon' src='" + iconsrc + "'></div>" + "<div class='details'> <h3 class='name'> " + item.name + "</h3> <p>" + item.description + "</p></div></div>";
   }
 
 });

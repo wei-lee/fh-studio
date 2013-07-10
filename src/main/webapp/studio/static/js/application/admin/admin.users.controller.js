@@ -7,7 +7,8 @@ Admin.Users.Controller = Controller.extend({
   models: {
     user: new model.User(),
     role: new model.Role(),
-    policy: new model.ArmAuthPolicy()/*,
+    policy: new model.ArmAuthPolicy()
+    /*,
     group: new model.Group(),
     storeitem: new model.StoreItem()*/
   },
@@ -36,17 +37,17 @@ Admin.Users.Controller = Controller.extend({
   container: null, // keeps track of currently active/visible container
   user_table: null,
 
-  convertRoles: function(roleArr, level){
+  convertRoles: function(roleArr, level) {
     var self = this;
     var removeRoles;
-    if(level){
+    if (level) {
       removeRoles = self.rolesToRemove[level];
     }
-    if(removeRoles){
+    if (removeRoles) {
       roleArr = _.difference(roleArr, removeRoles);
     }
-    return _.map(roleArr, function(role){
-       return [self.rolesTextMap[role], role];
+    return _.map(roleArr, function(role) {
+      return [self.rolesTextMap[role], role];
     });
   },
 
@@ -56,18 +57,18 @@ Admin.Users.Controller = Controller.extend({
     this.field_config = params.field_config || null;
   },
 
-  show: function (e) {
+  show: function(e) {
     // TODO: stateful restore i.e. $fw.state
     this.hideAlerts();
     var userId = arguments[1];
-    if(userId) {
-      return this.showUserUpdate(null, null,[userId]);
+    if (userId) {
+      return this.showUserUpdate(null, null, [userId]);
     } else {
       this.showUsersList();
     }
   },
 
-  reset: function() {    
+  reset: function() {
     $.each(this.views, function(k, v) {
       $('input[type=text],input[type=email],input[type=password], textarea', v).val('');
       $('input[type=checkbox]', v).removeAttr('checked');
@@ -86,7 +87,7 @@ Admin.Users.Controller = Controller.extend({
   },
 
   // type: error|success|info
-  showAlert: function (type, message) {
+  showAlert: function(type, message) {
     var self = this;
     var alerts_area = $(this.container).find('.alerts');
     var alert = $('<div>').addClass('alert fade in alert-' + type).html(message);
@@ -96,7 +97,7 @@ Admin.Users.Controller = Controller.extend({
     // only automatically hide alert if it's not an error
     if ('error' !== type) {
       setTimeout(function() {
-        alert.slideUp(function () {
+        alert.slideUp(function() {
           alert.remove();
         });
       }, self.alert_timeout);
@@ -120,13 +121,13 @@ Admin.Users.Controller = Controller.extend({
 
   bindUserControls: function() {
     var self = this;
-    $('tr td .edit_user, tr td:not(.controls,.dataTables_empty)', this.views.users).unbind().click(function() {
+    $(this.views.users + ' tr td .edit_user, ' + this.views.users + ' tr td:not(.controls,.dataTables_empty)').unbind().live('click', function() {
       var row = $(this).parent().parent();
       var data = self.userDataForRow($(this).closest('tr').get(0));
       self.showUserUpdate(this, row, data);
       return false;
     });
-    $('tr td .delete_user', this.views.users).unbind().click(function() {
+    $('tr td .delete_user', this.views.users).unbind().live('click', function() {
       var row = $(this).parent().parent();
       var data = self.userDataForRow($(this).parent().parent().get(0));
       self.deleteUser(this, row, data);
@@ -154,7 +155,7 @@ Admin.Users.Controller = Controller.extend({
     var parent = $(this.views.user_update);
     this.container = this.views.user_update;
 
-    var populateForm = function (results) {
+    var populateForm = function(results) {
       console.log('populating user update form');
       var user = results[0];
       $('#update_user_id', parent).val(user.username);
@@ -188,10 +189,10 @@ Admin.Users.Controller = Controller.extend({
       }
 
       self.updateRolesSwapSelect('#update_user_role_swap', self.convertRoles(results[1], "domain"), rolesTo, "domain");
-      if(customerRoles && $('#update_user_customer_role_swap').length > 0){
+      if (customerRoles && $('#update_user_customer_role_swap').length > 0) {
         self.updateRolesSwapSelect('#update_user_customer_role_swap', self.convertRoles(results[1], "customer"), customerRoles, "customer");
       }
-      if(resellerRoles && $('#update_user_reseller_role_swap').length > 0){
+      if (resellerRoles && $('#update_user_reseller_role_swap').length > 0) {
         self.updateRolesSwapSelect('#update_user_reseller_role_swap', self.convertRoles(results[1]), resellerRoles, "reseller");
       }
       self.updateAuthPolicySwapSelect('#update_user_policy_swap', policiesFrom, policiesTo);
@@ -215,31 +216,34 @@ Admin.Users.Controller = Controller.extend({
 
     // Setup user details, roles and groups
     var id = data[0];
-    async.parallel([function (cb) {
-      // user details
-      self.models.user.read(id, function(res) {
-        console.log('User read OK.');
-        return cb(null, res.fields);
-      }, function(e) {
-        return cb(e);
-      });
-    }, function (cb) {
-      // roles
-      self.models.role.list_assignable(function(res) {
-        console.log('Role list OK.');
-        return cb(null, res.list);
-      }, function(e) {
-        return cb(e);
-      });
-    }, function (cb) {
-      // roles
-      self.models.policy.list(function(res) {
-        console.log('Policy list OK.');
-        return cb(null, res.list);
-      }, function(e) {
-        return cb(e);
-      });
-    }], function (err, results) {
+    async.parallel([
+      function(cb) {
+        // user details
+        self.models.user.read(id, function(res) {
+          console.log('User read OK.');
+          return cb(null, res.fields);
+        }, function(e) {
+          return cb(e);
+        });
+    },
+ function(cb) {
+        // roles
+        self.models.role.list_assignable(function(res) {
+          console.log('Role list OK.');
+          return cb(null, res.list);
+        }, function(e) {
+          return cb(e);
+        });
+    },
+ function(cb) {
+        // roles
+        self.models.policy.list(function(res) {
+          console.log('Policy list OK.');
+          return cb(null, res.list);
+        }, function(e) {
+          return cb(e);
+        });
+    }], function(err, results) {
       if (err != null) {
         return self.showAlert('error', '<strong>Error loading user data</strong> ' + err);
       }
@@ -279,14 +283,14 @@ Admin.Users.Controller = Controller.extend({
     fields.roles = (rolesArr.length > 0) ? rolesArr.join(', ') : '';
 
     var customerRolesField = $('#update_user_customer_role_swap');
-    if(customerRolesField.length > 0){
+    if (customerRolesField.length > 0) {
       var customerRolesArr = self.getSelectedItems('#update_user_customer_role_swap');
-      fields.customerRoles = (customerRolesArr.length > 0) ? customerRolesArr.join(", "): "";
+      fields.customerRoles = (customerRolesArr.length > 0) ? customerRolesArr.join(", ") : "";
     }
     var resellerRolesField = $('#update_user_reseller_role_swap');
-    if(resellerRolesField.length > 0){
+    if (resellerRolesField.length > 0) {
       var resellerRolesArr = self.getSelectedItems('#update_user_reseller_role_swap');
-      fields.resellerRoles = resellerRolesArr.length > 0 ? resellerRolesArr.join(", "): "";
+      fields.resellerRoles = resellerRolesArr.length > 0 ? resellerRolesArr.join(", ") : "";
     }
 
     // select fields
@@ -373,10 +377,10 @@ Admin.Users.Controller = Controller.extend({
       var roles = res.list;
       var container = '#create_user_role_swap';
       self.updateRolesSwapSelect(container, self.convertRoles(roles, "domain"), undefined, "domain");
-      if($('#create_user_customer_role_swap').length > 0){
+      if ($('#create_user_customer_role_swap').length > 0) {
         self.updateRolesSwapSelect('#create_user_customer_role_swap', self.convertRoles(roles, "customer"), undefined, "customer");
       }
-      if($('#create_user_reseller_role_swap').length > 0){
+      if ($('#create_user_reseller_role_swap').length > 0) {
         self.updateRolesSwapSelect('#create_user_reseller_role_swap', self.convertRoles(roles), undefined, "reseller");
       }
     }, function(e) {
@@ -398,7 +402,7 @@ Admin.Users.Controller = Controller.extend({
     });
   },
 
-  showImportUsers: function () {
+  showImportUsers: function() {
     var self = this;
     self.hide();
 
@@ -414,31 +418,33 @@ Admin.Users.Controller = Controller.extend({
     // initial file upload
     var fileInput = $('#import_users_file').fileupload('destroy');
     fileInput.fileupload({
-      add: function(e, data){
-        setTimeout(function(){
+      add: function(e, data) {
+        setTimeout(function() {
           $('form', parent).data('import_users_file_data', data);
           return false;
         }, 100);
       }
     });
- 
-    async.parallel([function (cb) {
-      // roles
-      self.models.role.list_assignable(function(res) {
-        console.log('Role list OK.');
-        return cb(null, res.list);
-      }, function(e) {
-        return cb(e);
-      });
-    }, function (cb) {
-      // roles
-      self.models.policy.list(function(res) {
-        console.log('Policy list OK.');
-        return cb(null, res.list);
-      }, function(e) {
-        return cb(e);
-      });
-    }], function (err, results) {
+
+    async.parallel([
+      function(cb) {
+        // roles
+        self.models.role.list_assignable(function(res) {
+          console.log('Role list OK.');
+          return cb(null, res.list);
+        }, function(e) {
+          return cb(e);
+        });
+    },
+ function(cb) {
+        // roles
+        self.models.policy.list(function(res) {
+          console.log('Policy list OK.');
+          return cb(null, res.list);
+        }, function(e) {
+          return cb(e);
+        });
+    }], function(err, results) {
       if (err != null) {
         return self.showAlert('error', '<strong>Error loading import user options</strong> ' + err);
       }
@@ -450,11 +456,11 @@ Admin.Users.Controller = Controller.extend({
       }
 
       self.updateRolesSwapSelect('#import_users_role_swap', self.convertRoles(results[0], "domain"), undefined, "domain");
-      if($('#import_user_customer_role_swap').length > 0){
+      if ($('#import_user_customer_role_swap').length > 0) {
         self.updateRolesSwapSelect('#import_user_customer_role_swap', self.convertRoles(results[0], "customer"), undefined, "customer");
       }
-      if($('#import_user_reseller_role_swap').length > 0){
-        self.updateRolesSwapSelect('#import_user_reseller_role_swap', self.convertRoles(results[0]), undefined, "reseller" );
+      if ($('#import_user_reseller_role_swap').length > 0) {
+        self.updateRolesSwapSelect('#import_user_reseller_role_swap', self.convertRoles(results[0]), undefined, "reseller");
       }
       self.updateAuthPolicySwapSelect('#import_users_policy_swap', policiesFrom, undefined);
       self.bindSwapSelect(parent);
@@ -493,16 +499,16 @@ Admin.Users.Controller = Controller.extend({
 
     var customerRoles = null;
     var customerRolesField = $('#create_user_customer_role_swap');
-    if(customerRolesField.length > 0){
+    if (customerRolesField.length > 0) {
       var customerRolesArr = self.getSelectedItems('#create_user_customer_role_swap');
-      customerRoles = (customerRolesArr.length > 0) ? customerRolesArr.join(", "): null;
+      customerRoles = (customerRolesArr.length > 0) ? customerRolesArr.join(", ") : null;
     }
 
     var resellerRoles = null;
     var resellerRolesField = $('#create_user_reseller_role_swap');
-    if(resellerRolesField.length > 0){
+    if (resellerRolesField.length > 0) {
       var resellerRolesArr = self.getSelectedItems('#create_user_reseller_role_swap');
-      resellerRoles = resellerRolesArr.length > 0 ? resellerRolesArr.join(", "): null;
+      resellerRoles = resellerRolesArr.length > 0 ? resellerRolesArr.join(", ") : null;
     }
 
     var policiesArr = self.getSelectedItems('#create_user_policy_swap');
@@ -524,7 +530,7 @@ Admin.Users.Controller = Controller.extend({
     });
   },
 
-  importUsers: function () {
+  importUsers: function() {
     var self = this;
     var form = $(this.views.user_import + ' form');
 
@@ -533,13 +539,13 @@ Admin.Users.Controller = Controller.extend({
     var roles = rolesArr.length > 0 ? rolesArr.join(', ') : ''; // important to send '' here if no roles selected to ensure roles updated to remove all
     var customerRoles = null;
     var resellerRoles = null;
-    if($('#import_user_customer_role_swap').length > 0){
+    if ($('#import_user_customer_role_swap').length > 0) {
       var customerRolesArr = self.getSelectedItems('#import_user_customer_role_swap');
-      customerRoles = customerRolesArr.length > 0 ? customerRolesArr.join(', '): '';
+      customerRoles = customerRolesArr.length > 0 ? customerRolesArr.join(', ') : '';
     }
-    if($('#import_user_reseller_role_swap').length > 0){
+    if ($('#import_user_reseller_role_swap').length > 0) {
       var resellerRolesArr = self.getSelectedItems('#import_user_reseller_role_swap');
-      resellerRoles =  resellerRolesArr.length > 0 ? resellerRolesArr.join(', '): '';
+      resellerRoles = resellerRolesArr.length > 0 ? resellerRolesArr.join(', ') : '';
     }
     var policiesArr = self.getSelectedItems('#import_users_policy_swap');
     var policies = policiesArr.length > 0 ? policiesArr.join(', ') : ''; // same as above ^^^
@@ -558,7 +564,7 @@ Admin.Users.Controller = Controller.extend({
     var rangeEnd = 100;
     var multiplier = (rangeEnd - rangeStart) / 100;
 
-    self.showProgressModal(title, message, function () {
+    self.showProgressModal(title, message, function() {
       self.clearProgressModal();
       self.appendProgressLog('Uploading file.');
 
@@ -613,7 +619,7 @@ Admin.Users.Controller = Controller.extend({
               self.showAlert('error', '<strong>Error importing Users</strong> ' + msg);
             },
             end: function() {
-              setTimeout(function () {
+              setTimeout(function() {
                 self.destroyProgressModal();
               }, 1000);
             }
@@ -622,22 +628,22 @@ Admin.Users.Controller = Controller.extend({
         } else {
           var msg = 'Unable to track import progress (cachekey missing)';
           self.showAlert('error', '<strong>Error importing Users</strong> ' + msg);
-          setTimeout(function () {
+          setTimeout(function() {
             self.destroyProgressModal();
           }, 1000);
         }
-      }, function (data) {
+      }, function(data) {
         // file upload failed
         var msg = data.result;
         self.appendProgressLog(msg);
         self.showAlert('error', '<strong>Error importing Users</strong> ' + msg);
-        setTimeout(function () {
+        setTimeout(function() {
           self.destroyProgressModal();
         }, 1000);
-      }, function (data) {
+      }, function(data) {
         // progress update on file upload
         // max of 10% for file upload
-        import_progress = ((data.loaded/data.total) * 10);
+        import_progress = ((data.loaded / data.total) * 10);
         self.updateProgressBar(import_progress);
       });
     });
@@ -677,7 +683,7 @@ Admin.Users.Controller = Controller.extend({
       // TODO: Move to clonable hidden_template
       controls.push('<button class="btn edit_user">Edit</button>&nbsp;');
       //a user exists in either reseller or customer scope and portaladmin user should have no permission to delete them
-      if($fw.getUserProp("roles").indexOf("customeradmin") > -1 || $fw.getUserProp("roles").indexOf("reselleradmin") > -1){
+      if ($fw.getUserProp("roles").indexOf("customeradmin") > -1 || $fw.getUserProp("roles").indexOf("reselleradmin") > -1) {
         controls.push('<button class="btn btn-danger delete_user">Delete</button>');
       }
       row.push(controls.join(""));
@@ -685,27 +691,27 @@ Admin.Users.Controller = Controller.extend({
     return res;
   },
 
-  setUserEnabled: function (enabled) {
+  setUserEnabled: function(enabled) {
     var self = this;
     if (enabled) {
-      $('#update_user_enabled').attr('checked', 'checked').unbind().on('click', function () {
+      $('#update_user_enabled').attr('checked', 'checked').unbind().on('click', function() {
         self.disableUser();
       });
     } else {
-      $('#update_user_enabled').removeAttr('checked').unbind().on('click', function () {
+      $('#update_user_enabled').removeAttr('checked').unbind().on('click', function() {
         self.enableUser();
       });
     }
   },
 
-  setUserBlacklisted: function (blacklisted) {
+  setUserBlacklisted: function(blacklisted) {
     var self = this;
     if (blacklisted) {
-      $('#update_user_blacklisted').attr('checked', 'checked').unbind().on('click', function () {
+      $('#update_user_blacklisted').attr('checked', 'checked').unbind().on('click', function() {
         self.whitelistUser();
       });
     } else {
-      $('#update_user_blacklisted').removeAttr('checked').unbind().on('click', function () {
+      $('#update_user_blacklisted').removeAttr('checked').unbind().on('click', function() {
         self.blacklistUser();
       });
     }
@@ -713,7 +719,7 @@ Admin.Users.Controller = Controller.extend({
 
   deleteUser: function(button, row, data) {
     var self = this;
-    self.showBooleanModal('Are you sure you want to delete this User?', function () {
+    self.showBooleanModal('Are you sure you want to delete this User?', function() {
       var id = data[0];
       self.showAlert('info', '<strong>Deleting User</strong> (' + id + ') This may take some time.');
       // delete user
@@ -727,43 +733,43 @@ Admin.Users.Controller = Controller.extend({
     });
   },
 
-  enableUser: function () {
+  enableUser: function() {
     var self = this;
-    self.showBooleanModal('Are you sure you want to enable this User?', function () {
-      self.changeBooleanField('enabled', true, 'Enabling User', function () {
+    self.showBooleanModal('Are you sure you want to enable this User?', function() {
+      self.changeBooleanField('enabled', true, 'Enabling User', function() {
         self.setUserEnabled(true);
       });
     });
   },
 
-  disableUser: function () {
+  disableUser: function() {
     var self = this;
-    self.showBooleanModal('Are you sure you want to disable this user? This user will no longer be able to authenticate.', function () {
-      self.changeBooleanField('enabled', false, 'Disabling User', function () {
+    self.showBooleanModal('Are you sure you want to disable this user? This user will no longer be able to authenticate.', function() {
+      self.changeBooleanField('enabled', false, 'Disabling User', function() {
         self.setUserEnabled(false);
       });
     });
   },
 
-  blacklistUser: function () {
+  blacklistUser: function() {
     var self = this;
-    self.showBooleanModal('Are you sure you want to mark this User for data purge? (In supported apps, data will be purged at next login.)', function () {
-      self.changeBooleanField('blacklisted', true, 'Marking User for Data Purge', function () {
+    self.showBooleanModal('Are you sure you want to mark this User for data purge? (In supported apps, data will be purged at next login.)', function() {
+      self.changeBooleanField('blacklisted', true, 'Marking User for Data Purge', function() {
         self.setUserBlacklisted(true);
       });
     });
   },
 
-  whitelistUser: function () {
+  whitelistUser: function() {
     var self = this;
-    self.showBooleanModal('Are you sure you want to unmark this User for data purge?', function () {
-      self.changeBooleanField('blacklisted', false, 'Unmarking User for Data Purge', function () {
+    self.showBooleanModal('Are you sure you want to unmark this User for data purge?', function() {
+      self.changeBooleanField('blacklisted', false, 'Unmarking User for Data Purge', function() {
         self.setUserBlacklisted(false);
       });
     });
   },
 
-  changeBooleanField: function (boolField, boolVal, actionDesc, success) {
+  changeBooleanField: function(boolField, boolVal, actionDesc, success) {
     var self = this;
     var form = $(self.views.user_update + ' form');
     var fields = {
@@ -792,7 +798,7 @@ Admin.Users.Controller = Controller.extend({
     $(container).find('.swap-select select').empty().html('<option>Loading...</option>');
   },
 
-  updateRolesSwapSelect: function(container, from, to, level){
+  updateRolesSwapSelect: function(container, from, to, level) {
     var placeholder = "Click to Assign Roles";
     var block_helps_map = {
       "domain": "These roles are active for the domain represented by the current host name only - " + window.DOMAIN,
@@ -805,7 +811,7 @@ Admin.Users.Controller = Controller.extend({
     this.updateHelpPopover(container, ".reseller_roles_help", "getCustomers", "The following customers are managed by reseller " + $fw.getClientProp("reseller"));
   },
 
-  updateAuthPolicySwapSelect: function(container, from, to){
+  updateAuthPolicySwapSelect: function(container, from, to) {
     this.updateSwapSelect(container, from, to, "Click to Select Policies");
   },
 
@@ -817,10 +823,16 @@ Admin.Users.Controller = Controller.extend({
   updateSwapSelect: function(container, from, to, placeholder, blockhelp) {
     var fromModels = [];
     $.each(from, function(i, from_item) {
-      if(typeof from_item === "string"){
-        fromModels.push({text: from_item, value: from_item});
+      if (typeof from_item === "string") {
+        fromModels.push({
+          text: from_item,
+          value: from_item
+        });
       } else {
-        fromModels.push({text: from_item[0], value: from_item[1]});
+        fromModels.push({
+          text: from_item[0],
+          value: from_item[1]
+        });
       }
     });
     var toModels = [];
@@ -842,7 +854,8 @@ Admin.Users.Controller = Controller.extend({
       uid: "value",
       id: $(container).attr("id") + "_select",
       placeholder: placeholder,
-      block_help: blockhelp
+      block_help: blockhelp,
+      className: "input-xxlarge"
     });
     swapSelect.render();
 
@@ -852,46 +865,48 @@ Admin.Users.Controller = Controller.extend({
     return $(container).find('select').val() || [];
   },
 
-  updateHelpPopover: function(container, selector, functionName, title){
-    if($(container).find(selector).length > 0){
-      this[functionName](function(list){
+  updateHelpPopover: function(container, selector, functionName, title) {
+    if ($(container).find(selector).length > 0) {
+      this[functionName](function(list) {
         var helpcontent = [];
         helpcontent.push("<ul>");
-        for(var i=0;i<list.length;i++){
+        for (var i = 0; i < list.length; i++) {
           helpcontent.push("<li>" + list[i] + "</li>");
         }
         helpcontent.push("</ul>");
-        $(container).find(selector).click(function(e){
+        $(container).find(selector).click(function(e) {
           e.preventDefault();
         }).popover({
-            trigger: "hover",
-            content: helpcontent.join(""),
-            html: true,
-            title: title
-          });
-      }, function(){
-        $(container).find(selector).click(function(e){
+          trigger: "hover",
+          content: helpcontent.join(""),
+          html: true,
+          title: title
+        });
+      }, function() {
+        $(container).find(selector).click(function(e) {
           e.preventDefault();
         }).popover({
-            trigger: "hover",
-            content: "Failed to load list",
-            html: true,
-            title: ""
-          });
+          trigger: "hover",
+          content: "Failed to load list",
+          html: true,
+          title: ""
+        });
       });
     }
   },
 
-  getDomains: function(success, fail){
+  getDomains: function(success, fail) {
     var domains = $fw.data.get("customerdomains");
-    if(domains){
+    if (domains) {
       success(domains);
     } else {
-      $fw.server.post('/box/srv/1.1/admin/customer/domain/list', {name: $fw.getClientProp("customer")}, function(res){
-        if("ok" === res.status){
-          var domainList  = res.list;
+      $fw.server.post('/box/srv/1.1/admin/customer/domain/list', {
+        name: $fw.getClientProp("customer")
+      }, function(res) {
+        if ("ok" === res.status) {
+          var domainList = res.list;
           var domains = [];
-          for(var i=0;i<domainList.length;i++){
+          for (var i = 0; i < domainList.length; i++) {
             domains.push(domainList[i].fields.domain);
           }
           $fw.data.set("customerdomains", domains);
@@ -904,16 +919,18 @@ Admin.Users.Controller = Controller.extend({
 
   },
 
-  getCustomers: function(success, fail){
+  getCustomers: function(success, fail) {
     var customers = $fw.data.get("resellercustomers");
-    if(customers){
+    if (customers) {
       success(customers);
     } else {
-      $fw.server.post('/box/srv/1.1/admin/reseller/customer/list', {reseller: $fw.getClientProp("reseller")}, function(res){
-        if("ok" === res.status){
-          var customerList  = res.list;
+      $fw.server.post('/box/srv/1.1/admin/reseller/customer/list', {
+        reseller: $fw.getClientProp("reseller")
+      }, function(res) {
+        if ("ok" === res.status) {
+          var customerList = res.list;
           var customers = [];
-          for(var i=0;i<customerList.length;i++){
+          for (var i = 0; i < customerList.length; i++) {
             customers.push(customerList[i].fields.name);
           }
           $fw.data.set("resellercustomers", customers);

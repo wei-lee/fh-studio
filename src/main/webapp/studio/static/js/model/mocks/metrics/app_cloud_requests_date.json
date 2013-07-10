@@ -1,0 +1,91 @@
+{
+  "payload": {
+    "results": [
+      {
+        "_id": {
+          "domain": "sampleid",
+          "ts": 1312909201597
+        },
+        "value": {
+          "android": 3476,
+          "iphone": 3576,
+          "blackberry": 348,
+          "wp7": 50
+        }
+      },
+      {
+        "_id": {
+          "domain": "sampleid",
+          "ts": 1312909301597
+        },
+        "value": {
+          "android": 3222,
+          "iphone": 3330,
+          "blackberry": 448,
+          "wp7": 60
+        }
+      },
+      {
+        "_id": {
+          "domain": "sampleid",
+          "ts": 1312909401597
+        },
+        "value": {
+          "android": 3476,
+          "iphone": 1030,
+          "blackberry": 248,
+          "wp7": 70
+        }
+      },
+      {
+        "_id": {
+          "domain": "sampleid",
+          "ts": 1312909501597
+        },
+        "value": {
+          "android": 3876,
+          "iphone": 2330,
+          "blackberry": 148,
+          "wp7": 90
+        }
+      },
+      {
+        "_id": {
+          "domain": "sampleid",
+          "ts": 1312909601597
+        },
+        "value": {
+          "android": 4076,
+          "iphone": 1530,
+          "blackberry": 548,
+          "wp7": 100
+        }
+      },
+      {
+        "_id": {
+          "domain": "sampleid",
+          "ts": 1312909701597
+        },
+        "value": {
+          "android": 3176,
+          "iphone": 2030,
+          "blackberry": 248,
+          "wp7": 80
+        }
+      },
+      {
+        "_id": {
+          "domain": "sampleid",
+          "ts": 1312909801597
+        },
+        "value": {
+          "android": 5076,
+          "iphone": 1030,
+          "blackberry": 148,
+          "wp7": 60
+        }
+      }
+    ]
+  },
+  "status": "ok"
+}

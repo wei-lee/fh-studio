@@ -19,7 +19,7 @@ var store = {
 
   authSession: null,
   authSessionCookie: 'x-fh-auth-session',
-  feedhenryCookie:'feedhenry',
+  feedhenryCookie: 'feedhenry',
   deviceIdCookie: 'deviceId',
 
   storeInfo: null,
@@ -67,20 +67,31 @@ var store = {
         authPolRow.attr('data-auth-policy-id', item.name);
         authPolRow.attr('data-auth-policy-type', item.type);
         if (item.type === 'OAUTH2') {
-          authPolRow.addClass('google');
+          var img = $('<img>').attr('src', '/store/img/auth_google.png');
+          authPolRow.append(img);
         } else if (item.type === 'FEEDHENRY') {
-          authPolRow.addClass('feedhenry');
+          var img = $('<img>').attr('src', '/store/img/auth_feedhenry.png');
+          authPolRow.append(img);
         } else if (item.type === 'LDAP') {
-          authPolRow.addClass('ldap');
+          var img = $('<img>').attr('src', '/store/img/auth_ldap.png');
+          authPolRow.append(img);
         } else {
           authPolRow.text(item.name);
         }
 
         $('#auth_policy_actions').append(authPolRow).append('<br/>');
       });
+
+      var $subtext = $('.policy_subtext').show();
+      if (info.authpolicies.length === 1) {
+        $subtext.text('Please click the button below to login');
+      } else {
+        $subtext.text('Please select from one of the following login options');
+      }
+
       self.bindLoginControls();
     } else { // no auth policies defined
-      self.showAlert("error", "App Store not available");
+      self.showAlert("error", "App Store not available - no Auth Policies have been assigned to this Store.");
     }
   },
 
@@ -114,7 +125,9 @@ var store = {
     // Logout
     $('.logout_button').unbind().click(function() {
       self.authSession = null;
-      $.cookie(self.authSessionCookie, null,{"path":"/"});
+      $.cookie(self.authSessionCookie, null, {
+        "path": "/"
+      });
       //reload page without query params
       window.location = window.location.protocol + '//' + window.location.host + window.location.pathname;
       // TODO: remove session stuff too
@@ -141,14 +154,14 @@ var store = {
       //Note if the user is logged into the platform, they are resolved as that user for the auditlog entry to stop that we could remove the feedhenry cookie
       // or set the feedhenry cookie to the authSessionCookie
       //which would then resolve them as the user they logged into the store as.
-     // $.cookie(this.feedhenryCookie, this.authSession,{"path":"/"});
+      // $.cookie(this.feedhenryCookie, this.authSession,{"path":"/"});
       $.cookie(this.authSessionCookie, this.authSession, {
         "path": "/"
       });
       console.log("store:init() authSession: " + this.authSession);
     } else if ($.cookie(this.authSessionCookie) != null) {
       //unset the feedhenry cookie so that the user is resoved corectly
-     // $.cookie(this.feedhenryCookie, this.authSession,{"path":"/"});
+      // $.cookie(this.feedhenryCookie, this.authSession,{"path":"/"});
       this.authSession = $.cookie(this.authSessionCookie);
     } else {
       console.log("store:init() - no query params");
@@ -163,7 +176,7 @@ var store = {
     if (queryParams && queryParams.message) {
       var message = queryParams.message;
       var level = 'info'; // default to info
-      if(queryParams.result && (queryParams.result === 'failure')) {
+      if (queryParams.result && (queryParams.result === 'failure')) {
         level = 'error';
       }
       this.showAlert(level, message);
@@ -209,7 +222,7 @@ var store = {
   showLoading: function() {
     var self = this;
     this.hide();
-    $(this.views.loading).show();
+    $('.logout_button').hide();
   },
 
   // type: error|success|info
@@ -277,11 +290,11 @@ var store = {
         window.location = redirectTo + "?fh_auth_session=" + res.sessionToken; // redirect to location specified by auth call
       } else {
         self.showAlert("error", "Not authorised - no sessionToken returned");
-        self.showLogin();
+        self.showUserPassLogin(pol_id);
       }
     }, function(msg) {
-      self.showAlert("error", "Not authorised - Error from server: " + msg);
-      self.showLogin();
+      self.showAlert("error", "Login failed - please contact your administrator for assistance. (" + msg + ")");
+      self.showUserPassLogin(pol_id);
     });
 
   },
@@ -380,17 +393,17 @@ var store = {
     $('.btn_device_install', show_item_view).hide();
     $.each(store_item.binaries, function(i, v) {
       console.log(v);
-      v.url+="&deviceId="+ self.deviceId;
+      v.url += "&deviceId=" + self.deviceId;
       console.log("Store Item(" + i + "): " + JSON.stringify(v));
       //this temp unbinds the click function from href and adds a new one to return false then rebinds it after 1.5 secs to stop multiple clicks happening.
       var linkClick = function(e) {
         var ele = $(this);
-        $(this).unbind().click(function(){
+        $(this).unbind().click(function() {
           return false;
         });
-        setTimeout(function (){
-           ele.unbind().click(linkClick);
-        },1500);
+        setTimeout(function() {
+          ele.unbind().click(linkClick);
+        }, 1500);
         if (v.type === 'android') {
           return true;
         } else {

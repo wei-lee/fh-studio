@@ -1,8 +1,65 @@
 -------------------------------------------------------------------------------
 Component: fh-studio
 -------------------------------------------------------------------------------
+3.17.3 - 2013-07-09 - IR205 - Wei Li
+---------------------------------------------------------------------------
+* 4284 - Fixed perapp report view error for analytics users
 
-3.16.7 - 2013-06-10 - IR203 - Jason Madigan
+3.17.2 - 2013-06-27 - IR204 - Wei Li
+---------------------------------------------------------------------------
+* 3616 - Added support for app events and alerts
+
+3.17.1 - 2013-06-26 - IR205 - Jason Madigan
+---------------------------------------------------------------------------
+* 4213 - New Mobistar theme
+
+3.17.0 - 2013-06-26 - IR204 - Martin Murphy, Jason Madigan
+---------------------------------------------------------------------------
+* 4213  Reporting screens not displayed for users without dev role
+* 4218  Create group button broken in studio
+
+3.16.11 - 2013-06-11 - IR203 - Craig Brookes, Martin Murphy
+---------------------------------------------------------------------------
+* 4117  add support for multiple node versions to studio
+Studio makes use of 3 new props in millicore
+studio-js-nodejs.runtimes.release.show = false
+studio-js-nodejs.runtimes.development.show = false
+studio-js-nodejs.runtimes.supported = ["FEEDHENRY"]
+
+these control which env to show runtimes on the deploy screen for and also which platforms to show
+the runtimes options for.
+
+* 4198 fix git pull modal issue (martin murphy)
+
+3.16.10 - 2013-06-20 - IR203 - Jason Madigan
+---------------------------------------------------------------------------
+* 4194 - Clicking some items in the admin area can reveal unwanted details panes
+
+3.16.9 - 2013-05-31 - IR203 - Jason Madigan
+---------------------------------------------------------------------------
+* 3954 - Backported everglade reporting UI
+* 3956 - Backport models and collections for Analytics back to existing studio
+* 3959 - Implement Per-App (domain view) and aggregated analytics
+* 3957 - Backport existing views from Everglade analytics
+* 3737 - In the devices section of MAM in studio some of the buttons don't work
+* 3901 - Analytics Data not displaying correctly
+* 3910 - Improve the information displayed on exported reports (png/pdf etc)
+* 358  - Remember date selections
+* 4108 - Sample data for collections
+* 3944 - Colour for "embed" analytics not set - so appears random
+* 3963 - Per app domain reports - list of apps should display next to dashboard
+* 3964 - Charts should display totals
+* 3966 - Stats should be available under reporting
+* 3969 - Aggregate/domain level dashboard could do with some UI polish
+* 3970 - Change date format in analytics from MM/DD/YYYY to the more universal YYYY/MM/DD
+* 3972 - All destinations should have a fixed colour per series
+* 3737 - In the devices section of MAM in studio some of the buttons don't work
+* 4071 - Embedded typo
+
+3.16.8- 2013-06-13 - IR203 - Wei Li
+---------------------------------------------------------------------------
+* 4007 - Added support for monkeytalk
+
 ---------------------------------------------------------------------------
 * 4111 - IBM theme added
 
@@ -15,7 +72,6 @@ Component: fh-studio
 3.16.5 - 2013-05-21 - IR202 - Wei Li
 ---------------------------------------------------------------------------
 * 4032 - Only enable background call to get recent apps on dashboard for dev users
-=======
 
 3.16.4 - 2013-05-21 - IR202 - Damian Beresford
 ---------------------------------------------------------------------------

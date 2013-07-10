@@ -2,16 +2,16 @@ var App = App || {};
 App.View = App.View || {};
 App.View.SwapSelect = Backbone.View.extend({
   options: null,
-  tagName: "div",
 
   initialize: function(options) {
     _.bindAll(this);
     this.options = options;
     this.to = options.to;
     this.uid = options.uid || 'guid';
+    this.options.className = options.className || "input-xlarge";
     this.collection = options.from;
     this.collection.fetch();
-    this.collection.bind('sync', this.render, this);
+    this.collection.bind('sync reset', this.render, this);
   },
 
   render: function() {
@@ -29,25 +29,48 @@ App.View.SwapSelect = Backbone.View.extend({
         options: this.options
       }));
       this.$select = this.$el.find('select.swap-select');
-      //an empty option is required to allow placeholder to work
       if(this.options.placeholder){
-        this.$select.append("<option></option>");
+        self.$select.attr("data-placeholder", this.options.placeholder);
+        self.$select.append("<option></option>");
+      }
+      var renderOptions = function(models, el){
+        _.each(models, function(item) {
+          var guid = item.get(self.uid);
+          var selected = (self.to.indexOf(guid) !== -1);
+
+          el.append(option_template({
+            name: item.get(self.options.from_name_key),
+            value: guid,
+            selected: selected
+          }));
+        });
+      };
+
+      if(self.options.groupBy){
+        var groups = {};
+        _.each(this.collection.models, function(item){
+           var group = item.get([self.options.groupBy]);
+           if(groups[group]){
+             groups[group].push(item);
+           } else {
+             groups[group] = [item];
+           }
+        });
+        _.each(groups, function(value, key){
+          console.log(key);
+           var optgroup = $("<optgroup>", {label: key});
+           renderOptions(value, optgroup);
+           self.$select.append(optgroup);
+        });
+      } else {
+        // Build to & from
+        renderOptions(this.collection.models, self.$select);
       }
 
-      // Build to & from
-      _.each(this.collection.models, function(item) {
-        var guid = item.get(self.uid);
-        var selected = (self.to.indexOf(guid) !== -1);
-
-        self.$select.append(option_template({
-          name: item.get(self.options.from_name_key),
-          value: guid,
-          selected: selected
-        }));
-      });
+      var placeholder = this.options.placeholder || "Select an Item";
 
       this.$select.select2({
-        placeholder: this.options.placeholder || "Select an Item"
+        //placeholder:placeholder
       });
     }
 

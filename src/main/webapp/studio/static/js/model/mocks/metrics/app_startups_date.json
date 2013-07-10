@@ -1,0 +1,257 @@
+{
+  "payload": {
+    "results": [{
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1313773201597
+        },
+        "value": {
+          "android": 4697,
+          "iphone": 3852,
+          "blackberry": 2084,
+          "wp7": 2563
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1313859601597
+        },
+        "value": {
+          "android": 4195,
+          "iphone": 4080,
+          "blackberry": 2246,
+          "wp7": 2911
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1313946001597
+        },
+        "value": {
+          "android": 4356,
+          "iphone": 4496,
+          "blackberry": 2377,
+          "wp7": 2800
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1314032401597
+        },
+        "value": {
+          "android": 4799,
+          "iphone": 4044,
+          "blackberry": 2262,
+          "wp7": 2889
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1314118801597
+        },
+        "value": {
+          "android": 4936,
+          "iphone": 4682,
+          "blackberry": 2408,
+          "wp7": 3444
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1314205201597
+        },
+        "value": {
+          "android": 5315,
+          "iphone": 4554,
+          "blackberry": 2665,
+          "wp7": 3226
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1314291601597
+        },
+        "value": {
+          "android": 5741,
+          "iphone": 4285,
+          "blackberry": 2472,
+          "wp7": 3130
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1314378001597
+        },
+        "value": {
+          "android": 5510,
+          "iphone": 5009,
+          "blackberry": 2701,
+          "wp7": 3735
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1314464401597
+        },
+        "value": {
+          "android": 5513,
+          "iphone": 5155,
+          "blackberry": 3033,
+          "wp7": 3668
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1314550801597
+        },
+        "value": {
+          "android": 5193,
+          "iphone": 4823,
+          "blackberry": 2819,
+          "wp7": 3500
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1314637201597
+        },
+        "value": {
+          "android": 5512,
+          "iphone": 4949,
+          "blackberry": 3027,
+          "wp7": 3984
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1314723601597
+        },
+        "value": {
+          "android": 5613,
+          "iphone": 5393,
+          "blackberry": 2990,
+          "wp7": 4556
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1314810001597
+        },
+        "value": {
+          "android": 6306,
+          "iphone": 5557,
+          "blackberry": 2892,
+          "wp7": 4390
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1314896401597
+        },
+        "value": {
+          "android": 6770,
+          "iphone": 5074,
+          "blackberry": 2761,
+          "wp7": 3916
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1314982801597
+        },
+        "value": {
+          "android": 5786,
+          "iphone": 5106,
+          "blackberry": 2836,
+          "wp7": 4278
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1315069201597
+        },
+        "value": {
+          "android": 5952,
+          "iphone": 5577,
+          "blackberry": 2926,
+          "wp7": 5084
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1315155601597
+        },
+        "value": {
+          "android": 7015,
+          "iphone": 5771,
+          "blackberry": 3159,
+          "wp7": 5230
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1315242001597
+        },
+        "value": {
+          "android": 6308,
+          "iphone": 4943,
+          "blackberry": 3100,
+          "wp7": 5036
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1315328401597
+        },
+        "value": {
+          "android": 6714,
+          "iphone": 6194,
+          "blackberry": 3227,
+          "wp7": 5638
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1315414801597
+        },
+        "value": {
+          "android": 6286,
+          "iphone": 5100,
+          "blackberry": 3619,
+          "wp7": 5522
+        }
+      }
+      , {
+        "_id": {
+          "appid": "sampleid",
+          "ts": 1315501201597
+        },
+        "value": {
+          "android": 6474,
+          "iphone": 6229,
+          "blackberry": 3634,
+          "wp7": 5493
+        }
+      }]
+  },
+  "status": "ok"
+}

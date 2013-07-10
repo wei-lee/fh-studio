@@ -1,0 +1,83 @@
+{
+  "payload": {
+    "results": [{
+        "_id": {
+          "domain": "sampleid",
+          "ts": 1315501201597
+        },
+        "value": {
+          "United Kingdom": 60,
+          "ireland": 220,
+          "us": 1500
+        }
+          },
+      {
+        "_id": {
+          "domain": "sampleid",
+          "ts": 1315501201597
+        },
+        "value": {
+          "United Kingdom": 80,
+          "ireland": 550,
+          "us": 2000
+        }
+          },
+      {
+        "_id": {
+          "domain": "sampleid",
+          "ts": 1315501201597
+        },
+        "value": {
+          "United Kingdom": 100,
+          "ireland": 650,
+          "us": 1200
+        }
+          },
+      {
+        "_id": {
+          "domain": "sampleid",
+          "ts": 1315501201597
+        },
+        "value": {
+          "United Kingdom": 150,
+          "ireland": 450,
+          "us": 1650
+        }
+          },
+      {
+        "_id": {
+          "domain": "sampleid",
+          "ts": 1315501201597
+        },
+        "value": {
+          "United Kingdom": 200,
+          "ireland": 350,
+          "us": 1540
+        }
+          },
+      {
+        "_id": {
+          "domain": "sampleid",
+          "ts": 1315501201597
+        },
+        "value": {
+          "United Kingdom": 220,
+          "ireland": 150,
+          "us": 1980
+        }
+          },
+      {
+        "_id": {
+          "domain": "sampleid",
+          "ts": 1315501201597
+        },
+        "value": {
+          "United Kingdom": 180,
+          "ireland": 250,
+          "us": 1200
+        }
+          }
+    ]
+  },
+  "status": "ok"
+}
