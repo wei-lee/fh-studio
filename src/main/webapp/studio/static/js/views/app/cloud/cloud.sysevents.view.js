@@ -61,6 +61,7 @@ App.View.CloudNotificationsTable = Backbone.View.extend({
         "oLanguage": self.options.oLanguage || {}
       });
       this.table_view.render();
+      this.table_view.$el.find(".dataTables_filter").addClass("span3");
       this.collection.on("reset", function(collection){
         if(self.table_view && self.table_view.table){
           self.table_view.table.fnClearTable();

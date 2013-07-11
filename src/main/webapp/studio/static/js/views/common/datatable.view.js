@@ -35,7 +35,7 @@ App.View.DataTable = Backbone.View.extend({
     this.$table = this.$el.find('.datatable');
     this.table = this.$table.dataTable(this.options);
     if(this.options.bFilter){
-      this.$el.find('.dataTables_filter').addClass('span3').html(new App.View.DataTableSearch({
+      this.$el.find('.dataTables_filter').html(new App.View.DataTableSearch({
         search: function(term){
           self.table.fnFilter(term);
         }
