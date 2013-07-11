@@ -111,9 +111,6 @@ Apps.Details.Controller = Apps.Controller.extend({
 
     if (typeof inst.config.analyticsTag !== 'undefined') {
       detailsContainer.find('input[name=analytics_tag]').val(inst.config.analyticsTag.tag_name);
-    } else {
-      // Default tag
-      detailsContainer.find('input[name=analytics_tag]').val("1.0");
     }
 
     var scm = 'undefined' !== typeof app.config ? app.config.scm : undefined;
