@@ -694,6 +694,7 @@ Apps.Editor.Controller = Apps.Controller.extend({
     var template_mode = $fw.data.get('template_mode');
     if (!template_mode) {
       var url = Constants.SAVE_FILE_URL;
+      data["csrftoken"] =  $('input[name="csrftoken"]').val();
       this.call("POST", url, JSON.stringify(data), callback);
     }
   },
