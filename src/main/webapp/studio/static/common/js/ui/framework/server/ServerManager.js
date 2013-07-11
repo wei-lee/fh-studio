@@ -92,8 +92,7 @@ ServerManager = function (ajax_caller, opts) {
       self.post(Constants.VALIDATE_COOKIE,{}, function (data){
         cb(data.valid);
       },function failure(err){
-        console.log("failed to call the validate endpoint ");
-          cb();
+        console.log("failed to call the validate endpoint ", err);
       });
     },
 
