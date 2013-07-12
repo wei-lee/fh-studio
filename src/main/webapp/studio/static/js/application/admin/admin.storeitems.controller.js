@@ -26,6 +26,7 @@ Admin.Storeitems.Controller = Controller.extend({
     storeItemBinaryType:"select#binAuditlogStoreItemBinaryType"
   },
 
+
   audit_log_tabe:null,
 
   alert_timeout: 3000,
@@ -47,10 +48,12 @@ Admin.Storeitems.Controller = Controller.extend({
       copy[i] = field;
     });
     this.models.audit_log.field_config = copy;
+
   },
 
   show: function(e) {
     var self =this;
+	  self.csrftoken =  $('input[name="csrftoken"]').val();
     this.hideAlerts();
 
     var guid = arguments[1];
@@ -289,7 +292,7 @@ Admin.Storeitems.Controller = Controller.extend({
 
     // Setup file upload
     input.fileupload('destroy').fileupload({
-      url: Constants.ADMIN_STORE_ITEM_UPLOAD_BINARY_URL,
+      url: Constants.ADMIN_STORE_ITEM_UPLOAD_BINARY_URL + "?csrftoken=" + self.csrftoken,
       dataType: 'json',
       replaceFileInput: false,
       formData: [{
@@ -594,7 +597,7 @@ Admin.Storeitems.Controller = Controller.extend({
 
     // Setup file upload
     input.fileupload('destroy').fileupload({
-        url: Constants.ADMIN_STORE_ITEM_UPLOAD_BINARY_URL,
+        url: Constants.ADMIN_STORE_ITEM_UPLOAD_BINARY_URL + "?csrftoken=" + self.csrftoken,
         dataType: 'json',
         replaceFileInput: false,
         formData: binary.params,

@@ -55,7 +55,7 @@ Apps.Import.Controller = Controller.extend({
     var fileToUpload = null;
 	  var csrfToken = $('input[name="csrftoken"]').val();
     var fileUploader = import_app_wizard.parent().fileupload({
-      url: Constants.IMPORT_APP_URL,
+      url: Constants.IMPORT_APP_URL + "?csrftoken=" + csrfToken,
 	      "formData":{
 		      "csrftoken":csrfToken
 	      },
