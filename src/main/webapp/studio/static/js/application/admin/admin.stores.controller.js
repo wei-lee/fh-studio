@@ -94,7 +94,7 @@ Admin.Stores.Controller = Controller.extend({
     var progress_area = $('#binary_upload_progress_template').clone();
     var status = $('.status', progress_area);
     var progress_bar = $('.progress', progress_area);
-	  var csrfToken = $('input[name="csrftoken"]').val();
+    var csrfToken = $('input[name="csrftoken"]').val();
     progress_area.removeAttr('id');
     input.after(progress_area);
 

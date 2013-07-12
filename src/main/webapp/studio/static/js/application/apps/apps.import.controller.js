@@ -53,12 +53,9 @@ Apps.Import.Controller = Controller.extend({
     //import_app_wizard.find("input:file").replaceWith($('<input id="import_app_location" class="form_file" name="location" type="file" />'));
     import_app_wizard[0].reset();
     var fileToUpload = null;
-	  var csrfToken = $('input[name="csrftoken"]').val();
+    var csrfToken = $('input[name="csrftoken"]').val();
     var fileUploader = import_app_wizard.parent().fileupload({
       url: Constants.IMPORT_APP_URL + "?csrftoken=" + csrfToken,
-	      "formData":{
-		      "csrftoken":csrfToken
-	      },
         dataType: 'json',
         replaceFileInput: false,
         add: function(e, data){

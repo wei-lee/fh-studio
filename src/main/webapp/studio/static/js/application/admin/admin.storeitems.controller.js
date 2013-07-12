@@ -53,7 +53,7 @@ Admin.Storeitems.Controller = Controller.extend({
 
   show: function(e) {
     var self =this;
-	  self.csrftoken =  $('input[name="csrftoken"]').val();
+    self.csrftoken =  $('input[name="csrftoken"]').val();
     this.hideAlerts();
 
     var guid = arguments[1];
