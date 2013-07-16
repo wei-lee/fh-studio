@@ -11,6 +11,10 @@ App.View.PluginsDashboard = Backbone.View.extend({
     pluginPaneImage: '#pluginPaneImage',
     pluginPaneItemTpl: '#pluginPaneItemTpl'
   },
+  subviews: {
+    "configure": App.View.PluginsConfigure,
+    "setup": App.View.PluginsSetup
+  },
   initialize : function(){
     this.collection = new Plugins.Collection.Plugin();
     this.collection.bind('reset', this.render, this);
@@ -79,16 +83,15 @@ App.View.PluginsDashboard = Backbone.View.extend({
    */
   configurePlugin : function(e){
     var addButton = $(e.target),
-    id = $(addButton).attr('data-id') || $(addButton.parent()).attr('data-id');
-    var view = new App.View.PluginsConfigure({
-      plugin : this.collection.get(id)
-    });
+    id = $(addButton).attr('data-id'),
+    plugin = this.collection.get(id);
 
-    // TODO: Need a tidier way to instantiate a subview..
-    $('#plugins_configure_container').append(view.render().el);
-    this.$el.hide();
 
+    debugger;
   },
+  /**
+   compile all templates
+   */
   compileTemplates: function() {
     var templates = {};
     for (var key in this.templates){
