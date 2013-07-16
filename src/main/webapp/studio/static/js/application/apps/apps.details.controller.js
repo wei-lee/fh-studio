@@ -109,6 +109,10 @@ Apps.Details.Controller = Apps.Controller.extend({
       el.val(inst[el.attr('name')]);
     });
 
+    if (typeof inst.config.analyticsTag !== 'undefined') {
+      detailsContainer.find('input[name=analytics_tag]').val(inst.config.analyticsTag.tag_name);
+    }
+
     var scm = 'undefined' !== typeof app.config ? app.config.scm : undefined;
     if ('undefined' !== typeof scm) {
       detailsContainer.find('input[name=scmurl]').val(scm.url);
@@ -184,6 +188,10 @@ Apps.Details.Controller = Apps.Controller.extend({
       height: device.height,
       width: device.width,
       config: $.extend(true, {}, inst.config, {
+        analyticsTag: {
+          tag_name: form.find('input[name=analytics_tag]').val(),
+          updated: moment().valueOf()
+        },
         preview: {
           device: target
         }

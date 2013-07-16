@@ -4,10 +4,6 @@ Apps.Plugins = Apps.Plugins || {};
 
 Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
 
-  model: {
-    log: new model.CloudLog()
-  },
-
   views: {
     cloudplugins_container: "#cloudplugins_container"
   },
@@ -295,10 +291,6 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
 
   },
 
-  /*
-   * Initialise any UI components required for logging.
-   * Once-off initialisation
-   */
   initBindings: function () {
     var self = this;
     $('a.addButton').unbind().on('click', function(){
@@ -319,7 +311,6 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
     $('#pluginTabContent .plugin').on('mouseleave', function(){
       $(this).find('.carousel').carousel(0);
     });
-
 
   },
 

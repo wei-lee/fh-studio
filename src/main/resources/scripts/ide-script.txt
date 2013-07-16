@@ -248,6 +248,7 @@ js/application/tab/apps.tab.manager.js
 js/application/tab/dashboard.tab.manager.js
 js/application/tab/account.tab.manager.js
 js/application/tab/reporting.tab.manager.js
+js/application/tab/plugins.tab.manager.js
 js/application/destinations/destination_general.js
 js/application/destinations/destination_feedhenry.js
 js/application/destinations/destination_blackberry.js

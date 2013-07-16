@@ -1,6 +1,14 @@
 -------------------------------------------------------------------------------
 Component: fh-studio
 -------------------------------------------------------------------------------
+
+3.17.4 - 2013-07-08 - IR205 - Jason Madigan
+---------------------------------------------------------------------------
+* 4141 - fh-js-sdk changes for resiliency
+* 4142 - fh-ios-sdk changes for resiliency
+* 4143 - fh-android-sdk changes for resiliency
+* 4228 - Studio changes for Analytics Tag
+
 3.17.3 - 2013-07-09 - IR205 - Wei Li
 ---------------------------------------------------------------------------
 * 4284 - Fixed perapp report view error for analytics users
