@@ -1,0 +1,262 @@
+[
+  {
+    "name" : "Twilio",
+    "desc" : "Connects to the Twilio telephony API",
+    "image" : "twilio.png",
+    "category" : "Communication",
+    "version" :  "git://github.com/cianclarke/twilio-node.git",
+   "config" :  [
+      {
+       "name" :  "accountSID",
+       "desc" :  "Twilio account SID",
+       "varName" :  "TWILIO_SID"
+      },
+      {
+       "name" :  "authToken",
+       "desc" :  "Twilio Auth Token",
+       "varName" :  "TWILIO_AUTH"
+      },
+      {
+       "name" :  "number",
+       "desc" :  "Your Twilio number you\"ve been assigned",
+       "varName" :  "TWILIO_NUMBER"
+      }
+    ]
+  },
+  {
+    "name" : "Sendgrid",
+    "desc" : "Connects to the Sendgrid emailer API",
+    "image" : "sendgrid.png",
+    "category" : "Communication",
+    "version" :  "0.2.5",
+   "config" :  [
+      {
+       "name" :  "username",
+       "desc" :  "Your SendGrid username",
+       "varName" :  "SENDGRID_USERNAME"
+
+      },
+      {
+       "name" :  "password",
+       "desc" :  "Your SendGrid password",
+       "varName" :  "SENDGRID_PASSWORD",
+       "field" :  "password"
+      },
+      {
+       "name" :  "from",
+       "desc" :  "From email address",
+       "varName" :  "SENDGRID_FROM"
+      },
+      {
+
+       "name" :  "fromName",
+       "desc" :  "From descriptive name",
+       "varName" :  "SENDGRID_FROMNAME"
+      }
+    ]
+  },
+  {
+    "name" : "Amazon S3",
+    "desc" : "Connector to S3 bucket storage",
+    "image" : "s3.png",
+    "category" : "Storage",
+   "npmName" :  "knox",
+    "version" :  "0.5.2",
+   "config" :  [
+      {
+       "name" :  "key",
+       "desc" :  "Your S3 key",
+       "varName" :  "S3_KEY"
+      },
+      {
+       "name" :  "secret",
+       "desc" :  "Your S3 secret",
+       "varName" :  "S3_SECRET",
+       "field" :  "password"
+      },
+      {
+       "name" :  "bucket",
+       "desc" :  "Your S3 bucket name",
+       "varName" :  "S3_BUCKET"
+      }
+    ]
+  },
+  {
+    "name" : "OpenStack",
+    "desc" : "Connect to any OpenStack data storage platform",
+    "image" : "openstack.png",
+    "version" :  "0.1.0",
+   "npmName" :  "openstack-storage",
+    "category" : "Storage",
+   "config" :  [
+      {
+       "name" :  "instanceUrl",
+       "desc" :  "Your OpenStack instance URL - e.g. storage.openstack.com",
+       "varName" :  "OPENSTACK_INSTANCE"
+      },
+      {
+       "name" :  "apiKey",
+       "desc" :  "API Key",
+       "varName" :  "OPENSTACK_APIKEY"
+      }
+    ]
+  },
+  {
+    "name" : "Rackspace",
+    "desc" : "Rackspace Cloud Open Stack storage provider",
+    "image" : "rackspace.png",
+    "category" : "Storage",
+    "version" :  "0.1.0",
+   "npmName" :  "openstack-storage",
+   "config" :  [
+      {
+       "name" :  "instanceUrl",
+       "desc" :  "Your OpenStack instance URL - e.g. storage.openstack.com",
+       "varName" :  "OPENSTACK_INSTANCE"
+      },
+      {
+       "name" :  "apiKey",
+       "desc" :  "API Key",
+       "varName" :  "OPENSTACK_APIKEY"
+      }
+    ]
+  },
+  {
+    "name" : "MongoDB",
+    "desc" : "Connector to MongoDB Database",
+    "image" : "mongodb.png",
+    "category" : "DB",
+    "version" :  "~1.3.9",
+   "config" :  [
+      {
+       "name" :  "hostname",
+       "desc" :  "Your MongoDB hostname",
+       "varName" :  "MONGODB_HOSTNAME"
+      },
+      {
+       "name" :  "username",
+       "desc" :  "Your MongoDB Username",
+       "varName" :  "MONGODB_USER"
+      },
+      {
+       "name" :  "password",
+       "desc" :  "Your MongoDB Password",
+       "varName" :  "MONGODB_PASSWORD",
+       "field" :  "password"
+      },
+      {
+       "name" :  "port",
+       "desc" :  "Your MongoDB Port Number",
+       "varName" :  "MONGODB_PORT",
+       "field" :  "number"
+      }
+    ]
+  },
+  {
+    "name" : "Oracle 11g",
+    "desc" : "Connector to an Oracle database",
+    "image" : "oracle.png",
+    "category" : "DB",
+    "version" :  "~0.3.1",
+   "config" :  [
+      {
+       "name" :  "hostname",
+       "desc" :  "Your Oracle 11g hostname",
+       "varName" :  "ORACLE_HOSTNAME"
+      },
+      {
+       "name" :  "database",
+       "desc" :  "The Oracle 11g database you want to connect to",
+       "varName" :  "ORACLE_DATABASE"
+      },
+      {
+       "name" :  "username",
+       "desc" :  "Your Oracle 11g Username",
+       "varName" :  "ORACLE_USER"
+      },
+      {
+       "name" :  "password",
+       "desc" :  "Your Oracle 11g Password",
+       "varName" :  "ORACLE_PASSWORD",
+       "field" :  "password"
+      },
+      {
+       "name" :  "port",
+       "desc" :  "Your Oracle 11g Port Number",
+       "varName" :  "ORACLE_PORT",
+       "field" :  "number"
+      }
+    ]
+  },
+  {
+    "name" : "Salesforce",
+    "desc" : "Connects to the SalesForce CRM Api",
+    "image" : "salesforce.png",
+    "category" : "APIs",
+    "version" :  "0.5.1",
+   "npmName" :  "node-salesforce",
+   "config" :  [
+      {
+       "name" :  "instanceURL",
+       "desc" :  "Your salesforce instance URL - e.g. http://na1.salesforce.com",
+       "varName" :  "SALESFORCE_INSTANCE_URL"
+      },
+      {
+       "name" :  "username",
+       "desc" :  "Your salesforce.com login",
+       "varName" :  "SALESFORCE_USERNAME"
+      },
+      {
+       "name" :  "password",
+       "desc" :  "Your salesforce.com password",
+       "varName" :  "SALESFORCE_PASSWORD"
+      }
+    ]
+  },
+  {
+    "name" : "Twitter",
+    "desc" : "Connects to the Twitter social network",
+    "image" : "twitter.png",
+    "category" : "Social",
+   "config" :  [
+      {
+       "name" :  "username",
+       "desc" :  "Your twitter username",
+       "varName" :  "TWITTER_USERNAME"
+      }
+    ]
+  },
+  {
+    "name" : "Facebook",
+    "desc" : "Facebook OAuth connector",
+    "image" : "facebook.png",
+    "category" : "Social",
+   "config" :  [
+      {
+       "name" :  "apiKey",
+       "desc" :  "Your facebook API key - you can find this in...",
+       "varName" :  ""
+      },
+      {
+       "name" :  "OAuthToekn",
+       "desc" :  "OAuth token - you can",
+       "varName" :  ""
+      }
+    ]
+  },
+  {
+    "name" : "Request",
+    "desc" : "The de facto standard for doing all HTTP requests in Node.js - recommended over using the HTTP module standalone.",
+    "category" : "Tools",
+    "version" :  "2.11.4",
+   "docs" :  "https://github.com/mikeal/request"
+  },
+  {
+    "name" : "Async",
+    "desc" : "Callback hell? Async helps you overcome this",
+    "category" : "Tools",
+    "version" :  "0.2.5",
+   "docs" :  "https://github.com/caolan/async"
+  }
+
+]

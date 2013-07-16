@@ -8,7 +8,6 @@ Plugins.Controller = Apps.Controller.extend({
   },
   init: function() {},
   show: function(el) {
-    debugger;
     $(this.views.container).empty();
     $(this.views.container).show();
     this.view = new App.View.PluginsDashboard();

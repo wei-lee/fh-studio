@@ -14,6 +14,50 @@
   </div>
 </div>
 
-<script id="plugins-dashboard-template" type="text/x-handlebars-template">
-  Hi world
+<script id="pluginsTabs" type="text/x-handlebars-template">
+  <ul id="plugins-tabs" class="nav nav-tabs">
+
+  </ul>
+</script>
+<script id="pluginsTabsBody" type="text/x-handlebars-template">
+  <div class="">
+    <div class="plugins-home">
+      <div id="pluginTabContent" class="tab-content">
+        <!-- Dynamically generated -->
+      </div>
+    </div>
+  </div>
+</script>
+<script type="text/template" id="pluginPaneTabTpl">
+  <li class="tab-{{ category }}">
+    <a href="#tab-body-{{ category }}" data-toggle="tab">{{ category }}</a>
+  </li>
+</script>
+<script type="text/template" id="pluginPaneTabBody">
+  <div class="tab-pane fade in" id="tab-body-{{ category }}"><div class="row-fluid"></div></div>
+</script>
+<script type="text/template" id="pluginPaneImage">
+  <div class="pluginThumb"><img src="/studio/static/themes/default/img/cloud_plugins/{{ image }}"></div>
+</script>
+<script type="text/template" id="pluginPaneItemTpl">
+  <div class="span4 plugin">
+    <div id="" class="carousel plugin-carousel slide">
+      <div class="carousel-inner">
+        <div class="active item">
+          {{{ title }}}
+        </div>
+        <div class="item">
+          <h3>{{ name }}</h3>
+          <p>
+            <strong>Version: </strong><i>{{ versionLabel }}</i><br />
+            {{ desc }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <a class="btn btn-success addButton" data-plugin="{{ name }}" href="#">
+      Add <i class="icon-white icon-plus-sign"></i>
+    </a>
+  </div><!--/span4-->
 </script>
