@@ -1,62 +1,223 @@
-<div id="cloudnotifications_container">
+<script id="cloud-notifications-template" type="text/x-handlebars-template">
+    <div class="system_log"></div>
+</script>
+
+<script id="datatable-template" type="text/x-handlebars-template">
+    <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered datatable" width="100%"></table>
+</script>
+
+<script id="cloud-notifications-filter-template" type="text/x-handlebars-template">
+    <div class="filter_options span9">
+        <form class="filter_options_forms span12">
+            <div class="span9">
+            <select class="eventCategories_filters span4" data-toggle="tooltip" title="Filter By Event Class">
+            </select>
+            <select class="eventNames_filters span4" data-toggle="tooltip" title="Filter By Event State">
+            </select>
+            <select class="eventSeverities_filters span4" data-toggle="tooltip" title="Filter By Event Severity">
+            </select>
+            </div>
+            <div class="span3">
+            <button class="btn filterEventsBtn span4">Filter</button>
+            <button class="btn filterResetBtn span4">Reset</button>
+            <button class="btn reloadBtn span4">Reload</button>
+            </div>
+        </form>
+    </div>
+</script>
+
+<script id="event-alerts-template" type="text/x-handlebars-template">
+    <div class="event_alerts"></div>
+    <div class="event_notifications_table_container"></div>
+</script>
+
+<script id="event-alerts-controls-template" type="text/x-handlebars-template">
+    <button class="btn btn-danger pull-right alert_delete_btn disabled" disabled>Delete An Alert</button>
+    <button class="btn btn-primary pull-right alert_create_btn">Create An Alert</button>
+</script>
+
+<script id="event-alert-template" type="text/x-handlebars-template">
+    <div class="modal-header">
+        <a class="close" data-dismiss="modal">x</a>
+        <h3>{{header}}</h3>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" id="modal_alert_details_form">
+            <div class="control-group alertName_control"><label id="alert_name_label" class="control-label insert-lang insert-help-icon" for="input_alertName">Alert Name</label>
+                <div class="controls">
+                    <input type="text" class="input-xlarge" id="input_alertName" value="{{alertName}}"></input>
+                </div>
+            </div>
+            <div class="control-group eventCategories_control"><label id="alert_categories_label" class="control-label insert-lang insert-help-icon" for="input_eventCategories">Event Categories</label>
+                <div class="controls">
+                    <select class="input-xlarge" id="input_eventCategories"></select>
+                </div>
+            </div>
+            <div class="control-group eventSeverities_control"><label id="alert_severities_label" class="control-label insert-lang insert-help-icon" for="input_eventSeverities">Severities</label>
+                <div class="controls">
+                    <select class="input-xlarge" id="input_eventSeverities"></select>
+                </div>
+            </div>
+            <div class="control-group eventNames_control"><label id="alert_event_names_label" class="control-label insert-lang insert-help-icon" for="input_eventNames">Event Names</label>
+                <div class="controls">
+                    <select class="input-xlarge" id="input_eventNames"></select>
+                </div>
+            </div>
+            <div class="control-group emails_control"><label id="alert_emails_label" class="control-label insert-lang insert-help-icon" for="input_emails">Emails</label>
+                <div class="controls">
+                    <input type="text" class="input-xlarge" id="input_emails" value="{{emails}}"></input><button class="btn test_emails_btn"> Test Emails </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        {{#if enableClone}}
+        {{#if enabled}}
+        <a href="#" class="btn btn-inverse disable_btn">Disable</a>
+        {{else}}
+        <a href="#" class="btn btn-success enable_btn">Enable</a>
+        {{/if}}
+        {{/if}}
+        <a href="#" class="btn" data-dismiss="modal">Close</a>
+        {{#if enableClone}}
+        <a href="#" class="btn clone_alert_btn">Clone</a>
+        {{/if}}
+        <a href="#" class="btn save_alert_btn">Save</a>
+    </div>
+</script>
+
+<script id="event-alert-message-template" type="text/x-handlebars-template">
+    <div class="alert alert-{{type}}">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{message}}
+    </div>
+</script>
+
+<script id="confirm-modal-template" type="text/x-handlebars-template">
+    <div class="modal-body">
+        {{message}}
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+        <a href="#" class="btn confirm">OK</a>
+    </div>
+</script>
+
+<script id="alert-notifications-template" type="text/x-handlebars-template">
+    <div class="alert_notifications_table_container">
+    </div>
+</script>
+
+<script id="alert-checkbox-template" type="text/x-handlebars-template">
+    <input type='checkbox' class='row_control'>
+</script>
+
+<script id="event-alert-notification-template" type="text/x-handlebars-template">
+    <div class="modal-header">
+        <a class="close" data-dismiss="modal">x</a>
+        <h3>{{alertName}}</h3>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal">
+            <div class="control-group timeStamp_control">
+                <label id="alert_notification_ts_label" class="control-label insert-lang insert-help-icon" for="input_timeStamp">Time Stamp</label>
+                <div class="controls">
+                  <span  class="input-xxlarge uneditable-input" id="input_timeStamp"">{{sysCreated}}</span>
+               </div>
+            </div>
+            <div class="control-group alertName_control">
+                <label id="alert_notification_alert_name_label" class="control-label insert-lang insert-help-icon" for="input_alertName">Alert Name</label>
+                <div class="controls">
+                    <span  class="input-xxlarge uneditable-input" id="input_alertName">{{alertName}}</span>
+                </div>
+            </div>
+            <div class="control-group recipients_control">
+                <label id="alert_notification_recipients_label" class="control-label insert-lang insert-help-icon" for="input_recipients">Recipients</label>
+                <div class="controls">
+                    <span class="input-xxlarge uneditable-input" id="input_recipients">{{recipients}}</span>
+                </div>
+            </div>
+            <div class="control-group subject_control">
+                <label id="alert_notification_subject_label" class="control-label insert-lang insert-help-icon" for="input_subject">Subject</label>
+                <div class="controls">
+                    <span class="input-xxlarge uneditable-input" id="input_subject">{{subject}}</span>
+                </div>
+            </div>
+            <div class="control-group body_control">
+                <label id="alert_notification_body_label" class="control-label insert-lang insert-help-icon" for="input_body">Body</label>
+                <div class="controls">
+                    <div class="input-block-level uneditable-input alert_notification_body_field" id="input_body">{{{body}}}</div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="btn" data-dismiss="modal">Close</a>
+    </div>
+</script>
+
+<div id="cloudnotifications_container" class="hidden_template">
   <div class="fh-box-outer">
     <h4 class="fh-box-header">
-      Cloud Notifications
-        <%@ include file="./cloud_environment.html" %>
+      Events & Alerts
+      <%@ include file="./cloud_environment.html" %>
     </h4>
     <div class="fh-box-inner">
       <!-- div data-lang="cloudnotifications_description"></div -->
       <div class="alerts"></div>
+      
+      <ul class="cloud_notifications_type_nav nav nav-pills" id="cloud_notifications_main_pills">
+        <li>
+          <a href="#cloud_notifications_pill" data-toggle="pill" data-type="cloud_notifications">System Events <i class="icon-info-sign"></i></a>
+        </li>
+        <li>
+          <a href="#event_alert_pill" data-toggle="pill" data-type="alerts">Alerts <i class="icon-info-sign"></i></a>
+        </li>
+        <li>
+          <a href="#event_alert_notifications_pill" data-toggle="pill" data-type="alertnotifications">Notifications <i class="icon-info-sign"></i></a>
+        </li>
+      </ul>
 
-        <ul class="cloud_notifications_type_nav nav nav-pills" id="cloud_notifications_main_pills">
-            <li class="active">
-                <a href="#cloud_notifications_pill" data-toggle="pill" data-type="cloud_notifications">Cloud Notifications</a>
-            </li>
-            <li>
-                <a href="#cloud_notifications_auditlog_pill" data-toggle="pill" data-type="auditlog">Audit Log</a>
-            </li>
-        </ul>
+      <div class="pill-content" id="cloud_notifications_main_outer_div">
+        <div class="pill-pane active" id="cloud_notifications_pill">
+          <div id="notifications_loading" class="loading_icon" style="display:block">
+            <img src="<%=studio.getStaticAssetPath("themes/default/img/throbber.gif")%>" alt="loading"/> Loading data, please wait...
+          </div>
 
-        <div class="pill-content" id="cloud_notifications_main_outer_div">
-            <div class="pill-pane active" id="cloud_notifications_pill">
-                <div id="notifications_loading" class="loading_icon" style="display:block">
-                    <img src="<%=studio.getStaticAssetPath("themes/default/img/throbber.gif")%>" alt="loading"/> Loading data, please wait...
-                </div>
-                <div id="notification_container" class="row-fluid">
-
-                    <table id="cloud_notification_events_table" cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered hidden">
-                    </table>
-
-                </div>
-            </div>
-
-            <div class="pill-pane" id="cloud_notifications_auditlog_pill">
-                <div class="pill-content well">
-                    <form class="inline">
-                        <select class="selectfixedWidth" name="cloudNotificationsAuditLogTypes" id="cloudNotificationsAuditLogTypeFilter">
-                            <option value="all">All Types</option>
-                        </select>
-
-
-                        <select class="selectfixedWidth" name="cloudNotificationsAuditLogUsers" id="cloudNotificationsAuditLogUserFilter">
-                            <option value="all">All Users</option>
-                        </select>
-                        <button id="cloud_notifications_audit_log_filter" class="appreport-button btn btn-inverse insert-lang">Filter</button>
-                        <button id="cloud_notifications_audit_log_reset" class="appreport-button btn btn-inverse insert-lang">Reset</button>
-                    </form>
-                </div>
-                <div id="notification_audit_log_container" class="row-fluid">
-
-                    <table id="cloud_notification_audit_log_table" cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered hidden">
-                    </table>
-
-                </div>
-            </div>
+          <div id="notification_container" class="row-fluid">
+            
+          </div>
         </div>
 
+        <div class="pill-pane" id="event_alert_pill">
+          <!-- div class="pill-content well">
+               <form class="inline">
+                 <select class="selectfixedWidth" name="cloudNotificationsAuditLogTypes" id="cloudNotificationsAuditLogTypeFilter">
+                   <option value="all">All Types</option>
+                 </select>
+                 
+                 
+                 <select class="selectfixedWidth" name="cloudNotificationsAuditLogUsers" id="cloudNotificationsAuditLogUserFilter">
+                   <option value="all">All Users</option>
+                 </select>
+                 <button id="cloud_notifications_audit_log_filter" class="appreport-button btn btn-inverse insert-lang">Filter</button>
+                 <button id="cloud_notifications_audit_log_reset" class="appreport-button btn btn-inverse insert-lang">Reset</button>
+               </form>
+          </div-->
+          <div id="event_alerts_container" class="row-fluid">
+            
+            
+          </div>
+        </div>
 
-
-
+        <div class="pill-pane" id="event_alert_notifications_pill">
+          <div id="alerts_notifications_container" class="row-fluid">
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+</div>
+      
+<div id="modal_details" class="modal hide fade in" style="display: none; ">
 </div>

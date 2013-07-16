@@ -1,18 +1,38 @@
-$(document).ready(function () {
+$(document).ready(function() {
   console.log('main init');
-  
+
   $('.dialog').hide();
   // Footer text
   $('#footer_year').text(new Date().getFullYear() + ' ');
-  
+
   // show body
   $('body').show();
-  
-  $.validator.addMethod("validpass", function (value, element) {
+
+  $.validator.addMethod("validpass", function(value, element) {
     // check the password length
     return 'string' === typeof value && value.length >= 8;
-    
+
   }, Lang['password_valid_check']);
+
+  // Handy event emitter for a "resizeEnd" event
+  // fired after a resize has finished
+  $(window).resize(function() {
+    if (this.resizeTO) clearTimeout(this.resizeTO);
+    this.resizeTO = setTimeout(function() {
+      $(this).trigger('resizeEnd');
+    }, 250);
+  });
+
+  // Emit a beforeFetch event, prior to fetching on a collection
+  (function() {
+    if ('undefined' !== typeof Backbone) { // backbone may not be loaded for some pages e.g. login/reset/activate
+      var fetch = Backbone.Collection.prototype.fetch;
+      Backbone.Collection.prototype.fetch = function() {
+        this.trigger('beforeFetch');
+        return fetch.apply(this, arguments);
+      };
+    }
+  })();
 
   // Custom validation plugin functions
   $.validator.addMethod("giturl", function(value, element) {
@@ -23,9 +43,9 @@ $(document).ready(function () {
     // ssh://x@x/x.git
     priv1 = /ssh:\/\/\S+\.git$/;
     // x@x:x.git
-    priv2= /^(?!ssh:\/\/|git:\/\/|http:\/\/)\S+:\S+\.git$/;
+    priv2 = /^(?!ssh:\/\/|git:\/\/|http:\/\/)\S+:\S+\.git$/;
 
     return this.optional(element) || pub1.test(value) || (priv1.test(value) && value.split(':').length < 3) || priv2.test(value);
-    
+
   }, Lang['scm_git_url_validate_fail']);
 });

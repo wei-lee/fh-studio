@@ -52,6 +52,7 @@ $.extend(Constants, {
   DELETE_APP_URL: Constants.IDE_URL_PREFIX + "app/delete",
   PERMS_APP_URL: Constants.IDE_URL_PREFIX + "app/perms",
   DEPLOY_APP_URL: Constants.IDE_URL_PREFIX + "app/stage",
+	RUNTIMES_URL:Constants.IDE_URL_PREFIX + "app/runtimes",
   PING_APP_URL: Constants.IDE_URL_PREFIX + "app/ping",
   STATS_APP_URL: Constants.IDE_URL_PREFIX + "app/stats",
   EXTERNAL_REQUEST_URL: Constants.IDE_URL_PREFIX + "app/external_request",

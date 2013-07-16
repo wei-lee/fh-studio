@@ -1,7 +1,7 @@
 {
   "name": "fh-studio",
   "description": "FeedHenry App Studio",
-  "version": "3.16.7",
+  "version": "3.17.4",
   "author": "David Martin <david.martin@feedhenry.com>",
   "engines": {
     "node": ">= 0.6.17"
@@ -9,6 +9,9 @@
   "dependencies" : {
   },
   "devDependencies": {
-    "jshint": "0.7.1"
+    "jshint": "1.1.0",
+    "grunt-contrib-jasmine": "~0.4.2",
+    "grunt": "~0.4.1",
+    "grunt-template-jasmine-istanbul": "~0.2.1"
   }
 }
