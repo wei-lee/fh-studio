@@ -1,98 +1,36 @@
-App.View.PluginsDashboard = Backbone.View.extend({
+App.View.PluginsSetup = Backbone.View.extend({
   events: {
-    'click .plugin .addButton': 'configurePlugin'
+    'click #plugins-done': 'done'
   },
   templates : {
     // These get replaced with a handlebars template function with a $ prefix on the key once compileTemplates is run
-    pluginsTabs : '#pluginsTabs',
-    pluginsTabsBody : '#pluginsTabsBody',
-    pluginPaneTabTpl: '#pluginPaneTabTpl',
-    pluginPaneTabBody: '#pluginPaneTabBody',
-    pluginPaneImage: '#pluginPaneImage',
-    pluginPaneItemTpl: '#pluginPaneItemTpl'
+    pluginSetup : '#pluginSetup'
   },
-  subviews: {
-    "configure": App.View.PluginsConfigure,
-    "setup": App.View.PluginsSetup
-  },
-  initialize : function(){
-    this.collection = new Plugins.Collection.Plugin();
-    this.collection.bind('reset', this.render, this);
-    this.collection.fetch({ reset: true });
+  plugin : undefined,
+  initialize : function(options){
+    if (!options.plugin){
+      throw new Error("Plugin Configure view inited with no plugin specified!");
+    }
+    this.plugin = options.plugin;
     this.compileTemplates();
   },
   render: function() {
-    this.$el.html(this.renderPluginsPane());
-
+    this.$el.html(this.setup(this.options));
+    return this;
   },
   /*
-   Renders a grid of plugins on the front plugins screen from this.plugins
-   First builds the categories from every tab seen, then creates tab pane bodies
+   Renders the plugin configure page, with a form allowing the user to fill in their details
    */
-  renderPluginsPane: function(){
-    var self = this,
-    categories = [],
-    tabs = $(self.templates.$pluginsTabs()),
-    body = $(self.templates.$pluginsTabsBody()),
-    element;
-    this.collection.each(function(pluginItem){
-      var p = pluginItem.toJSON();
-      p.id = pluginItem.id || pluginItem.cid; // apply the model's ID so we can use it in templating
-
-      // If we haven't seen this category before, add the top tab, and the tab container
-      if (categories.indexOf(p.category)===-1){
-        var tab = $(self.templates.$pluginPaneTabTpl(p)),
-        tabBody = self.templates.$pluginPaneTabBody(p);
-        tabs.append(tab);
-        body.find('#pluginTabContent').append(tabBody);
-        categories.push(p.category);
-      }
-      // At this point, we deffo have a container to put the plugin in
-
-      // Setup the version so it's blank if git backed, or else "v 1.0" style
-      p.versionLabel = (!p.version || p.version === "" || p.version.indexOf("git")>-1) ? "Custom version" : "v" + p.version;
-      p.title = (p.image) ? self.templates.$pluginPaneImage(p) : '<h2>' + p.name +'</h2>';
-
-      var pluginItem = self.templates.$pluginPaneItemTpl(p);
-
-      body.find('#tab-body-' + p.category + ' .row-fluid').append(pluginItem);
+  setup: function(options){
+    //TODO: Pull the code, package json string & make env variables section prettier
+    return this.templates.$pluginSetup({
+      plugin : options.plugin.toJSON(),
+      code : '',
+      packageJsonString : '',
+      envVariablesString : ''
     });
-
-    // Make the first tab the active one
-    tabs.find('#plugins-tabs li:first').addClass('active');
-    body.find('#pluginTabContent div.tab-pane:first').addClass('active');
-
-    element = $("<div></div>").append(tabs).append(body);
-
-    // Setup the slider events on the carousel
-    element.find('.carousel.plugin-carousel').carousel({
-      interval: false, pause : false
-    });
-
-    element.find('#pluginTabContent .plugin').on('hover', function(){
-      $(this).find('.carousel').carousel(1);
-    });
-    element.find('#pluginTabContent .plugin').on('mouseleave', function(){
-      $(this).find('.carousel').carousel(0);
-    });
-
-    return element;
   },
-  /*
-    Add button gets pressed
-   */
-  configurePlugin : function(e){
-    var addButton = $(e.target),
-    id = $(addButton).attr('data-id'),
-    plugin = this.collection.get(id);
-
-
-    debugger;
-  },
-  /**
-   compile all templates
-   */
-  compileTemplates: function() {
+  compileTemplates: function() { //TODO: DRY
     var templates = {};
     for (var key in this.templates){
       if (this.templates.hasOwnProperty(key)){
@@ -105,5 +43,9 @@ App.View.PluginsDashboard = Backbone.View.extend({
       }
     }
     this.templates = templates;
+  },
+  done : function(){
+    this.$el.html('');
+
   }
 });

@@ -127,6 +127,8 @@ js/views/analytics/analytics.overview.view.js
 js/views/analytics/perapp.analytics.view.js
 js/views/analytics/domain.analytics.overview.view.js
 js/views/analytics/project.app.analytics.controller.view.js
+js/views/plugins/plugins.configure.view.js
+js/views/plugins/plugins.setup.view.js
 js/views/plugins/plugins.dashboard.view.js
 js/views/common/swap_select.view.js
 js/views/app/cloud/cloud.sysevents.view.js
