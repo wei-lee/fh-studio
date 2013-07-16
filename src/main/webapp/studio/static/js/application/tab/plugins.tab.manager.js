@@ -4,14 +4,12 @@ Plugins.Tab = Plugins.Tab || {};
 Plugins.Tab.Manager = Tab.Manager.extend({
   
   id: 'plugins_layout',
-  
   init: function() {
     this._super();
     this.initFn = _.once(this.initBindings);
   },
-
-  show: function() {
+  show : function(){
     this._super();
+    this.getController('plugins.controller').show()
   }
-
 });
