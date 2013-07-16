@@ -29,6 +29,12 @@
   <li class="account-tab">
     <a id="account_tab" href="#tabs-3">My Account</a>
   </li>
+
+  <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_REPORTING)) { %>
+    <li class="plugins-tab">
+      <a id="plugins-tab" href="#tabs-8">Plugins</a>
+    </li>
+  <% } %>
 </ul>
 
 <div id="main_tabs_panels" class="ui-layout-content">
@@ -36,6 +42,7 @@
 
   <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER)) { %>
     <%@ include file="./apps/apps_tab.html" %>
+    <%@ include file="./plugins/plugins_tab.html" %>
   <%}%>
 
   <% if(studio.getProperty("nodejsEnabled").equals("true")){ %>
