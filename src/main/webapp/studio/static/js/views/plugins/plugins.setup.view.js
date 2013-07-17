@@ -23,11 +23,17 @@ App.View.PluginsSetup = Backbone.View.extend({
    */
   setup: function(options){
     //TODO: Pull the code, package json string & make env variables section prettier
+    var plugin = options.plugin.toJSON();
+    plugin.npmName = plugin.npmName || plugin.name.toLowerCase();
+    var code = $('#snippet-' + plugin.npmName).html();
+
+
+
+
     return this.templates.$pluginSetup({
-      plugin : options.plugin.toJSON(),
-      code : '',
-      packageJsonString : '',
-      envVariablesString : ''
+      plugin : plugin,
+      code : code,
+      envVariablesString : '123'
     });
   },
   compileTemplates: function() { //TODO: DRY

@@ -95,7 +95,14 @@
   <p>To get started with your plugin, follow these simple steps:</p>
   <h4>1) Add the following line to cloud/package.json:</h4>
 <pre class="pluginsPre" id="packagejson">
-{{ packageJsonString }}
+{
+  "name": "Your Cloud App",
+  "version": "1.0.0",
+  "dependencies" : {
+  "fh-nodeapp" : "*",
+  <strong>    "{{ plugin.npmName }}" : "{{ plugin.version }}"</strong>
+  }
+}
 </pre>
   <h4>2) Add the following code where you want to use your plugin:</h4>
 <pre class="pluginsPre"  id="snippet">
@@ -108,14 +115,7 @@
     {{ envVariablesString }}
   </div>
   <br />
+  Now, check out <a href="{{ docs }}"> the docs page for this tool.</a><br />
   <a id="plugins-done" class="btn btn-primary plugins-done">Done!</a>
 </script>
-<!-- This is for a tool with no individual config e.g. request, async -->
-<script type="text/template" class="pluginToolCode">
-  <h4>To get started with your tool, simply add the following line to cloud/package.json:</h4>
-<pre class="pluginsPre">
-{{ packageJsonString }}
-</pre>
-  Now, check out <a href="{{ docs }}"> the docs page for this tool.</a><br />
-  <a class="btn btn-primary plugins-done">Done!</a>
-</script>
+
