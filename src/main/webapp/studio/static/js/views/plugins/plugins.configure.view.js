@@ -1,8 +1,5 @@
 App.View.PluginsConfigure = Backbone.View.extend({
   events: {
-    'click .plugin .addButton': 'configurePlugin',
-    'click #plugins-configure #plugins-cancel' : 'back',
-    'click #plugins-configure #plugins-save' : 'setup'
   },
   templates : {
     // These get replaced with a handlebars template function with a $ prefix on the key once compileTemplates is run
@@ -41,17 +38,6 @@ App.View.PluginsConfigure = Backbone.View.extend({
       obj[f.name] = f.value;
     }
     return obj;
-  },
-  back : function(){
-    this.$el.html('');
-    //TODO: Go back elegantly?
-  },
-  setup : function(){
-    var view = new App.View.PluginsSetup({plugin : this.plugin, config : this.getConfigFormValues() });
-    $('#plugins_setup_container').append(view.render().el);
-    this.$el.html('');
-
-    console.log(this.getConfigFormValues());
   },
   compileTemplates: function() { //TODO: DRY
     var templates = {};

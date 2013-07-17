@@ -1,6 +1,5 @@
 App.View.PluginsSetup = Backbone.View.extend({
   events: {
-    'click #plugins-done': 'done'
   },
   templates : {
     // These get replaced with a handlebars template function with a $ prefix on the key once compileTemplates is run
@@ -22,18 +21,24 @@ App.View.PluginsSetup = Backbone.View.extend({
    Renders the plugin configure page, with a form allowing the user to fill in their details
    */
   setup: function(options){
-    //TODO: Pull the code, package json string & make env variables section prettier
-    var plugin = options.plugin.toJSON();
+    //TODO: make env variables section prettier
+    var plugin = options.plugin.toJSON(),
+    envVariablesString = [],
+    code;
     plugin.npmName = plugin.npmName || plugin.name.toLowerCase();
-    var code = $('#snippet-' + plugin.npmName).html();
+    code = $('#snippet-' + plugin.npmName).html();
 
-
-
+    for (var key in options.config){
+      if (options.config.hasOwnProperty(key)){
+        var val = options.config[key];
+        envVariablesString.push(key + " : " + val);
+      }
+    }
 
     return this.templates.$pluginSetup({
       plugin : plugin,
       code : code,
-      envVariablesString : '123'
+      envVariablesString : envVariablesString.join("<br />")
     });
   },
   compileTemplates: function() { //TODO: DRY
@@ -49,9 +54,5 @@ App.View.PluginsSetup = Backbone.View.extend({
       }
     }
     this.templates = templates;
-  },
-  done : function(){
-    this.$el.html('');
-
   }
 });

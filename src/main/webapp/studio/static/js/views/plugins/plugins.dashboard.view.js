@@ -1,6 +1,5 @@
 App.View.PluginsDashboard = Backbone.View.extend({
   events: {
-    'click .plugin .addButton': 'configurePlugin'
   },
   templates : {
     // These get replaced with a handlebars template function with a $ prefix on the key once compileTemplates is run
@@ -19,7 +18,7 @@ App.View.PluginsDashboard = Backbone.View.extend({
   },
   render: function() {
     this.$el.html(this.renderPluginsPane());
-
+    return this;
   },
   /*
    Renders a grid of plugins on the front plugins screen from this.plugins

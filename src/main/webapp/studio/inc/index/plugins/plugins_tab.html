@@ -5,16 +5,20 @@
     </div>
 
     <div class="row-fluid">
-      <div class="span12">
-        <div id="plugins_dashboard_container" class="hidden_template"></div>
-        <div id="plugins_configure_container" class=""></div>
-        <div id="plugins_setup_container" class=""></div>
+      <div class="span12" id="plugins_container">
+
       </div>
     </div>
 
 
   </div>
 </div>
+
+<script id="pluginsContainerTemplate" type="text/x-handlebars-template">
+  <div id="plugins_dashboard_container"></div>
+  <div id="plugins_configure_container"></div>
+  <div id="plugins_setup_container"></div>
+</script>
 
 <script id="pluginsTabs" type="text/x-handlebars-template">
   <ul id="plugins-tabs" class="nav nav-tabs">
@@ -112,7 +116,7 @@
 
   <h4>3) Add environment variables for your plugin:</h4>
   <div id="plugin-env-variables">
-    {{ envVariablesString }}
+    {{{ envVariablesString }}}
   </div>
   <br />
   Now, check out <a href="{{ docs }}"> the docs page for this tool.</a><br />

@@ -130,6 +130,7 @@ js/views/analytics/project.app.analytics.controller.view.js
 js/views/plugins/plugins.configure.view.js
 js/views/plugins/plugins.setup.view.js
 js/views/plugins/plugins.dashboard.view.js
+js/views/plugins/plugins.controller.js
 js/views/common/swap_select.view.js
 js/views/app/cloud/cloud.sysevents.view.js
 js/views/app/cloud/cloud.alerts.view.js
@@ -216,7 +217,6 @@ js/application/reporting/reporting.controller.js
 js/application/reporting/reporting.app.controller.js
 js/application/reporting/reporting.dashboard.controller.js
 js/application/reporting/reporting.perapp.controller.js
-js/application/plugins/plugins.controller.js
 js/application/chart/ChartManager.js
 js/application/chart/locator/ChartLocator.js
 js/application/chart/locator/MetricsChartLocator.js
