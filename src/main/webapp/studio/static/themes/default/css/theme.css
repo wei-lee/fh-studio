@@ -1180,7 +1180,7 @@ span.label-info {
     margin-top: 8px;
 }
 
-#plugins-code pre strong {
+pre#packagejson strong {
     color: red;
     font-weight: bold;
 }
@@ -1189,23 +1189,10 @@ span.label-info {
     max-height: 220px;
 }
 
-#plugins-code .pluginsCodeImage {
+#plugins_setup_container .pluginsCodeImage {
     float : right;
     height: 90px;
     width: auto;
-}
-
-#pluginsModal .modal-body {
-    padding-top: 2px;
-}
-
-#pluginsModal .close {
-    float: right;
-    padding: 8px;
-}
-
-#pluginsModal ul {
-    padding: 3px 22px 0px 22px;
 }
 
 .pluginsPre {
@@ -1213,9 +1200,7 @@ span.label-info {
     margin: 12px 0px;
 }
 
-.pluginSnippet {
-    display : none;
-}
+/* End Cloud plugins */
 
 /* Destination Resources */
 .resource-div

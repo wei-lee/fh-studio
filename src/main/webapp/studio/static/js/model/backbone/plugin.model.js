@@ -31,3 +31,4 @@ Plugins.Collection.Plugin = Backbone.Collection.extend({
   }
 });
 Plugins.Collections.Plugins = new Plugins.Collection.Plugin();
+Plugins.Collections.Plugins.fetch({ reset: true });

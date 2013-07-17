@@ -11,31 +11,31 @@ App.View.PluginsDashboard = Backbone.View.extend({
     pluginPaneItemTpl: '#pluginPaneItemTpl'
   },
   initialize : function(){
-    this.collection = new Plugins.Collection.Plugin();
+
+    this.collection = Plugins.Collections.Plugins;
     this.collection.bind('reset', this.render, this);
-    this.collection.fetch({ reset: true });
     this.compileTemplates();
   },
   render: function() {
-    this.$el.html(this.renderPluginsPane());
+    this.$el.empty();
+    this.renderPluginsPane(true);
     return this;
   },
   /*
    Renders a grid of plugins on the front plugins screen from this.plugins
    First builds the categories from every tab seen, then creates tab pane bodies
    */
-  renderPluginsPane: function(){
+  renderPluginsPane: function(renderTabs){
     var self = this,
     categories = [],
     tabs = $(self.templates.$pluginsTabs()),
-    body = $(self.templates.$pluginsTabsBody()),
-    element;
+    body = $(self.templates.$pluginsTabsBody());
     this.collection.each(function(pluginItem){
       var p = pluginItem.toJSON();
       p.id = pluginItem.id || pluginItem.cid; // apply the model's ID so we can use it in templating
 
       // If we haven't seen this category before, add the top tab, and the tab container
-      if (categories.indexOf(p.category)===-1){
+      if (renderTabs && categories.indexOf(p.category)===-1){
         var tab = $(self.templates.$pluginPaneTabTpl(p)),
         tabBody = self.templates.$pluginPaneTabBody(p);
         tabs.append(tab);
@@ -50,28 +50,37 @@ App.View.PluginsDashboard = Backbone.View.extend({
 
       var pluginItem = self.templates.$pluginPaneItemTpl(p);
 
-      body.find('#tab-body-' + p.category + ' .row-fluid').append(pluginItem);
+      // Either find the tab container created above, or append directly to the body
+      if (renderTabs){
+        body.find('#tab-body-' + p.category + ' .row-fluid').append(pluginItem);
+      }else{
+        body.append(pluginItem);
+      }
+
     });
 
     // Make the first tab the active one
-    tabs.find('#plugins-tabs li:first').addClass('active');
+    if (renderTabs){
+      tabs.children('#plugins-tabs li:first').addClass('active');
+    }
     body.find('#pluginTabContent div.tab-pane:first').addClass('active');
 
-    element = $("<div></div>").append(tabs).append(body);
-
     // Setup the slider events on the carousel
-    element.find('.carousel.plugin-carousel').carousel({
+    body.find('.carousel.plugin-carousel').carousel({
       interval: false, pause : false
     });
 
-    element.find('#pluginTabContent .plugin').on('hover', function(){
+    body.find('#pluginTabContent .plugin').on('hover', function(){
       $(this).find('.carousel').carousel(1);
     });
-    element.find('#pluginTabContent .plugin').on('mouseleave', function(){
+    body.find('#pluginTabContent .plugin').on('mouseleave', function(){
       $(this).find('.carousel').carousel(0);
     });
 
-    return element;
+    this.$el.append(tabs);
+    this.$el.append(body);
+
+    return this.$el;
   },
   /*
     Add button gets pressed
