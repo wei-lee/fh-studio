@@ -12,6 +12,9 @@
     <li class="apps-tab">
       <a id="apps_tab" href="#tabs-1">Apps</a>
     </li>
+    <li class="plugins-tab">
+      <a id="plugins_tab" href="#tabs-2">Plugins</a>
+    </li>
   <%}%>
 
   <% if(studio.getProperty("nodejsEnabled").equals("true")){ %>
@@ -29,12 +32,6 @@
   <li class="account-tab">
     <a id="account_tab" href="#tabs-3">My Account</a>
   </li>
-
-  <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_REPORTING)) { %>
-    <li class="plugins-tab">
-      <a id="plugins_tab" href="#tabs-8">Plugins</a>
-    </li>
-  <% } %>
 </ul>
 
 <div id="main_tabs_panels" class="ui-layout-content">
