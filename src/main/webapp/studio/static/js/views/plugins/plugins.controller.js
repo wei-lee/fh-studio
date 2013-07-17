@@ -11,7 +11,6 @@ App.View.PluginsController = Backbone.View.extend({
     setup : App.View.PluginsSetup
   },
   initialize : function(){
-
   },
   render: function() {
     var self = this;

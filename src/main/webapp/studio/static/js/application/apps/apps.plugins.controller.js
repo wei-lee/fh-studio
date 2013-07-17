@@ -16,6 +16,14 @@ Apps.Plugins.Controller = Apps.Cloud.Controller.extend({
 
     // Just shelling out the a Backbone ViewController here, skipping studio view controllers altogether
     this.view = new App.View.PluginsController();
-    this.view.setElement($(this.views.container)).render();
+    this.view.render();
+    $(this.views.container).append(this.view.el);
+  },
+  hide : function(){
+    $(this.views.container).empty().hide();
+    if (this.view) {
+      this.view.remove();
+      this.view.undelegateEvents();
+    }
   }
 });
