@@ -20,33 +20,45 @@
   <div id="plugins_setup_container"></div>
 </script>
 
-<script id="pluginsTabs" type="text/x-handlebars-template">
-  <ul id="plugins-tabs" class="nav nav-tabs">
-
-  </ul>
+<script id="pluginsDashboardSearch" type="text/x-handlebars-template">
+  <form class="navbar-search pull-right">
+    <input type="text" class="search-query" placeholder="Search">
+  </form>
 </script>
-<script id="pluginsTabsBody" type="text/x-handlebars-template">
-  <div class="">
-    <div class="plugins-home">
-      <div id="pluginTabContent" class="tab-content">
-        <!-- Dynamically generated -->
-      </div>
+
+<script id="pluginsDashboardFilters" type="text/x-handlebars-template">
+    Filters:<br />
+    <label class="checkbox">
+      <input type="checkbox" value="option1" id="inlineCheckbox1"> Cash
+    </label>
+    <label class="checkbox">
+      <input type="checkbox" value="option2" id="inlineCheckbox2"> Invoice
+    </label>
+    <label class="checkbox">
+      <input type="checkbox" value="option3" id="inlineCheckbox3"> Discover
+    </label>
+    <label class="checkbox">
+      <input type="checkbox" value="option3" id="inlineCheckbox4"> Financing
+    </label>
+</script>
+
+
+
+<script id="pluginsFullscreenBody" type="text/x-handlebars-template">
+  <div class="row">
+    <div class="span2 filters">
+    </div>
+    <div class="span10 plugins">
     </div>
   </div>
 </script>
-<script type="text/x-handlebars-template" id="pluginPaneTabTpl">
-  <li class="tab-{{ category }}">
-    <a href="#tab-body-{{ category }}" data-toggle="tab">{{ category }}</a>
-  </li>
-</script>
-<script type="text/x-handlebars-template" id="pluginPaneTabBody">
-  <div class="tab-pane fade in" id="tab-body-{{ category }}"><div class="row-fluid"></div></div>
-</script>
+
 <script type="text/x-handlebars-template" id="pluginPaneImage">
   <div class="pluginThumb"><img src="/studio/static/themes/default/img/cloud_plugins/{{ image }}"></div>
 </script>
 <script type="text/x-handlebars-template" id="pluginPaneItemTpl">
-  <div class="span4 plugin">
+  <div class="span4 plugin" data-name="{{name}}" data-category="{{category}}">
+    <h4 class="category">{{category}}</h4>
     <div id="" class="carousel plugin-carousel slide">
       <div class="carousel-inner">
         <div class="active item">

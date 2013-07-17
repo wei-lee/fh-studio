@@ -1137,45 +1137,59 @@ span.label-info {
 
 .plugins-home {
   padding: 20px;
-  border: 1px solid #ccc;
   margin-top: -1px;
 }
 
-#pluginTabContent .span4 p:first-of-type {
+#plugins-tabs + .plugins-home {
+  border: 1px solid #ccc; /* Only show the border on the tabbed version of the page */
+}
+
+#plugins_dashboard_container .plugin{
+    margin: 8px 10px;
+    border: 3px solid #eee;
+    padding: 8px;
+    border-radius: 16px;
+    max-width: 200px;
+}
+
+#plugins_dashboard_container .plugin p:first-of-type {
   height: 60px;
   overflow: scroll; /* TODO: Is this a good idea? Should I just trim the descriptions? */
 }
 
-#pluginTabContent .span4 img, #pluginTabContent .span4 h2, #pluginTabContent .item  {
+#plugins_dashboard_container .plugin img, #pluginTabContent .span4 h2, #pluginTabContent .item  {
   height: 125px;
 }
-#pluginTabContent .span4 h2 {
+
+#plugins_dashboard_container .plugin h4.category {
+  background-color : #0088cc;
+  color : #fff;
+  font-weight: normal;
+  padding: 2px 8px;
+  font-size: 15px;
+  text-align: center;
+}
+
+#plugins_dashboard_container .plugin h2 {
   line-height : 125px;
 }
-#pluginTabContent .span4 h2, #pluginTabContent .span4 h3 {
+#plugins_dashboard_container .plugin h2, #pluginTabContent .span4 h3 {
     margin: 0 4px;
 }
 
-#pluginTabContent .plugin{
-  border: 3px solid #eee;
-  padding: 8px;
-  border-radius: 16px;
-  max-width: 200px;
-}
-
-#pluginTabContent .plugin p {
+#plugins_dashboard_container .plugin p {
   padding: 0px 8px;
 }
 
-#pluginTabContent .plugin hr {
+#plugins_dashboard_container .plugin hr {
     margin: 4px 0px 2px 0px;
 }
 
-#pluginTabContent .plugin .pluginThumb {
+#plugins_dashboard_container .plugin .pluginThumb {
     text-align : center;
 }
 
-#pluginTabContent .plugin .addButton {
+#plugins_dashboard_container .plugin .addButton {
     width: 146px;
     margin-top: 8px;
 }

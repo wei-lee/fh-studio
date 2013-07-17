@@ -12,13 +12,13 @@ App.View.PluginsController = Backbone.View.extend({
   },
   initialize : function(){
   },
-  render: function() {
+  render: function(options) {
     var self = this;
     this.$el.html($('#pluginsContainerTemplate').html());
 
     this.dashboard = new this.subviews.dashboard();
-    this.dashboard.setElement(this.$('#plugins_dashboard_container')).render();
-
+    this.dashboard.render(options);
+    this.$('#plugins_dashboard_container').html(this.dashboard.el);
     return this;
   },
   /*
@@ -30,7 +30,8 @@ App.View.PluginsController = Backbone.View.extend({
     this.configure = new this.subviews.configure({
       plugin : this.dashboard.collection.get(id)
     });
-    this.configure.setElement(this.$('#plugins_configure_container')).render();
+    this.configure.render();
+    this.$('#plugins_configure_container').html(this.configure.el);
     this.dashboard.$el.hide();
 
   },
@@ -40,7 +41,8 @@ App.View.PluginsController = Backbone.View.extend({
   },
   setup : function(){
     this.setup = new App.View.PluginsSetup({plugin : this.configure.plugin, config : this.configure.getConfigFormValues() });
-    this.setup.setElement(this.$('#plugins_setup_container')).render();
+    this.setup.render();
+    this.$('#plugins_setup_container').html(this.setup.el);
     this.configure.$el.hide()
   },
   done : function(){
