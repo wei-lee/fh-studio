@@ -16,7 +16,6 @@
 
 <script id="pluginsContainerTemplate" type="text/x-handlebars-template">
   <div id="plugins_dashboard_container"></div>
-  <div id="plugins_configure_container"></div>
   <div id="plugins_setup_container"></div>
 </script>
 
@@ -73,30 +72,6 @@
       Add <i class="icon-white icon-plus-sign"></i>
     </a>
   </div><!--/span4-->
-</script>
-
-<script type="text/x-handlebars-template" id="pluginConfigure">
-  <div id="plugins-configure" class="container-fluid" style="">
-    <div class="row">
-      <div class="span6">
-        <h3>Configure {{ name }}</h3>
-        <form>
-          <fieldset>
-          </fieldset>
-        </form>
-      </div>
-      <div class="span3">
-        <img class="pluginConfigureImage" src="/studio/static/themes/default/img/cloud_plugins/{{ image }}" alt="Plugin configure image">
-      </div>
-    </div>
-    <a id="plugins-save" class="btn btn-primary configureSave">Give me the code &raquo;</a> <a id="plugins-cancel" class="btn">Cancel</a>
-  </div>
-</script>
-
-<script type="text/x-handlebars-template" id="pluginInput">
-  <label>{{ desc }}</label>
-  <input name="{{ varName }}" type="{{ type }}" placeholder="">
-  <br />
 </script>
 
 <script type="text/x-handlebars-template" id="pluginSetup">

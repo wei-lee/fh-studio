@@ -127,10 +127,11 @@ js/views/analytics/analytics.overview.view.js
 js/views/analytics/perapp.analytics.view.js
 js/views/analytics/domain.analytics.overview.view.js
 js/views/analytics/project.app.analytics.controller.view.js
-js/views/plugins/plugins.configure.view.js
+js/views/plugins/plugins.view.js
 js/views/plugins/plugins.setup.view.js
-js/views/plugins/dashboard/plugins.dashboard.filters.js
 js/views/plugins/dashboard/plugins.dashboard.view.js
+js/views/plugins/dashboard/plugins.dashboard.search.js
+js/views/plugins/dashboard/plugins.dashboard.filters.js
 js/views/plugins/plugins.controller.js
 js/views/common/swap_select.view.js
 js/views/app/cloud/cloud.sysevents.view.js

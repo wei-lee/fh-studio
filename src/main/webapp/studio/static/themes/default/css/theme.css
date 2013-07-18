@@ -1191,13 +1191,6 @@ pre#packagejson strong {
     font-weight: bold;
 }
 
-#plugins-configure > .row {
-    margin: 0px 0px 20px 2px;
-}
-
-#plugins-configure .pluginConfigureImage {
-    max-height: 220px;
-}
 
 #plugins_setup_container .pluginsCodeImage {
     float : right;
