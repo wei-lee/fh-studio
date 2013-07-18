@@ -1126,22 +1126,9 @@ span.label-info {
 }
 
 /* Cloud plugins */
-#pluginsModal .modal-header {
-  border-bottom: 0px;
-  padding-bottom: 0px;
-}
-
-#plugins-tabs {
-  margin-bottom: 0px;
-}
-
 .plugins-home {
   padding: 20px;
   margin-top: -1px;
-}
-
-#plugins-tabs + .plugins-home {
-  border: 1px solid #ccc; /* Only show the border on the tabbed version of the page */
 }
 
 #plugins_dashboard_container .plugin{
@@ -1157,7 +1144,7 @@ span.label-info {
   overflow: scroll; /* TODO: Is this a good idea? Should I just trim the descriptions? */
 }
 
-#plugins_dashboard_container .plugin img, #pluginTabContent .span4 h2, #pluginTabContent .item  {
+#plugins_dashboard_container .plugin img, #plugins_dashboard_container .span4 h2, #plugins_dashboard_container .item  {
   height: 125px;
 }
 
@@ -1173,7 +1160,7 @@ span.label-info {
 #plugins_dashboard_container .plugin h2 {
   line-height : 125px;
 }
-#plugins_dashboard_container .plugin h2, #pluginTabContent .span4 h3 {
+#plugins_dashboard_container .plugin h2, #plugins_dashboard_container .span4 h3 {
     margin: 0 4px;
 }
 
