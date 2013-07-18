@@ -9,14 +9,15 @@ App.View.PluginsDashboard = Backbone.View.extend({
   initialize : function(){
     this.collection = Plugins.Collections.Plugins;
     this.collection.bind('reset', this.render, this);
+    this.collection.bind('redraw', this.renderPluginsPane);
     this.compileTemplates();
   },
-  render: function(options) {
+  render: function() {
     this.$el.empty();
     var filters = new App.View.DashboardFilters(), // TODO
     body = $(this.templates.$pluginsFullscreenBody());
 
-    body.find('.filters').append(filters.render(this.collection).el);
+    body.find('.filters').append(filters.render(this).el);
 
     //TODO Move these to proper events
     // Setup the slider events on the carousel
@@ -25,7 +26,7 @@ App.View.PluginsDashboard = Backbone.View.extend({
     this.renderSearch();
 
     this.$el.append(body);
-    this.renderPluginsPane(options);
+    this.renderPluginsPane(this);
 
     // This should be a backbone event, but it's far less
     // reliable at catching 'e.target' ( $(this) below )
@@ -41,13 +42,14 @@ App.View.PluginsDashboard = Backbone.View.extend({
    Renders a grid of plugins on the front plugins screen from this.plugins
    First builds the categories from every tab seen, then creates tab pane bodies
    */
-  renderPluginsPane: function(options){
-    var self = this,
-    pluginItems = [];
+  renderPluginsPane: function(self){
+    var pluginItems = [];
 
-
-    this.collection.each(function(pluginItem){
+    self.collection.each(function(pluginItem){
       var p = pluginItem.toJSON();
+      if (p.hidden===true){
+        return;
+      }
       p.id = pluginItem.id || pluginItem.cid; // apply the model's ID so we can use it in templating
 
       // Setup the version so it's blank if git backed, or else "v 1.0" style
@@ -56,8 +58,8 @@ App.View.PluginsDashboard = Backbone.View.extend({
       pluginItems.push(self.templates.$pluginPaneItemTpl(p));
     });
 
-    this.$el.find('.plugins').html(pluginItems.join('\n'));
-    this.$el.find('.plugins .carousel.plugin-carousel').carousel({
+    self.$el.find('.plugins').html(pluginItems.join('\n'));
+    self.$el.find('.plugins .carousel.plugin-carousel').carousel({
       interval: false, pause : false
     });
   },
@@ -67,7 +69,7 @@ App.View.PluginsDashboard = Backbone.View.extend({
     self = this;
 
     search.find('input').keyup(function(){
-      self.filter.apply(self, [this]);
+      self.filter.apply(self,[this]);
     });
     this.$el.append(search);
   },
@@ -84,7 +86,8 @@ App.View.PluginsDashboard = Backbone.View.extend({
         model.set('hidden', true);
       }
     });
-    this.render();
+    this.collection.trigger('redraw', this);
+
   },
   compileTemplates: function() {
     var templates = {};
