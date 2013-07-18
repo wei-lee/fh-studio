@@ -105,28 +105,31 @@
 
   <p>To get started with your plugin, follow these simple steps:</p>
   <h4>1) Add the following line to cloud/package.json:</h4>
+  Add the plugin's name to the 'dependencies' section of your package.json. This tells our cloud to install the plugin as a dependency.
 <pre class="pluginsPre" id="packagejson">
 {
   "name": "Your Cloud App",
   "version": "1.0.0",
   "dependencies" : {
-  "fh-nodeapp" : "*",
+    "fh-nodeapp" : "*",
   <strong>    "{{ plugin.npmName }}" : "{{ plugin.version }}"</strong>
   }
 }
 </pre>
-  <h4>2) Add the following code where you want to use your plugin:</h4>
+  <h4>2) Add the following code to cloud/main.js:</h4>
+This exposes a public function which you can call from your mobile device with <a href="http://docs.feedhenry.com/v2/api_client_hybrid.html#$fh.act">$fh.act</a>. The parameters expected are mentioned in the comment block.
 <pre class="pluginsPre"  id="snippet">
 {{code}}
 </pre>
   <br />
 
   <h4>3) Add environment variables for your plugin:</h4>
+  In the 'Environment Variables' section of Cloud Management for your app, add the following <a href="http://docs.feedhenry.com/v2/environment_variables.html">environment variables</a>.
   <div id="plugin-env-variables">
     {{{ envVariablesString }}}
   </div>
   <br />
-  Now, check out <a href="{{ docs }}"> the docs page for this tool.</a><br />
+  Now, check out <a href="{{ docs }}"> the docs page for this plugin.</a><br />
   <a id="plugins-done" class="btn btn-primary plugins-done">Done!</a>
 </script>
 

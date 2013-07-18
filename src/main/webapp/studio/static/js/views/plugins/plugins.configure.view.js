@@ -16,6 +16,15 @@ App.View.PluginsConfigure = Backbone.View.extend({
   },
   render: function() {
     this.$el.html(this.renderConfigure());
+    var crumb = $('#plugins_layout').find('.breadcrumb').empty();
+    crumb.append($('<li>Cloud Plugins</li>'));
+    crumb.append($('<span class="divider">/</span>'));
+    crumb.append($('<li>Configure</li>'));
+    crumb.append($('<span class="divider">/</span>'));
+    crumb.append($('<li>', {
+      "class": "active",
+      "text": this.plugin.get('name')
+    }));
     return this;
   },
   /*

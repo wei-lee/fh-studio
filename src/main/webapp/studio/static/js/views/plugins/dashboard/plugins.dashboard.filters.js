@@ -29,7 +29,7 @@ App.View.DashboardFilters = Backbone.View.extend({
     category = el.val(),
     checked = el.prop('checked'),
     idx = this.filters.indexOf(category);
-    
+
     if (checked && idx===-1){
       this.filters.push(category);
     }else{

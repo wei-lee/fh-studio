@@ -28,17 +28,23 @@ App.View.PluginsSetup = Backbone.View.extend({
     plugin.npmName = plugin.npmName || plugin.name.toLowerCase();
     code = $('#snippet-' + plugin.npmName).html();
 
+    envVariablesString.push("<table class='table table-striped'><thead><tr><th>Environment Variable</th><th>Dev Value</th><th>Live Value</th></tr></thead><tbody>");
     for (var key in options.config){
       if (options.config.hasOwnProperty(key)){
         var val = options.config[key];
-        envVariablesString.push(key + " : " + val);
+        envVariablesString.push("<tr>");
+        envVariablesString.push("<td>" + key + "</td>");
+        envVariablesString.push("<td>" + val + "</td>");
+        envVariablesString.push("<td>" + val + "</td>");
+        envVariablesString.push("</tr>");
       }
     }
+    envVariablesString.push("</tbody></table>");
 
     return this.templates.$pluginSetup({
       plugin : plugin,
       code : code,
-      envVariablesString : envVariablesString.join("<br />")
+      envVariablesString : envVariablesString.join("")
     });
   },
   compileTemplates: function() { //TODO: DRY
