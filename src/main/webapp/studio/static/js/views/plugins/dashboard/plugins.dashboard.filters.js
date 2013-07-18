@@ -1,13 +1,20 @@
-App.View.DashboardFilters = Backbone.View.extend({
+App.View.DashboardFilters = App.View.PluginsDashboard.extend({
   events: {
     'click input[type=checkbox]' : 'clicked'
   },
+  templates : {
+    pluginsDashboardFilters : '#pluginsDashboardFilters',
+    pluginsDashboardFilterRow : '#pluginsDashboardFilterRow'
+
+  },
   filters : [],
-  initialize : function(){},
+  initialize : function(){
+    this.compileTemplates();
+  },
   render: function(parent) {
     var categories = [],
-    template = $(Handlebars.compile($('#pluginsDashboardFilters').html())()),
-    row = Handlebars.compile($('#pluginsDashboardFilterRow').html());
+    template = $(this.templates.$pluginsDashboardFilters()),
+    row = this.templates.$pluginsDashboardFilterRow;
 
     this.parent = parent;
     this.collection = parent.collection;
@@ -35,12 +42,13 @@ App.View.DashboardFilters = Backbone.View.extend({
     }else{
       this.filters.splice(idx, 1);
     }
-
     if (this.filters.length>0){
       this.collection.each(function(model){
          var c = model.get('category');
          if (self.filters.indexOf(c)===-1){
            model.set('hidden', true);
+         }else{ // if filters.length > 2 there may be elements already with hidden set - unhide these!
+           model.unset('hidden', true);
          }
       });
     }else{

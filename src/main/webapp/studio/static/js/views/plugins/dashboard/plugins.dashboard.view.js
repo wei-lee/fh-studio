@@ -1,9 +1,8 @@
-App.View.PluginsDashboard = Backbone.View.extend({
+App.View.PluginsDashboard = App.View.PluginsView.extend({
   templates : {
     // These get replaced with a handlebars template function with a $ prefix on the key once compileTemplates is run
     pluginPaneImage: '#pluginPaneImage',
     pluginPaneItemTpl: '#pluginPaneItemTpl',
-    pluginsDashboardSearch : '#pluginsDashboardSearch',
     pluginsFullscreenBody : '#pluginsFullscreenBody'
   },
   initialize : function(){
@@ -11,10 +10,12 @@ App.View.PluginsDashboard = Backbone.View.extend({
     this.collection.bind('reset', this.render, this);
     this.collection.bind('redraw', this.renderPluginsPane);
     this.compileTemplates();
+    this.breadcrumb(['Cloud Plugins']);
   },
   render: function() {
     this.$el.empty();
-    var filters = new App.View.DashboardFilters(), // TODO
+    var filters = new App.View.DashboardFilters(),
+    search = new App.View.DashboardSearch(),
     body = $(this.templates.$pluginsFullscreenBody());
 
     body.find('.filters').append(filters.render(this).el);
@@ -22,9 +23,7 @@ App.View.PluginsDashboard = Backbone.View.extend({
     //TODO Move these to proper events
     // Setup the slider events on the carousel
 
-
-    this.renderSearch();
-
+    this.$el.append(search.render(this).el);
     this.$el.append(body);
     this.renderPluginsPane(this);
 
@@ -63,44 +62,11 @@ App.View.PluginsDashboard = Backbone.View.extend({
       interval: false, pause : false
     });
   },
-  renderSearch : function(){
-    // TODO: This should really be it's own view
-    var search = $(this.templates.$pluginsDashboardSearch()),
-    self = this;
-
-    search.find('input').keyup(function(){
-      self.filter.apply(self,[this]);
-    });
-    this.$el.append(search);
+  show : function(){
+    this.breadcrumb(['Cloud Plugins']);
+    this.$el.show();
   },
-  filter : function(el){
-    var value = el.value && el.value.toLowerCase();
-
-    this.collection.each(function(model){
-      model.unset('hidden');
-      if (typeof value !== "string" || value === ""){
-        return;
-      }
-      if (model.get('category').toLowerCase().indexOf(value)===-1
-      && model.get('name').toLowerCase().indexOf(value)===-1){
-        model.set('hidden', true);
-      }
-    });
-    this.collection.trigger('redraw', this);
-
-  },
-  compileTemplates: function() {
-    var templates = {};
-    for (var key in this.templates){
-      if (this.templates.hasOwnProperty(key)){
-        var tpl = this.templates[key],
-        html = $(tpl, this.$container).html();
-        if (!html){
-          throw new Error("No html found for " + key);
-        }
-        templates['$' + key] = Handlebars.compile(html);
-      }
-    }
-    this.templates = templates;
+  hide : function(){
+    this.$el.hide();
   }
 });
