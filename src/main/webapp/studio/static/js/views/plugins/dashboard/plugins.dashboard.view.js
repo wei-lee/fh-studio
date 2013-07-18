@@ -20,26 +20,16 @@ App.View.PluginsDashboard = App.View.PluginsView.extend({
 
     body.find('.filters').append(filters.render(this).el);
 
-    //TODO Move these to proper events
-    // Setup the slider events on the carousel
-
     this.$el.append(search.render(this).el);
     this.$el.append(body);
     this.renderPluginsPane(this);
 
-    // This should be a backbone event, but it's far less
-    // reliable at catching 'e.target' ( $(this) below )
-    body.find('.plugins .plugin').on('hover', function(){
-      $(this).find('.carousel').carousel(1);
-    });
-    body.find('.plugins .plugin').on('mouseleave', function(){
-      $(this).find('.carousel').carousel(0);
-    });
     return this;
   },
   /*
    Renders a grid of plugins on the front plugins screen from this.plugins
    First builds the categories from every tab seen, then creates tab pane bodies
+   @param self - because trigger() doesn't support custom scope, only arguments
    */
   renderPluginsPane: function(self){
     var pluginItems = [];
@@ -61,12 +51,37 @@ App.View.PluginsDashboard = App.View.PluginsView.extend({
     self.$el.find('.plugins .carousel.plugin-carousel').carousel({
       interval: false, pause : false
     });
+    self.bindCarouselEvents();
   },
   show : function(){
     this.breadcrumb(['Cloud Plugins']);
+    this.renderPluginsPane(this);
     this.$el.show();
+
   },
   hide : function(){
     this.$el.hide();
+  },
+  /*
+   This should be a backbone event, but it's far less
+   reliable at catching 'e.target' ( $(this) below )
+   It also needs to get re-bound.. lots..
+   */
+  bindCarouselEvents : function(){
+    this.$el.find('.plugins .plugin').on('mouseenter', function(){
+      var el = this;
+      if ($(el).data('animating')===true){
+        return;
+      }
+      
+      $(el).find('.carousel').carousel(1);
+      $(el).data('animating', true);
+      setTimeout(function(){
+        $(el).data('animating', false);
+      }, 400);
+    });
+    this.$el.find('.plugins .plugin').on('mouseleave', function(){
+      $(this).find('.carousel').carousel(0);
+    });
   }
 });
