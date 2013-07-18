@@ -27,25 +27,20 @@
 </script>
 
 <script id="pluginsDashboardFilters" type="text/x-handlebars-template">
-    Filters:<br />
-    <label class="checkbox">
-      <input type="checkbox" value="option1" id="inlineCheckbox1"> Cash
-    </label>
-    <label class="checkbox">
-      <input type="checkbox" value="option2" id="inlineCheckbox2"> Invoice
-    </label>
-    <label class="checkbox">
-      <input type="checkbox" value="option3" id="inlineCheckbox3"> Discover
-    </label>
-    <label class="checkbox">
-      <input type="checkbox" value="option3" id="inlineCheckbox4"> Financing
-    </label>
+    <div class="controls">
+      <strong>Category:</strong>
+
+    </div>
 </script>
 
-
+<script id="pluginsDashboardFilterRow" type="text/x-handlebars-template">
+  <label class="checkbox">
+    <input type="checkbox" value="{{name}}"> {{name}}
+  </label>
+</script>
 
 <script id="pluginsFullscreenBody" type="text/x-handlebars-template">
-  <div class="row">
+  <div class="row-fluid">
     <div class="span2 filters">
     </div>
     <div class="span10 plugins">

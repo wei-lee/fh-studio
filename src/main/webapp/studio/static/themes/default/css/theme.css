@@ -1131,6 +1131,11 @@ span.label-info {
   margin-top: -1px;
 }
 
+#plugins_dashboard_container .filters {
+    padding-left: 16px;
+    margin-top: 40px;
+}
+
 #plugins_dashboard_container .plugin{
     margin: 8px 10px;
     border: 3px solid #eee;

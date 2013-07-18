@@ -1,6 +1,4 @@
 App.View.PluginsDashboard = Backbone.View.extend({
-  events: {
-  },
   templates : {
     // These get replaced with a handlebars template function with a $ prefix on the key once compileTemplates is run
     pluginPaneImage: '#pluginPaneImage',
@@ -15,7 +13,28 @@ App.View.PluginsDashboard = Backbone.View.extend({
   },
   render: function(options) {
     this.$el.empty();
+    var filters = new App.View.DashboardFilters(), // TODO
+    body = $(this.templates.$pluginsFullscreenBody());
+
+    body.find('.filters').append(filters.render(this.collection).el);
+
+    //TODO Move these to proper events
+    // Setup the slider events on the carousel
+
+
+    this.renderSearch();
+
+    this.$el.append(body);
     this.renderPluginsPane(options);
+
+    // This should be a backbone event, but it's far less
+    // reliable at catching 'e.target' ( $(this) below )
+    body.find('.plugins .plugin').on('hover', function(){
+      $(this).find('.carousel').carousel(1);
+    });
+    body.find('.plugins .plugin').on('mouseleave', function(){
+      $(this).find('.carousel').carousel(0);
+    });
     return this;
   },
   /*
@@ -24,11 +43,8 @@ App.View.PluginsDashboard = Backbone.View.extend({
    */
   renderPluginsPane: function(options){
     var self = this,
-    categories = [],
-    filters = new App.View.DashboardFilters(), // TODO
-    pluginItems = [],
-    tabContainers = [],
-    body;
+    pluginItems = [];
+
 
     this.collection.each(function(pluginItem){
       var p = pluginItem.toJSON();
@@ -39,29 +55,11 @@ App.View.PluginsDashboard = Backbone.View.extend({
       p.title = (p.image) ? self.templates.$pluginPaneImage(p) : '<h2>' + p.name +'</h2>';
       pluginItems.push(self.templates.$pluginPaneItemTpl(p));
     });
-    body = $(self.templates.$pluginsFullscreenBody()); // TODO Events won't bind this way, do properly
 
-    body.find('.plugins').append(pluginItems.join('\n'));
-    body.find('.filters').append(filters.render().el);
-
-    //TODO Move these to proper events
-    // Setup the slider events on the carousel
-    body.find('.carousel.plugin-carousel').carousel({
+    this.$el.find('.plugins').html(pluginItems.join('\n'));
+    this.$el.find('.plugins .carousel.plugin-carousel').carousel({
       interval: false, pause : false
     });
-
-    body.find('.plugins .plugin').on('hover', function(){
-      $(this).find('.carousel').carousel(1);
-    });
-    body.find('.plugins .plugin').on('mouseleave', function(){
-      $(this).find('.carousel').carousel(0);
-    });
-
-    this.renderSearch();
-
-    this.$el.append(body);
-
-    return this.$el;
   },
   renderSearch : function(){
     // TODO: This should really be it's own view
@@ -75,16 +73,18 @@ App.View.PluginsDashboard = Backbone.View.extend({
   },
   filter : function(el){
     var value = el.value && el.value.toLowerCase();
-    this.$el.find('.plugin').show();
-    if (typeof value !== "string" || value === ""){
-      return;
-    }
 
-    this.$el.find('.plugin').each(function(i, p){
-      if ($(p).data('category').toLowerCase().indexOf(value)===-1 && $(p).data('name').toLowerCase().indexOf(value)===-1){
-        $(p).hide();
+    this.collection.each(function(model){
+      model.unset('hidden');
+      if (typeof value !== "string" || value === ""){
+        return;
+      }
+      if (model.get('category').toLowerCase().indexOf(value)===-1
+      && model.get('name').toLowerCase().indexOf(value)===-1){
+        model.set('hidden', true);
       }
     });
+    this.render();
   },
   compileTemplates: function() {
     var templates = {};
