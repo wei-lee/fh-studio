@@ -5,7 +5,8 @@
     "image" : "mysql.png",
     "category" : "Remote Database",
     "docs" : "https://github.com/felixge/node-mysql",
-    "version" :  "2.0.0",
+    "version" :  "2.0.0-alpha8",
+    "tested" : true,
     "config" :  [
       {
         "name" :  "host",
@@ -28,33 +29,58 @@
   {
     "name" : "PostgreSQL",
     "desc" : "",
+    "npmname" : "pg",
+    "tested" : false,
     "image" : "postgresql.png",
     "category" : "Remote Database",
-    "docs" : "https://github.com/brianc/node-postgres ",
-    "version" :  "",
+    "docs" : "https://github.com/brianc/node-postgres",
+    "version" :  "2.2.0",
     "config" :  []
   },
   {
     "name" : "MongoDB",
-    "desc" : "",
+    "desc" : "Database connector into MongoDB",
     "image" : "mongodb.png",
     "category" : "Remote Database",
     "docs" : "https://github.com/mongodb/node-mongodb-native",
-    "version" :  "",
-    "config" :  []
+    "version" :  "1.3.12",
+    "config" :  [
+      {
+        "name" :  "username",
+        "desc" :  "MongoDB Username",
+        "varName" :  "MONGODB_USER"
+      },
+      {
+        "name" :  "password",
+        "desc" :  "MongoDB Password",
+        "varName" :  "MONGODB_PASSWORD",
+        "field" : "password"
+      },
+      {
+        "name" :  "hostname",
+        "desc" :  "MongoDB Hostname",
+        "varName" :  "MONGODB_HOST"
+      },
+      {
+        "name" :  "database",
+        "desc" :  "MongoDB Database Name",
+        "varName" :  "MONGODB_DATABASE"
+      }
+    ]
   },
   {
     "name" : "MongoDB ORM",
-    "desc" : "",
+    "desc" : "MongoDB ORM Connector",
     "image" : "mongoose.png",
     "category" : "Remote Database",
-    "docs" : "https://github.com/learnboost/mongoose",
-    "version" :  "",
+    "docs" : "http://mongoosejs.com/",
+    "version" :  "3.6.15",
     "config" :  []
   },
   {
     "name" : "CouchDB",
     "desc" : "",
+    "tested" : false,
     "image" : "couchdb.png",
     "category" : "Remote Database",
     "docs" : "https://github.com/felixge/node-couchdb",
@@ -64,6 +90,7 @@
   {
     "name" : "Oracle 11g",
     "desc" : "",
+    "tested" : false,
     "image" : "oracle.png",
     "category" : "Remote Database",
     "version" :  "",
@@ -101,6 +128,7 @@
   {
     "name" : "S3",
     "desc" : "",
+    "tested" : true,
     "image" : "s3.png",
     "category" : "Remote Storage",
     "docs" : "https://github.com/learnboost/knox",
@@ -128,6 +156,7 @@
   {
     "name" : "Dropbox",
     "desc" : "",
+    "tested" : false,
     "image" : "dropbox.png",
     "category" : "Remote Storage",
     "docs" : "https://github.com/dropbox/dropbox-js",
@@ -136,6 +165,7 @@
   },
   {
     "name" : "OpenStack",
+    "tested" : false,
     "desc" : "",
     "image" : "openstack.png",
     "category" : "Remote Storage",
@@ -145,6 +175,7 @@
   },
   {
     "name" : "Rackspace",
+    "tested" : false,
     "desc" : "Rackspace Cloud Open Stack storage provider",
     "image" : "rackspace.png",
     "category" : "Remote Storage",
@@ -165,6 +196,7 @@
   },
   {
     "name" : "Google Drive",
+    "tested" : false,
     "desc" : "",
     "image" : "googledrive.png",
     "category" : "Remote Storage",
@@ -174,6 +206,7 @@
   },
   {
     "name" : "EBS and OpenStack",
+    "tested" : false,
     "desc" : "",
     "category" : "File System",
     "docs" : "https://github.com/nodejitsu/pkgcloud",
@@ -182,6 +215,7 @@
   },
   {
     "name" : "SQLite",
+    "tested" : false,
     "desc" : "",
     "image" : "sqlite.png",
     "category" : "File System",
@@ -191,6 +225,7 @@
   },
   {
     "name" : "LevelDB",
+    "tested" : "false",
     "desc" : "",
     "image" : "leveldb.png",
     "category" : "File System",
@@ -201,6 +236,7 @@
 
   {
     "name" : "Sendgrid",
+    "tested" : true,
     "desc" : "Connects to the Sendgrid emailer API",
     "image" : "sendgrid.png",
     "category" : "Messaging",
@@ -233,6 +269,7 @@
   },
   {
     "name" : "SMTP",
+    "tested" : false,
     "desc" : "",
     "image" : "smtp.png",
     "category" : "Messaging",
@@ -242,6 +279,7 @@
   },
   {
     "name" : "Twilio",
+    "tested" : true,
     "desc" : "Connects to the Twilio telephony API",
     "image" : "twilio.png",
     "category" : "Messaging",
@@ -266,6 +304,7 @@
   },
   {
     "name" : "RabbitMQ",
+    "tested" : false,
     "desc" : "",
     "image" : "rabbitmq.png",
     "category" : "Messaging",
@@ -275,6 +314,7 @@
   },
   {
     "name" : "Salesforce",
+    "tested" : false,
     "desc" : "Connects to the SalesForce CRM Api",
     "image" : "salesforce.png",
     "category" : "SaaS Connectors",
@@ -300,6 +340,7 @@
   },
   {
     "name" : "Google",
+    "tested" : false,
     "desc" : "",
     "image" : "google.png",
     "category" : "SaaS Connectors",
@@ -309,6 +350,7 @@
   },
   {
     "name" : "Intercom",
+    "tested" : false,
     "desc" : "",
     "image" : "intercom.png",
     "category" : "SaaS Connectors",
@@ -318,6 +360,7 @@
   },
   {
     "name" : "Tempboo",
+    "tested" : false,
     "desc" : "",
     "image" : "tempboo.png",
     "category" : "SaaS Connectors",
@@ -327,6 +370,7 @@
   },
   {
     "name" : "SAP Netweaver",
+    "tested" : false,
     "desc" : "",
     "image" : "netweaver.png",
     "category" : "SaaS Connectors",
@@ -336,6 +380,7 @@
   },
   {
     "name" : "Facebook",
+    "tested" : false,
     "desc" : "",
     "image" : "facebook.png",
     "category" : "Social",
@@ -344,6 +389,7 @@
   },
   {
     "name" : "Twitter",
+    "tested" : false,
     "desc" : "",
     "image" : "twitter.png",
     "category" : "Social",
@@ -352,6 +398,7 @@
   },
   {
     "name" : "Stripe",
+    "tested" : false,
     "desc" : "",
     "image" : "stripe.png",
     "category" : "eCommerce",
@@ -360,6 +407,7 @@
   },
   {
     "name" : "Paypal",
+    "tested" : false,
     "desc" : "",
     "image" : "paypal.png",
     "category" : "eCommerce",
@@ -368,6 +416,7 @@
   },
   {
     "name" : "Logentries",
+    "tested" : false,
     "desc" : "",
     "image" : "logentries.png",
     "category" : "Logging",
@@ -376,6 +425,7 @@
   },
   {
     "name" : "Loggly",
+    "tested" : false,
     "desc" : "",
     "image" : "loggly.png",
     "category" : "Logging",
@@ -384,6 +434,7 @@
   },
   {
     "name" : "Flurry",
+    "tested" : false,
     "desc" : "",
     "image" : "flurry.png",
     "category" : "Analytics",
@@ -392,6 +443,7 @@
   },
   {
     "name" : "Mixpanel",
+    "tested" : false,
     "desc" : "",
     "image" : "mixpanel.png",
     "category" : "Analytics",
@@ -400,6 +452,7 @@
   },
   {
     "name" : "Underscore",
+    "tested" : false,
     "desc" : "",
     "category" : "Tools",
     "version" :  "",
@@ -407,6 +460,7 @@
   },
   {
     "name" : "Whiskey",
+    "tested" : false,
     "desc" : "",
     "category" : "Tools",
     "version" :  "",
@@ -414,6 +468,7 @@
   },
   {
     "name" : "Proxyquire",
+    "tested" : false,
     "desc" : "",
     "category" : "Tools",
     "version" :  "",
@@ -421,6 +476,7 @@
   },
   {
     "name" : "Node Cron",
+    "tested" : false,
     "desc" : "",
     "category" : "Tools",
     "version" :  "",
@@ -428,6 +484,7 @@
   },
   {
     "name" : "Socket.io",
+    "tested" : false,
     "desc" : "",
     "category" : "Tools",
     "version" :  "",

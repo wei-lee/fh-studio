@@ -1,13 +1,13 @@
 <script type="text/snippet" id="snippet-mysql">
 /*
-  @param param.query : the query to execute
+@param param.query : the query to execute
 */
 exports.mysql = function(params, cb){
   var mysql      = require('mysql');
   var connection = mysql.createConnection({
     host     : process.env.MYSQL_HOST,
     user     : process.env.MYSQL_USERNAME,
-    password : process.env.MYSQL_PASSWORD,
+    password : process.env.MYSQL_PASSWORD
   });
 
   connection.connect();
@@ -17,7 +17,7 @@ exports.mysql = function(params, cb){
     return cb(err);
   }
 
-  return cb({rows : rows, fields : fields );
+  return cb(err, {rows : rows, fields : fields });
   });
 
   connection.end();
