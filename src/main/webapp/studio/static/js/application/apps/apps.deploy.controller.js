@@ -101,7 +101,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
 				if(! runtimes){
 					$fw.server.post(Constants.RUNTIMES_URL,{"platform":depTarget,"runtime":"nodejs","deploytarget":env}, function (data){
 						if(data && data.status == "error"){
-						  return	callback(data);
+              return	callback(data);
 						}
 						$fw.data.set("runtimes",data);
 						callback(undefined,data);
@@ -211,11 +211,11 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     var row;
 
     $.each(targets, function (i, target) {
-	    var target_name = target.fields.target;
-	    var label_name = target.fields.name;
-	    if("false" === $fw.getClientProp("deployment-targets-enabled") && target_name !== "FEEDHENRY"){
-		    return;
-	    }
+      var target_name = target.fields.target;
+      var label_name = target.fields.name;
+     if("false" === $fw.getClientProp("deployment-targets-enabled") && target_name !== "FEEDHENRY"){
+        return;
+     }
       // 3 targets per row
       if (i === 0 || i % 3 === 0) {
         // Create a new row
