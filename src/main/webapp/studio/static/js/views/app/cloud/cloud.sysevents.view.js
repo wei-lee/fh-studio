@@ -84,7 +84,7 @@ App.View.CloudNotificationsTable = Backbone.View.extend({
     var self = this;
     var when_td = $('td:eq(' + self.indexes.when + ')', row);
 
-    var timestamp = moment(data.timestamp, 'YYYY-MM-DD h:mm:ss:SSS').fromNow();
+    var timestamp = moment.utc(data.timestamp, 'YYYY-MM-DD h:mm:ss:SSS').fromNow();
     var ts = $('<span>').text(timestamp);
     when_td.html(ts);
 

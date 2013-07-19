@@ -100,6 +100,9 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
 			}, function (runtimes, callback){
 				if(! runtimes){
 					$fw.server.post(Constants.RUNTIMES_URL,{"platform":depTarget,"runtime":"nodejs","deploytarget":env}, function (data){
+						if(data && data.status == "error"){
+						  return	callback(data);
+						}
 						$fw.data.set("runtimes",data);
 						callback(undefined,data);
 					}, function (err){
@@ -120,19 +123,24 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
 				var runtime = (appConfig["nodejs"]) ? appConfig["nodejs"]["app"]["runtime"][env] :undefined;
 
 				select.empty();
+				if(runtimes && runtimes.result){
+					for(var i = 0; i < runtimes.result.length; i++ ){
+						var rtime = runtimes.result[i];
+						var selected="";
+						if(runtime && runtime === rtime.name)selected = "selected";
+						else if(! runtime && rtime["default"])selected = "selected";
 
-				for(var i = 0; i < runtimes.result.length; i++ ){
-					var rtime = runtimes.result[i];
-					var selected="";
-					if(runtime && runtime === rtime.name)selected = "selected";
-					else if(! runtime && rtime["default"])selected = "selected";
-
-					select.append("<option "+selected+" value='"+rtime.name+"' >"+rtime.name+"</option>");
+						select.append("<option "+selected+" value='"+rtime.name+"' >"+rtime.name+"</option>");
+						callback();
+					}
+				}else {
+					callback("error with runtimes");
 				}
-				callback();
+
 			}
 		],function (err, ok){
 			if(err){
+				console.log("runtimes error", err);
 				controlDiv.hide();
 			}
 		});
