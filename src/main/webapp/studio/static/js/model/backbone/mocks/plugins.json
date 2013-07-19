@@ -67,6 +67,7 @@
     "image" : "oracle.png",
     "category" : "Remote Database",
     "version" :  "",
+    "docs" : "https://npmjs.org/package/oracle",
     "config" :  [
       {
         "name" :  "hostname",
@@ -141,6 +142,26 @@
     "docs" : "https://github.com/feedhenry/openstack-storage",
     "version" :  "",
     "config" :  []
+  },
+  {
+    "name" : "Rackspace",
+    "desc" : "Rackspace Cloud Open Stack storage provider",
+    "image" : "rackspace.png",
+    "category" : "Remote Storage",
+    "version" :  "0.1.0",
+    "npmName" :  "openstack-storage",
+    "config" :  [
+      {
+        "name" :  "instanceUrl",
+        "desc" :  "Your OpenStack instance URL - e.g. storage.openstack.com",
+        "varName" :  "OPENSTACK_INSTANCE"
+      },
+      {
+        "name" :  "apiKey",
+        "desc" :  "API Key",
+        "varName" :  "OPENSTACK_APIKEY"
+      }
+    ]
   },
   {
     "name" : "Google Drive",
@@ -376,26 +397,6 @@
     "category" : "Analytics",
     "config" :  [],
     "docs" : "https://github.com/carlsverre/mixpanel-node"
-  },
-  {
-    "name" : "Rackspace",
-    "desc" : "Rackspace Cloud Open Stack storage provider",
-    "image" : "rackspace.png",
-    "category" : "Remote Storage",
-    "version" :  "0.1.0",
-   "npmName" :  "openstack-storage",
-   "config" :  [
-      {
-       "name" :  "instanceUrl",
-       "desc" :  "Your OpenStack instance URL - e.g. storage.openstack.com",
-       "varName" :  "OPENSTACK_INSTANCE"
-      },
-      {
-       "name" :  "apiKey",
-       "desc" :  "API Key",
-       "varName" :  "OPENSTACK_APIKEY"
-      }
-    ]
   },
   {
     "name" : "Underscore",

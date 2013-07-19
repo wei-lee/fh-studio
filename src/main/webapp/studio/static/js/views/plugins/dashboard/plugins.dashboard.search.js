@@ -13,7 +13,7 @@ App.View.DashboardSearch = App.View.PluginsDashboard.extend({
     this.collection = parent.collection;
     var search = $(this.templates.$pluginsDashboardSearch()),
     self = this;
-    this.$el.append(search);
+    this.setElement(search);
     return this;
   },
   filter : function(el){

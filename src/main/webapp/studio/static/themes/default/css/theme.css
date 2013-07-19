@@ -1131,17 +1131,30 @@ span.label-info {
   margin-top: -1px;
 }
 
+#plugins_dashboard_container div.header {
+  padding-left: 14px;
+}
+
+#plugins_dashboard_container div.header h2 {
+  display: inline;
+  padding: 0px;
+  margin: 0px;
+}
+
+#plugins_dashboard_container div.header form {
+  margin-right : 16px;
+}
+
 #plugins_dashboard_container .filters {
-    padding-left: 16px;
-    margin-top: 40px;
+  padding-left: 16px;
+  margin-top: 40px;
 }
 
 #plugins_dashboard_container .plugin{
-    margin: 8px 10px;
-    border: 3px solid #eee;
-    padding: 8px;
-    border-radius: 16px;
-    max-width: 200px;
+  margin: 8px 10px;
+  border: 1px solid #e7e7e8;
+  padding: 8px;
+  max-width: 200px;
 }
 
 #plugins_dashboard_container .plugin p:first-of-type {

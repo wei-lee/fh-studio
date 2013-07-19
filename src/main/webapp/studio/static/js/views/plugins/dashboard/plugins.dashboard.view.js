@@ -15,12 +15,14 @@ App.View.PluginsDashboard = App.View.PluginsView.extend({
   render: function() {
     this.$el.empty();
     var filters = new App.View.DashboardFilters(),
+    header = $('<div class="row-fluid header"></div>'),
     search = new App.View.DashboardSearch(),
     body = $(this.templates.$pluginsFullscreenBody());
 
     body.find('.filters').append(filters.render(this).el);
-
-    this.$el.append(search.render(this).el);
+    header.append('<i class="icon-random icon-3x pull-left"></i><h2>Cloud Plugins</h2>');
+    header.append(search.render(this).el);
+    this.$el.append(header);
     this.$el.append(body);
     this.renderPluginsPane(this);
 
@@ -73,7 +75,7 @@ App.View.PluginsDashboard = App.View.PluginsView.extend({
       if ($(el).data('animating')===true){
         return;
       }
-      
+
       $(el).find('.carousel').carousel(1);
       $(el).data('animating', true);
       setTimeout(function(){
