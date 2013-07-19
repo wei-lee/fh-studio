@@ -1,11 +1,13 @@
-<h5 class="steps">Step 1: Choose or Create a Cloud Deployment Target</h5>
+<h5 class="steps">Choose Deployment Target</h5>
 <div class="deploy_targets row-fluid"></div>
+<%  if(studio.getProps().optBoolean("deployment-targets-enabled", true)){ %>
 <div class="row-fluid">
     <button class="btn btn-large create_new_deploy_target pull-left">Create a new Deploy Target</button>
 </div>
+<% } %>
 <div id="nodevers" class="row-fluid hide">
     <hr/>
-    <h5 class="steps">Step 2: Choose a version of nodejs</h5>
+    <h5 class="steps">Choose a version of nodejs</h5>
 
     <div class="row-fluid">
         <div class=" span4 pull-left node_logo_cropped"></div>
