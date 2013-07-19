@@ -25,7 +25,7 @@
           <% } %>
         <% } %>
 
-        <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER)) { %>
+        <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER) && studio.getProps().optBoolean("deployment-targets-enabled", false) ) { %>
           <li>
             <a href="#" data-controller="admin.deploytarget.controller" class="deploy_targets">
               <i class="icon-road"></i>

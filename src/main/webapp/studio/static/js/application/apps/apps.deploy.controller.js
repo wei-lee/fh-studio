@@ -203,6 +203,11 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     var row;
 
     $.each(targets, function (i, target) {
+	    var target_name = target.fields.target;
+	    var label_name = target.fields.name;
+	    if("false" === $fw.getClientProp("deployment-targets-enabled") && target_name !== "FEEDHENRY"){
+		    return;
+	    }
       // 3 targets per row
       if (i === 0 || i % 3 === 0) {
         // Create a new row
@@ -213,8 +218,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
       // Use last row
       row = targets_area.find('div.target_row:last');
 
-      var target_name = target.fields.target;
-      var label_name = target.fields.name;
+
 
       var button = $('<a>').addClass('btn');
       var icon = $('<img>').attr('src', '/studio/static/themes/default/img/cloud_target_' + target_name.toLowerCase() + '.png');
