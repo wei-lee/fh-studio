@@ -8,6 +8,14 @@ Component: fh-studio
 * 4350-disable-founderies
 * 4387 events showing incorrect times
 * 4364 node runtimes select not hiding on error
+
+Note  a new property for studio is required:
+#enable showing deployment targets other than FEEDHENRY and also enable creation of new targets.
+studio-js-deployment-targets-enabled = false
+
+if it is not there it defaults to false.
+
+
 ---------------------------------------------------------------------------
 3.17.4 - 2013-07-08 - IR205 - Jason Madigan
 ---------------------------------------------------------------------------
