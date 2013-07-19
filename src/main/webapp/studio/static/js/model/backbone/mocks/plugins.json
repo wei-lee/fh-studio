@@ -1,10 +1,230 @@
 [
   {
+    "name" : "MySQL",
+    "desc" : "Connects to a relational MySQL Database",
+    "image" : "mysql.png",
+    "category" : "Remote Database",
+    "docs" : "https://github.com/felixge/node-mysql",
+    "version" :  "2.0.0",
+    "config" :  [
+      {
+        "name" :  "host",
+        "desc" :  "MySQL Database Host",
+        "varName" :  "MYSQL_HOST"
+      },
+      {
+        "name" :  "username",
+        "desc" :  "MySQL Username",
+        "varName" :  "MYSQL_USERNAME"
+      },
+      {
+        "name" :  "password",
+        "desc" :  "MySQL Password",
+        "varName" :  "MYSQL_PASSWORD",
+        "field" : "password"
+      }
+    ]
+  },
+  {
+    "name" : "PostgreSQL",
+    "desc" : "",
+    "image" : "postgresql.png",
+    "category" : "Remote Database",
+    "docs" : "https://github.com/brianc/node-postgres ",
+    "version" :  "",
+    "config" :  []
+  },
+  {
+    "name" : "MongoDB",
+    "desc" : "",
+    "image" : "mongodb.png",
+    "category" : "Remote Database",
+    "docs" : "https://github.com/mongodb/node-mongodb-native",
+    "version" :  "",
+    "config" :  []
+  },
+  {
+    "name" : "MongoDB ORM",
+    "desc" : "",
+    "image" : "mongoose.png",
+    "category" : "Remote Database",
+    "docs" : "https://github.com/learnboost/mongoose",
+    "version" :  "",
+    "config" :  []
+  },
+  {
+    "name" : "CouchDB",
+    "desc" : "",
+    "image" : "couchdb.png",
+    "category" : "Remote Database",
+    "docs" : "https://github.com/felixge/node-couchdb",
+    "version" :  "",
+    "config" :  []
+  },
+  {
+    "name" : "Oracle 11g",
+    "desc" : "",
+    "image" : "oracle.png",
+    "category" : "Remote Database",
+    "version" :  "",
+    "config" :  [
+      {
+        "name" :  "hostname",
+        "desc" :  "Your Oracle 11g hostname",
+        "varName" :  "ORACLE_HOSTNAME"
+      },
+      {
+        "name" :  "database",
+        "desc" :  "The Oracle 11g database you want to connect to",
+        "varName" :  "ORACLE_DATABASE"
+      },
+      {
+        "name" :  "username",
+        "desc" :  "Your Oracle 11g Username",
+        "varName" :  "ORACLE_USER"
+      },
+      {
+        "name" :  "password",
+        "desc" :  "Your Oracle 11g Password",
+        "varName" :  "ORACLE_PASSWORD",
+        "field" :  "password"
+      },
+      {
+        "name" :  "port",
+        "desc" :  "Your Oracle 11g Port Number",
+        "varName" :  "ORACLE_PORT",
+        "field" :  "number"
+      }
+    ]
+  },
+  {
+    "name" : "S3",
+    "desc" : "",
+    "image" : "s3.png",
+    "category" : "Remote Storage",
+    "docs" : "https://github.com/learnboost/knox",
+    "npmName" :  "knox",
+    "version" :  "0.5.2",
+    "config" :  [
+      {
+        "name" :  "key",
+        "desc" :  "Your S3 key",
+        "varName" :  "S3_KEY"
+      },
+      {
+        "name" :  "secret",
+        "desc" :  "Your S3 secret",
+        "varName" :  "S3_SECRET",
+        "field" :  "password"
+      },
+      {
+        "name" :  "bucket",
+        "desc" :  "Your S3 bucket name",
+        "varName" :  "S3_BUCKET"
+      }
+    ]
+  },
+  {
+    "name" : "Dropbox",
+    "desc" : "",
+    "image" : "dropbox.png",
+    "category" : "Remote Storage",
+    "docs" : "https://github.com/dropbox/dropbox-js",
+    "version" :  "",
+    "config" :  []
+  },
+  {
+    "name" : "OpenStack",
+    "desc" : "",
+    "image" : "openstack.png",
+    "category" : "Remote Storage",
+    "docs" : "https://github.com/feedhenry/openstack-storage",
+    "version" :  "",
+    "config" :  []
+  },
+  {
+    "name" : "Google Drive",
+    "desc" : "",
+    "image" : "googledrive.png",
+    "category" : "Remote Storage",
+    "docs" : "https://github.com/niftylettuce/node-google-drive",
+    "version" :  "",
+    "config" :  []
+  },
+  {
+    "name" : "EBS and OpenStack",
+    "desc" : "",
+    "category" : "File System",
+    "docs" : "https://github.com/nodejitsu/pkgcloud",
+    "version" :  "",
+    "config" :  []
+  },
+  {
+    "name" : "SQLite",
+    "desc" : "",
+    "image" : "sqlite.png",
+    "category" : "File System",
+    "docs" : "https://github.com/developmentseed/node-sqlite3",
+    "version" :  "",
+    "config" :  []
+  },
+  {
+    "name" : "LevelDB",
+    "desc" : "",
+    "image" : "leveldb.png",
+    "category" : "File System",
+    "docs" : "https://github.com/rvagg/node-levelup",
+    "version" :  "",
+    "config" :  []
+  },
+
+  {
+    "name" : "Sendgrid",
+    "desc" : "Connects to the Sendgrid emailer API",
+    "image" : "sendgrid.png",
+    "category" : "Messaging",
+    "version" :  "0.2.5",
+    "config" :  [
+      {
+        "name" :  "username",
+        "desc" :  "Your SendGrid username",
+        "varName" :  "SENDGRID_USERNAME"
+
+      },
+      {
+        "name" :  "password",
+        "desc" :  "Your SendGrid password",
+        "varName" :  "SENDGRID_PASSWORD",
+        "field" :  "password"
+      },
+      {
+        "name" :  "from",
+        "desc" :  "From email address",
+        "varName" :  "SENDGRID_FROM"
+      },
+      {
+
+        "name" :  "fromName",
+        "desc" :  "From descriptive name",
+        "varName" :  "SENDGRID_FROMNAME"
+      }
+    ]
+  },
+  {
+    "name" : "SMTP",
+    "desc" : "",
+    "image" : "smtp.png",
+    "category" : "Messaging",
+    "docs" : "https://npmjs.org/package/simplesmtp",
+    "version" :  "",
+    "config" :  []
+  },
+  {
     "name" : "Twilio",
     "desc" : "Connects to the Twilio telephony API",
     "image" : "twilio.png",
-    "category" : "Communication",
-    "version" :  "git://github.com/cianclarke/twilio-node.git",
+    "category" : "Messaging",
+    "version" :  "://twilio.github.io/twilio-node",
    "config" :  [
       {
        "name" :  "accountSID",
@@ -24,239 +244,206 @@
     ]
   },
   {
-    "name" : "Sendgrid",
-    "desc" : "Connects to the Sendgrid emailer API",
-    "image" : "sendgrid.png",
-    "category" : "Communication",
-    "version" :  "0.2.5",
-   "config" :  [
-      {
-       "name" :  "username",
-       "desc" :  "Your SendGrid username",
-       "varName" :  "SENDGRID_USERNAME"
-
-      },
-      {
-       "name" :  "password",
-       "desc" :  "Your SendGrid password",
-       "varName" :  "SENDGRID_PASSWORD",
-       "field" :  "password"
-      },
-      {
-       "name" :  "from",
-       "desc" :  "From email address",
-       "varName" :  "SENDGRID_FROM"
-      },
-      {
-
-       "name" :  "fromName",
-       "desc" :  "From descriptive name",
-       "varName" :  "SENDGRID_FROMNAME"
-      }
-    ]
-  },
-  {
-    "name" : "Amazon S3",
-    "desc" : "Connector to S3 bucket storage",
-    "image" : "s3.png",
-    "category" : "Storage",
-   "npmName" :  "knox",
-    "version" :  "0.5.2",
-   "config" :  [
-      {
-       "name" :  "key",
-       "desc" :  "Your S3 key",
-       "varName" :  "S3_KEY"
-      },
-      {
-       "name" :  "secret",
-       "desc" :  "Your S3 secret",
-       "varName" :  "S3_SECRET",
-       "field" :  "password"
-      },
-      {
-       "name" :  "bucket",
-       "desc" :  "Your S3 bucket name",
-       "varName" :  "S3_BUCKET"
-      }
-    ]
-  },
-  {
-    "name" : "OpenStack",
-    "desc" : "Connect to any OpenStack data storage platform",
-    "image" : "openstack.png",
-    "version" :  "0.1.0",
-   "npmName" :  "openstack-storage",
-    "category" : "Storage",
-   "config" :  [
-      {
-       "name" :  "instanceUrl",
-       "desc" :  "Your OpenStack instance URL - e.g. storage.openstack.com",
-       "varName" :  "OPENSTACK_INSTANCE"
-      },
-      {
-       "name" :  "apiKey",
-       "desc" :  "API Key",
-       "varName" :  "OPENSTACK_APIKEY"
-      }
-    ]
-  },
-  {
-    "name" : "Rackspace",
-    "desc" : "Rackspace Cloud Open Stack storage provider",
-    "image" : "rackspace.png",
-    "category" : "Storage",
-    "version" :  "0.1.0",
-   "npmName" :  "openstack-storage",
-   "config" :  [
-      {
-       "name" :  "instanceUrl",
-       "desc" :  "Your OpenStack instance URL - e.g. storage.openstack.com",
-       "varName" :  "OPENSTACK_INSTANCE"
-      },
-      {
-       "name" :  "apiKey",
-       "desc" :  "API Key",
-       "varName" :  "OPENSTACK_APIKEY"
-      }
-    ]
-  },
-  {
-    "name" : "MongoDB",
-    "desc" : "Connector to MongoDB Database",
-    "image" : "mongodb.png",
-    "category" : "DB",
-    "version" :  "~1.3.9",
-   "config" :  [
-      {
-       "name" :  "hostname",
-       "desc" :  "Your MongoDB hostname",
-       "varName" :  "MONGODB_HOSTNAME"
-      },
-      {
-       "name" :  "username",
-       "desc" :  "Your MongoDB Username",
-       "varName" :  "MONGODB_USER"
-      },
-      {
-       "name" :  "password",
-       "desc" :  "Your MongoDB Password",
-       "varName" :  "MONGODB_PASSWORD",
-       "field" :  "password"
-      },
-      {
-       "name" :  "port",
-       "desc" :  "Your MongoDB Port Number",
-       "varName" :  "MONGODB_PORT",
-       "field" :  "number"
-      }
-    ]
-  },
-  {
-    "name" : "Oracle 11g",
-    "desc" : "Connector to an Oracle database",
-    "image" : "oracle.png",
-    "category" : "DB",
-    "version" :  "~0.3.1",
-   "config" :  [
-      {
-       "name" :  "hostname",
-       "desc" :  "Your Oracle 11g hostname",
-       "varName" :  "ORACLE_HOSTNAME"
-      },
-      {
-       "name" :  "database",
-       "desc" :  "The Oracle 11g database you want to connect to",
-       "varName" :  "ORACLE_DATABASE"
-      },
-      {
-       "name" :  "username",
-       "desc" :  "Your Oracle 11g Username",
-       "varName" :  "ORACLE_USER"
-      },
-      {
-       "name" :  "password",
-       "desc" :  "Your Oracle 11g Password",
-       "varName" :  "ORACLE_PASSWORD",
-       "field" :  "password"
-      },
-      {
-       "name" :  "port",
-       "desc" :  "Your Oracle 11g Port Number",
-       "varName" :  "ORACLE_PORT",
-       "field" :  "number"
-      }
-    ]
+    "name" : "RabbitMQ",
+    "desc" : "",
+    "image" : "rabbitmq.png",
+    "category" : "Messaging",
+    "docs" : "https://github.com/squaremo/rabbit.js",
+    "version" :  "",
+    "config" :  []
   },
   {
     "name" : "Salesforce",
     "desc" : "Connects to the SalesForce CRM Api",
     "image" : "salesforce.png",
-    "category" : "APIs",
+    "category" : "SaaS Connectors",
     "version" :  "0.5.1",
-   "npmName" :  "node-salesforce",
-   "config" :  [
+    "npmName" :  "node-salesforce",
+    "config" :  [
       {
-       "name" :  "instanceURL",
-       "desc" :  "Your salesforce instance URL - e.g. http://na1.salesforce.com",
-       "varName" :  "SALESFORCE_INSTANCE_URL"
+        "name" :  "instanceURL",
+        "desc" :  "Your salesforce instance URL - e.g. http://na1.salesforce.com",
+        "varName" :  "SALESFORCE_INSTANCE_URL"
       },
       {
-       "name" :  "username",
-       "desc" :  "Your salesforce.com login",
-       "varName" :  "SALESFORCE_USERNAME"
+        "name" :  "username",
+        "desc" :  "Your salesforce.com login",
+        "varName" :  "SALESFORCE_USERNAME"
       },
       {
-       "name" :  "password",
-       "desc" :  "Your salesforce.com password",
-       "varName" :  "SALESFORCE_PASSWORD"
+        "name" :  "password",
+        "desc" :  "Your salesforce.com password",
+        "varName" :  "SALESFORCE_PASSWORD"
       }
     ]
   },
   {
-    "name" : "Twitter",
-    "desc" : "Connects to the Twitter social network",
-    "image" : "twitter.png",
-    "category" : "Social",
-   "config" :  [
-      {
-       "name" :  "username",
-       "desc" :  "Your twitter username",
-       "varName" :  "TWITTER_USERNAME"
-      }
-    ]
+    "name" : "Google",
+    "desc" : "",
+    "image" : "google.png",
+    "category" : "SaaS Connectors",
+    "docs" : "https://github.com/google/google-api-nodejs-client",
+    "version" :  "",
+    "config" :  []
+  },
+  {
+    "name" : "Intercom",
+    "desc" : "",
+    "image" : "intercom.png",
+    "category" : "SaaS Connectors",
+    "docs" : "https://github.com/silentrob/node-intercom",
+    "version" :  "",
+    "config" :  []
+  },
+  {
+    "name" : "Tempboo",
+    "desc" : "",
+    "image" : "tempboo.png",
+    "category" : "SaaS Connectors",
+    "docs" : "https://temboo.com/download",
+    "version" :  "",
+    "config" :  []
+  },
+  {
+    "name" : "SAP Netweaver",
+    "desc" : "",
+    "image" : "netweaver.png",
+    "category" : "SaaS Connectors",
+    "docs" : "https://github.com/jdorner/node-sapnwrfc",
+    "version" :  "",
+    "config" :  []
   },
   {
     "name" : "Facebook",
-    "desc" : "Facebook OAuth connector",
+    "desc" : "",
     "image" : "facebook.png",
     "category" : "Social",
+    "config" :  [],
+    "docs" : "https://github.com/amachang/facebook-node-sdk"
+  },
+  {
+    "name" : "Twitter",
+    "desc" : "",
+    "image" : "twitter.png",
+    "category" : "Social",
+    "config" :  [],
+    "docs" : "https://github.com/mynetx/codebird-js"
+  },
+  {
+    "name" : "Stripe",
+    "desc" : "",
+    "image" : "stripe.png",
+    "category" : "eCommerce",
+    "config" :  [],
+    "docs" : "https://github.com/abh/node-stripe"
+  },
+  {
+    "name" : "Paypal",
+    "desc" : "",
+    "image" : "paypal.png",
+    "category" : "eCommerce",
+    "config" :  [],
+    "docs" : "https://github.com/paypal/rest-api-sdk-nodejs"
+  },
+  {
+    "name" : "Logentries",
+    "desc" : "",
+    "image" : "logentries.png",
+    "category" : "Logging",
+    "config" :  [],
+    "docs" : "https://github.com/rjrodger/node-logentries"
+  },
+  {
+    "name" : "Loggly",
+    "desc" : "",
+    "image" : "loggly.png",
+    "category" : "Logging",
+    "config" :  [],
+    "docs" : "https://github.com/nodejitsu/node-loggly"
+  },
+  {
+    "name" : "Flurry",
+    "desc" : "",
+    "image" : "flurry.png",
+    "category" : "Analytics",
+    "config" :  [],
+    "docs" : "https://github.com/tlrobinson/node-flurry"
+  },
+  {
+    "name" : "Mixpanel",
+    "desc" : "",
+    "image" : "mixpanel.png",
+    "category" : "Analytics",
+    "config" :  [],
+    "docs" : "https://github.com/carlsverre/mixpanel-node"
+  },
+  {
+    "name" : "Rackspace",
+    "desc" : "Rackspace Cloud Open Stack storage provider",
+    "image" : "rackspace.png",
+    "category" : "Remote Storage",
+    "version" :  "0.1.0",
+   "npmName" :  "openstack-storage",
    "config" :  [
       {
-       "name" :  "apiKey",
-       "desc" :  "Your facebook API key - you can find this in...",
-       "varName" :  ""
+       "name" :  "instanceUrl",
+       "desc" :  "Your OpenStack instance URL - e.g. storage.openstack.com",
+       "varName" :  "OPENSTACK_INSTANCE"
       },
       {
-       "name" :  "OAuthToekn",
-       "desc" :  "OAuth token - you can",
-       "varName" :  ""
+       "name" :  "apiKey",
+       "desc" :  "API Key",
+       "varName" :  "OPENSTACK_APIKEY"
       }
     ]
+  },
+  {
+    "name" : "Underscore",
+    "desc" : "",
+    "category" : "Tools",
+    "version" :  "",
+    "docs" :  "https://github.com/jashkenas/underscore/"
+  },
+  {
+    "name" : "Whiskey",
+    "desc" : "",
+    "category" : "Tools",
+    "version" :  "",
+    "docs" :  "https://github.com/cloudkick/whiskey/"
+  },
+  {
+    "name" : "Proxyquire",
+    "desc" : "",
+    "category" : "Tools",
+    "version" :  "",
+    "docs" :  "https://github.com/thlorenz/proxyquire/"
+  },
+  {
+    "name" : "Node Cron",
+    "desc" : "",
+    "category" : "Tools",
+    "version" :  "",
+    "docs" :  "https://github.com/ncb000gt/node-cron/"
+  },
+  {
+    "name" : "Socket.io",
+    "desc" : "",
+    "category" : "Tools",
+    "version" :  "",
+    "docs" :  "https://github.com/learnboost/socket.io"
   },
   {
     "name" : "Request",
     "desc" : "The de facto standard for doing all HTTP requests in Node.js - recommended over using the HTTP module standalone.",
     "category" : "Tools",
     "version" :  "2.11.4",
-   "docs" :  "https://github.com/mikeal/request"
+    "docs" :  "https://github.com/mikeal/request"
   },
   {
     "name" : "Async",
     "desc" : "Callback hell? Async helps you overcome this",
     "category" : "Tools",
     "version" :  "0.2.5",
-   "docs" :  "https://github.com/caolan/async"
+    "docs" :  "https://github.com/caolan/async"
   }
-
 ]

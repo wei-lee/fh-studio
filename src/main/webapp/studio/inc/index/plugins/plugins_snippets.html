@@ -1,3 +1,30 @@
+<script type="text/snippet" id="snippet-mysql">
+/*
+  @param param.query : the query to execute
+*/
+exports.mysql = function(params, cb){
+  var mysql      = require('mysql');
+  var connection = mysql.createConnection({
+    host     : process.env.MYSQL_HOST,
+    user     : process.env.MYSQL_USERNAME,
+    password : process.env.MYSQL_PASSWORD,
+  });
+
+  connection.connect();
+
+  connection.query(params.query, function(err, rows, fields) {
+  if (err){
+    return cb(err);
+  }
+
+  return cb({rows : rows, fields : fields );
+  });
+
+  connection.end();
+};
+</script>
+
+
 <script type="text/snippet" id="snippet-request">
 var request = require('request');
 request('http://www.google.com', function (error, response, body) {
@@ -8,9 +35,9 @@ request('http://www.google.com', function (error, response, body) {
 </script>
 <script type="text/snippet" id="snippet-sendgrid">
 /*
-  @param to : recipient
-  @param subject : email subjecrt
-  @param body : message body
+  @param param.to : recipient
+  @param param.subject : email subjecrt
+  @param param.body : message body
  */
 exports.email = function(params, cb){
   var SendGrid = require('sendgrid').SendGrid;
@@ -32,8 +59,8 @@ exports.email = function(params, cb){
 <script type="text/snippet" id="snippet-twilio">
 /*
   Sends an SMS with the twilio API
-  @param to : recipient
-  @param body : message body
+  @param param.to : recipient
+  @param param.body : message body
  */
 exports.sms = function(params, cb){
   // Your accountSid and authToken from twilio.com/user/account
