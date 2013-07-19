@@ -80,7 +80,7 @@ App.View.PluginsDashboard = App.View.PluginsView.extend({
       $(el).data('animating', true);
       setTimeout(function(){
         $(el).data('animating', false);
-      }, 400);
+      }, 600);
     });
     this.$el.find('.plugins .plugin').on('mouseleave', function(){
       $(this).find('.carousel').carousel(0);
