@@ -98,13 +98,24 @@ This exposes a public function which you can call from your mobile device with <
 </pre>
   <br />
 
-  <h4>3) Add environment variables for your plugin:</h4>
-  In the 'Environment Variables' section of Cloud Management for your app, add the following <a href="http://docs.feedhenry.com/v2/environment_variables.html">environment variables</a>.
-  <div id="plugin-env-variables">
-    {{{ envVariablesString }}}
-  </div>
+  {{{ envVariablesString }}}
+
   <br />
   Now, check out <a href="{{ docs }}"> the docs page for this plugin.</a><br />
   <a id="plugins-done" class="btn btn-primary plugins-done">Done!</a>
 </script>
 
+<script type="text/x-handlebars-template" id="pluginSetupEnvVariables">
+  <h4>3) Add environment variables for your plugin:</h4>
+  In the 'Environment Variables' section of Cloud Management for your app, add the following <a href="http://docs.feedhenry.com/v2/environment_variables.html">environment variables</a>.
+  <div id="plugin-env-variables">
+    <table class='table table-striped'>
+      <thead>
+      <tr><th>Environment Variable</th><th>Value</th></tr>
+      </thead>
+      <tbody>
+        {{{ variableRows }}}
+      </tbody>
+    </table>
+  </div>
+</script>

@@ -38,7 +38,7 @@ App.View.PluginsDashboard = App.View.PluginsView.extend({
 
     self.collection.each(function(pluginItem){
       var p = pluginItem.toJSON();
-      if (p.hidden===true){
+      if (p.hidden === true || p.disabled === true){
         return;
       }
       p.id = pluginItem.id || pluginItem.cid; // apply the model's ID so we can use it in templating
