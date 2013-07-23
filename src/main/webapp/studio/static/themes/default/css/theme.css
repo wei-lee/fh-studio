@@ -1159,7 +1159,6 @@ span.label-info {
 
 #plugins_dashboard_container .plugin p:first-of-type {
   height: 60px;
-  overflow: scroll; /* TODO: Is this a good idea? Should I just trim the descriptions? */
 }
 
 #plugins_dashboard_container .plugin img, #plugins_dashboard_container .span4 h2, #plugins_dashboard_container .item  {
