@@ -28,6 +28,7 @@
     "desc" : "",
     "npmname" : "pg",
     "tested" : false,
+    "disabled" : true,
     "image" : "postgresql.png",
     "category" : "Remote Database",
     "docs" : "https://github.com/brianc/node-postgres",
@@ -92,6 +93,7 @@
     "name" : "CouchDB",
     "desc" : "",
     "tested" : false,
+    "disabled" : true,
     "image" : "couchdb.png",
     "category" : "Remote Database",
     "docs" : "https://github.com/felixge/node-couchdb",
@@ -156,6 +158,7 @@
     "name" : "Dropbox",
     "desc" : "",
     "tested" : false,
+    "disabled" : true,
     "image" : "dropbox.png",
     "category" : "Remote Storage",
     "docs" : "https://github.com/dropbox/dropbox-js",
@@ -165,6 +168,7 @@
   {
     "name" : "OpenStack",
     "tested" : false,
+    "disabled" : true,
     "desc" : "",
     "image" : "openstack.png",
     "category" : "Remote Storage",
@@ -175,6 +179,7 @@
   {
     "name" : "Rackspace",
     "tested" : false,
+    "disabled" : true,
     "desc" : "Rackspace Cloud Open Stack storage provider",
     "image" : "rackspace.png",
     "category" : "Remote Storage",
@@ -194,6 +199,7 @@
   {
     "name" : "Google Drive",
     "tested" : false,
+    "disabled" : true,
     "desc" : "",
     "image" : "googledrive.png",
     "category" : "Remote Storage",
@@ -204,6 +210,7 @@
   {
     "name" : "EBS and OpenStack",
     "tested" : false,
+    "disabled" : true,
     "desc" : "",
     "category" : "File System",
     "docs" : "https://github.com/nodejitsu/pkgcloud",
@@ -213,6 +220,7 @@
   {
     "name" : "SQLite",
     "tested" : false,
+    "disabled" : true,
     "desc" : "",
     "image" : "sqlite.png",
     "category" : "File System",
@@ -223,6 +231,7 @@
   {
     "name" : "LevelDB",
     "tested" : "false",
+    "disabled" : true,
     "desc" : "",
     "image" : "leveldb.png",
     "category" : "File System",
@@ -262,6 +271,7 @@
   {
     "name" : "SMTP",
     "tested" : false,
+    "disabled" : true,
     "desc" : "",
     "image" : "smtp.png",
     "category" : "Messaging",
@@ -294,6 +304,7 @@
   {
     "name" : "RabbitMQ",
     "tested" : false,
+    "disabled" : true,
     "desc" : "",
     "image" : "rabbitmq.png",
     "category" : "Messaging",
@@ -382,6 +393,7 @@
   {
     "name" : "Facebook",
     "tested" : false,
+    "disabled" : true,
     "desc" : "",
     "image" : "facebook.png",
     "category" : "Social",
@@ -391,6 +403,7 @@
   {
     "name" : "Twitter",
     "tested" : false,
+    "disabled" : true,
     "desc" : "",
     "image" : "twitter.png",
     "category" : "Social",
