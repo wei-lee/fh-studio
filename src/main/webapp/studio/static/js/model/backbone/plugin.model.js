@@ -1,4 +1,4 @@
-var Plugins = Plugins || {}; // Todo should this be singular? Singular just for the model?
+var Plugins = Plugins || {};
 Plugins.Collection = Plugins.Collection || {};
 Plugins.Collections = Plugins.Collections || {};
 

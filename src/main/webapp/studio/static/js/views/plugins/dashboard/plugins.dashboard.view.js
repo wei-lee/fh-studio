@@ -79,6 +79,7 @@ App.View.PluginsDashboard = App.View.PluginsView.extend({
 
       $(el).find('.carousel').carousel(1);
       $(el).data('animating', true);
+      // Delay before we allow the item to be animated again.
       setTimeout(function(){
         $(el).data('animating', false);
       }, 600);

@@ -3,7 +3,8 @@ App.View.PluginsSetup = App.View.PluginsView.extend({
     // These get replaced with a handlebars template function with a $ prefix on the key once compileTemplates is run
     pluginSetup : '#pluginSetup',
     pluginSetupEnvVariables : '#pluginSetupEnvVariables',
-    pluginSetupCode : '#pluginSetupCode'
+    pluginSetupCode : '#pluginSetupCode',
+    pluginSetupImage : '#pluginSetupImage'
   },
   plugin : undefined,
   initialize : function(options){
@@ -20,11 +21,9 @@ App.View.PluginsSetup = App.View.PluginsView.extend({
     return this;
   },
   setup: function(options){
-    //TODO: make env variables section prettier
     var plugin = options.plugin.toJSON(),
     config = this.plugin.get('config'),
-    envVariablesString,
-    code = "";
+    envVariablesString, code, image;
 
     plugin.npmName = plugin.npmName || plugin.name.toLowerCase();
 
@@ -48,12 +47,17 @@ App.View.PluginsSetup = App.View.PluginsView.extend({
       });
     }
 
+    if (plugin.image && plugin.image !== ""){
+      image = this.templates.$pluginSetupImage(plugin);
+    }
+
 
 
     return this.templates.$pluginSetup({
       plugin : plugin,
-      codeString : code,
-      envVariablesString : envVariablesString || ''
+      codeString : code || '',
+      envVariablesString : envVariablesString || '',
+      image : image || ''
     });
   }
 });

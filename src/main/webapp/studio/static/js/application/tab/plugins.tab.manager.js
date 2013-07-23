@@ -13,11 +13,6 @@ Plugins.Tab.Manager = Tab.Manager.extend({
   },
   show : function(){
     this._super();
-    var crumb = $('#' + this.id).find('.breadcrumb').empty();
-    crumb.append($('<li>', {
-      "class": "active",
-      "text": 'Cloud Plugins'
-    }));
 
     $(this.views.container).empty();
     $(this.views.container).show();
