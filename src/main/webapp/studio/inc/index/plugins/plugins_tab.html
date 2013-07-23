@@ -91,17 +91,13 @@
   }
 }
 </pre>
-  <h4>2) Add the following code to cloud/main.js:</h4>
-This exposes a public function which you can call from your mobile device with <a href="http://docs.feedhenry.com/v2/api_client_hybrid.html#$fh.act">$fh.act</a>. The parameters expected are mentioned in the comment block.
-<pre class="pluginsPre"  id="snippet">
-{{code}}
-</pre>
+  {{{ codeString }}}
   <br />
 
   {{{ envVariablesString }}}
 
   <br />
-  Now, check out <a href="{{ docs }}"> the docs page for this plugin.</a><br />
+  Now, check out <a href="{{ docs }}"> the docs page for this plugin.</a><br /><br />
   <a id="plugins-done" class="btn btn-primary plugins-done">Done!</a>
 </script>
 
@@ -118,4 +114,12 @@ This exposes a public function which you can call from your mobile device with <
       </tbody>
     </table>
   </div>
+</script>
+
+<script type="text/x-handlebars-template" id="pluginSetupCode">
+  <h4>2) Add the following code to cloud/main.js:</h4>
+  This exposes a public function which you can call from your mobile device with <a href="http://docs.feedhenry.com/v2/api_client_hybrid.html#$fh.act">$fh.act</a>. The parameters expected are mentioned in the comment block.
+  <pre class="pluginsPre"  id="snippet">
+  {{code}}
+</pre>
 </script>

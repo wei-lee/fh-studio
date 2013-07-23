@@ -58,6 +58,7 @@ App.View.PluginsDashboard = App.View.PluginsView.extend({
   show : function(){
     this.breadcrumb(['Cloud Plugins']);
     this.renderPluginsPane(this);
+    window.scrollTo(0, 0);
     this.$el.show();
 
   },
