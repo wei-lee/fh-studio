@@ -20,8 +20,10 @@ App.View.DashboardFilters = App.View.PluginsDashboard.extend({
     this.collection = parent.collection;
 
     this.collection.each(function(model){
-      var category = model.get('category');
-      if (categories.indexOf(category)===-1){
+      model = model.toJSON();
+      var category = model.category,
+      disabled = model.disabled;
+      if (categories.indexOf(category)===-1 && !disabled){
         categories.push(category);
         template.append(row({ name : category  }));
       }
