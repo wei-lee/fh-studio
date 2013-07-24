@@ -26,10 +26,8 @@ App.View.PluginsSetup = App.View.PluginsView.extend({
     envVariablesString, code, image;
 
     plugin.npmName = plugin.npmName || plugin.name.toLowerCase();
-
+    code = $('#snippet-' + plugin.npmName).html();
     if (code && code!==""){
-
-      code = $('#snippet-' + plugin.npmName).html();
       code = this.templates.$pluginSetupCode({ code : code });
     }
 
