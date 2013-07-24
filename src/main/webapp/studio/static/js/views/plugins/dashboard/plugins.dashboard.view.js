@@ -12,6 +12,11 @@ App.View.PluginsDashboard = App.View.PluginsView.extend({
     this.collection.bind('redraw', this.renderPluginsPane);
     this.compileTemplates();
     this.breadcrumb(['Cloud Plugins']);
+
+    // Add an isMouseOver plugin to the jQuery object for re-use by our carousel
+    jQuery.fn.mouseIsOver = function () {
+      return $(this).parent().find($(this).selector + ":hover").length > 0;
+    };
   },
   render: function() {
     this.$el.empty();
@@ -75,16 +80,36 @@ App.View.PluginsDashboard = App.View.PluginsView.extend({
   bindCarouselEvents : function(){
     this.$el.find('.plugins .plugin').on('mouseenter', function(){
       var el = this;
+
+      // If we're already moving the element (600ms below), bail
       if ($(el).data('animating')===true){
         return;
       }
 
-      $(el).find('.carousel').carousel(1);
-      $(el).data('animating', true);
-      // Delay before we allow the item to be animated again.
+      // Give the user some time contemplating the logo before we hover
       setTimeout(function(){
-        $(el).data('animating', false);
-      }, 600);
+        if (!$(el).mouseIsOver()){
+          return;
+        }
+
+        $(el).find('.carousel').carousel(1);
+        $(el).data('animating', true);
+
+        // Delay the length of the 2 animations
+        // before we allow the item to be animated again.
+        setTimeout(function(){
+          $(el).data('animating', false);
+        }, 600);
+
+        // One animation is done, check if we're still hovering over this element!
+        setTimeout(function(){
+          if ($(el).mouseIsOver() === false ){
+            $(el).find('.carousel').carousel(0);
+          }
+        }, 1000);
+
+      }, 300);
+
     });
     this.$el.find('.plugins .plugin').on('mouseleave', function(){
       $(this).find('.carousel').carousel(0);
