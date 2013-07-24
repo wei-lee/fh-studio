@@ -4,7 +4,8 @@ App.View.PluginsSetup = App.View.PluginsView.extend({
     pluginSetup : '#pluginSetup',
     pluginSetupEnvVariables : '#pluginSetupEnvVariables',
     pluginSetupCode : '#pluginSetupCode',
-    pluginSetupImage : '#pluginSetupImage'
+    pluginSetupImage : '#pluginSetupImage',
+    pluginsHeader : '#pluginsHeader'
   },
   plugin : undefined,
   initialize : function(options){
@@ -23,7 +24,8 @@ App.View.PluginsSetup = App.View.PluginsView.extend({
   setup: function(options){
     var plugin = options.plugin.toJSON(),
     config = this.plugin.get('config'),
-    envVariablesString, code, image;
+    envVariablesString, code, image,
+    header = this.templates.$pluginsHeader({ title : 'Using ' + plugin.name });
 
     plugin.npmName = plugin.npmName || plugin.name.toLowerCase();
     code = $('#snippet-' + plugin.npmName).html();
@@ -52,6 +54,7 @@ App.View.PluginsSetup = App.View.PluginsView.extend({
 
 
     return this.templates.$pluginSetup({
+      header : header,
       plugin : plugin,
       codeString : code || '',
       envVariablesString : envVariablesString || '',

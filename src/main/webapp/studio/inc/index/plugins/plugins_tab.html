@@ -74,10 +74,14 @@
   </div><!--/span4-->
 </script>
 <script type="text/x-handlebars-template" id="pluginSetup">
-  {{{  image }}}
-  <h3>Using {{ plugin.name }}</h3>
 
+  <div class="row-fluid header">
+    {{{ header }}} <br />
+    <a class="pluginBackLink" href="#">&laquo; Back to Plugins</a><br />
+  </div>
+  {{{ image }}}
   <p>To get started with your plugin, follow these simple steps:</p>
+
   <h4>1) Add the following line to cloud/package.json:</h4>
   Add the plugin's name to the 'dependencies' section of your package.json. This tells our cloud to install the plugin as a dependency.
 <pre class="pluginsPre" id="packagejson">
@@ -97,11 +101,18 @@
 
   <br />
   Now, check out <a href="{{ docs }}"> the docs page for this plugin.</a><br /><br />
-  <a id="plugins-done" class="btn btn-primary plugins-done">Done!</a>
+  <a id="plugins-done" class="pluginBackLink btn btn-primary plugins-done">Done!</a>
 </script>
 
 <script type="text/x-handlebars-template" id="pluginSetupImage">
-  <img src="/studio/static/themes/default/img/cloud_plugins/{{ image }}" class="pluginsCodeImage">
+  <div class="well pluginsCodeImage">
+    <p>
+      <strong>Version: </strong><i>{{ version }}</i><br />
+      {{ desc }}
+    </p>
+    <img src="/studio/static/themes/default/img/cloud_plugins/{{ image }}" class="pluginsCodeImage">
+  </div>
+
 </script>
 
 <script type="text/x-handlebars-template" id="pluginSetupEnvVariables">
@@ -125,4 +136,9 @@
   <pre class="pluginsPre"  id="snippet">
   {{code}}
 </pre>
+</script>
+
+<script type="text/x-handlebars-template" id="pluginsHeader">
+  <i class="icon-random icon-2x pull-left"></i>
+  <h3>{{title}}</h3>
 </script>

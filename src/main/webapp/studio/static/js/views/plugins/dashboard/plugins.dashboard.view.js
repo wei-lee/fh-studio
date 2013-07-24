@@ -3,7 +3,8 @@ App.View.PluginsDashboard = App.View.PluginsView.extend({
     // These get replaced with a handlebars template function with a $ prefix on the key once compileTemplates is run
     pluginPaneImage: '#pluginPaneImage',
     pluginPaneItemTpl: '#pluginPaneItemTpl',
-    pluginsFullscreenBody : '#pluginsFullscreenBody'
+    pluginsFullscreenBody : '#pluginsFullscreenBody',
+    pluginsHeader : '#pluginsHeader'
   },
   initialize : function(){
     this.collection = Plugins.Collections.Plugins;
@@ -20,7 +21,7 @@ App.View.PluginsDashboard = App.View.PluginsView.extend({
     body = $(this.templates.$pluginsFullscreenBody());
 
     body.find('.filters').append(filters.render(this).el);
-    header.append('<i class="icon-random icon-3x pull-left"></i><h2>Cloud Plugins</h2>');
+    header.append(this.templates.$pluginsHeader({ title : 'Cloud Plugins' }));
     header.append(search.render(this).el);
     this.$el.append(header);
     this.$el.append(body);
@@ -60,10 +61,11 @@ App.View.PluginsDashboard = App.View.PluginsView.extend({
     this.renderPluginsPane(this);
     window.scrollTo(0, 0);
     this.$el.show();
-
+    this.shown = true;
   },
   hide : function(){
     this.$el.hide();
+    this.shown = false;
   },
   /*
    This should be a backbone event, but it's far less

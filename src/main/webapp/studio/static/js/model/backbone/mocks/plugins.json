@@ -299,7 +299,7 @@
     "image" : "twilio.png",
     "category" : "Messaging",
     "version" :  "1.1.4",
-   "config" :  [
+    "config" :  [
       {
        "desc" :  "Twilio account SID",
        "varName" :  "TWILIO_SID"

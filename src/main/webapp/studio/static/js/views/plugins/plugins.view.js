@@ -16,6 +16,7 @@ App.View.PluginsView = Backbone.View.extend({
   breadcrumb : function(trail){
     var crumb = $('#plugins_layout').find('.breadcrumb').empty();
     _.each(trail, function(element, index, list){
+      var id = element.toLowerCase().replace(/\s/g, "");
       if (index === list.length-1){
         crumb.append($('<li>', {
           "class": "active",
@@ -23,7 +24,7 @@ App.View.PluginsView = Backbone.View.extend({
         }));
       }else{
         crumb.append($('<li>', {
-          "text": element
+          "html": '<a id="crumb-' + id + '" href="#">' + element + '</a>'
         })).append($('<span>', {
           "class": "divider",
           "text" : "/"

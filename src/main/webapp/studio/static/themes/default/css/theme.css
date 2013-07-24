@@ -1131,17 +1131,18 @@ span.label-info {
   margin-top: -1px;
 }
 
-#plugins_dashboard_container div.header {
+#plugins_container div.header {
   padding-left: 14px;
 }
 
-#plugins_dashboard_container div.header h2 {
+#plugins_container div.header h3 {
   display: inline;
   padding: 0px;
   margin: 0px;
+  line-height: 28px;
 }
 
-#plugins_dashboard_container div.header form {
+#plugins_container div.header form {
   margin-right : 16px;
 }
 
@@ -1205,6 +1206,9 @@ span.label-info {
     transition: 0.3s ease-in-out left;
 }
 
+pre#packagejson {
+    width: 350px;
+}
 pre#packagejson strong {
     color: red;
     font-weight: bold;

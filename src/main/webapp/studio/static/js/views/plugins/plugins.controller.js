@@ -1,13 +1,20 @@
 App.View.PluginsController = Backbone.View.extend({
   events: {
     'click .plugin .addButton': 'setup',
-    'click #plugins-done': 'done'
+    'click .pluginBackLink': 'done'
   },
   subviews : {
     dashboard : App.View.PluginsDashboard,
     setup : App.View.PluginsSetup
   },
-  initialize : function(){},
+  initialize : function(){
+    var self =  this;
+    $('#plugins_tab').click(function(e){
+      if (self.dashboard !== 'undefined' && self.dashboard.shown === false){
+        self.done.apply(self, [e]);
+      }
+    });
+  },
   render: function(options) {
     var self = this;
     this.$el.html($('#pluginsContainerTemplate').html());
@@ -22,13 +29,21 @@ App.View.PluginsController = Backbone.View.extend({
    */
   setup : function(e){
     e.preventDefault();
-    var addButton = $(e.target),
+
+    var self = this,
+    addButton = $(e.target),
     id = $(addButton).attr('data-id') || $(addButton.parent()).attr('data-id');
+
 
     this.setup = new App.View.PluginsSetup({plugin : this.dashboard.collection.get(id) });
     this.setup.render();
 
     this.$('#plugins_setup_container').html(this.setup.el);
+
+    $('#crumb-cloudplugins').unbind().click(function(e){
+      self.done.apply(self, [e]);
+    });
+
     this.dashboard.hide();
 
   },
