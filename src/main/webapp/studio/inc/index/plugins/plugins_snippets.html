@@ -371,3 +371,51 @@ _.each(params.list, function(el, index){
 });
 return cb(null, str);
 </script>
+
+<script type="text/snippet" id="snippet-pg">
+/*
+ Runs a query on a remote postgresql instance
+ @param params.query : the query to run
+ */
+exports.postgresql = function(params, cb){
+  var pg = require('pg').native; // needs native for SSL connection
+  var conString = process.env.POSTGRESQL_HOST;
+
+  var client = new pg.Client(conString);
+  client.connect(function(err) {
+    if(err) {
+      return console.error('could not connect to postgres', err);
+    }
+    client.query(params.query, function(err, result) {
+      client.end();
+      return cb(err, result);
+    });
+  });
+};
+</script>
+
+<script type="text/snippet" id="snippet-sqlite">
+/*
+ Creates a table in an in-memory sqlite DB
+ and returns the data it creats
+ */
+exports.sqlite = function(params, cb){
+  var sqlite3 = require('sqlite3').verbose();
+  var db = new sqlite3.Database(':memory:');
+
+  db.serialize(function() {
+    db.run("CREATE TABLE feedhenry (info TEXT)");
+
+    var stmt = db.prepare("INSERT INTO feedhenry VALUES (?)");
+    stmt.run("Hello world");
+    stmt.finalize();
+
+    var rows = [];
+    db.get("SELECT rowid AS id, info FROM feedhenry", function(err, row) {
+      return cb(err, row);
+    });
+
+  });
+  db.close();
+};
+</script>

@@ -26,14 +26,17 @@
   {
     "name" : "PostgreSQL",
     "desc" : "Non-blocking PostgreSQL client for node.js. Pure JavaScript and native libpq bindings.",
-    "npmname" : "pg",
-    "tested" : false,
-    "disabled" : true,
+    "npmName" : "pg",
     "image" : "postgresql.png",
     "category" : "Remote Database",
     "docs" : "https://github.com/brianc/node-postgres",
     "version" :  "2.2.0",
-    "config" :  []
+    "config" :  [
+      {
+        "desc" : "Your PostreSQL instance hostname",
+        "varName" : "POSTGRESQL_HOST"
+      }
+    ]
   },
   {
     "name" : "MongoDB",
@@ -93,8 +96,6 @@
   {
     "name" : "CouchDB",
     "desc" : "A new CouchDB module following node.js idioms",
-    "tested" : false,
-    "disabled" : true,
     "image" : "couchdb.png",
     "category" : "Remote Database",
     "docs" : "https://github.com/felixge/node-couchdb",
@@ -234,13 +235,11 @@
   },
   {
     "name" : "SQLite",
-    "tested" : false,
-    "disabled" : true,
     "desc" : "Asynchronous, non-blocking SQLite3 bindings for Node.js",
     "image" : "sqlite.png",
     "category" : "File System",
     "docs" : "https://github.com/developmentseed/node-sqlite3",
-    "version" :  "1.0.4",
+    "version" :  "2.1.14",
     "config" :  []
   },
   {
@@ -538,7 +537,7 @@
   },
   {
     "name" : "Node Cron",
-    "npmname" : "cron",
+    "npmName" : "cron",
     "desc" : "Cron-style scheduling for Node.jS",
     "category" : "Tools",
     "version" :  "1.0.1",
