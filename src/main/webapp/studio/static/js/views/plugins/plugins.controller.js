@@ -21,6 +21,7 @@ App.View.PluginsController = Backbone.View.extend({
    Add button gets pressed - setup screen with code snippets & instructions
    */
   setup : function(e){
+    e.preventDefault();
     var addButton = $(e.target),
     id = $(addButton).attr('data-id') || $(addButton.parent()).attr('data-id');
 
@@ -31,7 +32,8 @@ App.View.PluginsController = Backbone.View.extend({
     this.dashboard.hide();
 
   },
-  done : function(){
+  done : function(e){
+    e.preventDefault();
     this.setup.$el.remove();
     this.dashboard.show();
   }
