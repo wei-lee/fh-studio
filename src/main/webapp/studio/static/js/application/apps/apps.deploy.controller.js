@@ -202,9 +202,29 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
       this.devDeploy();
     }
   },
+	validTarget: function(target){
+		var depTargetsEnabled =  $fw.getClientProp("deployment-targets-enabled");
+		if("FEEDHENRY" === target.toUpperCase())return true;
+
+		else if("false" === depTargetsEnabled)
+			return false;
+
+		else{
+			var validTargets = $fw.getClientProp('nodejsValidTargets');
+			if(!validTargets) return false;
+
+			validTargets = validTargets.split(",");
+			return (validTargets.indexOf(target.toLowerCase()) === -1);
+		}
+
+
+
+
+  },
 
   renderTargets: function (targets) {
     var self = this;
+
     var targets_area = $(this.subviews.deploy_targets, this.sub_container).show();
     targets_area.empty();
     var current_target_button;
@@ -213,9 +233,9 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     $.each(targets, function (i, target) {
       var target_name = target.fields.target;
       var label_name = target.fields.name;
-     if("false" === $fw.getClientProp("deployment-targets-enabled") && target_name !== "FEEDHENRY"){
-        return;
-     }
+
+      if(! self.validTarget(target_name)) return;
+
       // 3 targets per row
       if (i === 0 || i % 3 === 0) {
         // Create a new row

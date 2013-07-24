@@ -9,17 +9,6 @@ Component: fh-studio
 * 4387 events showing incorrect times
 * 4364 node runtimes select not hiding on error
 
-Note  a new property for studio is required:
-#enable showing deployment targets other than FEEDHENRY and also enable creation of new targets.
-studio-js-deployment-targets-enabled = true
-
-if it is not there it defaults to false.
-
-As part of this release please change the following property
-
-nodejs.deploy.valid_targets          = appfog 
-
-This will mean only appfog targets can be created as this is the only one working correctly at the moment. 
 
 ---------------------------------------------------------------------------
 3.17.4 - 2013-07-08 - IR205 - Jason Madigan
