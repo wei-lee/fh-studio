@@ -214,7 +214,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
 			if(!validTargets) return false;
 
 			validTargets = validTargets.split(",");
-			return (validTargets.indexOf(target.toLowerCase()) === -1);
+			return (validTargets.indexOf(target.toLowerCase()) !== -1);
 		}
 
 
