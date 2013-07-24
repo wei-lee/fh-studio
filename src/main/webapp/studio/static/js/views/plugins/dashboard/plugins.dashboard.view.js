@@ -78,7 +78,9 @@ App.View.PluginsDashboard = App.View.PluginsView.extend({
    It also needs to get re-bound.. lots..
    */
   bindCarouselEvents : function(){
+    var self = this;
     this.$el.find('.plugins .plugin').on('mouseenter', function(){
+      self.$el.find('.plugins .plugin .carousel').carousel(0);
       var el = this;
 
       // If we're already moving the element (600ms below), bail
