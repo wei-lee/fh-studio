@@ -1215,9 +1215,12 @@ pre#packagejson strong {
 }
 
 
-#plugins_setup_container .pluginsCodeImage {
+#plugins_setup_container .pluginsCodeWell {
     float : right;
-    height: 90px;
+}
+
+#plugins_setup_container .pluginsCodeWell img {
+    height: 100px;
     width: auto;
 }
 

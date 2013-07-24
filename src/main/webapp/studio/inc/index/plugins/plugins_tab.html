@@ -100,17 +100,19 @@
   {{{ envVariablesString }}}
 
   <br />
-  Now, check out <a href="{{ docs }}"> the docs page for this plugin.</a><br /><br />
+  Now, check out <a href="{{ docs }}" target="_blank"> the docs page for this plugin.</a><br /><br />
   <a id="plugins-done" class="pluginBackLink btn btn-primary plugins-done">Done!</a>
 </script>
 
 <script type="text/x-handlebars-template" id="pluginSetupImage">
-  <div class="well pluginsCodeImage">
+  <div class="well pluginsCodeWell">
     <p>
+      <strong>Name: </strong>{{ npmName }}<br />
       <strong>Version: </strong><i>{{ version }}</i><br />
-      {{ desc }}
+      <strong>Docs: </strong><a href="{{ docs }}" target="_blank">Open</a><br />
+      {{ desc }}<br />
+      <img src="/studio/static/themes/default/img/cloud_plugins/{{ image }}" class="pluginsCodeWell">
     </p>
-    <img src="/studio/static/themes/default/img/cloud_plugins/{{ image }}" class="pluginsCodeImage">
   </div>
 
 </script>
