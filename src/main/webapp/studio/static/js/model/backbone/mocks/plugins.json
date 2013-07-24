@@ -99,7 +99,27 @@
     "category" : "Remote Database",
     "docs" : "https://github.com/felixge/node-couchdb",
     "version" :  "",
-    "config" :  []
+    "config" :  [
+      {
+        "desc" :  "CouchDB Hostname",
+        "varName" :  "COUCHDB_HOST"
+      },
+      {
+        "desc" :  "CouchDB Port (optional)",
+        "varName" :  "COUCHDB_PORT",
+        "optional" : true
+      },
+      {
+        "desc" :  "CouchDB Username (optional)",
+        "varName" :  "COUCHDB_USERNAME ",
+        "optional" : true
+      },
+      {
+        "desc" :  "CouchDB Password (optional)",
+        "varName" :  "COUCHDB_PASSWORD",
+        "optional" : true
+      }
+    ]
   },
   {
     "name" : "Oracle 11g",
@@ -278,7 +298,7 @@
     "desc" : "Connects to the Twilio telephony API",
     "image" : "twilio.png",
     "category" : "Messaging",
-    "version" :  "://twilio.github.io/twilio-node",
+    "version" :  "1.1.4",
    "config" :  [
       {
        "desc" :  "Twilio account SID",
@@ -439,10 +459,6 @@
       {
         "desc" :  "Client Secret",
         "varName" :  "PAYPAL_CLIENT_SECRET"
-      },
-      {
-        "desc" :  "Your Stripe API Key",
-        "varName" :  "STRIPE_API_KEY"
       }
     ],
     "docs" : "https://github.com/paypal/rest-api-sdk-nodejs"
