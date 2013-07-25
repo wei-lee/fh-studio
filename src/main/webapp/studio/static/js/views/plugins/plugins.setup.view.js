@@ -19,6 +19,7 @@ App.View.PluginsSetup = App.View.PluginsView.extend({
   render: function() {
     this.$el.html(this.setup(this.options));
     this.breadcrumb(['Cloud Plugins', 'Setup', this.options.plugin.get('name')]);
+    window.scrollTo(0,0);
     return this;
   },
   setup: function(options){
