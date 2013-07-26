@@ -79,5 +79,6 @@ App.View.DashboardFilters = App.View.PluginsDashboard.extend({
     this.collection.trigger('redraw', this.parent);
 
     $(e.target).prop('checked', true);
+    this.filters = [];
   }
 });
