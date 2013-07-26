@@ -53,20 +53,14 @@
 <script type="text/x-handlebars-template" id="pluginPaneItemTpl">
   <div class="span4 plugin" data-name="{{name}}" data-category="{{category}}">
     <h4 class="category">{{category}}</h4>
-    <div id="" class="carousel plugin-carousel slide">
-      <div class="carousel-inner">
-        <div class="active item">
           {{{ title }}}
-        </div>
-        <div class="item">
-          <h3>{{ name }}</h3>
           <p>
             <strong>Version: </strong><i>{{ versionLabel }}</i><br />
             {{ desc }}
           </p>
-        </div>
-      </div>
-    </div>
+
+
+
 
     <a class="btn btn-success addButton" data-id="{{ id }}" data-plugin="{{ name }}" href="#">
       Add <i class="icon-white icon-plus-sign"></i>

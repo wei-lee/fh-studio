@@ -12,11 +12,6 @@ App.View.PluginsDashboard = App.View.PluginsView.extend({
     this.collection.bind('redraw', this.renderPluginsPane);
     this.compileTemplates();
     this.breadcrumb(['Cloud Plugins']);
-
-    // Add an isMouseOver plugin to the jQuery object for re-use by our carousel
-    jQuery.fn.mouseIsOver = function () {
-      return $(this).parent().find($(this).selector + ":hover").length > 0;
-    };
   },
   render: function() {
     this.$el.empty();
@@ -56,10 +51,6 @@ App.View.PluginsDashboard = App.View.PluginsView.extend({
     });
 
     self.$el.find('.plugins').html(pluginItems.join('\n'));
-    self.$el.find('.plugins .carousel.plugin-carousel').carousel({
-      interval: false, pause : false
-    });
-    self.bindCarouselEvents();
   },
   show : function(){
     this.breadcrumb(['Cloud Plugins']);
@@ -71,50 +62,5 @@ App.View.PluginsDashboard = App.View.PluginsView.extend({
   hide : function(){
     this.$el.hide();
     this.shown = false;
-  },
-  /*
-   This should be a backbone event, but it's far less
-   reliable at catching 'e.target' ( $(this) below )
-   It also needs to get re-bound.. lots..
-   */
-  bindCarouselEvents : function(){
-    var self = this;
-    this.$el.find('.plugins .plugin').on('mouseenter', function(){
-      self.$el.find('.plugins .plugin .carousel').carousel(0);
-      var el = this;
-
-      // If we're already moving the element (600ms below), bail
-      if ($(el).data('animating')===true){
-        return;
-      }
-
-      // Give the user some time contemplating the logo before we hover
-      setTimeout(function(){
-        if (!$(el).mouseIsOver()){
-          return;
-        }
-
-        $(el).find('.carousel').carousel(1);
-        $(el).data('animating', true);
-
-        // Delay the length of the 2 animations
-        // before we allow the item to be animated again.
-        setTimeout(function(){
-          $(el).data('animating', false);
-        }, 600);
-
-        // One animation is done, check if we're still hovering over this element!
-        setTimeout(function(){
-          if ($(el).mouseIsOver() === false ){
-            $(el).find('.carousel').carousel(0);
-          }
-        }, 1000);
-
-      }, 300);
-
-    });
-    this.$el.find('.plugins .plugin').on('mouseleave', function(){
-      $(this).find('.carousel').carousel(0);
-    });
   }
 });
