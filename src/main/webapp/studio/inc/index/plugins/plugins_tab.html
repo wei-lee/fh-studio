@@ -105,13 +105,13 @@
 </script>
 
 <script type="text/x-handlebars-template" id="pluginSetupImage">
-  <div class="well pluginsCodeWell span3">
-    <p>
-      <img src="/studio/static/themes/default/img/cloud_plugins/{{ image }}">
-      <strong>Name: </strong>{{ npmName }}<br />
-      <strong>Version: </strong><i>{{ version }}</i><br />
-      <strong>Docs: </strong><a href="{{ docs }}" target="_blank">Open</a><br />
-      {{ desc }}<br />
+  <div class="boxed-group pluginsCodeWell span3" data-title="Details">
+    <img src="/studio/static/themes/default/img/cloud_plugins/{{ image }}">
+
+    <p class="plugin_name"><strong>Name: </strong>{{ npmName }}</p>
+    <p class="plugin_version"><strong>Version: </strong><i>{{ version }}</i></p>
+    <p class="plugin_docs"><strong>Docs: </strong><a href="{{ docs }}" target="_blank">Open</a></p>
+    <p class="plugin_desc">{{ desc }}</p>
     </p>
   </div>
 

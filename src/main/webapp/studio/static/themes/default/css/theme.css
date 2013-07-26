@@ -1226,6 +1226,9 @@ span.label-info {
 #plugins_dashboard_container .plugin .addButton {
     width: 146px;
     margin: 10px 0 10px 0;
+    font-weight: bold;
+    font-smooth:always;
+    -webkit-font-smoothing: antialiased;
 }
 
 #plugins_dashboard_container .plugin .carousel .item {
@@ -1256,6 +1259,10 @@ pre#packagejson strong {
     height: 100px;
     width: auto;
     float: right;
+}
+
+#plugins_setup_container .pluginsCodeWell p {
+  margin-bottom: 5px;
 }
 
 .pluginsPre {
