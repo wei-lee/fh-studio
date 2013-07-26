@@ -36,7 +36,7 @@ App.View.PluginsSetup = App.View.PluginsView.extend({
 
     if (config && !_.isEmpty(config)){
       var envVariables = [],
-      envVariablesTemplate = $
+      envVariablesTemplate = $;
       _.each(config, function(element){
         envVariables.push("<tr>");
         envVariables.push("<td>" + element.varName + "</td>");
