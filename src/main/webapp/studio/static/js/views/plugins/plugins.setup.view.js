@@ -52,11 +52,10 @@ App.View.PluginsSetup = App.View.PluginsView.extend({
       image = this.templates.$pluginSetupImage(plugin);
     }
 
-
-
     return this.templates.$pluginSetup({
       header : header,
       plugin : plugin,
+      docs: plugin.docs,
       codeString : code || '',
       envVariablesString : envVariablesString || '',
       image : image || ''
