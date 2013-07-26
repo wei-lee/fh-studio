@@ -432,7 +432,6 @@ exports.rabbitmq = function(params, cb){
       });
     });
     sub.on('data', function(data) {
-      //TODO: Hangs indefinately, context doesn't close with context.close()
       pub.destroy();
       sub.destroy();
       context.close();
