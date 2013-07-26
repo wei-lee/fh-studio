@@ -100,6 +100,9 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
 			}, function (runtimes, callback){
 				if(! runtimes){
 					$fw.server.post(Constants.RUNTIMES_URL,{"platform":depTarget,"runtime":"nodejs","deploytarget":env}, function (data){
+						if(data && data.status == "error"){
+              return	callback(data);
+						}
 						$fw.data.set("runtimes",data);
 						callback(undefined,data);
 					}, function (err){
@@ -120,19 +123,24 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
 				var runtime = (appConfig["nodejs"]) ? appConfig["nodejs"]["app"]["runtime"][env] :undefined;
 
 				select.empty();
+				if(runtimes && runtimes.result){
+					for(var i = 0; i < runtimes.result.length; i++ ){
+						var rtime = runtimes.result[i];
+						var selected="";
+						if(runtime && runtime === rtime.name)selected = "selected";
+						else if(! runtime && rtime["default"])selected = "selected";
 
-				for(var i = 0; i < runtimes.result.length; i++ ){
-					var rtime = runtimes.result[i];
-					var selected="";
-					if(runtime && runtime === rtime.name)selected = "selected";
-					else if(! runtime && rtime["default"])selected = "selected";
-
-					select.append("<option "+selected+" value='"+rtime.name+"' >"+rtime.name+"</option>");
+						select.append("<option "+selected+" value='"+rtime.name+"' >"+rtime.name+"</option>");
+						callback();
+					}
+				}else {
+					callback("error with runtimes");
 				}
-				callback();
+
 			}
 		],function (err, ok){
 			if(err){
+				console.log("runtimes error", err);
 				controlDiv.hide();
 			}
 		});
@@ -194,15 +202,40 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
       this.devDeploy();
     }
   },
+	validTarget: function(target){
+		var depTargetsEnabled =  $fw.getClientProp("deployment-targets-enabled");
+		if("FEEDHENRY" === target.toUpperCase())return true;
+
+		else if("false" === depTargetsEnabled)
+			return false;
+
+		else{
+			var validTargets = $fw.getClientProp('nodejsValidTargets');
+			if(!validTargets) return false;
+
+			validTargets = validTargets.split(",");
+			return (validTargets.indexOf(target.toLowerCase()) !== -1);
+		}
+
+
+
+
+  },
 
   renderTargets: function (targets) {
     var self = this;
+
     var targets_area = $(this.subviews.deploy_targets, this.sub_container).show();
     targets_area.empty();
     var current_target_button;
     var row;
 
     $.each(targets, function (i, target) {
+      var target_name = target.fields.target;
+      var label_name = target.fields.name;
+
+      if(! self.validTarget(target_name)) return;
+
       // 3 targets per row
       if (i === 0 || i % 3 === 0) {
         // Create a new row
@@ -213,8 +246,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
       // Use last row
       row = targets_area.find('div.target_row:last');
 
-      var target_name = target.fields.target;
-      var label_name = target.fields.name;
+
 
       var button = $('<a>').addClass('btn');
       var icon = $('<img>').attr('src', '/studio/static/themes/default/img/cloud_target_' + target_name.toLowerCase() + '.png');
