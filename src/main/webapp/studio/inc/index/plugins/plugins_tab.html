@@ -76,7 +76,7 @@
 <script type="text/x-handlebars-template" id="pluginSetup">
 
   <div class="row-fluid header">
-    {{{ header }}} <br />
+    {{{ header }}}
     <a class="pluginBackLink" href="#">&laquo; Back to Plugins</a><br />
   </div>
   {{{ image }}}
@@ -105,13 +105,13 @@
 </script>
 
 <script type="text/x-handlebars-template" id="pluginSetupImage">
-  <div class="well pluginsCodeWell">
+  <div class="well pluginsCodeWell span3">
     <p>
+      <img src="/studio/static/themes/default/img/cloud_plugins/{{ image }}">
       <strong>Name: </strong>{{ npmName }}<br />
       <strong>Version: </strong><i>{{ version }}</i><br />
       <strong>Docs: </strong><a href="{{ docs }}" target="_blank">Open</a><br />
       {{ desc }}<br />
-      <img src="/studio/static/themes/default/img/cloud_plugins/{{ image }}" class="pluginsCodeWell">
     </p>
   </div>
 
