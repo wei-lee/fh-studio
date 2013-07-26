@@ -534,13 +534,6 @@
     "docs" : "https://github.com/carlsverre/mixpanel-node"
   },
   {
-    "name" : "Underscore",
-    "desc" : "JavaScript's functional programming helper library.",
-    "category" : "Tools",
-    "version" :  "1.5.1",
-    "docs" :  "https://github.com/jashkenas/underscore/"
-  },
-  {
     "name" : "Whiskey",
     "desc" : "Whiskey is a powerful test runner for Node.js applications and a process orchestration framework which makes running integration tests with a lot of service / process dependencies easier.",
     "category" : "Testing",
@@ -561,6 +554,13 @@
     "category" : "Testing",
     "version" :  "0.4.1",
     "docs" :  "https://github.com/thlorenz/proxyquire/"
+  },
+  {
+    "name" : "Underscore",
+    "desc" : "JavaScript's functional programming helper library.",
+    "category" : "Tools",
+    "version" :  "1.5.1",
+    "docs" :  "https://github.com/jashkenas/underscore/"
   },
   {
     "name" : "Node Cron",
