@@ -1154,7 +1154,6 @@ span.label-info {
 
 #plugins_dashboard_container .filters {
   padding-left: 16px;
-  margin-top: 40px;
 }
 
 #plugins_dashboard_container .plugin{
@@ -2908,6 +2907,9 @@ table.dataTable th:active {
   background: linear-gradient(top, #ffffff 0%,#ededed 100%); /* W3C */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
 }
+
+#main_tabs_buttons li:hover { cursor: pointer; }
+
 
 #main_tabs_buttons .ui-state-active {
   border: none;
