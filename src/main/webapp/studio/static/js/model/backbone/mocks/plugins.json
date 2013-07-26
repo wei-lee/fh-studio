@@ -224,6 +224,7 @@
   {
     "name" : "PKG Cloud",
     "desc" : "pkgcloud is a standard library for node.js that abstracts away differences among multiple cloud providers. Allows connections into various compute, storage and database technologies",
+    "npmName" : "pkgcloud",
     "category" : "File System",
     "docs" : "https://github.com/nodejitsu/pkgcloud",
     "version" :  "0.8.4",
@@ -542,14 +543,22 @@
   {
     "name" : "Whiskey",
     "desc" : "Whiskey is a powerful test runner for Node.js applications and a process orchestration framework which makes running integration tests with a lot of service / process dependencies easier.",
-    "category" : "Tools",
+    "category" : "Testing",
     "version" :  "0.8.3",
     "docs" :  "https://github.com/cloudkick/whiskey/"
   },
   {
+    "name" : "Mocha",
+    "image" : "mocha.png",
+    "desc" : "Mocha is a simple, flexible, fun JavaScript test framework for node.js and the browser.",
+    "category" : "Testing",
+    "version" :  "1.12.0",
+    "docs" :  "http://visionmedia.github.io/mocha/"
+  },
+  {
     "name" : "Proxyquire",
     "desc" : "Proxies nodejs's require in order to make overriding dependencies during testing easy while staying totally unobstrusive.",
-    "category" : "Tools",
+    "category" : "Testing",
     "version" :  "0.4.1",
     "docs" :  "https://github.com/thlorenz/proxyquire/"
   },
