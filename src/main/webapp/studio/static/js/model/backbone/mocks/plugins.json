@@ -405,14 +405,40 @@
   },
   {
     "name" : "SAP Netweaver",
-    "tested" : false,
-    "disabled" : true,
     "desc" : "SAP Netweaver RFC SDK bindings for Node.js",
     "image" : "netweaver.png",
     "category" : "SaaS Connectors",
     "docs" : "https://github.com/jdorner/node-sapnwrfc",
     "version" :  "0.1.5",
-    "config" :  []
+    "npmName" : "sapnwrfc",
+    "config" :  [
+
+      {
+        "desc" :  "Your SAP Hostname",
+        "varName" :  "SAP_HOST"
+      },
+      {
+        "desc" :  "Your SAP SysID",
+        "varName" :  "SAP_SYSID"
+      },
+      {
+        "desc" :  "Your SAP SysNR",
+        "varName" :  "SAP_SYSNR"
+      },
+      {
+        "desc" :  "Your SAP Username",
+        "varName" :  "SAP_USER"
+      },
+      {
+        "desc" :  "Your SAP Password",
+        "varName" :  "SAP_PASSWORD",
+        "field" : "password"
+      },
+      {
+        "desc" :  "Your SAP Client",
+        "varName" :  "SAP_CLIENT"
+      }
+    ]
   },
   {
     "name" : "Facebook",
