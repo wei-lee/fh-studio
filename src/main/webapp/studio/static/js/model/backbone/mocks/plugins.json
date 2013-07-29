@@ -505,7 +505,7 @@
   {
     "name" : "Logentries",
     "tested" : true,
-    "desc" : "An easy-to-use wrapper for the logentries.com service. The node-logentries module makes it very easy to log directly to your logentries.com account direct from Node.js",
+    "desc" : "An easy-to-use wrapper for the logentries.com service.",
     "version" : "0.1.0",
     "npmName" : "node-logentries",
     "image" : "logentries.png",

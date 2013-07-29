@@ -48,7 +48,21 @@
 </script>
 
 <script type="text/x-handlebars-template" id="pluginPaneImage">
-  <div class="pluginThumb"><img src="/studio/static/themes/default/img/cloud_plugins/{{ image }}"></div>
+  <div class="row">
+    <div class="span6 pluginThumb">
+      <img src="/studio/static/themes/default/img/cloud_plugins/{{ image }}">
+    </div>
+    <div class="span6">
+      <p>
+        <strong>Version: </strong><i>{{ versionLabel }}</i><br />
+        {{ desc }}
+      </p>
+    </div>
+  </div>
+
+
+
+
 </script>
 <script type="text/x-handlebars-template" id="pluginPaneItemTpl">
   <div class="span4 plugin" data-name="{{name}}" data-category="{{category}}">
