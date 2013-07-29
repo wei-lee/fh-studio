@@ -576,6 +576,7 @@
   },
   {
     "name" : "Proxyquire",
+    "image" : "proxyquire.png",
     "desc" : "Proxies nodejs's require in order to make overriding dependencies during testing easy while staying totally unobstrusive.",
     "category" : "Testing",
     "version" :  "0.4.1",
@@ -583,6 +584,7 @@
   },
   {
     "name" : "Underscore",
+    "image" : "underscore.png",
     "desc" : "JavaScript's functional programming helper library.",
     "category" : "Tools",
     "version" :  "1.5.1",
@@ -591,6 +593,7 @@
   {
     "name" : "Node Cron",
     "npmName" : "cron",
+    "image" : "nodecron.png",
     "desc" : "Cron-style scheduling for Node.jS",
     "category" : "Tools",
     "version" :  "1.0.1",
@@ -598,6 +601,7 @@
   },
   {
     "name" : "Socket.io",
+    "image" : "socketio.png",
     "desc" : "Real-time apps made cross-browser & easy with a WebSocket-like API",
     "category" : "Tools",
     "version" :  "0.9.16",
@@ -605,6 +609,7 @@
   },
   {
     "name" : "Request",
+    "image" : "request.png",
     "desc" : "The de facto standard for doing all HTTP requests in Node.js - recommended over using the HTTP module standalone.",
     "category" : "Tools",
     "version" :  "2.11.4",
@@ -612,6 +617,7 @@
   },
   {
     "name" : "Async",
+    "image" : "async.png",
     "desc" : "Callback hell? Async helps you overcome this",
     "category" : "Tools",
     "version" :  "0.2.5",
