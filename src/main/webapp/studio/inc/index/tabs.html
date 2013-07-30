@@ -14,6 +14,11 @@
     </li>
   <%}%>
 
+  <!-- //TODO: what permission? -->
+  <li class="environments-tab">
+      <a id="environments_tab" href="#tabs-2">Cloud Environments</a>
+  </li>
+
   <% if(studio.getProperty("nodejsEnabled").equals("true")){ %>
   <li class="admin-tab">
     <a id="admin_tab" href="#tabs-6">Admin</a>
@@ -37,6 +42,9 @@
   <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER)) { %>
     <%@ include file="./apps/apps_tab.html" %>
   <%}%>
+
+  <!-- //TODO: what permission? -->
+  <%@ include file="./cloud_environment/cloud_environment_tab.html" %>
 
   <% if(studio.getProperty("nodejsEnabled").equals("true")){ %>
     <%@ include file="./admin/admin_tab.html" %>

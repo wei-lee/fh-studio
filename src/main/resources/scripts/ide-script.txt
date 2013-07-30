@@ -48,6 +48,7 @@ js/model/backbone/metrics/startups/app.startups.geo.model.js
 js/model/backbone/metrics/startups/app.startups.platform.model.js
 js/model/backbone/metrics/startups/domain.startups.platform.model.js
 js/model/backbone/metrics/installs/domain.installs.platform.model.js
+js/model/backbone/cloudenvironments/cloudenvironment.model.js
 js/views/common/datatable.view.js
 js/views/common/spinner.view.js
 js/views/charts/chart.view.js
@@ -130,6 +131,7 @@ js/views/common/swap_select.view.js
 js/views/app/cloud/cloud.sysevents.view.js
 js/views/app/cloud/cloud.alerts.view.js
 js/views/app/cloud/cloud.alertnotifications.view.js
+js/views/cloudenvironments/cloudenvironments.overview.view.js
 js/model/ModelManager.js
 js/model/models/Model.js
 js/model/models/App.js
@@ -211,6 +213,7 @@ js/application/reporting/reporting.controller.js
 js/application/reporting/reporting.app.controller.js
 js/application/reporting/reporting.dashboard.controller.js
 js/application/reporting/reporting.perapp.controller.js
+js/application/cloudenvironments/environments.controller.js
 js/application/chart/ChartManager.js
 js/application/chart/locator/ChartLocator.js
 js/application/chart/locator/MetricsChartLocator.js
@@ -247,6 +250,7 @@ js/application/tab/apps.tab.manager.js
 js/application/tab/dashboard.tab.manager.js
 js/application/tab/account.tab.manager.js
 js/application/tab/reporting.tab.manager.js
+js/application/tab/environments.tab.manager.js
 js/application/destinations/destination_general.js
 js/application/destinations/destination_feedhenry.js
 js/application/destinations/destination_blackberry.js

@@ -3775,3 +3775,86 @@ h5.steps{
     padding-bottom: 10px;
     padding-top:10px;
 }
+
+/* CSS for cloud environment page */
+#environments_tab {
+  width: 105px !important;
+}
+
+#cloud_environments_layout #cloudenvironments_accordion {
+  height: 100% !important;
+}
+
+#cloud_environments_layout #cloudenvironments_accordion .accordion-heading {
+  height: 160px;
+ }
+
+#cloud_environments_layout #cloudenvironments_accordion .accordion-toggle {
+  height: 100%;
+}
+
+#cloud_environments_layout div.env_name {
+  height: 40px;
+  font-size: 1.6em;
+  line-height: 30px;
+  padding: 8px 15px 0px 15px;
+}
+
+#cloud_environments_layout div.env_resource_summary_view .loading_spinner {
+  width:80px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#cloud_environments_layout .env_resource_summary_view {
+  margin-left: 0px !important;
+}
+
+#cloud_environments_layout div.center_text {
+  text-align: center;
+}
+
+#cloud_environments_layout .resource_usage_progress {
+  margin-top: 5px;
+}
+
+#cloud_environments_layout .resource_usage_progress .progress {
+  margin-bottom: 10px;
+}
+
+#cloud_environments_layout .env_resource_summary_view div.success {
+  color: #5eb95e;
+}
+
+#cloud_environments_layout .env_resource_summary_view div.warning {
+  color: #faa732;
+}
+
+#cloud_environments_layout .env_resource_summary_view div.danger {
+  color: #dd514c;
+}
+
+#cloud_environments_layout .details_nav {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 400px;
+}
+
+#cloud_environments_layout .details_nav li {
+  width: 110px;
+  margin-right: 20px;
+  text-align: center;
+  font-size: 1.3em;
+}
+
+#cloud_environments_layout .details_content {
+  width: 100%;
+  height: 900px;
+}
+
+#cloud_environments_layout .details_content .nav_content {
+  display: none;
+  height: 100%;
+  width: 100%;
+}

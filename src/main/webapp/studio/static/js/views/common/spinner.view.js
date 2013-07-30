@@ -1,6 +1,8 @@
 App.View.Spinner = Backbone.View.extend({
   options: null,
 
+  className: 'loading_spinner',
+
   defaults: {
     text: "Loading..."
   },
