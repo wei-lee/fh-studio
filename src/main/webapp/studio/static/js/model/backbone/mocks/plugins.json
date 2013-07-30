@@ -562,7 +562,6 @@
   },
   {
     "name" : "Whiskey",
-    "image" : "whiskey.png",
     "desc" : "Simplifies integration tests with lots of service / process dependencies",
     "category" : "Testing",
     "version" :  "0.8.3",
@@ -578,7 +577,6 @@
   },
   {
     "name" : "Proxyquire",
-    "image" : "proxyquire.png",
     "desc" : "Proxies require to make overriding dependencies during testing easy",
     "category" : "Testing",
     "version" :  "0.4.1",
@@ -595,7 +593,6 @@
   {
     "name" : "Node Cron",
     "npmName" : "cron",
-    "image" : "nodecron.png",
     "desc" : "Cron-style scheduling for Node.jS",
     "category" : "Tools",
     "version" :  "1.0.1",
@@ -611,7 +608,6 @@
   },
   {
     "name" : "Request",
-    "image" : "request.png",
     "desc" : "De facto standard for doing all HTTP requests in Node.js ",
     "category" : "Tools",
     "version" :  "2.11.4",
@@ -619,7 +615,6 @@
   },
   {
     "name" : "Async",
-    "image" : "async.png",
     "desc" : "Callback hell? Async helps you overcome this",
     "category" : "Tools",
     "version" :  "0.2.5",

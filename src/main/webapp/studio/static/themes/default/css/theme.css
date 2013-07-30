@@ -1126,6 +1126,13 @@ span.label-info {
 }
 
 /* Cloud plugins */
+.pluginName {
+  font-size: 20px;
+  color: #46483f;
+  background: url('../img/cloud_logo_node.png') no-repeat 42% 64%;
+  line-height: 85px;
+}
+
 .plugins-home {
   padding: 20px;
   margin-top: -1px;
@@ -1203,9 +1210,6 @@ span.label-info {
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0082bf', endColorstr='#006196',GradientType=0 );
 }
 
-#plugins_dashboard_container .plugin h2 {
-  line-height : 125px;
-}
 #plugins_dashboard_container .plugin h2, #plugins_dashboard_container .span4 h3 {
     margin: 0 4px;
 }
