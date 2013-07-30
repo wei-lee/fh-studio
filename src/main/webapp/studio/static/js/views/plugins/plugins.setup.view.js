@@ -47,9 +47,7 @@ App.View.PluginsSetup = App.View.PluginsView.extend({
       });
     }
 
-    if (plugin.image && plugin.image !== ""){
-      image = this.templates.$pluginSetupImage(plugin);
-    }
+    image = this.templates.$pluginSetupImage(plugin);
 
     return this.templates.$pluginSetup({
       header : header,
@@ -57,7 +55,7 @@ App.View.PluginsSetup = App.View.PluginsView.extend({
       docs: plugin.docs,
       codeString : code || '',
       envVariablesString : envVariablesString || '',
-      image : image || ''
+      image : image || null
     });
   },
   show : function(){

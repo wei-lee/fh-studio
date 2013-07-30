@@ -106,7 +106,11 @@
 
 <script type="text/x-handlebars-template" id="pluginSetupImage">
   <div class="boxed-group pluginsCodeWell span3" data-title="Details">
+    {{#if image}}
     <img src="/studio/static/themes/default/img/cloud_plugins/{{ image }}">
+    {{else}}
+    <h2 class="pluginName pluginDetail">{{name}}</h2>
+    {{/if}}
 
     <p class="plugin_name"><strong>Name: </strong>{{ npmName }}</p>
     <p class="plugin_version"><strong>Version: </strong><i>{{ version }}</i></p>

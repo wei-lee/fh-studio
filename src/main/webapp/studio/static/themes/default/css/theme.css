@@ -1133,6 +1133,16 @@ span.label-info {
   line-height: 85px;
 }
 
+.pluginName.pluginDetail {
+  width: 120px;
+  height: 120px;
+  float: right;
+  text-align: center;
+  line-height: 36px;
+  border: none;
+  background: url('../img/cloud_logo_node_small.png') no-repeat 31% 36%;
+}
+
 .plugins-home {
   padding: 20px;
   margin-top: -1px;
