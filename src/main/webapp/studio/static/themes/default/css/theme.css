@@ -1212,9 +1212,10 @@ span.label-info {
 
 #plugins_dashboard_container .plugin p {
   padding: 0px 8px;
-  max-height: 72px;
+  max-height: 66px;
   overflow: hidden;
   line-height: 1em;
+  margin-top: 8px;
 }
 
 #plugins_dashboard_container .plugin hr {
