@@ -24,8 +24,9 @@ App.View.PluginsController = Backbone.View.extend({
   setup : function(e){
     e.preventDefault();
     e.stopPropagation();
-    var self = this,
-    el = $(e.target),
+    var self = this;
+    var el = $(e.target);
+
     el = ($(el).hasClass('plugin')) ? el : el.parents('.plugin');
     id = $(el).attr('data-id') || $(el.parent()).attr('data-id');
 
