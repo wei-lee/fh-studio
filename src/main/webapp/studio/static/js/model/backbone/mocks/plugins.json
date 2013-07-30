@@ -24,7 +24,7 @@
   },
   {
     "name" : "PostgreSQL",
-    "desc" : "Non-blocking PostgreSQL client for node.js. Pure JavaScript and native libpq bindings.",
+    "desc" : "Non-blocking PostgreSQL client for node.js",
     "npmName" : "pg",
     "image" : "postgresql.png",
     "category" : "Remote Database",
@@ -223,7 +223,7 @@
   },
   {
     "name" : "PKG Cloud",
-    "desc" : "pkgcloud is a standard library for node.js that abstracts away differences among multiple cloud providers.",
+    "desc" : "Abstracts away differences among multiple cloud providers.",
     "npmName" : "pkgcloud",
     "image" : "pkgcloud.png",
     "category" : "File System",
@@ -233,7 +233,7 @@
   },
   {
     "name" : "SQLite",
-    "desc" : "Asynchronous, non-blocking SQLite3 bindings for Node.js",
+    "desc" : "Asynchronous, non-blocking SQLite3 ",
     "image" : "sqlite.png",
     "category" : "File System",
     "docs" : "https://github.com/developmentseed/node-sqlite3",

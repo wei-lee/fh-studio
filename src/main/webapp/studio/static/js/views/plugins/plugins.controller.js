@@ -1,6 +1,7 @@
 App.View.PluginsController = Backbone.View.extend({
   events: {
     'click .plugin .addButton': 'setup',
+    'click .plugin *': 'setup',
     'click .pluginBackLink': 'done'
   },
   subviews : {
@@ -29,10 +30,11 @@ App.View.PluginsController = Backbone.View.extend({
    */
   setup : function(e){
     e.preventDefault();
-
+    e.stopPropagation();
     var self = this,
-    addButton = $(e.target),
-    id = $(addButton).attr('data-id') || $(addButton.parent()).attr('data-id');
+    el = $(e.target),
+    el = ($(el).hasClass('plugin')) ? el : el.parents('.plugin');
+    id = $(el).attr('data-id') || $(el.parent()).attr('data-id');
 
 
     this.setup = new App.View.PluginsSetup({plugin : this.dashboard.collection.get(id) });

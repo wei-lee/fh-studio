@@ -1,7 +1,7 @@
 App.View.PluginsDashboard = App.View.PluginsView.extend({
   templates : {
     // These get replaced with a handlebars template function with a $ prefix on the key once compileTemplates is run
-    pluginPaneImage: '#pluginPaneImage',
+    pluginPaneBody: '#pluginPaneBody',
     pluginPaneItemTpl: '#pluginPaneItemTpl',
     pluginsFullscreenBody : '#pluginsFullscreenBody',
     pluginsHeader : '#pluginsHeader'
@@ -46,7 +46,7 @@ App.View.PluginsDashboard = App.View.PluginsView.extend({
 
       // Setup the version so it's blank if git backed, or else "v 1.0" style
       p.versionLabel = (!p.version || p.version === "" || p.version.indexOf("git")>-1) ? "Custom version" : "v" + p.version;
-      p.title = (p.image) ? self.templates.$pluginPaneImage(p) : '<h2>' + p.name +'</h2>';
+      p.pluginBody = (p.image) ? self.templates.$pluginPaneBody(p) : '<h2>' + p.name +'</h2>';
       pluginItems.push(self.templates.$pluginPaneItemTpl(p));
     });
 

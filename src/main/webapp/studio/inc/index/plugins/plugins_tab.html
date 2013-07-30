@@ -47,16 +47,19 @@
   </div>
 </script>
 
-<script type="text/x-handlebars-template" id="pluginPaneImage">
+<script type="text/x-handlebars-template" id="pluginPaneBody">
   <div class="row">
     <div class="span6 pluginThumb">
       <img src="/studio/static/themes/default/img/cloud_plugins/{{ image }}">
     </div>
     <div class="span6">
       <p>
-        <strong>Version: </strong><i>{{ versionLabel }}</i><br />
+        <strong>Version: </strong><i>{{ versionLabel }}</i><br /><br />
         {{ desc }}
       </p>
+      <a class="btn btn-success addButton" href="#">
+        Show <i class="icon-white icon-plus-sign"></i>
+      </a>
     </div>
   </div>
 
@@ -65,12 +68,9 @@
 
 </script>
 <script type="text/x-handlebars-template" id="pluginPaneItemTpl">
-  <div class="span4 plugin" data-name="{{name}}" data-category="{{category}}">
+  <div class="span4 plugin" data-name="{{name}}" data-category="{{category}}" data-id="{{ id }}" data-plugin="{{ name }}">
     <h4 class="category">{{category}}</h4>
-          {{{ title }}}
-    <a class="btn btn-success addButton" data-id="{{ id }}" data-plugin="{{ name }}" href="#">
-      Add <i class="icon-white icon-plus-sign"></i>
-    </a>
+          {{{ pluginBody }}}
   </div><!--/span4-->
 </script>
 <script type="text/x-handlebars-template" id="pluginSetup">
