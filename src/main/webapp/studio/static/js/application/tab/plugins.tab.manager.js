@@ -20,6 +20,8 @@ Plugins.Tab.Manager = Tab.Manager.extend({
       this.view = new App.View.PluginsController();
       this.view.render();
       $(this.views.container).append(this.view.el);
+    }else{
+      this.view.show();
     }
   }
 });

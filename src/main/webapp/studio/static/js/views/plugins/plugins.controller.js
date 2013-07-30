@@ -46,5 +46,12 @@ App.View.PluginsController = Backbone.View.extend({
     e.preventDefault();
     this.setup.$el.remove();
     this.dashboard.show();
+  },
+  show : function(){
+    if (this.dashboard.shown === false){
+      this.setup.show();
+    }
+
+
   }
 });
