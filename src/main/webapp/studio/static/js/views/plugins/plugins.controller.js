@@ -8,14 +8,7 @@ App.View.PluginsController = Backbone.View.extend({
     dashboard : App.View.PluginsDashboard,
     setup : App.View.PluginsSetup
   },
-  initialize : function(){
-    var self =  this;
-    $('#plugins_tab').click(function(e){
-      if (self.dashboard !== 'undefined' && self.dashboard.shown === false){
-        self.done.apply(self, [e]);
-      }
-    });
-  },
+  initialize : function(){},
   render: function(options) {
     var self = this;
     this.$el.html($('#pluginsContainerTemplate').html());
