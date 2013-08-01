@@ -501,7 +501,8 @@ Apps.Preview.Controller = Controller.extend({
       // use transform plugin to scale preview
       p_frame.css({
         position: 'absolute',
-        scale: scale_factor,
+        '-webkit-transform-origin': '0 0',
+        transform: 'scale('+scale_factor+','+scale_factor+')',
         origin: ['0', '0']
       });
       
@@ -529,6 +530,7 @@ Apps.Preview.Controller = Controller.extend({
       p_frame.css({
         position: 'absolute',
         scale: '1',
+        transform: 'scale(1,1)',
         // IE doesn't like it when an empty string is passed in here, so 0,0 will do
         origin: ['0', '0']
       });
