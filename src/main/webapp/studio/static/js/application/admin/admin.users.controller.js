@@ -121,13 +121,17 @@ Admin.Users.Controller = Controller.extend({
 
   bindUserControls: function() {
     var self = this;
-    $(this.views.users + ' tr td .edit_user, ' + this.views.users + ' tr td:not(.controls,.dataTables_empty)').unbind().live('click', function() {
+
+    var edit_sel = this.views.users + ' tr td .edit_user, ' + this.views.users + ' tr td:not(.controls,.dataTables_empty)';
+
+    $(document).off("click", edit_sel).on('click', edit_sel, function() {
       var row = $(this).parent().parent();
       var data = self.userDataForRow($(this).closest('tr').get(0));
       self.showUserUpdate(this, row, data);
       return false;
     });
-    $('tr td .delete_user', this.views.users).unbind().live('click', function() {
+
+    $(document).off("click", this.views.users + " tr td .delete_user").on("click", this.views.users + " tr td .delete_user", function() {
       var row = $(this).parent().parent();
       var data = self.userDataForRow($(this).parent().parent().get(0));
       self.deleteUser(this, row, data);
@@ -226,7 +230,7 @@ Admin.Users.Controller = Controller.extend({
           return cb(e);
         });
     },
- function(cb) {
+      function(cb) {
         // roles
         self.models.role.list_assignable(function(res) {
           console.log('Role list OK.');
@@ -235,7 +239,7 @@ Admin.Users.Controller = Controller.extend({
           return cb(e);
         });
     },
- function(cb) {
+      function(cb) {
         // roles
         self.models.policy.list(function(res) {
           console.log('Policy list OK.');
