@@ -1,4 +1,6 @@
 App.View.Chart = Backbone.View.extend({
+
+  LIVE_MAX_POINTS : 10,
   initialize: function(options) {
     var self = this;
 
@@ -13,6 +15,7 @@ App.View.Chart = Backbone.View.extend({
       }, this);
 
       this.collection.bind("sync", function() {
+        console.log("collection synced", this.collection);
         self.render();
       }, this);
 
@@ -20,6 +23,12 @@ App.View.Chart = Backbone.View.extend({
     } else {
       delete this.options.model;
       self.render();
+    }
+
+    if(this.options.dynamic && this.options.dynamic === true){
+      if (this.collection) {
+        this.collection.on('add', this.addPoint);
+      }
     }
 
     $(window).bind('resizeEnd', function() {
@@ -39,6 +48,22 @@ App.View.Chart = Backbone.View.extend({
     }
   },
 
+  addPoint: function(model, collection, options) {
+    if (!this.chart) return;
+    var series = collection.getSeries();
+    for(var i=0;i<series.length;i++){
+      var chartSeries = this.chart.series[i];
+      var obj = model.toJSON();
+      var seriesname = series[i];
+      if(chartSeries.data.length < this.LIVE_MAX_POINTS){
+        chartSeries.addPoint({x: obj.ts, y: obj[seriesname]}, true);
+      } else {
+        chartSeries.addPoint({x: obj.ts, y: obj[seriesname]}, true, true);
+      }
+    }
+    
+  },
+
   render: function(loading, resize) {
     var self = this;
 
@@ -53,7 +78,7 @@ App.View.Chart = Backbone.View.extend({
       return this;
     }
 
-    if (this.collection.models.length === 0 && !this.model) {
+    if (!this.model && this.collection && this.collection.models.length === 0 ) {
       this.$el.html("No data available for selected date range.");
       return this;
     }
@@ -76,6 +101,7 @@ App.View.Chart = Backbone.View.extend({
       } else {
         this.options.series = this.collection.toJSON();
       }
+      
     } else {
       throw "Chart view needs a model or collection set.";
     }
@@ -85,7 +111,7 @@ App.View.Chart = Backbone.View.extend({
 
     // Show subtitle or not?
     // Overview areas have a hideSubtitle property to hide subtitles on charts
-    if (typeof this.collection.getSubtitle !== 'undefined' && !this.options.hideSubtitle) {
+    if (this.collection && typeof this.collection.getSubtitle !== 'undefined' && !this.options.hideSubtitle) {
       // Use subtitle if available on collection
       this.options.subtitle = {
         text: this.collection.getSubtitle(),
@@ -98,7 +124,8 @@ App.View.Chart = Backbone.View.extend({
     if (!this.options.chart.width || resize) {
       this.options.chart.width = $(this.options.chart.renderTo).width();
     }
-
+    console.log("chart options", this.options);
+    
     // Some doughnuts may need adjusting
     this.chart = new Highcharts.Chart(this.options);
     return this;

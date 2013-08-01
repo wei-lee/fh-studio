@@ -14,7 +14,7 @@ Cloudenvironments.Controller = Apps.Controller.extend({
       console.log("Overview constructed");
       this.view = new Cloudenvironments.View.Overview({
         collection: cloudEnvs,
-        el: '#cloudenvironments_accordion'
+        el: $('#cloudenvironments_accordion')[0]
       });
     }
   }

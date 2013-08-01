@@ -14,7 +14,7 @@
     },
     "cpu" : {
       "total" : 100,
-      "used" : 2,
+      "used" : 10,
       "apps" : 8
     },
     "disk" : {

@@ -132,6 +132,9 @@ js/views/app/cloud/cloud.sysevents.view.js
 js/views/app/cloud/cloud.alerts.view.js
 js/views/app/cloud/cloud.alertnotifications.view.js
 js/views/cloudenvironments/cloudenvironments.overview.view.js
+js/views/cloudenvironments/cloudenvironments.envresources.view.js
+js/views/cloudenvironments/cloudenvironments.appsresources.view.js
+js/views/cloudenvironments/cloudenvironments.cacheresources.view.js
 js/model/ModelManager.js
 js/model/models/Model.js
 js/model/models/App.js

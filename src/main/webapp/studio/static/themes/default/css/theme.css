@@ -3834,14 +3834,14 @@ h5.steps{
   color: #dd514c;
 }
 
-#cloud_environments_layout .details_nav {
+#cloud_environments_layout .accordion-inner > .nav {
   display: block;
   margin-left: auto;
   margin-right: auto;
   width: 400px;
 }
 
-#cloud_environments_layout .details_nav li {
+#cloud_environments_layout .accordion-inner > .nav > li {
   width: 110px;
   margin-right: 20px;
   text-align: center;
@@ -3850,11 +3850,30 @@ h5.steps{
 
 #cloud_environments_layout .details_content {
   width: 100%;
-  height: 900px;
+  height: 780px;
 }
 
-#cloud_environments_layout .details_content .nav_content {
-  display: none;
-  height: 100%;
-  width: 100%;
+#cloud_environments_layout  .resource_chart_view {
+  height: 160px;
+}
+
+#cloud_environments_layout  .single_resource_view  .line_chart_view {
+  height: 160px;
+}
+
+#cloud_environments_layout  .single_resource_view  .stack_chart_view {
+  height: 400px;
+}
+
+#cloud_environments_layout  .single_resource_view .stack_chart_view .stack_chart_view_chart {
+  height: 350px;
+}
+
+#cloud_environments_layout  .single_resource_view .stack_chart_view .stack_chart_view_legend {
+  margin-top: 5px;
+  height: 35px;
+}
+
+#cloud_environments_layout  .single_resource_view .apps_view {
+  height: 240px;
 }

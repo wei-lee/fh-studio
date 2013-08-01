@@ -69,21 +69,64 @@
     </div>
     <div id="cloudenvironment_details_{{name}}" class="accordion-body collapse">
       <div class="accordion-inner">
-        <div class="details_nav">
-          <ul class="nav nav-pills">
-            <li><a href=".details_resources_cotent">Resources</a></li>
-            <li><a href=".details_apps_cotent">Apps</a></li>
-            <li><a href=".details_cache_cotent">Cache</a></li>
+        <ul class="nav nav-pills">
+            <li><a href="#details_resources_cotent_{{name}}" data-toggle="pill">Resources</a></li>
+            <li><a href="#details_apps_cotent_{{name}}" data-toggle="pill">Apps</a></li>
+            <li><a href="#details_cache_cotent_{{name}}" data-toggle="pill">Cache</a></li>
          </ul>
-        </div>
 
-        <div class="details_content">
-          <div class="nav_content details_resources_cotent">Resources</div>
-          <div class="nav_content details_apps_cotent">Apps</div>
-          <div class="nav_content details_cache_cotent">Cache</div>
+        <div class="details_content tab-content">
+          <div class="nav_content tab-pane" id="details_resources_cotent_{{name}}">Resources</div>
+          <div class="nav_content tab-pane" id="details_apps_cotent_{{name}}">Apps</div>
+          <div class="nav_content tab-pane" id="details_cache_cotent_{{name}}">Cache</div>
         </div>
 
       </div>
+    </div>
+  </div>
+</script>
+
+<script id="cloudenvironments-tabbable-view-template" type="text/x-handlebars-template">
+  <div class="tabbable tabs-left">
+    <ul class="nav nav-tabs">
+      {{#each list}}
+        <li><a href="#{{@key}}_content" data-toggle="tab">{{this}}</a></li>
+      {{/each}}
+    </ul>
+    <div class="tab-content">
+      {{#each list}}
+      <div class="tab-pane detail_view" id="{{@key}}_content"></div>
+      {{/each}}
+    </div>
+  </div>
+</script>
+
+<script id="cloudenvironments-resource-dashboard-view-template" type="text/x-handlebars-template">
+  <div>
+    {{#each resources}}
+      <form class="{{@key}}_dashboard_form">
+        <fieldset class="well">
+          <legend>{{this}}</legend>
+          <div class="{{@key}}_chart_view resource_chart_view">
+
+          </div>
+        </fieldset>
+      </form>
+    {{/each}}
+  </div>
+</script>
+
+<script id="cloudenvironments-resource-single-view-template" type="text/x-handlebars-template">
+  <div class="single_resource_view">
+    <div class="well line_chart_view">
+    </div>
+    <div class="well stack_chart_view">
+      <div class="stack_chart_view_chart"></div>
+      <div class="stack_chart_view_legend"></div>
+    </div>
+    <div class="row-fluid apps_view">
+      <div class="span5 pie_chart_view"></div>
+      <div class="span7 details_table_view"></div>
     </div>
   </div>
 </script>

@@ -66,8 +66,7 @@ Cloudenvironments.View.EnvAccordionView = Backbone.View.extend({
   events: {
     'click .reload_button': 'reloadModel',
     'click .show_collapse_button': 'showCollapse',
-    'click .hide_collapse_button': 'hideCollapse',
-    'click .details_nav li': 'navContent'
+    'click .hide_collapse_button': 'hideCollapse'
   },
 
   initialize: function(options){
@@ -87,13 +86,25 @@ Cloudenvironments.View.EnvAccordionView = Backbone.View.extend({
     this.$el.find('.collapse').on('show', function(){
       self.$el.find('.show_collapse_button').addClass('hidden');
       self.$el.find('.hide_collapse_button').removeClass('hidden');
-      if(self.$el.find('.details_nav li.active').length === 0){
-        self.$el.find('.details_nav li:eq(0)').trigger('click');
-      }
     });
     this.$el.find('.collapse').on('hide', function(){
       self.$el.find('.hide_collapse_button').addClass('hidden');
       self.$el.find('.show_collapse_button').removeClass('hidden');
+    });
+    this.$el.find('.collapse').on('shown', function(){
+      if(self.$el.find('.nav li.active').length === 0){
+        self.$el.find('.nav li:first a').tab('show');
+      }
+    });
+    this.$el.find('a[data-toggle="pill"]').on('shown', function(e){
+      var href = $(e.target).attr("href");
+      if(href.indexOf("details_resources_cotent") > -1){
+        self.showEnvResourceDetails(self.$(href));
+      } else if(href.indexOf("details_apps_cotent") > -1) {
+        self.showAppResouceDetails(self.$(href));
+      } else {
+        self.showCacheDetails(self.$(href));
+      }
     });
   },
 
@@ -112,14 +123,35 @@ Cloudenvironments.View.EnvAccordionView = Backbone.View.extend({
     this.$el.find('.collapse').collapse('hide');
   },
 
-  navContent: function(e){
-    e.preventDefault();
-    this.$el.find('.nav_content').hide();
-    this.$el.find('.details_nav li.active').removeClass("active");
-    var li = $(e.target).is("li") ? $(e.target): $(e.target).closest('li');
-    li.addClass("active");
-    var navTarget = $(li.find('a')).attr('href');
-    this.$el.find(navTarget).show();
+  showEnvResourceDetails: function(el){
+    if(!this.envResourcesView){
+      this.envResourcesView = new Cloudenvironments.View.EnvResourcesView({
+        model: this.model,
+        el: el[0]
+      });
+      this.envResourcesView.render();
+    }
+    
+  },
+
+  showAppResouceDetails: function(el){
+    if(!this.appsResourcesView){
+      this.appsResourcesView = new Cloudenvironments.View.AppsResourcesView({
+        model: this.model,
+        el: el[0]
+      });
+      this.appsResourcesView.render();
+    }
+  },
+
+  showCacheDetails: function(el){
+    if(!this.cacheResourcesView){
+      this.cacheResourcesView = new Cloudenvironments.View.CacheResourcesView({
+        model: this.model,
+        el: el[0]
+      });
+      this.cacheResourcesView.render();
+    }
   }
 });
 
