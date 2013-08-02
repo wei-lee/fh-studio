@@ -121,7 +121,6 @@ Admin.Users.Controller = Controller.extend({
 
   bindUserControls: function() {
     var self = this;
-
     var edit_sel = this.views.users + ' tr td .edit_user, ' + this.views.users + ' tr td:not(.controls,.dataTables_empty)';
 
     $(document).off("click", edit_sel).on('click', edit_sel, function() {
@@ -131,7 +130,8 @@ Admin.Users.Controller = Controller.extend({
       return false;
     });
 
-    $(document).off("click", this.views.users + " tr td .delete_user").on("click", this.views.users + " tr td .delete_user", function() {
+    var delete_sel = this.views.users + " tr td .delete_user";
+    $(document).off("click", delete_sel).on("click", delete_sel, function() {
       var row = $(this).parent().parent();
       var data = self.userDataForRow($(this).parent().parent().get(0));
       self.deleteUser(this, row, data);
