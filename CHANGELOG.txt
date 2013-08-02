@@ -6,6 +6,12 @@ Component: fh-studio
 * 4354 - mBaaS plugins catalog
 * 4414 - Update iOS and Android SDK artifacts to the latest version (Adding native sync client support)
 
+NOTES:
+
+A Millicore property now exists for toggling the Plugins UI. This should be set to enabled for the psdev domain (off by default).
+
+studio.plugins.enabled=true
+
 3.17.5 - 2013-07-23 - IR206 - Craig Brookes
 ---------------------------------------------------------------------------
 * 4350-disable-founderies
