@@ -74,6 +74,9 @@ Cloudenvironments.View.EnvAccordionView = Backbone.View.extend({
     var temp = Handlebars.compile($('#cloudenvironments-env-resource-accordion-tempalte').html());
     var html = temp({name: this.envName, envName: this.model.getEnvName()});
     this.$el = $(html);
+    this.model.on("change:interval", function(){
+      this.renderCountDown();
+    }, this);
   }, 
 
   render: function(){
@@ -106,6 +109,11 @@ Cloudenvironments.View.EnvAccordionView = Backbone.View.extend({
         self.showCacheDetails(self.$(href));
       }
     });
+    this.renderCountDown();
+  },
+
+  renderCountDown: function(){
+    this.$el.find('.count_down_info').find("span").text(this.model.get("interval") === 0 ? "Loading..." : ("Next Refresh: " + this.model.get("interval") + " Seconds") );
   },
 
   reloadModel: function(e){

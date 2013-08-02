@@ -49,19 +49,18 @@ App.View.Chart = Backbone.View.extend({
   },
 
   addPoint: function(model, collection, options) {
+    //expect the model is formatted as highchart series data
     if (!this.chart) return;
-    var series = collection.getSeries();
-    for(var i=0;i<series.length;i++){
-      var chartSeries = this.chart.series[i];
-      var obj = model.toJSON();
-      var seriesname = series[i];
-      if(chartSeries.data.length < this.LIVE_MAX_POINTS){
-        chartSeries.addPoint({x: obj.ts, y: obj[seriesname]}, true);
+    var modelJson = model.toJSON();
+    var seriesIndex = modelJson.index || 0;
+    var series = this.chart.series[seriesIndex];
+    if ($(this.options.chart.renderTo).is(':visible')){
+      if(series.data.length < this.LIVE_MAX_POINTS){
+        series.addPoint(modelJson.data, true);
       } else {
-        chartSeries.addPoint({x: obj.ts, y: obj[seriesname]}, true, true);
-      }
+        series.addPoint(modelJson.data, true, true);
+      }  
     }
-    
   },
 
   render: function(loading, resize) {
@@ -87,30 +86,20 @@ App.View.Chart = Backbone.View.extend({
       this.chart.destroy();
     }
 
-    //To get series data, we check if the model or collection has defined a "getChartSeries" function, if it does, use that method,
-    //otherwise, use the toJSON function
     // Assume model-based series
     if (this.model) {
-      if(typeof this.model.getChartSeries === "function"){
-        this.options.series = this.model.getSeries(this.options);
-      } else {
-        this.options.series = this.model.toJSON().series;
-      }
+      this.options.series = this.model.toJSON().series;
     } else if (this.collection) {
 
-      if(typeof this.collection.getChartSeries === "function"){
-        this.options.series = this.collection.getChartSeries(this.options);
-      } else {
-        // There are two potential usages of a collection. If the collection
-        // is a Series instance (as defined above), treat it as a single
-        // series. Otherwise assume it is a collection of multiple series
+      // There are two potential usages of a collection. If the collection
+      // is a Series instance (as defined above), treat it as a single
+      // series. Otherwise assume it is a collection of multiple series
         
-        // Pie charts are "special"
-        if (this.collection instanceof App.Collection.PieMetrics) {
-          this.options.series = [this.collection.toJSON()];
-        } else {
-          this.options.series = this.collection.toJSON();
-        }
+      // Pie charts are "special"
+      if (this.collection instanceof App.Collection.PieMetrics) {
+        this.options.series = [this.collection.toJSON()];
+      } else {
+        this.options.series = this.collection.toJSON();
       }
 
     } else {
