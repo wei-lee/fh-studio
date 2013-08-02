@@ -3858,22 +3858,47 @@ h5.steps{
 }
 
 #cloud_environments_layout  .single_resource_view  .line_chart_view {
-  height: 160px;
+  height: 200px;
 }
 
 #cloud_environments_layout  .single_resource_view  .stack_chart_view {
-  height: 400px;
+  height: 130px;
 }
 
 #cloud_environments_layout  .single_resource_view .stack_chart_view .stack_chart_view_chart {
-  height: 350px;
+  height: 100px;
 }
 
 #cloud_environments_layout  .single_resource_view .stack_chart_view .stack_chart_view_legend {
   margin-top: 5px;
-  height: 35px;
+  height: 25px;
+  padding-left: 10px;
+  font-size: 1.2em;
 }
 
 #cloud_environments_layout  .single_resource_view .apps_view {
-  height: 240px;
+  height: 370px;
+}
+
+#cloud_environments_layout  .single_resource_view .apps_view .pie_chart_view {
+  height: 370px;
+}
+
+#cloud_environments_layout  .single_resource_view .apps_view .details_table_view {
+  padding-top: 40px;
+  height: 370px;
+}
+
+#cloud_environments_layout .apps_resource_view_container {
+  height: 764px;
+  border-top: solid 1px;
+  padding-top: 15px;
+}
+
+#cloud_environments_layout .apps_resource_view_container .apps_resource_child_view {
+  height: 749px;
+}
+
+#cloud_environments_layout .apps_resource_view_container .apps_resource_details_view {
+  display: none;
 }

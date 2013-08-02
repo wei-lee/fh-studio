@@ -5,12 +5,46 @@ Cloudenvironments.View.ResourceBarChartView = App.View.BarChart.extend({
   initialize: function(options){
     options = $.extend(true, {}, options, {
       chart: {
-        type: "bar"
+        type: "bar",
+        backgroundColor: "transparent"
       },
       credits: {
         enabled: false
       },
-      title: false
+      exporting: {
+        enabled: false
+      },
+      legend: false,
+      title: false,
+      xAxis: {
+        lineWidth: 0,
+        gridLineWidth: 0,
+        minorGridLineWidth: 0,
+        lineColor: 'transparent',
+        labels: {
+          enabled: false
+        },
+        minorTickLength: 0,
+        tickLength: 0,       
+      }, 
+      yAxis: {
+        min: 0,
+        title: false,
+        lineWidth: 0,
+        gridLineWidth: 0,
+        minorGridLineWidth: 0,
+        lineColor: 'transparent',
+        labels: {
+          enabled: false
+        },
+        minorTickLength: 0,
+        tickLength: 0   
+      },
+      plotOptions: {
+        series: {
+          stacking: 'percent'
+        }
+      }
     });
 
     App.View.BarChart.prototype.initialize.call(this, options);
@@ -115,7 +149,7 @@ Cloudenvironments.View.ResourceDashboardView = Backbone.View.extend({
     opts.dynamic = true;
     opts.collection = collection;
     var chartView = new App.View.LineChart(opts);
-    chartView.render();
+    //chartView.render();
   }
 });
 
@@ -127,9 +161,12 @@ Cloudenvironments.View.SingleResourceView = Backbone.View.extend({
   },
 
   render: function(){
+    var self = this;
     this.$el.html(this.temp());
     this.renderLineChartView();
     this.renderStackChart();
+    this.renderPieChart();
+    this.renderAppsTable();
   },
 
   renderLineChartView : function(){
@@ -149,8 +186,71 @@ Cloudenvironments.View.SingleResourceView = Backbone.View.extend({
     opts.model = model;
     opts.xAxis = {categories: [this.resource]};
     var chartView = new Cloudenvironments.View.ResourceBarChartView(opts);
-    //chartView.render();
+    this.renderLegends();
+    model.on("change", function(){
+      if(this.$el.is(":visible")){
+        chartView.render();
+        this.renderLegends();
+      }
+    }, this);
+  },
+
+  //TODO: review this, better way to handle this?
+  renderLegends: function(){
+    var model = this.model.getStackSeries(this.resource);
+    var temp = Handlebars.compile($('#cloudenvironments-resource-stack-chart-legend-template').html());
+    var legends = [];
+    var series = model.getSeries();
+    var colors = model.getColors();
+    series.push("free");
+    for(var i=0;i<series.length; i++){
+      var className = "span" + (12/series.length);
+      legends.push({text: series[i], color: colors[i], percentage: model.getPercentage(series[i]), className: className});
+    }
+    this.$el.find('.stack_chart_view_legend').html(temp({legends: legends}));
+  },
+
+  renderPieChart: function(){
+    var collection = this.model.getAppPieSeries(this.resource);
+    var opts ={el: this.$el.find('.pie_chart_view')[0]};
+    opts.collection = collection;
+    opts.title = false;
+    opts.exporting = false;
+    var chartView = new App.View.PieChart(opts);
+    chartView.render();
+  },
+
+  renderAppsTable: function(){
+    var self = this;
+    var tableView = new App.View.DataTable({
+      aaData : self.model.get("apps"),
+      "fnRowCallback": function(nTr, sData, oData, iRow, iCol) {
+        // Append guid data
+        $(nTr).attr('data-guid', sData.guid);
+      },
+      aoColumns: [{
+        "sTitle": "Title",
+        "mDataProp": "title"
+      }, {
+        "sTitle": "Type",
+        "mDataProp": "type",
+      }, {
+        "sTitle": "Status",
+        "mDataProp": "status",
+      }, {
+        "sTitle": self.resource,
+        "mDataProp": self.resource
+      }],
+      "bAutoWidth": false,
+      "sPaginationType": 'bootstrap',
+      "sDom": "<'row-fluid'<'span12'f>r>t<'row-fluid'<'pull-left'i><'pull-right'p>>",
+      "bLengthChange": false,
+      "iDisplayLength": 5,
+      "bInfo": true
+    });
+    this.$el.find('.details_table_view').html(tableView.render().el);
   }
+
 });
 
 Cloudenvironments.View.EnvResourcesView = Backbone.View.extend({

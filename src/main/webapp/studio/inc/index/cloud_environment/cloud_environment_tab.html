@@ -118,15 +118,36 @@
 
 <script id="cloudenvironments-resource-single-view-template" type="text/x-handlebars-template">
   <div class="single_resource_view">
-    <div class="well line_chart_view">
-    </div>
-    <div class="well stack_chart_view">
-      <div class="stack_chart_view_chart"></div>
-      <div class="stack_chart_view_legend"></div>
+    <div class="well">
+      <div class="line_chart_view">
+      </div>
+      <div class="stack_chart_view">
+        <div class="stack_chart_view_chart"></div>
+        <div class="stack_chart_view_legend"></div>
+      </div>
     </div>
     <div class="row-fluid apps_view">
       <div class="span5 pie_chart_view"></div>
       <div class="span7 details_table_view"></div>
     </div>
+  </div>
+</script>
+
+<script id="cloudenvironments-resource-stack-chart-legend-template" type="text/x-handlebars-template">
+  <div class="row-fluid">
+    {{#each legends}}
+      <div class="{{this.className}}">
+        <span style="width: 20px; height: 20px; display: inline-block; background-color: {{this.color}}; margin-top: 5px;"></span>
+        <span>{{this.text}}</span>
+        <span>{{this.percentage}}</span>
+      </div>
+    {{/each}}
+  </div>
+</script>
+
+<script id="cloudenvironments-apps-resource-view-template" type="text/x-handlebars-template">
+  <div class="apps_resource_view_container">
+    <div class="apps_resource_list_view apps_resource_child_view"></div>
+    <div class="apps_resource_details_view apps_resource_child_view"></div>
   </div>
 </script>

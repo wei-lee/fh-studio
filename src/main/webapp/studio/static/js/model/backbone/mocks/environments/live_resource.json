@@ -31,7 +31,9 @@
       "name" : "Example App 1",
       "memory" : 9,
       "cpu" : 3,
-      "disk" : 80
+      "disk" : 80,
+      "type": "App Cloud",
+      "status": "Running"
     },
     {
       "guid" : "2",
@@ -39,7 +41,9 @@
       "name" : "Example App 2",
       "memory" : 10,
       "cpu" : 2,
-      "disk" : 100
+      "disk" : 100,
+      "type": "App Cloud",
+      "status": "Running"
     },
     {
       "guid" : "3",
@@ -47,7 +51,9 @@
       "name" : "Example App 3",
       "memory" : 11,
       "cpu" : 3,
-      "disk" : 120
+      "disk" : 120,
+      "type": "App Cloud",
+      "status": "Running"
     }
   ]
 } 
