@@ -3910,3 +3910,12 @@ h5.steps{
 #cloud_environments_layout .apps_resource_view_container .apps_resource_details_view {
   display: none;
 }
+
+#cloud_environments_layout .cloudenvironments_per_app_resource_container .control-btns .btn {
+  width: 150px;
+  margin-right: 30px;
+}
+
+#cloud_environments_layout .cloudenvironments_per_app_resource_container .resource_chart_view{
+  height: 100px;
+}

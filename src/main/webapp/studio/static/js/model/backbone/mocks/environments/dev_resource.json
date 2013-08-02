@@ -33,7 +33,9 @@
       "cpu" : 3,
       "disk" : 80,
       "type": "App Cloud",
-      "status": "Running"
+      "status": "Running",
+      "lastDeployed": "",
+      "lastAccessed": ""
     },
     {
       "guid" : "2",
@@ -43,7 +45,9 @@
       "cpu" : 2,
       "disk" : 100,
       "type": "App Cloud",
-      "status": "Running"
+      "status": "Running",
+      "lastDeployed": "",
+      "lastAccessed": ""
     },
     {
       "guid" : "3",
@@ -53,7 +57,9 @@
       "cpu" : 3,
       "disk" : 120,
       "type": "App Cloud",
-      "status": "Running"
+      "status": "Running",
+      "lastDeployed": "",
+      "lastAccessed": ""
     }
   ]
 } 

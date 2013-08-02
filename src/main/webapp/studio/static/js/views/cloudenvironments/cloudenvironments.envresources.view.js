@@ -145,34 +145,12 @@ Cloudenvironments.View.SingleResourceView = Backbone.View.extend({
   },
 
   renderAppsTable: function(){
-    var self = this;
-    var tableView = new App.View.DataTable({
-      aaData : self.model.getAppResources(),
-      "fnRowCallback": function(nTr, sData, oData, iRow, iCol) {
-        // Append guid data
-        $(nTr).attr('data-guid', sData.guid);
-      },
-      aoColumns: [{
-        "sTitle": "Title",
-        "mDataProp": "title"
-      }, {
-        "sTitle": "Type",
-        "mDataProp": "type",
-      }, {
-        "sTitle": "Status",
-        "mDataProp": "status",
-      }, {
-        "sTitle": self.resource,
-        "mDataProp": self.resource
-      }],
-      "bAutoWidth": false,
-      "sPaginationType": 'bootstrap',
-      "sDom": "<'row-fluid'<'span12'f>r>t<'row-fluid'<'pull-left'i><'pull-right'p>>",
-      "bLengthChange": false,
-      "iDisplayLength": 5,
-      "bInfo": true
+    var tableView = new Cloudenvironments.View.AppsResourceTableView({
+      model: this.model,
+      resource: this.resource,
+      el: this.$el.find('.details_table_view')[0]
     });
-    this.$el.find('.details_table_view').html(tableView.render().el);
+    tableView.render();
   }
 
 });
@@ -181,7 +159,6 @@ Cloudenvironments.View.EnvResourcesView = Backbone.View.extend({
 
   render: function(){
     var self = this;
-    console.log("EnvResourcesView rendered");
     if(!this.tabbableView){
       this.tabbableView = new Cloudenvironments.View.TabbableView({
         model: self.model,
