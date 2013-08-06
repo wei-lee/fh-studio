@@ -3851,7 +3851,7 @@ h5.steps{
 
 #cloud_environments_layout .details_content {
   width: 100%;
-  height: 780px;
+  height: 100%;
 }
 
 #cloud_environments_layout .count_down_info {
@@ -3884,6 +3884,11 @@ h5.steps{
   font-size: 1.2em;
 }
 
+#cloud_environments_layout  .single_resource_view .stack_chart_view .stack_chart_view_legend .Apps .legend_text, #cloud_environments_layout  .single_resource_view .stack_chart_view .stack_chart_view_legend .Cache .legend_text {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 #cloud_environments_layout  .single_resource_view .apps_view {
   height: 370px;
 }
@@ -3898,13 +3903,9 @@ h5.steps{
 }
 
 #cloud_environments_layout .apps_resource_view_container {
-  height: 764px;
   border-top: solid 1px;
   padding-top: 15px;
-}
-
-#cloud_environments_layout .apps_resource_view_container .apps_resource_child_view {
-  height: 749px;
+  overflow: hidden;
 }
 
 #cloud_environments_layout .apps_resource_view_container .apps_resource_details_view {
@@ -3917,5 +3918,53 @@ h5.steps{
 }
 
 #cloud_environments_layout .cloudenvironments_per_app_resource_container .resource_chart_view{
-  height: 100px;
+  height: 130px;
+}
+
+#cloud_environments_layout .cache_content_view {
+  border-top: solid 1px;
+  padding-top: 15px;
+  font-size: 1.2em;
+}
+
+#cloud_environments_layout .cache_content_view label {
+  font-size: 14px;
+}
+
+#cloud_environments_layout .cache_content_view .set_cache_options_form span {
+  width: 150px;
+  display: inline-block;
+}
+
+#cloud_environments_layout .cache_current_size_bar {
+  position: relative;
+}
+
+#cloud_environments_layout .cache_description {
+  width: 100%;
+  color: black;
+  text-align: center;
+  position: absolute;
+  z-index: 1000;
+}
+
+#cloud_environments_layout .cache_content_view .set_cache_options .cache_option {
+  height: 30px;
+}
+
+#cloud_environments_layout .cache_content_view .set_cache_options input[type="text"] {
+  width: 35px;
+}
+
+#cloud_environments_layout .cache_warning_container {
+  border: solid 1px;
+  border-radius: 8px;
+  padding: 5px;
+  background-color: #F8C986;
+}
+
+#cloud_environments_layout .cache_warning_container  .cache_warning_icon {
+  width: 40px;
+  height: 40px;
+  display: inline-block;
 }

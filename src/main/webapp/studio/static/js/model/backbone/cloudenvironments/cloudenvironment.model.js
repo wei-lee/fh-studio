@@ -129,6 +129,7 @@ Cloudenvironments.Model.Environment = Backbone.Model.extend({
     envResource.on("sync", function(model, resp, options){
       this.countToNextLoad();
       this.updateResourceCollection(model);
+      this.trigger("sync");
     }, this);
     envResource.fetch();
   },
@@ -175,4 +176,19 @@ Cloudenvironments.Collection.Environments = Backbone.Collection.extend({
 
 Cloudenvironments.Collection.EnvResource = Backbone.Collection.extend({
   model: Cloudenvironments.Model.EnvironmentResource
+});
+
+Cloudenvironments.Model.CacheResource = Backbone.Model.extend({
+
+  initialize: function(options){
+    this.env = options.env;
+  },
+
+  getPercentage: function(){
+    return Math.round(parseInt(this.get("used"), 10)/parseInt(this.get("total"), 10)*100);
+  },
+
+  getMaxPercentage: function(){
+    return Math.round(parseInt(this.get("total"), 10)/parseInt(this.get("memory"), 10)*100);
+  }
 });

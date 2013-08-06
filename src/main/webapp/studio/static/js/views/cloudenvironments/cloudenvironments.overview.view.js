@@ -104,7 +104,11 @@ Cloudenvironments.View.EnvAccordionView = Backbone.View.extend({
       if(href.indexOf("details_resources_cotent") > -1){
         self.showEnvResourceDetails(self.$(href));
       } else if(href.indexOf("details_apps_cotent") > -1) {
-        self.showAppResouceDetails(self.$(href));
+        var appGuid = $(e.target).data("appGuid");
+        if(appGuid){
+          $(e.target).removeData("appGuid");
+        }
+        self.showAppResourceDetails(self.$(href), appGuid);
       } else {
         self.showCacheDetails(self.$(href));
       }
@@ -135,21 +139,28 @@ Cloudenvironments.View.EnvAccordionView = Backbone.View.extend({
     if(!this.envResourcesView){
       this.envResourcesView = new Cloudenvironments.View.EnvResourcesView({
         model: this.model,
-        el: el[0]
+        el: el[0],
+        parentView: this
       });
       this.envResourcesView.render();
     }
-    
   },
 
-  showAppResouceDetails: function(el){
+  showAppResourceDetails: function(el, appGuid){
     if(!this.appsResourcesView){
       this.appsResourcesView = new Cloudenvironments.View.AppsResourcesView({
         model: this.model,
         el: el[0]
       });
-      this.appsResourcesView.render();
+    } 
+    this.appsResourcesView.toggleView(appGuid);
+  },
+
+  switchToAppResourcesView: function(appGuid){
+    if(appGuid){
+      this.$el.find(".nav li:eq(1) a").data("appGuid", appGuid);
     }
+    this.$el.find(".nav li:eq(1) a").tab("show");
   },
 
   showCacheDetails: function(el){
@@ -158,8 +169,11 @@ Cloudenvironments.View.EnvAccordionView = Backbone.View.extend({
         model: this.model,
         el: el[0]
       });
-      this.cacheResourcesView.render();
     }
+  },
+
+  switchToCacheDetailsView: function(){
+    this.$el.find(".nav li:eq(2) a").tab("show");
   }
 });
 

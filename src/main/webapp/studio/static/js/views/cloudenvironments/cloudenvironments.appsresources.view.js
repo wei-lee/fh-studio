@@ -31,17 +31,26 @@ Cloudenvironments.View.AppsResourcesView = Backbone.View.extend({
     tableView.render();
   },
 
+  toggleView: function(guid){
+    if(typeof guid === "undefined"){
+      this.$el.find('.apps_resource_details_view').hide();
+      this.$el.find('.app_resource_table_view').show();
+    } else {
+      var detailsView = new Cloudenvironments.View.AppResourceDetailsView({
+        model: this.model,
+        appGuid: guid,
+        el: this.$el.find('.apps_resource_details_view')[0]
+      });
+      this.$el.find('.apps_resource_child_view').hide();
+      this.$el.find('.apps_resource_details_view').show();
+      detailsView.render();
+    }
+  },
+
   showAppResourceDetails: function(e){
     e.preventDefault();
     var guid = $(e.currentTarget).closest('tr').data('guid');
-    var detailsView = new Cloudenvironments.View.AppResourceDetailsView({
-      model: this.model,
-      appGuid: guid,
-      el: this.$el.find('.apps_resource_details_view')[0]
-    });
-    this.$el.find('.apps_resource_child_view').hide();
-    this.$el.find('.apps_resource_details_view').show();
-    detailsView.render();
+    this.toggleView(guid);
   }
 });
 

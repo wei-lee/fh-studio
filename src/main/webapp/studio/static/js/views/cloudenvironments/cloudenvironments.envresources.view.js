@@ -3,7 +3,8 @@ Cloudenvironments.View = Cloudenvironments.View || {};
 
 Cloudenvironments.View.TabbableView = Backbone.View.extend({
 
-  initialize: function(){
+  initialize: function(options){
+    this.parentView = options.parentView;
     this.temp = Handlebars.compile($('#cloudenvironments-tabbable-view-template').html());
   },
   
@@ -48,7 +49,8 @@ Cloudenvironments.View.TabbableView = Backbone.View.extend({
       this.memoryView = new Cloudenvironments.View.SingleResourceView({
         model: this.model,
         resource: 'memory',
-        el: id
+        el: id,
+        parentView: this
       });
     }
   },
@@ -58,7 +60,8 @@ Cloudenvironments.View.TabbableView = Backbone.View.extend({
       this.cpuView = new Cloudenvironments.View.SingleResourceView({
         model: this.model,
         resource: 'cpu',
-        el: id
+        el: id,
+        parentView: this
       });
     }
   },
@@ -68,9 +71,18 @@ Cloudenvironments.View.TabbableView = Backbone.View.extend({
       this.diskView = new Cloudenvironments.View.SingleResourceView({
         model: this.model,
         resource: 'disk',
-        el: id
+        el: id,
+        parentView: this
       });
     }
+  },
+
+  showAppResourceDetails: function(guid){
+    this.parentView.switchToAppResourcesView(guid);
+  },
+
+  showCacheDetails: function(){
+    this.parentView.switchToCacheDetailsView();
   }
 });
 
@@ -103,7 +115,14 @@ Cloudenvironments.View.ResourceDashboardView = Backbone.View.extend({
 });
 
 Cloudenvironments.View.SingleResourceView = Backbone.View.extend({
+  events: {
+    'click table tbody tr': 'showResourceDetailsForApp',
+    'click .stack_chart_view_legend .Apps .legend_text': 'showAppResourcesView',
+    'click .stack_chart_view_legend .Cache .legend_text': 'showCacheView'
+  },
+
   initialize: function(options){
+    this.parentView = options.parentView;
     this.resource = options.resource;
     this.temp = Handlebars.compile($('#cloudenvironments-resource-single-view-template').html());
     this.render();
@@ -151,18 +170,39 @@ Cloudenvironments.View.SingleResourceView = Backbone.View.extend({
       el: this.$el.find('.details_table_view')[0]
     });
     tableView.render();
+  },
+
+  showResourceDetailsForApp: function(e){
+    e.preventDefault();
+    var guid = $(e.currentTarget).closest('tr').data('guid'); 
+    this.parentView.showAppResourceDetails(guid);
+  },
+
+  showAppResourcesView: function(e){
+    e.preventDefault();
+    this.parentView.showAppResourceDetails();
+  },
+
+  showCacheView: function(e){
+    e.preventDefault();
+    this.parentView.showCacheDetails();
   }
 
 });
 
 Cloudenvironments.View.EnvResourcesView = Backbone.View.extend({
 
+  initialize: function(options){
+    this.parentView = options.parentView;
+  },
+
   render: function(){
     var self = this;
     if(!this.tabbableView){
       this.tabbableView = new Cloudenvironments.View.TabbableView({
         model: self.model,
-        el: self.el
+        el: self.el,
+        parentView : this.parentView
       });
       this.tabbableView.render();
     }

@@ -138,10 +138,12 @@
 <script id="cloudenvironments-resource-stack-chart-legend-template" type="text/x-handlebars-template">
   <div class="row-fluid">
     {{#each legends}}
-      <div class="{{this.className}}">
+      <div class="{{this.className}} {{this.legend_type}}">
         <span style="width: 20px; height: 20px; display: inline-block; background-color: {{this.color}}; margin-top: 5px;"></span>
-        <span>{{this.text}}</span>
-        <span>{{this.percentage}}</span>
+        <span class="legend_text">
+          <span>{{this.text}}</span>
+          <span>{{this.percentage}}</span>
+        </span>
       </div>
     {{/each}}
   </div>
@@ -185,6 +187,76 @@
     </form>
 
     <div class="resource_charts">
+    </div>
+
+  </div>
+</script>
+
+<script id="cloudenvironments-cache-content-view-template" type="text/x-handlebars-template">
+  <div class="cache_content_view row-fluid">
+    
+    <div class="cache_current_view span5">
+      
+      <div class="cache_current_view_info_row span12">
+        <form action="" class="form-horizontal">
+          
+          <div class="control-group">
+            <label for="cache_current_value" class="cache_current_size_label control-label">Current Cache Size</label>
+            <div class="controls">
+              <div class="progress cache_current_size_bar">
+                <div class="bar bar-success" style="width: {{cache_percent}}%">
+                </div>
+                <span class="cache_description">{{cache_percent}}% ({{cache_used}}MB/{{cache_total}}MB)</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <div class="flush_cache_control controls">
+              <button class="btn btn-warning flush_cache_btn"> Flush Cache </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="cache_warning_row span12">
+        <div class="cache_warning_container span12">
+          <div class="cache_warning_text span12">
+            <i class='icon-warning-sign'></i> Warning: Flushing Cache will remove all cached data for all apps in this environment. This may result in a temparary performance hit while the cache is being rebuilt.
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="set_cache_view span5 offset1">
+      <div class="set_cache_options_row span12">
+
+        <div class="set_cache_options span12">
+          <form action="" class="set_cache_options_form form-horizontal">
+            
+            <div class="set_cache_absolute control-group">
+              <label for="cache_value" class="control-label"> Set Max Cache Size </label>
+              <div class="controls">
+                <input type="radio" name="cache_value" checked>  <span> value in MB </span> <input type="text" class="cache_absolute_value" value="{{cache_total}}"></input> MB </input>
+              </div>
+            </div>
+        
+            <div class="set_cache_relative cache_option control-group">
+              <div class="controls">
+                <input type="radio" name="cache_value">  <span> % of available memory </span> <input type="text" class="cache_relative_value" value="{{max_cache_percentage}}"></input> % </input>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <div class="set_cache_control_container controls">
+                <button class="btn btn-success"> Set Cache Size </button>
+              </div>
+            </div>
+            
+          </form>
+        </div>
+      </div>
     </div>
 
   </div>

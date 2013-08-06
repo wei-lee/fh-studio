@@ -22,6 +22,10 @@
       "used" : 900,
       "apps" : 300,
       "system" : 600
+    },
+    "cache": {
+      "total": 512,
+      "used": 30
     }
   },
   "apps" : [

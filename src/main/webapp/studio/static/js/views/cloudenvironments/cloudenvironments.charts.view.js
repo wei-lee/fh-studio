@@ -278,7 +278,7 @@ Cloudenvironments.View.StackChartView = Backbone.View.extend({
     series.push("free");
     for(var i=0;i<series.length; i++){
       var className = "span" + (12/series.length);
-      legends.push({text: series[i], color: colors[i], percentage: this.getPercentage(series[i]), className: className});
+      legends.push({text: js_util.capitalise(series[i]), color: colors[i], percentage: this.getPercentage(series[i]), className: className, legend_type: js_util.capitalise(series[i])});
     }
     this.$el.find('.stack_chart_view_legend').html(temp({legends: legends}));
   }
