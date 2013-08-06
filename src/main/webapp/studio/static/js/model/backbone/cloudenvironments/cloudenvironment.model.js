@@ -110,6 +110,7 @@ Cloudenvironments.Model.Environment = Backbone.Model.extend({
 
   startPooling: function(){
     if(!this.isPooling){
+      console.log("Start pooling resource for " + this.id);
       this.isPooling = true;
       this.loadResourceDetails();
     }
@@ -119,6 +120,7 @@ Cloudenvironments.Model.Environment = Backbone.Model.extend({
     if(this.poolingInterval){
       clearTimeout(this.poolingInterval);
       this.isPooling = false;
+      console.log("Stop pooling resource for " + this.id);
     }
   },
 

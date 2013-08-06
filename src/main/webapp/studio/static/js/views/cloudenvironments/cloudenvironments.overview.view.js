@@ -91,6 +91,7 @@ Cloudenvironments.View.EnvAccordionView = Backbone.View.extend({
       self.$el.find('.hide_collapse_button').removeClass('hidden');
     });
     this.$el.find('.collapse').on('hide', function(){
+      self.model.stopPooling();
       self.$el.find('.hide_collapse_button').addClass('hidden');
       self.$el.find('.show_collapse_button').removeClass('hidden');
     });
@@ -98,6 +99,7 @@ Cloudenvironments.View.EnvAccordionView = Backbone.View.extend({
       if(self.$el.find('.nav li.active').length === 0){
         self.$el.find('.nav li:first a').tab('show');
       }
+      self.model.startPooling();
     });
     this.$el.find('a[data-toggle="pill"]').on('shown', function(e){
       var href = $(e.target).attr("href");

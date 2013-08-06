@@ -100,7 +100,6 @@ Cloudenvironments.View.ResourceDashboardView = Backbone.View.extend({
     _.each(resources, function(val, key){
       self.renderChart(key, self.$el.find('.' + key + "_chart_view"));
     });
-    this.model.startPooling();
   },
 
   renderChart: function(resource, el){
