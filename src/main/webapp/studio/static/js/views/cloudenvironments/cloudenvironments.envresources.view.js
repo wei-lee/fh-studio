@@ -77,8 +77,8 @@ Cloudenvironments.View.TabbableView = Backbone.View.extend({
     }
   },
 
-  showAppResourceDetails: function(guid){
-    this.parentView.switchToAppResourcesView(guid);
+  showAppResourceDetails: function(guid, appName){
+    this.parentView.switchToAppResourcesView(guid, appName);
   },
 
   showCacheDetails: function(){
@@ -174,7 +174,8 @@ Cloudenvironments.View.SingleResourceView = Backbone.View.extend({
   showResourceDetailsForApp: function(e){
     e.preventDefault();
     var guid = $(e.currentTarget).closest('tr').data('guid'); 
-    this.parentView.showAppResourceDetails(guid);
+    var appName = $(e.currentTarget).closest('tr').data('appName'); 
+    this.parentView.showAppResourceDetails(guid, appName);
   },
 
   showAppResourcesView: function(e){

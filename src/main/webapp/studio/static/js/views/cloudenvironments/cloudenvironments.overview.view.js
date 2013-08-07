@@ -91,6 +91,9 @@ Cloudenvironments.View.EnvAccordionView = Backbone.View.extend({
     this.model.on("change:interval", function(){
       this.renderCountDown();
     }, this);
+    this.model.once("sync", function(){
+      this.$el.find('.resource_controls').removeClass("hidden");
+    }, this);
   }, 
 
   render: function(){
@@ -124,7 +127,11 @@ Cloudenvironments.View.EnvAccordionView = Backbone.View.extend({
         if(appGuid){
           $(e.target).removeData("appGuid");
         }
-        self.showAppResourceDetails(self.$(href), appGuid);
+        var appName = $(e.target).data("appName");
+        if(appName){
+          $(e.target).removeData("appName");
+        }
+        self.showAppResourceDetails(self.$(href), appGuid, appName);
       } else {
         self.showCacheDetails(self.$(href));
       }
@@ -162,19 +169,19 @@ Cloudenvironments.View.EnvAccordionView = Backbone.View.extend({
     }
   },
 
-  showAppResourceDetails: function(el, appGuid){
+  showAppResourceDetails: function(el, appGuid, appName){
     if(!this.appsResourcesView){
       this.appsResourcesView = new Cloudenvironments.View.AppsResourcesView({
         model: this.model,
         el: el[0]
       });
     } 
-    this.appsResourcesView.toggleView(appGuid);
+    this.appsResourcesView.toggleView(appGuid, appName);
   },
 
-  switchToAppResourcesView: function(appGuid){
+  switchToAppResourcesView: function(appGuid, appName){
     if(appGuid){
-      this.$el.find(".nav li:eq(1) a").data("appGuid", appGuid);
+      this.$el.find(".nav li:eq(1) a").data("appGuid", appGuid).data("appName", appName);
     }
     this.$el.find(".nav li:eq(1) a").tab("show");
   },

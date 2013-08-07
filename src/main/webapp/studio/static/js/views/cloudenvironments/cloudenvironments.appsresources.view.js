@@ -31,26 +31,33 @@ Cloudenvironments.View.AppsResourcesView = Backbone.View.extend({
     tableView.render();
   },
 
-  toggleView: function(guid){
+  toggleView: function(guid, appName){
     if(typeof guid === "undefined"){
       this.$el.find('.apps_resource_details_view').hide();
       this.$el.find('.app_resource_table_view').show();
     } else {
-      var detailsView = new Cloudenvironments.View.AppResourceDetailsView({
+      if(this.detailsView){
+        this.detailsView.remove();
+        this.$el.find('.apps_resource_view_container').append($('<div>', {'class': 'apps_resource_details_view apps_resource_child_view well'}));
+      }
+      this.detailsView = new Cloudenvironments.View.AppResourceDetailsView({
         model: this.model,
         appGuid: guid,
-        el: this.$el.find('.apps_resource_details_view')[0]
+        appName: appName,
+        el: this.$el.find('.apps_resource_details_view')[0],
+        parentView: this
       });
       this.$el.find('.apps_resource_child_view').hide();
       this.$el.find('.apps_resource_details_view').show();
-      detailsView.render();
+      this.detailsView.render();
     }
   },
 
   showAppResourceDetails: function(e){
     e.preventDefault();
     var guid = $(e.currentTarget).closest('tr').data('guid');
-    this.toggleView(guid);
+    var appName = $(e.currentTarget).closest('tr').data('appName');
+    this.toggleView(guid, appName);
   }
 });
 
@@ -60,41 +67,67 @@ Cloudenvironments.View.AppResourceDetailsView = Backbone.View.extend({
     "click button.restartButton":"restartApp",
     "click button.suspendButton":"suspendApp",
     "click button.stopButton":"stopApp",
-    "click button.undeployButton":"undeployApp"
+    "click button.undeployButton":"undeployApp",
+    "click button.back_btn": "toggleView"
   },
 
   initialize: function(options){
+    this.parentView = options.parentView;
     this.env = this.model.id;
     this.appGuid = options.appGuid + "";
+    this.appName = options.appName;
     this.appModel = new Cloudenvironments.Model.CloudApp({
       env: this.env,
-      guid: this.appGuid
+      guid: this.appGuid,
+      appName: this.appName
+    });
+    //when an action is invoked against the app, load resource immediately
+    this.appModel.on("sync", function(){
+      this.model.loadResourceDetails();
+    }, this);
+    var self = this;
+    //once there is new data, re-render the app details
+    this.listenTo(this.model.getResourceCollection(), "add", function(){
+      self.renderAppDetails();
     });
     this.temp = Handlebars.compile($('#cloudenvironments-per-app-resource-view-template').html());
+    this.setAppData();
+  },
+
+  setAppData: function(){
     var appResources = this.model.getAppResources();
     for(var i=0;i<appResources.length; i++){
-      if(appResources[i].guid === this.appGuid){
+      if(appResources[i].name === this.appName){
         this.appData = appResources[i];
         break;
       }
     }
   },
 
+  toggleView: function(){
+    this.parentView.toggleView();
+  },
+
   render: function(){
+    this.$el.html(this.temp());
+    this.renderAppDetails();
+    this.renderCharts();
+  },
+
+  renderAppDetails: function(){
+    this.setAppData();
     var form1data = [];
     form1data.push({id: "title", label: "App Title", value: this.appData["title"]});
     form1data.push({id: "type", label: "App Type", value: this.appData["type"]});
     form1data.push({id: "guid", label: "App Guid", value: this.appData["guid"]});
-    form1data.push({id: "status", label: "App Status", value: this.appData["status"]});
-    form1data.push({id: "url", label: "App URL", value: this.appData["url"]});
+    form1data.push({id: "status", label: "App Status", value: this.appData["state"]});
     var form2data = [];
-    form2data.push({id: "deployed", label: "Last Deployed", value: this.appData["lastDeployed"]});
-    form2data.push({id: "accessed", label: "Last Accessed", value: this.appData["lastAccessed"]});
+    form2data.push({id: "modified", label: "Last Modified", value: moment(this.appData["lastModified"]).utc().format("YYYY-MM-DD HH:mm:ss")});
     form2data.push({id: "memory", label: "Current Memory", value: this.appData["memory"] + "MB"});
     form2data.push({id: "cpu", label: "Current CPU", value: this.appData["cpu"] + "%"});
     form2data.push({id: "disk", label: "Current Disk", value: this.appData["disk"] + "MB"});
-    this.$el.html(this.temp({forms:[{fields: form1data}, {fields:form2data}]}));
-    this.renderCharts();
+    var temp = Handlebars.compile($('#cloudenvironments-per-app-resource-details-template').html());
+    this.$el.find('.app_details_container').html(temp({forms:[{fields: form1data}, {fields:form2data}]}));
   },
 
   renderCharts: function(){
@@ -113,7 +146,8 @@ Cloudenvironments.View.AppResourceDetailsView = Backbone.View.extend({
       collection: this.model.getResourceCollection(),
       resource: resource,
       el: el[0],
-      guid: self.appGuid
+      guid: self.appGuid,
+      appName: this.appName
     });
     chartView.render();
   },

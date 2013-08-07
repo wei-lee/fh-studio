@@ -61,7 +61,7 @@
         <div class="env_name_div pull-left">
           <span class="env_name_text">{{envName}}</span>
         </div>
-        <div class="resource_controls pull-right">
+        <div class="resource_controls pull-right hidden">
           <a class="btn btn-success btn-large show_collapse_button" href="#"><i class="icon-plus"></i></a>
           <a class="btn btn-danger btn-large hide_collapse_button hidden" href="#"><i class="icon-minus"></i></a>
           <a class="btn btn-primary btn-large reload_button" href="#"><i class="icon-repeat"></i></a>
@@ -166,18 +166,12 @@
 
 <script id="cloudenvironments-per-app-resource-view-template" type="text/x-handlebars-template">
   <div class="cloudenvironments_per_app_resource_container row-fluid">
-    {{#each forms}}
-      <form class="form-horizontal span6">
-        {{#each this.fields}}
-          <div class="control-group">
-            <label class="control-label" for="input_{{this.id}}"> {{this.label}} </label>
-            <div class="controls">
-              <input type="text" id="input_{{this.id}}" value="{{this.value}}" />
-            </div>
-          </div>
-        {{/each}}
-      </form>
-    {{/each}}
+    <div class="nav_container row-fluid">
+      <button class="btn back_btn"><i class="icon-arrow-left"></i> All Apps</button>
+    </div>
+
+    <div class="app_details_container">
+    </div>
     
     <form class="span11">
       <fieldset class="well control-btns">
@@ -196,10 +190,24 @@
   </div>
 </script>
 
+<script id="cloudenvironments-per-app-resource-details-template" type="text/x-handlebars-template">
+  {{#each forms}}
+    <form class="form-horizontal span6">
+      {{#each this.fields}}
+        <div class="control-group">
+          <label class="control-label" for="input_{{this.id}}"> {{this.label}} </label>
+          <div class="controls">
+            <input type="text" class="input-xlarge" id="input_{{this.id}}" value="{{this.value}}" disabled />
+          </div>
+        </div>
+      {{/each}}
+    </form>
+  {{/each}}
+</script>
+
 <script id="cloudenvironments-cache-content-view-template" type="text/x-handlebars-template">
-<div class="well">
   <div class="cache_content_view row-fluid">
-    
+    <div class="row-fluid well">
     <div class="cache_current_view span5">
       
       <div class="cache_current_view_info_row span12">
@@ -263,7 +271,6 @@
         </div>
       </div>
     </div>
-
   </div>
-</div>
+  </div>
 </script>

@@ -35,6 +35,9 @@ Cloudenvironments.View.CacheResourcesView = Backbone.View.extend({
         this.cacheModel.on("change", function(){
           this.render();
         }, this);
+        this.cacheModel.on("sync", function(){
+          this.model.loadResourceDetails();
+        },this);
         this.cacheModel.set(cacheData);
       }
     }

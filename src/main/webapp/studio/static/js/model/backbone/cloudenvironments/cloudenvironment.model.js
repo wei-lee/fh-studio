@@ -98,6 +98,9 @@ Cloudenvironments.Model.Environment = Backbone.Model.extend({
 
   countToNextLoad: function(){
     var self = this;
+    if(this.poolingInterval){
+      clearTimeout(this.poolingInterval);
+    }
     this.set("interval", parseInt($fw.getClientProp("studio.ui.environments.refreshInterval") || 10, 10));
     this.poolingInterval = setInterval(function(){
       self.set("interval", self.get("interval") - 1 );
@@ -213,10 +216,14 @@ Cloudenvironments.Model.CacheResource = Backbone.Model.extend({
   doAction: function(endpoint, data){
     var model = this;
     var url = model.url() + "/" + endpoint;
+    var self = this;
     var opts = {
       url: url,
       type: "POST",
-      data: JSON.stringify(data)
+      data: JSON.stringify(data),
+      success: function(){
+        self.trigger("sync");
+      }
     };
     return (this.sync || Backbone.sync).call(this, null, this, opts);
   }
@@ -257,13 +264,17 @@ Cloudenvironments.Model.CloudApp = Backbone.Model.extend({
   doAction: function(endpoint){
     var model = this;
     var url = model.url() + "/" + endpoint;
+    var self = this;
     var opts = {
       url: url,
       type: "POST",
       data: JSON.stringify({
         guid: this.appGuid,
         deploytarget: this.env
-      })
+      }),
+      success: function(){
+        self.trigger("sync");
+      }
     };
     return (this.sync || Backbone.sync).call(this, null, this, opts);
   }

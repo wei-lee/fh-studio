@@ -3925,6 +3925,10 @@ h5.steps{
   display: none;
 }
 
+#cloud_environments_layout .apps_resource_view_container .apps_resource_details_view .nav_container {
+  height: 35px;
+}
+
 #cloud_environments_layout .cloudenvironments_per_app_resource_container .control-btns .btn {
   width: 150px;
   margin-right: 30px;

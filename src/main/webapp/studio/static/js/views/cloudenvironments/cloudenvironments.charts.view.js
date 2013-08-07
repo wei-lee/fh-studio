@@ -85,6 +85,7 @@ Cloudenvironments.View.AppLineChartView = Backbone.View.extend({
   initialize: function(options){
     this.resource = options.resource;
     this.appGuid = options.guid + "";
+    this.appName = options.appName;
     this.resourceModel = new Cloudenvironments.ResourceTypes[options.resource]();
     this.collection.on("add", function(model){
       this.addData(model);
@@ -102,7 +103,7 @@ Cloudenvironments.View.AppLineChartView = Backbone.View.extend({
       var m = models[i].toJSON();
       var apps = m.apps;
       for(var k=0;k<apps.length;k++){
-        if(apps[k].guid === this.appGuid){
+        if(apps[k].name === this.appName){
           data.push({x:m.ts, y:apps[k][series]});
           break;
         }
@@ -125,7 +126,7 @@ Cloudenvironments.View.AppLineChartView = Backbone.View.extend({
       var m = model.toJSON();
       var apps = m.apps;
       for(var i=0;i<apps.length;i++){
-        if(apps[i].guid === this.appGuid){
+        if(apps[i].name === this.appName){
           var data = {x:m.ts, y:apps[i][series]};
           obj.data = data;
           break;
@@ -373,7 +374,7 @@ Cloudenvironments.View.AppsResourceTableView = Backbone.View.extend({
         }, 
         {
           "sTitle": "Status",
-          "mDataProp": "status"
+          "mDataProp": "state"
         }, 
         {
           "sTitle": js_util.capitalise(this.resource),
@@ -395,7 +396,7 @@ Cloudenvironments.View.AppsResourceTableView = Backbone.View.extend({
         "mDataProp": "guid"
       }, {
         "sTitle": "Status",
-        "mDataProp": "status"
+        "mDataProp": "state"
       }, {
         "sTitle": "Memory",
         "mDataProp": function(source){
@@ -412,11 +413,10 @@ Cloudenvironments.View.AppsResourceTableView = Backbone.View.extend({
           return source.disk + "MB";
         }
       }, {
-        "sTitle": "Last Deployed",
-        "mDataProp": "lastDeployed"
-      }, {
-        "sTitle": "Last Accessed",
-        "mDataProp": "lastAccessed"
+        "sTitle": "Last Modified",
+        "mDataProp": function(source){
+          return moment(source.lastModified).utc().format("YYYY-MM-DD HH:mm:ss");
+        }
       }];
     }
   },
@@ -428,7 +428,7 @@ Cloudenvironments.View.AppsResourceTableView = Backbone.View.extend({
         aaData : this.model.getAppResources(),
         "fnRowCallback": function(nTr, sData, oData, iRow, iCol) {
           // Append guid data
-          $(nTr).attr('data-guid', sData.guid);
+          $(nTr).attr('data-guid', sData.guid).attr('data-app-name', sData.name);
         },
         "aoColumns": this.columns,
         "bAutoWidth": false,

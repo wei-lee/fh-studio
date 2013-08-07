@@ -1,6 +1,6 @@
 App.View.Chart = Backbone.View.extend({
 
-  LIVE_MAX_POINTS : 10,
+  LIVE_MAX_POINTS : 50,
   initialize: function(options) {
     var self = this;
 
@@ -54,13 +54,13 @@ App.View.Chart = Backbone.View.extend({
     var modelJson = model.toJSON();
     var seriesIndex = modelJson.index || 0;
     var series = this.chart.series[seriesIndex];
-    if ($(this.options.chart.renderTo).is(':visible')){
+    //if ($(this.options.chart.renderTo).is(':visible')){
       if(series.data.length < this.LIVE_MAX_POINTS){
         series.addPoint(modelJson.data, true);
       } else {
         series.addPoint(modelJson.data, true, true);
       }  
-    }
+    //}
   },
 
   render: function(loading, resize) {
