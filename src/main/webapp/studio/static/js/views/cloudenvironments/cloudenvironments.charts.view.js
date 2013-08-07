@@ -23,7 +23,7 @@ Cloudenvironments.View.EnvLineChartView = Backbone.View.extend({
     var series = this.resourceModel.getSeries();
     var resource = this.resource;
     for(var k=0;k<series.length;k++){
-      var obj = {name: js_util.capitalise(series[k]), index: k};
+      var obj = {name: js_util.capitalise(series[k]), index: k, color: this.resourceModel.getColors()[k]};
       var data = [];
       var models = this.collection.models;
       for(var i=0;i<models.length;i++){
@@ -46,7 +46,7 @@ Cloudenvironments.View.EnvLineChartView = Backbone.View.extend({
       var series = this.resourceModel.getSeries();
       var resource = this.resource;
       for(var k=0;k<series.length;k++){
-        var obj = {name: series[k], index: k};
+        var obj = {name: js_util.capitalise(series[k]), index: k, color: this.resourceModel.getColors()[k]};
         var m = model.toJSON();
         var data = {x:m.ts, y:m["resources"][resource][series[k]]};
         obj.data = data;
@@ -95,7 +95,7 @@ Cloudenvironments.View.AppLineChartView = Backbone.View.extend({
   getSeriesFromCollection: function(){
     var ret = [];
     var series = this.resource;
-    var obj = {name: js_util.capitalise(series), index: 0};
+    var obj = {name: js_util.capitalise(series), index: 0, color: this.resourceModel.getColors()[0]};
     var data = [];
     var models = this.collection.models;
     for(var i=0;i<models.length;i++){
@@ -121,7 +121,7 @@ Cloudenvironments.View.AppLineChartView = Backbone.View.extend({
       this.render();
     } else {
       var series = this.resource;
-      var obj = {name: series, index: 0};
+      var obj = {name: js_util.capitalise(series), index: 0, color: this.resourceModel.getColors()[0]};
       var m = model.toJSON();
       var apps = m.apps;
       for(var i=0;i<apps.length;i++){
@@ -194,9 +194,9 @@ Cloudenvironments.View.StackChartView = Backbone.View.extend({
   getPercentage: function(type){
     var currentResource = this.latestResource.toJSON()["resources"][this.resource];
     if(type === "free"){
-      return Math.round(this.getFreeValue() / currentResource["total"] * 100) + "%";
+      return (currentResource["total"] === 0 ? Math.round(this.getFreeValue() / this.getUsedTotalValue() * 100) : Math.round(this.getFreeValue() / currentResource["total"] * 100) ) + "%";
     } else {
-      return Math.round(currentResource[type] / currentResource["total"] * 100) + "%";
+      return (currentResource["total"] === 0 ? Math.round(currentResource[type] / this.getUsedTotalValue() * 100) : Math.round(currentResource[type] / currentResource["total"] * 100) ) + "%";
     }
   },
 
@@ -204,16 +204,23 @@ Cloudenvironments.View.StackChartView = Backbone.View.extend({
     var currentResource = this.latestResource.toJSON()["resources"][this.resource];
     if(currentResource.free){
       return currentResource.free;
+    } else if(currentResource["total"] === 0){
+      return 0;
     } else {
-      var series = this.resourceModel.getSeries();
-      var usedTotal = 0;
-      for(var i=0;i< series.length;i++){
-        var seriesName = series[i];
-        var seriesValue = parseInt(currentResource[seriesName], 10);
-        usedTotal += seriesValue;
-      }
-      return currentResource["total"] - usedTotal;
+      return currentResource["total"] - this.getUsedTotalValue();
     }
+  },
+
+  getUsedTotalValue: function(){
+    var currentResource = this.latestResource.toJSON()["resources"][this.resource];
+    var series = this.resourceModel.getSeries();
+    var usedTotal = 0;
+    for(var i=0;i< series.length;i++){
+      var seriesName = series[i];
+      var seriesValue = parseInt(currentResource[seriesName], 10);
+      usedTotal += seriesValue;
+    }
+    return usedTotal;
   },
 
   render: function(){
@@ -260,6 +267,9 @@ Cloudenvironments.View.StackChartView = Backbone.View.extend({
           stacking: 'normal'
         }
       },
+      tooltip:{
+        valueSuffix: this.resourceModel.getUnit()
+      },
       collection: this.getSeriesFromCollection(),
       el: this.$el.find('.stack_chart_view_chart')[0]
     };
@@ -288,6 +298,7 @@ Cloudenvironments.View.StackChartView = Backbone.View.extend({
 Cloudenvironments.View.AppResourcePieChartView = Backbone.View.extend({
   initialize: function(options){
     this.resource = options.resource;
+    this.resourceModel = new Cloudenvironments.ResourceTypes[options.resource]();
     this.collection.on("add", function(model){
       this.latestResource = model.toJSON().apps;
       this.render();
@@ -299,10 +310,14 @@ Cloudenvironments.View.AppResourcePieChartView = Backbone.View.extend({
   getSeriesFromCollection: function(){
     var data = [];
     var appsResource = this.latestResource;
+    var total = this.collection.at(this.collection.length - 1).get("resources")[this.resource].total;
+    var usedTotal = 0;
     for(var i=0;i<appsResource.length; i++){
       var item = [appsResource[i].title, appsResource[i][this.resource]];
+      usedTotal += appsResource[i][this.resource];
       data.push(item);
     }
+    data.push(["Others", total - usedTotal]);
     this.chartCollection.set([{
       type:'pie',
       name: this.resource,
@@ -313,9 +328,19 @@ Cloudenvironments.View.AppResourcePieChartView = Backbone.View.extend({
 
   render: function(){
     var opts = {
+      chart: {
+        backgroundColor: "transparent"
+      },
       el: this.el,
       collection : this.getSeriesFromCollection(),
-      title: false
+      title: false,
+      tooltip:{
+        valueSuffix: this.resourceModel.getUnit()
+      },
+      colors: ['#4572A7', '#AA4643', '#89A54E', '#3D96AE', '#DB843D', '#A47D7C', '#B5CA92', '#aa4643', '#80699b', '#db843d'],
+      exporting: {
+        enabled: false
+      }
     };
     var chartView = new App.View.PieChart(opts);
     if(this.$el.is(":visible")){

@@ -3,6 +3,11 @@ Cloudenvironments.View = Cloudenvironments.View || {};
 
 Cloudenvironments.View.CacheResourcesView = Backbone.View.extend({
 
+  events: {
+    "click button.flush_cache_btn": "flushEnvCache",
+    "click button.set_cache_btn" : "setEnvCache"
+  },
+
   initialize: function(options){
     this.$el.html(new App.View.Spinner().render().el);
     this.temp = Handlebars.compile($('#cloudenvironments-cache-content-view-template').html());
@@ -43,6 +48,18 @@ Cloudenvironments.View.CacheResourcesView = Backbone.View.extend({
       max_cache_percentage: this.cacheModel.getMaxPercentage()
     };
     this.$el.html(this.temp(cacheUsage));
+  },
+
+  flushEnvCache: function(e){
+    e.preventDefault();
+    this.cacheModel.flush();
+  },
+
+  setEnvCache: function(e){
+    e.preventDefault();
+    var el = this.$el.find("input:radio[name=cache_value]:checked input:text");
+    this.cacheModel.setCache(el.data("cacheType"), el.val());
   }
+
 
 });

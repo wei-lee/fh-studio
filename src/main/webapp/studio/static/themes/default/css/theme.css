@@ -3834,6 +3834,10 @@ h5.steps{
   color: #dd514c;
 }
 
+#cloud_environments_layout .env_resource_summary_view div.disabled {
+  color: #999999;
+}
+
 #cloud_environments_layout .accordion-inner > .nav {
   display: block;
   margin-left: auto;
@@ -3882,6 +3886,15 @@ h5.steps{
   height: 25px;
   padding-left: 10px;
   font-size: 1.2em;
+}
+#cloud_environments_layout  .single_resource_view .stack_chart_view .stack_chart_view_legend .legend_container {
+  position: relative;
+}
+
+#cloud_environments_layout  .single_resource_view .stack_chart_view .stack_chart_view_legend .legend_container .legend_text {
+  position: absolute;
+  top: 5px;
+  left: 35px;
 }
 
 #cloud_environments_layout  .single_resource_view .stack_chart_view .stack_chart_view_legend .Apps .legend_text, #cloud_environments_layout  .single_resource_view .stack_chart_view .stack_chart_view_legend .Cache .legend_text {

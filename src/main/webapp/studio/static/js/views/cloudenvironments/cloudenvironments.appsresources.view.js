@@ -56,15 +56,20 @@ Cloudenvironments.View.AppsResourcesView = Backbone.View.extend({
 
 Cloudenvironments.View.AppResourceDetailsView = Backbone.View.extend({
   events: {
-    "button.startButton":"startApp",
-    "button.restartButton":"restartApp",
-    "button.suspendButton":"suspendApp",
-    "button.stopButton":"stopApp",
-    "button.undeployButton":"undeployApp"
+    "click button.startButton":"startApp",
+    "click button.restartButton":"restartApp",
+    "click button.suspendButton":"suspendApp",
+    "click button.stopButton":"stopApp",
+    "click button.undeployButton":"undeployApp"
   },
 
   initialize: function(options){
+    this.env = this.model.id;
     this.appGuid = options.appGuid + "";
+    this.appModel = new Cloudenvironments.Model.CloudApp({
+      env: this.env,
+      guid: this.appGuid
+    });
     this.temp = Handlebars.compile($('#cloudenvironments-per-app-resource-view-template').html());
     var appResources = this.model.getAppResources();
     for(var i=0;i<appResources.length; i++){
@@ -111,5 +116,30 @@ Cloudenvironments.View.AppResourceDetailsView = Backbone.View.extend({
       guid: self.appGuid
     });
     chartView.render();
+  },
+
+  startApp: function(e){
+    e.preventDefault();
+    this.appModel.start();
+  },
+
+  restartApp: function(e){
+    e.preventDefault();
+    this.appModel.restart();
+  },
+
+  suspendApp: function(e){
+    e.preventDefault();
+    this.appModel.suspend();
+  },
+
+  stopApp: function(e){
+    e.preventDefault();
+    this.appModel.stop();
+  },
+
+  undeployApp: function(e){
+    e.preventDefault();
+    this.appModel.undeploy();
   }
 });

@@ -59,7 +59,7 @@ Cloudenvironments.Model.DiskResource = Backbone.Model.extend({
 Cloudenvironments.Model.ResourceSummary = Backbone.Model.extend({
 
   getPercentage: function(){
-    return Math.round(this.get("used")/this.get("total")*100);
+    return this.get("total") === 0 ? 0: Math.round(this.get("used")/this.get("total")*100);
   },
 
   getPercentageStr: function(){
@@ -75,7 +75,7 @@ Cloudenvironments.Model.Environment = Backbone.Model.extend({
     this.resourceCollection = new Cloudenvironments.Collection.EnvResource();
     this.isPooling = false;
     this.url = function(){
-      return '/studio/static/js/model/backbone/mocks/environments/'+this.id+'.json';
+      return '/box/srv/1.1/environments/'+this.id;
     };
   },
 
@@ -131,7 +131,7 @@ Cloudenvironments.Model.Environment = Backbone.Model.extend({
     envResource.on("sync", function(model, resp, options){
       this.countToNextLoad();
       this.updateResourceCollection(model);
-      this.trigger("sync");
+      this.set("resources", model.get("resources"));
     }, this);
     envResource.fetch();
   },
@@ -155,7 +155,7 @@ Cloudenvironments.Model.EnvironmentResource = Backbone.Model.extend({
   initialize: function(options){
     this.env = options.env;
     this.url = function(){
-      return '/studio/static/js/model/backbone/mocks/environments/'+this.env+'_resource.json';
+      return '/box/srv/1.1/environments/'+this.env+'/resources';
     };
   }
 
@@ -164,10 +164,10 @@ Cloudenvironments.Model.EnvironmentResource = Backbone.Model.extend({
 
 Cloudenvironments.Collection.Environments = Backbone.Collection.extend({
   model: Cloudenvironments.Model.Environment,
-  url: '/studio/static/js/model/backbone/mocks/environments/list.json',
+  url: '/box/srv/1.1/environments',
 
   parse: function(response){
-    var envs = response.environments;
+    var envs = response;
     var ret = [];
     _.each(envs, function(env){
       ret.push({environment: env});
@@ -186,11 +186,86 @@ Cloudenvironments.Model.CacheResource = Backbone.Model.extend({
     this.env = options.env;
   },
 
+  url: function(){
+    return '/box/srv/1.1/environments/' + this.env;
+  },
+
   getPercentage: function(){
     return Math.round(parseInt(this.get("used"), 10)/parseInt(this.get("total"), 10)*100);
   },
 
   getMaxPercentage: function(){
     return Math.round(parseInt(this.get("total"), 10)/parseInt(this.get("memory"), 10)*100);
+  },
+
+  flush: function(){
+    this.doAction("cache/flush", {env: this.env});
+  },
+
+  flushApp: function(appid){
+    this.doAction("apps/" + appid + "/cache/flush", {app: appid});
+  },
+
+  setCache: function(type, value){
+    this.doAction("cache/set", {type: type, value: value});
+  },
+
+  doAction: function(endpoint, data){
+    var model = this;
+    var url = model.url() + "/" + endpoint;
+    var opts = {
+      url: url,
+      type: "POST",
+      data: JSON.stringify(data)
+    };
+    return (this.sync || Backbone.sync).call(this, null, this, opts);
   }
+
+});
+
+Cloudenvironments.Model.CloudApp = Backbone.Model.extend({
+  
+  initialize: function(options){
+    this.env = options.env;
+    this.appGuid = options.guid;
+  },
+
+  url: function(){
+    return "/box/srv/1.1/ide/" + window.DOMAIN + "/app";
+  },
+
+  start: function(){
+    return this.doAction("start");
+  },
+
+  restart: function(){
+
+  },
+
+  suspend: function(){
+
+  },
+
+  stop: function(){
+    return this.doAction("stop");
+  },
+
+  undeploy: function(){
+
+  },
+
+  doAction: function(endpoint){
+    var model = this;
+    var url = model.url() + "/" + endpoint;
+    var opts = {
+      url: url,
+      type: "POST",
+      data: JSON.stringify({
+        guid: this.appGuid,
+        deploytarget: this.env
+      })
+    };
+    return (this.sync || Backbone.sync).call(this, null, this, opts);
+  }
+
 });

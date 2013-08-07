@@ -9,22 +9,33 @@ Cloudenvironments.View.ResourceSummaryView = Backbone.View.extend({
     var resourceText = {"apps": "Apps", "memory":"Memory", "cpu": "CPU", "disk":"Storage"};
     var params = {};
     params.name = resourceText[this.model.get("name")];
-    params.used = this.model.get("used");
     params.total = this.model.get("total");
-    params.percentage = this.model.getPercentageStr();
-    if(this.model.get("name") === "apps"){
-      params.app = true;
-    } else if(this.model.get("name") === "cpu"){
-      params.cpu = true;
+    if(params.total === 0){
+      params.na = true;
+      this.$el.addClass("disabled");
+    } else {
+      params.used = this.model.get("used");
+      params.percentage = this.model.getPercentageStr();
+      if(this.model.get("name") === "apps"){
+        params.app = true;
+      } else if(this.model.get("name") === "cpu"){
+        params.cpu = true;
+      }
+      var type = "success";
+      if(this.model.getPercentage() >= this.WARNING_THRESHHOLD && this.model.getPercentage() <= this.DANGER_THRESHHOLD){
+        type = "warning";
+      } else if(this.model.getPercentage() >= this.DANGER_THRESHHOLD){
+        type = "danger";
+      }
+
+      if(this.model.get("name") === "apps"){
+        type = "info";
+      } 
+
+      params.type = type;
+      this.$el.addClass(type);
+      
     }
-    var type = "success";
-    if(this.model.getPercentage() >= this.WARNING_THRESHHOLD && this.model.getPercentage() <= this.DANGER_THRESHHOLD){
-      type = "warning";
-    } else if(this.model.getPercentage() >= this.DANGER_THRESHHOLD){
-      type = "danger";
-    }
-    params.type = type;
-    this.$el.addClass(type);
     var template = Handlebars.compile($("#cloudenvironments-resource-summary-template").html());
     this.$el.html(template(params));
   }
@@ -43,6 +54,9 @@ Cloudenvironments.View.EnvResourceOverview = Backbone.View.extend({
       this.render();
     }, this);
     this.model.fetch();
+    this.model.bind("change", function(){
+      this.render();
+    }, this);
   },
 
   render: function(){
