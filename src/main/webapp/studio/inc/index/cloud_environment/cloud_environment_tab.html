@@ -155,12 +155,12 @@
 
 <script id="cloudenvironments-apps-resource-view-template" type="text/x-handlebars-template">
   <div class="apps_resource_view_container">
-    <div class="app_resource_table_view apps_resource_child_view">
+    <div class="app_resource_table_view apps_resource_child_view well">
       <div class="apps_controls_container">
       </div>
       <div class="apps_resource_list_view"></div>
     </div>
-    <div class="apps_resource_details_view apps_resource_child_view"></div>
+    <div class="apps_resource_details_view apps_resource_child_view well"></div>
   </div>
 </script>
 
@@ -178,11 +178,11 @@
         {{/each}}
       </form>
     {{/each}}
-
-    <form>
+    
+    <form class="span11">
       <fieldset class="well control-btns">
         <legend> Manage App </legend>
-        <div class="span2"><button class="btn btn-large btn-success startButton">Start</button></div>
+        <div class="span2 offset1"><button class="btn btn-large btn-success startButton">Start</button></div>
         <div class="span2"><button class="btn btn-large btn-ino restartButton">Restart</button></div>
         <div class="span2"><button class="btn btn-large btn-warning suspendButton">Suspend</button></div>
         <div class="span2"><button class="btn btn-large btn-danger stopButton">Stop</button></div>
@@ -190,13 +190,14 @@
       </fieldset>
     </form>
 
-    <div class="resource_charts">
+    <div class="resource_charts span11">
     </div>
 
   </div>
 </script>
 
 <script id="cloudenvironments-cache-content-view-template" type="text/x-handlebars-template">
+<div class="well">
   <div class="cache_content_view row-fluid">
     
     <div class="cache_current_view span5">
@@ -264,4 +265,5 @@
     </div>
 
   </div>
+</div>
 </script>
