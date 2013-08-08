@@ -1,6 +1,6 @@
 App.View.Chart = Backbone.View.extend({
 
-  LIVE_MAX_POINTS : 50,
+  LIVE_MAX_POINTS : 100,
   initialize: function(options) {
     var self = this;
 

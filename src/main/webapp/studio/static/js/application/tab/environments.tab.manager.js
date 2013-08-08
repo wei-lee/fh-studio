@@ -18,5 +18,5 @@ Cloudenvironments.Tab.Manager = Tab.Manager.extend({
     var navList = el.find('.nav-tabs');
 
     navList.find('li a:eq(0)').trigger('click');
-  },
+  }
 });

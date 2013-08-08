@@ -266,6 +266,7 @@ Cloudenvironments.Model.CloudApp = Backbone.Model.extend({
     this.env = options.env;
     this.appGuid = options.guid;
     this.appName = options.appName;
+    this.appType = this.appName.indexOf("-embed") > -1? "embed":"cloud";
   },
 
   url: function(){
@@ -305,7 +306,7 @@ Cloudenvironments.Model.CloudApp = Backbone.Model.extend({
       data: JSON.stringify({
         guid: this.appGuid,
         deploytarget: this.env,
-        appName: this.appName
+        apptype: this.appType
       }),
       success: function(res, status){
         self.trigger("sync");

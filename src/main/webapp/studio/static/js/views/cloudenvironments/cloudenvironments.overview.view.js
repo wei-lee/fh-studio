@@ -103,7 +103,6 @@ Cloudenvironments.View.EnvAccordionView = Backbone.View.extend({
     var overview = new Cloudenvironments.View.EnvResourceOverview({
       model: self.model
     });
-    var self = this;
     this.$el.find('.accordion-toggle').html(overview.$el);
     this.$el.find('.collapse').on('show', function(){
       self.$el.find('.show_collapse_button').addClass('hidden');
