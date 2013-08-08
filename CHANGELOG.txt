@@ -1,6 +1,15 @@
 -------------------------------------------------------------------------------
 Component: fh-studio
 -------------------------------------------------------------------------------
+3.17.7 - 2013-08-08 - IR207 - Wei Li
+-------------------------------------------------------------------------------
+* 4417 - Cloud Environments
+
+NOTES:
+
+A millicore property is created for toggling this new UI. It is set to false by default.
+studio.cloudenvironments.enabled = false
+
 3.17.6 - 2013-07-26 - IR206 - Cian Clarke, Wei Li
 -------------------------------------------------------------------------------
 * 4354 - mBaaS plugins catalog
