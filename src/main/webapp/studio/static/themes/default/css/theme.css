@@ -3921,6 +3921,13 @@ h5.steps{
   overflow: hidden;
 }
 
+#cloud_environments_layout .apps_resource_view_container .control-btns .btn .loading_spinner, #cloud_environments_layout .cache_content_view .btn .loading_spinner{
+  display: inline-block;
+  margin-left: 5px;
+  width: 16px;
+  height: 16px;
+}
+
 #cloud_environments_layout .apps_resource_view_container .apps_resource_details_view {
   display: none;
 }

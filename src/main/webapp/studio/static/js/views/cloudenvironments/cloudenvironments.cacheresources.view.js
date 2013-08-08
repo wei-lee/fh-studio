@@ -55,14 +55,32 @@ Cloudenvironments.View.CacheResourcesView = Backbone.View.extend({
 
   flushEnvCache: function(e){
     e.preventDefault();
-    this.cacheModel.flush();
+    var self = this;
+    self.startLoading(e.target);
+    this.cacheModel.flush(function(){
+      self.stopLoading(e.target);
+    }, function(){
+      self.stopLoading(e.target);
+    });
   },
 
   setEnvCache: function(e){
     e.preventDefault();
-    var el = this.$el.find("input:radio[name=cache_value]:checked input:text");
-    this.cacheModel.setCache(el.data("cacheType"), el.val());
+    var self = this;
+    self.startLoading(e.target);
+    var el = this.$el.find("input:radio[name=cache_value]:checked").siblings('input:text');
+    this.cacheModel.setCache(el.data("cacheType"), el.val(), function(){
+      self.stopLoading(e.target);
+    }, function(){
+      self.stopLoading(e.target);
+    });
+  },
+
+  startLoading: function(btn){
+    $(btn).attr("disabled", "disabled").append(new App.View.Spinner({text:""}).render().el);
+  },
+
+  stopLoading: function(btn){
+    $(btn).removeAttr("disabled").find('.loading_spinner').remove();
   }
-
-
 });

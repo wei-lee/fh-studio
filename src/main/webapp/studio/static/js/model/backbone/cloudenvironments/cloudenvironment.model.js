@@ -204,19 +204,22 @@ Cloudenvironments.Model.CacheResource = Backbone.Model.extend({
     return Math.round(parseInt(this.get("total"), 10)/parseInt(this.get("memory"), 10)*100);
   },
 
-  flush: function(){
-    this.doAction("cache/flush", {env: this.env});
+  flush: function(success, fail){
+    this.doAction("cache/flush", {env: this.env}, success, fail);
   },
 
   flushApp: function(appid){
     this.doAction("apps/" + appid + "/cache/flush", {app: appid});
   },
 
-  setCache: function(type, value){
-    this.doAction("cache/set", {type: type, value: value});
+  setCache: function(type, value, success, fail){
+    if(type === "size"){
+      value = value*1024*1024;
+    }
+    this.doAction("cache/set", {cache:{type: type, value: value}}, success, fail);
   },
 
-  doAction: function(endpoint, data){
+  doAction: function(endpoint, data, success, fail){
     var model = this;
     var url = model.url() + "/" + endpoint;
     var self = this;
@@ -224,8 +227,16 @@ Cloudenvironments.Model.CacheResource = Backbone.Model.extend({
       url: url,
       type: "POST",
       data: JSON.stringify(data),
-      success: function(){
+      success: function(res, status){
         self.trigger("sync");
+        if(success){
+          success(res, status);
+        }
+      },
+      error: function(xhr, status, error){
+        if(fail){
+          fail(status, error);
+        }
       }
     };
     return (this.sync || Backbone.sync).call(this, null, this, opts);
@@ -238,33 +249,37 @@ Cloudenvironments.Model.CloudApp = Backbone.Model.extend({
   initialize: function(options){
     this.env = options.env;
     this.appGuid = options.guid;
+    this.appName = options.appName;
   },
 
   url: function(){
     return "/box/srv/1.1/ide/" + window.DOMAIN + "/app";
   },
 
-  start: function(){
-    return this.doAction("start");
+  start: function(success, fail){
+    return this.doAction("start", success, fail);
   },
 
-  restart: function(){
-
+  restart: function(success, fail){
+    var self = this;
+    this.stop(function(){
+      self.start(success, fail);
+    }, fail);
   },
 
-  suspend: function(){
-
-  },
-
-  stop: function(){
-    return this.doAction("stop");
-  },
-
-  undeploy: function(){
+  suspend: function(success, fail){
 
   },
 
-  doAction: function(endpoint){
+  stop: function(success, fail){
+    return this.doAction("stop", success, fail);
+  },
+
+  undeploy: function(success, fail){
+
+  },
+
+  doAction: function(endpoint, success, fail){
     var model = this;
     var url = model.url() + "/" + endpoint;
     var self = this;
@@ -273,10 +288,19 @@ Cloudenvironments.Model.CloudApp = Backbone.Model.extend({
       type: "POST",
       data: JSON.stringify({
         guid: this.appGuid,
-        deploytarget: this.env
+        deploytarget: this.env,
+        appName: this.appName
       }),
-      success: function(){
+      success: function(res, status){
         self.trigger("sync");
+        if(success){
+          success(res, status);
+        }
+      },
+      error: function(xhr, status, error){
+        if(fail){
+          fail(status, error);
+        }
       }
     };
     return (this.sync || Backbone.sync).call(this, null, this, opts);

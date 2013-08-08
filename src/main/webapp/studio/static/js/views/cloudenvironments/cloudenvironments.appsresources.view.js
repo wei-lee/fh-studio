@@ -154,26 +154,64 @@ Cloudenvironments.View.AppResourceDetailsView = Backbone.View.extend({
 
   startApp: function(e){
     e.preventDefault();
-    this.appModel.start();
+    var self = this;
+    this.startLoading(e.target);
+    this.appModel.start(function(){
+      self.stopLoading(e.target);
+    }, function(){
+      self.stopLoading(e.target);
+    });
   },
 
   restartApp: function(e){
     e.preventDefault();
-    this.appModel.restart();
+    var self = this;
+    this.startLoading(e.target);
+    this.appModel.restart(function(){
+      self.stopLoading(e.target);
+    }, function(){
+      self.stopLoading(e.target);
+    });
   },
 
   suspendApp: function(e){
     e.preventDefault();
-    this.appModel.suspend();
+    var self = this;
+    this.startLoading(e.target);
+    this.appModel.suspend(function(){
+      self.stopLoading(e.target);
+    }, function(){
+      self.stopLoading(e.target);
+    });
   },
 
   stopApp: function(e){
     e.preventDefault();
-    this.appModel.stop();
+    var self = this;
+    this.startLoading(e.target);
+    this.appModel.stop(function(){
+      self.stopLoading(e.target);
+    }, function(){
+      self.stopLoading(e.target);
+    });
   },
 
   undeployApp: function(e){
     e.preventDefault();
-    this.appModel.undeploy();
+    var self = this;
+    this.startLoading(e.target);
+    this.appModel.undeploy(function(){
+      self.stopLoading(e.target);
+    }, function(){
+      self.stopLoading(e.target);
+    });
+  },
+
+  startLoading: function(btn){
+    $(btn).attr("disabled", "disabled").append(new App.View.Spinner({text:""}).render().el);
+  },
+
+  stopLoading: function(btn){
+    $(btn).removeAttr("disabled").find('.loading_spinner').remove();
   }
 });
