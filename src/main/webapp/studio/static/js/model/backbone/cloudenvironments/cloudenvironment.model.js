@@ -270,35 +270,31 @@ Cloudenvironments.Model.CloudApp = Backbone.Model.extend({
   },
 
   url: function(){
-    return "/box/srv/1.1/ide/" + window.DOMAIN + "/app";
+    return "/box/srv/1.1/environments/" + this.env + "/apps/" + this.appGuid + "/";
   },
 
   start: function(success, fail){
-    return this.doAction("start", success, fail);
+    return this.doAction("/box/srv/1.1/ide/" + window.DOMAIN + "/app/start", success, fail);
   },
 
   restart: function(success, fail){
-    var self = this;
-    this.stop(function(){
-      self.start(success, fail);
-    }, fail);
+    return this.doAction(this.url() + "restart", success, fail);
   },
 
   suspend: function(success, fail){
-
+    return this.doAction(this.url() + "suspend", success, fail);
   },
 
   stop: function(success, fail){
-    return this.doAction("stop", success, fail);
+    return this.doAction("/box/srv/1.1/ide/" + window.DOMAIN + "/app/stop", success, fail);
   },
 
   undeploy: function(success, fail){
-
+    return this.doAction(this.url() + "undeploy", success, fail);
   },
 
-  doAction: function(endpoint, success, fail){
+  doAction: function(url, success, fail){
     var model = this;
-    var url = model.url() + "/" + endpoint;
     var self = this;
     var opts = {
       url: url,

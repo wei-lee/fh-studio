@@ -202,6 +202,7 @@ Cloudenvironments.View.AppResourceDetailsView = Backbone.View.extend({
     this.startLoading(e.target);
     this.appModel.undeploy(function(){
       self.stopLoading(e.target);
+      self.toggleView();
     }, function(){
       self.stopLoading(e.target);
     });
