@@ -1,0 +1,623 @@
+[
+  {
+    "name" : "MySQL",
+    "desc" : "Connects to a relational MySQL Database",
+    "image" : "mysql.png",
+    "category" : "Remote Database",
+    "docs" : "https://github.com/felixge/node-mysql",
+    "version" :  "2.0.0-alpha8",
+    "config" :  [
+      {
+        "desc" :  "MySQL Database Host",
+        "varName" :  "MYSQL_HOST"
+      },
+      {
+        "desc" :  "MySQL Username",
+        "varName" :  "MYSQL_USERNAME"
+      },
+      {
+        "desc" :  "MySQL Password",
+        "varName" :  "MYSQL_PASSWORD",
+        "field" : "password"
+      }
+    ]
+  },
+  {
+    "name" : "PostgreSQL",
+    "desc" : "Non-blocking PostgreSQL client for node.js",
+    "npmName" : "pg",
+    "image" : "postgresql.png",
+    "category" : "Remote Database",
+    "docs" : "https://github.com/brianc/node-postgres",
+    "version" :  "2.2.0",
+    "config" :  [
+      {
+        "desc" : "Your PostreSQL instance hostname",
+        "varName" : "POSTGRESQL_HOST"
+      }
+    ]
+  },
+  {
+    "name" : "MongoDB",
+    "desc" : "Database connector into MongoDB",
+    "image" : "mongodb.png",
+    "category" : "Remote Database",
+    "docs" : "https://github.com/mongodb/node-mongodb-native",
+    "version" :  "1.3.12",
+    "config" :  [
+      {
+        "desc" :  "MongoDB Username",
+        "varName" :  "MONGODB_USER"
+      },
+      {
+        "desc" :  "MongoDB Password",
+        "varName" :  "MONGODB_PASSWORD",
+        "field" : "password"
+      },
+      {
+        "desc" :  "MongoDB Hostname",
+        "varName" :  "MONGODB_HOST"
+      },
+      {
+        "desc" :  "MongoDB Database Name",
+        "varName" :  "MONGODB_DATABASE"
+      }
+    ]
+  },
+  {
+    "name" : "MongoDB ORM",
+    "desc" : "MongoDB ORM Connector",
+    "npmName" : "mongoose",
+    "image" : "mongoose.png",
+    "category" : "Remote Database",
+    "docs" : "http://mongoosejs.com/",
+    "version" :  "3.6.15",
+    "config" :  [
+      {
+        "desc" :  "MongoDB Username",
+        "varName" :  "MONGOOSE_USER"
+      },
+      {
+        "desc" :  "MongoDB Password",
+        "varName" :  "MONGOOSE_PASSWORD",
+        "field" : "password"
+      },
+      {
+        "desc" :  "MongoDB Hostname",
+        "varName" :  "MONGOOSE_HOST"
+      },
+      {
+        "desc" :  "MongoDB Database Name",
+        "varName" :  "MONGOOSE_DATABASE"
+      }
+    ]
+  },
+  {
+    "name" : "CouchDB",
+    "desc" : "A new CouchDB module following node.js idioms",
+    "image" : "couchdb.png",
+    "category" : "Remote Database",
+    "docs" : "https://github.com/felixge/node-couchdb",
+    "npmName" : "felix-couchdb",
+    "version" :  "1.0.7",
+    "config" :  [
+      {
+        "desc" :  "CouchDB Hostname",
+        "varName" :  "COUCHDB_HOST"
+      },
+      {
+        "desc" :  "CouchDB Port (optional)",
+        "varName" :  "COUCHDB_PORT",
+        "optional" : true
+      },
+      {
+        "desc" :  "CouchDB Username (optional)",
+        "varName" :  "COUCHDB_USERNAME ",
+        "optional" : true
+      },
+      {
+        "desc" :  "CouchDB Password (optional)",
+        "varName" :  "COUCHDB_PASSWORD",
+        "optional" : true
+      }
+    ]
+  },
+  {
+    "name" : "Oracle 11g",
+    "desc" : "Oracle database driver",
+    "npmName" : "oracle",
+    "tested" : false,
+    "image" : "oracle.png",
+    "category" : "Remote Database",
+    "version" :  "0.3.2",
+    "docs" : "https://npmjs.org/package/oracle",
+    "config" :  [
+      {
+        "desc" :  "Your Oracle 11g hostname",
+        "varName" :  "ORACLE_HOSTNAME"
+      },
+      {
+        "desc" :  "Your Oracle 11g Username",
+        "varName" :  "ORACLE_USER"
+      },
+      {
+        "desc" :  "Your Oracle 11g Password",
+        "varName" :  "ORACLE_PASSWORD",
+        "field" :  "password"
+      }
+    ]
+  },
+  {
+    "name" : "S3",
+    "desc" : "Connects to Amazon S3 Bucket Storage",
+    "image" : "s3.png",
+    "category" : "Remote Storage",
+    "docs" : "https://github.com/learnboost/knox",
+    "npmName" :  "knox",
+    "version" :  "0.5.2",
+    "config" :  [
+      {
+        "desc" :  "Your S3 key",
+        "varName" :  "S3_KEY"
+      },
+      {
+        "desc" :  "Your S3 secret",
+        "varName" :  "S3_SECRET",
+        "field" :  "password"
+      }
+    ]
+  },
+  {
+    "name" : "Dropbox",
+    "desc" : "JavaScript client library for the Dropbox API",
+    "tested" : false,
+    "disabled" : true,
+    "image" : "dropbox.png",
+    "category" : "Remote Storage",
+    "docs" : "https://github.com/dropbox/dropbox-js/blob/stable/guides/getting_started.md",
+    "version" :  "0.10.0",
+    "config" :  []
+  },
+  {
+    "name" : "OpenStack",
+    "tested" : false,
+    "disabled" : true,
+    "desc" : "A node.js client library for interacting with Openstack Storage (Swift)",
+    "image" : "openstack.png",
+    "category" : "Remote Storage",
+    "docs" : "https://github.com/feedhenry/openstack-storage",
+    "version" :  "0.1.0-80",
+    "config" :  []
+  },
+  {
+    "name" : "Rackspace",
+    "tested" : false,
+    "disabled" : true,
+    "desc" : "Rackspace Cloud Open Stack storage provider",
+    "image" : "rackspace.png",
+    "category" : "Remote Storage",
+    "version" :  "0.1.0-80",
+    "npmName" :  "openstack-storage",
+    "docs" : "https://github.com/feedhenry/openstack-storage",
+    "config" :  [
+      {
+        "desc" :  "Your OpenStack instance URL - e.g. storage.openstack.com",
+        "varName" :  "OPENSTACK_INSTANCE"
+      },
+      {
+        "desc" :  "API Key",
+        "varName" :  "OPENSTACK_APIKEY"
+      }
+    ]
+  },
+  {
+    "name" : "Google Drive",
+    "tested" : false,
+    "disabled" : true,
+    "desc" : "Node.js library to access Google Drive's API",
+    "image" : "googledrive.png",
+    "category" : "Remote Storage",
+    "docs" : "https://github.com/niftylettuce/node-google-drive",
+    "version" :  "0.0.4",
+    "config" :  []
+  },
+  {
+    "name" : "PKG Cloud",
+    "desc" : "Abstracts away differences among multiple cloud providers.",
+    "npmName" : "pkgcloud",
+    "image" : "pkgcloud.png",
+    "category" : "File System",
+    "docs" : "https://github.com/nodejitsu/pkgcloud",
+    "version" :  "0.8.4",
+    "config" :  []
+  },
+  {
+    "name" : "SQLite",
+    "desc" : "Asynchronous, non-blocking SQLite3 ",
+    "image" : "sqlite.png",
+    "category" : "File System",
+    "docs" : "https://github.com/developmentseed/node-sqlite3",
+    "version" :  "2.1.14",
+    "config" :  []
+  },
+  {
+    "name" : "LevelDB",
+    "desc" : "LevelDB - Node.js style",
+    "image" : "leveldb.png",
+    "category" : "File System",
+    "docs" : "https://github.com/rvagg/node-levelup",
+    "npmName" : "level",
+    "version" :  "0.11.0",
+    "config" :  []
+  },
+
+  {
+    "name" : "Sendgrid",
+    "tested" : true,
+    "desc" : "Connects to the Sendgrid emailer API",
+    "image" : "sendgrid.png",
+    "category" : "Messaging",
+    "version" :  "0.2.5",
+    "docs" : "https://github.com/sendgrid/sendgrid-nodejs",
+    "config" :  [
+      {
+        "desc" :  "Your SendGrid username",
+        "varName" :  "SENDGRID_USERNAME"
+
+      },
+      {
+        "desc" :  "Your SendGrid password",
+        "varName" :  "SENDGRID_PASSWORD",
+        "field" :  "password"
+      },
+      {
+        "desc" :  "From email address",
+        "varName" :  "SENDGRID_FROM"
+      },
+      {
+        "desc" :  "From descriptive name",
+        "varName" :  "SENDGRID_FROMNAME"
+      }
+    ]
+  },
+  {
+    "name" : "SMTP",
+    "npmName" : "simplesmtp",
+    "desc" : "Simple SMTP server module to create custom SMTP servers",
+    "image" : "smtp.png",
+    "category" : "Messaging",
+    "docs" : "https://npmjs.org/package/simplesmtp",
+    "version" :  "0.3.4",
+    "config" :  [
+      {
+        "desc" :  "Your SMTP Server Username",
+        "varName" :  "SMTP_USERNAME"
+      },
+      {
+        "desc" :  "Your SMTP Server Password",
+        "varName" :  "SMTP_PASSWORD",
+        "field" : "password"
+      },
+      {
+        "desc" :  "Your SMTP Server Hostname",
+        "varName" :  "SMTP_HOST"
+      },
+      {
+        "desc" :  "Your SMTP Port (optional - default 25)",
+        "varName" :  "SMTP_PORT",
+        "optional" : "true"
+      }
+    ]
+  },
+  {
+    "name" : "Twilio",
+    "tested" : true,
+    "desc" : "Connects to the Twilio telephony API",
+    "image" : "twilio.png",
+    "category" : "Messaging",
+    "version" :  "1.1.4",
+    "docs" : "http://twilio.github.io/twilio-node/",
+    "config" :  [
+      {
+       "desc" :  "Twilio account SID",
+       "varName" :  "TWILIO_SID"
+      },
+      {
+       "desc" :  "Twilio Auth Token",
+       "varName" :  "TWILIO_AUTH"
+      },
+      {
+       "desc" :  "Your Twilio number you\"ve been assigned",
+       "varName" :  "TWILIO_NUMBER"
+      }
+    ]
+  },
+  {
+    "name" : "RabbitMQ",
+    "desc" : "Messaging in Node.JS made easy using RabbitMQ",
+    "image" : "rabbitmq.png",
+    "category" : "Messaging",
+    "docs" : "https://github.com/squaremo/rabbit.js",
+    "npmName" : "rabbit.js",
+    "version" :  "0.2.2",
+    "config" :  [
+      {
+        "desc" :  "Your RabbitMQ Hostname",
+        "varName" :  "RABBITMQ_HOST"
+      }
+    ]
+  },
+  {
+    "name" : "Salesforce",
+    "tested" : true,
+    "desc" : "Connects to the SalesForce CRM Api",
+    "image" : "salesforce.png",
+    "category" : "SaaS Connectors",
+    "version" :  "0.5.1",
+    "npmName" :  "node-salesforce",
+    "docs" : "https://github.com/stomita/node-salesforce",
+    "config" :  [
+      {
+        "desc" :  "Your salesforce.com login",
+        "varName" :  "SALESFORCE_USERNAME"
+      },
+      {
+        "desc" :  "Your salesforce.com password",
+        "varName" :  "SALESFORCE_PASSWORD",
+        "type" : "password"
+      },
+      {
+        "desc" :  "Your salesforce security token (optional - not needed if you've added our cloud to your access whitelist)",
+        "optional" : true,
+        "varName" :  "SALESFORCE_SECURITYTOKEN",
+        "type" : "password"
+      }
+    ]
+  },
+  {
+    "name" : "Google",
+    "tested" : true,
+    "desc" : "Official client library for accessing Google APIs",
+    "image" : "google.png",
+    "category" : "SaaS Connectors",
+    "docs" : "https://github.com/google/google-api-nodejs-client",
+    "version" :  "0.2.13-alpha",
+    "config" :  []
+  },
+  {
+    "name" : "Intercom",
+    "tested" : true,
+    "desc" : "An interface for speaking to intercom.io API",
+    "image" : "intercom.png",
+    "category" : "SaaS Connectors",
+    "docs" : "https://github.com/silentrob/node-intercom",
+    "version" :  "0.0.4",
+    "config" :  [
+      {
+        "desc" :  "Your Intercom.io API Key",
+        "varName" :  "INTERCOM_API_KEY"
+      },
+      {
+        "desc" :  "Your Intercom.io APP Key",
+        "varName" :  "INTERCOM_APP_KEY"
+      }
+
+    ]
+  },
+  {
+    "name" : "SAP Netweaver",
+    "desc" : "SAP Netweaver RFC SDK bindings for Node.js",
+    "image" : "netweaver.png",
+    "category" : "SaaS Connectors",
+    "docs" : "https://github.com/jdorner/node-sapnwrfc",
+    "version" :  "0.1.5",
+    "npmName" : "sapnwrfc",
+    "config" :  [
+
+      {
+        "desc" :  "Your SAP Hostname",
+        "varName" :  "SAP_HOST"
+      },
+      {
+        "desc" :  "Your SAP SysID",
+        "varName" :  "SAP_SYSID"
+      },
+      {
+        "desc" :  "Your SAP SysNR",
+        "varName" :  "SAP_SYSNR"
+      },
+      {
+        "desc" :  "Your SAP Username",
+        "varName" :  "SAP_USER"
+      },
+      {
+        "desc" :  "Your SAP Password",
+        "varName" :  "SAP_PASSWORD",
+        "field" : "password"
+      },
+      {
+        "desc" :  "Your SAP Client",
+        "varName" :  "SAP_CLIENT"
+      }
+    ]
+  },
+  {
+    "name" : "Facebook",
+    "tested" : false,
+    "disabled" : true,
+    "desc" : "Node.js SDK for the Facebook API",
+    "image" : "facebook.png",
+    "category" : "Social",
+    "config" :  [],
+    "docs" : "https://github.com/criso/fbgraph",
+    "npmName" : "fbgraph",
+    "version" : "0.2.0"
+  },
+  {
+    "name" : "Twitter",
+    "tested" : false,
+    "disabled" : true,
+    "desc" : "",
+    "image" : "twitter.png",
+    "category" : "Social",
+    "config" :  [],
+    "docs" : "https://github.com/mynetx/codebird-js"
+  },
+  {
+    "name" : "Stripe",
+    "tested" : true,
+    "version" : "1.3.0",
+    "desc" : "Stripe.com API for node.js",
+    "image" : "stripe.png",
+    "category" : "eCommerce",
+    "config" :  [
+      {
+        "desc" :  "Your Stripe API Key",
+        "varName" :  "STRIPE_API_KEY"
+      }
+    ],
+    "docs" : "https://github.com/abh/node-stripe"
+  },
+  {
+    "name" : "Paypal",
+    "tested" : true,
+    "desc" : "Connects to PayPal payment gateway",
+    "version" : "0.6.2",
+    "npmName" : "paypal-rest-sdk",
+    "image" : "paypal.png",
+    "category" : "eCommerce",
+    "config" :  [
+      {
+        "desc" :  "PayPal hostname to connect to (optional - assumes api.paypal.com)",
+        "optional" : true,
+        "varName" :  "PAYPAL_HOST"
+      },
+      {
+        "desc" :  "Your PayPal client ID",
+        "varName" :  "PAYPAL_CLIENT_ID"
+      },
+      {
+        "desc" :  "Client Secret",
+        "varName" :  "PAYPAL_CLIENT_SECRET"
+      }
+    ],
+    "docs" : "https://github.com/paypal/rest-api-sdk-nodejs"
+  },
+  {
+    "name" : "Logentries",
+    "tested" : true,
+    "desc" : "An easy-to-use wrapper for the logentries.com service.",
+    "version" : "0.1.0",
+    "npmName" : "node-logentries",
+    "image" : "logentries.png",
+    "category" : "Logging",
+    "config" :  [
+      {
+        "desc" :  "Your Logentries App Token",
+        "varName" :  "LOGENTRIES_APP_TOKEN"
+      }
+    ],
+    "docs" : "https://github.com/rjrodger/node-logentries"
+  },
+  {
+    "name" : "Loggly",
+    "tested" : true,
+    "desc" : "A client implementation for Loggly cloud Logging-as-a-Service API",
+    "image" : "loggly.png",
+    "category" : "Logging",
+    "version" : "0.3.11",
+    "config" :  [
+      {
+        "desc" :  "Your Loggly subdomain - the 'yourname' part of yourname.loggly.com",
+        "varName" :  "LOGGLY_SUBDOMAIN"
+      },
+      {
+        "desc" :  "Your Loggly username",
+        "varName" :  "LOGGLY_USERNAME"
+      },
+      {
+        "desc" :  "Your Loggly password",
+        "varName" :  "LOGGLY_PASSWORD",
+        "type" : "password"
+      }
+
+    ],
+    "docs" : "https://github.com/nodejitsu/node-loggly"
+  },
+  {
+    "name" : "Mixpanel",
+    "tested" : true,
+    "desc" : "A simple API for mixpanel",
+    "version" : "0.0.16",
+    "image" : "mixpanel.png",
+    "category" : "Analytics",
+    "config" :  [
+      {
+        "desc" :  "Your Mixpanel API Key",
+        "varName" :  "MIXPANEL_API_KEY",
+        "type" : "password"
+      }
+    ],
+    "docs" : "https://github.com/carlsverre/mixpanel-node"
+  },
+  {
+    "name" : "Whiskey",
+    "desc" : "Simplifies integration tests with lots of service / process dependencies",
+    "category" : "Testing",
+    "version" :  "0.8.3",
+    "docs" :  "https://github.com/cloudkick/whiskey/"
+  },
+  {
+    "name" : "Mocha",
+    "image" : "mocha.png",
+    "desc" : "Simple, flexible, JavaScript test framework for Node.js & the browser.",
+    "category" : "Testing",
+    "version" :  "1.12.0",
+    "docs" :  "http://visionmedia.github.io/mocha/"
+  },
+  {
+    "name" : "Proxyquire",
+    "desc" : "Proxies require to make overriding dependencies during testing easy",
+    "category" : "Testing",
+    "version" :  "0.4.1",
+    "docs" :  "https://github.com/thlorenz/proxyquire/"
+  },
+  {
+    "name" : "Underscore",
+    "image" : "underscore.png",
+    "desc" : "JavaScript's functional programming helper library.",
+    "category" : "Tools",
+    "version" :  "1.5.1",
+    "docs" :  "https://github.com/jashkenas/underscore/"
+  },
+  {
+    "name" : "Node Cron",
+    "npmName" : "cron",
+    "desc" : "Cron-style scheduling for Node.jS",
+    "category" : "Tools",
+    "version" :  "1.0.1",
+    "docs" :  "https://github.com/ncb000gt/node-cron/"
+  },
+  {
+    "name" : "Socket.io",
+    "image" : "socketio.png",
+    "desc" : "Real-time apps made easy with a WebSocket-like API",
+    "category" : "Tools",
+    "version" :  "0.9.16",
+    "docs" :  "https://github.com/learnboost/socket.io"
+  },
+  {
+    "name" : "Request",
+    "desc" : "De facto standard for doing all HTTP requests in Node.js ",
+    "category" : "Tools",
+    "version" :  "2.11.4",
+    "docs" :  "https://github.com/mikeal/request"
+  },
+  {
+    "name" : "Async",
+    "desc" : "Callback hell? Async helps you overcome this",
+    "category" : "Tools",
+    "version" :  "0.2.5",
+    "docs" :  "https://github.com/caolan/async"
+  }
+]

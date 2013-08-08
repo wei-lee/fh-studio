@@ -92,6 +92,7 @@ public class StudioBean {
   public static final String PROP_LANDINGGOOGLEKEY = "landingGoogleKey";
   public static final String PROP_STUDIOVERSIONOPTION = "studioVersionOptionEnabled";
   public static final String PROP_STUDIOVERSION = "studioVersion";
+  public static final String PROP_PLUGINS_ENABLED = "pluginsEnabled";
 
   public static final List<String> mAllowedActionRequest = new ArrayList<String>();
   private static ArrayList<String> sSchemeHeaders = new ArrayList<String>();

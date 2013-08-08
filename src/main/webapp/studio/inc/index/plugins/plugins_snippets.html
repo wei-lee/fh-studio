@@ -1,0 +1,551 @@
+<script type="text/snippet" id="snippet-mysql">
+/*
+ Executes a MySQL Query
+ @param param.query : the query to execute
+ */
+exports.mysql = function(params, cb){
+  var mysql      = require('mysql');
+  var connection = mysql.createConnection({
+    host     : process.env.MYSQL_HOST,
+    user     : process.env.MYSQL_USERNAME,
+    password : process.env.MYSQL_PASSWORD
+  });
+
+  connection.connect();
+
+  connection.query(params.query, function(err, rows, fields) {
+    if (err){
+      return cb(err);
+    }
+
+    return cb(err, {rows : rows, fields : fields });
+  });
+
+  connection.end();
+};
+</script>
+
+
+<script type="text/snippet" id="snippet-request">
+var request = require('request');
+request('http://www.google.com', function (error, response, body) {
+  if (!error && response.statusCode == 200) {
+    console.log(body) // Print the google web page.
+  }
+});
+</script>
+<script type="text/snippet" id="snippet-sendgrid">
+/*
+ @param params.to : recipient
+ @param params.subject : email subjecrt
+ @param params.body : message body
+ */
+exports.sendgrid = function(params, cb){
+  var SendGrid = require('sendgrid').SendGrid;
+  var sendgrid = new SendGrid(process.env.SENDGRID_USERNAME, process.env.SENDGRID_PASSWORD);
+  sendgrid.send({
+    to: params.to,
+    from: 'mobile@feedhenry.com',
+    fromname : 'FeedHenry mBaaS',
+    subject: params.subject || "FeedHenry Email",
+    text: params.body || "Here is an email from a FeedHenry app!"
+  }, function(success, message) {
+    if (!success) {
+      return cb(message);
+    }
+    return cb(null, { ok : true});
+  });
+};
+</script>
+<script type="text/snippet" id="snippet-twilio">
+/*
+ Sends an SMS with the twilio API
+ @param to : recipient
+ @param body : message body
+ */
+exports.twillio = function(params, cb){
+  // Your accountSid and authToken from twilio.com/user/account
+  var accountSid = process.env.TWILIO_SID,
+          authToken = process.env.TWILIO_AUTH,
+          client = require('twilio')(accountSid, authToken);
+
+  client.sms.messages.create({
+    body: params.body,
+    to: params.to,
+    from: process.env.TWILIO_NUMBER
+  }, function(err, message) {
+    return cb(err, message);
+  });
+};
+</script>
+<script type="text/snippet" id="snippet-knox">
+/*
+ Retrieves the contents of an Amazon S3 bucket
+ @param params.bucket : Bucket name we're retrieving the listing from
+ */
+exports.s3 = function(params, callback){
+  var s3 = require('knox'),
+          client = s3.createClient({
+            key: process.env.S3_KEY,
+            secret: process.env.S3_SECRET,
+            bucket: params.bucket
+          });
+  client.list({}, function(err, data){
+    if (err) {
+      return callback(err);
+    }
+
+    var contents = data && data.Contents;
+
+    if (!contents){
+      return callback({err : "No files found" });
+    }
+    return callback(null, {'contents':contents});
+  });
+};
+</script>
+<script type="text/snippet" id="snippet-oracle11g">
+/*
+  Connects to Oracle 11g
+*/
+exports.oracle = function(params, callback){
+  var oracledb = require('oracle');
+  oracledb.connect({
+    "hostname": process.env.ORACLE_HOSTNAME,
+    "database": process.env.ORACLE_DATABASE,
+    "user":     process.env.ORACLE_USER,
+    "password": process.env.ORACLE_PASSWORD,
+    "port":     process.env.ORACLE_PORT
+  }, callback);
+}
+</script>
+<script type="text/snippet" id="snippet-mongodb">
+/*
+ Inserts an object (document) into a collection in MongoDB
+ @param params.insert an object to insert into your database
+ @param params.collection the collection to insert it into
+ */
+exports.mongodb = function(params, cb){
+  var MongoClient = require('mongodb').MongoClient,
+          format = require('util').format,
+          user = process.env.MONGODB_USER,
+          password = process.env.MONGODB_PASSWORD,
+          upString = (typeof user === 'string' && typeof password === 'string') ? user + ":" + password : "",
+          database = process.env.MONGODB_DATABASE,
+          host = process.env.MONGODB_HOST;
+
+  MongoClient.connect('mongodb://' + upString + '@' + host + '/' + database, function(err, db) {
+    if(err) return cb(err);
+
+    var collection = db.collection(params.collection);
+    collection.insert(params.insert, function(err, docs) {
+      db.close();
+      return cb(null, docs);
+    });
+  })
+
+};
+</script>
+<script type="text/snippet" id="snippet-mongoose">
+/*
+ This example Exposes Mongoose ORM to the client side by creating a Message model,
+ adding an instance to it, then finding all instances of messages, returning these to the client
+ @param params.message : The message to send to the DB
+ */
+exports.mongoose = function(params, cb){
+  var mongoose = require('mongoose'),
+          user = process.env.MONGOOSE_USER,
+          password = process.env.MONGOOSE_PASSWORD,
+          upString = (typeof user === 'string' && typeof password === 'string') ? user + ":" + password : "",
+          database = process.env.MONGOOSE_DATABASE,
+          host = process.env.MONGOOSE_HOST,
+          db = mongoose.connect('mongodb://' + upString + '@' + host + '/' + database),
+          Schema = mongoose.Schema;
+
+  // Make a new message model
+  var Message = mongoose.model('Message', {
+    message: String,
+    date: Date
+  });
+
+  var instance = new Message();
+  Message.message = params.message;
+  Message.date = new Date();
+
+  instance.save(function (err) {
+    Message.find({}, function (err, docs) {
+      mongoose.disconnect();
+      return cb(err, docs);
+    });
+  });
+};
+</script>
+<script type="text/snippet" id="snippet-oracle">
+/*
+ Connects to an Oracle 11g instance
+ */
+exports.oracle = function(params, cb){
+  var oracle = require("oracle");
+  oracle.connect({ "hostname": process.env.ORACLE_HOSTNAME, "user": process.env.ORACLE_USERNAME, "password": process.env.ORACLE_PASSWORD }, function(err, connection) {
+    // selecting rows
+    if (err) {
+      return cb(err);
+    }
+    connection.execute("SELECT * FROM person WHERE name = :1", ['bob smith'], cb);
+    connection.close(); // call this when you are done with the connection
+  });
+};
+</script>
+<script type="text/snippet" id="snippet-openstack">
+/*
+  Connects to a OpenStack swift storage instance
+*/
+exports.openstack = function(params, callback){
+  var storage = require('openstack-storage');
+  var storageSwift = new storage.OpenStackStorage (authFn, function(err, res, tokens) {
+
+  });
+
+}
+</script>
+<script type="text/snippet" id="snippet-node-salesforce">
+/*
+ Performs authentication with SalesForce using SOAP API then queries the db
+ @param params.query : The SOQL query to perform
+ */
+exports.salesforce = function(params, cb){
+  var sf = require('node-salesforce'),
+          pass = (typeof process.env.SALESFORCE_SECURITYTOKEN === 'undefined') ? process.env.SALESFORCE_PASSWORD : process.env.SALESFORCE_PASSWORD + process.env.SALESFORCE_SECURITYTOKEN;
+  var conn = new sf.Connection({
+  });
+  conn.login(process.env.SALESFORCE_USERNAME, pass, function(err, userInfo) {
+    if (err) {
+      return cb(err);
+    }
+    conn.query(params.query, cb);
+  });
+};
+</script>
+
+<script type="text/snippet" id="snippet-google">
+/*
+ Example of using google apis module to discover the URL shortener module, and shorten
+ a url
+ @param params.url : the URL to shorten
+ */
+exports.googleapis = function(params, cb){
+  var googleapis = require('googleapis');
+  googleapis
+          .discover('urlshortener', 'v1')
+          .execute(function(err, client) {
+            var req1 = client.urlshortener.url.insert({ longUrl: params.url });
+
+            req1.execute(cb);
+          });
+};
+</script>
+
+<script type="text/snippet" id="snippet-intercom">
+/*
+ Logs into the Intercom.io API using your APP and API key,
+ then retrieves the information on a specific user
+ @param params.user : the user who's info to retrieve
+ */
+exports.intercom = function(params, cb){
+  var settings = {
+    "API_KEY": process.env.INTERCOM_API_KEY,
+    "APP_ID": process.env.INTERCOM_APP_KEY
+  };
+  var intercom = require('node-intercom').app(settings);
+
+  intercom.users.get(params.user,function(code, body){
+    if (code.toString()[0] !== '2'){
+      // If our response code isn't a 2**, error condition..
+      return cb(code);
+    }
+    // Body is a JSON string - parse it into an object
+    try{
+      body = JSON.parse(body);
+      return cb(null, body);
+    }catch(err){
+      return cb(err);
+    }
+  });
+};
+</script>
+
+<script type="text/snippet" id="snippet-stripe">
+/*
+ Authenticates with Stripe and creates a customer
+ @param params.email : the user account we're creating
+ */
+exports.stripe = function(params, cb){
+  var api_key = process.env.STRIPE_API_KEY;  // secret stripe API key
+  var stripe = require('stripe')(api_key);
+  return stripe.customers.create( { email: params.email }, cb );
+};
+</script>
+
+<script type="text/snippet" id="snippet-paypal-rest-sdk">
+/*
+ Connects to the Paypal SDK, and shows an example of adding a credit card to the system.
+ @param params.card : JSON object representing the card being created - expects type, number, expire_month, expire_year, cvv2, first_name, last_name
+ */
+exports.paypal = function(params, cb){
+  var paypal_sdk = require('paypal-rest-sdk');
+  paypal_sdk.configure({
+    'host': process.env.PAYPAL_HOST || 'api.paypal.com',
+    'port': '443',
+    'client_id': process.env.PAYPAL_CLIENT_ID,
+    'client_secret': process.env.PAYPAL_CLIENT_SECRET
+  });
+
+  return paypal_sdk.credit_card.create(params.card, cb);
+};
+</script>
+
+<script type="text/snippet" id="snippet-node-logentries">
+/*
+ Logs a message to a logentries app
+ @param params.msg : the message to log
+ */
+exports.logentries = function(params, cb){
+  var logentries = require('node-logentries')
+
+  var log = logentries.logger({
+    token: process.env.LOGENTRIES_APP_TOKEN
+  });
+  log.log("debug", params.msg);
+  log.end();
+  return cb(null, { ok : true });
+};
+</script>
+
+<script type="text/snippet" id="snippet-loggly">
+/*
+ Logs a message to loggly
+ @param params.msg : the message to log
+ */
+exports.loggly = function(params, cb){
+  var loggly = require('loggly');
+  var config = {
+    subdomain: process.env.LOGGLY_SUBDOMAIN,
+    auth: {
+      username: process.env.LOGGLY_USERNAME,
+      password: process.env.LOGGLY_PASSWORD
+    }
+  };
+  var client = loggly.createClient(config);
+  return client.log(process.env.LOGGLY_INPUT_TOKEN, params.msg, cb);
+};
+</script>
+
+<script type="text/snippet" id="snippet-mixpanel">
+/*
+ Tracks an event with the Mixpanel API
+ */
+exports.mixpanel = function(params, cb){
+  var Mixpanel = require('mixpanel');
+  // create an instance of the mixpanel client
+  var mixpanel = Mixpanel.init(process.env.MIXPANEL_API_KEY);
+
+  // track an event with optional properties
+  mixpanel.track("my event", {
+    distinct_id: "some unique client id",
+    as: "many",
+    properties: "as",
+    you: "want"
+  });
+  return cb(null, { ok : true })
+};
+</script>
+
+<script type="text/snippet" id="snippet-underscore">
+var _ = require('underscore'),
+        str = "";
+_.each(params.list, function(el, index){
+  str += el;
+  str = (index === params.list.length) ? str : str+";";
+});
+return cb(null, str);
+</script>
+
+<script type="text/snippet" id="snippet-pg">
+/*
+ Runs a query on a remote postgresql instance
+ @param params.query : the query to run
+ */
+exports.postgresql = function(params, cb){
+  var pg = require('pg').native; // needs native for SSL connection
+  var conString = process.env.POSTGRESQL_HOST;
+
+  var client = new pg.Client(conString);
+  client.connect(function(err) {
+    if(err) {
+      return console.error('could not connect to postgres', err);
+    }
+    client.query(params.query, function(err, result) {
+      client.end();
+      return cb(err, result);
+    });
+  });
+};
+</script>
+
+<script type="text/snippet" id="snippet-sqlite">
+/*
+ Creates a table in an in-memory sqlite DB
+ and returns the data it creats
+ */
+exports.sqlite = function(params, cb){
+  var sqlite3 = require('sqlite3').verbose();
+  var db = new sqlite3.Database(':memory:');
+
+  db.serialize(function() {
+    db.run("CREATE TABLE feedhenry (info TEXT)");
+
+    var stmt = db.prepare("INSERT INTO feedhenry VALUES (?)");
+    stmt.run("Hello world");
+    stmt.finalize();
+
+    var rows = [];
+    db.get("SELECT rowid AS id, info FROM feedhenry", function(err, row) {
+      return cb(err, row);
+    });
+
+  });
+  db.close();
+};
+</script>
+
+<script type="text/snippet" id="snippet-rabbitjs">
+/*
+ Connects to a RabbitMQ messaging queue, publishes a message & then listens for it
+ */
+exports.rabbitmq = function(params, cb){
+  var context = require('rabbit.js').createContext(process.env.RABBITMQ_HOST);
+  context.on('ready', function() {
+    var pub = context.socket('PUB'), sub = context.socket('SUB');
+    sub.connect('events', function() {
+      pub.connect('events', function() {
+        pub.write(JSON.stringify({welcome: 'rabbit.js'}), 'utf8');
+      });
+    });
+    sub.on('data', function(data) {
+      pub.destroy();
+      sub.destroy();
+      context.close();
+      return cb(null, data.toString());
+    });
+  });
+};
+</script>
+
+<script type="text/snippet" id="snippet-pkgcloud">
+/*
+ Uses pkgcloud to connect to an Amazon S3 bucket
+ */
+exports.pkgcloud = function(params, cb){
+  var pkgcloud = require('pkgcloud');
+  var amazon = pkgcloud.storage.createClient({
+    provider: 'amazon',
+    key: process.env.S3_SECRET,
+    keyId: process.env.S3_KEY
+  });
+  return amazon.getContainers(cb);
+}
+
+</script>
+
+<script type="text/snippet" id="snippet-level">
+/*
+ Puts a value into LevelDB Store then retrieves it
+ @param params.key - the key to insert under
+ @param params.value - the value to insert
+ */
+exports.leveldb = function(params, cb){
+  var levelup = require('level')
+  // 1) Create our database, supply location and options.
+  // This will create or open the underlying LevelDB store.
+  var db = levelup('./mydb')
+  // 2) put a key & value
+  db.put(params.key, params.value, function (err) {
+    if (err){
+      return cb(err);
+    }
+    // 3) fetch by key
+    return db.get(params.key, cb);
+  })
+};
+</script>
+
+<script type="text/snippet" id="snippet-simplesmtp">
+/*
+ Connects to a SMTP server
+ @param params.to : address to send to
+ @param params.from : from address
+ @param params.message : message string
+ */
+exports.smtp = function(params, cb){
+  var simplesmtp = require("simplesmtp"),
+          port = process.env.SMTP_PORT || 25,
+          options = {};
+
+  if (typeof process.env.SMTP_USERNAME === 'string' && typeof process.env.SMTP_PASSWORD === 'string'){
+    options = {
+      auth : {
+        user : process.env.SMTP_USERNAME,
+        pass : process.env.SMTP_PASSWORD
+      }
+    }
+  }
+
+  var client = simplesmtp.connect(port, process.env.SMTP_HOST, options);
+  client.once("idle", function(){
+    client.useEnvelope({
+      from: params.from,
+      to: [params.to]
+    });
+  });
+  client.on('message', function(){
+    client.write(params.message);
+    client.end();
+  });
+  client.on('error', function(err){
+    client.quit();
+    return cb(err);
+  });
+  client.on("ready", function(success, response){
+    if(success){
+      client.quit();
+      return cb(null, response);
+    }
+  });
+};
+</script>
+
+<script type="text/snippet" id="snippet-sapnwrfc">
+/*
+ Connects to a SAP Netweaver instance - returns the SAP version number on success
+ NB - SAP Netweaver support is enabled on a per-customer basis
+ */
+exports.netweaver = function(){
+ var conParams = {
+   ashost: process.env.SAP_HOST,
+   sysid: process.env.SAP_SYSID,
+   sysnr: process.env.SAP_SYSNR,
+   user: process.env.SAP_USER,
+   passwd: process.env.SAP_PASSWORD,
+   client: process.env.SAP_CLIENT
+ };
+
+ var con = new sapnwrfc.Connection;
+
+ con.Open(conParams, function(err) {
+   if (err) {
+     return cb(err);
+   }
+   return cb(null, con.GetVersion());
+ });
+};
+</script>

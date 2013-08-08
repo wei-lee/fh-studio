@@ -18,6 +18,7 @@ js/application/Config.js
 js/application/dialog/DialogManager.js
 js/application/controller.js
 js/model/backbone/event.model.js
+js/model/backbone/plugin.model.js
 js/model/backbone/alert.model.js
 js/model/backbone/alertnotification.model.js
 js/model/backbone/app.model.js
@@ -127,6 +128,12 @@ js/views/analytics/analytics.overview.view.js
 js/views/analytics/perapp.analytics.view.js
 js/views/analytics/domain.analytics.overview.view.js
 js/views/analytics/project.app.analytics.controller.view.js
+js/views/plugins/plugins.view.js
+js/views/plugins/plugins.setup.view.js
+js/views/plugins/dashboard/plugins.dashboard.view.js
+js/views/plugins/dashboard/plugins.dashboard.search.js
+js/views/plugins/dashboard/plugins.dashboard.filters.js
+js/views/plugins/plugins.controller.js
 js/views/common/swap_select.view.js
 js/views/app/cloud/cloud.sysevents.view.js
 js/views/app/cloud/cloud.alerts.view.js
@@ -255,6 +262,7 @@ js/application/tab/dashboard.tab.manager.js
 js/application/tab/account.tab.manager.js
 js/application/tab/reporting.tab.manager.js
 js/application/tab/environments.tab.manager.js
+js/application/tab/plugins.tab.manager.js
 js/application/destinations/destination_general.js
 js/application/destinations/destination_feedhenry.js
 js/application/destinations/destination_blackberry.js
