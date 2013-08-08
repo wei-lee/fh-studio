@@ -16,6 +16,7 @@ Cloudenvironments.View.ResourceSummaryView = Backbone.View.extend({
     } else {
       params.used = this.model.get("used");
       params.percentage = this.model.getPercentageStr();
+      console.log("name =" + this.model.get("name") + " used = " + this.model.get("used") + " percentage = " + this.model.getPercentageStr());
       if(this.model.get("name") === "apps"){
         params.app = true;
       } else if(this.model.get("name") === "cpu"){
@@ -50,11 +51,11 @@ Cloudenvironments.View.EnvResourceOverview = Backbone.View.extend({
     var html = temp({envName: this.model.getEnvName()});
     this.$el.html(html);
     this.$el.find('div.env_resource_summary_view').html(new App.View.Spinner().render().$el);
-    this.model.bind("sync", function(){
+    this.model.on("sync", function(){
       this.render();
     }, this);
     this.model.fetch();
-    this.model.bind("change", function(){
+    this.model.on("change:resources", function(){
       this.render();
     }, this);
   },

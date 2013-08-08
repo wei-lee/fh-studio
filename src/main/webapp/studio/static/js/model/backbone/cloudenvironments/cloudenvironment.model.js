@@ -59,7 +59,7 @@ Cloudenvironments.Model.DiskResource = Backbone.Model.extend({
 Cloudenvironments.Model.ResourceSummary = Backbone.Model.extend({
 
   getPercentage: function(){
-    return this.get("total") === 0 ? 0: Math.round(this.get("used")/this.get("total")*100);
+    return this.get("total") === 0 ? 0: Math.round(parseInt(this.get("used"), 10)/parseInt(this.get("total"), 10)*100);
   },
 
   getPercentageStr: function(){
@@ -87,6 +87,9 @@ Cloudenvironments.Model.Environment = Backbone.Model.extend({
     var self = this;
     var data = this.get("resources")[resource];
     data.used = this.get("resources")[resource]["used"] ||this.get("resources")[resource]["running"];
+    if(typeof data.used === "undefined"){
+      data.used = 0;
+    }
     data.name = resource;
     data.ts = new Date().getTime();
     return new Cloudenvironments.Model.ResourceSummary(data);
