@@ -123,12 +123,13 @@ Cloudenvironments.View.SingleResourceView = Backbone.View.extend({
   initialize: function(options){
     this.parentView = options.parentView;
     this.resource = options.resource;
+    this.resourceModel = new Cloudenvironments.ResourceTypes[options.resource]();
     this.temp = Handlebars.compile($('#cloudenvironments-resource-single-view-template').html());
     this.render();
   },
 
   render: function(){
-    this.$el.html(this.temp());
+    this.$el.html(this.temp({resource: this.resourceModel.getTitle()}));
     this.renderLineChartView();
     this.renderStackChart();
     this.renderPieChart();

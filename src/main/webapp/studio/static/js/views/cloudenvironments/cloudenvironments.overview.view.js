@@ -80,7 +80,9 @@ Cloudenvironments.View.EnvAccordionView = Backbone.View.extend({
   events: {
     'click .reload_button': 'reloadModel',
     'click .show_collapse_button': 'showCollapse',
-    'click .hide_collapse_button': 'hideCollapse'
+    'click .hide_collapse_button': 'hideCollapse',
+    'click .pause_btn': 'pauseUpdate',
+    'click .play_btn': 'continueUpdate'
   },
 
   initialize: function(options){
@@ -141,6 +143,22 @@ Cloudenvironments.View.EnvAccordionView = Backbone.View.extend({
 
   renderCountDown: function(){
     this.$el.find('.count_down_info').find("span").text(this.model.get("interval") === 0 ? "Loading..." : ("Next Refresh: " + this.model.get("interval") + " Seconds") );
+  },
+
+  pauseUpdate: function(e){
+    e.preventDefault();
+    this.model.pausePooling();
+    this.$el.find('.pause_btn').addClass("hidden");
+    this.$el.find('.play_btn').removeClass("hidden");
+    this.$el.find('.count_down_info').find("span").text("Paused");
+  },
+
+  continueUpdate: function(e){
+    e.preventDefault();
+    this.model.continuePooling();
+    this.$el.find('.play_btn').addClass("hidden");
+    this.$el.find('.pause_btn').removeClass("hidden");
+    this.$el.find('.count_down_info').find("span").text("Loading...");
   },
 
   reloadModel: function(e){

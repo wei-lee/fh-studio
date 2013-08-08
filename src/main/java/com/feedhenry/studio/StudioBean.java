@@ -58,6 +58,7 @@ public class StudioBean {
   // If perms for a particular endpoint/s change, we need to update these
   public static final String ROLE_CUSTOMERADMIN = "customeradmin";
   public static final String ROLE_RESELLERADMIN = "reselleradmin";
+  public static final String ROLE_DEVADMIN = "devadmin";
   public static final String[] GROUP_REPORTING = new String[] { "analytics" };
   public static final String[] GROUP_ARM = new String[] { "portaladmin" };
   public static final String[] GROUP_USER_ADMIN = new String[] { ROLE_CUSTOMERADMIN, ROLE_RESELLERADMIN};

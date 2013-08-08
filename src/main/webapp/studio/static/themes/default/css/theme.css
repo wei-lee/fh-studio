@@ -3793,6 +3793,10 @@ h5.steps{
   height: 100%;
 }
 
+#cloud_environments_layout  .accordion-group.boxed-group {
+  padding: 0px;
+}
+
 #cloud_environments_layout div.env_name {
   height: 40px;
   font-size: 1.6em;
@@ -3812,6 +3816,10 @@ h5.steps{
 
 #cloud_environments_layout div.center_text {
   text-align: center;
+}
+
+#cloud_environments_layout  div.boxed-group {
+  background-color: #FFFFFF;
 }
 
 #cloud_environments_layout .resource_usage_progress {
@@ -3921,6 +3929,11 @@ h5.steps{
   overflow: hidden;
 }
 
+#cloud_environments_layout .control-btns {
+  height: 50px;
+  padding-top: 10px;
+}
+
 #cloud_environments_layout .apps_resource_view_container .control-btns .btn .loading_spinner, #cloud_environments_layout .cache_content_view .btn .loading_spinner{
   display: inline-block;
   margin-left: 5px;
@@ -3978,17 +3991,4 @@ h5.steps{
 
 #cloud_environments_layout .cache_content_view .set_cache_options input[type="text"] {
   width: 35px;
-}
-
-#cloud_environments_layout .cache_warning_container {
-  border: solid 1px;
-  border-radius: 8px;
-  padding: 5px;
-  background-color: #F8C986;
-}
-
-#cloud_environments_layout .cache_warning_container  .cache_warning_icon {
-  width: 40px;
-  height: 40px;
-  display: inline-block;
 }

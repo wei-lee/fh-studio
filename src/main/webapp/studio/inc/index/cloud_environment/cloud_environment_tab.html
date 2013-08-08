@@ -55,16 +55,13 @@
 </script>
 
 <script id="cloudenvironments-env-resource-accordion-tempalte" type="text/x-handlebars-template">
-  <div class="accordion-group">
-    <div class="accordion-heading">
-      <div class="env_name">
-        <div class="env_name_div pull-left">
-          <span class="env_name_text">{{envName}}</span>
-        </div>
+  <div class="accordion-group boxed-group" data-title="{{envName}}">
+    <div class="accordion-heading" >
+      <div class="env_name" >
         <div class="resource_controls pull-right hidden">
-          <a class="btn btn-success btn-large show_collapse_button" href="#"><i class="icon-plus"></i></a>
-          <a class="btn btn-danger btn-large hide_collapse_button hidden" href="#"><i class="icon-minus"></i></a>
           <a class="btn btn-primary btn-large reload_button" href="#"><i class="icon-repeat"></i></a>
+          <a class="btn btn-success btn-large show_collapse_button" href="#"><i class="icon-chevron-down"></i></a>
+          <a class="btn btn-danger btn-large hide_collapse_button hidden" href="#"><i class="icon-chevron-up"></i></a>
         </div>
       </div>
       <div class="accordion-toggle" data-toggle="collapse" data-parent="#cloudenvironments_accordion" href="#cloudenvironment_details_{{name}}">
@@ -79,7 +76,7 @@
             <li><a href="#details_cache_cotent_{{name}}" data-toggle="pill">Cache</a></li>
          </ul>
 
-         <div class="count_down_info pull-right"><span class="text"></span></div>
+         <div class="count_down_info pull-right"><span class="text"></span> <button class="btn btn-info pause_btn"><i class="icon-pause"></i></button> <button class="btn btn-success play_btn hidden"><i class="icon-play"></i></button></div>
 
         <div class="details_content tab-content">
           <div class="nav_content tab-pane" id="details_resources_cotent_{{name}}">Resources</div>
@@ -110,21 +107,18 @@
 <script id="cloudenvironments-resource-dashboard-view-template" type="text/x-handlebars-template">
   <div>
     {{#each resources}}
-      <form class="{{@key}}_dashboard_form">
-        <fieldset class="well">
-          <legend>{{this}}</legend>
+        <div class="boxed-group" data-title="{{this}}">
           <div class="{{@key}}_chart_view resource_chart_view">
 
           </div>
-        </fieldset>
-      </form>
+        </div>
     {{/each}}
   </div>
 </script>
 
 <script id="cloudenvironments-resource-single-view-template" type="text/x-handlebars-template">
   <div class="single_resource_view">
-    <div class="well">
+    <div class="boxed-group" data-title="{{resource}} Usage">
       <div class="line_chart_view">
       </div>
       <div class="stack_chart_view row-fluid">
@@ -173,16 +167,15 @@
     <div class="app_details_container">
     </div>
     
-    <form class="span11">
-      <fieldset class="well control-btns">
-        <legend> Manage App </legend>
+    <div class="span11">
+      <div class="control-btns">
         <div class="span2 offset1"><button class="btn btn-large btn-success startButton">Start</button></div>
         <div class="span2"><button class="btn btn-large btn-ino restartButton">Restart</button></div>
         <div class="span2"><button class="btn btn-large btn-warning suspendButton">Suspend</button></div>
         <div class="span2"><button class="btn btn-large btn-danger stopButton">Stop</button></div>
         <div class="span2"><button class="btn btn-large btn-inverse undeployButton">Undeploy</button></div>       
-      </fieldset>
-    </form>
+      </div>
+    </div>
 
     <div class="resource_charts span11">
     </div>
@@ -232,12 +225,10 @@
         </form>
       </div>
 
-      <div class="cache_warning_row span12">
-        <div class="cache_warning_container span12">
-          <div class="cache_warning_text span12">
-            <i class='icon-warning-sign'></i> Warning: Flushing Cache will remove all cached data for all apps in this environment. This may result in a temparary performance hit while the cache is being rebuilt.
+      <div class="cache_warning_row span12 alert">
+        <div class="span12">
+          <i class='icon-warning-sign'></i> Warning: Flushing Cache will remove all cached data for all apps in this environment. This may result in a temparary performance hit while the cache is being rebuilt.
           </div>
-        </div>
       </div>
 
     </div>
