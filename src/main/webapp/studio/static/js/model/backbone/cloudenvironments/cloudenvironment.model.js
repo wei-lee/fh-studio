@@ -240,6 +240,8 @@ Cloudenvironments.Model.CacheResource = Backbone.Model.extend({
     var model = this;
     var url = model.url() + "/" + endpoint;
     var self = this;
+    var csrftoken = $('input[name="csrftoken"]').val();
+    data.csrftoken = csrftoken;
     var opts = {
       url: url,
       type: "POST",
@@ -297,13 +299,15 @@ Cloudenvironments.Model.CloudApp = Backbone.Model.extend({
   doAction: function(url, success, fail){
     var model = this;
     var self = this;
+    var csrftoken = $('input[name="csrftoken"]').val();
     var opts = {
       url: url,
       type: "POST",
       data: JSON.stringify({
         guid: this.appGuid,
         deploytarget: this.env,
-        apptype: this.appType
+        apptype: this.appType,
+        csrftoken: csrftoken
       }),
       success: function(res, status){
         self.trigger("sync");
