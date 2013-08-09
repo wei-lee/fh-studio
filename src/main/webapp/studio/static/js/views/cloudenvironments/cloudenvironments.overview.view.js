@@ -53,7 +53,10 @@ Cloudenvironments.View.EnvResourceOverview = Backbone.View.extend({
     this.model.on("sync", function(){
       this.render();
     }, this);
-    this.model.fetch();
+    var self = this;
+    this.model.fetch({error: function(model, resp, options){
+      self.renderError(model, resp, options);
+    }});
     this.model.on("change:resources", function(){
       this.render();
     }, this);
@@ -72,6 +75,12 @@ Cloudenvironments.View.EnvResourceOverview = Backbone.View.extend({
       summaryView.render();
       self.$el.find('div.env_resource_summary_view').append(summaryView.$el);
     });
+  },
+
+  renderError: function(model, resp, options){
+    var alert = $("<div>", {"class":"alert alert-error", text:"This service is currently unavailable due to errors. Status Code: " + resp.status + ". Please try again later."});
+    alert.prepend($('<h4>', {"class":"alert-heading", text:"Error"}));
+    this.$el.find('div.env_resource_summary_view').html(alert);
   }
 });
 

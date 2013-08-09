@@ -65,6 +65,16 @@ Cloudenvironments.View.EnvLineChartView = Backbone.View.extend({
         type:'datetime',
         tickPixelInterval: 100
       },
+      yAxis: {
+        title: {
+          text: null
+        },
+        labels: {
+          formatter: function(){
+            return Highcharts.numberFormat(this.value, 0) + self.resourceModel.getUnit();
+          }
+        }
+      },
       title: {text:self.resourceModel.getTitle()},
       tooltip:{
         valueSuffix: self.resourceModel.getUnit()
@@ -147,6 +157,16 @@ Cloudenvironments.View.AppLineChartView = Backbone.View.extend({
       xAxis: {
         type:'datetime',
         tickPixelInterval: 100
+      },
+      yAxis: {
+        title: {
+          text: null
+        },
+        labels: {
+          formatter: function(){
+            return Highcharts.numberFormat(this.value, 0) + self.resourceModel.getUnit();
+          }
+        }
       },
       title: {text:self.resourceModel.getTitle()},
       tooltip:{
@@ -336,11 +356,24 @@ Cloudenvironments.View.AppResourcePieChartView = Backbone.View.extend({
       collection : this.getSeriesFromCollection(),
       title: false,
       tooltip:{
-        valueSuffix: this.resourceModel.getUnit()
+        //valueSuffix: this.resourceModel.getUnit()
+        pointFormat: '{series.name}: {point.y}'+this.resourceModel.getUnit()+' - <b>{point.percentage:.1f}%</b>'
       },
-      colors: ['#4572A7', '#AA4643', '#89A54E', '#3D96AE', '#DB843D', '#A47D7C', '#B5CA92', '#aa4643', '#80699b', '#db843d'],
+      colors: ['#fb9d00', "#df3f1f", "#666666", '#aa4643', '#484848', '#4572a7', '#492970', '#92A8CD', '#3d96ae', '#80699B', '#db843d', '#aa4643', '#80699b', '#db843d', '#4572A7', '#AA4643', '#89A54E', '#3D96AE', '#DB843D', '#A47D7C', '#B5CA92', "#7bb900"],
       exporting: {
         enabled: false
+      },
+      plotOptions: {
+        pie: {
+          allowPointSelect: false,
+          cursor: 'pointer',
+          dataLabels: {
+            enabled: true,
+            format: '{point.percentage:.1f} %'
+          },
+          showInLegend: true,
+          innerSize: '50%'
+        }
       }
     };
     var chartView = new App.View.PieChart(opts);

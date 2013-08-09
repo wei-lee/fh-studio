@@ -147,6 +147,7 @@ Cloudenvironments.Model.Environment = Backbone.Model.extend({
   },
 
   loadResourceDetails: function(){
+    var self = this;
     var envResource = new Cloudenvironments.Model.EnvironmentResource({
       env: this.id
     });

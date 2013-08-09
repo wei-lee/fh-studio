@@ -86,19 +86,25 @@ Cloudenvironments.View.AppResourceDetailsView = Backbone.View.extend({
       this.model.loadResourceDetails();
     }, this);
     var self = this;
-    //once there is new data, re-render the app details
+    //once there is new data, re-set appdata
     this.listenTo(this.model.getResourceCollection(), "add", function(){
-      self.renderAppDetails();
+      this.setAppData();
     });
     this.temp = Handlebars.compile($('#cloudenvironments-per-app-resource-view-template').html());
+    this.appData = new Backbone.Model();
     this.setAppData();
+    this.appData.on("change", function(){
+      self.renderAppDetails();
+    }, this);
   },
 
   setAppData: function(){
     var appResources = this.model.getAppResources();
     for(var i=0;i<appResources.length; i++){
       if(appResources[i].name === this.appName){
-        this.appData = appResources[i];
+        if(this.appData){
+          this.appData.set(appResources[i]);
+        }
         break;
       }
     }
@@ -117,17 +123,26 @@ Cloudenvironments.View.AppResourceDetailsView = Backbone.View.extend({
   renderAppDetails: function(){
     this.setAppData();
     var form1data = [];
-    form1data.push({id: "title", label: "App Title", value: this.appData["title"]});
-    form1data.push({id: "type", label: "App Type", value: this.appData["type"]});
-    form1data.push({id: "guid", label: "App Guid", value: this.appData["guid"]});
-    form1data.push({id: "status", label: "App Status", value: this.appData["state"]});
+    form1data.push({id: "title", label: "App Title", value: this.appData.get("title")});
+    form1data.push({id: "type", label: "App Type", value: this.appData.get("type")});
+    form1data.push({id: "guid", label: "App Guid", value: this.appData.get("guid")});
+    form1data.push({id: "status", label: "App Status", value: this.appData.get("state")});
     var form2data = [];
-    form2data.push({id: "modified", label: "Last Modified", value: moment(this.appData["lastModified"]).utc().format("YYYY-MM-DD HH:mm:ss")});
-    form2data.push({id: "memory", label: "Current Memory", value: this.appData["memory"] + "MB"});
-    form2data.push({id: "cpu", label: "Current CPU", value: this.appData["cpu"] + "%"});
-    form2data.push({id: "disk", label: "Current Disk", value: this.appData["disk"] + "MB"});
+    form2data.push({id: "modified", label: "Last Modified", value: moment(this.appData.get("lastModified")).utc().format("YYYY-MM-DD HH:mm:ss")});
+    form2data.push({id: "memory", label: "Current Memory", value: this.appData.get("memory") + "MB"});
+    form2data.push({id: "cpu", label: "Current CPU", value: this.appData.get("cpu") + "%"});
+    form2data.push({id: "disk", label: "Current Disk", value: this.appData.get("disk") + "MB"});
     var temp = Handlebars.compile($('#cloudenvironments-per-app-resource-details-template').html());
     this.$el.find('.app_details_container').html(temp({forms:[{fields: form1data}, {fields:form2data}]}));
+    this.$el.find('.control-btns .btn').removeAttr("disabled");
+    var currentState = this.appData.get("state").toLowerCase();
+    if( currentState.indexOf("run") > -1){
+      this.$el.find('.control-btns .startButton').attr("disabled", "disabled");
+    } else if(currentState.indexOf("stop") > -1) {
+      this.$el.find('.control-btns .stopButton').attr("disabled", "disabled");
+    } else if(currentState.indexOf("suspend") > -1) {
+      this.$el.find('.control-btns .suspendButton').attr("disabled", "disabled");
+    }
   },
 
   renderCharts: function(){
