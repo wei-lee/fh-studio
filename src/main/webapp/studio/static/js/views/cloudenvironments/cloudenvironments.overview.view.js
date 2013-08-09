@@ -75,6 +75,7 @@ Cloudenvironments.View.EnvResourceOverview = Backbone.View.extend({
       summaryView.render();
       self.$el.find('div.env_resource_summary_view').append(summaryView.$el);
     });
+    this.$el.parents('.accordion-toggle').attr('data-toggle', "collapse");
   },
 
   renderError: function(model, resp, options){
