@@ -134,7 +134,11 @@ Cloudenvironments.View.AppResourceDetailsView = Backbone.View.extend({
     form2data.push({id: "disk", label: "Current Disk", value: this.appData.get("disk") + "MB"});
     var temp = Handlebars.compile($('#cloudenvironments-per-app-resource-details-template').html());
     this.$el.find('.app_details_container').html(temp({forms:[{fields: form1data}, {fields:form2data}]}));
-    this.$el.find('.control-btns .btn').removeAttr("disabled");
+    this.$el.find('.control-btns .btn').each(function(idx, el){
+      if($(el).find('.loading_spinner').length === 0 && $(el).is(":disabled")){
+        $(el).removeAttr("disabled");
+      }
+    });
     var currentState = this.appData.get("state").toLowerCase();
     if( currentState.indexOf("run") > -1){
       this.$el.find('.control-btns .startButton').attr("disabled", "disabled");

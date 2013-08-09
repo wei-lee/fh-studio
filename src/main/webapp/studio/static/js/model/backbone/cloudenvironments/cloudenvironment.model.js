@@ -105,7 +105,7 @@ Cloudenvironments.Model.Environment = Backbone.Model.extend({
       clearTimeout(this.poolingInterval);
     }
     if(!this.paused){
-      this.set("interval", parseInt($fw.getClientProp("studio.ui.environments.refreshInterval") || 10, 10));
+      this.set("interval", parseInt($fw.getClientProp("cloudEnvironmentRefreshInterval") || 10, 10));
       this.poolingInterval = setInterval(function(){
         self.set("interval", self.get("interval") - 1 );
         if(self.get("interval") === 0){
