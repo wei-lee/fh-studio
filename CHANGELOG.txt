@@ -4,6 +4,9 @@ Component: fh-studio
 3.17.7 - 2013-08-08 - IR207 - Wei Li
 -------------------------------------------------------------------------------
 * 4417 - Cloud Environments
+* 4196-minor-security-fixes
+we now set a csrf cookie which is sent with each request and value of the cookie 
+is also sent as a param in post request to be checked by millicore
 
 NOTES:
 
@@ -47,7 +50,7 @@ studio.plugins.enabled=true
 * 4213 - New Mobistar theme
 
 3.17.0 - 2013-06-26 - IR204 - Martin Murphy, Jason Madigan
----------------------------------------------------------------------------
+--------------------------------------serv-------------------------------------
 * 4213  Reporting screens not displayed for users without dev role
 * 4218  Create group button broken in studio
 
@@ -118,7 +121,6 @@ the runtimes options for.
 ---------------------------------------------------------------------------
 * 3942 - Fixed an issue where default stdout/stderr could point to the wrong file
 * 3774 - Increase stage timeout from 20 seconds
-
 
 3.16.1 - 2013-05-15 - IR201 - Jason Madigan
 ---------------------------------------------------------------------------

@@ -4,8 +4,10 @@
 <%
 studio.init( application );
 String pageName = com.feedhenry.studio.StudioBean.IDE_INDEX;
+String csrftoken = null;
 try {
   if( studio.initreq( request, response, pageName ) ) {
+        csrftoken = (String) request.getAttribute("csrftoken");
     if( studio.canProceed( request, response, pageName ) ) {
 %>
 <!DOCTYPE html>
@@ -17,7 +19,7 @@ try {
   </head>
   
   <body style="display:none;">
-
+    <input name="csrftoken" value="<%=csrftoken %>" type="hidden" />
     <%@ include file="common.html" %>
     
     <%@ include file="inc/index/main.html"%>
