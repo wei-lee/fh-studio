@@ -255,7 +255,7 @@ Cloudenvironments.View.StackChartView = Backbone.View.extend({
   render: function(){
     var opts = {
       chart: {
-        type: "bar",
+        type: "bar"
       },
       credits: {
         enabled: false
