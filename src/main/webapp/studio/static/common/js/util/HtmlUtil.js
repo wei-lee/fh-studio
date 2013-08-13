@@ -42,11 +42,17 @@ HtmlUtil = function() {
       }
 
       return ret;
+    },
+
+    isIE8: function(){
+      //jQuery.browser will be removed in jQuery 1.9
+      return jQuery.browser.msie && parseInt(jQuery.browser.version, 10) === 8;
     }
   };
 
   return {
     constructOptions: self.constructOptions,
-    optionsFromConfig: self.optionsFromConfig
+    optionsFromConfig: self.optionsFromConfig,
+    isIE8: self.isIE8
   };
 }();

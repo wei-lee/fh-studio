@@ -58,6 +58,10 @@ Cloudenvironments.View.EnvLineChartView = Backbone.View.extend({
   render: function(){
     var self = this;
     this.chartView = new App.View.LineChart({
+      chart: {
+        //IE8 will not update chart if animation is true
+        animation: !HtmlUtil.isIE8()
+      },
       collection: self.getSeriesFromCollection(),
       el: self.el,
       dynamic: true,
@@ -150,6 +154,10 @@ Cloudenvironments.View.AppLineChartView = Backbone.View.extend({
   render: function(){
     var self = this;
     this.chartView = new App.View.LineChart({
+      chart: {
+        //IE8 will not update chart if animation is true
+        animation: !HtmlUtil.isIE8()
+      },
       collection: self.getSeriesFromCollection(),
       el: self.el,
       dynamic: true,
@@ -248,7 +256,6 @@ Cloudenvironments.View.StackChartView = Backbone.View.extend({
     var opts = {
       chart: {
         type: "bar",
-        backgroundColor: "transparent"
       },
       credits: {
         enabled: false
@@ -349,9 +356,6 @@ Cloudenvironments.View.AppResourcePieChartView = Backbone.View.extend({
 
   render: function(){
     var opts = {
-      chart: {
-        backgroundColor: "transparent"
-      },
       el: this.el,
       collection : this.getSeriesFromCollection(),
       title: false,

@@ -24,7 +24,7 @@ try {
     
     <%@ include file="inc/index/main.html"%>
     
-	  <script id="IntercomSettingsScriptTag">
+	  <script type="text/javascript" id="IntercomSettingsScriptTag">
 	  if ($fw.getUserProp('created') != null) {
 		  var intercomSettings = {
 		    app_id: 'xbv6bi62',
@@ -38,7 +38,7 @@ try {
 		  };
     }
 		</script>
-		<script>
+		<script type="text/javascript">
 		if (typeof intercomSettings != 'undefined' && ENVIRONMENT === 'prod') {
 		  console.log('Intercom initialising');
 		  (function() {

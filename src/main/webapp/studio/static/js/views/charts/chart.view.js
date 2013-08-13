@@ -56,9 +56,9 @@ App.View.Chart = Backbone.View.extend({
     var series = this.chart.series[seriesIndex];
     //if ($(this.options.chart.renderTo).is(':visible')){
       if(series.data.length < this.LIVE_MAX_POINTS){
-        series.addPoint(modelJson.data, true);
+        series.addPoint(modelJson.data, true, false, false);
       } else {
-        series.addPoint(modelJson.data, true, true);
+        series.addPoint(modelJson.data, true, true, false);
       }  
     //}
   },
