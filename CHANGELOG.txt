@@ -30,6 +30,8 @@ studio.plugins.enabled=true
 * 4387 events showing incorrect times
 * 4364 node runtimes select not hiding on error
 
+=======
+>>>>>>> 4196-minor-security-fixes
 3.17.4 - 2013-07-08 - IR205 - Jason Madigan
 ---------------------------------------------------------------------------
 * 4141 - fh-js-sdk changes for resiliency

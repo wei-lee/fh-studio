@@ -106,7 +106,7 @@ model.User = model.Model.extend({
   imports: function (invite, roles, authpolicies, groups, fileField, customerRoles, resellerRoles, success, fail, progress) {
     var url = Constants.ADMIN_USER_IMPORT_URL;
     var formData = [];
-
+    var csrftoken = $('input[name="csrftoken"]').val();
     if (invite != null) {
       formData.push({
         "name": "invite",
@@ -141,7 +141,7 @@ model.User = model.Model.extend({
     }
 
     fileField.fileupload('option', {
-      url: Constants.ADMIN_USER_IMPORT_URL,
+      url: Constants.ADMIN_USER_IMPORT_URL+ "?csrftoken=" + csrftoken,
       dataType: 'json',
       replaceFileInput: false,
       formData: formData,
