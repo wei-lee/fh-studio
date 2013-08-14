@@ -19,6 +19,7 @@ js/application/dialog/DialogManager.js
 js/application/controller.js
 js/model/backbone/event.model.js
 js/model/backbone/plugin.model.js
+js/model/backbone/databrowser.model.js
 js/model/backbone/alert.model.js
 js/model/backbone/alertnotification.model.js
 js/model/backbone/app.model.js
@@ -137,6 +138,11 @@ js/views/common/swap_select.view.js
 js/views/app/cloud/cloud.sysevents.view.js
 js/views/app/cloud/cloud.alerts.view.js
 js/views/app/cloud/cloud.alertnotifications.view.js
+js/views/app/cloud/databrowser/cloud.databrowser.view.js
+js/views/app/cloud/databrowser/cloud.databrowser.collectionslist.view.js
+js/views/app/cloud/databrowser/cloud.databrowser.dataview.table.view.js
+js/views/app/cloud/databrowser/cloud.databrowser.dataview.view.js
+js/views/app/cloud/databrowser/cloud.databrowser.controller.js
 js/model/ModelManager.js
 js/model/models/Model.js
 js/model/models/App.js
@@ -201,6 +207,7 @@ js/application/apps/apps.configuration.blackberry.controller.js
 js/application/apps/apps.configuration.windowsphone.controller.js
 js/application/apps/apps.configuration.studio.controller.js
 js/application/apps/apps.configuration.embed.controller.js
+js/application/apps/apps.databrowser.controller.js
 js/application/apps/apps.push.controller.js
 js/application/apps/apps.preview.controller.js
 js/application/apps/apps.cloud.controller.js

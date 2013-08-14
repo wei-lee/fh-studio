@@ -95,6 +95,12 @@
         </a>
       </li>
       <li class="template-restriction nodejs_mode">
+        <a href="#" data-controller="apps.databrowser.controller">
+          <i class="icon-hdd"></i>
+          Data Browser
+        </a>
+      </li>
+      <li class="template-restriction nodejs_mode">
         <a href="#" data-controller="apps.environment.controller">
           <i class="icon-cogs"></i>
           Environment Variables
@@ -208,6 +214,8 @@
        <% if(studio.getProps().optBoolean("enable-per-app-metrics")){ %>
         <%@ include file="../reporting/reports_container.html" %>
        <%}%>
+
+      <%@ include file="./data_browser.html"%>
 
        <%@ include file="./dashboard.html"%>
 

@@ -1,0 +1,103 @@
+#databrowser_container .navbar {
+    margin-bottom: 0px;
+}
+
+#databrowser_container .navbar  a.brand{
+    cursor: default;
+}
+
+#databrowser_container .pagination {
+    margin: 0px;
+}
+.table.databrowser {
+    overflow-y : scroll;
+    display: block;
+    width: 95%;
+}
+
+.table.databrowser.table-bordered, .table.databrowser.table-bordered th {
+    border-top-right-radius: 0px;
+    border-top-left-radius: 0px;
+}
+.databrowsernav.navbar .navbar-inner {
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-bottom: 0px;
+}
+
+.navbar.databrowsernav {
+    margin-bottom: 0px;
+}
+
+
+.databrowser td {
+    border-left: 1px solid #dddddd;
+    overflow: hidden;
+    white-space: nowrap;
+
+}
+
+.databrowser td.field {
+    min-width: 150px;
+}
+
+.trow.editing td {
+    padding: 0px;
+    margin: 0px;
+    border: 1px solid #999;
+}
+.trow.editing input, .trow.editing select{
+    border: 0px;
+    margin: 0px;
+    padding: 0px;
+    display: inline;
+    width: auto;
+    height: 31px;
+}
+.databrowser tr td.td-edit {
+    overflow: visible;
+    position: absolute;
+    right: 0px;
+    border: 0px;
+}
+
+#databrowser_container .td-edit .dropdown-menu {
+    right: 20px;
+    left: auto;
+}
+
+ul.collectionsUl {
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    padding: 0px 18px;
+    margin: 0px;
+    border-bottom: 1px solid #ccc;
+}
+
+ul.collectionsUl li {
+    border-bottom: 1px solid #ccc;
+    cursor: pointer;
+    padding: 0px 2px;
+}
+
+ul.collectionsUl li:last-child {
+    border-bottom: 0px;
+}
+
+ul.collectionsUl li h3 {
+    margin: 14px 0px 5px 0px;
+    line-height: 15px;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+ul.collectionsUl li .collectionMeta {
+    float: left;
+    margin: 0px 20px 0px 0px;
+}
+ul.collectionsUl li .raquo {
+    float: right;
+    content:'\00BB';
+    font-size: 26px;
+    color: #666;
+}

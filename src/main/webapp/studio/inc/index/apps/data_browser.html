@@ -1,0 +1,150 @@
+<div id="databrowser_container">
+  <div class="fh-box-outer">
+    <h4 class="fh-box-header">
+      Data Browser
+      <div class="cloud_environment pull-right">
+    <span class="status_light_container dev">
+      <span class="status_light dev"></span>
+    </span>
+        <span class="env_type dev active">Dev</span>
+    <span class="env_toggle_container dev">
+      <span class="env_toggle_button"></span>
+    </span>
+    <span class="status_light_container live">
+      <span class="status_light live"></span>
+    </span>
+        <span class="env_type live">Live</span>
+      </div></h4>
+    <div class="fh-box-inner">
+      <div class="databrowsernav navbar">
+        <div class="navbar-inner">
+
+
+
+
+          <button type="button" class="btn btn-large"><i class="icon-plus"></i>	</button>
+          <button type="button" class="btn btn-large"><i class="icon-refresh"></i></button>
+          <button type="button" class="btn btn-large"><i class="icon-trash"></i></button>
+          <a class="brand" href="#">Users</a>
+          <ul class="nav" role="navigation">
+            <li class="dropdown">
+              <a id="drop2" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Select collection<b class="caret"></b></a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="http://google.com">Users <span class="badge pull-right">124</span></a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="#anotherAction">Products <span class="badge pull-right">256023</span></a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Items<span class="badge pull-right">10</span></a></li>
+                <li role="presentation" class="divider"></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="#"><i class="icon-plus"></i> New Collection</a></li>
+              </ul>
+            </li>
+          </ul>
+          <form class="navbar-search pull-right">
+            <input type="text" class="search-query" placeholder="Search">
+          </form>
+        </div>
+      </div>
+
+
+      <div id="emptymessage" style="display: none;">
+
+        <div style="height: 400px;">
+          <h1 style="
+          font-weight: normal;
+          height: 50%;
+          line-height: 10;
+          color: #999;
+          text-align: center;
+          /* margin: 208px 0px; */
+          ">No collections</h1>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<script id="databrowserNavbar" type="text/x-handlebars-template">
+  <div class="{{ class }} navbar">
+    <div class="navbar-inner">
+      <a class="brand" href="#">{{ brand }}</a>
+       {{{ baritems }}}
+    </div>
+  </div>
+</script>
+
+<script id="databrowserDataViewBarItems" type="text/x-handlebars-template">
+  <button type="button" class="btn btn-large"><i class="icon-plus"></i>	</button>
+  <button type="button" class="btn btn-large"><i class="icon-refresh"></i></button>
+  <button type="button" class="btn btn-large"><i class="icon-trash"></i></button>
+  <ul class="nav" role="navigation">
+          <li class="dropdown">
+          <a id="dropd2" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Select collection<b class="caret"></b></a>
+  <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
+          <li role="presentation"><a role="menuitem" tabindex="-1" href="http://google.com">Users <span class="badge pull-right">124</span></a></li>
+  <li role="presentation"><a role="menuitem" tabindex="-1" href="#anotherAction">Products <span class="badge pull-right">256023</span></a></li>
+  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Items<span class="badge pull-right">10</span></a></li>
+  <li role="presentation" class="divider"></li>
+          <li role="presentation"><a role="menuitem" tabindex="-1" href="#"><i class="icon-plus"></i> New Collection</a></li>
+          </ul>
+          </li>
+          </ul>
+  <form class="navbar-search pull-right">
+          <input type="text" class="search-query" placeholder="Search">
+          </form>
+</script>
+
+
+<script id="collectionsListItem" type="text/x-handlebars-template">
+  <li>
+    <div class="raquo">&raquo;</div>
+    <h3>{{name}}</h3>
+    <div class="collectionMeta collectionLength">
+      <strong>{{ records }}</strong> records
+    </div>
+    <div class="collectionMeta collectionSize">
+      <strong>{{size}}</strong>mb
+    </div>
+    <br style="clear:both;" />
+  </li>
+</script>
+
+<script id="collectionsList" type="text/x-handlebars-template">
+    <ul class="collectionsUl">
+      {{{ collections }}}
+    </ul>
+</script>
+
+<script id="dataviewEditButton" type="text/x-handlebars-template">
+  <div class="btn-group btn-edit">
+    <button class="btn btn-mini dropdown-toggle" data-toggle="dropdown"><i class="icon-pencil"></i> <span
+            class="caret"></span></button>
+    <ul class="dropdown-menu">
+      <li><a href="#"><i class="icon-pencil"></i> Edit Inline</a></li>
+      <li><a href="#"><i class="icon-edit"></i> Advanced Editor</a></li>
+      <li><a href="#"><i class="icon-remove"></i> Delete Row</a></li>
+    </ul>
+  </div>
+</script>
+
+<script id="dataviewSaveCancelButton" type="text/x-handlebars-template">
+  <div class="btn-group btn-savecancel">
+    <a class="btn btn-mini brn-success btn-save"><i class="icon-ok"></i></a>
+    <a class="btn btn-mini btn-cancel"><i class="icon-arrow-left"></i></a>
+  </div>
+</script>
+
+<script id="dataviewPagination" type="text/x-handlebars-template">
+  <div class="pagination pagination-mini pull-right">
+    <ul>
+      <li><a href="#">&laquo;</a></li>
+      <li><a href="#">1</a></li>
+      <li><a href="#">2</a></li>
+      <li><a href="#">3</a></li>
+      <li><a href="#">4</a></li>
+      <li><a href="#">5</a></li>
+      <li><a href="#">&raquo;</a></li>
+    </ul>
+  </div>
+
+</script>
