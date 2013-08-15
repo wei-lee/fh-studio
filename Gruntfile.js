@@ -33,6 +33,7 @@ module.exports = function(grunt) {
         'src/main/webapp/studio/static/common/js/ui/thirdparty/highcharts/moment.js',
         'src/main/webapp/studio/static/common/js/ui/thirdparty/handlebars/handlebars.js',
         'src/main/webapp/studio/static/common/js/ui/thirdparty/handlebars/helpers.js',
+        'src/main/webapp/studio/static/common/js/ui/thirdparty/jsoneditor/jsoneditor.js',
         'src/main/webapp/studio/static/common/js/util/StringUtil.js'
         ],
         template: require('grunt-template-jasmine-istanbul'),

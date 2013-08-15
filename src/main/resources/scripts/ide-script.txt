@@ -3,6 +3,7 @@ common/js/ui/thirdparty/underscore.string.js
 common/js/ajax/ASyncServerTask.js
 common/js/ui/thirdparty/bootstrap/bootstrap.js
 common/js/ui/thirdparty/backbone/backbone.js
+common/js/ui/thirdparty/jsoneditor/jsoneditor.js
 js/init/namespaces.js
 common/js/ui/thirdparty/handlebars/handlebars.js
 common/js/ui/thirdparty/handlebars/helpers.js
