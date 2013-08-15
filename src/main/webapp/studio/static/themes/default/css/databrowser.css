@@ -13,6 +13,10 @@
     overflow-y : scroll;
     display: block;
     width: 95%;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -ms-user-select: none;
 }
 
 .table.databrowser.table-bordered, .table.databrowser.table-bordered th {
@@ -29,6 +33,13 @@
     margin-bottom: 0px;
 }
 
+.databrowser th.th-edit {
+    display: none;
+}
+
+.btn-group.btn-savecancel {
+    margin-top: 5px;
+}
 
 .databrowser td {
     border-left: 1px solid #dddddd;
@@ -41,6 +52,11 @@
     min-width: 150px;
 }
 
+.databrowser td.field:last-child {
+    width: 100%; /* Makes the last field stretch across to the edit buttons on narrow tables */
+}
+
+
 .trow.editing td {
     padding: 0px;
     margin: 0px;
@@ -52,13 +68,20 @@
     padding: 0px;
     display: inline;
     width: auto;
-    height: 31px;
+    height: 27px;
+    background: transparent;
 }
 .databrowser tr td.td-edit {
     overflow: visible;
     position: absolute;
     right: 0px;
     border: 0px;
+    padding-left: 6px;
+    background: white;
+}
+
+.databrowser tr.dirty {
+    background-color: #fcf8e3;
 }
 
 #databrowser_container .td-edit .dropdown-menu {

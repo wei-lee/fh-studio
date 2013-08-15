@@ -30,6 +30,7 @@ App.View.DataBrowserController = Backbone.View.extend({
     this.dataView.render();
     this.list.hide();
     this.$el.append(this.dataView.el);
+    //TODO: Update the model, and fetch from the server the collection contents
   },
   done : function(e){
     e.preventDefault();

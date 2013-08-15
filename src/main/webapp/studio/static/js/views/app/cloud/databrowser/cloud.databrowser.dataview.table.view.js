@@ -4,16 +4,23 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     dataviewSaveCancelButton : '#dataviewSaveCancelButton'
   },
   events : {
-    'click .btn-save' : 'onRowSave',
-    'click .btn-cancel' : 'onRowCancel',
-    'dblclick tr.trow' : 'rowClicked',
-    'click .td-checkbox input[type=checkbox]' : 'onRowSelection'
+    'click table.databrowser .btn-save' : 'onRowSave',
+    'click table.databrowser .btn-cancel' : 'onRowCancel',
+    'dblclick table.databrowser tr.trow' : 'onRowDoubleClick',
+    'click table.databrowser tr.trow' : 'onRowClickProxy',
+    'click table.databrowser .td-checkbox input[type=checkbox]' : 'onRowSelection',
+    'keyup table.databrowser td.field input' : 'onRowDirty',
+    'change table.databrowser td.field select' : 'onRowDirty',
+    'click table.databrowser tr .btn-edit-inline' : 'onEditRow',
+    'click table.databrowser tr .btn-delete-row' : 'onRowDelete'
+
   },
   headings: [],
   types : [],
   editTd : $('<td class="td-edit readOnly"></td>'),
   editable : true,
   selectable : true,
+  dblClicked: undefined,
   initialize : function(){
     this.collection = DataBrowser.Collections.CollectionData;
     this.collection.bind('reset', this.render, this);
@@ -46,10 +53,6 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     table.attr('data-collection', entries[0].type);
 
     if (this.editable){
-      $(editButton).on('click', function(e){
-        self.editRow.apply(self, [e]);
-      });
-
       this.editTd.append(editButton);
     }
 
@@ -120,28 +123,20 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     }
     return rowEl;
   },
-  deleteRow : function(e){
-  //TODO: Wire this up to some UI
+  deleteRow : function(tr, cb){
     var self = this,
-    guid = $(this).parents('tr').attr('id'),
-    collection = $(this).parents('table').attr('data-collection');
-    app.doAct('delete', { password : app.password, collection : collection, guid : guid },
-    function(err, res){
-      if (err){
-        alert("Error deleting row");
-      }
-      alert("Row deleted successfully");
-    });
-  },
-  rowClicked : function(e){
-    this.editRow(e);
-  },
-  editRow : function(e){
-    var self = this,
-    element = e.target,
-    tr = $(element).parents('tr'),
     guid = tr.attr('id'),
-    collection = $(element).parents('table').attr('data-collection'),
+    collection = tr.parents('table').attr('data-collection');
+    //TODO: Delete on server
+    cb(null, {ok : true});
+  },
+  /*
+    Takes a reference to a TR and sets it to be editable
+   */
+  editRow : function(tr){
+    var self = this,
+    guid = tr.attr('id'),
+    collection = $(tr).parents('table').attr('data-collection'),
     saveCancelButton = $(this.templates.$dataviewSaveCancelButton());
 
     tr.addClass('editing');
@@ -177,7 +172,54 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     });
 
   },
+  cancelRow : function(tr){
+    var tds = tr.children('td');
+    tr.find('.btn-edit').show();
+    tr.find('.btn-savecancel').remove();
+    tr.find('.btn-group').show();
+
+    tds.each(function(){
+      if (!$(this).hasClass('readOnly') && $(this).children('span').length>0){
+        $(this).children('span').show();
+        $(this).children('input, select').remove();
+      }else{
+        $(this).children().show();
+      }
+    });
+
+    tr.removeClass('editing dirty');
+  },
+  /*
+    Cancels every row but this one
+   */
+  cancelOtherRows : function(clickedRow){
+    var self  = this,
+    editingRows = $('table.databrowser tr.editing'),
+    dirtyRows = [];
+    editingRows.each(function(){
+      if ($(this).hasClass('dirty')){
+        dirtyRows.push(this);
+      }else if ($(this).attr('id') !== $(clickedRow).attr('id')){
+        self.cancelRow($(this));
+      }
+    });
+
+    if (dirtyRows.length > 0){
+      this.onDirtyRowsCancel(dirtyRows);
+    }
+  },
+  onDirtyRowsCancel : function(dirtyRows){
+    // TODO: Modal this - not window.confirm, that's nasty..
+    if (window.confirm("You have unsaved edits to one or more rows - are you sure you want to discard?")){
+      for (var i=0; i<dirtyRows.length; i++){
+        this.cancelRow($(dirtyRows[i]));
+      }
+    }else{
+      return;
+    }
+  },
   onRowSave : function(e){
+    e.stopPropagation();
     var el = e.target,
     updatedObj = {},
     tr = $(el).parents('tr');
@@ -195,36 +237,90 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
       $(span).html(val).show();
       updatedObj[name] = val;
     });
-    this.onRowCancel(e);
+    this.cancelRow(tr);
     //TODO: Save this back to mongo
   },
+  // Cancel button pressed in the studio - find the relevant TR and pass it to the cancel function
   onRowCancel: function(e){
+    e.stopPropagation();
     var el = e.target,
-    tr = $(el).parents('tr'),
-    tds = tr.children('td');
-
-    tr.find('.btn-edit').show();
-    tr.find('.btn-savecancel').remove();
-    tr.find('.btn-group').show();
-
-    tds.each(function(){
-      if (!$(this).hasClass('readOnly') && $(this).children('span').length>0){
-        $(this).children('span').show();
-        $(this).children('input, select').remove();
-      }else{
-        $(this).children().show();
-      }
-    });
-
-    tr.removeClass('editing');
+    tr = $(el).parents('tr');
+    if (tr.hasClass('dirty')){
+      this.onDirtyRowsCancel([tr]);
+    }else{
+      this.cancelRow(tr);
+    }
   },
   onRowSelection : function(e){
+    e.stopPropagation();
     var el = e.target,
     tr = $(el).parents('tr');
     if($(el).attr('checked')) {
       tr.addClass('info');
     }else{
       tr.removeClass('info');
+    }
+  },
+  onRowDoubleClick : function(e){
+    var self = this;
+    e.preventDefault(); // prevent awkward selection
+    setTimeout(function(){
+      self.dblClicked = false;
+    }, 200);
+    this.onEditRow(e);
+    this.dblClicked = true;
+  },
+  onEditRow: function(e){
+    e.stopPropagation();
+
+    // Remove open class for the button group we just clicked
+    $(e.target).parents('.btn-group.open').removeClass('open');
+
+
+    var self = this,
+    element = e.target,
+    tr = $(element).parents('tr');
+
+    if (tr.hasClass('editing')){
+      return;
+    }
+    this.editRow($(tr));
+    this.cancelOtherRows(tr);
+  },
+  /*
+    Proxys onclick events to ensure they aren't triggered if we doubleclick
+   */
+  onRowClickProxy: function(e){
+    var self = this,
+    ev = e;
+    setTimeout(function(){
+      if (self.dblClicked){
+        return;
+      }
+      self.dblClicked = false;
+      self.onRowClick(ev);
+    }, 100);
+  },
+  onRowClick : function(e){
+    var clickedRow = $(e.target).parents('tr');
+    this.cancelOtherRows(clickedRow);
+  },
+  onRowDirty : function(e){
+    var tr = $(e.target).parents('tr');
+    tr.addClass('dirty warning');
+  },
+  onRowDelete : function(e){
+    e.stopPropagation();
+    var el = e.target,
+    tr = $($(el).parents('tr'));
+    //TODO: Modal confirm
+    if (window.confirm("Are you sure you want to delete this row?")){
+      this.deleteRow(tr, function(err, res){
+        if (err){
+          return alert(err); //TODO: Modal this or some such..
+        }
+        tr.remove();
+      });
     }
   }
 });

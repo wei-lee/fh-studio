@@ -4,6 +4,9 @@ App.View.DataBrowserDataView = App.View.DataBrowserView.extend({
     databrowserDataViewBarItems: '#databrowserDataViewBarItems',
     dataviewPagination : '#dataviewPagination'
   },
+  events : {
+    'click table.databrowser tr .btn-advanced-edit' : 'onRowAdvancedEdit'
+  },
   initialize : function(){
     this.compileTemplates();
   },
@@ -17,5 +20,16 @@ App.View.DataBrowserDataView = App.View.DataBrowserView.extend({
     this.$el.append(this.templates.$dataviewPagination());
     return this;
   },
-
+  onRowAdvancedEdit : function(e){
+    e.stopPropagation();
+    // Clone the old view
+    this.dataview = this.$el.clone();
+    this.$el.empty();
+    var browser = new App.View.DataBrowserAdvancedEditor();
+    browser.render();
+    this.$el.append(browser.el);
+  },
+  onRowAdvancedEditDone : function(e){
+    this.$el = this.dataview;
+  }
 });
