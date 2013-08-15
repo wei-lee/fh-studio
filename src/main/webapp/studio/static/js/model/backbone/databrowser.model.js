@@ -2,12 +2,16 @@ var DataBrowser = DataBrowser || {};
 DataBrowser.Collection = DataBrowser.Collection || {};
 DataBrowser.Collections = DataBrowser.Collections || {};
 
-DataBrowser.Model = Backbone.Model.extend({
+DataBrowser.CollectionModel = Backbone.Model.extend({
+});
+
+DataBrowser.CollectionDataModel = Backbone.Model.extend({
+  idAttribute : 'guid'
 });
 
 DataBrowser.Collection.CollectionList = Backbone.Collection.extend({
   initialize: function() {},
-  model: DataBrowser.Model,
+  model: DataBrowser.CollectionModel,
   url: '/studio/static/js/model/backbone/mocks/collections.json',
   sync: function (method, model, options) {
     var self = this;
@@ -33,7 +37,7 @@ DataBrowser.Collection.CollectionList = Backbone.Collection.extend({
 
 DataBrowser.Collection.CollectionData = Backbone.Collection.extend({
   initialize: function() {},
-  model: DataBrowser.Model,
+  model: DataBrowser.CollectionDataModel,
   url: '/studio/static/js/model/backbone/mocks/collection_users.json',
   sync: function (method, model, options) {
     var self = this;

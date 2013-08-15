@@ -1,7 +1,10 @@
 App.View.DataBrowserTable = App.View.DataBrowserView.extend({
   templates : {
+    databrowserNavbar : '#databrowserNavbar',
+    databrowserDataViewBarItems: '#databrowserDataViewBarItems',
     dataviewEditButton : '#dataviewEditButton',
-    dataviewSaveCancelButton : '#dataviewSaveCancelButton'
+    dataviewSaveCancelButton : '#dataviewSaveCancelButton',
+    dataviewPagination : '#dataviewPagination'
   },
   events : {
     'click table.databrowser .btn-save' : 'onRowSave',
@@ -24,14 +27,21 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
   initialize : function(){
     this.collection = DataBrowser.Collections.CollectionData;
     this.collection.bind('reset', this.render, this);
-    this.collection.bind('redraw', this.renderCollections);
+    //this.collection.bind('redraw', this.renderCollections);
     this.compileTemplates();
   },
   render: function() {
-    var data = this.collection.toJSON();
-    var table = this.buildTable(data, false);
+    this.$el.empty();
+    var navItems = this.templates.$databrowserDataViewBarItems(),
+    nav = this.templates.$databrowserNavbar({ brand : 'Collections', class : 'collectionsnavbar', baritems : navItems }),
+    data = this.collection.toJSON(),
+    table = this.buildTable(data, false);
+
     table.addClass('databrowser table table-condensed table-bordered');
+
+    this.$el.append(nav);
     this.$el.append(table);
+    this.$el.append(this.templates.$dataviewPagination());
     return this;
   },
   /*
@@ -50,7 +60,7 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     }
 
     // Add in the collection name to the table element
-    table.attr('data-collection', entries[0].type);
+    table.data('collection', entries[0].type);
 
     if (this.editable){
       this.editTd.append(editButton);
@@ -113,10 +123,23 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     }
 
     for (var k=0; k<this.headings.length; k++){
-      var heading = this.headings[k],
+      var td = $("<td></td>"),
+      heading = this.headings[k],
       type = this.types[k],
-      value = row.hasOwnProperty(heading) ? row[heading] : '';
-      $(rowEl).append('<td data-field="' + heading + '" data-type="' + type + '" class="field field-' + heading + '"><span>' + value  + '</span></td>');
+      value = '';
+
+      td.data('field', heading);
+      td.data('type', type);
+      td.addClass('field');
+      td.addClass('field-' + heading);
+      if (row.hasOwnProperty(heading)){
+        value = row[heading];
+      }else{
+        td.addClass('emptyfield');
+      }
+      td.append('<span>' + value  + '</span>');
+
+      $(rowEl).append(td);
     }
     if (this.editable){
       $(rowEl).append(this.editTd.clone(true));
@@ -126,7 +149,7 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
   deleteRow : function(tr, cb){
     var self = this,
     guid = tr.attr('id'),
-    collection = tr.parents('table').attr('data-collection');
+    collection = tr.parents('table').data('collection');
     //TODO: Delete on server
     cb(null, {ok : true});
   },
@@ -136,7 +159,7 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
   editRow : function(tr){
     var self = this,
     guid = tr.attr('id'),
-    collection = $(tr).parents('table').attr('data-collection'),
+    collection = $(tr).parents('table').data('collection'),
     saveCancelButton = $(this.templates.$dataviewSaveCancelButton());
 
     tr.addClass('editing');
@@ -148,7 +171,7 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
 
 
     tr.children('td.field').each(function(i, field){
-      var type = $(field).attr('data-type'),
+      var type = $(field).data('type'),
       span = $(field).children('span'),
       input;
 
@@ -164,7 +187,7 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
           input = $('<input type="text">');
           break;
       }
-      input.attr('name', $(field).attr('data-field'));
+      input.attr('name', $(field).data('field'));
       input.css('width', $(field).width());
       input.val(span.html());
       $(field).append(input);
@@ -222,9 +245,16 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     e.stopPropagation();
     var el = e.target,
     updatedObj = {},
-    tr = $(el).parents('tr');
+    tr = $(el).parents('tr'),
+    guid = tr.attr('id'),
+    model = DataBrowser.Collections.CollectionData.get(guid);
 
     tr.children('td.field').each(function(i, fieldtd){
+      if ($(fieldtd).hasClass('emptyfield') && !$(fieldtd).hasClass('dirty')){
+        return;
+      }
+      $(fieldtd).removeClass('dirty emptyfield');
+
       var curInp = $(fieldtd).children('input, select'),
       val = curInp.val(),
       name = curInp.attr('name'),
@@ -237,6 +267,9 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
       $(span).html(val).show();
       updatedObj[name] = val;
     });
+    console.log(updatedObj);
+    model.set('fields', updatedObj);
+    console.log(model.get('fields'));
     this.cancelRow(tr);
     //TODO: Save this back to mongo
   },
@@ -262,10 +295,11 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     }
   },
   onRowDoubleClick : function(e){
-    var self = this;
-    e.preventDefault(); // prevent awkward selection
+    var self = this,
+    el = e.target;
     setTimeout(function(){
       self.dblClicked = false;
+      $(el).find('input, select').focus(); // Focus the  freshly created field we double clicked
     }, 200);
     this.onEditRow(e);
     this.dblClicked = true;
@@ -306,8 +340,10 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     this.cancelOtherRows(clickedRow);
   },
   onRowDirty : function(e){
-    var tr = $(e.target).parents('tr');
+    var td = $(e.target).parents('td'),
+    tr = $(e.target).parents('tr');
     tr.addClass('dirty warning');
+    td.addClass('dirty');
   },
   onRowDelete : function(e){
     e.stopPropagation();

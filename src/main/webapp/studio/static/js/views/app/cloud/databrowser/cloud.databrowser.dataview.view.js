@@ -1,8 +1,6 @@
 App.View.DataBrowserDataView = App.View.DataBrowserView.extend({
   templates : {
-    databrowserNavbar : '#databrowserNavbar',
-    databrowserDataViewBarItems: '#databrowserDataViewBarItems',
-    dataviewPagination : '#dataviewPagination'
+
   },
   events : {
     'click table.databrowser tr .btn-advanced-edit' : 'onRowAdvancedEdit'
@@ -11,25 +9,37 @@ App.View.DataBrowserDataView = App.View.DataBrowserView.extend({
     this.compileTemplates();
   },
   render: function() {
-    var navItems = this.templates.$databrowserDataViewBarItems(),
-    nav = this.templates.$databrowserNavbar({ brand : 'Collections', class : 'collectionsnavbar', baritems : navItems }),
-    table = new App.View.DataBrowserTable().render();
 
-    this.$el.append(nav);
-    this.$el.append(table.el);
-    this.$el.append(this.templates.$dataviewPagination());
+    this.table = new App.View.DataBrowserTable();
+    this.table.render();
+    this.$el.append(this.table.el);
+
+    this.browser = new App.View.DataBrowserAdvancedEditor( {parent : this, guid : '1a', json : { a : 1, b : '2', c : [1,2,3] }});
+    this.browser.render();
+    this.browser.$el.hide();
+    this.$el.append(this.browser.el);
     return this;
   },
   onRowAdvancedEdit : function(e){
     e.stopPropagation();
     // Clone the old view
-    this.dataview = this.$el.clone();
-    this.$el.empty();
-    var browser = new App.View.DataBrowserAdvancedEditor();
-    browser.render();
-    this.$el.append(browser.el);
+    var el = e.target,
+    tr = $(el).parents('tr'),
+    guid = tr.attr('id'),
+    model = DataBrowser.Collections.CollectionData.get(guid);
+
+    this.browser.update(model);
+
+    this.table.$el.hide();
+    this.browser.$el.show();
   },
   onRowAdvancedEditDone : function(e){
-    this.$el = this.dataview;
+    this.table.render();
+    this.browser.$el.hide();
+    this.table.$el.show();
+  },
+  onRowAdvancedEditCancel : function(e){
+    this.browser.$el.hide();
+    this.table.$el.show();
   }
 });

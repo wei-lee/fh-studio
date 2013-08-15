@@ -124,3 +124,29 @@ ul.collectionsUl li .raquo {
     font-size: 26px;
     color: #666;
 }
+
+/*
+    JSONEditor specific styling
+*/
+#databrowser_container .jsoneditor, #databrowser_container .jsoneditor .frame,
+#databrowser_container .jsoneditor .menu, #databrowser_container .jsoneditor .menu button {
+    border-color: #d4d4d4;
+}
+#databrowser_container .jsoneditor .menu button {
+    background-color : #ededed;
+}
+#databrowser_container .jsoneditor .menu button:disabled {
+    background-color: #efefef;
+}
+#databrowser_container .jsoneditor {
+
+    min-height: 400px;
+}
+
+#databrowser_container .jsoneditor .menu {
+    background-color: #f2f2f2;
+}
+
+#databrowser_container .jsoneditor textarea {
+    min-height: 363px;
+}
