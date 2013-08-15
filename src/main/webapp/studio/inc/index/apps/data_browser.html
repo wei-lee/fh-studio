@@ -29,7 +29,7 @@
           <ul class="nav" role="navigation">
             <li class="dropdown">
               <a id="drop2" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Select collection<b class="caret"></b></a>
-              <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
+              <ul class="dropdown-menu collections" role="menu" aria-labelledby="drop1">
                 <li role="presentation"><a role="menuitem" tabindex="-1" href="http://google.com">Users <span class="badge pull-right">124</span></a></li>
                 <li role="presentation"><a role="menuitem" tabindex="-1" href="#anotherAction">Products <span class="badge pull-right">256023</span></a></li>
                 <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Items<span class="badge pull-right">10</span></a></li>
@@ -80,12 +80,8 @@
   <ul class="nav" role="navigation">
           <li class="dropdown">
           <a id="dropd2" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Select collection<b class="caret"></b></a>
-  <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
-          <li role="presentation"><a role="menuitem" tabindex="-1" href="http://google.com">Users <span class="badge pull-right">124</span></a></li>
-  <li role="presentation"><a role="menuitem" tabindex="-1" href="#anotherAction">Products <span class="badge pull-right">256023</span></a></li>
-  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Items<span class="badge pull-right">10</span></a></li>
-  <li role="presentation" class="divider"></li>
-          <li role="presentation"><a role="menuitem" tabindex="-1" href="#"><i class="icon-plus"></i> New Collection</a></li>
+          <ul class="dropdown-menu collections-dropdown" role="menu" aria-labelledby="drop1">
+            {{{ collections }}}
           </ul>
           </li>
           </ul>
@@ -94,9 +90,12 @@
           </form>
 </script>
 
+<script id="databrowserDataViewBarCollectionMenuItem" type="text/x-handlebars-template">
+<li role="presentation"><a role="menuitem" data-id="{{ name }}" tabindex="-1" href="#">{{ name }} <span class="badge pull-right">{{ records }} </span></a></li>
+</script>
 
 <script id="collectionsListItem" type="text/x-handlebars-template">
-  <li>
+  <li data-id="{{ id }}" data-name="{{ name }}">
     <div class="raquo">&raquo;</div>
     <h3>{{name}}</h3>
     <div class="collectionMeta collectionLength">
@@ -150,9 +149,9 @@
 </script>
 
 <script id="dataviewAdvancedEditorBarItems" type="text/x-handlebars-template">
-  <button type="button" class="btn btn-large btn-success btn-advancededitor-save"><i class="icon-pencil"></i>Save	</button>
-  <button type="button" class="btn btn-large btn-advancededitor-cancel"> Cancel	</button>
-  <div class="btn-group btn-advancedEditorSwitch pull-right" data-toggle="buttons-radio">
+  <button type="button" class="btn pull-right btn-large btn-advancededitor-cancel"> Cancel	</button>
+  <button type="button" class="btn pull-right btn-large btn-success btn-advancededitor-save"><i class="icon-pencil"></i>Save	</button>
+  <div class="btn-group btn-advancedEditorSwitch" data-toggle="buttons-radio">
     <a class="btn btn-dynamic-editor btn-inverse active"><i class="icon-indent-left"> Dynamic</i></a>
     <a class="btn btn-raw-editor btn-inverse"><i class="icon-wrench"></i> Raw</a>
   </div>

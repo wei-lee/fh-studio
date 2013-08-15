@@ -33,6 +33,20 @@
     margin-bottom: 0px;
 }
 
+.navbar.databrowsernav .dropdown-menu.collections-dropdown {
+    width: 188px;
+}
+
+.navbar.databrowsernav .dropdown-menu.collections-dropdown a {
+    padding-right: 2px;
+}
+
+.navbar.databrowsernav .dropdown-menu.collections-dropdown span.badge {
+    width: 52px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .databrowser th.th-edit {
     display: none;
 }
@@ -117,12 +131,20 @@ ul.collectionsUl li h3 {
 ul.collectionsUl li .collectionMeta {
     float: left;
     margin: 0px 20px 0px 0px;
+    width: 120px;
 }
 ul.collectionsUl li .raquo {
     float: right;
     content:'\00BB';
     font-size: 26px;
     color: #666;
+}
+#databrowser_container .advancededitorBar .btn-advancedEditorSwitch {
+    display : inline-block;
+}
+
+#databrowser_container .advancededitorBar button {
+    margin-left: 4px;
 }
 
 /*

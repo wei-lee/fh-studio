@@ -7,25 +7,27 @@ App.View.DataBrowserCollectionsList = App.View.DataBrowserView.extend({
   initialize : function(){
     this.collection = DataBrowser.Collections.Collections;
     this.collection.bind('reset', this.render, this);
-    this.collection.bind('redraw', this.renderCollections);
     this.compileTemplates();
     this.breadcrumb(['Cloud Plugins']);
   },
   render: function() {
+    var nav = this.templates.$databrowserNavbar({ brand : 'Collections', class : 'collectionsnavbar', baritems : '' });
+
+    this.$el.empty();
+    this.$el.append(nav);
+
     this.renderCollections();
     return this;
   },
   renderCollections : function(){
     var self = this,
-    nav = this.templates.$databrowserNavbar({ brand : 'Collections', class : 'collectionsnavbar', baritems : '' }),
     collectionItems = [],
     body, collectionItem;
 
-    this.$el.empty();
-    this.$el.append(nav);
-
-    this.collection.each(function(){
-      collectionItem = self.templates.$collectionsListItem( { name : 'Users', records : 124, size: '12.5' });
+    this.collection.each(function(model){
+      var jsonModel = model.toJSON();
+      jsonModel.id = model.id;
+      collectionItem = self.templates.$collectionsListItem( jsonModel );
       collectionItems.push(collectionItem);
     });
 

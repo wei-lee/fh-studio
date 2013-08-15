@@ -4,7 +4,8 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     databrowserDataViewBarItems: '#databrowserDataViewBarItems',
     dataviewEditButton : '#dataviewEditButton',
     dataviewSaveCancelButton : '#dataviewSaveCancelButton',
-    dataviewPagination : '#dataviewPagination'
+    dataviewPagination : '#dataviewPagination',
+    databrowserDataViewBarCollectionMenuItem : '#databrowserDataViewBarCollectionMenuItem'
   },
   events : {
     'click table.databrowser .btn-save' : 'onRowSave',
@@ -16,7 +17,6 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     'change table.databrowser td.field select' : 'onRowDirty',
     'click table.databrowser tr .btn-edit-inline' : 'onEditRow',
     'click table.databrowser tr .btn-delete-row' : 'onRowDelete'
-
   },
   headings: [],
   types : [],
@@ -24,16 +24,28 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
   editable : true,
   selectable : true,
   dblClicked: undefined,
-  initialize : function(){
+  initialize : function(options){
+    this.model = options.model;
+    this.collections = options.collections;
+
     this.collection = DataBrowser.Collections.CollectionData;
     this.collection.bind('reset', this.render, this);
+    this.collection.fetch({reset : true, collection : this.model.get('name')});
+
     //this.collection.bind('redraw', this.renderCollections);
     this.compileTemplates();
   },
   render: function() {
     this.$el.empty();
-    var navItems = this.templates.$databrowserDataViewBarItems(),
-    nav = this.templates.$databrowserNavbar({ brand : 'Collections', class : 'collectionsnavbar', baritems : navItems }),
+
+    var collectionsHTML = [];
+    for (var i=0; i<this.collections.length; i++){
+      var c = this.collections[i];
+      collectionsHTML.push(this.templates.$databrowserDataViewBarCollectionMenuItem(c));
+    }
+
+    var navItems = this.templates.$databrowserDataViewBarItems({collections : collectionsHTML.join('')}),
+    nav = this.templates.$databrowserNavbar({ brand : this.model.get('name'), class : 'databrowsernav', baritems : navItems }),
     data = this.collection.toJSON(),
     table = this.buildTable(data, false);
 

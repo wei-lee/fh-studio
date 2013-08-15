@@ -3,6 +3,25 @@
     "name": "Users",
     "size": 123000,
     "records": 180000
+  },
+  {
+    "name": "Products",
+    "size": 2,
+    "records": 22
+  },
+  {
+    "name": "Destinations",
+    "size": 45,
+    "records": 54435435
+  },
+  {
+    "name": "Incoming",
+    "size": 52,
+    "records": 32523
+  },
+  {
+    "name": "Outgoing",
+    "size": 345,
+    "records": 4543
   }
-
 ]

@@ -18,7 +18,7 @@ Apps.Databrowser.Controller = Apps.Controller.extend({
       this.view.render();
       $(this.views.container).append(this.view.el);
     }else{
-      this.view.show();
+      $(this.views.container).show();
     }
   }
 });

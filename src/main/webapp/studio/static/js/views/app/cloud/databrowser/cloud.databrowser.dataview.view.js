@@ -5,12 +5,13 @@ App.View.DataBrowserDataView = App.View.DataBrowserView.extend({
   events : {
     'click table.databrowser tr .btn-advanced-edit' : 'onRowAdvancedEdit'
   },
-  initialize : function(){
+  initialize : function(options){
+    this.options = options;
     this.compileTemplates();
   },
   render: function() {
 
-    this.table = new App.View.DataBrowserTable();
+    this.table = new App.View.DataBrowserTable(this.options);
     this.table.render();
     this.$el.append(this.table.el);
 
