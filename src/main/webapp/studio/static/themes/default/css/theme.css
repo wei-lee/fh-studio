@@ -3274,6 +3274,10 @@ a.docslink {
 
 .cloud_target_label {
   font-weight: bold;
+  padding-top: 40px;
+  background-image: url('/studio/static/themes/default/img/cloud_target_feedhenry.png'); /* default target image */
+  background-repeat: no-repeat;
+  background-position: top center;
 }
 
 #admin_deploytarget_edit .target-settings {

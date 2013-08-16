@@ -51,3 +51,7 @@
 .hero-unit h3 {
 	font-size:15px;
 }
+
+.cloud_target_label {
+  background-image: url('/studio/static/themes/default/img/cloud_target_rackspace.png'); /* default target image */
+}

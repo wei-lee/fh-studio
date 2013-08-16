@@ -249,11 +249,13 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
 
 
       var button = $('<a>').addClass('btn');
-      var icon = $('<img>').attr('src', '/studio/static/themes/default/img/cloud_target_' + target_name.toLowerCase() + '.png');
       button.addClass('span4');
-      button.append(icon);
 
-      var label = $('<div>').addClass('cloud_target_label');
+      var label = $('<div>').addClass('cloud_target_label')
+      // only changet target image if its not the default (this allows for theming the default via css)
+      if (target_name.toLowerCase() !== self.target_map.FEEDHENRY.toLowerCase()) {
+        label.css('background-image', 'url("/studio/static/themes/default/img/cloud_target_' + target_name.toLowerCase() + '.png")');
+      }
       if (target.fields.id !== 'default') {
         label.text(label_name);
       } else {
