@@ -15,7 +15,7 @@ App.View.DataBrowserDataView = App.View.DataBrowserView.extend({
     this.table.render();
     this.$el.append(this.table.el);
 
-    this.browser = new App.View.DataBrowserAdvancedEditor( {parent : this, guid : '1a', json : { a : 1, b : '2', c : [1,2,3] }});
+    this.browser = new App.View.DataBrowserAdvancedEditor( {parent : this});
     this.browser.render();
     this.browser.$el.hide();
     this.$el.append(this.browser.el);

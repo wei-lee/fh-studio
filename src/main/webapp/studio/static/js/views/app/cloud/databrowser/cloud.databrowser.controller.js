@@ -37,7 +37,7 @@ App.View.DataBrowserController = Backbone.View.extend({
   },
   onChangeCollection : function(e){
     var id = $(e.target).data('id');
+    this.dataView.table.model = DataBrowser.Collections.Collections.get(id);
     this.dataView.table.collection.fetch({ reset : true, collection : id }); // TODO: Is this nasty?
-
   }
 });

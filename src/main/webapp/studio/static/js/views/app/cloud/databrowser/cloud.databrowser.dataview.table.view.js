@@ -16,10 +16,11 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     'keyup table.databrowser td.field input' : 'onRowDirty',
     'change table.databrowser td.field select' : 'onRowDirty',
     'click table.databrowser tr .btn-edit-inline' : 'onEditRow',
-    'click table.databrowser tr .btn-delete-row' : 'onRowDelete'
+    'click table.databrowser tr .btn-delete-row' : 'onRowDelete',
+    'click .btn-add-row' : 'onAddRow'
   },
-  headings: [],
-  types : [],
+  headings: undefined,
+  types : undefined,
   editTd : $('<td class="td-edit readOnly"></td>'),
   editable : true,
   selectable : true,
@@ -91,6 +92,8 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     return table;
   },
   buildHeadings : function(entries){
+    this.headings = [];
+    this.types = [];
     // Iteration 1: Build a picture of every possible heading, append the THes
     var thead = $('<thead></thead>'),
     theadtr = $('<tr></tr>');
@@ -208,6 +211,11 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
 
   },
   cancelRow : function(tr){
+    // If it's a row that the user decided not to create, nuke it
+    if (tr.hasClass('newrow')){
+      tr.remove();
+    }
+
     var tds = tr.children('td');
     tr.find('.btn-edit').show();
     tr.find('.btn-savecancel').remove();
@@ -232,13 +240,14 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     editingRows = $('table.databrowser tr.editing'),
     dirtyRows = [];
     editingRows.each(function(){
-      if ($(this).hasClass('dirty')){
-        dirtyRows.push(this);
-      }else if ($(this).attr('id') !== $(clickedRow).attr('id')){
-        self.cancelRow($(this));
+      if ($(this).attr('id') !== $(clickedRow).attr('id')){
+        if ($(this).hasClass('dirty')){
+          dirtyRows.push(this);
+        }else{
+          self.cancelRow($(this));
+        }
       }
     });
-
     if (dirtyRows.length > 0){
       this.onDirtyRowsCancel(dirtyRows);
     }
@@ -279,9 +288,16 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
       $(span).html(val).show();
       updatedObj[name] = val;
     });
-    console.log(updatedObj);
-    model.set('fields', updatedObj);
-    console.log(model.get('fields'));
+
+    // If this is a new row, it's a create we need to do - not update
+    if (!guid || $(tr).hasClass('newrow')){
+      model = DataBrowser.Collections.CollectionData.create({fields : updatedObj});
+    }else{
+      model.set('fields', updatedObj);
+    }
+
+
+
     this.cancelRow(tr);
     //TODO: Save this back to mongo
   },
@@ -370,5 +386,13 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
         tr.remove();
       });
     }
+  },
+  onAddRow : function(e){
+    var emptyRow = this.row({ fields : {}}),
+    tbody = this.$el.find('table.databrowser tbody');
+    emptyRow.addClass('newrow');
+    tbody.prepend(emptyRow);
+
+    this.editRow(emptyRow);// is this a ref to the row in-situe?
   }
 });

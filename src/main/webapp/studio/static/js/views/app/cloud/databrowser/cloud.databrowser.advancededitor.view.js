@@ -27,9 +27,6 @@ App.View.DataBrowserAdvancedEditor = App.View.DataBrowserView.extend({
     this.$el.append(container);
     return this;
   },
-  onEditorCancel : function(){
-
-  },
   onEditorDynamic : function(){
     this.editor.setMode('tree');
   },
