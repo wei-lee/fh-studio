@@ -70,13 +70,16 @@
     width: 100%; /* Makes the last field stretch across to the edit buttons on narrow tables */
 }
 
+.databrowser tr.trow {
+    cursor : default;
+}
 
-.trow.editing td {
+.databrowser .trow.editing td {
     padding: 0px;
     margin: 0px;
     border: 1px solid #999;
 }
-.trow.editing input, .trow.editing select{
+.databrowser .trow.editing input, .databrowser .trow.editing select{
     border: 0px;
     margin: 0px;
     padding: 0px;
