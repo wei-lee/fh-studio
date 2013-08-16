@@ -1,0 +1,53 @@
+#header_logo {
+  background-image:url(../../default/img/feedhenry_logo.png);
+}
+
+.dashboard-header{
+  background-image: url(../../default/img/home_page_graphic.png);
+}
+
+.dashboard-create{
+  background-image: url(../../default/img/create_app_sprite.png);
+}
+
+.hiring-link {
+ display: none !important;
+}
+
+#header_user_info {
+  background-image: none;
+  background-color: #000;
+  border:none;
+  border-radius: 0;
+  -webkit-border-radius:0;
+  -moz-border-radius:0;
+  -webkit-border-bottom-right-radius: 0px;
+  -webkit-border-bottom-left-radius: 0px;
+  -moz-border-radius-bottomright: 0px;
+  -moz-border-radius-bottomleft: 0px;
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+  height:33px;
+  margin:0;
+}
+
+#main_layout_wrapper #header_user_info {
+  padding-top:10px;
+}
+
+#header_logo_east {
+  float:right;
+  width: 154px;
+  height: 46px;
+  margin:23px 13px 0 0;
+  background-image:url(../images/logo-rackspace.png);
+  background-repeat:no-repeat;
+}
+#header_user_info a {
+  background-color: #5c5c5c;
+  padding:7px;
+  margin-left:7px;
+}
+.hero-unit h3 {
+	font-size:15px;
+}
