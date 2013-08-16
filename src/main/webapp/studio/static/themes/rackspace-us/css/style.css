@@ -114,7 +114,8 @@ pre.code {
 }
 .toptabs li a {
   line-height: 45px;
-  padding: 0 53px;
+  text-align: center;
+  width: 194px;
 }
 .toptabs li a, .toptabs li a:link, .toptabs li a:active, .toptabs li a:hover {
   background-color: #231f20;
@@ -323,7 +324,11 @@ iframe.vimeo {
 .row .video {
   margin-left: 15px;
 }
-
+.row .coming_soon {
+  text-align: center;
+  padding-top: 100px;
+  font-size: 20px;
+}
 .hero-unit p {
   font-size: 17px;
 }
