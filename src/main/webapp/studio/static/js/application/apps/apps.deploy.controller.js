@@ -9,14 +9,6 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     app : new model.App()
   },
 
-  target_map: {
-    FEEDHENRY: 'FeedHenry',
-    CLOUDFOUNDRY: 'Cloud Foundry',
-    STACKATO: 'ActiveState Stackato',
-    APPFOG: 'App Fog',
-    IRONFOUNDRY: 'Iron Foundry'
-  },
-
   views: {
     deploying_container: "#deploying_container"
   },
@@ -31,6 +23,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
   init: function () {
     this._super();
     this.initFn = _.once(this.initBindings);
+    this.target_map = $fw.getClientProp('deploy-target-map');
   },
 
   show: function () {
@@ -251,11 +244,9 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
       var button = $('<a>').addClass('btn');
       button.addClass('span4');
 
-      var label = $('<div>').addClass('cloud_target_label')
-      // only changet target image if its not the default (this allows for theming the default via css)
-      if (target_name.toLowerCase() !== self.target_map.FEEDHENRY.toLowerCase()) {
-        label.css('background-image', 'url("/studio/static/themes/default/img/cloud_target_' + target_name.toLowerCase() + '.png")');
-      }
+      // class name determines deploy target image, so whitelabel-able
+      var label = $('<div>').addClass('cloud_target_label ' + target_name.toLowerCase());
+      
       if (target.fields.id !== 'default') {
         label.text(label_name);
       } else {

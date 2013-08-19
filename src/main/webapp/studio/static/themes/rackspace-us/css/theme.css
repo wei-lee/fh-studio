@@ -28,7 +28,9 @@
   border-bottom-right-radius: 0px;
   border-bottom-left-radius: 0px;
   height:33px;
-  margin:0;
+  padding-right: 30px;
+  margin-left: -20px;
+  margin-right: -20px;
 }
 
 #main_layout_wrapper #header_user_info {
@@ -52,6 +54,6 @@
 	font-size:15px;
 }
 
-.cloud_target_label {
-  background-image: url('/studio/static/themes/default/img/cloud_target_rackspace.png'); /* default target image */
+.cloud_target_label.feedhenry {
+  background-image: url('/studio/static/themes/rackspace-us/img/cloud_target_rackspace.png');
 }
