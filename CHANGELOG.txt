@@ -1,8 +1,21 @@
 -------------------------------------------------------------------------------
 Component: fh-studio
 -------------------------------------------------------------------------------
+
+3.17.7 - 2013-08-19 - IR208 - Jason Madigan
+-------------------------------------------
+
+* 4556 - Whitelabelling and landing page for Rackspace
+
+NOTES: 
+
+This release is to be accompanied by Millicore. A number of property changes are noted 
+in the Millicore changelog, as well as a new property for white-labelling deploy 
+target labels.
+
+
 3.17.6 - 2013-07-26 - IR206 - Cian Clarke, Wei Li
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------
 * 4354 - mBaaS plugins catalog
 * 4414 - Update iOS and Android SDK artifacts to the latest version (Adding native sync client support)
 
