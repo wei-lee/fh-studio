@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -275,6 +277,11 @@ public class StudioBean {
       pResponse.sendRedirect(redirectUrl);
     } else {
       setNoCacheHeaders(pResponse);
+      String csrfHash = generateCsrfHash(); 
+      pResponse.setHeader("SET-COOKIE", "scrf="+csrfHash+"; HttpOnly;");
+      mStudioProps.put("csrf", csrfHash);
+      pRequest.setAttribute("csrftoken", csrfHash);
+      setXFrameOptionHeaders(pResponse);
       mInput = JSONObject.fromObject(pRequest.getParameterMap());
       log.debug(mInput.toString(2));
     }
@@ -282,6 +289,11 @@ public class StudioBean {
     return proceed;
   }
 
+   private String generateCsrfHash(){
+    String salt = "UhwwE5p-d7ssOpcmq";
+    return DigestUtils.md5Hex(new Date().toString() + salt);
+  }
+  
   public boolean canProceed(HttpServletRequest pRequest, HttpServletResponse pResponse, String pPageName) throws Exception {
     boolean canProceed = false;
 
@@ -493,6 +505,13 @@ public class StudioBean {
     pResponse.setHeader("Cache-Control", "no-cache");
     pResponse.setHeader("Pragma", "no-cache");
     pResponse.setDateHeader("Expires", -1);
+  }
+
+  /**
+  * Set headers for clickjacking defense - see https://www.owasp.org/index.php/Clickjacking_Defense_Cheat_Sheet
+  */
+  private void setXFrameOptionHeaders(HttpServletResponse pResponse){
+    pResponse.setHeader("X-Frame-Options", "DENY");
   }
 
   public List<String> getThemes() throws Exception {
