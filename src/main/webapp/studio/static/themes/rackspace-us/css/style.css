@@ -350,3 +350,7 @@ iframe.vimeo {
   margin-top: 10px; 
   display: none;
 }
+
+#main_layout_north {
+  height: 10px !important;
+}

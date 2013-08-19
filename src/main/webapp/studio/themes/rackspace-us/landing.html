@@ -66,6 +66,15 @@ try {
           $('#activation_successful').slideUp();
         }, 10000);
       }
+
+      // Set fhc install code
+      var fhc_install_text = [
+        '$ sudo npm install -g fh-fhc',
+        '$ fhc -v',
+        '$ fhc target ' + document.location.host,
+        '$ fhc login email password'
+      ];
+      $('#installing pre').text(fhc_install_text.join("\n"));
     });
   
   </script>
@@ -175,11 +184,7 @@ try {
           <div class="span7">
               <h2>Installing FHC</h2>
               <p>The FHC command line utility gives access to the entire FeedHenry suite through your command line. It's a NodeJS utility which allows you to quickly get started building your apps in Rackspace Cloud.</p>
-          <pre class="code">
-$ sudo npm install -g fh-fhc 
-$ fhc -v
-$ fhc target rackspace.feedhenry.com
-$ fhc login email password</pre>
+          <pre class="code"></pre>
         </div>
           <div class="span8 video">
           <iframe class="vimeo" src="https://player.vimeo.com/video/33966777?title=0&amp;byline=0&amp;portrait=0" width="400" height="225" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
