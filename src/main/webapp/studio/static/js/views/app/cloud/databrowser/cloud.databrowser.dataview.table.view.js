@@ -21,7 +21,6 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
   },
   headings: undefined,
   types : undefined,
-  editTd : $('<td class="td-edit readOnly"></td>'),
   editable : true,
   selectable : true,
   dblClicked: undefined,
@@ -31,6 +30,7 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
 
     this.collection = DataBrowser.Collections.CollectionData;
     this.collection.bind('reset', this.render, this);
+    this.collection.bind('sync', this.render, this);
     this.collection.fetch({reset : true, collection : this.model.get('name')});
 
     //this.collection.bind('redraw', this.renderCollections);
@@ -65,7 +65,6 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     var self = this,
     table = $('<table></table>'),
     tbody = $('<tbody></tbody>'),
-    editButton = $(this.templates.$dataviewEditButton()),
     thead;
 
     if (entries.length <= 0){
@@ -73,11 +72,7 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     }
 
     // Add in the collection name to the table element
-    table.data('collection', entries[0].type);
-
-    if (this.editable){
-      this.editTd.append(editButton);
-    }
+    table.data('collection', this.model.get('name'));
 
     thead = this.buildHeadings(entries);
 
@@ -157,16 +152,20 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
       $(rowEl).append(td);
     }
     if (this.editable){
-      $(rowEl).append(this.editTd.clone(true));
+      var editButton = $(this.templates.$dataviewEditButton());
+      $(rowEl).append(editButton);
     }
     return rowEl;
   },
   deleteRow : function(tr, cb){
     var self = this,
     guid = tr.attr('id'),
-    collection = tr.parents('table').data('collection');
-    //TODO: Delete on server
-    cb(null, {ok : true});
+    collectionName = tr.parents('table').data('collection'),
+    model = this.collection.get(guid);
+    this.collection.remove(model, {success : function(resp){
+      cb(null, {ok : true});
+    }});
+
   },
   /*
     Takes a reference to a TR and sets it to be editable
@@ -267,8 +266,10 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     var el = e.target,
     updatedObj = {},
     tr = $(el).parents('tr'),
+    table = $(tr).parents('table'),
+    collectionName = table.data('collection'),
     guid = tr.attr('id'),
-    model = DataBrowser.Collections.CollectionData.get(guid);
+    model = this.collection.get(guid);
 
     tr.children('td.field').each(function(i, fieldtd){
       if ($(fieldtd).hasClass('emptyfield') && !$(fieldtd).hasClass('dirty')){
@@ -289,16 +290,18 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
       updatedObj[name] = val;
     });
 
-    // If this is a new row, it's a create we need to do - not update
-    if (!guid || $(tr).hasClass('newrow')){
-      model = DataBrowser.Collections.CollectionData.create({fields : updatedObj});
-    }else{
-      model.set('fields', updatedObj);
+    function _succ(){
+      self.cancelRow(tr);
     }
 
+    // If this is a new row, it's a create we need to do - not update
+    if (!guid || $(tr).hasClass('newrow')){
+      model = this.collection.create({fields : updatedObj}, { success : _succ });
+    }else{
+      model.set('fields', updatedObj);
+      model.save(null, null, { success : _succ });
+    }
 
-
-    this.cancelRow(tr);
     //TODO: Save this back to mongo
   },
   // Cancel button pressed in the studio - find the relevant TR and pass it to the cancel function

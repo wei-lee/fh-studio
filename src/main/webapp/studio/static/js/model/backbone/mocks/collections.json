@@ -1,6 +1,6 @@
 [
   {
-    "name": "Users",
+    "name": "users",
     "size": 123000,
     "records": 180000
   },
@@ -20,7 +20,7 @@
     "records": 32523
   },
   {
-    "name": "Outgoing",
+    "name": "myFirstEntity",
     "size": 345,
     "records": 4543
   }
