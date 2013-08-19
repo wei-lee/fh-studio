@@ -3963,19 +3963,19 @@ h5.steps{
 }
 
 .cloud_target_label.cloudfoundry {
-  background-image: url('/studio/static/themes/default/img/cloud_target_feedhenry.png');
+  background-image: url('/studio/static/themes/default/img/cloud_target_cloudfoundry.png');
 }
 
 .cloud_target_label.stackato {
-  background-image: url('/studio/static/themes/default/img/cloud_target_feedhenry.png');
+  background-image: url('/studio/static/themes/default/img/cloud_target_stackato.png');
 }
 
 .cloud_target_label.appfog {
-  background-image: url('/studio/static/themes/default/img/cloud_target_feedhenry.png');
+  background-image: url('/studio/static/themes/default/img/cloud_target_appfog.png');
 }
 
 .cloud_target_label.ironfoundry {
-  background-image: url('/studio/static/themes/default/img/cloud_target_feedhenry.png');
+  background-image: url('/studio/static/themes/default/img/cloud_target_ironfoundry.png');
 }
 
 /* For demo-ui-enabled */
