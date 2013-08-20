@@ -37,6 +37,7 @@ App.View.DataBrowserAdvancedEditor = App.View.DataBrowserView.extend({
   onEditorSave : function(e){
     this.json = this.editor.get();
     this.model.set('fields', this.json);
+    this.model.save();
     this.parent.onRowAdvancedEditDone(e);
   },
   onEditorCancel : function(e){

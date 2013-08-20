@@ -5,7 +5,10 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     dataviewEditButton : '#dataviewEditButton',
     dataviewSaveCancelButton : '#dataviewSaveCancelButton',
     dataviewPagination : '#dataviewPagination',
-    databrowserDataViewBarCollectionMenuItem : '#databrowserDataViewBarCollectionMenuItem'
+    databrowserDataViewBarCollectionMenuItem : '#databrowserDataViewBarCollectionMenuItem',
+    dataviewEmptyContainer : '#dataviewEmptyContainer',
+    dataviewEmptyContent : '#dataviewEmptyContent',
+    dataviewLoadingContent : '#dataviewLoadingContent'
   },
   events : {
     'click table.databrowser .btn-save' : 'onRowSave',
@@ -17,7 +20,9 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     'change table.databrowser td.field select' : 'onRowDirty',
     'click table.databrowser tr .btn-edit-inline' : 'onEditRow',
     'click table.databrowser tr .btn-delete-row' : 'onRowDelete',
-    'click .btn-add-row' : 'onAddRow'
+    'click .btn-add-row' : 'onAddRow',
+    'click .btn-refresh-collection' : 'onRefreshCollection',
+    'click .btn-trash-rows' : 'onMultiDelete'
   },
   headings: undefined,
   types : undefined,
@@ -25,13 +30,16 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
   selectable : true,
   dblClicked: undefined,
   initialize : function(options){
+    var self = this;
     this.model = options.model;
     this.collections = options.collections;
 
     this.collection = DataBrowser.Collections.CollectionData;
     this.collection.bind('reset', this.render, this);
-    this.collection.bind('sync', this.render, this);
-    this.collection.fetch({reset : true, collection : this.model.get('name')});
+    // No sync event is bound *intentionally* - we modify the table in place to prevent nasty refreshes, loosing the user's scroll position etc
+    this.onRefreshCollection(function(){
+      self.loaded = true;
+    });
 
     //this.collection.bind('redraw', this.renderCollections);
     this.compileTemplates();
@@ -50,8 +58,6 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     data = this.collection.toJSON(),
     table = this.buildTable(data, false);
 
-    table.addClass('databrowser table table-condensed table-bordered');
-
     this.$el.append(nav);
     this.$el.append(table);
     this.$el.append(this.templates.$dataviewPagination());
@@ -65,10 +71,12 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     var self = this,
     table = $('<table></table>'),
     tbody = $('<tbody></tbody>'),
+    tableContainer = $('<div class="databrowserTableContainer"></div>'),
     thead;
 
     if (entries.length <= 0){
-      return table;
+      var emptyContent = (this.loaded) ? this.templates.$dataviewEmptyContent() : new App.View.Spinner().render().$el.html();
+      return $(this.templates.$dataviewEmptyContainer( { content : emptyContent } ));
     }
 
     // Add in the collection name to the table element
@@ -84,7 +92,9 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
 
     table.append(thead);
     table.append(tbody);
-    return table;
+    table.addClass('databrowser table table-condensed table-bordered');
+    tableContainer.append(table);
+    return tableContainer;
   },
   buildHeadings : function(entries){
     this.headings = [];
@@ -263,7 +273,8 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
   },
   onRowSave : function(e){
     e.stopPropagation();
-    var el = e.target,
+    var self = this,
+    el = e.target,
     updatedObj = {},
     tr = $(el).parents('tr'),
     table = $(tr).parents('table'),
@@ -286,11 +297,15 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
         val = (val === "true");
       }
 
-      $(span).html(val).show();
+      $(span).html(val);
       updatedObj[name] = val;
     });
 
-    function _succ(){
+    function _succ(model, options){
+      // modify the row in place to be as it should any of the other rows that exist in the DB
+      // that is, it's ID is a GUID and it doesn't have a newrow class
+      tr.attr('id', model.guid);
+      tr.removeClass('newrow');
       self.cancelRow(tr);
     }
 
@@ -299,10 +314,8 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
       model = this.collection.create({fields : updatedObj}, { success : _succ });
     }else{
       model.set('fields', updatedObj);
-      model.save(null, null, { success : _succ });
+      model.save(null, { success : _succ });
     }
-
-    //TODO: Save this back to mongo
   },
   // Cancel button pressed in the studio - find the relevant TR and pass it to the cancel function
   onRowCancel: function(e){
@@ -380,22 +393,75 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     e.stopPropagation();
     var el = e.target,
     tr = $($(el).parents('tr'));
+    this.onRowOrRowsDelete([tr]);
+  },
+  onMultiDelete : function(e){
+    e.stopPropagation();
+    var trs = this.$el.find('tr.info');
+    this.onRowOrRowsDelete(trs);
+  },
+  onRowOrRowsDelete : function(trs){
     //TODO: Modal confirm
-    if (window.confirm("Are you sure you want to delete this row?")){
-      this.deleteRow(tr, function(err, res){
+    var self = this,
+    rowMessage = (trs.length > 1) ? "these rows?" : "this row?",
+    deleters = [];
+    if (window.confirm("Are you sure you want to delete " + rowMessage)){
+
+      for (var i=0; i<trs.length; i++){
+        var tr = trs[i];
+        (function(tr, self){
+          deleters.push(function(cb){
+            self.deleteRow($(tr), function(err, res){
+              if (err){
+                return cb(err);
+              }
+              tr.remove();
+              return cb();
+            });
+          });
+        })(tr, self);
+      }
+
+      async.parallel(deleters, function(err, res){
         if (err){
-          return alert(err); //TODO: Modal this or some such..
+          return alert(err); //TODO: modal..
         }
-        tr.remove();
+        if (self.collection.length < 1){
+          //Redraw the empty screen
+          self.render();
+        }
       });
     }
   },
   onAddRow : function(e){
+    if (this.$el.find('table tr').length<1){
+      return this.emptyCollectionRow();
+    }
+
     var emptyRow = this.row({ fields : {}}),
     tbody = this.$el.find('table.databrowser tbody');
     emptyRow.addClass('newrow');
     tbody.prepend(emptyRow);
 
     this.editRow(emptyRow);// is this a ref to the row in-situe?
+  },
+  /*
+    We're going to add a row to the empty (possibly non-existant) collection by adding a row-column pair 'field1 : value1'
+    then trigger the advanced editor, allowing the user to edit it further..debugger
+   */
+  emptyCollectionRow : function(){
+    var self = this;
+    this.collection.create({fields : { field1 : 'value1'}}, { success : function(method, model, options){
+      //Trigger advanced editor
+      self.render();
+      self.$el.find('.btn-edit .btn-advanced-edit').click();
+    }});
+  },
+  onRefreshCollection : function(cb){
+    this.collection.fetch({reset : true, collection : this.model.get('name'), success : function(){
+      if (typeof cb === 'function'){
+        cb.apply(this, arguments);
+      }
+    }});
   }
 });

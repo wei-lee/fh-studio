@@ -2,7 +2,10 @@ App.View.DataBrowserCollectionsList = App.View.DataBrowserView.extend({
   templates : {
     collectionsList: '#collectionsList',
     collectionsListItem : '#collectionsListItem',
-    databrowserNavbar : '#databrowserNavbar'
+    databrowserNavbar : '#databrowserNavbar',
+    dataviewEmptyContainer : '#dataviewEmptyContainer',
+    collectionsEmptyContent : '#collectionsEmptyContent'
+
   },
   initialize : function(){
     this.collection = DataBrowser.Collections.Collections;

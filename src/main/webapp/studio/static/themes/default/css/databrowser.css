@@ -9,8 +9,40 @@
 #databrowser_container .pagination {
     margin: 0px;
 }
+
+#databrowser_container #rowsPerPageDiv {
+    margin: 5px 25px 0 0;
+}
+
+
+.databrowser.emptyContainer{
+    border: 1px solid #ddd;
+    text-align: center;
+    display: table;
+    width: 100%;
+}
+.databrowser.emptyContainer .centered .btn {
+    margin-top: 12px;
+}
+
+.databrowser.emptyContainer .centered {
+    display: table-cell;
+    vertical-align: middle;
+    font-weight: 100;
+    color: #666;
+    font-size: 22px;
+}
+
+#databrowser_container .databrowserTableContainer, .databrowser.emptyContainer {
+    max-height: 500px;
+    min-height: 400px;
+    overflow-x: scroll;
+    overflow-y: scroll;
+}
+
 .table.databrowser {
     overflow-y : scroll;
+    overflow-x : scroll;
     display: block;
     width: 95%;
     -webkit-user-select: none;
@@ -106,6 +138,11 @@
     left: auto;
 }
 
+.collectionsnavbar .navbar-inner {
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
 ul.collectionsUl {
     border-left: 1px solid #ccc;
     border-right: 1px solid #ccc;
@@ -117,7 +154,7 @@ ul.collectionsUl {
 ul.collectionsUl li {
     border-bottom: 1px solid #ccc;
     cursor: pointer;
-    padding: 0px 2px;
+    padding: 7px 2px 2px 2px;
 }
 
 ul.collectionsUl li:last-child {
@@ -125,7 +162,7 @@ ul.collectionsUl li:last-child {
 }
 
 ul.collectionsUl li h3 {
-    margin: 14px 0px 5px 0px;
+    margin: 0px;
     line-height: 15px;
     font-size: 14px;
     font-weight: normal;

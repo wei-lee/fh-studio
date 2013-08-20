@@ -53,9 +53,11 @@ DataBrowser.Collection.CollectionData = Backbone.Collection.extend({
   sortField : undefined,
   create : function(model, options){
     var self = this;
+    var oldSuccess = options.success;
     options.success = function(resp){
-      self.add(resp);
+      self.add(resp, { at : 0 });
       self.trigger('sync', this, resp.fields);
+      oldSuccess.apply(this, arguments);
     };
     return this.sync('create', model, options);
   },
@@ -102,6 +104,10 @@ DataBrowser.Collection.CollectionData = Backbone.Collection.extend({
         _successCall = function(result){
           self.collectionName = options.collection;
           result = result && result.list;
+          //If we haven't defined a sortOrder, show most recent first by default - $fh.db returns in  reverse
+          if (!options.sortOrder && !options.sortField){
+            result = result.reverse();
+          }
           _success(result);
         };
         break;

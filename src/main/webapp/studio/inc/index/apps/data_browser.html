@@ -33,11 +33,11 @@
 
 <script id="databrowserDataViewBarItems" type="text/x-handlebars-template">
   <button type="button" class="btn btn-large btn-add-row"><i class="icon-plus"></i>	</button>
-  <button type="button" class="btn btn-large"><i class="icon-refresh"></i></button>
-  <button type="button" class="btn btn-large"><i class="icon-trash"></i></button>
+  <button type="button" class="btn btn-large btn-refresh-collection"><i class="icon-refresh"></i></button>
+  <button type="button" class="btn btn-large btn-trash-rows"><i class="icon-trash"></i></button>
   <ul class="nav" role="navigation">
           <li class="dropdown">
-          <a id="dropd2" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Select collection<b class="caret"></b></a>
+          <a id="dropd2" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Switch Collection<b class="caret"></b></a>
           <ul class="dropdown-menu collections-dropdown" role="menu" aria-labelledby="drop1">
             {{{ collections }}}
           </ul>
@@ -105,7 +105,16 @@
       <li><a href="#">&raquo;</a></li>
     </ul>
   </div>
-
+  <div id="rowsPerPageDiv" class="input-prepend input-append pull-right">
+    <span class="add-on">show </span>
+    <select class="span6">
+      <option>20</option>
+      <option>60</option>
+      <option>100</option>
+      <option>500</option>
+    </select>
+    <span class="add-on"> rows</span>
+  </div>
 </script>
 
 <script id="dataviewAdvancedEditorBarItems" type="text/x-handlebars-template">
@@ -114,5 +123,23 @@
   <div class="btn-group btn-advancedEditorSwitch" data-toggle="buttons-radio">
     <a class="btn btn-dynamic-editor btn-inverse active"><i class="icon-indent-left"> Dynamic</i></a>
     <a class="btn btn-raw-editor btn-inverse"><i class="icon-wrench"></i> Raw</a>
+  </div>
+</script>
+<script id="dataviewEmptyContent" type="text/x-handlebars-template">
+  This collection has no rows<br />
+  <button type="button" class="btn btn-primary btn-large btn-add-row"><i class="icon-plus"></i> Add row	</button>
+</script>
+<script id="collectionsEmptyContent" type="text/x-handlebars-template">
+  No collections<br />
+  <button type="button" class="btn btn-primary btn-large btn-add-row"><i class="icon-plus"></i> Add a collection </button>
+</script>
+<script id="dataviewLoadingContent" type="text/x-handlebars-template">
+  Loading...
+</script>
+<script id="dataviewEmptyContainer" type="text/x-handlebars-template">
+  <div class="databrowser emptyContainer">
+    <div class="centered">
+      {{{ content }}}
+    </div>
   </div>
 </script>
