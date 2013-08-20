@@ -3272,10 +3272,6 @@ a.docslink {
   min-height: 0;
 }
 
-.cloud_target_label {
-  font-weight: bold;
-}
-
 #admin_deploytarget_edit .target-settings {
   display: none;
 }
@@ -4166,4 +4162,47 @@ h5.steps{
 
 #cloud_environments_layout .cache_content_view .set_cache_options input[type="text"] {
   width: 35px;
+}
+/* Deploy targets */
+
+/* Default */
+.cloud_target_label {
+  font-weight: bold;
+  padding-top: 40px;
+  background-image: url('/studio/static/themes/default/img/cloud_target_feedhenry.png');
+  background-repeat: no-repeat;
+  background-position: top center;
+}
+
+.cloud_target_label.feedhenry {
+  background-image: url('/studio/static/themes/default/img/cloud_target_feedhenry.png');
+}
+
+.cloud_target_label.cloudfoundry {
+  background-image: url('/studio/static/themes/default/img/cloud_target_cloudfoundry.png');
+}
+
+.cloud_target_label.stackato {
+  background-image: url('/studio/static/themes/default/img/cloud_target_stackato.png');
+}
+
+.cloud_target_label.appfog {
+  background-image: url('/studio/static/themes/default/img/cloud_target_appfog.png');
+}
+
+.cloud_target_label.ironfoundry {
+  background-image: url('/studio/static/themes/default/img/cloud_target_ironfoundry.png');
+}
+
+/* For demo-ui-enabled */
+.cloud_target_label.hpcloud {
+  background-image: url('/studio/static/themes/default/img/cloud_target_hpcloud.png');
+}
+
+.cloud_target_label.rackspace {
+  background-image: url('/studio/static/themes/default/img/cloud_target_rackspace.png');
+}
+
+.cloud_target_label.vmware {
+  background-image: url('/studio/static/themes/default/img/cloud_target_vmware.png');
 }
