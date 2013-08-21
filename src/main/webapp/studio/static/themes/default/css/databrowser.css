@@ -79,6 +79,37 @@
     text-overflow: ellipsis;
 }
 
+.navbar.databrowsernav .btn-trash-rows{
+    margin-left: 10px;
+}
+
+.navbar.databrowsernav .filters {
+    margin: 4px 0px;
+}
+.navbar.databrowsernav .filters form.form-inline {
+    margin: 0px;
+}
+
+.navbar.databrowsernav .filters form.form-inline label {
+    margin-right: 4px;
+}
+
+.navbar.databrowsernav .filters form.form-inline input, .navbar.databrowsernav .filters form.form-inline .btn-group, .navbar.databrowsernav .filters form.form-inline button, .filters form.form-inline .btn {
+    border-radius: 0px;
+    margin: 0px;
+}
+.navbar.databrowsernav .filters form.form-inline button {
+    height: 30px;
+}
+.navbar.databrowsernav .filters form.form-inline input:nth-child(2) {
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+.navbar.databrowsernav .filters form.form-inline button:last-child {
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
 .databrowser th.th-edit {
     display: none;
 }

@@ -32,20 +32,53 @@
 </script>
 
 <script id="databrowserDataViewBarItems" type="text/x-handlebars-template">
-  <button type="button" class="btn btn-large btn-add-row"><i class="icon-plus"></i>	</button>
-  <button type="button" class="btn btn-large btn-refresh-collection"><i class="icon-refresh"></i></button>
-  <button type="button" class="btn btn-large btn-trash-rows"><i class="icon-trash"></i></button>
-  <ul class="nav" role="navigation">
-          <li class="dropdown">
-          <a id="dropd2" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Switch Collection<b class="caret"></b></a>
-          <ul class="dropdown-menu collections-dropdown" role="menu" aria-labelledby="drop1">
-            {{{ collections }}}
-          </ul>
-          </li>
-          </ul>
-  <form class="navbar-search pull-right">
-          <input type="text" class="search-query" placeholder="Search">
-          </form>
+  <div class="row">
+    <button type="button" class="btn btn-large btn-add-row"><i class="icon-plus"></i>	</button>
+    <button type="button" class="btn btn-large btn-refresh-collection"><i class="icon-refresh"></i></button>
+    <a class="btn btn-filter" href="#filter-row-collapsable" data-toggle="collapse"><i class="icon-filter"></i></a>
+    <button type="button" class="btn btn-large btn-trash-rows disabled"><i class="icon-trash"></i></button>
+    <ul class="nav" role="navigation">
+            <li class="dropdown">
+            <a id="dropd2" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Switch Collection<b class="caret"></b></a>
+            <ul class="dropdown-menu collections-dropdown" role="menu" aria-labelledby="drop1">
+              {{{ collections }}}
+            </ul>
+            </li>
+            </ul>
+    <form class="navbar-search pull-right">
+            <input type="text" class="search-query" placeholder="Search">
+    </form>
+  </div>
+  {{{ filters }}}
+</script>
+
+<script id="databrowserFilters" type="text/x-handlebars-template">
+  <div id="filter-row-collapsable" class="row filters" >
+    <form class="form-inline btn-group">
+      <label>Filter: </label>
+      <input type="text" class="input-small" id="data-filter-key" placeholder="Field name">
+      <div class="btn-group">
+        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+          Is <span class="symbol"></span>
+          <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a data-filter="eq" href="#"><span class="badge">=&nbsp;</span> Equals</a></li>
+          <li><a data-filter="ne" href="#"><span class="badge">!=</span> Not Equals</a></li>
+          <li><a data-filter="lt" href="#"><span class="badge">&lt;&nbsp;</span> Less Than</a></li>
+          <li><a data-filter="le" href="#"><span class="badge">&le;&nbsp;</span> Less Than or Equal</a></li>
+          <li><a data-filter="gt" href="#"><span class="badge">&gt;&nbsp;</span> Greater Than</a></li>
+          <li><a data-filter="ge" href="#"><span class="badge">&ge;&nbsp;</span> Greater Than or Equal</a></li>
+          <li><a data-filter="like" href="#"><span class="badge">R</span> Like (Regular Expression)</a></li>
+          <li><a data-filter="in" href="#"><span class="badge">In</span> In</a></li>
+        </ul>
+      </div>
+
+
+      <input type="text" class="input-small" id="data-filter-value" placeholder="Value">
+      <button type="submit" class="btn add-filter"><i class="icon-plus"></i> Add</button>
+    </form>
+  </div>
 </script>
 
 <script id="databrowserDataViewBarCollectionMenuItem" type="text/x-handlebars-template">

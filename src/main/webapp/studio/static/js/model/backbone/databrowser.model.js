@@ -42,11 +42,13 @@ DataBrowser.Collection.CollectionList = Backbone.Collection.extend({
 });
 
 DataBrowser.Collection.CollectionData = Backbone.Collection.extend({
-  initialize: function() {},
+  initialize: function(options) {
+    this.url = options.url + '/mbass/db';
+  },
   model: DataBrowser.CollectionDataModel,
   //url: '/studio/static/js/model/backbone/mocks/collection_users.json',
   //TODO: Auto
-  url: 'http://all-a41gshd2rmvzmamvff6gvuzq-dev_all.feedhenry.me:9080/mbass/db',
+  url: undefined,
   limit : 25,
   collectionName : undefined,
   sortOrder : 'desc',
@@ -143,5 +145,4 @@ DataBrowser.Collection.CollectionData = Backbone.Collection.extend({
   }
 });
 DataBrowser.Collections.Collections = new DataBrowser.Collection.CollectionList();
-DataBrowser.Collections.CollectionData = new DataBrowser.Collection.CollectionData();
 DataBrowser.Collections.Collections.fetch({ reset: true });

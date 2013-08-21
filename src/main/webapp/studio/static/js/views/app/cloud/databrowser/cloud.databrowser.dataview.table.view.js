@@ -34,12 +34,9 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     this.model = options.model;
     this.collections = options.collections;
 
-    this.collection = DataBrowser.Collections.CollectionData;
+    this.collection = options.collection;
     this.collection.bind('reset', this.render, this);
     // No sync event is bound *intentionally* - we modify the table in place to prevent nasty refreshes, loosing the user's scroll position etc
-    this.onRefreshCollection(function(){
-      self.loaded = true;
-    });
 
     //this.collection.bind('redraw', this.renderCollections);
     this.compileTemplates();
@@ -52,8 +49,8 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
       var c = this.collections[i];
       collectionsHTML.push(this.templates.$databrowserDataViewBarCollectionMenuItem(c));
     }
-
-    var navItems = this.templates.$databrowserDataViewBarItems({collections : collectionsHTML.join('')}),
+    var filters = new App.View.DataBrowserFilters().render().$el.html(),
+    navItems = this.templates.$databrowserDataViewBarItems({filters : filters, collections : collectionsHTML.join('')}),
     nav = this.templates.$databrowserNavbar({ brand : this.model.get('name'), class : 'databrowsernav', baritems : navItems }),
     data = this.collection.toJSON(),
     table = this.buildTable(data, false);
@@ -336,8 +333,12 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     tr = $(el).parents('tr');
     if($(el).attr('checked')) {
       tr.addClass('info');
+      this.$el.find('.btn-trash-rows').removeClass('disabled');
     }else{
       tr.removeClass('info');
+      if (this.$el.find('table tr.info').length<1){
+        this.$el.find('.btn-trash-rows').addClass('disabled');
+      }
     }
   },
   onRowDoubleClick : function(e){
