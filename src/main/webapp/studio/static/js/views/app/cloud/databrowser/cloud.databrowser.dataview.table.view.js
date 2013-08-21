@@ -262,14 +262,16 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     }
   },
   onDirtyRowsCancel : function(dirtyRows){
-    // TODO: Modal this - not window.confirm, that's nasty..
-    if (window.confirm("You have unsaved edits to one or more rows - are you sure you want to discard?")){
-      for (var i=0; i<dirtyRows.length; i++){
-        this.cancelRow($(dirtyRows[i]));
+    var self = this;
+    this.modalbox("You have unsaved edits to one or more rows - are you sure you want to discard?", function(ok){
+      if (ok){
+        for (var i=0; i<dirtyRows.length; i++){
+          self.cancelRow($(dirtyRows[i]));
+        }
+      }else{
+        return;
       }
-    }else{
-      return;
-    }
+    });
   },
   onRowSave : function(e){
     e.stopPropagation();
@@ -401,12 +403,13 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     this.onRowOrRowsDelete(trs);
   },
   onRowOrRowsDelete : function(trs){
-    //TODO: Modal confirm
     var self = this,
     rowMessage = (trs.length > 1) ? "these rows?" : "this row?",
     deleters = [];
-    if (window.confirm("Are you sure you want to delete " + rowMessage)){
-
+    this.modalbox("Are you sure you want to delete " + rowMessage, function(ok){
+      if (!ok){
+        return;
+      }
       for (var i=0; i<trs.length; i++){
         var tr = trs[i];
         (function(tr, self){
@@ -424,14 +427,14 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
 
       async.parallel(deleters, function(err, res){
         if (err){
-          return alert(err); //TODO: modal..
+          return this.alertbox(err);
         }
         if (self.collection.length < 1){
           //Redraw the empty screen
           self.render();
         }
       });
-    }
+    });
   },
   onAddRow : function(e){
     if (this.$el.find('table tr').length<1){
@@ -447,7 +450,7 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
   },
   /*
     We're going to add a row to the empty (possibly non-existant) collection by adding a row-column pair 'field1 : value1'
-    then trigger the advanced editor, allowing the user to edit it further..debugger
+    then trigger the advanced editor, allowing the user to edit it further..
    */
   emptyCollectionRow : function(){
     var self = this;
@@ -463,5 +466,24 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
         cb.apply(this, arguments);
       }
     }});
+  },
+  modalbox : function(msg, cb){
+    this.modal  = new App.View.Modal({
+      body : msg,
+      ok : function(){
+        cb(true);
+      },
+      cancel : function(){
+        cb(false);
+      }
+    });
+    this.$el.append(this.modal.render().$el);
+  },
+  alertbox : function(msg){
+    this.modal  = new App.View.Modal({
+      body : msg,
+      cancelText : false
+    });
+    this.$el.append(this.modal.render().$el);
   }
 });

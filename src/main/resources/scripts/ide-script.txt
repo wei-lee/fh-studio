@@ -53,6 +53,7 @@ js/model/backbone/metrics/startups/domain.startups.platform.model.js
 js/model/backbone/metrics/installs/domain.installs.platform.model.js
 js/views/common/datatable.view.js
 js/views/common/spinner.view.js
+js/views/common/modal.view.js
 js/views/charts/chart.view.js
 js/views/charts/bar_chart.view.js
 js/views/charts/column_chart.view.js

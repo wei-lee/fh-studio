@@ -20,6 +20,22 @@
 <img src="<%=studio.getStaticAssetPath("themes/default/img/throbber.gif")%>" alt="loading"/> <span class="spinner_text">{{text}}</span>
 </script>
 
+<script id="modal-template" type="text/x-handlebars-template">
+  <div id="{{id}}" class="modal hide fade" tabindex="-1" role="dialog">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal">&times;</button>
+      <h3>{{ title }}</h3>
+    </div>
+    <div class="modal-body">
+      {{ body }}
+    </div>
+    <div class="modal-footer">
+      <button id="modal-cancel" class="btn" data-dismiss="modal">{{cancelText }}</button>
+      <button id="modal-ok" class="btn btn-primary" data-dismiss="modal">{{ okText }}</button>
+    </div>
+  </div>
+</script>
+
 <script id="project-app-analytics-date-picker-template" type="text/x-handlebars-template">
 <form class="form-horizontal pull-right">
   <fieldset>
