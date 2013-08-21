@@ -6,17 +6,22 @@ App.View.DataBrowserController = Backbone.View.extend({
   },
   subviews : {
     collectionsList : App.View.DataBrowserCollectionsList,
-    dataView: App.View.DataBrowserDataView
+    dataView: App.View.DataBrowserDataView,
+    migrateView : App.View.DataBrowserMigrateView
   },
   initialize : function(){
     var self = this,
-    url = Constants.APP_HOSTS_URL;
+    url = Constants.APP_HOSTS_URL
+    this.guid = $fw.data.get('inst').guid;
     var params = {
-      guid: $fw.data.get('inst').guid
+      guid : this.guid
     };
     $fw.server.post(url, params, function(res) {
       self.hosts = res.hosts;
       self.loaded = true;
+      if (self.el){
+        self.render();
+      }
     }, function(err){
       console.log(err);
     }, false);
@@ -24,15 +29,28 @@ App.View.DataBrowserController = Backbone.View.extend({
   render: function() {
     var self = this;
     this.$el.empty();
-    this.list = new this.subviews.collectionsList();
-    this.list.render();
-    this.$el.append(this.list.el);
+    if (this.loaded){
+      var dynoHost = self.hosts['development-url'], // TODO: Switch
+      collection = new DataBrowser.Collection.CollectionList({ url : dynoHost });
+      collection.fetch({reset : true, success : function(){
+        self.list = new self.subviews.collectionsList( { collection : collection});
+        self.list.render();
+        self.$el.append(self.list.el);
+      }, error : function(){
+        self.migrate = new self.subviews.migrateView( { guid : self.guid } );
+        self.migrate.render();
+        self.$el.append(self.migrate.el);
+      }});
+    }else{
+      this.$el.append('Loading');
+    }
+
     return this;
   },
   showCollection : function(e){
     e.stopPropagation();
     var self = this,
-    dynoHost = this.hosts['development-url'],
+    dynoHost = this.hosts['development-url'], // TODO: Switch
     el = $(e.target),
     li = (e.target.nodeName.toLowerCase() === 'li' ) ? el : el.parents('li'),
     id = li.data('id'),

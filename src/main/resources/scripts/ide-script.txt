@@ -146,6 +146,7 @@ js/views/app/cloud/databrowser/cloud.databrowser.dataview.table.view.js
 js/views/app/cloud/databrowser/cloud.databrowser.dataview.view.js
 js/views/app/cloud/databrowser/cloud.databrowser.advancededitor.view.js
 js/views/app/cloud/databrowser/cloud.databrowser.filters.view.js
+js/views/app/cloud/databrowser/cloud.databrowser.migrate.view.js
 js/views/app/cloud/databrowser/cloud.databrowser.controller.js
 js/model/ModelManager.js
 js/model/models/Model.js

@@ -7,8 +7,8 @@ App.View.DataBrowserCollectionsList = App.View.DataBrowserView.extend({
     collectionsEmptyContent : '#collectionsEmptyContent'
 
   },
-  initialize : function(){
-    this.collection = DataBrowser.Collections.Collections;
+  initialize : function(options){
+    this.collection = options.collection;
     this.collection.bind('reset', this.render, this);
     this.compileTemplates();
     this.breadcrumb(['Cloud Plugins']);

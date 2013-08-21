@@ -16,9 +16,11 @@ DataBrowser.CollectionDataModel = Backbone.Model.extend({
 });
 
 DataBrowser.Collection.CollectionList = Backbone.Collection.extend({
-  initialize: function() {},
+  initialize: function(options) {
+    this.url = options.url + '/cloud/collections'; // TODO: Wire this up to the proper endpoint once fh-db work is done
+  },
   model: DataBrowser.CollectionModel,
-  url: '/studio/static/js/model/backbone/mocks/collections.json',
+  url: undefined,
   sync: function (method, model, options) {
     var self = this;
     if(!self.loaded){
@@ -43,7 +45,7 @@ DataBrowser.Collection.CollectionList = Backbone.Collection.extend({
 
 DataBrowser.Collection.CollectionData = Backbone.Collection.extend({
   initialize: function(options) {
-    this.url = options.url + '/mbass/db';
+    this.url = options.url + '/mbaas/db';
   },
   model: DataBrowser.CollectionDataModel,
   //url: '/studio/static/js/model/backbone/mocks/collection_users.json',
@@ -144,5 +146,3 @@ DataBrowser.Collection.CollectionData = Backbone.Collection.extend({
     $fw.server[verb](url, req, _successCall, options.error, true);
   }
 });
-DataBrowser.Collections.Collections = new DataBrowser.Collection.CollectionList();
-DataBrowser.Collections.Collections.fetch({ reset: true });
