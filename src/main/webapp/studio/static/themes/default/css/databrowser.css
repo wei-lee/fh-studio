@@ -102,12 +102,27 @@
     height: 30px;
 }
 .navbar.databrowsernav .filters form.form-inline input:nth-child(2) {
-    border-top-left-radius: 3px;
-    border-bottom-left-radius: 3px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
 }
 .navbar.databrowsernav .filters form.form-inline button:last-child {
-    border-top-right-radius: 3px;
-    border-bottom-right-radius: 3px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.navbar.databrowsernav .filters .filterList .badge {
+    color: #fff;
+    background-color: #006dcc;
+    padding: 4px 14px;
+    font-size: 12px;
+    cursor: pointer;
+    height: 17px;
+    display: inline-block;
+    margin: 5px 10px 0px 0px;
+}
+
+.navbar.databrowsernav .filters .filterList .badge .closebadge {
+    font-size: 20px;
 }
 
 .databrowser th.th-edit {

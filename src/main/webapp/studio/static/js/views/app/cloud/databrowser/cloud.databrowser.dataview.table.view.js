@@ -22,7 +22,8 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     'click table.databrowser tr .btn-delete-row' : 'onRowDelete',
     'click .btn-add-row' : 'onAddRow',
     'click .btn-refresh-collection' : 'onRefreshCollection',
-    'click .btn-trash-rows' : 'onMultiDelete'
+    'click .btn-trash-rows' : 'onMultiDelete',
+    'click .btn-filter' : 'onFilterToggle'
   },
   headings: undefined,
   types : undefined,
@@ -57,7 +58,10 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
 
     this.$el.append(nav);
     this.$el.append(table);
-    this.$el.append(this.templates.$dataviewPagination());
+
+    var pagination = new App.View.DataBrowserDataViewPagination({collection : this.collection});
+    this.$el.append(pagination.render().el);
+
     return this;
   },
   /*
@@ -486,5 +490,19 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
       cancelText : false
     });
     this.$el.append(this.modal.render().$el);
+  },
+  onFilterToggle : function(){
+    var filters = this.$el.find('.filters');
+    filters.collapse('toggle');
+
+    // Unfortunate hack to allow the dropdown to function, without any glitch in the animation -
+    // adding overflow:visible before animation completes screws it up
+    if (filters.hasClass('in')){
+      setTimeout(function(){
+        filters.css({'overflow' : 'visible'});
+      }, 300);
+    }else{
+      filters.css({'overflow' : 'hidden'});
+    }
   }
 });

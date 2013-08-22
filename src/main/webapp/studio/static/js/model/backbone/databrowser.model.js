@@ -46,12 +46,14 @@ DataBrowser.Collection.CollectionList = Backbone.Collection.extend({
 DataBrowser.Collection.CollectionData = Backbone.Collection.extend({
   initialize: function(options) {
     this.url = options.url + '/mbaas/db';
+    this.collectionName = options.collection;
   },
   model: DataBrowser.CollectionDataModel,
   //url: '/studio/static/js/model/backbone/mocks/collection_users.json',
   //TODO: Auto
   url: undefined,
-  limit : 25,
+  limit : 20,
+  page : 0, // skip = page * limit => first page skips 0 records!
   collectionName : undefined,
   sortOrder : 'desc',
   sortField : undefined,
@@ -74,6 +76,7 @@ DataBrowser.Collection.CollectionData = Backbone.Collection.extend({
   sync: function (method, model, options) {
     method = method || "get";
     var self = this,
+    skip = this.page * this.limit,
     url = self.url,
     req, verb;
 
@@ -100,13 +103,13 @@ DataBrowser.Collection.CollectionData = Backbone.Collection.extend({
         verb = "post";
         req = {
           act : 'list',
-          type : options.collection,
+          type : this.collectionName,
           limit : options.limit || this.limit,
           order : options.sortOrder || this.sortOrder,
-          sort : options.sortField || this.sortField
+          sort : options.sortField || this.sortField,
+          skip : skip
         };
         _successCall = function(result){
-          self.collectionName = options.collection;
           result = result && result.list;
           //If we haven't defined a sortOrder, show most recent first by default - $fh.db returns in  reverse
           if (!options.sortOrder && !options.sortField){

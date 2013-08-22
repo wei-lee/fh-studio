@@ -35,8 +35,8 @@
   <div class="row">
     <button type="button" class="btn btn-large btn-add-row"><i class="icon-plus"></i>	</button>
     <button type="button" class="btn btn-large btn-refresh-collection"><i class="icon-refresh"></i></button>
-    <a class="btn btn-filter" href="#filter-row-collapsable" data-toggle="collapse"><i class="icon-filter"></i></a>
-    <button type="button" class="btn btn-large btn-trash-rows disabled"><i class="icon-trash"></i></button>
+    <a class="btn btn-filter" href="#"><i class="icon-filter"></i></a>
+    <button type="button" class="btn btn-large btn-danger btn-trash-rows disabled"><i class="icon-trash"></i></button>
     <ul class="nav" role="navigation">
             <li class="dropdown">
             <a id="dropd2" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Switch Collection<b class="caret"></b></a>
@@ -53,7 +53,7 @@
 </script>
 
 <script id="databrowserFilters" type="text/x-handlebars-template">
-  <div id="filter-row-collapsable" class="row filters" >
+  <div id="filter-row-collapsable" class="row filters collapse" >
     <form class="form-inline btn-group">
       <label>Filter: </label>
       <input type="text" class="input-small" id="data-filter-key" placeholder="Field name">
@@ -76,8 +76,20 @@
 
 
       <input type="text" class="input-small" id="data-filter-value" placeholder="Value">
-      <button type="submit" class="btn add-filter"><i class="icon-plus"></i> Add</button>
+      <button type="submit" class="btn btn-primary add-filter"><i class="icon-plus"></i> Add</button>
     </form>
+      <div class="filterList">
+        <div class="badge btn-primary" style="">
+         <span class="filterbody">price &gt;= 15</span>
+         <span class="closebadge">&times;</span>
+        </div>
+
+        <div class="badge btn-primary" style="">
+
+          <span class="filterbody">price &gt;= 15</span>
+          <span class="closebadge">&times;</span>
+        </div>
+      </div>
   </div>
 </script>
 
@@ -130,11 +142,7 @@
   <div class="pagination pagination-mini pull-right">
     <ul>
       <li><a href="#">&laquo;</a></li>
-      <li><a href="#">1</a></li>
-      <li><a href="#">2</a></li>
-      <li><a href="#">3</a></li>
-      <li><a href="#">4</a></li>
-      <li><a href="#">5</a></li>
+      {{{ pages }}}
       <li><a href="#">&raquo;</a></li>
     </ul>
   </div>

@@ -50,23 +50,34 @@ App.View.DataBrowserController = Backbone.View.extend({
   showCollection : function(e){
     e.stopPropagation();
     var self = this,
-    dynoHost = this.hosts['development-url'], // TODO: Switch
     el = $(e.target),
     li = (e.target.nodeName.toLowerCase() === 'li' ) ? el : el.parents('li'),
     id = li.data('id'),
-    model = this.list.collection.get(id);
+    model = this.list.collection.get(id),
+    name = model.get('name');
 
-    var dataViewCollection = new DataBrowser.Collection.CollectionData( { url : dynoHost } );
-    dataViewCollection.fetch({reset : true, collection : model.get('name'), success : function(){
+    this.updateCollection(name, function(dataViewCollection){
       self.dataView = new App.View.DataBrowserDataView({ model : model, collections : self.list.collection.toJSON(), collection : dataViewCollection  });
       self.dataView.render();
       self.list.hide();
       self.$el.append(self.dataView.el);
+    });
+  },
+  updateCollection : function(name, cb){
+    var dynoHost = this.hosts['development-url'], // TODO: Switch
+    dataViewCollection = new DataBrowser.Collection.CollectionData( { url : dynoHost, collection : name } );
+    return dataViewCollection.fetch({reset : true, success : function(){
+      cb(dataViewCollection);
     }});
   },
   onChangeCollection : function(e){
-    var id = $(e.target).data('id');
-    this.dataView.table.model = DataBrowser.Collections.Collections.get(id);
-    this.dataView.table.collection.fetch({ reset : true, collection : id }); // TODO: Is this nasty?
+    var self = this,
+    id = $(e.target).data('id');
+    this.dataView.table.model = this.list.collection.get(id);
+
+    this.updateCollection(this.dataView.table.model.get('name'), function(collection){
+      self.dataView.table.collection = collection;
+      self.dataView.table.render();
+    });
   }
 });

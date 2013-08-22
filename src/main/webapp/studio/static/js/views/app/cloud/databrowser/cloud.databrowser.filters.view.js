@@ -13,7 +13,6 @@ App.View.DataBrowserFilters = App.View.DataBrowserView.extend({
     this.$el.empty();
     var filters = this.templates.$databrowserFilters();
     this.$el.append($(filters));
-    this.$el.addClass('row filters');
     return this;
   },
   onComparatorSelection : function(e){
