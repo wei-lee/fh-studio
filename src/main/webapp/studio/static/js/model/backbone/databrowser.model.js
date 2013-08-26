@@ -17,7 +17,7 @@ DataBrowser.CollectionDataModel = Backbone.Model.extend({
 
 DataBrowser.Collection.CollectionList = Backbone.Collection.extend({
   initialize: function(options) {
-    this.url = options.url + '/cloud/collections'; // TODO: Wire this up to the proper endpoint once fh-db work is done
+    this.url = options.url + '/mbaas/db';
     this.appkey = options.appkey;
   },
   model: DataBrowser.CollectionModel,
@@ -30,8 +30,9 @@ DataBrowser.Collection.CollectionList = Backbone.Collection.extend({
         "act" : "list",
         "__fh" : { "appkey" : self.appkey }
       };
-      $fw.server.post(url, {}, function(res) {
-        if (res && res.length && res.length>0) {
+      $fw.server.post(url, req, function(res) {
+        if (res && res.list) {
+          res = res.list;
           self.loaded = true;
           if ($.isFunction(options.success)) {
             options.success(res, options);
@@ -49,22 +50,21 @@ DataBrowser.Collection.CollectionList = Backbone.Collection.extend({
 });
 
 DataBrowser.Collection.CollectionData = Backbone.Collection.extend({
+  model: DataBrowser.CollectionDataModel,
+  url: undefined,
+  count : undefined, // size of the collection in total - important for pagination
+  limit : 20,
+  page : 0, // skip = page * limit => first page skips 0 records!
+  collectionName : undefined,
+  sort : undefined,
+  filters : {},
   initialize: function(options) {
     this.url = options.url + '/mbaas/db';
     this.appkey = options.appkey;
     this.filters = {};
     this.collectionName = options.collection;
+    this.count = options.count;
   },
-  model: DataBrowser.CollectionDataModel,
-  //url: '/studio/static/js/model/backbone/mocks/collection_users.json',
-  //TODO: Auto
-  url: undefined,
-  limit : 20,
-  page : 0, // skip = page * limit => first page skips 0 records!
-  collectionName : undefined,
-  sortOrder : 'desc',
-  sortField : undefined,
-  filters : {},
   create : function(model, options){
     var self = this;
     var oldSuccess = options.success;
@@ -113,15 +113,14 @@ DataBrowser.Collection.CollectionData = Backbone.Collection.extend({
           act : 'list',
           type : this.collectionName,
           limit : options.limit || this.limit,
-          order : options.sortOrder || this.sortOrder,
-          sort : options.sortField || this.sortField,
+          sort : options.sort || this.sort,
           skip : skip
         };
         _.extend(req, this.filters);
         _successCall = function(result){
           result = result && result.list;
           //If we haven't defined a sortOrder, show most recent first by default - $fh.db returns in  reverse
-          if (!options.sortOrder && !options.sortField){
+          if (!options.sort){
             result = result.reverse();
           }
           _success(result);

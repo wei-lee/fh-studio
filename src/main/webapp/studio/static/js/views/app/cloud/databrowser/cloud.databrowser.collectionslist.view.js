@@ -30,6 +30,7 @@ App.View.DataBrowserCollectionsList = App.View.DataBrowserView.extend({
     this.collection.each(function(model){
       var jsonModel = model.toJSON();
       jsonModel.id = model.id;
+      jsonModel.size = Math.round((jsonModel.size/1048576)*100)/100; // size to MB rounded to 2 decimal places
       collectionItem = self.templates.$collectionsListItem( jsonModel );
       collectionItems.push(collectionItem);
     });

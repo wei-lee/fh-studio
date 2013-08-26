@@ -54,19 +54,20 @@ App.View.DataBrowserController = Backbone.View.extend({
     el = $(e.target),
     li = (e.target.nodeName.toLowerCase() === 'li' ) ? el : el.parents('li'),
     id = li.data('id'),
-    model = this.list.collection.get(id),
-    name = model.get('name');
+    model = this.list.collection.get(id);
 
-    this.updateCollection(name, function(dataViewCollection){
-      self.dataView = new App.View.DataBrowserDataView({ model : model, collections : self.list.collection.toJSON(), collection : dataViewCollection  });
+    this.updateCollection(model, function(dataViewCollection){
+      self.dataView = new App.View.DataBrowserDataView({ model : model, collections : self.list.collection.toJSON(), collection : dataViewCollection});
       self.dataView.render();
       self.list.hide();
       self.$el.append(self.dataView.el);
     });
   },
-  updateCollection : function(name, cb){
+  updateCollection : function(model, cb){
     var dynoHost = this.hosts['development-url'], // TODO: Switch
-    dataViewCollection = new DataBrowser.Collection.CollectionData( { url : dynoHost, collection : name, appkey : this.appkey } );
+    name = model.get('name'),
+    count = model.get('count'),
+    dataViewCollection = new DataBrowser.Collection.CollectionData( { url : dynoHost, collection : name, appkey : this.appkey, count : count } );
     return dataViewCollection.fetch({reset : true, success : function(){
       cb(dataViewCollection);
     }});
@@ -76,7 +77,7 @@ App.View.DataBrowserController = Backbone.View.extend({
     id = $(e.target).data('id');
     this.dataView.table.model = this.list.collection.get(id);
 
-    this.updateCollection(this.dataView.table.model.get('name'), function(collection){
+    this.updateCollection(this.dataView.table.model, function(collection){
       self.dataView.table.collection = collection;
       self.dataView.table.render();
     });

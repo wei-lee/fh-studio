@@ -11,9 +11,10 @@ App.View.DataBrowserDataViewPagination = App.View.DataBrowserView.extend({
     this.compileTemplates();
   },
   render: function() {
+    this.$el.empty();
     var pages = [],
     // Total rows divided by no. rows per page
-    noPages = Math.floor(this.collection.length / this.collection.limit) + 1,
+    noPages = Math.floor(this.collection.count / this.collection.limit) + 1,
     curPageLessThree = this.collection.page - 3,
     startPage = (curPageLessThree<=0) ? 0 : curPageLessThree,
     noPagesShown = Math.min(noPages, 6);
@@ -29,12 +30,16 @@ App.View.DataBrowserDataViewPagination = App.View.DataBrowserView.extend({
   },
   onPageCountChange : function(e){
     var el = $(e.target);
-    this.collection.limit = el.val();
+    this.collection.limit = parseInt(el.val(), 10);
     this.collection.fetch({reset : true});
+    this.render(); // also need to redraw the pagination..!
   },
   onPageChange : function(e){
     var el = $(e.target);
-    this.collection.page = parseInt(el.data('page'));
+    this.collection.page = parseInt(el.data('page'), 10);
+    if (isNaN(this.collection.page)){
+      this.collection.page = 0;
+    }
     this.collection.fetch({reset : true});
   }
 });

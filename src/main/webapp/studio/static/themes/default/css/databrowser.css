@@ -142,6 +142,22 @@
     display: none;
 }
 
+.databrowser th {
+    cursor: pointer;
+}
+
+.databrowser th .sorter {
+    float: right;
+}
+
+.databrowser th.asc .sorter:before {
+  content: '\25B2'; /* arrow */
+}
+
+.databrowser th.desc .sorter:before {
+    content: '\25BC'; /* arrow */
+}
+
 .btn-group.btn-savecancel {
     margin-top: 5px;
 }

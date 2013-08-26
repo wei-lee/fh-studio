@@ -20,6 +20,7 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     'change table.databrowser td.field select' : 'onRowDirty',
     'click table.databrowser tr .btn-edit-inline' : 'onEditRow',
     'click table.databrowser tr .btn-delete-row' : 'onRowDelete',
+    'click table.databrowser th' : 'onColumnSort',
     'click .btn-add-row' : 'onAddRow',
     'click .btn-refresh-collection' : 'onRefreshCollection',
     'click .btn-trash-rows' : 'onMultiDelete',
@@ -104,7 +105,8 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     this.types = [];
     // Iteration 1: Build a picture of every possible heading, append the THes
     var thead = $('<thead></thead>'),
-    theadtr = $('<tr></tr>');
+    theadtr = $('<tr></tr>'),
+    sortOrder = this.collection.sort;
 
     if (this.selectable){
       theadtr.append('<th data-type="" class="th-checkbox readOnly"></th>');
@@ -120,7 +122,13 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
           var heading = key,
           type = typeof row[key];
           if (this.headings.indexOf(heading)===-1){
-            theadtr.append('<th data-type="' + type + '" class="th-' + heading + '">' + heading + '</th>');
+            var cls = 'th-' + heading;
+            // Are we sorting by this TH?
+            if (typeof sortOrder === 'object' && sortOrder.hasOwnProperty(heading)){
+              cls += (sortOrder[heading]===1) ? ' asc' : ' desc';
+            }
+
+            theadtr.append('<th data-name="' + heading + '" data-type="' + type + '" class="' + cls + '">' + heading + '<span class="sorter"></span></th>');
             this.headings.push(heading);
             this.types.push(type);
           }
@@ -507,5 +515,27 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     }else{
       filters.css({'overflow' : 'hidden'});
     }
+  },
+  onColumnSort : function(e){
+    var el = $(e.target),
+    field = el.data('name'),
+    preSorted = el.hasClass('asc') || el.hasClass('desc'),
+    sortObj = {},
+    sort, sortIdx;
+
+    // If this column already has a sort order, let's reverse it
+    if (preSorted){
+      sort = (el.hasClass('asc')) ? 'desc' : 'asc';
+    }else{
+      sort = 'asc';
+    }
+    this.$el.find('th').removeClass('asc desc');
+    el.addClass(sort);
+
+    sortIdx = (sort === 'asc') ? 1 : -1;
+    sortObj[field] = sortIdx;
+    this.collection.sort = sortObj;
+    this.collection.page = 0;
+    this.collection.fetch({reset : true});
   }
 });
