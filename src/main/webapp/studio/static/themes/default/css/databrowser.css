@@ -105,7 +105,7 @@
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
 }
-.navbar.databrowsernav .filters form.form-inline button:last-child {
+.navbar.databrowsernav .filters form.form-inline button {
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
 }
@@ -121,9 +121,22 @@
     margin: 5px 10px 0px 0px;
 }
 
+.navbar.databrowsernav .filters textarea {
+    height: 1em;
+    float: right;
+    display: inline-block;
+}
+
 .navbar.databrowsernav .filters .filterList .badge .closebadge {
     font-size: 20px;
 }
+
+
+.navbar.databrowsernav .filters form a.btn.dropdown-toggle {
+    font-size: 16px;
+    font-weight: lighter;
+}
+
 
 .databrowser th.th-edit {
     display: none;

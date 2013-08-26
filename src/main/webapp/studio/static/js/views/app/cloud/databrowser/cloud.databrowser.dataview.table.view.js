@@ -50,11 +50,13 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
       var c = this.collections[i];
       collectionsHTML.push(this.templates.$databrowserDataViewBarCollectionMenuItem(c));
     }
-    var filters = new App.View.DataBrowserFilters().render().$el.html(),
-    navItems = this.templates.$databrowserDataViewBarItems({filters : filters, collections : collectionsHTML.join('')}),
-    nav = this.templates.$databrowserNavbar({ brand : this.model.get('name'), class : 'databrowsernav', baritems : navItems }),
+    var filters = new App.View.DataBrowserFilters({ collection : this.collection}),
+    navItems = this.templates.$databrowserDataViewBarItems({collections : collectionsHTML.join('')}),
+    nav = $(this.templates.$databrowserNavbar({ brand : this.model.get('name'), class : 'databrowsernav', baritems : navItems })),
     data = this.collection.toJSON(),
     table = this.buildTable(data, false);
+
+    nav.find('.navbar-inner').append(filters.render().$el); // NB needs to be added in here 'cause otherwise events don't bind
 
     this.$el.append(nav);
     this.$el.append(table);
@@ -491,7 +493,8 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     });
     this.$el.append(this.modal.render().$el);
   },
-  onFilterToggle : function(){
+  onFilterToggle : function(e){
+    e.preventDefault();
     var filters = this.$el.find('.filters');
     filters.collapse('toggle');
 

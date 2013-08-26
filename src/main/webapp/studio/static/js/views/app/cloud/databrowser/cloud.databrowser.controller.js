@@ -13,6 +13,7 @@ App.View.DataBrowserController = Backbone.View.extend({
     var self = this,
     url = Constants.APP_HOSTS_URL
     this.guid = $fw.data.get('inst').guid;
+    this.appkey = $fw.data.get('inst').apiKey;
     var params = {
       guid : this.guid
     };
@@ -31,7 +32,7 @@ App.View.DataBrowserController = Backbone.View.extend({
     this.$el.empty();
     if (this.loaded){
       var dynoHost = self.hosts['development-url'], // TODO: Switch
-      collection = new DataBrowser.Collection.CollectionList({ url : dynoHost });
+      collection = new DataBrowser.Collection.CollectionList({ url : dynoHost, appkey : self.appkey });
       collection.fetch({reset : true, success : function(){
         self.list = new self.subviews.collectionsList( { collection : collection});
         self.list.render();
@@ -65,7 +66,7 @@ App.View.DataBrowserController = Backbone.View.extend({
   },
   updateCollection : function(name, cb){
     var dynoHost = this.hosts['development-url'], // TODO: Switch
-    dataViewCollection = new DataBrowser.Collection.CollectionData( { url : dynoHost, collection : name } );
+    dataViewCollection = new DataBrowser.Collection.CollectionData( { url : dynoHost, collection : name, appkey : this.appkey } );
     return dataViewCollection.fetch({reset : true, success : function(){
       cb(dataViewCollection);
     }});

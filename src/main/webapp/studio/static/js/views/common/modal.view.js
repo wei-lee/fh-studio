@@ -21,7 +21,7 @@ App.View.Modal = Backbone.View.extend({
     var template = Handlebars.compile($("#modal-template").html());
     var dialog = $(template(this.options));
     if (this.options.cancelText && this.options.cancelText === false){
-      dialog.remove('#modal-cancel');
+      dialog.find('#modal-cancel').remove();
     }
     this.$el.append(dialog);
     this.$el.find('#' + this.options.id).modal();
@@ -31,10 +31,12 @@ App.View.Modal = Backbone.View.extend({
     if (typeof this.options.ok === 'function'){
       this.options.ok.apply(this, arguments);
     }
+    this.remove();
   },
   modalCancel : function(){
     if (typeof this.options.cancel === 'function'){
       this.options.cancel.apply(this, arguments);
     }
+    this.remove();
   }
 });

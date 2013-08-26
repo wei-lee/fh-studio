@@ -18,13 +18,18 @@ DataBrowser.CollectionDataModel = Backbone.Model.extend({
 DataBrowser.Collection.CollectionList = Backbone.Collection.extend({
   initialize: function(options) {
     this.url = options.url + '/cloud/collections'; // TODO: Wire this up to the proper endpoint once fh-db work is done
+    this.appkey = options.appkey;
   },
   model: DataBrowser.CollectionModel,
   url: undefined,
   sync: function (method, model, options) {
     var self = this;
     if(!self.loaded){
-      var url = self.url;
+      var url = self.url,
+      req = {
+        "act" : "list",
+        "__fh" : { "appkey" : self.appkey }
+      };
       $fw.server.post(url, {}, function(res) {
         if (res && res.length && res.length>0) {
           self.loaded = true;
@@ -46,6 +51,8 @@ DataBrowser.Collection.CollectionList = Backbone.Collection.extend({
 DataBrowser.Collection.CollectionData = Backbone.Collection.extend({
   initialize: function(options) {
     this.url = options.url + '/mbaas/db';
+    this.appkey = options.appkey;
+    this.filters = {};
     this.collectionName = options.collection;
   },
   model: DataBrowser.CollectionDataModel,
@@ -57,6 +64,7 @@ DataBrowser.Collection.CollectionData = Backbone.Collection.extend({
   collectionName : undefined,
   sortOrder : 'desc',
   sortField : undefined,
+  filters : {},
   create : function(model, options){
     var self = this;
     var oldSuccess = options.success;
@@ -109,6 +117,7 @@ DataBrowser.Collection.CollectionData = Backbone.Collection.extend({
           sort : options.sortField || this.sortField,
           skip : skip
         };
+        _.extend(req, this.filters);
         _successCall = function(result){
           result = result && result.list;
           //If we haven't defined a sortOrder, show most recent first by default - $fh.db returns in  reverse
@@ -144,8 +153,7 @@ DataBrowser.Collection.CollectionData = Backbone.Collection.extend({
         };
         break;
     }
-    //TODO: auto
-    req.__fh = { appkey : "296dbe91dac43f5d1342201c8a0ace4d140787f" };
+    req.__fh = { appkey : self.appkey }; // TODO: User API key goes here too...
     $fw.server[verb](url, req, _successCall, options.error, true);
   }
 });

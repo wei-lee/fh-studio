@@ -1,32 +1,152 @@
 App.View.DataBrowserFilters = App.View.DataBrowserView.extend({
   templates : {
-    databrowserFilters: '#databrowserFilters'
+    databrowserFilters: '#databrowserFilters',
+    databrowserFilterItem : '#databrowserFilterItem'
   },
   events : {
     'click .filters .dropdown-menu a' : 'onComparatorSelection',
-    'click .add-filter' : 'onFilterAdd'
+    'click .add-filter' : 'onFilterAdd',
+    'click .aFilter' : 'onFilterRemove',
+    'focus textarea' : 'expandArea',
+    'blur textarea' : 'contractArea'
   },
-  initialize : function(){
+  filters : [
+    {
+      name : 'Equals',
+      entity: '=',
+      operator : 'eq'
+    },
+    {
+      name : 'Not Equals',
+      entity: '!=',
+      operator : 'ne'
+    },
+    {
+      name : 'Less Than',
+      entity: '&le;',
+      operator : 'le'
+    },
+    {
+      name : 'Less or Equals',
+      entity: '&le;',
+      operator : 'eq'
+    },
+    {
+      name : 'Greater Than',
+      entity: '&gt;',
+      operator : 'gt'
+    },
+    {
+      name : 'Greater or Equals',
+      entity: '&ge;',
+      operator : 'ge'
+    },
+    {
+      name : 'Like',
+      entity: 'Like',
+      operator : 'like'
+    },
+    {
+      name : 'In',
+      entity: 'In',
+      operator : 'in'
+    }
+  ],
+  initialize : function(options){
+    this.collection = options.collection;
     this.compileTemplates();
   },
   render: function() {
     this.$el.empty();
-    var filters = this.templates.$databrowserFilters();
-    this.$el.append($(filters));
+    var filters = [];
+
+    for (var i=0; i<this.filters.length; i++){
+      var f = this.filters[i],
+      cls = (i===0) ? 'active' : '';
+      filters.push('<li class="' + cls + '"><a data-filter-index="' + i + '" data-filter-operator="' + f.operator + '" href="#"><span class="badge">' + f.entity + '</span> ' + f.name + '</a></li>');
+    }
+
+    var filtersTpl = this.templates.$databrowserFilters( { filters : filters.join('') } )
+    this.$el.append($(filtersTpl));
     return this;
   },
   onComparatorSelection : function(e){
-    var el = $(e.target),
+    var el = e.target.tagName.toLowerCase()==='a' ?  $(e.target) : $(e.target).parent('a'),
+    li = el.parent(),
     ul = el.parents('ul'),
     btn = ul.siblings('.btn'),
-    symbolSpan = btn.children('span.smybol'),
-    filter = el.data('filter'),
-    symbol = el.find('.badge').html();
+    symbolSpan = btn.children('span.symbol'),
+    filterIndex = parseInt(el.data('filter-index'), 10),
+    symbol = this.filters[filterIndex].entity;
 
     symbolSpan.html(symbol);
-    btn.data('filter', 'filter');
+    ul.children('li').removeClass('active');
+    li.addClass('active');
   },
   onFilterAdd : function(e){
-    //TODO: Why do none of these get called?
+    e.preventDefault();
+    var el = (e.target.tagName.toLowerCase() === 'button') ? $(e.target) : $(e.target).parents('button'),
+    form = el.parent(),
+    key = form.children('#data-filter-key').val(),
+    val = form.children('#data-filter-value').val(),
+    a = form.find('.btn-group ul li.active a'),
+    operator = a.data('filter-operator'),
+    operatorIndex = a.data('filter-index'),
+    entity = this.filters[operatorIndex].entity,
+    f = this.collection.filters,
+    filterEl;
+
+    if (!key || !val || key.trim()==='' || val.trim()===''){
+      return this.alertbox('You must specify a field name and value to create a filter');
+    }
+
+    if (['ge', 'gt', 'le', 'lt'].indexOf(operator)>-1){
+      if (isNaN(parseInt(val, 10))){
+        //TODO: 1234fefefe still passes this - trims the letters. Why?
+        return this.alertbox('Greater than or less than filters require a number value');
+      }
+    }
+
+    if (!f.hasOwnProperty(operator)){
+      f[operator] = {};
+    }
+    f[operator][key] = val;
+    this.collection.fetch({reset : true});
+
+    filterEl = this.templates.$databrowserFilterItem( { key : key, entity : entity, value : val, operator : operator } );
+    this.$el.find('.filterList').append(filterEl);
+    this.$el.find('textarea').val(JSON.stringify(f));
+  },
+  onFilterRemove : function(e){
+    e.preventDefault();
+    var el = $(e.target),
+    el = (el.hasClass('badge')) ? el : el.parents('.badge'),
+    operator = el.data('operator'),
+    key = el.data('key'),
+    val = el.data('value'),
+    f = this.collection.filters;
+
+    el.remove();
+    if (f.hasOwnProperty(operator)){
+      delete f[operator][key];
+      this.$el.find('textarea').val(JSON.stringify(f));
+      this.collection.fetch({reset : true});
+    }
+  },
+  expandArea : function(e){
+    var el = $(e.target);
+    $(el).animate({ height: "4em" }, 500);
+  },
+  contractArea : function(e){
+    var el = $(e.target);
+    $(el).animate({ height: "1em" }, 500);
+  },
+  alertbox : function(msg){
+    //TODO: Common view stuff?
+    this.modal  = new App.View.Modal({
+      body : msg,
+      cancelText : false
+    });
+    this.$el.append(this.modal.render().$el);
   }
 });
