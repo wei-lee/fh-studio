@@ -8,17 +8,18 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     databrowserDataViewBarCollectionMenuItem : '#databrowserDataViewBarCollectionMenuItem',
     dataviewEmptyContainer : '#dataviewEmptyContainer',
     dataviewEmptyContent : '#dataviewEmptyContent',
-    dataviewLoadingContent : '#dataviewLoadingContent'
+    dataviewLoadingContent : '#dataviewLoadingContent',
+    dataviewEditTable : '#dataviewEditTable'
   },
   events : {
-    'click table.databrowser .btn-save' : 'onRowSave',
-    'click table.databrowser .btn-cancel' : 'onRowCancel',
+    'click table .btn-save' : 'onRowSave',
+    'click table .btn-cancel' : 'onRowCancel',
     'dblclick table.databrowser tr.trow' : 'onRowDoubleClick',
     'click table.databrowser tr.trow' : 'onRowClickProxy',
     'click table.databrowser .td-checkbox input[type=checkbox]' : 'onRowSelection',
     'keyup table.databrowser td.field input' : 'onRowDirty',
     'change table.databrowser td.field select' : 'onRowDirty',
-    'click table.databrowser tr .btn-edit-inline' : 'onEditRow',
+    'click table.databrowser tr .btn-edit-inline' : 'onEditRowButton',
     'click table.databrowser tr .btn-delete-row' : 'onRowDelete',
     'click table.databrowser th' : 'onColumnSort',
     'click .btn-add-row' : 'onAddRow',
@@ -28,7 +29,6 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
   },
   headings: undefined,
   types : undefined,
-  editable : true,
   selectable : true,
   dblClicked: undefined,
   initialize : function(options){
@@ -55,7 +55,7 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     navItems = this.templates.$databrowserDataViewBarItems({collections : collectionsHTML.join('')}),
     nav = $(this.templates.$databrowserNavbar({ brand : this.model.get('name'), class : 'databrowsernav', baritems : navItems })),
     data = this.collection.toJSON(),
-    table = this.buildTable(data, false);
+    table = this.buildTable();
 
     nav.find('.navbar-inner').append(filters.render().$el); // NB needs to be added in here 'cause otherwise events don't bind
 
@@ -71,14 +71,16 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
    Draws a HTML table from some data
    This is part of the FeedHenry mBaaS suite repurposed for this portal
    */
-  buildTable : function(entries){
+  buildTable : function(){
     var self = this,
+    entries = this.collection.toJSON(),
     table = $('<table></table>'),
     tbody = $('<tbody></tbody>'),
+    edittable = $(this.templates.$dataviewEditTable()),
     tableContainer = $('<div class="databrowserTableContainer"></div>'),
     thead;
 
-    if (entries.length <= 0){
+    if (this.collection.length <= 0){
       var emptyContent = (this.loaded) ? this.templates.$dataviewEmptyContent() : new App.View.Spinner().render().$el.html();
       return $(this.templates.$dataviewEmptyContainer( { content : emptyContent } ));
     }
@@ -86,18 +88,24 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     // Add in the collection name to the table element
     table.data('collection', this.model.get('name'));
 
-    thead = this.buildHeadings(entries);
+    thead = this.buildHeadings(this.collection.toJSON());
 
     // Iteration 2: We know every possible heading, now we can draw every table cell, even the important blanks
-    for (var j=0; j<entries.length; j++){
-      var row = this.row(entries[j]);
+    this.collection.each(function(model){
+      var row = self.row(model.toJSON());
       tbody.append(row);
-    }
+
+      // Also fill in the TR for our edit button in the floated-right table with the edit buttons
+      var editButton = $(self.templates.$dataviewEditButton(model.toJSON()));
+      var editTr = $('<tr></tr>').append(editButton);
+      edittable.find('tbody').append(editTr);
+    });
 
     table.append(thead);
     table.append(tbody);
     table.addClass('databrowser table table-condensed table-bordered');
     tableContainer.append(table);
+    tableContainer.append(edittable);
     return tableContainer;
   },
   buildHeadings : function(entries){
@@ -135,10 +143,6 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
         }
       }
     }
-    // TH appends not working
-    if (this.editable){
-      theadtr.append('<th class="th-edit"></th>');
-    }
     thead.append(theadtr);
     return thead;
   },
@@ -172,10 +176,7 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
 
       $(rowEl).append(td);
     }
-    if (this.editable){
-      var editButton = $(this.templates.$dataviewEditButton());
-      $(rowEl).append(editButton);
-    }
+
     return rowEl;
   },
   deleteRow : function(tr, cb){
@@ -201,8 +202,8 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
 
     // Hide edit button, show save button
 
-    var editButton = tr.find('.td-edit .btn-edit').hide();
-    tr.find('.td-edit').append(saveCancelButton);
+    var editButton = this.$el.find('#edit-' + guid + ' .btn-edit').hide();
+    this.$el.find('#edit-' + guid).append(saveCancelButton);
 
 
     tr.children('td.field').each(function(i, field){
@@ -232,14 +233,16 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
   },
   cancelRow : function(tr){
     // If it's a row that the user decided not to create, nuke it
+    var id = tr.attr('id'),
+    editTd = this.$el.find('#edit-' + id);
     if (tr.hasClass('newrow')){
       tr.remove();
     }
 
     var tds = tr.children('td');
-    tr.find('.btn-edit').show();
-    tr.find('.btn-savecancel').remove();
-    tr.find('.btn-group').show();
+    editTd.find('.btn-edit').show();
+    editTd.find('.btn-savecancel').remove();
+    editTd.find('.btn-group').show();
 
     tds.each(function(){
       if (!$(this).hasClass('readOnly') && $(this).children('span').length>0){
@@ -249,6 +252,8 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
         $(this).children().show();
       }
     });
+
+
 
     tr.removeClass('editing dirty');
   },
@@ -289,10 +294,10 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     var self = this,
     el = e.target,
     updatedObj = {},
-    tr = $(el).parents('tr'),
+    guid = $(el).parents('td').data('id'),
+    tr = this.$el.find('#' + guid),
     table = $(tr).parents('table'),
     collectionName = table.data('collection'),
-    guid = tr.attr('id'),
     model = this.collection.get(guid);
 
     tr.children('td.field').each(function(i, fieldtd){
@@ -334,7 +339,8 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
   onRowCancel: function(e){
     e.stopPropagation();
     var el = e.target,
-    tr = $(el).parents('tr');
+    id = $(el).parents('td').data('id'),
+    tr = this.$el.find('#' + id);
     if (tr.hasClass('dirty')){
       this.onDirtyRowsCancel([tr]);
     }else{
@@ -374,7 +380,13 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
 
     var self = this,
     element = e.target,
+    id = $(element).data('id');
     tr = $(element).parents('tr');
+
+    // We're in that other table - let's find the right TR.
+    if (!tr){
+      tr = this.$el.find('#' + id);
+    }
 
     if (tr.hasClass('editing')){
       return;

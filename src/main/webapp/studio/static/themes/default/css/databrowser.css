@@ -40,16 +40,34 @@
     overflow-y: scroll;
 }
 
+/*  Make our edit table float to the right OK */
+.databrowserTableContainer table {
+    display: inline-block
+}
+
+.databrowserTableContainer table.edittable {
+    width: 4%;
+}
+
+.databrowserTableContainer table.edittable th  {
+    height: 20px;
+}
+.databrowserTableContainer table.edittable .td-edit {
+    height: 25px;
+}
+
 .table.databrowser {
     overflow-y : scroll;
     overflow-x : scroll;
-    display: block;
     width: 95%;
+    float: left;
     -webkit-user-select: none;
     -moz-user-select: none;
     -khtml-user-select: none;
     -ms-user-select: none;
 }
+
+
 
 .table.databrowser.table-bordered, .table.databrowser.table-bordered th {
     border-top-right-radius: 0px;
@@ -169,8 +187,15 @@
 
 }
 
+.databrowser td.td-checkbox {
+  padding: 0 6px;
+}
+
 .databrowser td.field {
     min-width: 150px;
+    height: 25px;
+    line-height: 25px;
+    margin: 0;
 }
 
 .databrowser td.field:last-child {
@@ -186,13 +211,14 @@
     margin: 0px;
     border: 1px solid #999;
 }
-.databrowser .trow.editing input, .databrowser .trow.editing select{
+.databrowser .trow.editing input, .databrowser .trow.editing select, .databrowser .trow input{
     border: 0px;
     margin: 0px;
     padding: 0px;
     display: inline;
     width: auto;
-    height: 27px;
+    /* 0 the padding. original fields have 4px top, 4px bottom padding and 25px height. => 25px + 8 = 33 */
+    height: 33px;
     background: transparent;
 }
 .databrowser tr td.td-edit {

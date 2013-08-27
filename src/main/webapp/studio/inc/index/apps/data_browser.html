@@ -111,15 +111,19 @@
     </ul>
 </script>
 
+<script id="dataviewEditTable" type="text/x-handlebars-template">
+<table class="edittable table table-condensed table-bordered"><thead><tr><th class="th-edit"></th></tr></thead><tbody></tbody></table>
+</script>
+
 <script id="dataviewEditButton" type="text/x-handlebars-template">
-  <td class="td-edit readOnly">
+  <td class="td-edit readOnly" data-id="{{guid}}" id="edit-{{guid}}">
     <div class="btn-group btn-edit">
-      <button class="btn btn-mini dropdown-toggle" data-toggle="dropdown"><i class="icon-pencil"></i> <span
+      <button data-id="{{ guid }}" class="btn btn-mini dropdown-toggle" data-toggle="dropdown"><i class="icon-pencil"></i> <span
               class="caret"></span></button>
       <ul class="dropdown-menu">
-        <li><a href="#" class="btn-edit-inline"><i class="icon-pencil"></i> Edit Inline</a></li>
-        <li><a href="#" class="btn-advanced-edit"><i class="icon-edit"></i> Advanced Editor</a></li>
-        <li><a href="#" class="btn-delete-row"><i class="icon-remove"></i> Delete Row</a></li>
+        <li><a href="#" data-id="{{ guid }}" class="btn-edit-inline"><i class="icon-pencil"></i> Edit Inline</a></li>
+        <li><a href="#" data-id="{{ guid }}" class="btn-advanced-edit"><i class="icon-edit"></i> Advanced Editor</a></li>
+        <li><a href="#" data-id="{{ guid }}" class="btn-delete-row"><i class="icon-remove"></i> Delete Row</a></li>
       </ul>
     </div>
   </td>
