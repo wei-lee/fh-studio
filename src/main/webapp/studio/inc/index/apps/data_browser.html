@@ -85,7 +85,7 @@
 </script>
 
 <script id="databrowserDataViewBarCollectionMenuItem" type="text/x-handlebars-template">
-<li role="presentation"><a role="menuitem" data-id="{{ name }}" data-name=" {{ name }} " tabindex="-1" href="#">{{ name }} <span class="badge pull-right">{{ records }} </span></a></li>
+<li role="presentation"><a role="menuitem" data-id="{{ name }}" data-name=" {{ name }} " tabindex="-1" href="#">{{ name }} <span class="badge pull-right">{{ count }} </span></a></li>
 </script>
 
 <script id="collectionsListItem" type="text/x-handlebars-template">
@@ -107,6 +107,33 @@
       {{{ collections }}}
     </ul>
 </script>
+
+<script id="dataviewTableContainer" type="text/x-handlebars-template">
+  <div class="databrowserTableContainer busy">
+    <!-- Tables go here -->
+    <div class="busyContainer">
+      <div id="floatingCirclesG">
+        <div class="f_circleG" id="frotateG_01">
+        </div>
+        <div class="f_circleG" id="frotateG_02">
+        </div>
+        <div class="f_circleG" id="frotateG_03">
+        </div>
+        <div class="f_circleG" id="frotateG_04">
+        </div>
+        <div class="f_circleG" id="frotateG_05">
+        </div>
+        <div class="f_circleG" id="frotateG_06">
+        </div>
+        <div class="f_circleG" id="frotateG_07">
+        </div>
+        <div class="f_circleG" id="frotateG_08">
+        </div>
+      </div>
+    </div>
+  </div>
+</script>
+
 
 <script id="dataviewEditTable" type="text/x-handlebars-template">
 <table class="edittable table table-condensed table-bordered"><thead><tr><th class="th-edit"></th></tr></thead><tbody></tbody></table>

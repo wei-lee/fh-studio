@@ -1,15 +1,12 @@
 App.View.DataBrowserTable = App.View.DataBrowserView.extend({
   templates : {
-    databrowserNavbar : '#databrowserNavbar',
-    databrowserDataViewBarItems: '#databrowserDataViewBarItems',
     dataviewEditButton : '#dataviewEditButton',
     dataviewSaveCancelButton : '#dataviewSaveCancelButton',
-    dataviewPagination : '#dataviewPagination',
-    databrowserDataViewBarCollectionMenuItem : '#databrowserDataViewBarCollectionMenuItem',
     dataviewEmptyContainer : '#dataviewEmptyContainer',
     dataviewEmptyContent : '#dataviewEmptyContent',
     dataviewLoadingContent : '#dataviewLoadingContent',
-    dataviewEditTable : '#dataviewEditTable'
+    dataviewEditTable : '#dataviewEditTable',
+    dataviewTableContainer : '#dataviewTableContainer'
   },
   events : {
     'click table .btn-save' : 'onRowSave',
@@ -22,10 +19,7 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     'click table.edittable tr .btn-edit-inline' : 'onEditRowButton',
     'click table.edittable .btn-delete-row' : 'onRowDelete',
     'click table.databrowser th' : 'onColumnSort',
-    'click .btn-add-row' : 'onAddRow',
-    'click .btn-refresh-collection' : 'onRefreshCollection',
-    'click .btn-trash-rows' : 'onMultiDelete',
-    'click .btn-filter' : 'onFilterToggle'
+
   },
   headings: undefined,
   types : undefined,
@@ -38,6 +32,7 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
 
     this.collection = options.collection;
     this.collection.bind('reset', this.render, this);
+    this.collection.bind('request', this.busy, this);
     // No sync event is bound *intentionally* - we modify the table in place to prevent nasty refreshes, loosing the user's scroll position etc
 
     //this.collection.bind('redraw', this.renderCollections);
@@ -45,25 +40,14 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
   },
   render: function() {
     this.$el.empty();
-
-    var collectionsHTML = [];
-    for (var i=0; i<this.collections.length; i++){
-      var c = this.collections[i];
-      collectionsHTML.push(this.templates.$databrowserDataViewBarCollectionMenuItem(c));
-    }
-    var filters = new App.View.DataBrowserFilters({ collection : this.collection}),
-    navItems = this.templates.$databrowserDataViewBarItems({collections : collectionsHTML.join('')}),
-    nav = $(this.templates.$databrowserNavbar({ brand : this.model.get('name'), class : 'databrowsernav', baritems : navItems })),
-    data = this.collection.toJSON(),
+    var self = this,
     table = this.buildTable();
-
-    nav.find('.navbar-inner').append(filters.render().$el); // NB needs to be added in here 'cause otherwise events don't bind
-
-    this.$el.append(nav);
     this.$el.append(table);
 
-    var pagination = new App.View.DataBrowserDataViewPagination({collection : this.collection});
-    this.$el.append(pagination.render().el);
+    // Our busy state shows at first - we hide it after a delay. Otherwise it just looks like it flickers...
+    setTimeout(function(){
+      self.hideBusy();
+    }, 500);
 
     return this;
   },
@@ -77,8 +61,9 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     table = $('<table></table>'),
     tbody = $('<tbody></tbody>'),
     edittable = $(this.templates.$dataviewEditTable()),
-    tableContainer = $('<div class="databrowserTableContainer"></div>'),
+    tableContainer = $(this.templates.$dataviewTableContainer()),
     thead;
+
 
     if (this.collection.length <= 0){
       var emptyContent = (this.collection.loaded) ? this.templates.$dataviewEmptyContent() : new App.View.Spinner().render().$el.html();
@@ -185,6 +170,7 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     collectionName = tr.parents('table').data('collection'),
     model = this.collection.get(guid);
     this.collection.remove(model, {success : function(resp){
+      self.hideBusy();
       cb(null, {ok : true});
     }});
 
@@ -194,7 +180,7 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
    */
   editRow : function(tr){
     var self = this,
-    guid = tr.attr('id'),
+    guid = tr.attr('id') || '',
     collection = $(tr).parents('table').data('collection'),
     saveCancelButton = $(this.templates.$dataviewSaveCancelButton());
 
@@ -237,10 +223,12 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
   },
   cancelRow : function(tr){
     // If it's a row that the user decided not to create, nuke it
-    var id = tr.attr('id'),
+    var id = tr.attr('id') || '',
     editTd = this.$el.find('#edit-' + id);
     if (tr.hasClass('newrow')){
       tr.remove();
+      editTd.remove();
+      return;
     }
 
     var tds = tr.children('td');
@@ -299,7 +287,8 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     el = e.target,
     updatedObj = {},
     guid = $(el).parents('td').data('id'),
-    tr = this.$el.find('#' + guid),
+    rowSelector = (guid && guid !== '') ? '#' + guid : '.newrow',
+    tr = this.$el.find(rowSelector),
     table = $(tr).parents('table'),
     collectionName = table.data('collection'),
     model = this.collection.get(guid);
@@ -329,6 +318,7 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
       tr.attr('id', model.guid);
       tr.removeClass('newrow');
       self.cancelRow(tr);
+      self.hideBusy();
     }
 
     // If this is a new row, it's a create we need to do - not update
@@ -344,7 +334,8 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     e.stopPropagation();
     var el = e.target,
     id = $(el).parents('td').data('id'),
-    tr = this.$el.find('#' + id);
+    rowSelector = (id && id !== '') ? '#' + id : '.newrow',
+    tr = this.$el.find(rowSelector);
     if (tr.hasClass('dirty')){
       this.onDirtyRowsCancel([tr]);
     }else{
@@ -352,17 +343,12 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     }
   },
   onRowSelection : function(e){
-    e.stopPropagation();
     var el = e.target,
     tr = $(el).parents('tr');
     if($(el).attr('checked')) {
       tr.addClass('info');
-      this.$el.find('.btn-trash-rows').removeClass('disabled');
     }else{
       tr.removeClass('info');
-      if (this.$el.find('table tr.info').length<1){
-        this.$el.find('.btn-trash-rows').addClass('disabled');
-      }
     }
   },
   onRowDoubleClick : function(e){
@@ -439,14 +425,6 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     tr = $($(el).parents('tr'));
     this.onRowOrRowsDelete([tr]);
   },
-  onMultiDelete : function(e){
-    e.stopPropagation();
-    var trs = this.$el.find('tr.info');
-    if (trs.length === 0){
-      return;
-    }
-    this.onRowOrRowsDelete(trs);
-  },
   onRowOrRowsDelete : function(trs){
     var self = this,
     rowMessage = (trs.length > 1) ? "these rows?" : "this row?",
@@ -493,6 +471,11 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     emptyRow.addClass('newrow');
     tbody.prepend(emptyRow);
 
+    // Add in it's edit button on the RHS table
+    var editButton = $(this.templates.$dataviewEditButton({ id : 'new' }));
+    var editTr = $('<tr></tr>').append(editButton);
+    this.$el.find('table.edittable tbody').prepend(editTr);
+
     this.editRow(emptyRow);// is this a ref to the row in-situe?
   },
   /*
@@ -505,13 +488,6 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
       //Trigger advanced editor
       self.render();
       self.$el.find('.btn-edit .btn-advanced-edit').click();
-    }});
-  },
-  onRefreshCollection : function(cb){
-    this.collection.fetch({reset : true, collection : this.model.get('name'), success : function(){
-      if (typeof cb === 'function'){
-        cb.apply(this, arguments);
-      }
     }});
   },
   modalbox : function(msg, cb){
@@ -533,21 +509,7 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     });
     this.$el.append(this.modal.render().$el);
   },
-  onFilterToggle : function(e){
-    e.preventDefault();
-    var filters = this.$el.find('.filters');
-    filters.collapse('toggle');
 
-    // Unfortunate hack to allow the dropdown to function, without any glitch in the animation -
-    // adding overflow:visible before animation completes screws it up
-    if (filters.hasClass('in')){
-      setTimeout(function(){
-        filters.css({'overflow' : 'visible'});
-      }, 300);
-    }else{
-      filters.css({'overflow' : 'hidden'});
-    }
-  },
   onColumnSort : function(e){
     var el = $(e.target),
     field = el.data('name'),
@@ -569,5 +531,11 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     this.collection.sort = sortObj;
     this.collection.page = 0;
     this.collection.fetch({reset : true});
+  },
+  showBusy : function(e){
+    this.$el.find('.databrowserTableContainer').addClass('busy');
+  },
+  hideBusy : function(e){
+    this.$el.find('.databrowserTableContainer').removeClass('busy');
   }
 });

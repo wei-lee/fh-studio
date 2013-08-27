@@ -37,7 +37,8 @@ App.View.DataBrowserDataViewPagination = App.View.DataBrowserView.extend({
   },
   onPageChange : function(e){
     e.preventDefault();
-    var el = $(e.target),
+    var self = this,
+    el = $(e.target),
     page = el.data('page');
 
     if (page==='first'){
@@ -50,6 +51,8 @@ App.View.DataBrowserDataViewPagination = App.View.DataBrowserView.extend({
         this.collection.page = 0;
       }
     }
-    this.collection.fetch({reset : true});
+    this.collection.fetch({reset : true, success : function(){
+      self.render();
+    }});
   }
 });

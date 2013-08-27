@@ -156,6 +156,8 @@ DataBrowser.Collection.CollectionData = Backbone.Collection.extend({
         break;
     }
     req.__fh = { appkey : self.appkey }; // TODO: User API key goes here too...
+
+    this.trigger('request'); // manually trigger a req event since backbone isn't sending it - shows busy state on the table
     $fw.server[verb](url, req, _successCall, options.error, true);
   }
 });
