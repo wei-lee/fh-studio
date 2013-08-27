@@ -19,8 +19,8 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     'click table.databrowser .td-checkbox input[type=checkbox]' : 'onRowSelection',
     'keyup table.databrowser td.field input' : 'onRowDirty',
     'change table.databrowser td.field select' : 'onRowDirty',
-    'click table.databrowser tr .btn-edit-inline' : 'onEditRowButton',
-    'click table.databrowser tr .btn-delete-row' : 'onRowDelete',
+    'click table.edittable tr .btn-edit-inline' : 'onEditRowButton',
+    'click table.edittable .btn-delete-row' : 'onRowDelete',
     'click table.databrowser th' : 'onColumnSort',
     'click .btn-add-row' : 'onAddRow',
     'click .btn-refresh-collection' : 'onRefreshCollection',
@@ -81,7 +81,7 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     thead;
 
     if (this.collection.length <= 0){
-      var emptyContent = (this.loaded) ? this.templates.$dataviewEmptyContent() : new App.View.Spinner().render().$el.html();
+      var emptyContent = (this.collection.loaded) ? this.templates.$dataviewEmptyContent() : new App.View.Spinner().render().$el.html();
       return $(this.templates.$dataviewEmptyContainer( { content : emptyContent } ));
     }
 
@@ -218,14 +218,18 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
       switch(type.toLowerCase()){
         case "boolean":
           input = $('<select><option value="true">true</option><option value="false">false</option></select>');
+          input.val(span.html());
+          break;
+        case "object":
+          input = $('<input type="text" disabled placeholder="Advanced editor only">');
           break;
         default:
           input = $('<input type="text">');
+          input.val(span.html());
           break;
       }
       input.attr('name', $(field).data('field'));
       input.css('width', $(field).width());
-      input.val(span.html());
       $(field).append(input);
       span.hide();
     });
@@ -371,13 +375,24 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     this.onEditRow(e);
     this.dblClicked = true;
   },
-  onEditRow: function(e){
-    e.stopPropagation();
+  // for when the edit inline button is clicked
+  onEditRowButton : function(e){
+    var el = $(e.target),
+    id = el.parents('td').data('id'),
+    tr = this.$el.find('#' + id);
 
     // Remove open class for the button group we just clicked
-    $(e.target).parents('.btn-group.open').removeClass('open');
+    el.parents('.btn-group.open').removeClass('open');
 
+    if (tr.hasClass('editing')){
+      return;
+    }
+    this.editRow($(tr));
+    this.cancelOtherRows(tr);
 
+  },
+  onEditRow: function(e){
+    e.stopPropagation();
     var self = this,
     element = e.target,
     id = $(element).data('id');
@@ -427,6 +442,9 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
   onMultiDelete : function(e){
     e.stopPropagation();
     var trs = this.$el.find('tr.info');
+    if (trs.length === 0){
+      return;
+    }
     this.onRowOrRowsDelete(trs);
   },
   onRowOrRowsDelete : function(trs){
@@ -442,10 +460,12 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
         (function(tr, self){
           deleters.push(function(cb){
             self.deleteRow($(tr), function(err, res){
+              var id = tr.id;
               if (err){
                 return cb(err);
               }
               tr.remove();
+              self.$el.find('#edit-' + id).parents('tr').remove();
               return cb();
             });
           });

@@ -52,6 +52,7 @@ DataBrowser.Collection.CollectionList = Backbone.Collection.extend({
 DataBrowser.Collection.CollectionData = Backbone.Collection.extend({
   model: DataBrowser.CollectionDataModel,
   url: undefined,
+  loaded : false,
   count : undefined, // size of the collection in total - important for pagination
   limit : 20,
   page : 0, // skip = page * limit => first page skips 0 records!
@@ -60,6 +61,7 @@ DataBrowser.Collection.CollectionData = Backbone.Collection.extend({
   filters : {},
   initialize: function(options) {
     this.url = options.url + '/mbaas/db';
+    this.loaded = false;
     this.appkey = options.appkey;
     this.filters = {};
     this.collectionName = options.collection;
@@ -89,6 +91,7 @@ DataBrowser.Collection.CollectionData = Backbone.Collection.extend({
     req, verb;
 
     var _success = function(res) {
+      self.loaded = true;
       if (res) {
         if ($.isFunction(options.success)) {
           options.success(res, options);

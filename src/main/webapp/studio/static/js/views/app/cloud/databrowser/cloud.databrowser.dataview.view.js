@@ -3,7 +3,7 @@ App.View.DataBrowserDataView = App.View.DataBrowserView.extend({
 
   },
   events : {
-    'click table.databrowser tr .btn-advanced-edit' : 'onRowAdvancedEdit'
+    'click table.edittable tr .btn-advanced-edit' : 'onRowAdvancedEdit'
   },
   initialize : function(options){
     this.options = options;
@@ -24,10 +24,10 @@ App.View.DataBrowserDataView = App.View.DataBrowserView.extend({
   onRowAdvancedEdit : function(e){
     e.stopPropagation();
     // Clone the old view
-    var el = e.target,
-    tr = $(el).parents('tr'),
-    guid = tr.attr('id'),
-    model = DataBrowser.Collections.CollectionData.get(guid);
+    var el = $(e.target),
+    guid = el.parents('td').data('id'),
+    tr = this.table.$el.find('#' + guid),
+    model = this.table.collection.get(guid);
 
     this.browser.update(model);
 

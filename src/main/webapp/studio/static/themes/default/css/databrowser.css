@@ -34,10 +34,15 @@
 }
 
 #databrowser_container .databrowserTableContainer, .databrowser.emptyContainer {
-    max-height: 500px;
-    min-height: 400px;
+    /*max-height: 500px;
+    min-height: 400px;*/
+    height: 100%; /* Other approach gives nasty double scrollbars - lets just use the entire page */
     overflow-x: scroll;
     overflow-y: scroll;
+}
+
+#databrowser_container .databrowserTableContainer {
+    padding-right: 30px; /* Means scroll bars on OSX aren't hovering over the button */
 }
 
 /*  Make our edit table float to the right OK */
@@ -47,6 +52,7 @@
 
 .databrowserTableContainer table.edittable {
     width: 4%;
+    border-color: #fff; /* Include in the flow, just make it white & invisible */
 }
 
 .databrowserTableContainer table.edittable th  {
@@ -54,6 +60,7 @@
 }
 .databrowserTableContainer table.edittable .td-edit {
     height: 25px;
+    border-color: #fff; /* Include in the flow, just make it white & invisible */
 }
 
 .table.databrowser {
@@ -77,6 +84,8 @@
     border-bottom-right-radius: 0px;
     border-bottom-left-radius: 0px;
     border-bottom: 0px;
+    box-shadow : none;
+    -webkit-box-shadow: none;
 }
 
 .navbar.databrowsernav {
