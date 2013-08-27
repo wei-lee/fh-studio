@@ -18,8 +18,7 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     'change table.databrowser td.field select' : 'onRowDirty',
     'click table.edittable tr .btn-edit-inline' : 'onEditRowButton',
     'click table.edittable .btn-delete-row' : 'onRowDelete',
-    'click table.databrowser th' : 'onColumnSort',
-
+    'click table.databrowser th' : 'onColumnSort'
   },
   headings: undefined,
   types : undefined,
@@ -32,7 +31,7 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
 
     this.collection = options.collection;
     this.collection.bind('reset', this.render, this);
-    this.collection.bind('request', this.busy, this);
+    this.collection.bind('request', this.showBusy, this);
     // No sync event is bound *intentionally* - we modify the table in place to prevent nasty refreshes, loosing the user's scroll position etc
 
     //this.collection.bind('redraw', this.renderCollections);

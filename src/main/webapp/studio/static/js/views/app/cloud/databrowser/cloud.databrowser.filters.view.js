@@ -112,7 +112,7 @@ App.View.DataBrowserFilters = App.View.DataBrowserView.extend({
     }
     f[operator][key] = val;
     this.collection.page = 0; // reset pagecount to 0 when filtering
-    this.collection.fetch({reset : true});
+    this.collection.fetch({reset : true, filters : f});
 
     filterEl = this.templates.$databrowserFilterItem( { key : key, entity : entity, value : val, operator : operator } );
     this.$el.find('.filterList').append(filterEl);
@@ -131,7 +131,7 @@ App.View.DataBrowserFilters = App.View.DataBrowserView.extend({
     if (f.hasOwnProperty(operator)){
       delete f[operator][key];
       this.$el.find('textarea').val(JSON.stringify(f));
-      this.collection.fetch({reset : true});
+      this.collection.fetch({reset : true, filters : f});
     }
   },
   expandArea : function(e){
@@ -141,13 +141,5 @@ App.View.DataBrowserFilters = App.View.DataBrowserView.extend({
   contractArea : function(e){
     var el = $(e.target);
     $(el).animate({ height: "1em" }, 500);
-  },
-  alertbox : function(msg){
-    //TODO: Common view stuff?
-    this.modal  = new App.View.Modal({
-      body : msg,
-      cancelText : false
-    });
-    this.$el.append(this.modal.render().$el);
   }
 });

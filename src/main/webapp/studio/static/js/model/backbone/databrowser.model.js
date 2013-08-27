@@ -90,6 +90,8 @@ DataBrowser.Collection.CollectionData = Backbone.Collection.extend({
     url = self.url,
     req, verb;
 
+    this.filters = options.filters || this.filters;
+
     var _success = function(res) {
       self.loaded = true;
       if (res) {
