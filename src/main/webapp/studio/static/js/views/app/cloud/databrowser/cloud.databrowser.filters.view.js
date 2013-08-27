@@ -111,6 +111,7 @@ App.View.DataBrowserFilters = App.View.DataBrowserView.extend({
       f[operator] = {};
     }
     f[operator][key] = val;
+    this.collection.page = 0; // reset pagecount to 0 when filtering
     this.collection.fetch({reset : true});
 
     filterEl = this.templates.$databrowserFilterItem( { key : key, entity : entity, value : val, operator : operator } );

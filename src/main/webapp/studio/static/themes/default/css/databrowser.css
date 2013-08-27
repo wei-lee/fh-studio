@@ -65,6 +65,7 @@
     height: 0;
     opacity: 0;
     overflow: hidden;
+    border-radius: 6px;
 }
 
 .databrowserTableContainer .busyContainer {
