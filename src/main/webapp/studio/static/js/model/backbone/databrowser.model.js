@@ -16,12 +16,14 @@ DataBrowser.CollectionDataModel = Backbone.Model.extend({
 });
 
 DataBrowser.Collection.CollectionList = Backbone.Collection.extend({
+  model: DataBrowser.CollectionModel,
+  url: undefined,
+  mode : undefined,
   initialize: function(options) {
     this.url = options.url + '/mbaas/db';
     this.appkey = options.appkey;
+    this.mode = options.mode;
   },
-  model: DataBrowser.CollectionModel,
-  url: undefined,
   sync: function (method, model, options) {
     var self = this;
     if(!self.loaded){
@@ -59,8 +61,10 @@ DataBrowser.Collection.CollectionData = Backbone.Collection.extend({
   collectionName : undefined,
   sort : undefined,
   filters : {},
+  mode : undefined,
   initialize: function(options) {
     this.url = options.url + '/mbaas/db';
+    this.mode = options.mode;
     this.loaded = false;
     this.appkey = options.appkey;
     this.filters = {};

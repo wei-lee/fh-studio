@@ -1,8 +1,10 @@
 App.View.DataBrowserController = Backbone.View.extend({
+  mode : 'dev',
   events: {
     'click ul.collectionsUl li': 'showCollection',
     //TODO: This element is in a subview, can the event still be up here?
-    'click .databrowsernav .dropdown-menu.collections-dropdown a' : 'onChangeCollection'
+    'click .databrowsernav .dropdown-menu.collections-dropdown a' : 'onChangeCollection',
+    'click .env_toggle_button' : 'onEnvSwitch'
   },
   subviews : {
     collectionsList : App.View.DataBrowserCollectionsList,
@@ -13,6 +15,7 @@ App.View.DataBrowserController = Backbone.View.extend({
     var self = this,
     url = Constants.APP_HOSTS_URL
     this.guid = $fw.data.get('inst').guid;
+    this.mode = $fw.data.get('cloud_environment');
     this.appkey = $fw.data.get('inst').apiKey;
     var params = {
       guid : this.guid
@@ -31,19 +34,19 @@ App.View.DataBrowserController = Backbone.View.extend({
     var self = this;
     this.$el.empty();
     if (this.loaded){
-      var dynoHost = self.hosts['development-url'], // TODO: Switch
-      collection = new DataBrowser.Collection.CollectionList({ url : dynoHost, appkey : self.appkey });
+      var dynoHost = (this.mode==='dev') ? self.hosts['development-url'] : self.hosts['live-url'],
+      collection = new DataBrowser.Collection.CollectionList({ url : dynoHost, appkey : self.appkey, mode : this.mode });
       collection.fetch({reset : true, success : function(){
         self.list = new self.subviews.collectionsList( { collection : collection});
         self.list.render();
         self.$el.append(self.list.el);
       }, error : function(){
-        self.migrate = new self.subviews.migrateView( { guid : self.guid } );
+        self.migrate = new self.subviews.migrateView( { guid : self.guid, mode : this.mode } );
         self.migrate.render();
         self.$el.append(self.migrate.el);
       }});
     }else{
-      this.$el.append('Loading');
+      self.$el.append('Loading');
     }
 
     return this;
@@ -64,7 +67,7 @@ App.View.DataBrowserController = Backbone.View.extend({
     });
   },
   updateCollection : function(model, cb){
-    var dynoHost = this.hosts['development-url'], // TODO: Switch
+    var dynoHost = (this.mode === 'dev') ? this.hosts['development-url'] : this.hosts['live-url'], // TODO: Switch
     name = model.get('name'),
     count = model.get('count'),
     dataViewCollection = new DataBrowser.Collection.CollectionData( { url : dynoHost, collection : name, appkey : this.appkey, count : count } );

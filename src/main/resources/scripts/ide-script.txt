@@ -213,7 +213,6 @@ js/application/apps/apps.configuration.blackberry.controller.js
 js/application/apps/apps.configuration.windowsphone.controller.js
 js/application/apps/apps.configuration.studio.controller.js
 js/application/apps/apps.configuration.embed.controller.js
-js/application/apps/apps.databrowser.controller.js
 js/application/apps/apps.push.controller.js
 js/application/apps/apps.preview.controller.js
 js/application/apps/apps.cloud.controller.js
@@ -222,6 +221,7 @@ js/application/apps/apps.endpoints.controller.js
 js/application/apps/apps.cloudresources.controller.js
 js/application/apps/apps.cloudnotifications.controller.js
 js/application/apps/apps.cloud.dashboard.controller.js
+js/application/apps/apps.cloud.databrowser.controller.js
 js/application/apps/apps.environment.controller.js
 js/application/apps/apps.deploy.controller.js
 js/application/apps/apps.reports.support.js
