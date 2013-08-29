@@ -26,10 +26,10 @@ App.View.DataBrowserDataView = App.View.DataBrowserView.extend({
       collectionsHTML.push(this.templates.$databrowserDataViewBarCollectionMenuItem(c));
     }
     var filters = new App.View.DataBrowserFilters({ collection : this.collection}),
-    navItems = this.templates.$databrowserDataViewBarItems({collections : collectionsHTML.join('')}),
-    nav = $(this.templates.$databrowserNavbar({ brand : this.model.get('name'), class : 'databrowsernav', baritems : navItems }));
-    nav.find('.navbar-inner').append(filters.render().$el); // NB needs to be added in here 'cause otherwise events don't bind
-    this.$el.append(nav);
+    navItems = this.templates.$databrowserDataViewBarItems({collections : collectionsHTML.join('')});
+    this.nav = $(this.templates.$databrowserNavbar({ brand : this.model.get('name'), class : 'databrowsernav', baritems : navItems }));
+    this.nav.find('.navbar-inner').append(filters.render().$el); // NB needs to be added in here 'cause otherwise events don't bind
+    this.$el.append(this.nav);
 
     // Add in the table view
     this.table = new App.View.DataBrowserTable(this.options);
@@ -37,8 +37,8 @@ App.View.DataBrowserDataView = App.View.DataBrowserView.extend({
     this.$el.append(this.table.el);
 
     // Add in the pagination controls at the bottom of the table
-    var pagination = new App.View.DataBrowserDataViewPagination({collection : this.collection});
-    this.$el.append(pagination.render().el);
+    this.pagination = new App.View.DataBrowserDataViewPagination({collection : this.collection});
+    this.$el.append(this.pagination.render().el);
 
 
     // Add in a hidden advanced editor behind the scenes
@@ -59,12 +59,16 @@ App.View.DataBrowserDataView = App.View.DataBrowserView.extend({
     this.browser.update(model);
 
     this.table.$el.hide();
+    this.nav.hide();
+    this.pagination.$el.hide();
     this.browser.$el.show();
   },
   onRowAdvancedEditDone : function(e){
     this.table.render();
     this.browser.$el.hide();
-    this.table.$el.show();
+    this.table.$el.show()
+    this.nav.show();
+    this.pagination.$el.show();
   },
   onRowAdvancedEditCancel : function(e){
     this.browser.$el.hide();

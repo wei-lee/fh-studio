@@ -12,6 +12,7 @@ App.View.DataBrowserDataViewPagination = App.View.DataBrowserView.extend({
   },
   render: function() {
     this.$el.empty();
+    this.$el.addClass('pagerContainer');
     var pages = [],
     // Total rows divided by no. rows per page
     noPages = Math.floor(this.collection.count / this.collection.limit) + 1,

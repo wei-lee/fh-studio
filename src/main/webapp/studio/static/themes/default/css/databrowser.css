@@ -6,6 +6,11 @@
     cursor: default;
 }
 
+#databrowser_container .pagerContainer {
+    display : inline-block;
+    width: 100%;
+}
+
 #databrowser_container .pagination {
     margin: 0px;
 }
@@ -88,6 +93,7 @@
 .databrowserTableContainer table.edittable .td-edit {
     height: 25px;
     border-color: #fff; /* Include in the flow, just make it white & invisible */
+    padding-left: 10px;
 }
 
 .table.databrowser {

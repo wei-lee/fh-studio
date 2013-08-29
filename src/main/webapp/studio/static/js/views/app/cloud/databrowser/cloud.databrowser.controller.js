@@ -77,12 +77,14 @@ App.View.DataBrowserController = Backbone.View.extend({
   },
   onChangeCollection : function(e){
     var self = this,
-    id = $(e.target).data('id');
+    el = $(e.target),
+    id = el.data('id');
     this.dataView.table.model = this.list.collection.get(id);
 
     this.updateCollection(this.dataView.table.model, function(collection){
       self.dataView.table.collection = collection;
       self.dataView.table.render();
     });
+    el.parents('.dropdown.open').removeClass('open');
   }
 });
