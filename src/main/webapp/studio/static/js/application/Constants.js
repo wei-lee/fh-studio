@@ -26,6 +26,7 @@ $.extend(Constants, {
   SDK_URL_PREFIX : "/box/srv/1.1/sdk/",
   DEPLOY_TARGET_MANAGE_PREFIX : "/box/srv/1.1/cm/deploy/policy/",
   ENVIRONMENT_TARGET_MANAGE_PREFIX : "/box/srv/1.1/app/envvariable/",
+  MBAAS_URL_PREFIX : "/box/api/mbaas/",
 
   ____DEPRECATED____DEV_URL_PREFIX____DEPRECATED____: "/box/srv/1.1/dev/" // dev endpoints to be moved/migrated into ide space
 });
@@ -74,6 +75,9 @@ $.extend(Constants, {
   KEY_LIST_URL: Constants.IDE_URL_PREFIX + "api/list",
   KEY_CREATE_URL: Constants.IDE_URL_PREFIX + "api/create",
   KEY_UPDATE_URL: Constants.IDE_URL_PREFIX + "api/update",
+
+  MBAAS_AUTHENTICATE_URL : Constants.MBAAS_URL_PREFIX + "admin/authenticateRequest",
+  DB_MIGRATE_URL : Constants.MBAAS_URL_PREFIX + "admin/migratedb",
 
   RELEASE_DEPLOY_APP_URL: Constants.IDE_URL_PREFIX + "app/releasestage",
   UPDATE_APP_FRAMEWORKS_URL: Constants.IDE_URL_PREFIX + "app/updateFrameworks",

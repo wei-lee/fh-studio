@@ -188,8 +188,8 @@
   </div>
 </script>
 <script id="dataviewEmptyContent" type="text/x-handlebars-template">
-  This collection has no rows<br />
-  <button type="button" class="btn btn-primary btn-large btn-add-row"><i class="icon-plus"></i> Add row	</button>
+  {{{ message }}}<br />
+  <button type="button" class="btn btn-primary btn-large btn-add-row">{{{ button }}}</button>
 </script>
 <script id="collectionsEmptyContent" type="text/x-handlebars-template">
   No collections<br />
@@ -198,11 +198,83 @@
 <script id="dataviewLoadingContent" type="text/x-handlebars-template">
   Loading...
 </script>
-<script id="dataMigrateContent" type="text/x-handlebars-template">
-  Your app uses an old type of database - we need to migrate it.<br />
-  <small>To migrate, we need to restart your application - this may result in a few seconds downtime</small>
-  <button type="button" class="btn btn-primary btn-large btn-migrate">Migrate now &raquo;</button>
+<script id="dataMigrateMessage" type="text/x-handlebars-template">
+  <h2>Your app uses an old type of database - we need to migrate it.</h2>
+  To migrate, we're going to:
+  <ol>
+    <li>Restart your application - this will result in a few seconds downtime.</li>
+    <li>Re-create any data you saved using $fh.db in a new location</li>
+    <li>You may need to update your package.json file - we'll let you know</li>
+    <li>You'll need to re-stage your application</li>
+  </ol>
 </script>
+
+<script id="dataMigratingView" type="text/x-handlebars-template">
+  <div class="data_migrate_progress row-fluid">
+    <h4>Migration Progress</h4>
+
+    <div class="progress active">
+      <div class="bar" style="width: 0%;"></div>
+    </div>
+    <textarea class="progresslog span12" readonly=""></textarea>
+  </div>
+</script>
+
+<script id="dataviewPackageJsonChange" type="text/x-handlebars-template">
+  <h2>Nearly done!</h2>
+  Your app uses an old version of our cloud software called <strong>fh-nodeapp</strong>. We need to replace it with <strong>fh-webapp</strong> - here's how:
+  <ol class="packageJsonInstructions">
+    <li>Open the editor, in the cloud directory, and open the file <strong>"package.json"</strong>.</li>
+    <li>Find the "dependencies" section, and remove the row which looks like this:<br />
+    <pre>
+    "<strong>fh-nodeapp</strong>" : "*"
+    </pre>
+    </li>
+    <li>Add the following lines to the end of the dependencies section: <br />
+    <pre>
+      "<strong>fh-webapp</strong>" : "*",
+      "<strong>fh-api</strong>" : "*",
+      "<strong>express</strong>" : "*"
+    </pre>
+    </li>
+    <li>It's important this file is well formed JSON - once done your file sould look something like this: <br />
+    <pre>
+{
+  "name": "myappname",
+  "version": "0.1.0",
+  "dependencies" : {
+    "myCustomDependenciesGoHere" : "*",
+    "fh-webapp" : "*",
+    "fh-api" : "*",
+    "express" : "*"
+  }
+}
+      </pre>
+    </li>
+    <li>You'll also need to create a file called application.js which looks like this:<br />
+    <pre>
+var webapp = require('fh-webapp');
+var express = require('express');
+$fh = require('fh-api');
+var mainjs = require('main.js');
+
+var app = express();
+app.use('/sys', webapp.sys(mainjs));
+app.use('/mbaas', webapp.mbaas);
+app.use('/cloud', webapp.cloud(mainjs));
+
+// You can define custom URL handlers here, like this one:
+app.use('/', function(req, res){
+  res.end('Your Cloud App is Running');
+});
+
+module.exports = app.listen(process.env.FH_PORT || process.env.VCAP_APP_PORT || 8001);
+    </pre>
+    </li>
+    <li>Lastly, you need to re-deploy your app</li>
+  </ol>
+</script>
+
 <script id="dataviewEmptyContainer" type="text/x-handlebars-template">
   <div class="databrowser emptyContainer">
     <div class="centered">

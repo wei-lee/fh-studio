@@ -13,6 +13,7 @@ App.View.DataBrowserDataView = App.View.DataBrowserView.extend({
     'click table.databrowser .td-checkbox input[type=checkbox]' : 'onRowSelection'
   },
   initialize : function(options){
+    this.updateCrumb();
     this.options = options;
     this.collection = options.collection;
     this.collections = options.collections;
@@ -62,6 +63,8 @@ App.View.DataBrowserDataView = App.View.DataBrowserView.extend({
     this.nav.hide();
     this.pagination.$el.hide();
     this.browser.$el.show();
+
+    this.breadcrumb(['Data Browser', 'Collections', this.model.get('name'), 'Advanced Editor']);
   },
   onRowAdvancedEditDone : function(e){
     this.table.render();
@@ -69,10 +72,12 @@ App.View.DataBrowserDataView = App.View.DataBrowserView.extend({
     this.table.$el.show()
     this.nav.show();
     this.pagination.$el.show();
+    this.updateCrumb();
   },
   onRowAdvancedEditCancel : function(e){
     this.browser.$el.hide();
     this.table.$el.show();
+    this.updateCrumb();
   },
   onAddRow : function(){
     this.table.onAddRow.apply(this.table, arguments);
@@ -116,5 +121,8 @@ App.View.DataBrowserDataView = App.View.DataBrowserView.extend({
         this.$el.find('.btn-trash-rows').addClass('disabled');
       }
     }
+  },
+  updateCrumb : function(){
+    this.breadcrumb(['Data Browser', 'Collections', this.model.get('name')]);
   }
 });

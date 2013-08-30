@@ -28,14 +28,27 @@
 }
 .databrowser.emptyContainer .centered .btn {
     margin-top: 12px;
+    margin-bottom: 12px;
 }
 
-.databrowser.emptyContainer .centered {
+.databrowser.emptyContainer .centered, .databrowser.emptyContainer h2 {
     display: table-cell;
     vertical-align: middle;
     font-weight: 100;
     color: #666;
+    font-size: 1.3em;
+}
+.databrowser.emptyContainer h2 {
+    display : block;
     font-size: 22px;
+}
+.databrowser.emptyContainer .centered ol {
+    margin: auto;
+    width: 380px;
+}
+
+.databrowser.emptyContainer .centered ol, .databrowser.emptyContainer .centered ol li {
+    list-style: decimal;
 }
 
 #databrowser_container .databrowserTableContainer, .databrowser.emptyContainer {
@@ -44,6 +57,9 @@
     height: 100%; /* Other approach gives nasty double scrollbars - lets just use the entire page */
     overflow-x: scroll;
     overflow-y: scroll;
+}
+.databrowser.emptyContainer {
+    min-height: 400px;
 }
 
 #databrowser_container .databrowserTableContainer {
@@ -357,6 +373,17 @@ ul.collectionsUl li .raquo {
 #databrowser_container .jsoneditor textarea {
     min-height: 363px;
 }
+
+.data_migrate_progress {
+  margin-top: 25px;
+}
+
+#databrowser_container ol.packageJsonInstructions {
+    width: 100%;
+    text-align: left;
+    padding: 10px 40px;
+}
+
 
 #floatingCirclesG {
     margin: 5% 30%;

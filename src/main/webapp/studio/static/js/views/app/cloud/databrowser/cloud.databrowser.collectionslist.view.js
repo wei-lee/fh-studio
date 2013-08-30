@@ -3,23 +3,33 @@ App.View.DataBrowserCollectionsList = App.View.DataBrowserView.extend({
     collectionsList: '#collectionsList',
     collectionsListItem : '#collectionsListItem',
     databrowserNavbar : '#databrowserNavbar',
-    dataviewEmptyContainer : '#dataviewEmptyContainer',
-    collectionsEmptyContent : '#collectionsEmptyContent'
+   // TODO: Empty collections list gets this
 
   },
   initialize : function(options){
     this.collection = options.collection;
     this.collection.bind('reset', this.render, this);
     this.compileTemplates();
-    this.breadcrumb(['Cloud Plugins']);
+    this.breadcrumb(['Data Browser', 'Collections']);
   },
   render: function() {
-    var nav = this.templates.$databrowserNavbar({ brand : 'Collections', class : 'collectionsnavbar', baritems : '' });
+    var self = this,
+    nav = this.templates.$databrowserNavbar({ brand : 'Collections', class : 'collectionsnavbar', baritems : '' });
 
     this.$el.empty();
     this.$el.append(nav);
 
-    this.renderCollections();
+    //this.collection.length = 0; // todo remove me
+    if (this.collection.length === 0){
+      var messageView = new App.View.DataBrowserMessageView({ message : 'Your app has no collections', button : '<i class="icon-plus"></i> Add one', cb : function(e){
+        self.onCreateCollection.apply(self, arguments);
+      }});
+      this.$el.append(messageView.render().$el);
+    }else{
+      this.renderCollections();
+    }
+    this.collection.bind('reset', this.renderCollections);
+
     return this;
   },
   renderCollections : function(){
@@ -45,5 +55,24 @@ App.View.DataBrowserCollectionsList = App.View.DataBrowserView.extend({
   show : function(){
     this.$el.show();
     this.shown = true;
+  },
+  onCreateCollection : function(){
+    var self = this,
+    modal  = new App.View.Modal({
+      title : 'Create New Collection',
+      body : 'Enter a name to describe your new collection: <br /> <input placeholder="Collection Name" id="newCollectionName">',
+      okText : 'Create',
+      ok : function(e){
+        var el = $(e.target),
+        input = el.parents('.modal').find('input'),
+        val = input.val();
+
+        self.doCreateCollection(val);
+      }
+    });
+    self.$el.append(modal.render().$el);
+  },
+  doCreateCollection : function(val){
+     //TODO: Create on the model, dispatch to the server...
   }
 });

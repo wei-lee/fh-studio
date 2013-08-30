@@ -14,7 +14,16 @@ App.View.DataBrowserView = Backbone.View.extend({
     this.templates = templates;
   },
   breadcrumb : function(trail){
-    var crumb = $('#plugins_layout').find('.breadcrumb').empty();
+    //debugger; //TODO
+    var startRemoving = false;
+    var crumb = $('#apps_breadcrumb');
+    crumb.children().each(function(index, el){
+      if (startRemoving){
+        $(this).remove();
+      }else{
+        startRemoving = $(this).text().trim() === "Cloud Management";
+      }
+    });
     _.each(trail, function(element, index, list){
       var id = element.toLowerCase().replace(/\s/g, "");
       if (index === list.length-1){
@@ -23,7 +32,10 @@ App.View.DataBrowserView = Backbone.View.extend({
           "text": element
         }));
       }else{
-        crumb.append($('<li>', {
+        crumb.append($('<span>', {
+          "class": "divider",
+          "text" : "/"
+        })).append($('<li>', {
           "html": '<a id="crumb-' + id + '" href="#">' + element + '</a>'
         })).append($('<span>', {
           "class": "divider",
