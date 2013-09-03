@@ -1,6 +1,17 @@
 -------------------------------------------------------------------------------
 Component: fh-studio
 -------------------------------------------------------------------------------
+3.17.7 - 2013-08-19 - IR208 - Cian Clarke
+-------------------------------------------
+
+* 4537-databrowser
+
+NOTES:
+
+To be accompanied by changes to Millicore, fh-db, fh-ditch. Also required for the data browser to
+function is updates to user's cloud code in application.js to use new components fh-webapp and
+fh-api in replacement of fh-nodeapp.
+
 3.17.9 - 2013-08-29 - IR209 - Martin Murphy
 -------------------------------------------------------------------------------
 * 4605 - Fix app resources references
