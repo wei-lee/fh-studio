@@ -501,12 +501,17 @@ Apps.Preview.Controller = Controller.extend({
       // use transform plugin to scale preview
       p_frame.css({
         position: 'absolute',
-        scale: scale_factor,
-        origin: ['0', '0']
+        'transformOrigin': '0 0',
+        transform: 'scale('+scale_factor+','+scale_factor+')',
+        origin: ['0', '0'],
+        top: 0,
+        left: 0,
+        "margin-top": 0,
+        "margin-left": 0
       });
       
       $('#preview_wrapper').css({
-        '-webkit-transform-style': 'preserve-3d',
+        'transform-style': 'preserve-3d',
         overflow: 'hidden',
         width: act_width + 'px',
         height: act_height + 'px'
@@ -529,6 +534,7 @@ Apps.Preview.Controller = Controller.extend({
       p_frame.css({
         position: 'absolute',
         scale: '1',
+        transform: 'scale(1,1)',
         // IE doesn't like it when an empty string is passed in here, so 0,0 will do
         origin: ['0', '0']
       });

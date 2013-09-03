@@ -12,6 +12,7 @@ var IDEManager = Class.extend({
       dashboard: new Dashboard.Tab.Manager(),
       account: new Account.Tab.Manager(),
       reporting: new Reporting.Tab.Manager(),
+      environments: new Cloudenvironments.Tab.Manager(),
       plugins: new Plugins.Tab.Manager()
     };
     this.analytics = new analytics.AnalyticsIntegration();

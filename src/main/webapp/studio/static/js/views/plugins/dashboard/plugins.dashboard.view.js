@@ -46,7 +46,7 @@ App.View.PluginsDashboard = App.View.PluginsView.extend({
 
       // Setup the version so it's blank if git backed, or else "v 1.0" style
       p.versionLabel = (!p.version || p.version === "" || p.version.indexOf("git")>-1) ? "Custom version" : "v" + p.version;
-      p.pluginBody = (p.image) ? self.templates.$pluginPaneBody(p) : '<h2>' + p.name +'</h2>';
+      p.pluginBody = (p.image) ? self.templates.$pluginPaneBody(p) : '<h2 class="pluginName">' + p.name +'</h2>';
       pluginItems.push(self.templates.$pluginPaneItemTpl(p));
     });
 

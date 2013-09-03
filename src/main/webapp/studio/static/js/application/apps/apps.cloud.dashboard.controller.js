@@ -27,21 +27,14 @@ Apps.Cloud.Dashboard.Controller = Apps.Cloud.Controller.extend({
     }
   },
 
-  // TODO: Move
-  target_map: {
-    FEEDHENRY: 'FeedHenry',
-    CLOUDFOUNDRY: 'Cloud Foundry',
-    STACKATO: 'ActiveState Stackato',
-    APPFOG: 'App Fog',
-    IRONFOUNDRY: 'Iron Foundry'
-  },
-
   init: function() {
     this._super();
   },
 
   show: function(e, showClientCloudOptions) {
     var self = this;
+
+    this.target_map = $fw.getClientProp('deploy-target-map');
 
     this._super(this.views.dashboard_container);
     this.bind();
@@ -247,11 +240,11 @@ Apps.Cloud.Dashboard.Controller = Apps.Cloud.Controller.extend({
     var label_name = target.fields.name;
 
     var button = $('<a>').addClass('btn');
-    var icon = $('<img>').attr('src', '/studio/static/themes/default/img/cloud_target_' + target_name.toLowerCase() + '.png');
     button.addClass('span4');
-    button.append(icon);
 
-    var label = $('<div>').addClass('cloud_target_label');
+    var label = $('<div>').addClass('cloud_target_label ' + target_name.toLowerCase());
+    // only changet target image if its not the default (this allows for theming the default via css)
+
     if (target.fields.id !== 'default') {
       label.text(label_name);
     } else {

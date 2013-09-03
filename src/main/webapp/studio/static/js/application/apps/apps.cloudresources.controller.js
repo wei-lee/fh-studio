@@ -282,7 +282,7 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
       }
       if(results.length  === 2){
         var dynoresources = results[0];
-        if(!dynoresources || typeof dynoresources.max === "undefined" || typeof dynoresources.usage === "undefined"){
+        if(!dynoresources || typeof dynoresources.resources.max === "undefined" || typeof dynoresources.resources.usage === "undefined"){
           self.showAlert('error', 'Error getting resource data. Please make sure your App is deployed to \'' + cloudEnv + '\' environment.');
           self.resetResource();
           cb();
@@ -290,17 +290,17 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
         }
         var model = results[1];
         var maxCpu = 100;
-        var maxMem = self.bytesToMB(dynoresources.max.mem);
-        var maxDisk = self.bytesToMB(dynoresources.max.disk);
+        var maxMem = self.bytesToMB(dynoresources.resources.max.mem);
+        var maxDisk = self.bytesToMB(dynoresources.resources.max.disk);
         var currentCpu, currentMemory, currentDisk;
         if(dynoresources.app && dynoresources.app.resources){
           currentCpu = parseFloat(dynoresources.app.resources.Cpu_Pct);
           currentMemory = self.bytesToMB(dynoresources.app.resources.VmRSS*1000);
           currentDisk = self.bytesToMB(dynoresources.app.resources.Disk*1000);
         } else {
-          currentCpu = dynoresources.usage.cpu;
-          currentMemory = self.bytesToMB(dynoresources.usage.mem);
-          currentDisk = self.bytesToMB(dynoresources.usage.disk);
+          currentCpu = dynoresources.resources.usage.cpu;
+          currentMemory = self.bytesToMB(dynoresources.resources.usage.mem);
+          currentDisk = self.bytesToMB(dynoresources.resources.usage.disk);
         }
         
         if(self.enabled_live_app_resources && !model.error){
@@ -317,7 +317,7 @@ Apps.Cloudresources.Controller = Apps.Cloud.Controller.extend({
             currentDisk = self.bytesToMB(statsDisk*1000);
           }
         }
-        self.maxValues = {"VmRSS": dynoresources.max.mem/1000, "Disk": dynoresources.max.disk/1000, "Cpu_Pct": 100};
+        self.maxValues = {"VmRSS": dynoresources.resources.max.mem/1000, "Disk": dynoresources.resources.max.disk/1000, "Cpu_Pct": 100};
         self.updateGaugeChartValue('cpu', currentCpu, null, resources.cpu.unit);
         self.updateGaugeChartValue('memory', currentMemory, maxMem, resources.memory.unit);
         self.updateGaugeChartValue('storage', currentDisk, maxDisk, resources.storage.unit);

@@ -34,6 +34,7 @@ $.extend(Constants, {
 $.extend(Constants, {
 
   LOGOUT_URL: Constants.ACT_URL_PREFIX + "sys/auth/logout",
+	VALIDATE_COOKIE : Constants.IDE_URL_PREFIX + "user/validate",
 
   // LogManager urls
   DAT_LOG_READ_URL: Constants.DAT_URL_PREFIX + "log/read",

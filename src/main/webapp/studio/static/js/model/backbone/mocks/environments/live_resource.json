@@ -1,0 +1,69 @@
+{
+  "environment" : "live",
+  "resources" : {
+    "apps" : {
+      "total" : 3,
+      "running" : 3
+    },
+    "memory" : {
+      "total" : 2048,
+      "used" : 120,
+      "apps" : 30,
+      "system" : 60,
+      "cache" :30
+    },
+    "cpu" : {
+      "total" : 100,
+      "used" : 2,
+      "apps" : 8
+    },
+    "disk" : {
+      "total" : 2048,
+      "used" : 900,
+      "apps" : 300,
+      "system" : 600
+    },
+    "cache": {
+      "total": 512,
+      "used": 30
+    }
+  },
+  "apps" : [
+    {
+      "guid" : "1",
+      "title" : "Example App 1",
+      "name" : "Example App 1",
+      "memory" : 9,
+      "cpu" : 3,
+      "disk" : 80,
+      "type": "App Cloud",
+      "status": "Running",
+      "lastDeployed": "",
+      "lastAccessed": ""
+    },
+    {
+      "guid" : "2",
+      "title" : "Example App 2",
+      "name" : "Example App 2",
+      "memory" : 10,
+      "cpu" : 2,
+      "disk" : 100,
+      "type": "App Cloud",
+      "status": "Running",
+      "lastDeployed": "",
+      "lastAccessed": ""
+    },
+    {
+      "guid" : "3",
+      "title" : "Example App 3",
+      "name" : "Example App 3",
+      "memory" : 11,
+      "cpu" : 3,
+      "disk" : 120,
+      "type": "App Cloud",
+      "status": "Running",
+      "lastDeployed": "",
+      "lastAccessed": ""
+    }
+  ]
+} 

@@ -18,3 +18,13 @@
   $fw.ROLE_RESELLERADMIN = '<%=studio.ROLE_RESELLERADMIN%>';
   $fw.initFramework();
 </script> 
+
+<!-- clickjacking defense for legacy browsers which don't support X-Frame-Options header, see https://www.owasp.org/index.php/Clickjacking_Defense_Cheat_Sheet -->
+<script type="text/javascript">
+   if (self === top) {
+       var antiClickjack = document.getElementById("antiClickjack");
+       antiClickjack.parentNode.removeChild(antiClickjack);
+   } else {
+       top.location = self.location;
+   }
+</script>

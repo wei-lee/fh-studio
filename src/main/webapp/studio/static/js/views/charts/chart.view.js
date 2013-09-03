@@ -1,4 +1,6 @@
 App.View.Chart = Backbone.View.extend({
+
+  LIVE_MAX_POINTS : 100,
   initialize: function(options) {
     var self = this;
 
@@ -13,6 +15,7 @@ App.View.Chart = Backbone.View.extend({
       }, this);
 
       this.collection.bind("sync", function() {
+        console.log("collection synced", this.collection);
         self.render();
       }, this);
 
@@ -20,6 +23,12 @@ App.View.Chart = Backbone.View.extend({
     } else {
       delete this.options.model;
       self.render();
+    }
+
+    if(this.options.dynamic && this.options.dynamic === true){
+      if (this.collection) {
+        this.collection.on('add', this.addPoint);
+      }
     }
 
     $(window).bind('resizeEnd', function() {
@@ -39,6 +48,21 @@ App.View.Chart = Backbone.View.extend({
     }
   },
 
+  addPoint: function(model, collection, options) {
+    //expect the model is formatted as highchart series data
+    if (!this.chart) return;
+    var modelJson = model.toJSON();
+    var seriesIndex = modelJson.index || 0;
+    var series = this.chart.series[seriesIndex];
+    //if ($(this.options.chart.renderTo).is(':visible')){
+      if(series.data.length < this.LIVE_MAX_POINTS){
+        series.addPoint(modelJson.data, true, false, false);
+      } else {
+        series.addPoint(modelJson.data, true, true, false);
+      }  
+    //}
+  },
+
   render: function(loading, resize) {
     var self = this;
 
@@ -53,7 +77,7 @@ App.View.Chart = Backbone.View.extend({
       return this;
     }
 
-    if (this.collection.models.length === 0 && !this.model) {
+    if (!this.model && this.collection && this.collection.models.length === 0 ) {
       this.$el.html("No data available for selected date range.");
       return this;
     }
@@ -66,16 +90,18 @@ App.View.Chart = Backbone.View.extend({
     if (this.model) {
       this.options.series = this.model.toJSON().series;
     } else if (this.collection) {
+
       // There are two potential usages of a collection. If the collection
       // is a Series instance (as defined above), treat it as a single
       // series. Otherwise assume it is a collection of multiple series
-
+        
       // Pie charts are "special"
       if (this.collection instanceof App.Collection.PieMetrics) {
         this.options.series = [this.collection.toJSON()];
       } else {
         this.options.series = this.collection.toJSON();
       }
+
     } else {
       throw "Chart view needs a model or collection set.";
     }
@@ -85,7 +111,7 @@ App.View.Chart = Backbone.View.extend({
 
     // Show subtitle or not?
     // Overview areas have a hideSubtitle property to hide subtitles on charts
-    if (typeof this.collection.getSubtitle !== 'undefined' && !this.options.hideSubtitle) {
+    if (this.collection && typeof this.collection.getSubtitle !== 'undefined' && !this.options.hideSubtitle) {
       // Use subtitle if available on collection
       this.options.subtitle = {
         text: this.collection.getSubtitle(),
@@ -98,7 +124,8 @@ App.View.Chart = Backbone.View.extend({
     if (!this.options.chart.width || resize) {
       this.options.chart.width = $(this.options.chart.renderTo).width();
     }
-
+    console.log("chart options", this.options);
+    
     // Some doughnuts may need adjusting
     this.chart = new Highcharts.Chart(this.options);
     return this;

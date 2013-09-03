@@ -1,16 +1,57 @@
 -------------------------------------------------------------------------------
 Component: fh-studio
 -------------------------------------------------------------------------------
-3.17.6 - 2013-07-26 - IR206 - Cian Clarke, Wei Li
+3.17.9 - 2013-08-29 - IR209 - Martin Murphy
 -------------------------------------------------------------------------------
+* 4605 - Fix app resources references
+
+3.17.8 - 2013-08-20 - IR207 - Wei Li
+-------------------------------------------------------------------------------
+* 4417 - Cloud Environments
+* 4196-minor-security-fixes
+we now set a csrf cookie which is sent with each request and value of the cookie 
+is also sent as a param in post request to be checked by millicore
+
+NOTES:
+
+A millicore property is created for toggling this new UI. It is set to false by default.
+studio.cloudenvironments.enabled = false
+
+
+3.17.7 - 2013-08-19 - IR208 - Jason Madigan
+-------------------------------------------
+
+* 4556 - Whitelabelling and landing page for Rackspace
+
+NOTES: 
+
+This release is to be accompanied by Millicore. A number of property changes are noted 
+in the Millicore changelog, as well as a new property for white-labelling deploy 
+target labels.
+
+
+3.17.6 - 2013-07-26 - IR206 - Cian Clarke, Wei Li
+---------------------------------------------------------------------------
 * 4354 - mBaaS plugins catalog
 * 4414 - Update iOS and Android SDK artifacts to the latest version (Adding native sync client support)
+
+NOTES:
+
+A Millicore property now exists for toggling the Plugins UI. This should be set to enabled for the psdev domain (off by default).
+
+studio.plugins.enabled=true
 
 3.17.5 - 2013-07-23 - IR206 - Craig Brookes
 ---------------------------------------------------------------------------
 * 4350-disable-founderies
 * 4387 events showing incorrect times
 * 4364 node runtimes select not hiding on error
+
+3.17.5 (NR) - 2013-07-10 - IR205 - Craig Brookes
+
+* 4196-minor-security-fixes
+we now set a csrf cookie which is sent with each request and value of the cookie 
+is also sent as a param in post request to be checked by millicore
 
 3.17.4 - 2013-07-08 - IR205 - Jason Madigan
 ---------------------------------------------------------------------------
@@ -32,7 +73,7 @@ Component: fh-studio
 * 4213 - New Mobistar theme
 
 3.17.0 - 2013-06-26 - IR204 - Martin Murphy, Jason Madigan
----------------------------------------------------------------------------
+--------------------------------------serv-------------------------------------
 * 4213  Reporting screens not displayed for users without dev role
 * 4218  Create group button broken in studio
 
@@ -103,7 +144,6 @@ the runtimes options for.
 ---------------------------------------------------------------------------
 * 3942 - Fixed an issue where default stdout/stderr could point to the wrong file
 * 3774 - Increase stage timeout from 20 seconds
-
 
 3.16.1 - 2013-05-15 - IR201 - Jason Madigan
 ---------------------------------------------------------------------------

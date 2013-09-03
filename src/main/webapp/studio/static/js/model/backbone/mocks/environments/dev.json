@@ -1,0 +1,21 @@
+{
+  "environment" : "dev",
+  "resources" : {
+    "apps" : {
+      "total" : 3,
+      "running" : 3
+    },
+    "memory" : {
+      "total" : 2048,
+      "used" : 120
+    },
+    "cpu" : {
+      "total" : 100,
+      "used" : 10
+    },
+    "disk" : {
+      "total" : 2048,
+      "used" : 900
+    }
+  }
+} 

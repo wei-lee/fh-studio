@@ -1,0 +1,267 @@
+<div id="tabs-7">
+  <div id="cloud_environments_layout">
+
+    <div class="row-fluid">
+      <ul class="breadcrumb"></ul>
+    </div>
+
+    <div class="row-fluid hidden">
+      <ul class="nav nav-tabs reporting_nav_list span12">
+        <li>
+          <a href="#" data-controller="cloudenvironments.controller">
+            Cloud Environments
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="accordion" id="cloudenvironments_accordion">
+    </div>
+    
+  </div>
+</div>
+
+<script id="cloudenvironments-resource-summary-template" type="text/x-handlebars-template">
+  <div class="resource_name center_text">
+    <span class="resource_name_text">{{name}}</span>
+  </div>
+  <div class="resource_usage_progress">
+    <div class="progress">
+      <div class="bar bar-{{type}}" style="width: {{percentage}};"></div>
+    </div>
+  </div>
+  <div class="resource_usage_detail center_text">
+    <span class="resource_usage_detail_text">
+      {{#if na}}
+        N/A
+      {{else}}
+        {{#if app}} 
+          {{used}}/{{total}} Running 
+        {{else}} 
+          {{#if cpu}} 
+            {{percentage}} 
+          {{else}} 
+            {{percentage}} ({{used}}MB/{{total}}MB) 
+          {{/if}} 
+        {{/if}} 
+      {{/if}} 
+    </span>
+  </div>
+</script>
+
+<script id="cloudenvironment-env-resource-overview-template" type="text/x-handlebars-template">
+  <div class="env_resource_summary_view span12">
+  </div>
+</script>
+
+<script id="cloudenvironments-env-resource-accordion-tempalte" type="text/x-handlebars-template">
+  <div class="accordion-group boxed-group" data-title="{{envName}}">
+    <div class="accordion-heading" >
+      <div class="env_name" >
+        <div class="resource_controls pull-right hidden">
+          <a class="btn btn-primary btn-large reload_button" href="#"><i class="icon-repeat"></i></a>
+          <a class="btn btn-success btn-large show_collapse_button" href="#"><i class="icon-chevron-down"></i></a>
+          <a class="btn btn-danger btn-large hide_collapse_button hidden" href="#"><i class="icon-chevron-up"></i></a>
+        </div>
+      </div>
+      <div class="accordion-toggle" data-parent="#cloudenvironments_accordion" href="#cloudenvironment_details_{{name}}">
+
+      </div>
+    </div>
+    <div id="cloudenvironment_details_{{name}}" class="accordion-body collapse">
+      <div class="accordion-inner">
+        <ul class="nav nav-pills">
+            <li><a href="#details_resources_cotent_{{name}}" data-toggle="pill">Resources</a></li>
+            <li><a href="#details_apps_cotent_{{name}}" data-toggle="pill">Apps</a></li>
+            <li><a href="#details_cache_cotent_{{name}}" data-toggle="pill">Cache</a></li>
+         </ul>
+
+         <div class="count_down_info pull-right"><span class="text"></span> <button class="btn btn-info pause_btn"><i class="icon-pause"></i></button> <button class="btn btn-success play_btn hidden"><i class="icon-play"></i></button></div>
+
+        <div class="details_content tab-content">
+          <div class="nav_content tab-pane" id="details_resources_cotent_{{name}}">Resources</div>
+          <div class="nav_content tab-pane" id="details_apps_cotent_{{name}}">Apps</div>
+          <div class="nav_content tab-pane" id="details_cache_cotent_{{name}}">Cache</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</script>
+
+<script id="cloudenvironments-tabbable-view-template" type="text/x-handlebars-template">
+  <div class="tabbable tabs-left">
+    <ul class="nav nav-tabs">
+      {{#each list}}
+        <li><a href="#{{@key}}_content" data-toggle="tab">{{this}}</a></li>
+      {{/each}}
+    </ul>
+    <div class="tab-content">
+      {{#each list}}
+      <div class="tab-pane detail_view well" id="{{@key}}_content"></div>
+      {{/each}}
+    </div>
+  </div>
+</script>
+
+<script id="cloudenvironments-resource-dashboard-view-template" type="text/x-handlebars-template">
+  <div>
+    {{#each resources}}
+        <div class="boxed-group" data-title="{{this}}">
+          <div class="{{@key}}_chart_view resource_chart_view">
+
+          </div>
+        </div>
+    {{/each}}
+  </div>
+</script>
+
+<script id="cloudenvironments-resource-single-view-template" type="text/x-handlebars-template">
+  <div class="single_resource_view boxed-group" data-title="{{resource}} Usage">
+    <div>
+      <div class="line_chart_view">
+      </div>
+      <div class="stack_chart_view row-fluid">
+        <div class="stack_chart_view_chart span12"></div>
+        <div class="stack_chart_view_legend span12"></div>
+      </div>
+    </div>
+    <div class="row-fluid apps_view">
+      <div class="span5 pie_chart_view"></div>
+      <div class="span7 details_table_view"></div>
+    </div>
+  </div>
+</script>
+
+<script id="cloudenvironments-resource-stack-chart-legend-template" type="text/x-handlebars-template">
+  <div class="row-fluid">
+    {{#each legends}}
+      <div class="{{this.className}} {{this.legend_type}} legend_container">
+        <span style="width: 30px; height: 20px; display: inline-block; background-color: {{this.color}}; margin-top: 5px;"></span>
+        <span class="legend_text">
+          <span>{{this.text}}</span>
+          <span>{{this.percentage}}</span>
+        </span>
+      </div>
+    {{/each}}
+  </div>
+</script>
+
+<script id="cloudenvironments-apps-resource-view-template" type="text/x-handlebars-template">
+  <div class="apps_resource_view_container">
+    <div class="app_resource_table_view apps_resource_child_view well">
+      <div class="apps_controls_container">
+      </div>
+      <div class="apps_resource_list_view"></div>
+    </div>
+    <div class="apps_resource_details_view apps_resource_child_view well"></div>
+  </div>
+</script>
+
+<script id="cloudenvironments-per-app-resource-view-template" type="text/x-handlebars-template">
+  <div class="cloudenvironments_per_app_resource_container row-fluid">
+    <div class="nav_container row-fluid">
+      <button class="btn back_btn"><i class="icon-arrow-left"></i> All Apps</button>
+    </div>
+
+    <div class="app_details_container">
+    </div>
+    
+    <div class="span11">
+      <div class="control-btns">
+        <div class="span2 offset1"><button class="btn btn-large btn-success startButton">Start</button></div>
+        <div class="span2"><button class="btn btn-large btn-ino restartButton">Restart</button></div>
+        <div class="span2"><button class="btn btn-large btn-warning suspendButton">Suspend</button></div>
+        <div class="span2"><button class="btn btn-large btn-danger stopButton">Stop</button></div>
+        <div class="span2"><button class="btn btn-large btn-inverse undeployButton">Undeploy</button></div>       
+      </div>
+    </div>
+
+    <div class="resource_charts span11">
+    </div>
+
+  </div>
+</script>
+
+<script id="cloudenvironments-per-app-resource-details-template" type="text/x-handlebars-template">
+  {{#each forms}}
+    <form class="form-horizontal span6">
+      {{#each this.fields}}
+        <div class="control-group">
+          <label class="control-label" for="input_{{this.id}}"> {{this.label}} </label>
+          <div class="controls">
+            <input type="text" class="input-xlarge" id="input_{{this.id}}" value="{{this.value}}" disabled />
+          </div>
+        </div>
+      {{/each}}
+    </form>
+  {{/each}}
+</script>
+
+<script id="cloudenvironments-cache-content-view-template" type="text/x-handlebars-template">
+  <div class="cache_content_view row-fluid">
+    <div class="span12 well">
+    <div class="cache_current_view span5">
+      
+      <div class="cache_current_view_info_row span12">
+        <form action="" class="form-horizontal">
+          
+          <div class="control-group">
+            <label for="cache_current_value" class="cache_current_size_label control-label">Current Cache Size</label>
+            <div class="controls">
+              <div class="progress cache_current_size_bar">
+                <div class="bar bar-success" style="width: {{cache_percent}}%">
+                </div>
+                <span class="cache_description">{{cache_percent}}% ({{cache_used}}MB/{{cache_total}}MB)</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <div class="flush_cache_control controls">
+              <button class="btn btn-large btn-warning flush_cache_btn"> Flush Cache </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="cache_warning_row span12 alert">
+        <div class="span12">
+          <i class='icon-warning-sign'></i> Warning: Flushing Cache will remove all cached data for all apps in this environment. This may result in a temparary performance hit while the cache is being rebuilt.
+          </div>
+      </div>
+
+    </div>
+
+    <div class="set_cache_view span5 offset1">
+      <div class="set_cache_options_row span12">
+
+        <div class="set_cache_options span12">
+          <form action="" class="set_cache_options_form form-horizontal">
+            
+            <div class="set_cache_absolute control-group">
+              <label for="cache_value" class="control-label"> Set Max Cache Size </label>
+              <div class="controls">
+                <input type="radio" name="cache_value" checked>  <span> value in MB </span> <input type="text" data-cache-type="size" class="cache_absolute_value" value="{{cache_total}}"></input> MB </input>
+              </div>
+            </div>
+        
+            <div class="set_cache_relative cache_option control-group">
+              <div class="controls">
+                <input type="radio" name="cache_value">  <span> % of available memory </span> <input type="text" data-cache-type="percent" class="cache_relative_value" value="{{max_cache_percentage}}"></input> % </input>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <div class="set_cache_control_container controls">
+                <button class="btn btn-large btn-success set_cache_btn"> Set Cache Size </button>
+              </div>
+            </div>
+            
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</script>
