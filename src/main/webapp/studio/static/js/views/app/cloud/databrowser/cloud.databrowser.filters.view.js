@@ -6,7 +6,7 @@ App.View.DataBrowserFilters = App.View.DataBrowserView.extend({
   events : {
     'click .filters .dropdown-menu a' : 'onComparatorSelection',
     'click .add-filter' : 'onFilterAdd',
-    'click .aFilter' : 'onFilterRemove',
+    'click .aFilter' : 'onFilterRemove'
   },
   filters : [
     {
@@ -38,16 +38,6 @@ App.View.DataBrowserFilters = App.View.DataBrowserView.extend({
       name : 'Greater or Equals',
       entity: '&ge;',
       operator : 'ge'
-    },
-    {
-      name : 'Like',
-      entity: 'Like',
-      operator : 'like'
-    },
-    {
-      name : 'In',
-      entity: 'In',
-      operator : 'in'
     }
   ],
   initialize : function(options){
@@ -117,9 +107,9 @@ App.View.DataBrowserFilters = App.View.DataBrowserView.extend({
   },
   onFilterRemove : function(e){
     e.preventDefault();
-    var el = $(e.target),
-    el = (el.hasClass('badge')) ? el : el.parents('.badge'),
-    operator = el.data('operator'),
+    var el = $(e.target);
+    el = (el.hasClass('badge')) ? el : el.parents('.badge');
+    var operator = el.data('operator'),
     key = el.data('key'),
     val = el.data('value'),
     f = this.collection.filters;

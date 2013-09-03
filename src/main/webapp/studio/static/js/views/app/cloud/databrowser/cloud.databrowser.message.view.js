@@ -1,7 +1,7 @@
 App.View.DataBrowserMessageView = App.View.DataBrowserView.extend({
   templates : {
     dataviewEmptyContainer : '#dataviewEmptyContainer',
-    dataviewEmptyContent : '#dataviewEmptyContent',
+    dataviewEmptyContent : '#dataviewEmptyContent'
   },
   events : {
     'click button' : 'onButtonClick'

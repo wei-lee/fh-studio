@@ -2,7 +2,7 @@ App.View.DataBrowserDataView = App.View.DataBrowserView.extend({
   templates : {
     databrowserDataViewBarCollectionMenuItem : '#databrowserDataViewBarCollectionMenuItem',
     databrowserDataViewBarItems: '#databrowserDataViewBarItems',
-    databrowserNavbar : '#databrowserNavbar',
+    databrowserNavbar : '#databrowserNavbar'
   },
   events : {
     'click table.edittable tr .btn-advanced-edit' : 'onRowAdvancedEdit',
@@ -69,7 +69,7 @@ App.View.DataBrowserDataView = App.View.DataBrowserView.extend({
   onRowAdvancedEditDone : function(e){
     this.table.render();
     this.browser.$el.hide();
-    this.table.$el.show()
+    this.table.$el.show();
     this.nav.show();
     this.pagination.$el.show();
     this.updateCrumb();

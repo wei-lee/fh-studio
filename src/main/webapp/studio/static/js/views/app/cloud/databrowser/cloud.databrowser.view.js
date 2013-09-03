@@ -14,7 +14,6 @@ App.View.DataBrowserView = Backbone.View.extend({
     this.templates = templates;
   },
   breadcrumb : function(trail){
-    //debugger; //TODO
     var startRemoving = false;
     var crumb = $('#apps_breadcrumb');
     crumb.children().each(function(index, el){
@@ -41,6 +40,7 @@ App.View.DataBrowserView = Backbone.View.extend({
           "class": "divider",
           "text" : "/"
         }));
+        //TODO: Bug exists with this where double dividers appear
       }
     });
   },

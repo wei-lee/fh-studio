@@ -35,10 +35,11 @@ App.View.DataBrowserController = Backbone.View.extend({
       self.$el.append(self.migrate.el);
     // Do we need to upgrade from nodeapp to webapp?
     }else if (this.wrapper !== 'fh-webapp'){
+    // This may never trigger. once the migration is done, this.wrapper is set to fh-webapp even if the user never did so..
       var tpl = $('#dataviewPackageJsonChange').html();
       tpl = Handlebars.compile(tpl);
       var messageView = new App.View.DataBrowserMessageView({ message : tpl(), button : 'Done!', cb : function(e){
-        //TODO: We need to set $fw.data.set appcloud.wrapper here I think?
+        //TODO: We need to set $fw.data.set appcloud.wrapper here I think? That or parse it from package.json - otherwise this screen will appear right back again
         self.render();
       }});
       self.$el.append(messageView.render().$el);

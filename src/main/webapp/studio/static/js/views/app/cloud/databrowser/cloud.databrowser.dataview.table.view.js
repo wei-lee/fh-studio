@@ -380,7 +380,7 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     e.stopPropagation();
     var self = this,
     element = e.target,
-    id = $(element).data('id');
+    id = $(element).data('id'),
     tr = $(element).parents('tr');
 
     // We're in that other table - let's find the right TR.
