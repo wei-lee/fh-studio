@@ -4,7 +4,7 @@ Apps.Cloud.Databrowser = Apps.Cloud.Databrowser || {};
 
 Apps.Cloud.Databrowser.Controller = Apps.Cloud.Controller.extend({
   views: {
-    container: "#databrowser_container",
+    container: "#databrowser_container"
   },
   init : function(){
     this._super();

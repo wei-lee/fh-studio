@@ -7,8 +7,6 @@ App.View.DataBrowserFilters = App.View.DataBrowserView.extend({
     'click .filters .dropdown-menu a' : 'onComparatorSelection',
     'click .add-filter' : 'onFilterAdd',
     'click .aFilter' : 'onFilterRemove',
-    'focus textarea' : 'expandArea',
-    'blur textarea' : 'contractArea'
   },
   filters : [
     {
@@ -116,7 +114,6 @@ App.View.DataBrowserFilters = App.View.DataBrowserView.extend({
 
     filterEl = this.templates.$databrowserFilterItem( { key : key, entity : entity, value : val, operator : operator } );
     this.$el.find('.filterList').append(filterEl);
-    this.$el.find('textarea').val(JSON.stringify(f));
   },
   onFilterRemove : function(e){
     e.preventDefault();
@@ -130,16 +127,7 @@ App.View.DataBrowserFilters = App.View.DataBrowserView.extend({
     el.remove();
     if (f.hasOwnProperty(operator)){
       delete f[operator][key];
-      this.$el.find('textarea').val(JSON.stringify(f));
       this.collection.fetch({reset : true, filters : f});
     }
-  },
-  expandArea : function(e){
-    var el = $(e.target);
-    $(el).animate({ height: "4em" }, 500);
-  },
-  contractArea : function(e){
-    var el = $(e.target);
-    $(el).animate({ height: "1em" }, 500);
   }
 });
