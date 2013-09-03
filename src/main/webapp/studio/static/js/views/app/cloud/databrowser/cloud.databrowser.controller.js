@@ -4,7 +4,7 @@ App.View.DataBrowserController = Backbone.View.extend({
     'click ul.collectionsUl li': 'showCollection',
     //TODO: This element is in a subview, can the event still be up here?
     'click .databrowsernav .dropdown-menu.collections-dropdown a' : 'onChangeCollection',
-    'click .env_toggle_button' : 'onEnvSwitch'
+    'click .btn-migration-next' : 'onMigrateDone'
   },
   subviews : {
     collectionsList : App.View.DataBrowserCollectionsList,
@@ -18,6 +18,7 @@ App.View.DataBrowserController = Backbone.View.extend({
     this.appkey = this.inst.apiKey;
     this.mode = $fw.data.get('cloud_environment');
     this.hasOwnDb = inst.config && inst.config.app && inst.config.app[this.mode] && inst.config.app[this.mode].hasowndb;
+    // TOOD: This is just explicitly set after migrate, not reliable - why bother using this prop? Just interrogate pacakge.json using the file APIs available to us..
     this.wrapper = inst.config && inst.config.appcloud && inst.config.appcloud.wrapper && inst.config.appcloud.wrapper.module || 'fh-nodeapp';
     this.getHosts();
   },
@@ -49,6 +50,8 @@ App.View.DataBrowserController = Backbone.View.extend({
         self.list = new self.subviews.collectionsList( { collection : collection});
         self.list.render();
         self.$el.append(self.list.el);
+        // Property which tells parent controllers not to re-draw this page, as it's now doing something useful - not just a 'migrate' message
+        self.browsing = true;
       }, error : function(){
         var messageView = new App.View.DataBrowserMessageView({ message : 'There was an issue loading the databrowser. Is your cloud app running?', button : 'Try again', cb : function(e){
           self.getHosts();
@@ -112,5 +115,15 @@ App.View.DataBrowserController = Backbone.View.extend({
       self.dataView.table.render();
     });
     el.parents('.dropdown.open').removeClass('open');
+  },
+  onMigrateDone : function(){
+    this.$el.empty();
+    var tpl = $('#dataviewGoDeploy').html();
+    tpl = Handlebars.compile(tpl);
+    var messageView = new App.View.DataBrowserMessageView({ message : tpl(), button : 'Deploy &raquo;', cb : function(e){
+      // Jump to the deploy page
+      $('a[data-controller="apps.deploy.controller"]').trigger("click");
+    }});
+    this.$el.append(messageView.render().$el);
   }
 });

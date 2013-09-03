@@ -90,6 +90,13 @@ App.View.DataBrowserMigrateView = App.View.DataBrowserView.extend({
           progress += 2;
         }
 
+        if (res.status === "COMPLETE"){
+          return self.migrateCompleteSuccess();
+        }else if (res.status ==="ERROR"){
+          self.updateProgress(100);
+          return self.migrateCompleteFailed();
+        }
+
         self.updateProgressLog(res.log);
         self.updateProgress(progress);
       },
@@ -98,7 +105,6 @@ App.View.DataBrowserMigrateView = App.View.DataBrowserView.extend({
         if ($.isFunction(self.migrateCompleteSuccess)) {
           self.migrateCompleteSuccess();
         }
-        self.updateProgress(100);
       },
       error: function (res) {
         console.log('Migrate error > ' + JSON.stringify(res));
@@ -164,11 +170,21 @@ App.View.DataBrowserMigrateView = App.View.DataBrowserView.extend({
   migrateCompleteSuccess: function () {
     console.log('Migrate complete - success');
     this.makeProgressGreen();
+    this.updateProgress(100);
+    this.updateProgressLog('Migration successful');
+
+    // update inst now that migrate is complete so it has the hasOwnDb property in millicore
+    $fw.client.model.App.read($fw.data.get('inst').guid, function(result) {
+      $fw.data.set('inst', result.inst);
+    }, function(err){
+      this.updateProgressLog('Error updating app instance properties');
+    });
+    this.$el.find('.btn-migration-next').show();
   },
   makeProgressRed: function () {
     this.$el.find('.data_migrate_progress .progress').removeClass('progress-striped').addClass('progress-danger');
   },
   makeProgressGreen: function () {
-    this.$el.find('.cloud_deploy_progress .progress').removeClass('progress-striped').addClass('progress-success');
+    this.$el.find('.data_migrate_progress .progress').removeClass('progress-striped').addClass('progress-success');
   }
 });
