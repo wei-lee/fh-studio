@@ -3,7 +3,8 @@ DataBrowser.Collection = DataBrowser.Collection || {};
 DataBrowser.Collections = DataBrowser.Collections || {};
 
 DataBrowser.CollectionModel = Backbone.Model.extend({
-  idAttribute : 'name' // collection names are unique..
+  idAttribute : 'name'
+
 });
 
 DataBrowser.CollectionDataModel = Backbone.Model.extend({
@@ -20,8 +21,11 @@ DataBrowser.Collection.CollectionList = Backbone.Collection.extend({
   url: undefined,
   mode : undefined,
   initialize: function(options) {
+
+	  console.log(options);
     this.url = options.url + '/mbaas/db';
     this.appkey = options.appkey;
+	  this.userApiKey = options.userApiKey;
     this.mode = options.mode;
   },
   sync: function (method, model, options) {
@@ -30,7 +34,7 @@ DataBrowser.Collection.CollectionList = Backbone.Collection.extend({
       var url = self.url,
       req = {
         "act" : "list",
-        "__fh" : { "appkey" : self.appkey }
+        "__fh" : { "appkey" : self.appkey, "userApiKey":self.userApiKey }
       };
       $fw.server.post(url, req, function(res) {
         if (res && res.list) {
@@ -161,7 +165,7 @@ DataBrowser.Collection.CollectionData = Backbone.Collection.extend({
         };
         break;
     }
-    req.__fh = { appkey : self.appkey }; // TODO: User API key goes here too...?
+    req.__fh = { appkey : self.appkey, "userkey":self.userApiKey}; // TODO: User API key goes here too...?
 
     this.trigger('request'); // manually trigger a req event since backbone isn't sending it - shows busy state on the table
     $fw.server[verb](url, req, _successCall, options.error, true);

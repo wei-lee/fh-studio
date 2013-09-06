@@ -14,12 +14,14 @@ App.View.DataBrowserController = Backbone.View.extend({
   },
   initialize : function(){
     var inst = this.inst = $fw.data.get('inst');
+	  this.userApiKey = $fw.data.get("userapikey");
     this.guid = this.inst.guid;
     this.appkey = this.inst.apiKey;
+
     this.mode = $fw.data.get('cloud_environment');
     this.hasOwnDb = inst.config && inst.config.app && inst.config.app[this.mode] && inst.config.app[this.mode].hasowndb;
     // TOOD: This is just explicitly set after migrate, not reliable - why bother using this prop? Just interrogate pacakge.json using the file APIs available to us..
-    this.wrapper = inst.config && inst.config.appcloud && inst.config.appcloud.wrapper && inst.config.appcloud.wrapper.module || 'fh-nodeapp';
+    this.wrapper = inst.config && inst.config.appcloud && inst.config.appcloud.wrapper && inst.config.appcloud.wrapper[this.mode] && inst.config.appcloud.wrapper[this.mode]["module"] || 'fh-nodeapp';
     this.getHosts();
   },
   // Typically gets called twice - a second time when getHosts is finished
@@ -45,10 +47,12 @@ App.View.DataBrowserController = Backbone.View.extend({
       self.$el.append(messageView.render().$el);
 
     }else if (this.loaded){
-      var dynoHost = (this.mode==='dev') ? self.hosts['development-url'] : self.hosts['live-url'],
-      collection = new DataBrowser.Collection.CollectionList({ url : dynoHost, appkey : self.appkey, mode : this.mode });
+
+      var dynoHost = (this.mode==='dev') ? self.hosts['development-url'] : self.hosts['live-url'];
+
+      var collection = new DataBrowser.Collection.CollectionList({ url : dynoHost, appkey : self.appkey, mode : this.mode, "userApiKey":this.userApiKey});
       collection.fetch({reset : true, success : function(){
-        self.list = new self.subviews.collectionsList( { collection : collection});
+        self.list = new self.subviews.collectionsList( { collection : collection , "userApiKey":this.userApiKey});
         self.list.render();
         self.$el.append(self.list.el);
         // Property which tells parent controllers not to re-draw this page, as it's now doing something useful - not just a 'migrate' message
@@ -90,7 +94,7 @@ App.View.DataBrowserController = Backbone.View.extend({
     model = this.list.collection.get(id);
 
     this.updateCollection(model, function(dataViewCollection){
-      self.dataView = new App.View.DataBrowserDataView({ model : model, collections : self.list.collection.toJSON(), collection : dataViewCollection});
+      self.dataView = new App.View.DataBrowserDataView({ model : model, collections : self.list.collection.toJSON(), collection : dataViewCollection, "userApiKey":this.userApiKey});
       self.dataView.render();
       self.list.hide();
       self.$el.append(self.dataView.el);
@@ -100,7 +104,7 @@ App.View.DataBrowserController = Backbone.View.extend({
     var dynoHost = (this.mode === 'dev') ? this.hosts['development-url'] : this.hosts['live-url'], // TODO: Switch
     name = model.get('name'),
     count = model.get('count'),
-    dataViewCollection = new DataBrowser.Collection.CollectionData( { url : dynoHost, collection : name, appkey : this.appkey, count : count } );
+    dataViewCollection = new DataBrowser.Collection.CollectionData( { url : dynoHost, collection : name, appkey : this.appkey, count : count, "userApiKey": this.userApiKey  } );
     return dataViewCollection.fetch({reset : true, success : function(){
       cb(dataViewCollection);
     }});
@@ -121,6 +125,7 @@ App.View.DataBrowserController = Backbone.View.extend({
     this.$el.empty();
     var tpl = $('#dataviewGoDeploy').html();
     tpl = Handlebars.compile(tpl);
+	  //check app props and show update information or deploy information
     var messageView = new App.View.DataBrowserMessageView({ message : tpl(), button : 'Deploy &raquo;', cb : function(e){
       // Jump to the deploy page
       $('a[data-controller="apps.deploy.controller"]').trigger("click");
