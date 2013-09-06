@@ -375,6 +375,33 @@
     ]
   },
   {
+    "name" : "Sharepoint",
+    "tested" : true,
+    "desc" : "Connects to Microsoft Sharepoint",
+    "image" : "sharepoint.png",
+    "category" : "SaaS Connectors",
+    "version" :  "0.0.5",
+    "npmName" :  "sharepoint",
+    "docs" : "https://github.com/lstak/node-sharepoint",
+    "config" :  [
+      {
+        "desc" :  "Your Sharepoint Login",
+        "varName" :  "SHAREPOINT_LOGIN"
+      },
+      {
+        "desc" :  "Your Sharepoint password",
+        "varName" :  "SHAREPOINT_PASSWORD",
+        "type" : "password"
+      },
+      {
+        "desc" :  "Your Sharepoint Hostname",
+        "optional" : true,
+        "varName" :  "SHAREPOINT_HOSTNAME",
+        "type" : "password"
+      }
+    ]
+  },
+  {
     "name" : "Google",
     "tested" : true,
     "desc" : "Official client library for accessing Google APIs",
