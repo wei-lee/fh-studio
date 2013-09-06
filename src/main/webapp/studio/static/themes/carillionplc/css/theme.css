@@ -1,5 +1,7 @@
 #header_logo {
   background-image: url(../img/corplogo.png) !important;
+  width: 165px !important;
+  height: 60px !important;
 }
 
 .hiring-link {
