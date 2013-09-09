@@ -89,8 +89,7 @@ App.View.DataBrowserFilters = App.View.DataBrowserView.extend({
     }
 
     if (['ge', 'gt', 'le', 'lt'].indexOf(operator)>-1){
-      if (isNaN(parseInt(val, 10))){
-        //TODO: 1234fefefe still passes this - trims the letters. Why?
+      if (isNaN(parseInt(val, 10)) || /[A-Z]/i.test(val)){
         return this.alertbox('Greater than or less than filters require a number value');
       }
     }
