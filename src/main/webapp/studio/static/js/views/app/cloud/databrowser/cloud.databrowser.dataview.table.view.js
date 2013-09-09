@@ -180,15 +180,20 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
   editRow : function(tr){
     var self = this,
     guid = tr.attr('id') || '',
-    collection = $(tr).parents('table').data('collection'),
-    saveCancelButton = $(this.templates.$dataviewSaveCancelButton());
+    saveCancelButton = $(this.templates.$dataviewSaveCancelButton()),
+    editTd = $(this.$el.find('#edit-' + guid));
+
+    // Bail out if we're already editing'
+    if (tr.hasClass('editing') || editTd.find('.btn-savecancel').length>0){
+      console.log("Error: already editing this row");
+      return;
+    }
 
     tr.addClass('editing');
 
     // Hide edit button, show save button
-
-    var editButton = this.$el.find('#edit-' + guid + ' .btn-edit').hide();
-    this.$el.find('#edit-' + guid).append(saveCancelButton);
+    var editButton = editTd.find('.btn-edit').hide();
+    editTd.append(saveCancelButton);
 
 
     tr.children('td.field').each(function(i, field){

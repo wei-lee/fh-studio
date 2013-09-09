@@ -2,15 +2,14 @@ App.View.DataBrowserCollectionsList = App.View.DataBrowserView.extend({
   templates : {
     collectionsList: '#collectionsList',
     collectionsListItem : '#collectionsListItem',
-    databrowserNavbar : '#databrowserNavbar',
-   // TODO: Empty collections list gets this
+    databrowserNavbar : '#databrowserNavbar'
 
   },
   initialize : function(options){
     this.collection = options.collection;
     this.collection.bind('reset', this.render, this);
     this.compileTemplates();
-    this.breadcrumb(['Data Browser', 'Collections']);
+    this.breadcrumb(['Data Browser']);
   },
   render: function() {
     var self = this,
@@ -19,7 +18,6 @@ App.View.DataBrowserCollectionsList = App.View.DataBrowserView.extend({
     this.$el.empty();
     this.$el.append(nav);
 
-    //this.collection.length = 0; // todo remove me
     if (this.collection.length === 0){
       var messageView = new App.View.DataBrowserMessageView({ message : 'Your app has no collections', button : '<i class="icon-plus"></i> Add one', cb : function(e){
         self.onCreateCollection.apply(self, arguments);

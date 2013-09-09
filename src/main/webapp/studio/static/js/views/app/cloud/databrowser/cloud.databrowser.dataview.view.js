@@ -11,6 +11,7 @@ App.View.DataBrowserDataView = App.View.DataBrowserView.extend({
     'click .btn-trash-rows' : 'onMultiDelete',
     'click .btn-filter' : 'onFilterToggle',
     'click table.databrowser .td-checkbox input[type=checkbox]' : 'onRowSelection'
+    // for "click .dropdown-menu.collections-dropdown a" see parent controller cloud.databrowser.controller:onChangeCollection
   },
   initialize : function(options){
     this.updateCrumb();
@@ -47,6 +48,7 @@ App.View.DataBrowserDataView = App.View.DataBrowserView.extend({
     this.browser.render();
     this.browser.$el.hide();
     this.$el.append(this.browser.el);
+
     return this;
   },
   onRowAdvancedEdit : function(e){
@@ -64,7 +66,8 @@ App.View.DataBrowserDataView = App.View.DataBrowserView.extend({
     this.pagination.$el.hide();
     this.browser.$el.show();
 
-    this.breadcrumb(['Data Browser', 'Collections', this.model.get('name'), 'Advanced Editor']);
+    this.breadcrumb(['Data Browser', this.model.get('name'), 'Advanced Editor']);
+    $('.databrowserCrumb').unbind().on('click', $.proxy(this.crumbClicked, this));
   },
   onRowAdvancedEditDone : function(e){
     this.table.render();
@@ -123,6 +126,31 @@ App.View.DataBrowserDataView = App.View.DataBrowserView.extend({
     }
   },
   updateCrumb : function(){
-    this.breadcrumb(['Data Browser', 'Collections', this.model.get('name')]);
-  }
+    this.breadcrumb(['Data Browser', this.model.get('name')], this.crumbClicked);
+    $('.databrowserCrumb').unbind().on('click', $.proxy(this.crumbClicked, this));
+  },
+  crumbClicked : function(e){
+    var el = $(e.target),
+    idx = el.data('index');
+    switch(idx){
+      case 0:
+        // back to collections listing
+        this.trigger('collectionBack');
+        break;
+      case 1:
+        // Back to collection view, hide advanced
+        this.browser.$el.hide();
+        this.table.$el.show();
+        this.updateCrumb();
+        break;
+    }
+  },
+  hide : function(){
+    this.$el.hide();
+    this.shown = false;
+  },
+  show : function(){
+    this.$el.show();
+    this.shown = true;
+  },
 });

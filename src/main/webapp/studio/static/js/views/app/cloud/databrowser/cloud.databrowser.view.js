@@ -13,7 +13,7 @@ App.View.DataBrowserView = Backbone.View.extend({
     }
     this.templates = templates;
   },
-  breadcrumb : function(trail){
+  breadcrumb : function(trail, clickHandler){
     var startRemoving = false;
     var crumb = $('#apps_breadcrumb');
     crumb.children().each(function(index, el){
@@ -25,22 +25,27 @@ App.View.DataBrowserView = Backbone.View.extend({
     });
     _.each(trail, function(element, index, list){
       var id = element.toLowerCase().replace(/\s/g, "");
+
+      // First iteration needs an extra /
+      if (index === 0){
+        crumb.append($('<span>', {
+          "class": "divider",
+          "text" : "/"
+        }));
+      }
+
       if (index === list.length-1){
         crumb.append($('<li>', {
           "class": "active",
           "text": element
         }));
       }else{
-        crumb.append($('<span>', {
-          "class": "divider",
-          "text" : "/"
-        })).append($('<li>', {
-          "html": '<a id="crumb-' + id + '" href="#">' + element + '</a>'
+        crumb.append($('<li>', {
+          "html": '<a class="databrowserCrumb" data-index="' + index + '" id="crumb-' + id + '" href="#">' + element + '</a>'
         })).append($('<span>', {
           "class": "divider",
           "text" : "/"
         }));
-        //TODO: Bug exists with this where double dividers appear
       }
     });
   },
