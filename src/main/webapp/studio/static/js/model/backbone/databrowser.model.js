@@ -28,30 +28,49 @@ DataBrowser.Collection.CollectionList = Backbone.Collection.extend({
 	  this.userApiKey = options.userApiKey;
     this.mode = options.mode;
   },
+  create : function(model, options){
+    var self = this;
+    options = options || { };
+    options.success = function(resp){
+      // No idea what size our created collection will be, document creation API doesn't tell us -> re-fetch whole collection
+      self.fetch({reset : true});
+    };
+    return this.sync('create', model, options);
+  },
   sync: function (method, model, options) {
     var self = this;
-    if(!self.loaded){
-      var url = self.url,
-      req = {
-        "act" : "list",
-        "__fh" : { "appkey" : self.appkey, "userApiKey":self.userApiKey }
-      };
-      $fw.server.post(url, req, function(res) {
-        if (res && res.list) {
-          res = res.list;
-          self.loaded = true;
-          if ($.isFunction(options.success)) {
-            options.success(res, options);
-          }
-        } else {
-          if ($.isFunction(options.error)) {
-            options.error(res, options);
-          }
-        }
-      }, options.error, true);
-    } else {
-      self.trigger("sync");
+    var url = self.url,
+    req = {
+      "__fh" : { "appkey" : self.appkey, "userApiKey":self.userApiKey }
+    };
+
+    switch(method){
+      case "create":
+        req.act = "create";
+        req.type = model.name;
+        // mock data - will come out in UI, but at least user then has chance to change / delete that row
+        req.fields = { field : 'value' };
+        break;
+      default: // i.e. read
+        req.act = "list";
+        break;
+
     }
+
+    $fw.server.post(url, req, function(res) {
+      if (res) {
+        res = res.list || res;
+        self.loaded = true;
+        if ($.isFunction(options.success)) {
+          options.success(res, options);
+        }
+      } else {
+        if ($.isFunction(options.error)) {
+          options.error(res, options);
+        }
+      }
+    }, options.error, true);
+
   }
 });
 

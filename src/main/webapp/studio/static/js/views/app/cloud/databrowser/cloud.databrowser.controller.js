@@ -97,16 +97,27 @@ App.View.DataBrowserController = Backbone.View.extend({
     id = li.data('id'),
     model = this.list.collection.get(id);
 
+    // Don't allow double clicks / multiple clicks on collections to ruin the showing
+    if (self.loadingACollection){
+      return;
+    }
+    self.loadingACollection = true;
+    setTimeout(function(){
+      self.loadingACollection = false; //just incase
+    }, 10000)
+
     this.updateCollection(model, function(dataViewCollection){
       self.dataView = new App.View.DataBrowserDataView({ model : model, collections : self.list.collection.toJSON(), collection : dataViewCollection, "userApiKey":this.userApiKey});
       self.dataView.render();
       self.dataView.bind('collectionBack', $.proxy(self.onCollectionBack, self));
       self.list.hide();
       self.$el.append(self.dataView.el);
+
+      self.loadingACollection = false;
     });
   },
   updateCollection : function(model, cb){
-    var dynoHost = (this.mode === 'dev') ? this.hosts['development-url'] : this.hosts['live-url'], // TODO: Switch
+    var dynoHost = (this.mode === 'dev') ? this.hosts['development-url'] : this.hosts['live-url'],
     name = model.get('name'),
     count = model.get('count'),
     dataViewCollection = new DataBrowser.Collection.CollectionData( { url : dynoHost, collection : name, appkey : this.appkey, count : count, "userApiKey": this.userApiKey  } );

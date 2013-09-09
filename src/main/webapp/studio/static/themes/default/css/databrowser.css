@@ -55,8 +55,6 @@
     /*max-height: 500px;
     min-height: 400px;*/
     height: 100%; /* Other approach gives nasty double scrollbars - lets just use the entire page */
-    overflow-x: scroll;
-    overflow-y: scroll;
 }
 .databrowser.emptyContainer {
     min-height: 400px;

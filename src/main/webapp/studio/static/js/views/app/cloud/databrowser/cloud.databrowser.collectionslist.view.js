@@ -2,8 +2,11 @@ App.View.DataBrowserCollectionsList = App.View.DataBrowserView.extend({
   templates : {
     collectionsList: '#collectionsList',
     collectionsListItem : '#collectionsListItem',
-    databrowserNavbar : '#databrowserNavbar'
-
+    databrowserNavbar : '#databrowserNavbar',
+    dataBrowserCollectionListBarItems : '#dataBrowserCollectionListBarItems'
+  },
+  events : {
+    "click .btn-add-collection" : "onCreateCollection"
   },
   initialize : function(options){
     this.collection = options.collection;
@@ -13,7 +16,8 @@ App.View.DataBrowserCollectionsList = App.View.DataBrowserView.extend({
   },
   render: function() {
     var self = this,
-    nav = this.templates.$databrowserNavbar({ brand : 'Collections', class : 'collectionsnavbar', baritems : '' });
+    collectionListBarItems = this.templates.$dataBrowserCollectionListBarItems(),
+    nav = this.templates.$databrowserNavbar({ brand : 'Collections', class : 'collectionsnavbar', baritems : collectionListBarItems });
 
     this.$el.empty();
     this.$el.append(nav);
@@ -26,7 +30,6 @@ App.View.DataBrowserCollectionsList = App.View.DataBrowserView.extend({
     }else{
       this.renderCollections();
     }
-    this.collection.bind('reset', this.renderCollections);
 
     return this;
   },
@@ -71,6 +74,6 @@ App.View.DataBrowserCollectionsList = App.View.DataBrowserView.extend({
     self.$el.append(modal.render().$el);
   },
   doCreateCollection : function(val){
-     //TODO: Create on the model, dispatch to the server...
+    var model = this.collection.create({name : val, size : 0, count : 0});
   }
 });
