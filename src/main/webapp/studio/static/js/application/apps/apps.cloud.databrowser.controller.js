@@ -50,7 +50,8 @@ Apps.Cloud.Databrowser.Controller = Apps.Cloud.Controller.extend({
       if(err){
         console.log("error loading data", err);
       }else{
-        if(data && data[0] && data[0].list){
+        if(data && data[0] && data[0].list && data[0].list.length > 0){
+	        console.log("have keys ", data[0].list);
           var userApiKey = data[0].list[0].key;
           $fw.data.set("userapikey",userApiKey);
         }
