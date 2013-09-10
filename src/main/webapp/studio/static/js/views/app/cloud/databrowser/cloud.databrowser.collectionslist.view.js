@@ -17,7 +17,7 @@ App.View.DataBrowserCollectionsList = App.View.DataBrowserView.extend({
   render: function() {
     var self = this,
     collectionListBarItems = this.templates.$dataBrowserCollectionListBarItems(),
-    nav = this.templates.$databrowserNavbar({ brand : 'Collections', class : 'collectionsnavbar', baritems : collectionListBarItems });
+    nav = this.templates.$databrowserNavbar({ brand : 'Collections', 'class' : 'collectionsnavbar', baritems : collectionListBarItems });
 
     this.$el.empty();
     this.$el.append(nav);

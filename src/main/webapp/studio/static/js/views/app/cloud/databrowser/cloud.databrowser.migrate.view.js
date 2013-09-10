@@ -15,7 +15,7 @@ App.View.DataBrowserMigrateView = App.View.DataBrowserView.extend({
   },
   render: function() {
     var self = this,
-    nav = this.templates.$databrowserNavbar({ brand : 'Data Browser', class : 'migratenavbar', baritems : '' });
+    nav = this.templates.$databrowserNavbar({ brand : 'Data Browser', 'class' : 'migratenavbar', baritems : '' });
     this.message = new App.View.DataBrowserMessageView({ message : this.templates.$dataMigrateMessage(), button : 'Migrate now &raquo;', cb : function(){
       self.onMigrate.apply(self, arguments);
     }});

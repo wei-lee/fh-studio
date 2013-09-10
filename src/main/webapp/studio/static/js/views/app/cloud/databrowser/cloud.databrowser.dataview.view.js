@@ -29,7 +29,7 @@ App.View.DataBrowserDataView = App.View.DataBrowserView.extend({
     }
     var filters = new App.View.DataBrowserFilters({ collection : this.collection}),
     navItems = this.templates.$databrowserDataViewBarItems({collections : collectionsHTML.join('')});
-    this.nav = $(this.templates.$databrowserNavbar({ brand : this.model.get('name'), class : 'databrowsernav', baritems : navItems }));
+    this.nav = $(this.templates.$databrowserNavbar({ brand : this.model.get('name'), 'class' : 'databrowsernav', baritems : navItems }));
     this.nav.find('.navbar-inner').append(filters.render().$el); // NB needs to be added in here 'cause otherwise events don't bind
     this.$el.append(this.nav);
 
