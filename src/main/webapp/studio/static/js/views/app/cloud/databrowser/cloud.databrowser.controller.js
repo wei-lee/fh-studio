@@ -77,8 +77,8 @@ App.View.DataBrowserController = Backbone.View.extend({
   },
   getCollectionsListing : function(cb){
     var dynoHost = (this.mode==='dev') ? this.hosts['development-url'] : this.hosts['live-url'];
-
     var collection = new DataBrowser.Collection.CollectionList({ url : dynoHost, appkey : this.appkey, mode : this.mode, "userApiKey":this.userApiKey});
+
     collection.fetch({reset : true, success : function(){
       return cb(null, collection);
     }, error : function(err){
