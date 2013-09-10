@@ -39,7 +39,7 @@ DataBrowser.Collection.CollectionList = Backbone.Collection.extend({
     var self = this;
     var url = self.url,
     req = {
-      "__fh" : { "appkey" : self.appkey, "userApiKey":self.userApiKey }
+      "__fh" : { "appkey" : self.appkey, "userkey":self.userApiKey }
     };
 
     switch(method){
