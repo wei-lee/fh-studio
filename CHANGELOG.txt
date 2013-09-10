@@ -1,6 +1,11 @@
 -------------------------------------------------------------------------------
 Component: fh-studio
 -------------------------------------------------------------------------------
+3.17.11 - 2013-09-10 - IR210 - Michael Nairn
+-------------------------------------------------------------------------------
+* 4625 - Remove registration links from rackspace theme
+* 4630 - Remove registartion links from hpcs theme
+
 3.17.10 - 2013-09-06 - IR209 - Martin Murphy
 -------------------------------------------------------------------------------
 * 4642 - Fix password error display on activation and reset password screens
