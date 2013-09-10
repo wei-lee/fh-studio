@@ -90,6 +90,9 @@ App.View.DataBrowserMigrateView = App.View.DataBrowserView.extend({
           progress += 2;
         }
 
+        self.updateProgressLog(res.log);
+        self.updateProgress(progress);
+
         if (res.status === "COMPLETE"){
           return self.migrateCompleteSuccess();
         }else if (res.status ==="ERROR"){
@@ -97,8 +100,7 @@ App.View.DataBrowserMigrateView = App.View.DataBrowserView.extend({
           return self.migrateCompleteFailed();
         }
 
-        self.updateProgressLog(res.log);
-        self.updateProgress(progress);
+
       },
       complete: function (res) {
         console.log('Migrate successful > ' + JSON.stringify(res));

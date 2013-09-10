@@ -17,7 +17,8 @@ Apps.Cloud.Databrowser.Controller = Apps.Cloud.Controller.extend({
     if (this.guid && this.guid === $fw.data.get('inst').guid
     && this.env && this.env === $fw.data.get('cloud_environment') && this.view && this.view.browsing){
       // Show the same view if we've already got it, and we haven't switched app - then exit completely
-      return $(this.views.container).show();
+      $(this.views.container).show();
+      return this.view.onCollectionBack();
     }else if (this.view){
       // otherwise, if we have a view already -> we've switched app, nuke the old one
       this.view.remove();

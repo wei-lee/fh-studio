@@ -55,6 +55,7 @@
     /*max-height: 500px;
     min-height: 400px;*/
     height: 100%; /* Other approach gives nasty double scrollbars - lets just use the entire page */
+    position: relative;
 }
 .databrowser.emptyContainer {
     min-height: 400px;
@@ -69,6 +70,16 @@
     display: inline-block
 }
 
+/*
+ makes sure when showing it's busy status, it's got just the right height
+ */
+#databrowser_container .fh-box-inner > div {
+    height: 100%;
+    width: 100%;
+    min-height: 400px;
+    position: relative;
+}
+
 #databrowser_container .busy .busyContainer {
     display: block;
     opacity: 0.8;
@@ -76,6 +87,7 @@
 }
 
 #databrowser_container .busyContainer {
+    position: absolute;
     display: block;
     /* Also transition height to 0 afterwards so it's not visible, but doesn't get in the way of the databrowser */
     transition: opacity 0.5s ease-out, height 1s linear;
@@ -85,14 +97,8 @@
     opacity: 0;
     overflow: hidden;
     border-radius: 6px;
-}
-
-.databrowserTableContainer .busyContainer {
-    height: 100%;
-    position: absolute;
     width: 100%;
     background: #000;
-    opacity: 0.6;
     z-index: 10000;
 }
 
@@ -383,7 +389,7 @@ ul.collectionsUl li .raquo {
 }
 
 
-#floatingCirclesG {
+.busyAnimationFloatingCircles {
     margin: 5% 30%;
 }
 
@@ -391,7 +397,7 @@ ul.collectionsUl li .raquo {
     CSS3 loading spinner
     courtesy of http://cssload.net/
  */
-#floatingCirclesG{
+.busyAnimationFloatingCircles{
     position:relative;
     width:256px;
     height:256px;

@@ -4,7 +4,6 @@ App.View.DataBrowserController = Backbone.View.extend({
     'click ul.collectionsUl li': 'showCollection',
     'click .databrowsernav .dropdown-menu.collections-dropdown a' : 'onChangeCollection',
     'click .btn-migration-next' : 'onMigrateDone'
-
   },
   subviews : {
     collectionsList : App.View.DataBrowserCollectionsList,
@@ -13,16 +12,31 @@ App.View.DataBrowserController = Backbone.View.extend({
     errorView : App.View.DataBrowser
   },
   initialize : function(){
-    var inst = this.inst = $fw.data.get('inst');
+    var self = this,
+    inst = this.inst = $fw.data.get('inst');
     this.userApiKey = $fw.data.get("userapikey");
     this.guid = this.inst.guid;
     this.appkey = this.inst.apiKey;
 
     this.mode = $fw.data.get('cloud_environment');
-    this.getHosts();
+    this.bind('loaded', this.showCollectionsListing);
+
+    async.series([$.proxy(this.getHosts, this), $.proxy(this.getCollectionsListing, this)], function(err, res){
+      self.$el.removeClass('busy');
+      // Delay before doing anything else to give animation chance to finish
+      setTimeout(function(){
+        if (err || res.length !== 2){
+          return self.renderError(err);
+        }
+        var collection = res[1];
+        self.loaded = true;
+        self.trigger('loaded', collection);
+      }, 500);
+    });
+
   },
   // Typically gets called twice - a second time when getHosts is finished
-  render: function() {
+  render: function(page) {
     var self = this;
     this.$el.empty();
 
@@ -32,15 +46,22 @@ App.View.DataBrowserController = Backbone.View.extend({
     // Do we need to upgrade from nodeapp to webapp?
     }else if (!this.hasCorrectWrapper()){
       this.showWrapperChangeInstructions();
-    }else if (this.loaded){
-      this.showCollectionsListing();
     }else{
-      self.$el.append('Loading');
+      self.$el.addClass('busy');
+      var tpl = Handlebars.compile($('#databrowserLoading').html());
+      self.$el.append(tpl());
     }
-
     return this;
   },
-  getHosts : function(){
+  renderError : function(err){
+    var self = this;
+    var messageView = new App.View.DataBrowserMessageView({ message : 'There was an issue loading the databrowser. Is your cloud app running?', button : 'Try again', cb : function(e){
+      self.initialize();
+      self.render();
+    }});
+    self.$el.append(messageView.render().$el);
+  },
+  getHosts : function(cb){
     var self = this,
     params = {
       guid : this.guid
@@ -48,13 +69,21 @@ App.View.DataBrowserController = Backbone.View.extend({
     url = Constants.APP_HOSTS_URL;
     $fw.server.post(url, params, function(res) {
       self.hosts = res.hosts;
-      self.loaded = true;
-      if (self.el && !self.needsMigrate() && self.hasCorrectWrapper()){
-        self.render();
-      }
+      return cb(null, res);
     }, function(err){
       console.log(err);
+      return cb(err);
     }, false);
+  },
+  getCollectionsListing : function(cb){
+    var dynoHost = (this.mode==='dev') ? this.hosts['development-url'] : this.hosts['live-url'];
+
+    var collection = new DataBrowser.Collection.CollectionList({ url : dynoHost, appkey : this.appkey, mode : this.mode, "userApiKey":this.userApiKey});
+    collection.fetch({reset : true, success : function(){
+      return cb(null, collection);
+    }, error : function(err){
+      return cb(err);
+    }});
   },
   showMigrateView : function(){
     this.migrate = new this.subviews.migrateView( { guid : this.guid, mode : this.mode } );
@@ -71,23 +100,14 @@ App.View.DataBrowserController = Backbone.View.extend({
     }});
     self.$el.append(messageView.render().$el);
   },
-  showCollectionsListing : function(){
-    var self = this,
-    dynoHost = (this.mode==='dev') ? self.hosts['development-url'] : self.hosts['live-url'];
-
-    var collection = new DataBrowser.Collection.CollectionList({ url : dynoHost, appkey : self.appkey, mode : this.mode, "userApiKey":this.userApiKey});
-    collection.fetch({reset : true, success : function(){
-      self.list = new self.subviews.collectionsList( { collection : collection , "userApiKey":this.userApiKey});
-      self.list.render();
-      self.$el.append(self.list.el);
-      // Property which tells parent controllers not to re-draw this page, as it's now doing something useful - not just a 'migrate' message
-      self.browsing = true;
-    }, error : function(){
-      var messageView = new App.View.DataBrowserMessageView({ message : 'There was an issue loading the databrowser. Is your cloud app running?', button : 'Try again', cb : function(e){
-        self.getHosts();
-      }});
-      self.$el.append(messageView.render().$el);
-    }});
+  showCollectionsListing : function(collection){
+    this.$el.empty();
+    var self =  this;
+    self.list = new self.subviews.collectionsList( { collection : collection , "userApiKey":self.userApiKey});
+    self.list.render();
+    self.$el.append(self.list.el);
+    // Property which tells parent controllers not to re-draw this page, as it's now doing something useful - not just a 'migrate' message
+    self.browsing = true;
   },
   showCollection : function(e){
     e.stopPropagation();
@@ -158,9 +178,9 @@ App.View.DataBrowserController = Backbone.View.extend({
     this.$el.append(messageView.render().$el);
   },
   onCollectionBack : function(){
-    this.dataView.hide();
+    this.dataView && this.dataView.hide();
     this.list.show();
-    this.dataView.remove();
+    this.dataView && this.dataView.remove();
     delete this.dataView;
   },
   /*

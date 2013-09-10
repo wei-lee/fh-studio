@@ -67,7 +67,7 @@ DataBrowser.Collection.CollectionList = Backbone.Collection.extend({
           options.error(res, options);
         }
       }
-    }, options.error, true);
+    }, options.error, true, 6000);
 
   }
 });
@@ -185,6 +185,6 @@ DataBrowser.Collection.CollectionData = Backbone.Collection.extend({
     req.__fh = { appkey : self.appkey, "userkey":self.userApiKey}; // TODO: User API key goes here too...?
 
     this.trigger('request'); // manually trigger a req event since backbone isn't sending it - shows busy state on the table
-    $fw.server[verb](url, req, _successCall, options.error, true);
+    $fw.server[verb](url, req, _successCall, options.error, true, 6000);
   }
 });

@@ -6,7 +6,8 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     dataviewEmptyContent : '#dataviewEmptyContent',
     dataviewLoadingContent : '#dataviewLoadingContent',
     dataviewEditTable : '#dataviewEditTable',
-    dataviewTableContainer : '#dataviewTableContainer'
+    dataviewTableContainer : '#dataviewTableContainer',
+    databrowserLoading : '#databrowserLoading'
   },
   events : {
     'click table .btn-save' : 'onRowSave',
@@ -61,7 +62,10 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     tbody = $('<tbody></tbody>'),
     edittable = $(this.templates.$dataviewEditTable()),
     tableContainer = $(this.templates.$dataviewTableContainer()),
+    busyContainer = $(this.templates.$databrowserLoading()),
     thead;
+
+    tableContainer.append(busyContainer);
 
 
     if (this.collection.length <= 0){

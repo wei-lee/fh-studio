@@ -6,7 +6,8 @@ App.View.DataBrowserCollectionsList = App.View.DataBrowserView.extend({
     dataBrowserCollectionListBarItems : '#dataBrowserCollectionListBarItems'
   },
   events : {
-    "click .btn-add-collection" : "onCreateCollection"
+    "click .btn-add-collection" : "onCreateCollection",
+    "click .btn-refresh-collectionsList" : "onRefreshCollections"
   },
   initialize : function(options){
     this.collection = options.collection;
@@ -72,6 +73,10 @@ App.View.DataBrowserCollectionsList = App.View.DataBrowserView.extend({
       }
     });
     self.$el.append(modal.render().$el);
+  },
+  onRefreshCollections : function(){
+    this.$el.find('ul.collectionsUl').empty();
+    this.collection.fetch({reset : true});
   },
   doCreateCollection : function(val){
     var model = this.collection.create({name : val, size : 0, count : 0});
