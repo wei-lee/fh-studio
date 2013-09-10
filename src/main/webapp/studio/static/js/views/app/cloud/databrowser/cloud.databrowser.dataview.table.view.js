@@ -312,11 +312,11 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
       name = curInp.attr('name'),
       span = $(fieldtd).children('span');
 
-      if (curInp.attr('type') === 'select'){
+      if (curInp.prop('tagName').toLowerCase() === 'select'){
         val = (val === "true");
       }
 
-      $(span).html(val);
+      $(span).html(val.toString());
       updatedObj[name] = val;
     });
 
@@ -324,6 +324,10 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
       // modify the row in place to be as it should any of the other rows that exist in the DB
       // that is, it's ID is a GUID and it doesn't have a newrow class
       tr.attr('id', model.guid);
+      // Add the correct ID to our editing table too
+      var editTr = $(self.$el.find('#edit-.td-edit'));
+      editTr.attr('id', 'edit-' + model.guid).data('id', model.guid);
+
       tr.removeClass('newrow');
       self.cancelRow(tr);
       self.hideBusy();
@@ -429,8 +433,9 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
   },
   onRowDelete : function(e){
     e.stopPropagation();
-    var el = e.target,
-    tr = $($(el).parents('tr'));
+    var el = $(e.target),
+    id = el.parents('td').data('id'),
+    tr = $('#' + id);
     this.onRowOrRowsDelete([tr]);
   },
   onRowOrRowsDelete : function(trs){
@@ -446,7 +451,7 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
         (function(tr, self){
           deleters.push(function(cb){
             self.deleteRow($(tr), function(err, res){
-              var id = tr.id;
+              var id = tr.id || tr.attr && tr.attr('id');
               if (err){
                 return cb(err);
               }
