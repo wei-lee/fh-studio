@@ -61,7 +61,7 @@ App.View.DataBrowserCollectionsList = App.View.DataBrowserView.extend({
     var self = this,
     modal  = new App.View.Modal({
       title : 'Create New Collection',
-      body : 'Enter a name to describe your new collection: <br /> <input placeholder="Collection Name" id="newCollectionName">',
+      body : '<input class="input-large" placeholder="Enter a collection name" id="newCollectionName">',
       okText : 'Create',
       ok : function(e){
         var el = $(e.target),
