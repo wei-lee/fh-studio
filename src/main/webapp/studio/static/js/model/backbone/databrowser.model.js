@@ -21,11 +21,9 @@ DataBrowser.Collection.CollectionList = Backbone.Collection.extend({
   url: undefined,
   mode : undefined,
   initialize: function(options) {
-
-	  console.log(options);
     this.url = options.url + '/mbaas/db';
     this.appkey = options.appkey;
-	  this.userApiKey = options.userApiKey;
+    this.userApiKey = options.userApiKey;
     this.mode = options.mode;
   },
   create : function(model, options){

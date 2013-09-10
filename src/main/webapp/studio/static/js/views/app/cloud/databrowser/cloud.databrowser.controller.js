@@ -3,7 +3,7 @@ App.View.DataBrowserController = Backbone.View.extend({
   events: {
     'click ul.collectionsUl li': 'showCollection',
     'click .databrowsernav .dropdown-menu.collections-dropdown a' : 'onChangeCollection',
-    'click .btn-migration-next' : 'onMigrateDone',
+    'click .btn-migration-next' : 'onMigrateDone'
 
   },
   subviews : {
@@ -14,7 +14,7 @@ App.View.DataBrowserController = Backbone.View.extend({
   },
   initialize : function(){
     var inst = this.inst = $fw.data.get('inst');
-	  this.userApiKey = $fw.data.get("userapikey");
+    this.userApiKey = $fw.data.get("userapikey");
     this.guid = this.inst.guid;
     this.appkey = this.inst.apiKey;
 
@@ -104,7 +104,7 @@ App.View.DataBrowserController = Backbone.View.extend({
     self.loadingACollection = true;
     setTimeout(function(){
       self.loadingACollection = false; //just incase
-    }, 10000)
+    }, 10000);
 
     this.updateCollection(model, function(dataViewCollection){
       self.dataView = new App.View.DataBrowserDataView({ model : model, collections : self.list.collection.toJSON(), collection : dataViewCollection, "userApiKey":this.userApiKey});

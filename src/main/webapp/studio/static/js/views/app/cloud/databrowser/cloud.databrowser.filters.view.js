@@ -54,7 +54,7 @@ App.View.DataBrowserFilters = App.View.DataBrowserView.extend({
       filters.push('<li class="' + cls + '"><a data-filter-index="' + i + '" data-filter-operator="' + f.operator + '" href="#"><span class="badge">' + f.entity + '</span> ' + f.name + '</a></li>');
     }
 
-    var filtersTpl = this.templates.$databrowserFilters( { filters : filters.join('') } )
+    var filtersTpl = this.templates.$databrowserFilters( { filters : filters.join('') } );
     this.$el.append($(filtersTpl));
     return this;
   },

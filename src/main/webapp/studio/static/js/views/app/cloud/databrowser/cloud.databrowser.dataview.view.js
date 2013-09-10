@@ -152,5 +152,5 @@ App.View.DataBrowserDataView = App.View.DataBrowserView.extend({
   show : function(){
     this.$el.show();
     this.shown = true;
-  },
+  }
 });
