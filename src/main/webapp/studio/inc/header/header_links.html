@@ -14,7 +14,7 @@
   <a href="/?a=<%=studio.IDE_INDEX%>" class="<%=pageName.equals(studio.IDE_INDEX) ? "active" : ""%>">Studio</a>
 <% } %>
 
-  <a target="_blank" href="<%=studio.getProperty("docs-url")%>">Docs</a>
+  <a target="_blank" href="<%=studio.getProperty("docs-url")%>">Dos</a>
   <a target="_blank" href="<%=studio.getProperty("support-url")%>">Support</a>
   
 <% if("true".equals(studio.getProperty("hiring-link"))) { %>
@@ -34,8 +34,14 @@
   </script>
   <a onclick="signOut();">Sign Out</a>
 <% } else { %>
-  <a href="/?a=<%=studio.IDE_LOGIN%>" class="<%=pageName.equals(studio.IDE_LOGIN) ? "active" : ""%>">Login/Register</a>
+  <a href="/?a=<%=studio.IDE_LOGIN%>" class="<%=pageName.equals(studio.IDE_LOGIN) ? "active" : ""%>">
+  <% if ("true".equals(studio.getProperty(studio.PROP_FREEREGISTRATION))) { %>
+    Login/Register
+  <% } else { %>
+    Login
+  </a>
+  <% } %>
 <% } %>
-  
+
 
 </div>
