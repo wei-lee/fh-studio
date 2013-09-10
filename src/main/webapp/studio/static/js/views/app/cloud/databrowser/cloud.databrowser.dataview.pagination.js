@@ -45,7 +45,7 @@ App.View.DataBrowserDataViewPagination = App.View.DataBrowserView.extend({
     // Don't do unnecessary work
     if (this.collection.page === page ||
     (this.collection.page === 0 && page === "first") ||
-    (this.collection.page = this.pages-1 && page === "last")){
+    (this.collection.page === this.pages-1 && page === "last")){
       return;
     }
 
