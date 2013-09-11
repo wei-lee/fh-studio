@@ -178,9 +178,11 @@ App.View.DataBrowserController = Backbone.View.extend({
     this.$el.append(messageView.render().$el);
   },
   onCollectionBack : function(){
-    this.dataView && this.dataView.hide();
+    if (this.dataView){
+      this.dataView.hide();
+      this.dataView.remove();
+    }
     this.list.show();
-    this.dataView && this.dataView.remove();
     delete this.dataView;
   },
   /*
