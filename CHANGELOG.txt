@@ -6,6 +6,9 @@ Component: fh-studio
 * 4625 - Remove registration links from rackspace theme
 * 4630 - Remove registartion links from hpcs theme
 
+Both themes are updated to show a "Request an Account" form in place of the registration form when free account
+registration is disabled. Both submit requests to wufoo forms.
+
 3.17.10 - 2013-09-06 - IR209 - Martin Murphy
 -------------------------------------------------------------------------------
 * 4642 - Fix password error display on activation and reset password screens
