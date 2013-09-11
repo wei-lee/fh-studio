@@ -41,7 +41,7 @@ function activate() {
       "data": JSON.stringify(activate_params),
       "success": function (res) {
         if ('undefined' !== typeof res.status && "error" === res.status) {
-          var messageText = Lang[res.message];
+          var messageText = Lang[res.message] || res.message;
           activate_form.find('#activate_form_error').show().text(messageText);
           activate_button.removeAttr('disabled').val('Activate');
         }

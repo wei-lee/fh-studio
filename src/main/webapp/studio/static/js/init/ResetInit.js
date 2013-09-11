@@ -43,7 +43,7 @@ function reset() {
       "data": JSON.stringify(reset_params),
       "success": function(res) {
         if ('undefined' !== typeof res.status && "error" === res.status) {
-          var messageText = Lang[res.message];
+          var messageText = Lang[res.message] || res.message;
           reset_form.find('#reset_form_error').show().text(messageText);
           reset_button.removeAttr('disabled').val('Reset');
         } else {
