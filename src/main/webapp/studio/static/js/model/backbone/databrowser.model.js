@@ -88,6 +88,7 @@ DataBrowser.Collection.CollectionData = Backbone.Collection.extend({
     this.mode = options.mode;
     this.loaded = false;
     this.appkey = options.appkey;
+    this.userApiKey = options.userApiKey;
     this.filters = {};
     this.collectionName = options.collection;
     this.count = options.count;
@@ -133,7 +134,6 @@ DataBrowser.Collection.CollectionData = Backbone.Collection.extend({
     _successCall = function(res){
       _success(res);
     };
-
 
     switch(method){
       case "read":
