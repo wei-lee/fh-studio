@@ -12,7 +12,7 @@ describe("test alert notifications view", function(){
           if (data.hasOwnProperty('guid')){
             // HOSTS call
             return success({"hosts":{"development-dyno":"testing","development-name":"testing-v60ttwgovdinr6mylanwld05-dev","development-url":"https://testing-v60ttwgovdinr6mylanwld05-dev_testing.ac.gen.ppa.feedhenry.com","live-dyno":"testing","live-name":"testing-v60ttwgovdinr6mylanwld05-live","live-url":"https://testing-v60ttwgovdinr6mylanwld05-live_testing.ac.gen.ppa.feedhenry.com"},"status":"ok"});
-          }else if(data.hasOwnProperty('act') && data.act === 'list'){
+          }else if(data.hasOwnProperty('act') && data.act === 'list' && !data.type){
             console.log("Got collections");
             success(getJSONFixture("collectionsList.json"));
           }else{
@@ -49,9 +49,29 @@ describe("test alert notifications view", function(){
       expect(view.list.collection.length).toEqual(5);
 
       view.$el.find('ul.collectionsUl li').click();
-//      console.log(view.dataView);
-//      expect(view.dataView).exists();
-//      console.log('exists');
+
+      jasmine.Clock.tick(2000);
+
+      expect(view.dataView.collection.length).toEqual(3);
+
+
+
+      expect(view.dataView.$el.find('table.databrowser').length).toEqual(1);
+      expect(view.dataView.$el.find('table.databrowser tbody tr').length).toEqual(3);
+
+      view.dataView.onAddRow();
+      jasmine.Clock.tick(1000);
+      expect(view.dataView.$el.find('table.databrowser tbody tr').length).toEqual(4);
+
+      var newRow = view.dataView.$el.find('tr.editing');
+
+//      view.dataView.onRowAdvancedEdit({ target : newRow, stopPropagation : function(){} });
+//
+//      expect(view.dataView.$el.find('.advancededitorBar').style.display === "none").toBe(false);
+//      view.dataView.$el.find('.btn-raw-editor').click();
+
+
+
     });
     jasmine.Clock.tick(501);
   });
