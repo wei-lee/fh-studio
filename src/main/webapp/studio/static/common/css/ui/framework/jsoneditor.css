@@ -33,12 +33,12 @@
 }
 
 .jsoneditor .field.empty {
-    background-image: url('img/jsoneditor-icons.png');
+    background-image: url('../img/jsoneditor-icons.png');
     background-position: 0 -144px;
 }
 
 .jsoneditor .value.empty {
-    background-image: url('img/jsoneditor-icons.png');
+    background-image: url('../img/jsoneditor-icons.png');
     background-position: -48px -144px;
 }
 
