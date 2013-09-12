@@ -88,11 +88,24 @@ App.View.DataBrowserFilters = App.View.DataBrowserView.extend({
       return this.alertbox('You must specify a field name and value to create a filter');
     }
 
+    // Retrieve from the TH tag the type of this field
+    // TODO all possible types should be in a collection, it'd be nice to draw these in dropdown rather than freeform text on this page
+    var type = $('th.th-' + key).data('type');
+    switch(type){
+      case "number":
+        val = parseInt(val, 10);
+        break;
+      case "boolean":
+        val = (val === "true");
+        break;
+    }
+
     if (['ge', 'gt', 'le', 'lt'].indexOf(operator)>-1){
       if (isNaN(parseInt(val, 10)) || /[A-Z]/i.test(val)){
         return this.alertbox('Greater than or less than filters require a number value');
       }
     }
+
 
     if (!f.hasOwnProperty(operator)){
       f[operator] = {};

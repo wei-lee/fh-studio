@@ -69,7 +69,7 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
 
 
     if (this.collection.length <= 0){
-      var emptyContent = (this.collection.loaded) ? this.templates.$dataviewEmptyContent() : new App.View.Spinner().render().$el.html();
+      var emptyContent = (this.collection.loaded) ? this.templates.$dataviewEmptyContent({ message : "No items found" }) : new App.View.Spinner().render().$el.html();
       return $(this.templates.$dataviewEmptyContainer( { content : emptyContent } ));
     }
 
