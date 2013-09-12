@@ -19,6 +19,9 @@ App.View.DataBrowserController = Backbone.View.extend({
     this.appkey = this.inst.apiKey;
 
     this.mode = $fw.data.get('cloud_environment');
+  },
+  loadCollectionsListing : function(){
+    var self = this;
     this.bind('loaded', this.showCollectionsListing);
 
     async.series([$.proxy(this.getHosts, this), $.proxy(this.getCollectionsListing, this)], function(err, res){
@@ -33,9 +36,7 @@ App.View.DataBrowserController = Backbone.View.extend({
         self.trigger('loaded', collection);
       }, 500);
     });
-
   },
-  // Typically gets called twice - a second time when getHosts is finished
   render: function(page) {
     var self = this;
     this.$el.empty();
@@ -47,9 +48,11 @@ App.View.DataBrowserController = Backbone.View.extend({
     }else if (!this.hasCorrectWrapper()){
       this.showWrapperChangeInstructions();
     }else{
+    // We're ready to show the collections listing
       self.$el.addClass('busy');
       var tpl = Handlebars.compile($('#databrowserLoading').html());
       self.$el.append(tpl());
+      this.loadCollectionsListing();
     }
     return this;
   },
@@ -59,6 +62,7 @@ App.View.DataBrowserController = Backbone.View.extend({
       self.initialize();
       self.render();
     }});
+    self.$el.empty();
     self.$el.append(messageView.render().$el);
   },
   getHosts : function(cb){
@@ -89,6 +93,7 @@ App.View.DataBrowserController = Backbone.View.extend({
     this.migrate = new this.subviews.migrateView( { guid : this.guid, mode : this.mode } );
     this.migrate.render();
     this.$el.append(this.migrate.el);
+    this.migrate.bind('migrateDone', $.proxy(this.onMigrateDone, this));
   },
   showWrapperChangeInstructions : function(){
     var self = this,
@@ -157,15 +162,15 @@ App.View.DataBrowserController = Backbone.View.extend({
     });
     el.parents('.dropdown.open').removeClass('open');
   },
-  onMigrateDone : function(){
+  onMigrateDone : function(needsDeploy){
     this.$el.empty();
-
-    if (this.hasCorrectWrapper()){
+    if (!this.hasCorrectWrapper()){
+      this.showWrapperChangeInstructions();
+    }else if (needsDeploy === true){
       this.showDeployMessage();
     }else{
-      this.showWrapperChangeInstructions();
+       this.loadCollectionsListing(); // re-init, download collection listing & show it
     }
-
   },
   showDeployMessage : function(){
     var tpl = $('#dataviewGoDeploy').html();

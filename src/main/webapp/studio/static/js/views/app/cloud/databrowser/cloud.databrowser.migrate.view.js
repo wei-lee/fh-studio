@@ -3,7 +3,8 @@ App.View.DataBrowserMigrateView = App.View.DataBrowserView.extend({
     'dataviewEmptyContainer' : '#dataviewEmptyContainer',
     'dataMigrateMessage' : '#dataMigrateMessage',
     'databrowserNavbar' : '#databrowserNavbar',
-    dataMigratingView : '#dataMigratingView'
+    'dataMigratingView' : '#dataMigratingView',
+    'databrowserEnable' : "#databrowserEnable"
   },
   events : {
     'click  .btn-migrate' : 'onMigrate'
@@ -15,8 +16,24 @@ App.View.DataBrowserMigrateView = App.View.DataBrowserView.extend({
   },
   render: function() {
     var self = this,
-    nav = this.templates.$databrowserNavbar({ brand : 'Data Browser', 'class' : 'migratenavbar', baritems : '' });
-    this.message = new App.View.DataBrowserMessageView({ message : this.templates.$dataMigrateMessage(), button : 'Migrate now &raquo;', cb : function(){
+    nav = this.templates.$databrowserNavbar({ brand : 'Data Browser', 'class' : 'migratenavbar', baritems : '' }),
+    // Is this a migrate or a simple "enable" - if it's a brand new app it might be an "enable"
+    isFullMigrate = !($fw.clientProps['mongo.dbperapp'] === 'true'),
+    migrateMessage, migrateButton;
+
+    if (isFullMigrate){
+      migrateMessage = this.templates.$dataMigrateMessage();
+      migrateButton = 'Migrate now &raquo;';
+      this.url = Constants.DB_MIGRATE_URL;
+      this.needsDeploy = true;
+    }else{
+      migrateMessage = this.templates.$databrowserEnable();
+      migrateButton = 'Enable &raquo;';
+      this.url = Constants.DB_CREATE_URL;
+      this.needsDeploy = false;
+    }
+
+    this.message = new App.View.DataBrowserMessageView({ message : migrateMessage, button : migrateButton , cb : function(){
       self.onMigrate.apply(self, arguments);
     }});
 
@@ -27,8 +44,7 @@ App.View.DataBrowserMigrateView = App.View.DataBrowserView.extend({
   },
   onMigrate : function(){
     var self = this,
-    url = Constants.DB_MIGRATE_URL;
-    var params = {
+    params = {
       appGuid: this.options.guid,
       env : this.options.mode
     };
@@ -37,7 +53,7 @@ App.View.DataBrowserMigrateView = App.View.DataBrowserView.extend({
     this.$el.append(this.templates.$dataMigratingView());
     $.ajax({
       type: 'POST',
-      url: url,
+      url: this.url,
       contentType : 'application/json',
       data: JSON.stringify(params),
       timeout: 20000,
@@ -181,7 +197,7 @@ App.View.DataBrowserMigrateView = App.View.DataBrowserView.extend({
     }, function(err){
       this.updateProgressLog('Error updating app instance properties');
     });
-    this.$el.find('.btn-migration-next').show();
+    this.trigger('migrateDone', this.needsDeploy);
   },
   makeProgressRed: function () {
     this.$el.find('.data_migrate_progress .progress').removeClass('progress-striped').addClass('progress-danger');

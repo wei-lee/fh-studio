@@ -94,12 +94,14 @@
           Dashboard
         </a>
       </li>
+      <% if(studio.getProps().optBoolean("databrowser.enabled")){ %>
       <li class="template-restriction nodejs_mode">
         <a href="#" data-controller="apps.cloud.databrowser.controller">
           <i class="icon-hdd"></i>
           Data Browser
         </a>
       </li>
+      <% } %>
       <li class="template-restriction nodejs_mode">
         <a href="#" data-controller="apps.environment.controller">
           <i class="icon-cogs"></i>
@@ -215,7 +217,9 @@
         <%@ include file="../reporting/reports_container.html" %>
        <%}%>
 
-      <%@ include file="./data_browser.html"%>
+      <% if(studio.getProps().optBoolean("databrowser.enabled")){ %>
+        <%@ include file="./data_browser.html"%>
+      <% } %>
 
        <%@ include file="./dashboard.html"%>
 

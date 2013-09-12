@@ -79,6 +79,7 @@ $.extend(Constants, {
 
   MBAAS_AUTHENTICATE_URL : Constants.MBAAS_URL_PREFIX + "admin/authenticateRequest",
   DB_MIGRATE_URL : Constants.MBAAS_URL_PREFIX + "admin/migratedb",
+  DB_CREATE_URL : Constants.MBAAS_URL_PREFIX + "admin/createdb",
 
   RELEASE_DEPLOY_APP_URL: Constants.IDE_URL_PREFIX + "app/releasestage",
   UPDATE_APP_FRAMEWORKS_URL: Constants.IDE_URL_PREFIX + "app/updateFrameworks",
