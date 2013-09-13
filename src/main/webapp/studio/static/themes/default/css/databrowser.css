@@ -67,6 +67,7 @@
 
 #databrowser_container .databrowserTableContainer {
     padding-right: 30px; /* Means scroll bars on OSX aren't hovering over the button */
+    border: 1px solid #ccc;
 }
 
 /*  Make our edit table float to the right OK */
@@ -115,6 +116,7 @@
 
 .databrowserTableContainer table.edittable th  {
     height: 20px;
+    border: 0px;
 }
 .databrowserTableContainer table.edittable .td-edit {
     height: 25px;
@@ -138,13 +140,22 @@
 .table.databrowser.table-bordered, .table.databrowser.table-bordered th {
     border-top-right-radius: 0px;
     border-top-left-radius: 0px;
+    border-top: 0px;
 }
+.table.databrowser.table-bordered tr td:first-child, .table.databrowser.table-bordered tr th:first-child {
+    border-left: 0px;
+}
+.table.databrowser.table-bordered tr th:last-child {
+    border-right: 0px;
+}
+
 .databrowsernav.navbar .navbar-inner {
     border-bottom-right-radius: 0px;
     border-bottom-left-radius: 0px;
     border-bottom: 0px;
     box-shadow : none;
     -webkit-box-shadow: none;
+    height: 100%; /* ensures border reaches top tip of table */
 }
 
 .navbar.databrowsernav {
