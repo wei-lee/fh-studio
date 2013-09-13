@@ -18,7 +18,7 @@ App.View.DataBrowserMigrateView = App.View.DataBrowserView.extend({
     var self = this,
     nav = this.templates.$databrowserNavbar({ brand : 'Data Browser', 'class' : 'migratenavbar', baritems : '' }),
     // Is this a migrate or a simple "enable" - if it's a brand new app it might be an "enable"
-    isFullMigrate = !($fw.clientProps['mongo.dbperapp'] === 'true'),
+    isFullMigrate = $fw.clientProps['mongo.dbperapp'] === 'true' ? false : true,
     migrateMessage, migrateButton;
 
     if (isFullMigrate){
