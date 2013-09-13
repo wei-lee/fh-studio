@@ -43,7 +43,9 @@ App.View.DataBrowserController = Backbone.View.extend({
 
     // Do we need to migrate?
     if (this.needsMigrate()){
-      this.showMigrateView();
+      // Is this a migrate or a simple "enable" - if it's a brand new app it might be an "enable"
+      var isFullMigrate = ( ($fw.clientProps['mongo.dbperapp'] !== 'true') || (this.hasCorrectWrapper() === false) );
+      this.showMigrateView(isFullMigrate);
     // Do we need to upgrade from nodeapp to webapp?
     }else if (!this.hasCorrectWrapper()){
       this.showWrapperChangeInstructions();
@@ -89,8 +91,8 @@ App.View.DataBrowserController = Backbone.View.extend({
       return cb(err);
     }});
   },
-  showMigrateView : function(){
-    this.migrate = new this.subviews.migrateView( { guid : this.guid, mode : this.mode } );
+  showMigrateView : function(isFullMigrate){
+    this.migrate = new this.subviews.migrateView( { guid : this.guid, mode : this.mode, isFullMigrate : isFullMigrate } );
     this.migrate.render();
     this.$el.append(this.migrate.el);
     this.migrate.bind('migrateDone', $.proxy(this.onMigrateDone, this));
