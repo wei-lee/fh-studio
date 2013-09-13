@@ -196,6 +196,12 @@
     <a class="btn btn-raw-editor btn-inverse"><i class="icon-wrench"></i> Raw</a>
   </div>
 </script>
+<script id="dataviewInlineError" type="text/x-handlebars-template">
+  <div class="alert alert-error">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    {{ message }}
+  </div>
+</script>
 <script id="dataviewEmptyContent" type="text/x-handlebars-template">
   {{{ message }}}<br />
   <button type="button" class="btn btn-primary btn-large btn-add-row">{{{ button }}}</button>

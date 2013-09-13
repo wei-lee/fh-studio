@@ -1,7 +1,8 @@
 App.View.DataBrowserAdvancedEditor = App.View.DataBrowserView.extend({
   templates : {
     databrowserNavbar : '#databrowserNavbar',
-    dataviewAdvancedEditorBarItems: '#dataviewAdvancedEditorBarItems'
+    dataviewAdvancedEditorBarItems: '#dataviewAdvancedEditorBarItems',
+    dataviewInlineError : '#dataviewInlineError'
   },
   events : {
     'click .btn-advancededitor-cancel' : 'onEditorCancel',
@@ -22,7 +23,7 @@ App.View.DataBrowserAdvancedEditor = App.View.DataBrowserView.extend({
 
     var container = document.createElement('div');
     this.editor = new jsoneditor.JSONEditor(container, {
-      error : this.onJSONError
+      error : function(){ /* handled in below try catch - this doesn't get fired */}
     });
     this.$el.append(container);
     return this;
@@ -35,7 +36,12 @@ App.View.DataBrowserAdvancedEditor = App.View.DataBrowserView.extend({
     // 'code' sets the Ace Editor mode - but there seems to be an incompatability of versions :-(
   },
   onEditorSave : function(e){
-    this.json = this.editor.get();
+    try{
+      this.json = this.editor.get();
+    }catch(err){
+      this.onJSONError(err);
+      return;
+    }
     this.model.set('fields', this.json);
     this.model.save();
     this.parent.onRowAdvancedEditDone(e);
@@ -47,7 +53,13 @@ App.View.DataBrowserAdvancedEditor = App.View.DataBrowserView.extend({
     this.model = model;
     this.editor.set(model.get('fields'));
   },
-  onJSONError : function(){
+  onJSONError : function(err){
+    var self = this;
+    this.err = $(this.templates.$dataviewInlineError({ message : 'Error saving JSON: ' + err.toString() }));
+    this.$el.prepend(this.err);
+    setTimeout(function(){
+      $(self.err).remove();
+    }, 5000);
     console.log(arguments);
   }
 });
