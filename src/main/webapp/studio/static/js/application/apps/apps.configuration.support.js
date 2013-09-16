@@ -3,7 +3,6 @@ var Apps = Apps || {};
 Apps.Configuration = Apps.Configuration || {};
 
 Apps.Configuration.Support = Controller.extend({
-
   hiddenOptions: {},
   replaceOptions: {},
   featuredConfigOptions: {
@@ -13,7 +12,7 @@ Apps.Configuration.Support = Controller.extend({
   },
 
   init: function () {
-    this.hiddenOptions = {'status':true};
+    _.extend(this.hiddenOptions, {'status':true});
   },
   
   show: function () {
@@ -119,6 +118,7 @@ Apps.Configuration.Support = Controller.extend({
   },
 
   constructConfigDom: function (configs, dest, container, hiddenOptions, replaceOptions) {
+    console.log('*** hiddenOptions', hiddenOptions);
     var self = this;
     container.empty();
     console.log("Construct config form");
