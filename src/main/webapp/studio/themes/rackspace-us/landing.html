@@ -42,9 +42,9 @@ try {
     $('.tabs').tabs();
     
     function switchTab(id){
-      //$(".row").removeClass("active");
-      //$("#" + id).addClass("active");
-      $("#" + id + "Link").data('track', 'false').click();
+      $('.tabs_container .row').removeClass('active');
+      $("#" + id).addClass("active");
+      $('#tryit').hide();
       return false;
     }
 
@@ -67,14 +67,13 @@ try {
         }, 10000);
       }
 
-      // Set fhc install code
-      var fhc_install_text = [
-        '$ sudo npm install -g fh-fhc',
-        '$ fhc -v',
-        '$ fhc target ' + document.location.host,
-        '$ fhc login email password'
-      ];
-      $('#installing pre').text(fhc_install_text.join("\n"));
+      var video = getQuerystring('video');
+      if (video === "1"){
+        switchTab('showvideo')
+      }else if(video === "2"){
+        switchTab('showdemo');
+      }
+
     });
   
   </script>
@@ -92,7 +91,7 @@ try {
 	        a.parentNode.insertBefore(b,a);e=function(f){return function(){mpq.push(
 	        [f].concat(Array.prototype.slice.call(arguments,0)))}};d=["init","track","track_links",
 	        "track_forms","register","register_once","identify","name_tag","set_config"];for(c=0;c<
-	        d.length;c++){mpq[d[c]]=e(d[c])}})();	
+	        d.length;c++){mpq[d[c]]=e(d[c])}})();
 	        if( mpTestMode ) {
 	          mpq.push(["set_config", {'test': 1 }]);
 	        }
@@ -139,94 +138,66 @@ try {
     </div>
 
     <!-- Main hero unit for a primary marketing message or call to action -->
-    <ul class="tabs toptabs" data-tabs="tabs">
-      <% if (studio.isLoggedIn()) { %>
-      <li class="active"><a href="#welcome">Getting Started</a></li>
-      <% } else { %>
-      <li class="active"><a href="#welcome">Welcome</a></li>
-      <% } %>
-      <li><a id="installingLink" href="#installing">Installing FHC</a></li>
-      <li><a id="studioLink" href="#studio">App Studio</a></li>
-    </ul>
+    <!--<ul class="tabs toptabs" data-tabs="tabs">-->
+      <!--<% if (studio.isLoggedIn()) { %>-->
+      <!--<li class="active"><a href="#welcome">Getting Started</a></li>-->
+      <!--<% } else { %>-->
+      <!--<li class="active"><a href="#welcome">Welcome</a></li>-->
+      <!--<% } %>-->
+      <!--<li><a id="installingLink" href="#installing">Installing FHC</a></li>-->
+      <!--<li><a id="studioLink" href="#studio">App Studio</a></li>-->
+    <!--</ul>-->
 
       <div class="hero-unit tab-content pill-content tabs_container">
 
-      <% if (studio.isLoggedIn()) { %>
-        <div id="welcome" class="row active">
-        <div class="span7">
-          <h2>Build Enterprise-Grade Mobile Apps with Rackspace and FeedHenry</h2>
-          <p>Rackspace and FeedHenry combine to deliver the first in its class, completely open, cloud-based, enterprise grade mobile application platform designed to be the most flexible, scalable and secure solution in the industry.</p>
-          <!--<a class="btn" target="_blank" href="<%= docLinks.get("docs_fhc")%>">Installing FHC &raquo;</a><br/>
-          <a class="btn" target="_blank" href="<%= docLinks.get("docs_fhc_labs")%>">FHC Labs &raquo;</a><br/>-->
-        </div>
-        <div class="span8 video">
-          <iframe class="vimeo" src="https://player.vimeo.com/video/34086215?title=0&amp;byline=0&amp;portrait=0" width="400" height="225" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
-        </div>
-      </div>
-      <% } else { %>
-        <div id="welcome" class="row active">
-        <div class="span7">
-          <h2>Build apps powered by Rackspace Cloud</h2>
-          <p>Build powerful cloud powered apps with Feedhenry. Write in HTML5 and JavaScript. Hosted and deployed in Rackspace Cloud, providing a cloud scalable app on 5 platforms 
-          instantly!</p><br />
-          <p>            
-          </p>
-        </div>
-        <div class="span8 video">
-          <iframe class="vimeo" src="https://player.vimeo.com/video/34086215?title=0&amp;byline=0&amp;portrait=0" width="400" height="225" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
-        </div>
-      </div>
-      
-      <% }%>
-    
-    <div id="installing" class="row">
-          <div class="span7">
-              <h2>Installing FHC</h2>
-              <p>The FHC command line utility gives access to the entire FeedHenry suite through your command line. It's a NodeJS utility which allows you to quickly get started building your apps in Rackspace Cloud.</p>
-          <pre class="code"></pre>
-        </div>
-          <div class="span8 video">
-          <iframe class="vimeo" src="https://player.vimeo.com/video/33966777?title=0&amp;byline=0&amp;portrait=0" width="400" height="225" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
 
-        </div>                 
+      <div id="welcome" class="row active">
+      <div class="span7">
+        <h2>Build Enterprise-Grade Mobile Apps with Rackspace and FeedHenry</h2>
+        <p>Rackspace and FeedHenry combine to deliver the first in its class, completely open, cloud-based, enterprise grade mobile application platform designed to be the most flexible, scalable and secure solution in the industry.</p>
+        <!--<a class="btn" target="_blank" href="<%= docLinks.get("docs_fhc")%>">Installing FHC &raquo;</a><br/>
+        <a class="btn" target="_blank" href="<%= docLinks.get("docs_fhc_labs")%>">FHC Labs &raquo;</a><br/>-->
+      </div>
+      <div class="span8 platformdiagram">
+        <img src="<%= studio.getThemeStaticAssetPath("/images/platform-diagram2.png")%>" />
+      </div>
     </div>
-        
-    <div id="studio" class="row">
-        <div class="span7">
-            <h2>App Studio</h2>
-            <p>Learn about the FeedHenry App Studio. 
-            This powerful web-based tool allows you to build and manage your app portfolio. 
-            </p>
-      </div>
-        <div class="span8 video">
-        <iframe class="vimeo" src="https://player.vimeo.com/video/34513716?title=0&amp;byline=0&amp;portrait=0" width="400" height="225" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
 
-      </div>
+    <div id="registerdemo" class="row">
+      <iframe height="460" allowTransparency="true" frameborder="0" scrolling="no" style="width:100%;border:none"  src="https://feedhenry.wufoo.com/embed/z7r4w7/"><a href="https://feedhenry.wufoo.com/forms/z7r4w7/">Form loading..</a></iframe>
+    </div>
+    <div id="registervideo" class="row">
+      <iframe height="460" allowTransparency="true" frameborder="0" scrolling="no" style="width:100%;border:none"  src="https://feedhenry.wufoo.com/embed/z7r4q7/"><a href="https://feedhenry.wufoo.com/forms/z7r4q7/">Form laoding..</a></iframe>
+    </div>
+    <div id="showvideo" class="row" style="text-align: center; margin: auto;">
+      <iframe class="vimeo" src="https://player.vimeo.com/video/33966777?title=0&amp;byline=0&amp;portrait=0" width="500" height="280" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+    </div>
+    <div id="showdemo" class="row" style="text-align: center; margin: auto;">
+      <iframe src="//player.vimeo.com/video/74495467" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
     </div>
   </div>
 
   <% if (studio.isLoggedIn()) { %>
-    <div class="hero-unit" id="tryit">
-      <a href="#" onclick="switchTab('installing')" class="btn large bfob fhc_button">Watch Video</a>
-      <a href="<%=btnTarget%>" class="btn large bfob studio_button">Jump to App Studio &raquo;</a>
-    </div>
+      <div class="hero-unit" id="tryit">
+        <a href="<%=btnTarget%>" class="btn large bfob">Jump to App Studio &raquo;</a>
+      </div>
   <% } else { %>
     <div class="hero-unit" id="tryit">
-      <a href="#" onclick="switchTab('installing')" class="btn large bfob fhc_button">Watch 90 Second Video</a>
-      <a href="<%=btnTarget%>" class="btn large bfob studio_button">Sign Up Now</a>
+      <a href="#" onclick="switchTab('registervideo')" class="btn large bfob fhc_button">Watch Video &raquo; </a>
+      <a href="#" onclick="switchTab('registerdemo')" class="btn large bfob studio_button">Sign Up Now  &raquo; </a>
     </div>
   <% } %>
 
       <!-- Example row of columns -->
       <div class="row docs">
         <div class="span5">
-          <h2>Watch Demo Video</h2>
+          <h2>Watch Platform Demo</h2>
           <img src="<%= studio.getThemeStaticAssetPath("/images/videos.png")%>" alt="Github" class="pull-left thumb">
           <p>See the FeedHenry and Rackspace demo video to learn how quick and easy it is to build enterprise-grade applications.</p>
-          <a class="btn" target="_blank" href="http://www.vimoe.com/feedhenry">View Video &raquo;</a>
+          <a class="btn" target="_blank" onclick="switchTab('showdemo')" href="#">View Video &raquo;</a>
         </div>
         <div class="span6">
-          <h2>Feedhenry Platform & Rackspace Cloud Overview</h2>
+          <h2>Solution Overview</h2>
           <img src="<%= studio.getThemeStaticAssetPath("/images/blog.png")%>" alt="Blog" class="pull-left thumb">
           <p>Learn more about how FeedHenry provides a next-generation, cloud-based Mobile
 
@@ -235,10 +206,10 @@ try {
        </div>
         <div class="span5">
           <h2>Schedule a Demo</h2>
-          <img src="<%= studio.getThemeStaticAssetPath("/images/apis.png")%>" alt="APIs" class="pull-left thumb">
-          <p>Schedule a live demo with FeedHenry and Rackspace experts who will guide you through the development of an enterprise-grade mobile app deployed in a Rackspace Cloud.</p>
+          <img src="<%= studio.getThemeStaticAssetPath("/images/schedule.png")%>" alt="APIs" class="pull-left thumb">
+          <p>Schedule a live demo with our experts guiding you through developing an enterprise-grade mobile app deployed in the Rackspace Cloud.</p>
           <a class="btn" target="_blank" href="<%= docLinks.get("docs_video")%>">Schedule a Demo &raquo;</a>
-          
+
         </div>
       </div>
 
@@ -248,7 +219,7 @@ try {
       </footer>
 
     </div> <!-- /container -->
-    
+
     <!-- Mixpanel stuff - bind to all anchor tags when clicked -->
     <script>
     var fhpage = "<%=this.getClass().getSimpleName().replaceAll("_", ".")%>";
@@ -263,7 +234,7 @@ try {
           // lets check if we shouldn't track
           if (thisA.data('track') !== 'false') {
             var buttonName = thisA.text().replace(/\s/g, '_');
-            mpq.track(buttonName + '-clicked', {"page": fhpage}); 
+            mpq.track(buttonName + '-clicked', {"page": fhpage});
           } else {
             thisA.data('track', '');
           }

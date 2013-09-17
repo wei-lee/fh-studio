@@ -5,9 +5,6 @@
   <span><%=studio.getEmail()%> (<%=studio.getAccountType()%>)</span>
 <% } %>
 
-<% if ( studio.getProperty(studio.PROP_AUTHLANDING).equals(studio.IDE_LANDING) || studio.getProperty(studio.PROP_NOAUTHLANDING).equals(studio.IDE_LANDING) ) { %>
-  <a href="/?a=<%=studio.IDE_LANDING%>" class="<%=pageName.equals(studio.IDE_LANDING) ? "active" : ""%>">Home</a>
-<% } %>
 
 <% if (studio.isLoggedIn()) { %>
   <!--  only show studio if logged in -->
@@ -15,6 +12,9 @@
 <% } %>
 
 <% if (!pageName.equals(studio.IDE_LANDING)){ %>
+  <% if ( studio.getProperty(studio.PROP_AUTHLANDING).equals(studio.IDE_LANDING) || studio.getProperty(studio.PROP_NOAUTHLANDING).equals(studio.IDE_LANDING) ) { %>
+  <a href="/?a=<%=studio.IDE_LANDING%>" class="<%=pageName.equals(studio.IDE_LANDING) ? "active" : ""%>">Home</a>
+  <% } %>
   <a target="_blank" href="<%=studio.getProperty("docs-url")%>">Docs</a>
   <a target="_blank" href="<%=studio.getProperty("support-url")%>">Support</a>
 <% } %>
