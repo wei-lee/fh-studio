@@ -118,12 +118,12 @@ pre.code {
   width: 194px;
 }
 .toptabs li a, .toptabs li a:link, .toptabs li a:active, .toptabs li a:hover {
-  background-color: #231f20;
+  background-color: #a5ca5f;
   color: #fff;
   border: 0;
 }
 .toptabs li a:hover {
-  background-color: #231f20;
+  background-color: #73b039;
   text-decoration: underline;
 }
 .toptabs li.active {
@@ -131,7 +131,7 @@ pre.code {
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
 }
 .toptabs li.active a, .toptabs li.active a:hover {
-  background-color: #231f20;
+  background-color: #639c33;
   opacity: 1;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
   color: #fff;
@@ -176,7 +176,7 @@ iframe.vimeo {
 }
 
 .hero-unit {
-  background: #323232 url('../images/subtle-grunge-lines-repeating-135x135.png');
+  background: #85bc40 url('../images/subtle-grunge-lines-repeating-135x135.png');
   padding: 30px;
   -webkit-border-radius: 0px;
   -moz-border-radius: 0px;

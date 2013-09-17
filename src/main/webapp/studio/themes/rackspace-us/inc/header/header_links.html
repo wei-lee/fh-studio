@@ -1,0 +1,43 @@
+<div id="header_user_info">
+  
+<% if (studio.isLoggedIn()) { %>
+  <!--  only show user details if logged in -->
+  <span><%=studio.getEmail()%> (<%=studio.getAccountType()%>)</span>
+<% } %>
+
+<% if ( studio.getProperty(studio.PROP_AUTHLANDING).equals(studio.IDE_LANDING) || studio.getProperty(studio.PROP_NOAUTHLANDING).equals(studio.IDE_LANDING) ) { %>
+  <a href="/?a=<%=studio.IDE_LANDING%>" class="<%=pageName.equals(studio.IDE_LANDING) ? "active" : ""%>">Home</a>
+<% } %>
+
+<% if (studio.isLoggedIn()) { %>
+  <!--  only show studio if logged in -->
+  <a href="/?a=<%=studio.IDE_INDEX%>" class="<%=pageName.equals(studio.IDE_INDEX) ? "active" : ""%>">Studio</a>
+<% } %>
+
+<% if (!pageName.equals(studio.IDE_LANDING)){ %>
+  <a target="_blank" href="<%=studio.getProperty("docs-url")%>">Docs</a>
+  <a target="_blank" href="<%=studio.getProperty("support-url")%>">Support</a>
+<% } %>
+
+<% if("true".equals(studio.getProperty("hiring-link"))) { %>
+  <!--  only show hiring link if switched on -->
+  <a target="_blank" href="<%=studio.getProperty("hiring-url")%>">We're Hiring</a>
+<% } %>
+
+<% if (studio.isLoggedIn()) { %>
+  <script>
+  var signOut = function () { 
+    $.post('/box/srv/1.1/act/sys/auth/logout',
+      {'feedhenry':'true'},
+      function () {
+        document.location = document.location;
+      });
+  };
+  </script>
+  <a onclick="signOut();">Sign Out</a>
+<% } else { %>
+  <a href="/?a=<%=studio.IDE_LOGIN%>" class="<%=pageName.equals(studio.IDE_LOGIN) ? "active" : ""%>">Login/Register</a>
+<% } %>
+  
+
+</div>
