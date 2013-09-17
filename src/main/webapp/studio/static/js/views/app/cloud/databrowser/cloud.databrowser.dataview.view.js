@@ -80,6 +80,8 @@ App.View.DataBrowserDataView = App.View.DataBrowserView.extend({
   onRowAdvancedEditCancel : function(e){
     this.browser.$el.hide();
     this.table.$el.show();
+    this.pagination.$el.show();
+    this.nav.show();
     this.updateCrumb();
   },
   onAddRow : function(){

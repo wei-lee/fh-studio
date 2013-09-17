@@ -302,7 +302,7 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     model = this.collection.get(guid);
 
     tr.children('td.field').each(function(i, fieldtd){
-      if ($(fieldtd).hasClass('emptyfield') && !$(fieldtd).hasClass('dirty')){
+      if ($(fieldtd).hasClass('emptyfield') || !$(fieldtd).hasClass('dirty')){
         return;
       }
       $(fieldtd).removeClass('dirty emptyfield');
@@ -337,7 +337,8 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     if (!guid || $(tr).hasClass('newrow')){
       model = this.collection.create({fields : updatedObj}, { success : _succ });
     }else{
-      model.set('fields', updatedObj);
+      var merged = _.extend(model.get('fields'), updatedObj);
+      model.set('fields', merged);
       model.save(null, { success : _succ });
     }
   },
