@@ -16,7 +16,9 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     'click table.databrowser tr.trow' : 'onRowClickProxy',
     'click table.databrowser .td-checkbox input[type=checkbox]' : 'onRowSelection',
     'keyup table.databrowser td.field input' : 'onRowDirty',
+    'focus table.databrowser td.field select' : 'onRowDirty',
     'change table.databrowser td.field select' : 'onRowDirty',
+    'input table.databrowser td.field input[type=number]' : 'onRowDirty',
     'click table.edittable tr .btn-edit-inline' : 'onEditRowButton',
     'click table.edittable .btn-delete-row' : 'onRowDelete',
     'click table.databrowser th' : 'onColumnSort'
@@ -217,6 +219,10 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
         case "object":
           input = $('<input type="text" disabled placeholder="Advanced editor only">');
           break;
+        case "number":
+          input = $('<input type="number">');
+          input.val(span.html());
+          break;
         default:
           input = $('<input type="text">');
           input.val(span.html());
@@ -299,7 +305,8 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     tr = this.$el.find(rowSelector),
     table = $(tr).parents('table'),
     collectionName = table.data('collection'),
-    model = this.collection.get(guid);
+    model = this.collection.get(guid),
+    previousObj = (model && model.get('fields')) || {};
 
     tr.children('td.field').each(function(i, fieldtd){
       if (($(fieldtd).hasClass('emptyfield') && !tr.hasClass('newrow')) || !$(fieldtd).hasClass('dirty')){
@@ -312,8 +319,14 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
       name = curInp.attr('name'),
       span = $(fieldtd).children('span');
 
+      // Make sure bools retain their type
       if (curInp.prop('tagName').toLowerCase() === 'select'){
         val = (val === "true");
+      }
+
+      // Make sure numbers retain their type
+      if (curInp.attr('type')==="number" && !isNaN(parseInt(val, 10))){
+        val = parseInt(val, 10);
       }
 
       $(span).html(val.toString());
@@ -337,7 +350,7 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     if (!guid || $(tr).hasClass('newrow')){
       model = this.collection.create({fields : updatedObj}, { success : _succ });
     }else{
-      var merged = _.extend(model.get('fields'), updatedObj);
+      var merged = _.extend(previousObj, updatedObj);
       model.set('fields', merged);
       model.save(null, { success : _succ });
     }
@@ -431,6 +444,7 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     tr = $(e.target).parents('tr');
     tr.addClass('dirty warning');
     td.addClass('dirty');
+    td.removeClass('emptyfield');
   },
   onRowDelete : function(e){
     e.stopPropagation();
