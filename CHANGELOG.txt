@@ -6,6 +6,7 @@ Component: fh-studio
 -------------------------------------------------------------------------------
 * 4571 - Use white icon/splash screen by default for builds
 
+
 3.17.11 - 2013-09-10 - IR210 - Michael Nairn
 -------------------------------------------------------------------------------
 * 4625 - Remove registration links from rackspace theme
