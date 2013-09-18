@@ -138,6 +138,7 @@ js/views/common/swap_select.view.js
 js/views/app/cloud/cloud.sysevents.view.js
 js/views/app/cloud/cloud.alerts.view.js
 js/views/app/cloud/cloud.alertnotifications.view.js
+js/views/app/cloud/cms/cloud.cms.view.js
 js/views/cloudenvironments/cloudenvironments.charts.view.js
 js/views/cloudenvironments/cloudenvironments.overview.view.js
 js/views/cloudenvironments/cloudenvironments.envresources.view.js

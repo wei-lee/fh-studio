@@ -89,6 +89,12 @@
       </li>
       <li class="nav-header template-restriction">Cloud Management</li>
       <li class="template-restriction nodejs_mode">
+        <a href="#" data-controller="apps.cloud.cms.controller">
+          <i class="icon-dashboard"></i>
+          CMS
+        </a>
+      </li>
+      <li class="template-restriction nodejs_mode">
         <a href="#" data-controller="apps.cloud.dashboard.controller">
           <i class="icon-dashboard"></i>
           Dashboard
@@ -210,6 +216,8 @@
        <%}%>
 
        <%@ include file="./dashboard.html"%>
+
+      <%@ include file="./cms.html"%>
 
        <%@ include file="./debug_logging.html"%>
 
