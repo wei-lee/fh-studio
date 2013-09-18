@@ -23,7 +23,7 @@ Apps.Configuration.Ios.Controller = Apps.Configuration.Support.extend({
       "packages": true,
       "auto Rotate": true,
       "hide Status Bar": true,
-      "orientation": true,
+      "orientation": true
     };
   }
 });
