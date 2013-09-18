@@ -155,12 +155,15 @@ App.View.DataBrowserController = Backbone.View.extend({
   onChangeCollection : function(e){
     var self = this,
     el = $(e.target),
-    id = el.data('id');
+    id = el.data('id'),
+    name = el.data('name');
     this.dataView.table.model = this.list.collection.get(id);
 
     this.updateCollection(this.dataView.table.model, function(collection){
       self.dataView.table.collection = collection;
       self.dataView.table.render();
+
+      self.$el.find('.databrowsernav a.brand').html(name);
     });
     el.parents('.dropdown.open').removeClass('open');
   },

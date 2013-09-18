@@ -155,7 +155,7 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
       td.data('type', type);
       td.addClass('field');
       td.addClass('field-' + heading);
-      if (row.hasOwnProperty(heading)){
+      if (row && row.hasOwnProperty(heading)){
         value = row[heading];
       }else{
         td.addClass('emptyfield');
@@ -302,7 +302,7 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     model = this.collection.get(guid);
 
     tr.children('td.field').each(function(i, fieldtd){
-      if ($(fieldtd).hasClass('emptyfield') || !$(fieldtd).hasClass('dirty')){
+      if (($(fieldtd).hasClass('emptyfield') && !tr.hasClass('newrow')) || !$(fieldtd).hasClass('dirty')){
         return;
       }
       $(fieldtd).removeClass('dirty emptyfield');
