@@ -216,6 +216,7 @@ js/application/apps/apps.endpoints.controller.js
 js/application/apps/apps.cloudresources.controller.js
 js/application/apps/apps.cloudnotifications.controller.js
 js/application/apps/apps.cloud.dashboard.controller.js
+js/application/apps/apps.cms.controller.js
 js/application/apps/apps.environment.controller.js
 js/application/apps/apps.deploy.controller.js
 js/application/apps/apps.reports.support.js
