@@ -170,7 +170,7 @@ try {
       <iframe height="460" allowTransparency="true" frameborder="0" scrolling="no" style="width:100%;border:none"  src="https://feedhenry.wufoo.com/embed/z7r4q7/"><a href="https://feedhenry.wufoo.com/forms/z7r4q7/">Form laoding..</a></iframe>
     </div>
     <div id="showvideo" class="row" style="text-align: center; margin: auto;">
-      <iframe class="vimeo" src="https://player.vimeo.com/video/33966777?title=0&amp;byline=0&amp;portrait=0" width="500" height="280" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+      <iframe src="//player.vimeo.com/video/74826280" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
     </div>
     <div id="showdemo" class="row" style="text-align: center; margin: auto;">
       <iframe src="//player.vimeo.com/video/74495467" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
@@ -188,13 +188,12 @@ try {
     </div>
   <% } %>
 
-      <!-- Example row of columns -->
       <div class="row docs">
         <div class="span5">
           <h2>Watch Platform Demo</h2>
           <img src="<%= studio.getThemeStaticAssetPath("/images/videos.png")%>" alt="Github" class="pull-left thumb">
           <p>See the FeedHenry and Rackspace demo video to learn how quick and easy it is to build enterprise-grade applications.</p>
-          <a class="btn" target="_blank" onclick="switchTab('showdemo')" href="#">View Video &raquo;</a>
+          <a class="btn" onclick="switchTab('showdemo')" href="#">View Video &raquo;</a>
         </div>
         <div class="span6">
           <h2>Solution Overview</h2>
@@ -208,9 +207,32 @@ try {
           <h2>Schedule a Demo</h2>
           <img src="<%= studio.getThemeStaticAssetPath("/images/schedule.png")%>" alt="APIs" class="pull-left thumb">
           <p>Schedule a live demo with our experts guiding you through developing an enterprise-grade mobile app deployed in the Rackspace Cloud.</p>
-          <a class="btn" target="_blank" href="<%= docLinks.get("docs_video")%>">Schedule a Demo &raquo;</a>
-
+          <a class="btn" onclick="switchTab('registerdemo')" href="#">Schedule a Demo &raquo;</a>
         </div>
+
+      </div>
+
+      <div class="row docs">
+          <div class="span5">
+            <h2>Mobile Meets Cloud</h2>
+            <img src="<%= studio.getThemeStaticAssetPath("/images/videos.png")%>" alt="Github" class="pull-left thumb">
+            <p>Read press release on how FeedHenry and Rackspace go to market to advance deployments of open, cloud based mobile applications</p>
+            <a class="btn" target="_blank" href="#">View press release &raquo;</a>
+          </div>
+          <div class="span6">
+            <h2>Webinar</h2>
+            <img src="<%= studio.getThemeStaticAssetPath("/images/blog.png")%>" alt="Blog" class="pull-left thumb">
+            <p>View the FeedHenry & Rackspace Webinar</p>
+            <a class="btn" target="_blank" href="#">Watch Webinar &raquo;</a>
+          </div>
+          <div class="span5">
+            <h2>Blog Post</h2>
+            <img src="<%= studio.getThemeStaticAssetPath("/images/schedule.png")%>" alt="APIs" class="pull-left thumb">
+            <p>Read our blog post on why FeedHenry and Rackspace and mobile and cloud are a perfect yin and yang for enterprise mobility.</p>
+            <a class="btn" target="_blank" href="#">Blog Post &raquo;</a>
+
+      </div>
+
       </div>
 
       <footer>
