@@ -7,9 +7,7 @@ Apps.Configuration.Android.Controller = Apps.Configuration.Support.extend({
   destination: 'android',
 
   init: function() {
-    this.hiddenOptions = {
-      'splash Image': true
-    };
+    this.hiddenOptions = {};
     this._super();
   }
 
