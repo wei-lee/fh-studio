@@ -119,7 +119,7 @@ try {
       <div class="topbar-inner">
         <div class="container-fluid">
           <div class="user_info_container">
-            <%@ include file="inc/header/header_links.html"%>
+            <%@ include file="../../inc/header/header_links.html"%>
           </div>
         </div>
       </div>
@@ -137,17 +137,6 @@ try {
       <strong>Activation Successful.</strong> Your account is now activated.
     </div>
 
-    <!-- Main hero unit for a primary marketing message or call to action -->
-    <!--<ul class="tabs toptabs" data-tabs="tabs">-->
-      <!--<% if (studio.isLoggedIn()) { %>-->
-      <!--<li class="active"><a href="#welcome">Getting Started</a></li>-->
-      <!--<% } else { %>-->
-      <!--<li class="active"><a href="#welcome">Welcome</a></li>-->
-      <!--<% } %>-->
-      <!--<li><a id="installingLink" href="#installing">Installing FHC</a></li>-->
-      <!--<li><a id="studioLink" href="#studio">App Studio</a></li>-->
-    <!--</ul>-->
-
       <div class="hero-unit tab-content pill-content tabs_container">
 
 
@@ -156,8 +145,6 @@ try {
         <h2>Build Enterprise-Grade Mobile Apps with Rackspace and FeedHenry</h2>
         <hr />
         <p>Rackspace and FeedHenry combine to deliver the first in its class, completely open, cloud-based, enterprise grade mobile application platform designed to be the most flexible, scalable and secure solution in the industry.</p>
-        <!--<a class="btn" target="_blank" href="<%= docLinks.get("docs_fhc")%>">Installing FHC &raquo;</a><br/>
-        <a class="btn" target="_blank" href="<%= docLinks.get("docs_fhc_labs")%>">FHC Labs &raquo;</a><br/>-->
       </div>
       <div class="span8 platformdiagram">
         <img src="<%= studio.getThemeStaticAssetPath("/images/platform-diagram.png")%>" />
