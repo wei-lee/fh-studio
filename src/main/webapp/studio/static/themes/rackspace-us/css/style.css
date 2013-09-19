@@ -35,15 +35,15 @@ h2 {
   color: #505050;
 }
 
-.bfob {
+.bfob, .btn.primary.bfob {
   color: #FFFFFF;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-  background-color: #009CDC;
-  background-image: -moz-linear-gradient(top, #009CDC, #0090d9);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#009CDC), to(#0090d9));
-  background-image: -webkit-linear-gradient(top, #009CDC, #0090d9);
-  background-image: -o-linear-gradient(top, #009CDC, #0090d9);
-  background-image: linear-gradient(to bottom, #009CDC, #0090d9);
+  background-color: #7ea0b5;
+  background-image: -moz-linear-gradient(top, #7ea0b5, #8fadbe);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#7ea0b5), to(#8fadbe));
+  background-image: -webkit-linear-gradient(top, #7ea0b5, #8fadbe);
+  background-image: -o-linear-gradient(top, #7ea0b5, #8fadbe);
+  background-image: linear-gradient(to bottom, #7ea0b5, #8fadbe);
   background-repeat: repeat-x;
   border-color: #398907;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
@@ -56,7 +56,7 @@ h2 {
 .bfob.disabled,
 .bfob[disabled] {
   color: #FFFFFF;
-  background-color: #0090d9;
+  background-color: #8fadbe;
 }
 
 .logoWest {
