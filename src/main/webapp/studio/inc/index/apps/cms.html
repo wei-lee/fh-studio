@@ -12,13 +12,50 @@
 
 <script id="cms_home" type="text/x-handlebars-template">
   <div class="row">
+
     <div class="span3" style="background-color : #eee;">
-      JSTree here
+      <div class="menu pull-right">
+        <a href="#" class="btn btn-small btn-deletesection btn-danger"><i class="icon-trash"></i></a>
+        <a href="#" class="btn btn-small btn-addsection btn-success"><i class="icon-plus"></i></a>
+
+      </div>
+      JSTree here<br />
+      <span class="text-error">Unsaved Changes</span>
+      <span class="text-warning">Draft</span>
+      <span class="text-info">Publish Later</span>
     </div>
 
-    <div class="span9" style="background-color: #ccc;">
-      Other stuff here
+    <div class="span6" style="background-color: #ccc;">
+      <ul class="breadcrumb">
+        <li><a href="#">Stores</a> <span class="divider">/</span></li>
+        <li><a href="#">Munster</a> <span class="divider">/</span></li>
+        <li class="active">Waterford</li>
+      </ul>
+
+      <h2>Waterford</h2>
     </div>
 
+    <div class="span3" style="background-color : #eee;">
+      <ul id="myTab" class="nav nav-tabs">
+        <li class=""><a href="#addfield" data-toggle="tab">Add Field</a></li>
+        <li class=""><a href="#configurefield" data-toggle="tab">Configure Field</a></li>
+        <li class=""><a href="#configuresection" data-toggle="tab">Configure Section</a></li>
+        <li class=""><a href="#apppreview" data-toggle="tab">App Preview</a></li>
+      </ul>
+      <div id="myTabContent" class="tab-content">
+        <div class="tab-pane fade active in" id="addfield">
+          <p>Add a field</p>
+        </div>
+        <div class="tab-pane fade" id="configurefield">
+          <p>Configure Field</p>
+        </div>
+        <div class="tab-pane fade" id="configuresection">
+          <p>Configure section</p>
+        </div>
+        <div class="tab-pane fade" id="apppreview">
+          <p>Preview Here</p>
+        </div>
+      </div>
+    </div>
   </div>
 </script>
