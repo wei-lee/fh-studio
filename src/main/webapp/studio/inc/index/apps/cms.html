@@ -11,46 +11,114 @@
 </div>
 
 <script id="cms_home" type="text/x-handlebars-template">
-  <div class="row">
+  <div class="row nomargin">
 
-    <div class="span3" style="background-color : #eee;">
+    <div class="span2">
       <div class="menu pull-right">
         <a href="#" class="btn btn-small btn-deletesection btn-danger"><i class="icon-trash"></i></a>
         <a href="#" class="btn btn-small btn-addsection btn-success"><i class="icon-plus"></i></a>
+      </div>
+      <br style="clear: both;" />
+      <div class="treeContainer">
 
       </div>
-      JSTree here<br />
       <span class="text-error">Unsaved Changes</span>
       <span class="text-warning">Draft</span>
       <span class="text-info">Publish Later</span>
     </div>
 
-    <div class="span6" style="background-color: #ccc;">
-      <ul class="breadcrumb">
+    <div class="span6">
+      <ul class="breadcrumb compact">
         <li><a href="#">Stores</a> <span class="divider">/</span></li>
         <li><a href="#">Munster</a> <span class="divider">/</span></li>
         <li class="active">Waterford</li>
       </ul>
-
       <h2>Waterford</h2>
+
+      <form id="sectionForm">
+        <fieldset class="empty">
+          Drag items from the "Add field" section to add content
+        </fieldset>
+      </form>
+
+
     </div>
 
-    <div class="span3" style="background-color : #eee;">
-      <ul id="myTab" class="nav nav-tabs">
-        <li class=""><a href="#addfield" data-toggle="tab">Add Field</a></li>
-        <li class=""><a href="#configurefield" data-toggle="tab">Configure Field</a></li>
-        <li class=""><a href="#configuresection" data-toggle="tab">Configure Section</a></li>
+    <div class="span4">
+      <ul id="myTab" class="nav nav-tabs compact">
+        <li class="active"><a href="#addfield" data-toggle="tab"><i class="icon-plus"></i> Field</a></li>
+        <li class=""><a href="#configurefield" data-toggle="tab"><i class="icon-cog"></i> Field</a></li>
+        <li class=""><a href="#configuresection" data-toggle="tab"><i class="icon-cog"></i> Section</a></li>
         <li class=""><a href="#apppreview" data-toggle="tab">App Preview</a></li>
       </ul>
       <div id="myTabContent" class="tab-content">
         <div class="tab-pane fade active in" id="addfield">
-          <p>Add a field</p>
+
+
+          <button class="icon btn btn-primary">
+            <i class="icon-font"></i>
+            <span>Single Line Input</span>
+          </button>
+
+          <button class="icon btn btn-primary">
+            <i class="icon-list-ol"></i>
+            <span>Paragraph Text</span>
+          </button>
+
+          <button class="icon btn btn-primary">
+            <i class="icon-file"></i>
+            <span>File</span>
+          </button>
+
+          <button class="icon btn btn-primary">
+            <i class="icon-picture"></i>
+            <span>Image</span>
+          </button>
+
+
         </div>
         <div class="tab-pane fade" id="configurefield">
-          <p>Configure Field</p>
+          <form id="configureFieldForm">
+            <fieldset>
+              <label>Field Name</label>
+              <input type="text" name="fieldName">
+              <label>Field Value</label>
+              <input type="text" name="fieldValue">
+
+              <div class="btn-group">
+                <button class="btn btn-primary btn-saveField">Save</button>
+                <button class="btn btn-danger btn-discardField">Discard Changes</button>
+              </div>
+            </fieldset>
+          </form>
         </div>
         <div class="tab-pane fade" id="configuresection">
-          <p>Configure section</p>
+          <form id="configureSectionForm">
+            <fieldset>
+              <label>Section Parent</label>
+              <select name="fieldName">
+                <option value="root">-Root</option>
+                <option value="stores">Stores</option>
+              </select>
+              <label class="radio">
+                <input type="radio" name="publishRadio" id="publishRadioNow" value="now" checked>
+                Publish Now
+              </label>
+              <label class="radio">
+                <input type="radio" name="publishRadio" id="publishRadioLater" value="later">
+                Publish Later
+              </label>
+              <input type="date" name="publishdate">
+
+              <div class="btn-group">
+                <button class="btn btn-primary btn-savesection">Save Section</button>
+                <button class="btn btn-danger btn-discard-section">Discard Changes</button>
+              </div>
+              <br />
+              <button class="btn btn-danger btn-deletesection">Delete this section</button>
+            </fieldset>
+          </form>
+
         </div>
         <div class="tab-pane fade" id="apppreview">
           <p>Preview Here</p>

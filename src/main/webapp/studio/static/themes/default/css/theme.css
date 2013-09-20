@@ -2697,7 +2697,7 @@ label, input, button, select, textarea {
 }
 legend { margin-bottom: 0; }
 legend + .control-group { margin-top: 0; }
-.breadcrumb .active {
+.crumb_container .breadcrumb .active {
   color: #fff;
   font-weight: bold;
 }
@@ -3003,7 +3003,7 @@ table.dataTable th:active {
   margin-bottom: 0;
 }
 
-.breadcrumb {
+.crumb_container .breadcrumb {
   border: none;
   box-shadow: none;
   -webkit-border-top-left-radius: 0;
@@ -3011,7 +3011,7 @@ table.dataTable th:active {
   border-top-left-radius: 0;
 }
 
-.breadcrumb li, .breadcrumb a {
+.crumb_container .breadcrumb li, .crumb_container .breadcrumb a {
   text-shadow: none;
   color: #fff;
 }

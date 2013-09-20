@@ -14,6 +14,35 @@ App.View.CMS = Backbone.View.extend({
   },
   render: function(){
     this.$el.append(this.templates.$cms_home());
+
+    this.$el.find('.treeContainer').jstree({
+      "json_data" : {
+        "data" : [
+          {
+            "data" : "A node",
+            "metadata" : { id : 23 },
+            "children" : [ "Child 1", "A Child 2" ]
+          },
+          {
+            "attr" : { "id" : "li.node.id1" },
+            "data" : {
+              "title" : "Long format demo",
+              "attr" : { "href" : "#" }
+            }
+          }
+        ]
+      },
+      'core': {
+        initially_open: ['root'],
+        animation: 0
+      },
+      'themes': {
+        theme: 'classic',
+        loaded: true
+      },
+      'plugins': ['themes', 'json_data', 'ui', 'cookies', 'crrm']
+    }).bind("select_node.jstree", function (e, data) { alert(data.rslt.obj.data("id")); });
+
     return this;
   },
   compileTemplates: function() {

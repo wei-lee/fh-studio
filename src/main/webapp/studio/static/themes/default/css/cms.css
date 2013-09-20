@@ -1,0 +1,91 @@
+.nav-tabs.compact > li > a {
+  padding-top: 4px;
+  padding-bottom: 4px;
+  line-height: 16px;
+}
+
+.nav-tabs.compact > li > a {
+  font-size: 0.9em;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin-right: 4px;
+}
+
+.breadcrumb.compact {
+    display: inline-block;
+    float: left;
+    font-size: 0.8em;
+    margin: 8px;
+}
+
+#cms_container .fh-box-inner {
+  padding: 0px;
+}
+
+/* These are in newer versions of bootstrap..*/
+.text-warning {
+    color: #c09853;
+}
+.text-error {
+    color: #b94a48;
+}
+.text-info {
+    color: #3a87ad;
+}
+
+#cms_container .col {
+  display: inline-block;
+}
+
+#cms_container .leftCol {
+  width: 20%;
+}
+
+#cms_container .middleCol{
+  width: 50%;
+}
+
+#cms_container .rightCol {
+  width: 29%;
+}
+
+#cms_container #addfield button {
+  width: 95px;
+  text-align: left;
+  margin: 4px 6px;
+  float: left;
+}
+
+.row.nomargin {
+  margin-left: 0px;
+}
+
+.row.nomargin .span3,
+.row.nomargin .span4,
+.row.nomargin .span6,
+.row.nomargin .span2 {
+  margin-left: 0px;
+}
+
+.row.nomargin .span3 {
+  width: 25%;
+}
+.row.nomargin .span6 {
+  width: 50%;
+}
+
+.row.nomargin .span4 {
+  width: 33.333333333%;
+}
+
+.row.nomargin .span2 {
+  width: 16.666666667%;
+}
+
+#cms_container fieldset.empty {
+    border: 1px dashed #ddd;
+    padding: 65px;
+    color: #666;
+    font-weight: 100;
+    font-size: 1.4em;
+}
