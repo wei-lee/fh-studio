@@ -2909,7 +2909,7 @@ table.dataTable th:active {
     background-size: 100px 30px;
 }
 
-.container-header-content, .breadcrumb {
+.container-header-content, .crumb_container .breadcrumb {
   background: #2e72ab; /* Old browsers */
   background: -moz-linear-gradient(top,  #2e72ab 0%, #285f96 100%); /* FF3.6+ */
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#2e72ab), color-stop(100%,#285f96)); /* Chrome,Safari4+ */
