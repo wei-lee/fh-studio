@@ -1,8 +1,13 @@
 common/js/ui/thirdparty/underscore.js
 common/js/ui/thirdparty/underscore.string.js
+common/js/ui/thirdparty/underscore.mixin.deepExtend/index.js
 common/js/ajax/ASyncServerTask.js
 common/js/ui/thirdparty/bootstrap/bootstrap.js
 common/js/ui/thirdparty/backbone/backbone.js
+common/js/ui/thirdparty/backbone-deep-model/deep-model.js
+common/js/ui/thirdparty/rivets/rivets.js
+common/js/ui/thirdparty/formbuilder/formbuilder.js
+common/js/ui/thirdparty/jquery.scrollWindowTo/index.js
 js/init/namespaces.js
 common/js/ui/thirdparty/handlebars/handlebars.js
 common/js/ui/thirdparty/handlebars/helpers.js
