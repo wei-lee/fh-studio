@@ -162,7 +162,7 @@ public class StudioBean {
       String host = "127.0.0.1";// pRequest.getLocalName();
       String endpoint = PROPS_ENDPOINT;
       int port = pRequest.getLocalPort();
-      String referer = scheme + "://" + pRequest.getLocalName();
+      String referer = scheme + "://" + pRequest.getServerName();
 
       // TODO: allow self-signed cert in development
       scheme = "http";
