@@ -10,24 +10,60 @@
 
 </div>
 
+<script id="cms_left" type="text/x-handlebars-template">
+  <div class="span2 left">
+    <div class="menu pull-right">
+      <a href="#" class="btn btn-small btn-deletesection btn-danger"><i class="icon-trash"></i></a>
+      <a href="#" class="btn btn-small btn-addsection btn-success"><i class="icon-plus"></i></a>
+    </div>
+    <br style="clear: both;" />
+    <div class="treeContainer">
+
+    </div>
+    <span class="text-error">Unsaved Changes</span>
+    <span class="text-warning">Draft</span>
+    <span class="text-info">Publish Later</span>
+  </div>
+</script>
+
+<script id="cms_sectionExtraTabs" type="text/x-handlebars-template">
+  <li class=""><a data-target="#configuresection"><i class="icon-cog"></i> Section</a></li>
+  <li class=""><a  data-target="#apppreview">App Preview</a></li>
+</script>
+<script id="cms_configureSection" type="text/x-handlebars-template">
+  <div class="fb-tab-pane" id="configuresection">
+    <form id="configureSectionForm">
+      <fieldset>
+        <label>Section Parent</label>
+        <select name="parentName">
+          <option value="root">-Root</option>
+          <option value="stores">Stores</option>
+        </select>
+        <label class="radio">
+          <input type="radio" name="publishRadio" id="publishRadioNow" value="now" checked>
+          Publish Now
+        </label>
+        <label class="radio">
+          <input type="radio" name="publishRadio" id="publishRadioLater" value="later">
+          Publish Later
+        </label>
+        <input type="date" name="publishdate">
+
+        <div class="btn-group">
+          <button type="submit" class="btn btn-primary btn-savesection">Save Section</button>
+          <button type="reset" class="btn btn-danger btn-discard-section">Discard Changes</button>
+        </div>
+        <br />
+        <button class="btn btn-danger btn-deletesection">Delete this section</button>
+      </fieldset>
+    </form>
+
+  </div>
+</script>
 <script id="cms_home" type="text/x-handlebars-template">
   <div class="row nomargin">
 
-    <div class="span2">
-      <div class="menu pull-right">
-        <a href="#" class="btn btn-small btn-deletesection btn-danger"><i class="icon-trash"></i></a>
-        <a href="#" class="btn btn-small btn-addsection btn-success"><i class="icon-plus"></i></a>
-      </div>
-      <br style="clear: both;" />
-      <div class="treeContainer">
-
-      </div>
-      <span class="text-error">Unsaved Changes</span>
-      <span class="text-warning">Draft</span>
-      <span class="text-info">Publish Later</span>
-    </div>
-
-    <div class="span6">
+    <div class="span6 middle">
       <ul class="breadcrumb compact">
         <li><a href="#">Stores</a> <span class="divider">/</span></li>
         <li><a href="#">Munster</a> <span class="divider">/</span></li>
@@ -44,12 +80,11 @@
 
     </div>
 
-    <div class="span4">
+    <div class="span4 right">
       <ul id="myTab" class="nav nav-tabs compact">
-        <li class="active"><a href="#addfield" data-toggle="tab"><i class="icon-plus"></i> Field</a></li>
-        <li class=""><a href="#configurefield" data-toggle="tab"><i class="icon-cog"></i> Field</a></li>
-        <li class=""><a href="#configuresection" data-toggle="tab"><i class="icon-cog"></i> Section</a></li>
-        <li class=""><a href="#apppreview" data-toggle="tab">App Preview</a></li>
+        <li class="active"><a href="#addfield" data-toggle="tab"></a></li>
+        <li class=""><a href="#configurefield" data-toggle="tab"></li>
+
       </ul>
       <div id="myTabContent" class="tab-content">
         <div class="tab-pane fade active in" id="addfield">
@@ -77,52 +112,7 @@
 
 
         </div>
-        <div class="tab-pane fade" id="configurefield">
-          <form id="configureFieldForm">
-            <fieldset>
-              <label>Field Name</label>
-              <input type="text" name="fieldName">
-              <label>Field Value</label>
-              <input type="text" name="fieldValue">
 
-              <div class="btn-group">
-                <button class="btn btn-primary btn-saveField">Save</button>
-                <button class="btn btn-danger btn-discardField">Discard Changes</button>
-              </div>
-            </fieldset>
-          </form>
-        </div>
-        <div class="tab-pane fade" id="configuresection">
-          <form id="configureSectionForm">
-            <fieldset>
-              <label>Section Parent</label>
-              <select name="fieldName">
-                <option value="root">-Root</option>
-                <option value="stores">Stores</option>
-              </select>
-              <label class="radio">
-                <input type="radio" name="publishRadio" id="publishRadioNow" value="now" checked>
-                Publish Now
-              </label>
-              <label class="radio">
-                <input type="radio" name="publishRadio" id="publishRadioLater" value="later">
-                Publish Later
-              </label>
-              <input type="date" name="publishdate">
-
-              <div class="btn-group">
-                <button class="btn btn-primary btn-savesection">Save Section</button>
-                <button class="btn btn-danger btn-discard-section">Discard Changes</button>
-              </div>
-              <br />
-              <button class="btn btn-danger btn-deletesection">Delete this section</button>
-            </fieldset>
-          </form>
-
-        </div>
-        <div class="tab-pane fade" id="apppreview">
-          <p>Preview Here</p>
-        </div>
       </div>
     </div>
   </div>

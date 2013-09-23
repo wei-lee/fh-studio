@@ -68,6 +68,7 @@
         SIZE: 'field_options.size',
         UNITS: 'field_options.units',
         LABEL: 'label',
+        VALUE: 'value',
         FIELD_TYPE: 'field_type',
         REQUIRED: 'required',
         ADMIN_ONLY: 'admin_only',
@@ -144,7 +145,9 @@
         events: {
           'click .subtemplate-wrapper': 'focusEditView',
           'click .js-duplicate': 'duplicate',
-          'click .js-clear': 'clear'
+          'click .js-clear': 'clear',
+          'input input': 'forceEditRender',
+          'input textarea': 'forceEditRender'
         },
         initialize: function() {
           this.parentView = this.options.parentView;
@@ -152,13 +155,19 @@
           return this.listenTo(this.model, "destroy", this.remove);
         },
         render: function() {
+          if (arguments.length > 0) {
+            return;
+          }
           this.$el.addClass('response-field-' + this.model.get(Formbuilder.options.mappings.FIELD_TYPE)).data('cid', this.model.cid).html(Formbuilder.templates["view/base" + (!this.model.is_input() ? '_non_input' : '')]({
             rf: this.model
           }));
           return this;
         },
-        focusEditView: function() {
+        focusEditView: function(e) {
           return this.parentView.createAndShowEditView(this.model);
+        },
+        forceEditRender: function(e) {
+          return this.model.set('value', e.target.value);
         },
         clear: function() {
           this.parentView.handleFormUpdate();
@@ -282,7 +291,8 @@
         render: function() {
           var subview, _i, _len, _ref;
           this.$el.html(Formbuilder.templates['page']());
-          this.$fbLeft = this.$el.find('.fb-left');
+          this.$fbLeft = this.$el.find('.fb-left') || this.$el.find('.span6.middle');
+          this.$fbRight = this.$el.find('.fb-right') || this.$el.find('.span4.right');
           this.$responseFields = this.$el.find('.fb-response-fields');
           this.bindWindowScrollEvent();
           this.hideShowNoResponseFields();
@@ -423,7 +433,9 @@
           });
           $newEditEl = this.editView.render().$el;
           this.$el.find(".fb-edit-field-wrapper").html($newEditEl);
-          this.$el.find(".fb-tabs a[data-target=\"#editField\"]").click();
+          if (!this.options.noEditOnDrop) {
+            this.$el.find(".fb-tabs a[data-target=\"#editField\"]").click();
+          }
           this.scrollLeftWrapper($responseFieldEl);
           return this;
         },
@@ -435,6 +447,9 @@
         },
         scrollLeftWrapper: function($responseFieldEl) {
           var _this = this;
+          if (this.options.noScroll) {
+            return;
+          }
           this.unlockLeftWrapper();
           return $.scrollWindowTo($responseFieldEl.offset().top - this.$responseFields.offset().top, 200, function() {
             return _this.lockLeftWrapper();
@@ -522,6 +537,8 @@
 }).call(this);
 
 (function() {
+  return;
+
   Formbuilder.registerField('address', {
     view: "<div class='input-line'>\n  <span class='street'>\n    <input type='text' />\n    <label>Address</label>\n  </span>\n</div>\n\n<div class='input-line'>\n  <span class='city'>\n    <input type='text' />\n    <label>City</label>\n  </span>\n\n  <span class='state'>\n    <input type='text' />\n    <label>State / Province / Region</label>\n  </span>\n</div>\n\n<div class='input-line'>\n  <span class='zip'>\n    <input type='text' />\n    <label>Zipcode</label>\n  </span>\n\n  <span class='country'>\n    <select><option>United States</option></select>\n    <label>Country</label>\n  </span>\n</div>",
     edit: "",
@@ -531,6 +548,8 @@
 }).call(this);
 
 (function() {
+  return;
+
   Formbuilder.registerField('checkboxes', {
     view: "<% for (i in (rf.get(Formbuilder.options.mappings.OPTIONS) || [])) { %>\n  <div>\n    <label class='fb-option'>\n      <input type='checkbox' <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].checked && 'checked' %> onclick=\"javascript: return false;\" />\n      <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>\n    </label>\n  </div>\n<% } %>\n\n<% if (rf.get(Formbuilder.options.mappings.INCLUDE_OTHER)) { %>\n  <div class='other-option'>\n    <label class='fb-option'>\n      <input type='checkbox' />\n      Other\n    </label>\n\n    <input type='text' />\n  </div>\n<% } %>",
     edit: "<%= Formbuilder.templates['edit/options']({ includeOther: true }) %>",
@@ -552,6 +571,8 @@
 }).call(this);
 
 (function() {
+  return;
+
   Formbuilder.registerField('date', {
     view: "<div class='input-line'>\n  <span class='month'>\n    <input type=\"text\" />\n    <label>MM</label>\n  </span>\n\n  <span class='above-line'>/</span>\n\n  <span class='day'>\n    <input type=\"text\" />\n    <label>DD</label>\n  </span>\n\n  <span class='above-line'>/</span>\n\n  <span class='year'>\n    <input type=\"text\" />\n    <label>YYYY</label>\n  </span>\n</div>",
     edit: "",
@@ -561,6 +582,8 @@
 }).call(this);
 
 (function() {
+  return;
+
   Formbuilder.registerField('dropdown', {
     view: "<select>\n  <% if (rf.get(Formbuilder.options.mappings.INCLUDE_BLANK)) { %>\n    <option value=''></option>\n  <% } %>\n\n  <% for (i in (rf.get(Formbuilder.options.mappings.OPTIONS) || [])) { %>\n    <option <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].checked && 'selected' %>>\n      <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>\n    </option>\n  <% } %>\n</select>",
     edit: "<%= Formbuilder.templates['edit/options']({ includeBlank: true }) %>",
@@ -583,6 +606,8 @@
 }).call(this);
 
 (function() {
+  return;
+
   Formbuilder.registerField('email', {
     view: "<input type='text' class='rf-size-<%= rf.get(Formbuilder.options.mappings.SIZE) %>' />",
     edit: "",
@@ -601,6 +626,17 @@
 }).call(this);
 
 (function() {
+  Formbuilder.registerField('file', {
+    view: "<input type='file' />",
+    edit: "",
+    addButton: "<span class=\"symbol\"><span class=\"icon-cloud-upload\"></span></span> File"
+  });
+
+}).call(this);
+
+(function() {
+  return;
+
   Formbuilder.registerField('number', {
     view: "<input type='text' />\n<% if (units = rf.get(Formbuilder.options.mappings.UNITS)) { %>\n  <%= units %>\n<% } %>",
     edit: "<%= Formbuilder.templates['edit/min_max']() %>\n<%= Formbuilder.templates['edit/units']() %>\n<%= Formbuilder.templates['edit/integer_only']() %>",
@@ -611,7 +647,7 @@
 
 (function() {
   Formbuilder.registerField('paragraph', {
-    view: "<textarea class='rf-size-<%= rf.get(Formbuilder.options.mappings.SIZE) %>'></textarea>",
+    view: "<textarea class='rf-size-<%= rf.get(Formbuilder.options.mappings.SIZE) %>'><%= rf.get(Formbuilder.options.mappings.VALUE) %></textarea>",
     edit: "<%= Formbuilder.templates['edit/size']() %>\n<%= Formbuilder.templates['edit/min_max_length']() %>",
     addButton: "<span class=\"symbol\">&#182;</span> Paragraph",
     defaultAttributes: function(attrs) {
@@ -623,6 +659,8 @@
 }).call(this);
 
 (function() {
+  return;
+
   Formbuilder.registerField('price', {
     view: "<div class='input-line'>\n  <span class='above-line'>$</span>\n  <span class='dolars'>\n    <input type='text' />\n    <label>Dollars</label>\n  </span>\n  <span class='above-line'>.</span>\n  <span class='cents'>\n    <input type='text' />\n    <label>Cents</label>\n  </span>\n</div>",
     edit: "",
@@ -632,6 +670,8 @@
 }).call(this);
 
 (function() {
+  return;
+
   Formbuilder.registerField('radio', {
     view: "<% for (i in (rf.get(Formbuilder.options.mappings.OPTIONS) || [])) { %>\n  <div>\n    <label class='fb-option'>\n      <input type='radio' <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].checked && 'checked' %> onclick=\"javascript: return false;\" />\n      <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>\n    </label>\n  </div>\n<% } %>\n\n<% if (rf.get(Formbuilder.options.mappings.INCLUDE_OTHER)) { %>\n  <div class='other-option'>\n    <label class='fb-option'>\n      <input type='radio' />\n      Other\n    </label>\n\n    <input type='text' />\n  </div>\n<% } %>",
     edit: "<%= Formbuilder.templates['edit/options']({ includeOther: true }) %>",
@@ -664,7 +704,7 @@
 
 (function() {
   Formbuilder.registerField('text', {
-    view: "<input type='text' class='rf-size-<%= rf.get(Formbuilder.options.mappings.SIZE) %>' />",
+    view: "<input type='text' value='<%= rf.get(Formbuilder.options.mappings.VALUE) %>' class='rf-size-<%= rf.get(Formbuilder.options.mappings.SIZE) %>' />",
     edit: "<%= Formbuilder.templates['edit/size']() %>\n<%= Formbuilder.templates['edit/min_max_length']() %>",
     addButton: "<span class='symbol'><span class='icon-font'></span></span> Text",
     defaultAttributes: function(attrs) {
@@ -676,6 +716,8 @@
 }).call(this);
 
 (function() {
+  return;
+
   Formbuilder.registerField('time', {
     view: "<div class='input-line'>\n  <span class='hours'>\n    <input type=\"text\" />\n    <label>HH</label>\n  </span>\n\n  <span class='above-line'>:</span>\n\n  <span class='minutes'>\n    <input type=\"text\" />\n    <label>MM</label>\n  </span>\n\n  <span class='above-line'>:</span>\n\n  <span class='seconds'>\n    <input type=\"text\" />\n    <label>SS</label>\n  </span>\n\n  <span class='am_pm'>\n    <select>\n      <option>AM</option>\n      <option>PM</option>\n    </select>\n  </span>\n</div>",
     edit: "",
@@ -685,6 +727,8 @@
 }).call(this);
 
 (function() {
+  return;
+
   Formbuilder.registerField('website', {
     view: "<input type='text' class='rf-size-<%= rf.get(Formbuilder.options.mappings.SIZE) %>' placeholder='http://' />",
     edit: "<%= Formbuilder.templates['edit/size']() %>",
@@ -786,6 +830,8 @@ var __t, __p = '', __e = _.escape;
 with (obj) {
 __p += '<input type=\'text\' data-rv-input=\'model.' +
 ((__t = ( Formbuilder.options.mappings.LABEL )) == null ? '' : __t) +
+'\' />\n<div class=\'fb-edit-section-header\'>Value</div>\n<input type=\'text\' data-rv-input=\'model.' +
+((__t = ( Formbuilder.options.mappings.VALUE )) == null ? '' : __t) +
 '\' />\n<textarea data-rv-input=\'model.' +
 ((__t = ( Formbuilder.options.mappings.DESCRIPTION )) == null ? '' : __t) +
 '\'\n  placeholder=\'Add a longer description to this field\'></textarea>';
@@ -812,13 +858,13 @@ this["Formbuilder"]["templates"]["edit/min_max_length"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class=\'fb-edit-section-header\'>Length Limit</div>\n\nMin\n<input type="text" data-rv-input="model.' +
+__p += '<!--<div class=\'fb-edit-section-header\'>Length Limit</div>-->\n\n<!--Min-->\n<!--<input type="text" data-rv-input="model.' +
 ((__t = ( Formbuilder.options.mappings.MINLENGTH )) == null ? '' : __t) +
-'" style="width: 30px" />\n\n&nbsp;&nbsp;\n\nMax\n<input type="text" data-rv-input="model.' +
+'" style="width: 30px" />-->\n\n<!--&nbsp;&nbsp;-->\n\n<!--Max-->\n<!--<input type="text" data-rv-input="model.' +
 ((__t = ( Formbuilder.options.mappings.MAXLENGTH )) == null ? '' : __t) +
-'" style="width: 30px" />\n\n&nbsp;&nbsp;\n\n<select data-rv-value="model.' +
+'" style="width: 30px" />-->\n\n<!--&nbsp;&nbsp;-->\n\n<!--<select data-rv-value="model.' +
 ((__t = ( Formbuilder.options.mappings.LENGTH_UNITS )) == null ? '' : __t) +
-'" style="width: auto;">\n  <option value="characters">characters</option>\n  <option value="words">words</option>\n</select>\n';
+'" style="width: auto;">-->\n  <!--<option value="characters">characters</option>-->\n  <!--<option value="words">words</option>-->\n<!--</select>-->\n';
 
 }
 return __p
@@ -859,9 +905,9 @@ this["Formbuilder"]["templates"]["edit/size"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class=\'fb-edit-section-header\'>Size</div>\n<select data-rv-value="model.' +
+__p += '<!--<div class=\'fb-edit-section-header\'>Size</div>-->\n<!--<select data-rv-value="model.' +
 ((__t = ( Formbuilder.options.mappings.SIZE )) == null ? '' : __t) +
-'">\n  <option value="small">Small</option>\n  <option value="medium">Medium</option>\n  <option value="large">Large</option>\n</select>\n';
+'">-->\n  <!--<option value="small">Small</option>-->\n  <!--<option value="medium">Medium</option>-->\n  <!--<option value="large">Large</option>-->\n<!--</select>-->\n';
 
 }
 return __p
@@ -904,9 +950,7 @@ __p += '<div class=\'fb-tab-pane active\' id=\'addField\'>\n  <div class=\'fb-ad
  for (i in Formbuilder.inputFields) { ;
 __p += '\n        <a data-field-type="' +
 ((__t = ( i )) == null ? '' : __t) +
-'" class="' +
-((__t = ( Formbuilder.options.BUTTON_CLASS )) == null ? '' : __t) +
-'">\n          ' +
+'" class="btn btn-primary">\n          ' +
 ((__t = ( Formbuilder.inputFields[i].addButton )) == null ? '' : __t) +
 '\n        </a>\n      ';
  } ;
@@ -914,9 +958,7 @@ __p += '\n    </div>\n\n    <div class=\'section\'>\n      ';
  for (i in Formbuilder.nonInputFields) { ;
 __p += '\n        <a data-field-type="' +
 ((__t = ( i )) == null ? '' : __t) +
-'" class="' +
-((__t = ( Formbuilder.options.BUTTON_CLASS )) == null ? '' : __t) +
-'">\n          ' +
+'" class="btn btn-primary">\n          ' +
 ((__t = ( Formbuilder.nonInputFields[i].addButton )) == null ? '' : __t) +
 '\n        </a>\n      ';
  } ;
@@ -940,11 +982,7 @@ this["Formbuilder"]["templates"]["partials/left_side"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class=\'fb-left\'>\n  <ul class=\'fb-tabs\'>\n    <li class=\'active\'><a data-target=\'#addField\'>Add new field</a></li>\n    <li><a data-target=\'#editField\'>Edit field</a></li>\n  </ul>\n\n  <div class=\'fb-tab-content\'>\n    ' +
-((__t = ( Formbuilder.templates['partials/add_field']() )) == null ? '' : __t) +
-'\n    ' +
-((__t = ( Formbuilder.templates['partials/edit_field']() )) == null ? '' : __t) +
-'\n  </div>\n</div>';
+__p += '<div class=\'span6 middle\'>\n  <div class=\'fb-no-response-fields\'>No response fields</div>\n  <div class=\'fb-response-fields\'></div>\n</div>';
 
 }
 return __p
@@ -954,7 +992,11 @@ this["Formbuilder"]["templates"]["partials/right_side"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class=\'fb-right\'>\n  <div class=\'fb-no-response-fields\'>No response fields</div>\n  <div class=\'fb-response-fields\'></div>\n</div>\n';
+__p += '<div class=\'span4 right\'>\n  <ul class=\'fb-tabs nav nav-tabs compact \'>\n    <li class=\'active\'><a data-target=\'#addField\'><i class="icon-plus"></i> Field</a></li>\n    <li><a data-target=\'#editField\'><i class="icon-cog"></i> Field</a></li>\n  </ul>\n\n  <div class=\'fb-tab-content\'>\n    ' +
+((__t = ( Formbuilder.templates['partials/add_field']() )) == null ? '' : __t) +
+'\n    ' +
+((__t = ( Formbuilder.templates['partials/edit_field']() )) == null ? '' : __t) +
+'\n  </div>\n</div>\n';
 
 }
 return __p
@@ -1020,11 +1062,7 @@ this["Formbuilder"]["templates"]["view/duplicate_remove"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class=\'actions-wrapper\'>\n  <a class="js-duplicate ' +
-((__t = ( Formbuilder.options.BUTTON_CLASS )) == null ? '' : __t) +
-'" title="Duplicate Field"><i class=\'icon-plus-sign\'></i></a>\n  <a class="js-clear ' +
-((__t = ( Formbuilder.options.BUTTON_CLASS )) == null ? '' : __t) +
-'" title="Remove Field"><i class=\'icon-minus-sign\'></i></a>\n</div>';
+__p += '<div class=\'actions-wrapper\'>\n  <a class="js-duplicate btn btn-success" title="Duplicate Field"><i class=\'icon-plus-sign\'></i></a>\n  <a class="js-clear btn btn-danger" title="Remove Field"><i class=\'icon-minus-sign\'></i></a>\n</div>';
 
 }
 return __p
