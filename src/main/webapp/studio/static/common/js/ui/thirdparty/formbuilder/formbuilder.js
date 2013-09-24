@@ -155,7 +155,7 @@
           return this.listenTo(this.model, "destroy", this.remove);
         },
         render: function() {
-          if (arguments.length > 0) {
+          if (arguments.length > 0 && (arguments[0].noReRender === true)) {
             return;
           }
           this.$el.addClass('response-field-' + this.model.get(Formbuilder.options.mappings.FIELD_TYPE)).data('cid', this.model.cid).html(Formbuilder.templates["view/base" + (!this.model.is_input() ? '_non_input' : '')]({
@@ -167,7 +167,12 @@
           return this.parentView.createAndShowEditView(this.model);
         },
         forceEditRender: function(e) {
-          return this.model.set('value', e.target.value);
+          this.model.set('value', e.target.value, {
+            silent: true
+          });
+          return this.model.trigger('change', {
+            noReRender: true
+          });
         },
         clear: function() {
           this.parentView.handleFormUpdate();
@@ -693,6 +698,8 @@
 }).call(this);
 
 (function() {
+  return;
+
   Formbuilder.registerField('section_break', {
     type: 'non_input',
     view: "<label class='section-name'><%= rf.get(Formbuilder.options.mappings.LABEL) %></label>\n<p><%= rf.get(Formbuilder.options.mappings.DESCRIPTION) %></p>",
