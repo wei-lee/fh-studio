@@ -41,11 +41,14 @@ App.View.CMSSection = App.View.CMS.extend({
     });
 
     this.$el.find('.fb-tabs').append(this.templates.$cms_sectionExtraTabs());
+    //TODO: Fix this and its selection..
     var parentOptions = this.collection.toHTMLOptions();
-
-
-
+    parentOptions = ["<option value=''>-Root</option>"].concat(parentOptions);
+    parentOptions = parentOptions.join('');
     this.$el.find('.fb-tab-content').append(this.templates.$cms_configureSection({ parentOptions : parentOptions }));
+    // Select the active option
+    this.$el.find('select[name=parentName]').val("Stores")
+
 
     this.$el.find('#cmsAppPreview').append($('#app_preview').clone().show().width('100%'));
 

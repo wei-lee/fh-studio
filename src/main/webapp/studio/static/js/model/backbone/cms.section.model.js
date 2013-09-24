@@ -26,31 +26,38 @@ App.Collection.CmsSection = Backbone.Collection.extend({
       }
     }, options.error, true);
   },
-  findSectionByHash : function(hash, sections){
+  findSectionByHash : function(hash, sections, sep){
     sections = sections || this.toJSON();
+    sep = sep || "";
     for (var i=0; i<sections.length; i++){
       var section = sections[i];
       if (section.hash === hash){
+        section.parent = sep; // Add in the section's parent in dot sep'd for convenience
         return section;
       }
       if (section.sections && section.sections.length > 0){
-        return this.findSectionByHash(hash, section.sections || []);
+        sep = (sep === "") ? section.name : "." + section.name;
+        return this.findSectionByHash(hash, section.sections || [], sep);
       }
     }
     return undefined;
   },
   toHTMLOptions : function(sections, level, parentTrail){
-    level = level++ || 0;
+    level = level+1 || 0;
     sections = sections || this.toJSON();
     parentTrail = parentTrail || "";
     var html = [],
-    spacer = _.times(level, function(){ return "&nbsp;"; }).join('');
+    spacer = _.times(level, function(){ return "&nbsp;&nbsp;"; }).join('');
 
     for (var i=0; i<sections.length; i++){
       var section = sections[i];
+      parentTrail = (parentTrail === "") ? section.name : parentTrail + "." + section.name;
+      if (level === 0 ){
+        // Reset the parent trail if we're at root
+        parentTrail = "";
+      }
       html.push('<option value="' + parentTrail + '">' + spacer + section.name + '</option>');
       if (section.sections && section.sections.length > 0){
-        parentTrail = (parentTrail === "") ? section.name : "." + section.name;
         var children = this.toHTMLOptions(section.sections, level, parentTrail);
         html = html.concat(children);
       }
