@@ -38,5 +38,23 @@ App.Collection.CmsSection = Backbone.Collection.extend({
       }
     }
     return undefined;
+  },
+  toHTMLOptions : function(sections, level, parentTrail){
+    level = level++ || 0;
+    sections = sections || this.toJSON();
+    parentTrail = parentTrail || "";
+    var html = [],
+    spacer = _.times(level, function(){ return "&nbsp;"; }).join('');
+
+    for (var i=0; i<sections.length; i++){
+      var section = sections[i];
+      html.push('<option value="' + parentTrail + '">' + spacer + section.name + '</option>');
+      if (section.sections && section.sections.length > 0){
+        parentTrail = (parentTrail === "") ? section.name : "." + section.name;
+        var children = this.toHTMLOptions(section.sections, level, parentTrail);
+        html = html.concat(children);
+      }
+    }
+    return html;
   }
 });
