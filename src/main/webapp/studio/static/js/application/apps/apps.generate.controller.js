@@ -381,7 +381,8 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
       filePath: "/cloud/",
       fileName: "wufoo_config.js",
       type: "file",
-      do_stage: false
+      do_stage: false,
+      csrftoken: $('input[name="csrftoken"]').val()
     };
 
     var config = self.buildConfig(app_config);
