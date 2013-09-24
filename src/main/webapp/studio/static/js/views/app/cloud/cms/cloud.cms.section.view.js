@@ -43,6 +43,8 @@ App.View.CMSSection = App.View.CMS.extend({
     this.$el.find('.fb-tabs').append(this.templates.$cms_sectionExtraTabs());
     this.$el.find('.fb-tab-content').append(this.templates.$cms_configureSection());
 
+    this.$el.find('#cmsAppPreview').append($('#app_preview').clone().show().width('100%'));
+
     return this;
   },
   massageSection : function(section){
