@@ -7,7 +7,9 @@ App.View.CMSSection = App.View.CMS.extend({
     'submit #configureSectionForm' : 'onSectionSave',
     'reset #configureSectionForm' : 'onSectionDiscard',
     'click btn-deletesection' : 'onDeleteSection',
-    'focus input[name=publishdate]' : 'onPublishDateFocus'
+    'focus input[name=publishdate]' : 'onPublishDateFocus',
+    'click .btn-listfield-structure' : 'onListFieldEditStructure',
+    'click .btn-listfield-data' : 'onListFieldEditData'
   },
   templates : {
     'cms_configureSection' : '#cms_configureSection',
@@ -51,7 +53,7 @@ App.View.CMSSection = App.View.CMS.extend({
     this.$el.find('select[name=parentName]').val(section.parent);
 
 
-    this.$el.find('#cmsAppPreview').append($('#app_preview').clone().show().width('100%'));
+    this.$el.find('#cmsAppPreview').append($('#app_preview').clone(true).show().width('100%'));
 
     return this;
   },
@@ -108,5 +110,13 @@ App.View.CMSSection = App.View.CMS.extend({
   setSection : function(section){
     this.section = section;
     this.render();
+  },
+  onListFieldEditStructure : function(){
+
+    //TODO: New screen
+  },
+  onListFieldEditData : function(){
+
+    //TODO: New screen
   }
 });
