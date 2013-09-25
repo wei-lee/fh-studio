@@ -12,3 +12,4 @@ common/js/ui/thirdparty/formbuilder/formbuilder.css
 common/css/ui/framework/bootstrap-datepicker.css
 common/css/ui/framework/select2/select2.css
 common/css/ui/framework/daterangepicker.css
+common/css/ui/framework/jsoneditor.css

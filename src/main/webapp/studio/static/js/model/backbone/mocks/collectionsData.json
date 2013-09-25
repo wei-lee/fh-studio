@@ -1,0 +1,38 @@
+
+{"count":3, "list":[
+  {
+    "type":"users",
+    "guid":"51bef7ef4ccbf0bf459475e3",
+    "fields":{
+      "email":"brian.dooley@feedhenry.com",
+      "pin":"4516",
+      "name":"iPad",
+      "version":"6.1",
+      "platform":"iPad",
+      "cuid":"e2fb49fbb6c1558b7a51f7d93f9ae0c5"
+    }
+  },
+  {
+    "type":"users",
+    "guid":"51c49a3ee9e912867fe31f9a",
+    "fields":{
+      "pin":"1234",
+      "email":"cian.clarke@feedhenry.com",
+      "name":"Cian Clarke’s iPad 3",
+      "version":"6.0.1",
+      "platform":"iPad"
+    }
+  },
+  {
+    "type":"users",
+    "guid":"51de8c0ab5953d860602ad23",
+    "fields":{
+      "email":"keyang.xiang@feedhenry.com",
+      "pin":"8899",
+      "name":"iPad Simulator",
+      "version":"6.1",
+      "platform":"iPad Simulator",
+      "cuid":"3e7c7d87fb9029a7ce13559268ea682b"
+    }
+  }
+]}
