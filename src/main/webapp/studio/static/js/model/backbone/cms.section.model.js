@@ -16,6 +16,7 @@ App.Collection.CmsSection = Backbone.Collection.extend({
     $fw.server.post(url, {}, function(res) {
       if (res && res.sections && res.sections.length>0) {
         self.loaded = true;
+        var parsed = self.addPathsAndParents(res.sections);
         if ($.isFunction(options.success)) {
           options.success(res.sections, options);
         }
@@ -26,6 +27,36 @@ App.Collection.CmsSection = Backbone.Collection.extend({
       }
     }, options.error, true);
   },
+  addPathsAndParents : function(sections, sep){
+    sep = sep || "";
+    for (var i=0; i<sections.length; i++){
+      var section = sections[i],
+      path = (sep === "") ? section.name : sep + "." + section.name;
+      section.parent = sep; // Add in the section's parent in dot sep'd for convenience
+      section.path = path;
+
+      if (section.sections && section.sections.length > 0){
+        sep = (sep === "") ? section.name : sep + "." + section.name;
+        section.sections =  this.addPathsAndParents(section.sections, sep);
+      }
+    }
+    return sections;
+  },
+  findSectionByPath : function(path){
+    var section = true,
+    sections = this.toJSON(),
+    i;
+
+    path = path.split(".");
+    for (i=0; i<path.length && typeof section !== "undefined"; i++){
+      section = _.findWhere(sections, {name : path[i]});
+      sections = section.sections;
+    }
+    return section;
+  },
+  /*
+    TODO: Deprecate - let's do this by path now
+   */
   findSectionByHash : function(hash, sections, sep){
     sections = sections || this.toJSON();
     sep = sep || "";
@@ -36,7 +67,7 @@ App.Collection.CmsSection = Backbone.Collection.extend({
         return section;
       }
       if (section.sections && section.sections.length > 0){
-        sep = (sep === "") ? section.name : "." + section.name;
+        sep = (sep === "") ? section.name : sep + "." + section.name;
         return this.findSectionByHash(hash, section.sections || [], sep);
       }
     }
@@ -50,15 +81,11 @@ App.Collection.CmsSection = Backbone.Collection.extend({
     spacer = _.times(level, function(){ return "&nbsp;&nbsp;"; }).join('');
 
     for (var i=0; i<sections.length; i++){
-      var section = sections[i];
-      parentTrail = (parentTrail === "") ? section.name : parentTrail + "." + section.name;
-      if (level === 0 ){
-        // Reset the parent trail if we're at root
-        parentTrail = "";
-      }
-      html.push('<option value="' + parentTrail + '">' + spacer + section.name + '</option>');
+      var section = sections[i],
+      parentString = (parentTrail === "") ? section.name : parentTrail + "." + section.name;
+      html.push('<option value="' + parentString + '">' + spacer + section.name + '</option>');
       if (section.sections && section.sections.length > 0){
-        var children = this.toHTMLOptions(section.sections, level, parentTrail);
+        var children = this.toHTMLOptions(section.sections, level, parentString);
         html = html.concat(children);
       }
     }

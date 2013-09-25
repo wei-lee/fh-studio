@@ -37,7 +37,7 @@ App.View.CMSTree = App.View.CMS.extend({
     _.each(sections, function(section, idx, list){
       var node = {
         data : section.name,
-        attr : { id : section.id, hash : section.hash }
+        attr : { id : section.id, hash : section.hash, path : section.path, parent : section.parent }
       },
       nodeChildren = self.massageTree(section.sections); // massage the sub-sections if they exist
       node.children = (nodeChildren && nodeChildren.length>0) ? nodeChildren : undefined;
@@ -47,12 +47,12 @@ App.View.CMSTree = App.View.CMS.extend({
     return tree;
   },
   onTreeNodeClick : function (e, data) {
-    var hash = data && data.rslt && data.rslt.obj && data.rslt.obj.attr && data.rslt.obj.attr('hash');
-    if (!hash){
+    var path = data && data.rslt && data.rslt.obj && data.rslt.obj.attr && data.rslt.obj.attr('path');
+    if (!path){
       alert('Error loading section'); // TODO: Modal
-      console.log('Error finding section hash on tree node');
+      console.log('Error finding section path on tree node');
     }
-    this.trigger('sectionchange', hash);
+    this.trigger('sectionchange', path);
   },
   onTreeMove : function(e, data){
     // JSTree needs to be told which attributes to retrieve - otherwise it dumps them. I kid you not.
@@ -64,10 +64,10 @@ App.View.CMSTree = App.View.CMS.extend({
     var newCollection = [];
     for (var i=0; i<tree.length; i++){
       var t = tree[i];
-      if (!t.attr && !t.attr.hash){
+      if (!t.attr && !t.attr.path){
         return undefined;
       }
-      var section = this.collection.findSectionByHash(t.attr.hash);
+      var section = this.collection.findSectionByPath(t.attr.path);
       if (!section){
         return undefined;
       }

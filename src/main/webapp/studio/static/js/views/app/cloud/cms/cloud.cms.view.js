@@ -23,7 +23,7 @@ App.View.CMS = Backbone.View.extend({
       return this;
     }
 
-    this.section = this.section || this.collection.at(0) && this.collection.at(0).get('hash');
+    this.section = this.section || this.collection.at(0) && this.collection.at(0).get('path');
 
     if (!this.section){
       alert("Error loading section"); //TODO: Modal

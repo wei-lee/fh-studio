@@ -21,7 +21,7 @@ App.View.CMSSection = App.View.CMS.extend({
   render : function(){
     var self = this;
 
-    var section = this.collection.findSectionByHash(this.section),
+    var section = this.collection.findSectionByPath(this.section),
     fields = this.massageSection(section);
 
     if (!section || !fields){
@@ -47,7 +47,7 @@ App.View.CMSSection = App.View.CMS.extend({
     parentOptions = parentOptions.join('');
     this.$el.find('.fb-tab-content').append(this.templates.$cms_configureSection({ parentOptions : parentOptions }));
     // Select the active option
-    this.$el.find('select[name=parentName]').val("Stores")
+    this.$el.find('select[name=parentName]').val(section.parent);
 
 
     this.$el.find('#cmsAppPreview').append($('#app_preview').clone().show().width('100%'));
