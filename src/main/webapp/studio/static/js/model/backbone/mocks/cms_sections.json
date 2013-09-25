@@ -3,6 +3,7 @@
     {
       "hash": "a1b2c3d4",
       "name": "Stores",
+      "path":"stores",
       "fields": [
         {
           "hash": "a2b3c4d5",
@@ -14,6 +15,7 @@
       ],
       "sections": [
         {
+          "path":"store.waterford-stores",
           "hash": "a3b4c5d6",
           "name" : "Waterford Stores",
           "fields" : [
@@ -37,6 +39,34 @@
                 }
               ],
               "listHash": "a7b8c9d0"
+            }
+          ]
+        },
+        {
+          "path":"store.dublin-stores",
+          "hash": "a3b4c5g6",
+          "name" : "Dublin Stores",
+          "fields" : [
+            {
+              "hash": "a4b5e6d7",
+              "name": "heading",
+              "type": "string",
+              "value": "Here is a list of stores in Co. Dublin",
+              "modifiedDate": "11/12/2013"
+            },
+            {
+              "hash": "a5b6x7d8",
+              "name": "Dublin Stores List",
+              "type": "list",
+              "listEntries": [
+                {
+                  "hash": "a6b7w8d9",
+                  "name": "title",
+                  "type": "text",
+                  "value": "The Quay, Waterford"
+                }
+              ],
+              "listHash": "a7b8c1d0"
             }
           ]
         }

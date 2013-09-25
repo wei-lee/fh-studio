@@ -4,11 +4,16 @@ App.Collection = App.Collection || {};
 App.collections = App.collections || {};
 
 App.Model.CmsSection = Backbone.Model.extend({
+  "setSectionName" : function (name){
+    name = name.replace(/\./,"");
+    this.name = name;
+  }
 });
 
 App.Collection.CmsSection = Backbone.Collection.extend({
   initialize: function() {},
   model: App.Model.CmsSection,
+  //todo change this to use property instead
   url: '/studio/static/js/model/backbone/mocks/cms_sections.json',
   sync: function (method, model, options) {
     var self = this;
@@ -42,6 +47,17 @@ App.Collection.CmsSection = Backbone.Collection.extend({
     }
     return undefined;
   },
+
+  findSectionByPath: function(path, sections){
+    sections = sections || this.toJSON();
+    for (var i=0; i<sections.length; i++){
+      var section = sections[i];
+      if (section.path === path){
+        return section;
+      }
+    }
+  },
+
   toHTMLOptions : function(sections, level, parentTrail){
     level = level+1 || 0;
     sections = sections || this.toJSON();

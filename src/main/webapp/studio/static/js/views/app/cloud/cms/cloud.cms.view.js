@@ -4,7 +4,9 @@ App.View = App.View || {};
 App.View.CMS = Backbone.View.extend({
 
   events: {
+
   },
+
   templates : {
     'cms_left' : '#cms_left'
   },
@@ -39,6 +41,7 @@ App.View.CMS = Backbone.View.extend({
     this.$el.prepend(this.templates.$cms_left());
     this.$el.find('.treeContainer').append(this.tree.render().$el);
     this.tree.bind('sectionchange', $.proxy(this.form.setSection, this.form));
+
 
     return this;
   },
