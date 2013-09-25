@@ -11,13 +11,24 @@
           "type": "string",
           "value": "Here you will find a list of stores sorted by geography",
           "modifiedDate": "11/12/2013"
-        }
-      ],
-      "sections": [
+        }],
+        "sections": [
         {
-          "path":"store.waterford-stores",
-          "hash": "a3b4c5d6",
+          "path":"stores.waterford-stores",
+          "hash": "a3b4c5d21",
           "name" : "Waterford Stores",
+          "sections":[{
+            "hash": "a1b2c322",
+            "name": "Stores Locally",
+            "path":"stores.waterford-stores.local",
+            "fields":[{
+              "hash": "a4b5c6d70",
+              "name": "heading",
+              "type": "string",
+              "value": "Here is a list of stores in Co. Waterford",
+              "modifiedDate": "11/12/2013"
+            }]
+          }],
           "fields" : [
             {
               "hash": "a4b5c6d7",

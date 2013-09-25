@@ -7,6 +7,7 @@ App.Model.CmsSection = Backbone.Model.extend({
   "setSectionName" : function (name){
     name = name.replace(/\./,"");
     this.name = name;
+    return this.name;
   }
 });
 
@@ -32,13 +33,14 @@ App.Collection.CmsSection = Backbone.Collection.extend({
     }, options.error, true);
   },
   findSectionByHash : function(hash, sections, sep){
+    console.log("looking for hash ", hash, "in sections ", sections);
     sections = sections || this.toJSON();
     sep = sep || "";
     for (var i=0; i<sections.length; i++){
       var section = sections[i];
       if (section.hash === hash){
         section.parent = sep; // Add in the section's parent in dot sep'd for convenience
-        return section;
+        return sections[i];
       }
       if (section.sections && section.sections.length > 0){
         sep = (sep === "") ? section.name : "." + section.name;

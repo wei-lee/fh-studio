@@ -9,6 +9,7 @@ App.View.CMSTree = App.View.CMS.extend({
 
   render: function(){
     var jsonData = this.massageTree(this.collection.toJSON());
+    console.log("jsonData ", jsonData);
     var self = this;
     this.$el.jstree({
       "json_data" : {
@@ -44,30 +45,33 @@ App.View.CMSTree = App.View.CMS.extend({
     tree = [];
 
     _.each(sections, function(section, idx, list){
+      console.log("massageTree looking at section ", section.attributes);
       var node = {
         data : section.name,
         attr : { id : section.id, hash : section.hash, path:section.path }
       },
       nodeChildren = self.massageTree(section.sections); // massage the sub-sections if they exist
       node.children = (nodeChildren && nodeChildren.length>0) ? nodeChildren : undefined;
+      console.log("adding node to tree ", node);
       tree.push(node);
 
     });
     return tree;
   },
 
+  "onDeleteSection": function (){
+
+  },
+
   "onAddSection" : function (element){
-    console.log(this);
+
     var self = this;
-    var selectedSection = self.activeSection || "root";
-    var tree = self.massageTree(self.collection.toJSON());
-    console.log("tree",tree);
+
     // when data ret from mbaas cms it will have sections and hashes but not when we create one until we push it up (which may not be immediately).
     // I think we should use a path property to indicate where this sits in the structure and then when a save is done we push any sections that do not have a hash?.
     //make new section model add it to the collection let backbone listeners do there thing?
 
-    //show some kind of modal
-    var parentSection = self.collection.findSectionByHash(selectedSection);
+
     var modal  = new App.View.Modal({
       title : 'Create New Section',
       body : '<input class="input-large" placeholder="Enter a Section name" id="newCollectionName">',
@@ -78,22 +82,40 @@ App.View.CMSTree = App.View.CMS.extend({
           val = input.val();
 
 
-       //self.doCreateCollection(val);
+       self.createSection(val);
       }
     });
     self.$el.append(modal.render().$el);
-//    if(parentSection){
-//      if(! parentSection["sections"]) parentSection["sections"]= [];
-//
-//      var section = new App.Model.CmsSection({
-//        "path":section.path + section.setName(),
-//        "hash": "a3b4c5d6",
-//        "name" : "Waterford Stores",
-//      });
-//
-//    }
 
+  },
+  //move to fh.cms
+  deleteSection : function (val){
 
+  },
+
+  //move to fh.cms
+  createSection : function (val){
+    var self = this;
+    console.log("called create section");
+    var selectedSection = self.activeSection || "root";
+    //show some kind of modal
+    var parentSection = self.collection.findSectionByHash(selectedSection);
+
+    if(parentSection){
+      if(! parentSection["sections"]) parentSection["sections"]= [];
+
+      var node = {
+        "path":parentSection.path +"."+ val,
+        "hash": "a3b4c5d6",
+        "name" : val,
+        "data":val,
+        "parent":parentSection.name
+      };
+
+    }
+    parentSection["sections"].push(node);
+    console.log("collection" , self.collection.models);
+    self.render();
   },
 
   onTreeNodeClick : function (e, data) {
