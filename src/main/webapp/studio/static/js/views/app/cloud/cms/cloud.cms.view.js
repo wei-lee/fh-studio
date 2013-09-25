@@ -34,8 +34,15 @@ App.View.CMS = Backbone.View.extend({
 
     this.$el.addClass('row nomargin');
 
-    this.form = new App.View.CMSSection({collection : this.collection, section : this.section });
-    this.$el.prepend(this.form.render().$el);
+
+    /*
+     Formbuilder doesn't render well with an invisible el - DnD doesn't work.
+     It needs to be already on the page => we work around this requirement here
+     */
+    var fbContainer = $('<div></div>');
+    this.$el.prepend(fbContainer);
+    this.form = new App.View.CMSSection({ $el : fbContainer, collection : this.collection, section : this.section });
+    this.form.render();
 
     this.tree = new App.View.CMSTree({collection : this.collection});
     this.$el.prepend(this.templates.$cms_left());

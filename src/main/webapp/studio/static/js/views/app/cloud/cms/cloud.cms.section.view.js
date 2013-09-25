@@ -14,6 +14,7 @@ App.View.CMSSection = App.View.CMS.extend({
     'cms_sectionExtraTabs' : '#cms_sectionExtraTabs'
   },
   initialize: function(options){
+    this.$el = options.$el;
     this.collection = options.collection;
     this.section = options.section;
     this.compileTemplates();
