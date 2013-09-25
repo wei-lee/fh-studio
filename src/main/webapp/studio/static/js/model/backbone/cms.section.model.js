@@ -4,11 +4,17 @@ App.Collection = App.Collection || {};
 App.collections = App.collections || {};
 
 App.Model.CmsSection = Backbone.Model.extend({
+  "setSectionName" : function (name){
+    name = name.replace(/\./,"");
+    this.name = name;
+    return this.name;
+  }
 });
 
 App.Collection.CmsSection = Backbone.Collection.extend({
   initialize: function() {},
   model: App.Model.CmsSection,
+  //todo change this to use property instead
   url: '/studio/static/js/model/backbone/mocks/cms_sections.json',
   sync: function (method, model, options) {
     var self = this;
@@ -58,13 +64,14 @@ App.Collection.CmsSection = Backbone.Collection.extend({
     TODO: Deprecate - let's do this by path now
    */
   findSectionByHash : function(hash, sections, sep){
+    console.log("looking for hash ", hash, "in sections ", sections);
     sections = sections || this.toJSON();
     sep = sep || "";
     for (var i=0; i<sections.length; i++){
       var section = sections[i];
       if (section.hash === hash){
         section.parent = sep; // Add in the section's parent in dot sep'd for convenience
-        return section;
+        return sections[i];
       }
       if (section.sections && section.sections.length > 0){
         sep = (sep === "") ? section.name : sep + "." + section.name;

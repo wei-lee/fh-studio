@@ -5,8 +5,12 @@ App.View.CMSTree = App.View.CMS.extend({
   initialize: function(options){
     this.collection = options.collection;
   },
+
+
   render: function(){
     var jsonData = this.massageTree(this.collection.toJSON());
+    console.log("jsonData ", jsonData);
+    var self = this;
     this.$el.jstree({
       "json_data" : {
         "data" : jsonData
@@ -28,6 +32,12 @@ App.View.CMSTree = App.View.CMS.extend({
       'plugins': ['themes', 'json_data', 'ui', 'cookies', 'crrm', 'dnd']
     }).bind("select_node.jstree", $.proxy(this.onTreeNodeClick, this))
     .bind('move_node.jstree', $.proxy(this.onTreeMove, this));
+
+
+    $('.btn-addsection').bind("click",function (e){
+      self.onAddSection(this);
+    });
+
     return this;
   },
   massageTree : function(sections){
@@ -35,17 +45,79 @@ App.View.CMSTree = App.View.CMS.extend({
     tree = [];
 
     _.each(sections, function(section, idx, list){
+      console.log("massageTree looking at section ", section.attributes);
       var node = {
         data : section.name,
         attr : { id : section.id, hash : section.hash, path : section.path, parent : section.parent }
       },
       nodeChildren = self.massageTree(section.sections); // massage the sub-sections if they exist
       node.children = (nodeChildren && nodeChildren.length>0) ? nodeChildren : undefined;
+      console.log("adding node to tree ", node);
       tree.push(node);
 
     });
     return tree;
   },
+
+  "onDeleteSection": function (){
+
+  },
+
+  "onAddSection" : function (element){
+
+    var self = this;
+
+    // when data ret from mbaas cms it will have sections and hashes but not when we create one until we push it up (which may not be immediately).
+    // I think we should use a path property to indicate where this sits in the structure and then when a save is done we push any sections that do not have a hash?.
+    //make new section model add it to the collection let backbone listeners do there thing?
+
+
+    var modal  = new App.View.Modal({
+      title : 'Create New Section',
+      body : '<input class="input-large" placeholder="Enter a Section name" id="newCollectionName">',
+      okText : 'Create',
+      ok : function(e){
+        var el = $(e.target),
+          input = el.parents('.modal').find('input'),
+          val = input.val();
+
+
+       self.createSection(val);
+      }
+    });
+    self.$el.append(modal.render().$el);
+
+  },
+  //move to fh.cms
+  deleteSection : function (val){
+
+  },
+
+  //move to fh.cms
+  createSection : function (val){
+    var self = this;
+    console.log("called create section");
+    var selectedSection = self.activeSection || "root";
+    //show some kind of modal
+    var parentSection = self.collection.findSectionByHash(selectedSection);
+
+    if(parentSection){
+      if(! parentSection["sections"]) parentSection["sections"]= [];
+
+      var node = {
+        "path":parentSection.path +"."+ val,
+        "hash": "a3b4c5d6",
+        "name" : val,
+        "data":val,
+        "parent":parentSection.name
+      };
+
+    }
+    parentSection["sections"].push(node);
+    console.log("collection" , self.collection.models);
+    self.render();
+  },
+
   onTreeNodeClick : function (e, data) {
     var path = data && data.rslt && data.rslt.obj && data.rslt.obj.attr && data.rslt.obj.attr('path');
     if (!path){
@@ -53,6 +125,8 @@ App.View.CMSTree = App.View.CMS.extend({
       console.log('Error finding section path on tree node');
     }
     this.trigger('sectionchange', path);
+    console.log("tree node click " + path);
+    self.activeSection = path;
   },
   onTreeMove : function(e, data){
     // JSTree needs to be told which attributes to retrieve - otherwise it dumps them. I kid you not.

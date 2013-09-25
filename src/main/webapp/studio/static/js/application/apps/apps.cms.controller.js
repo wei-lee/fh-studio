@@ -5,6 +5,7 @@ Apps.Cms.Controller = Apps.Cloud.Controller.extend({
   container: '#cms_container',
   init: function() {
     this._super();
+    this.initCloudFn();
   },
   show: function(e) {
     var self = this,
