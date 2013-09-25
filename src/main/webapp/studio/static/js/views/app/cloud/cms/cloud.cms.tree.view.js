@@ -130,15 +130,16 @@ App.View.CMSTree = App.View.CMS.extend({
   },
   onTreeMove : function(e, data){
     // JSTree needs to be told which attributes to retrieve - otherwise it dumps them. I kid you not.
-    var treeData = data.inst.get_json(-1, ['hash']),
+    var treeData = data.inst.get_json(-1, ['hash', 'path', 'parent']),
     newCMSCollection = this.reorderTree(treeData);
+    newCMSCollection = this.collection.addPathsAndParents(newCMSCollection); //TODO: Reset should do this automatically?
     this.collection.reset(newCMSCollection);
   },
   reorderTree : function(tree){
     var newCollection = [];
     for (var i=0; i<tree.length; i++){
       var t = tree[i];
-      if (!t.attr && !t.attr.path){
+      if (!t.attr || !t.attr.path){
         return undefined;
       }
       var section = this.collection.findSectionByPath(t.attr.path);
@@ -148,7 +149,7 @@ App.View.CMSTree = App.View.CMS.extend({
 
       section.sections = (t.children && t.children.length>0) ? this.reorderTree(t.children) : [];
       if (!section.sections){
-        return undefined;
+        section.sections = undefined;
       }
       newCollection.push(section);
     }
