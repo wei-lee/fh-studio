@@ -50,6 +50,26 @@
           "type": "string",
           "value": "Here are some waterford stores",
           "modifiedDate": "11/12/2013"
+        },
+        {
+          "hash": "a9b6c7d8",
+          "name": "Waterford Stores List",
+          "type": "list",
+          "listEntries": [
+            {
+              "hash": "a0b7c8d9",
+              "name": "title",
+              "type": "text",
+              "value": "The Quay, Waterford"
+            },
+            {
+              "hash": "a0b7c8d9",
+              "name": "title",
+              "type": "text",
+              "value": "The Square Shopping Center, Waterford"
+            }
+          ],
+          "listHash": "a1b8c9d0"
         }
       ],
       "children":[

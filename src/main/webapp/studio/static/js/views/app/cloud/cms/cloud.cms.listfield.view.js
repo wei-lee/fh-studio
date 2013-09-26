@@ -8,7 +8,7 @@ App.View.CMSListField = App.View.CMSSection.extend({
   render : function(options){
     this.constructor.__super__.render.apply(this, arguments);
     var top = new App.View.CMSListFieldTopBar();
-    this.$el.prepend(top.render().$el);
+    top.render().$el.insertAfter(this.$el.find('.middle .breadcrumb'));
     return this;
   }
 });

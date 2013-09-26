@@ -4,8 +4,6 @@ App.View = App.View || {};
 App.View.CMSController  = Backbone.View.extend({
 
   events: {
-    'click .btn-listfield-structure' : 'onListFieldEditStructure',
-    'click .btn-listfield-data' : 'onListFieldEditStructure',
     'click .btn-cms-back' : 'onCMSBack'
   },
 
@@ -50,30 +48,32 @@ App.View.CMSController  = Backbone.View.extend({
     this.form = new App.View.CMSSection({ $el : this.$fbContainer, collection : this.collection, section : this.section });
     this.form.render();
 
+    this.form.bind('edit_field_list', $.proxy(this.onEditFieldList, this));
+
     this.tree = new App.View.CMSTree({collection : this.collection});
     this.$el.prepend(this.templates.$cms_left());
     this.$el.find('.treeContainer').append(this.tree.render().$el);
+    this.tree.bind('sectionchange', $.proxy(this.treeNodeClicked, this));
     this.tree.bind('sectionchange', $.proxy(this.form.setSection, this.form));
 
 
     return this;
   },
-  onListFieldEditStructure : function(e){
-    var el = $(e.target);
+  onEditFieldList : function(options){
     this.$fbContainer.hide();
     this.$listFieldContainer.empty().show();
-    //TODO: Pass section, field_list and other useful stuff to this here
-    //TODO: This should probably be passed by bubbling an event from this.form..?
-    //TODO: field: should come from formbuilder..
-    this.form = new App.View.CMSListField({ $el : this.$listFieldContainer, collection : this.collection, section : this.form.section, field : 'Patrick St List' });
+    options.$el = this.$listFieldContainer;
+    //TODO: Interrogate options.mode and choose the right view
+    this.form = new App.View.CMSListField(options);
     this.form.render();
-    //TODO: New screen
   },
-  onListFieldEditData : function(e){
-    //TODO - similar to above but with additional table view on top
-  },
-  onCMSBack : function(e){
+  onCMSBack : function(){
     this.$listFieldContainer.empty().hide();
     this.$fbContainer.show();
+  },
+  treeNodeClicked : function(){
+    if (this.$listFieldContainer.length && this.$listFieldContainer.length>0){
+      this.onCMSBack();
+    }
   }
 });

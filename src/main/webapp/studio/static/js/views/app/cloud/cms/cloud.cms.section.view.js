@@ -7,7 +7,9 @@ App.View.CMSSection = App.View.CMS.extend({
     'submit #configureSectionForm' : 'onSectionSave',
     'reset #configureSectionForm' : 'onSectionDiscard',
     'click btn-deletesection' : 'onDeleteSection',
-    'focus input[name=publishdate]' : 'onPublishDateFocus'
+    'focus input[name=publishdate]' : 'onPublishDateFocus',
+    'click .btn-listfield-structure' : 'onListFieldEditStructure',
+    'click .btn-listfield-data' : 'onListFieldEditStructure'
   },
   templates : {
     'cms_configureSection' : '#cms_configureSection',
@@ -37,7 +39,7 @@ App.View.CMSSection = App.View.CMS.extend({
         return;
       }
       fields = this.massageFields(fields);
-      path += ("." + field.name);
+      path += ("." + field.name + "." + "Edit " + this.options.mode);
     }else{
       fields = this.massageFields(section.fields);
     }
@@ -61,7 +63,7 @@ App.View.CMSSection = App.View.CMS.extend({
     });
 
     // Add in the CMS specific breadcrumb on top of the middle section
-    this.$el.find('.middle').prepend(this.cmsBreadcrumb(section.path));
+    this.$el.find('.middle').prepend(this.cmsBreadcrumb(path));
 
 
     this.$el.find('.fb-tabs').append(this.templates.$cms_sectionExtraTabs());
@@ -127,5 +129,18 @@ App.View.CMSSection = App.View.CMS.extend({
   setSection : function(section){
     this.section = section;
     this.render();
+  },
+  onListFieldEditStructure : function(e){
+    this.onListFieldEdit(e, 'structure');
+
+  },
+  onListFieldEditData : function(e){
+    this.onListFieldEdit(e, 'data');
+  },
+  onListFieldEdit : function(e, mode){
+    var el = $(e.target),
+    fieldName = el.data('name'),
+    options = { collection : this.collection, section : this.section, field : fieldName, mode : mode };
+    this.trigger('edit_field_list', options);
   }
 });

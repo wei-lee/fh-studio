@@ -11,7 +11,7 @@ App.View.CMSListFieldTopBar = App.View.CMS.extend({
   },
   render : function(options){
     this.$el.append(this.templates.$cms_back());
-    this.$el.append('Drag fields over here');
+    this.$el.append('Drag fields to alter the structure');
     this.$el.append(this.templates.$cms_listfieldswitch());
     return this;
   }
