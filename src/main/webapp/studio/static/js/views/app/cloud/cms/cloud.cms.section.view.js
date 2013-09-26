@@ -9,7 +9,7 @@ App.View.CMSSection = App.View.CMS.extend({
     'click btn-deletesection' : 'onDeleteSection',
     'focus input[name=publishdate]' : 'onPublishDateFocus',
     'click .btn-listfield-structure' : 'onListFieldEditStructure',
-    'click .btn-listfield-data' : 'onListFieldEditStructure'
+    'click .btn-listfield-data' : 'onListFieldEditData'
   },
   templates : {
     'cms_configureSection' : '#cms_configureSection',
@@ -56,7 +56,8 @@ App.View.CMSSection = App.View.CMS.extend({
     this.fb = new Formbuilder(this.$el, {
       noScroll : true,
       noEditOnDrop : true,
-      bootstrapData: fields
+      bootstrapData: fields,
+      editStructure : this.editStructure || false
     });
     this.fb.on('save', function(payload){
       self.draft = payload;
@@ -140,7 +141,8 @@ App.View.CMSSection = App.View.CMS.extend({
   onListFieldEdit : function(e, mode){
     var el = $(e.target),
     fieldName = el.data('name'),
-    options = { collection : this.collection, section : this.section, field : fieldName, mode : mode };
+    editStructure = (mode === 'data'), // TODO: Structural readonly mode..
+    options = { collection : this.collection, section : this.section, field : fieldName, mode : mode, editStructure : editStructure };
     this.trigger('edit_field_list', options);
   }
 });

@@ -63,7 +63,6 @@ App.View.CMSController  = Backbone.View.extend({
     this.$fbContainer.hide();
     this.$listFieldContainer.empty().show();
     options.$el = this.$listFieldContainer;
-    //TODO: Interrogate options.mode and choose the right view
     this.form = new App.View.CMSListField(options);
     this.form.render();
   },
