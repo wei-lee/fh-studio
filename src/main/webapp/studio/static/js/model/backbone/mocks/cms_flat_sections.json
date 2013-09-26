@@ -1,7 +1,7 @@
 {
   "sections":[
     {
-      "path":".",
+      "path":"Stores",
       "hash": "a1b2c3d4",
       "name": "Stores",
       "fields": [
@@ -25,7 +25,7 @@
       ]
     },
     {
-      "path":".Stores",
+      "path":"Stores.Waterford Stores",
       "hash": "a1b2c3d5",
       "name": "Waterford Stores",
       "fields": [
@@ -42,7 +42,7 @@
       ]
     },
     {
-      "path":".Stores",
+      "path":"Stores Cork Stores",
       "hash": "a1b2c3d6",
       "name": "Cork Stores",
       "fields": [
@@ -59,7 +59,7 @@
       ]
     },
     {
-      "path":".Stores.Cork Stores",
+      "path":".Stores.Cork Stores.Patrick Street",
       "hash": "a1b2c3d7",
       "name": "Patrick Street",
       "fields": [

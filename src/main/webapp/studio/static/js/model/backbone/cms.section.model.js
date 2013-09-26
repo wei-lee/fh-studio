@@ -54,34 +54,24 @@ App.Collection.CmsSection = Backbone.Collection.extend({
     sections = this.toJSON(),
     i;
 
-    if("root" == path) return sections[0];
-    path = path.split(".");
-    for (i=0; i<path.length && typeof section !== "undefined"; i++){
-      section = _.findWhere(sections, {name : path[i]});
-      sections = section.sections;
+    for(i=0; i < sections.length; i++){
+      if(sections[i] && sections[i].path && path === sections[i].path){
+        return sections[i];
+      }
     }
-    return section;
   },
 
   removeBySectionPath : function(path){
 
   },
-  /*
-    TODO: Deprecate - let's do this by path now
-   */
+
   findSectionByHash : function(hash, sections, sep){
     console.log("looking for hash ", hash, "in sections ", sections);
     sections = sections || this.toJSON();
-    sep = sep || "";
     for (var i=0; i<sections.length; i++){
       var section = sections[i];
       if (section.hash === hash){
-        section.parent = sep; // Add in the section's parent in dot sep'd for convenience
         return sections[i];
-      }
-      if (section.sections && section.sections.length > 0){
-        sep = (sep === "") ? section.name : sep + "." + section.name;
-        return this.findSectionByHash(hash, section.sections || [], sep);
       }
     }
     return undefined;

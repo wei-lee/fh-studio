@@ -48,14 +48,22 @@ App.View.CMSTree = App.View.CMS.extend({
     tree = [];
 
     _.each(sections, function(section, idx, list){
+
+
       console.log("massageTree looking at section ", section.attributes);
       var node = {
         data : section.name,
-        attr : { id : section.id, hash : section.hash, path : section.path, parent : section.parent }
-      },
-      nodeChildren = self.massageTree(section.sections); // massage the sub-sections if they exist
-      node.children = (nodeChildren && nodeChildren.length>0) ? nodeChildren : undefined;
-      console.log("adding node to tree ", node);
+        attr : { id : section.id, hash : section.hash, path : section.path }
+      };
+      if(section.children && section.children.length > 0){
+        node.children = [];
+        for(var j=0; j < section.children.length; j++){
+          node.children.push(self.collection.findSectionByHash(section.children[i]))
+        }
+      }
+//      nodeChildren = self.massageTree(section.sections); // massage the sub-sections if they exist
+//      node.children = (nodeChildren && nodeChildren.length>0) ? nodeChildren : undefined;
+//      console.log("adding node to tree ", node);
       tree.push(node);
 
     });
