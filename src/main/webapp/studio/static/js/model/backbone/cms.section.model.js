@@ -15,14 +15,14 @@ App.Collection.CmsSection = Backbone.Collection.extend({
   initialize: function() {},
   model: App.Model.CmsSection,
   //todo change this to use property instead
-  url: '/studio/static/js/model/backbone/mocks/cms_sections.json',
+  url: '/studio/static/js/model/backbone/mocks/cms_flat_sections.json',
   sync: function (method, model, options) {
     var self = this;
     var url = self.url;
     $fw.server.post(url, {}, function(res) {
       if (res && res.sections && res.sections.length>0) {
         self.loaded = true;
-        var parsed = self.addPathsAndParents(res.sections);
+        self.addPathsAndParents(res.sections);
         if ($.isFunction(options.success)) {
           options.success(res.sections, options);
         }
@@ -49,16 +49,22 @@ App.Collection.CmsSection = Backbone.Collection.extend({
     return sections;
   },
   findSectionByPath : function(path){
+    console.log("findSectionByPath " + path);
     var section = true,
     sections = this.toJSON(),
     i;
 
+    if("root" == path) return sections[0];
     path = path.split(".");
     for (i=0; i<path.length && typeof section !== "undefined"; i++){
       section = _.findWhere(sections, {name : path[i]});
       sections = section.sections;
     }
     return section;
+  },
+
+  removeBySectionPath : function(path){
+
   },
   /*
     TODO: Deprecate - let's do this by path now

@@ -37,6 +37,9 @@ App.View.CMSTree = App.View.CMS.extend({
     $('.btn-addsection').bind("click",function (e){
       self.onAddSection(this);
     });
+    $('.btn-deletesection').bind("click", function (e){
+       self.onDeleteSection(this);
+    });
 
     return this;
   },
@@ -59,8 +62,15 @@ App.View.CMSTree = App.View.CMS.extend({
     return tree;
   },
 
-  "onDeleteSection": function (){
-
+  "onDeleteSection": function (e){
+    var self = this;
+    var del=confirm("Are you sure you wish delete " + self.activeSection);
+    if (del==true){
+      console.log("deleting " + self.activeSection);
+      self.deleteSection(self.activeSection);
+    }else{
+      console.log("not deleting section");
+    }
   },
 
   "onAddSection" : function (element){
@@ -90,16 +100,20 @@ App.View.CMSTree = App.View.CMS.extend({
   },
   //move to fh.cms
   deleteSection : function (val){
+    var self = this;
+    var selectedSection = self.activeSection || "root";
+    //show some kind of modal
+    var parentSection = self.collection.removeBySectionPath(selectedSection);
+
 
   },
 
   //move to fh.cms
   createSection : function (val){
     var self = this;
-    console.log("called create section");
     var selectedSection = self.activeSection || "root";
     //show some kind of modal
-    var parentSection = self.collection.findSectionByHash(selectedSection);
+    var parentSection = self.collection.findSectionByPath(selectedSection);
 
     if(parentSection){
       if(! parentSection["sections"]) parentSection["sections"]= [];
@@ -114,11 +128,11 @@ App.View.CMSTree = App.View.CMS.extend({
 
     }
     parentSection["sections"].push(node);
-    console.log("collection" , self.collection.models);
     self.render();
   },
 
   onTreeNodeClick : function (e, data) {
+    var self = this;
     var path = data && data.rslt && data.rslt.obj && data.rslt.obj.attr && data.rslt.obj.attr('path');
     if (!path){
       alert('Error loading section'); // TODO: Modal
