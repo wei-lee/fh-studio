@@ -8,22 +8,26 @@ App.View.CMSController  = Backbone.View.extend({
   },
 
   templates : {
-    'cms_left' : '#cms_left'
+    'cms_left' : '#cms_left',
+    'cms_mastermenu' : '#cms_mastermenu'
   },
-  initialize: function(){
+  initialize: function(options){
+    this.options = options;
     var self = this;
     this.compileTemplates();
     this.collection = new App.Collection.CmsSection();
     this.collection.fetch({ reset: true});
     this.collection.bind('reset', $.proxy(this.render, this));
   },
-  render: function(){
+  render: function(options){
     this.$el.empty();
 
     if (!this.collection.loaded){
       this.$el.append('Loading...');
       return this;
     }
+
+    $(this.options.container).find('.fh-box-header').append(this.templates.$cms_mastermenu());
 
     this.section = this.section || this.collection.at(0) && this.collection.at(0).get('path');
 
