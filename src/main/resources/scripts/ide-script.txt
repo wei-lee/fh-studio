@@ -58,6 +58,7 @@ js/model/backbone/metrics/startups/app.startups.platform.model.js
 js/model/backbone/metrics/startups/domain.startups.platform.model.js
 js/model/backbone/metrics/installs/domain.installs.platform.model.js
 js/model/backbone/cloudenvironments/cloudenvironment.model.js
+js/views/view.overrides.js
 js/views/common/datatable.view.js
 js/views/common/spinner.view.js
 js/views/common/modal.view.js
@@ -150,6 +151,9 @@ js/views/app/cloud/cloud.alertnotifications.view.js
 js/views/app/cloud/cms/cloud.cms.view.js
 js/views/app/cloud/cms/cloud.cms.tree.view.js
 js/views/app/cloud/cms/cloud.cms.section.view.js
+js/views/app/cloud/cms/cloud.cms.listfield.topbar.view.js
+js/views/app/cloud/cms/cloud.cms.listfield.view.js
+js/views/app/cloud/cms/cloud.cms.view.controller.js
 js/views/app/cloud/databrowser/cloud.databrowser.view.js
 js/views/app/cloud/databrowser/cloud.databrowser.collectionslist.view.js
 js/views/app/cloud/databrowser/cloud.databrowser.dataview.table.view.js

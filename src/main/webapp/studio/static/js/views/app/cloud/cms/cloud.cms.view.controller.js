@@ -58,20 +58,6 @@ App.View.CMSController  = Backbone.View.extend({
 
     return this;
   },
-  compileTemplates: function() {
-    var templates = {};
-    for (var key in this.templates){
-      if (this.templates.hasOwnProperty(key)){
-        var tpl = this.templates[key],
-        html = $(tpl, this.$container).html();
-        if (!html){
-          throw new Error("No html found for " + key);
-        }
-        templates['$' + key] = Handlebars.compile(html);
-      }
-    }
-    this.templates = templates;
-  },
   onListFieldEditStructure : function(e){
     var el = $(e.target);
     this.$fbContainer.hide();
