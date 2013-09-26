@@ -7,9 +7,7 @@ App.View.CMSSection = App.View.CMS.extend({
     'submit #configureSectionForm' : 'onSectionSave',
     'reset #configureSectionForm' : 'onSectionDiscard',
     'click btn-deletesection' : 'onDeleteSection',
-    'focus input[name=publishdate]' : 'onPublishDateFocus',
-    'click .btn-listfield-structure' : 'onListFieldEditStructure',
-    'click .btn-listfield-data' : 'onListFieldEditData'
+    'focus input[name=publishdate]' : 'onPublishDateFocus'
   },
   templates : {
     'cms_configureSection' : '#cms_configureSection',
@@ -19,14 +17,30 @@ App.View.CMSSection = App.View.CMS.extend({
     this.$el = options.$el;
     this.collection = options.collection;
     this.section = options.section;
+    this.field = options.field;
     this.compileTemplates();
   },
   render : function(){
     var self = this;
 
     var section = this.collection.findSectionByPath(this.section),
-    fields = this.massageSection(section);
+    field = false,
+    path = section.path,
+    fields;
 
+    if (this.field){
+      // We're editing a field_list - retrieve it
+      field = _.findWhere(section.fields, { name : this.field });
+      fields = field && field.listEntries;
+      if (!fields || !fields.length){
+        alert('Error loading list fields'); //TODO: Modal
+        return;
+      }
+      fields = this.massageFields(fields);
+      path += ("." + field.name);
+    }else{
+      fields = this.massageFields(section.fields);
+    }
 
     console.log("Section is " + section + " fields ",fields);
 
@@ -46,6 +60,10 @@ App.View.CMSSection = App.View.CMS.extend({
       self.draft = payload;
     });
 
+    // Add in the CMS specific breadcrumb on top of the middle section
+    this.$el.find('.middle').prepend(this.cmsBreadcrumb(section.path));
+
+
     this.$el.find('.fb-tabs').append(this.templates.$cms_sectionExtraTabs());
     //TODO: Fix this and its selection..
     var parentOptions = this.collection.toHTMLOptions();
@@ -60,20 +78,16 @@ App.View.CMSSection = App.View.CMS.extend({
 
     return this;
   },
-  massageSection : function(section){
-    if (!section || !section.fields){
-      return undefined;
-    }
+  massageFields : function(oldFields){
     var fields = [];
-
-    _.each(section.fields, function(field){
+    _.each(oldFields, function(field){
       var newField = {};
       switch(field.type){
         case "string":
           newField.field_type = "text";
           break;
         case "list": // TODO
-          newField.field_type = "text";
+          newField.field_type = "field_list";
           break;
         default:
           newField.field_type = field.type;
@@ -113,13 +127,5 @@ App.View.CMSSection = App.View.CMS.extend({
   setSection : function(section){
     this.section = section;
     this.render();
-  },
-  onListFieldEditStructure : function(){
-
-    //TODO: New screen
-  },
-  onListFieldEditData : function(){
-
-    //TODO: New screen
   }
 });

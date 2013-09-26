@@ -62,60 +62,12 @@
   <div class="fb-tab-pane" id="cmsAppPreview">
   </div>
 </script>
-<script id="cms_home" type="text/x-handlebars-template">
-  <div class="row nomargin">
-
-    <div class="span6 middle">
-      <ul class="breadcrumb compact">
-        <li><a href="#">Stores</a> <span class="divider">/</span></li>
-        <li><a href="#">Munster</a> <span class="divider">/</span></li>
-        <li class="active">Waterford</li>
-      </ul>
-      <h2>Waterford</h2>
-
-      <form id="sectionForm">
-        <fieldset class="empty">
-          Drag items from the "Add field" section to add content
-        </fieldset>
-      </form>
-
-
-    </div>
-
-    <div class="span4 right">
-      <ul id="myTab" class="nav nav-tabs compact">
-        <li class="active"><a href="#addfield" data-toggle="tab"></a></li>
-        <li class=""><a href="#configurefield" data-toggle="tab"></li>
-
-      </ul>
-      <div id="myTabContent" class="tab-content">
-        <div class="tab-pane fade active in" id="addfield">
-
-
-          <button class="icon btn btn-primary">
-            <i class="icon-font"></i>
-            <span>Single Line Input</span>
-          </button>
-
-          <button class="icon btn btn-primary">
-            <i class="icon-list-ol"></i>
-            <span>Paragraph Text</span>
-          </button>
-
-          <button class="icon btn btn-primary">
-            <i class="icon-file"></i>
-            <span>File</span>
-          </button>
-
-          <button class="icon btn btn-primary">
-            <i class="icon-picture"></i>
-            <span>Image</span>
-          </button>
-
-
-        </div>
-
-      </div>
-    </div>
+<script id="cms_back" type="text/x-handlebars-template">
+  <a class="btn btn-cms-back" href="#"><i class="icon-arrow-left"></i> Back</a>
+</script>
+<script id="cms_listfieldswitch" type="text/x-handlebars-template">
+  <div class="btn-group pull-right">
+    <a class="btn btn-small btn-listfield-data" href="#"><i class="icon-road"></i> Edit Data</a>
+    <a class="btn btn-small btn-listfield-structure" href="#"><i class="icon-pencil"></i> Edit Structure</a>
   </div>
 </script>

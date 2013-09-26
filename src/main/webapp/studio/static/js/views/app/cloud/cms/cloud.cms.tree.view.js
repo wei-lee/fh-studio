@@ -132,8 +132,9 @@ App.View.CMSTree = App.View.CMS.extend({
     if(parentSection){
       if(! parentSection["sections"]) parentSection["sections"]= [];
 
-      var node = {
-        "path":parentSection.path +"."+ val,
+      var path = (parentSection.path === "") ? val : parentSection.path + "." + val,
+      node = {
+        "path": path,
         "hash": "a3b4c5d6",
         "name" : val,
         "data":val,
