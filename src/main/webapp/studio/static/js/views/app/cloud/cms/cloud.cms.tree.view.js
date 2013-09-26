@@ -70,9 +70,6 @@ App.View.CMSTree = App.View.CMS.extend({
       }
       return node;
     }
-
-    console.log(tree);
-
     return tree;
   },
 
@@ -158,31 +155,67 @@ App.View.CMSTree = App.View.CMS.extend({
     self.activeSection = path;
   },
   onTreeMove : function(e, data){
+    console.log("move data", data);
     // JSTree needs to be told which attributes to retrieve - otherwise it dumps them. I kid you not.
     var treeData = data.inst.get_json(-1, ['hash', 'path', 'parent']),
     newCMSCollection = this.reorderTree(treeData);
-    newCMSCollection = this.collection.addPathsAndParents(newCMSCollection); //TODO: Reset should do this automatically?
+    newCMSCollection = this.collection.addPathsAndChildren(newCMSCollection); //TODO: Reset should do this automatically?
     this.collection.reset(newCMSCollection);
   },
   reorderTree : function(tree){
+    console.log("the tree ", tree);
     var newCollection = [];
     for (var i=0; i<tree.length; i++){
       var t = tree[i];
       if (!t.attr || !t.attr.path){
         return undefined;
       }
-      var section = this.collection.findSectionByPath(t.attr.path);
-      if (!section){
-        return undefined;
+      //t currently is a root node.
+      if(t.attr.path.split(".").length > 1){
+        t.attr.path = t.attr.name;
       }
 
-      section.sections = (t.children && t.children.length>0) ? this.reorderTree(t.children) : [];
-      if (!section.sections){
-        section.sections = undefined;
+      if(t.children && t.children.length > 0){
+        for(var ch=0; ch < t.children.length; ch++){
+          addPath(t.children[ch]);
+        }
       }
-      newCollection.push(section);
+
+
+
+      function addPath(parent){
+        debugger;
+        if(parent.children && parent.children.length > 0){
+          for(var ck =0; ck < parent.children.length; ck++){
+            parent.children[ck].attr.path = parent.attr.name + "." + parent.children[ck].attr.name;
+            if(parent.children[ck].children && parent.children[ck].children.length > 0){
+              addPath(parent.children[ck]);
+            }
+          }
+        }
+      }
+
+
+//      var section = this.collection.findSectionByPath(t.attr.path);
+//      if (!section){
+//        return undefined;
+//      }
+//
+//      function getChildHashes(children) {
+//        var ret = [];
+//        for(var r=0; r < children.length; r++){
+//          ret.push(children[r].hash);
+//        }
+//      }
+//
+//      section.children = (t.children && t.children.length>0) ? getChildHashes(t.children) : [];
+//      if (!section.sections){
+//        section.sections = undefined;
+//      }
+//      newCollection.push(section);
     }
-
-    return newCollection;
+    console.log("repathed tree", tree);
+    return tree;
+//    return newCollection;
   }
 });

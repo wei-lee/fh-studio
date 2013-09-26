@@ -33,7 +33,17 @@ App.Collection.CmsSection = Backbone.Collection.extend({
       }
     }, options.error, true);
   },
+  "addPathsAndChildren":function (sections){
 
+
+
+
+    function correctPathAndChildren(section){
+
+    }
+
+
+  },
   findSectionByPath : function(path){
     console.log("findSectionByPath " + path);
     var section = true,
