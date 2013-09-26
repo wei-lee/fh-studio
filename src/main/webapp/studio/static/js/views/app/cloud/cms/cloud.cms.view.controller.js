@@ -63,12 +63,14 @@ App.View.CMSController  = Backbone.View.extend({
     this.$fbContainer.hide();
     this.$listFieldContainer.empty().show();
     options.$el = this.$listFieldContainer;
-    this.form = new App.View.CMSListField(options);
-    this.form.render();
+    this.listfield = new App.View.CMSListField(options);
+    this.listfield.render();
   },
   onCMSBack : function(){
+    //TODO: Events get double-bound, we need to destroy this.listField...
     this.$listFieldContainer.empty().hide();
     this.$fbContainer.show();
+    this.listfield;
   },
   treeNodeClicked : function(){
     if (this.$listFieldContainer.length && this.$listFieldContainer.length>0){
