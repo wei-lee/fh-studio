@@ -22,7 +22,7 @@ App.Collection.CmsSection = Backbone.Collection.extend({
     $fw.server.post(url, {}, function(res) {
       if (res && res.sections && res.sections.length>0) {
         self.loaded = true;
-        self.addPathsAndParents(res.sections);
+        //self.addPathsAndParents(res.sections);
         if ($.isFunction(options.success)) {
           options.success(res.sections, options);
         }
@@ -33,21 +33,7 @@ App.Collection.CmsSection = Backbone.Collection.extend({
       }
     }, options.error, true);
   },
-  addPathsAndParents : function(sections, sep){
-    sep = sep || "";
-    for (var i=0; i<sections.length; i++){
-      var section = sections[i],
-      path = (sep === "") ? section.name : sep + "." + section.name;
-      section.parent = sep; // Add in the section's parent in dot sep'd for convenience
-      section.path = path;
 
-      if (section.sections && section.sections.length > 0){
-        sep = (sep === "") ? section.name : sep + "." + section.name;
-        section.sections =  this.addPathsAndParents(section.sections, sep);
-      }
-    }
-    return sections;
-  },
   findSectionByPath : function(path){
     console.log("findSectionByPath " + path);
     var section = true,

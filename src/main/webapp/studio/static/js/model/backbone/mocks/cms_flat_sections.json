@@ -25,6 +25,21 @@
       ]
     },
     {
+      "path":"Restaurants",
+      "hash":"res123",
+      "name":"Restaurants",
+      "fields":[
+        {
+          "hash": "a2b3c4d5",
+          "name": "heading",
+          "type": "string",
+          "value": "Here you will find a list of stores sorted by geography",
+          "modifiedDate": "11/12/2013"
+        }
+      ],
+      "children":[]
+    },
+    {
       "path":"Stores.Waterford Stores",
       "hash": "a1b2c3d5",
       "name": "Waterford Stores",
@@ -42,7 +57,7 @@
       ]
     },
     {
-      "path":"Stores Cork Stores",
+      "path":"Stores.Cork Stores",
       "hash": "a1b2c3d6",
       "name": "Cork Stores",
       "fields": [
