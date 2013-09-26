@@ -27,6 +27,9 @@ App.View.CMSSection = App.View.CMS.extend({
     var section = this.collection.findSectionByPath(this.section),
     fields = this.massageSection(section);
 
+
+    console.log("Section is " + section + " fields ",fields);
+
     if (!section || !fields){
       alert("Error loading section");
       console.log('Error finding section or fields on rendering section view');

@@ -14,7 +14,7 @@
         },{
           "hash":"img123",
           "name":"stores image",
-          "type":"image/jpg",
+          "type":"file",
           "value":"imghash123",
           "modifiedData":"11/12/2013"
         }
