@@ -15,7 +15,7 @@ App.Collection.CmsSection = Backbone.Collection.extend({
   initialize: function() {},
   model: App.Model.CmsSection,
   //todo change this to use property instead
-  url: '/studio/static/js/model/backbone/mocks/cms_flat_sections.json',
+  url: '/studio/static/js/model/backbone/mocks/cms_sections.json',
   sync: function (method, model, options) {
     var self = this;
     var url = self.url;

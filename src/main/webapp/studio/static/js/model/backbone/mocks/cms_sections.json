@@ -1,6 +1,7 @@
 {
-  "sections" : [
+  "sections":[
     {
+      "path":"Stores",
       "hash": "a1b2c3d4",
       "name": "Stores",
       "fields": [
@@ -10,79 +11,105 @@
           "type": "string",
           "value": "Here you will find a list of stores sorted by geography",
           "modifiedDate": "11/12/2013"
+        },{
+          "hash":"img123",
+          "name":"stores image",
+          "type":"file",
+          "value":"imghash123",
+          "modifiedData":"11/12/2013"
         }
       ],
-      "sections": [
+      "children":[
+        "a1b2c3d5",
+        "a1b2c3d6"
+      ]
+    },
+    {
+      "path":"Restaurants",
+      "hash":"res123",
+      "name":"Restaurants",
+      "fields":[
         {
-          "hash": "b3b4c5d6",
-          "name" : "Munster Stores",
-          "fields" : [
+          "hash": "a2b3c4d5",
+          "name": "heading",
+          "type": "string",
+          "value": "Here you will find a list of stores sorted by geography",
+          "modifiedDate": "11/12/2013"
+        }
+      ],
+      "children":[]
+    },
+    {
+      "path":"Stores.Waterford Stores",
+      "hash": "a1b2c3d5",
+      "name": "Waterford Stores",
+      "fields": [
+        {
+          "hash": "a2b4c4d5",
+          "name": "heading",
+          "type": "string",
+          "value": "Here are some waterford stores",
+          "modifiedDate": "11/12/2013"
+        }
+      ],
+      "children":[
+
+      ]
+    },
+    {
+      "path":"Stores.Cork Stores",
+      "hash": "a1b2c3d6",
+      "name": "Cork Stores",
+      "fields": [
+        {
+          "hash": "a2b5c5d5",
+          "name": "heading",
+          "type": "string",
+          "value": "Here are some cork stores",
+          "modifiedDate": "11/12/2013"
+        }
+      ],
+      "children":[
+        "a1b2c3d7"
+      ]
+    },
+    {
+      "path":"Stores.Cork Stores.Patrick Street",
+      "hash": "a1b2c3d7",
+      "name": "Patrick Street",
+      "fields": [
+        {
+          "hash": "a2b5c4d5",
+          "name": "heading",
+          "type": "string",
+          "value": "Here are some cork stores on Patrick St",
+          "modifiedDate": "11/12/2013"
+        },
+        {
+          "hash": "a9b6c7d8",
+          "name": "Patrick St List",
+          "type": "list",
+          "listEntries": [
             {
-              "hash": "b4b5c6d7",
-              "name": "heading",
-              "type": "string",
-              "value": "Here is a list of stores in Munster",
-              "modifiedDate": "11/12/2013"
-            }
-          ],
-          "sections" : [
-            {
-              "hash": "a3b4c5d6",
-              "name" : "Waterford Stores",
-              "fields" : [
-                {
-                  "hash": "a4b5c6d7",
-                  "name": "heading",
-                  "type": "string",
-                  "value": "Here is a list of stores in Co. Waterford",
-                  "modifiedDate": "11/12/2013"
-                },
-                {
-                  "hash": "a5b6c7d8",
-                  "name": "Waterford Stores List",
-                  "type": "list",
-                  "listEntries": [
-                    {
-                      "hash": "a6b7c8d9",
-                      "name": "title",
-                      "type": "text",
-                      "value": "The Quay, Waterford"
-                    }
-                  ],
-                  "listHash": "a7b8c9d0"
-                }
-              ]
+              "hash": "a0b7c8d9",
+              "name": "title",
+              "type": "text",
+              "value": "The Quay, Cork"
             },
             {
-              "hash": "a7b4c5d6",
-              "name" : "Cork Stores",
-              "fields" : [
-                {
-                  "hash": "a8b5c6d7",
-                  "name": "heading",
-                  "type": "string",
-                  "value": "Here is a list of stores in Co. Cork",
-                  "modifiedDate": "11/12/2013"
-                },
-                {
-                  "hash": "a9b6c7d8",
-                  "name": "Cork Stores List",
-                  "type": "list",
-                  "listEntries": [
-                    {
-                      "hash": "a0b7c8d9",
-                      "name": "title",
-                      "type": "text",
-                      "value": "The Quay, Waterford"
-                    }
-                  ],
-                  "listHash": "a1b8c9d0"
-                }
-              ]
+              "hash": "a0b7c8d9",
+              "name": "title",
+              "type": "text",
+              "value": "Merchants Quay, Cork"
             }
-          ]
+          ],
+          "listHash": "a1b8c9d0"
         }
+      ],
+      "children":[
+
       ]
     }
+
   ]
 }
