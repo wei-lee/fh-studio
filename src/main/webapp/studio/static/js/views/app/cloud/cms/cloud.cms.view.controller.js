@@ -27,7 +27,9 @@ App.View.CMSController  = Backbone.View.extend({
       return this;
     }
 
-    $(this.options.container).find('.fh-box-header').append(this.templates.$cms_mastermenu());
+    if ($(this.options.container).find('.fh-box-header .cms_mastermenu').length===0){
+      $(this.options.container).find('.fh-box-header').append(this.templates.$cms_mastermenu());
+    }
 
     this.section = this.section || this.collection.at(0) && this.collection.at(0).get('path');
 

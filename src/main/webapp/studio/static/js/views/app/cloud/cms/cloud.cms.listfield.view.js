@@ -30,31 +30,9 @@ App.View.CMSListField = App.View.CMSSection.extend({
     top.render().$el.insertAfter(this.$el.find('.middle .breadcrumb'));
 
     if (this.options.mode === "data"){
-      var columns = [],
-      fields = this.fieldList.fields,
-      data = this.fieldList.data;
-      for (var i=0; i<fields.length; i++){
-        var f = fields[i];
-        columns.push({
-          "sTitle": f.name,
-          "mDataProp": f.name
-        });
-      }
-
-      this.table = new App.View.DataTable({
-        aaData : data,
-        "fnRowCallback": function(nTr, sData, oData, iRow, iCol) {
-          $(nTr).attr('data-index', iRow).attr('data-hash', sData.hash);
-        },
-        "aoColumns": columns,
-        "bAutoWidth": false,
-        "sPaginationType": 'bootstrap',
-        "sDom": "<'row-fluid'<'span4'f>r>t<'row-fluid'<'pull-left'i><'pull-right'p>>",
-        "bLengthChange": false,
-        "iDisplayLength": 5,
-        "bInfo": true
-      });
+      this.table = new App.View.CMSTable({ checkboxes : true, fields : this.fieldList.fields, data : this.fieldList.data });
       this.table.render().$el.insertAfter(this.$el.find('.middle .fb-no-response-fields'));
+      this.table.$el.find('table').removeClass('table-striped');
     }
 
     this.$el.find('.middle').append(this.templates.$cms_listfieldsavecancel());
@@ -80,10 +58,17 @@ App.View.CMSListField = App.View.CMSSection.extend({
     this.render();
   },
   onRowClick : function(e){
+    // Uncheck all other rows
+    this.table.$el.find('tr.info input[type=checkbox]').attr('checked', false);
+    this.table.$el.find('tr.info').removeClass('info');
+
+    // Trigger selection action for this item
     this.onRowSelect(e);
+
+    // Trigger a selection event which will update the data on the formbuilder of section view
     var tr = (e.target.nodeName === "tr") ? $(e.target) : $(e.target).parents('tr');
-    tr.data('index');
-    //TODO: More stuffs..
+    this.trigger('listfieldRowSelect', tr.data('index'));
+
   },
   onRowSelect : function(e){
     e.stopPropagation();
@@ -97,6 +82,9 @@ App.View.CMSListField = App.View.CMSSection.extend({
       row.addClass('info');
       row.find('input[type=checkbox]').attr('checked', true);
     }
+
+  },
+  updateFormData : function(){
 
   }
 });
