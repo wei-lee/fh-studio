@@ -1,24 +1,38 @@
 var App = App || {};
 App.View = App.View || {};
 
+
 App.View.CMSTree = App.View.CMS.extend({
 
-  'events':{
+  'events': {
 
   },
 
-  initialize: function(options){
+  initialize: function (options) {
+    var self = this;
     this.collection = options.collection;
+    this.collection.on("change", function () {
+      console.log("a model was added this is where we would add a call to the server to a que of changes ", "calling render");
+      self.render();
+    });
+    this.collection.on("add", function (){
+       console.log(" a model was added to the collection ");
+      self.render();
+    });
+    this.collection.on("remove", function (m){
+
+       console.log("a model was removed from the collection ", m);
+      self.render();
+    });
   },
 
-
-  render: function(){
-    var jsonData =  this.massageTree(this.collection.toJSON());
+  render: function () {
+    var jsonData = this.massageTree(this.collection.toJSON());
     console.log("jsonData ", jsonData);
     var self = this;
-   self.tree = this.$el.jstree({
-      "json_data" : {
-        "data" : jsonData
+    self.tree = this.$el.jstree({
+      "json_data": {
+        "data": jsonData
       },
       'core': {
         initially_open: ['root'],
@@ -28,81 +42,90 @@ App.View.CMSTree = App.View.CMS.extend({
         theme: 'classic',
         loaded: true
       },
-      "crrm" : {
-        "move" : {
-          "default_position" : "first",
-          "check_move" : function (m) { return (m.o[0].id === "thtml_1") ? false : true;  }
+      "crrm": {
+        "move": {
+          "default_position": "first",
+          "check_move": function (m) {
+            return (m.o[0].id === "thtml_1") ? false : true;
+          }
         }
       },
       'plugins': ['themes', 'json_data', 'ui', 'cookies', 'crrm', 'dnd']
     });
-    self.tree.unbind("select_node.jstree, move_node.jstree");
+    self.tree.unbind("select_node.jstree, move_node.jstree, create.jstree");
     self.tree.bind("select_node.jstree", $.proxy(this.onTreeNodeClick, this));
     self.tree.bind('move_node.jstree', $.proxy(this.onTreeMove, this));
+    self.tree.bind("create.jstree", function (e, data) {
 
+    });
 
-    $('.btn-addsection').unbind().bind("click",function (e){
+    $('.btn-addsection').unbind().bind("click", function (e) {
       self.onAddSection(this);
     });
-    $('.btn-deletesection').unbind().bind("click", function (e){
-       self.onDeleteSection(this);
+    $('.btn-deletesection').unbind().bind("click", function (e) {
+      self.onDeleteSection(this);
     });
 
     return this;
   },
-  massageTree : function(sections){
+  massageTree: function (sections) {
+    var id = 0;
     var self = this,
-    tree = [];
+      tree = [];
 
-    _.each(sections, function(section, idx, list){
-         console.log("IN EACH SECTION SECTION NO # ", idx);
-      if(section.path.split(".").length === 1){
+    _.each(sections, function (section, idx, list) {
+      console.log("IN EACH SECTION SECTION NO # ", idx);
+      if (section.path.split(".").length === 1) {
         var exploded = explodeSection(section);
         console.log("exploded section ", exploded);
         tree.push(exploded);
       }
     });
 
-    function explodeSection(section){
-      console.log("IN EXPLODE SECTION");
+    function explodeSection(section) {
+      console.log("IN EXPLODE SECTION", sections);
       var node = {
-        data : section.name,
-        attr : { id : section.id, hash : section.hash, path : section.path } ,
-        "children":[]
+        data: section.name,
+        attr: { id: id, hash: section.hash, path: section.path },
+        "children": []
       };
-      if(section && section.children){
+      if (section && section.children) {
         node.children = [];
-        _.each(section.children,function (secChild){
+        _.each(section.children, function (secChild, idx) {
           console.log("Exploding section");
           var cSection = self.collection.findSectionByHash(secChild);
-          node.children.push(explodeSection(cSection));
+          if(cSection){
+            node.children.push(explodeSection(cSection));
+          }
         });
       }
+       id++;
       return node;
     }
+
     return tree;
   },
 
-  "onDeleteSection": function (e){
+  "onDeleteSection": function (e) {
     var self = this;
-    var del=confirm("Are you sure you wish delete " + self.activeSection);
-    if (del==true){
+    var del = confirm("Are you sure you wish delete " + self.activeSection);
+    if (del == true) {
       console.log("deleting " + self.activeSection);
       self.deleteSection(self.activeSection);
-    }else{
+    } else {
       console.log("not deleting section");
     }
   },
 
-  "onAddSection" : function (element){
+  "onAddSection": function (element) {
 
     var self = this;
 
-    var modal  = new App.View.Modal({
-      title : 'Create New Section',
-      body : '<input class="input-large" placeholder="Enter a Section name" id="newCollectionName">',
-      okText : 'Create',
-      ok : function(e){
+    var modal = new App.View.Modal({
+      title: 'Create New Section',
+      body: '<input class="input-large" placeholder="Enter a Section name" id="newCollectionName">',
+      okText: 'Create',
+      ok: function (e) {
         var el = $(e.target),
           input = el.parents('.modal').find('input'),
           val = input.val();
@@ -114,51 +137,52 @@ App.View.CMSTree = App.View.CMS.extend({
   },
 
   //move to fh.cms
-  createSection : function (val){
+  createSection: function (val) {
     var self = this;
     var selectedSection = self.activeSection || "root";
 
-     console.log("Create Section");
+    console.log("Create Section");
 
     var parentSection = self.collection.findSectionByPath(selectedSection);
 
     console.log("parent section is ", parentSection);
     var childrenKey = App.Model.CmsSection.CONST.CHILDREN;
     var hash = new Date().getTime();
-    if(parentSection){
-      if(! parentSection[childrenKey]) parentSection[childrenKey]= [];
+    if (parentSection) {
+      if (!parentSection[childrenKey]) parentSection[childrenKey] = [];
 
       var path = (parentSection.path === "") ? val : parentSection.path + "." + val,
         node = {
           "path": path,
           "hash": hash,
-          "name" : val,
-          "data":val,
-          "children":[]
+          "name": val,
+          "data": val,
+          "children": []
         };
 
     }
     parentSection[childrenKey].push(node.hash);
+    console.log("models ",self.collection.models);
     var model = new App.Model.CmsSection(node);
     self.collection.push(model);
-    self.render();
   },
   //move to fh.cms
-  deleteSection : function (val){
+  deleteSection: function (val) {
     var self = this;
     var selectedSection = self.activeSection || "root";
     //show some kind of modal
-    var parentSection = self.collection.removeBySectionPath(selectedSection);
+    self.collection.removeBySectionPath(selectedSection);
+
+    self.render();
 
 
   },
 
 
-
-  onTreeNodeClick : function (e, data) {
+  onTreeNodeClick: function (e, data) {
     var self = this;
     var path = data && data.rslt && data.rslt.obj && data.rslt.obj.attr && data.rslt.obj.attr('path');
-    if (!path){
+    if (!path) {
       alert('Error loading section'); // TODO: Modal
       console.log('Error finding section path on tree node');
     }
@@ -166,41 +190,40 @@ App.View.CMSTree = App.View.CMS.extend({
     console.log("tree node click " + path);
     self.activeSection = path;
   },
-  onTreeMove : function(e, data){
+  onTreeMove: function (e, data) {
     console.log("move data", data);
     // JSTree needs to be told which attributes to retrieve - otherwise it dumps them. I kid you not.
     var treeData = data.inst.get_json(-1, ['hash', 'path', 'parent']),
-    newCMSCollection = this.reorderTree(treeData);
+      newCMSCollection = this.reorderTree(treeData);
     newCMSCollection = this.collection.addPathsAndChildren(newCMSCollection); //TODO: Reset should do this automatically?
     this.collection.reset(newCMSCollection);
   },
-  reorderTree : function(tree){
+  reorderTree: function (tree) {
     console.log("the tree ", tree);
     var newCollection = [];
-    for (var i=0; i<tree.length; i++){
+    for (var i = 0; i < tree.length; i++) {
       var t = tree[i];
-      if (!t.attr || !t.attr.path){
+      if (!t.attr || !t.attr.path) {
         return undefined;
       }
       //t currently is a root node.
-      if(t.attr.path.split(".").length > 1){
+      if (t.attr.path.split(".").length > 1) {
         t.attr.path = t.attr.name;
       }
 
-      if(t.children && t.children.length > 0){
-        for(var ch=0; ch < t.children.length; ch++){
+      if (t.children && t.children.length > 0) {
+        for (var ch = 0; ch < t.children.length; ch++) {
           addPath(t.children[ch]);
         }
       }
 
 
-
-      function addPath(parent){
+      function addPath(parent) {
         debugger;
-        if(parent.children && parent.children.length > 0){
-          for(var ck =0; ck < parent.children.length; ck++){
+        if (parent.children && parent.children.length > 0) {
+          for (var ck = 0; ck < parent.children.length; ck++) {
             parent.children[ck].attr.path = parent.attr.name + "." + parent.children[ck].attr.name;
-            if(parent.children[ck].children && parent.children[ck].children.length > 0){
+            if (parent.children[ck].children && parent.children[ck].children.length > 0) {
               addPath(parent.children[ck]);
             }
           }

@@ -64,7 +64,30 @@ App.Collection.CmsSection = Backbone.Collection.extend({
   },
 
   removeBySectionPath : function(path){
+    var self = this;
+    var childrenKey = App.Model.CmsSection.CONST.CHILDREN;
+    var section = self.findWhere({"path":path});
 
+    for(var i=0; i < self.models.length; i++){
+      var m = self.models[i];
+      console.log("looking at model ", m);
+      var children = m.get(childrenKey);
+
+      console.log("children ", children);
+
+      if(children && Array.isArray(children) && children.length > 0){
+        console.log("model has children " , children);
+        var hasRem =section.get("hash");
+        var refIndex = children.indexOf(hasRem);
+        if(refIndex != -1){
+          console.log("found child ref for hash "+hasRem+" removing index " + refIndex);
+          children.splice(refIndex,1);
+          console.log("children now set to ",children);
+        }
+      }
+    }
+    section.destroy();
+    self.remove(section);
   },
 
   findSectionByHash : function(hash, sections, sep){
