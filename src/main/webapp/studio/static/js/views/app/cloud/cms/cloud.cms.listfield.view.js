@@ -11,8 +11,7 @@ App.View.CMSListField = App.View.CMSSection.extend({
   },
   initialize: function(options){
     this.templates = _.extend(this.constructor.__super__.templates, {
-      'cms_listfieldsavecancel' : '#cms_listfieldsavecancel',
-      'cms_listfieldEditDataTable' : '#cms_listfieldEditDataTable'
+      'cms_listfieldsavecancel' : '#cms_listfieldsavecancel'
     });
     this.constructor.__super__.initialize.apply(this, arguments);
   },
@@ -31,7 +30,31 @@ App.View.CMSListField = App.View.CMSSection.extend({
     top.render().$el.insertAfter(this.$el.find('.middle .breadcrumb'));
 
     if (this.options.mode === "data"){
-      $(this.templates.$cms_listfieldEditDataTable()).insertAfter(this.$el.find('.middle .fb-no-response-fields'));
+      var columns = [],
+      fields = this.fieldList.fields,
+      data = this.fieldList.data;
+      for (var i=0; i<fields.length; i++){
+        var f = fields[i];
+        columns.push({
+          "sTitle": f.name,
+          "mDataProp": f.name
+        });
+      }
+
+      this.table = new App.View.DataTable({
+        aaData : data,
+        "fnRowCallback": function(nTr, sData, oData, iRow, iCol) {
+          $(nTr).attr('data-index', iRow).attr('data-hash', sData.hash);
+        },
+        "aoColumns": columns,
+        "bAutoWidth": false,
+        "sPaginationType": 'bootstrap',
+        "sDom": "<'row-fluid'<'span4'f>r>t<'row-fluid'<'pull-left'i><'pull-right'p>>",
+        "bLengthChange": false,
+        "iDisplayLength": 5,
+        "bInfo": true
+      });
+      this.table.render().$el.insertAfter(this.$el.find('.middle .fb-no-response-fields'));
     }
 
     this.$el.find('.middle').append(this.templates.$cms_listfieldsavecancel());
@@ -60,7 +83,6 @@ App.View.CMSListField = App.View.CMSSection.extend({
     this.onRowSelect(e);
     var tr = (e.target.nodeName === "tr") ? $(e.target) : $(e.target).parents('tr');
     tr.data('index');
-    debugger;
     //TODO: More stuffs..
   },
   onRowSelect : function(e){

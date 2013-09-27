@@ -27,12 +27,13 @@ App.View.CMSSection = App.View.CMS.extend({
     var section = this.collection.findSectionByPath(this.options.section),
     field = false,
     path = section.path,
-    fields;
+    fields, listData;
 
     if (this.options.field){
       // We're editing a field_list - retrieve it
-      field = _.findWhere(section.fields, { name : this.options.field });
-      fields = field && field.listEntries;
+      this.fieldList = _.findWhere(section.fields, { name : this.options.field });
+      fields = this.fieldList && this.fieldList.fields;
+      listData = this.fieldList && this.fieldList.data;
       if (!fields || !fields.length){
         alert('Error loading list fields'); //TODO: Modal
         return;
