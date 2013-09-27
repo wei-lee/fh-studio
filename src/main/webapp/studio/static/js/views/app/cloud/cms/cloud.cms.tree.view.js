@@ -2,16 +2,21 @@ var App = App || {};
 App.View = App.View || {};
 
 App.View.CMSTree = App.View.CMS.extend({
+
+  'events':{
+
+  },
+
   initialize: function(options){
     this.collection = options.collection;
   },
 
 
   render: function(){
-    var jsonData = this.massageTree(this.collection.toJSON());
+    var jsonData =  this.massageTree(this.collection.toJSON());
     console.log("jsonData ", jsonData);
     var self = this;
-    this.$el.jstree({
+   self.tree = this.$el.jstree({
       "json_data" : {
         "data" : jsonData
       },
@@ -30,14 +35,16 @@ App.View.CMSTree = App.View.CMS.extend({
         }
       },
       'plugins': ['themes', 'json_data', 'ui', 'cookies', 'crrm', 'dnd']
-    }).bind("select_node.jstree", $.proxy(this.onTreeNodeClick, this))
-    .bind('move_node.jstree', $.proxy(this.onTreeMove, this));
+    });
+    self.tree.unbind("select_node.jstree, move_node.jstree");
+    self.tree.bind("select_node.jstree", $.proxy(this.onTreeNodeClick, this));
+    self.tree.bind('move_node.jstree', $.proxy(this.onTreeMove, this));
 
 
-    $('.btn-addsection').bind("click",function (e){
+    $('.btn-addsection').unbind().bind("click",function (e){
       self.onAddSection(this);
     });
-    $('.btn-deletesection').bind("click", function (e){
+    $('.btn-deletesection').unbind().bind("click", function (e){
        self.onDeleteSection(this);
     });
 
@@ -47,23 +54,26 @@ App.View.CMSTree = App.View.CMS.extend({
     var self = this,
     tree = [];
 
-    console.log("sections ", sections);
-
     _.each(sections, function(section, idx, list){
-
+         console.log("IN EACH SECTION SECTION NO # ", idx);
       if(section.path.split(".").length === 1){
-        tree.push(explodeSection(section));
+        var exploded = explodeSection(section);
+        console.log("exploded section ", exploded);
+        tree.push(exploded);
       }
     });
 
     function explodeSection(section){
+      console.log("IN EXPLODE SECTION");
       var node = {
         data : section.name,
-        attr : { id : section.id, hash : section.hash, path : section.path }
+        attr : { id : section.id, hash : section.hash, path : section.path } ,
+        "children":[]
       };
       if(section && section.children){
         node.children = [];
         _.each(section.children,function (secChild){
+          console.log("Exploding section");
           var cSection = self.collection.findSectionByHash(secChild);
           node.children.push(explodeSection(cSection));
         });
@@ -88,11 +98,6 @@ App.View.CMSTree = App.View.CMS.extend({
 
     var self = this;
 
-    // when data ret from mbaas cms it will have sections and hashes but not when we create one until we push it up (which may not be immediately).
-    // I think we should use a path property to indicate where this sits in the structure and then when a save is done we push any sections that do not have a hash?.
-    //make new section model add it to the collection let backbone listeners do there thing?
-
-
     var modal  = new App.View.Modal({
       title : 'Create New Section',
       body : '<input class="input-large" placeholder="Enter a Section name" id="newCollectionName">',
@@ -101,13 +106,42 @@ App.View.CMSTree = App.View.CMS.extend({
         var el = $(e.target),
           input = el.parents('.modal').find('input'),
           val = input.val();
-
-
-       self.createSection(val);
+        self.createSection(val);
       }
     });
     self.$el.append(modal.render().$el);
 
+  },
+
+  //move to fh.cms
+  createSection : function (val){
+    var self = this;
+    var selectedSection = self.activeSection || "root";
+
+     console.log("Create Section");
+
+    var parentSection = self.collection.findSectionByPath(selectedSection);
+
+    console.log("parent section is ", parentSection);
+    var childrenKey = App.Model.CmsSection.CONST.CHILDREN;
+    var hash = new Date().getTime();
+    if(parentSection){
+      if(! parentSection[childrenKey]) parentSection[childrenKey]= [];
+
+      var path = (parentSection.path === "") ? val : parentSection.path + "." + val,
+        node = {
+          "path": path,
+          "hash": hash,
+          "name" : val,
+          "data":val,
+          "children":[]
+        };
+
+    }
+    parentSection[childrenKey].push(node.hash);
+    var model = new App.Model.CmsSection(node);
+    self.collection.push(model);
+    self.render();
   },
   //move to fh.cms
   deleteSection : function (val){
@@ -119,29 +153,7 @@ App.View.CMSTree = App.View.CMS.extend({
 
   },
 
-  //move to fh.cms
-  createSection : function (val){
-    var self = this;
-    var selectedSection = self.activeSection || "root";
-    //show some kind of modal
-    var parentSection = self.collection.findSectionByPath(selectedSection);
 
-    if(parentSection){
-      if(! parentSection["sections"]) parentSection["sections"]= [];
-
-      var path = (parentSection.path === "") ? val : parentSection.path + "." + val,
-      node = {
-        "path": path,
-        "hash": "a3b4c5d6",
-        "name" : val,
-        "data":val,
-        "parent":parentSection.name
-      };
-
-    }
-    parentSection["sections"].push(node);
-    self.render();
-  },
 
   onTreeNodeClick : function (e, data) {
     var self = this;
@@ -194,25 +206,6 @@ App.View.CMSTree = App.View.CMS.extend({
           }
         }
       }
-
-
-//      var section = this.collection.findSectionByPath(t.attr.path);
-//      if (!section){
-//        return undefined;
-//      }
-//
-//      function getChildHashes(children) {
-//        var ret = [];
-//        for(var r=0; r < children.length; r++){
-//          ret.push(children[r].hash);
-//        }
-//      }
-//
-//      section.children = (t.children && t.children.length>0) ? getChildHashes(t.children) : [];
-//      if (!section.sections){
-//        section.sections = undefined;
-//      }
-//      newCollection.push(section);
     }
     console.log("repathed tree", tree);
     return tree;

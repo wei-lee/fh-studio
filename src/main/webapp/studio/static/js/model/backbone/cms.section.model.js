@@ -3,6 +3,8 @@ App.Model = App.Model || {};
 App.Collection = App.Collection || {};
 App.collections = App.collections || {};
 
+
+
 App.Model.CmsSection = Backbone.Model.extend({
   "setSectionName" : function (name){
     name = name.replace(/\./,"");
@@ -10,6 +12,10 @@ App.Model.CmsSection = Backbone.Model.extend({
     return this.name;
   }
 });
+
+App.Model.CmsSection.CONST = {
+  "CHILDREN" : "children"
+};
 
 App.Collection.CmsSection = Backbone.Collection.extend({
   initialize: function() {},

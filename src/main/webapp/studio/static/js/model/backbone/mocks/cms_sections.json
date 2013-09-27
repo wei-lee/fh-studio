@@ -58,15 +58,27 @@
           "listEntries": [
             {
               "hash": "a0b7c8d9",
-              "name": "title",
+              "name": "address",
               "type": "text",
               "value": "The Quay, Waterford"
             },
             {
-              "hash": "a0b7c8d9",
-              "name": "title",
+              "hash": "a0b7c8d10",
+              "name": "address",
               "type": "text",
               "value": "The Square Shopping Center, Waterford"
+            },
+            {
+              "hash":"a0b7c8d11",
+              "name": "opening hours",
+              "type":"text",
+              "value":"9am to 5pm mon - fri"
+            },
+            {
+              "hash":"a0b7c8d12",
+              "name": "opening hours",
+              "type":"text",
+              "value":"9am to 5pm mon - fri"
             }
           ],
           "listHash": "a1b8c9d0"

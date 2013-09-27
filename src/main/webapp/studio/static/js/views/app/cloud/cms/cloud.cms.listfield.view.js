@@ -36,6 +36,7 @@ App.View.CMSListField = App.View.CMSSection.extend({
   onListFieldSave : function(){
     debugger;
     //TODO: POST to server
+    //NOTE: all actions need to be qued in order to ensure consistency and processed in order on save.
   },
   setModeData : function(){
     this.options.mode = 'data';
