@@ -53,35 +53,50 @@
         },
         {
           "hash": "a9b6c7d8",
-          "name": "Waterford Stores List",
-          "type": "list",
-          "listEntries": [
+          "name": "Patrick St List",
+          "type" : "list",
+          "modifiedDate" : "11/12/2013",
+          "fields": [
             {
-              "hash": "a0b7c8d9",
-              "name": "address",
-              "type": "text",
-              "value": "The Quay, Waterford"
+              "name" : "name",
+              "type" : "string"
             },
             {
-              "hash": "a0b7c8d10",
-              "name": "address",
-              "type": "text",
-              "value": "The Square Shopping Center, Waterford"
+              "name" : "address",
+              "type" : "paragraph"
             },
             {
-              "hash":"a0b7c8d11",
-              "name": "opening hours",
-              "type":"text",
-              "value":"9am to 5pm mon - fri"
+              "name" : "city",
+              "type" : "string"
             },
             {
-              "hash":"a0b7c8d12",
-              "name": "opening hours",
-              "type":"text",
-              "value":"9am to 5pm mon - fri"
+              "name" : "hours",
+              "type" : "string"
             }
           ],
-          "listHash": "a1b8c9d0"
+          "data": [
+            {
+              "hash" : "a1b2",
+              "name" : "Tom Creanes",
+              "address" : "21 Yellow St, Waterford",
+              "hours" : "9am-5pm",
+              "city" : "waterford"
+            },
+            {
+              "hash" : "a1b4",
+              "name" : "The Quay",
+              "address" : "48 The Quay, Waterford",
+              "hours" : "9am-5pm",
+              "city" : "waterford"
+            },
+            {
+              "hash" : "a1b3",
+              "name" : "Square Shopping Center",
+              "address" : "2B The Square Shopping Center",
+              "hours" : "9am-5pm",
+              "city" : "waterford"
+            }
+          ]
         }
       ],
       "children":[
@@ -120,22 +135,49 @@
         {
           "hash": "a9b6c7d8",
           "name": "Patrick St List",
-          "type": "list",
-          "listEntries": [
+          "type" : "list",
+          "modifiedDate" : "11/12/2013",
+          "fields": [
             {
-              "hash": "a0b7c8d9",
-              "name": "title",
-              "type": "text",
-              "value": "The Quay, Cork"
+              "name" : "name",
+              "type" : "string"
             },
             {
-              "hash": "a0b7c8d9",
-              "name": "title",
-              "type": "text",
-              "value": "Merchants Quay, Cork"
+              "name" : "address",
+              "type" : "paragraph"
+            },
+            {
+              "name" : "city",
+              "type" : "string"
+            },
+            {
+              "name" : "hours",
+              "type" : "string"
             }
           ],
-          "listHash": "a1b8c9d0"
+          "data": [
+            {
+              "hash" : "a1b2",
+              "name" : "Patrick St",
+              "address" : "25 Patrick St",
+              "hours" : "9am-9pm",
+              "city" : "cork"
+            },
+            {
+              "hash" : "a1b4",
+              "name" : "Oliver Plunket St",
+              "address" : "48 Oliver Pulunket St",
+              "hours" : "9am-4pm",
+              "city" : "cork"
+            },
+            {
+              "hash" : "a1b3",
+              "name" : "Mitchel St Shopping Center",
+              "address" : "5C Mitchel St Shopping Center",
+              "hours" : "9am-6pm",
+              "city" : "cork"
+            }
+          ]
         }
       ],
       "children":[
