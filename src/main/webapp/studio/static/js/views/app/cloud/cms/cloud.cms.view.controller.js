@@ -49,7 +49,8 @@ App.View.CMSController  = Backbone.View.extend({
     this.$el.prepend(this.$fbContainer);
     this.$el.prepend(this.$listFieldContainer);
 
-    this.form = new App.View.CMSSection({ $el : this.$fbContainer, collection : this.collection, section : this.section });
+    var isAdministrator = $fw.userProps.roles.indexOf('cmsadmin'); //TODO: Wire this up - doesn't exist yet
+    this.form = new App.View.CMSSection({ $el : this.$fbContainer, collection : this.collection, section : this.section, editStructure : true }); //
     this.form.render();
 
     this.form.bind('edit_field_list', $.proxy(this.onEditFieldList, this));
@@ -69,12 +70,14 @@ App.View.CMSController  = Backbone.View.extend({
     options.$el = this.$listFieldContainer;
     this.listfield = new App.View.CMSListField(options);
     this.listfield.render();
+    this.listfield.bind('back', $.proxy(this.onCMSBack, this));
   },
   onCMSBack : function(){
-    //TODO: Events get double-bound, we need to destroy this.listField...
     this.$listFieldContainer.empty().hide();
     this.$fbContainer.show();
-    this.listfield;
+    if (this.listField){
+      this.listfield.undelegateEvents();
+    }
   },
   treeNodeClicked : function(){
     if (this.$listFieldContainer.length && this.$listFieldContainer.length>0){

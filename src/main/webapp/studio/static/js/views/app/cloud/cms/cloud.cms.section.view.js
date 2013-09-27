@@ -17,22 +17,21 @@ App.View.CMSSection = App.View.CMS.extend({
   },
   initialize: function(options){
     this.$el = options.$el;
+    this.options = options;
     this.collection = options.collection;
-    this.section = options.section;
-    this.field = options.field;
     this.compileTemplates();
   },
   render : function(){
     var self = this;
 
-    var section = this.collection.findSectionByPath(this.section),
+    var section = this.collection.findSectionByPath(this.options.section),
     field = false,
     path = section.path,
     fields;
 
-    if (this.field){
+    if (this.options.field){
       // We're editing a field_list - retrieve it
-      field = _.findWhere(section.fields, { name : this.field });
+      field = _.findWhere(section.fields, { name : this.options.field });
       fields = field && field.listEntries;
       if (!fields || !fields.length){
         alert('Error loading list fields'); //TODO: Modal
@@ -57,7 +56,7 @@ App.View.CMSSection = App.View.CMS.extend({
       noScroll : true,
       noEditOnDrop : true,
       bootstrapData: fields,
-      editStructure : this.editStructure || false
+      editStructure : this.options.editStructure || false
     });
     this.fb.on('save', function(payload){
       self.draft = payload;
@@ -128,7 +127,7 @@ App.View.CMSSection = App.View.CMS.extend({
     this.$el.find('#publishRadioLater').attr('checked', true);
   },
   setSection : function(section){
-    this.section = section;
+    this.options.section = section;
     this.render();
   },
   onListFieldEditStructure : function(e){
@@ -141,8 +140,8 @@ App.View.CMSSection = App.View.CMS.extend({
   onListFieldEdit : function(e, mode){
     var el = $(e.target),
     fieldName = el.data('name'),
-    editStructure = (mode === 'data'), // TODO: Structural readonly mode..
-    options = { collection : this.collection, section : this.section, field : fieldName, mode : mode, editStructure : editStructure };
+    editStructure = (mode === 'structure'),
+    options = { collection : this.collection, section : this.options.section, field : fieldName, mode : mode, editStructure : editStructure };
     this.trigger('edit_field_list', options);
   }
 });

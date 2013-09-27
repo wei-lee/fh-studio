@@ -12,8 +12,9 @@ App.View.CMSListFieldTopBar = App.View.CMS.extend({
     this.compileTemplates();
   },
   render : function(options){
-    this.$el.append(this.templates.$cms_back());
-    if (this.options.mode === 'structure'){
+    var back = $(this.templates.$cms_back()).addClass('btn-small');
+    this.$el.append(back);
+    if (this.options.mode === 'data'){
       this.$el.append(this.templates.$cms_listfieldEditDataTopButtons());
     }else{
       this.$el.append('<span>Drag fields to alter the structure</span>');
