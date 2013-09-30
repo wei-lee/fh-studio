@@ -2,7 +2,7 @@ var App = App || {};
 App.View = App.View || {};
 
 App.View.CMSSection = App.View.CMS.extend({
-
+  title : 'Edit Section',
   events: {
     'submit #configureSectionForm' : 'onSectionSave',
     'reset #configureSectionForm' : 'onSectionDiscard',
@@ -14,7 +14,8 @@ App.View.CMSSection = App.View.CMS.extend({
   },
   templates : {
     'cms_configureSection' : '#cms_configureSection',
-    'cms_sectionExtraTabs' : '#cms_sectionExtraTabs'
+    'cms_sectionExtraTabs' : '#cms_sectionExtraTabs',
+    'cms_section_savecancel' : '#cms_section_savecancel'
   },
   initialize: function(options){
     this.$el = options.$el;
@@ -22,7 +23,6 @@ App.View.CMSSection = App.View.CMS.extend({
     this.collection = options.collection;
     this.compileTemplates();
     this.bind('listfieldRowSelect', this.listfieldRowSelect);
-
   },
   render : function(){
     var self = this,
@@ -59,8 +59,11 @@ App.View.CMSSection = App.View.CMS.extend({
     this.$fbEl = this.$el.append('<div></div>');
     this.renderFormBuilder(fields);
 
+
     // Add in the CMS specific breadcrumb on top of the middle section
     this.$el.find('.middle').prepend(this.cmsBreadcrumb(path));
+    // Add in the page title to the breadcrumb row
+    this.$el.find('.middle ul.breadcrumb').prepend('<li><h3>' + this.title + '</h3></li>');
 
 
     this.$el.find('.fb-tabs').append(this.templates.$cms_sectionExtraTabs());
@@ -89,6 +92,10 @@ App.View.CMSSection = App.View.CMS.extend({
 
       $(this).find('.fieldlist_table').html(table.render().$el);
     });
+
+    if (!this.options.listfield){
+      this.$el.find('.middle').append(this.templates.$cms_section_savecancel());
+    }
 
     return this;
   },
@@ -131,7 +138,7 @@ App.View.CMSSection = App.View.CMS.extend({
         case "string":
           newField.field_type = "text";
           break;
-        case "list": // TODO
+        case "list":
           newField.field_type = "field_list";
           break;
         default:

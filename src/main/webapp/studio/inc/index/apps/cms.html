@@ -50,10 +50,6 @@
         </label>
         <input type="date" name="publishdate">
 
-        <div class="btn-group">
-          <button type="submit" class="btn btn-primary btn-savesection">Save Section</button>
-          <button type="reset" class="btn btn-danger btn-discard-section">Discard Changes</button>
-        </div>
         <br />
         <button class="btn btn-danger btn-deletesection">Delete this section</button>
       </fieldset>
@@ -62,6 +58,12 @@
   </div>
   <div class="fb-tab-pane" id="cmsAppPreview">
   </div>
+</script>
+<script id="cms_section_savecancel" type="text/x-handlebars-template">
+<div class="btn-group pull-right cms_section_savecancel">
+  <button type="submit" class="btn btn-primary btn-savesection">Save Section</button>
+  <button type="reset" class="btn btn-danger btn-discard-section">Discard Changes</button>
+</div>
 </script>
 <script id="cms_back" type="text/x-handlebars-template">
   <a class="btn btn-cms-back" href="#"><i class="icon-arrow-left"></i> Back</a>
@@ -74,16 +76,18 @@
 </script>
 
 <script id="cms_listfieldsavecancel" type="text/x-handlebars-template">
-  <div class="btn-group pull-right">
-    <a class="btn btn-small btn-primary btn-listfield-save" href="#">Save</a>
-    <a class="btn btn-small btn-cms-back" href="#">Cancel</a>
+  <div class="btn-group pull-right cms-listfield-savecancel">
+    <a class="btn btn-primary btn-listfield-save" href="#">Save</a>
+    <a class="btn btn-cms-back" href="#">Cancel</a>
   </div>
 </script>
 
 <script id="cms_listfieldEditDataTopButtons" type="text/x-handlebars-template">
+  <div class="btn-group">
   <a class="btn btn-small btn-success btn-fieldlist-add" href="#"><i class="icon-plus"></i> Row</a>
   <a class="btn btn-small btn-success btn-fieldlist-duplicate disabled" href="#"><i class="icon-plus"></i><i class="icon-plus"></i> Duplicate</a>
   <a class="btn btn-small btn-danger btn-fieldlist-delete disabled" href="#"><i class="icon-trash"></i> Delete</a>
+  </div>
 </script>
 
 <script id="cms_mastermenu" type="text/x-handlebars-template">

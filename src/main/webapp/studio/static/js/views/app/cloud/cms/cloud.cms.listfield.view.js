@@ -10,6 +10,7 @@ App.View.CMSListField = App.View.CMSSection.extend({
     'click table tbody tr input[type=checkbox]' : 'onRowSelect'
   },
   initialize: function(options){
+    this.title = (options.mode === 'data') ? "Edit List Data" : "Edit List Structure"
     this.templates = _.extend(this.constructor.__super__.templates, {
       'cms_listfieldsavecancel' : '#cms_listfieldsavecancel',
       'cms_editListDataInstructions' : '#cms_editListDataInstructions'
@@ -44,6 +45,8 @@ App.View.CMSListField = App.View.CMSSection.extend({
 
     this.$el.find('.middle').append(this.templates.$cms_listfieldsavecancel());
 
+    this.$el.find('.btn-listfield-change-' + this.options.mode).addClass('active');
+
     return this;
   },
   onListFieldSave : function(){
@@ -55,13 +58,17 @@ App.View.CMSListField = App.View.CMSSection.extend({
   },
   setModeData : function(){
     this.options.mode = 'data';
+    this.title = 'Edit List Data';
     this.options.editStructure = false;
     this.render();
+    this.$el.find('.btn-listfield-change-data').addClass('active');
   },
   setModeStructure : function(){
     this.options.mode = 'structure';
+    this.title = 'Edit List Structure';
     this.options.editStructure = true;
     this.render();
+    this.$el.find('.btn-listfield-change-structure').addClass('active');
   },
   onRowClick : function(e){
     // Uncheck all other rows

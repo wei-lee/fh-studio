@@ -60,7 +60,7 @@
   float: left;
 }
 
-#cms_container .left .menu h3 {
+#cms_container .left .menu h3, #cms_container .middle h3 {
     font-size: 1.3em;
     font-weight: 100;
     margin: 0px;
@@ -68,6 +68,12 @@
     display: inline-block;
     line-height: 20px;
 }
+
+#cms_container .middle h3 {
+    line-height: 4px;
+    width: 136px;
+}
+
 
 #cms_container .left .menu .btn {
     float: right;
@@ -114,6 +120,10 @@
     margin-left: 6px;
 }
 
+.middle .btn-group {
+    display: inline-block;
+}
+
 #cms_container fieldset.empty {
     border: 1px dashed #ddd;
     padding: 65px;
@@ -154,6 +164,10 @@
 /*
   Form Builder CSS overrides
  */
+
+.cms-listfield-savecancel, .cms_section_savecancel {
+    top: -150px; /* Makes up for the 150px bottom padding on every form */
+}
 
 .fb-field-wrapper .actions-wrapper {
     bottom: 2px;
