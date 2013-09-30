@@ -42,5 +42,12 @@ App.View.CMS = Backbone.View.extend({
         alertBox.remove();
       });
     }, 3000);
+  },
+  modal : function(msg){
+    this.modal  = new App.View.Modal({
+      body : msg,
+      cancelText : false
+    });
+    this.$el.append(this.modal.render().$el);
   }
 });

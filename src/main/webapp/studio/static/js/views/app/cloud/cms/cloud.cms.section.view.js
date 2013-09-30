@@ -38,8 +38,8 @@ App.View.CMSSection = App.View.CMS.extend({
       fields = this.fieldList && this.fieldList.fields;
       listData = this.fieldList && this.fieldList.data;
       if (!fields || !fields.length){
-        alert('Error loading list fields'); //TODO: Modal
-        return;
+        console.log('error loading list fields');
+        return this.modal('Error loading list fields');
       }
       fields = this.massageFields(fields);
       path += ("." + this.fieldList.name + "." + "Edit " + this.options.mode);
@@ -51,9 +51,8 @@ App.View.CMSSection = App.View.CMS.extend({
     console.log("Section is " + section + " fields ",fields);
 
     if (!section || !fields){
-      alert("Error loading section");
       console.log('Error finding section or fields on rendering section view');
-      //TODO: Modal, fire up event?
+      return this.modal("Error loading section");
     }
 
     this.$fbEl = this.$el.append('<div></div>');
@@ -67,7 +66,7 @@ App.View.CMSSection = App.View.CMS.extend({
 
 
     this.$el.find('.fb-tabs').append(this.templates.$cms_sectionExtraTabs());
-    //TODO: Fix this and its selection..
+
     var parentOptions = this.collection.toHTMLOptions();
     parentOptions = ["<option value='' data-path='' >-Root</option>"].concat(parentOptions);
     parentOptions = parentOptions.join('');
@@ -85,7 +84,7 @@ App.View.CMSSection = App.View.CMS.extend({
       table;
 
       if (!listField){
-        return alert('No list field found with name: ' + name); //TODO: Modal
+        return this.modal('No list field found with name: ' + name);
       }
 
       table = new App.View.CMSTable({ fields : listField.fields, data : listField.data });

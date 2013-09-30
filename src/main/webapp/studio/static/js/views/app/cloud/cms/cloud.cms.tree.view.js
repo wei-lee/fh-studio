@@ -140,13 +140,17 @@ App.View.CMSTree = App.View.CMS.extend({
 
   "onDeleteSection": function (e) {
     var self = this;
-    var del = confirm("Are you sure you wish delete " + self.activeSection);
-    if (del == true) {
-      console.log("deleting " + self.activeSection);
-      self.deleteSection(self.activeSection);
-    } else {
-      console.log("not deleting section");
-    }
+    var modal = new App.View.Modal({
+      title: 'Confirm Delete',
+      body: "Are you sure you wish delete " + self.activeSection,
+      okText: 'Delete',
+      cancelText : 'Cancel',
+      ok: function (e) {
+        console.log("deleting " + self.activeSection);
+        self.deleteSection(self.activeSection);
+      }
+    });
+    self.$el.append(modal.render().$el);
   },
 
   "onAddSection": function (element) {
@@ -218,8 +222,8 @@ App.View.CMSTree = App.View.CMS.extend({
     var self = this;
     var path = data && data.rslt && data.rslt.obj && data.rslt.obj.attr && data.rslt.obj.attr('path');
     if (!path) {
-      alert('Error loading section'); // TODO: Modal
       console.log('Error finding section path on tree node');
+      return this.modal('Error loading section');
     }
     this.trigger('sectionchange', path);
     App.dispatch.trigger("cms.sectionclick",{"path":path.replace(/\s+/g,'')});

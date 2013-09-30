@@ -42,8 +42,8 @@ App.View.CMSController  = Backbone.View.extend({
     this.section = this.section || this.collection.at(0) && this.collection.at(0).get('path');
 
     if (!this.section){
-      alert("Error loading section"); //TODO: Modal
       console.log('Error: no section specified when initing cloud.cms.view');
+      return this.modal("Error loading section");
     }
 
     this.$el.addClass('row nomargin');
