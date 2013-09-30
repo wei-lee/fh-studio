@@ -98,7 +98,7 @@ App.View.CMSSection = App.View.CMS.extend({
       if(this.options.editStructure && this.options.editStructure === true){
         instructions = "Drag fields from the right to add fields. Drag fields to re-order. Click on a field to select it, click again to edit it. ";
       }else{
-        instructions = ""
+        instructions = "Edit the form to alter CMS data";
       }
       $(this.templates.$cms_editSectionInstructions({msg : instructions})).insertAfter(this.$el.find('.breadcrumb'));
       this.$el.find('.middle').append(this.templates.$cms_section_savecancel());
