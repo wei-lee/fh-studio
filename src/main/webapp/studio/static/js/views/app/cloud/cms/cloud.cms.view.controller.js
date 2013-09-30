@@ -18,7 +18,15 @@ App.View.CMSController  = Backbone.View.extend({
     this.collection = new App.Collection.CmsSection();
     this.collection.fetch({ reset: true});
     this.collection.bind('reset', $.proxy(this.render, this));
+    App.dispatch.on("cms.sectionclick",self.updateSelect);
   },
+
+  updateSelect : function (data) {
+    console.log("update select ", data);
+    $('option:selected', 'select[name="parentName"]').removeAttr('selected');
+    $('select[name="parentName"]').find("option[data-path='"+data.path+"']").attr("selected",true);
+  },
+
   render: function(options){
     this.$el.empty();
 

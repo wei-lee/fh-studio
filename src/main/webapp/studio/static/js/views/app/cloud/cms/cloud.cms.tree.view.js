@@ -22,6 +22,7 @@ App.View.CMSTree = App.View.CMS.extend({
     this.collection.on("remove", function (m){
 
        console.log("a model was removed from the collection ", m);
+
       self.render();
     });
 
@@ -206,6 +207,7 @@ App.View.CMSTree = App.View.CMS.extend({
     self.collection.removeBySectionPath(selectedSection);
 
     self.render();
+    $('.fb-response-fields').empty();
 
 
   },
@@ -220,6 +222,7 @@ App.View.CMSTree = App.View.CMS.extend({
       console.log('Error finding section path on tree node');
     }
     this.trigger('sectionchange', path);
+    App.dispatch.trigger("cms.sectionclick",{"path":path.replace(/\s+/g,'')});
     self.activeSection = path;
   },
   onTreeMove: function (e, data) {
