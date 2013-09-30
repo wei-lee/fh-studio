@@ -14,18 +14,24 @@ App.View.TemplateMixins = {
    this.view.$pluginSetup();
    */
   compileTemplates: function() {
-    var templates = {};
+    if (!this.templates){
+      throw new Error('Error: compileTemplates called on view with no templates defined');
+    }
     for (var key in this.templates){
       if (this.templates.hasOwnProperty(key)){
         var tpl = this.templates[key],
-        html = $(tpl, this.$container).html();
-        if (!html){
-          throw new Error("No html found for " + key);
+        html;
+        // Only do HTML lookups on string selectors, not already compiled templates
+        if (typeof tpl === 'string' && tpl[0] === '#'){
+          html = $(tpl, this.$container).html();
+          if (!html){
+            throw new Error("No html found for " + key);
+          }
+          this.templates['$' + key] = Handlebars.compile(html);
         }
-        templates['$' + key] = Handlebars.compile(html);
       }
     }
-    this.templates = templates;
+    //this.templates = templates;
   }
 };
 

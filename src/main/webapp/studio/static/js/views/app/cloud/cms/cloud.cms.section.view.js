@@ -155,7 +155,10 @@ App.View.CMSSection = App.View.CMS.extend({
     }
     vals.fields = this.fb.mainView.collection.toJSON();
     console.log(vals);
+
+    this.alertMessage();
     //TODO: Dispatch to server
+
 
     return false;
   },

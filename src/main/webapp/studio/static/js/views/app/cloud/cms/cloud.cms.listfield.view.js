@@ -30,8 +30,10 @@ App.View.CMSListField = App.View.CMSSection.extend({
     top.render().$el.insertAfter(this.$el.find('.middle .breadcrumb'));
 
     if (this.options.mode === "data"){
+      var afterEl = $(this.$el.find('.middle .fb-no-response-fields'));
+      afterEl.append('');
       this.table = new App.View.CMSTable({ checkboxes : true, fields : this.fieldList.fields, data : this.fieldList.data });
-      this.table.render().$el.insertAfter(this.$el.find('.middle .fb-no-response-fields'));
+      this.table.render().$el.insertAfter(afterEl);
       this.table.$el.find('table').removeClass('table-striped');
     }
 
@@ -41,9 +43,8 @@ App.View.CMSListField = App.View.CMSSection.extend({
   },
   onListFieldSave : function(){
     var self = this;
-    setTimeout(function(){
-      self.trigger('back');
-    }), 1000;
+    self.trigger('back', true);
+
     //TODO: POST to server
     //NOTE: all actions need to be qued in order to ensure consistency and processed in order on save.
   },

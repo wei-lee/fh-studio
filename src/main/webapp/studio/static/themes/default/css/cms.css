@@ -86,6 +86,12 @@
   width: 16.666666667%;
 }
 
+.middle .alert {
+    position: absolute;
+    width: 38%;
+    margin-left: 6px;
+}
+
 #cms_container fieldset.empty {
     border: 1px dashed #ddd;
     padding: 65px;

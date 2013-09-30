@@ -75,11 +75,15 @@ App.View.CMSController  = Backbone.View.extend({
     this.listfield.render();
     this.listfield.bind('back', $.proxy(this.onCMSBack, this));
   },
-  onCMSBack : function(){
+  onCMSBack : function(success){
     this.$listFieldContainer.empty().hide();
     this.$fbContainer.show();
     if (this.listField){
       this.listfield.undelegateEvents();
+    }
+    if (success === true){
+      // Show save success message
+      this.form.alertMessage();
     }
   },
   treeNodeClicked : function(){
