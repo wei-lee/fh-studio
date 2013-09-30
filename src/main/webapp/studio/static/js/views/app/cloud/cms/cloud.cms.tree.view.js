@@ -33,13 +33,25 @@ App.View.CMSTree = App.View.CMS.extend({
       console.log("treepath",treePath);
       var pathBits = treePath.split(".");
 
-      console.log(pathBits);
+
       var path ="";
+      var ref="";
       for(var i = 0; i < pathBits.length; i++){
-        path+=pathBits[i];
-        var ref = $.jstree._reference("#" + path);
-        if(ref) ref.open_node("#"+path);
+        path+=pathBits[i].trim();
+
+        console.log("path to open is " + path);
+         ref = $.jstree._reference("#" + path);
+        if(ref){
+          ref.deselect_all();
+          console.log("found ref performing action");
+          ref.open_node("#"+path);
+
+        }
       }
+      if(ref){
+        ref.select_node("#"+path);
+      }
+      $("#"+path).trigger("click");
     });
 
   },
@@ -74,7 +86,7 @@ App.View.CMSTree = App.View.CMS.extend({
     self.tree.unbind("select_node.jstree, move_node.jstree, create.jstree","blur");
     self.tree.bind("select_node.jstree", $.proxy(this.onTreeNodeClick, this));
     self.tree.bind('move_node.jstree', $.proxy(this.onTreeMove, this));
-    self.tree.bind("create.jstree", function (e, data) {
+    self.tree.bind("open_node.jstree", function (e, data) {
 
     });
 
@@ -105,7 +117,7 @@ App.View.CMSTree = App.View.CMS.extend({
       console.log("IN EXPLODE SECTION", sections);
       var node = {
         data: section.name,
-        attr: { id: section.path.replace(/\s+/,'').replace(/\.+/,''), hash: section.hash, path: section.path },
+        attr: { id: section.path.replace(/\s+/g,'').replace(/\.+/g,''), hash: section.hash, path: section.path },
         "children": []
       };
       if (section && section.children) {
@@ -200,6 +212,7 @@ App.View.CMSTree = App.View.CMS.extend({
 
 
   onTreeNodeClick: function (e, data) {
+    console.log("on tree node click");
     var self = this;
     var path = data && data.rslt && data.rslt.obj && data.rslt.obj.attr && data.rslt.obj.attr('path');
     if (!path) {
@@ -207,7 +220,6 @@ App.View.CMSTree = App.View.CMS.extend({
       console.log('Error finding section path on tree node');
     }
     this.trigger('sectionchange', path);
-    console.log("tree node click " + path);
     self.activeSection = path;
   },
   onTreeMove: function (e, data) {
