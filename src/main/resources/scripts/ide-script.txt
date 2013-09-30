@@ -58,7 +58,6 @@ js/model/backbone/metrics/startups/app.startups.platform.model.js
 js/model/backbone/metrics/startups/domain.startups.platform.model.js
 js/model/backbone/metrics/installs/domain.installs.platform.model.js
 js/model/backbone/cloudenvironments/cloudenvironment.model.js
-js/views/view.overrides.js
 js/views/common/datatable.view.js
 js/views/common/spinner.view.js
 js/views/common/modal.view.js
@@ -170,6 +169,7 @@ js/views/cloudenvironments/cloudenvironments.overview.view.js
 js/views/cloudenvironments/cloudenvironments.envresources.view.js
 js/views/cloudenvironments/cloudenvironments.appsresources.view.js
 js/views/cloudenvironments/cloudenvironments.cacheresources.view.js
+js/views/view.mixins.js
 js/model/ModelManager.js
 js/model/models/Model.js
 js/model/models/App.js

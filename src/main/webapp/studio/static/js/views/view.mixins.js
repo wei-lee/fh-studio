@@ -1,8 +1,9 @@
 /*
   Common functions used by all backbone views in FH - override Backbone.View here
  */
-
-Backbone.View = Backbone.View.extend({
+var App = App || {};
+App.View = App.View || {};
+App.View.TemplateMixins = {
   /*
     To use, add a property to the view called templates - key is template name, value is the ID of the script tag containing it e.g.
    templates : {
@@ -26,4 +27,9 @@ Backbone.View = Backbone.View.extend({
     }
     this.templates = templates;
   }
-});
+};
+
+_.extend(App.View.CMS.prototype, App.View.TemplateMixins);
+_.extend(App.View.CMSController.prototype, App.View.TemplateMixins);
+_.extend(App.View.PluginsView.prototype, App.View.TemplateMixins);
+_.extend(App.View.DataBrowserView.prototype, App.View.TemplateMixins);
