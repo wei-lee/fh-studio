@@ -70,19 +70,15 @@ App.Collection.CmsSection = Backbone.Collection.extend({
 
     for(var i=0; i < self.models.length; i++){
       var m = self.models[i];
-      console.log("looking at model ", m);
       var children = m.get(childrenKey);
 
-      console.log("children ", children);
-
       if(children && Array.isArray(children) && children.length > 0){
-        console.log("model has children " , children);
+        //console.log("model has children " , children);
         var hasRem =section.get("hash");
         var refIndex = children.indexOf(hasRem);
         if(refIndex != -1){
-          console.log("found child ref for hash "+hasRem+" removing index " + refIndex);
+          //console.log("found child ref for hash "+hasRem+" removing index " + refIndex);
           children.splice(refIndex,1);
-          console.log("children now set to ",children);
         }
       }
     }
@@ -111,11 +107,11 @@ App.Collection.CmsSection = Backbone.Collection.extend({
     for (var i=0; i<sections.length; i++){
       var section = sections[i],
       parentString = (parentTrail === "") ? section.name : parentTrail + "." + section.name;
-      html.push('<option value="' + parentString + '">' + spacer + section.name + '</option>');
-      if (section.sections && section.sections.length > 0){
-        var children = this.toHTMLOptions(section.sections, level, parentString);
-        html = html.concat(children);
-      }
+      var id = section.path.replace(/\s+/g,'').replace(/\.+/g,'');
+      var pathData = section.path.replace(/\s+/g,'');
+
+      html.push('<option value="' + parentString + '" data-id="'+id+'"  data-path="'+pathData+'">' + spacer + section.name + '</option>');
+
     }
     return html;
   }
