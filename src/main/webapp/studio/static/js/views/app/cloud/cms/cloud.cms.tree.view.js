@@ -22,6 +22,7 @@ App.View.CMSTree = App.View.CMS.extend({
     this.collection.on("remove", function (m){
 
        console.log("a model was removed from the collection ", m);
+
       self.render();
     });
 
@@ -206,6 +207,7 @@ App.View.CMSTree = App.View.CMS.extend({
     self.collection.removeBySectionPath(selectedSection);
 
     self.render();
+    $('.fb-response-fields').empty();
 
 
   },
