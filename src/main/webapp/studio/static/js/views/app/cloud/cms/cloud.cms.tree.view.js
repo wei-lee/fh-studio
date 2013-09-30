@@ -220,6 +220,7 @@ App.View.CMSTree = App.View.CMS.extend({
       console.log('Error finding section path on tree node');
     }
     this.trigger('sectionchange', path);
+    App.dispatch.trigger("cms.sectionclick",{"path":path});
     self.activeSection = path;
   },
   onTreeMove: function (e, data) {
