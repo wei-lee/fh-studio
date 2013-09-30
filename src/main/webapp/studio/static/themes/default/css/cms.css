@@ -112,3 +112,7 @@
 .fb-field-wrapper .subtemplate-wrapper .cover {
     z-index: -2;
 }
+
+.fb-save-wrapper {
+    display: none;
+}
