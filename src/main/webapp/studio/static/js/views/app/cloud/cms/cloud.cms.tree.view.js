@@ -24,10 +24,29 @@ App.View.CMSTree = App.View.CMS.extend({
        console.log("a model was removed from the collection ", m);
       self.render();
     });
+
+    App.dispatch.on("cms.sectionchange", function (evData){
+      //update the tree somehow.
+        console.log(evData);
+      //need to go through the levels opening as we go.
+      var treePath = evData.path;
+      console.log("treepath",treePath);
+      var pathBits = treePath.split(".");
+
+      console.log(pathBits);
+      var path ="";
+      for(var i = 0; i < pathBits.length; i++){
+        path+=pathBits[i];
+        var ref = $.jstree._reference("#" + path);
+        if(ref) ref.open_node("#"+path);
+      }
+    });
+
   },
 
   render: function () {
     var jsonData = this.massageTree(this.collection.toJSON());
+
     console.log("jsonData ", jsonData);
     var self = this;
     self.tree = this.$el.jstree({
@@ -52,7 +71,7 @@ App.View.CMSTree = App.View.CMS.extend({
       },
       'plugins': ['themes', 'json_data', 'ui', 'cookies', 'crrm', 'dnd']
     });
-    self.tree.unbind("select_node.jstree, move_node.jstree, create.jstree");
+    self.tree.unbind("select_node.jstree, move_node.jstree, create.jstree","blur");
     self.tree.bind("select_node.jstree", $.proxy(this.onTreeNodeClick, this));
     self.tree.bind('move_node.jstree', $.proxy(this.onTreeMove, this));
     self.tree.bind("create.jstree", function (e, data) {
@@ -86,7 +105,7 @@ App.View.CMSTree = App.View.CMS.extend({
       console.log("IN EXPLODE SECTION", sections);
       var node = {
         data: section.name,
-        attr: { id: id, hash: section.hash, path: section.path },
+        attr: { id: section.path.replace(/\s+/,'').replace(/\.+/,''), hash: section.hash, path: section.path },
         "children": []
       };
       if (section && section.children) {
@@ -165,6 +184,7 @@ App.View.CMSTree = App.View.CMS.extend({
     console.log("models ",self.collection.models);
     var model = new App.Model.CmsSection(node);
     self.collection.push(model);
+    self.$el.jstree("unset_focus");
   },
   //move to fh.cms
   deleteSection: function (val) {

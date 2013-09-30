@@ -53,6 +53,7 @@ App.View.CMSController  = Backbone.View.extend({
 
     var isAdministrator = $fw.userProps.roles.indexOf('cmsadmin'); //TODO: Wire this up - doesn't exist yet
     this.form = new App.View.CMSSection({ $el : this.$fbContainer, collection : this.collection, section : this.section, editStructure : true }); //
+
     this.form.render();
 
     this.form.bind('edit_field_list', $.proxy(this.onEditFieldList, this));

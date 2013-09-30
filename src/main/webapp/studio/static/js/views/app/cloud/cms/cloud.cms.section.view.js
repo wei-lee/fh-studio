@@ -9,7 +9,8 @@ App.View.CMSSection = App.View.CMS.extend({
     'click btn-deletesection' : 'onDeleteSection',
     'focus input[name=publishdate]' : 'onPublishDateFocus',
     'click .btn-listfield-structure' : 'onListFieldEditStructure',
-    'click .btn-listfield-data' : 'onListFieldEditData'
+    'click .btn-listfield-data' : 'onListFieldEditData',
+    'change #configureSectionForm':'onSectionChange'
   },
   templates : {
     'cms_configureSection' : '#cms_configureSection',
@@ -21,6 +22,7 @@ App.View.CMSSection = App.View.CMS.extend({
     this.collection = options.collection;
     this.compileTemplates();
     this.bind('listfieldRowSelect', this.listfieldRowSelect);
+
   },
   render : function(){
     var self = this,
@@ -64,7 +66,7 @@ App.View.CMSSection = App.View.CMS.extend({
     this.$el.find('.fb-tabs').append(this.templates.$cms_sectionExtraTabs());
     //TODO: Fix this and its selection..
     var parentOptions = this.collection.toHTMLOptions();
-    parentOptions = ["<option value=''>-Root</option>"].concat(parentOptions);
+    parentOptions = ["<option value='' data-path='' >-Root</option>"].concat(parentOptions);
     parentOptions = parentOptions.join('');
     this.$el.find('.fb-tab-content').append(this.templates.$cms_configureSection({ parentOptions : parentOptions }));
     // Select the active option
@@ -90,6 +92,18 @@ App.View.CMSSection = App.View.CMS.extend({
 
     return this;
   },
+
+  onSectionChange : function (se){
+    var select = this.$('select[name="parentName"]');
+    var opt = select.find('option').filter(":selected:");
+    console.log(opt);
+    console.log(select);
+    var selectVal = select.val();
+    console.log("section changed",selectVal);
+
+    App.dispatch.trigger("cms.sectionchange",{"section":selectVal,"id":opt.data("id"),"path":opt.data("path")});
+  },
+
   renderFormBuilder : function(fields){
     // Save some data massaging
     this.$fbEl.empty();
@@ -103,6 +117,7 @@ App.View.CMSSection = App.View.CMS.extend({
       bootstrapData: fields,
       editStructure : this.options.editStructure || false
     });
+
     this.fb.on('save', function(payload){
       self.draft = payload;
     });
