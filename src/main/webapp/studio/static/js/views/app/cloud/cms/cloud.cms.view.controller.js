@@ -23,6 +23,8 @@ App.View.CMSController  = Backbone.View.extend({
 
   updateSelect : function (data) {
     console.log("update select ", data);
+    $('option:selected', 'select[name="parentName"]').removeAttr('selected');
+    $('select[name="parentName"]').find("option[data-path='"+data.path+"']").attr("selected",true);
   },
 
   render: function(options){
