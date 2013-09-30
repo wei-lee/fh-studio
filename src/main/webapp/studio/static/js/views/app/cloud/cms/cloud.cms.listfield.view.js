@@ -11,7 +11,8 @@ App.View.CMSListField = App.View.CMSSection.extend({
   },
   initialize: function(options){
     this.templates = _.extend(this.constructor.__super__.templates, {
-      'cms_listfieldsavecancel' : '#cms_listfieldsavecancel'
+      'cms_listfieldsavecancel' : '#cms_listfieldsavecancel',
+      'cms_editListDataInstructions' : '#cms_editListDataInstructions'
     });
     this.constructor.__super__.initialize.apply(this, arguments);
   },
@@ -24,6 +25,9 @@ App.View.CMSListField = App.View.CMSSection.extend({
     if (this.options.mode === "data"){
       this.$el.find('.fb-tabs li.addfield').remove();
       this.$el.find('.fb-tabs li.configurefield').remove();
+      // Make our only left tab the active one
+      this.$el.find('.apppreview').addClass('active');
+      this.$el.find('#cmsAppPreview').addClass('active');
     }
 
     var top = new App.View.CMSListFieldTopBar(this.options);
@@ -31,10 +35,11 @@ App.View.CMSListField = App.View.CMSSection.extend({
 
     if (this.options.mode === "data"){
       var afterEl = $(this.$el.find('.middle .fb-no-response-fields'));
-      afterEl.append('');
       this.table = new App.View.CMSTable({ checkboxes : true, fields : this.fieldList.fields, data : this.fieldList.data });
       this.table.render().$el.insertAfter(afterEl);
       this.table.$el.find('table').removeClass('table-striped');
+
+      $(this.templates.$cms_editListDataInstructions()).insertAfter(afterEl);
     }
 
     this.$el.find('.middle').append(this.templates.$cms_listfieldsavecancel());

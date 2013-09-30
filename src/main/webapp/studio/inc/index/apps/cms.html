@@ -13,7 +13,8 @@
 
 <script id="cms_left" type="text/x-handlebars-template">
   <div class="span2 left">
-    <div class="menu pull-right">
+    <div class="menu">
+      <h3>Sections</h3>
       <a href="#" class="btn btn-small btn-deletesection btn-danger"><i class="icon-trash"></i></a>
       <a href="#" class="btn btn-small btn-addsection btn-success"><i class="icon-plus"></i></a>
     </div>
@@ -86,7 +87,7 @@
 </script>
 
 <script id="cms_mastermenu" type="text/x-handlebars-template">
-  <div class="cms_mastermenu pull-right">
+  <div class="cms_mastermenu btn-group pull-right">
     <a href="#" class="btn btn-small btn-cms-import btn-success"><i class="icon-upload"></i> Import</a>
     <a href="#" class="btn btn-small btn-cms-export btn-success"><i class="icon-download"></i> Export</a>
     <a href="#" class="btn btn-small btn-cms-audit"><i class="icon-list"></i> Audit Log</a>
@@ -100,4 +101,8 @@
     <button type="button" class="close" data-dismiss="alert">&times;</button>
     {{{ msg }}}
   </div>
+</script>
+
+<script id="cms_editListDataInstructions" type="text/x-handlebars-template">
+  <p class="editListDataInstructions">To edit a row's data, click on a row.</p>
 </script>

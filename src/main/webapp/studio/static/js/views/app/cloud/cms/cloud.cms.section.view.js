@@ -27,7 +27,8 @@ App.View.CMSSection = App.View.CMS.extend({
   render : function(){
     var self = this,
     section = this.collection.findSectionByPath(this.options.section),
-    path, fields, listData;
+    path = section.path,
+    fields, listData;
 
 
 
@@ -45,7 +46,6 @@ App.View.CMSSection = App.View.CMS.extend({
     }else{
       // Just a standard section view - may or may not contain a listfield within
       fields = this.massageFields(section.fields);
-      path = section.path;
     }
 
     console.log("Section is " + section + " fields ",fields);

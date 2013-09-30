@@ -60,6 +60,28 @@
   float: left;
 }
 
+#cms_container .left .menu h3 {
+    font-size: 1.3em;
+    font-weight: 100;
+    margin: 0px;
+    padding: 6px 0px 0px 12px;
+    display: inline-block;
+    line-height: 20px;
+}
+
+#cms_container .left .menu .btn {
+    float: right;
+    margin: 2px;
+}
+
+.editListDataInstructions {
+    margin: 10px 0px;
+}
+
+#cms_container .btn-cms-back {
+    margin-right: 10px;
+}
+
 .row.nomargin {
   margin-left: 0px;
 }
@@ -100,6 +122,35 @@
     font-size: 1.4em;
 }
 
+.fb-field-wrapper .dataTables_paginate {
+    display: none;
+}
+
+/*
+  Make a unified border-bottom across the CMS
+ */
+
+#cms_container .middle .breadcrumb,
+#cms_container .left .menu,
+#cms_container .right .fb-tabs {
+    border-bottom: 1px solid #ccc;
+}
+
+#cms_container .middle .breadcrumb {
+    background-color: #fff;
+    border-radius: 0px;
+}
+
+#cms_container .left .menu {
+    width: 100%;
+    margin-top: 2px;
+    padding-bottom: 7px;
+}
+
+#cms_container .right .fb-tabs {
+    margin-top: 11px;
+}
+
 /*
   Form Builder CSS overrides
  */
@@ -122,3 +173,13 @@
 .fb-save-wrapper {
     display: none;
 }
+
+.fb-field-wrapper.editing {
+    background-color: #f8f8f8;
+}
+
+.fb-field-wrapper.editing .subtemplate-wrapper {
+    border-color: #868686;
+    border-style: dashed;
+}
+

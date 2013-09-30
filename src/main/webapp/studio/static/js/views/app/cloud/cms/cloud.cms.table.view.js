@@ -44,6 +44,8 @@ App.View.CMSTable = App.View.CMS.extend({
       "bFilter": false
     });
     this.$el.html(this.table.render().$el);
+
+    this.$el.find('.dataTables_wrapper .row-fluid .span4').hide(); // Hide the search row on this
     return this;
   }
 });
