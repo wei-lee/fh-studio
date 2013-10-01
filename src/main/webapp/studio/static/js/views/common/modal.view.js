@@ -20,7 +20,7 @@ App.View.Modal = Backbone.View.extend({
     var self = this;
     var template = Handlebars.compile($("#modal-template").html());
     var dialog = $(template(this.options));
-    if (this.options.cancelText && this.options.cancelText === false){
+    if (this.options.hasOwnProperty('cancelText') && this.options.cancelText === false){
       dialog.find('#modal-cancel').remove();
     }
     this.$el.append(dialog);

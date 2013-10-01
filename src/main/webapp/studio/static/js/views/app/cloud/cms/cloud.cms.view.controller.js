@@ -15,6 +15,10 @@ App.View.CMSController  = Backbone.View.extend({
     this.options = options;
     var self = this;
     this.compileTemplates();
+
+    // Initialise our audit controller
+    this.audit = new App.View.CMSAudit();
+
     this.collection = new App.Collection.CmsSection();
     this.collection.fetch({ reset: true});
     this.collection.bind('reset', $.proxy(this.render, this));
@@ -37,6 +41,8 @@ App.View.CMSController  = Backbone.View.extend({
 
     if ($(this.options.container).find('.fh-box-header .cms_mastermenu').length===0){
       $(this.options.container).find('.fh-box-header').append(this.templates.$cms_mastermenu());
+      // Bind the events - these aren't in this.$el alas
+      $(this.options.container).find('.fh-box-header .btn-cms-audit').on('click', $.proxy(this.showAudit, this));
     }
 
     this.section = this.section || this.collection.at(0) && this.collection.at(0).get('path');
@@ -98,5 +104,8 @@ App.View.CMSController  = Backbone.View.extend({
     if (this.$listFieldContainer.length && this.$listFieldContainer.length>0){
       this.onCMSBack();
     }
+  },
+  showAudit : function(){
+    this.$el.append(this.audit.render().$el);
   }
 });

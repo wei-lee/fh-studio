@@ -53,6 +53,8 @@ App.View.CMSListField = App.View.CMSSection.extend({
     var self = this;
     self.trigger('back', true);
 
+    App.dispatch.trigger("cms.audit", "CMS List saved");
+
     //TODO: POST to server
     //NOTE: all actions need to be qued in order to ensure consistency and processed in order on save.
   },

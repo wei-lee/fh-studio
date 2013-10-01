@@ -26,6 +26,10 @@
     margin-right: 24px;
 }
 
+#cms_container .modal pre {
+    max-height: 300px;
+}
+
 /* These are in newer versions of bootstrap..*/
 .text-warning {
     color: #c09853;
