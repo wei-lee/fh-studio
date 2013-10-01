@@ -13,11 +13,12 @@ App.View.CMSAudit = App.View.CMS.extend({
     App.dispatch.on("cms.audit", $.proxy(this.log, this));
   },
   render : function(){
-    var self = this;
+    var self = this,
+    body = (this.audit.length >0) ? this.audit.join('\n') : "\n\n No entries to display \n\n";
 
     this.modal = new App.View.Modal({
       title: 'Audit Log',
-      body: "<pre>" + this.audit.join('\n') + "</pre>",
+      body: "<pre>" + body + "</pre>",
       okText: 'Done',
       cancelText : false,
       ok: function (e) {

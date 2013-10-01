@@ -3,7 +3,7 @@ App.View = App.View || {};
 
 App.View.CMSExport = App.View.CMS.extend({
   templates : {
-    'cms_exportModal' : '#cms_exportModal'
+    'cms_exportModal' : '#cms_exportModal',
   },
   initialize: function(options){
     this.compileTemplates();

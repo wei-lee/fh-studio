@@ -121,7 +121,6 @@
     <label>JSON File</label>
       <input type="file">
       <span class="help-block">Import a JSON representation of FeedHenry CMS Data</span>
-      <button type="submit" class="btn">Submit</button>
     </fieldset>
   </form>
 </script>
@@ -129,4 +128,15 @@
 <script id="cms_exportModal" type="text/x-handlebars-template">
   <p>CMS data is exported as a JSON representation of all data, with embedded links to all images. <br />
   It may take some time to export, depending on the size of your CMS data. To begin, click Export. </p>
+</script>
+
+<script id="cms_progress" type="text/x-handlebars-template">
+  <div class="cms_progress row-fluid">
+    <h4>Progress</h4>
+
+    <div class="progress active">
+      <div class="bar" style="width: 0%;"></div>
+    </div>
+    <textarea class="progresslog span12" readonly=""></textarea>
+  </div>
 </script>

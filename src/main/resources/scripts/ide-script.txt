@@ -152,8 +152,7 @@ js/views/app/cloud/cms/cloud.cms.view.js
 js/views/app/cloud/cms/cloud.cms.tree.view.js
 js/views/app/cloud/cms/cloud.cms.table.view.js
 js/views/app/cloud/cms/cloud.cms.audit.view.js
-js/views/app/cloud/cms/cloud.cms.import.view.js
-js/views/app/cloud/cms/cloud.cms.export.view.js
+js/views/app/cloud/cms/cloud.cms.importexport.view.js
 js/views/app/cloud/cms/cloud.cms.section.view.js
 js/views/app/cloud/cms/cloud.cms.listfield.topbar.view.js
 js/views/app/cloud/cms/cloud.cms.listfield.view.js

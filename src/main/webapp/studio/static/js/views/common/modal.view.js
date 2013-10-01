@@ -4,7 +4,8 @@ App.View.Modal = Backbone.View.extend({
     okText : 'OK',
     cancelText : 'Cancel',
     title : 'Confirm',
-    body : 'Are you sure you want to do this?'
+    body : 'Are you sure you want to do this?',
+    dismiss : 'modal'
   },
   events : {
     'click #modal-ok' : 'modalOk',
@@ -14,12 +15,16 @@ App.View.Modal = Backbone.View.extend({
     _.bindAll(this);
     this.defaults.id = 'modal-' +  Math.floor((Math.random()*10000));
     this.options = $.extend({}, this.defaults, options);
+    if (this.options.autoHide === false){
+      this.options.dismiss = '';
+    }
   },
-
   render: function() {
     var self = this;
     var template = Handlebars.compile($("#modal-template").html());
     var dialog = $(template(this.options));
+    // Dynamically add in body, not as HTML string so we can interact with it later
+    dialog.find('.modal-body').append(this.options.body);
     if (this.options.hasOwnProperty('cancelText') && this.options.cancelText === false){
       dialog.find('#modal-cancel').remove();
     }
@@ -28,15 +33,26 @@ App.View.Modal = Backbone.View.extend({
     return this;
   },
   modalOk : function(){
+    var self = this,
+    modalEl = this.$el.find('.modal'),
+    close = true;
     if (typeof this.options.ok === 'function'){
+      // Call our OK callback since it exists, if it returns false, don't close.
       this.options.ok.apply(this, arguments);
     }
-    this.remove();
   },
   modalCancel : function(){
     if (typeof this.options.cancel === 'function'){
       this.options.cancel.apply(this, arguments);
     }
     this.remove();
+  },
+  close : function(){
+    var self = this,
+    modalEl = this.$el.find('.modal');
+    modalEl.modal('hide');
+    modalEl.on('hidden', function(){
+      self.remove();
+    });
   }
 });
