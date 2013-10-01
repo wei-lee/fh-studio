@@ -60,7 +60,7 @@ App.View.CMSTree = App.View.CMS.extend({
   render: function () {
     var jsonData = this.massageTree(this.collection.toJSON());
 
-    console.log("jsonData ", jsonData);
+    console.log("RENDER CALLED jsonData ", jsonData);
     var self = this;
     self.tree = this.$el.jstree({
       "json_data": {
@@ -229,13 +229,69 @@ App.View.CMSTree = App.View.CMS.extend({
     App.dispatch.trigger("cms.sectionclick",{"path":path.replace(/\s+/g,'')});
     self.activeSection = path;
   },
+
+  //TODO major todo add tests around this logic.
+
   onTreeMove: function (e, data) {
+    var self = this;
     console.log("move data", data);
     // JSTree needs to be told which attributes to retrieve - otherwise it dumps them. I kid you not.
-    var treeData = data.inst.get_json(-1, ['hash', 'path', 'parent']),
-      newCMSCollection = this.reorderTree(treeData);
-    newCMSCollection = this.collection.addPathsAndChildren(newCMSCollection); //TODO: Reset should do this automatically?
-    this.collection.reset(newCMSCollection);
+    var treeData = data.inst.get_json(-1, ['name','hash', 'path', 'children']);
+    //need to update the models in the collection to reflect the new state then recall render.
+    // we have two different data structures that contain the same data we need to sync them.
+    function findInData(treeData,hash, path){
+      for(var k=0; k < treeData.length; k++){
+        var treeOb = treeData[k];
+        path = treeData[k]["data"];
+        if(hash == treeOb.attr['hash']){
+          treeOb.attr["path"] = path;
+          return treeOb;
+        }
+        else if(treeOb.children && treeOb.children.length > 0){
+         treeOb =  findInData(treeOb.children,hash,path);
+          if(treeOb) return treeOb;
+        }
+      }
+    }
+
+    function resetPaths(treeData){
+      for(var k=0; k < treeData.length; k++){
+        var treeOb = treeData[k];
+        var model = self.collection.findWhere({"hash":treeOb.attr["hash"]});
+        if(model){
+          setPath(model,treeOb["data"]);
+        }
+      }
+
+      function setPath(model,currentPath){
+        model.set({"path":currentPath});
+        if(model.get("children")){
+          var ch = model.get("children");
+          var chModel;
+          for(var i=0; i < ch.length; ch++){
+            chModel = self.collection.findWhere({"hash":ch[i]});
+            var updatePath = currentPath + "." + chModel.get("name");
+            setPath(chModel, updatePath);
+          }
+        }
+      }
+    }
+
+    var models =  self.collection.models;
+    for(var td=0; td < models.length; td++){
+      var model = models[td];
+      var syncTo = findInData(treeData, model.get("hash"));
+      syncTo.children = syncTo.children || [];
+      model.attributes.children = [];
+      for(var cid=0; cid < syncTo.children.length; cid++){
+        model.attributes.children.push(syncTo.children[cid]["attr"]["hash"]);
+      }
+    }
+    resetPaths(treeData);
+
+    console.log("DONE MOVE ******************** ",self.collection.models);
+
+    self.render();
   },
   reorderTree: function (tree) {
     console.log("the tree ", tree);
