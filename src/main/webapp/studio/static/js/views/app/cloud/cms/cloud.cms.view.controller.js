@@ -13,6 +13,7 @@ App.View.CMSController  = Backbone.View.extend({
   },
   initialize: function(options){
     this.options = options;
+    this.mode = options.mode || 'dev';
     var self = this;
     this.compileTemplates();
 
@@ -39,14 +40,19 @@ App.View.CMSController  = Backbone.View.extend({
       return this;
     }
 
+    var modeString = (this.mode==="dev") ? "Live" : "Dev"; // "Copy to {{ mode }}"
+
     if ($(this.options.container).find('.fh-box-header .cms_mastermenu').length===0){
-      $(this.options.container).find('.fh-box-header').append(this.templates.$cms_mastermenu());
+
+      $(this.options.container).find('.fh-box-header').append(this.templates.$cms_mastermenu({ mode : modeString }));
       // Bind the events - these aren't in this.$el alas
       $(this.options.container).find('.fh-box-header .btn-cms-audit').on('click', $.proxy(this.showAudit, this));
       $(this.options.container).find('.fh-box-header .btn-cms-import').on('click', $.proxy(this.showImport, this));
       $(this.options.container).find('.fh-box-header .btn-cms-export').on('click', $.proxy(this.showExport, this));
       $(this.options.container).find('.fh-box-header .btn-cms-copy').on('click', $.proxy(this.showCopy, this));
     }
+    // The button is only templated once - for every other mode switch, we need to replace the inner text of the button
+    $(this.options.container).find('.btn-cms-copy span').html('Copy to ' + modeString);
 
     this.section = this.section || this.collection.at(0) && this.collection.at(0).get('path');
 
@@ -119,6 +125,6 @@ App.View.CMSController  = Backbone.View.extend({
   },
   showCopy : function(){
     //TODO: Switch between mode on mode switch?
-    this.$el.append(new App.View.CMSImportExportCopy( { view : 'copy', mode : 'live' } ).render().$el);
+    this.$el.append(new App.View.CMSImportExportCopy( { view : 'copy', mode : this.mode } ).render().$el);
   }
 });
