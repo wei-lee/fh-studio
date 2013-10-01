@@ -114,3 +114,19 @@
 <script id="cms_editSectionInstructions" type="text/x-handlebars-template">
   <p class="cms_editSectionInstructions">{{{ msg }}}</p>
 </script>
+
+<script id="cms_importModal" type="text/x-handlebars-template">
+  <form>
+    <fieldset>
+    <label>JSON File</label>
+      <input type="file">
+      <span class="help-block">Import a JSON representation of FeedHenry CMS Data</span>
+      <button type="submit" class="btn">Submit</button>
+    </fieldset>
+  </form>
+</script>
+
+<script id="cms_exportModal" type="text/x-handlebars-template">
+  <p>CMS data is exported as a JSON representation of all data, with embedded links to all images. <br />
+  It may take some time to export, depending on the size of your CMS data. To begin, click Export. </p>
+</script>

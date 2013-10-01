@@ -43,6 +43,8 @@ App.View.CMSController  = Backbone.View.extend({
       $(this.options.container).find('.fh-box-header').append(this.templates.$cms_mastermenu());
       // Bind the events - these aren't in this.$el alas
       $(this.options.container).find('.fh-box-header .btn-cms-audit').on('click', $.proxy(this.showAudit, this));
+      $(this.options.container).find('.fh-box-header .btn-cms-import').on('click', $.proxy(this.showImport, this));
+      $(this.options.container).find('.fh-box-header .btn-cms-export').on('click', $.proxy(this.showExport, this));
     }
 
     this.section = this.section || this.collection.at(0) && this.collection.at(0).get('path');
@@ -107,5 +109,11 @@ App.View.CMSController  = Backbone.View.extend({
   },
   showAudit : function(){
     this.$el.append(this.audit.render().$el);
-  }
+  },
+  showImport : function(){
+    this.$el.append(new App.View.CMSImport().render().$el);
+  },
+  showExport : function(){
+    this.$el.append(new App.View.CMSExport().render().$el);
+  },
 });
