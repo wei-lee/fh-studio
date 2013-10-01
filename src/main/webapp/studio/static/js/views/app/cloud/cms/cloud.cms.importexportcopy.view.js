@@ -1,10 +1,11 @@
 var App = App || {};
 App.View = App.View || {};
 
-App.View.CMSImportExport = App.View.CMS.extend({
+App.View.CMSImportExportCopy = App.View.CMS.extend({
   templates : {
     'cms_importModal' : '#cms_importModal',
     'cms_exportModal' : '#cms_exportModal',
+    'cms_copyModal' : '#cms_copyModal',
     'cms_progress' : '#cms_progress'
   },
   mockImportMessages : [
@@ -21,17 +22,38 @@ App.View.CMSImportExport = App.View.CMS.extend({
     "Reticulating Splines",
     "CMS data imported successfully"
   ],
+  mockCopyMessages : [
+    "Collecting assets",
+    "Validating data structure",
+    "Copying sections",
+    "Reticulating Splines",
+    "CMS data copied successfully"
+  ],
   initialize: function(options){
+    this.view = options.view;
     this.mode = options.mode;
     this.compileTemplates();
   },
   render : function(){
     var self = this,
     container = $('<div></div>'),
-    text = (this.mode ==='import') ? $(this.templates.$cms_importModal()) : $(this.templates.$cms_exportModal()),
-    op = (this.mode==='import') ? 'Import' : 'Export';
-    progress = $(this.templates.$cms_progress({ operation : op }));
+    text, op, progress, copyArgs;
+    switch(this.view){
+      case "import":
+        text = $(this.templates.$cms_importModal());
+        op = 'Import';
 
+      case "export":
+        text = $(this.templates.$cms_exportModal());
+        op = 'Export';
+        break;
+      case "copy":
+        copyArgs = (this.mode==='live') ? { left : 'dev', right : 'live' } : { left : 'live', right : 'dev' };
+        text = $(this.templates.$cms_copyModal(copyArgs));
+        op = 'Copy';
+        break;
+    }
+    progress = $(this.templates.$cms_progress({ operation : op }));
     progress.hide();
     container.append(text, progress);
 
@@ -54,12 +76,30 @@ App.View.CMSImportExport = App.View.CMS.extend({
     return this;
   },
   doOperation : function(){
-    var buttonText = (this.mode === 'import') ? "Done!" : "Download &raquo;";
+    var buttonText, mockMessages, auditMessage;
+
+    switch(this.view){
+      case "import":
+        mockMessages = this.mockImportMessages;
+        auditMessage = 'imported';
+        buttonText = "Done!";
+        break;
+      case "export":
+        mockMessages = this.mockExportMessages;
+        auditMessage = 'exported';
+        buttonText = "Download &raquo;";
+        break;
+      case "copy":
+        mockMessages = this.mockCopyMessages;
+        auditMessage = 'copied to ' + this.mode;
+        buttonText = "Done!";
+        break;
+    }
+
     this.$el.find('#modal-cancel').remove();
     this.$el.find('#modal-ok').html(buttonText).attr('disabled', true);
     this.$el.find('.progress').addClass('progress-striped');
     var self = this,
-    mockMessages = (this.mode === 'import') ? this.mockImportMessages : this.mockExportMessages,
     i = 0,
     interval = setInterval(function(){
       var msg = mockMessages[i],
@@ -73,6 +113,7 @@ App.View.CMSImportExport = App.View.CMS.extend({
         clearInterval(interval);
         self.$el.find('#modal-ok').attr('disabled', false);
         self.$el.find('.progress').removeClass('progress-striped').addClass('progress-success');
+        App.dispatch.trigger("cms.audit", "CMS data " + auditMessage);
       }
     }, 1000);
   }

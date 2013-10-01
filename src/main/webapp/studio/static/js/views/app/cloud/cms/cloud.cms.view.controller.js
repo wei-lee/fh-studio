@@ -112,12 +112,13 @@ App.View.CMSController  = Backbone.View.extend({
     this.$el.append(this.audit.render().$el);
   },
   showImport : function(){
-    this.$el.append(new App.View.CMSImportExport( { mode : 'import' } ).render().$el);
+    this.$el.append(new App.View.CMSImportExportCopy( { view : 'import' } ).render().$el);
   },
   showExport : function(){
-    this.$el.append(new App.View.CMSImportExport( { mode : 'export' } ).render().$el);
+    this.$el.append(new App.View.CMSImportExportCopy( { view : 'export' } ).render().$el);
   },
   showCopy : function(){
     //TODO: Switch between mode on mode switch?
+    this.$el.append(new App.View.CMSImportExportCopy( { view : 'copy', mode : 'live' } ).render().$el);
   }
 });
