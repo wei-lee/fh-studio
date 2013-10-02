@@ -88,8 +88,9 @@
 
 
 #cms_container .middle h3 {
-    line-height: 4px;
-    width: 136px;
+    width: 100%;
+    margin-top: 2px;
+    padding-bottom: 8px;
 }
 
 
@@ -153,15 +154,17 @@
   Make a unified border-bottom across the CMS
  */
 
-#cms_container .middle .breadcrumb,
+#cms_container .middle h3,
 #cms_container .left .menu,
 #cms_container .right .fb-tabs {
     border-bottom: 1px solid #ccc;
 }
 
-#cms_container .middle .breadcrumb {
+#cms_container .middle .breadcrumb, #cms_container .middle p {
     background-color: #fff;
     border-radius: 0px;
+    margin: 0px;
+    padding: 6px 0px 3px 12px;
 }
 
 #cms_container .left .menu {

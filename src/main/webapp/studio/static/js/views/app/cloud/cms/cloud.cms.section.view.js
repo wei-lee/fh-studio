@@ -68,7 +68,7 @@ App.View.CMSSection = App.View.CMS.extend({
     // Add in the CMS specific breadcrumb on top of the middle section
     this.$el.find('.middle').prepend(this.cmsBreadcrumb(path));
     // Add in the page title to the breadcrumb row
-    this.$el.find('.middle ul.breadcrumb').prepend('<li><h3>' + this.title + '</h3></li>');
+    this.$el.find('.middle').prepend('<h3>' + this.title + '</h3>');
 
 
     this.$el.find('.fb-tabs').append(this.templates.$cms_sectionExtraTabs());
