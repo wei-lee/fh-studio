@@ -6,6 +6,10 @@ Component: fh-studio
 * 4668 - problem with file editor in chrome
 * 4751 - Zendesk #2202 Cloud Environment tab
 
+3.17.13 - 2013-10-02 - IR210 - Cian Clarke
+-------------------------------------------------------------------------------
+* 4740 - Add Rackspace US theme & landing page
+
 3.17.12 - 2013-09-18 - IR210 - Jason Madigan
 -------------------------------------------------------------------------------
 * 4571 - Use white icon/splash screen by default for builds
