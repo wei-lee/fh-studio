@@ -28,22 +28,22 @@ body {
   margin-left:7px;
 }
 h2 {
-  font-size: 22px;
+    font-size: 1.3em;
+    font-weight: normal;
 }
 .row.docs {
   color: #505050;
 }
 
-.bfob {
+.bfob, .btn.primary.bfob {
   color: #FFFFFF;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-  background-color: #398907;
-  *background-color: #398907;
-  background-image: -moz-linear-gradient(top, #82D24F, #398907);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#82D24F), to(#398907));
-  background-image: -webkit-linear-gradient(top, #82D24F, #398907);
-  background-image: -o-linear-gradient(top, #82D24F, #398907);
-  background-image: linear-gradient(to bottom, #82D24F, #398907);
+  background-color: #7ea0b5;
+  background-image: -moz-linear-gradient(top, #7ea0b5, #8fadbe);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#7ea0b5), to(#8fadbe));
+  background-image: -webkit-linear-gradient(top, #7ea0b5, #8fadbe);
+  background-image: -o-linear-gradient(top, #7ea0b5, #8fadbe);
+  background-image: linear-gradient(to bottom, #7ea0b5, #8fadbe);
   background-repeat: repeat-x;
   border-color: #398907;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
@@ -56,8 +56,7 @@ h2 {
 .bfob.disabled,
 .bfob[disabled] {
   color: #FFFFFF;
-  background-color: #398907;
-  *background-color: #003bb3;
+  background-color: #8fadbe;
 }
 
 .logoWest {
@@ -82,7 +81,7 @@ pre.code {
 
 }
 .tab-content, .tab-content h1, .tab-content h2, .tab-content h3, .tab-content fieldset, .tab-content fieldset legend, .tab-content label {
-  color: #eee;  
+  color: #fff;
 }
 .tab-content legend {
   padding-left: 0px;
@@ -118,12 +117,12 @@ pre.code {
   width: 194px;
 }
 .toptabs li a, .toptabs li a:link, .toptabs li a:active, .toptabs li a:hover {
-  background-color: #231f20;
+  background-color: #82bead;
   color: #fff;
   border: 0;
 }
 .toptabs li a:hover {
-  background-color: #231f20;
+  background-color: #5fa38b;
   text-decoration: underline;
 }
 .toptabs li.active {
@@ -131,7 +130,7 @@ pre.code {
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
 }
 .toptabs li.active a, .toptabs li.active a:hover {
-  background-color: #231f20;
+  background-color: #75b7a4;
   opacity: 1;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
   color: #fff;
@@ -143,6 +142,11 @@ pre.code {
 
 .hero-unit .promo {
   font-weight:700;
+}
+
+.hero-unit hr {
+  margin: 6px 0px;
+  border-color: #eee;
 }
 
 p.tab-footer, .hero-unit p.tab-footer{
@@ -172,11 +176,14 @@ iframe.vimeo {
 }
 
 .hero-unit.tabs_container {
-  height: 235px;
+  height: 255px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
 }
 
 .hero-unit {
-  background: #323232 url('../images/subtle-grunge-lines-repeating-135x135.png');
+  background: #82bead url('../images/landing-background.png');
+  background-size: 100% 100%;
   padding: 30px;
   -webkit-border-radius: 0px;
   -moz-border-radius: 0px;
@@ -188,7 +195,7 @@ iframe.vimeo {
 }
 
 .hero-unit h3, .hero-unit, .hero-unit p {
-  color: #eee;
+  color: #fff;
 }
 
 #tryit .bfob {
@@ -330,7 +337,7 @@ iframe.vimeo {
   font-size: 20px;
 }
 .hero-unit p {
-  font-size: 17px;
+  font-size: 15px;
 }
 
 #register_form label, #forgot_form label {
@@ -353,4 +360,21 @@ iframe.vimeo {
 
 #main_layout_north {
   height: 10px !important;
+}
+
+.platformdiagram img{
+    width: 100%;
+}
+
+.span5 img, .span6 img {
+    height: 100px;
+    width: 88px;
+}
+
+#header_user_info.landing .docslink,
+#header_user_info.landing .supportlink,
+#header_user_info.landing .hiringlink,
+#header_user_info.landing .homelink,
+#header_user_info.landing .studiolink {
+ display: none;
 }
