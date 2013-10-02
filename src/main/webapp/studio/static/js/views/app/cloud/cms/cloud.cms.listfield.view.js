@@ -7,7 +7,8 @@ App.View.CMSListField = App.View.CMSSection.extend({
     'click .btn-listfield-change-data' : 'setModeData',
     'click .btn-listfield-change-structure' : 'setModeStructure',
     'click table tbody tr' : 'onRowClick',
-    'click table tbody tr input[type=checkbox]' : 'onRowSelect'
+    'click table tbody tr input[type=checkbox]' : 'onRowSelect',
+    'click .btn-fieldlist-add' : 'onAddNewRow'
   },
   initialize: function(options){
     this.title = (options.mode === 'data') ? "Edit List Data" : "Edit List Structure"
@@ -49,6 +50,12 @@ App.View.CMSListField = App.View.CMSSection.extend({
 
     return this;
   },
+
+  onAddNewRow : function (){
+    console.log("add new row");
+    this.$el.empty();
+  },
+
   onListFieldSave : function(){
     var self = this;
     self.trigger('back', true);

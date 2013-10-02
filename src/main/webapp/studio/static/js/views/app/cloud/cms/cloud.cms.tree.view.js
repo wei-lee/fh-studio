@@ -8,43 +8,35 @@ App.View.CMSTree = App.View.CMS.extend({
 
   },
 
+  'templates':{
+      'cms_sectionDropDown' : '#cms_sectionDropDown'
+  },
   initialize: function (options) {
     var self = this;
     this.collection = options.collection;
     this.collection.on("change", function () {
-      console.log("a model was added this is where we would add a call to the server to a que of changes ", "calling render");
       self.render();
     });
     this.collection.on("add", function (){
-       console.log(" a model was added to the collection ");
       self.render();
     });
     this.collection.on("remove", function (m){
-
-       console.log("a model was removed from the collection ", m);
-
       self.render();
     });
 
     App.dispatch.on("cms.sectionchange", function (evData){
       //update the tree somehow.
-        console.log(evData);
       //need to go through the levels opening as we go.
       var treePath = evData.path;
-      console.log("treepath",treePath);
       var pathBits = treePath.split(".");
-
-
       var path ="";
       var ref="";
       for(var i = 0; i < pathBits.length; i++){
         path+=pathBits[i].trim();
 
-        console.log("path to open is " + path);
          ref = $.jstree._reference("#" + path);
         if(ref){
           ref.deselect_all();
-          console.log("found ref performing action");
           ref.open_node("#"+path);
 
         }
@@ -54,6 +46,7 @@ App.View.CMSTree = App.View.CMS.extend({
       }
       $("#"+path).trigger("click");
     });
+    this.compileTemplates();
 
   },
 
@@ -106,10 +99,9 @@ App.View.CMSTree = App.View.CMS.extend({
       tree = [];
 
     _.each(sections, function (section, idx, list) {
-      console.log("IN EACH SECTION SECTION NO # ", idx);
+
       if (section.path.split(".").length === 1) {
         var exploded = explodeSection(section);
-        console.log("exploded section ", exploded);
         tree.push(exploded);
       }
     });
@@ -156,16 +148,25 @@ App.View.CMSTree = App.View.CMS.extend({
   "onAddSection": function (element) {
 
     var self = this;
+    var parentOptions = self.collection.toHTMLOptions();
+    parentOptions = ["<option value='' data-path='' >-Root</option>"].concat(parentOptions);
+    parentOptions = parentOptions.join('');
+    var selectContent = self.templates.$cms_sectionDropDown({"parentOptions":parentOptions});
 
+    console.log(selectContent);
     var modal = new App.View.Modal({
       title: 'Create New Section',
-      body: '<input class="input-large" placeholder="Enter a Section name" id="newCollectionName">',
+      body: '<input class="input-large" placeholder="Enter a Section name" id="newCollectionName"> <br/> ' + selectContent,
       okText: 'Create',
       ok: function (e) {
         var el = $(e.target),
-          input = el.parents('.modal').find('input'),
-          val = input.val();
-        self.createSection(val);
+          input = el.parents('.modal').find('input#newCollectionName'),
+          sectionIn = el.parents('.modal').find("select[name='parentName']").find('option').filter(":selected").val(),
+          secVal = input.val();
+
+        console.log("Section parent section name ", secVal, sectionIn);
+        self.activeSection = sectionIn;
+        self.createSection(secVal);
       }
     });
     self.$el.append(modal.render().$el);
@@ -196,8 +197,9 @@ App.View.CMSTree = App.View.CMS.extend({
           "children": []
         };
 
+      parentSection[childrenKey].push(node.hash);
     }
-    parentSection[childrenKey].push(node.hash);
+
     console.log("models ",self.collection.models);
     var model = new App.Model.CmsSection(node);
     self.collection.push(model);

@@ -32,6 +32,16 @@
   <li class="configuresection"><a data-target="#configuresection"><i class="icon-cog"></i> Section</a></li>
   <li class="apppreview"><a  data-target="#cmsAppPreview">App Preview</a></li>
 </script>
+
+<script id="cms_sectionDropDown" type="text/x-handlebars-template">
+    <fieldset>
+        <label>Section Parent</label>
+    <select name="parentName">
+        {{{ parentOptions }}}
+    </select>
+        </fieldset>
+</script>
+
 <script id="cms_configureSection" type="text/x-handlebars-template">
   <div class="fb-tab-pane" id="configuresection">
     <form id="configureSectionForm">

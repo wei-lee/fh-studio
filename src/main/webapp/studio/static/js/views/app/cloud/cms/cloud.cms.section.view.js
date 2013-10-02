@@ -36,7 +36,17 @@ App.View.CMSSection = App.View.CMS.extend({
     if (this.options.listfield){
       // We're editing a field_list - retrieve it
       this.fieldList = _.findWhere(section.fields, { name : this.options.listfield });
+      //HERE NEED TO ADD MODEL TO LIST WITH LIST FIELD TYPE AND RENDER IT
+//      section.fields.data.push({
+//        "hash" : "",
+//        "name" : "",
+//        "address" : "",
+//        "hours" : "",
+//        "city" : ""
+//      });
+      console.log("the field list ", section.fields);
       fields = this.fieldList && this.fieldList.fields;
+      console.log("fields  AGAIN ", fields);
       listData = this.fieldList && this.fieldList.data;
       if (!fields || !fields.length){
         console.log('error loading list fields');
@@ -46,10 +56,12 @@ App.View.CMSSection = App.View.CMS.extend({
       path += ("." + this.fieldList.name + "." + "Edit " + this.options.mode);
     }else{
       // Just a standard section view - may or may not contain a listfield within
+      console.log("fields = " + section.fields);
       fields = this.massageFields(section.fields);
+      console.log("fields after massage = ", fields);
     }
 
-    console.log("Section is " + section + " fields ",fields);
+    console.log("Section is ", section  ," fields ",fields);
 
     if (!section || !fields){
       console.log('Error finding section or fields on rendering section view');
@@ -89,7 +101,6 @@ App.View.CMSSection = App.View.CMS.extend({
       }
 
       table = new App.View.CMSTable({ fields : listField.fields, data : listField.data });
-
       $(this).find('.fieldlist_table').html(table.render().$el);
     });
 
