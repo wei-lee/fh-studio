@@ -42,7 +42,7 @@ App.View.CMSImportExportCopy = App.View.CMS.extend({
       case "import":
         text = $(this.templates.$cms_importModal());
         op = 'Import';
-
+        break;
       case "export":
         text = $(this.templates.$cms_exportModal());
         op = 'Export';
