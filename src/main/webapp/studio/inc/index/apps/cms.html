@@ -5,7 +5,7 @@
       <%@ include file="./cloud_environment.html" %>
     </h4>
     <div class="fh-box-inner">
-     Hi
+     Loading..
     </div>
   </div>
 
@@ -15,8 +15,11 @@
   <div class="span2 left">
     <div class="menu">
       <h3>Sections</h3>
-      <a href="#" class="btn btn-small btn-deletesection btn-danger"><i class="icon-trash"></i></a>
-      <a href="#" class="btn btn-small btn-addsection btn-success"><i class="icon-plus"></i></a>
+      <div class="btn-group pull-right">
+        <a href="#" class="btn btn-small btn-deletesection btn-danger"><i class="icon-trash"></i></a>
+        <a href="#" class="btn btn-small btn-addsection btn-success"><i class="icon-plus"></i></a>
+      </div>
+
     </div>
     <br style="clear: both;" />
     <div class="treeContainer">
@@ -105,7 +108,7 @@
     <a href="#" class="btn btn-small btn-cms-import btn-success"><i class="icon-upload"></i> Import</a>
     <a href="#" class="btn btn-small btn-cms-export btn-success"><i class="icon-download"></i> Export</a>
     <a href="#" class="btn btn-small btn-cms-audit"><i class="icon-list"></i> Audit Log</a>
-    <a href="#" class="btn btn-small btn-cms-copy btn-primary"><i class="icon-arrow-right"></i> Copy to Live</a>
+    <a href="#" class="btn btn-small btn-cms-copy btn-primary"><i class="icon-arrow-right"></i> <span>Copy to {{{ mode }}}</span></a>
   </div>
 
 </script>
@@ -123,4 +126,35 @@
 
 <script id="cms_editSectionInstructions" type="text/x-handlebars-template">
   <p class="cms_editSectionInstructions">{{{ msg }}}</p>
+</script>
+
+<script id="cms_importModal" type="text/x-handlebars-template">
+  <form>
+    <fieldset>
+    <label>JSON File</label>
+      <input type="file">
+      <span class="help-block">Import a JSON representation of FeedHenry CMS Data</span>
+    </fieldset>
+  </form>
+</script>
+
+<script id="cms_exportModal" type="text/x-handlebars-template">
+  <p>CMS data is exported as a JSON representation of all data, with embedded links to all images. <br />
+  It may take some time to export, depending on the size of your CMS data. To begin, click Export. </p>
+</script>
+
+<script id="cms_copyModal" type="text/x-handlebars-template">
+  <p class="text-error">Warning: Copying data may result in data loss - please ensure you are copying data in the correct direction.</p>
+  <h4>Copy {{left}} <i class="icon-arrow-right"></i> {{right}}</h4>
+</script>
+
+<script id="cms_progress" type="text/x-handlebars-template">
+  <div class="cms_progress row-fluid">
+    <h4>Progress</h4>
+
+    <div class="progress active">
+      <div class="bar" style="width: 0%;"></div>
+    </div>
+    <textarea class="progresslog span12" readonly=""></textarea>
+  </div>
 </script>

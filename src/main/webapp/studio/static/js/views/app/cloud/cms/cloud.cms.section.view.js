@@ -4,8 +4,8 @@ App.View = App.View || {};
 App.View.CMSSection = App.View.CMS.extend({
   title : 'Edit Section',
   events: {
-    'submit #configureSectionForm' : 'onSectionSave',
-    'reset #configureSectionForm' : 'onSectionDiscard',
+    'click .btn-savesection' : 'onSectionSave',
+    'click .btn-discard-section' : 'onSectionDiscard',
     'click btn-deletesection' : 'onDeleteSection',
     'focus input[name=publishdate]' : 'onPublishDateFocus',
     'click .btn-listfield-structure' : 'onListFieldEditStructure',
@@ -172,16 +172,16 @@ App.View.CMSSection = App.View.CMS.extend({
   onSectionSave : function(e){
     e.preventDefault();
     var vals = {};
-    $($(e.target).serializeArray()).each(function(idx, el){
+    $(this.$el.find('configureSectionForm').serializeArray()).each(function(idx, el){
       vals[el.name] = el.value;
     });
     if (vals.publishRadio && vals.publishRadio === "now"){
       vals.publishdate = new Date(); // TODO: Maybe this should be handled on the user's computer?
     }
     vals.fields = this.fb.mainView.collection.toJSON();
-    console.log(vals);
 
     this.alertMessage();
+    App.dispatch.trigger("cms.audit", "Section saved with values: " + JSON.stringify(vals));
     //TODO: Dispatch to server
 
 
@@ -189,10 +189,13 @@ App.View.CMSSection = App.View.CMS.extend({
   },
   onSectionDiscard : function(){
     this.render();
+    this.alertMessage('Section changes discarded successfully');
+    App.dispatch.trigger("cms.audit", "Section draft discarded");
     //TODO: Discard draft on server
   },
   onSectionDelete : function(){
     // TODO: Delete section on server
+    App.dispatch.trigger("cms.audit", "Section deleted");
   },
   onPublishDateFocus : function(){
     this.$el.find('#publishRadioLater').attr('checked', true);
