@@ -30,6 +30,11 @@ App.View.CMSSection = App.View.CMS.extend({
     path = section.path,
     fields, listData;
 
+    if (!section){
+      console.log('Error loading section with path ' + this.options.section);
+      return this.modal('Error loading section');
+    }
+
 
 
     if (this.options.listfield){
@@ -169,11 +174,15 @@ App.View.CMSSection = App.View.CMS.extend({
   onSectionSave : function(e){
     e.preventDefault();
     var vals = {},
-    section = this.collection.findSectionByPath(this.options.section),
+    sectionModel = this.collection.findWhere({path : this.options.section} ), // we don't use our convenience byPath here as we want modal instance
+    section = sectionModel.toJSON(),
     fields = this.fb.mainView.collection.toJSON(); //TODO: Verify this syncs with autoSave
+
+    // Get our form as a JSON object
     $(this.$el.find('#configureSectionForm').serializeArray()).each(function(idx, el){
       vals[el.name] = el.value;
     });
+
 
     // If publish is now, set the timedate if it's not already defined on the section
     if (vals.publishRadio && vals.publishRadio === "now"){
@@ -190,9 +199,8 @@ App.View.CMSSection = App.View.CMS.extend({
 
     this.alertMessage();
     App.dispatch.trigger("cms.audit", "Section saved with values: " + JSON.stringify(section));
-    //TODO: Dispatch section to server || update collection
-
-
+    sectionModel.set(section);
+    //TODO: Dispatch section to server ?
     return false;
   },
   onSectionDiscard : function(){

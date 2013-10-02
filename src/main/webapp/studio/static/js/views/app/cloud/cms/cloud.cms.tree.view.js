@@ -180,6 +180,10 @@ App.View.CMSTree = App.View.CMS.extend({
     console.log("Create Section");
 
     var parentSection = self.collection.findSectionByPath(selectedSection);
+    if (!parentSection){
+      console.log('Couldnt find parent section with path ' + selectedSection);
+      return this.modal('Error moving section');
+    }
 
     console.log("parent section is ", parentSection);
     var childrenKey = App.Model.CmsSection.CONST.CHILDREN;
@@ -233,8 +237,7 @@ App.View.CMSTree = App.View.CMS.extend({
     console.log("move data", data);
     // JSTree needs to be told which attributes to retrieve - otherwise it dumps them. I kid you not.
     var treeData = data.inst.get_json(-1, ['hash', 'path', 'parent']),
-      newCMSCollection = this.reorderTree(treeData);
-    newCMSCollection = this.collection.addPathsAndChildren(newCMSCollection); //TODO: Reset should do this automatically?
+    newCMSCollection = this.reorderTree(treeData);
     this.collection.reset(newCMSCollection);
   },
   reorderTree: function (tree) {

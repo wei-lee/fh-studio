@@ -39,30 +39,13 @@ App.Collection.CmsSection = Backbone.Collection.extend({
       }
     }, options.error, true);
   },
-  "addPathsAndChildren":function (sections){
-
-
-
-
-    function correctPathAndChildren(section){
-
-    }
-
-
-  },
   findSectionByPath : function(path){
-    console.log("findSectionByPath " + path);
-    var section = true,
-    sections = this.toJSON(),
-    i;
-
-    for(i=0; i < sections.length; i++){
-      if(sections[i] && sections[i].path && path === sections[i].path){
-        return sections[i];
-      }
+    var model = this.findWhere({path : path });
+    if (!model){
+      return undefined;
     }
+    return model.toJSON();
   },
-
   removeBySectionPath : function(path){
     var self = this;
     var childrenKey = App.Model.CmsSection.CONST.CHILDREN;
