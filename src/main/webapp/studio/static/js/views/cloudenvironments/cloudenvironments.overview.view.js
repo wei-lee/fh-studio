@@ -81,7 +81,7 @@ Cloudenvironments.View.EnvResourceOverview = Backbone.View.extend({
   renderError: function(model, resp, options){
     var alert;
     if (resp.status === 404) {
-      alert = $("<div>", {"class":"alert alert-error", text:"Environment does not exists! Please contact FeedHenry Support."});
+      alert = $("<div>", {"class":"alert alert-error", text:"Environment does not exist! Please contact FeedHenry Support."});
     }else {
       alert = $("<div>", {"class":"alert alert-error", text:"This service is currently unavailable due to errors. Status Code: " + resp.status + ". Please try again later."});
     }
