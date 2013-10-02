@@ -21,7 +21,7 @@ App.View.CMSTable = App.View.CMS.extend({
     }
 
 
-    for (var i=0; i<fields.length; i++){
+    for (var i=0; fields && i<fields.length; i++){
       var f = fields[i];
       columns.push({
         "sTitle": f.name,
@@ -41,7 +41,10 @@ App.View.CMSTable = App.View.CMS.extend({
       "bLengthChange": false,
       "iDisplayLength": 5,
       "bInfo": true,
-      "bFilter": false
+      "bFilter": false,
+      "oLanguage" : {
+        "sEmptyTable" : "This list has no data. First, ensure the list has some structure - then add fields using the \"Add Row\" button"
+      }
     });
     this.$el.html(this.table.render().$el);
 

@@ -41,9 +41,20 @@ App.View.CMSSection = App.View.CMS.extend({
     if (this.view === 'listfield'){
       // We're editing a field_list - retrieve it
       this.fieldList = _.findWhere(section.fields, { name : this.options.listfield });
+
+      if (!this.fieldList){
+        this.fieldList = {
+          modifiedDate : new Date(),
+          name : this.options.listfield,
+          type : 'list',
+          fields : [],
+          data : []
+        };
+      }
+
       fields = this.fieldList && this.fieldList.fields;
       listData = this.fieldList && this.fieldList.data;
-      if (!fields || !fields.length){
+      if (!fields){
         console.log('error loading list fields');
         return this.modal('Error loading list fields');
       }

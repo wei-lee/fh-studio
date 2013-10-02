@@ -69,6 +69,7 @@
         UNITS: 'field_options.units',
         LABEL: 'label',
         VALUE: 'value',
+        HASH: 'hash',
         FIELD_TYPE: 'field_type',
         REQUIRED: 'required',
         ADMIN_ONLY: 'admin_only',
@@ -726,7 +727,7 @@
 
 (function() {
   Formbuilder.registerField('text', {
-    view: "<% var size = rf.get(Formbuilder.options.mappings.SIZE) || 'large'; %>\n<input type='text' value='<%= rf.get(Formbuilder.options.mappings.VALUE) %>' class='rf-size-<%= size %>' />",
+    view: "<% var size = rf.get(Formbuilder.options.mappings.SIZE) || 'large'; %>\n<input type='text' data-hash='<%= rf.get(Formbuilder.options.mappings.HASH) %>' value='<%= rf.get(Formbuilder.options.mappings.VALUE) %>' class='rf-size-<%= size %>' />",
     edit: "<%= Formbuilder.templates['edit/size']() %>\n<%= Formbuilder.templates['edit/min_max_length']() %>",
     addButton: "<span class='symbol'><span class='icon-font'></span></span> Text",
     defaultAttributes: function(attrs) {
@@ -1057,19 +1058,19 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<div class=\'subtemplate-wrapper\'>\n  <div class=\'cover\'></div>\n  ' +
+__p += '<div class=\'subtemplate-wrapper\'>\n  <div class=\'cover\'></div>\n  ';
+ if(editStructure){  ;
+__p += '\n  ' +
+((__t = ( Formbuilder.templates['view/duplicate_remove']({rf: rf}) )) == null ? '' : __t) +
+'\n  ';
+ } ;
+__p += '\n  ' +
 ((__t = ( Formbuilder.templates['view/label']({rf: rf}) )) == null ? '' : __t) +
 '\n\n  ' +
 ((__t = ( Formbuilder.fields[rf.get(Formbuilder.options.mappings.FIELD_TYPE)].view({rf: rf}) )) == null ? '' : __t) +
 '\n\n  ' +
 ((__t = ( Formbuilder.templates['view/description']({rf: rf}) )) == null ? '' : __t) +
-'\n  ';
- if(editStructure){  ;
-__p += '\n     ' +
-((__t = ( Formbuilder.templates['view/duplicate_remove']({rf: rf}) )) == null ? '' : __t) +
-'\n  ';
- } ;
-__p += '\n</div>\n';
+'\n\n</div>\n';
 
 }
 return __p
@@ -1080,9 +1081,9 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
 __p += '<div class=\'subtemplate-wrapper\'>\n  <div class=\'cover\'></div>\n  ' +
-((__t = ( Formbuilder.fields[rf.get(Formbuilder.options.mappings.FIELD_TYPE)].view({rf: rf}) )) == null ? '' : __t) +
-'\n  ' +
 ((__t = ( Formbuilder.templates['view/duplicate_remove']({rf: rf}) )) == null ? '' : __t) +
+'\n  ' +
+((__t = ( Formbuilder.fields[rf.get(Formbuilder.options.mappings.FIELD_TYPE)].view({rf: rf}) )) == null ? '' : __t) +
 '\n</div>\n';
 
 }
@@ -1105,7 +1106,7 @@ this["Formbuilder"]["templates"]["view/duplicate_remove"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class=\'actions-wrapper\'>\n  <a class="js-duplicate btn btn-success" title="Duplicate Field"><i class=\'icon-plus-sign\'></i></a>\n  <a class="js-clear btn btn-danger" title="Remove Field"><i class=\'icon-minus-sign\'></i></a>\n</div>';
+__p += '<div class=\'actions-wrapper btn-group\'>\n  <a class="js-duplicate btn btn-small btn-success" title="Duplicate Field"><i class=\'icon-plus-sign\'></i></a>\n  <a class="js-clear btn btn-small btn-danger" title="Remove Field"><i class=\'icon-minus-sign\'></i></a>\n</div>';
 
 }
 return __p

@@ -13,14 +13,14 @@ App.View.CMSImportExportCopy = App.View.CMS.extend({
     "Validating data structure",
     "Exporting sections",
     "Reticulating Splines",
-    "CMS data exported successfully"
+    "CMS data imported successfully"
   ],
   mockExportMessages : [
     "Collecting assets",
     "Validating data structure",
     "Importing sections",
     "Reticulating Splines",
-    "CMS data imported successfully"
+    "CMS data exported successfully"
   ],
   mockCopyMessages : [
     "Collecting assets",
