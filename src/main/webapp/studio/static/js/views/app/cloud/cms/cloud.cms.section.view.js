@@ -41,11 +41,11 @@ App.View.CMSSection = App.View.CMS.extend({
         console.log('error loading list fields');
         return this.modal('Error loading list fields');
       }
-      fields = this.massageFields(fields);
+      fields = this.massageFieldsForFormbuilder(fields);
       path += ("." + this.fieldList.name + "." + "Edit " + this.options.mode);
     }else{
       // Just a standard section view - may or may not contain a listfield within
-      fields = this.massageFields(section.fields);
+      fields = this.massageFieldsForFormbuilder(section.fields);
     }
 
     console.log("Section is " + section + " fields ",fields);
@@ -70,7 +70,7 @@ App.View.CMSSection = App.View.CMS.extend({
     var parentOptions = this.collection.toHTMLOptions();
     parentOptions = ["<option value='' data-path='' >-Root</option>"].concat(parentOptions);
     parentOptions = parentOptions.join('');
-    this.$el.find('.fb-tab-content').append(this.templates.$cms_configureSection({ parentOptions : parentOptions }));
+    this.$el.find('.fb-tab-content').append(this.templates.$cms_configureSection({ parentOptions : parentOptions, name : section.name }));
     // Select the active option
     this.$el.find('select[name=parentName]').val(section.parent);
 
@@ -124,7 +124,7 @@ App.View.CMSSection = App.View.CMS.extend({
     });
     return this.fb;
   },
-  massageFields : function(oldFields){
+  massageFieldsForFormbuilder : function(oldFields){
     var fields = [];
     _.each(oldFields, function(field){
       var newField = {};
@@ -145,20 +145,52 @@ App.View.CMSSection = App.View.CMS.extend({
     });
     return fields;
   },
+  massageFieldsFromFormBuilder : function(fbfields){
+    var fields = [];
+    _.each(fbfields, function(field){
+      var  newField = {};
+      switch(field.field_type){
+        case "field_list":
+          newField.type = "list";
+          break;
+        case "text":
+          newField.type = "string";
+          break;
+        default:
+          newField.type = field.field_type;
+          break;
+      }
+      fields.push(newField);
+      newField.name = field.label;
+      newField.value = field.value;
+    });
+    return fields;
+  },
   onSectionSave : function(e){
     e.preventDefault();
-    var vals = {};
-    $(this.$el.find('configureSectionForm').serializeArray()).each(function(idx, el){
+    var vals = {},
+    section = this.collection.findSectionByPath(this.options.section),
+    fields = this.fb.mainView.collection.toJSON(); //TODO: Verify this syncs with autoSave
+    $(this.$el.find('#configureSectionForm').serializeArray()).each(function(idx, el){
       vals[el.name] = el.value;
     });
+
+    // If publish is now, set the timedate if it's not already defined on the section
     if (vals.publishRadio && vals.publishRadio === "now"){
-      vals.publishdate = new Date(); // TODO: Maybe this should be handled on the user's computer?
+      if (!section.hasOwnProperty('publishdate')){
+        section.publishdate = new Date(); // TODO: Maybe this should be handled on the server..?
+      }
+    }else if (vals.publishRadio && vals.publishRadio === "later"){
+      section.publishDate = vals.publishdate;
     }
-    vals.fields = this.fb.mainView.collection.toJSON();
+
+    section.name = vals.name;
+    section.fields = this.massageFieldsFromFormBuilder(fields);
+
 
     this.alertMessage();
-    App.dispatch.trigger("cms.audit", "Section saved with values: " + JSON.stringify(vals));
-    //TODO: Dispatch to server
+    App.dispatch.trigger("cms.audit", "Section saved with values: " + JSON.stringify(section));
+    //TODO: Dispatch section to server || update collection
 
 
     return false;
@@ -210,7 +242,7 @@ App.View.CMSSection = App.View.CMS.extend({
       }
       f.value = row[f.name];
     });
-    fields = this.massageFields(fields);
+    fields = this.massageFieldsForFormbuilder(fields);
     this.fb.mainView.collection.reset(fields);
   }
 });
