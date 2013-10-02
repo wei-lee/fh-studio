@@ -3,6 +3,7 @@ common/js/ui/thirdparty/underscore.string.js
 common/js/ajax/ASyncServerTask.js
 common/js/ui/thirdparty/bootstrap/bootstrap.js
 common/js/ui/thirdparty/backbone/backbone.js
+common/js/ui/thirdparty/jsoneditor/jsoneditor.js
 js/init/namespaces.js
 common/js/ui/thirdparty/handlebars/handlebars.js
 common/js/ui/thirdparty/handlebars/helpers.js
@@ -19,6 +20,7 @@ js/application/dialog/DialogManager.js
 js/application/controller.js
 js/model/backbone/event.model.js
 js/model/backbone/plugin.model.js
+js/model/backbone/databrowser.model.js
 js/model/backbone/alert.model.js
 js/model/backbone/alertnotification.model.js
 js/model/backbone/app.model.js
@@ -52,6 +54,7 @@ js/model/backbone/metrics/installs/domain.installs.platform.model.js
 js/model/backbone/cloudenvironments/cloudenvironment.model.js
 js/views/common/datatable.view.js
 js/views/common/spinner.view.js
+js/views/common/modal.view.js
 js/views/charts/chart.view.js
 js/views/charts/bar_chart.view.js
 js/views/charts/column_chart.view.js
@@ -138,6 +141,16 @@ js/views/common/swap_select.view.js
 js/views/app/cloud/cloud.sysevents.view.js
 js/views/app/cloud/cloud.alerts.view.js
 js/views/app/cloud/cloud.alertnotifications.view.js
+js/views/app/cloud/databrowser/cloud.databrowser.view.js
+js/views/app/cloud/databrowser/cloud.databrowser.collectionslist.view.js
+js/views/app/cloud/databrowser/cloud.databrowser.dataview.table.view.js
+js/views/app/cloud/databrowser/cloud.databrowser.dataview.view.js
+js/views/app/cloud/databrowser/cloud.databrowser.advancededitor.view.js
+js/views/app/cloud/databrowser/cloud.databrowser.filters.view.js
+js/views/app/cloud/databrowser/cloud.databrowser.message.view.js
+js/views/app/cloud/databrowser/cloud.databrowser.dataview.pagination.js
+js/views/app/cloud/databrowser/cloud.databrowser.migrate.view.js
+js/views/app/cloud/databrowser/cloud.databrowser.controller.js
 js/views/cloudenvironments/cloudenvironments.charts.view.js
 js/views/cloudenvironments/cloudenvironments.overview.view.js
 js/views/cloudenvironments/cloudenvironments.envresources.view.js
@@ -215,6 +228,7 @@ js/application/apps/apps.endpoints.controller.js
 js/application/apps/apps.cloudresources.controller.js
 js/application/apps/apps.cloudnotifications.controller.js
 js/application/apps/apps.cloud.dashboard.controller.js
+js/application/apps/apps.cloud.databrowser.controller.js
 js/application/apps/apps.environment.controller.js
 js/application/apps/apps.deploy.controller.js
 js/application/apps/apps.reports.support.js

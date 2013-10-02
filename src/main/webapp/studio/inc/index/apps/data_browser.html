@@ -1,0 +1,310 @@
+<div id="databrowser_container">
+  <div class="fh-box-outer">
+    <h4 class="fh-box-header">
+      Data Browser
+      <div class="cloud_environment pull-right">
+      <span class="status_light_container dev">
+        <span class="status_light dev"></span>
+      </span>
+        <span class="env_type dev active">Dev</span>
+      <span class="env_toggle_container dev">
+        <span class="env_toggle_button"></span>
+      </span>
+      <span class="status_light_container live">
+        <span class="status_light live"></span>
+      </span>
+        <span class="env_type live">Live</span>
+      </div></h4>
+      <div class="fh-box-inner">
+      </div>
+  </div>
+</div>
+
+<script id="databrowserLoading" type="text/x-handlebars-template">
+  <div class="busyContainer">
+    <div class="busyAnimationFloatingCircles">
+      <div class="f_circleG" id="frotateG_01">
+      </div>
+      <div class="f_circleG" id="frotateG_02">
+      </div>
+      <div class="f_circleG" id="frotateG_03">
+      </div>
+      <div class="f_circleG" id="frotateG_04">
+      </div>
+      <div class="f_circleG" id="frotateG_05">
+      </div>
+      <div class="f_circleG" id="frotateG_06">
+      </div>
+      <div class="f_circleG" id="frotateG_07">
+      </div>
+      <div class="f_circleG" id="frotateG_08">
+      </div>
+    </div>
+  </div>
+</script>
+
+<script id="databrowserNavbar" type="text/x-handlebars-template">
+  <div class="{{ class }} navbar">
+    <div class="navbar-inner">
+      <a class="brand" href="#">{{ brand }}</a>
+       {{{ baritems }}}
+    </div>
+  </div>
+</script>
+
+<script id="dataBrowserCollectionListBarItems" type="text/x-handlebars-template">
+  <div class="row">
+    <button type="button" class="btn btn-large btn-add-collection"><i class="icon-plus"></i>  </button>
+    <button type="button" class="btn btn-large btn-refresh-collectionsList"><i class="icon-refresh"></i>  </button>
+  </div>
+</script>
+
+<script id="databrowserDataViewBarItems" type="text/x-handlebars-template">
+  <div class="row">
+    <button type="button" class="btn btn-large btn-add-row"><i class="icon-plus"></i>	</button>
+    <button type="button" class="btn btn-large btn-refresh-collection"><i class="icon-refresh"></i></button>
+    <a class="btn btn-filter" href="#"><i class="icon-filter"></i></a>
+    <button type="button" class="btn btn-large btn-danger btn-trash-rows disabled"><i class="icon-trash"></i></button>
+    <ul class="nav" role="navigation">
+            <li class="dropdown">
+            <a id="dropd2" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Switch Collection<b class="caret"></b></a>
+            <ul class="dropdown-menu collections-dropdown" role="menu" aria-labelledby="drop1">
+              {{{ collections }}}
+            </ul>
+            </li>
+            </ul>
+  </div>
+</script>
+
+<script id="databrowserFilters" type="text/x-handlebars-template">
+  <div id="filter-row-collapsable" class="row filters collapse" >
+    <form class="form-inline btn-group">
+      <label>Filter: </label>
+      <input type="text" class="input-small" id="data-filter-key" placeholder="Field name">
+      <div class="btn-group">
+        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+          Is <span class="symbol">=</span>
+          <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+          {{{ filters }}}
+        </ul>
+      </div>
+
+
+      <input type="text" class="input-small" id="data-filter-value" placeholder="Value">
+      <button type="submit" class="btn btn-primary add-filter"><i class="icon-plus"></i> Add</button>
+    </form>
+
+
+
+    <div class="filterList">
+        <!-- Filters go here -->
+      </div>
+  </div>
+</script>
+
+<script id="databrowserFilterItem" type="text/x-handlebars-template">
+  <div class="aFilter badge btn-primary" data-key="{{key}}" data-operator="{{ operator }}" data-value="{{ value }}">
+    <span class="filterbody">{{key}} {{{entity}}} {{value}}</span>
+    <span class="closebadge">&times;</span>
+  </div>
+</script>
+
+<script id="databrowserDataViewBarCollectionMenuItem" type="text/x-handlebars-template">
+<li role="presentation"><a role="menuitem" data-id="{{ name }}" data-name=" {{ name }} " tabindex="-1" href="#">{{ name }} <span class="badge pull-right">{{ count }} </span></a></li>
+</script>
+
+<script id="collectionsListItem" type="text/x-handlebars-template">
+  <li data-id="{{ id }}" data-name="{{ name }}">
+    <div class="raquo">&raquo;</div>
+    <h3>{{name}}</h3>
+    <div class="collectionMeta collectionLength">
+      <strong>{{ count }}</strong> records
+    </div>
+    <div class="collectionMeta collectionSize">
+      <strong>{{size}}</strong>mb
+    </div>
+    <br style="clear:both;" />
+  </li>
+</script>
+
+<script id="collectionsList" type="text/x-handlebars-template">
+    <ul class="collectionsUl">
+      {{{ collections }}}
+    </ul>
+</script>
+
+<script id="dataviewTableContainer" type="text/x-handlebars-template">
+  <div class="databrowserTableContainer busy">
+    <!-- Tables go here -->
+  </div>
+</script>
+
+
+<script id="dataviewEditTable" type="text/x-handlebars-template">
+<table class="edittable table table-condensed table-bordered"><thead><tr><th class="th-edit"></th></tr></thead><tbody></tbody></table>
+</script>
+
+<script id="dataviewEditButton" type="text/x-handlebars-template">
+  <td class="td-edit readOnly" data-id="{{guid}}" id="edit-{{guid}}">
+    <div class="btn-group btn-edit">
+      <button data-id="{{ guid }}" class="btn btn-mini dropdown-toggle" data-toggle="dropdown"><i class="icon-pencil"></i> <span
+              class="caret"></span></button>
+      <ul class="dropdown-menu">
+        <li><a href="#" data-id="{{ guid }}" class="btn-edit-inline"><i class="icon-pencil"></i> Edit Inline</a></li>
+        <li><a href="#" data-id="{{ guid }}" class="btn-advanced-edit"><i class="icon-edit"></i> Advanced Editor</a></li>
+        <li><a href="#" data-id="{{ guid }}" class="btn-delete-row"><i class="icon-remove"></i> Delete Row</a></li>
+      </ul>
+    </div>
+  </td>
+</script>
+
+<script id="dataviewSaveCancelButton" type="text/x-handlebars-template">
+  <div class="btn-group btn-savecancel">
+    <a class="btn btn-mini btn-success btn-save"><i class="icon-ok"></i></a>
+    <a class="btn btn-mini btn-cancel btn-inverse"><i class="icon-arrow-left"></i></a>
+  </div>
+</script>
+
+<script id="dataviewPagination" type="text/x-handlebars-template">
+  <div class="pagination pagination-mini pull-right">
+    <ul>
+      <li><a href="#" data-page="first">&laquo;</a></li>
+      {{{ pages }}}
+      <li><a href="#" data-page="last">&raquo;</a></li>
+    </ul>
+  </div>
+  <div id="rowsPerPageDiv" class="input-prepend input-append pull-right">
+    <span class="add-on">show </span>
+    <select class="span6">
+      <option>10</option>
+      <option>20</option>
+      <option>60</option>
+      <option>100</option>
+      <option>500</option>
+    </select>
+    <span class="add-on"> rows</span>
+  </div>
+</script>
+
+<script id="dataviewAdvancedEditorBarItems" type="text/x-handlebars-template">
+  <button type="button" class="btn pull-right btn-large btn-advancededitor-cancel"> Cancel	</button>
+  <button type="button" class="btn pull-right btn-large btn-success btn-advancededitor-save"><i class="icon-pencil"></i>Save	</button>
+  <div class="btn-group btn-advancedEditorSwitch" data-toggle="buttons-radio">
+    <a class="btn btn-dynamic-editor btn-inverse active"><i class="icon-indent-left"> Dynamic</i></a>
+    <a class="btn btn-raw-editor btn-inverse"><i class="icon-wrench"></i> Raw</a>
+  </div>
+</script>
+<script id="dataviewInlineError" type="text/x-handlebars-template">
+  <div class="alert alert-error">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    {{ message }}
+  </div>
+</script>
+<script id="dataviewEmptyContent" type="text/x-handlebars-template">
+  {{{ message }}}<br />
+  <button type="button" class="btn btn-primary btn-large btn-add-row">{{{ button }}}</button>
+</script>
+<script id="collectionsEmptyContent" type="text/x-handlebars-template">
+  No collections<br />
+  <button type="button" class="btn btn-primary btn-large btn-add-row"><i class="icon-plus"></i> Add a collection </button>
+</script>
+<script id="dataviewLoadingContent" type="text/x-handlebars-template">
+  Loading...
+</script>
+<script id="dataMigrateMessage" type="text/x-handlebars-template">
+  <h2>Your app uses an old type of database - we need to migrate it.</h2>
+  To migrate, we're going to:
+  <ol>
+    <li>Restart your application - this will result in a few seconds downtime.</li>
+    <li>Re-create any data you saved using $fh.db in a new location</li>
+    <li>You may need to update your package.json file - we'll let you know</li>
+    <li>You'll need to re-stage your application</li>
+  </ol>
+</script>
+
+<script id="dataMigratingView" type="text/x-handlebars-template">
+  <div class="data_migrate_progress row-fluid">
+    <h4>Migration Progress</h4>
+
+    <div class="progress active">
+      <div class="bar" style="width: 0%;"></div>
+    </div>
+    <textarea class="progresslog span12" readonly=""></textarea>
+  </div>
+</script>
+
+<script id="dataviewGoDeploy" type="text/x-handlebars-template">
+  <h2>Time to deploy</h2>
+  Now that we've successfully migrated your data, it's time to start your app again. Once done, return to the Data Browser.
+</script>
+
+<script id="databrowserEnable" type="text/x-handlebars-template">
+  <h2>Data Browser must be enabled</h2>
+  To use the data browser, we first need to enable it for your app - this means we'll briefly stopping your app.
+</script>
+
+
+<script id="dataviewPackageJsonChange" type="text/x-handlebars-template">
+  <h2>Nearly done!</h2>
+  Your app uses an old version of our cloud software called <strong>fh-nodeapp</strong>. We need to replace it with <strong>fh-webapp</strong> - here's how:
+  <ol class="packageJsonInstructions">
+    <li>Open the editor, in the cloud directory, and open the file <strong>"package.json"</strong>.</li>
+    <li>Find the "dependencies" section, and remove the row which looks like this:<br />
+    <pre>
+    "<strong>fh-nodeapp</strong>" : "*"
+    </pre>
+    </li>
+    <li>Add the following lines to the end of the dependencies section: <br />
+    <pre>
+      "<strong>fh-webapp</strong>" : "*",
+      "<strong>fh-api</strong>" : "*",
+      "<strong>express</strong>" : "*"
+    </pre>
+    </li>
+    <li>It's important this file is well formed JSON - once done your file sould look something like this: <br />
+    <pre>
+{
+  "name": "myappname",
+  "version": "0.1.0",
+  "dependencies" : {
+    "myCustomDependenciesGoHere" : "*",
+    "fh-webapp" : "*",
+    "fh-api" : "*",
+    "express" : "*"
+  }
+}
+      </pre>
+    </li>
+    <li>You'll also need to create a file in the cloud directory called 'application.js' - if it already exists, replace it. Here's what it should contain:<br />
+    <pre>
+var webapp = require('fh-webapp');
+var express = require('express');
+$fh = require('fh-api');
+var mainjs = require('main.js');
+
+var app = express();
+app.use('/sys', webapp.sys(mainjs));
+app.use('/mbaas', webapp.mbaas);
+app.use('/cloud', webapp.cloud(mainjs));
+
+// You can define custom URL handlers here, like this one:
+app.use('/', function(req, res){
+  res.end('Your Cloud App is Running');
+});
+
+module.exports = app.listen(process.env.FH_PORT || process.env.VCAP_APP_PORT || 8001);
+    </pre>
+    </li>
+    <li>Lastly, you need to re-deploy your app for Node.js version 0.8 or above</li>
+  </ol>
+</script>
+
+<script id="dataviewEmptyContainer" type="text/x-handlebars-template">
+  <div class="databrowser emptyContainer">
+    <div class="centered">
+      {{{ content }}}
+    </div>
+  </div>
+</script>
