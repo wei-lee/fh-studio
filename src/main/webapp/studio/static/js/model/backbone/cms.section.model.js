@@ -28,7 +28,6 @@ App.Collection.CmsSection = Backbone.Collection.extend({
     $fw.server.post(url, {}, function(res) {
       if (res && res.sections && res.sections.length>0) {
         self.loaded = true;
-        //self.addPathsAndParents(res.sections);
         if ($.isFunction(options.success)) {
           options.success(res.sections, options);
         }

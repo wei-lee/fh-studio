@@ -23,6 +23,7 @@ App.View.CMSSection = App.View.CMS.extend({
     this.collection = options.collection;
     this.compileTemplates();
     this.bind('listfieldRowSelect', this.listfieldRowSelect);
+    this.view = (this.options.hasOwnProperty('listfield')) ?  "listfield" : "section";
   },
   render : function(){
     var self = this,
@@ -37,7 +38,7 @@ App.View.CMSSection = App.View.CMS.extend({
 
 
 
-    if (this.options.listfield){
+    if (this.view === 'listfield'){
       // We're editing a field_list - retrieve it
       this.fieldList = _.findWhere(section.fields, { name : this.options.listfield });
       fields = this.fieldList && this.fieldList.fields;
@@ -72,12 +73,21 @@ App.View.CMSSection = App.View.CMS.extend({
 
     this.$el.find('.fb-tabs').append(this.templates.$cms_sectionExtraTabs());
 
-    var parentOptions = this.collection.toHTMLOptions();
-    parentOptions = ["<option value='' data-path='' >-Root</option>"].concat(parentOptions);
-    parentOptions = parentOptions.join('');
-    this.$el.find('.fb-tab-content').append(this.templates.$cms_configureSection({ parentOptions : parentOptions, name : section.name }));
-    // Select the active option
-    this.$el.find('select[name=parentName]').val(section.parent);
+    if (this.view === 'section'){
+      var pathArray = section.path.split('.'),
+      parent = pathArray[pathArray.length-2] || "Root";
+      var parentOptions = this.collection.toHTMLOptions();
+      parentOptions = ["<option value='' data-path='' >-Root</option>"].concat(parentOptions);
+      parentOptions = parentOptions.join('');
+      this.$el.find('.fb-tab-content').append(this.templates.$cms_configureSection({ parentOptions : parentOptions, name : section.name }));
+
+      // Select the active option
+      this.$el.find('select[name=parentName]').val(parent);
+    }
+
+
+
+
 
 
     this.$el.find('#cmsAppPreview').append($('#app_preview').clone(true).show().width('100%'));
@@ -97,7 +107,8 @@ App.View.CMSSection = App.View.CMS.extend({
       $(this).find('.fieldlist_table').html(table.render().$el);
     });
 
-    if (!this.options.listfield){
+    // Add in some instructions ontop of the form
+    if (this.view === 'section'){
       var instructions;
       if(this.options.editStructure && this.options.editStructure === true){
         instructions = "Drag fields from the right to add fields. Drag fields to re-order. Click on a field to select it, click again to edit it. ";
@@ -194,7 +205,7 @@ App.View.CMSSection = App.View.CMS.extend({
     }
 
     section.name = vals.name;
-    section.fields = this.massageFieldsFromFormBuilder(fields);
+    section.fields = this.massageFieldsFromFormBuilder(fields); //TODO: This doesn't get fieldlist values.. :-(
 
 
     this.alertMessage();
