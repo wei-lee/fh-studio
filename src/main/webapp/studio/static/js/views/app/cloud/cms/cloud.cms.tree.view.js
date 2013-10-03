@@ -25,7 +25,6 @@ App.View.CMSTree = App.View.CMS.extend({
     });
 
     App.dispatch.on("cms.sectionchange", function (evData){
-      //update the tree somehow.
       //need to go through the levels opening as we go.
       var treePath = evData.path;
       var pathBits = treePath.split(".");
@@ -149,6 +148,7 @@ App.View.CMSTree = App.View.CMS.extend({
 
     var self = this;
     var parentOptions = self.collection.toHTMLOptions();
+    console.log("parentOptions ",parentOptions);
     parentOptions = ["<option value='' data-path='' >-Root</option>"].concat(parentOptions);
     parentOptions = parentOptions.join('');
     var selectContent = self.templates.$cms_sectionDropDown({"parentOptions":parentOptions});
@@ -161,7 +161,7 @@ App.View.CMSTree = App.View.CMS.extend({
       ok: function (e) {
         var el = $(e.target),
           input = el.parents('.modal').find('input#newCollectionName'),
-          sectionIn = el.parents('.modal').find("select[name='parentName']").find('option').filter(":selected").val(),
+          sectionIn = el.parents('.modal').find("select[name='parentName']").find('option').filter(":selected").data("path"),
           secVal = input.val();
 
         console.log("Section parent section name ", secVal, sectionIn);
@@ -178,17 +178,13 @@ App.View.CMSTree = App.View.CMS.extend({
     var self = this;
     var selectedSection = self.activeSection || "root";
 
-    console.log("Create Section");
+    console.log("Create Section in", selectedSection);
 
-    var parentSection = self.collection.findSectionByPath(selectedSection);
-    if (!parentSection){
-      console.log('Couldnt find parent section with path ' + selectedSection);
-      return this.modal('Error moving section');
-    }
-
+    var parentSection = (selectedSection == "root") ? undefined : self.collection.findSectionByPath(selectedSection);
+    var hash = "temp-"+new Date().getTime();
     console.log("parent section is ", parentSection);
     var childrenKey = App.Model.CmsSection.CONST.CHILDREN;
-    var hash = new Date().getTime();
+
     if (parentSection) {
       if (!parentSection[childrenKey]) parentSection[childrenKey] = [];
 
@@ -202,6 +198,15 @@ App.View.CMSTree = App.View.CMS.extend({
         };
 
       parentSection[childrenKey].push(node.hash);
+    }else{
+      //add new parent section
+      node = {
+        "path":val,
+        "hash":hash,
+        "name":val,
+        "data":val,
+        "children":[]
+      };
     }
 
     console.log("models ",self.collection.models);

@@ -107,7 +107,7 @@ App.View.CMSListField = App.View.CMSSection.extend({
   },
 
   getCheckedRows : function (){
-    var checked = this.table.$el.find('tr.info input:checked');
+    var checked = this.table.$el.find('tr input:checked');
     var trParents = checked.parents('tr');
     console.log("found " + trParents.length + " trs");
     var hashes = [];
@@ -199,12 +199,12 @@ App.View.CMSListField = App.View.CMSSection.extend({
   },
 
   rowSetState: function(row){
+    console.log("row set state ", row);
     if (row.hasClass('info')){
       row.removeClass('info');
       row.find('input[type=checkbox]').attr('checked', false);
-      var checked = this.getCheckedRows().indexOf(row.data("hash"));
-
-      if(checked.length == 0){
+      var checked = this.getCheckedRows();
+      if(checked.length <= 0){
         this.deavtivateDestructiveButtons();
       }
     }else{
