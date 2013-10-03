@@ -13,8 +13,6 @@ App.View.CMSListField = App.View.CMSSection.extend({
   },
 
 
-  "activeRows":[],
-
   initialize: function(options){
     this.title = (options.mode === 'data') ? "Edit List Data" : "Edit List Structure"
     this.templates = _.extend(this.constructor.__super__.templates, {
@@ -70,10 +68,8 @@ App.View.CMSListField = App.View.CMSSection.extend({
         blank[f.name] = "";
 
       }
-      //we add a temp hash to use as a ref and remove these on save.
+      //we add a temp hash to use as a ref and remove these on save may be a better way of doing this.
       blank.hash = "temp-"+new Date().getTime();
-
-      console.log("new temp hash", blank.hash);
 
       this.fieldList.data.push(blank);
 
@@ -82,54 +78,67 @@ App.View.CMSListField = App.View.CMSSection.extend({
       var tr = this.$el.find("tr[data-hash='"+blank.hash+"'] ");
       this.trigger('listfieldRowSelect', tr.data('index'));
       this.rowSetState(tr);
-      this.editingRow = blank.hash;
-
     }
   },
 
-  onDeleteRow : function (){
-    var self = this;
-    async.filter(self.fieldList.data,function (ob,cb){
-      if(self.activeRows.indexOf(ob.hash) == -1){
-          cb(ob);
-      }
-      else cb();
-    },function (res){
-      self.fieldList.data = res;
+  getCheckedRows : function (){
+    var checked = this.table.$el.find('tr.info input:checked');
+    var trParents = checked.parents('tr');
+    console.log("found " + trParents.length + " trs");
+    var hashes = [];
+    trParents.each(function (){
+       hashes.push($(this).data("hash"));
     });
-    self.activeRows = [];
-    this.render();
+    return hashes;
   },
 
-  onListFieldSave : function(){
+  onListFieldSave : function(e){
+    e.stopPropagation();
     var self = this;
-    var hashId = this.$el.find('.btn-listfield-save').data("hash");
-    console.log("hashid ", hashId);
+
     var checked = this.table.$el.find('tr.info input:checked').parents('tr');
     console.log("checked length ", checked.length);
     if(checked.length > 1){
-      //error
+      //error only one save at a time
     }
     var hash = checked.first().data("hash");
 
-    App.dispatch.trigger("cms.audit", "CMS List saved",self.fb);
     var params = self.fb.mainView.collection.toJSON();
     console.log("saving params ", params);
     for(var i=0; i < self.fieldList.data.length; i++){
       var d = self.fieldList.data[i];
       if(d.hash === hash){
-        debugger;
+
         for(var pr in params){
           if(params.hasOwnProperty(pr)){
             d[params[pr].label] = params[pr].value;
           }
         }
+        self.fieldList.data[i] = d;
       }
 
     }
-    self.trigger('back', true);
+    self.render();
+    App.dispatch.trigger("cms.audit", "CMS List saved",self.fb);
     //TODO: POST to server
     //NOTE: all actions need to be qued in order to ensure consistency and processed in order on save.
+  },
+
+  onDeleteRow : function (){
+
+    var self = this;
+    var activeRows = self.getCheckedRows();
+    console.log("active rows",activeRows);
+    async.filter(self.fieldList.data,function (ob,cb){
+      if(activeRows.indexOf(ob.hash) == -1){
+        cb(ob);
+      }
+      else cb();
+    },function (res){
+      self.fieldList.data = res;
+    });
+
+    this.render();
   },
   setModeData : function(){
     this.options.mode = 'data';
@@ -164,19 +173,14 @@ App.View.CMSListField = App.View.CMSSection.extend({
     if (row.hasClass('info')){
       row.removeClass('info');
       row.find('input[type=checkbox]').attr('checked', false);
-      var index = this.activeRows.indexOf(row.data("hash"));
-      if( index != -1){
-        this.activeRows.splice(index,1);
-      }
-      if(this.activeRows.length == 0){
+      var checked = this.getCheckedRows().indexOf(row.data("hash"));
+
+      if(checked.length == 0){
         this.deavtivateDestructiveButtons();
       }
     }else{
       row.addClass('info');
       row.find('input[type=checkbox]').attr('checked', true);
-      if(this.activeRows.indexOf(row.data("hash")) == -1){
-        this.activeRows.push(row.data("hash"));
-      }
       this.activateDestuctiveButtons();
     }
   },

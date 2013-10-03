@@ -49,6 +49,8 @@
   <div class="fb-tab-pane" id="configuresection">
     <form id="configureSectionForm">
       <fieldset>
+        <label>Name</label>
+        <input type="text" name="name" value="{{ name }}">
         <label>Section Parent</label>
         <select name="parentName">
           {{{ parentOptions }}}
@@ -74,8 +76,8 @@
 </script>
 <script id="cms_section_savecancel" type="text/x-handlebars-template">
 <div class="btn-group pull-right cms_section_savecancel">
-  <button type="submit" class="btn btn-primary btn-savesection">Save Section</button>
-  <button type="reset" class="btn btn-danger btn-discard-section">Discard Changes</button>
+  <button type="submit" class="btn btn-primary btn-savesection">Save Draft</button>
+  <button type="reset" class="btn btn-danger btn-discard-section">Discard Draft</button>
 </div>
 </script>
 <script id="cms_back" type="text/x-handlebars-template">
@@ -131,9 +133,9 @@
 <script id="cms_importModal" type="text/x-handlebars-template">
   <form>
     <fieldset>
-    <label>JSON File</label>
+    <label>Zip File</label>
       <input type="file">
-      <span class="help-block">Import a JSON representation of FeedHenry CMS Data</span>
+      <span class="help-block">Import a zipped representation of FeedHenry CMS Data</span>
     </fieldset>
   </form>
 </script>

@@ -181,6 +181,10 @@ App.View.CMSTree = App.View.CMS.extend({
     console.log("Create Section");
 
     var parentSection = self.collection.findSectionByPath(selectedSection);
+    if (!parentSection){
+      console.log('Couldnt find parent section with path ' + selectedSection);
+      return this.modal('Error moving section');
+    }
 
     console.log("parent section is ", parentSection);
     var childrenKey = App.Model.CmsSection.CONST.CHILDREN;
@@ -238,6 +242,7 @@ App.View.CMSTree = App.View.CMS.extend({
     var self = this;
     console.log("move data", data);
     // JSTree needs to be told which attributes to retrieve - otherwise it dumps them. I kid you not.
+
     var treeData = data.inst.get_json(-1, ['name','hash', 'path', 'children']);
     //need to update the models in the collection to reflect the new state then recall render.
     // we have two different data structures that contain the same data we need to sync them.
@@ -294,6 +299,7 @@ App.View.CMSTree = App.View.CMS.extend({
     console.log("DONE MOVE ******************** ",self.collection.models);
 
     self.render();
+
   },
   reorderTree: function (tree) {
     console.log("the tree ", tree);

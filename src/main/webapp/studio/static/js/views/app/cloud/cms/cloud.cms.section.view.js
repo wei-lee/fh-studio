@@ -9,8 +9,7 @@ App.View.CMSSection = App.View.CMS.extend({
     'click btn-deletesection' : 'onDeleteSection',
     'focus input[name=publishdate]' : 'onPublishDateFocus',
     'click .btn-listfield-structure' : 'onListFieldEditStructure',
-    'click .btn-listfield-data' : 'onListFieldEditData',
-    'change #configureSectionForm':'onSectionChange'
+    'click .btn-listfield-data' : 'onListFieldEditData'
   },
   templates : {
     'cms_configureSection' : '#cms_configureSection',
@@ -24,6 +23,7 @@ App.View.CMSSection = App.View.CMS.extend({
     this.collection = options.collection;
     this.compileTemplates();
     this.bind('listfieldRowSelect', this.listfieldRowSelect);
+    this.view = (this.options.hasOwnProperty('listfield')) ?  "listfield" : "section";
   },
 
 
@@ -34,25 +34,41 @@ App.View.CMSSection = App.View.CMS.extend({
     path = section.path,
     fields, listData;
 
+    if (!section){
+      console.log('Error loading section with path ' + this.options.section);
+      return this.modal('Error loading section');
+    }
 
 
-    if (this.options.listfield){
+
+    if (this.view === 'listfield'){
       // We're editing a field_list - retrieve it
       this.fieldList = _.findWhere(section.fields, { name : this.options.listfield });
-      console.log("the field list ", section.fields);
+
+
+      if (!this.fieldList){
+        this.fieldList = {
+          modifiedDate : new Date(),
+          name : this.options.listfield,
+          type : 'list',
+          fields : [],
+          data : []
+        };
+      }
+
       fields = this.fieldList && this.fieldList.fields;
       listData = this.fieldList && this.fieldList.data;
-      if (!fields || !fields.length){
+      if (!fields){
         console.log('error loading list fields');
         return this.modal('Error loading list fields');
       }
-      fields = this.massageFields(fields);
+      fields = this.massageFieldsForFormbuilder(fields);
       path += ("." + this.fieldList.name + "." + "Edit " + this.options.mode);
     }else{
       // Just a standard section view - may or may not contain a listfield within
-      console.log("fields = " + section.fields);
-      fields = this.massageFields(section.fields);
-      console.log("fields after massage = ", fields);
+
+      fields = this.massageFieldsForFormbuilder(section.fields);
+
     }
 
     console.log("Section is ", section  ," fields ",fields);
@@ -69,17 +85,26 @@ App.View.CMSSection = App.View.CMS.extend({
     // Add in the CMS specific breadcrumb on top of the middle section
     this.$el.find('.middle').prepend(this.cmsBreadcrumb(path));
     // Add in the page title to the breadcrumb row
-    this.$el.find('.middle ul.breadcrumb').prepend('<li><h3>' + this.title + '</h3></li>');
+    this.$el.find('.middle').prepend('<h3>' + this.title + '</h3>');
 
 
     this.$el.find('.fb-tabs').append(this.templates.$cms_sectionExtraTabs());
 
-    var parentOptions = this.collection.toHTMLOptions();
-    parentOptions = ["<option value='' data-path='' >-Root</option>"].concat(parentOptions);
-    parentOptions = parentOptions.join('');
-    this.$el.find('.fb-tab-content').append(this.templates.$cms_configureSection({ parentOptions : parentOptions }));
-    // Select the active option
-    this.$el.find('select[name=parentName]').val(section.parent);
+    if (this.view === 'section'){
+      var pathArray = section.path.split('.'),
+      parent = pathArray[pathArray.length-2] || "Root";
+      var parentOptions = this.collection.toHTMLOptions();
+      parentOptions = ["<option value='' data-path='' >-Root</option>"].concat(parentOptions);
+      parentOptions = parentOptions.join('');
+      this.$el.find('.fb-tab-content').append(this.templates.$cms_configureSection({ parentOptions : parentOptions, name : section.name }));
+
+      // Select the active option
+      this.$el.find('select[name=parentName]').val(parent);
+    }
+
+
+
+
 
 
     this.$el.find('#cmsAppPreview').append($('#app_preview').clone(true).show().width('100%'));
@@ -98,7 +123,8 @@ App.View.CMSSection = App.View.CMS.extend({
       $(this).find('.fieldlist_table').html(table.render().$el);
     });
 
-    if (!this.options.listfield){
+    // Add in some instructions ontop of the form
+    if (this.view === 'section'){
       var instructions;
       if(this.options.editStructure && this.options.editStructure === true){
         instructions = "Drag fields from the right to add fields. Drag fields to re-order. Click on a field to select it, click again to edit it. ";
@@ -111,6 +137,7 @@ App.View.CMSSection = App.View.CMS.extend({
 
     return this;
   },
+
 
   onAddNewRow : function (){
     console.log("add new row");
@@ -126,7 +153,6 @@ App.View.CMSSection = App.View.CMS.extend({
 
     App.dispatch.trigger("cms.sectionchange",{"section":selectVal,"id":opt.data("id"),"path":opt.data("path")});
   },
-
 
 
   renderFormBuilder : function(fields){
@@ -159,7 +185,7 @@ App.View.CMSSection = App.View.CMS.extend({
 
     return this.fb;
   },
-  massageFields : function(oldFields){
+  massageFieldsForFormbuilder : function(oldFields){
     var fields = [];
     _.each(oldFields, function(field){
       var newField = {};
@@ -181,22 +207,57 @@ App.View.CMSSection = App.View.CMS.extend({
 
     return fields;
   },
+  massageFieldsFromFormBuilder : function(fbfields){
+    var fields = [];
+    _.each(fbfields, function(field){
+      var  newField = {};
+      switch(field.field_type){
+        case "field_list":
+          newField.type = "list";
+          break;
+        case "text":
+          newField.type = "string";
+          break;
+        default:
+          newField.type = field.field_type;
+          break;
+      }
+      fields.push(newField);
+      newField.name = field.label;
+      newField.value = field.value;
+    });
+    return fields;
+  },
   onSectionSave : function(e){
     e.preventDefault();
-    var vals = {};
-    $(this.$el.find('configureSectionForm').serializeArray()).each(function(idx, el){
+    var vals = {},
+    sectionModel = this.collection.findWhere({path : this.options.section} ), // we don't use our convenience byPath here as we want modal instance
+    section = sectionModel.toJSON(),
+    fields = this.fb.mainView.collection.toJSON(); //TODO: Verify this syncs with autoSave
+
+    // Get our form as a JSON object
+    $(this.$el.find('#configureSectionForm').serializeArray()).each(function(idx, el){
       vals[el.name] = el.value;
     });
+
+
+    // If publish is now, set the timedate if it's not already defined on the section
     if (vals.publishRadio && vals.publishRadio === "now"){
-      vals.publishdate = new Date(); // TODO: Maybe this should be handled on the user's computer?
+      if (!section.hasOwnProperty('publishdate')){
+        section.publishdate = new Date(); // TODO: Maybe this should be handled on the server..?
+      }
+    }else if (vals.publishRadio && vals.publishRadio === "later"){
+      section.publishDate = vals.publishdate;
     }
-    vals.fields = this.fb.mainView.collection.toJSON();
+
+    section.name = vals.name;
+    section.fields = this.massageFieldsFromFormBuilder(fields); //TODO: This doesn't get fieldlist values.. :-(
+
 
     this.alertMessage();
-    App.dispatch.trigger("cms.audit", "Section saved with values: " + JSON.stringify(vals));
-    //TODO: Dispatch to server
-
-
+    App.dispatch.trigger("cms.audit", "Section saved with values: " + JSON.stringify(section));
+    sectionModel.set(section);
+    //TODO: Dispatch section to server ?
     return false;
   },
   onSectionDiscard : function(){
@@ -246,7 +307,7 @@ App.View.CMSSection = App.View.CMS.extend({
       }
       f.value = row[f.name];
     });
-    fields = this.massageFields(fields);
+    fields = this.massageFieldsForFormbuilder(fields);
     this.fb.mainView.collection.reset(fields);
   }
 });
