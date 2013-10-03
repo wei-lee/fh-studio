@@ -4,8 +4,8 @@ App.View = App.View || {};
 App.View.CMSSection = App.View.CMS.extend({
   title : 'Edit Section',
   events: {
-    'click .btn-savesection' : 'onSectionSave',
-    'click .btn-discard-section' : 'onSectionDiscard',
+    'click .btn-publish-draft' : 'onSectionSave',
+    'click .btn-discard-draft' : 'onSectionDiscard',
     'click .btn-deletesection' : 'onDeleteSection',
     'focus input[name=publishdate]' : 'onPublishDateFocus',
     'click .btn-listfield-structure' : 'onListFieldEditStructure',
@@ -24,6 +24,7 @@ App.View.CMSSection = App.View.CMS.extend({
     this.compileTemplates();
     this.bind('listfieldRowSelect', this.listfieldRowSelect);
     this.view = (this.options.hasOwnProperty('listfield')) ?  "listfield" : "section";
+
 
   },
 
@@ -135,6 +136,10 @@ App.View.CMSSection = App.View.CMS.extend({
       this.$el.find('.middle').append(this.templates.$cms_section_savecancel());
     }
 
+     $('.fb-response-fields input').unbind().keyup(function (e){
+       App.dispatch.trigger("cms.section.unsaved",section);
+     });
+
     return this;
   },
 
@@ -177,7 +182,12 @@ App.View.CMSSection = App.View.CMS.extend({
 //      }
 //
 //    });
-
+    //TODO move this not sure where the right place is for it right now.
+    console.log("binding to inputs");
+    $('.fb-response-fields').find('input').unbind().keyup(function (e){
+      console.log("trigger section unsaved");
+      App.dispatch.trigger("cms.section.unsaved",{});
+    });
     return this.fb;
   },
   massageFieldsForFormbuilder : function(oldFields){
@@ -231,12 +241,24 @@ App.View.CMSSection = App.View.CMS.extend({
 
 
   onSectionSave : function(e){
+    var action = $(e.target).data("action");
+
     e.preventDefault();
     var vals = {},
     sectionModel = this.collection.findWhere({path : this.options.section} ), // we don't use our convenience byPath here as we want modal instance
     section = sectionModel.toJSON(),
     fields = this.fb.mainView.collection.toJSON(); //TODO: Verify this syncs with autoSave
 
+    //TODO CENTRALISE
+    switch (action){
+      case "save-draft" :
+        App.dispatch.trigger("cms.section.savedraft",section);
+        break;
+
+      case "publish":
+        App.dispatch.trigger("cms.section.publish", section);
+        break;
+    }
     // Get our form as a JSON object
     $(this.$el.find('#configureSectionForm').serializeArray()).each(function(idx, el){
       vals[el.name] = el.value;
@@ -257,15 +279,25 @@ App.View.CMSSection = App.View.CMS.extend({
 
 
     this.alertMessage();
-    App.dispatch.trigger("cms.audit", "Section saved with values: " + JSON.stringify(section));
-    sectionModel.set(section);
+   // App.dispatch.trigger("cms.audit", "Section saved with values: " + JSON.stringify(section));
+   // sectionModel.set(section);
     //TODO: Dispatch section to server ?
     return false;
   },
-  onSectionDiscard : function(){
+  onSectionDiscard : function(e){
+    console.log("discard section called");
     this.render();
+    var sectionModel = this.collection.findWhere({path : this.options.section} ), // we don't use our convenience byPath here as we want modal instance
+    section = sectionModel.toJSON();
     this.alertMessage('Section changes discarded successfully');
     App.dispatch.trigger("cms.audit", "Section draft discarded");
+    var action = $(e.target).data("action");
+    console.log("action ",action);
+    switch(action){
+      case "discard-draft" :
+        App.dispatch.trigger("cms.section.discarddraft",section);
+        break;
+    }
     //TODO: Discard draft on server
   },
   onSectionDelete : function(e){

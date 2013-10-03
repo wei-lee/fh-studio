@@ -8,6 +8,7 @@ App.View.CMSTree = App.View.CMS.extend({
 
   },
 
+
   'templates':{
       'cms_sectionDropDown' : '#cms_sectionDropDown'
   },
@@ -48,6 +49,27 @@ App.View.CMSTree = App.View.CMS.extend({
 
     App.dispatch.on("cms.sectiondelete", function (data){
        self.deleteSection(data.section);
+    });
+
+    App.dispatch.on("cms.section.savedraft", function (data){
+      console.log("save draft event ", data);
+      $('.jstree-clicked').removeClass().addClass("jstree-clicked").addClass("jstree-draft");
+    });
+
+    App.dispatch.on("cms.section.discarddraft", function (data){
+      console.log("discard draft event ", data);
+      $('.jstree-clicked').removeClass().addClass("jstree-clicked");
+    });
+
+    App.dispatch.on("cms.section.publish",function (data){
+       console.log("cms.sectionpublish ", data);
+      //TODO need to know if it is a publish later or not.
+      $('.jstree-clicked').removeClass().addClass("jstree-clicked");
+    });
+
+    App.dispatch.on("cms.section.unsaved", function (data){
+      console.log("cms.section.unsaved ", data);
+      $('.jstree-clicked').removeClass().addClass("jstree-clicked").addClass("jstree-unsaved");
     });
 
     this.compileTemplates();
