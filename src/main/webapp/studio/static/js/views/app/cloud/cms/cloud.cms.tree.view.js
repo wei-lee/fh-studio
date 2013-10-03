@@ -157,7 +157,7 @@ App.View.CMSTree = App.View.CMS.extend({
   },
 
   "onDeleteSection": function (e) {
-    e.preventDefault();
+
     var self = this;
     var modal = new App.View.Modal({
       title: 'Confirm Delete',
