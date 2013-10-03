@@ -45,6 +45,11 @@ App.View.CMSTree = App.View.CMS.extend({
       }
       $("#"+path).trigger("click");
     });
+
+    App.dispatch.on("cms.sectiondelete", function (data){
+       self.deleteSection(data.section);
+    });
+
     this.compileTemplates();
 
   },
@@ -130,6 +135,7 @@ App.View.CMSTree = App.View.CMS.extend({
   },
 
   "onDeleteSection": function (e) {
+    e.preventDefault();
     var self = this;
     var modal = new App.View.Modal({
       title: 'Confirm Delete',
@@ -156,7 +162,7 @@ App.View.CMSTree = App.View.CMS.extend({
     console.log(selectContent);
     var modal = new App.View.Modal({
       title: 'Create New Section',
-      body: '<input class="input-large" placeholder="Enter a Section name" id="newCollectionName"> <br/> ' + selectContent,
+      body: selectContent + '<br/> <input class="input-large" placeholder="Enter a Section name" id="newCollectionName"> ',
       okText: 'Create',
       ok: function (e) {
         var el = $(e.target),

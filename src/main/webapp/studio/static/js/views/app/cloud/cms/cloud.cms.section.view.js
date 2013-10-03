@@ -6,7 +6,7 @@ App.View.CMSSection = App.View.CMS.extend({
   events: {
     'click .btn-savesection' : 'onSectionSave',
     'click .btn-discard-section' : 'onSectionDiscard',
-    'click btn-deletesection' : 'onDeleteSection',
+    'click .btn-deletesection' : 'onDeleteSection',
     'focus input[name=publishdate]' : 'onPublishDateFocus',
     'click .btn-listfield-structure' : 'onListFieldEditStructure',
     'click .btn-listfield-data' : 'onListFieldEditData'
@@ -24,11 +24,10 @@ App.View.CMSSection = App.View.CMS.extend({
     this.compileTemplates();
     this.bind('listfieldRowSelect', this.listfieldRowSelect);
     this.view = (this.options.hasOwnProperty('listfield')) ?  "listfield" : "section";
+
   },
 
-
-
-  render : function(){
+   render : function(){
     var self = this,
     section = this.collection.findSectionByPath(this.options.section),
     path = section.path,
@@ -91,13 +90,14 @@ App.View.CMSSection = App.View.CMS.extend({
     this.$el.find('.fb-tabs').append(this.templates.$cms_sectionExtraTabs());
 
     if (this.view === 'section'){
+
       var pathArray = section.path.split('.'),
       parent = pathArray[pathArray.length-2] || "Root";
       var parentOptions = this.collection.toHTMLOptions();
       parentOptions = ["<option value='' data-path='' >-Root</option>"].concat(parentOptions);
       parentOptions = parentOptions.join('');
       this.$el.find('.fb-tab-content').append(this.templates.$cms_configureSection({ parentOptions : parentOptions, name : section.name }));
-
+      this.delegateEvents();
       // Select the active option
       this.$el.find('select[name=parentName]').val(parent);
     }
@@ -136,11 +136,6 @@ App.View.CMSSection = App.View.CMS.extend({
     }
 
     return this;
-  },
-
-
-  onAddNewRow : function (){
-    console.log("add new row");
   },
 
   onSectionChange : function (se){
@@ -269,9 +264,12 @@ App.View.CMSSection = App.View.CMS.extend({
     App.dispatch.trigger("cms.audit", "Section draft discarded");
     //TODO: Discard draft on server
   },
-  onSectionDelete : function(){
+  onSectionDelete : function(e){
+    console.log("section delete called");
+    e.preventDefault();
     // TODO: Delete section on server
     App.dispatch.trigger("cms.audit", "Section deleted");
+    App.dispatch.trigget("cms.sectiondelete",{});
   },
   onPublishDateFocus : function(){
     this.$el.find('#publishRadioLater').attr('checked', true);

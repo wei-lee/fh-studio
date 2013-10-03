@@ -80,6 +80,7 @@ App.View.CMSController  = Backbone.View.extend({
     this.tree.bind('sectionchange', $.proxy(this.form.setSection, this.form));
 
 
+
     return this;
   },
   onEditFieldList : function(options){
