@@ -279,8 +279,8 @@ App.View.CMSSection = App.View.CMS.extend({
 
 
     this.alertMessage();
-   // App.dispatch.trigger("cms.audit", "Section saved with values: " + JSON.stringify(section));
-   // sectionModel.set(section);
+    App.dispatch.trigger("cms.audit", "Section saved with values: " + JSON.stringify(section));
+    sectionModel.set(section);
     //TODO: Dispatch section to server ?
     return false;
   },
