@@ -9,7 +9,8 @@ App.View.CMSListField = App.View.CMSSection.extend({
     'click table tbody tr' : 'onRowClick',
     'click table tbody tr input[type=checkbox]' : 'onRowSelect',
     'click .btn-fieldlist-add' : 'onAddNewRow',
-    'click .btn-fieldlist-delete' : 'onDeleteRow'
+    'click .btn-fieldlist-delete' : 'onDeleteRow',
+    'click .btn-fieldlist-duplicate' : 'onDuplicateRow'
   },
 
 
@@ -69,7 +70,7 @@ App.View.CMSListField = App.View.CMSSection.extend({
 
       }
       //we add a temp hash to use as a ref and remove these on save may be a better way of doing this.
-      blank.hash = "temp-"+new Date().getTime();
+      blank.hash = self.getTempHash();
 
       this.fieldList.data.push(blank);
 
@@ -79,6 +80,30 @@ App.View.CMSListField = App.View.CMSSection.extend({
       this.trigger('listfieldRowSelect', tr.data('index'));
       this.rowSetState(tr);
     }
+  },
+
+  onDuplicateRow : function (){
+    var self = this;
+     var checked = self.getCheckedRows();
+    //get data obs change hases to tmp hashes and push into data and re render
+    self.getFieldsData(checked, function (data){
+      console.log("got row data ",data);
+      _.each(data, function (it){
+        var clone = _.clone(it);
+        clone.hash =  self.getTempHash();
+        self.fieldList.data.push(clone);
+      });
+    });
+    self.render();
+  },
+
+  getFieldsData : function (hashes,cb){
+    var self = this;
+    async.filter(self.fieldList.data, function (it, cb){
+      if(it && hashes.indexOf(it.hash) != -1){
+        cb(it);
+      }else cb();
+    }, cb);
   },
 
   getCheckedRows : function (){
@@ -122,6 +147,10 @@ App.View.CMSListField = App.View.CMSSection.extend({
     App.dispatch.trigger("cms.audit", "CMS List saved",self.fb);
     //TODO: POST to server
     //NOTE: all actions need to be qued in order to ensure consistency and processed in order on save.
+  },
+
+  "getTempHash" :function(){
+    return "temp-" + ( new Date().getTime() + Math.random() * 10000);
   },
 
   onDeleteRow : function (){
