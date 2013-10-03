@@ -23,10 +23,18 @@ App.View.CMSTable = App.View.CMS.extend({
 
     for (var i=0; fields && i<fields.length; i++){
       var f = fields[i];
-      columns.push({
-        "sTitle": f.name,
-        "mDataProp": f.name
-      });
+      (function(f){
+        var propFn = function(src){
+            if (src.hasOwnProperty(f.name)){
+              return src.name;
+            }
+            return '';
+        };
+        columns.push({
+          "sTitle": f.name,
+          "mDataProp": propFn
+        });
+      })(f);
     }
 
     this.table = new App.View.DataTable({

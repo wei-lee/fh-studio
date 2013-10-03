@@ -16,8 +16,7 @@ App.View.CMSListField = App.View.CMSSection.extend({
   "mode":"",
 
   initialize: function(options){
-    this.title = (options.mode === 'data') ? "Edit List Data" : "Edit List Structure"
-    this.mode = options.mode;
+    this.title = (options.mode === 'data') ? "Edit List Data" : "Edit List Structure";
     this.templates = _.extend(this.constructor.__super__.templates, {
       'cms_listfieldsavecancel' : '#cms_listfieldsavecancel',
       'cms_editListDataInstructions' : '#cms_editListDataInstructions'
@@ -31,11 +30,14 @@ App.View.CMSListField = App.View.CMSSection.extend({
     // remove unused tabs
     this.$el.find('.fb-tabs li.configuresection').remove();
     if (this.options.mode === "data"){
-      this.$el.find('.fb-tabs li.addfield').remove();
-      this.$el.find('.fb-tabs li.configurefield').remove();
+      this.$el.find('.fb-tabs li.addfield').hide();
+      this.$el.find('.fb-tabs li.configurefield').hide();
       // Make our only left tab the active one
       this.$el.find('.apppreview').addClass('active');
       this.$el.find('#cmsAppPreview').addClass('active');
+    }else if (this.options.mode === "structre"){
+      this.$el.find('.fb-tabs li.addfield').show();
+      this.$el.find('.fb-tabs li.configurefield').show();
     }
 
     var top = new App.View.CMSListFieldTopBar(this.options);
@@ -128,17 +130,17 @@ App.View.CMSListField = App.View.CMSSection.extend({
     e.stopPropagation();
     var self = this;
     //hmm will need to distinguish here if it is a structure change or data
-    if(self.mode == "data"){
+    if(this.options.mode === "data"){
       var checked = this.table.$el.find('tr.info input:checked').parents('tr');
       if(checked.length > 1){
         //error only one save at a time
       }
       var hash = checked.first().data("hash");
 
-      var params = self.fb.mainView.collection.toJSON();
+      var params = this.fb.mainView.collection.toJSON();
       console.log("saving params ", params);
-      for(var i=0; i < self.fieldList.data.length; i++){
-        var d = self.fieldList.data[i];
+      for(var i=0; i < this.fieldList.data.length; i++){
+        var d = this.fieldList.data[i];
         if(d.hash === hash){
 
           for(var pr in params){
@@ -146,13 +148,28 @@ App.View.CMSListField = App.View.CMSSection.extend({
               d[params[pr].label] = params[pr].value;
             }
           }
-          self.fieldList.data[i] = d;
+          this.fieldList.data[i] = d;
         }
 
       }
-    }else if(self.mode == "structure"){
-
+    }else if(this.options.mode === "structure"){
+      var fields = this.fb.mainView.collection.toJSON();
+      fields = this.massageFieldsFromFormBuilder(fields);
+      this.fieldList.fields = fields;
     }
+
+    // Now beings the rather complex task of updating the parent model's field list entry with this data (i.e. this.fieldList)..
+    var parentModelFields = this.sectionModel.get('fields'),
+    parentIndex;
+    _.each(parentModelFields, function(f, i){
+      if(f.name === self.fieldList.name){
+        parentIndex = i;
+      }
+    });
+    parentModelFields[parentIndex] = this.fieldList;
+    this.sectionModel.set('fields', parentModelFields);
+    App.dispatch.trigger("cms.section.savedraft",this.section); // Notify the tree that we're saving the section so it can change colour
+
     self.render();
     App.dispatch.trigger("cms.audit", "CMS List saved",self.fb);
     //TODO: POST to server

@@ -31,7 +31,8 @@ App.View.CMSSection = App.View.CMS.extend({
 
    render : function(){
     var self = this,
-    section = this.collection.findSectionByPath(this.options.section),
+    sectionModel = this.sectionModel = this.collection.findWhere({path : this.options.section}),
+    section = this.section =  sectionModel.toJSON(),
     path = section.path,
     fields, listData;
 
@@ -244,10 +245,8 @@ App.View.CMSSection = App.View.CMS.extend({
   onSectionSaveDraft : function(e){
     e.preventDefault();
     var vals = {},
-    sectionModel = this.collection.findWhere({path : this.options.section} ), // we don't use our convenience byPath here as we want modal instance
-    section = sectionModel.toJSON(),
     fields = this.fb.mainView.collection.toJSON(); //TODO: Verify this syncs with autoSave
-    App.dispatch.trigger("cms.section.savedraft",section); // Notify the tree that we're saving the section so it can change colour
+    App.dispatch.trigger("cms.section.savedraft",this.section); // Notify the tree that we're saving the section so it can change colour
 
     // Get our form as a JSON object
     $(this.$el.find('#configureSectionForm').serializeArray()).each(function(idx, el){
@@ -257,51 +256,47 @@ App.View.CMSSection = App.View.CMS.extend({
 
     // If publish is now, set the timedate if it's not already defined on the section
     if (vals.publishRadio && vals.publishRadio === "now"){
-      if (!section.hasOwnProperty('publishdate')){
-        section.publishdate = new Date(); // TODO: Maybe this should be handled on the server..?
+      if (!this.section.hasOwnProperty('publishdate')){
+        this.section.publishdate = new Date(); // TODO: Maybe this should be handled on the server..?
       }
     }else if (vals.publishRadio && vals.publishRadio === "later"){
-      section.publishDate = vals.publishdate;
+      this.section.publishDate = vals.publishdate;
     }
 
-    section.name = vals.name;
-    section.fields = this.massageFieldsFromFormBuilder(fields, section);
+    this.section.name = vals.name;
+    this.section.fields = this.massageFieldsFromFormBuilder(fields, this.section);
 
 
     this.alertMessage();
-    App.dispatch.trigger("cms.audit", "Section saved with values: " + JSON.stringify(section));
-    section.status = 'draft';
-    sectionModel.set(section);
+    App.dispatch.trigger("cms.audit", "Section saved with values: " + JSON.stringify(this.section));
+    this.section.status = 'draft';
+    this.sectionModel.set(this.section);
     //TODO: Dispatch draft to SS
     return false;
   },
   onDraftDiscard: function(e){
     console.log("discard draft called");
     this.render();
-    var sectionModel = this.collection.findWhere({path : this.options.section} ), // we don't use our convenience byPath here as we want modal instance
-    section = sectionModel.toJSON(),
-    previous = sectionModel.previousAttributes();
+    previous = this.sectionModel.previousAttributes();
 
-    sectionModel.set(previous);
+    this.sectionModel.set(previous);
 
     this.alertMessage('Section changes discarded successfully');
     App.dispatch.trigger("cms.audit", "Section draft discarded");
-    App.dispatch.trigger("cms.section.discarddraft",section);
+    App.dispatch.trigger("cms.section.discarddraft",this.section);
     //TODO: Discard draft on server
   },
   onSectionPublish : function(e){
-    var vals = {},
-    sectionModel = this.collection.findWhere({path : this.options.section} );
-    sectionModel.set('status', 'published');
+    this.sectionModel.set('status', 'published');
     //TODO: Dispatch publish action to SS
-    App.dispatch.trigger("cms.section.publish", sectionModel.toJSON()); // Notify the tree that we're saving the section so it can change colour
+    App.dispatch.trigger("cms.section.publish", this.section); // Notify the tree that we're saving the section so it can change colour
   },
   onSectionDelete : function(e){
     console.log("section delete called");
     e.preventDefault();
     // TODO: Delete section on server
     App.dispatch.trigger("cms.audit", "Section deleted");
-    App.dispatch.trigget("cms.sectiondelete",{});
+    App.dispatch.trigger("cms.sectiondelete",{});
   },
   onPublishDateFocus : function(){
     this.$el.find('#publishRadioLater').attr('checked', true);

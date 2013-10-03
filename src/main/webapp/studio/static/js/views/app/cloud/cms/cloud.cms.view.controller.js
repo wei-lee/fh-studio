@@ -101,11 +101,13 @@ App.View.CMSController  = Backbone.View.extend({
         this.$listFieldContainer.empty().hide();
         if (this.listField){
           this.listfield.undelegateEvents();
+
         }
         if (success === true){
           // Show save success message
           this.form.alertMessage();
         }
+        this.form.render();
         break;
       case "audit":
         this.$auditContainer.hide();
