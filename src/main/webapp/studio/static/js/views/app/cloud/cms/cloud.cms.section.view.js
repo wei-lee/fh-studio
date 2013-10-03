@@ -7,7 +7,7 @@ App.View.CMSSection = App.View.CMS.extend({
     'click .btn-savedraft' : 'onSectionSaveDraft',
     'submit #configureSectionForm' : 'onSectionPublish',
     'click .btn-discard-draft' : 'onDraftDiscard',
-    'click .btn-deletesection' : 'onDeleteSection',
+    'click .btn-deletesection' : 'onSectionDelete',
     'focus input[name=publishdate]' : 'onPublishDateFocus',
     'click .btn-listfield-structure' : 'onListFieldEditStructure',
     'click .btn-listfield-data' : 'onListFieldEditData'
