@@ -76,21 +76,21 @@
           ],
           "data": [
             {
-              "hash" : "a1b2",
+              "hash" : "a1b21",
               "name" : "Tom Creanes",
               "address" : "21 Yellow St, Waterford",
               "hours" : "9am-5pm",
               "city" : "waterford"
             },
             {
-              "hash" : "a1b4",
+              "hash" : "a1b41",
               "name" : "The Quay",
               "address" : "48 The Quay, Waterford",
               "hours" : "9am-5pm",
               "city" : "waterford"
             },
             {
-              "hash" : "a1b3",
+              "hash" : "a1b31",
               "name" : "Square Shopping Center",
               "address" : "2B The Square Shopping Center",
               "hours" : "9am-5pm",

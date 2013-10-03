@@ -8,8 +8,13 @@ App.View.CMSListField = App.View.CMSSection.extend({
     'click .btn-listfield-change-structure' : 'setModeStructure',
     'click table tbody tr' : 'onRowClick',
     'click table tbody tr input[type=checkbox]' : 'onRowSelect',
-    'click .btn-fieldlist-add' : 'onAddNewRow'
+    'click .btn-fieldlist-add' : 'onAddNewRow',
+    'click .btn-fieldlist-delete' : 'onDeleteRow'
   },
+
+
+  "activeRows":[],
+
   initialize: function(options){
     this.title = (options.mode === 'data') ? "Edit List Data" : "Edit List Structure"
     this.templates = _.extend(this.constructor.__super__.templates, {
@@ -37,31 +42,92 @@ App.View.CMSListField = App.View.CMSSection.extend({
 
     if (this.options.mode === "data"){
       var afterEl = $(this.$el.find('.middle .fb-no-response-fields'));
+      console.log("fields set to ", this.fieldList.fields);
       this.table = new App.View.CMSTable({ checkboxes : true, fields : this.fieldList.fields, data : this.fieldList.data });
       this.table.render().$el.insertAfter(afterEl);
       this.table.$el.find('table').removeClass('table-striped');
 
       $(this.templates.$cms_editListDataInstructions()).insertAfter(afterEl);
-    }
 
-    this.$el.find('.middle').append(this.templates.$cms_listfieldsavecancel());
+    }
+    this.$el.find('.middle').append(this.templates.$cms_listfieldsavecancel({"listid":this.fieldList.hash}));
 
     this.$el.find('.btn-listfield-change-' + this.options.mode).addClass('active');
+
+
 
     return this;
   },
 
-  onAddNewRow : function (){
-    console.log("add new row");
-    this.$el.empty();
+  onAddNewRow : function () {
+
+    console.log("add new row ",this.fieldList.fields);
+    //add an empty row
+    if(this.fieldList.fields){
+      var blank = {};
+      for(var i=0; i < this.fieldList.fields.length; i++){
+        var f = this.fieldList.fields[i];
+        blank[f.name] = "";
+
+      }
+      //we add a temp hash to use as a ref and remove these on save.
+      blank.hash = "temp-"+new Date().getTime();
+
+      console.log("new temp hash", blank.hash);
+
+      this.fieldList.data.push(blank);
+
+      this.render();
+
+      var tr = this.$el.find("tr[data-hash='"+blank.hash+"'] ");
+      this.trigger('listfieldRowSelect', tr.data('index'));
+      this.rowSetState(tr);
+      this.editingRow = blank.hash;
+
+    }
+  },
+
+  onDeleteRow : function (){
+    var self = this;
+    async.filter(self.fieldList.data,function (ob,cb){
+      if(self.activeRows.indexOf(ob.hash) == -1){
+          cb(ob);
+      }
+      else cb();
+    },function (res){
+      self.fieldList.data = res;
+    });
+    self.activeRows = [];
+    this.render();
   },
 
   onListFieldSave : function(){
     var self = this;
+    var hashId = this.$el.find('.btn-listfield-save').data("hash");
+    console.log("hashid ", hashId);
+    var checked = this.table.$el.find('tr.info input:checked').parents('tr');
+    console.log("checked length ", checked.length);
+    if(checked.length > 1){
+      //error
+    }
+    var hash = checked.first().data("hash");
+
+    App.dispatch.trigger("cms.audit", "CMS List saved",self.fb);
+    var params = self.fb.mainView.collection.toJSON();
+    console.log("saving params ", params);
+    for(var i=0; i < self.fieldList.data.length; i++){
+      var d = self.fieldList.data[i];
+      if(d.hash === hash){
+        debugger;
+        for(var pr in params){
+          if(params.hasOwnProperty(pr)){
+            d[params[pr].label] = params[pr].value;
+          }
+        }
+      }
+
+    }
     self.trigger('back', true);
-
-    App.dispatch.trigger("cms.audit", "CMS List saved");
-
     //TODO: POST to server
     //NOTE: all actions need to be qued in order to ensure consistency and processed in order on save.
   },
@@ -80,6 +146,7 @@ App.View.CMSListField = App.View.CMSSection.extend({
     this.$el.find('.btn-listfield-change-structure').addClass('active');
   },
   onRowClick : function(e){
+    console.log("row click called");
     // Uncheck all other rows
     this.table.$el.find('tr.info input[type=checkbox]').attr('checked', false);
     this.table.$el.find('tr.info').removeClass('info');
@@ -92,20 +159,45 @@ App.View.CMSListField = App.View.CMSSection.extend({
     this.trigger('listfieldRowSelect', tr.data('index'));
 
   },
+
+  rowSetState: function(row){
+    if (row.hasClass('info')){
+      row.removeClass('info');
+      row.find('input[type=checkbox]').attr('checked', false);
+      var index = this.activeRows.indexOf(row.data("hash"));
+      if( index != -1){
+        this.activeRows.splice(index,1);
+      }
+      if(this.activeRows.length == 0){
+        this.deavtivateDestructiveButtons();
+      }
+    }else{
+      row.addClass('info');
+      row.find('input[type=checkbox]').attr('checked', true);
+      if(this.activeRows.indexOf(row.data("hash")) == -1){
+        this.activeRows.push(row.data("hash"));
+      }
+      this.activateDestuctiveButtons();
+    }
+  },
+
   onRowSelect : function(e){
     e.stopPropagation();
     var el = $(e.target),
     row = el.parents('tr');
-
-    if (row.hasClass('info')){
-      row.removeClass('info');
-      row.find('input[type=checkbox]').attr('checked', false);
-    }else{
-      row.addClass('info');
-      row.find('input[type=checkbox]').attr('checked', true);
-    }
-
+    this.rowSetState(row);
   },
+
+  "activateDestuctiveButtons" : function () {
+    $('.btn-fieldlist-duplicate').removeClass("disabled");
+    $('.btn-fieldlist-delete').removeClass('disabled');
+  },
+
+  "deavtivateDestructiveButtons": function (){
+    $('.btn-fieldlist-duplicate').addClass("disabled");
+    $('.btn-fieldlist-delete').addClass('disabled');
+  },
+
   updateFormData : function(){
 
   }
