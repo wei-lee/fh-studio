@@ -4,7 +4,8 @@ App.View = App.View || {};
 App.View.CMSSection = App.View.CMS.extend({
   title : 'Edit Section',
   events: {
-    'click .btn-publish-draft' : 'onSectionSave',
+    'click .btn-publish-draft' : 'onSectionSave',  // TODO change this to publish section
+    'click .btn-savesection' : 'onSectionSave',
     'click .btn-discard-draft' : 'onSectionDiscard',
     'click .btn-deletesection' : 'onDeleteSection',
     'focus input[name=publishdate]' : 'onPublishDateFocus',
@@ -279,8 +280,8 @@ App.View.CMSSection = App.View.CMS.extend({
 
 
     this.alertMessage();
-   // App.dispatch.trigger("cms.audit", "Section saved with values: " + JSON.stringify(section));
-   // sectionModel.set(section);
+    App.dispatch.trigger("cms.audit", "Section saved with values: " + JSON.stringify(section));
+    sectionModel.set(section);
     //TODO: Dispatch section to server ?
     return false;
   },
