@@ -279,16 +279,14 @@ App.View.CMSSection = App.View.CMS.extend({
     console.log("discard draft called");
     this.render();
     var sectionModel = this.collection.findWhere({path : this.options.section} ), // we don't use our convenience byPath here as we want modal instance
-    section = sectionModel.toJSON();
+    section = sectionModel.toJSON(),
+    previous = sectionModel.previousAttributes();
+
+    sectionModel.set(previous);
+
     this.alertMessage('Section changes discarded successfully');
     App.dispatch.trigger("cms.audit", "Section draft discarded");
-    var action = $(e.target).data("action");
-    console.log("action ",action);
-    switch(action){
-      case "discard-draft" :
-        App.dispatch.trigger("cms.section.discarddraft",section);
-        break;
-    }
+    App.dispatch.trigger("cms.section.discarddraft",section);
     //TODO: Discard draft on server
   },
   onSectionPublish : function(e){

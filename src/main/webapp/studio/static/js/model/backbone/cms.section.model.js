@@ -6,11 +6,6 @@ App.collections = App.collections || {};
 
 
 App.Model.CmsSection = Backbone.Model.extend({
-  "setSectionName" : function (name){
-    name = name.replace(/\./,"");
-    this.name = name;
-    return this.name;
-  }
 });
 
 App.Model.CmsSection.CONST = {
