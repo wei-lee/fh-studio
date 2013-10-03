@@ -6,26 +6,58 @@ App.View.CMSAudit = App.View.CMS.extend({
 
   },
   templates : {
-
+    'cms_back' : '#cms_back'
   },
   audit : [],
   initialize: function(options){
+    this.compileTemplates();
     App.dispatch.on("cms.audit", $.proxy(this.log, this));
   },
   render : function(){
     var self = this,
-    body = (this.audit.length >0) ? this.audit.join('\n') : "\n\n No entries to display \n\n";
+    data = [];
 
-    this.modal = new App.View.Modal({
-      title: 'Audit Log',
-      body: "<pre>" + body + "</pre>",
-      okText: 'Done',
-      cancelText : false,
-      ok: function (e) {
+    this.$el.empty();
 
+    this.$el.addClass('cmsAudit');
+
+    this.$el.append(this.templates.$cms_back());
+    this.$el.append("<h3>CMS Audit Log</h3>");
+
+    _.each(this.audit, function(r){
+      r = r.split(':');
+      data.push({
+        date : r[0],
+        msg : r[1]
+      });
+    });
+
+    this.table = new App.View.DataTable({
+      aaData : data,
+      "fnRowCallback": function(nTr, sData, oData, iRow, iCol) {
+      },
+      "aoColumns": [
+        {
+          "sTitle": 'Date',
+          "mDataProp": 'date'
+        },
+        {
+          "sTitle": 'Message',
+          "mDataProp": 'msg'
+        }
+      ],
+      "bAutoWidth": false,
+      "sPaginationType": 'bootstrap',
+      "sDom": "<'row-fluid'<'span4'f>r>t<'row-fluid'<'pull-left'i><'pull-right'p>>",
+      "bLengthChange": false,
+      "iDisplayLength": 5,
+      "bInfo": true,
+      "bFilter": false,
+      "oLanguage" : {
+        "sEmptyTable" : "No audit logs found"
       }
     });
-    self.$el.append(this.modal.render().$el);
+    this.$el.append(this.table.render().$el);
     return this;
   },
   log : function(auditLog){

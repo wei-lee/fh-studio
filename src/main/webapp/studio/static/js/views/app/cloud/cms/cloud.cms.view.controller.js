@@ -11,6 +11,7 @@ App.View.CMSController  = Backbone.View.extend({
     'cms_left' : '#cms_left',
     'cms_mastermenu' : '#cms_mastermenu'
   },
+  active : 'section',
   initialize: function(options){
     this.options = options;
     this.mode = options.mode || 'dev';
@@ -63,8 +64,8 @@ App.View.CMSController  = Backbone.View.extend({
      */
     this.$fbContainer = $('<div></div>');
     this.$listFieldContainer = $('<div></div>'); // Contains subviews of FormBuilder for list fields
-    this.$el.prepend(this.$fbContainer);
-    this.$el.prepend(this.$listFieldContainer);
+    this.$auditContainer = $('<div></div>');
+    this.$el.prepend(this.$fbContainer, this.$listFieldContainer, this.$auditContainer);
 
     var isAdministrator = $fw.userProps.roles.indexOf('cmsadmin'); //TODO: Wire this up - doesn't exist yet
     this.form = new App.View.CMSSection({ $el : this.$fbContainer, collection : this.collection, section : this.section, editStructure : true }); //
@@ -73,8 +74,9 @@ App.View.CMSController  = Backbone.View.extend({
 
     this.form.bind('edit_field_list', $.proxy(this.onEditFieldList, this));
 
+    this.$left = $(this.templates.$cms_left());
     this.tree = new App.View.CMSTree({collection : this.collection});
-    this.$el.prepend(this.templates.$cms_left());
+    this.$el.prepend(this.$left);
     this.$el.find('.treeContainer').append(this.tree.render().$el);
     this.tree.bind('sectionchange', $.proxy(this.treeNodeClicked, this));
     this.tree.bind('sectionchange', $.proxy(this.form.setSection, this.form));
@@ -84,6 +86,7 @@ App.View.CMSController  = Backbone.View.extend({
     return this;
   },
   onEditFieldList : function(options){
+    this.active = 'listfield';
     this.$fbContainer.hide();
     this.$listFieldContainer.empty().show();
     options.$el = this.$listFieldContainer;
@@ -92,15 +95,29 @@ App.View.CMSController  = Backbone.View.extend({
     this.listfield.bind('back', $.proxy(this.onCMSBack, this));
   },
   onCMSBack : function(success){
-    this.$listFieldContainer.empty().hide();
+
+    switch(this.active){
+      case "listfield":
+        this.$listFieldContainer.empty().hide();
+        if (this.listField){
+          this.listfield.undelegateEvents();
+        }
+        if (success === true){
+          // Show save success message
+          this.form.alertMessage();
+        }
+        break;
+      case "audit":
+        this.$auditContainer.hide();
+        this.$auditContainer.empty();
+        this.audit.undelegateEvents();
+        this.$left.show();
+        break;
+      case "section":
+        break;
+    }
+    // Always it's here we want to get back to
     this.$fbContainer.show();
-    if (this.listField){
-      this.listfield.undelegateEvents();
-    }
-    if (success === true){
-      // Show save success message
-      this.form.alertMessage();
-    }
   },
   treeNodeClicked : function(){
     if (this.$listFieldContainer.length && this.$listFieldContainer.length>0){
@@ -108,7 +125,11 @@ App.View.CMSController  = Backbone.View.extend({
     }
   },
   showAudit : function(){
-    this.$el.append(this.audit.render().$el);
+    this.active = 'audit';
+    this.$listFieldContainer.hide();
+    this.$fbContainer.hide();
+    this.$left.hide();
+    this.$auditContainer.empty().append(this.audit.render().$el).show();
   },
   showImport : function(){
     this.$el.append(new App.View.CMSImportExportCopy( { view : 'import' } ).render().$el);
