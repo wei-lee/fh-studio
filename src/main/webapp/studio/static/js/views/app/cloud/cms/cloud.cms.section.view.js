@@ -202,13 +202,17 @@ App.View.CMSSection = App.View.CMS.extend({
 
     return fields;
   },
-  massageFieldsFromFormBuilder : function(fbfields){
+  massageFieldsFromFormBuilder : function(fbfields, oldSection){
     var fields = [];
     _.each(fbfields, function(field){
       var  newField = {};
       switch(field.field_type){
         case "field_list":
-          newField.type = "list";
+          // FormBuilder doesn't give us the values of lists, we need to retrieve them ourselves.
+          // if a user has changed the list structure or data, we've already copied it to the model - so we can
+          // just copy it directly..
+          //TODO: What if the user changes the listfield's name?
+          newField = _.findWhere(oldSection.fields, { name : field.label});
           break;
         case "text":
           newField.type = "string";
@@ -249,7 +253,7 @@ App.View.CMSSection = App.View.CMS.extend({
     }
 
     section.name = vals.name;
-    section.fields = this.massageFieldsFromFormBuilder(fields); //TODO: This doesn't get fieldlist values.. :-(
+    section.fields = this.massageFieldsFromFormBuilder(fields, section);
 
 
     this.alertMessage();
