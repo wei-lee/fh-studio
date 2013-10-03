@@ -134,9 +134,15 @@ App.View.CMSTree = App.View.CMS.extend({
 
     function explodeSection(section) {
       console.log("IN EXPLODE SECTION", sections);
+      var status = section.status || 'published';
       var node = {
-        data: section.name,
-        attr: { id: section.path.replace(/\s+/g,'').replace(/\.+/g,''), hash: section.hash, path: section.path },
+        data: {
+          attr : {
+            class : 'jstree-' + status
+          },
+          title : section.name
+        },
+        attr: { id: section.path.replace(/\s+/g,'').replace(/\.+/g,''), hash: section.hash, path: section.path, status : section.status || 'published' },
         "children": []
       };
       if (section && section.children) {

@@ -4,9 +4,9 @@ App.View = App.View || {};
 App.View.CMSSection = App.View.CMS.extend({
   title : 'Edit Section',
   events: {
-    'click .btn-publish-draft' : 'onSectionSave',  // TODO change this to publish section
-    'click .btn-savesection' : 'onSectionSave',
-    'click .btn-discard-draft' : 'onSectionDiscard',
+    'click .btn-savedraft' : 'onSectionSaveDraft',
+    'submit #configureSectionForm' : 'onSectionPublish',
+    'click .btn-discard-draft' : 'onDraftDiscard',
     'click .btn-deletesection' : 'onDeleteSection',
     'focus input[name=publishdate]' : 'onPublishDateFocus',
     'click .btn-listfield-structure' : 'onListFieldEditStructure',
@@ -241,25 +241,14 @@ App.View.CMSSection = App.View.CMS.extend({
 
 
 
-  onSectionSave : function(e){
-    var action = $(e.target).data("action");
-
+  onSectionSaveDraft : function(e){
     e.preventDefault();
     var vals = {},
     sectionModel = this.collection.findWhere({path : this.options.section} ), // we don't use our convenience byPath here as we want modal instance
     section = sectionModel.toJSON(),
     fields = this.fb.mainView.collection.toJSON(); //TODO: Verify this syncs with autoSave
+    App.dispatch.trigger("cms.section.savedraft",section); // Notify the tree that we're saving the section so it can change colour
 
-    //TODO CENTRALISE
-    switch (action){
-      case "save-draft" :
-        App.dispatch.trigger("cms.section.savedraft",section);
-        break;
-
-      case "publish":
-        App.dispatch.trigger("cms.section.publish", section);
-        break;
-    }
     // Get our form as a JSON object
     $(this.$el.find('#configureSectionForm').serializeArray()).each(function(idx, el){
       vals[el.name] = el.value;
@@ -281,12 +270,13 @@ App.View.CMSSection = App.View.CMS.extend({
 
     this.alertMessage();
     App.dispatch.trigger("cms.audit", "Section saved with values: " + JSON.stringify(section));
+    section.status = 'draft';
     sectionModel.set(section);
-    //TODO: Dispatch section to server ?
+    //TODO: Dispatch draft to SS
     return false;
   },
-  onSectionDiscard : function(e){
-    console.log("discard section called");
+  onDraftDiscard: function(e){
+    console.log("discard draft called");
     this.render();
     var sectionModel = this.collection.findWhere({path : this.options.section} ), // we don't use our convenience byPath here as we want modal instance
     section = sectionModel.toJSON();
@@ -300,6 +290,13 @@ App.View.CMSSection = App.View.CMS.extend({
         break;
     }
     //TODO: Discard draft on server
+  },
+  onSectionPublish : function(e){
+    var vals = {},
+    sectionModel = this.collection.findWhere({path : this.options.section} );
+    sectionModel.set('status', 'published');
+    //TODO: Dispatch publish action to SS
+    App.dispatch.trigger("cms.section.publish", sectionModel.toJSON()); // Notify the tree that we're saving the section so it can change colour
   },
   onSectionDelete : function(e){
     console.log("section delete called");
