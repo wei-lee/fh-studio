@@ -39,6 +39,7 @@ App.Collection.CmsSection = Backbone.Collection.extend({
     }, options.error, true);
   },
   findSectionByPath : function(path){
+    console.log("find section by path " + path);
     var model = this.findWhere({path : path });
     if (!model){
       return undefined;
@@ -89,8 +90,8 @@ App.Collection.CmsSection = Backbone.Collection.extend({
     for (var i=0; i<sections.length; i++){
       var section = sections[i],
       parentString = (parentTrail === "") ? section.name : parentTrail + "." + section.name;
-      var id = section.path.replace(/\s+/g,'').replace(/\.+/g,'');
-      var pathData = section.path.replace(/\s+/g,'');
+      var id = section.path ? section.path.replace(/\s+/g,'').replace(/\.+/g,'') : "";
+      var pathData = section.path;
 
       html.push('<option value="' + parentString + '" data-id="'+id+'"  data-path="'+pathData+'">' + spacer + section.name + '</option>');
 

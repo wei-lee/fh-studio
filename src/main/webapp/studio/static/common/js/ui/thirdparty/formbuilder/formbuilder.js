@@ -479,6 +479,9 @@
           this.formSaved = false;
           return this.saveFormButton.removeAttr('disabled').text(Formbuilder.options.dict.SAVE_FORM);
         },
+        "getCollection" : function (){
+          return this.collection;
+        },
         saveForm: function(e) {
           var payload;
           if (this.formSaved) {

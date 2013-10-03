@@ -6,7 +6,7 @@ App.View.CMSSection = App.View.CMS.extend({
   events: {
     'click .btn-savesection' : 'onSectionSave',
     'click .btn-discard-section' : 'onSectionDiscard',
-    'click btn-deletesection' : 'onDeleteSection',
+    'click .btn-deletesection' : 'onDeleteSection',
     'focus input[name=publishdate]' : 'onPublishDateFocus',
     'click .btn-listfield-structure' : 'onListFieldEditStructure',
     'click .btn-listfield-data' : 'onListFieldEditData'
@@ -24,8 +24,10 @@ App.View.CMSSection = App.View.CMS.extend({
     this.compileTemplates();
     this.bind('listfieldRowSelect', this.listfieldRowSelect);
     this.view = (this.options.hasOwnProperty('listfield')) ?  "listfield" : "section";
+
   },
-  render : function(){
+
+   render : function(){
     var self = this,
     section = this.collection.findSectionByPath(this.options.section),
     path = section.path,
@@ -41,6 +43,7 @@ App.View.CMSSection = App.View.CMS.extend({
     if (this.view === 'listfield'){
       // We're editing a field_list - retrieve it
       this.fieldList = _.findWhere(section.fields, { name : this.options.listfield });
+
 
       if (!this.fieldList){
         this.fieldList = {
@@ -62,10 +65,12 @@ App.View.CMSSection = App.View.CMS.extend({
       path += ("." + this.fieldList.name + "." + "Edit " + this.options.mode);
     }else{
       // Just a standard section view - may or may not contain a listfield within
+
       fields = this.massageFieldsForFormbuilder(section.fields);
+
     }
 
-    console.log("Section is " + section + " fields ",fields);
+    console.log("Section is ", section  ," fields ",fields);
 
     if (!section || !fields){
       console.log('Error finding section or fields on rendering section view');
@@ -85,13 +90,14 @@ App.View.CMSSection = App.View.CMS.extend({
     this.$el.find('.fb-tabs').append(this.templates.$cms_sectionExtraTabs());
 
     if (this.view === 'section'){
+
       var pathArray = section.path.split('.'),
       parent = pathArray[pathArray.length-2] || "Root";
       var parentOptions = this.collection.toHTMLOptions();
       parentOptions = ["<option value='' data-path='' >-Root</option>"].concat(parentOptions);
       parentOptions = parentOptions.join('');
       this.$el.find('.fb-tab-content').append(this.templates.$cms_configureSection({ parentOptions : parentOptions, name : section.name }));
-
+      this.delegateEvents();
       // Select the active option
       this.$el.find('select[name=parentName]').val(parent);
     }
@@ -114,7 +120,6 @@ App.View.CMSSection = App.View.CMS.extend({
       }
 
       table = new App.View.CMSTable({ fields : listField.fields, data : listField.data });
-
       $(this).find('.fieldlist_table').html(table.render().$el);
     });
 
@@ -132,13 +137,27 @@ App.View.CMSSection = App.View.CMS.extend({
 
     return this;
   },
+
+  onSectionChange : function (se){
+    var select = this.$('select[name="parentName"]');
+    var opt = select.find('option').filter(":selected:");
+    console.log(opt);
+    console.log(select);
+    var selectVal = select.val();
+    console.log("section changed",selectVal);
+
+    App.dispatch.trigger("cms.sectionchange",{"section":selectVal,"id":opt.data("id"),"path":opt.data("path")});
+  },
+
+
   renderFormBuilder : function(fields){
     // Save some data massaging
+    var self = this;
     this.$fbEl.empty();
     if (this.fb){
       this.fb.stopListening();
     }
-
+    console.log("renderFormBuilder ", fields);
     this.fb = new Formbuilder(this.$fbEl, {
       noScroll : true,
       noEditOnDrop : true,
@@ -146,9 +165,19 @@ App.View.CMSSection = App.View.CMS.extend({
       editStructure : this.options.editStructure || false
     });
 
-    this.fb.on('save', function(payload){
-      self.draft = payload;
-    });
+
+
+//    this.fb.on('save', function(payload){
+//      console.log("save has been called");
+//      console.log("fb save ", payload);
+//      self.draft = payload;
+//      debugger;
+//      if(self.save){
+//        console.log("Proxying on to save function in lower level");
+//      }
+//
+//    });
+
     return this.fb;
   },
   massageFieldsForFormbuilder : function(oldFields){
@@ -170,6 +199,7 @@ App.View.CMSSection = App.View.CMS.extend({
       newField.value = field.value;
       fields.push(newField);
     });
+
     return fields;
   },
   massageFieldsFromFormBuilder : function(fbfields){
@@ -193,6 +223,9 @@ App.View.CMSSection = App.View.CMS.extend({
     });
     return fields;
   },
+
+
+
   onSectionSave : function(e){
     e.preventDefault();
     var vals = {},
@@ -231,9 +264,12 @@ App.View.CMSSection = App.View.CMS.extend({
     App.dispatch.trigger("cms.audit", "Section draft discarded");
     //TODO: Discard draft on server
   },
-  onSectionDelete : function(){
+  onSectionDelete : function(e){
+    console.log("section delete called");
+    e.preventDefault();
     // TODO: Delete section on server
     App.dispatch.trigger("cms.audit", "Section deleted");
+    App.dispatch.trigget("cms.sectiondelete",{});
   },
   onPublishDateFocus : function(){
     this.$el.find('#publishRadioLater').attr('checked', true);
