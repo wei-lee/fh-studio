@@ -25,6 +25,7 @@
     <div class="treeContainer">
 
     </div>
+    <hr/>
     <span class="text-error">Unsaved Changes</span>
     <span class="text-warning">Draft</span>
     <span class="text-info">Publish Later</span>
@@ -67,8 +68,8 @@
 
         <br />
           <div class="btn-group">
-              <button type="submit" class="btn btn-primary btn-publishsection">publish</button>
-              <button type="reset" class="btn btn-danger btn-discard-section">Discard Changes</button>
+              <button type="submit" class="btn btn-primary btn-savesection" data-action="publish">publish</button>
+              <button type="reset" class="btn btn-danger btn-discard-section" data-action="discard">Discard Changes</button>
 
           </div>
 
@@ -86,8 +87,8 @@
 </script>
 <script id="cms_section_savecancel" type="text/x-handlebars-template">
 <div class="btn-group pull-right cms_section_savecancel">
-  <button type="submit" class="btn btn-primary btn-savesection">Save Draft</button>
-  <button type="reset" class="btn btn-danger btn-discard-section">Discard Draft</button>
+  <button type="submit" class="btn btn-primary btn-savesection" data-action="save-draft" >Save Draft</button>
+  <button type="reset" class="btn btn-danger btn-discard-section" data-action="discard-draft">Discard Draft</button>
 </div>
 </script>
 <script id="cms_back" type="text/x-handlebars-template">
@@ -109,9 +110,9 @@
 
 <script id="cms_listfieldEditDataTopButtons" type="text/x-handlebars-template">
   <div class="btn-group">
-  <a class="btn btn-small btn-success btn-fieldlist-add" href="#"><i class="icon-plus"></i> Row</a>
-  <a class="btn btn-small btn-success btn-fieldlist-duplicate disabled" href="#"><i class="icon-plus"></i><i class="icon-plus"></i> Duplicate</a>
-  <a class="btn btn-small btn-danger btn-fieldlist-delete disabled" href="#"><i class="icon-trash"></i> Delete</a>
+  <a class="btn btn-small btn-success btn-fieldlist-add cms-change" href="#"><i class="icon-plus"></i> Row</a>
+  <a class="btn btn-small btn-success btn-fieldlist-duplicate cms-change disabled" href="#"><i class="icon-plus"></i><i class="icon-plus"></i> Duplicate</a>
+  <a class="btn btn-small btn-danger btn-fieldlist-delete cms-change disabled" href="#"><i class="icon-trash"></i> Delete</a>
   </div>
 </script>
 

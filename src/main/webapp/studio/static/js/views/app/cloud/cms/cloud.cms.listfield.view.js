@@ -10,12 +10,14 @@ App.View.CMSListField = App.View.CMSSection.extend({
     'click table tbody tr input[type=checkbox]' : 'onRowSelect',
     'click .btn-fieldlist-add' : 'onAddNewRow',
     'click .btn-fieldlist-delete' : 'onDeleteRow',
-    'click .btn-fieldlist-duplicate' : 'onDuplicateRow'
+    'click .btn-fieldlist-duplicate' : 'onDuplicateRow',
+    'click .cms-change': 'triggerChange'
   },
-
+  "mode":"",
 
   initialize: function(options){
     this.title = (options.mode === 'data') ? "Edit List Data" : "Edit List Structure"
+    this.mode = options.mode;
     this.templates = _.extend(this.constructor.__super__.templates, {
       'cms_listfieldsavecancel' : '#cms_listfieldsavecancel',
       'cms_editListDataInstructions' : '#cms_editListDataInstructions'
@@ -55,11 +57,16 @@ App.View.CMSListField = App.View.CMSSection.extend({
 
 
 
+
     return this;
   },
 
-  onAddNewRow : function () {
+  triggerChange : function () {
+    App.dispatch.trigger("cms.section.unsaved",{});
+  },
 
+  onAddNewRow : function () {
+    var self = this;
     console.log("add new row ",this.fieldList.fields);
     //add an empty row
     if(this.fieldList.fields){
@@ -120,27 +127,30 @@ App.View.CMSListField = App.View.CMSSection.extend({
   onListFieldSave : function(e){
     e.stopPropagation();
     var self = this;
-
-    var checked = this.table.$el.find('tr.info input:checked').parents('tr');
-    console.log("checked length ", checked.length);
-    if(checked.length > 1){
-      //error only one save at a time
-    }
-    var hash = checked.first().data("hash");
-
-    var params = self.fb.mainView.collection.toJSON();
-    console.log("saving params ", params);
-    for(var i=0; i < self.fieldList.data.length; i++){
-      var d = self.fieldList.data[i];
-      if(d.hash === hash){
-
-        for(var pr in params){
-          if(params.hasOwnProperty(pr)){
-            d[params[pr].label] = params[pr].value;
-          }
-        }
-        self.fieldList.data[i] = d;
+    //hmm will need to distinguish here if it is a structure change or data
+    if(self.mode == "data"){
+      var checked = this.table.$el.find('tr.info input:checked').parents('tr');
+      if(checked.length > 1){
+        //error only one save at a time
       }
+      var hash = checked.first().data("hash");
+
+      var params = self.fb.mainView.collection.toJSON();
+      console.log("saving params ", params);
+      for(var i=0; i < self.fieldList.data.length; i++){
+        var d = self.fieldList.data[i];
+        if(d.hash === hash){
+
+          for(var pr in params){
+            if(params.hasOwnProperty(pr)){
+              d[params[pr].label] = params[pr].value;
+            }
+          }
+          self.fieldList.data[i] = d;
+        }
+
+      }
+    }else if(self.mode == "structure"){
 
     }
     self.render();
@@ -195,7 +205,12 @@ App.View.CMSListField = App.View.CMSSection.extend({
     // Trigger a selection event which will update the data on the formbuilder of section view
     var tr = (e.target.nodeName === "tr") ? $(e.target) : $(e.target).parents('tr');
     this.trigger('listfieldRowSelect', tr.data('index'));
-
+    //TODO move this
+    console.log("binding to inputs");
+    $('.fb-response-fields').find('input').unbind().keyup(function (e){
+      console.log("trigger section unsaved");
+      App.dispatch.trigger("cms.section.unsaved",{});
+    });
   },
 
   rowSetState: function(row){
@@ -219,6 +234,7 @@ App.View.CMSListField = App.View.CMSSection.extend({
     var el = $(e.target),
     row = el.parents('tr');
     this.rowSetState(row);
+
   },
 
   "activateDestuctiveButtons" : function () {
