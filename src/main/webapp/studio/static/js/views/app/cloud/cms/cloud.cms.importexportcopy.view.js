@@ -48,7 +48,7 @@ App.View.CMSImportExportCopy = App.View.CMS.extend({
         op = 'Export';
         break;
       case "copy":
-        copyArgs = (this.mode==='live') ? { left : 'dev', right : 'live' } : { left : 'live', right : 'dev' };
+        copyArgs = (this.mode==='dev') ? { left : 'dev', right : 'live' } : { left : 'live', right : 'dev' };
         text = $(this.templates.$cms_copyModal(copyArgs));
         op = 'Copy';
         break;
