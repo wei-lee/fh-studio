@@ -333,7 +333,7 @@
           $el = $(e.currentTarget);
           target = $el.data('target');
           $el.closest('li').addClass('active').siblings('li').removeClass('active');
-          $(target).addClass('active').siblings('.fb-tab-pane').removeClass('active');
+          this.$el.find(target).addClass('active').siblings('.fb-tab-pane').removeClass('active');
           if (target !== '#editField') {
             this.unlockLeftWrapper();
           }
@@ -478,9 +478,6 @@
           }
           this.formSaved = false;
           return this.saveFormButton.removeAttr('disabled').text(Formbuilder.options.dict.SAVE_FORM);
-        },
-        "getCollection" : function (){
-          return this.collection;
         },
         saveForm: function(e) {
           var payload;

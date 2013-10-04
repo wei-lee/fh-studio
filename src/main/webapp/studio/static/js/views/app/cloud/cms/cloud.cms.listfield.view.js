@@ -9,7 +9,7 @@ App.View.CMSListField = App.View.CMSSection.extend({
     'click table tbody tr' : 'onRowClick',
     'click table tbody tr input[type=checkbox]' : 'onRowSelect',
     'click .btn-fieldlist-add' : 'onAddNewRow',
-    'click .btn-fieldlist-delete' : 'onDeleteRow',
+    'click .btn-fieldlist-delete' : 'onDel  eteRow',
     'click .btn-fieldlist-duplicate' : 'onDuplicateRow',
     'click .cms-change': 'triggerChange'
   },
@@ -24,6 +24,7 @@ App.View.CMSListField = App.View.CMSSection.extend({
     this.constructor.__super__.initialize.apply(this, arguments);
   },
   render : function(){
+    var self = this;
     this.$el.empty();
     this.constructor.__super__.render.apply(this, arguments);
 
@@ -56,8 +57,6 @@ App.View.CMSListField = App.View.CMSSection.extend({
     this.$el.find('.middle').append(this.templates.$cms_listfieldsavecancel({"listid":this.fieldList.hash}));
 
     this.$el.find('.btn-listfield-change-' + this.options.mode).addClass('active');
-
-
 
 
     return this;
