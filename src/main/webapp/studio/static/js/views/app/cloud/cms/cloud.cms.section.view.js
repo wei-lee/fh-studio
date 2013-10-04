@@ -136,10 +136,18 @@ App.View.CMSSection = App.View.CMS.extend({
       $(this.templates.$cms_editSectionInstructions({msg : instructions})).insertAfter(this.$el.find('.breadcrumb'));
       this.$el.find('.middle').append(this.templates.$cms_section_savecancel());
     }
-
-     $('.fb-response-fields input').unbind().keyup(function (e){
+    var resFields = $('.fb-response-fields input');
+     //TODO tidy these up
+     resFields.keyup(function (e){
        App.dispatch.trigger("cms.section.unsaved",section);
-     });
+    });
+
+    $('.fb-field-wrapper .subtemplate-wrapper').click(function (){
+      $('.fb-tabs li.configurefield a').trigger('click');
+    });
+
+
+
 
     return this;
   },
