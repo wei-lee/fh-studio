@@ -26,9 +26,12 @@
 
     </div>
     <hr/>
-    <span class="text-error">Unsaved Changes</span>
-    <span class="text-warning">Draft</span>
-    <span class="text-info">Publish Later</span>
+    <span style="margin-left:5px; font-size:14px;">Legend:</span>
+    <ul style="margin-left:5px;">
+     <li><span class="text-error">Unsaved Changes</span></li>
+     <li><span class="text-warning">Draft</span></li>
+    <li><span class="text-info">Publish Later</span></li>
+    </ul>
   </div>
 </script>
 
@@ -75,7 +78,7 @@
     </form>
 
     <br/>
-    <a class="btn btn-danger btn-deletesection">Delete this section</a>
+    <a class="btn btn-danger btn-deletesection"  data-path="{{path}}" >Delete this section</a>
 
   </div>
   <div class="fb-tab-pane" id="cmsAppPreview">

@@ -2,6 +2,7 @@ var App = App || {};
 App.View = App.View || {};
 
 
+
 App.View.CMSTree = App.View.CMS.extend({
 
   'events': {
@@ -15,9 +16,7 @@ App.View.CMSTree = App.View.CMS.extend({
   initialize: function (options) {
     var self = this;
     this.collection = options.collection;
-    this.collection.on("change", function () {
-      self.render();
-    });
+
     this.collection.on("add", function (){
       self.render();
     });
@@ -25,7 +24,7 @@ App.View.CMSTree = App.View.CMS.extend({
       self.render();
     });
 
-    App.dispatch.on("cms.sectionchange", function (evData){
+    App.dispatch.on(CMS_TOPICS.SECTION_CHANGE, function (evData){
       //need to go through the levels opening as we go.
       var treePath = evData.path;
       var pathBits = treePath.split(".");
@@ -47,27 +46,30 @@ App.View.CMSTree = App.View.CMS.extend({
       $("#"+path).trigger("click");
     });
 
-    App.dispatch.on("cms.sectiondelete", function (data){
-       self.deleteSection(data.section);
+    App.dispatch.on(CMS_TOPICS.SECTION_DELETE, function (data){
+      self.activeSection = data.path;
+      self.onDeleteSection();
     });
 
-    App.dispatch.on("cms.section.savedraft", function (data){
+    App.dispatch.on(CMS_TOPICS.SECTION_SAVE_DRAFT, function (data){
       console.log("save draft event ", data);
       $('.jstree-clicked').removeClass().addClass("jstree-clicked").addClass("jstree-draft");
     });
 
-    App.dispatch.on("cms.section.discarddraft", function (data){
+    App.dispatch.on(CMS_TOPICS.SECTION_DISCARD_DRAFT, function (data){
       console.log("discard draft event ", data);
-      $('.jstree-clicked').removeClass().addClass("jstree-clicked");
+      var jstreeClicked = $('.jstree-clicked');
+      console.log("jstree clicked ", jstreeClicked);
+      jstreeClicked.removeClass().addClass("jstree-clicked");
     });
 
-    App.dispatch.on("cms.section.publish",function (data){
+    App.dispatch.on(CMS_TOPICS.SECTION_PUBLISH,function (data){
        console.log("cms.sectionpublish ", data);
       //TODO need to know if it is a publish later or not.
       $('.jstree-clicked').removeClass().addClass("jstree-clicked");
     });
 
-    App.dispatch.on("cms.section.unsaved", function (data){
+    App.dispatch.on(CMS_TOPICS.SECTION_DIRTIED, function (data){
       console.log("cms.section.unsaved ", data);
       $('.jstree-clicked').removeClass().addClass("jstree-clicked").addClass("jstree-unsaved");
     });
@@ -78,15 +80,16 @@ App.View.CMSTree = App.View.CMS.extend({
 
   render: function () {
     var jsonData = this.massageTree(this.collection.toJSON());
+    console.log("json data ", jsonData);
 
-    console.log("RENDER CALLED jsonData ", jsonData);
     var self = this;
-    self.tree = this.$el.jstree({
+    self.tree = this.$el.unbind("loaded.jstree").bind("loaded.jstree", function (event, data) {
+     $(this).jstree("open_all");
+    }).jstree({
       "json_data": {
         "data": jsonData
       },
       'core': {
-        initially_open: ['root'],
         animation: 0
       },
       'themes': {
@@ -111,10 +114,10 @@ App.View.CMSTree = App.View.CMS.extend({
     });
 
     $('.btn-addsection').unbind().bind("click", function (e) {
-      self.onAddSection(this);
+      self.onAddSection(self);
     });
     $('.btn-deletesection').unbind().bind("click", function (e) {
-      self.onDeleteSection(this);
+      self.onDeleteSection(self);
     });
 
     return this;
@@ -133,7 +136,6 @@ App.View.CMSTree = App.View.CMS.extend({
     });
 
     function explodeSection(section) {
-      console.log("IN EXPLODE SECTION", sections);
       var status = section.status || 'published';
       var node = {
         data: {
@@ -176,6 +178,7 @@ App.View.CMSTree = App.View.CMS.extend({
       }
     });
     self.$el.append(modal.render().$el);
+
   },
 
   "onAddSection": function (element) {
@@ -251,13 +254,13 @@ App.View.CMSTree = App.View.CMS.extend({
   //move to fh.cms
   deleteSection: function (val) {
     var self = this;
-    var selectedSection = self.activeSection || "root";
+    var selectedSection = val || self.activeSection || "root";
     //show some kind of modal
     self.collection.removeBySectionPath(selectedSection);
 
     self.render();
     $('.fb-response-fields').empty();
-
+    self.activeSection = undefined; //TODO remove self.activesection not a nice way of doing things
 
   },
 
@@ -267,7 +270,7 @@ App.View.CMSTree = App.View.CMS.extend({
     var self = this,
     path = data && data.rslt && data.rslt.obj && data.rslt.obj.attr && data.rslt.obj.attr('path'),
     unsaved = this.$el.find('.jstree-unsaved');
-
+    self.activeSection = path;
     if (unsaved.length > 0){
       var modal = new App.View.Modal({
         title: 'Unsaved Changes',
@@ -354,45 +357,7 @@ App.View.CMSTree = App.View.CMS.extend({
     }
     resetPaths(treeData);
 
-    console.log("DONE MOVE ******************** ",self.collection.models);
-
     self.render();
 
-  },
-  reorderTree: function (tree) {
-    console.log("the tree ", tree);
-    var newCollection = [];
-    for (var i = 0; i < tree.length; i++) {
-      var t = tree[i];
-      if (!t.attr || !t.attr.path) {
-        return undefined;
-      }
-      //t currently is a root node.
-      if (t.attr.path.split(".").length > 1) {
-        t.attr.path = t.attr.name;
-      }
-
-      if (t.children && t.children.length > 0) {
-        for (var ch = 0; ch < t.children.length; ch++) {
-          addPath(t.children[ch]);
-        }
-      }
-
-
-      function addPath(parent) {
-        debugger;
-        if (parent.children && parent.children.length > 0) {
-          for (var ck = 0; ck < parent.children.length; ck++) {
-            parent.children[ck].attr.path = parent.attr.name + "." + parent.children[ck].attr.name;
-            if (parent.children[ck].children && parent.children[ck].children.length > 0) {
-              addPath(parent.children[ck]);
-            }
-          }
-        }
-      }
-    }
-    console.log("repathed tree", tree);
-    return tree;
-//    return newCollection;
   }
 });
