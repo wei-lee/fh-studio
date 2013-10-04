@@ -26,7 +26,7 @@ App.View.CMSTable = App.View.CMS.extend({
       (function(f){
         var propFn = function(src){
             if (src.hasOwnProperty(f.name)){
-              return src.name;
+              return src[f.name];
             }
             return '';
         };

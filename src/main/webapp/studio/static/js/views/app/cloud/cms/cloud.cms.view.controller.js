@@ -126,6 +126,7 @@ App.View.CMSController  = Backbone.View.extend({
   },
   treeNodeClicked : function(){
     if (this.$listFieldContainer.length && this.$listFieldContainer.length>0){
+      //TODO: This call here causing some issues on first load & double renders happening..
       this.onCMSBack();
     }
   },
