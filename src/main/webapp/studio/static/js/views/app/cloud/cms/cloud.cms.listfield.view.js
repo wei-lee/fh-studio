@@ -116,7 +116,7 @@ App.View.CMSListField = App.View.CMSSection.extend({
   },
 
   getCheckedRows : function (){
-    var checked = this.table.$el.find('tr input:checked');
+    var checked = this.table.$el.find('input[type="checkbox"]:checked');
     var trParents = checked.parents('tr');
     console.log("found " + trParents.length + " trs");
     var hashes = [];
@@ -127,6 +127,7 @@ App.View.CMSListField = App.View.CMSSection.extend({
   },
 
   onListFieldSave : function(e){
+    e.preventDefault();
     e.stopPropagation();
     var self = this;
     //hmm will need to distinguish here if it is a structure change or data
@@ -174,6 +175,7 @@ App.View.CMSListField = App.View.CMSSection.extend({
     App.dispatch.trigger("cms.audit", "CMS List saved",self.fb);
     //TODO: POST to server
     //NOTE: all actions need to be qued in order to ensure consistency and processed in order on save.
+
   },
 
   "getTempHash" :function(){

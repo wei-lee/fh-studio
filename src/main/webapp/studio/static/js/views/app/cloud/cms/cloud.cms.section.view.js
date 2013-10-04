@@ -59,7 +59,6 @@ App.View.CMSSection = App.View.CMS.extend({
       }
 
       fields = this.fieldList && this.fieldList.fields;
-      listData = this.fieldList && this.fieldList.data;
       if (!fields){
         console.log('error loading list fields');
         return this.modal('Error loading list fields');
@@ -99,7 +98,7 @@ App.View.CMSSection = App.View.CMS.extend({
       var parentOptions = this.collection.toHTMLOptions();
       parentOptions = ["<option value='' data-path='' >-Root</option>"].concat(parentOptions);
       parentOptions = parentOptions.join('');
-      this.$el.find('.fb-tab-content').append(this.templates.$cms_configureSection({ parentOptions : parentOptions, name : section.name }));
+      this.$el.find('.fb-tab-content').append(this.templates.$cms_configureSection({ parentOptions : parentOptions, name : section.name, path:section.path }));
       this.delegateEvents();
       // Select the active option
       this.$el.find('select[name=parentName]').val(parent);
@@ -153,7 +152,7 @@ App.View.CMSSection = App.View.CMS.extend({
     var selectVal = select.val();
     console.log("section changed",selectVal);
 
-    App.dispatch.trigger("cms.sectionchange",{"section":selectVal,"id":opt.data("id"),"path":opt.data("path")});
+    App.dispatch.trigger(CMS_TOPICS.SECTION_CHANGE,{"section":selectVal,"id":opt.data("id"),"path":opt.data("path")});
   },
 
 
@@ -164,7 +163,6 @@ App.View.CMSSection = App.View.CMS.extend({
     if (this.fb){
       this.fb.stopListening();
     }
-    console.log("renderFormBuilder ", fields);
     this.fb = new Formbuilder(this.$fbEl, {
       noScroll : true,
       noEditOnDrop : true,
@@ -172,23 +170,9 @@ App.View.CMSSection = App.View.CMS.extend({
       editStructure : this.options.editStructure || false
     });
 
-
-
-//    this.fb.on('save', function(payload){
-//      console.log("save has been called");
-//      console.log("fb save ", payload);
-//      self.draft = payload;
-//      debugger;
-//      if(self.save){
-//        console.log("Proxying on to save function in lower level");
-//      }
-//
-//    });
     //TODO move this not sure where the right place is for it right now.
-    console.log("binding to inputs");
     $('.fb-response-fields').find('input').unbind().keyup(function (e){
-      console.log("trigger section unsaved");
-      App.dispatch.trigger("cms.section.unsaved",{});
+      App.dispatch.trigger(CMS_TOPICS.SECTION_DIRTIED,{});
     });
     return this.fb;
   },
@@ -246,7 +230,7 @@ App.View.CMSSection = App.View.CMS.extend({
     e.preventDefault();
     var vals = {},
     fields = this.fb.mainView.collection.toJSON(); //TODO: Verify this syncs with autoSave
-    App.dispatch.trigger("cms.section.savedraft",this.section); // Notify the tree that we're saving the section so it can change colour
+    App.dispatch.trigger(CMS_TOPICS.SECTION_SAVE_DRAFT,{"section":this.section}); // Notify the tree that we're saving the section so it can change colour
 
     // Get our form as a JSON object
     $(this.$el.find('#configureSectionForm').serializeArray()).each(function(idx, el){
@@ -268,35 +252,39 @@ App.View.CMSSection = App.View.CMS.extend({
 
 
     this.alertMessage();
-    App.dispatch.trigger("cms.audit", "Section saved with values: " + JSON.stringify(this.section));
+    App.dispatch.trigger(CMS_TOPICS.AUDIT, "Section draft saved with values: " + JSON.stringify(this.section));
     this.section.status = 'draft';
     this.sectionModel.set(this.section);
     //TODO: Dispatch draft to SS
     return false;
   },
   onDraftDiscard: function(e){
+
+
+    var previous = this.sectionModel.previousAttributes();
+
     console.log("discard draft called");
-    this.render();
-    previous = this.sectionModel.previousAttributes();
 
     this.sectionModel.set(previous);
 
     this.alertMessage('Section changes discarded successfully');
-    App.dispatch.trigger("cms.audit", "Section draft discarded");
-    App.dispatch.trigger("cms.section.discarddraft",this.section);
+    App.dispatch.trigger(CMS_TOPICS.AUDIT, "Section draft discarded");
+    App.dispatch.trigger(CMS_TOPICS.SECTION_DISCARD_DRAFT,this.section);
+    this.render();
     //TODO: Discard draft on server
   },
   onSectionPublish : function(e){
+    e.preventDefault();
     this.sectionModel.set('status', 'published');
     //TODO: Dispatch publish action to SS
-    App.dispatch.trigger("cms.section.publish", this.section); // Notify the tree that we're saving the section so it can change colour
+    App.dispatch.trigger(CMS_TOPICS.SECTION_PUBLISH, this.section); // Notify the tree that we're saving the section so it can change colour
   },
   onSectionDelete : function(e){
     console.log("section delete called");
     e.preventDefault();
     // TODO: Delete section on server
-    App.dispatch.trigger("cms.audit", "Section deleted");
-    App.dispatch.trigger("cms.sectiondelete",{});
+    App.dispatch.trigger(CMS_TOPICS.AUDIT, "Section deleted");
+    App.dispatch.trigger(CMS_TOPICS.SECTION_DELETE,{"path": $(e.target).data("path")});
   },
   onPublishDateFocus : function(){
     this.$el.find('#publishRadioLater').attr('checked', true);

@@ -11,6 +11,9 @@ App.View.CMSController  = Backbone.View.extend({
     'cms_left' : '#cms_left',
     'cms_mastermenu' : '#cms_mastermenu'
   },
+  "que":[],
+
+
   active : 'section',
   initialize: function(options){
     this.options = options;
