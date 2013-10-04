@@ -101,15 +101,7 @@ App.View.CMSController  = Backbone.View.extend({
 
     switch(this.active){
       case "listfield":
-        this.$listFieldContainer.empty().hide();
-        if (this.listField){
-          this.listfield.undelegateEvents();
-
-        }
-        if (success === true){
-          // Show save success message
-          this.form.alertMessage();
-        }
+        this.hideListField(success);
         this.form.render();
         break;
       case "audit":
@@ -124,9 +116,20 @@ App.View.CMSController  = Backbone.View.extend({
     // Always it's here we want to get back to
     this.$fbContainer.show();
   },
+  hideListField : function(success){
+    this.$listFieldContainer.empty().hide();
+    if (this.listField){
+      this.listfield.undelegateEvents();
+
+    }
+    if (success === true){
+      // Show save success message
+      this.form.alertMessage();
+    }
+  },
   treeNodeClicked : function(){
     if (this.$listFieldContainer.length && this.$listFieldContainer.length>0){
-      this.onCMSBack();
+      this.hideListField();
     }
   },
   showAudit : function(){
