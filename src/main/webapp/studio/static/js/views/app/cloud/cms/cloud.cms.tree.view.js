@@ -80,14 +80,16 @@ App.View.CMSTree = App.View.CMS.extend({
 
   render: function () {
     var jsonData = this.massageTree(this.collection.toJSON());
+    console.log("json data ", jsonData);
 
     var self = this;
-    self.tree = this.$el.jstree({
+    self.tree = this.$el.unbind("loaded.jstree").bind("loaded.jstree", function (event, data) {
+     $(this).jstree("open_all");
+    }).jstree({
       "json_data": {
         "data": jsonData
       },
       'core': {
-        initially_open: ['root'],
         animation: 0
       },
       'themes': {
@@ -134,7 +136,6 @@ App.View.CMSTree = App.View.CMS.extend({
     });
 
     function explodeSection(section) {
-      console.log("IN EXPLODE SECTION", sections);
       var status = section.status || 'published';
       var node = {
         data: {
@@ -356,45 +357,7 @@ App.View.CMSTree = App.View.CMS.extend({
     }
     resetPaths(treeData);
 
-    console.log("DONE MOVE ******************** ",self.collection.models);
-
     self.render();
 
-  },
-  reorderTree: function (tree) {
-    console.log("the tree ", tree);
-    var newCollection = [];
-    for (var i = 0; i < tree.length; i++) {
-      var t = tree[i];
-      if (!t.attr || !t.attr.path) {
-        return undefined;
-      }
-      //t currently is a root node.
-      if (t.attr.path.split(".").length > 1) {
-        t.attr.path = t.attr.name;
-      }
-
-      if (t.children && t.children.length > 0) {
-        for (var ch = 0; ch < t.children.length; ch++) {
-          addPath(t.children[ch]);
-        }
-      }
-
-
-      function addPath(parent) {
-        debugger;
-        if (parent.children && parent.children.length > 0) {
-          for (var ck = 0; ck < parent.children.length; ck++) {
-            parent.children[ck].attr.path = parent.attr.name + "." + parent.children[ck].attr.name;
-            if (parent.children[ck].children && parent.children[ck].children.length > 0) {
-              addPath(parent.children[ck]);
-            }
-          }
-        }
-      }
-    }
-    console.log("repathed tree", tree);
-    return tree;
-//    return newCollection;
   }
 });
