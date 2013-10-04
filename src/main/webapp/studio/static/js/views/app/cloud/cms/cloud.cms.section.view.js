@@ -138,8 +138,20 @@ App.View.CMSSection = App.View.CMS.extend({
       this.$el.find('.middle').append(this.templates.$cms_section_savecancel());
     }
 
+     // On editing an existing field, mark section as unsaved
+     //TOOD: A..?
      $('.fb-response-fields input').unbind().keyup(function (e){
        App.dispatch.trigger("cms.section.unsaved",section);
+     });
+     //..or B?:
+//     this.fb.mainView.collection.bind('change', function(e){
+//       App.dispatch.trigger("cms.section.unsaved",section);
+//       console.log(self.fb);
+//     });
+     // On creating a field, we should also mark the section unsaved changes
+     this.fb.mainView.collection.bind('add', function(e){
+       App.dispatch.trigger("cms.section.unsaved",section);
+       console.log(self.fb);
      });
 
     return this;
