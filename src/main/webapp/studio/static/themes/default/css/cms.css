@@ -150,6 +150,13 @@
     display: none;
 }
 
+.cmsTreeContainer .jstree-clicked {
+    background: transparent;
+    color: black;
+    font-weight: bold;
+    border: 0;
+}
+
 /*
   Make a unified border-bottom across the CMS
  */

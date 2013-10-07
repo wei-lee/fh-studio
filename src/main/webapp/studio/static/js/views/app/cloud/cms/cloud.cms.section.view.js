@@ -259,6 +259,7 @@ App.View.CMSSection = App.View.CMS.extend({
     App.dispatch.trigger(CMS_TOPICS.AUDIT, "Section draft saved with values: " + JSON.stringify(this.section));
     this.section.status = 'draft';
     this.sectionModel.set(this.section);
+    this.$el.find('.btn-discard-draft').attr('disabled', false)
     //TODO: Dispatch draft to SS
     return false;
   },

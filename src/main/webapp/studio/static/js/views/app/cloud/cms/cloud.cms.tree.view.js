@@ -4,12 +4,9 @@ App.View = App.View || {};
 
 
 App.View.CMSTree = App.View.CMS.extend({
-
   'events': {
 
   },
-
-
   'templates':{
       'cms_sectionDropDown' : '#cms_sectionDropDown'
   },

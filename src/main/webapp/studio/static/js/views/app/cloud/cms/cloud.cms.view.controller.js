@@ -81,7 +81,7 @@ App.View.CMSController  = Backbone.View.extend({
     this.$left = $(this.templates.$cms_left());
     this.tree = new App.View.CMSTree({collection : this.collection});
     this.$el.prepend(this.$left);
-    this.$el.find('.treeContainer').append(this.tree.render().$el);
+    this.$el.find('.cmsTreeContainer').append(this.tree.render().$el);
     this.tree.bind('sectionchange', $.proxy(this.treeNodeClicked, this));
     this.tree.bind('sectionchange', $.proxy(this.form.setSection, this.form));
 
