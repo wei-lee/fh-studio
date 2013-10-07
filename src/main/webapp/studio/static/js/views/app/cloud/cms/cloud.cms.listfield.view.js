@@ -41,6 +41,8 @@ App.View.CMSListField = App.View.CMSSection.extend({
       this.$el.find('.fb-tabs li.configurefield').show();
     }
 
+
+
     var top = new App.View.CMSListFieldTopBar(this.options);
     top.render().$el.insertAfter(this.$el.find('.middle .breadcrumb'));
 
@@ -52,6 +54,9 @@ App.View.CMSListField = App.View.CMSSection.extend({
       this.table.$el.find('table').removeClass('table-striped');
 
       $(this.templates.$cms_editListDataInstructions()).insertAfter(afterEl);
+
+      // Disable field entry until user clicks a row, or adds a new row
+      this.$el.find('.fb-response-fields input, .fb-response-fields textarea').attr('disabled', true);
 
     }
     this.$el.find('.middle').append(this.templates.$cms_listfieldsavecancel({"listid":this.fieldList.hash}));
@@ -87,6 +92,9 @@ App.View.CMSListField = App.View.CMSSection.extend({
       var tr = this.$el.find("tr[data-hash='"+blank.hash+"'] ");
       this.trigger('listfieldRowSelect', tr.data('index'));
       this.rowSetState(tr);
+
+      // Set fields disabled to false now we've added a row
+      this.$el.find('.fb-response-fields input, .fb-response-fields textarea').attr('disabled', false);
     }
   },
 
@@ -229,6 +237,9 @@ App.View.CMSListField = App.View.CMSSection.extend({
       console.log("trigger section unsaved");
       App.dispatch.trigger("cms.section.unsaved",{});
     });
+
+    // Set fields disabled to false now we're editing a row
+    this.$el.find('.fb-response-fields input, .fb-response-fields textarea').attr('disabled', false);
   },
 
   rowSetState: function(row){
