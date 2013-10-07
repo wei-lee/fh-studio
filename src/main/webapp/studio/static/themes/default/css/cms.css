@@ -177,6 +177,14 @@
     margin-top: 11px;
 }
 
+.cmsAudit {
+    padding: 8px 16px;
+}
+
+.cmsAudit table th:first-of-type {
+    width: 124px;
+}
+
 /*
   Form Builder CSS overrides
  */

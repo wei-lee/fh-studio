@@ -28,7 +28,7 @@ App.View.CMSAudit = App.View.CMS.extend({
       r = r.split(':');
       data.push({
         date : r[0],
-        msg : r[1]
+        msg : r.slice(1, r.length).join('')
       });
     });
 
@@ -44,6 +44,12 @@ App.View.CMSAudit = App.View.CMS.extend({
         {
           "sTitle": 'Message',
           "mDataProp": 'msg'
+        },
+        {
+          "sTitle": '',
+          "mDataProp": function(){
+            return '<a class="btn btn-primary">Revert</a>';
+          }
         }
       ],
       "bAutoWidth": false,
