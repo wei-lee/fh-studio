@@ -299,7 +299,6 @@ App.View.CMSListField = App.View.CMSSection.extend({
 
   },
   listfieldRowSelect : function(index){
-    debugger;
     var fields = this.fieldList.fields,
     data = this.fieldList.data,
     row;
