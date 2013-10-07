@@ -9,7 +9,7 @@ App.View.CMSListField = App.View.CMSSection.extend({
     'click table tbody tr' : 'onRowClick',
     'click table tbody tr input[type=checkbox]' : 'onRowSelect',
     'click .btn-fieldlist-add' : 'onAddNewRow',
-    'click .btn-fieldlist-delete' : 'onDel  eteRow',
+    'click .btn-fieldlist-delete' : 'onDeleteRow',
     'click .btn-fieldlist-duplicate' : 'onDuplicateRow',
     'click .cms-change': 'triggerChange'
   },
