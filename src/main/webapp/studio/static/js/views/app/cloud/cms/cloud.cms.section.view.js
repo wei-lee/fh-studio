@@ -8,7 +8,7 @@ App.View.CMSSection = App.View.CMS.extend({
     'submit #configureSectionForm' : 'onSectionPublish',
     'click .btn-discard-draft' : 'onDraftDiscard',
     'click .btn-deletesection' : 'onSectionDelete',
-    'focus input[name=publishdate]' : 'onPublishDateFocus',
+    'click #cmsDatePicker' : 'onPublishDateFocus',
     'click .btn-listfield-structure' : 'onListFieldEditStructure',
     'click .btn-listfield-data' : 'onListFieldEditData'
   },
@@ -67,9 +67,7 @@ App.View.CMSSection = App.View.CMS.extend({
       path += ("." + this.fieldList.name + "." + "Edit " + this.options.mode);
     }else{
       // Just a standard section view - may or may not contain a listfield within
-
       fields = this.massageFieldsForFormbuilder(section.fields);
-
     }
 
     console.log("Section is ", section  ," fields ",fields);
@@ -88,26 +86,31 @@ App.View.CMSSection = App.View.CMS.extend({
     // Add in the page title to the breadcrumb row
     this.$el.find('.middle').prepend('<h3>' + this.title + '</h3>');
 
-
+    // Add in the extra tabs for configure section and preview
     this.$el.find('.fb-tabs').append(this.templates.$cms_sectionExtraTabs());
 
     if (this.view === 'section'){
-
+      // Setup the configure section tab
       var pathArray = section.path.split('.'),
       parent = pathArray[pathArray.length-2] || "Root";
       var parentOptions = this.collection.toHTMLOptions();
       parentOptions = ["<option value='' data-path='' >-Root</option>"].concat(parentOptions);
       parentOptions = parentOptions.join('');
       this.$el.find('.fb-tab-content').append(this.templates.$cms_configureSection({ parentOptions : parentOptions, name : section.name, path:section.path }));
+
+      this.$el.find('#cmsDatePicker').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii',
+        autoclose: true,
+        todayBtn: true
+      });
+
+
+
+
       this.delegateEvents();
       // Select the active option
       this.$el.find('select[name=parentName]').val(parent);
     }
-
-
-
-
-
 
     this.$el.find('#cmsAppPreview').append($('#app_preview').clone(true).show().width('100%'));
 
@@ -247,26 +250,9 @@ App.View.CMSSection = App.View.CMS.extend({
 
   onSectionSaveDraft : function(e){
     e.preventDefault();
-    var vals = {},
-    fields = this.fb.mainView.collection.toJSON(); //TODO: Verify this syncs with autoSave
+    var fields = this.fb.mainView.collection.toJSON(); //TODO: Verify this syncs with autoSave
     App.dispatch.trigger(CMS_TOPICS.SECTION_SAVE_DRAFT,{"section":this.section}); // Notify the tree that we're saving the section so it can change colour
 
-    // Get our form as a JSON object
-    $(this.$el.find('#configureSectionForm').serializeArray()).each(function(idx, el){
-      vals[el.name] = el.value;
-    });
-
-
-    // If publish is now, set the timedate if it's not already defined on the section
-    if (vals.publishRadio && vals.publishRadio === "now"){
-      if (!this.section.hasOwnProperty('publishdate')){
-        this.section.publishdate = new Date(); // TODO: Maybe this should be handled on the server..?
-      }
-    }else if (vals.publishRadio && vals.publishRadio === "later"){
-      this.section.publishDate = vals.publishdate;
-    }
-
-    this.section.name = vals.name;
     this.section.fields = this.massageFieldsFromFormBuilder(fields, this.section);
 
 
@@ -293,7 +279,27 @@ App.View.CMSSection = App.View.CMS.extend({
     //TODO: Discard draft on server
   },
   onSectionPublish : function(e){
+    var vals = {};
     e.preventDefault();
+
+    // Get our form as a JSON object
+    $(this.$el.find('#configureSectionForm').serializeArray()).each(function(idx, el){
+      vals[el.name] = el.value;
+    });
+
+    // If publish is now, set the timedate if it's not already defined on the section
+    if (vals.hasOwnProperty('publishRadio') && vals.publishRadio === "now"){
+      if (!this.section.hasOwnProperty('publishdate')){
+        this.section.publishdate = new Date(); // TODO: Maybe this should be handled on the server..?
+      }
+    }else if (vals.hasOwnProperty('publishRadio') && vals.publishRadio === "later"){
+      this.section.publishDate = vals.publishdate;
+    }
+
+    this.section.name = vals.name;
+
+    this.sectionModel.set(this.section);
+
     this.sectionModel.set('status', 'published');
     //TODO: Dispatch publish action to SS
     App.dispatch.trigger(CMS_TOPICS.SECTION_PUBLISH, this.section); // Notify the tree that we're saving the section so it can change colour

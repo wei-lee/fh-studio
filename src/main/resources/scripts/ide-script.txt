@@ -13,6 +13,7 @@ js/init/namespaces.js
 common/js/ui/thirdparty/handlebars/handlebars.js
 common/js/ui/thirdparty/handlebars/helpers.js
 common/js/ui/thirdparty/bootstrap-datepicker/bootstrap-datepicker.js
+common/js/ui/thirdparty/bootstrap-datetimepicker/bootstrap-datetimepicker.js
 common/js/ui/thirdparty/bootstrap-daterangepicker/daterangepicker.js
 common/js/ui/thirdparty/handlebars/handlebars.js
 common/js/ui/thirdparty/handlebars/helpers.js
