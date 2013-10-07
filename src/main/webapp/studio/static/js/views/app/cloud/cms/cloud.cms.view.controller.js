@@ -72,7 +72,7 @@ App.View.CMSController  = Backbone.View.extend({
     this.$el.prepend(this.$fbContainer, this.$listFieldContainer, this.$auditContainer);
 
     var isAdministrator = $fw.userProps.roles.indexOf('cmsadmin'); //TODO: Wire this up - doesn't exist yet
-    this.form = new App.View.CMSSection({ $el : this.$fbContainer, collection : this.collection, section : this.section, isAdministrator : false }); //
+    this.form = new App.View.CMSSection({ $el : this.$fbContainer, collection : this.collection, section : this.section, isAdministrator : true }); //
 
     this.form.render();
 

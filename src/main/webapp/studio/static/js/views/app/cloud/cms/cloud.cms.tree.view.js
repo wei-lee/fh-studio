@@ -182,17 +182,18 @@ App.View.CMSTree = App.View.CMS.extend({
 
     var self = this;
     var parentOptions = self.collection.toHTMLOptions(),
-    selectContent;
+    body;
     parentOptions = ["<option value='' data-path='' >-Root</option>"].concat(parentOptions);
     parentOptions = parentOptions.join('');
-    selectContent = self.templates.$cms_sectionDropDown({"parentOptions":parentOptions});
+    body = $(self.templates.$cms_sectionDropDown({"parentOptions":parentOptions}));
 
-    $(selectContent).find('select').val(self.activeSection);
+    body.find('select').val(self.activeSection); // TODO Fix me so active selection is the selected node in here..
 
-    console.log(selectContent);
+    body.append('<br/> <input class="input-large" placeholder="Enter a Section name" id="newCollectionName">');
+
     var modal = new App.View.Modal({
       title: 'Create New Section',
-      body: selectContent + '<br/> <input class="input-large" placeholder="Enter a Section name" id="newCollectionName"> ',
+      body: body,
       okText: 'Create',
       ok: function (e) {
         var el = $(e.target),
