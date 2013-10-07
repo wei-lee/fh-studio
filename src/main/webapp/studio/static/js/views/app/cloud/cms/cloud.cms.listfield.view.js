@@ -38,9 +38,12 @@ App.View.CMSListField = App.View.CMSSection.extend({
       // Make our only left tab the active one
       this.$el.find('.apppreview').addClass('active');
       this.$el.find('#cmsAppPreview').addClass('active');
-    }else if (this.options.mode === "structre"){
+    }else if (this.options.mode === "structure" && this.options.isAdministrator){
       this.$el.find('.fb-tabs li.addfield').show();
       this.$el.find('.fb-tabs li.configurefield').show();
+    }else{
+      this.$el.find('middle').empty().append('<h3>You do not have permissions to perform this operation</h3>');
+      return this;
     }
 
 
@@ -162,7 +165,7 @@ App.View.CMSListField = App.View.CMSSection.extend({
         }
 
       }
-    }else if(this.options.mode === "structure"){
+    }else if(this.options.mode === "structure" && this.options.isAdministrator){
       var fields = this.fb.mainView.collection.toJSON();
       fields = this.massageFieldsFromFormBuilder(fields);
       this.fieldList.fields = fields;
@@ -212,17 +215,22 @@ App.View.CMSListField = App.View.CMSSection.extend({
     App.dispatch.trigger('cms-checkUnsaved', function(){
       self.options.mode = 'data';
       self.title = 'Edit List Data';
-      self.options.editStructure = false;
+      self.options.isAdministrator = false;
       self.render();
       self.$el.find('.btn-listfield-change-data').addClass('active');
     });
   },
   setModeStructure : function(){
     var self = this;
+
+    if (!this.options.isAdministrator){
+      return;
+    }
+
     App.dispatch.trigger('cms-checkUnsaved', function(){
       self.options.mode = 'structure';
       self.title = 'Edit List Structure';
-      self.options.editStructure = true;
+      self.options.isAdministrator = true;
       self.render();
       self.$el.find('.btn-listfield-change-structure').addClass('active');
     });

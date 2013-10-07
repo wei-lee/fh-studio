@@ -130,7 +130,7 @@ App.View.CMSSection = App.View.CMS.extend({
     // Add in some instructions ontop of the form
     if (this.view === 'section'){
       var instructions;
-      if(this.options.editStructure && this.options.editStructure === true){
+      if(this.options.isAdministrator && this.options.isAdministrator === true){
         instructions = "Drag fields from the right to add fields. Drag fields to re-order. Click on a field to select it, click again to edit it. ";
       }else{
         instructions = "Edit the form to alter CMS data";
@@ -188,7 +188,7 @@ App.View.CMSSection = App.View.CMS.extend({
       noScroll : true,
       noEditOnDrop : true,
       bootstrapData: fields,
-      editStructure : this.options.editStructure || false
+      editStructure : this.options.isAdministrator || false
     });
 
     //TODO move this not sure where the right place is for it right now.
@@ -328,8 +328,7 @@ App.View.CMSSection = App.View.CMS.extend({
   onListFieldEdit : function(e, mode){
     var el = $(e.target),
     fieldName = el.data('name'),
-    editStructure = (mode === 'structure'),
-    options = { collection : this.collection, section : this.options.section, listfield : fieldName, mode : mode, editStructure : editStructure };
+    options = { collection : this.collection, section : this.options.section, listfield : fieldName, mode : mode, isAdministrator : this.options.isAdministrator };
     this.trigger('edit_field_list', options);
   }
 });

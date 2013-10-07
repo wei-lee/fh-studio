@@ -181,11 +181,13 @@ App.View.CMSTree = App.View.CMS.extend({
   "onAddSection": function (element) {
 
     var self = this;
-    var parentOptions = self.collection.toHTMLOptions();
-    console.log("parentOptions ",parentOptions);
+    var parentOptions = self.collection.toHTMLOptions(),
+    selectContent;
     parentOptions = ["<option value='' data-path='' >-Root</option>"].concat(parentOptions);
     parentOptions = parentOptions.join('');
-    var selectContent = self.templates.$cms_sectionDropDown({"parentOptions":parentOptions});
+    selectContent = self.templates.$cms_sectionDropDown({"parentOptions":parentOptions});
+
+    $(selectContent).find('select').val(self.activeSection);
 
     console.log(selectContent);
     var modal = new App.View.Modal({
