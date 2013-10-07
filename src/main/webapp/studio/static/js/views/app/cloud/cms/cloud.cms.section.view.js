@@ -23,7 +23,6 @@ App.View.CMSSection = App.View.CMS.extend({
     this.options = options;
     this.collection = options.collection;
     this.compileTemplates();
-    this.bind('listfieldRowSelect', this.listfieldRowSelect);
     this.view = (this.options.hasOwnProperty('listfield')) ?  "listfield" : "section";
 
 
@@ -331,24 +330,5 @@ App.View.CMSSection = App.View.CMS.extend({
     editStructure = (mode === 'structure'),
     options = { collection : this.collection, section : this.options.section, listfield : fieldName, mode : mode, editStructure : editStructure };
     this.trigger('edit_field_list', options);
-  },
-  listfieldRowSelect : function(index){
-    var fields = this.fieldList.fields,
-    data = this.fieldList.data,
-    row;
-
-    if (data.length < index){
-      throw new Error('No list field row with that index found');
-    }
-
-    row = data[index];
-    _.each(fields, function(f){
-      if (!row.hasOwnProperty(f.name)){
-        throw new Error('No propery on this row found with key ' + f.name);
-      }
-      f.value = row[f.name];
-    });
-    fields = this.massageFieldsForFormbuilder(fields);
-    this.fb.mainView.collection.reset(fields);
   }
 });

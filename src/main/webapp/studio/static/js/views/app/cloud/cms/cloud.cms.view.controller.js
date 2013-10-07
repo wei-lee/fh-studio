@@ -27,6 +27,7 @@ App.View.CMSController  = Backbone.View.extend({
     this.collection = new App.Collection.CmsSection();
     this.collection.fetch({ reset: true});
     this.collection.bind('reset', $.proxy(this.render, this));
+    App.dispatch.bind('cms-checkUnsaved', $.proxy(this.checkUnsaved, this));
   },
   render: function(options){
     this.$el.empty();
@@ -89,28 +90,33 @@ App.View.CMSController  = Backbone.View.extend({
     return this;
   },
   onEditFieldList : function(options){
-    this.active = 'listfield';
-    this.$fbContainer.hide();
-    this.$listFieldContainer.empty().show();
-    options.$el = this.$listFieldContainer;
-    this.listfield = new App.View.CMSListField(options);
-    this.listfield.render();
-    this.listfield.bind('back', $.proxy(this.onCMSBack, this));
+    var self = this;
+    App.dispatch.trigger('cms-checkUnsaved', function(){
+      self.active = 'listfield';
+      self.$fbContainer.hide();
+      self.$listFieldContainer.empty().show();
+      options.$el = self.$listFieldContainer;
+      self.listfield = new App.View.CMSListField(options);
+      self.listfield.render();
+      self.listfield.bind('back', $.proxy(self.onCMSBack, self));
+    });
   },
   onCMSBack : function(success){
-
+//    App.dispatch.trigger('cms-checkUnsaved', function(){
+//    });
+    var self = this;
     switch(this.active){
       case "listfield":
-        this.$listFieldContainer.empty().hide();
-        if (this.listField){
-          this.listfield.undelegateEvents();
+        self.$listFieldContainer.empty().hide();
+        if (self.listfield){
+          self.listfield.undelegateEvents();
 
         }
         if (success === true){
           // Show save success message
-          this.form.alertMessage();
+          self.form.alertMessage();
         }
-        this.form.render();
+        self.form.render();
         break;
       case "audit":
         this.$auditContainer.hide();
@@ -145,5 +151,25 @@ App.View.CMSController  = Backbone.View.extend({
   },
   showCopy : function(){
     this.$el.append(new App.View.CMSImportExportCopy( { view : 'copy', mode : this.mode } ).render().$el);
+  },
+  checkUnsaved : function(cb){
+    var self = this,
+    unsaved = this.tree.$el.find('.jstree-unsaved');
+    if (unsaved.length > 0){
+      var modal = new App.View.Modal({
+        title: 'Unsaved Changes',
+        body: "Are you sure you want to leave this page? You have unsaved changes",
+        okText: 'Discard changes',
+        cancelText : 'Cancel',
+        ok: function(){
+          self.tree.$el.find('.jstree-unsaved').removeClass('jstree-unsaved');
+          cb();
+        }
+      });
+      this.$el.append(modal.render().$el);
+    }else{
+      cb();
+    }
+
   }
 });

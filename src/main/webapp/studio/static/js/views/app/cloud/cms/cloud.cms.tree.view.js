@@ -268,24 +268,12 @@ App.View.CMSTree = App.View.CMS.extend({
   onTreeNodeClick: function (e, data) {
     console.log("on tree node click");
     var self = this,
-    path = data && data.rslt && data.rslt.obj && data.rslt.obj.attr && data.rslt.obj.attr('path'),
-    unsaved = this.$el.find('.jstree-unsaved');
+    path = data && data.rslt && data.rslt.obj && data.rslt.obj.attr && data.rslt.obj.attr('path');
     self.activeSection = path;
-    if (unsaved.length > 0){
-      var modal = new App.View.Modal({
-        title: 'Unsaved Changes',
-        body: "Are you sure you want to leave this page? You have unsaved changes",
-        okText: 'Discard changes',
-        cancelText : 'Cancel',
-        ok: function (e) {
-          self.navigateTo(path);
-          self.$el.find('.jstree-unsaved').removeClass('jstree-unsaved');
-        }
-      });
-      self.$el.append(modal.render().$el);
-    }else{
-      this.navigateTo(path);
-    }
+    var ok = function (e) {
+      self.navigateTo(path);
+    };
+    App.dispatch.trigger('cms-checkUnsaved', ok);
   },
   navigateTo : function(path){
     if (!path) {
