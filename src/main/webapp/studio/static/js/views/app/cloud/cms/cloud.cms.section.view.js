@@ -207,6 +207,8 @@ App.View.CMSSection = App.View.CMS.extend({
           break;
         case "list":
           newField.field_type = "field_list";
+          newField.values = field.values || [];
+          newField.fields = field.fields || [];
           break;
         default:
           newField.field_type = field.type;
@@ -230,6 +232,13 @@ App.View.CMSSection = App.View.CMS.extend({
           // just copy it directly..
           //TODO: What if the user changes the listfield's name?
           newField = _.findWhere(oldSection.fields, { name : field.label});
+          if (!newField){
+            newField = {
+              type : 'list',
+              data : [],
+              fields : []
+            };
+          }
           break;
         case "text":
           newField.type = "string";
@@ -239,8 +248,8 @@ App.View.CMSSection = App.View.CMS.extend({
           break;
       }
       fields.push(newField);
-      newField.name = field.label;
-      newField.value = field.value;
+      newField.name = newField.name || field.label;
+      newField.value = newField.value || field.value;
     });
     return fields;
   },
