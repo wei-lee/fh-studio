@@ -4,6 +4,7 @@ Component: fh-studio
 3.17.15 - 2013-10-07 - IR212 - Niall Donnelly
 -------------------------------------------------------------------------------
 * 4879 -- Open Registration breaks login functionality
+* 2323 -- Added Mubaloo images for mubaloodemo.feedhenry.com
 
 3.17.14 - 2013-09-25 - IR211 - Damian Beresford
 -------------------------------------------------------------------------------
