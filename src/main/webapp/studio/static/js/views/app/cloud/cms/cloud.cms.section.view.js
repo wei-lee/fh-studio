@@ -271,8 +271,8 @@ App.View.CMSSection = App.View.CMS.extend({
     App.dispatch.trigger(CMS_TOPICS.AUDIT, "Section draft saved with values: " + JSON.stringify(this.section));
     this.section.status = 'draft';
     this.sectionModel.set(this.section);
-    this.$el.find('.btn-discard-draft').attr('disabled', false)
-    //TODO: Dispatch draft to SS
+    this.$el.find('.btn-discard-draft').attr('disabled', false);
+    this.collection.sync('draft', this.sectionModel.toJSON(), {});
     return false;
   },
   onDraftDiscard: function(e){
@@ -288,7 +288,7 @@ App.View.CMSSection = App.View.CMS.extend({
     App.dispatch.trigger(CMS_TOPICS.AUDIT, "Section draft discarded");
     App.dispatch.trigger(CMS_TOPICS.SECTION_DISCARD_DRAFT,this.section);
     this.render();
-    //TODO: Discard draft on server
+    this.collection.sync('discarddraft', this.sectionModel.toJSON(), {});
   },
   onSectionPublish : function(e){
     var vals = {},
@@ -315,16 +315,16 @@ App.View.CMSSection = App.View.CMS.extend({
     this.sectionModel.set(this.section);
 
     this.sectionModel.set('status', status);
-    //TODO: Dispatch publish action to SS
     this.alertMessage('Section published successfully');
     App.dispatch.trigger(CMS_TOPICS.SECTION_PUBLISH, this.sectionModel.toJSON()); // Notify the tree that we're saving the section so it can change colour
+    this.collection.sync('publish', this.sectionModel.toJSON(), {});
   },
   onSectionDelete : function(e){
     console.log("section delete called");
     e.preventDefault();
-    // TODO: Delete section on server
     App.dispatch.trigger(CMS_TOPICS.AUDIT, "Section deleted");
     App.dispatch.trigger(CMS_TOPICS.SECTION_DELETE,{"path": $(e.target).data("path")});
+    this.collection.sync('delete', this.sectionModel.toJSON(), {});
   },
   onPublishDateFocus : function(){
     this.$el.find('#publishRadioLater').attr('checked', true);

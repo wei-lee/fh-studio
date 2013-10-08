@@ -16,22 +16,45 @@ App.Collection.CmsSection = Backbone.Collection.extend({
   initialize: function() {},
   model: App.Model.CmsSection,
   //todo change this to use property instead
-  url: '/studio/static/js/model/backbone/mocks/cms_sections.json',
+  read_url: '/studio/static/js/model/backbone/mocks/cms_sections.json',
   sync: function (method, model, options) {
     var self = this;
-    var url = self.url;
-    $fw.server.post(url, {}, function(res) {
-      if (res && res.sections && res.sections.length>0) {
-        self.loaded = true;
-        if ($.isFunction(options.success)) {
-          options.success(res.sections, options);
-        }
-      } else {
-        if ($.isFunction(options.error)) {
-          options.error(res.sections, options);
-        }
+    var url, body;
+    //TODO These go in "read" - leave here for now so we post to a blank thingy
+    url = self.read_url;
+    body = {};
+    switch(method){
+      case "read":
+        //TODO
+        break;
+      case "create":
+        //TODO
+        break;
+      case "discarddraft":
+        //TODO
+        break;
+      case "draft":
+        //TODO
+        break;
+      case "publish":
+        //TODO
+        break;
+      case "delete":
+        //TODO
+        break;
+      default:
+        url = self.read_url;
+        body = {};
+        break;
+    }
+
+    $fw.server.post(url, body, function(res) {
+      self.loaded = true;
+      if ($.isFunction(options.success)) {
+        options.success(res.sections, options);
       }
     }, options.error, true);
+
   },
   findSectionByPath : function(path){
     console.log("find section by path " + path);

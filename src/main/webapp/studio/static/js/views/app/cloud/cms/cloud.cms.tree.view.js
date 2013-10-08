@@ -250,6 +250,7 @@ App.View.CMSTree = App.View.CMS.extend({
     console.log("models ",self.collection.models);
     var model = new App.Model.CmsSection(node);
     self.collection.push(model);
+    this.collection.sync('create', model.toJSON(), {});
     self.$el.jstree("unset_focus");
   },
   //move to fh.cms
