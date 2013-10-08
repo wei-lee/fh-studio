@@ -279,7 +279,8 @@ App.View.CMSSection = App.View.CMS.extend({
     //TODO: Discard draft on server
   },
   onSectionPublish : function(e){
-    var vals = {};
+    var vals = {},
+    status = 'published';
     e.preventDefault();
 
     // Get our form as a JSON object
@@ -293,6 +294,7 @@ App.View.CMSSection = App.View.CMS.extend({
         this.section.publishdate = new Date(); // TODO: Maybe this should be handled on the server..?
       }
     }else if (vals.hasOwnProperty('publishRadio') && vals.publishRadio === "later"){
+      status = 'publishlater';
       this.section.publishDate = vals.publishdate;
     }
 
@@ -300,9 +302,10 @@ App.View.CMSSection = App.View.CMS.extend({
 
     this.sectionModel.set(this.section);
 
-    this.sectionModel.set('status', 'published');
+    this.sectionModel.set('status', status);
     //TODO: Dispatch publish action to SS
-    App.dispatch.trigger(CMS_TOPICS.SECTION_PUBLISH, this.section); // Notify the tree that we're saving the section so it can change colour
+    this.alertMessage('Section published successfully');
+    App.dispatch.trigger(CMS_TOPICS.SECTION_PUBLISH, this.sectionModel.toJSON()); // Notify the tree that we're saving the section so it can change colour
   },
   onSectionDelete : function(e){
     console.log("section delete called");

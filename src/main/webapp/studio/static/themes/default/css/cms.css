@@ -150,20 +150,6 @@
     display: none;
 }
 
-.cmsTreeContainer .jstree-clicked, .cmsTreeContainer .jstree-clicked.jstree-hovered {
-    border: 0;
-    border-bottom:2px solid #006dcc;
-    background: transparent;
-    color: #333;
-}
-
-.cmsTreeContainer .jstree-hovered {
-    background: transparent;
-    color: black;
-    font-weight: bold;
-    border: 0;
-}
-
 /*
   Make a unified border-bottom across the CMS
  */
@@ -212,11 +198,65 @@
     font-size: 1.4em;
 }
 
+/*
+  JSTree styles
+*/
+#cms_container .jstree-clicked, #cms_container .jstree-clicked.jstree-hovered {
+    border: 0;
+    border-bottom:2px solid #006dcc;
+    background: transparent;
+    color: #333;
+}
+
+#cms_container .jstree-hovered {
+    background: transparent;
+    color: black;
+    font-weight: bold;
+    padding: 0 2px;
+    border: 0;
+}
+
+#cms_container .jstree-clicked.jstree-unsaved, #cms_container .jstree-clicked.jstree-hovered.jstree-unsaved {
+    border-bottom:2px solid #ab2729;
+}
+
+#cms_container .jstree-clicked.jstree-draft, #cms_container .jstree-clicked.jstree-hovered.jstree-draft {
+    border-bottom:2px solid #ff9101;
+}
+
+#cms_container .jstree-clicked.jstree-publishlater, #cms_container .jstree-clicked.jstree-hovered.jstree-publishlater {
+    border-bottom:2px solid #4756b9;
+}
+
 #cms_container .jstree-classic ins {
     background-image: url("../img/ddark.png");
 }
 #cms_container  .jstree-classic li {
     background-image: none;
+}
+
+.jstree-classic .jstree-open .jstree-unsaved  .jstree-icon {
+    background-position: -37px -36px;
+}
+
+#cms_container  .jstree-classic .jstree-unsaved .jstree-icon {
+    background-position: -37px -19px;
+}
+
+.jstree-classic .jstree-open .jstree-draft  .jstree-icon {
+    background-position: -74px -36px;
+}
+
+#cms_container  .jstree-classic .jstree-draft .jstree-icon {
+    background-position: -74px -19px;
+}
+
+.jstree-classic .jstree-open .jstree-publishlater  .jstree-icon {
+    background-position: -18px -36px;
+}
+
+#cms_container  .jstree-classic .jstree-publishlater .jstree-icon {
+    background-position: -18px -19px;
 }
 
 /*

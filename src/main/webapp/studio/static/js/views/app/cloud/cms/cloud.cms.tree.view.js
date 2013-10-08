@@ -62,8 +62,9 @@ App.View.CMSTree = App.View.CMS.extend({
 
     App.dispatch.on(CMS_TOPICS.SECTION_PUBLISH,function (data){
        console.log("cms.sectionpublish ", data);
+       var status = data.status || 'published';
       //TODO need to know if it is a publish later or not.
-      $('.jstree-clicked').removeClass().addClass("jstree-clicked");
+      $('.jstree-clicked').removeClass().addClass("jstree-clicked").addClass("jstree-" + status);
     });
 
     App.dispatch.on(CMS_TOPICS.SECTION_DIRTIED, function (data){
