@@ -215,7 +215,7 @@ App.View.CMSListField = App.View.CMSSection.extend({
     App.dispatch.trigger('cms-checkUnsaved', function(){
       self.options.mode = 'data';
       self.title = 'Edit List Data';
-      self.options.isAdministrator = false;
+      self.options.editStructure = false;
       self.render();
       self.$el.find('.btn-listfield-change-data').addClass('active');
     });
@@ -230,7 +230,7 @@ App.View.CMSListField = App.View.CMSSection.extend({
     App.dispatch.trigger('cms-checkUnsaved', function(){
       self.options.mode = 'structure';
       self.title = 'Edit List Structure';
-      self.options.isAdministrator = true;
+      self.options.editStructure = true;
       self.render();
       self.$el.find('.btn-listfield-change-structure').addClass('active');
     });

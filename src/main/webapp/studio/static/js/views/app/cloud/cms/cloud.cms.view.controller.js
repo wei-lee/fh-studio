@@ -110,7 +110,6 @@ App.View.CMSController  = Backbone.View.extend({
         self.$listFieldContainer.empty().hide();
         if (self.listfield){
           self.listfield.undelegateEvents();
-
         }
         if (success === true){
           // Show save success message

@@ -21,6 +21,7 @@ App.View.CMSSection = App.View.CMS.extend({
   initialize: function(options){
     this.$el = options.$el;
     this.options = options;
+    this.options.editStructure = (options.isAdministrator === true);
     this.collection = options.collection;
     this.compileTemplates();
     this.view = (this.options.hasOwnProperty('listfield')) ?  "listfield" : "section";
@@ -160,7 +161,9 @@ App.View.CMSSection = App.View.CMS.extend({
       $('.fb-tabs li.configurefield a').trigger('click');
     });
 
-
+    // Bug fix for multiple formbuilder views - unbind and re-bind the events
+    var mv = this.fb.mainView;
+    mv.$el.find('.fb-tabs a').unbind().on('click', $.proxy(mv.showTab, mv));
 
     return this;
   },
@@ -188,7 +191,7 @@ App.View.CMSSection = App.View.CMS.extend({
       noScroll : true,
       noEditOnDrop : true,
       bootstrapData: fields,
-      editStructure : this.options.isAdministrator || false
+      editStructure : this.options.editStructure || false
     });
 
     //TODO move this not sure where the right place is for it right now.
