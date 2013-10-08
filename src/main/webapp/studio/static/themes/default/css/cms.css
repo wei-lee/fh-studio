@@ -150,7 +150,14 @@
     display: none;
 }
 
-.cmsTreeContainer .jstree-clicked {
+.cmsTreeContainer .jstree-clicked, .cmsTreeContainer .jstree-clicked.jstree-hovered {
+    border: 0;
+    border-bottom:2px solid #006dcc;
+    background: transparent;
+    color: #333;
+}
+
+.cmsTreeContainer .jstree-hovered {
     background: transparent;
     color: black;
     font-weight: bold;
@@ -194,7 +201,7 @@
 
 #cms_container p.instructions {
     border-bottom: 2px solid #006dcc;
-    padding: 6px 0 0 2px;
+    padding: 0 0 0 2px;
     margin-left: 12px;
     display: inline;
     color: #333;
@@ -203,6 +210,13 @@
 #cms_container .instructions i.icon-info-sign {
     color: #006dcc;
     font-size: 1.4em;
+}
+
+#cms_container .jstree-classic ins {
+    background-image: url("../img/ddark.png");
+}
+#cms_container  .jstree-classic li {
+    background-image: none;
 }
 
 /*
