@@ -75,22 +75,24 @@
 
         <br />
           <div class="btn-group">
-              <button type="submit" class="btn btn-primary btn-publish-draft" data-action="publish">Publish Section</button>
-              <button type="reset" class="btn btn-danger btn-discard-draft" disabled data-action="discard">Revert Changes</button>
+              <a class="btn btn-small btn-publish-draft" data-action="publish">Save Changes</a>
+              <a class="btn btn-small btn-danger btn-discard-draft" disabled>Revert Changes</a>
         </div>
       </fieldset>
     </form>
 
     <br/>
-    <a class="btn btn-danger btn-deletesection"  data-path="{{path}}" >Delete this section</a>
-
+    <div class="btn-group">
+      <a class="btn btn-large btn-publish-draft btn-primary"  data-path="{{path}}" >Publish this section</a>
+      <a class="btn btn-large btn-danger btn-deletesection"  data-path="{{path}}" >Delete this section</a>
+    </div>
   </div>
   <div class="fb-tab-pane" id="cmsAppPreview">
   </div>
 </script>
 <script id="cms_section_savecancel" type="text/x-handlebars-template">
 <div class="btn-group pull-right cms_section_savecancel">
-  <button type="submit" class="btn btn-primary btn-savedraft" data-action="save-draft" >Save Draft</button>
+  <button type="submit" class="btn btn-savedraft" data-action="save-draft" >Save Changes</button>
   <button type="reset" class="btn btn-danger btn-discard-draft" disabled data-action="discard-draft">Discard Draft</button>
 </div>
 </script>
