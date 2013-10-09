@@ -5,7 +5,7 @@ App.View.CMSSection = App.View.CMS.extend({
   title : 'Edit Section',
   events: {
     'click .btn-savedraft' : 'onSectionSaveDraft',
-    'submit #configureSectionForm' : 'onSectionPublish',
+    'click .btn-publish-draft' : 'onSectionPublish',
     'click .btn-discard-draft' : 'onDraftDiscard',
     'click .btn-deletesection' : 'onSectionDelete',
     'click #cmsDatePicker' : 'onPublishDateFocus',
@@ -140,22 +140,6 @@ App.View.CMSSection = App.View.CMS.extend({
       this.$el.find('.middle').append(this.templates.$cms_section_savecancel());
     }
 
-     // On editing an existing field, mark section as unsaved
-     //TOOD: A..?
-     var resFields = $('.fb-response-fields input');
-     //TODO tidy these up
-     resFields.keyup(function (e){
-       App.dispatch.trigger("cms.section.unsaved",section);
-    });
-     //..or B?:
-//     this.fb.mainView.collection.bind('change', function(e){
-//       App.dispatch.trigger("cms.section.unsaved",section);
-//     });
-     // On creating a field, we should also mark the section unsaved changes
-     this.fb.mainView.collection.bind('add', function(e){
-       App.dispatch.trigger("cms.section.unsaved",section);
-     });
-
 
     $('.fb-field-wrapper .subtemplate-wrapper').click(function (){
       $('.fb-tabs li.configurefield a').trigger('click');
@@ -194,10 +178,31 @@ App.View.CMSSection = App.View.CMS.extend({
       editStructure : this.options.editStructure || false
     });
 
-    //TODO move this not sure where the right place is for it right now.
-    $('.fb-response-fields').find('input').unbind().keyup(function (e){
-      App.dispatch.trigger(CMS_TOPICS.SECTION_DIRTIED,{});
+    // On editing an existing field, mark section as unsaved
+    this.fb.mainView.collection.bind('change', function(model, collection){
+      if (model.hasChanged('label')){
+        model.set('needsUpdate', true); // Label changed - this is structure, we need to POST to setField
+      }
+      App.dispatch.trigger(CMS_TOPICS.SECTION_DIRTIED,model.toJSON());
     });
+    // On creating a field, we should also mark the section unsaved changes
+    this.fb.mainView.collection.bind('add', function(model, collection){
+      model.set('needsCreate', true); // We need to POST to setField to create it
+      App.dispatch.trigger(CMS_TOPICS.SECTION_DIRTIED,model.toJSON());
+    });
+
+    // On creating a field, we should also mark the section unsaved changes
+    this.fb.mainView.collection.bind('remove', function(model, collection){
+      if (!self.sectionModel.has('fieldsToDelete')){
+        self.sectionModel.set('fieldsToDelete', []);
+      }
+      var appended = self.sectionModel.get('fieldsToDelete').concat(model.toJSON());
+      self.sectionModel.set('fieldsToDelete', appended);
+      App.dispatch.trigger(CMS_TOPICS.SECTION_DIRTIED,model.toJSON());
+    });
+
+
+
     return this.fb;
   },
   massageFieldsForFormbuilder : function(oldFields){
@@ -253,6 +258,13 @@ App.View.CMSSection = App.View.CMS.extend({
       fields.push(newField);
       newField.name = newField.name || field.label;
       newField.value = newField.value || field.value;
+      //TODO: Remove the need for massaging, this is kinda redonk.
+      if (field.needsUpdate===true){
+        newField.needsUpdate = true;
+      }
+      if (field.needsCreate===true){
+        newField.needsCreate = true;
+      }
     });
     return fields;
   },
@@ -261,18 +273,24 @@ App.View.CMSSection = App.View.CMS.extend({
 
   onSectionSaveDraft : function(e){
     e.preventDefault();
-    var fields = this.fb.mainView.collection.toJSON(); //TODO: Verify this syncs with autoSave
-    App.dispatch.trigger(CMS_TOPICS.SECTION_SAVE_DRAFT,{"section":this.section}); // Notify the tree that we're saving the section so it can change colour
+    var self = this,
+    fields = this.fb.mainView.collection.toJSON(); //TODO: Verify this syncs with autoSave
 
     this.section.fields = this.massageFieldsFromFormBuilder(fields, this.section);
 
-
-    this.alertMessage();
-    App.dispatch.trigger(CMS_TOPICS.AUDIT, "Section draft saved with values: " + JSON.stringify(this.section));
     this.section.status = 'draft';
     this.sectionModel.set(this.section);
     this.$el.find('.btn-discard-draft').attr('disabled', false);
-    this.collection.sync('draft', this.sectionModel.toJSON(), {});
+    this.collection.sync('draft', this.sectionModel.toJSON(), {
+      success : function(){
+        self.alertMessage();
+        App.dispatch.trigger(CMS_TOPICS.AUDIT, "Section draft saved with values: " + JSON.stringify(self.section));
+        App.dispatch.trigger(CMS_TOPICS.SECTION_SAVE_DRAFT,{"section":self.section}); // Notify the tree that we're saving the section so it can change colour
+      },
+      error : function(err){
+        self.alertMessage(err.toString(), 'danger');
+      }
+    });
     return false;
   },
   onDraftDiscard: function(e){
