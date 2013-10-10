@@ -12,7 +12,7 @@ App.Model.CmsSection.CONST = {
   "CHILDREN" : "children"
 };
 
-App.Collection.CmsSection = Backbone.Collection.extend({
+App.Collection.CMS = Backbone.Collection.extend({
   initialize: function() {},
   model: App.Model.CmsSection,
   //todo change this to use property instead
@@ -28,22 +28,22 @@ App.Collection.CmsSection = Backbone.Collection.extend({
     var self = this;
 
     switch(method){
-      case "read":
+      case "read": // read sections
         this.read.apply(this, arguments);
         break;
-      case "create":
+      case "create": // create a new section
         //TODO
         break;
-      case "discarddraft":
+      case "discarddraft": // Restore a section to it's published values
         //TODO
         break;
-      case "draft":
+      case "draft": // Update section values
         this.draft.apply(this, arguments);
         break;
-      case "publish":
+      case "publish": // Publish entire CMS (all drafts)
         //TODO
         break;
-      case "delete":
+      case "delete": // Delete a section
         //TODO
         break;
       default:

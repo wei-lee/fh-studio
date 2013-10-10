@@ -16,8 +16,9 @@
     <div class="menu">
       <h3>Sections</h3>
       <div class="btn-group pull-right">
-        <a href="#" class="btn btn-small btn-deletesection btn-danger"><i class="icon-trash"></i></a>
-        <a href="#" class="btn btn-small btn-addsection btn-success"><i class="icon-plus"></i></a>
+        <a href="#" title="Delete Selected Section" class="btn btn-small btn-deletesection btn-danger"><i class="icon-trash"></i></a>
+        <a href="#" title="Add Section"  class="btn btn-small btn-addsection btn-success"><i class="icon-plus"></i></a>
+        <a href="#" title="Publish all CMS Drafts" class="btn btn-small btn-cms-publish btn-primary" disabled><i class="icon-bullhorn"></i></a>
       </div>
 
     </div>
@@ -59,20 +60,6 @@
         <select name="parentName">
           {{{ parentOptions }}}
         </select>
-        <label class="radio">
-          <input type="radio" name="publishRadio" id="publishRadioNow" value="now" checked>
-          Publish Now
-        </label>
-        <label class="radio">
-          <input type="radio" name="publishRadio" id="publishRadioLater" value="later">
-          Publish Later
-        </label>
-        <div class="input-append date" id="cmsDatePicker">
-          <input type="text" class="span6"  name="publishdate">
-          <span class="add-on"><i class="icon-th"></i></span>
-        </div>
-
-
         <br />
           <div class="btn-group">
               <a class="btn btn-small btn-publish-draft" data-action="publish">Save Changes</a>
@@ -83,13 +70,28 @@
 
     <br/>
     <div class="btn-group">
-      <a class="btn btn-large btn-publish-draft btn-primary"  data-path="{{path}}" >Publish this section</a>
       <a class="btn btn-large btn-danger btn-deletesection"  data-path="{{path}}" >Delete this section</a>
     </div>
   </div>
   <div class="fb-tab-pane" id="cmsAppPreview">
   </div>
 </script>
+
+<script id="cms_publishModal" type="text/x-handlebars-template">
+  <label class="radio">
+    <input type="radio" name="publishRadio" id="publishRadioNow" value="now" checked>
+    Publish Now
+  </label>
+  <label class="radio">
+    <input type="radio" name="publishRadio" id="publishRadioLater" value="later">
+    Publish Later
+  </label>
+  <div class="input-append date" id="cmsDatePicker">
+    <input type="text" class="span6"  name="publishdate">
+    <span class="add-on"><i class="icon-th"></i></span>
+  </div>
+</script>
+
 <script id="cms_section_savecancel" type="text/x-handlebars-template">
 <div class="btn-group pull-right cms_section_savecancel">
   <button type="submit" class="btn btn-savedraft" data-action="save-draft" >Save Changes</button>
@@ -125,8 +127,9 @@
   <div class="cms_mastermenu btn-group pull-right">
     <a href="#" class="btn btn-small btn-cms-import btn-success"><i class="icon-upload"></i> Import</a>
     <a href="#" class="btn btn-small btn-cms-export btn-success"><i class="icon-download"></i> Export</a>
+    <a href="#" class="btn btn-small btn-cms-copy btn-success"><i class="icon-arrow-right"></i> <span>Copy to {{{ mode }}}</span></a>
     <a href="#" class="btn btn-small btn-cms-audit"><i class="icon-list"></i> Audit Log</a>
-    <a href="#" class="btn btn-small btn-cms-copy btn-primary"><i class="icon-arrow-right"></i> <span>Copy to {{{ mode }}}</span></a>
+    <a href="#" class="btn btn-small btn-cms-publish btn-primary" disabled><i class="icon-bullhorn"></i> <span>Publish</span></a>
   </div>
 
 </script>

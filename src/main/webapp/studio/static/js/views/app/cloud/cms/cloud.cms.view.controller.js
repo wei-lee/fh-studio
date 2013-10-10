@@ -4,7 +4,8 @@ App.View = App.View || {};
 App.View.CMSController  = Backbone.View.extend({
 
   events: {
-    'click .btn-cms-back' : 'onCMSBack'
+    'click .btn-cms-back' : 'onCMSBack',
+    'click .btn-cms-publish' : 'showCMSPublishModal'
   },
 
   templates : {
@@ -24,10 +25,12 @@ App.View.CMSController  = Backbone.View.extend({
     // Initialise our audit controller
     this.audit = new App.View.CMSAudit();
 
-    this.collection = new App.Collection.CmsSection();
+    this.collection = new App.Collection.CMS();
     this.collection.fetch({ reset: true});
     this.collection.bind('reset', $.proxy(this.render, this));
     App.dispatch.bind('cms-checkUnsaved', $.proxy(this.checkUnsaved, this));
+    App.dispatch.bind(CMS_TOPICS.SECTION_SAVE_DRAFT, $.proxy(this.onSaveDraft, this));
+    App.dispatch.bind(CMS_TOPICS.SECTION_DISCARD_DRAFT, $.proxy(this.onDiscardDraft, this));
   },
   render: function(options){
     this.$el.empty();
@@ -46,6 +49,7 @@ App.View.CMSController  = Backbone.View.extend({
       $(this.options.container).find('.fh-box-header .btn-cms-audit').on('click', $.proxy(this.showAudit, this));
       $(this.options.container).find('.fh-box-header .btn-cms-import').on('click', $.proxy(this.showImport, this));
       $(this.options.container).find('.fh-box-header .btn-cms-export').on('click', $.proxy(this.showExport, this));
+      $(this.options.container).find('.fh-box-header .btn-cms-publish').on('click', $.proxy(this.showCMSPublishModal, this));
       $(this.options.container).find('.fh-box-header .btn-cms-copy').on('click', $.proxy(this.showCopy, this));
     }
     // The button is only templated once - for every other mode switch, we need to replace the inner text of the button
@@ -170,5 +174,53 @@ App.View.CMSController  = Backbone.View.extend({
       cb();
     }
 
+  },
+  // Enable discard draft an publish buttons - we now have a draft..
+  onSaveDraft : function(){
+    this.$el.find('.btn-discard-draft').attr('disabled', false);
+    $(this.options.container).find('.fh-box-header .btn-cms-publish').attr('disabled', false);
+    this.$el.find('.btn-cms-publish').attr('disabled', false);
+
+  },
+  onDiscardDraft : function(){
+    // including .cmsTreeContainer here important, otherwise we pick up on the legend
+    if (this.tree.$el.find('.cmsTreeContainer .jstree-draft').length===0){
+      this.$el.find('.btn-discard-draft').attr('disabled', true);
+      $(this.options.container).find('.fh-box-header .btn-cms-publish').attr('disabled', true);
+      this.$el.find('.btn-cms-publish').attr('disabled', true);
+    }
+
+  },
+  showCMSPublishModal : function(e){
+    this.$el.append(new App.View.CMSImportExportCopy( { view : 'publish' } ).render().$el);
+  },
+  onCMSPublish : function(e){
+    var vals = {},
+    status = 'published';
+    e.preventDefault();
+
+    // Get our form as a JSON object
+    $(this.$el.find('#configureSectionForm').serializeArray()).each(function(idx, el){
+      vals[el.name] = el.value;
+    });
+
+    // If publish is now, set the timedate if it's not already defined on the section
+    if (vals.hasOwnProperty('publishRadio') && vals.publishRadio === "now"){
+      if (!this.section.hasOwnProperty('publishdate')){
+        this.section.publishdate = new Date(); // TODO: Maybe this should be handled on the server..?
+      }
+    }else if (vals.hasOwnProperty('publishRadio') && vals.publishRadio === "later"){
+      status = 'publishlater';
+      this.section.publishDate = vals.publishdate;
+    }
+
+    this.section.name = vals.name;
+
+    this.sectionModel.set(this.section);
+
+    this.sectionModel.set('status', status);
+    this.alertMessage('Section published successfully');
+    App.dispatch.trigger(CMS_TOPICS.SECTION_PUBLISH, this.sectionModel.toJSON()); // Notify the tree that we're saving the section so it can change colour
+    this.collection.sync('publish', this.sectionModel.toJSON(), {});
   }
 });

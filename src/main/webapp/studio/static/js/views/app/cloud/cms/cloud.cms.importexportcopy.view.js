@@ -6,6 +6,7 @@ App.View.CMSImportExportCopy = App.View.CMS.extend({
     'cms_importModal' : '#cms_importModal',
     'cms_exportModal' : '#cms_exportModal',
     'cms_copyModal' : '#cms_copyModal',
+    'cms_publishModal' : '#cms_publishModal',
     'cms_progress' : '#cms_progress'
   },
   mockImportMessages : [
@@ -28,6 +29,13 @@ App.View.CMSImportExportCopy = App.View.CMS.extend({
     "Copying sections",
     "Reticulating Splines",
     "CMS data copied successfully"
+  ],
+  mockPublishMessages : [
+    "Collecting drafts",
+    "Validating draft structure",
+    "Publishing drafts",
+    "Reticulating Splines",
+    "CMS data published successfully"
   ],
   initialize: function(options){
     this.view = options.view;
@@ -52,6 +60,9 @@ App.View.CMSImportExportCopy = App.View.CMS.extend({
         text = $(this.templates.$cms_copyModal(copyArgs));
         op = 'Copy';
         break;
+      case "publish":
+        text = $(this.templates.$cms_publishModal());
+        op = 'Publish';
     }
     progress = $(this.templates.$cms_progress({ operation : op }));
     progress.hide();
@@ -92,6 +103,11 @@ App.View.CMSImportExportCopy = App.View.CMS.extend({
       case "copy":
         mockMessages = this.mockCopyMessages;
         auditMessage = 'copied to ' + this.mode;
+        buttonText = "Done!";
+        break;
+      case "publish":
+        mockMessages = this.mockPublishMessages;
+        auditMessage = 'published to ' + this.mode;
         buttonText = "Done!";
         break;
     }
