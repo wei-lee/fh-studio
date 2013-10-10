@@ -147,13 +147,13 @@ App.View.CMSController  = Backbone.View.extend({
     this.$auditContainer.empty().append(this.audit.render().$el).show();
   },
   showImport : function(){
-    this.$el.append(new App.View.CMSImportExportCopy( { view : 'import' } ).render().$el);
+    this.$el.append(new App.View.CMSImport().render().$el);
   },
   showExport : function(){
-    this.$el.append(new App.View.CMSImportExportCopy( { view : 'export' } ).render().$el);
+    this.$el.append(new App.View.CMSExport().render().$el);
   },
   showCopy : function(){
-    this.$el.append(new App.View.CMSImportExportCopy( { view : 'copy', mode : this.mode } ).render().$el);
+    this.$el.append(new App.View.CMSPublish({mode : this.mode}).render().$el);
   },
   checkUnsaved : function(cb){
     var self = this,
@@ -192,7 +192,7 @@ App.View.CMSController  = Backbone.View.extend({
 
   },
   showCMSPublishModal : function(e){
-    this.$el.append(new App.View.CMSImportExportCopy( { view : 'publish' } ).render().$el);
+    this.$el.append(new App.View.CMSPublish( { view : 'publish' } ).render().$el);
   },
   onCMSPublish : function(e){
     e.preventDefault();
