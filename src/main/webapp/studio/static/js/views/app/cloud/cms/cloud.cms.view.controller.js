@@ -195,32 +195,21 @@ App.View.CMSController  = Backbone.View.extend({
     this.$el.append(new App.View.CMSImportExportCopy( { view : 'publish' } ).render().$el);
   },
   onCMSPublish : function(e){
-    var vals = {},
-    status = 'published';
     e.preventDefault();
 
     // Get our form as a JSON object
-    $(this.$el.find('#configureSectionForm').serializeArray()).each(function(idx, el){
-      vals[el.name] = el.value;
-    });
+    var publishRadio = this.$el.find('input[name="publishRadio"]').val();
 
     // If publish is now, set the timedate if it's not already defined on the section
-    if (vals.hasOwnProperty('publishRadio') && vals.publishRadio === "now"){
-      if (!this.section.hasOwnProperty('publishdate')){
-        this.section.publishdate = new Date(); // TODO: Maybe this should be handled on the server..?
-      }
-    }else if (vals.hasOwnProperty('publishRadio') && vals.publishRadio === "later"){
-      status = 'publishlater';
-      this.section.publishDate = vals.publishdate;
+    if (publishRadio === "later"){
+      this.section.publishDate = this.$el.find('#cmsDatePicker').val();
     }
 
-    this.section.name = vals.name;
-
-    this.sectionModel.set(this.section);
-
-    this.sectionModel.set('status', status);
-    this.alertMessage('Section published successfully');
-    App.dispatch.trigger(CMS_TOPICS.SECTION_PUBLISH, this.sectionModel.toJSON()); // Notify the tree that we're saving the section so it can change colour
-    this.collection.sync('publish', this.sectionModel.toJSON(), {});
+    this.collection.sync('publish', {}, { success : function(){
+      this.alertMessage('CMS published successfully');
+      App.dispatch.trigger(CMS_TOPICS.SECTION_PUBLISH, this.sectionModel.toJSON()); // Notify the tree that we're saving the section so it can change colour
+    }, error : function(){
+      this.alertMessage('CMS publish failed');
+    } });
   }
 });
