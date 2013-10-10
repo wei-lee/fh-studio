@@ -277,7 +277,7 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
 
     self.showProgressModal(title, message, function () {
       self.clearProgressModal();
-      self.appendProgressLog('Cloning Wufoo app template.');
+      self.appendProgressLog('Cloning App Forms app template.');
 
       // Import template & configure
       var import_url = Constants.IMPORT_APP_VIA_URL;
@@ -504,7 +504,7 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
         self.updateFormListing(res.data.Forms);
         self.enableAllInputs();
       } else {
-        self.showError("We couldn't load your Wufoo forms. Please check your details below and try again.");
+        self.showError("We couldn't load your App Forms forms. Please check your details below and try again.");
         self.disableInputs();
       }
     });
