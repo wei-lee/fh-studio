@@ -7,7 +7,6 @@ App.View.CMSSection = App.View.CMS.extend({
     'click .btn-savedraft' : 'onSectionSaveDraft',
     'click .btn-discard-draft' : 'onDraftDiscard',
     'click .btn-deletesection' : 'onSectionDelete',
-    'click #cmsDatePicker' : 'onPublishDateFocus',
     'click .btn-listfield-structure' : 'onListFieldEditStructure',
     'click .btn-listfield-data' : 'onListFieldEditData'
   },
@@ -96,12 +95,6 @@ App.View.CMSSection = App.View.CMS.extend({
       parentOptions = ["<option value='' data-path='' >-Root</option>"].concat(parentOptions);
       parentOptions = parentOptions.join('');
       this.$el.find('.fb-tab-content').append(this.templates.$cms_configureSection({ parentOptions : parentOptions, name : section.name, path:section.path }));
-
-      this.$el.find('#cmsDatePicker').datetimepicker({
-        format: 'yyyy-mm-dd hh:ii',
-        autoclose: true,
-        todayBtn: true
-      });
 
 
 
@@ -325,9 +318,6 @@ App.View.CMSSection = App.View.CMS.extend({
     App.dispatch.trigger(CMS_TOPICS.AUDIT, "Section deleted");
     App.dispatch.trigger(CMS_TOPICS.SECTION_DELETE,{"path": $(e.target).data("path")});
     this.collection.sync('delete', this.sectionModel.toJSON(), {});
-  },
-  onPublishDateFocus : function(){
-    this.$el.find('#publishRadioLater').attr('checked', true);
   },
   setSection : function(section){
     this.options.section = section;

@@ -12,26 +12,18 @@ App.View.CMSModalProgress = App.View.CMS.extend({
   },
   render : function(){
     var self = this,
-    container = $('<div></div>'),
-    progress;
+    container = $('<div></div>');
 
-    progress = $(this.templates.$cms_progress({ operation : this.op }));
-    progress.hide();
-    container.append(this.text, progress);
+    this.progress = $(this.templates.$cms_progress({ operation : this.op }));
+    this.progress.hide();
+    container.append(this.text, this.progress);
 
     this.modal = new App.View.Modal({
       title: this.op + ' CMS Data',
       autoHide : false,
       body: container,
       okText: this.op,
-      ok: function (e) {
-        if (self.done===true){
-          $.proxy(self.modal.close(), self.modal);
-        }
-        self.text.hide();
-        progress.show();
-        self.doOperation();
-      }
+      ok: $.proxy(this.ok, this)
     });
     self.$el.append(this.modal.render().$el);
     return this;
@@ -57,5 +49,13 @@ App.View.CMSModalProgress = App.View.CMS.extend({
         App.dispatch.trigger("cms.audit", "CMS data " + self.auditMessage);
       }
     }, 1000);
+  },
+  ok : function (e) {
+    if (this.done===true){
+      $.proxy(this.modal.close(), this.modal);
+    }
+    this.text.hide();
+    this.progress.show();
+    this.doOperation();
   }
 });

@@ -152,6 +152,13 @@ App.View.CMSController  = Backbone.View.extend({
   showExport : function(){
     this.$el.append(new App.View.CMSExport().render().$el);
   },
+  showCMSPublishModal : function(e){
+    var el = (e.target.nodeName.toLowerCase() === 'span') ? $($(e.target).parents('a')) : $(e.target);
+    if (el.attr('disabled') === 'disabled' || el.attr('disabled') === true){
+      return;
+    }
+    this.$el.append(new App.View.CMSPublish( { collection : this.collection, mode : this.mode } ).render().$el);
+  },
   showCopy : function(){
     this.$el.append(new App.View.CMSPublish({mode : this.mode}).render().$el);
   },
@@ -190,26 +197,5 @@ App.View.CMSController  = Backbone.View.extend({
       this.$el.find('.btn-cms-publish').attr('disabled', true);
     }
 
-  },
-  showCMSPublishModal : function(e){
-    this.$el.append(new App.View.CMSPublish( { view : 'publish' } ).render().$el);
-  },
-  onCMSPublish : function(e){
-    e.preventDefault();
-
-    // Get our form as a JSON object
-    var publishRadio = this.$el.find('input[name="publishRadio"]').val();
-
-    // If publish is now, set the timedate if it's not already defined on the section
-    if (publishRadio === "later"){
-      this.section.publishDate = this.$el.find('#cmsDatePicker').val();
-    }
-
-    this.collection.sync('publish', {}, { success : function(){
-      this.alertMessage('CMS published successfully');
-      App.dispatch.trigger(CMS_TOPICS.SECTION_PUBLISH, this.sectionModel.toJSON()); // Notify the tree that we're saving the section so it can change colour
-    }, error : function(){
-      this.alertMessage('CMS publish failed');
-    } });
   }
 });
