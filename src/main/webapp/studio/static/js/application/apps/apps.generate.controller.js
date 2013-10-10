@@ -93,13 +93,13 @@ GenerateApp.Models.Wufoo = Class.extend({
               else {
                 return cb({
                   status: "error",
-                  data: "Unable to login to WuFoo (not authenticated)"
+                  data: "Unable to login to App Forms (not authenticated)"
                 });
               }
             } else {
               return cb({
                 status: "error",
-                data: "Unable to login to WuFoo (not authenticated)"
+                data: "Unable to login to App Forms (not authenticated)"
               });
             }
           });
@@ -112,7 +112,7 @@ GenerateApp.Models.Wufoo = Class.extend({
       } else {
         return cb({
           status: "error",
-          data: "Unable to login to WuFoo (not authenticated)"
+          data: "Unable to login to App Forms (not authenticated)"
         });
       }
     });
