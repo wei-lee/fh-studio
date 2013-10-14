@@ -27,6 +27,8 @@ App.View.CMSListField = App.View.CMSSection.extend({
     var self = this;
     this.$el.empty();
     this.constructor.__super__.render.apply(this, arguments);
+    // Empty all text fields
+    this.$el.find('.fb-response-fields input, .fb-response-fields textarea').val('');
 
     // remove unused tabs
     this.$el.find('.fb-tabs li.configuresection').remove();
@@ -36,10 +38,15 @@ App.View.CMSListField = App.View.CMSSection.extend({
       // Make our only left tab the active one
       this.$el.find('.apppreview').addClass('active');
       this.$el.find('#cmsAppPreview').addClass('active');
-    }else if (this.options.mode === "structre"){
+    }else if (this.options.mode === "structure" && this.options.isAdministrator){
       this.$el.find('.fb-tabs li.addfield').show();
       this.$el.find('.fb-tabs li.configurefield').show();
+    }else{
+      this.$el.find('middle').empty().append('<h3>You do not have permissions to perform this operation</h3>');
+      return this;
     }
+
+
 
     var top = new App.View.CMSListFieldTopBar(this.options);
     top.render().$el.insertAfter(this.$el.find('.middle .breadcrumb'));
@@ -52,6 +59,9 @@ App.View.CMSListField = App.View.CMSSection.extend({
       this.table.$el.find('table').removeClass('table-striped');
 
       $(this.templates.$cms_editListDataInstructions()).insertAfter(afterEl);
+
+      // Disable field entry until user clicks a row, or adds a new row
+      this.$el.find('.fb-response-fields input, .fb-response-fields textarea').attr('disabled', true);
 
     }
     this.$el.find('.middle').append(this.templates.$cms_listfieldsavecancel({"listid":this.fieldList.hash}));
@@ -85,8 +95,11 @@ App.View.CMSListField = App.View.CMSSection.extend({
       this.render();
 
       var tr = this.$el.find("tr[data-hash='"+blank.hash+"'] ");
-      this.trigger('listfieldRowSelect', tr.data('index'));
+      this.listfieldRowSelect(tr.data('index'));
       this.rowSetState(tr);
+
+      // Set fields disabled to false now we've added a row
+      this.$el.find('.fb-response-fields input, .fb-response-fields textarea').attr('disabled', false);
     }
   },
 
@@ -152,7 +165,7 @@ App.View.CMSListField = App.View.CMSSection.extend({
         }
 
       }
-    }else if(this.options.mode === "structure"){
+    }else if(this.options.mode === "structure" && this.options.isAdministrator){
       var fields = this.fb.mainView.collection.toJSON();
       fields = this.massageFieldsFromFormBuilder(fields);
       this.fieldList.fields = fields;
@@ -198,18 +211,30 @@ App.View.CMSListField = App.View.CMSSection.extend({
     this.render();
   },
   setModeData : function(){
-    this.options.mode = 'data';
-    this.title = 'Edit List Data';
-    this.options.editStructure = false;
-    this.render();
-    this.$el.find('.btn-listfield-change-data').addClass('active');
+    var self = this;
+    App.dispatch.trigger('cms-checkUnsaved', function(){
+      self.options.mode = 'data';
+      self.title = 'Edit List Data';
+      self.options.editStructure = false;
+      self.render();
+      self.$el.find('.btn-listfield-change-data').addClass('active');
+    });
   },
   setModeStructure : function(){
-    this.options.mode = 'structure';
-    this.title = 'Edit List Structure';
-    this.options.editStructure = true;
-    this.render();
-    this.$el.find('.btn-listfield-change-structure').addClass('active');
+    var self = this;
+
+    if (!this.options.isAdministrator){
+      return;
+    }
+
+    App.dispatch.trigger('cms-checkUnsaved', function(){
+      self.options.mode = 'structure';
+      self.title = 'Edit List Structure';
+      self.options.editStructure = true;
+      self.render();
+      self.$el.find('.btn-listfield-change-structure').addClass('active');
+    });
+
   },
   onRowClick : function(e){
     console.log("row click called");
@@ -222,13 +247,16 @@ App.View.CMSListField = App.View.CMSSection.extend({
 
     // Trigger a selection event which will update the data on the formbuilder of section view
     var tr = (e.target.nodeName === "tr") ? $(e.target) : $(e.target).parents('tr');
-    this.trigger('listfieldRowSelect', tr.data('index'));
+    this.listfieldRowSelect(tr.data('index'));
     //TODO move this
     console.log("binding to inputs");
     $('.fb-response-fields').find('input').unbind().keyup(function (e){
       console.log("trigger section unsaved");
       App.dispatch.trigger("cms.section.unsaved",{});
     });
+
+    // Set fields disabled to false now we're editing a row
+    this.$el.find('.fb-response-fields input, .fb-response-fields textarea').attr('disabled', false);
   },
 
   rowSetState: function(row){
@@ -253,6 +281,8 @@ App.View.CMSListField = App.View.CMSSection.extend({
     row = el.parents('tr');
     this.rowSetState(row);
 
+
+
   },
 
   "activateDestuctiveButtons" : function () {
@@ -267,5 +297,24 @@ App.View.CMSListField = App.View.CMSSection.extend({
 
   updateFormData : function(){
 
+  },
+  listfieldRowSelect : function(index){
+    var fields = this.fieldList.fields,
+    data = this.fieldList.data,
+    row;
+
+    if (data.length < index){
+      throw new Error('No list field row with that index found');
+    }
+
+    row = data[index];
+    _.each(fields, function(f){
+      if (!row.hasOwnProperty(f.name)){
+        throw new Error('No propery on this row found with key ' + f.name);
+      }
+      f.value = row[f.name];
+    });
+    fields = this.massageFieldsForFormbuilder(fields);
+    this.fb.mainView.collection.reset(fields);
   }
 });

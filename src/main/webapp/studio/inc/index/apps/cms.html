@@ -16,21 +16,22 @@
     <div class="menu">
       <h3>Sections</h3>
       <div class="btn-group pull-right">
-        <a href="#" class="btn btn-small btn-deletesection btn-danger"><i class="icon-trash"></i></a>
-        <a href="#" class="btn btn-small btn-addsection btn-success"><i class="icon-plus"></i></a>
+        <a href="#" title="Delete Selected Section" class="btn btn-small btn-deletesection btn-danger"><i class="icon-trash"></i></a>
+        <a href="#" title="Add Section"  class="btn btn-small btn-addsection btn-success"><i class="icon-plus"></i></a>
+        <a href="#" title="Publish all CMS Drafts" class="btn btn-small btn-cms-publish btn-primary" disabled><i class="icon-bullhorn"></i></a>
       </div>
 
     </div>
     <br style="clear: both;" />
-    <div class="treeContainer">
+    <div class="cmsTreeContainer">
 
     </div>
     <hr/>
     <span style="margin-left:5px; font-size:14px;">Legend:</span>
-    <ul style="margin-left:5px;">
-     <li><span class="text-error">Unsaved Changes</span></li>
-     <li><span class="text-warning">Draft</span></li>
-    <li><span class="text-info">Publish Later</span></li>
+    <ul class="jstree jstree-classic" style="margin-left:5px;">
+      <li class="jstree-leaf"><a class="jstree-publishlater" href="#"><ins class="jstree-icon">&nbsp;</ins>Publish Later</a></li>
+      <li class="jstree-leaf"><a class="jstree-unsaved" href="#"><ins class="jstree-icon">&nbsp;</ins>Unsaved Changes</a></li>
+      <li class="jstree-leaf"><a class="jstree-draft" href="#"><ins class="jstree-icon">&nbsp;</ins>Draft</a></li>
     </ul>
   </div>
 </script>
@@ -59,35 +60,42 @@
         <select name="parentName">
           {{{ parentOptions }}}
         </select>
-        <label class="radio">
-          <input type="radio" name="publishRadio" id="publishRadioNow" value="now" checked>
-          Publish Now
-        </label>
-        <label class="radio">
-          <input type="radio" name="publishRadio" id="publishRadioLater" value="later">
-          Publish Later
-        </label>
-        <input type="date" name="publishdate">
-
         <br />
           <div class="btn-group">
-              <button type="submit" class="btn btn-primary btn-publish-draft" data-action="publish">Publish Section</button>
-              <button type="reset" class="btn btn-danger btn-discard-draft" data-action="discard">Revert Changes</button>
+              <a class="btn btn-small btn-publish-draft" data-action="publish">Save Changes</a>
+              <a class="btn btn-small btn-danger btn-discard-draft" disabled>Revert Changes</a>
         </div>
       </fieldset>
     </form>
 
     <br/>
-    <a class="btn btn-danger btn-deletesection"  data-path="{{path}}" >Delete this section</a>
-
+    <div class="btn-group">
+      <a class="btn btn-large btn-danger btn-deletesection"  data-path="{{path}}" >Delete this section</a>
+    </div>
   </div>
   <div class="fb-tab-pane" id="cmsAppPreview">
   </div>
 </script>
+
+<script id="cms_publishModal" type="text/x-handlebars-template">
+  <label class="radio">
+    <input type="radio" name="publishRadio" id="publishRadioNow" value="now" checked>
+    Publish Now
+  </label>
+  <label class="radio">
+    <input type="radio" name="publishRadio" id="publishRadioLater" value="later">
+    Publish Later
+  </label>
+  <div class="input-append date" id="cmsDatePicker">
+    <input type="text" class="span6"  name="publishdate">
+    <span class="add-on"><i class="icon-th"></i></span>
+  </div>
+</script>
+
 <script id="cms_section_savecancel" type="text/x-handlebars-template">
 <div class="btn-group pull-right cms_section_savecancel">
-  <button type="submit" class="btn btn-primary btn-savedraft" data-action="save-draft" >Save Draft</button>
-  <button type="reset" class="btn btn-danger btn-discard-draft" data-action="discard-draft">Discard Draft</button>
+  <button type="submit" class="btn btn-savedraft" data-action="save-draft" >Save Changes</button>
+  <button type="reset" class="btn btn-danger btn-discard-draft" disabled data-action="discard-draft">Discard Draft</button>
 </div>
 </script>
 <script id="cms_back" type="text/x-handlebars-template">
@@ -95,8 +103,8 @@
 </script>
 <script id="cms_listfieldswitch" type="text/x-handlebars-template">
   <div class="btn-group pull-right">
-    <a class="btn btn-small btn-listfield-change-data" href="#"><i class="icon-road"></i> Edit Data</a>
-    <a class="btn btn-small btn-listfield-change-structure" href="#"><i class="icon-pencil"></i> Edit Structure</a>
+    <a class="btn btn-small btn-listfield-change-data" href="#"><i class="icon-pencil"></i> Edit Data</a>
+    <a class="btn btn-small btn-listfield-change-structure" href="#"><i class="icon-road"></i> Edit Structure</a>
   </div>
 </script>
 
@@ -119,8 +127,9 @@
   <div class="cms_mastermenu btn-group pull-right">
     <a href="#" class="btn btn-small btn-cms-import btn-success"><i class="icon-upload"></i> Import</a>
     <a href="#" class="btn btn-small btn-cms-export btn-success"><i class="icon-download"></i> Export</a>
+    <a href="#" class="btn btn-small btn-cms-copy btn-success"><i class="icon-arrow-right"></i> <span>Copy to {{{ mode }}}</span></a>
     <a href="#" class="btn btn-small btn-cms-audit"><i class="icon-list"></i> Audit Log</a>
-    <a href="#" class="btn btn-small btn-cms-copy btn-primary"><i class="icon-arrow-right"></i> <span>Copy to {{{ mode }}}</span></a>
+    <a href="#" class="btn btn-small btn-cms-publish btn-primary" disabled><i class="icon-bullhorn"></i> <span>Publish</span></a>
   </div>
 
 </script>
@@ -133,11 +142,11 @@
 </script>
 
 <script id="cms_editListDataInstructions" type="text/x-handlebars-template">
-  <p class="editListDataInstructions">To edit a row's data, click on a row.</p>
+  <p class="instructions editListDataInstructions"><i class="icon-info-sign"></i> To edit a row's data, click on a row.</p>
 </script>
 
 <script id="cms_editSectionInstructions" type="text/x-handlebars-template">
-  <p class="cms_editSectionInstructions">{{{ msg }}}</p>
+  <p class="instructions cms_editSectionInstructions"><i class="icon-info-sign"></i> {{{ msg }}}</p>
 </script>
 
 <script id="cms_importModal" type="text/x-handlebars-template">

@@ -12,26 +12,130 @@ App.Model.CmsSection.CONST = {
   "CHILDREN" : "children"
 };
 
-App.Collection.CmsSection = Backbone.Collection.extend({
+App.Collection.CMS = Backbone.Collection.extend({
   initialize: function() {},
   model: App.Model.CmsSection,
   //todo change this to use property instead
-  url: '/studio/static/js/model/backbone/mocks/cms_sections.json',
+  urls : {
+    mock : '/studio/static/js/model/backbone/mocks/cms_sections.json',
+    prefix: '/mbass',
+    section : this.prefix + '/cms/section',
+    field : this.prefix +'/cms/section/field',
+    fieldlist: this.prefix + '/cms/section/list/field/'
+  },
+  read_url: '/studio/static/js/model/backbone/mocks/cms_sections.json',
   sync: function (method, model, options) {
     var self = this;
-    var url = self.url;
-    $fw.server.post(url, {}, function(res) {
-      if (res && res.sections && res.sections.length>0) {
-        self.loaded = true;
+
+    switch(method){
+      case "read": // read sections
+        this.read.apply(this, arguments);
+        break;
+      case "create": // create a new section
+        //TODO
+        break;
+      case "discarddraft": // Restore a section to it's published values
+        //TODO
+        break;
+      case "draft": // Update section values
+        this.draft.apply(this, arguments);
+        break;
+      case "publish": // Publish entire CMS (all drafts)
+        //TODO
+        break;
+      case "delete": // Delete a section
+        //TODO
+        break;
+      default:
+        break;
+    }
+
+
+  },
+  /*
+    User clicks the 'save draft' / 'save changes' button
+   */
+  draft : function(method, model, options){
+    var self = this,
+    fieldsToCreate, fieldsToUpdate;
+
+    async.series({
+      createFields : function(cb){
+        // 1. Find all fields that need to be added
+        fieldsToCreate = _.where(model.fields, { needsCreate : true } );
+        self.bulkUpdate({fields : fieldsToCreate, url : self.urls.mock, method : 'POST'}, cb);
+      },
+      updateFields : function(cb){
+        // 2. Find all fields that need to be updated
+        fieldsToUpdate = _.where(model.fields, { needsUpdate : true } );
+        self.bulkUpdate({fields : fieldsToUpdate, url : self.urls.mock, method : 'PUT'}, cb);
+      },
+      deleteFields : function(cb){
+        // 3. Find all fields that have been removed
+        if (model.hasOwnProperty('fieldsToDelete') && model.fieldsToDelete.length > 0){
+          self.bulkUpdate({fields : model.fieldsToDelete, url : self.urls.mock, method : 'DELETE'}, function(err, res){
+            delete model.fieldsToDelete;
+            cb(err, res);
+          });
+        }else{
+          // return success
+          return cb(null, true);
+        }
+      },
+      updateSection : function(cb){
+        // 4. Call setSection with any changes to field values(?), and section title, publish date or parent
+        $fw.server.put(self.urls.mock, model, function(res) {
+          return cb(null, res);
+        }, function(err){
+          return cb(err);
+        }, true);
+      }
+    }, function(err, res){
+      // Finally - done with all requests needed for a save draft
+      if (err){
         if ($.isFunction(options.success)) {
-          options.success(res.sections, options);
+          return options.error(err);
         }
-      } else {
-        if ($.isFunction(options.error)) {
-          options.error(res.sections, options);
-        }
+        return err;
+      }
+
+      if ($.isFunction(options.success)) {
+        options.success(res);
+      }
+    });
+
+  },
+  read : function(method, model, options){
+    //TODO These go in "read" - leave here for now so we post to a blank thingy
+    var self = this,
+    url = this.urls.mock,
+    body = {};
+
+    $fw.server.post(url, body, function(res) {
+      self.loaded = true;
+      if ($.isFunction(options.success) && res.hasOwnProperty('sections')) {
+        options.success(res.sections, options);
       }
     }, options.error, true);
+  },
+  bulkUpdate : function(opts, cb){
+    var workers = [],
+    asyncMethod = (opts.series === true) ? 'series' : 'parallel',
+    httpMethod = opts.method.toLowerCase() || 'post';
+    httpMethod = (httpMethod === 'delete') ? 'del' : httpMethod; // delete is reserved keyword - filter this out
+
+    _.each(opts.fields, function(field){
+      delete field.needsUpdate;
+      delete field.needsCreate;
+      workers.push(function(cb){
+        $fw.server[httpMethod](opts.url, field, function(res) {
+          cb(null, res);
+        }, function(err){
+          cb(err, null);
+        }, true);
+      });
+    });
+    async[asyncMethod](workers, cb);
   },
   findSectionByPath : function(path){
     console.log("find section by path " + path);

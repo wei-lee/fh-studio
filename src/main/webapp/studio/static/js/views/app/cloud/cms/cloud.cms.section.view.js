@@ -5,10 +5,8 @@ App.View.CMSSection = App.View.CMS.extend({
   title : 'Edit Section',
   events: {
     'click .btn-savedraft' : 'onSectionSaveDraft',
-    'submit #configureSectionForm' : 'onSectionPublish',
     'click .btn-discard-draft' : 'onDraftDiscard',
     'click .btn-deletesection' : 'onSectionDelete',
-    'focus input[name=publishdate]' : 'onPublishDateFocus',
     'click .btn-listfield-structure' : 'onListFieldEditStructure',
     'click .btn-listfield-data' : 'onListFieldEditData'
   },
@@ -21,9 +19,9 @@ App.View.CMSSection = App.View.CMS.extend({
   initialize: function(options){
     this.$el = options.$el;
     this.options = options;
+    this.options.editStructure = (options.isAdministrator === true);
     this.collection = options.collection;
     this.compileTemplates();
-    this.bind('listfieldRowSelect', this.listfieldRowSelect);
     this.view = (this.options.hasOwnProperty('listfield')) ?  "listfield" : "section";
 
 
@@ -67,9 +65,7 @@ App.View.CMSSection = App.View.CMS.extend({
       path += ("." + this.fieldList.name + "." + "Edit " + this.options.mode);
     }else{
       // Just a standard section view - may or may not contain a listfield within
-
       fields = this.massageFieldsForFormbuilder(section.fields);
-
     }
 
     console.log("Section is ", section  ," fields ",fields);
@@ -88,26 +84,25 @@ App.View.CMSSection = App.View.CMS.extend({
     // Add in the page title to the breadcrumb row
     this.$el.find('.middle').prepend('<h3>' + this.title + '</h3>');
 
-
+    // Add in the extra tabs for configure section and preview
     this.$el.find('.fb-tabs').append(this.templates.$cms_sectionExtraTabs());
 
     if (this.view === 'section'){
-
+      // Setup the configure section tab
       var pathArray = section.path.split('.'),
       parent = pathArray[pathArray.length-2] || "Root";
       var parentOptions = this.collection.toHTMLOptions();
       parentOptions = ["<option value='' data-path='' >-Root</option>"].concat(parentOptions);
       parentOptions = parentOptions.join('');
       this.$el.find('.fb-tab-content').append(this.templates.$cms_configureSection({ parentOptions : parentOptions, name : section.name, path:section.path }));
+
+
+
+
       this.delegateEvents();
       // Select the active option
       this.$el.find('select[name=parentName]').val(parent);
     }
-
-
-
-
-
 
     this.$el.find('#cmsAppPreview').append($('#app_preview').clone(true).show().width('100%'));
 
@@ -128,7 +123,7 @@ App.View.CMSSection = App.View.CMS.extend({
     // Add in some instructions ontop of the form
     if (this.view === 'section'){
       var instructions;
-      if(this.options.editStructure && this.options.editStructure === true){
+      if(this.options.isAdministrator && this.options.isAdministrator === true){
         instructions = "Drag fields from the right to add fields. Drag fields to re-order. Click on a field to select it, click again to edit it. ";
       }else{
         instructions = "Edit the form to alter CMS data";
@@ -137,28 +132,14 @@ App.View.CMSSection = App.View.CMS.extend({
       this.$el.find('.middle').append(this.templates.$cms_section_savecancel());
     }
 
-     // On editing an existing field, mark section as unsaved
-     //TOOD: A..?
-     var resFields = $('.fb-response-fields input');
-     //TODO tidy these up
-     resFields.keyup(function (e){
-       App.dispatch.trigger("cms.section.unsaved",section);
-    });
-     //..or B?:
-//     this.fb.mainView.collection.bind('change', function(e){
-//       App.dispatch.trigger("cms.section.unsaved",section);
-//     });
-     // On creating a field, we should also mark the section unsaved changes
-     this.fb.mainView.collection.bind('add', function(e){
-       App.dispatch.trigger("cms.section.unsaved",section);
-     });
-
 
     $('.fb-field-wrapper .subtemplate-wrapper').click(function (){
       $('.fb-tabs li.configurefield a').trigger('click');
     });
 
-
+    // Bug fix for multiple formbuilder views - unbind and re-bind the events
+    var mv = this.fb.mainView;
+    mv.$el.find('.fb-tabs a').unbind().on('click', $.proxy(mv.showTab, mv));
 
     return this;
   },
@@ -189,10 +170,31 @@ App.View.CMSSection = App.View.CMS.extend({
       editStructure : this.options.editStructure || false
     });
 
-    //TODO move this not sure where the right place is for it right now.
-    $('.fb-response-fields').find('input').unbind().keyup(function (e){
-      App.dispatch.trigger(CMS_TOPICS.SECTION_DIRTIED,{});
+    // On editing an existing field, mark section as unsaved
+    this.fb.mainView.collection.bind('change', function(model, collection){
+      if (model.hasChanged('label')){
+        model.set('needsUpdate', true); // Label changed - this is structure, we need to POST to setField
+      }
+      App.dispatch.trigger(CMS_TOPICS.SECTION_DIRTIED,model.toJSON());
     });
+    // On creating a field, we should also mark the section unsaved changes
+    this.fb.mainView.collection.bind('add', function(model, collection){
+      model.set('needsCreate', true); // We need to POST to setField to create it
+      App.dispatch.trigger(CMS_TOPICS.SECTION_DIRTIED,model.toJSON());
+    });
+
+    // On creating a field, we should also mark the section unsaved changes
+    this.fb.mainView.collection.bind('remove', function(model, collection){
+      if (!self.sectionModel.has('fieldsToDelete')){
+        self.sectionModel.set('fieldsToDelete', []);
+      }
+      var appended = self.sectionModel.get('fieldsToDelete').concat(model.toJSON());
+      self.sectionModel.set('fieldsToDelete', appended);
+      App.dispatch.trigger(CMS_TOPICS.SECTION_DIRTIED,model.toJSON());
+    });
+
+
+
     return this.fb;
   },
   massageFieldsForFormbuilder : function(oldFields){
@@ -205,6 +207,8 @@ App.View.CMSSection = App.View.CMS.extend({
           break;
         case "list":
           newField.field_type = "field_list";
+          newField.values = field.values || [];
+          newField.fields = field.fields || [];
           break;
         default:
           newField.field_type = field.type;
@@ -228,6 +232,13 @@ App.View.CMSSection = App.View.CMS.extend({
           // just copy it directly..
           //TODO: What if the user changes the listfield's name?
           newField = _.findWhere(oldSection.fields, { name : field.label});
+          if (!newField){
+            newField = {
+              type : 'list',
+              data : [],
+              fields : []
+            };
+          }
           break;
         case "text":
           newField.type = "string";
@@ -237,8 +248,15 @@ App.View.CMSSection = App.View.CMS.extend({
           break;
       }
       fields.push(newField);
-      newField.name = field.label;
-      newField.value = field.value;
+      newField.name = newField.name || field.label;
+      newField.value = newField.value || field.value;
+      //TODO: Remove the need for massaging, this is kinda redonk.
+      if (field.needsUpdate===true){
+        newField.needsUpdate = true;
+      }
+      if (field.needsCreate===true){
+        newField.needsCreate = true;
+      }
     });
     return fields;
   },
@@ -247,34 +265,35 @@ App.View.CMSSection = App.View.CMS.extend({
 
   onSectionSaveDraft : function(e){
     e.preventDefault();
-    var vals = {},
-    fields = this.fb.mainView.collection.toJSON(); //TODO: Verify this syncs with autoSave
-    App.dispatch.trigger(CMS_TOPICS.SECTION_SAVE_DRAFT,{"section":this.section}); // Notify the tree that we're saving the section so it can change colour
+    var self = this,
+    fields = this.fb.mainView.collection.toJSON(), //TODO: Verify this syncs with autoSave
+    vals = {};
 
+
+    //TODO: Wrap in if user is administrator for safety?
     // Get our form as a JSON object
     $(this.$el.find('#configureSectionForm').serializeArray()).each(function(idx, el){
       vals[el.name] = el.value;
     });
-
-
-    // If publish is now, set the timedate if it's not already defined on the section
-    if (vals.publishRadio && vals.publishRadio === "now"){
-      if (!this.section.hasOwnProperty('publishdate')){
-        this.section.publishdate = new Date(); // TODO: Maybe this should be handled on the server..?
-      }
-    }else if (vals.publishRadio && vals.publishRadio === "later"){
-      this.section.publishDate = vals.publishdate;
-    }
-
     this.section.name = vals.name;
+    //TODO: Update children?
+    //TODO: end wrap
+
+
     this.section.fields = this.massageFieldsFromFormBuilder(fields, this.section);
 
-
-    this.alertMessage();
-    App.dispatch.trigger(CMS_TOPICS.AUDIT, "Section draft saved with values: " + JSON.stringify(this.section));
     this.section.status = 'draft';
     this.sectionModel.set(this.section);
-    //TODO: Dispatch draft to SS
+    this.collection.sync('draft', this.sectionModel.toJSON(), {
+      success : function(){
+        self.alertMessage();
+        App.dispatch.trigger(CMS_TOPICS.AUDIT, "Section draft saved with values: " + JSON.stringify(self.section));
+        App.dispatch.trigger(CMS_TOPICS.SECTION_SAVE_DRAFT,{"section":self.section}); // Notify the tree that we're saving the section so it can change colour
+      },
+      error : function(err){
+        self.alertMessage(err.toString(), 'danger');
+      }
+    });
     return false;
   },
   onDraftDiscard: function(e){
@@ -290,23 +309,15 @@ App.View.CMSSection = App.View.CMS.extend({
     App.dispatch.trigger(CMS_TOPICS.AUDIT, "Section draft discarded");
     App.dispatch.trigger(CMS_TOPICS.SECTION_DISCARD_DRAFT,this.section);
     this.render();
-    //TODO: Discard draft on server
+    this.collection.sync('discarddraft', this.sectionModel.toJSON(), {});
   },
-  onSectionPublish : function(e){
-    e.preventDefault();
-    this.sectionModel.set('status', 'published');
-    //TODO: Dispatch publish action to SS
-    App.dispatch.trigger(CMS_TOPICS.SECTION_PUBLISH, this.section); // Notify the tree that we're saving the section so it can change colour
-  },
+
   onSectionDelete : function(e){
     console.log("section delete called");
     e.preventDefault();
-    // TODO: Delete section on server
     App.dispatch.trigger(CMS_TOPICS.AUDIT, "Section deleted");
     App.dispatch.trigger(CMS_TOPICS.SECTION_DELETE,{"path": $(e.target).data("path")});
-  },
-  onPublishDateFocus : function(){
-    this.$el.find('#publishRadioLater').attr('checked', true);
+    this.collection.sync('delete', this.sectionModel.toJSON(), {});
   },
   setSection : function(section){
     this.options.section = section;
@@ -322,27 +333,7 @@ App.View.CMSSection = App.View.CMS.extend({
   onListFieldEdit : function(e, mode){
     var el = $(e.target),
     fieldName = el.data('name'),
-    editStructure = (mode === 'structure'),
-    options = { collection : this.collection, section : this.options.section, listfield : fieldName, mode : mode, editStructure : editStructure };
+    options = { collection : this.collection, section : this.options.section, listfield : fieldName, mode : mode, isAdministrator : this.options.isAdministrator };
     this.trigger('edit_field_list', options);
-  },
-  listfieldRowSelect : function(index){
-    var fields = this.fieldList.fields,
-    data = this.fieldList.data,
-    row;
-
-    if (data.length < index){
-      throw new Error('No list field row with that index found');
-    }
-
-    row = data[index];
-    _.each(fields, function(f){
-      if (!row.hasOwnProperty(f.name)){
-        throw new Error('No propery on this row found with key ' + f.name);
-      }
-      f.value = row[f.name];
-    });
-    fields = this.massageFieldsForFormbuilder(fields);
-    this.fb.mainView.collection.reset(fields);
   }
 });

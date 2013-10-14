@@ -4,12 +4,9 @@ App.View = App.View || {};
 
 
 App.View.CMSTree = App.View.CMS.extend({
-
   'events': {
 
   },
-
-
   'templates':{
       'cms_sectionDropDown' : '#cms_sectionDropDown'
   },
@@ -65,8 +62,9 @@ App.View.CMSTree = App.View.CMS.extend({
 
     App.dispatch.on(CMS_TOPICS.SECTION_PUBLISH,function (data){
        console.log("cms.sectionpublish ", data);
+       var status = data.status || 'published';
       //TODO need to know if it is a publish later or not.
-      $('.jstree-clicked').removeClass().addClass("jstree-clicked");
+      $('.jstree-clicked').removeClass().addClass("jstree-clicked").addClass("jstree-" + status);
     });
 
     App.dispatch.on(CMS_TOPICS.SECTION_DIRTIED, function (data){
@@ -184,16 +182,19 @@ App.View.CMSTree = App.View.CMS.extend({
   "onAddSection": function (element) {
 
     var self = this;
-    var parentOptions = self.collection.toHTMLOptions();
-    console.log("parentOptions ",parentOptions);
+    var parentOptions = self.collection.toHTMLOptions(),
+    body;
     parentOptions = ["<option value='' data-path='' >-Root</option>"].concat(parentOptions);
     parentOptions = parentOptions.join('');
-    var selectContent = self.templates.$cms_sectionDropDown({"parentOptions":parentOptions});
+    body = $(self.templates.$cms_sectionDropDown({"parentOptions":parentOptions}));
 
-    console.log(selectContent);
+    body.find('select').val(self.activeSection); // TODO Fix me so active selection is the selected node in here..
+
+    body.append('<br/> <input class="input-large" placeholder="Enter a Section name" id="newCollectionName">');
+
     var modal = new App.View.Modal({
       title: 'Create New Section',
-      body: selectContent + '<br/> <input class="input-large" placeholder="Enter a Section name" id="newCollectionName"> ',
+      body: body,
       okText: 'Create',
       ok: function (e) {
         var el = $(e.target),
@@ -249,6 +250,7 @@ App.View.CMSTree = App.View.CMS.extend({
     console.log("models ",self.collection.models);
     var model = new App.Model.CmsSection(node);
     self.collection.push(model);
+    this.collection.sync('create', model.toJSON(), {});
     self.$el.jstree("unset_focus");
   },
   //move to fh.cms
@@ -268,24 +270,12 @@ App.View.CMSTree = App.View.CMS.extend({
   onTreeNodeClick: function (e, data) {
     console.log("on tree node click");
     var self = this,
-    path = data && data.rslt && data.rslt.obj && data.rslt.obj.attr && data.rslt.obj.attr('path'),
-    unsaved = this.$el.find('.jstree-unsaved');
+    path = data && data.rslt && data.rslt.obj && data.rslt.obj.attr && data.rslt.obj.attr('path');
     self.activeSection = path;
-    if (unsaved.length > 0){
-      var modal = new App.View.Modal({
-        title: 'Unsaved Changes',
-        body: "Are you sure you want to leave this page? You have unsaved changes",
-        okText: 'Discard changes',
-        cancelText : 'Cancel',
-        ok: function (e) {
-          self.navigateTo(path);
-          self.$el.find('.jstree-unsaved').removeClass('jstree-unsaved');
-        }
-      });
-      self.$el.append(modal.render().$el);
-    }else{
-      this.navigateTo(path);
-    }
+    var ok = function (e) {
+      self.navigateTo(path);
+    };
+    App.dispatch.trigger('cms-checkUnsaved', ok);
   },
   navigateTo : function(path){
     if (!path) {
