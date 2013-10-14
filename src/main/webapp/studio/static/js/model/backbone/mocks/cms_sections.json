@@ -1,17 +1,22 @@
 {
   "sections":[
     {
+      "_id":"525bb3e66dcb1e9a89000002",
       "path":"Stores",
       "hash": "a1b2c3d4",
       "name": "Stores",
       "fields": [
         {
+          "_id":"525bb3e66dcb1e9a89000003",
+          "section":"Stores",
           "hash": "a2b3c4d5",
           "name": "heading",
           "type": "string",
           "value": "Here you will find a list of stores sorted by geography",
           "modifiedDate": "11/12/2013"
         },{
+          "_id":"525bb3e66dcb1e9a89000004",
+          "section":"Stores",
           "hash":"img123",
           "name":"stores image",
           "type":"file",
@@ -25,11 +30,14 @@
       ]
     },
     {
+      "_id":"525bb3e66dcb1e9a89000005",
       "path":"Restaurants",
       "hash":"res123",
       "name":"Restaurants",
       "fields":[
         {
+          "_id":"525bb3e66dcb1e9a89000006",
+          "section":"Restaurants",
           "hash": "a2b3c4d5",
           "name": "heading",
           "type": "string",
@@ -40,11 +48,14 @@
       "children":[]
     },
     {
+      "_id":"525bb3e66dcb1e9a89000007",
       "path":"Stores.Waterford Stores",
       "hash": "a1b2c3d5",
       "name": "Waterford Stores",
       "fields": [
         {
+          "_id":"525bb3e66dcb1e9a89000008",
+          "section":"Waterford Stores",
           "hash": "a2b4c4d5",
           "name": "heading",
           "type": "string",
@@ -52,6 +63,8 @@
           "modifiedDate": "11/12/2013"
         },
         {
+          "_id":"525bb3e66dcb1e9a89000009",
+          "section":"Waterford Stores",
           "hash": "a9b6c7d8",
           "name": "Patrick St List",
           "type" : "list",
@@ -104,11 +117,14 @@
       ]
     },
     {
+      "_id":"525bb3e66dcb1e9a89000011",
       "path":"Stores.Cork Stores",
       "hash": "a1b2c3d6",
       "name": "Cork Stores",
       "fields": [
         {
+          "_id":"525bb3e66dcb1e9a89000012",
+          "section":"Cork Stores",
           "hash": "a2b5c5d5",
           "name": "heading",
           "type": "string",
@@ -124,8 +140,11 @@
       "path":"Stores.Cork Stores.Patrick Street",
       "hash": "a1b2c3d7",
       "name": "Patrick Street",
+      "_id":"525bb3e66dcb1e9a89000013",
       "fields": [
         {
+          "_id":"525bb3e66dcb1e9a89000014",
+          "section":"Patrick Street",
           "hash": "a2b5c4d5",
           "name": "heading",
           "type": "string",
@@ -133,6 +152,8 @@
           "modifiedDate": "11/12/2013"
         },
         {
+          "_id":"525bb3e66dcb1e9a89000015",
+          "section":"Patrick Street",
           "hash": "a9b6c7d8",
           "name": "Patrick St List",
           "type" : "list",
