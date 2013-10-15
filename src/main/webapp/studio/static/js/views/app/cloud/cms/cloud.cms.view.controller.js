@@ -40,6 +40,25 @@ App.View.CMSController  = Backbone.View.extend({
       return this;
     }
 
+    // If not enabled
+    if (true){
+      return this.renderEnableView();
+    }
+
+    return this.renderCMS();
+
+
+
+  },
+  renderEnableView : function(){
+    // tood move to common
+    this.message = new App.View.DataBrowserMessageView({ message : 'To use the Mobile CMS, it must be enabled.', button : 'Enable CMS &raquo;', cb : this.onCMSEnable});
+
+    this.$el.empty();
+    this.$el.append(this.message.render().$el);
+    return this;
+  },
+  renderCMS : function(){
     var modeString = (this.mode==="dev") ? "Live" : "Dev"; // "Copy to {{ mode }}"
 
     if ($(this.options.container).find('.fh-box-header .cms_mastermenu').length===0){
@@ -92,6 +111,9 @@ App.View.CMSController  = Backbone.View.extend({
 
 
     return this;
+  },
+  onCMSEnable : function(){
+    //todo..
   },
   onEditFieldList : function(options){
     var self = this;
