@@ -4,7 +4,7 @@ App.View.DataBrowserMessageView = App.View.DataBrowserView.extend({
     dataviewEmptyContent : '#dataviewEmptyContent'
   },
   events : {
-    'click button' : 'onButtonClick'
+    'click button.btn-messageView' : 'onButtonClick'
   },
   initialize : function(options){
     this.compileTemplates();

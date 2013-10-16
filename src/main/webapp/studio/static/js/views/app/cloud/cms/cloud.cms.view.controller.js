@@ -40,8 +40,10 @@ App.View.CMSController  = Backbone.View.extend({
       return this;
     }
 
-    // If not enabled
-    if (true){
+    // If not enabled, show the enable view
+    var inst = $fw.data.get('inst'),
+    enabled = inst.config && inst.config.app && inst.config.app.cms && inst.config.app.cms.enabled || "false";
+    if (enabled!=="true" && enabled!== true){
       return this.renderEnableView();
     }
 
@@ -52,7 +54,7 @@ App.View.CMSController  = Backbone.View.extend({
   },
   renderEnableView : function(){
     // tood move to common
-    this.message = new App.View.DataBrowserMessageView({ message : 'To use the Mobile CMS, it must be enabled.', button : 'Enable CMS &raquo;', cb : this.onCMSEnable});
+    this.message = new App.View.DataBrowserMessageView({ message : 'To use the Mobile CMS, it must be enabled.', button : 'Enable CMS &raquo;', cb :$.proxy(this.onCMSEnable, this)});
 
     this.$el.empty();
     this.$el.append(this.message.render().$el);
@@ -113,7 +115,12 @@ App.View.CMSController  = Backbone.View.extend({
     return this;
   },
   onCMSEnable : function(){
-    //todo..
+    var self = this;
+    var enableView = new App.View.CMSEnable();
+    enableView.bind('enabled', function(){
+      $.proxy(self.render(), self);
+    });
+    this.$el.append(enableView.render().$el);
   },
   onEditFieldList : function(options){
     var self = this;

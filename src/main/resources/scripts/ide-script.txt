@@ -154,6 +154,7 @@ js/views/app/cloud/cms/cloud.cms.tree.view.js
 js/views/app/cloud/cms/cloud.cms.table.view.js
 js/views/app/cloud/cms/cloud.cms.audit.view.js
 js/views/app/cloud/cms/modals/cloud.cms.modalprogress.view.js
+js/views/app/cloud/cms/modals/cloud.cms.enable.view.js
 js/views/app/cloud/cms/modals/cloud.cms.export.view.js
 js/views/app/cloud/cms/modals/cloud.cms.import.view.js
 js/views/app/cloud/cms/modals/cloud.cms.copy.view.js

@@ -52,7 +52,7 @@ App.View.CMSModalProgress = App.View.CMS.extend({
   },
   ok : function (e) {
     if (this.done===true){
-      $.proxy(this.modal.close(), this.modal);
+      return $.proxy(this.modal.close(), this.modal);
     }
     this.text.hide();
     this.progress.show();

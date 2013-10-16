@@ -15,7 +15,8 @@ Apps.Cms.Controller = Apps.Cloud.Controller.extend({
     box_container = $($(this.views.container).find('.fh-box-inner'));
     $(this.views.container).show();
     if (this.view){
-      return; //this.view.remove();
+      this.view.remove();
+      this.view.stopListening(); // TODO Does this still cause issues with formbuilder?
     }
     this.view = new App.View.CMSController({ container : this.views.container, mode : $fw.data.get('cloud_environment') });
     box_container.empty().append(this.view.render().$el);
