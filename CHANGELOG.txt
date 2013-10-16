@@ -4,7 +4,8 @@ Component: fh-studio
 
 3.17.16 - 2013-10-16 - IR212 - Niall Donnelly
 -------------------------------------------------------------------------------
-* 2169 - Fix iOS Store Issue
+* 2169 - Fix iOS Store Issue  
+* 2434 - Fix O2 Cloud Environments Tab css.
 
 3.17.15 - 2013-10-10 - IR212 - Niall Donnelly & Jason Madigan
 -------------------------------------------------------------------------------
