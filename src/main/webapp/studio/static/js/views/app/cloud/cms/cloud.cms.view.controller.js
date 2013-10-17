@@ -48,13 +48,9 @@ App.View.CMSController  = Backbone.View.extend({
     }
 
     return this.renderCMS();
-
-
-
   },
   renderEnableView : function(){
-    // tood move to common
-    this.message = new App.View.DataBrowserMessageView({ message : 'To use the Mobile CMS, it must be enabled.', button : 'Enable CMS &raquo;', cb :$.proxy(this.onCMSEnable, this)});
+    this.message = new App.View.FullPageMessageView({ message : 'To use the Mobile CMS, it must be enabled.', button : 'Enable CMS &raquo;', cb :$.proxy(this.onCMSEnable, this)});
 
     this.$el.empty();
     this.$el.append(this.message.render().$el);

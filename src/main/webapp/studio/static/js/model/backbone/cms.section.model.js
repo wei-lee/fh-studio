@@ -19,7 +19,7 @@ App.Collection.CMS = Backbone.Collection.extend({
   urls : {
     mock : '/studio/static/js/model/backbone/mocks/cms_sections.json',
     prefix: '/mbass',
-    section : this.prefix + '/cms/section',
+    section : this.prefix + '/cms/sections',
     field : this.prefix +'/cms/section/field',
     fieldlist: this.prefix + '/cms/section/list/field/'
   },

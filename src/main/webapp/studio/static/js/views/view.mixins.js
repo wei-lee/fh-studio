@@ -39,3 +39,4 @@ _.extend(App.View.CMS.prototype, App.View.TemplateMixins);
 _.extend(App.View.CMSController.prototype, App.View.TemplateMixins);
 _.extend(App.View.PluginsView.prototype, App.View.TemplateMixins);
 _.extend(App.View.DataBrowserView.prototype, App.View.TemplateMixins);
+_.extend(App.View.FullPageMessageView.prototype, App.View.TemplateMixins);

@@ -63,6 +63,7 @@ js/model/backbone/cloudenvironments/cloudenvironment.model.js
 js/views/common/datatable.view.js
 js/views/common/spinner.view.js
 js/views/common/modal.view.js
+js/views/common/fullpage_message.js
 js/views/charts/chart.view.js
 js/views/charts/bar_chart.view.js
 js/views/charts/column_chart.view.js
@@ -169,7 +170,6 @@ js/views/app/cloud/databrowser/cloud.databrowser.dataview.table.view.js
 js/views/app/cloud/databrowser/cloud.databrowser.dataview.view.js
 js/views/app/cloud/databrowser/cloud.databrowser.advancededitor.view.js
 js/views/app/cloud/databrowser/cloud.databrowser.filters.view.js
-js/views/app/cloud/databrowser/cloud.databrowser.message.view.js
 js/views/app/cloud/databrowser/cloud.databrowser.dataview.pagination.js
 js/views/app/cloud/databrowser/cloud.databrowser.migrate.view.js
 js/views/app/cloud/databrowser/cloud.databrowser.controller.js

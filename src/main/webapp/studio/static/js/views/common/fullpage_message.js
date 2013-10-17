@@ -1,7 +1,7 @@
-App.View.DataBrowserMessageView = App.View.DataBrowserView.extend({
+App.View.FullPageMessageView = Backbone.View.extend({
   templates : {
-    dataviewEmptyContainer : '#dataviewEmptyContainer',
-    dataviewEmptyContent : '#dataviewEmptyContent'
+    dataviewEmptyContainer : '#emptyFullpageContainer',
+    dataviewEmptyContent : '#fullpageEmptyContent'
   },
   events : {
     'click button.btn-messageView' : 'onButtonClick'

@@ -273,3 +273,15 @@
         </div>
     </form>
 </script>
+
+<script id="emptyFullpageContainer" type="text/x-handlebars-template">
+  <div class="databrowser emptyContainer">
+    <div class="centered">
+      {{{ content }}}
+    </div>
+  </div>
+</script>
+<script id="fullpageEmptyContent" type="text/x-handlebars-template">
+  {{{ message }}}<br />
+  <button type="button" class="btn btn-primary btn-large btn-add-row btn-messageView">{{{ button }}}</button>
+</script>
