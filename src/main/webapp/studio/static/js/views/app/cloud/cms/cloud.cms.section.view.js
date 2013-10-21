@@ -316,8 +316,7 @@ App.View.CMSSection = App.View.CMS.extend({
     console.log("section delete called");
     e.preventDefault();
     App.dispatch.trigger(CMS_TOPICS.AUDIT, "Section deleted");
-    App.dispatch.trigger(CMS_TOPICS.SECTION_DELETE,{"path": $(e.target).data("path")});
-    this.collection.sync('delete', this.sectionModel.toJSON(), {});
+    this.collection.remove(this.sectionModel);
   },
   setSection : function(section){
     this.options.section = section;

@@ -33,6 +33,11 @@ App.Collection.CMS = Backbone.Collection.extend({
     this.urls.app = options.url;
   },
   model: App.Model.CmsSection,
+  remove : function(model, options){
+    Backbone.Collection.prototype.remove.apply(this, arguments);
+    this.sync('delete', model, options);
+    this.trigger('reset');
+  },
   sync: function (method, model, options) {
     var self = this;
 

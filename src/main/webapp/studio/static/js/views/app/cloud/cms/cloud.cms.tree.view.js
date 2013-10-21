@@ -40,11 +40,6 @@ App.View.CMSTree = App.View.CMS.extend({
       $("#"+path).trigger("click");
     });
 
-    App.dispatch.on(CMS_TOPICS.SECTION_DELETE, function (data){
-      self.activeSection = data.path;
-      self.onDeleteSection();
-    });
-
     App.dispatch.on(CMS_TOPICS.SECTION_SAVE_DRAFT, function (data){
       console.log("save draft event ", data);
       $('.jstree-clicked').removeClass().addClass("jstree-clicked").addClass("jstree-draft");
@@ -167,26 +162,12 @@ App.View.CMSTree = App.View.CMS.extend({
       cancelText : 'Cancel',
       ok: function (e) {
         console.log("deleting " + self.activeSection);
-        self.deleteSection(self.activeSection);
+        var model = self.collection.findWhere({path : self.activeSection});
+        self.collection.remove(model);
       }
     });
     self.$el.append(modal.render().$el);
-
   },
-  //move to fh.cms
-  deleteSection: function (val) {
-    var self = this;
-    var selectedSection = val || self.activeSection || "root";
-    //show some kind of modal
-    self.collection.removeBySectionPath(selectedSection);
-
-    self.render();
-    $('.fb-response-fields').empty();
-    self.activeSection = undefined; //TODO remove self.activesection not a nice way of doing things
-
-  },
-
-
   onTreeNodeClick: function (e, data) {
     console.log("on tree node click");
     var self = this,
