@@ -181,13 +181,10 @@ App.View.CMSListField = App.View.CMSSection.extend({
     });
     parentModelFields[parentIndex] = this.fieldList;
     this.sectionModel.set('fields', parentModelFields);
-    App.dispatch.trigger("cms.section.savedraft",this.section); // Notify the tree that we're saving the section so it can change colour
 
     self.render();
     App.dispatch.trigger("cms.audit", "CMS List saved",self.fb);
-    //TODO: POST to server
-    //NOTE: all actions need to be qued in order to ensure consistency and processed in order on save.
-
+    // We don't post to the server here - we just mark as unsaved, and only do so on the save button of the section
   },
 
   "getTempHash" :function(){

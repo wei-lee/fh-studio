@@ -10,11 +10,9 @@ App.View.CMSController  = Backbone.View.extend({
 
   templates : {
     'cms_left' : '#cms_left',
-    'cms_mastermenu' : '#cms_mastermenu'
+    'cms_mastermenu' : '#cms_mastermenu',
+    'cms_sectionDropDown' : '#cms_sectionDropDown'
   },
-  "que":[],
-
-
   active : 'section',
   initialize: function(options){
     this.options = options;
@@ -25,29 +23,44 @@ App.View.CMSController  = Backbone.View.extend({
     // Initialise our audit controller
     this.audit = new App.View.CMSAudit();
 
-    this.collection = new App.Collection.CMS();
-    this.collection.fetch({ reset: true});
-    this.collection.bind('reset', $.proxy(this.render, this));
     App.dispatch.bind('cms-checkUnsaved', $.proxy(this.checkUnsaved, this));
     App.dispatch.bind(CMS_TOPICS.SECTION_SAVE_DRAFT, $.proxy(this.onSaveDraft, this));
     App.dispatch.bind(CMS_TOPICS.SECTION_DISCARD_DRAFT, $.proxy(this.onDiscardDraft, this));
   },
   render: function(options){
+    var self = this;
     this.$el.empty();
 
-    if (!this.collection.loaded){
-      this.$el.append('Loading...');
-      return this;
-    }
 
     // If not enabled, show the enable view
     var inst = $fw.data.get('inst'),
     enabled = inst.config && inst.config.app && inst.config.app.cms && inst.config.app.cms.enabled || "false";
+    this.guid = inst.guid;
     if (enabled!=="true" && enabled!== true){
-      return this.renderEnableView();
+      return self.renderEnableView();
     }
 
-    return this.renderCMS();
+    // Otherwise, CMS is already enabled - append loading & load the app dyno hosts
+    self.$el.append('Loading...');
+
+    if (!this.hosts){
+      this.getHosts(function(err, res){
+        if (err){
+          //TODO
+        }
+        var url = self.hosts['development-url']; //todo
+
+        self.$el.empty();
+
+        self.collection = new App.Collection.CMS([], { url : url });
+        self.collection.fetch({ reset: true});
+        self.collection.bind('reset', $.proxy(self.render, self));
+        return self.renderCMS();
+      });
+    }else{
+      self.renderCMS();
+    }
+    return self;
   },
   renderEnableView : function(){
     this.message = new App.View.FullPageMessageView({ message : 'To use the Mobile CMS, it must be enabled.', button : 'Enable CMS &raquo;', cb :$.proxy(this.onCMSEnable, this)});
@@ -57,6 +70,11 @@ App.View.CMSController  = Backbone.View.extend({
     return this;
   },
   renderCMS : function(){
+
+    if (this.collection.length === 0){
+      return this.renderEmptyCMSView();
+    }
+
     var modeString = (this.mode==="dev") ? "Live" : "Dev"; // "Copy to {{ mode }}"
 
     if ($(this.options.container).find('.fh-box-header .cms_mastermenu').length===0){
@@ -100,14 +118,26 @@ App.View.CMSController  = Backbone.View.extend({
     this.form.bind('edit_field_list', $.proxy(this.onEditFieldList, this));
 
     this.$left = $(this.templates.$cms_left());
+
+    if (this.tempTree){
+      // Remove the temp tree if we had an empty CMS & used it to create
+      this.tempTree.remove();
+    }
+
     this.tree = new App.View.CMSTree({collection : this.collection});
     this.$el.prepend(this.$left);
     this.$el.find('.cmsTreeContainer').append(this.tree.render().$el);
     this.tree.bind('sectionchange', $.proxy(this.treeNodeClicked, this));
     this.tree.bind('sectionchange', $.proxy(this.form.setSection, this.form));
+    this.tree.bind('addsection', $.proxy(this.onAddSection, this));
 
+    return this;
+  },
+  renderEmptyCMSView : function(){
+    this.message = new App.View.FullPageMessageView({ message : 'Your CMS contains no sections', button : 'New Section &raquo;', cb :$.proxy(this.onCMSCreateSection, this)});
 
-
+    this.$el.empty();
+    this.$el.append(this.message.render().$el);
     return this;
   },
   onCMSEnable : function(){
@@ -117,6 +147,94 @@ App.View.CMSController  = Backbone.View.extend({
       $.proxy(self.render(), self);
     });
     this.$el.append(enableView.render().$el);
+  },
+  onCMSCreateSection : function(){
+    this.onAddSection();
+    //TODO
+  },
+  "onAddSection": function (element) {
+    var self = this;
+    var parentOptions = self.collection.toHTMLOptions(),
+    body;
+    parentOptions = ["<option value='' data-path='' >-Root</option>"].concat(parentOptions);
+    parentOptions = parentOptions.join('');
+    body = $(self.templates.$cms_sectionDropDown({"parentOptions":parentOptions}));
+
+    body.find('select').val(self.activeSection); // TODO Fix me so active selection is the selected node in here..
+
+    body.append('<br/> <input class="input-large" placeholder="Enter a Section name" id="newCollectionName">');
+
+    var modal = new App.View.Modal({
+      title: 'Create New Section',
+      body: body,
+      okText: 'Create',
+      ok: function (e) {
+        var el = $(e.target),
+        input = el.parents('.modal').find('input#newCollectionName'),
+        sectionIn = el.parents('.modal').find("select[name='parentName']").find('option').filter(":selected").data("path"),
+        secVal = input.val();
+        self.doCreateSection(secVal);
+        console.log("Section parent section name ", secVal, sectionIn);
+        if (self.tree){
+          self.tree.activeSection = sectionIn;
+
+        }
+      }
+    });
+    self.$el.append(modal.render().$el);
+
+  },
+  //move to fh.cms
+  doCreateSection: function (val) {
+    var self = this,
+    selectedSection = self.activeSection || "root",
+    node;
+
+    console.log("Create Section in", selectedSection);
+
+    var parentSection = (selectedSection === "root") ? undefined : self.collection.findSectionByPath(selectedSection);
+    var hash = "temp-"+new Date().getTime();
+    console.log("parent section is ", parentSection);
+    var childrenKey = App.Model.CmsSection.CONST.CHILDREN;
+
+    if (parentSection) {
+      if (!parentSection[childrenKey]){
+        parentSection[childrenKey] = [];
+      }
+
+      var path = (parentSection.path === "") ? val : parentSection.path + "." + val,
+      node = {
+        "path": path,
+        "hash": hash,
+        "name": val,
+        "data": val,
+        "children": []
+      };
+
+      parentSection[childrenKey].push(node.hash);
+    }else{
+      //add new parent section
+      node = {
+        "path":val,
+        "hash":hash,
+        "name":val,
+        "data":val,
+        "children":[]
+      };
+    }
+
+    console.log("models ",self.collection.models);
+    var model = new App.Model.CmsSection(node);
+    self.collection.push(model);
+
+    this.collection.sync('create', model.toJSON(), { success : function(res){
+      self.alertMessage('Section successfully saved');
+    }, failure : function(err){
+      self.alertMessage(err.toString(), 'danger');
+    }});
+    if (self.tree && self.tree.$el){
+      self.tree.$el.jstree("unset_focus");
+    }
   },
   onEditFieldList : function(options){
     var self = this;
@@ -222,5 +340,19 @@ App.View.CMSController  = Backbone.View.extend({
       this.$el.find('.btn-cms-publish').attr('disabled', true);
     }
 
+  },
+  getHosts : function(cb){
+    var self = this,
+    params = {
+      guid : this.guid
+    },
+    url = Constants.APP_HOSTS_URL;
+    $fw.server.post(url, params, function(res) {
+      self.hosts = res.hosts;
+      return cb(null, res);
+    }, function(err){
+      console.log(err);
+      return cb(err);
+    }, false);
   }
 });

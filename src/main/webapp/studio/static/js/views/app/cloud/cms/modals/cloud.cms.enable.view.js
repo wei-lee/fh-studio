@@ -22,9 +22,10 @@ App.View.CMSEnable = App.View.CMSModalProgress.extend({
     this.$el.find('#modal-ok').html(this.buttonText).attr('disabled', true);
     this.$el.find('.progress').addClass('progress-striped');
     var self = this,
+    mode = "dev", // TODO why doesnt $fw.data.get('cloud_environment') work
     params = {
     "serviceName":"cms",
-    "env":"dev", // TODO why doesnt $fw.data.get('cloud_environment') work
+    "env":mode,
     "appGuid":$fw.data.get('inst').guid,
     "restage":true
     };
@@ -37,7 +38,7 @@ App.View.CMSEnable = App.View.CMSModalProgress.extend({
       timeout: 20000,
       success: function(res){
         if (res.status === "ok") {
-          self.enableStarted(res.result.cacheKey[0]);
+          self.enableStarted(res.result.cacheKey[mode]);
         } else {
           console.log('Enable failed:' + res);
         }
@@ -143,7 +144,7 @@ App.View.CMSEnable = App.View.CMSModalProgress.extend({
     bar.css('width', value + '%');
   },
   enableFailed : function(){
-    self.$el.find('#modal-ok').html(this.buttonText).attr('disabled', false);
+    this.$el.find('#modal-ok').html(this.buttonText).attr('disabled', false);
     this.$el.find('.progress').removeClass('progress-striped').addClass('progress-danger');
   },
   enableSuccess : function(){

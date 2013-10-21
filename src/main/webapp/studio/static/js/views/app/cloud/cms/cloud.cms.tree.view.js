@@ -7,9 +7,6 @@ App.View.CMSTree = App.View.CMS.extend({
   'events': {
 
   },
-  'templates':{
-      'cms_sectionDropDown' : '#cms_sectionDropDown'
-  },
   initialize: function (options) {
     var self = this;
     this.collection = options.collection;
@@ -72,8 +69,6 @@ App.View.CMSTree = App.View.CMS.extend({
       $('.jstree-clicked').removeClass().addClass("jstree-clicked").addClass("jstree-unsaved");
     });
 
-    this.compileTemplates();
-
   },
 
   render: function () {
@@ -112,7 +107,7 @@ App.View.CMSTree = App.View.CMS.extend({
     });
 
     $('.btn-addsection').unbind().bind("click", function (e) {
-      self.onAddSection(self);
+      self.trigger('addsection');
     });
     $('.btn-deletesection').unbind().bind("click", function (e) {
       self.onDeleteSection(self);
@@ -163,11 +158,11 @@ App.View.CMSTree = App.View.CMS.extend({
   },
 
   "onDeleteSection": function (e) {
-
-    var self = this;
+    var self = this,
+    title = self.activeSection.split('.').pop();
     var modal = new App.View.Modal({
       title: 'Confirm Delete',
-      body: "Are you sure you wish delete " + self.activeSection,
+      body: "Are you sure you want to delete " + title + "?",
       okText: 'Delete',
       cancelText : 'Cancel',
       ok: function (e) {
@@ -177,81 +172,6 @@ App.View.CMSTree = App.View.CMS.extend({
     });
     self.$el.append(modal.render().$el);
 
-  },
-
-  "onAddSection": function (element) {
-
-    var self = this;
-    var parentOptions = self.collection.toHTMLOptions(),
-    body;
-    parentOptions = ["<option value='' data-path='' >-Root</option>"].concat(parentOptions);
-    parentOptions = parentOptions.join('');
-    body = $(self.templates.$cms_sectionDropDown({"parentOptions":parentOptions}));
-
-    body.find('select').val(self.activeSection); // TODO Fix me so active selection is the selected node in here..
-
-    body.append('<br/> <input class="input-large" placeholder="Enter a Section name" id="newCollectionName">');
-
-    var modal = new App.View.Modal({
-      title: 'Create New Section',
-      body: body,
-      okText: 'Create',
-      ok: function (e) {
-        var el = $(e.target),
-          input = el.parents('.modal').find('input#newCollectionName'),
-          sectionIn = el.parents('.modal').find("select[name='parentName']").find('option').filter(":selected").data("path"),
-          secVal = input.val();
-
-        console.log("Section parent section name ", secVal, sectionIn);
-        self.activeSection = sectionIn;
-        self.createSection(secVal);
-      }
-    });
-    self.$el.append(modal.render().$el);
-
-  },
-
-  //move to fh.cms
-  createSection: function (val) {
-    var self = this;
-    var selectedSection = self.activeSection || "root";
-
-    console.log("Create Section in", selectedSection);
-
-    var parentSection = (selectedSection == "root") ? undefined : self.collection.findSectionByPath(selectedSection);
-    var hash = "temp-"+new Date().getTime();
-    console.log("parent section is ", parentSection);
-    var childrenKey = App.Model.CmsSection.CONST.CHILDREN;
-
-    if (parentSection) {
-      if (!parentSection[childrenKey]) parentSection[childrenKey] = [];
-
-      var path = (parentSection.path === "") ? val : parentSection.path + "." + val,
-        node = {
-          "path": path,
-          "hash": hash,
-          "name": val,
-          "data": val,
-          "children": []
-        };
-
-      parentSection[childrenKey].push(node.hash);
-    }else{
-      //add new parent section
-      node = {
-        "path":val,
-        "hash":hash,
-        "name":val,
-        "data":val,
-        "children":[]
-      };
-    }
-
-    console.log("models ",self.collection.models);
-    var model = new App.Model.CmsSection(node);
-    self.collection.push(model);
-    this.collection.sync('create', model.toJSON(), {});
-    self.$el.jstree("unset_focus");
   },
   //move to fh.cms
   deleteSection: function (val) {
