@@ -116,7 +116,7 @@ App.View.CMSTree = App.View.CMS.extend({
       tree = [];
 
     _.each(sections, function (section, idx, list) {
-
+      section.path = section.path || section;
       if (section.path.split(".").length === 1) {
         var exploded = explodeSection(section);
         tree.push(exploded);
@@ -132,15 +132,16 @@ App.View.CMSTree = App.View.CMS.extend({
           },
           title : section.name
         },
-        attr: { id: section.path.replace(/\s+/g,'').replace(/\.+/g,''), hash: section.hash, path: section.path, status : section.status || 'published' },
+        attr: { id: section.path.replace(/\s+/g,'').replace(/\.+/g,''), hash: section.hash, _id : section._id, path: section.path, status : section.status || 'published' },
         "children": []
       };
       if (section && section.children) {
         node.children = [];
-        _.each(section.children, function (secChild, idx) {
+        _.each(section.children, function (childId, idx) {
           console.log("Exploding section");
-          var cSection = self.collection.findSectionByHash(secChild);
+          var cSection = self.collection.findWhere({_id : childId});
           if(cSection){
+            cSection = cSection.toJSON();
             node.children.push(explodeSection(cSection));
           }
         });
@@ -203,19 +204,19 @@ App.View.CMSTree = App.View.CMS.extend({
     console.log("move data", data);
     // JSTree needs to be told which attributes to retrieve - otherwise it dumps them. I kid you not.
 
-    var treeData = data.inst.get_json(-1, ['name','hash', 'path', 'children']);
+    var treeData = data.inst.get_json(-1, ['name','hash', 'path', 'children', '_id']);
     //need to update the models in the collection to reflect the new state then recall render.
     // we have two different data structures that contain the same data we need to sync them.
-    function findInData(treeData,hash, path){
+    function findInData(treeData,_id, path){
       for(var k=0; k < treeData.length; k++){
         var treeOb = treeData[k];
         path = treeData[k]["data"];
-        if(hash == treeOb.attr['hash']){
+        if(_id == treeOb.attr['_id']){
           treeOb.attr["path"] = path;
           return treeOb;
         }
         else if(treeOb.children && treeOb.children.length > 0){
-         treeOb =  findInData(treeOb.children,hash,path);
+         treeOb =  findInData(treeOb.children,_id,path);
           if(treeOb) return treeOb;
         }
       }
@@ -224,7 +225,7 @@ App.View.CMSTree = App.View.CMS.extend({
     function resetPaths(treeData){
       for(var k=0; k < treeData.length; k++){
         var treeOb = treeData[k];
-        var model = self.collection.findWhere({"hash":treeOb.attr["hash"]});
+        var model = self.collection.findWhere({"_id":treeOb.attr["_id"]});
         if(model){
           setPath(model,treeOb["data"]);
         }
@@ -236,7 +237,7 @@ App.View.CMSTree = App.View.CMS.extend({
           var ch = model.get("children");
           var chModel;
           for(var i=0; i < ch.length; ch++){
-            chModel = self.collection.findWhere({"hash":ch[i]});
+            chModel = self.collection.findWhere({"_id":ch[i]});
             var updatePath = currentPath + "." + chModel.get("name");
             setPath(chModel, updatePath);
           }
@@ -247,11 +248,11 @@ App.View.CMSTree = App.View.CMS.extend({
     var models =  self.collection.models;
     for(var td=0; td < models.length; td++){
       var model = models[td];
-      var syncTo = findInData(treeData, model.get("hash"));
+      var syncTo = findInData(treeData, model.get("_id"));
       syncTo.children = syncTo.children || [];
       model.attributes.children = [];
       for(var cid=0; cid < syncTo.children.length; cid++){
-        model.attributes.children.push(syncTo.children[cid]["attr"]["hash"]);
+        model.attributes.children.push(syncTo.children[cid]["attr"]["_id"]);
       }
     }
     resetPaths(treeData);

@@ -53,7 +53,7 @@ App.Collection.CMS = Backbone.Collection.extend({
       options.error = function(){};
       console.warn('No error CB provided in Section Model on ' + method + ' operation');
     }
-
+    
     switch(method){
       case "read": // read sections
         this.read.apply(this, arguments);
@@ -84,61 +84,23 @@ App.Collection.CMS = Backbone.Collection.extend({
    */
   draft : function(method, model, options){
     var self = this,
-    url = this.urls.crupdateSection,
-    fieldsToCreate, fieldsToUpdate;
+    url = this.urls.crupdateSection;
+    delete model.__v;
+    delete model.hash;
+    delete model.status;
+    model.modifiedBy = $fw.userProps.email;
+    model.fields = [];
 
-    $fw.server.put(url, model, options.success, options.error, true);
-    // TODO: Confirm & delete following code
-//    async.series({
-//      createFields : function(cb){
-//        // 1. Find all fields that need to be added
-//        fieldsToCreate = _.where(model.fields, { needsCreate : true } );
-//        self.bulkUpdate({fields : fieldsToCreate, url : self.urls.mock, method : 'POST'}, cb);
-//      },
-//      updateFields : function(cb){
-//        // 2. Find all fields that need to be updated
-//        fieldsToUpdate = _.where(model.fields, { needsUpdate : true } );
-//        self.bulkUpdate({fields : fieldsToUpdate, url : self.urls.mock, method : 'PUT'}, cb);
-//      },
-//      deleteFields : function(cb){
-//        // 3. Find all fields that have been removed
-//        if (model.hasOwnProperty('fieldsToDelete') && model.fieldsToDelete.length > 0){
-//          self.bulkUpdate({fields : model.fieldsToDelete, url : self.urls.mock, method : 'DELETE'}, function(err, res){
-//            delete model.fieldsToDelete;
-//            cb(err, res);
-//          });
-//        }else{
-//          // return success
-//          return cb(null, true);
-//        }
-//      },
-//      updateSection : function(cb){
-//        // 4. Call setSection with any changes to field values(?), and section title, publish date or parent
-//        $fw.server.put(this.urls.self.urls.mock, model, function(res) {
-//          return cb(null, res);
-//        }, function(err){
-//          return cb(err);
-//        }, true);
-//      }
-//    }, function(err, res){
-//      // Finally - done with all requests needed for a save draft
-//      if (err){
-//        if ($.isFunction(options.success)) {
-//          return options.error(err);
-//        }
-//        return err;
-//      }
-//
-//      if ($.isFunction(options.success)) {
-//        options.success(res);
-//      }
-//    });
-
+    $.ajax({
+      type: "POST",
+      url: url, contentType : "application/json",
+      data: JSON.stringify(model)
+    }) .done(options.success).error(options.error);
   },
   read : function(method, model, options){
     //TODO These go in "read" - leave here for now so we post to a blank thingy
     var self = this,
-    url = this.urls.mock,
+    url = this.urls.readSections,
     body = {};
 
     $fw.server.get(url, body, function(res) {
@@ -149,39 +111,52 @@ App.Collection.CMS = Backbone.Collection.extend({
     }, options.error, true);
   },
   create : function(method, section, options){
-    var url = this.urls.crupdateSection,
-    body = { //TODO: Fill these in
-      "name": section.name,
-      "parent": "", // TODO: ??
-      "path":section.path,
-      "modifiedBy": "test@example.com" // TODO: ??
-    };
-    $fw.server.put(url, body, options.success, options.error, true);
+    var self = this,
+    url = this.urls.crupdateSection;
+    section.modifiedBy = $fw.userProps.email,
+    parent = false;
+    delete section.hash;
+    delete section.data;
+    delete section._id;
+
+    // If it isn't a root level item, validate it's parent exists
+    if (section.parent && section.parent!==""){
+      parent = self.findWhere({ name : section.parent });
+      if (!parent){
+        return options.error("Could not find parent with name " + section.parent);
+      }
+      parent = parent.toJSON();
+    }
+
+    $.ajax({
+      type: "PUT",
+      url: url, contentType : "application/json",
+      data: JSON.stringify(section)
+    }) .done(function(res){
+
+      if (parent){
+        // We also need to update it's parent's "children" property
+        parent.children.push(res._id);
+        self.sync('draft', parent, {success : function(){
+          return options.success(res);
+        }, error : function(err){
+          return options.success(err);
+        }});
+      }else{
+        return options.success(res);
+      }
+
+    }).error(options.error);
+
   },
   del : function(method, model, options){
-    var url = this.urls.crupdateSection,
-    body = ( model.toJSON ) ? model.toJSON() : model; // no hasOwnProperty here - want to see if prototype chain has method toJSON
-    $fw.server.del(url, model, options.success, options.error, true);
-  },
-  bulkUpdate : function(opts, cb){
-    //TODO: Confirm & Delete - no longer used
-    var workers = [],
-    asyncMethod = (opts.series === true) ? 'series' : 'parallel',
-    httpMethod = opts.method.toLowerCase() || 'post';
-    httpMethod = (httpMethod === 'delete') ? 'del' : httpMethod; // delete is reserved keyword - filter this out
+    var body = ( model.toJSON ) ? model.toJSON() : model, // no hasOwnProperty here - want to see if prototype chain has method toJSON
+    url = this.urls.crupdateSection + '/' + body._id;
 
-    _.each(opts.fields, function(field){
-      delete field.needsUpdate;
-      delete field.needsCreate;
-      workers.push(function(cb){
-        $fw.server[httpMethod](opts.url, field, function(res) {
-          cb(null, res);
-        }, function(err){
-          cb(err, null);
-        }, true);
-      });
-    });
-    async[asyncMethod](workers, cb);
+    $.ajax({
+      type: "DELETE",
+      url: url, contentType : "application/json"
+    }) .done(options.success).error(options.error);
   },
   findSectionByPath : function(path){
     console.log("find section by path " + path);

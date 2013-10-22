@@ -173,7 +173,7 @@ App.View.CMSController  = Backbone.View.extend({
         input = el.parents('.modal').find('input#newCollectionName'),
         sectionIn = el.parents('.modal').find("select[name='parentName']").find('option').filter(":selected").data("path"),
         secVal = input.val();
-        self.doCreateSection(secVal);
+        self.doCreateSection({ name : secVal.toString(), parent : sectionIn.toString()});
         console.log("Section parent section name ", secVal, sectionIn);
         if (self.tree){
           self.tree.activeSection = sectionIn;
@@ -185,7 +185,7 @@ App.View.CMSController  = Backbone.View.extend({
 
   },
   //move to fh.cms
-  doCreateSection: function (val) {
+  doCreateSection: function (section) {
     var self = this,
     selectedSection = self.activeSection || "root",
     node;
@@ -193,7 +193,7 @@ App.View.CMSController  = Backbone.View.extend({
     console.log("Create Section in", selectedSection);
 
     var parentSection = (selectedSection === "root") ? undefined : self.collection.findSectionByPath(selectedSection);
-    var hash = "temp-"+new Date().getTime();
+    var id = "temp-"+new Date().getTime();
     console.log("parent section is ", parentSection);
     var childrenKey = App.Model.CmsSection.CONST.CHILDREN;
 
@@ -202,12 +202,13 @@ App.View.CMSController  = Backbone.View.extend({
         parentSection[childrenKey] = [];
       }
 
-      var path = (parentSection.path === "") ? val : parentSection.path + "." + val,
+      var path = (parentSection.path === "") ? section.name : parentSection.path + "." + section.name,
       node = {
         "path": path,
-        "hash": hash,
-        "name": val,
-        "data": val,
+        "_id": id,
+        "name": section.name,
+        "data": section.name,
+        "parent" : section.parent,
         "children": []
       };
 
@@ -215,10 +216,11 @@ App.View.CMSController  = Backbone.View.extend({
     }else{
       //add new parent section
       node = {
-        "path":val,
-        "hash":hash,
-        "name":val,
-        "data":val,
+        "path":section.name,
+        "_id":id,
+        "name":section.name,
+        "data":section.name,
+        "parent" : section.parent,
         "children":[]
       };
     }
@@ -229,7 +231,8 @@ App.View.CMSController  = Backbone.View.extend({
 
     this.collection.sync('create', model.toJSON(), { success : function(res){
       self.form.alertMessage('Section successfully saved');
-    }, failure : function(err){
+      self.collection.fetch({reset : true});
+    }, error : function(err){
       self.form.alertMessage(err.toString(), 'danger');
     }});
     if (self.tree && self.tree.$el){

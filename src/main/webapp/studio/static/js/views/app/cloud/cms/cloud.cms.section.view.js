@@ -172,24 +172,15 @@ App.View.CMSSection = App.View.CMS.extend({
 
     // On editing an existing field, mark section as unsaved
     this.fb.mainView.collection.bind('change', function(model, collection){
-      if (model.hasChanged('label')){
-        model.set('needsUpdate', true); // Label changed - this is structure, we need to POST to setField
-      }
       App.dispatch.trigger(CMS_TOPICS.SECTION_DIRTIED,model.toJSON());
     });
     // On creating a field, we should also mark the section unsaved changes
     this.fb.mainView.collection.bind('add', function(model, collection){
-      model.set('needsCreate', true); // We need to POST to setField to create it
       App.dispatch.trigger(CMS_TOPICS.SECTION_DIRTIED,model.toJSON());
     });
 
     // On creating a field, we should also mark the section unsaved changes
     this.fb.mainView.collection.bind('remove', function(model, collection){
-      if (!self.sectionModel.has('fieldsToDelete')){
-        self.sectionModel.set('fieldsToDelete', []);
-      }
-      var appended = self.sectionModel.get('fieldsToDelete').concat(model.toJSON());
-      self.sectionModel.set('fieldsToDelete', appended);
       App.dispatch.trigger(CMS_TOPICS.SECTION_DIRTIED,model.toJSON());
     });
 
@@ -250,13 +241,6 @@ App.View.CMSSection = App.View.CMS.extend({
       fields.push(newField);
       newField.name = newField.name || field.label;
       newField.value = newField.value || field.value;
-      //TODO: Remove the need for massaging, this is kinda redonk.
-      if (field.needsUpdate===true){
-        newField.needsUpdate = true;
-      }
-      if (field.needsCreate===true){
-        newField.needsCreate = true;
-      }
     });
     return fields;
   },
@@ -289,6 +273,7 @@ App.View.CMSSection = App.View.CMS.extend({
         self.alertMessage();
         App.dispatch.trigger(CMS_TOPICS.AUDIT, "Section draft saved with values: " + JSON.stringify(self.section));
         App.dispatch.trigger(CMS_TOPICS.SECTION_SAVE_DRAFT,{"section":self.section}); // Notify the tree that we're saving the section so it can change colour
+        self.collection.fetch({reset : true});
       },
       error : function(err){
         self.alertMessage(err.toString(), 'danger');
@@ -309,7 +294,15 @@ App.View.CMSSection = App.View.CMS.extend({
     App.dispatch.trigger(CMS_TOPICS.AUDIT, "Section draft discarded");
     App.dispatch.trigger(CMS_TOPICS.SECTION_DISCARD_DRAFT,this.section);
     this.render();
-    this.collection.sync('discarddraft', this.sectionModel.toJSON(), {});
+    this.collection.sync('discarddraft', this.sectionModel.toJSON(), {
+      success : function(){
+        self.alertMessage('Draft discarded successfully');
+        self.collection.fetch({reset : true});
+      },
+      error : function(){
+        self.alertMessage('Error removing draft');
+      }
+    });
   },
 
   onSectionDelete : function(e){
