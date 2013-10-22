@@ -40,6 +40,19 @@ App.Collection.CMS = Backbone.Collection.extend({
   },
   sync: function (method, model, options) {
     var self = this;
+    options = options || {};
+    options.success = options.success || function(){
+
+    };
+
+    if (!options.success){
+      options.success = function(){};
+      console.warn('No success CB provided in Section Model on ' + method + ' operation');
+    }
+    if (!options.error){
+      options.error = function(){};
+      console.warn('No error CB provided in Section Model on ' + method + ' operation');
+    }
 
     switch(method){
       case "read": // read sections
@@ -58,7 +71,7 @@ App.Collection.CMS = Backbone.Collection.extend({
         //TODO
         break;
       case "delete": // Delete a section
-        //TODO
+        this.del.apply(this, arguments);
         break;
       default:
         break;
@@ -144,6 +157,11 @@ App.Collection.CMS = Backbone.Collection.extend({
       "modifiedBy": "test@example.com" // TODO: ??
     };
     $fw.server.put(url, body, options.success, options.error, true);
+  },
+  del : function(method, model, options){
+    var url = this.urls.crupdateSection,
+    body = ( model.toJSON ) ? model.toJSON() : model; // no hasOwnProperty here - want to see if prototype chain has method toJSON
+    $fw.server.del(url, model, options.success, options.error, true);
   },
   bulkUpdate : function(opts, cb){
     //TODO: Confirm & Delete - no longer used

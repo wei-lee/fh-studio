@@ -313,10 +313,18 @@ App.View.CMSSection = App.View.CMS.extend({
   },
 
   onSectionDelete : function(e){
-    console.log("section delete called");
+    var self = this;
     e.preventDefault();
     App.dispatch.trigger(CMS_TOPICS.AUDIT, "Section deleted");
-    this.collection.remove(this.sectionModel);
+    this.collection.remove(this.sectionModel, {
+      success : function(){
+        self.alertMessage('Section removed successfully');
+      },
+      error : function(){
+        debugger;
+        self.alertMessage('Error removing section');
+      }
+    });
   },
   setSection : function(section){
     this.options.section = section;

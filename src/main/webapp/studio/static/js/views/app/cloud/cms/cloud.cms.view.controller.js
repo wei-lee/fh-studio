@@ -228,9 +228,9 @@ App.View.CMSController  = Backbone.View.extend({
     self.collection.push(model);
 
     this.collection.sync('create', model.toJSON(), { success : function(res){
-      self.alertMessage('Section successfully saved');
+      self.form.alertMessage('Section successfully saved');
     }, failure : function(err){
-      self.alertMessage(err.toString(), 'danger');
+      self.form.alertMessage(err.toString(), 'danger');
     }});
     if (self.tree && self.tree.$el){
       self.tree.$el.jstree("unset_focus");

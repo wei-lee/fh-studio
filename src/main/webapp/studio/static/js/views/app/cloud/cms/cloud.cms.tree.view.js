@@ -163,7 +163,15 @@ App.View.CMSTree = App.View.CMS.extend({
       ok: function (e) {
         console.log("deleting " + self.activeSection);
         var model = self.collection.findWhere({path : self.activeSection});
-        self.collection.remove(model);
+        self.collection.remove(model, {
+          success : function(){
+            self.alertMessage('Section removed successfully');
+          },
+          error : function(){
+            debugger;
+            self.alertMessage('Error removing section');
+          }
+        });
       }
     });
     self.$el.append(modal.render().$el);
