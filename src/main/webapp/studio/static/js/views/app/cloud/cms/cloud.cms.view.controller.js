@@ -314,7 +314,8 @@ App.View.CMSController  = Backbone.View.extend({
   },
   checkUnsaved : function(cb){
     var self = this,
-    unsaved = this.tree.$el.find('.jstree-unsaved');
+    tree = (this.tree) ? this.tree.$el : this.$el,
+    unsaved = tree.find('.jstree-unsaved');
     if (unsaved.length > 0){
       var modal = new App.View.Modal({
         title: 'Unsaved Changes',
