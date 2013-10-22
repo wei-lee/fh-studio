@@ -270,13 +270,17 @@ App.View.CMSSection = App.View.CMS.extend({
     this.sectionModel.set(this.section);
     this.collection.sync('draft', this.sectionModel.toJSON(), {
       success : function(){
-        self.alertMessage();
         App.dispatch.trigger(CMS_TOPICS.AUDIT, "Section draft saved with values: " + JSON.stringify(self.section));
         App.dispatch.trigger(CMS_TOPICS.SECTION_SAVE_DRAFT,{"section":self.section}); // Notify the tree that we're saving the section so it can change colour
-        self.collection.fetch({reset : true});
+        self.collection.fetch({reset : true, success : function(){
+          setTimeout(function(){
+            // Make this happen after render - TODO, not the tidiest
+            self.trigger('message', 'Draft updated successfully');
+          }, 200);
+        }});
       },
       error : function(err){
-        self.alertMessage(err.toString(), 'danger');
+        self.trigger('message', err.toString(), 'danger');
       }
     });
     return false;
@@ -290,17 +294,22 @@ App.View.CMSSection = App.View.CMS.extend({
 
     this.sectionModel.set(previous);
 
-    this.alertMessage('Section changes discarded successfully');
+    this.trigger('message', 'Section changes discarded successfully');
     App.dispatch.trigger(CMS_TOPICS.AUDIT, "Section draft discarded");
     App.dispatch.trigger(CMS_TOPICS.SECTION_DISCARD_DRAFT,this.section);
     this.render();
     this.collection.sync('discarddraft', this.sectionModel.toJSON(), {
       success : function(){
-        self.alertMessage('Draft discarded successfully');
-        self.collection.fetch({reset : true});
+        self.collection.fetch({reset : true, success : function(){
+          setTimeout(function(){
+            // Make this happen after render - TODO, not the tidiest
+            self.trigger('message', 'Draft discarded successfully');
+          }, 200);
+
+        }});
       },
       error : function(){
-        self.alertMessage('Error removing draft');
+        self.trigger('message', 'Error removing draft', 'danger');
       }
     });
   },
@@ -311,11 +320,10 @@ App.View.CMSSection = App.View.CMS.extend({
     App.dispatch.trigger(CMS_TOPICS.AUDIT, "Section deleted");
     this.collection.remove(this.sectionModel, {
       success : function(){
-        self.alertMessage('Section removed successfully');
+        self.trigger('message', 'Section removed successfully');
       },
       error : function(){
-        debugger;
-        self.alertMessage('Error removing section');
+        self.trigger('message', 'Error removing section', 'danger');
       }
     });
   },

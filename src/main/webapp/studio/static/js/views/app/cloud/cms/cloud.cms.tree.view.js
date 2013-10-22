@@ -166,11 +166,10 @@ App.View.CMSTree = App.View.CMS.extend({
         var model = self.collection.findWhere({path : self.activeSection});
         self.collection.remove(model, {
           success : function(){
-            self.alertMessage('Section removed successfully');
+            self.trigger('message', 'Section removed successfully');
           },
           error : function(){
-            debugger;
-            self.alertMessage('Error removing section');
+            self.trigger('message', 'Error removing section', 'danger');
           }
         });
       }

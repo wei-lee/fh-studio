@@ -18,31 +18,6 @@ App.View.CMS = Backbone.View.extend({
     crumbs.push('</ul>');
     return crumbs.join('');
   },
-  alertMessage : function(msg, cls, cb){
-    cls = cls || 'success';
-    msg = msg || 'Save successful';
-
-    var cms_alert = Handlebars.compile($('#cms_alert').html()),
-    alertBox = $(cms_alert({ cls : cls, msg : msg })),
-    el = this.$el.find('.middle');
-
-
-    if (!el || (el.length && el.length ===0)){
-      el = this.$el;
-    }
-
-    $(el).prepend(alertBox);
-
-    // Fade out then remove our message
-    setTimeout(function(){
-      alertBox.fadeOut('fast', function(){
-        if (typeof cb === 'function'){
-          cb();
-        }
-        alertBox.remove();
-      });
-    }, 3000);
-  },
   modal : function(msg){
     this.modal  = new App.View.Modal({
       body : msg,

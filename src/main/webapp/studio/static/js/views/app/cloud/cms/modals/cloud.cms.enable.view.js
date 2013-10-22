@@ -38,7 +38,11 @@ App.View.CMSEnable = App.View.CMSModalProgress.extend({
       timeout: 20000,
       success: function(res){
         if (res.status === "ok") {
-          self.enableStarted(res.result.cacheKey[mode]);
+          var key = res.result.cacheKey[mode];
+          if (!key && res.result.cacheKey.length && res.result.cacheKey.length>0 ){
+            key = res.result.cacheKey[0];
+          }
+          self.enableStarted(key);
         } else {
           console.log('Enable failed:' + res);
         }
@@ -146,6 +150,7 @@ App.View.CMSEnable = App.View.CMSModalProgress.extend({
   enableFailed : function(){
     this.$el.find('#modal-ok').html(this.buttonText).attr('disabled', false);
     this.$el.find('.progress').removeClass('progress-striped').addClass('progress-danger');
+    this.done = true;
   },
   enableSuccess : function(){
     var self = this;

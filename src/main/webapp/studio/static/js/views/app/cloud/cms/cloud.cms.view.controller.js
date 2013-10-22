@@ -116,6 +116,7 @@ App.View.CMSController  = Backbone.View.extend({
     this.form.render();
 
     this.form.bind('edit_field_list', $.proxy(this.onEditFieldList, this));
+    this.form.bind('message', $.proxy(this.alertMessage, this));
 
     this.$left = $(this.templates.$cms_left());
 
@@ -130,6 +131,7 @@ App.View.CMSController  = Backbone.View.extend({
     this.tree.bind('sectionchange', $.proxy(this.treeNodeClicked, this));
     this.tree.bind('sectionchange', $.proxy(this.form.setSection, this.form));
     this.tree.bind('addsection', $.proxy(this.onAddSection, this));
+    this.tree.bind('message', $.proxy(this.alertMessage, this));
 
     return this;
   },
@@ -230,10 +232,12 @@ App.View.CMSController  = Backbone.View.extend({
     self.collection.push(model);
 
     this.collection.sync('create', model.toJSON(), { success : function(res){
-      self.form.alertMessage('Section successfully saved');
-      self.collection.fetch({reset : true});
+
+      self.collection.fetch({reset : true, success : function(){
+        self.alertMessage('Section successfully saved');
+      }});
     }, error : function(err){
-      self.form.alertMessage(err.toString(), 'danger');
+      self.alertMessage(err.toString(), 'danger');
     }});
     if (self.tree && self.tree.$el){
       self.tree.$el.jstree("unset_focus");
@@ -263,7 +267,7 @@ App.View.CMSController  = Backbone.View.extend({
         }
         if (success === true){
           // Show save success message
-          self.form.alertMessage();
+          self.alertMessage();
         }
         self.form.render();
         break;
@@ -357,5 +361,30 @@ App.View.CMSController  = Backbone.View.extend({
       console.log(err);
       return cb(err);
     }, false);
+  },
+  alertMessage : function(msg, cls, cb){
+    cls = cls || 'success';
+    msg = msg || 'Save successful';
+
+    var cms_alert = Handlebars.compile($('#cms_alert').html()),
+    alertBox = $(cms_alert({ cls : cls, msg : msg })),
+    el = this.$el.find('.middle');
+
+
+    if (!el || (el.length && el.length ===0)){
+      el = this.$el;
+    }
+
+    $(el).prepend(alertBox);
+
+    // Fade out then remove our message
+    setTimeout(function(){
+      alertBox.fadeOut('fast', function(){
+        if (typeof cb === 'function'){
+          cb();
+        }
+        alertBox.remove();
+      });
+    }, 3000);
   }
 });
