@@ -135,7 +135,7 @@ App.Collection.CMS = Backbone.Collection.extend({
     }
 
     $.ajax({
-      type: "PUT",
+      type: "POST",
       url: url, contentType : "application/json",
       data: JSON.stringify(section)
     }) .done(function(res){
