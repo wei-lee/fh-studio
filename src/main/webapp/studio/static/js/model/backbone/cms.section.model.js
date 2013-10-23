@@ -85,11 +85,17 @@ App.Collection.CMS = Backbone.Collection.extend({
   draft : function(method, model, options){
     var self = this,
     url = this.urls.crupdateSection;
+
+    console.log("MODEL SAVE ", model);
     delete model.__v;
     delete model.hash;
     delete model.status;
     model.modifiedBy = $fw.userProps.email;
-    model.fields = [];
+    for(var i=0; i < model.fields.length; i++ ){
+      model.fields[i].section = model.name;
+      model.fields[i].modifiedBy = model.modifiedBy;
+    }
+    //model.fields = [];
 
     $.ajax({
       type: "POST",
