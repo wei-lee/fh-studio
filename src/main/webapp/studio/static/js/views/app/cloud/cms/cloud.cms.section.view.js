@@ -23,8 +23,6 @@ App.View.CMSSection = App.View.CMS.extend({
     this.collection = options.collection;
     this.compileTemplates();
     this.view = (this.options.hasOwnProperty('listfield')) ?  "listfield" : "section";
-
-
   },
 
    render : function(){
@@ -38,6 +36,8 @@ App.View.CMSSection = App.View.CMS.extend({
       console.log('Error loading section with path ' + this.options.section);
       return this.modal('Error loading section');
     }
+
+     console.log("section retrieved ", section);
 
 
 
@@ -115,9 +115,10 @@ App.View.CMSSection = App.View.CMS.extend({
       if (!listField){
         return this.modal('No list field found with name: ' + name);
       }
-
-      table = new App.View.CMSTable({ fields : listField.fields, data : listField.data });
-      $(this).find('.fieldlist_table').html(table.render().$el);
+      if(listField.fields.length > 0){
+        table = new App.View.CMSTable({ fields : listField.fields, data : listField.data });
+        $(this).find('.fieldlist_table').html(table.render().$el);
+      }
     });
 
     // Add in some instructions ontop of the form
@@ -198,7 +199,7 @@ App.View.CMSSection = App.View.CMS.extend({
           break;
         case "list":
           newField.field_type = "field_list";
-          newField.values = field.values || [];
+          newField.values = field.data || [];
           newField.fields = field.fields || [];
           break;
         default:
@@ -206,7 +207,7 @@ App.View.CMSSection = App.View.CMS.extend({
           break;
       }
       newField.label = field.name;
-      newField.value = field.value;
+      newField.value = field.value || "";
       fields.push(newField);
     });
 
@@ -275,7 +276,7 @@ App.View.CMSSection = App.View.CMS.extend({
         self.collection.fetch({reset : true, success : function(){
           setTimeout(function(){
             // Make this happen after render - TODO, not the tidiest
-            self.trigger('message', 'Draft updated successfully');
+            self.trigger('message', 'updated successfully');
           }, 200);
         }});
       },

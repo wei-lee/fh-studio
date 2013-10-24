@@ -41,7 +41,7 @@ App.View.CMSController  = Backbone.View.extend({
     }
 
     // Otherwise, CMS is already enabled - append loading & load the app dyno hosts
-    self.$el.append('Loading...');
+    //self.$el.append('Loading...');
 
     if (!this.hosts){
       this.getHosts(function(err, res){
@@ -174,7 +174,7 @@ App.View.CMSController  = Backbone.View.extend({
       ok: function (e) {
         var el = $(e.target),
         input = el.parents('.modal').find('input#newCollectionName'),
-        sectionIn = el.parents('.modal').find("select[name='parentName']").find('option').filter(":selected").data("path"),
+        sectionIn = el.parents('.modal').find("select[name='parentName']").find('option').filter(":selected").val(),
         secVal = input.val();
         self.doCreateSection({ name : secVal.toString(), parent : sectionIn.toString()});
         console.log("Section parent section name ", secVal, sectionIn);
@@ -188,42 +188,44 @@ App.View.CMSController  = Backbone.View.extend({
 
   },
   //move to fh.cms
-  doCreateSection: function (section) {
+  doCreateSection: function (sectionParams) {
+    debugger;
     var self = this,
-    selectedSection = self.activeSection || "root",
+    selectedSection = sectionParams.parent,
     node;
-
     console.log("Create Section in", selectedSection);
 
-    var parentSection = (selectedSection === "root") ? undefined : self.collection.findSectionByPath(selectedSection);
+    var parentSection = (selectedSection === "root") ? "" : self.collection.findWhere({"name":selectedSection});
     var id = "temp-"+new Date().getTime();
     console.log("parent section is ", parentSection);
     var childrenKey = App.Model.CmsSection.CONST.CHILDREN;
 
     if (parentSection) {
-      if (!parentSection[childrenKey]){
-        parentSection[childrenKey] = [];
+      if (!parentSection.get(childrenKey)){
+        parentSection.set(childrenKey,[]);
       }
 
-      var path = (parentSection.path === "") ? section.name : parentSection.path + "." + section.name,
+      var path = parentSection.get("path") || "";
+      path+= "." + sectionParams.name;
+
       node = {
         "path": path,
         "_id": id,
-        "name": section.name,
-        "data": section.name,
-        "parent" : section.parent,
+        "name": sectionParams.name,
+        "data": sectionParams.name,
+        "parent" : sectionParams.parent,
         "children": []
       };
 
-      parentSection[childrenKey].push(node.hash);
+      parentSection.attributes.children.push(node.hash);
     }else{
       //add new parent section
       node = {
-        "path":section.name,
+        "path":sectionParams.name,
         "_id":id,
-        "name":section.name,
-        "data":section.name,
-        "parent" : section.parent,
+        "name":sectionParams.name,
+        "data":sectionParams.name,
+        "parent" : sectionParams.parent,
         "children":[]
       };
     }
