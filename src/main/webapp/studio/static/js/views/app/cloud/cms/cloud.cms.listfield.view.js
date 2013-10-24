@@ -182,6 +182,21 @@ App.View.CMSListField = App.View.CMSSection.extend({
     parentModelFields[parentIndex] = this.fieldList;
     this.sectionModel.set('fields', parentModelFields);
 
+    this.collection.sync('draft', this.sectionModel.toJSON(), {
+      success : function(){
+        App.dispatch.trigger(CMS_TOPICS.AUDIT, "Section draft saved with values: " + JSON.stringify(self.section));
+        App.dispatch.trigger(CMS_TOPICS.SECTION_SAVE_DRAFT,{"section":self.section}); // Notify the tree that we're saving the section so it can change colour
+        self.collection.fetch({reset : true, success : function(){
+          setTimeout(function(){
+            // Make this happen after render - TODO, not the tidiest
+            self.trigger('message', 'updated successfully');
+          }, 200);
+        }});
+      },
+      error : function(err){
+        self.trigger('message', err.toString(), 'danger');
+      }
+    });
     self.render();
     App.dispatch.trigger("cms.audit", "CMS List saved",self.fb);
     // We don't post to the server here - we just mark as unsaved, and only do so on the save button of the section

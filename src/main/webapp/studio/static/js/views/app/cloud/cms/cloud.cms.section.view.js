@@ -276,7 +276,7 @@ App.View.CMSSection = App.View.CMS.extend({
         self.collection.fetch({reset : true, success : function(){
           setTimeout(function(){
             // Make this happen after render - TODO, not the tidiest
-            self.trigger('message', 'Draft updated successfully');
+            self.trigger('message', 'updated successfully');
           }, 200);
         }});
       },
