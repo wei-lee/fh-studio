@@ -165,10 +165,6 @@ App.View.CMSListField = App.View.CMSSection.extend({
         }
 
       }
-    }else if(this.options.mode === "structure" && this.options.isAdministrator){
-      var fields = this.fb.mainView.collection.toJSON();
-      fields = this.massageFieldsFromFormBuilder(fields);
-      this.fieldList.fields = fields;
     }
 
     // Now beings the rather complex task of updating the parent model's field list entry with this data (i.e. this.fieldList)..
@@ -182,22 +178,10 @@ App.View.CMSListField = App.View.CMSSection.extend({
     parentModelFields[parentIndex] = this.fieldList;
     this.sectionModel.set('fields', parentModelFields);
 
-    this.collection.sync('draft', this.sectionModel.toJSON(), {
-      success : function(){
-        App.dispatch.trigger(CMS_TOPICS.AUDIT, "Section draft saved with values: " + JSON.stringify(self.section));
-        App.dispatch.trigger(CMS_TOPICS.SECTION_SAVE_DRAFT,{"section":self.section}); // Notify the tree that we're saving the section so it can change colour
-        self.collection.fetch({reset : true, success : function(){
-          setTimeout(function(){
-            // Make this happen after render - TODO, not the tidiest
-            self.trigger('message', 'updated successfully');
-          }, 200);
-        }});
-      },
-      error : function(err){
-        self.trigger('message', err.toString(), 'danger');
-      }
-    });
-    self.render();
+    // Go back to section back
+    this.trigger('back');
+
+
     App.dispatch.trigger("cms.audit", "CMS List saved",self.fb);
     // We don't post to the server here - we just mark as unsaved, and only do so on the save button of the section
   },
@@ -224,13 +208,11 @@ App.View.CMSListField = App.View.CMSSection.extend({
   },
   setModeData : function(){
     var self = this;
-    App.dispatch.trigger('cms-checkUnsaved', function(){
-      self.options.mode = 'data';
-      self.title = 'Edit List Data';
-      self.options.editStructure = false;
-      self.render();
-      self.$el.find('.btn-listfield-change-data').addClass('active');
-    });
+    self.options.mode = 'data';
+    self.title = 'Edit List Data';
+    self.options.editStructure = false;
+    self.render();
+    self.$el.find('.btn-listfield-change-data').addClass('active');
   },
   setModeStructure : function(){
     var self = this;
@@ -239,14 +221,11 @@ App.View.CMSListField = App.View.CMSSection.extend({
       return;
     }
 
-    App.dispatch.trigger('cms-checkUnsaved', function(){
-      self.options.mode = 'structure';
-      self.title = 'Edit List Structure';
-      self.options.editStructure = true;
-      self.render();
-      self.$el.find('.btn-listfield-change-structure').addClass('active');
-    });
-
+    self.options.mode = 'structure';
+    self.title = 'Edit List Structure';
+    self.options.editStructure = true;
+    self.render();
+    self.$el.find('.btn-listfield-change-structure').addClass('active');
   },
   onRowClick : function(e){
     console.log("row click called");
@@ -328,5 +307,37 @@ App.View.CMSListField = App.View.CMSSection.extend({
     });
     fields = this.massageFieldsForFormbuilder(fields);
     this.fb.mainView.collection.reset(fields);
+  },
+  bindFBEvents : function(){
+    var self = this;
+    // On editing an existing field, mark section as unsaved
+    this.fb.mainView.collection.bind('change', function(field, collection){
+      App.dispatch.trigger(CMS_TOPICS.SECTION_DIRTIED,field.toJSON());
+      var massaged = self.massageFieldFromFormBuilder(field),
+      previousFields = self.fieldList.fields,
+      id = field.get('_id') || field.cid,
+      previous = _.findWhere(previousFields, { _id : id}),
+      indexOfPrevious = previousFields.indexOf(previous);
+
+      // Set the previous fields array at the index where we found the one
+      // with matching _id to be our updated massaged field
+      previousFields[indexOfPrevious] = massaged;
+    });
+    // On creating a field, we should also mark the section unsaved changes
+    this.fb.mainView.collection.bind('add', function(field, collection){
+      App.dispatch.trigger(CMS_TOPICS.SECTION_DIRTIED,field.toJSON());
+      var massaged = self.massageFieldFromFormBuilder(field),
+      previousFields = self.fieldList.fields;
+      previousFields.push(massaged);
+    });
+
+    // On creating a field, we should also mark the section unsaved changes
+    this.fb.mainView.collection.bind('remove', function(field, collection){
+      App.dispatch.trigger(CMS_TOPICS.SECTION_DIRTIED,field.toJSON());
+      var previousFields = self.fieldList.fields,
+      previous = _.findWhere(previousFields, { _id : field.get('_id')}),
+      indexOfPrevious = previousFields.indexOf(previous);
+      previousFields.splice(indexOfPrevious, indexOfPrevious+1);
+    });
   }
 });

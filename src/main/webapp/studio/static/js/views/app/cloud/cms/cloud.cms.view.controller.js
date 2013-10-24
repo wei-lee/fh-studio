@@ -22,8 +22,6 @@ App.View.CMSController  = Backbone.View.extend({
 
     // Initialise our audit controller
     this.audit = new App.View.CMSAudit();
-
-    App.dispatch.bind('cms-checkUnsaved', $.proxy(this.checkUnsaved, this));
     App.dispatch.bind(CMS_TOPICS.SECTION_SAVE_DRAFT, $.proxy(this.onSaveDraft, this));
     App.dispatch.bind(CMS_TOPICS.SECTION_DISCARD_DRAFT, $.proxy(this.onDiscardDraft, this));
   },
@@ -144,11 +142,6 @@ App.View.CMSController  = Backbone.View.extend({
 
     this.$left = $(this.templates.$cms_left());
 
-    if (this.tempTree){
-      // Remove the temp tree if we had an empty CMS & used it to create
-      this.tempTree.remove();
-    }
-
     this.tree = new App.View.CMSTree({collection : this.collection});
     this.$el.prepend(this.$left);
     this.$el.find('.cmsTreeContainer').append(this.tree.render().$el);
@@ -156,6 +149,7 @@ App.View.CMSController  = Backbone.View.extend({
     this.tree.bind('sectionchange', $.proxy(this.form.setSection, this.form));
     this.tree.bind('addsection', $.proxy(this.onAddSection, this));
     this.tree.bind('message', $.proxy(this.alertMessage, this));
+    this.tree.bind('cms-checkUnsaved', $.proxy(this.checkUnsaved, this));
 
     return this;
   },
@@ -271,19 +265,15 @@ App.View.CMSController  = Backbone.View.extend({
   },
   onEditFieldList : function(options){
     var self = this;
-    App.dispatch.trigger('cms-checkUnsaved', function(){
-      self.active = 'listfield';
-      self.$fbContainer.hide();
-      self.$listFieldContainer.empty().show();
-      options.$el = self.$listFieldContainer;
-      self.listfield = new App.View.CMSListField(options);
-      self.listfield.render();
-      self.listfield.bind('back', $.proxy(self.onCMSBack, self));
-    });
+    self.active = 'listfield';
+    self.$fbContainer.hide();
+    self.$listFieldContainer.empty().show();
+    options.$el = self.$listFieldContainer;
+    self.listfield = new App.View.CMSListField(options);
+    self.listfield.render();
+    self.listfield.bind('back', $.proxy(self.onCMSBack, self));
   },
   onCMSBack : function(success){
-//    App.dispatch.trigger('cms-checkUnsaved', function(){
-//    });
     var self = this;
     switch(this.active){
       case "listfield":
@@ -295,7 +285,7 @@ App.View.CMSController  = Backbone.View.extend({
           // Show save success message
           self.alertMessage();
         }
-        self.form.render();
+        self.$fbContainer.show();
         break;
       case "audit":
         this.$auditContainer.hide();

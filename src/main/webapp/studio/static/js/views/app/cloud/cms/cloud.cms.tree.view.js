@@ -184,7 +184,7 @@ App.View.CMSTree = App.View.CMS.extend({
     var ok = function (e) {
       self.navigateTo(path);
     };
-    App.dispatch.trigger('cms-checkUnsaved', ok);
+    this.trigger('cms-checkUnsaved', ok);
   },
   navigateTo : function(path){
     if (!path) {

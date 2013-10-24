@@ -6,7 +6,6 @@ App.View.CMSSection = App.View.CMS.extend({
   events: {
     'click .btn-savedraft' : 'onSectionSaveDraft',
     'click .btn-discard-draft' : 'onDraftDiscard',
-    'click .btn-deletesection' : 'onSectionDelete',
     'click .btn-listfield-structure' : 'onListFieldEditStructure',
     'click .btn-listfield-data' : 'onListFieldEditData'
   },
@@ -162,6 +161,10 @@ App.View.CMSSection = App.View.CMS.extend({
     var self = this;
     this.$fbEl.empty();
     if (this.fb){
+      if (this.fb.mainView && this.fb.mainView.collection){
+        this.fb.mainView.collection.unbind();
+        this.fb.mainView.collection.stopListening();
+      }
       this.fb.stopListening();
     }
     this.fb = new Formbuilder(this.$fbEl, {
@@ -171,104 +174,122 @@ App.View.CMSSection = App.View.CMS.extend({
       editStructure : this.options.editStructure || false
     });
 
-    // On editing an existing field, mark section as unsaved
-    this.fb.mainView.collection.bind('change', function(model, collection){
-      App.dispatch.trigger(CMS_TOPICS.SECTION_DIRTIED,model.toJSON());
-    });
-    // On creating a field, we should also mark the section unsaved changes
-    this.fb.mainView.collection.bind('add', function(model, collection){
-      App.dispatch.trigger(CMS_TOPICS.SECTION_DIRTIED,model.toJSON());
-    });
-
-    // On creating a field, we should also mark the section unsaved changes
-    this.fb.mainView.collection.bind('remove', function(model, collection){
-      App.dispatch.trigger(CMS_TOPICS.SECTION_DIRTIED,model.toJSON());
-    });
+    this.bindFBEvents();
 
 
 
     return this.fb;
   },
-  massageFieldsForFormbuilder : function(oldFields){
-    var fields = [];
-    _.each(oldFields, function(field){
-      var newField = {};
+  bindFBEvents : function(){
+    var self = this;
+    // On editing an existing field, mark section as unsaved
+    this.fb.mainView.collection.bind('change', function(field, collection){
+      App.dispatch.trigger(CMS_TOPICS.SECTION_DIRTIED,field.toJSON());
+      var massaged = self.massageFieldFromFormBuilder(field),
+      previousFields = self.sectionModel.get('fields'),
+      id = field.get('_id') || field.cid,
+      previous = _.findWhere(previousFields, { _id : id}),
+      indexOfPrevious = previousFields.indexOf(previous);
+
+      // Set the previous fields array at the index where we found the one
+      // with matching _id to be our updated massaged field
+      previousFields[indexOfPrevious] = massaged;
+      self.sectionModel.set('fields', previousFields);
+
+    });
+    // On creating a field, we should also mark the section unsaved changes
+    this.fb.mainView.collection.bind('add', function(field, collection){
+      App.dispatch.trigger(CMS_TOPICS.SECTION_DIRTIED,field.toJSON());
+      var massaged = self.massageFieldFromFormBuilder(field),
+      previousFields = self.sectionModel.get('fields');
+      previousFields.push(massaged);
+      self.sectionModel.set('fields', previousFields);
+    });
+
+    // On creating a field, we should also mark the section unsaved changes
+    this.fb.mainView.collection.bind('remove', function(field, collection){
+      App.dispatch.trigger(CMS_TOPICS.SECTION_DIRTIED,field.toJSON());
+      var previousFields = self.sectionModel.get('fields'),
+      previous = _.findWhere(previousFields, { _id : field.get('_id')}),
+      indexOfPrevious = previousFields.indexOf(previous);
+      previousFields.splice(indexOfPrevious, indexOfPrevious+1);
+      self.sectionModel.set('fields', previousFields);
+    });
+  },
+  massageFieldsForFormbuilder : function(fields){
+    _.each(fields, function(field){
       switch(field.type){
         case "string":
-          newField.field_type = "text";
+          field.field_type = "text";
+          delete field.fields;
+          delete field.data;
           break;
         case "list":
-          newField.field_type = "field_list";
-          newField.values = field.data || [];
-          newField.fields = field.fields || [];
+          field.field_type = "field_list";
+          field.values = field.data || [];
+          field.fields = field.fields || [];
           break;
         default:
-          newField.field_type = field.type;
+          delete field.fields;
+          delete field.data;
+          field.field_type = field.type;
           break;
       }
-      newField.label = field.name;
-      newField.value = field.value || "";
-      fields.push(newField);
+      field.label = field.name;
+      field.value = field.value || "";
     });
 
     return fields;
   },
-  massageFieldsFromFormBuilder : function(fbfields, oldSection){
-    var fields = [];
-    _.each(fbfields, function(field){
-      var  newField = {};
-      switch(field.field_type){
-        case "field_list":
-          // FormBuilder doesn't give us the values of lists, we need to retrieve them ourselves.
-          // if a user has changed the list structure or data, we've already copied it to the model - so we can
-          // just copy it directly..
-          //TODO: What if the user changes the listfield's name?
-          newField = _.findWhere(oldSection.fields, { name : field.label});
-          if (!newField){
-            newField = {
-              type : 'list',
-              data : [],
-              fields : []
-            };
-          }
-          break;
-        case "text":
-          newField.type = "string";
-          break;
-        default:
-          newField.type = field.field_type;
-          break;
-      }
+  massageFieldFromFormBuilder : function(model){
+    var field = model.toJSON();
+    switch(field.field_type){
+      case "field_list":
+        // FormBuilder doesn't give us the values of lists, we need to retrieve them ourselves.
+        // if a user has changed the list structure or data, we've already copied it to the model - so we can
+        // just copy it directly..
+        //TODO: What if the user changes the listfield's name?
+        field.type = "list";
+        field.fields = field.fields || [];
+        field.data = field.data || [];
+        break;
+      case "text":
+        field.type = "string";
+        break;
+      default:
+        field.type = field.field_type;
+        break;
+    }
+    field.name = _.clone(field.label);
+    field._id = field._id || model.cid;
+    field.value = field.value || "";
+    delete field.field_type;
+    delete field.required;
+    delete field.label;
+    delete field.cid;
+    delete field.field_options;
+    return field;
+  },
+  massageFieldsFromFormBuilder : function(fbCollection, oldSection){
+    var self = this,
+    fields = [];
+    fbCollection.each(function(field){
+      var newField = self.massageFieldFromFormBuilder(field);
       fields.push(newField);
-      newField.name = newField.name || field.label;
-      newField.value = newField.value || field.value;
     });
     return fields;
   },
-
-
 
   onSectionSaveDraft : function(e){
     e.preventDefault();
     var self = this,
-    fields = this.fb.mainView.collection.toJSON(), //TODO: Verify this syncs with autoSave
     vals = {};
 
-
-    //TODO: Wrap in if user is administrator for safety?
-    // Get our form as a JSON object
     $(this.$el.find('#configureSectionForm').serializeArray()).each(function(idx, el){
       vals[el.name] = el.value;
     });
-    this.section.name = vals.name;
-    //TODO: Update children?
-    //TODO: end wrap
-
-
-    this.section.fields = this.massageFieldsFromFormBuilder(fields, this.section);
-
-    this.section.status = 'draft';
-    this.sectionModel.set(this.section);
+    this.sectionModel.set('name', vals.name);
+    this.sectionModel.set('status', 'draft');
     this.collection.sync('draft', this.sectionModel.toJSON(), {
       success : function(){
         App.dispatch.trigger(CMS_TOPICS.AUDIT, "Section draft saved with values: " + JSON.stringify(self.section));
@@ -311,20 +332,6 @@ App.View.CMSSection = App.View.CMS.extend({
       },
       error : function(){
         self.trigger('message', 'Error removing draft', 'danger');
-      }
-    });
-  },
-
-  onSectionDelete : function(e){
-    var self = this;
-    e.preventDefault();
-    App.dispatch.trigger(CMS_TOPICS.AUDIT, "Section deleted");
-    this.collection.remove(this.sectionModel, {
-      success : function(){
-        self.trigger('message', 'Section removed successfully');
-      },
-      error : function(){
-        self.trigger('message', 'Error removing section', 'danger');
       }
     });
   },

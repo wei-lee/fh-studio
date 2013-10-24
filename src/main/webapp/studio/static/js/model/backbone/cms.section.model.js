@@ -90,6 +90,7 @@ App.Collection.CMS = Backbone.Collection.extend({
     delete model.__v;
     delete model.hash;
     delete model.status;
+    model.fields = this.trimInternalIds(model.fields);
     model.modifiedBy = $fw.userProps.email;
     for(var i=0; i < model.fields.length; i++ ){
       model.fields[i].section = model.name;
@@ -102,6 +103,25 @@ App.Collection.CMS = Backbone.Collection.extend({
       url: url, contentType : "application/json",
       data: JSON.stringify(model)
     }) .done(options.success).error(options.error);
+  },
+  /*
+    Internally we use backbone CIDs to represent state until it reaches the SS.
+    Since these are new fields according to the SS, we don't want to dispatch these
+    fake internal IDs - it'll only trigger an update..
+   */
+  trimInternalIds : function(fields){
+    for (var i=0; i<fields.length; i++){
+      var f = fields[i];
+      if (f._id.length < 24){
+        // If it's some arbitrary internal ID we assigned, not a node ObjectID, delete it before pushing
+        delete f._id;
+      }
+      // Cater field lists by recursing - should only happen once..
+      if (f.fields){
+        f.fields = this.trimInternalIds(f.fields);
+      }
+    }
+    return fields;
   },
   read : function(method, model, options){
     //TODO These go in "read" - leave here for now so we post to a blank thingy
