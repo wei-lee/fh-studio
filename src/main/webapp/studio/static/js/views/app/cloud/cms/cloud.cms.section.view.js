@@ -125,7 +125,7 @@ App.View.CMSSection = App.View.CMS.extend({
     if (this.view === 'section'){
       var instructions;
       if(this.options.isAdministrator && this.options.isAdministrator === true){
-        instructions = "Drag fields from the right to add fields. Drag fields to re-order. Click on a field to select it, click again to edit it. ";
+        instructions = "Drag fields from the right to add fields. Click on a field to to edit it.";
       }else{
         instructions = "Edit the form to alter CMS data";
       }

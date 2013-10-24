@@ -29,8 +29,6 @@ App.View.CMSController  = Backbone.View.extend({
   },
   render: function(options){
     var self = this;
-    this.$el.empty();
-
 
     // If not enabled, show the enable view
     var inst = $fw.data.get('inst'),
@@ -40,27 +38,30 @@ App.View.CMSController  = Backbone.View.extend({
       return self.renderEnableView();
     }
 
-    // Otherwise, CMS is already enabled - append loading & load the app dyno hosts
-    //self.$el.append('Loading...');
+    // Otherwise, CMS is already enabled - append loading
+    this.renderLoading();
 
+    // Then load hosts & then actual CMS data
     if (!this.hosts){
       this.getHosts(function(err, res){
         if (err){
-          //TODO
+          self.$el.removeClass('busy');
+          self.renderErrorView();
         }
-        var url = self.hosts['development-url']; //todo
+        self.gotHosts();
 
-        self.$el.empty();
 
-        self.collection = new App.Collection.CMS([], { url : url });
-        self.collection.fetch({ reset: true});
-        self.collection.bind('reset', $.proxy(self.render, self));
-        return self.renderCMS();
       });
     }else{
-      self.renderCMS();
+      self.gotHosts();
     }
     return self;
+  },
+  renderLoading : function(){
+    this.$el.empty();
+    this.$el.addClass('busy');
+    var tpl = Handlebars.compile($('#databrowserLoading').html());
+    this.$el.append(tpl());
   },
   renderEnableView : function(){
     this.message = new App.View.FullPageMessageView({ message : 'To use the Mobile CMS, it must be enabled.', button : 'Enable CMS &raquo;', cb :$.proxy(this.onCMSEnable, this)});
@@ -69,8 +70,30 @@ App.View.CMSController  = Backbone.View.extend({
     this.$el.append(this.message.render().$el);
     return this;
   },
-  renderCMS : function(){
+  renderErrorView : function(){
+    this.message = new App.View.FullPageMessageView({ message : 'Error loading CMS - is your cloud app running?', button : 'Retry &raquo;', cb :$.proxy(this.render, this)});
 
+    this.$el.empty();
+    this.$el.append(this.message.render().$el);
+    return this;
+  },
+  gotHosts: function(){
+    var self = this,
+    url = self.hosts['development-url']; //todo
+
+    self.collection = new App.Collection.CMS([], { url : url });
+    self.collection.fetch({ reset: true, success : function(){
+      self.collection.bind('reset', $.proxy(self.render, self));
+      return self.renderCMS();
+      self.$el.removeClass('busy');
+    }, error : function(err){
+      console.log('Error fetching CMS data: ' + err.toString());
+      self.renderErrorView();
+      self.$el.removeClass('busy');
+    }});
+  },
+  renderCMS : function(){
+    this.$el.empty();
     // TODO - not handling failed collection fetches, this needs to only show if the collection was loaded
     if (this.collection.length === 0){
       return this.renderEmptyCMSView();

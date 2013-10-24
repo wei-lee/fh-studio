@@ -259,6 +259,11 @@
     background-position: -18px -19px;
 }
 
+#cms_container .busy .busyContainer {
+    position: relative;
+    width: 100%;
+}
+
 /*
   Form Builder CSS overrides
  */
@@ -319,3 +324,4 @@
 .fb-field-wrapper .btn-group.pull-right {
     margin-right: 4px;
 }
+
