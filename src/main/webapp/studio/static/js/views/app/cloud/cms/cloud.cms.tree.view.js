@@ -42,7 +42,7 @@ App.View.CMSTree = App.View.CMS.extend({
 
     App.dispatch.on(CMS_TOPICS.SECTION_SAVE_DRAFT, function (data){
       console.log("save draft event ", data);
-      $('.jstree-clicked').removeClass().addClass("jstree-clicked").addClass("jstree-draft");
+      $('.jstree-clicked').removeClass().addClass("jstree-clicked").addClass("jstree-published");
     });
 
     App.dispatch.on(CMS_TOPICS.SECTION_DISCARD_DRAFT, function (data){
