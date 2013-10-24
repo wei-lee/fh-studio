@@ -105,20 +105,7 @@ App.View.CMSSection = App.View.CMS.extend({
 
     this.$el.find('#cmsAppPreview').append($('#app_preview').clone(true).show().width('100%'));
 
-    $(this.$el.find('.response-field-field_list')).each(function(){
-      //self
-      var name = $(this).find('.fieldlist_table').data('name'),
-      listField = _.findWhere(section.fields, { name : name }),
-      table;
-
-      if (!listField){
-        return this.modal('No list field found with name: ' + name);
-      }
-      if(listField.fields.length > 0){
-        table = new App.View.CMSTable({ fields : listField.fields, data : listField.data });
-        $(this).find('.fieldlist_table').html(table.render().$el);
-      }
-    });
+    this.renderListFieldTables();
 
     // Add in some instructions ontop of the form
     if (this.view === 'section'){
@@ -142,6 +129,23 @@ App.View.CMSSection = App.View.CMS.extend({
     mv.$el.find('.fb-tabs a').unbind().on('click', $.proxy(mv.showTab, mv));
 
     return this;
+  },
+  renderListFieldTables : function(){
+    var self = this;
+    $(this.$el.find('.response-field-field_list')).each(function(){
+      //self
+      var name = $(this).find('.fieldlist_table').data('name'),
+      listField = _.findWhere(self.section.fields, { name : name }),
+      table;
+
+      if (!listField){
+        return this.modal('No list field found with name: ' + name);
+      }
+      if(listField.fields.length > 0){
+        table = new App.View.CMSTable({ fields : listField.fields, data : listField.data });
+        $(this).find('.fieldlist_table').html(table.render().$el);
+      }
+    });
   },
 
   onSectionChange : function (se){

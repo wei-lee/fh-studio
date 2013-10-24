@@ -286,6 +286,7 @@ App.View.CMSController  = Backbone.View.extend({
           self.alertMessage();
         }
         self.$fbContainer.show();
+        self.form.renderListFieldTables();
         break;
       case "audit":
         this.$auditContainer.hide();

@@ -4,6 +4,7 @@ App.View = App.View || {};
 App.View.CMSListField = App.View.CMSSection.extend({
   events : {
     'click .btn-listfield-save' : 'onListFieldSave',
+    'click .btn-cms-back' : 'onListFieldSave', // prevents default - override the default..
     'click .btn-listfield-change-data' : 'setModeData',
     'click .btn-listfield-change-structure' : 'setModeStructure',
     'click table tbody tr' : 'onRowClick',
