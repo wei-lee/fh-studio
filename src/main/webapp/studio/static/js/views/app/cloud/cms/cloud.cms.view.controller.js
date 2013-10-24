@@ -71,6 +71,7 @@ App.View.CMSController  = Backbone.View.extend({
   },
   renderCMS : function(){
 
+    // TODO - not handling failed collection fetches, this needs to only show if the collection was loaded
     if (this.collection.length === 0){
       return this.renderEmptyCMSView();
     }
