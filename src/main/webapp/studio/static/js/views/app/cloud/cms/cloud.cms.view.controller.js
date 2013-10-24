@@ -352,7 +352,7 @@ App.View.CMSController  = Backbone.View.extend({
   },
   // Enable discard draft an publish buttons - we now have a draft..
   onSaveDraft : function(){
-    this.$el.find('.btn-discard-draft').attr('disabled', false);
+    this.$el.find('.btn-cancel-changes').attr('disabled', false);
     $(this.options.container).find('.fh-box-header .btn-cms-publish').attr('disabled', false);
     this.$el.find('.btn-cms-publish').attr('disabled', false);
 
@@ -360,7 +360,7 @@ App.View.CMSController  = Backbone.View.extend({
   onDiscardDraft : function(){
     // including .cmsTreeContainer here important, otherwise we pick up on the legend
     if (this.tree.$el.find('.cmsTreeContainer .jstree-draft').length===0){
-      this.$el.find('.btn-discard-draft').attr('disabled', true);
+      this.$el.find('.btn-cancel-changes').attr('disabled', true);
       $(this.options.container).find('.fh-box-header .btn-cms-publish').attr('disabled', true);
       this.$el.find('.btn-cms-publish').attr('disabled', true);
     }

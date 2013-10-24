@@ -198,6 +198,35 @@
     font-size: 1.4em;
 }
 
+#configureSectionForm {
+    background-color: #eee;
+    border: 0;
+    border-radius: 12px;
+    padding: 0;
+    margin-bottom: 12px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    height: 0px;
+    overflow-y: hidden;
+    transition-property: all;
+    transition-duration: .5s;
+    transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+    height: 0;
+}
+
+#configureSectionForm.active {
+    height: 30px;
+    display: block;
+    border: 1px solid #eee;
+    padding: 8px;
+}
+
+.btn-edit-section small {
+    font-weight: 100;
+    margin-top: 6px;
+    margin-right: 14px;
+}
+
 /*
   JSTree styles
 */
@@ -206,6 +235,7 @@
     border-bottom:2px solid #006dcc;
     background: transparent;
     color: #333;
+    font-weight: bold;
 }
 
 #cms_container .jstree-hovered {
@@ -325,3 +355,14 @@
     margin-right: 4px;
 }
 
+.fb-field-wrapper .subtemplate-wrapper {
+    border-color: #bbb;
+}
+
+.fb-response-fields {
+    margin-top: 14px;;
+}
+
+.fb-field-wrapper:hover .subtemplate-wrapper {
+    border-color: #bbb;
+}

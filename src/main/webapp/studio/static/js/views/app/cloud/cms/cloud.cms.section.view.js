@@ -5,15 +5,18 @@ App.View.CMSSection = App.View.CMS.extend({
   title : 'Edit Section',
   events: {
     'click .btn-savedraft' : 'onSectionSaveDraft',
-    'click .btn-discard-draft' : 'onDraftDiscard',
+    'click .btn-cancel-changes' : 'onCancelChanges',
     'click .btn-listfield-structure' : 'onListFieldEditStructure',
-    'click .btn-listfield-data' : 'onListFieldEditData'
+    'click .btn-listfield-data' : 'onListFieldEditData',
+    'click .btn-edit-section' : 'onEditSectionToggle'
   },
   templates : {
     'cms_configureSection' : '#cms_configureSection',
     'cms_sectionExtraTabs' : '#cms_sectionExtraTabs',
+    'cms_sectionExtraTabsContent' : '#cms_sectionExtraTabsContent',
     'cms_section_savecancel' : '#cms_section_savecancel',
-    'cms_editSectionInstructions' : '#cms_editSectionInstructions'
+    'cms_editSectionInstructions' : '#cms_editSectionInstructions',
+    'cms_editSectionButton' : "#cms_editSectionButton"
   },
   initialize: function(options){
     this.$el = options.$el;
@@ -81,23 +84,13 @@ App.View.CMSSection = App.View.CMS.extend({
     // Add in the CMS specific breadcrumb on top of the middle section
     this.$el.find('.middle').prepend(this.cmsBreadcrumb(path));
     // Add in the page title to the breadcrumb row
-    this.$el.find('.middle').prepend('<h3>' + this.title + '</h3>');
+    this.$el.find('.middle').prepend('<h3>' + this.title + this.templates.$cms_editSectionButton() + '</h3>');
 
     // Add in the extra tabs for configure section and preview
     this.$el.find('.fb-tabs').append(this.templates.$cms_sectionExtraTabs());
 
     if (this.view === 'section'){
-      // Setup the configure section tab
-      var pathArray = section.path.split('.'),
-      parent = pathArray[pathArray.length-2] || "Root";
-      var parentOptions = this.collection.toHTMLOptions();
-      parentOptions = ["<option value='' data-path='' >-Root</option>"].concat(parentOptions);
-      parentOptions = parentOptions.join('');
-      this.$el.find('.fb-tab-content').append(this.templates.$cms_configureSection({ parentOptions : parentOptions, name : section.name, path:section.path }));
-
-
-
-
+      this.$el.find('.fb-tab-content').append(this.templates.$cms_sectionExtraTabsContent());
       this.delegateEvents();
       // Select the active option
       this.$el.find('select[name=parentName]').val(parent);
@@ -116,6 +109,10 @@ App.View.CMSSection = App.View.CMS.extend({
         instructions = "Edit the form to alter CMS data";
       }
       $(this.templates.$cms_editSectionInstructions({msg : instructions})).insertAfter(this.$el.find('.breadcrumb'));
+
+
+      this.renderConfigureSection();
+
       this.$el.find('.middle').append(this.templates.$cms_section_savecancel());
     }
 
@@ -129,6 +126,17 @@ App.View.CMSSection = App.View.CMS.extend({
     mv.$el.find('.fb-tabs a').unbind().on('click', $.proxy(mv.showTab, mv));
 
     return this;
+  },
+  renderConfigureSection : function(){
+    // Setup the configure section tab
+    var pathArray = this.section.path.split('.'),
+    parent = pathArray[pathArray.length-2] || "Root";
+    var parentOptions = this.collection.toHTMLOptions();
+    parentOptions = ["<option value='' data-path='' >-Root</option>"].concat(parentOptions);
+    parentOptions = parentOptions.join('');
+    var configureSection = this.templates.$cms_configureSection({ parentOptions : parentOptions, name : this.section.name, path:this.section.path });
+    $(configureSection).insertBefore(this.$el.find('.middle .breadcrumb'));
+    this.$el.find('.middle').prepend();
   },
   renderListFieldTables : function(){
     var self = this;
@@ -179,6 +187,9 @@ App.View.CMSSection = App.View.CMS.extend({
     });
 
     this.bindFBEvents();
+    this.bind('dirtied', function(){
+      self.$el.find('.btn-cancel-changes').attr('disabled', false);
+    });
 
 
 
@@ -189,6 +200,7 @@ App.View.CMSSection = App.View.CMS.extend({
     // On editing an existing field, mark section as unsaved
     this.fb.mainView.collection.bind('change', function(field, collection){
       App.dispatch.trigger(CMS_TOPICS.SECTION_DIRTIED,field.toJSON());
+      self.trigger('dirtied');
       var massaged = self.massageFieldFromFormBuilder(field),
       previousFields = self.sectionModel.get('fields'),
       id = field.get('_id') || field.cid,
@@ -204,6 +216,7 @@ App.View.CMSSection = App.View.CMS.extend({
     // On creating a field, we should also mark the section unsaved changes
     this.fb.mainView.collection.bind('add', function(field, collection){
       App.dispatch.trigger(CMS_TOPICS.SECTION_DIRTIED,field.toJSON());
+      self.trigger('dirtied');
       var massaged = self.massageFieldFromFormBuilder(field),
       previousFields = self.sectionModel.get('fields');
       previousFields.push(massaged);
@@ -213,6 +226,7 @@ App.View.CMSSection = App.View.CMS.extend({
     // On creating a field, we should also mark the section unsaved changes
     this.fb.mainView.collection.bind('remove', function(field, collection){
       App.dispatch.trigger(CMS_TOPICS.SECTION_DIRTIED,field.toJSON());
+      self.trigger('dirtied');
       var previousFields = self.sectionModel.get('fields'),
       previous = _.findWhere(previousFields, { _id : field.get('_id')}),
       indexOfPrevious = previousFields.indexOf(previous);
@@ -311,9 +325,12 @@ App.View.CMSSection = App.View.CMS.extend({
     });
     return false;
   },
-  onDraftDiscard: function(e){
-
-
+  onCancelChanges: function(e){
+    // TODO: this no longer works - probably need to fetch from serverside? :-( ~cian
+    var disabled = $(e.target).attr('disabled');
+    if (disabled === "disabled" || disabled === true){
+      return;
+    }
     var previous = this.sectionModel.previousAttributes();
 
     console.log("discard draft called");
@@ -355,5 +372,8 @@ App.View.CMSSection = App.View.CMS.extend({
     fieldName = el.data('name'),
     options = { collection : this.collection, section : this.options.section, listfield : fieldName, mode : mode, isAdministrator : this.options.isAdministrator };
     this.trigger('edit_field_list', options);
+  },
+  onEditSectionToggle : function(){
+    this.$el.find('#configureSectionForm').toggleClass('active');
   }
 });

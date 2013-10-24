@@ -32,7 +32,6 @@ App.View.CMSListField = App.View.CMSSection.extend({
     this.$el.find('.fb-response-fields input, .fb-response-fields textarea').val('');
 
     // remove unused tabs
-    this.$el.find('.fb-tabs li.configuresection').remove();
     if (this.options.mode === "data"){
       this.$el.find('.fb-tabs li.addfield').hide();
       this.$el.find('.fb-tabs li.configurefield').hide();

@@ -17,7 +17,7 @@
       <div class="btn-group pull-right">
         <a href="#" title="Delete Selected Section" class="btn btn-small btn-deletesection btn-danger"><i class="icon-trash"></i></a>
         <a href="#" title="Add Section"  class="btn btn-small btn-addsection btn-success"><i class="icon-plus"></i></a>
-        <a href="#" title="Publish all CMS Drafts" class="btn btn-small btn-cms-publish btn-primary" disabled><i class="icon-bullhorn"></i></a>
+        <a href="#" title="Configure this section" class="btn btn-small btn-cms-configure"><i class="icon-cog"></i></a>
       </div>
 
     </div>
@@ -26,7 +26,7 @@
 
     </div>
     <hr/>
-    <span style="margin-left:5px; font-size:14px;">Legend:</span>
+    <span style=" font-size:14px;">Legend:</span>
     <ul class="jstree jstree-classic" style="margin-left:5px;">
       <li class="jstree-leaf"><a class="jstree-publishlater" href="#"><ins class="jstree-icon">&nbsp;</ins>Publish Later</a></li>
       <li class="jstree-leaf"><a class="jstree-unsaved" href="#"><ins class="jstree-icon">&nbsp;</ins>Unsaved Changes</a></li>
@@ -36,7 +36,6 @@
 </script>
 
 <script id="cms_sectionExtraTabs" type="text/x-handlebars-template">
-  <li class="configuresection"><a data-target="#configuresection"><i class="icon-cog"></i> Section</a></li>
   <li class="apppreview"><a  data-target="#cmsAppPreview">App Preview</a></li>
 </script>
 
@@ -49,30 +48,26 @@
         </fieldset>
 </script>
 
-<script id="cms_configureSection" type="text/x-handlebars-template">
-  <div class="fb-tab-pane" id="configuresection">
-    <form id="configureSectionForm">
-      <fieldset>
-        <label>Name</label>
-        <input type="text" name="name" value="{{ name }}">
-        <label>Section Parent</label>
-        <select name="parentName">
-          {{{ parentOptions }}}
-        </select>
-        <br />
-          <div class="btn-group">
-              <a class="btn btn-small btn-savedraft">Save Changes</a>
-              <a class="btn btn-small btn-danger btn-discard-draft" disabled>Revert Changes</a>
-        </div>
-      </fieldset>
-    </form>
-
-    <br/>
-    <div class="btn-group">
-    </div>
-  </div>
+<script id="cms_sectionExtraTabsContent" type="text/x-handlebars-template">
   <div class="fb-tab-pane" id="cmsAppPreview">
   </div>
+</script>
+
+<script id="cms_configureSection" type="text/x-handlebars-template">
+  <form id="configureSectionForm" class="form-inline">
+    <fieldset>
+      <label>Title</label>
+      <input type="text" class="input-medium" name="name" value="{{ name }}">
+      <label>Section Parent</label>
+      <select class="input-small" name="parentName">
+        {{{ parentOptions }}}
+      </select>
+    </fieldset>
+  </form>
+</script>
+
+<script id="cms_editSectionButton" type="text/x-handlebars-template">
+  <a class="btn-edit-section" href="#"><small class="pull-right"><i class="icon icon-cog"></i> Section</small></a>
 </script>
 
 <script id="cms_publishModal" type="text/x-handlebars-template">
@@ -93,7 +88,7 @@
 <script id="cms_section_savecancel" type="text/x-handlebars-template">
 <div class="btn-group pull-right cms_section_savecancel">
   <a class="btn btn-savedraft">Save Changes</a>
-  <a class="btn btn-danger btn-discard-draft" disabled>Discard Draft</a>
+  <a class="btn btn-danger btn-cancel-changes" disabled>Cancel Changes</a>
 </div>
 </script>
 <script id="cms_back" type="text/x-handlebars-template">
