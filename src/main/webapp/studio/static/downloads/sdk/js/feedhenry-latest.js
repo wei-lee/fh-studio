@@ -8775,8 +8775,10 @@ $fh.sync = (function() {
       return cb("The field " + fieldName + " is not a list.");
     } else {
       // do list stuff
-      if(fieldOptions.size){
+      if (fieldOptions.size) {
         return cb(undefined, field.data.length);
+      } else if (fieldOptions.wholeList) {
+        return cb(undefined, field.data);
       } else {
         if(fieldOptions.index >= field.data.length){
           return cb("Index " + fieldOptions.index + " out of bounds.");
@@ -8814,12 +8816,15 @@ $fh.sync = (function() {
       findCMSFieldOptions.list = options.list;
     }
 
-    if(options.size){
+    if (options.size) {
       findCMSFieldOptions.size = options.size;
+    } else if (options.wholeList) {
+      findCMSFieldOptions.wholeList = options.wholeList;
     } else {
       findCMSFieldOptions.index = params.index;
       findCMSFieldOptions.fieldName = params.fieldName; // The field within a list entry that user is interested in.
     }
+
     //As sections are stored flat, only interested in the last entry of the array. section.section2.field
     var sectionOfInterestName = parseSection(pathArray);
     var fieldOfInterestName = parseField(pathArray);
@@ -9283,25 +9288,34 @@ $fh.sync = (function() {
       });
     },
 
-     "getListSize": function(params, s, f){
-        sanityCheckParams(params, {"path": true}, function(err){
-          if(err){
-            return handleError(err, f);
-          }
+    getList: function(params, s, f){
+      sanityCheckParams(params, {"path": true}, function(err){
+        if(err){
+          return handleError(err, f);
+        }
+        return searchForFieldValue(params, {"list": true, "wholeList": true}, s, f);
+      });
+    },
 
-          return searchForFieldValue(params, {"list": true, "size": true}, s, f);
-        });
-      },
-      "getListField": function(params, s, f){
-        sanityCheckParams(params, {"path": true, "index": true, "fieldName": true}, function(err){
-          if(err){
-            return handleError(err, f);
-          }
+    getListSize: function(params, s, f){
+      sanityCheckParams(params, {"path": true}, function(err){
+        if(err){
+          return handleError(err, f);
+        }
 
-          return searchForFieldValue(params, {"list": true}, s, f);
-        });
-      }
+        return searchForFieldValue(params, {"list": true, "size": true}, s, f);
+      });
+    },
 
+    getListField: function(params, s, f){
+      sanityCheckParams(params, {"path": true, "index": true, "fieldName": true}, function(err){
+        if(err){
+          return handleError(err, f);
+        }
+
+        return searchForFieldValue(params, {"list": true}, s, f);
+      });
+    }
   };
 
   $fh.cms2 = function(p, s, f){//Parameters, success, failure
