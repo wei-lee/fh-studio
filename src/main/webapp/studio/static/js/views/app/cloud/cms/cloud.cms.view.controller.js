@@ -41,7 +41,7 @@ App.View.CMSController  = Backbone.View.extend({
     }
 
     // Otherwise, CMS is already enabled - append loading & load the app dyno hosts
-    self.$el.append('Loading...');
+    //self.$el.append('Loading...');
 
     if (!this.hosts){
       this.getHosts(function(err, res){
