@@ -161,7 +161,7 @@
 }
 
 #cms_container .middle .breadcrumb, #cms_container .middle p {
-    background-color: #fff;
+    background-color: transparent;
     border-radius: 0px;
     margin: 0px;
     padding: 6px 0px 6px 12px;
