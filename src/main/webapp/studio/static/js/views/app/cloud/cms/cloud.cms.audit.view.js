@@ -1,4 +1,4 @@
-var App = App || {};
+App = App || {};
 App.View = App.View || {};
 
 App.View.CMSAudit = App.View.CMS.extend({

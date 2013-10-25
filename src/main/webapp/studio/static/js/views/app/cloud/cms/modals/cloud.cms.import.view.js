@@ -1,4 +1,4 @@
-var App = App || {};
+App = App || {};
 App.View = App.View || {};
 
 App.View.CMSImport = App.View.CMSModalProgress.extend({
