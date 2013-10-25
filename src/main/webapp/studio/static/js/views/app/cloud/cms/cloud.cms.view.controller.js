@@ -83,7 +83,6 @@ App.View.CMSController  = Backbone.View.extend({
     self.collection.fetch({ reset: true, success : function(){
       self.collection.bind('reset', $.proxy(self.render, self));
       return self.renderCMS();
-      self.$el.removeClass('busy');
     }, error : function(err){
       console.log('Error fetching CMS data: ' + err.toString());
       self.renderErrorView();
@@ -206,7 +205,6 @@ App.View.CMSController  = Backbone.View.extend({
   },
   //move to fh.cms
   doCreateSection: function (sectionParams) {
-    debugger;
     var self = this,
     selectedSection = sectionParams.parent,
     node;
