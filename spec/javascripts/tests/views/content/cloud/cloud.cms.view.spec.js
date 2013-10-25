@@ -16,6 +16,14 @@ describe("test CMS view", function(){
   });
 
   it('should have a full populated JSTree', function () {
+    App = App || {};
+    App.View = App.View || {};
+    App.View.CMSAudit = function MockCMSAudit() {
+      return {
+        undelegateEvents: function mockUndelegateEvents() {console.log('MockCMSAudit.undelegateEvents() called');}
+        , render: function mockRender() {console.log('MockCMSAudit.render() called');}
+      };
+    };
     var container = $('<div></div>'),
     view = new App.View.CMSController({ container : container });
     view.render();
