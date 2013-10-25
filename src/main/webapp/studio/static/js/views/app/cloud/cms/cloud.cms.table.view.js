@@ -42,6 +42,7 @@ App.View.CMSTable = App.View.CMS.extend({
       "fnRowCallback": function(nTr, sData, oData, iRow, iCol) {
         $(nTr).attr('data-index', iRow).attr('data-hash', sData.hash);
       },
+      "aaSorting" : [],
       "aoColumns": columns,
       "bAutoWidth": false,
       "sPaginationType": 'bootstrap',

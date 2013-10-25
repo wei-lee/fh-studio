@@ -3,8 +3,8 @@ App.View = App.View || {};
 
 App.View.CMSListField = App.View.CMSSection.extend({
   events : {
-    'click .btn-listfield-save' : 'onListFieldSave',
-    'click .btn-cms-back' : 'onListFieldSave', // prevents default - override the default..
+    'click .btn-listfield-done' : 'onListFieldDone',
+    'click .btn-cms-back' : 'onListFieldDone', // prevents default - override the default..
     'click .btn-listfield-change-data' : 'setModeData',
     'click .btn-listfield-change-structure' : 'setModeStructure',
     'click table tbody tr' : 'onRowClick',
@@ -38,6 +38,7 @@ App.View.CMSListField = App.View.CMSSection.extend({
       // Make our only left tab the active one
       this.$el.find('.apppreview').addClass('active');
       this.$el.find('#cmsAppPreview').addClass('active');
+      //TODO - Disable the 'label' input - CSS maybe?
     }else if (this.options.mode === "structure" && this.options.isAdministrator){
       this.$el.find('.fb-tabs li.addfield').show();
       this.$el.find('.fb-tabs li.configurefield').show();
@@ -52,13 +53,11 @@ App.View.CMSListField = App.View.CMSSection.extend({
     top.render().$el.insertAfter(this.$el.find('.middle .breadcrumb'));
 
     if (this.options.mode === "data"){
-      var afterEl = $(this.$el.find('.middle .fb-no-response-fields'));
+      this.afterEl = $(this.$el.find('.middle .fb-no-response-fields'));
       console.log("fields set to ", this.fieldList.fields);
-      this.table = new App.View.CMSTable({ checkboxes : true, fields : this.fieldList.fields, data : this.fieldList.data });
-      this.table.render().$el.insertAfter(afterEl);
-      this.table.$el.find('table').removeClass('table-striped');
+      this.renderDataTable();
 
-      $(this.templates.$cms_editListDataInstructions()).insertAfter(afterEl);
+      $(this.templates.$cms_editListDataInstructions()).insertAfter(this.afterEl);
 
       // Disable field entry until user clicks a row, or adds a new row
       this.$el.find('.fb-response-fields input, .fb-response-fields textarea').attr('disabled', true);
@@ -70,6 +69,14 @@ App.View.CMSListField = App.View.CMSSection.extend({
 
 
     return this;
+  },
+  renderDataTable : function(){
+    // Remove any previous table
+    this.$el.find('.listViewDataTable').remove();
+    this.table = new App.View.CMSTable({ checkboxes : true, fields : this.fieldList.fields, data : this.fieldList.data });
+    this.table.$el.addClass('listViewDataTable');
+    this.table.render().$el.insertAfter(this.afterEl);
+    this.table.$el.find('table').removeClass('table-striped');
   },
 
   triggerChange : function () {
@@ -138,43 +145,10 @@ App.View.CMSListField = App.View.CMSSection.extend({
     return hashes;
   },
 
-  onListFieldSave : function(e){
+  onListFieldDone : function(e){
     e.preventDefault();
     e.stopPropagation();
     var self = this;
-    //hmm will need to distinguish here if it is a structure change or data
-    if(this.options.mode === "data"){
-      var checked = this.table.$el.find('tr.info input:checked').parents('tr');
-      if(checked.length > 1){
-        //error only one save at a time
-      }
-      var index = checked.first().data("index");
-
-      var params = this.fb.mainView.collection.toJSON();
-
-      console.log("saving params ", params);
-      var d = this.fieldList.data[index];
-      if(d){
-        for(var pr in params){
-          if(params.hasOwnProperty(pr)){
-            d[params[pr].label] = params[pr].value;
-          }
-        }
-      }
-//      for(var i=0; i < this.fieldList.data.length; i++){
-//        var d = this.fieldList.data[i];
-//        if(d.hash === hash){
-//
-//          for(var pr in params){
-//            if(params.hasOwnProperty(pr)){
-//              d[params[pr].label] = params[pr].value;
-//            }
-//          }
-//          this.fieldList.data[i] = d;
-//        }
-//
-//      }
-    }
 
     // Now beings the rather complex task of updating the parent model's field list entry with this data (i.e. this.fieldList)..
     var parentModelFields = this.sectionModel.get('fields'),
@@ -263,10 +237,11 @@ App.View.CMSListField = App.View.CMSSection.extend({
 
   rowSetState: function(row){
     console.log("row set state ", row);
+    var checked = this.getCheckedRows();
     if (row.hasClass('info')){
       row.removeClass('info');
       row.find('input[type=checkbox]').attr('checked', false);
-      var checked = this.getCheckedRows();
+      checked = this.getCheckedRows();
       if(checked.length <= 0){
         this.deavtivateDestructiveButtons();
       }
@@ -274,6 +249,13 @@ App.View.CMSListField = App.View.CMSSection.extend({
       row.addClass('info');
       row.find('input[type=checkbox]').attr('checked', true);
       this.activateDestuctiveButtons();
+    }
+
+    // If >1 row is selected, we're doing a multi-operation - we can only delete..
+    if (checked.length>1){
+      this.$el.find('.fb-response-fields input, .fb-response-fields textarea').attr('disabled', true);
+    }else{
+      this.$el.find('.fb-response-fields input, .fb-response-fields textarea').attr('disabled', false);
     }
   },
 
@@ -324,15 +306,33 @@ App.View.CMSListField = App.View.CMSSection.extend({
     // On editing an existing field, mark section as unsaved
     this.fb.mainView.collection.bind('change', function(field, collection){
       App.dispatch.trigger(CMS_TOPICS.SECTION_DIRTIED,field.toJSON());
-      var massaged = self.massageFieldFromFormBuilder(field),
-      previousFields = self.fieldList.fields,
-      id = field.get('_id') || field.cid,
-      previous = _.findWhere(previousFields, { _id : id}),
-      indexOfPrevious = previousFields.indexOf(previous);
+      var massaged = self.massageFieldFromFormBuilder(field);
 
-      // Set the previous fields array at the index where we found the one
-      // with matching _id to be our updated massaged field
-      previousFields[indexOfPrevious] = massaged;
+      if (self.options.mode === "data"){
+        var checked = self.table.$el.find('tr.info input:checked').parents('tr'),
+        index = checked.first().data("index"),
+        previousRow = self.fieldList.data[index],
+        fObj = {};
+
+        // Create a field object ready to extend/merge into our previousRow
+        fObj[massaged.name] = massaged.value;
+
+        _.extend(previousRow, fObj);
+
+        self.fieldList.data[index] = previousRow;
+
+        // Now that we've updated the data, render it in the table
+        self.renderDataTable();
+      }else if (self.options.mode === "structre" ){
+        // Set the previous fields array at the index where we found the one
+        // with matching _id to be our updated massaged field
+        var previousFields = self.fieldList.fields,
+        id = field.get('_id') || field.cid,
+        previous = _.findWhere(previousFields, { _id : id}),
+        indexOfPrevious = previousFields.indexOf(previous);
+
+        previousFields[indexOfPrevious] = massaged;
+      }
     });
     // On creating a field, we should also mark the section unsaved changes
     this.fb.mainView.collection.bind('add', function(field, collection){
