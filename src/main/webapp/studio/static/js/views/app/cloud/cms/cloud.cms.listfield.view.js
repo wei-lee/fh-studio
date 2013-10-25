@@ -120,11 +120,11 @@ App.View.CMSListField = App.View.CMSSection.extend({
 
   getFieldsData : function (hashes,cb){
     var self = this;
-    async.filter(self.fieldList.data, function (it, cb){
-      if(it && hashes.indexOf(it.hash) != -1){
-        cb(it);
-      }else cb();
-    }, cb);
+    var data = [];
+    for(var i=0; i < hashes.length; i++){
+      data.push(self.fieldList.data[hashes[i]]);
+    }
+    return cb(data);
   },
 
   getCheckedRows : function (){
@@ -133,7 +133,7 @@ App.View.CMSListField = App.View.CMSSection.extend({
     console.log("found " + trParents.length + " trs");
     var hashes = [];
     trParents.each(function (){
-       hashes.push($(this).data("hash"));
+       hashes.push($(this).data("index"));
     });
     return hashes;
   },
@@ -203,15 +203,12 @@ App.View.CMSListField = App.View.CMSSection.extend({
 
     var self = this;
     var activeRows = self.getCheckedRows();
+
+
     console.log("active rows",activeRows);
-    async.filter(self.fieldList.data,function (ob,cb){
-      if(activeRows.indexOf(ob.hash) == -1){
-        cb(ob);
-      }
-      else cb();
-    },function (res){
-      self.fieldList.data = res;
-    });
+    for(var i=0; i < activeRows.length; i++){
+      self.fieldList.data.splice(activeRows[i],1);
+    }
 
     this.render();
   },
@@ -258,7 +255,7 @@ App.View.CMSListField = App.View.CMSSection.extend({
     // Set fields disabled to false now we're editing a row
     this.$el.find('.fb-response-fields input, .fb-response-fields textarea').attr('disabled', false);
 
-    //remove after demo
+    //TODO remove and fix properly after demo
     this.$el.find('textarea').each(function (){
        $(this).addClass("rf-size-large");
     });
