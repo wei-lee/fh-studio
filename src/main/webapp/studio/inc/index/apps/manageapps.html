@@ -103,6 +103,12 @@
       </li>
       <% } %>
       <li class="template-restriction nodejs_mode">
+        <a href="#" data-controller="apps.cms.controller">
+          <i class="icon-align-justify"></i>
+          CMS
+        </a>
+      </li>
+      <li class="template-restriction nodejs_mode">
         <a href="#" data-controller="apps.environment.controller">
           <i class="icon-cogs"></i>
           Environment Variables
@@ -222,6 +228,8 @@
       <% } %>
 
        <%@ include file="./dashboard.html"%>
+
+      <%@ include file="./cms.html"%>
 
        <%@ include file="./debug_logging.html"%>
 

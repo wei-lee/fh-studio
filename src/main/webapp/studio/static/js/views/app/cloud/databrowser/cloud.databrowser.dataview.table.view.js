@@ -2,8 +2,8 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
   templates : {
     dataviewEditButton : '#dataviewEditButton',
     dataviewSaveCancelButton : '#dataviewSaveCancelButton',
-    dataviewEmptyContainer : '#dataviewEmptyContainer',
-    dataviewEmptyContent : '#dataviewEmptyContent',
+    dataviewEmptyContainer : '#emptyFullpageContainer',
+    dataviewEmptyContent : '#fullpageEmptyContent',
     dataviewLoadingContent : '#dataviewLoadingContent',
     dataviewEditTable : '#dataviewEditTable',
     dataviewTableContainer : '#dataviewTableContainer',

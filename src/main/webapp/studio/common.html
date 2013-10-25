@@ -27,11 +27,11 @@
       <h3>{{ title }}</h3>
     </div>
     <div class="modal-body">
-      {{{ body }}}
+
     </div>
     <div class="modal-footer">
       <button id="modal-cancel" class="btn" data-dismiss="modal">{{cancelText }}</button>
-      <button id="modal-ok" class="btn btn-primary" data-dismiss="modal">{{ okText }}</button>
+      <button id="modal-ok" class="btn btn-primary" data-dismiss="{{dismiss}}">{{ okText }}</button>
     </div>
   </div>
 </script>
@@ -272,4 +272,16 @@
             <input type="text" class="search-query span10">
         </div>
     </form>
+</script>
+
+<script id="emptyFullpageContainer" type="text/x-handlebars-template">
+  <div class="databrowser emptyContainer">
+    <div class="centered">
+      {{{ content }}}
+    </div>
+  </div>
+</script>
+<script id="fullpageEmptyContent" type="text/x-handlebars-template">
+  {{{ message }}}<br />
+  <button type="button" class="btn btn-primary btn-large btn-add-row btn-messageView">{{{ button }}}</button>
 </script>

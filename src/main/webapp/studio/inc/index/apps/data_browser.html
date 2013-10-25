@@ -202,10 +202,6 @@
     {{ message }}
   </div>
 </script>
-<script id="dataviewEmptyContent" type="text/x-handlebars-template">
-  {{{ message }}}<br />
-  <button type="button" class="btn btn-primary btn-large btn-add-row">{{{ button }}}</button>
-</script>
 <script id="collectionsEmptyContent" type="text/x-handlebars-template">
   No collections<br />
   <button type="button" class="btn btn-primary btn-large btn-add-row"><i class="icon-plus"></i> Add a collection </button>
@@ -299,12 +295,4 @@ module.exports = app.listen(process.env.FH_PORT || process.env.VCAP_APP_PORT || 
     </li>
     <li>Lastly, you need to re-deploy your app for Node.js version 0.8 or above</li>
   </ol>
-</script>
-
-<script id="dataviewEmptyContainer" type="text/x-handlebars-template">
-  <div class="databrowser emptyContainer">
-    <div class="centered">
-      {{{ content }}}
-    </div>
-  </div>
 </script>

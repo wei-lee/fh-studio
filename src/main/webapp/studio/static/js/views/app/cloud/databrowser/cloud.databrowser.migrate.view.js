@@ -1,6 +1,6 @@
 App.View.DataBrowserMigrateView = App.View.DataBrowserView.extend({
   templates : {
-    'dataviewEmptyContainer' : '#dataviewEmptyContainer',
+    'dataviewEmptyContainer' : '#emptyFullpageContainer',
     'dataMigrateMessage' : '#dataMigrateMessage',
     'databrowserNavbar' : '#databrowserNavbar',
     'dataMigratingView' : '#dataMigratingView',
@@ -31,7 +31,7 @@ App.View.DataBrowserMigrateView = App.View.DataBrowserView.extend({
       this.needsDeploy = false;
     }
 
-    this.message = new App.View.DataBrowserMessageView({ message : migrateMessage, button : migrateButton , cb : function(){
+    this.message = new App.View.FullPageMessageView({ message : migrateMessage, button : migrateButton , cb : function(){
       self.onMigrate.apply(self, arguments);
     }});
 

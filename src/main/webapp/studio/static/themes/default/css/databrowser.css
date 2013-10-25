@@ -85,13 +85,13 @@
     position: relative;
 }
 
-#databrowser_container .busy .busyContainer {
+#databrowser_container .busy .busyContainer, #cms_container .busy .busyContainer {
     display: block;
     opacity: 0.8;
     height: 100%;
 }
 
-#databrowser_container .busyContainer {
+#databrowser_container .busyContainer, #cms_container .busyContainer {
     position: absolute;
     display: block;
     /* Also transition height to 0 afterwards so it's not visible, but doesn't get in the way of the databrowser */

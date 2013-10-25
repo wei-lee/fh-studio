@@ -1,0 +1,368 @@
+.nav-tabs.compact > li > a {
+  padding-top: 4px;
+  padding-bottom: 4px;
+  line-height: 16px;
+}
+
+.nav-tabs.compact > li > a {
+  font-size: 0.9em;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin-right: 4px;
+}
+
+.breadcrumb.compact {
+    display: inline-block;
+    float: left;
+    font-size: 0.8em;
+    margin: 8px;
+}
+
+#cms_container .fh-box-inner {
+  padding: 0px;
+}
+
+#cms_container .fh-box-header .btn:last-of-type {
+    margin-right: 24px;
+}
+
+#cms_container .modal pre {
+    max-height: 300px;
+}
+
+/* These are in newer versions of bootstrap..*/
+.text-warning {
+    color: #c09853;
+}
+.text-error {
+    color: #b94a48;
+}
+.text-info {
+    color: #3a87ad;
+}
+
+#cms_container .col {
+  display: inline-block;
+}
+
+#cms_container .leftCol {
+  width: 20%;
+}
+
+#cms_container .middleCol{
+  width: 50%;
+}
+
+#cms_container .rightCol {
+  width: 29%;
+}
+
+#cms_container #addField a.btn {
+  width: 90px;
+  text-align: left;
+  margin: 4px 6px;
+  float: left;
+}
+
+#cms_container .left .menu h3, #cms_container .middle h3 {
+    font-size: 1.3em;
+    font-weight: 100;
+    margin: 0px;
+    padding: 6px 0px 0px 12px;
+    display: inline-block;
+    line-height: 20px;
+}
+
+/* Make left menu buttons inline with nav */
+#cms_container .left .menu .btn-group {
+    margin-top: 8px;
+}
+
+#cms_container .left .menu .btn-group > .btn:first-child {
+    border-bottom-left-radius: 0px;
+}
+
+#cms_container .left .menu .btn-group > .btn:last-child {
+    border-bottom-right-radius: 0px;
+}
+
+
+#cms_container .middle h3 {
+    width: 100%;
+    margin-top: 2px;
+    padding-bottom: 8px;
+}
+
+
+.editListDataInstructions {
+    margin: 10px 0px;
+}
+
+#cms_container .btn-cms-back {
+    margin-right: 10px;
+}
+
+.row.nomargin {
+  margin-left: 0px;
+}
+
+.row.nomargin .span3,
+.row.nomargin .span4,
+.row.nomargin .span6,
+.row.nomargin .span2 {
+  margin-left: 0px;
+}
+
+.row.nomargin .span3 {
+  width: 25%;
+}
+.row.nomargin .span6 {
+  width: 50%;
+}
+
+.row.nomargin .span4 {
+  width: 33.333333333%;
+}
+
+.row.nomargin .span2 {
+  width: 16.666666667%;
+}
+
+.middle .alert {
+    position: absolute;
+    width: 38%;
+    margin-left: 6px;
+}
+
+.middle .btn-group, .left .btn-group {
+    display: inline-block;
+}
+
+#cms_container fieldset.empty {
+    border: 1px dashed #ddd;
+    padding: 65px;
+    color: #666;
+    font-weight: 100;
+    font-size: 1.4em;
+}
+
+.fb-field-wrapper .dataTables_paginate {
+    display: none;
+}
+
+/*
+  Make a unified border-bottom across the CMS
+ */
+
+#cms_container .middle h3,
+#cms_container .left .menu,
+#cms_container .right .fb-tabs {
+    border-bottom: 1px solid #ccc;
+}
+
+#cms_container .middle .breadcrumb, #cms_container .middle p {
+    background-color: transparent;
+    border-radius: 0px;
+    margin: 0px;
+    padding: 6px 0px 6px 12px;
+}
+
+#cms_container .left .menu {
+    width: 100%;
+    margin-top: 2px;
+    padding-bottom: 7px;
+}
+
+#cms_container .right .fb-tabs {
+    margin-top: 11px;
+}
+
+.cmsAudit {
+    padding: 8px 16px;
+}
+
+.cmsAudit table th:first-of-type {
+    width: 124px;
+}
+
+#cms_container p.instructions {
+    border-bottom: 2px solid #006dcc;
+    padding: 0 0 0 2px;
+    margin-left: 12px;
+    display: inline;
+    color: #333;
+}
+
+#cms_container .instructions i.icon-info-sign {
+    color: #006dcc;
+    font-size: 1.4em;
+}
+
+#configureSectionForm {
+    background-color: #eee;
+    border: 0;
+    border-radius: 12px;
+    padding: 0;
+    margin-bottom: 12px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    height: 0px;
+    overflow-y: hidden;
+    transition-property: all;
+    transition-duration: .5s;
+    transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+    height: 0;
+}
+
+#configureSectionForm.active {
+    height: 30px;
+    display: block;
+    border: 1px solid #eee;
+    padding: 8px;
+}
+
+.btn-edit-section small {
+    font-weight: 100;
+    margin-top: 6px;
+    margin-right: 14px;
+}
+
+/*
+  JSTree styles
+*/
+#cms_container .jstree-clicked, #cms_container .jstree-clicked.jstree-hovered {
+    border: 0;
+    border-bottom:2px solid #006dcc;
+    background: transparent;
+    color: #333;
+    font-weight: bold;
+}
+
+#cms_container .jstree-hovered {
+    background: transparent;
+    color: black;
+    font-weight: bold;
+    padding: 0 2px;
+    border: 0;
+}
+
+#cms_container .jstree-clicked.jstree-unsaved, #cms_container .jstree-clicked.jstree-hovered.jstree-unsaved {
+    border-bottom:2px solid #ab2729;
+}
+
+#cms_container .jstree-clicked.jstree-draft, #cms_container .jstree-clicked.jstree-hovered.jstree-draft {
+    border-bottom:2px solid #ff9101;
+}
+
+#cms_container .jstree-clicked.jstree-publishlater, #cms_container .jstree-clicked.jstree-hovered.jstree-publishlater {
+    border-bottom:2px solid #4756b9;
+}
+
+#cms_container .jstree-classic ins {
+    background-image: url("../img/ddark.png");
+}
+#cms_container  .jstree-classic li {
+    background-image: none;
+}
+
+.jstree-classic .jstree-open .jstree-unsaved  .jstree-icon {
+    background-position: -37px -36px;
+}
+
+#cms_container  .jstree-classic .jstree-unsaved .jstree-icon {
+    background-position: -37px -19px;
+}
+
+.jstree-classic .jstree-open .jstree-draft  .jstree-icon {
+    background-position: -74px -36px;
+}
+
+#cms_container  .jstree-classic .jstree-draft .jstree-icon {
+    background-position: -74px -19px;
+}
+
+.jstree-classic .jstree-open .jstree-publishlater  .jstree-icon {
+    background-position: -18px -36px;
+}
+
+#cms_container  .jstree-classic .jstree-publishlater .jstree-icon {
+    background-position: -18px -19px;
+}
+
+#cms_container .busy .busyContainer {
+    position: relative;
+    width: 100%;
+}
+
+/*
+  Form Builder CSS overrides
+ */
+
+.cms-listfield-savecancel, .cms_section_savecancel {
+    top: -150px; /* Makes up for the 150px bottom padding on every form */
+}
+
+.fb-field-wrapper .actions-wrapper {
+    bottom: 2px;
+}
+
+.fb-common-checkboxes {
+    display: none;
+}
+
+.fb-label-description textarea {
+    display: none;
+}
+.fb-field-wrapper .subtemplate-wrapper .cover {
+    z-index: -2;
+}
+
+.fb-save-wrapper {
+    display: none;
+}
+
+.fb-field-wrapper.editing {
+    background-color: #f8f8f8;
+}
+
+.fb-field-wrapper.editing .subtemplate-wrapper {
+    border-color: #868686;
+    border-style: dashed;
+}
+
+.response-field-text input.rf-size-large, .response-field-paragraph textarea.rf-size-large {
+    width: 97%;
+}
+
+.fb-field-wrapper .actions-wrapper {
+    position: relative;
+    float: right;
+    display: inline-block;
+    visibility: hidden;
+    margin-bottom: 4px;
+    right: 0px;
+}
+
+.fb-field-wrapper.editing .actions-wrapper, .fb-field-wrapper:hover .actions-wrapper {
+    visibility: visible;
+}
+
+.fb-field-wrapper.editing .subtemplate-wrapper {
+    padding: 8px 10px;
+}
+
+.fb-field-wrapper .btn-group.pull-right {
+    margin-right: 4px;
+}
+
+.fb-field-wrapper .subtemplate-wrapper {
+    border-color: #bbb;
+}
+
+.fb-response-fields {
+    margin-top: 14px;;
+}
+
+.fb-field-wrapper:hover .subtemplate-wrapper {
+    border-color: #bbb;
+}

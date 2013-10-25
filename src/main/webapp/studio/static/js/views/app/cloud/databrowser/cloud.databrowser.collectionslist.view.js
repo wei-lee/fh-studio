@@ -24,7 +24,7 @@ App.View.DataBrowserCollectionsList = App.View.DataBrowserView.extend({
     this.$el.append(nav);
 
     if (this.collection.length === 0){
-      var messageView = new App.View.DataBrowserMessageView({ message : 'Your app has no collections', button : '<i class="icon-plus"></i> Add one', cb : function(e){
+      var messageView = new App.View.FullPageMessageView({ message : 'Your app has no collections', button : '<i class="icon-plus"></i> Add one', cb : function(e){
         self.onCreateCollection.apply(self, arguments);
       }});
       this.$el.append(messageView.render().$el);

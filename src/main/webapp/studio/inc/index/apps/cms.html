@@ -1,0 +1,181 @@
+<div id="cms_container" style="display: none;">
+  <div class="fh-box-outer">
+    <h4 class="fh-box-header">
+      CMS
+      <%@ include file="./cloud_environment.html" %>
+    </h4>
+    <div class="fh-box-inner">
+    </div>
+  </div>
+
+</div>
+
+<script id="cms_left" type="text/x-handlebars-template">
+  <div class="span2 left">
+    <div class="menu">
+      <h3>Sections</h3>
+      <div class="btn-group pull-right">
+        <a href="#" title="Delete Selected Section" class="btn btn-small btn-deletesection btn-danger"><i class="icon-trash"></i></a>
+        <a href="#" title="Add Section"  class="btn btn-small btn-addsection btn-success"><i class="icon-plus"></i></a>
+        <a href="#" title="Configure this section" class="btn btn-small btn-cms-configure"><i class="icon-cog"></i></a>
+      </div>
+
+    </div>
+    <br style="clear: both;" />
+    <div class="cmsTreeContainer">
+
+    </div>
+    <hr/>
+    <span style=" font-size:14px;">Legend:</span>
+    <ul class="jstree jstree-classic" style="margin-left:5px;">
+      <li class="jstree-leaf"><a class="jstree-publishlater" href="#"><ins class="jstree-icon">&nbsp;</ins>Publish Later</a></li>
+      <li class="jstree-leaf"><a class="jstree-unsaved" href="#"><ins class="jstree-icon">&nbsp;</ins>Unsaved Changes</a></li>
+      <li class="jstree-leaf"><a class="jstree-draft" href="#"><ins class="jstree-icon">&nbsp;</ins>Draft</a></li>
+    </ul>
+  </div>
+</script>
+
+<script id="cms_sectionExtraTabs" type="text/x-handlebars-template">
+  <li class="apppreview"><a  data-target="#cmsAppPreview">App Preview</a></li>
+</script>
+
+<script id="cms_sectionDropDown" type="text/x-handlebars-template">
+    <fieldset>
+        <label>Section Parent</label>
+    <select name="parentName">
+        {{{ parentOptions }}}
+    </select>
+        </fieldset>
+</script>
+
+<script id="cms_sectionExtraTabsContent" type="text/x-handlebars-template">
+  <div class="fb-tab-pane" id="cmsAppPreview">
+  </div>
+</script>
+
+<script id="cms_configureSection" type="text/x-handlebars-template">
+  <form id="configureSectionForm" class="form-inline">
+    <fieldset>
+      <label>Title</label>
+      <input type="text" class="input-medium" name="name" value="{{ name }}">
+      <label>Section Parent</label>
+      <select class="input-small" name="parentName">
+        {{{ parentOptions }}}
+      </select>
+    </fieldset>
+  </form>
+</script>
+
+<script id="cms_editSectionButton" type="text/x-handlebars-template">
+  <a class="btn-edit-section" href="#"><small class="pull-right"><i class="icon icon-cog"></i> Section</small></a>
+</script>
+
+<script id="cms_publishModal" type="text/x-handlebars-template">
+  <label class="radio">
+    <input type="radio" name="publishRadio" id="publishRadioNow" value="now" checked>
+    Publish Now
+  </label>
+  <label class="radio">
+    <input type="radio" name="publishRadio" id="publishRadioLater" value="later">
+    Publish Later
+  </label>
+  <div class="input-append date" id="cmsDatePicker">
+    <input type="text" class="span6"  name="publishdate">
+    <span class="add-on"><i class="icon-th"></i></span>
+  </div>
+</script>
+
+<script id="cms_section_savecancel" type="text/x-handlebars-template">
+<div class="btn-group pull-right cms_section_savecancel">
+  <a class="btn btn-savedraft">Save Changes</a>
+  <a class="btn btn-danger btn-cancel-changes" disabled>Cancel Changes</a>
+</div>
+</script>
+<script id="cms_back" type="text/x-handlebars-template">
+  <a class="btn btn-cms-back" href="#"><i class="icon-arrow-left"></i> Back</a>
+</script>
+<script id="cms_listfieldswitch" type="text/x-handlebars-template">
+  <div class="btn-group pull-right">
+    <a class="btn btn-small btn-listfield-change-data" href="#"><i class="icon-pencil"></i> Edit Data</a>
+    <a class="btn btn-small btn-listfield-change-structure" href="#"><i class="icon-road"></i> Edit Structure</a>
+  </div>
+</script>
+
+<script id="cms_listfieldsavecancel" type="text/x-handlebars-template">
+  <div class="btn-group pull-right cms-listfield-savecancel">
+    <a class="btn btn-primary btn-listfield-save"  data-hash="{{listid}}" href="#">Done</a>
+  </div>
+</script>
+
+<script id="cms_listfieldEditDataTopButtons" type="text/x-handlebars-template">
+  <div class="btn-group">
+  <a class="btn btn-small btn-success btn-fieldlist-add cms-change" href="#"><i class="icon-plus"></i> Row</a>
+  <a class="btn btn-small btn-success btn-fieldlist-duplicate cms-change disabled" href="#"><i class="icon-plus"></i><i class="icon-plus"></i> Duplicate</a>
+  <a class="btn btn-small btn-danger btn-fieldlist-delete cms-change disabled" href="#"><i class="icon-trash"></i> Delete</a>
+  </div>
+</script>
+
+<script id="cms_mastermenu" type="text/x-handlebars-template">
+  <div class="cms_mastermenu btn-group pull-right">
+    <a href="#" class="btn btn-small btn-cms-import btn-success"><i class="icon-upload"></i> Import</a>
+    <a href="#" class="btn btn-small btn-cms-export btn-success"><i class="icon-download"></i> Export</a>
+    <a href="#" class="btn btn-small btn-cms-copy btn-success"><i class="icon-arrow-right"></i> <span>Copy to {{{ mode }}}</span></a>
+    <a href="#" class="btn btn-small btn-cms-audit"><i class="icon-list"></i> Audit Log</a>
+    <a href="#" class="btn btn-small btn-cms-publish btn-primary" disabled><i class="icon-bullhorn"></i> <span>Publish</span></a>
+  </div>
+
+</script>
+
+<script id="cms_alert" type="text/x-handlebars-template">
+  <div class="alert alert-{{ cls }}">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    {{{ msg }}}
+  </div>
+</script>
+
+<script id="cms_editListDataInstructions" type="text/x-handlebars-template">
+  <p class="instructions editListDataInstructions"><i class="icon-info-sign"></i> To edit a row's data, click on a row.</p>
+</script>
+
+<script id="cms_editSectionInstructions" type="text/x-handlebars-template">
+  <p class="instructions cms_editSectionInstructions"><i class="icon-info-sign"></i> {{{ msg }}}</p>
+</script>
+
+<script id="cms_importModal" type="text/x-handlebars-template">
+  <form>
+    <fieldset>
+    <label>Zip File</label>
+      <input type="file">
+      <span class="help-block">Import a zipped representation of FeedHenry CMS Data</span>
+    </fieldset>
+  </form>
+</script>
+
+<script id="cms_exportModal" type="text/x-handlebars-template">
+  <p>CMS data is exported as a JSON representation of all data, with embedded links to all images. <br />
+  It may take some time to export, depending on the size of your CMS data. To begin, click Export. </p>
+</script>
+
+<script id="cms_copyModal" type="text/x-handlebars-template">
+  <p class="text-error">Warning: Copying data may result in data loss - please ensure you are copying data in the correct direction.</p>
+  <h4>Copy {{left}} <i class="icon-arrow-right"></i> {{right}}</h4>
+</script>
+
+<script id="cms_enableModal" type="text/x-handlebars-template">
+  <p>To use the CMS, it must first be enabled. To do this, we're going to:<br />
+  <ol>
+    <li>Create a new collection to store your CMS data</li>
+    <li>Restart your application - this will result in a few seconds downtime.</li>
+  </ol>
+</script>
+
+<script id="cms_progress" type="text/x-handlebars-template">
+  <div class="cms_progress row-fluid">
+    <h4>Progress</h4>
+
+    <div class="progress active">
+      <div class="bar" style="width: 0%;"></div>
+    </div>
+    <textarea class="progresslog span12" readonly=""></textarea>
+  </div>
+</script>
