@@ -257,6 +257,11 @@ App.View.CMSListField = App.View.CMSSection.extend({
 
     // Set fields disabled to false now we're editing a row
     this.$el.find('.fb-response-fields input, .fb-response-fields textarea').attr('disabled', false);
+
+    //remove after demo
+    this.$el.find('textarea').each(function (){
+       $(this).addClass("rf-size-large");
+    });
   },
 
   rowSetState: function(row){
