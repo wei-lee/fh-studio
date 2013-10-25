@@ -148,23 +148,30 @@ App.View.CMSListField = App.View.CMSSection.extend({
       if(checked.length > 1){
         //error only one save at a time
       }
-      var hash = checked.first().data("hash");
+      var index = checked.first().data("index");
 
       var params = this.fb.mainView.collection.toJSON();
+
       console.log("saving params ", params);
-      for(var i=0; i < this.fieldList.data.length; i++){
-        var d = this.fieldList.data[i];
-        if(d.hash === hash){
-
-          for(var pr in params){
-            if(params.hasOwnProperty(pr)){
-              d[params[pr].label] = params[pr].value;
-            }
-          }
-          this.fieldList.data[i] = d;
+      var d = this.fieldList.data[index];
+      for(var pr in params){
+        if(params.hasOwnProperty(pr)){
+          d[params[pr].label] = params[pr].value;
         }
-
       }
+//      for(var i=0; i < this.fieldList.data.length; i++){
+//        var d = this.fieldList.data[i];
+//        if(d.hash === hash){
+//
+//          for(var pr in params){
+//            if(params.hasOwnProperty(pr)){
+//              d[params[pr].label] = params[pr].value;
+//            }
+//          }
+//          this.fieldList.data[i] = d;
+//        }
+//
+//      }
     }
 
     // Now beings the rather complex task of updating the parent model's field list entry with this data (i.e. this.fieldList)..
