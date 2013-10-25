@@ -154,9 +154,11 @@ App.View.CMSListField = App.View.CMSSection.extend({
 
       console.log("saving params ", params);
       var d = this.fieldList.data[index];
-      for(var pr in params){
-        if(params.hasOwnProperty(pr)){
-          d[params[pr].label] = params[pr].value;
+      if(d){
+        for(var pr in params){
+          if(params.hasOwnProperty(pr)){
+            d[params[pr].label] = params[pr].value;
+          }
         }
       }
 //      for(var i=0; i < this.fieldList.data.length; i++){
