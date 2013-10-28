@@ -29,17 +29,14 @@ App.View.CMSController  = Backbone.View.extend({
     var self = this;
 
     // If not enabled, show the enable view
-    var inst = $fw.data.get('inst'),
-    enabled = inst.config && inst.config.app && inst.config.app.cms && inst.config.app.cms.enabled || "false";
-    this.guid = inst.guid;
-    if (enabled!=="true" && enabled!== true){
+    if (!this.checkIsEnabled()){
       return self.renderEnableView();
     }
 
     // Otherwise, CMS is already enabled - append loading
     this.renderLoading();
 
-    // Then load hosts & then actual CMS data
+    // Then load hosts if needed & then actual CMS data
     if (!this.hosts){
       this.getHosts(function(err, res){
         if (err){
@@ -47,8 +44,6 @@ App.View.CMSController  = Backbone.View.extend({
           self.renderErrorView();
         }
         self.gotHosts();
-
-
       });
     }else{
       self.gotHosts();
@@ -77,7 +72,8 @@ App.View.CMSController  = Backbone.View.extend({
   },
   gotHosts: function(){
     var self = this,
-    url = self.hosts['development-url']; //todo
+    urlKey = ($fw.data.get('cloud_environment') === 'dev') ? "development-url" : "live-url",
+    url = self.hosts[urlKey];
 
     self.collection = new App.Collection.CMS([], { url : url });
     self.collection.fetch({ reset: true, success : function(){
@@ -404,5 +400,15 @@ App.View.CMSController  = Backbone.View.extend({
         alertBox.remove();
       });
     }, 3000);
+  },
+  checkIsEnabled : function(){
+    var inst = $fw.data.get('inst'),
+    enabled = inst.config && inst.config.app && inst.config.app.cms && inst.config.app.cms.enabled || "false";
+    this.guid = inst.guid;
+    if (enabled!=="true" && enabled!== true){
+      return false;
+    }
+    return true;
+
   }
 });
