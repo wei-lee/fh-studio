@@ -151,28 +151,40 @@ App.View.CMSTree = App.View.CMS.extend({
     var self = this,
     selected = this.tree.jstree('get_selected'),
     _id = selected.attr('id'),
-    model = this.collection.findWhere({_id : _id});
+    model = this.collection.findWhere({_id : _id}),
+    modal;
 
-    var modal = new App.View.Modal({
-      title: 'Confirm Delete',
-      body: "Are you sure you want to delete " + model.get('name') + "?",
-      okText: 'Delete',
-      cancelText : 'Cancel',
-      ok: function (e) {
-        self.collection.remove(model, {
-          success : function(){
-            // set current section as first tree node
-            var first = self.tree.find('li:first').attr('id');
-            self.trigger('sectionchange', first);
-            self.trigger('message', 'Section removed successfully');
-          },
-          error : function(){
-            self.trigger('message', 'Error removing section', 'danger');
-          }
-        });
-      }
-    });
-    self.$el.append(modal.render().$el);
+    if (model.has('children') && model.get('children').length>0){
+      modal = new App.View.Modal({
+        title: 'Cannot Remove ' + model.get('name'),
+        body: "Error removing " + model.get('name') + " - this section has child sections. Please delete all child sections and try again.",
+        okText: 'Ok',
+        cancelText : false
+      });
+    }else{
+      modal = new App.View.Modal({
+        title: 'Confirm Delete',
+        body: "Are you sure you want to delete " + model.get('name') + "?",
+        okText: 'Delete',
+        cancelText : 'Cancel',
+        ok: function (e) {
+          self.collection.remove(model, {
+            success : function(){
+              // set current section as first tree node
+              var first = self.tree.find('li:first').attr('id');
+              self.trigger('sectionchange', first);
+              self.trigger('message', 'Section removed successfully');
+            },
+            error : function(){
+              self.trigger('message', 'Error removing section', 'danger');
+            }
+          });
+        }
+      });
+    }
+
+
+    return self.$el.append(modal.render().$el);
   },
   onTreeNodeClick: function (e, data) {
     console.log("on tree node click");

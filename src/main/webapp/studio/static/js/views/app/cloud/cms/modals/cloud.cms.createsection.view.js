@@ -6,13 +6,15 @@ App.View.CMSCreateSection = App.View.Modal.extend({
   initialize: function(options){
     this.tpl = Handlebars.compile($('#cms_sectionDropDown').html());
 
-    var parentOptions = this.options.collection.toHTMLOptions(),
+    var currentSelection = options.collection.findWhere({ _id : options.current }),
+    siblingParent = currentSelection.get('parent'), // on creating, we want to create as a sibling of the current node by default
+    parentOptions = this.options.collection.toHTMLOptions(),
     body;
     parentOptions = ["<option value='' data-path='' >-Root</option>"].concat(parentOptions);
     parentOptions = parentOptions.join('');
     body = $(this.tpl({"parentOptions":parentOptions}));
 
-    body.find('select').val(this.activeSection); // TODO Fix me so active selection is the selected node in here..
+    body.find('select').val(siblingParent);
 
     body.append('<br/> <input class="input-large" placeholder="Enter a Section name" id="newCollectionName">');
 
@@ -36,42 +38,24 @@ App.View.CMSCreateSection = App.View.Modal.extend({
   },
   doCreateSection: function (sectionParams) {
     var self = this,
-    selectedSection = sectionParams.parent,
-    node;
+    id = "temp-"+new Date().getTime(),
+    parent = sectionParams.parent,
+    node = {
+      "path":sectionParams.name,
+      "_id":id,
+      "name":sectionParams.name,
+      "data":sectionParams.name,
+      "parent" : "", // assume root, override as needed
+      "children":[]
+    };
 
-    var parentSection = (selectedSection === "root") ? "" : self.options.collection.findWhere({"name":selectedSection});
-    var id = "temp-"+new Date().getTime();
+    if (parent && parent!== "root") {
+      node.parent = parent;
 
-    var childrenKey = App.Model.CmsSection.CONST.CHILDREN;
-
-    if (parentSection) {
-      if (!parentSection.get(childrenKey)){
-        parentSection.set(childrenKey,[]);
-      }
-
-      var path = parentSection.get("path") || "";
+      var parentModel = self.options.collection.findWhere({"name":parent});
+      var path = parentModel.get("path") || "";
       path+= "." + sectionParams.name;
-
-      node = {
-        "path": path,
-        "_id": id,
-        "name": sectionParams.name,
-        "data": sectionParams.name,
-        "parent" : sectionParams.parent,
-        "children": []
-      };
-
-      parentSection.attributes.children.push(node.hash);
-    }else{
-      //add new parent section
-      node = {
-        "path":sectionParams.name,
-        "_id":id,
-        "name":sectionParams.name,
-        "data":sectionParams.name,
-        "parent" : sectionParams.parent,
-        "children":[]
-      };
+      node.path = path;
     }
 
     var model = new App.Model.CmsSection(node);

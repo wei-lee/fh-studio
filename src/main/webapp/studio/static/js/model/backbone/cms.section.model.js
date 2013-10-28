@@ -8,10 +8,6 @@ App.collections = App.collections || {};
 App.Model.CmsSection = Backbone.Model.extend({
 });
 
-App.Model.CmsSection.CONST = {
-  "CHILDREN" : "children"
-};
-
 App.Collection.CMS = Backbone.Collection.extend({
   initialize: function(models, options) {
     var url = options.url,
@@ -131,7 +127,6 @@ App.Collection.CMS = Backbone.Collection.extend({
     return fields;
   },
   read : function(method, model, options){
-    //TODO These go in "read" - leave here for now so we post to a blank thingy
     var self = this,
     url = this.urls.readSections,
     body = {};
@@ -201,12 +196,11 @@ App.Collection.CMS = Backbone.Collection.extend({
   },
   removeBySectionPath : function(path){
     var self = this;
-    var childrenKey = App.Model.CmsSection.CONST.CHILDREN;
     var section = self.findWhere({"path":path});
 
     for(var i=0; i < self.models.length; i++){
       var m = self.models[i];
-      var children = m.get(childrenKey);
+      var children = m.get('children');
 
       if(children && Array.isArray(children) && children.length > 0){
         //console.log("model has children " , children);

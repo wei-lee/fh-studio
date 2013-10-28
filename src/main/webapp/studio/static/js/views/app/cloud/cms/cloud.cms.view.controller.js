@@ -87,6 +87,7 @@ App.View.CMSController  = Backbone.View.extend({
     }});
   },
   renderCMS : function(){
+    var self = this;
     this.$el.empty();
     if (this.collection.length === 0){
       return this.renderEmptyCMSView();
@@ -140,8 +141,11 @@ App.View.CMSController  = Backbone.View.extend({
     this.tree = new App.View.CMSTree({collection : this.collection, section : this.section});
     this.$el.prepend(this.$left);
     this.$el.find('.cmsTreeContainer').append(this.tree.render().$el);
-    this.tree.bind('sectionchange', $.proxy(this.treeNodeClicked, this));
-    this.tree.bind('sectionchange', $.proxy(this.form.setSection, this.form));
+    this.tree.bind('sectionchange', function(id){
+      self.section = id;
+      $.proxy(self.treeNodeClicked, self)(id);
+      $.proxy(self.form.setSection, self.form)(id);
+    });
     this.tree.bind('addsection', $.proxy(this.onCreateSection, this));
     this.tree.bind('message', $.proxy(this.alertMessage, this));
     this.tree.bind('cms-checkUnsaved', $.proxy(this.checkUnsaved, this));
@@ -202,7 +206,7 @@ App.View.CMSController  = Backbone.View.extend({
   },
   onCreateSection : function(){
     var self = this,
-    createView = new App.View.CMSCreateSection({collection : this.collection});
+    createView = new App.View.CMSCreateSection({collection : this.collection, current : this.section});
     this.$el.append(createView.render().$el);
     createView.bind('message', $.proxy(this.alertMessage, this));
     createView.bind('sectionchange', function(section){
