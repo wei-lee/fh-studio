@@ -33,7 +33,6 @@ App.View.CMSCreateSection = App.View.Modal.extend({
     sectionIn = el.parents('.modal').find("select[name='parentName']").find('option').filter(":selected").val(),
     secVal = input.val();
     this.doCreateSection({ name : secVal.toString(), parent : sectionIn.toString()});
-    this.trigger('sectionchange', secVal.toString());
   },
   doCreateSection: function (sectionParams) {
     var self = this,
@@ -79,8 +78,11 @@ App.View.CMSCreateSection = App.View.Modal.extend({
     self.options.collection.push(model);
 
     this.options.collection.sync('create', model.toJSON(), { success : function(res){
-
-      self.options.collection.fetch({reset : true, success : function(){
+      self.options.collection.fetch({reset : true, success : function(collection){
+        // TODO: Non-ideal - only trigger our section change event when the collection has loaded because
+        // the POST doesn't return the Id of the newly created section
+        var model = collection.findWhere({name : node.name});
+        self.trigger('sectionchange', model.get('_id'));
         self.trigger('message', 'Section created successfully');
       }});
     }, error : function(err){

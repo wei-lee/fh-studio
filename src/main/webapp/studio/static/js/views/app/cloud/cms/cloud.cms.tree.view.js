@@ -18,7 +18,7 @@ App.View.CMSTree = App.View.CMS.extend({
       self.render();
     });
 
-    this.activeSection = options.section;
+    this.section = options.section;
 
     App.dispatch.on(CMS_TOPICS.SECTION_SAVE_DRAFT, function (data){
       console.log("save draft event ", data);
@@ -52,7 +52,7 @@ App.View.CMSTree = App.View.CMS.extend({
 
     var self = this;
     self.tree = this.$el.unbind("loaded.jstree").bind("loaded.jstree", function (event, data) {
-     $(this).jstree("open_all");
+      $(this).jstree("open_all");
     }).jstree({
       "json_data": {
         "data": jsonData
@@ -64,6 +64,10 @@ App.View.CMSTree = App.View.CMS.extend({
         theme: 'classic',
         loaded: true
       },
+      "ui" : {
+        "initially_select" : []
+      },
+
       "crrm": {
         "move": {
           "default_position": "first",
@@ -74,12 +78,19 @@ App.View.CMSTree = App.View.CMS.extend({
       },
       'plugins': ['themes', 'json_data', 'ui', 'cookies', 'crrm', 'dnd']
     });
-    self.tree.unbind("select_node.jstree, move_node.jstree, create.jstree","blur");
-    self.tree.bind("select_node.jstree", $.proxy(this.onTreeNodeClick, this));
-    self.tree.bind('move_node.jstree', $.proxy(this.onTreeMove, this));
-    self.tree.bind("open_node.jstree", function (e, data) {
+    self.tree.unbind("reselect.jstree, select_node.jstree, move_node.jstree, create.jstree","blur");
 
+
+    // Set the initially selected node in the reselect callback because JSTree is a mess
+    self.tree.bind("reselect.jstree", function(){
+      self.tree.unbind("select_node.jstree");
+      self.tree.jstree('deselect_all');
+      self.tree.jstree("select_node", '#' + self.section).trigger("select_node.jstree");
+      self.tree.bind("select_node.jstree", $.proxy(self.onTreeNodeClick, self));
     });
+
+    self.tree.bind('move_node.jstree', $.proxy(this.onTreeMove, this));
+    self.tree.bind("open_node.jstree", function (e, data) {});
 
     $('.btn-addsection').unbind().bind("click", function (e) {
       self.trigger('addsection');
@@ -112,7 +123,7 @@ App.View.CMSTree = App.View.CMS.extend({
           },
           title : section.name
         },
-        attr: { id: section.path.replace(/\s+/g,'').replace(/\.+/g,''), hash: section.hash, _id : section._id, path: section.path, status : section.status || 'published' },
+        attr: { id: section._id, hash: section.hash, _id : section._id, path: section.path, status : section.status || 'published' },
         "children": []
       };
       if (section && section.children) {
@@ -143,7 +154,7 @@ App.View.CMSTree = App.View.CMS.extend({
       cancelText : 'Cancel',
       ok: function (e) {
         console.log("deleting " + self.activeSection);
-        var model = self.collection.findWhere({path : self.activeSection});
+        var model = self.collection.findWhere({_id : self.activeSection});
         self.collection.remove(model, {
           success : function(){
             self.trigger('message', 'Section removed successfully');
