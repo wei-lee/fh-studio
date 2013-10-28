@@ -5,7 +5,9 @@ App.View.CMSController  = Backbone.View.extend({
 
   events: {
     'click .btn-cms-back' : 'onCMSBack',
-    'click .btn-cms-publish' : 'showCMSPublishModal'
+    'click .btn-cms-publish' : 'showCMSPublishModal',
+    'click .btn-addsection' : 'onCreateSection',
+    'click .btn-deletesection' : 'onDeleteSection'
   },
 
   templates : {
@@ -146,7 +148,7 @@ App.View.CMSController  = Backbone.View.extend({
       $.proxy(self.treeNodeClicked, self)(id);
       $.proxy(self.form.setSection, self.form)(id);
     });
-    this.tree.bind('addsection', $.proxy(this.onCreateSection, this));
+
     this.tree.bind('message', $.proxy(this.alertMessage, this));
     this.tree.bind('cms-checkUnsaved', $.proxy(this.checkUnsaved, this));
 
@@ -213,6 +215,46 @@ App.View.CMSController  = Backbone.View.extend({
       self.section = section;
     });
 
+  },
+  "onDeleteSection": function (e) {
+    var self = this,
+    selected = this.tree.treenode.jstree('get_selected'),
+    _id = selected.attr('id'),
+    model = this.collection.findWhere({_id : _id}),
+    modal;
+
+    if (model.has('children') && model.get('children').length>0){
+      modal = new App.View.Modal({
+        title: 'Cannot Remove ' + model.get('name'),
+        body: "Error removing " + model.get('name') + " - this section has child sections. Please delete all child sections and try again.",
+        okText: 'Ok',
+        cancelText : false
+      });
+    }else{
+      modal = new App.View.Modal({
+        title: 'Confirm Delete',
+        body: "Are you sure you want to delete " + model.get('name') + "?",
+        okText: 'Delete',
+        cancelText : 'Cancel',
+        ok: function (e) {
+          self.collection.remove(model, {
+            success : function(){
+              // set current section as first tree node
+              var first = self.tree.treenode.find('li:first').attr('id');
+              self.section = first;
+              $.proxy(self.form.setSection, self.form)(first);
+              self.alertMessage('Section removed successfully');
+            },
+            error : function(){
+              self.alertMessage('Error removing section', 'danger');
+            }
+          });
+        }
+      });
+    }
+
+
+    return self.$el.append(modal.render().$el);
   },
   treeNodeClicked : function(){
     if (this.$listFieldContainer.length && this.$listFieldContainer.length>0){

@@ -1,12 +1,7 @@
 var App = App || {};
 App.View = App.View || {};
 
-
-
 App.View.CMSTree = App.View.CMS.extend({
-  'events': {
-
-  },
   initialize: function (options) {
     var self = this;
     this.collection = options.collection;
@@ -51,7 +46,7 @@ App.View.CMSTree = App.View.CMS.extend({
     console.log("json data ", jsonData);
 
     var self = this;
-    self.tree = this.$el.unbind("loaded.jstree").bind("loaded.jstree", function (event, data) {
+    self.treenode = this.$el.unbind("loaded.jstree").bind("loaded.jstree", function (event, data) {
       $(this).jstree("open_all");
     }).jstree({
       "json_data": {
@@ -78,29 +73,22 @@ App.View.CMSTree = App.View.CMS.extend({
       },
       'plugins': ['themes', 'json_data', 'ui', 'cookies', 'crrm', 'dnd']
     });
-    self.tree.unbind("reselect.jstree, select_node.jstree, move_node.jstree, create.jstree","blur");
+    self.treenode.unbind("reselect.jstree, select_node.jstree, move_node.jstree, create.jstree","blur");
 
 
     // Set the initially selected node in the reselect callback because JSTree is a mess
-    self.tree.bind("reselect.jstree", function(){
-      self.tree.unbind("select_node.jstree");
-      self.tree.jstree('deselect_all');
-      var node = self.tree.jstree("select_node", '#' + self.section);
+    self.treenode.bind("reselect.jstree", function(){
+      self.treenode.unbind("select_node.jstree");
+      self.treenode.jstree('deselect_all');
+      var node = self.treenode.jstree("select_node", '#' + self.section);
       if (node){
         node.trigger("select_node.jstree");
       }
-      self.tree.bind("select_node.jstree", $.proxy(self.onTreeNodeClick, self));
+      self.treenode.bind("select_node.jstree", $.proxy(self.onTreeNodeClick, self));
     });
 
-    self.tree.bind('move_node.jstree', $.proxy(this.onTreeMove, this));
-    self.tree.bind("open_node.jstree", function (e, data) {});
-
-    $('.btn-addsection').unbind().bind("click", function (e) {
-      self.trigger('addsection');
-    });
-    $('.btn-deletesection').unbind().bind("click", function (e) {
-      self.onDeleteSection(self);
-    });
+    self.treenode.bind('move_node.jstree', $.proxy(this.onTreeMove, this));
+    self.treenode.bind("open_node.jstree", function (e, data) {});
 
     return this;
   },
@@ -145,46 +133,6 @@ App.View.CMSTree = App.View.CMS.extend({
     }
 
     return tree;
-  },
-
-  "onDeleteSection": function (e) {
-    var self = this,
-    selected = this.tree.jstree('get_selected'),
-    _id = selected.attr('id'),
-    model = this.collection.findWhere({_id : _id}),
-    modal;
-
-    if (model.has('children') && model.get('children').length>0){
-      modal = new App.View.Modal({
-        title: 'Cannot Remove ' + model.get('name'),
-        body: "Error removing " + model.get('name') + " - this section has child sections. Please delete all child sections and try again.",
-        okText: 'Ok',
-        cancelText : false
-      });
-    }else{
-      modal = new App.View.Modal({
-        title: 'Confirm Delete',
-        body: "Are you sure you want to delete " + model.get('name') + "?",
-        okText: 'Delete',
-        cancelText : 'Cancel',
-        ok: function (e) {
-          self.collection.remove(model, {
-            success : function(){
-              // set current section as first tree node
-              var first = self.tree.find('li:first').attr('id');
-              self.trigger('sectionchange', first);
-              self.trigger('message', 'Section removed successfully');
-            },
-            error : function(){
-              self.trigger('message', 'Error removing section', 'danger');
-            }
-          });
-        }
-      });
-    }
-
-
-    return self.$el.append(modal.render().$el);
   },
   onTreeNodeClick: function (e, data) {
     console.log("on tree node click");
