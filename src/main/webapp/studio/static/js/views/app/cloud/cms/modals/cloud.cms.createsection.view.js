@@ -33,7 +33,7 @@ App.View.CMSCreateSection = App.View.Modal.extend({
     sectionIn = el.parents('.modal').find("select[name='parentName']").find('option').filter(":selected").val(),
     secVal = input.val();
     this.doCreateSection({ name : secVal.toString(), parent : sectionIn.toString()});
-    this.trigger('activeChanged', sectionIn);
+    this.trigger('sectionchange', secVal.toString());
   },
   doCreateSection: function (sectionParams) {
     var self = this,

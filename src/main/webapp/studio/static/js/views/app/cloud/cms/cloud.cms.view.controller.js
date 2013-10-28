@@ -107,7 +107,7 @@ App.View.CMSController  = Backbone.View.extend({
     // The button is only templated once - for every other mode switch, we need to replace the inner text of the button
     $(this.options.container).find('.btn-cms-copy span').html('Copy to ' + modeString);
 
-    this.section = this.section || this.collection.at(0) && this.collection.at(0).get('path');
+    this.section = this.section || this.collection.at(0) && this.collection.at(0).get('_id');
 
     if (!this.section){
       console.log('Error: no section specified when initing cloud.cms.view');
@@ -201,10 +201,13 @@ App.View.CMSController  = Backbone.View.extend({
     this.$fbContainer.show();
   },
   onCreateSection : function(){
-    var createView = new App.View.CMSCreateSection({collection : this.collection});
+    var self = this,
+    createView = new App.View.CMSCreateSection({collection : this.collection});
     this.$el.append(createView.render().$el);
     createView.bind('message', $.proxy(this.alertMessage, this));
-    // createView.bind('activeChanged', '//TODO');
+    createView.bind('sectionchange', function(section){
+      self.section = section;
+    });
 
   },
   treeNodeClicked : function(){

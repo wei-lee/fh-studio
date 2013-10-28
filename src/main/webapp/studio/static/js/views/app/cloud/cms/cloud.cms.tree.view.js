@@ -18,27 +18,7 @@ App.View.CMSTree = App.View.CMS.extend({
       self.render();
     });
 
-    App.dispatch.on(CMS_TOPICS.SECTION_CHANGE, function (evData){
-      //need to go through the levels opening as we go.
-      var treePath = evData.path;
-      var pathBits = treePath.split(".");
-      var path ="";
-      var ref="";
-      for(var i = 0; i < pathBits.length; i++){
-        path+=pathBits[i].trim();
-
-         ref = $.jstree._reference("#" + path);
-        if(ref){
-          ref.deselect_all();
-          ref.open_node("#"+path);
-
-        }
-      }
-      if(ref){
-        ref.select_node("#"+path);
-      }
-      $("#"+path).trigger("click");
-    });
+    this.activeSection = options.section;
 
     App.dispatch.on(CMS_TOPICS.SECTION_SAVE_DRAFT, function (data){
       console.log("save draft event ", data);
@@ -179,21 +159,20 @@ App.View.CMSTree = App.View.CMS.extend({
   onTreeNodeClick: function (e, data) {
     console.log("on tree node click");
     var self = this,
-    path = data && data.rslt && data.rslt.obj && data.rslt.obj.attr && data.rslt.obj.attr('path');
-    self.activeSection = path;
+    _id = data && data.rslt && data.rslt.obj && data.rslt.obj.attr && data.rslt.obj.attr('_id');
+    self.activeSection = _id;
     var ok = function (e) {
-      self.navigateTo(path);
+      self.navigateTo(_id);
     };
     this.trigger('cms-checkUnsaved', ok);
   },
-  navigateTo : function(path){
-    if (!path) {
+  navigateTo : function(_id){
+    if (!_id) {
       console.log('Error finding section path on tree node');
       return this.modal('Error loading section');
     }
-    this.trigger('sectionchange', path);
-    App.dispatch.trigger("cms.sectionclick",{"path":path.replace(/\s+/g,'')});
-    self.activeSection = path;
+    this.trigger('sectionchange', _id);
+    self.activeSection = _id;
   },
 
   //TODO major todo add tests around this logic.

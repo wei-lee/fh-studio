@@ -29,7 +29,7 @@ App.View.CMSSection = App.View.CMS.extend({
 
    render : function(){
     var self = this,
-    sectionModel = this.sectionModel = this.collection.findWhere({path : this.options.section}),
+    sectionModel = this.sectionModel = this.collection.findWhere({_id : this.options.section}),
     section = this.section =  sectionModel.toJSON(),
     path = section.path,
     fields, listData;
@@ -155,19 +155,6 @@ App.View.CMSSection = App.View.CMS.extend({
       }
     });
   },
-
-  onSectionChange : function (se){
-    var select = this.$('select[name="parentName"]');
-    var opt = select.find('option').filter(":selected:");
-    console.log(opt);
-    console.log(select);
-    var selectVal = select.val();
-    console.log("section changed",selectVal);
-
-    App.dispatch.trigger(CMS_TOPICS.SECTION_CHANGE,{"section":selectVal,"id":opt.data("id"),"path":opt.data("path")});
-  },
-
-
   renderFormBuilder : function(fields){
     // Save some data massaging
     var self = this;
