@@ -85,7 +85,10 @@ App.View.CMSTree = App.View.CMS.extend({
     self.tree.bind("reselect.jstree", function(){
       self.tree.unbind("select_node.jstree");
       self.tree.jstree('deselect_all');
-      self.tree.jstree("select_node", '#' + self.section).trigger("select_node.jstree");
+      var node = self.tree.jstree("select_node", '#' + self.section);
+      if (node){
+        node.trigger("select_node.jstree");
+      }
       self.tree.bind("select_node.jstree", $.proxy(self.onTreeNodeClick, self));
     });
 

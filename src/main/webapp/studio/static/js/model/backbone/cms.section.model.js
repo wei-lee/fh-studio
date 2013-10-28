@@ -42,7 +42,7 @@ App.Collection.CMS = Backbone.Collection.extend({
          options.success.apply(self, arguments);
        }, error : options.error
      };
-    this.sync('delete', model, options);
+    this.sync('delete', model, opts);
 
   },
   sync: function (method, model, options) {
