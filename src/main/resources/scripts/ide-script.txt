@@ -160,6 +160,7 @@ js/views/app/cloud/cms/modals/cloud.cms.export.view.js
 js/views/app/cloud/cms/modals/cloud.cms.import.view.js
 js/views/app/cloud/cms/modals/cloud.cms.copy.view.js
 js/views/app/cloud/cms/modals/cloud.cms.publish.view.js
+js/views/app/cloud/cms/modals/cloud.cms.createsection.view.js
 js/views/app/cloud/cms/cloud.cms.section.view.js
 js/views/app/cloud/cms/cloud.cms.listfield.topbar.view.js
 js/views/app/cloud/cms/cloud.cms.listfield.view.js

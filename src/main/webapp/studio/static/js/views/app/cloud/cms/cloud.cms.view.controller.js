@@ -88,7 +88,6 @@ App.View.CMSController  = Backbone.View.extend({
   },
   renderCMS : function(){
     this.$el.empty();
-    // TODO - not handling failed collection fetches, this needs to only show if the collection was loaded
     if (this.collection.length === 0){
       return this.renderEmptyCMSView();
     }
@@ -123,8 +122,8 @@ App.View.CMSController  = Backbone.View.extend({
      It needs to be already on the page => we work around this requirement here
      with 2 containers, one for section edit, one for list field edit
      */
-    this.$fbContainer = $('<div></div>');
-    this.$listFieldContainer = $('<div></div>'); // Contains subviews of FormBuilder for list fields
+    this.$fbContainer = $('<div class="fbContainer"></div>');
+    this.$listFieldContainer = $('<div></div>'); // Contains subviews of FormBuilder for drilling down into editing list fields
     this.$auditContainer = $('<div></div>');
     this.$el.prepend(this.$fbContainer, this.$listFieldContainer, this.$auditContainer);
 
@@ -143,14 +142,14 @@ App.View.CMSController  = Backbone.View.extend({
     this.$el.find('.cmsTreeContainer').append(this.tree.render().$el);
     this.tree.bind('sectionchange', $.proxy(this.treeNodeClicked, this));
     this.tree.bind('sectionchange', $.proxy(this.form.setSection, this.form));
-    this.tree.bind('addsection', $.proxy(this.onAddSection, this));
+    this.tree.bind('addsection', $.proxy(this.onCreateSection, this));
     this.tree.bind('message', $.proxy(this.alertMessage, this));
     this.tree.bind('cms-checkUnsaved', $.proxy(this.checkUnsaved, this));
 
     return this;
   },
   renderEmptyCMSView : function(){
-    this.message = new App.View.FullPageMessageView({ message : 'Your CMS contains no sections', button : 'New Section &raquo;', cb :$.proxy(this.onCMSCreateSection, this)});
+    this.message = new App.View.FullPageMessageView({ message : 'Your CMS contains no sections', button : 'New Section &raquo;', cb :$.proxy(this.onCreateSection, this)});
 
     this.$el.empty();
     this.$el.append(this.message.render().$el);
@@ -163,101 +162,6 @@ App.View.CMSController  = Backbone.View.extend({
       $.proxy(self.render(), self);
     });
     this.$el.append(enableView.render().$el);
-  },
-  onCMSCreateSection : function(){
-    this.onAddSection();
-    //TODO
-  },
-  "onAddSection": function (element) {
-    var self = this;
-    var parentOptions = self.collection.toHTMLOptions(),
-    body;
-    parentOptions = ["<option value='' data-path='' >-Root</option>"].concat(parentOptions);
-    parentOptions = parentOptions.join('');
-    body = $(self.templates.$cms_sectionDropDown({"parentOptions":parentOptions}));
-
-    body.find('select').val(self.activeSection); // TODO Fix me so active selection is the selected node in here..
-
-    body.append('<br/> <input class="input-large" placeholder="Enter a Section name" id="newCollectionName">');
-
-    var modal = new App.View.Modal({
-      title: 'Create New Section',
-      body: body,
-      okText: 'Create',
-      ok: function (e) {
-        var el = $(e.target),
-        input = el.parents('.modal').find('input#newCollectionName'),
-        sectionIn = el.parents('.modal').find("select[name='parentName']").find('option').filter(":selected").val(),
-        secVal = input.val();
-        self.doCreateSection({ name : secVal.toString(), parent : sectionIn.toString()});
-        console.log("Section parent section name ", secVal, sectionIn);
-        if (self.tree){
-          self.tree.activeSection = sectionIn;
-
-        }
-      }
-    });
-    self.$el.append(modal.render().$el);
-
-  },
-  //move to fh.cms
-  doCreateSection: function (sectionParams) {
-    debugger;
-    var self = this,
-    selectedSection = sectionParams.parent,
-    node;
-    console.log("Create Section in", selectedSection);
-
-    var parentSection = (selectedSection === "root") ? "" : self.collection.findWhere({"name":selectedSection});
-    var id = "temp-"+new Date().getTime();
-    console.log("parent section is ", parentSection);
-    var childrenKey = App.Model.CmsSection.CONST.CHILDREN;
-
-    if (parentSection) {
-      if (!parentSection.get(childrenKey)){
-        parentSection.set(childrenKey,[]);
-      }
-
-      var path = parentSection.get("path") || "";
-      path+= "." + sectionParams.name;
-
-      node = {
-        "path": path,
-        "_id": id,
-        "name": sectionParams.name,
-        "data": sectionParams.name,
-        "parent" : sectionParams.parent,
-        "children": []
-      };
-
-      parentSection.attributes.children.push(node.hash);
-    }else{
-      //add new parent section
-      node = {
-        "path":sectionParams.name,
-        "_id":id,
-        "name":sectionParams.name,
-        "data":sectionParams.name,
-        "parent" : sectionParams.parent,
-        "children":[]
-      };
-    }
-
-    console.log("models ",self.collection.models);
-    var model = new App.Model.CmsSection(node);
-    self.collection.push(model);
-
-    this.collection.sync('create', model.toJSON(), { success : function(res){
-
-      self.collection.fetch({reset : true, success : function(){
-        self.alertMessage('Section successfully saved');
-      }});
-    }, error : function(err){
-      self.alertMessage(err.toString(), 'danger');
-    }});
-    if (self.tree && self.tree.$el){
-      self.tree.$el.jstree("unset_focus");
-    }
   },
   onEditFieldList : function(options){
     var self = this;
@@ -295,6 +199,13 @@ App.View.CMSController  = Backbone.View.extend({
     }
     // Always it's here we want to get back to
     this.$fbContainer.show();
+  },
+  onCreateSection : function(){
+    var createView = new App.View.CMSCreateSection({collection : this.collection});
+    this.$el.append(createView.render().$el);
+    createView.bind('message', $.proxy(this.alertMessage, this));
+    // createView.bind('activeChanged', '//TODO');
+
   },
   treeNodeClicked : function(){
     if (this.$listFieldContainer.length && this.$listFieldContainer.length>0){
@@ -381,15 +292,16 @@ App.View.CMSController  = Backbone.View.extend({
     msg = msg || 'Save successful';
 
     var cms_alert = Handlebars.compile($('#cms_alert').html()),
-    alertBox = $(cms_alert({ cls : cls, msg : msg })),
-    el = this.$el.find('.middle');
+    alertBox = $(cms_alert({ cls : cls, msg : msg }));
 
 
-    if (!el || (el.length && el.length ===0)){
-      el = this.$el;
-    }
+    // Issues occuring with messages appending to previous instances of this.$el
+    // - lookup in global context after some delay to ensure correct div selected
+    setTimeout(function(){
+      var el = $('#cms_container .fbContainer .middle');
+      $(el).prepend(alertBox);
+    }, 200);
 
-    $(el).prepend(alertBox);
 
     // Fade out then remove our message
     setTimeout(function(){
