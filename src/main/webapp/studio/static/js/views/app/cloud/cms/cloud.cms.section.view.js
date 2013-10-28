@@ -39,10 +39,6 @@ App.View.CMSSection = App.View.CMS.extend({
       return this.modal('Error loading section');
     }
 
-     console.log("section retrieved ", section);
-
-
-
     if (this.view === 'listfield'){
       // We're editing a field_list - retrieve it
       this.fieldList = _.findWhere(section.fields, { name : this.options.listfield });
@@ -69,8 +65,6 @@ App.View.CMSSection = App.View.CMS.extend({
       // Just a standard section view - may or may not contain a listfield within
       fields = this.massageFieldsForFormbuilder(section.fields);
     }
-
-    console.log("Section is ", section  ," fields ",fields);
 
     if (!section || !fields){
       console.log('Error finding section or fields on rendering section view');
@@ -153,6 +147,11 @@ App.View.CMSSection = App.View.CMS.extend({
         table = new App.View.CMSTable({ fields : listField.fields, data : listField.data });
         $(this).find('.fieldlist_table').html(table.render().$el);
       }
+
+      if (!self.options.isAdministrator){
+        $(this).find('.btn-listfield-structure').remove();
+      }
+
     });
   },
   renderFormBuilder : function(fields){
@@ -275,16 +274,6 @@ App.View.CMSSection = App.View.CMS.extend({
     delete field.field_options;
     return field;
   },
-  massageFieldsFromFormBuilder : function(fbCollection, oldSection){
-    var self = this,
-    fields = [];
-    fbCollection.each(function(field){
-      var newField = self.massageFieldFromFormBuilder(field);
-      fields.push(newField);
-    });
-    return fields;
-  },
-
   onSectionSaveDraft : function(e){
     e.preventDefault();
     var self = this,
@@ -320,8 +309,6 @@ App.View.CMSSection = App.View.CMS.extend({
     }
     var previous = this.sectionModel.previousAttributes();
 
-    console.log("discard draft called");
-
     this.sectionModel.set(previous);
 
     this.trigger('message', 'Section changes discarded successfully');
@@ -349,7 +336,6 @@ App.View.CMSSection = App.View.CMS.extend({
   },
   onListFieldEditStructure : function(e){
     this.onListFieldEdit(e, 'structure');
-
   },
   onListFieldEditData : function(e){
     this.onListFieldEdit(e, 'data');

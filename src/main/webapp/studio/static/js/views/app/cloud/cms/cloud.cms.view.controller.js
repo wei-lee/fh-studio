@@ -19,7 +19,7 @@ App.View.CMSController  = Backbone.View.extend({
   initialize: function(options){
     this.options = options;
     this.mode = options.mode || 'dev';
-    var self = this;
+    this.isAdministrator = true; // ($fw.userProps.roles.indexOf('cmsadmin') > -1); //TODO: Wire this up - doesn't exist yet
     this.compileTemplates();
 
     // Initialise our audit controller
@@ -95,20 +95,7 @@ App.View.CMSController  = Backbone.View.extend({
       return this.renderEmptyCMSView();
     }
 
-    var modeString = (this.mode==="dev") ? "Live" : "Dev"; // "Copy to {{ mode }}"
-
-    if ($(this.options.container).find('.fh-box-header .cms_mastermenu').length===0){
-
-      $(this.options.container).find('.fh-box-header').append(this.templates.$cms_mastermenu({ mode : modeString }));
-      // Bind the events - these aren't in this.$el alas
-      $(this.options.container).find('.fh-box-header .btn-cms-audit').on('click', $.proxy(this.showAudit, this));
-      $(this.options.container).find('.fh-box-header .btn-cms-import').on('click', $.proxy(this.showImport, this));
-      $(this.options.container).find('.fh-box-header .btn-cms-export').on('click', $.proxy(this.showExport, this));
-      $(this.options.container).find('.fh-box-header .btn-cms-publish').on('click', $.proxy(this.showCMSPublishModal, this));
-      $(this.options.container).find('.fh-box-header .btn-cms-copy').on('click', $.proxy(this.showCopy, this));
-    }
-    // The button is only templated once - for every other mode switch, we need to replace the inner text of the button
-    $(this.options.container).find('.btn-cms-copy span').html('Copy to ' + modeString);
+    this.renderMasterMenu();
 
     this.section = this.section || this.collection.at(0) && this.collection.at(0).get('_id');
 
@@ -130,8 +117,7 @@ App.View.CMSController  = Backbone.View.extend({
     this.$auditContainer = $('<div></div>');
     this.$el.prepend(this.$fbContainer, this.$listFieldContainer, this.$auditContainer);
 
-    var isAdministrator = $fw.userProps.roles.indexOf('cmsadmin'); //TODO: Wire this up - doesn't exist yet
-    this.form = new App.View.CMSSection({ $el : this.$fbContainer, collection : this.collection, section : this.section, isAdministrator : true }); //
+    this.form = new App.View.CMSSection({ $el : this.$fbContainer, collection : this.collection, section : this.section, isAdministrator : this.isAdministrator }); //
 
     this.form.render();
 
@@ -139,6 +125,9 @@ App.View.CMSController  = Backbone.View.extend({
     this.form.bind('message', $.proxy(this.alertMessage, this));
 
     this.$left = $(this.templates.$cms_left());
+    if (!this.isAdministrator){
+      this.$left.find('.addremovebuttons').remove();
+    }
 
     this.tree = new App.View.CMSTree({collection : this.collection, section : this.section});
     this.$el.prepend(this.$left);
@@ -153,6 +142,27 @@ App.View.CMSController  = Backbone.View.extend({
     this.tree.bind('cms-checkUnsaved', $.proxy(this.checkUnsaved, this));
 
     return this;
+  },
+  renderMasterMenu : function(){
+    var modeString = (this.mode==="dev") ? "Live" : "Dev"; // "Copy to {{ mode }}"
+    if ($(this.options.container).find('.fh-box-header .cms_mastermenu').length===0){
+
+      $(this.options.container).find('.fh-box-header').append(this.templates.$cms_mastermenu({ mode : modeString }));
+
+      if (!this.isAdministrator){
+        $(this.options.container).find('.fh-box-header').find('.btn-cms-import, .btn-cms-export').remove();
+      }
+
+      // Bind the events - these aren't in this.$el alas
+      $(this.options.container).find('.fh-box-header .btn-cms-audit').on('click', $.proxy(this.showAudit, this));
+      $(this.options.container).find('.fh-box-header .btn-cms-import').on('click', $.proxy(this.showImport, this));
+      $(this.options.container).find('.fh-box-header .btn-cms-export').on('click', $.proxy(this.showExport, this));
+      $(this.options.container).find('.fh-box-header .btn-cms-publish').on('click', $.proxy(this.showCMSPublishModal, this));
+      $(this.options.container).find('.fh-box-header .btn-cms-copy').on('click', $.proxy(this.showCopy, this));
+    }
+
+    // The button is only templated once - for every other mode switch, we need to replace the inner text of the button
+    $(this.options.container).find('.btn-cms-copy span').html('Copy to ' + modeString);
   },
   renderEmptyCMSView : function(){
     this.message = new App.View.FullPageMessageView({ message : 'Your CMS contains no sections', button : 'New Section &raquo;', cb :$.proxy(this.onCreateSection, this)});

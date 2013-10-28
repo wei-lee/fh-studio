@@ -120,7 +120,6 @@ App.View.CMSTree = App.View.CMS.extend({
       if (section && section.children) {
         node.children = [];
         _.each(section.children, function (childId, idx) {
-          console.log("Exploding section");
           var cSection = self.collection.findWhere({_id : childId});
           if(cSection){
             cSection = cSection.toJSON();
@@ -135,7 +134,6 @@ App.View.CMSTree = App.View.CMS.extend({
     return tree;
   },
   onTreeNodeClick: function (e, data) {
-    console.log("on tree node click");
     var self = this,
     _id = data && data.rslt && data.rslt.obj && data.rslt.obj.attr && data.rslt.obj.attr('_id');
     var ok = function (e) {
