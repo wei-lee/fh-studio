@@ -52,7 +52,7 @@ App.View.DataBrowserController = Backbone.View.extend({
     }else{
     // We're ready to show the collections listing
       self.$el.addClass('busy');
-      var tpl = Handlebars.compile($('#databrowserLoading').html());
+      var tpl = Handlebars.compile($('#fullpageLoading').html());
       self.$el.append(tpl());
       this.loadCollectionsListing();
     }

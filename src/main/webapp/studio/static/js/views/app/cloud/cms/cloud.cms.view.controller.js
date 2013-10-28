@@ -58,7 +58,7 @@ App.View.CMSController  = Backbone.View.extend({
   renderLoading : function(){
     this.$el.empty();
     this.$el.addClass('busy');
-    var tpl = Handlebars.compile($('#databrowserLoading').html());
+    var tpl = Handlebars.compile($('#fullpageLoading').html());
     this.$el.append(tpl());
   },
   renderEnableView : function(){
