@@ -149,17 +149,21 @@ App.View.CMSTree = App.View.CMS.extend({
 
   "onDeleteSection": function (e) {
     var self = this,
-    title = self.activeSection.split('.').pop();
+    selected = this.tree.jstree('get_selected'),
+    _id = selected.attr('id'),
+    model = this.collection.findWhere({_id : _id});
+
     var modal = new App.View.Modal({
       title: 'Confirm Delete',
-      body: "Are you sure you want to delete " + title + "?",
+      body: "Are you sure you want to delete " + model.get('name') + "?",
       okText: 'Delete',
       cancelText : 'Cancel',
       ok: function (e) {
-        console.log("deleting " + self.activeSection);
-        var model = self.collection.findWhere({_id : self.activeSection});
         self.collection.remove(model, {
           success : function(){
+            // set current section as first tree node
+            var first = self.tree.find('li:first').attr('id');
+            self.trigger('sectionchange', first);
             self.trigger('message', 'Section removed successfully');
           },
           error : function(){
@@ -174,7 +178,6 @@ App.View.CMSTree = App.View.CMS.extend({
     console.log("on tree node click");
     var self = this,
     _id = data && data.rslt && data.rslt.obj && data.rslt.obj.attr && data.rslt.obj.attr('_id');
-    self.activeSection = _id;
     var ok = function (e) {
       self.navigateTo(_id);
     };
@@ -186,7 +189,6 @@ App.View.CMSTree = App.View.CMS.extend({
       return this.modal('Error loading section');
     }
     this.trigger('sectionchange', _id);
-    self.activeSection = _id;
   },
 
   //TODO major todo add tests around this logic.
