@@ -35,8 +35,15 @@ App.Collection.CMS = Backbone.Collection.extend({
   model: App.Model.CmsSection,
   remove : function(model, options){
     Backbone.Collection.prototype.remove.apply(this, arguments);
+     var self = this,
+     opts = {
+       success : function(){
+         self.trigger('reset');
+         options.success.apply(self, arguments);
+       }, error : options.error
+     };
     this.sync('delete', model, options);
-    this.trigger('reset');
+
   },
   sync: function (method, model, options) {
     var self = this;

@@ -81,7 +81,7 @@ App.View.CMSCreateSection = App.View.Modal.extend({
     this.options.collection.sync('create', model.toJSON(), { success : function(res){
 
       self.options.collection.fetch({reset : true, success : function(){
-        self.trigger('message', 'Section successfully saved');
+        self.trigger('message', 'Section created successfully');
       }});
     }, error : function(err){
       self.trigger('message', err.toString(), 'danger');
