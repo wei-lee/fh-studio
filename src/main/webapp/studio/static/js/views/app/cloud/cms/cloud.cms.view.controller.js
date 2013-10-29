@@ -1,5 +1,6 @@
 var App = App || {};
 App.View = App.View || {};
+var CMS_TOPICS = App.dispatch.topics.CMS;
 
 App.View.CMSController  = Backbone.View.extend({
 
