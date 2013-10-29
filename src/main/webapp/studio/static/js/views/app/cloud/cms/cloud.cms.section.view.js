@@ -197,6 +197,10 @@ App.View.CMSSection = App.View.CMS.extend({
       // with matching _id to be our updated massaged field
       previousFields[indexOfPrevious] = massaged;
       self.sectionModel.set('fields', previousFields);
+      
+      if (field.get('type') === 'list'){
+        self.renderListFieldTables();
+      }
 
     });
     // On creating a field, we should also mark the section unsaved changes
@@ -252,7 +256,6 @@ App.View.CMSSection = App.View.CMS.extend({
         // FormBuilder doesn't give us the values of lists, we need to retrieve them ourselves.
         // if a user has changed the list structure or data, we've already copied it to the model - so we can
         // just copy it directly..
-        //TODO: What if the user changes the listfield's name?
         field.type = "list";
         field.fields = field.fields || [];
         field.data = field.data || [];
