@@ -323,7 +323,7 @@ App.View.CMSListField = App.View.CMSSection.extend({
 
         // Now that we've updated the data, render it in the table
         self.renderDataTable();
-      }else if (self.options.mode === "structre" ){
+      }else if (self.options.mode === "structure" ){
         // Set the previous fields array at the index where we found the one
         // with matching _id to be our updated massaged field
         var previousFields = self.fieldList.fields,
