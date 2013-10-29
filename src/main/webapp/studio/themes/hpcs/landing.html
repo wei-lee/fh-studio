@@ -229,9 +229,11 @@ $ fhc login email password</pre>
       <a href="<%=btnTarget%>" class="btn large primary bfob studio_button">App Studio</a>
     </div>
   <% } else { %>
-    <div class="hero-unit" id="tryit">
-      <a href="/?a=login" class="btn large primary bfob">Try it now - it's free!</a>
-    </div>
+    <% if("true".equals(studio.getProperty(studio.PROP_FREEREGISTRATION))) { %>
+      <div class="hero-unit" id="tryit">
+        <a href="/?a=login" class="btn large primary bfob">Try it now - it's free!</a>
+      </div>
+    <% } %>
   <% } %>
 
       <!-- Example row of columns -->

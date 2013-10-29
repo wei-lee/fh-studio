@@ -93,13 +93,13 @@ GenerateApp.Models.Wufoo = Class.extend({
               else {
                 return cb({
                   status: "error",
-                  data: "Unable to login to WuFoo (not authenticated)"
+                  data: "Unable to login to App Forms (not authenticated)"
                 });
               }
             } else {
               return cb({
                 status: "error",
-                data: "Unable to login to WuFoo (not authenticated)"
+                data: "Unable to login to App Forms (not authenticated)"
               });
             }
           });
@@ -112,7 +112,7 @@ GenerateApp.Models.Wufoo = Class.extend({
       } else {
         return cb({
           status: "error",
-          data: "Unable to login to WuFoo (not authenticated)"
+          data: "Unable to login to App Forms (not authenticated)"
         });
       }
     });
@@ -277,7 +277,7 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
 
     self.showProgressModal(title, message, function () {
       self.clearProgressModal();
-      self.appendProgressLog('Cloning Wufoo app template.');
+      self.appendProgressLog('Cloning App Forms app template.');
 
       // Import template & configure
       var import_url = Constants.IMPORT_APP_VIA_URL;
@@ -381,7 +381,8 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
       filePath: "/cloud/",
       fileName: "wufoo_config.js",
       type: "file",
-      do_stage: false
+      do_stage: false,
+      csrftoken: $('input[name="csrftoken"]').val()
     };
 
     var config = self.buildConfig(app_config);
@@ -503,7 +504,7 @@ GenerateApp.Controllers.Wufoo = Controller.extend({
         self.updateFormListing(res.data.Forms);
         self.enableAllInputs();
       } else {
-        self.showError("We couldn't load your Wufoo forms. Please check your details below and try again.");
+        self.showError("We couldn't load your App Forms forms. Please check your details below and try again.");
         self.disableInputs();
       }
     });

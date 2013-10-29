@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------------
 Component: fh-studio
 -------------------------------------------------------------------------------
-3.17.11 - 2013-09-11 - IR209 - Cian Clarke
+3.17.17 - 2013-09-11 - IR209 - Cian Clarke
 -------------------------------------------
 
 * 4537-databrowser
@@ -11,6 +11,39 @@ NOTES:
 To be accompanied by changes to Millicore, fh-db, fh-ditch. Also required for the data browser to
 function is updates to user's cloud code in application.js to use new components fh-webapp and
 fh-api in replacement of fh-nodeapp.
+=======
+
+3.17.16 - 2013-10-16 - IR212 - Niall Donnelly
+-------------------------------------------------------------------------------
+* 2169 - Fix iOS Store Issue  
+* 2434 - Fix O2 Cloud Environments Tab css.
+
+3.17.15 - 2013-10-10 - IR212 - Niall Donnelly & Jason Madigan
+-------------------------------------------------------------------------------
+* 4917 - App Forms branding
+* 4879 -- Open Registration breaks login functionality
+* 2323 -- Added Mubaloo images for mubaloodemo.feedhenry.com
+
+3.17.14 - 2013-09-25 - IR211 - Damian Beresford
+-------------------------------------------------------------------------------
+* 4668 - problem with file editor in chrome
+* 4751 - Zendesk #2202 Cloud Environment tab
+
+3.17.13 - 2013-10-02 - IR210 - Cian Clarke
+-------------------------------------------------------------------------------
+* 4740 - Add Rackspace US theme & landing page
+
+3.17.12 - 2013-09-18 - IR210 - Jason Madigan
+-------------------------------------------------------------------------------
+* 4571 - Use white icon/splash screen by default for builds
+
+3.17.11 - 2013-09-10 - IR210 - Michael Nairn
+-------------------------------------------------------------------------------
+* 4625 - Remove registration links from rackspace theme
+* 4630 - Remove registartion links from hpcs theme
+
+Both themes are updated to show a "Request an Account" form in place of the registration form when free account
+
 3.17.10 - 2013-09-06 - IR209 - Martin Murphy
 -------------------------------------------------------------------------------
 * 4642 - Fix password error display on activation and reset password screens

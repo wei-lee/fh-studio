@@ -30,11 +30,11 @@ Cloudenvironments.View.ResourceSummaryView = Backbone.View.extend({
 
       if(this.model.get("name") === "apps"){
         type = "info";
-      } 
+      }
 
       params.type = type;
       this.$el.addClass(type);
-      
+
     }
     var template = Handlebars.compile($("#cloudenvironments-resource-summary-template").html());
     this.$el.html(template(params));
@@ -79,7 +79,12 @@ Cloudenvironments.View.EnvResourceOverview = Backbone.View.extend({
   },
 
   renderError: function(model, resp, options){
-    var alert = $("<div>", {"class":"alert alert-error", text:"This service is currently unavailable due to errors. Status Code: " + resp.status + ". Please try again later."});
+    var alert;
+    if (resp.status === 404) {
+      alert = $("<div>", {"class":"alert alert-error", text:"Environment does not exist! Please contact FeedHenry Support."});
+    }else {
+      alert = $("<div>", {"class":"alert alert-error", text:"This service is currently unavailable due to errors. Status Code: " + resp.status + ". Please try again later."});
+    }
     alert.prepend($('<h4>', {"class":"alert-heading", text:"Error"}));
     this.$el.find('div.env_resource_summary_view').html(alert);
   }
@@ -106,7 +111,7 @@ Cloudenvironments.View.EnvAccordionView = Backbone.View.extend({
     this.model.once("sync", function(){
       this.$el.find('.resource_controls').removeClass("hidden");
     }, this);
-  }, 
+  },
 
   render: function(){
     var self = this;
@@ -202,7 +207,7 @@ Cloudenvironments.View.EnvAccordionView = Backbone.View.extend({
         model: this.model,
         el: el[0]
       });
-    } 
+    }
     this.appsResourcesView.toggleView(appGuid, appName);
   },
 
@@ -230,7 +235,7 @@ Cloudenvironments.View.EnvAccordionView = Backbone.View.extend({
 Cloudenvironments.View.Overview = Backbone.View.extend({
   initialize: function(){
     this.$el.html(new App.View.Spinner().render().el);
-    //Important: the render function only needs to be invoked once as each time when the model is fetched, the collection's 
+    //Important: the render function only needs to be invoked once as each time when the model is fetched, the collection's
     //sync event will be emitted as well, which will cause an infinite loop
     this.collection.once("sync", function(){
       this.render();
