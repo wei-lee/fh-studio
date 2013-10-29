@@ -16,7 +16,8 @@ App.Collection.CMS = Backbone.Collection.extend({
       readSections : '/mbaas/cms/sections',
       crupdateSection : '/mbaas/cms/section',
       field : '/mbaas/cms/section/field',
-      fieldlist: '/mbaas/cms/section/list/field/'
+      fieldlist: '/mbaas/cms/section/list/field/',
+      upload : '/mbaas/cms/{_id}/upload'
     };
 
     // Add in the URL prefix
@@ -87,7 +88,8 @@ App.Collection.CMS = Backbone.Collection.extend({
    */
   draft : function(method, model, options){
     var self = this,
-    url = this.urls.crupdateSection;
+    url = this.urls.crupdateSection,
+    filesToUpload = _.where(model.fields, {type : 'file'});
 
     console.log("MODEL SAVE ", model);
     delete model.__v;
@@ -99,13 +101,40 @@ App.Collection.CMS = Backbone.Collection.extend({
       model.fields[i].section = model.name;
       model.fields[i].modifiedBy = model.modifiedBy;
     }
-    //model.fields = [];
 
     $.ajax({
       type: "PUT",
       url: url, contentType : "application/json",
       data: JSON.stringify(model)
-    }) .done(options.success).error(options.error);
+    }) .done(function(res){
+      self.fetch({reset : true, success : function(res){
+        // Find this file's ID
+        if (filesToUpload && filesToUpload.length>0){
+          self.uploadFiles(model, filesToUpload, function(err, res){
+            return options.success(res);
+          });
+        }else{
+          return options.success(res);
+        }
+      }});
+    }).error(options.error);
+  },
+  uploadFiles : function(section, files, cb){
+    var self =  this;
+    for (var i=0; i<files.length; i++){
+      var f = files[i];
+      if (!f._id){
+        // If we've just created this field, it hasn't yet got an ID - retrieve it from
+        // our freshly re-fetched section definitions after the PUT
+        var sectionId = section._id,
+        fields = self.findWhere({ _id : sectionId }).get('fields'),
+        field = _.findWhere(fields, { name :f.name });
+        f._id = field._id;
+      }
+      //TODO Now we're sure the file has an ID, async a task to upload it to the serverside
+      var url = self.urls.upload.replace("{_id}", f._id);
+      return cb(null, {});
+    }
   },
   /*
     Internally we use backbone CIDs to represent state until it reaches the SS.

@@ -197,7 +197,7 @@ App.View.CMSSection = App.View.CMS.extend({
       // with matching _id to be our updated massaged field
       previousFields[indexOfPrevious] = massaged;
       self.sectionModel.set('fields', previousFields);
-      
+
       if (field.get('type') === 'list'){
         self.renderListFieldTables();
       }
@@ -291,12 +291,10 @@ App.View.CMSSection = App.View.CMS.extend({
       success : function(){
         App.dispatch.trigger(CMS_TOPICS.AUDIT, "Section draft saved with values: " + JSON.stringify(self.section));
         App.dispatch.trigger(CMS_TOPICS.SECTION_SAVE_DRAFT,{"section":self.section}); // Notify the tree that we're saving the section so it can change colour
-        self.collection.fetch({reset : true, success : function(){
-          setTimeout(function(){
-            // Make this happen after render - TODO, not the tidiest
-            self.trigger('message', 'Section updated successfully');
-          }, 200);
-        }});
+        setTimeout(function(){
+          // Make this happen after render - TODO, not the tidiest
+          self.trigger('message', 'Section updated successfully');
+        }, 200);
       },
       error : function(err){
         self.trigger('message', err.toString(), 'danger');
