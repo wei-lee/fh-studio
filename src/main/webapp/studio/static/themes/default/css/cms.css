@@ -298,10 +298,6 @@
   Form Builder CSS overrides
  */
 
-.cms-listfield-savecancel, .cms_section_savecancel {
-    top: -150px; /* Makes up for the 150px bottom padding on every form */
-}
-
 .fb-field-wrapper .actions-wrapper {
     bottom: 2px;
 }
@@ -360,7 +356,9 @@
 }
 
 .fb-response-fields {
-    margin-top: 14px;;
+    margin-top: 14px;
+    height: 300px;
+    overflow-y: scroll;
 }
 
 .fb-field-wrapper:hover .subtemplate-wrapper {

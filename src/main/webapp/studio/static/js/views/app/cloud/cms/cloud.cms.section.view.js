@@ -93,6 +93,7 @@ App.View.CMSSection = App.View.CMS.extend({
     this.$el.find('#cmsAppPreview').append($('#app_preview').clone(true).show().width('100%'));
 
     this.renderListFieldTables();
+    this.renderFilePreviews();
 
     // Add in some instructions ontop of the form
     if (this.view === 'section'){
@@ -132,6 +133,24 @@ App.View.CMSSection = App.View.CMS.extend({
     $(configureSection).insertBefore(this.$el.find('.middle .breadcrumb'));
     this.$el.find('.middle').prepend();
   },
+  renderFilePreviews : function(){
+    var self = this;
+    $(this.$el.find('.response-field-file')).each(function(){
+      //self
+
+      var container = $(this).find('.file_container'),
+      name = $(container).data('name'),
+      file = _.findWhere(self.section.fields, { name : name }),
+      image;
+
+      if (!file){
+        return console.log('No file found with name: ' + name);
+      }
+
+      $(container).html(file.value);
+
+    });
+  },
   renderListFieldTables : function(){
     var self = this;
     $(this.$el.find('.response-field-field_list')).each(function(){
@@ -141,7 +160,7 @@ App.View.CMSSection = App.View.CMS.extend({
       table;
 
       if (!listField){
-        return this.modal('No list field found with name: ' + name);
+        return console.log('No list field found with name: ' + name);
       }
       if(listField.fields.length > 0){
         table = new App.View.CMSTable({ fields : listField.fields, data : listField.data });
