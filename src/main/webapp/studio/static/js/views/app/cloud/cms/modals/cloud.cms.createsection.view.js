@@ -6,15 +6,18 @@ App.View.CMSCreateSection = App.View.Modal.extend({
   initialize: function(options){
     this.tpl = Handlebars.compile($('#cms_sectionDropDown').html());
 
-    var currentSelection = options.collection.findWhere({ _id : options.current }),
-    siblingParent = currentSelection.get('parent'), // on creating, we want to create as a sibling of the current node by default
-    parentOptions = this.options.collection.toHTMLOptions(),
+    var parentOptions = this.options.collection.toHTMLOptions(),
     body;
     parentOptions = ["<option value='' data-path='' >-Root</option>"].concat(parentOptions);
     parentOptions = parentOptions.join('');
     body = $(this.tpl({"parentOptions":parentOptions}));
 
-    body.find('select').val(siblingParent);
+    if (options.current){
+      // If we aren't creating from scratch, select the same parent as our current selection
+      var currentSelection = options.collection.findWhere({ _id : options.current }),
+      siblingParent = currentSelection.get('parent'); // on creating, we want to create as a sibling of the current node by default
+      body.find('select').val(siblingParent);
+    }
 
     body.append('<br/> <input class="input-large" placeholder="Enter a Section name" id="newCollectionName">');
 

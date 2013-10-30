@@ -279,12 +279,22 @@ App.View.CMSSection = App.View.CMS.extend({
   },
   onSectionSaveDraft : function(e){
     e.preventDefault();
+    window.scrollTo(0,0);
     var self = this,
-    vals = {};
+    vals = {},
+    fileFields = {};
 
     $(this.$el.find('#configureSectionForm').serializeArray()).each(function(idx, el){
       vals[el.name] = el.value;
     });
+
+    // We need to get references to every file field so we can get their file contents
+    this.$el.find('input[type=file]').each(function(){
+      var label = $(this).parent().children('label').text().trim();
+      $(this).attr('name', label);
+      fileFields[label] = this;
+    });
+
     this.sectionModel.set('name', vals.name);
     this.sectionModel.set('status', 'draft');
     this.collection.sync('draft', this.sectionModel.toJSON(), {
@@ -298,7 +308,8 @@ App.View.CMSSection = App.View.CMS.extend({
       },
       error : function(err){
         self.trigger('message', err.toString(), 'danger');
-      }
+      },
+      fileFields : fileFields
     });
     return false;
   },

@@ -107,20 +107,26 @@ App.Collection.CMS = Backbone.Collection.extend({
       url: url, contentType : "application/json",
       data: JSON.stringify(model)
     }) .done(function(res){
-      self.fetch({reset : true, success : function(res){
+      self.fetch({reset : true, silent : true, success : function(res){
         // Find this file's ID
         if (filesToUpload && filesToUpload.length>0){
-          self.uploadFiles(model, filesToUpload, function(err, res){
+          self.uploadFiles(model, filesToUpload, options, function(err, res){
+            self.trigger('reset');
+            if (err){
+              return options.error(err);
+            }
             return options.success(res);
           });
         }else{
+          self.trigger('reset');
           return options.success(res);
         }
       }});
     }).error(options.error);
   },
-  uploadFiles : function(section, files, cb){
-    var self =  this;
+  uploadFiles : function(section, files, options, cb){
+    var self =  this,
+    uploaders = [];
     for (var i=0; i<files.length; i++){
       var f = files[i];
       if (!f._id){
@@ -132,9 +138,37 @@ App.Collection.CMS = Backbone.Collection.extend({
         f._id = field._id;
       }
       //TODO Now we're sure the file has an ID, async a task to upload it to the serverside
-      var url = self.urls.upload.replace("{_id}", f._id);
-      return cb(null, {});
+      var temp_form =  $('<form method="POST" enctype="multipart/form-data"></form>'),
+      fileFieldEl = options.fileFields[f.name];
+      temp_form.append(fileFieldEl);
+      $('body').append(temp_form);
+      (function(self, f, temp_form){
+        uploaders.push(function(cb){
+          var request_opts = {
+            url: self.urls.upload.replace("{_id}", f._id),
+            data: {
+              fileName :f.name
+            },
+            dataType: 'json',
+            success: function(res) {
+              temp_form.remove();
+              return cb(null, res);
+            },
+            error : function(err){
+              temp_form.remove();
+              console.log("Error uploading files:");
+              console.log(err);
+              return cb("Error uploading files: " + err.error);
+            }
+          };
+          temp_form.ajaxSubmit(request_opts);
+        });
+      })(self, f, temp_form);
+
     }
+    return async.series(uploaders, function(err, res){
+      return cb(err, res);
+    });
   },
   /*
     Internally we use backbone CIDs to represent state until it reaches the SS.
