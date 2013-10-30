@@ -107,16 +107,18 @@ App.Collection.CMS = Backbone.Collection.extend({
       url: url, contentType : "application/json",
       data: JSON.stringify(model)
     }) .done(function(res){
-      self.fetch({reset : true, success : function(res){
+      self.fetch({reset : true, silent : true, success : function(res){
         // Find this file's ID
         if (filesToUpload && filesToUpload.length>0){
           self.uploadFiles(model, filesToUpload, options, function(err, res){
+            self.trigger('reset');
             if (err){
               return options.error(err);
             }
             return options.success(res);
           });
         }else{
+          self.trigger('reset');
           return options.success(res);
         }
       }});
@@ -165,7 +167,6 @@ App.Collection.CMS = Backbone.Collection.extend({
 
     }
     return async.series(uploaders, function(err, res){
-      debugger;
       return cb(err, res);
     });
   },

@@ -279,6 +279,7 @@ App.View.CMSSection = App.View.CMS.extend({
   },
   onSectionSaveDraft : function(e){
     e.preventDefault();
+    window.scrollTo(0,0);
     var self = this,
     vals = {},
     fileFields = {};
