@@ -290,6 +290,7 @@ App.View.CMSSection = App.View.CMS.extend({
     // We need to get references to every file field so we can get their file contents
     this.$el.find('input[type=file]').each(function(){
       var label = $(this).parent().children('label').text().trim();
+      $(this).attr('name', label);
       fileFields[label] = this;
     });
 

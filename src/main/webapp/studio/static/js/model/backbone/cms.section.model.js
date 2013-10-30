@@ -140,11 +140,13 @@ App.Collection.CMS = Backbone.Collection.extend({
       fileFieldEl = options.fileFields[f.name];
       temp_form.append(fileFieldEl);
       $('body').append(temp_form);
-      (function(self, temp_form){
+      (function(self, f, temp_form){
         uploaders.push(function(cb){
           var request_opts = {
             url: self.urls.upload.replace("{_id}", f._id),
-            data: {},
+            data: {
+              fileName :f.name
+            },
             dataType: 'json',
             success: function(res) {
               temp_form.remove();
@@ -159,7 +161,7 @@ App.Collection.CMS = Backbone.Collection.extend({
           };
           temp_form.ajaxSubmit(request_opts);
         });
-      })(self, temp_form);
+      })(self, f, temp_form);
 
     }
     return async.series(uploaders, function(err, res){
