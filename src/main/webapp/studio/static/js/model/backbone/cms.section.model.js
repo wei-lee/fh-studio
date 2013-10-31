@@ -235,8 +235,8 @@ App.Collection.CMS = Backbone.Collection.extend({
 
     var self = this,
     url = this.urls.crupdateSection;
-    section.modifiedBy = $fw.userProps.email,
-    parent = false;
+    section.modifiedBy = $fw.userProps.email;
+    var parent = false;
     delete section.hash;
     delete section.data;
     delete section._id;
