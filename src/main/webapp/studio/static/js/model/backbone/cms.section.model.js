@@ -102,10 +102,22 @@ App.Collection.CMS = Backbone.Collection.extend({
       model.fields[i].modifiedBy = model.modifiedBy;
     }
 
+    var inst = this.inst = $fw.data.get('inst');
+    this.userApiKey = $fw.data.get("userapikey");
+    this.guid = this.inst.guid;
+    this.appkey = this.inst.apiKey;
+
+
+
+
     $.ajax({
       type: "PUT",
       url: url, contentType : "application/json",
-      data: JSON.stringify(model)
+      data: JSON.stringify(model),
+      "headers":{
+        "x-fh-auth-app":self.appkey,
+        "x-fh-auth-user":self.userApiKey
+      }
     }) .done(function(res){
       self.fetch({reset : true, silent : true, success : function(res){
         // Find this file's ID
@@ -125,6 +137,11 @@ App.Collection.CMS = Backbone.Collection.extend({
     }).error(options.error);
   },
   uploadFiles : function(section, files, options, cb){
+    var inst = this.inst = $fw.data.get('inst');
+    this.userApiKey = $fw.data.get("userapikey");
+    this.guid = this.inst.guid;
+    this.appkey = this.inst.apiKey;
+
     var self =  this,
     uploaders = [];
     for (var i=0; i<files.length; i++){
@@ -148,6 +165,10 @@ App.Collection.CMS = Backbone.Collection.extend({
             url: self.urls.upload.replace("{_id}", f._id),
             data: {
               fileName :f.name
+            },
+            "headers":{
+              "x-fh-auth-app":self.appkey,
+              "x-fh-auth-user":self.userApiKey
             },
             dataType: 'json',
             success: function(res) {
@@ -190,6 +211,11 @@ App.Collection.CMS = Backbone.Collection.extend({
     return fields;
   },
   read : function(method, model, options){
+    var inst = this.inst = $fw.data.get('inst');
+    this.userApiKey = $fw.data.get("userapikey");
+    this.guid = this.inst.guid;
+    this.appkey = this.inst.apiKey;
+
     var self = this,
     url = this.urls.readSections,
     body = {};
@@ -202,6 +228,11 @@ App.Collection.CMS = Backbone.Collection.extend({
     }, options.error, true);
   },
   create : function(method, section, options){
+    var inst = this.inst = $fw.data.get('inst');
+    this.userApiKey = $fw.data.get("userapikey");
+    this.guid = this.inst.guid;
+    this.appkey = this.inst.apiKey;
+
     var self = this,
     url = this.urls.crupdateSection;
     section.modifiedBy = $fw.userProps.email,
@@ -222,7 +253,11 @@ App.Collection.CMS = Backbone.Collection.extend({
     $.ajax({
       type: "POST",
       url: url, contentType : "application/json",
-      data: JSON.stringify(section)
+      data: JSON.stringify(section),
+      "headers":{
+        "x-fh-auth-app":self.appkey,
+        "x-fh-auth-user":self.userApiKey
+      }
     }) .done(function(res){
 
       if (parent){
@@ -241,11 +276,20 @@ App.Collection.CMS = Backbone.Collection.extend({
 
   },
   del : function(method, model, options){
+    var inst = this.inst = $fw.data.get('inst');
+    this.userApiKey = $fw.data.get("userapikey");
+    this.guid = this.inst.guid;
+    this.appkey = this.inst.apiKey;
+    var self = this;
     var body = ( model.toJSON ) ? model.toJSON() : model, // no hasOwnProperty here - want to see if prototype chain has method toJSON
     url = this.urls.crupdateSection + '/' + body._id;
 
     $.ajax({
       type: "DELETE",
+      "headers":{
+        "x-fh-auth-app":self.appkey,
+        "x-fh-auth-user":self.userApiKey
+      },
       url: url, contentType : "application/json"
     }) .done(options.success).error(options.error);
   },
