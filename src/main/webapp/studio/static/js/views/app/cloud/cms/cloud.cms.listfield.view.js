@@ -84,6 +84,7 @@ App.View.CMSListField = App.View.CMSSection.extend({
     this.table.$el.addClass('listViewDataTable');
     this.table.render().$el.insertAfter(this.afterEl);
     this.table.$el.find('table').removeClass('table-striped');
+    this.table.$el.find('tr[data-index=' + this.editing + '] input').attr('checked', true); // set the row that we're editing to true
   },
 
   triggerChange : function () {
@@ -308,6 +309,7 @@ App.View.CMSListField = App.View.CMSSection.extend({
       }
       f.value = row[f.name];
     });
+    this.editing = index;
     fields = this.massageFieldsForFormbuilder(fields);
     this.fb.mainView.collection.reset(fields);
   },
@@ -319,15 +321,32 @@ App.View.CMSListField = App.View.CMSSection.extend({
       var massaged = self.massageFieldFromFormBuilder(field);
 
       if (self.options.mode === "data"){
-        var checked = self.table.$el.find('tr.info input:checked').parents('tr'),
-        index = checked.first().data("index"),
+        var index = self.editing,
         previousRow = self.fieldList.data[index],
         fObj = {};
 
         // Create a field object ready to extend/merge into our previousRow
-        fObj[massaged.name] = massaged.value;
+        // Files are a special case - becomes an object with needsUpload
+        if (massaged.type && massaged.type === "file" ){
+          var needsUpload = (field.changedAttributes().value) ? true : false;
+          fObj[massaged.name] = {
+            type : 'file',
+            fieldEl : self.$el.find('input[type=file][data-_id="' + massaged._id + '"]'),
+            listfields : {
+              index : self.editing
+            },
+            needsUpload : needsUpload,
+            name : massaged.name
+          };
+        }else{
+          fObj[massaged.name] = massaged.value;
+        }
 
         _.extend(previousRow, fObj);
+
+        if (previousRow.type && previousRow.type === "file"){
+
+        }
 
         self.fieldList.data[index] = previousRow;
 
