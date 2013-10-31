@@ -94,7 +94,7 @@ App.View.CMSListField = App.View.CMSSection.extend({
     var self = this;
     console.log("add new row ",this.fieldList.fields);
     //add an empty row
-    if(this.fieldList.fields){
+    if(this.fieldList.fields && this.fieldList.fields.length >0){
       var blank = {};
       for(var i=0; i < this.fieldList.fields.length; i++){
         var f = this.fieldList.fields[i];
@@ -114,7 +114,10 @@ App.View.CMSListField = App.View.CMSSection.extend({
 
       // Set fields disabled to false now we've added a row
       this.$el.find('.fb-response-fields input, .fb-response-fields textarea').attr('disabled', false);
+    }else{
+      this.modal('No structure has been defined for this list. First edit the structure to define some fields', 'No Structure Defined');
     }
+
   },
 
   onDuplicateRow : function (){

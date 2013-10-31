@@ -18,11 +18,13 @@ App.View.CMS = Backbone.View.extend({
     crumbs.push('</ul>');
     return crumbs.join('');
   },
-  modal : function(msg){
-    this.modal  = new App.View.Modal({
+  modal : function(msg, title){
+    title = title || 'Confirm';
+    this.modalView = new App.View.Modal({
       body : msg,
+      title : title,
       cancelText : false
     });
-    this.$el.append(this.modal.render().$el);
+    this.$el.append(this.modalView.render().$el);
   }
 });
