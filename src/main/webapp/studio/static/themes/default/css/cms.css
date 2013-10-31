@@ -370,3 +370,14 @@
 .fieldlist.structure .right #editField input:nth-of-type(2) {
     display: none;
 }
+
+/* Hide duplicate/clone field buttons from edit data mode */
+.fieldlist.data .fb-response-fields .fb-field-wrapper .actions-wrapper.btn-group {
+    display: none;
+}
+
+/* Not possible to add a field list within a field list.. */
+
+.fieldlist .right .btn-field_list {
+    display: none;
+}
