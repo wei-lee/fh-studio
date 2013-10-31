@@ -146,8 +146,9 @@ App.View.CMSSection = App.View.CMS.extend({
       if (!file){
         return console.log('No file found with name: ' + name);
       }
-
-      $(container).html(file.value);
+      var img = $('<img>');
+      img.attr('src', self.collection.url + file.binaryUrl);
+      $(container).html(img);
 
     });
   },
