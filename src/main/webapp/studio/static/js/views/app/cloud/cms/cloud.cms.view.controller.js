@@ -1,12 +1,16 @@
 App = App || {};
 App.View = App.View || {};
+
 var CMS_TOPICS = CMS_TOPICS || App.dispatch.topics.CMS;
+
 
 App.View.CMSController  = Backbone.View.extend({
 
   events: {
     'click .btn-cms-back' : 'onCMSBack',
-    'click .btn-cms-publish' : 'showCMSPublishModal'
+    'click .btn-cms-publish' : 'showCMSPublishModal',
+    'click .btn-addsection' : 'onCreateSection',
+    'click .btn-deletesection' : 'onDeleteSection'
   },
 
   templates : {
@@ -18,7 +22,7 @@ App.View.CMSController  = Backbone.View.extend({
   initialize: function(options){
     this.options = options;
     this.mode = options.mode || 'dev';
-    var self = this;
+    this.isAdministrator = true; // ($fw.userProps.roles.indexOf('cmsadmin') > -1); //TODO: Wire this up - doesn't exist yet
     this.compileTemplates();
 
     // Initialise our audit controller
@@ -30,17 +34,14 @@ App.View.CMSController  = Backbone.View.extend({
     var self = this;
 
     // If not enabled, show the enable view
-    var inst = $fw.data.get('inst'),
-    enabled = inst.config && inst.config.app && inst.config.app.cms && inst.config.app.cms.enabled || "false";
-    this.guid = inst.guid;
-    if (enabled!=="true" && enabled!== true){
+    if (!this.checkIsEnabled()){
       return self.renderEnableView();
     }
 
     // Otherwise, CMS is already enabled - append loading
     this.renderLoading();
 
-    // Then load hosts & then actual CMS data
+    // Then load hosts if needed & then actual CMS data
     if (!this.hosts){
       this.getHosts(function(err, res){
         if (err){
@@ -48,8 +49,6 @@ App.View.CMSController  = Backbone.View.extend({
           self.renderErrorView();
         }
         self.gotHosts();
-
-
       });
     }else{
       self.gotHosts();
@@ -59,7 +58,7 @@ App.View.CMSController  = Backbone.View.extend({
   renderLoading : function(){
     this.$el.empty();
     this.$el.addClass('busy');
-    var tpl = Handlebars.compile($('#databrowserLoading').html());
+    var tpl = Handlebars.compile($('#fullpageLoading').html());
     this.$el.append(tpl());
   },
   renderEnableView : function(){
@@ -78,12 +77,16 @@ App.View.CMSController  = Backbone.View.extend({
   },
   gotHosts: function(){
     var self = this,
-    url = self.hosts['development-url']; //todo
+    urlKey = ($fw.data.get('cloud_environment') === 'dev') ? "development-url" : "live-url",
+    url = self.hosts[urlKey];
 
     self.collection = new App.Collection.CMS([], { url : url });
     self.collection.fetch({ reset: true, success : function(){
       self.collection.bind('reset', $.proxy(self.render, self));
+
+      self.$el.removeClass('busy');
       return self.renderCMS();
+
     }, error : function(err){
       console.log('Error fetching CMS data: ' + err.toString());
       self.renderErrorView();
@@ -91,28 +94,15 @@ App.View.CMSController  = Backbone.View.extend({
     }});
   },
   renderCMS : function(){
+    var self = this;
     this.$el.empty();
-    // TODO - not handling failed collection fetches, this needs to only show if the collection was loaded
     if (this.collection.length === 0){
       return this.renderEmptyCMSView();
     }
 
-    var modeString = (this.mode==="dev") ? "Live" : "Dev"; // "Copy to {{ mode }}"
+    this.renderMasterMenu();
 
-    if ($(this.options.container).find('.fh-box-header .cms_mastermenu').length===0){
-
-      $(this.options.container).find('.fh-box-header').append(this.templates.$cms_mastermenu({ mode : modeString }));
-      // Bind the events - these aren't in this.$el alas
-      $(this.options.container).find('.fh-box-header .btn-cms-audit').on('click', $.proxy(this.showAudit, this));
-      $(this.options.container).find('.fh-box-header .btn-cms-import').on('click', $.proxy(this.showImport, this));
-      $(this.options.container).find('.fh-box-header .btn-cms-export').on('click', $.proxy(this.showExport, this));
-      $(this.options.container).find('.fh-box-header .btn-cms-publish').on('click', $.proxy(this.showCMSPublishModal, this));
-      $(this.options.container).find('.fh-box-header .btn-cms-copy').on('click', $.proxy(this.showCopy, this));
-    }
-    // The button is only templated once - for every other mode switch, we need to replace the inner text of the button
-    $(this.options.container).find('.btn-cms-copy span').html('Copy to ' + modeString);
-
-    this.section = this.section || this.collection.at(0) && this.collection.at(0).get('path');
+    this.section = this.section || this.collection.at(0) && this.collection.at(0).get('_id');
 
     if (!this.section){
       console.log('Error: no section specified when initing cloud.cms.view');
@@ -127,13 +117,12 @@ App.View.CMSController  = Backbone.View.extend({
      It needs to be already on the page => we work around this requirement here
      with 2 containers, one for section edit, one for list field edit
      */
-    this.$fbContainer = $('<div></div>');
-    this.$listFieldContainer = $('<div></div>'); // Contains subviews of FormBuilder for list fields
+    this.$fbContainer = $('<div class="fbContainer"></div>');
+    this.$listFieldContainer = $('<div></div>'); // Contains subviews of FormBuilder for drilling down into editing list fields
     this.$auditContainer = $('<div></div>');
     this.$el.prepend(this.$fbContainer, this.$listFieldContainer, this.$auditContainer);
 
-    var isAdministrator = $fw.userProps.roles.indexOf('cmsadmin'); //TODO: Wire this up - doesn't exist yet
-    this.form = new App.View.CMSSection({ $el : this.$fbContainer, collection : this.collection, section : this.section, isAdministrator : true }); //
+    this.form = new App.View.CMSSection({ $el : this.$fbContainer, collection : this.collection, section : this.section, isAdministrator : this.isAdministrator }); //
 
     this.form.render();
 
@@ -141,20 +130,47 @@ App.View.CMSController  = Backbone.View.extend({
     this.form.bind('message', $.proxy(this.alertMessage, this));
 
     this.$left = $(this.templates.$cms_left());
+    if (!this.isAdministrator){
+      this.$left.find('.addremovebuttons').remove();
+    }
 
-    this.tree = new App.View.CMSTree({collection : this.collection});
+    this.tree = new App.View.CMSTree({collection : this.collection, section : this.section});
     this.$el.prepend(this.$left);
     this.$el.find('.cmsTreeContainer').append(this.tree.render().$el);
-    this.tree.bind('sectionchange', $.proxy(this.treeNodeClicked, this));
-    this.tree.bind('sectionchange', $.proxy(this.form.setSection, this.form));
-    this.tree.bind('addsection', $.proxy(this.onAddSection, this));
+    this.tree.bind('sectionchange', function(id){
+      self.section = id;
+      $.proxy(self.treeNodeClicked, self)(id);
+      $.proxy(self.form.setSection, self.form)(id);
+    });
+
     this.tree.bind('message', $.proxy(this.alertMessage, this));
     this.tree.bind('cms-checkUnsaved', $.proxy(this.checkUnsaved, this));
 
     return this;
   },
+  renderMasterMenu : function(){
+    var modeString = (this.mode==="dev") ? "Live" : "Dev"; // "Copy to {{ mode }}"
+    if ($(this.options.container).find('.fh-box-header .cms_mastermenu').length===0){
+
+      $(this.options.container).find('.fh-box-header').append(this.templates.$cms_mastermenu({ mode : modeString }));
+
+      if (!this.isAdministrator){
+        $(this.options.container).find('.fh-box-header').find('.btn-cms-import, .btn-cms-export').remove();
+      }
+
+      // Bind the events - these aren't in this.$el alas
+      $(this.options.container).find('.fh-box-header .btn-cms-audit').on('click', $.proxy(this.showAudit, this));
+      $(this.options.container).find('.fh-box-header .btn-cms-import').on('click', $.proxy(this.showImport, this));
+      $(this.options.container).find('.fh-box-header .btn-cms-export').on('click', $.proxy(this.showExport, this));
+      $(this.options.container).find('.fh-box-header .btn-cms-publish').on('click', $.proxy(this.showCMSPublishModal, this));
+      $(this.options.container).find('.fh-box-header .btn-cms-copy').on('click', $.proxy(this.showCopy, this));
+    }
+
+    // The button is only templated once - for every other mode switch, we need to replace the inner text of the button
+    $(this.options.container).find('.btn-cms-copy span').html('Copy to ' + modeString);
+  },
   renderEmptyCMSView : function(){
-    this.message = new App.View.FullPageMessageView({ message : 'Your CMS contains no sections', button : 'New Section &raquo;', cb :$.proxy(this.onCMSCreateSection, this)});
+    this.message = new App.View.FullPageMessageView({ message : 'Your CMS contains no sections', button : 'New Section &raquo;', cb :$.proxy(this.onCreateSection, this)});
 
     this.$el.empty();
     this.$el.append(this.message.render().$el);
@@ -168,100 +184,7 @@ App.View.CMSController  = Backbone.View.extend({
     });
     this.$el.append(enableView.render().$el);
   },
-  onCMSCreateSection : function(){
-    this.onAddSection();
-    //TODO
-  },
-  "onAddSection": function (element) {
-    var self = this;
-    var parentOptions = self.collection.toHTMLOptions(),
-    body;
-    parentOptions = ["<option value='' data-path='' >-Root</option>"].concat(parentOptions);
-    parentOptions = parentOptions.join('');
-    body = $(self.templates.$cms_sectionDropDown({"parentOptions":parentOptions}));
 
-    body.find('select').val(self.activeSection); // TODO Fix me so active selection is the selected node in here..
-
-    body.append('<br/> <input class="input-large" placeholder="Enter a Section name" id="newCollectionName">');
-
-    var modal = new App.View.Modal({
-      title: 'Create New Section',
-      body: body,
-      okText: 'Create',
-      ok: function (e) {
-        var el = $(e.target),
-        input = el.parents('.modal').find('input#newCollectionName'),
-        sectionIn = el.parents('.modal').find("select[name='parentName']").find('option').filter(":selected").val(),
-        secVal = input.val();
-        self.doCreateSection({ name : secVal.toString(), parent : sectionIn.toString()});
-        console.log("Section parent section name ", secVal, sectionIn);
-        if (self.tree){
-          self.tree.activeSection = sectionIn;
-
-        }
-      }
-    });
-    self.$el.append(modal.render().$el);
-
-  },
-  //move to fh.cms
-  doCreateSection: function (sectionParams) {
-    var self = this,
-    selectedSection = sectionParams.parent,
-    node;
-    console.log("Create Section in", selectedSection);
-
-    var parentSection = (selectedSection === "root") ? "" : self.collection.findWhere({"name":selectedSection});
-    var id = "temp-"+new Date().getTime();
-    console.log("parent section is ", parentSection);
-    var childrenKey = App.Model.CmsSection.CONST.CHILDREN;
-
-    if (parentSection) {
-      if (!parentSection.get(childrenKey)){
-        parentSection.set(childrenKey,[]);
-      }
-
-      var path = parentSection.get("path") || "";
-      path+= "." + sectionParams.name;
-
-      node = {
-        "path": path,
-        "_id": id,
-        "name": sectionParams.name,
-        "data": sectionParams.name,
-        "parent" : sectionParams.parent,
-        "children": []
-      };
-
-      parentSection.attributes.children.push(node.hash);
-    }else{
-      //add new parent section
-      node = {
-        "path":sectionParams.name,
-        "_id":id,
-        "name":sectionParams.name,
-        "data":sectionParams.name,
-        "parent" : sectionParams.parent,
-        "children":[]
-      };
-    }
-
-    console.log("models ",self.collection.models);
-    var model = new App.Model.CmsSection(node);
-    self.collection.push(model);
-
-    this.collection.sync('create', model.toJSON(), { success : function(res){
-
-      self.collection.fetch({reset : true, success : function(){
-        self.alertMessage('Section successfully saved');
-      }});
-    }, error : function(err){
-      self.alertMessage(err.toString(), 'danger');
-    }});
-    if (self.tree && self.tree.$el){
-      self.tree.$el.jstree("unset_focus");
-    }
-  },
   onEditFieldList : function(options){
     var self = this;
     self.active = 'listfield';
@@ -298,6 +221,56 @@ App.View.CMSController  = Backbone.View.extend({
     }
     // Always it's here we want to get back to
     this.$fbContainer.show();
+  },
+  onCreateSection : function(){
+    var self = this,
+    createView = new App.View.CMSCreateSection({collection : this.collection, current : this.section});
+    this.$el.append(createView.render().$el);
+    createView.bind('message', $.proxy(this.alertMessage, this));
+    createView.bind('sectionchange', function(section){
+      self.section = section;
+    });
+
+  },
+  "onDeleteSection": function (e) {
+    var self = this,
+    selected = this.tree.treenode.jstree('get_selected'),
+    _id = selected.attr('id'),
+    model = this.collection.findWhere({_id : _id}),
+    modal;
+
+    if (model.has('children') && model.get('children').length>0){
+      modal = new App.View.Modal({
+        title: 'Cannot Remove ' + model.get('name'),
+        body: "Error removing " + model.get('name') + " - this section has child sections. Please delete all child sections and try again.",
+        okText: 'Ok',
+        cancelText : false
+      });
+    }else{
+      modal = new App.View.Modal({
+        title: 'Confirm Delete',
+        body: "Are you sure you want to delete " + model.get('name') + "?",
+        okText: 'Delete',
+        cancelText : 'Cancel',
+        ok: function (e) {
+          self.collection.remove(model, {
+            success : function(){
+              // set current section as first tree node
+              var first = self.tree.treenode.find('li:first').attr('id');
+              self.section = first;
+              $.proxy(self.form.setSection, self.form)(first);
+              self.alertMessage('Section removed successfully');
+            },
+            error : function(){
+              self.alertMessage('Error removing section', 'danger');
+            }
+          });
+        }
+      });
+    }
+
+
+    return self.$el.append(modal.render().$el);
   },
   treeNodeClicked : function(){
     if (this.$listFieldContainer.length && this.$listFieldContainer.length>0){
@@ -384,15 +357,16 @@ App.View.CMSController  = Backbone.View.extend({
     msg = msg || 'Save successful';
 
     var cms_alert = Handlebars.compile($('#cms_alert').html()),
-    alertBox = $(cms_alert({ cls : cls, msg : msg })),
-    el = this.$el.find('.middle');
+    alertBox = $(cms_alert({ cls : cls, msg : msg }));
 
 
-    if (!el || (el.length && el.length ===0)){
-      el = this.$el;
-    }
+    // Issues occuring with messages appending to previous instances of this.$el
+    // - lookup in global context after some delay to ensure correct div selected
+    setTimeout(function(){
+      var el = $('#cms_container .fbContainer .middle');
+      $(el).prepend(alertBox);
+    }, 200);
 
-    $(el).prepend(alertBox);
 
     // Fade out then remove our message
     setTimeout(function(){
@@ -403,5 +377,15 @@ App.View.CMSController  = Backbone.View.extend({
         alertBox.remove();
       });
     }, 3000);
+  },
+  checkIsEnabled : function(){
+    var inst = $fw.data.get('inst'),
+    enabled = inst.config && inst.config.app && inst.config.app.cms && inst.config.app.cms.enabled || "false";
+    this.guid = inst.guid;
+    if (enabled!=="true" && enabled!== true){
+      return false;
+    }
+    return true;
+
   }
 });

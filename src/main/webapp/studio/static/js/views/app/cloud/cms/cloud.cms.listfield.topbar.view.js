@@ -20,6 +20,10 @@ App.View.CMSListFieldTopBar = App.View.CMS.extend({
       this.$el.append('<span>Drag fields to alter the structure</span>');
     }
     this.$el.append(this.templates.$cms_listfieldswitch());
+    if (!this.options.isAdministrator){
+      this.$el.find('.btn-listfield-change-structure').remove();
+    }
+
     return this;
   }
 });

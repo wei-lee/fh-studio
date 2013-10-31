@@ -7,7 +7,7 @@ App.View.DataBrowserTable = App.View.DataBrowserView.extend({
     dataviewLoadingContent : '#dataviewLoadingContent',
     dataviewEditTable : '#dataviewEditTable',
     dataviewTableContainer : '#dataviewTableContainer',
-    databrowserLoading : '#databrowserLoading'
+    databrowserLoading : '#fullpageLoading'
   },
   events : {
     'click table .btn-save' : 'onRowSave',

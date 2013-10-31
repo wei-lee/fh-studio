@@ -160,6 +160,7 @@ js/views/app/cloud/cms/modals/cloud.cms.export.view.js
 js/views/app/cloud/cms/modals/cloud.cms.import.view.js
 js/views/app/cloud/cms/modals/cloud.cms.copy.view.js
 js/views/app/cloud/cms/modals/cloud.cms.publish.view.js
+js/views/app/cloud/cms/modals/cloud.cms.createsection.view.js
 js/views/app/cloud/cms/cloud.cms.section.view.js
 js/views/app/cloud/cms/cloud.cms.listfield.topbar.view.js
 js/views/app/cloud/cms/cloud.cms.listfield.view.js
@@ -251,7 +252,7 @@ js/application/apps/apps.endpoints.controller.js
 js/application/apps/apps.cloudresources.controller.js
 js/application/apps/apps.cloudnotifications.controller.js
 js/application/apps/apps.cloud.dashboard.controller.js
-js/application/apps/apps.cms.controller.js
+js/application/apps/apps.cloud.cms.controller.js
 js/application/apps/apps.cloud.databrowser.controller.js
 js/application/apps/apps.environment.controller.js
 js/application/apps/apps.deploy.controller.js

@@ -29,7 +29,7 @@ App.View.CMSSection = App.View.CMS.extend({
 
    render : function(){
     var self = this,
-    sectionModel = this.sectionModel = this.collection.findWhere({path : this.options.section}),
+    sectionModel = this.sectionModel = this.collection.findWhere({_id : this.options.section}),
     section = this.section =  sectionModel.toJSON(),
     path = section.path,
     fields, listData;
@@ -38,10 +38,6 @@ App.View.CMSSection = App.View.CMS.extend({
       console.log('Error loading section with path ' + this.options.section);
       return this.modal('Error loading section');
     }
-
-     console.log("section retrieved ", section);
-
-
 
     if (this.view === 'listfield'){
       // We're editing a field_list - retrieve it
@@ -69,8 +65,6 @@ App.View.CMSSection = App.View.CMS.extend({
       // Just a standard section view - may or may not contain a listfield within
       fields = this.massageFieldsForFormbuilder(section.fields);
     }
-
-    console.log("Section is ", section  ," fields ",fields);
 
     if (!section || !fields){
       console.log('Error finding section or fields on rendering section view');
@@ -153,21 +147,13 @@ App.View.CMSSection = App.View.CMS.extend({
         table = new App.View.CMSTable({ fields : listField.fields, data : listField.data });
         $(this).find('.fieldlist_table').html(table.render().$el);
       }
+
+      if (!self.options.isAdministrator){
+        $(this).find('.btn-listfield-structure').remove();
+      }
+
     });
   },
-
-  onSectionChange : function (se){
-    var select = this.$('select[name="parentName"]');
-    var opt = select.find('option').filter(":selected:");
-    console.log(opt);
-    console.log(select);
-    var selectVal = select.val();
-    console.log("section changed",selectVal);
-
-    App.dispatch.trigger(CMS_TOPICS.SECTION_CHANGE,{"section":selectVal,"id":opt.data("id"),"path":opt.data("path")});
-  },
-
-
   renderFormBuilder : function(fields){
     // Save some data massaging
     var self = this;
@@ -211,6 +197,10 @@ App.View.CMSSection = App.View.CMS.extend({
       // with matching _id to be our updated massaged field
       previousFields[indexOfPrevious] = massaged;
       self.sectionModel.set('fields', previousFields);
+
+      if (field.get('type') === 'list'){
+        self.renderListFieldTables();
+      }
 
     });
     // On creating a field, we should also mark the section unsaved changes
@@ -266,7 +256,6 @@ App.View.CMSSection = App.View.CMS.extend({
         // FormBuilder doesn't give us the values of lists, we need to retrieve them ourselves.
         // if a user has changed the list structure or data, we've already copied it to the model - so we can
         // just copy it directly..
-        //TODO: What if the user changes the listfield's name?
         field.type = "list";
         field.fields = field.fields || [];
         field.data = field.data || [];
@@ -288,40 +277,39 @@ App.View.CMSSection = App.View.CMS.extend({
     delete field.field_options;
     return field;
   },
-  massageFieldsFromFormBuilder : function(fbCollection, oldSection){
-    var self = this,
-    fields = [];
-    fbCollection.each(function(field){
-      var newField = self.massageFieldFromFormBuilder(field);
-      fields.push(newField);
-    });
-    return fields;
-  },
-
   onSectionSaveDraft : function(e){
     e.preventDefault();
+    window.scrollTo(0,0);
     var self = this,
-    vals = {};
+    vals = {},
+    fileFields = {};
 
     $(this.$el.find('#configureSectionForm').serializeArray()).each(function(idx, el){
       vals[el.name] = el.value;
     });
+
+    // We need to get references to every file field so we can get their file contents
+    this.$el.find('input[type=file]').each(function(){
+      var label = $(this).parent().children('label').text().trim();
+      $(this).attr('name', label);
+      fileFields[label] = this;
+    });
+
     this.sectionModel.set('name', vals.name);
     this.sectionModel.set('status', 'draft');
     this.collection.sync('draft', this.sectionModel.toJSON(), {
       success : function(){
         App.dispatch.trigger(CMS_TOPICS.AUDIT, "Section draft saved with values: " + JSON.stringify(self.section));
         App.dispatch.trigger(CMS_TOPICS.SECTION_SAVE_DRAFT,{"section":self.section}); // Notify the tree that we're saving the section so it can change colour
-        self.collection.fetch({reset : true, success : function(){
-          setTimeout(function(){
-            // Make this happen after render - TODO, not the tidiest
-            self.trigger('message', 'updated successfully');
-          }, 200);
-        }});
+        setTimeout(function(){
+          // Make this happen after render - TODO, not the tidiest
+          self.trigger('message', 'Section updated successfully');
+        }, 200);
       },
       error : function(err){
         self.trigger('message', err.toString(), 'danger');
-      }
+      },
+      fileFields : fileFields
     });
     return false;
   },
@@ -332,8 +320,6 @@ App.View.CMSSection = App.View.CMS.extend({
       return;
     }
     var previous = this.sectionModel.previousAttributes();
-
-    console.log("discard draft called");
 
     this.sectionModel.set(previous);
 
@@ -362,7 +348,6 @@ App.View.CMSSection = App.View.CMS.extend({
   },
   onListFieldEditStructure : function(e){
     this.onListFieldEdit(e, 'structure');
-
   },
   onListFieldEditData : function(e){
     this.onListFieldEdit(e, 'data');

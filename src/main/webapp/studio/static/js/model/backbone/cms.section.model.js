@@ -8,10 +8,6 @@ App.collections = App.collections || {};
 App.Model.CmsSection = Backbone.Model.extend({
 });
 
-App.Model.CmsSection.CONST = {
-  "CHILDREN" : "children"
-};
-
 App.Collection.CMS = Backbone.Collection.extend({
   initialize: function(models, options) {
     var url = options.url,
@@ -20,7 +16,8 @@ App.Collection.CMS = Backbone.Collection.extend({
       readSections : '/mbaas/cms/sections',
       crupdateSection : '/mbaas/cms/section',
       field : '/mbaas/cms/section/field',
-      fieldlist: '/mbaas/cms/section/list/field/'
+      fieldlist: '/mbaas/cms/section/list/field/',
+      upload : '/mbaas/cms/{_id}/upload'
     };
 
     // Add in the URL prefix
@@ -35,8 +32,15 @@ App.Collection.CMS = Backbone.Collection.extend({
   model: App.Model.CmsSection,
   remove : function(model, options){
     Backbone.Collection.prototype.remove.apply(this, arguments);
-    this.sync('delete', model, options);
-    this.trigger('reset');
+     var self = this,
+     opts = {
+       success : function(){
+         self.trigger('reset');
+         options.success.apply(self, arguments);
+       }, error : options.error
+     };
+    this.sync('delete', model, opts);
+
   },
   sync: function (method, model, options) {
     var self = this;
@@ -84,7 +88,8 @@ App.Collection.CMS = Backbone.Collection.extend({
    */
   draft : function(method, model, options){
     var self = this,
-    url = this.urls.crupdateSection;
+    url = this.urls.crupdateSection,
+    filesToUpload = _.where(model.fields, {type : 'file'});
 
     console.log("MODEL SAVE ", model);
     delete model.__v;
@@ -96,13 +101,95 @@ App.Collection.CMS = Backbone.Collection.extend({
       model.fields[i].section = model.name;
       model.fields[i].modifiedBy = model.modifiedBy;
     }
-    //model.fields = [];
+
+    var inst = this.inst = $fw.data.get('inst');
+    this.userApiKey = $fw.data.get("userapikey");
+    this.guid = this.inst.guid;
+    this.appkey = this.inst.apiKey;
+
+
+
 
     $.ajax({
       type: "PUT",
       url: url, contentType : "application/json",
-      data: JSON.stringify(model)
-    }) .done(options.success).error(options.error);
+      data: JSON.stringify(model),
+      "headers":{
+        "x-fh-auth-app":self.appkey,
+        "x-fh-auth-user":self.userApiKey
+      }
+    }) .done(function(res){
+      self.fetch({reset : true, silent : true, success : function(res){
+        // Find this file's ID
+        if (filesToUpload && filesToUpload.length>0){
+          self.uploadFiles(model, filesToUpload, options, function(err, res){
+            self.trigger('reset');
+            if (err){
+              return options.error(err);
+            }
+            return options.success(res);
+          });
+        }else{
+          self.trigger('reset');
+          return options.success(res);
+        }
+      }});
+    }).error(options.error);
+  },
+  uploadFiles : function(section, files, options, cb){
+    var inst = this.inst = $fw.data.get('inst');
+    this.userApiKey = $fw.data.get("userapikey");
+    this.guid = this.inst.guid;
+    this.appkey = this.inst.apiKey;
+
+    var self =  this,
+    uploaders = [];
+    for (var i=0; i<files.length; i++){
+      var f = files[i];
+      if (!f._id){
+        // If we've just created this field, it hasn't yet got an ID - retrieve it from
+        // our freshly re-fetched section definitions after the PUT
+        var sectionId = section._id,
+        fields = self.findWhere({ _id : sectionId }).get('fields'),
+        field = _.findWhere(fields, { name :f.name });
+        f._id = field._id;
+      }
+      //TODO Now we're sure the file has an ID, async a task to upload it to the serverside
+      var temp_form =  $('<form method="POST" enctype="multipart/form-data"></form>'),
+      fileFieldEl = options.fileFields[f.name];
+      temp_form.append(fileFieldEl);
+      $('body').append(temp_form);
+      (function(self, f, temp_form){
+        uploaders.push(function(cb){
+          var request_opts = {
+            url: self.urls.upload.replace("{_id}", f._id),
+            data: {
+              fileName :f.name
+            },
+            "headers":{
+              "x-fh-auth-app":self.appkey,
+              "x-fh-auth-user":self.userApiKey
+            },
+            dataType: 'json',
+            success: function(res) {
+              temp_form.remove();
+              return cb(null, res);
+            },
+            error : function(err){
+              temp_form.remove();
+              console.log("Error uploading files:");
+              console.log(err);
+              return cb("Error uploading files: " + err.error);
+            }
+          };
+          temp_form.ajaxSubmit(request_opts);
+        });
+      })(self, f, temp_form);
+
+    }
+    return async.series(uploaders, function(err, res){
+      return cb(err, res);
+    });
   },
   /*
     Internally we use backbone CIDs to represent state until it reaches the SS.
@@ -124,7 +211,11 @@ App.Collection.CMS = Backbone.Collection.extend({
     return fields;
   },
   read : function(method, model, options){
-    //TODO These go in "read" - leave here for now so we post to a blank thingy
+    var inst = this.inst = $fw.data.get('inst');
+    this.userApiKey = $fw.data.get("userapikey");
+    this.guid = this.inst.guid;
+    this.appkey = this.inst.apiKey;
+
     var self = this,
     url = this.urls.readSections,
     body = {};
@@ -137,11 +228,16 @@ App.Collection.CMS = Backbone.Collection.extend({
     }, options.error, true);
   },
   create : function(method, section, options){
-    var self = this,
-    url = this.urls.crupdateSection,
-    parent = false;
+    var inst = this.inst = $fw.data.get('inst');
+    this.userApiKey = $fw.data.get("userapikey");
+    this.guid = this.inst.guid;
+    this.appkey = this.inst.apiKey;
 
+    var self = this,
+
+    url = this.urls.crupdateSection;
     section.modifiedBy = $fw.userProps.email;
+    var parent = false;
 
     delete section.hash;
     delete section.data;
@@ -159,7 +255,11 @@ App.Collection.CMS = Backbone.Collection.extend({
     $.ajax({
       type: "POST",
       url: url, contentType : "application/json",
-      data: JSON.stringify(section)
+      data: JSON.stringify(section),
+      "headers":{
+        "x-fh-auth-app":self.appkey,
+        "x-fh-auth-user":self.userApiKey
+      }
     }) .done(function(res){
 
       if (parent){
@@ -178,11 +278,20 @@ App.Collection.CMS = Backbone.Collection.extend({
 
   },
   del : function(method, model, options){
+    var inst = this.inst = $fw.data.get('inst');
+    this.userApiKey = $fw.data.get("userapikey");
+    this.guid = this.inst.guid;
+    this.appkey = this.inst.apiKey;
+    var self = this;
     var body = ( model.toJSON ) ? model.toJSON() : model, // no hasOwnProperty here - want to see if prototype chain has method toJSON
     url = this.urls.crupdateSection + '/' + body._id;
 
     $.ajax({
       type: "DELETE",
+      "headers":{
+        "x-fh-auth-app":self.appkey,
+        "x-fh-auth-user":self.userApiKey
+      },
       url: url, contentType : "application/json"
     }) .done(options.success).error(options.error);
   },
@@ -196,12 +305,11 @@ App.Collection.CMS = Backbone.Collection.extend({
   },
   removeBySectionPath : function(path){
     var self = this;
-    var childrenKey = App.Model.CmsSection.CONST.CHILDREN;
     var section = self.findWhere({"path":path});
 
     for(var i=0; i < self.models.length; i++){
       var m = self.models[i];
-      var children = m.get(childrenKey);
+      var children = m.get('children');
 
       if(children && Array.isArray(children) && children.length > 0){
         //console.log("model has children " , children);

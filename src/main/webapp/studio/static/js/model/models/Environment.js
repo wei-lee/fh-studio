@@ -137,8 +137,23 @@ model.Environment = model.Model.extend({
    * @return {*}
    */
   list: function(app, success, fail, post_process) {
-    var params = {"appId": app};
-    var url = Constants.ENVIRONMENT_TARGET_LISTFORAPP_URL;
+    var self = this,
+    params = {"appId": app},
+    url = Constants.ENVIRONMENT_TARGET_LISTFORAPP_URL;
+    // Regardless of postprocess or not, ensure system env variables don't show in our results
+    success = _.wrap(success, function (func,res){ // (there are more args, we just .apply them below)
+      var args = Array.prototype.slice.call( arguments),
+      newResults = [];
+      _.each(res.list, function(v){
+        if (v.fields && typeof v.fields.name === 'string' && v.fields.name.substring(0, 3) === "FH_"){
+          return;
+        }
+        newResults.push(v);
+      });
+      res.list = newResults;
+      res.count = newResults.length;
+      return func.apply(self, args.slice(1, args.length));
+    });
     if (post_process) {
       return this.serverPost(url, params, success, fail, true, this.postProcessList, this);
     } else {

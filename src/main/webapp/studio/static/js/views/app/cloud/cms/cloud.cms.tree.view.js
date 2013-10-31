@@ -1,12 +1,7 @@
 App = App || {};
 App.View = App.View || {};
 
-
-
 App.View.CMSTree = App.View.CMS.extend({
-  'events': {
-
-  },
   initialize: function (options) {
     var self = this;
     this.collection = options.collection;
@@ -18,27 +13,7 @@ App.View.CMSTree = App.View.CMS.extend({
       self.render();
     });
 
-    App.dispatch.on(CMS_TOPICS.SECTION_CHANGE, function (evData){
-      //need to go through the levels opening as we go.
-      var treePath = evData.path;
-      var pathBits = treePath.split(".");
-      var path ="";
-      var ref="";
-      for(var i = 0; i < pathBits.length; i++){
-        path+=pathBits[i].trim();
-
-         ref = $.jstree._reference("#" + path);
-        if(ref){
-          ref.deselect_all();
-          ref.open_node("#"+path);
-
-        }
-      }
-      if(ref){
-        ref.select_node("#"+path);
-      }
-      $("#"+path).trigger("click");
-    });
+    this.section = options.section;
 
     App.dispatch.on(CMS_TOPICS.SECTION_SAVE_DRAFT, function (data){
       console.log("save draft event ", data);
@@ -71,8 +46,8 @@ App.View.CMSTree = App.View.CMS.extend({
     console.log("json data ", jsonData);
 
     var self = this;
-    self.tree = this.$el.unbind("loaded.jstree").bind("loaded.jstree", function (event, data) {
-     $(this).jstree("open_all");
+    self.treenode = this.$el.unbind("loaded.jstree").bind("loaded.jstree", function (event, data) {
+      $(this).jstree("open_all");
     }).jstree({
       "json_data": {
         "data": jsonData
@@ -84,6 +59,10 @@ App.View.CMSTree = App.View.CMS.extend({
         theme: 'classic',
         loaded: true
       },
+      "ui" : {
+        "initially_select" : []
+      },
+
       "crrm": {
         "move": {
           "default_position": "first",
@@ -94,19 +73,22 @@ App.View.CMSTree = App.View.CMS.extend({
       },
       'plugins': ['themes', 'json_data', 'ui', 'cookies', 'crrm', 'dnd']
     });
-    self.tree.unbind("select_node.jstree, move_node.jstree, create.jstree","blur");
-    self.tree.bind("select_node.jstree", $.proxy(this.onTreeNodeClick, this));
-    self.tree.bind('move_node.jstree', $.proxy(this.onTreeMove, this));
-    self.tree.bind("open_node.jstree", function (e, data) {
+    self.treenode.unbind("reselect.jstree, select_node.jstree, move_node.jstree, create.jstree","blur");
 
+
+    // Set the initially selected node in the reselect callback because JSTree is a mess
+    self.treenode.bind("reselect.jstree", function(){
+      self.treenode.unbind("select_node.jstree");
+      self.treenode.jstree('deselect_all');
+      var node = self.treenode.jstree("select_node", '#' + self.section);
+      if (node){
+        node.trigger("select_node.jstree");
+      }
+      self.treenode.bind("select_node.jstree", $.proxy(self.onTreeNodeClick, self));
     });
 
-    $('.btn-addsection').unbind().bind("click", function (e) {
-      self.trigger('addsection');
-    });
-    $('.btn-deletesection').unbind().bind("click", function (e) {
-      self.onDeleteSection(self);
-    });
+    self.treenode.bind('move_node.jstree', $.proxy(this.onTreeMove, this));
+    self.treenode.bind("open_node.jstree", function (e, data) {});
 
     return this;
   },
@@ -128,17 +110,16 @@ App.View.CMSTree = App.View.CMS.extend({
       var node = {
         data: {
           attr : {
-            'class' : 'jstree-' + status
+            "class" : 'jstree-' + status
           },
           title : section.name
         },
-        attr: { id: section.path.replace(/\s+/g,'').replace(/\.+/g,''), hash: section.hash, _id : section._id, path: section.path, status : section.status || 'published' },
+        attr: { id: section._id, hash: section.hash, _id : section._id, path: section.path, status : section.status || 'published' },
         "children": []
       };
       if (section && section.children) {
         node.children = [];
         _.each(section.children, function (childId, idx) {
-          console.log("Exploding section");
           var cSection = self.collection.findWhere({_id : childId});
           if(cSection){
             cSection = cSection.toJSON();
@@ -152,48 +133,20 @@ App.View.CMSTree = App.View.CMS.extend({
 
     return tree;
   },
-
-  "onDeleteSection": function (e) {
-    var self = this,
-    title = self.activeSection.split('.').pop();
-    var modal = new App.View.Modal({
-      title: 'Confirm Delete',
-      body: "Are you sure you want to delete " + title + "?",
-      okText: 'Delete',
-      cancelText : 'Cancel',
-      ok: function (e) {
-        console.log("deleting " + self.activeSection);
-        var model = self.collection.findWhere({path : self.activeSection});
-        self.collection.remove(model, {
-          success : function(){
-            self.trigger('message', 'Section removed successfully');
-          },
-          error : function(){
-            self.trigger('message', 'Error removing section', 'danger');
-          }
-        });
-      }
-    });
-    self.$el.append(modal.render().$el);
-  },
   onTreeNodeClick: function (e, data) {
-    console.log("on tree node click");
     var self = this,
-    path = data && data.rslt && data.rslt.obj && data.rslt.obj.attr && data.rslt.obj.attr('path');
-    self.activeSection = path;
+    _id = data && data.rslt && data.rslt.obj && data.rslt.obj.attr && data.rslt.obj.attr('_id');
     var ok = function (e) {
-      self.navigateTo(path);
+      self.navigateTo(_id);
     };
     this.trigger('cms-checkUnsaved', ok);
   },
-  navigateTo : function(path){
-    if (!path) {
+  navigateTo : function(_id){
+    if (!_id) {
       console.log('Error finding section path on tree node');
       return this.modal('Error loading section');
     }
-    this.trigger('sectionchange', path);
-    App.dispatch.trigger("cms.sectionclick",{"path":path.replace(/\s+/g,'')});
-    self.activeSection = path;
+    this.trigger('sectionchange', _id);
   },
 
   //TODO major todo add tests around this logic.
