@@ -150,20 +150,18 @@ App.Collection.CMS = Backbone.Collection.extend({
             formData: {
               fileName :f.name
             },
-            dataType: 'json',
-            done: function(res) {
-              temp_form.remove();
-              return cb(null, res);
-            },
-            error : function(err){
-              temp_form.remove();
-              console.log("Error uploading files:");
-              console.log(err);
-              return cb("Error uploading files");
-            }
+            dataType: 'json'
           };
           $(temp_form).fileupload();
-          $(temp_form).fileupload('send', request_opts);
+          $(temp_form).fileupload('send', request_opts).success(function (res, textStatus, jqXHR) {
+            temp_form.remove();
+            return cb(null, res);
+          }).error(function (jqXHR, textStatus, errorThrown) {
+            temp_form.remove();
+            console.log("Error uploading files:");
+            console.log(textStatus);
+            return cb("Error uploading files");
+          });
 
         });
       })(self, f, fileFieldEl, temp_form);
