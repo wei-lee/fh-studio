@@ -364,3 +364,9 @@
 .fb-field-wrapper:hover .subtemplate-wrapper {
     border-color: #bbb;
 }
+
+/* Hide the value heading & field when editing structure - this is kinda nasty but oh well */
+.fieldlist.structure .right #editField .fb-edit-section-header:nth-of-type(2),
+.fieldlist.structure .right #editField input:nth-of-type(2) {
+    display: none;
+}
