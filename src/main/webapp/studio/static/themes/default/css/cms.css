@@ -298,10 +298,6 @@
   Form Builder CSS overrides
  */
 
-.cms-listfield-savecancel, .cms_section_savecancel {
-    top: -150px; /* Makes up for the 150px bottom padding on every form */
-}
-
 .fb-field-wrapper .actions-wrapper {
     bottom: 2px;
 }
@@ -360,9 +356,28 @@
 }
 
 .fb-response-fields {
-    margin-top: 14px;;
+    margin-top: 14px;
+    height: 300px;
+    overflow-y: scroll;
 }
 
 .fb-field-wrapper:hover .subtemplate-wrapper {
     border-color: #bbb;
+}
+
+/* Hide the value heading & field when editing structure - this is kinda nasty but oh well */
+.fieldlist.structure .right #editField .fb-edit-section-header:nth-of-type(2),
+.fieldlist.structure .right #editField input:nth-of-type(2) {
+    display: none;
+}
+
+/* Hide duplicate/clone field buttons from edit data mode */
+.fieldlist.data .fb-response-fields .fb-field-wrapper .actions-wrapper.btn-group {
+    display: none;
+}
+
+/* Not possible to add a field list within a field list.. */
+
+.fieldlist .right .btn-field_list {
+    display: none;
 }

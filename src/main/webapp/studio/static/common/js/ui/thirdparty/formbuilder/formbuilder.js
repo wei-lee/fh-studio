@@ -643,17 +643,8 @@
 
 (function() {
   Formbuilder.registerField('file', {
-    view: "<input type='file' />",
-    edit: "",
-    addButton: "<span class=\"symbol\"><span class=\"icon-cloud-upload\"></span></span> File"
-  });
-
-}).call(this);
-
-(function() {
-  Formbuilder.registerField('file', {
-    view: "<input type='file' />",
-    edit: "",
+    view: "<div class=\"file_container\" data-name=\"<%= rf.get(Formbuilder.options.mappings.LABEL) %>\"></div>\n<input type='file' />",
+    edit: "<div class='fb-edit-section-header'>Field Name</div>\n<input type='text' data-rv-input='model.<%= Formbuilder.options.mappings.LABEL %>' />",
     addButton: "<span class=\"symbol\"><span class=\"icon-cloud-upload\"></span></span> File"
   });
 
@@ -858,7 +849,7 @@ function print() { __p += __j.call(arguments, '') }
 with (obj) {
 
  if (editStructure) { ;
-__p += '\n  <div class=\'fb-edit-section-header\'>Label</div>\n  <input type=\'text\' data-rv-input=\'model.' +
+__p += '\n  <div class=\'fb-edit-section-header\'>Name</div>\n  <input type=\'text\' data-rv-input=\'model.' +
 ((__t = ( Formbuilder.options.mappings.LABEL )) == null ? '' : __t) +
 '\' />\n';
  } ;
@@ -982,7 +973,9 @@ __p += '<div class=\'fb-tab-pane active\' id=\'addField\'>\n  <div class=\'fb-ad
  for (i in Formbuilder.inputFields) { ;
 __p += '\n        <a data-field-type="' +
 ((__t = ( i )) == null ? '' : __t) +
-'" class="btn btn-primary">\n          ' +
+'" class="btn btn-primary btn-' +
+((__t = ( i )) == null ? '' : __t) +
+'">\n          ' +
 ((__t = ( Formbuilder.inputFields[i].addButton )) == null ? '' : __t) +
 '\n        </a>\n      ';
  } ;
@@ -990,7 +983,9 @@ __p += '\n    </div>\n\n    <div class=\'section\'>\n      ';
  for (i in Formbuilder.nonInputFields) { ;
 __p += '\n        <a data-field-type="' +
 ((__t = ( i )) == null ? '' : __t) +
-'" class="btn btn-primary">\n          ' +
+'" class="btn btn-primary btn-' +
+((__t = ( i )) == null ? '' : __t) +
+'">\n          ' +
 ((__t = ( Formbuilder.nonInputFields[i].addButton )) == null ? '' : __t) +
 '\n        </a>\n      ';
  } ;

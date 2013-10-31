@@ -154,16 +154,17 @@ App.Collection.CMS = Backbone.Collection.extend({
         field = _.findWhere(fields, { name :f.name });
         f._id = field._id;
       }
-      //TODO Now we're sure the file has an ID, async a task to upload it to the serverside
+
       var temp_form =  $('<form method="POST" enctype="multipart/form-data"></form>'),
       fileFieldEl = options.fileFields[f.name];
       temp_form.append(fileFieldEl);
       $('body').append(temp_form);
-      (function(self, f, temp_form){
+      (function(self, f, fileFieldEl, temp_form){
         uploaders.push(function(cb){
           var request_opts = {
+            fileInput : $(fileFieldEl),
             url: self.urls.upload.replace("{_id}", f._id),
-            data: {
+            formData: {
               fileName :f.name
             },
             "headers":{
@@ -182,9 +183,19 @@ App.Collection.CMS = Backbone.Collection.extend({
               return cb("Error uploading files: " + err.error);
             }
           };
-          temp_form.ajaxSubmit(request_opts);
+          $(temp_form).fileupload();
+          $(temp_form).fileupload('send', request_opts).success(function (res, textStatus, jqXHR) {
+            temp_form.remove();
+            return cb(null, res);
+          }).error(function (jqXHR, textStatus, errorThrown) {
+            temp_form.remove();
+            console.log("Error uploading files:");
+            console.log(textStatus);
+            return cb("Error uploading files");
+          });
+
         });
-      })(self, f, temp_form);
+      })(self, f, fileFieldEl, temp_form);
 
     }
     return async.series(uploaders, function(err, res){

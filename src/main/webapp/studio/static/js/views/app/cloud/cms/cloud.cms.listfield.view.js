@@ -30,18 +30,25 @@ App.View.CMSListField = App.View.CMSSection.extend({
     this.constructor.__super__.render.apply(this, arguments);
     // Empty all text fields
     this.$el.find('.fb-response-fields input, .fb-response-fields textarea').val('');
-
+    this.$el.addClass('fieldlist');
     // remove unused tabs
     if (this.options.mode === "data"){
+      this.$el.removeClass('structure').addClass('data');
       this.$el.find('.fb-tabs li.addfield').hide();
+      this.$el.find('#addField').hide();
+
       this.$el.find('.fb-tabs li.configurefield').hide();
       // Make our only left tab the active one
       this.$el.find('.apppreview').addClass('active');
       this.$el.find('#cmsAppPreview').addClass('active');
       //TODO - Disable the 'label' input - CSS maybe?
     }else if (this.options.mode === "structure" && this.options.isAdministrator){
+      this.$el.removeClass('data').addClass('structure');
       this.$el.find('.fb-tabs li.addfield').show();
+      this.$el.find('#addField').show();
       this.$el.find('.fb-tabs li.configurefield').show();
+      // Disable input in the form fields - we don't want to change values
+      this.$el.find('.fb-response-fields .fb-field-wrapper input, .fb-response-fields .fb-field-wrapper textarea').attr('disabled', true)
     }else{
       this.$el.find('middle').empty().append('<h3>You do not have permissions to perform this operation</h3>');
       return this;
@@ -87,7 +94,7 @@ App.View.CMSListField = App.View.CMSSection.extend({
     var self = this;
     console.log("add new row ",this.fieldList.fields);
     //add an empty row
-    if(this.fieldList.fields){
+    if(this.fieldList.fields && this.fieldList.fields.length >0){
       var blank = {};
       for(var i=0; i < this.fieldList.fields.length; i++){
         var f = this.fieldList.fields[i];
@@ -107,7 +114,10 @@ App.View.CMSListField = App.View.CMSSection.extend({
 
       // Set fields disabled to false now we've added a row
       this.$el.find('.fb-response-fields input, .fb-response-fields textarea').attr('disabled', false);
+    }else{
+      this.modal('No structure has been defined for this list. First edit the structure to define some fields', 'No Structure Defined');
     }
+
   },
 
   onDuplicateRow : function (){
