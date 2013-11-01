@@ -20,6 +20,22 @@
 <img src="<%=studio.getStaticAssetPath("themes/default/img/throbber.gif")%>" alt="loading"/> <span class="spinner_text">{{text}}</span>
 </script>
 
+<script id="modal-template" type="text/x-handlebars-template">
+  <div id="{{id}}" class="modal hide fade" tabindex="-1" role="dialog">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal">&times;</button>
+      <h3>{{ title }}</h3>
+    </div>
+    <div class="modal-body">
+
+    </div>
+    <div class="modal-footer">
+      <button id="modal-cancel" class="btn" data-dismiss="modal">{{cancelText }}</button>
+      <button id="modal-ok" class="btn btn-primary" data-dismiss="{{dismiss}}">{{ okText }}</button>
+    </div>
+  </div>
+</script>
+
 <script id="project-app-analytics-date-picker-template" type="text/x-handlebars-template">
 <form class="form-horizontal pull-right">
   <fieldset>
@@ -256,4 +272,39 @@
             <input type="text" class="search-query span10">
         </div>
     </form>
+</script>
+
+<script id="emptyFullpageContainer" type="text/x-handlebars-template">
+  <div class="databrowser emptyContainer">
+    <div class="centered">
+      {{{ content }}}
+    </div>
+  </div>
+</script>
+<script id="fullpageEmptyContent" type="text/x-handlebars-template">
+  {{{ message }}}<br />
+  <button type="button" class="btn btn-primary btn-large btn-add-row btn-messageView">{{{ button }}}</button>
+</script>
+
+<script id="fullpageLoading" type="text/x-handlebars-template">
+  <div class="busyContainer">
+    <div class="busyAnimationFloatingCircles">
+      <div class="f_circleG" id="frotateG_01">
+      </div>
+      <div class="f_circleG" id="frotateG_02">
+      </div>
+      <div class="f_circleG" id="frotateG_03">
+      </div>
+      <div class="f_circleG" id="frotateG_04">
+      </div>
+      <div class="f_circleG" id="frotateG_05">
+      </div>
+      <div class="f_circleG" id="frotateG_06">
+      </div>
+      <div class="f_circleG" id="frotateG_07">
+      </div>
+      <div class="f_circleG" id="frotateG_08">
+      </div>
+    </div>
+  </div>
 </script>

@@ -94,6 +94,22 @@
           Dashboard
         </a>
       </li>
+      <% if(studio.getProps().optBoolean("databrowser.enabled")){ %>
+      <li class="template-restriction nodejs_mode">
+        <a href="#" data-controller="apps.cloud.databrowser.controller">
+          <i class="icon-hdd"></i>
+          Data Browser
+        </a>
+      </li>
+      <% } %>
+      <% if(studio.getProps().optBoolean("cms.enabled")){ %>
+      <li class="template-restriction nodejs_mode">
+        <a href="#" data-controller="apps.cloud.cms.controller">
+          <i class="icon-align-justify"></i>
+          CMS
+        </a>
+      </li>
+      <% } %>
       <li class="template-restriction nodejs_mode">
         <a href="#" data-controller="apps.environment.controller">
           <i class="icon-cogs"></i>
@@ -209,7 +225,15 @@
         <%@ include file="../reporting/reports_container.html" %>
        <%}%>
 
+      <% if(studio.getProps().optBoolean("databrowser.enabled")){ %>
+        <%@ include file="./data_browser.html"%>
+      <% } %>
+
        <%@ include file="./dashboard.html"%>
+
+      <% if(studio.getProps().optBoolean("cms.enabled")){ %>
+        <%@ include file="./cms.html"%>
+      <% } %>
 
        <%@ include file="./debug_logging.html"%>
 

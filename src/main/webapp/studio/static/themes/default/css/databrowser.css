@@ -1,0 +1,584 @@
+#databrowser_container .navbar {
+    margin-bottom: 0px;
+}
+
+#databrowser_container .navbar  a.brand{
+    cursor: default;
+}
+
+#databrowser_container .pagerContainer {
+    display : inline-block;
+    width: 100%;
+}
+
+#databrowser_container .pagination {
+    margin: 0px;
+}
+
+#databrowser_container #rowsPerPageDiv {
+    margin: 5px 25px 0 0;
+}
+
+.modal-open #databrowser_container .dropdown-menu {
+    z-index : 900;
+}
+
+
+.databrowser.emptyContainer{
+    border: 1px solid #ddd;
+    text-align: center;
+    display: table;
+    width: 100%;
+}
+.databrowser.emptyContainer .centered .btn {
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+
+.databrowser.emptyContainer .centered, .databrowser.emptyContainer h2 {
+    display: table-cell;
+    vertical-align: middle;
+    font-weight: 100;
+    color: #666;
+    font-size: 1.3em;
+}
+.databrowser.emptyContainer h2 {
+    display : block;
+    font-size: 22px;
+}
+.databrowser.emptyContainer .centered ol {
+    margin: auto;
+    width: 380px;
+}
+
+.databrowser.emptyContainer .centered ol, .databrowser.emptyContainer .centered ol li {
+    list-style: decimal;
+}
+
+#databrowser_container .databrowserTableContainer, .databrowser.emptyContainer {
+    /*max-height: 500px;
+    min-height: 400px;*/
+    height: 100%; /* Other approach gives nasty double scrollbars - lets just use the entire page */
+    position: relative;
+}
+.databrowser.emptyContainer {
+    min-height: 400px;
+}
+
+#databrowser_container .databrowserTableContainer {
+    padding-right: 30px; /* Means scroll bars on OSX aren't hovering over the button */
+    border: 1px solid #ccc;
+}
+
+/*  Make our edit table float to the right OK */
+.databrowserTableContainer table {
+    display: inline-block
+}
+
+/*
+ makes sure when showing it's busy status, it's got just the right height
+ */
+#databrowser_container .fh-box-inner > div {
+    height: 100%;
+    width: 100%;
+    min-height: 400px;
+    position: relative;
+}
+
+#databrowser_container .busy .busyContainer, #cms_container .busy .busyContainer {
+    display: block;
+    opacity: 0.8;
+    height: 100%;
+}
+
+#databrowser_container .busyContainer, #cms_container .busyContainer {
+    position: absolute;
+    display: block;
+    /* Also transition height to 0 afterwards so it's not visible, but doesn't get in the way of the databrowser */
+    transition: opacity 0.5s ease-out, height 0s ease-out;
+    -webkit-transition: opacity 0.5s ease-out, height 0s ease-out;
+    -moz-transition: opacity 0.5s ease-out, height 0s ease-out;
+    -webkit-transition-delay: 0s, 0.5s;
+    transition-delay: 02, 0.5s;
+    height: 0;
+    opacity: 0;
+    overflow: hidden;
+    border-radius: 6px;
+    width: 100%;
+    background: #000;
+    z-index: 10000;
+}
+
+.databrowserTableContainer table.edittable {
+    width: 4%;
+    border-color: #fff; /* Include in the flow, just make it white & invisible */
+}
+
+.databrowserTableContainer table.edittable th  {
+    height: 20px;
+    border: 0px;
+}
+.databrowserTableContainer table.edittable .td-edit {
+    height: 25px;
+    border-color: #fff; /* Include in the flow, just make it white & invisible */
+    padding-left: 10px;
+}
+
+.table.databrowser {
+    overflow-y : scroll;
+    overflow-x : scroll;
+    width: 95%;
+    float: left;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -ms-user-select: none;
+}
+
+
+
+.table.databrowser.table-bordered, .table.databrowser.table-bordered th {
+    border-top-right-radius: 0px;
+    border-top-left-radius: 0px;
+    border-top: 0px;
+}
+.table.databrowser.table-bordered tr td:first-child, .table.databrowser.table-bordered tr th:first-child {
+    border-left: 0px;
+}
+.table.databrowser.table-bordered tr th:last-child {
+    border-right: 0px;
+}
+
+.databrowsernav.navbar .navbar-inner {
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-bottom: 0px;
+    box-shadow : none;
+    -webkit-box-shadow: none;
+    height: 100%; /* ensures border reaches top tip of table */
+}
+
+.navbar.databrowsernav {
+    margin-bottom: 0px;
+}
+
+.navbar.databrowsernav .dropdown-menu.collections-dropdown {
+    width: 188px;
+}
+
+.navbar.databrowsernav .dropdown-menu.collections-dropdown a {
+    padding-right: 2px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.navbar.databrowsernav .dropdown-menu.collections-dropdown span.badge {
+    width: 52px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.navbar.databrowsernav .btn-trash-rows{
+    margin-left: 10px;
+}
+
+.navbar.databrowsernav .filters {
+    margin: 4px 0px;
+}
+.navbar.databrowsernav .filters form.form-inline {
+    margin: 0px;
+}
+
+.navbar.databrowsernav .filters form.form-inline label {
+    margin-right: 4px;
+}
+
+.navbar.databrowsernav .filters form.form-inline input, .navbar.databrowsernav .filters form.form-inline .btn-group, .navbar.databrowsernav .filters form.form-inline button, .filters form.form-inline .btn {
+    border-radius: 0px;
+    margin: 0px;
+}
+.navbar.databrowsernav .filters form.form-inline button {
+    height: 30px;
+}
+.navbar.databrowsernav .filters form.form-inline input:nth-child(2) {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+.navbar.databrowsernav .filters form.form-inline button {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.navbar.databrowsernav .filters .filterList .badge {
+    color: #fff;
+    background-color: #006dcc;
+    padding: 4px 14px;
+    font-size: 12px;
+    cursor: pointer;
+    height: 17px;
+    display: inline-block;
+    margin: 5px 10px 0px 0px;
+}
+
+.navbar.databrowsernav .filters textarea {
+    height: 1em;
+    float: right;
+    display: inline-block;
+}
+
+.navbar.databrowsernav .filters .filterList .badge .closebadge {
+    font-size: 20px;
+}
+
+
+.navbar.databrowsernav .filters form a.btn.dropdown-toggle {
+    font-size: 16px;
+    font-weight: lighter;
+}
+
+
+.databrowser th.th-edit {
+    display: none;
+}
+
+.databrowser th {
+    cursor: pointer;
+}
+
+.databrowser th .sorter {
+    float: right;
+}
+
+.databrowser th.asc .sorter:before {
+  content: '\25B2'; /* arrow */
+}
+
+.databrowser th.desc .sorter:before {
+    content: '\25BC'; /* arrow */
+}
+
+.btn-group.btn-savecancel {
+    margin-top: 5px;
+}
+
+.databrowser td {
+    border-left: 1px solid #dddddd;
+    overflow: hidden;
+    white-space: nowrap;
+
+}
+
+.databrowser td.td-checkbox {
+  padding: 0 6px;
+}
+
+.databrowser td.field {
+    min-width: 150px;
+    height: 25px;
+    line-height: 25px;
+    margin: 0;
+}
+
+.databrowser td.field:last-child {
+    width: 100%; /* Makes the last field stretch across to the edit buttons on narrow tables */
+}
+
+.databrowser tr.trow {
+    cursor : default;
+}
+
+.databrowser .trow.editing td {
+    padding: 0px;
+    margin: 0px;
+    border: 1px solid #999;
+}
+.databrowser .trow.editing input, .databrowser .trow.editing select, .databrowser .trow input{
+    border: 0px;
+    margin: 0px;
+    padding: 0px;
+    display: inline;
+    width: auto;
+    /* 0 the padding. original fields have 4px top, 4px bottom padding and 25px height. => 25px + 8 = 33 */
+    height: 33px;
+    background: transparent;
+}
+.databrowser tr td.td-edit {
+    overflow: visible;
+    position: absolute;
+    right: 0px;
+    border: 0px;
+    padding-left: 6px;
+    background: white;
+}
+
+.databrowser tr.dirty {
+    background-color: #fcf8e3;
+}
+
+#databrowser_container .td-edit .dropdown-menu {
+    right: 20px;
+    left: auto;
+}
+
+.collectionsnavbar .navbar-inner {
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
+ul.collectionsUl {
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    padding: 0px 18px;
+    margin: 0px;
+    border-bottom: 1px solid #ccc;
+}
+
+ul.collectionsUl li {
+    border-bottom: 1px solid #ccc;
+    cursor: pointer;
+    padding: 7px 2px 2px 2px;
+}
+
+ul.collectionsUl li:last-child {
+    border-bottom: 0px;
+}
+
+ul.collectionsUl li h3 {
+    margin: 0px;
+    line-height: 15px;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+ul.collectionsUl li .collectionMeta {
+    float: left;
+    margin: 0px 20px 0px 0px;
+    width: 120px;
+}
+ul.collectionsUl li .raquo {
+    float: right;
+    content:'\00BB';
+    font-size: 26px;
+    color: #666;
+}
+#databrowser_container .advancededitorBar .btn-advancedEditorSwitch {
+    display : inline-block;
+}
+
+#databrowser_container .advancededitorBar button {
+    margin-left: 4px;
+}
+
+/*
+    JSONEditor specific styling
+*/
+#databrowser_container .jsoneditor, #databrowser_container .jsoneditor .frame,
+#databrowser_container .jsoneditor .menu, #databrowser_container .jsoneditor .menu button {
+    border-color: #d4d4d4;
+}
+#databrowser_container .jsoneditor .menu button {
+    background-color : #ededed;
+}
+#databrowser_container .jsoneditor .menu button:disabled {
+    background-color: #efefef;
+}
+#databrowser_container .jsoneditor {
+
+    min-height: 400px;
+}
+
+#databrowser_container .jsoneditor .menu {
+    background-color: #f2f2f2;
+}
+
+#databrowser_container .jsoneditor textarea {
+    min-height: 363px;
+}
+
+.data_migrate_progress {
+  margin-top: 25px;
+}
+
+#databrowser_container ol.packageJsonInstructions {
+    width: 100%;
+    text-align: left;
+    padding: 10px 40px;
+}
+
+
+.busyAnimationFloatingCircles {
+    margin: 5% 30%;
+}
+
+/*
+    CSS3 loading spinner
+    courtesy of http://cssload.net/
+ */
+.busyAnimationFloatingCircles{
+    position:relative;
+    width:256px;
+    height:256px;
+    -moz-transform:scale(0.6);
+    -webkit-transform:scale(0.6);
+    -ms-transform:scale(0.6);
+    -o-transform:scale(0.6);
+    transform:scale(0.6);
+}
+
+.f_circleG{
+    position:absolute;
+    background-color:#FFFFFF;
+    height:47px;
+    width:47px;
+    -moz-border-radius:23px;
+    -moz-animation-name:f_fadeG;
+    -moz-animation-duration:1.04s;
+    -moz-animation-iteration-count:infinite;
+    -moz-animation-direction:linear;
+    -webkit-border-radius:23px;
+    -webkit-animation-name:f_fadeG;
+    -webkit-animation-duration:1.04s;
+    -webkit-animation-iteration-count:infinite;
+    -webkit-animation-direction:linear;
+    -ms-border-radius:23px;
+    -ms-animation-name:f_fadeG;
+    -ms-animation-duration:1.04s;
+    -ms-animation-iteration-count:infinite;
+    -ms-animation-direction:linear;
+    -o-border-radius:23px;
+    -o-animation-name:f_fadeG;
+    -o-animation-duration:1.04s;
+    -o-animation-iteration-count:infinite;
+    -o-animation-direction:linear;
+    border-radius:23px;
+    animation-name:f_fadeG;
+    animation-duration:1.04s;
+    animation-iteration-count:infinite;
+    animation-direction:linear;
+}
+
+#frotateG_01{
+    left:0;
+    top:105px;
+    -moz-animation-delay:0.39s;
+    -webkit-animation-delay:0.39s;
+    -ms-animation-delay:0.39s;
+    -o-animation-delay:0.39s;
+    animation-delay:0.39s;
+}
+
+#frotateG_02{
+    left:30px;
+    top:30px;
+    -moz-animation-delay:0.52s;
+    -webkit-animation-delay:0.52s;
+    -ms-animation-delay:0.52s;
+    -o-animation-delay:0.52s;
+    animation-delay:0.52s;
+}
+
+#frotateG_03{
+    left:105px;
+    top:0;
+    -moz-animation-delay:0.65s;
+    -webkit-animation-delay:0.65s;
+    -ms-animation-delay:0.65s;
+    -o-animation-delay:0.65s;
+    animation-delay:0.65s;
+}
+
+#frotateG_04{
+    right:30px;
+    top:30px;
+    -moz-animation-delay:0.78s;
+    -webkit-animation-delay:0.78s;
+    -ms-animation-delay:0.78s;
+    -o-animation-delay:0.78s;
+    animation-delay:0.78s;
+}
+
+#frotateG_05{
+    right:0;
+    top:105px;
+    -moz-animation-delay:0.91s;
+    -webkit-animation-delay:0.91s;
+    -ms-animation-delay:0.91s;
+    -o-animation-delay:0.91s;
+    animation-delay:0.91s;
+}
+
+#frotateG_06{
+    right:30px;
+    bottom:30px;
+    -moz-animation-delay:1.04s;
+    -webkit-animation-delay:1.04s;
+    -ms-animation-delay:1.04s;
+    -o-animation-delay:1.04s;
+    animation-delay:1.04s;
+}
+
+#frotateG_07{
+    left:105px;
+    bottom:0;
+    -moz-animation-delay:1.17s;
+    -webkit-animation-delay:1.17s;
+    -ms-animation-delay:1.17s;
+    -o-animation-delay:1.17s;
+    animation-delay:1.17s;
+}
+
+#frotateG_08{
+    left:30px;
+    bottom:30px;
+    -moz-animation-delay:1.3s;
+    -webkit-animation-delay:1.3s;
+    -ms-animation-delay:1.3s;
+    -o-animation-delay:1.3s;
+    animation-delay:1.3s;
+}
+
+@-moz-keyframes f_fadeG{
+    0%{
+        background-color:#6E6E6E}
+
+    100%{
+        background-color:#FFFFFF}
+
+}
+
+@-webkit-keyframes f_fadeG{
+    0%{
+        background-color:#6E6E6E}
+
+    100%{
+        background-color:#FFFFFF}
+
+}
+
+@-ms-keyframes f_fadeG{
+0%{
+background-color:#6E6E6E}
+
+100%{
+background-color:#FFFFFF}
+
+}
+
+@-o-keyframes f_fadeG{
+    0%{
+        background-color:#6E6E6E}
+
+    100%{
+        background-color:#FFFFFF}
+
+}
+
+@keyframes f_fadeG{
+    0%{
+        background-color:#6E6E6E}
+
+    100%{
+        background-color:#FFFFFF}
+
+}
+

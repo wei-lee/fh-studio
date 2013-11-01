@@ -9,6 +9,7 @@ Apps.Cloud.Controller = Apps.Controller.extend({
 
 
   init: function() {
+
     this._super();
     this.initCloudFn = _.once(this.initCloudBindings);
   },

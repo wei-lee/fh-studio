@@ -6,7 +6,7 @@
   margin-bottom: 10px;
 }
 
-.container-header-content, .breadcrumb {
+.container-header-content, .crumb_container .breadcrumb {
   background: #28903a !important;
 }
 
