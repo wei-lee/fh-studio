@@ -185,9 +185,9 @@ App.Collection.CMS = Backbone.Collection.extend({
           request_opts;
 
           if (f.hasOwnProperty('listfields')){
-            debugger;
-            data.listfields = f.listfields;
             data.name = f.name;
+            data.listFieldsIndex = f.listfields.index;
+            data.listFieldsName = f.name;
           }
 
           request_opts = {
