@@ -34,8 +34,14 @@
   </script>
   <a onclick="signOut();">Sign Out</a>
 <% } else { %>
-  <a href="/?a=<%=studio.IDE_LOGIN%>" class="<%=pageName.equals(studio.IDE_LOGIN) ? "active" : ""%>">Login/Register</a>
+  <a href="/?a=<%=studio.IDE_LOGIN%>" class="<%=pageName.equals(studio.IDE_LOGIN) ? "active" : ""%>">
+  <% if ("true".equals(studio.getProperty(studio.PROP_FREEREGISTRATION))) { %>
+    Login/Register
+  <% } else { %>
+    Login
+  </a>
+  <% } %>
 <% } %>
-  
+
 
 </div>

@@ -211,9 +211,11 @@ try {
       <a href="<%=btnTarget%>" class="btn large bfob studio_button">App Studio</a>
     </div>
   <% } else { %>
-    <div class="hero-unit" id="tryit">
-      <a href="/?a=login" class="btn large bfob">Sign Up Now</a>
-    </div>
+      <% if("true".equals(studio.getProperty(studio.PROP_FREEREGISTRATION))) { %>
+      <div class="hero-unit" id="tryit">
+        <a href="/?a=login" class="btn large bfob">Sign Up Now</a>
+      </div>
+      <% } %>
   <% } %>
 
       <!-- Example row of columns -->

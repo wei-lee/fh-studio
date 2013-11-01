@@ -110,7 +110,7 @@ App.View.CMSTree = App.View.CMS.extend({
       var node = {
         data: {
           attr : {
-            class : 'jstree-' + status
+            "class" : 'jstree-' + status
           },
           title : section.name
         },
