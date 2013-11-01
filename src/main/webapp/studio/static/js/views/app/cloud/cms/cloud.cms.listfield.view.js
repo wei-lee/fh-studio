@@ -328,25 +328,22 @@ App.View.CMSListField = App.View.CMSSection.extend({
         // Create a field object ready to extend/merge into our previousRow
         // Files are a special case - becomes an object with needsUpload
         if (massaged.type && massaged.type === "file" ){
-          var needsUpload = (field.changedAttributes().value) ? true : false;
-          fObj[massaged.name] = {
-            type : 'file',
-            fieldEl : self.$el.find('input[type=file][data-_id="' + massaged._id + '"]'),
-            listfields : {
-              index : self.editing
-            },
-            needsUpload : needsUpload,
-            name : massaged.name
-          };
+          var needsUpload = (field.changedAttributes().value) ? true : false,
+          previousFileField = (typeof previousRow[massaged.name] === 'object') ? previousRow[massaged.name] : {};
+          debugger;
+
+          previousFileField.type = 'file';
+          previousFileField.needsUpload = needsUpload;
+          previousFileField.fieldEl = self.$el.find('input[type=file][data-_id="' + massaged._id + '"]');
+          previousFileField.listFieldsIndex = self.editing;
+          previousFileField.listFieldsName = massaged.name;
+
+          fObj[massaged.name] = previousFileField;
         }else{
           fObj[massaged.name] = massaged.value;
         }
 
         _.extend(previousRow, fObj);
-
-        if (previousRow.type && previousRow.type === "file"){
-
-        }
 
         self.fieldList.data[index] = previousRow;
 

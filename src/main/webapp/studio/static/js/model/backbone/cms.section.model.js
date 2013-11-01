@@ -201,9 +201,9 @@ App.Collection.CMS = Backbone.Collection.extend({
           },
           request_opts;
 
-          if (f.hasOwnProperty('listfields')){
-            data.listFieldsIndex = f.listfields.index;
-            data.listFieldsName = f.name;
+          if (f.hasOwnProperty('listFieldsIndex')){
+            data.listFieldsIndex = f.listFieldsIndex;
+            data.listFieldsName = f.listFieldsName;
           }
 
           request_opts = {
@@ -297,7 +297,10 @@ App.Collection.CMS = Backbone.Collection.extend({
             if (row.hasOwnProperty(key)){
               var d = row[key];
               if (typeof d === 'object'){
-                row[key] = d.name;
+                delete d.fieldEl;
+                delete d.needsUpload;
+                delete d.listFieldsIndex;
+                delete d.listFieldsName;
               }
             }
           }
