@@ -8,7 +8,8 @@ App.View.CMSSection = App.View.CMS.extend({
     'click .btn-cancel-changes' : 'onCancelChanges',
     'click .btn-listfield-structure' : 'onListFieldEditStructure',
     'click .btn-listfield-data' : 'onListFieldEditData',
-    'click .btn-edit-section' : 'onEditSectionToggle'
+    'click .btn-edit-section' : 'onEditSectionToggle',
+    'change input[type="file"]' : 'onFileBrowsed'
   },
   templates : {
     'cms_configureSection' : '#cms_configureSection',
@@ -93,6 +94,7 @@ App.View.CMSSection = App.View.CMS.extend({
     this.$el.find('#cmsAppPreview').append($('#app_preview').clone(true).show().width('100%'));
 
     this.renderListFieldTables();
+    this.renderFilePreviews();
 
     // Add in some instructions ontop of the form
     if (this.view === 'section'){
@@ -132,6 +134,25 @@ App.View.CMSSection = App.View.CMS.extend({
     $(configureSection).insertBefore(this.$el.find('.middle .breadcrumb'));
     this.$el.find('.middle').prepend();
   },
+  renderFilePreviews : function(){
+    var self = this;
+    $(this.$el.find('.response-field-file')).each(function(){
+      //self
+
+      var container = $(this).find('.file_container'),
+      name = $(container).data('name'),
+      file = _.findWhere(self.section.fields, { name : name }),
+      image;
+
+      if (!file){
+        return console.log('No file found with name: ' + name);
+      }
+      var img = $('<img class="img-rounded">');
+      img.attr('src', self.collection.url + file.binaryUrl);
+      $(container).html(img);
+
+    });
+  },
   renderListFieldTables : function(){
     var self = this;
     $(this.$el.find('.response-field-field_list')).each(function(){
@@ -141,7 +162,7 @@ App.View.CMSSection = App.View.CMS.extend({
       table;
 
       if (!listField){
-        return this.modal('No list field found with name: ' + name);
+        return console.log('No list field found with name: ' + name);
       }
       if(listField.fields.length > 0){
         table = new App.View.CMSTable({ fields : listField.fields, data : listField.data });
@@ -193,6 +214,14 @@ App.View.CMSSection = App.View.CMS.extend({
       previous = _.findWhere(previousFields, { _id : id}),
       indexOfPrevious = previousFields.indexOf(previous);
 
+      // Set a flag when we change the actual file element of a file field
+      if (massaged.type === 'file'){
+        if (field.changedAttributes().value){
+          massaged.needsUpload = true;
+          massaged.fieldEl = self.$el.find('input[type=file][data-_id="' + massaged._id + '"]');
+        }
+      }
+
       // Set the previous fields array at the index where we found the one
       // with matching _id to be our updated massaged field
       previousFields[indexOfPrevious] = massaged;
@@ -205,6 +234,9 @@ App.View.CMSSection = App.View.CMS.extend({
     });
     // On creating a field, we should also mark the section unsaved changes
     this.fb.mainView.collection.bind('add', function(field, collection){
+      if (!field.has('_id')){
+        field.set('_id', field.cid);
+      }
       App.dispatch.trigger(CMS_TOPICS.SECTION_DIRTIED,field.toJSON());
       self.trigger('dirtied');
       var massaged = self.massageFieldFromFormBuilder(field),
@@ -281,19 +313,15 @@ App.View.CMSSection = App.View.CMS.extend({
     e.preventDefault();
     window.scrollTo(0,0);
     var self = this,
-    vals = {},
-    fileFields = {};
+    vals = {};
 
     $(this.$el.find('#configureSectionForm').serializeArray()).each(function(idx, el){
-      vals[el.name] = el.value;
+      var curVal = el.value;
+      if (curVal && curVal!== ""){
+        vals[el.name] = el.value;
+      }
     });
 
-    // We need to get references to every file field so we can get their file contents
-    this.$el.find('input[type=file]').each(function(){
-      var label = $(this).parent().children('label').text().trim();
-      $(this).attr('name', label);
-      fileFields[label] = this;
-    });
 
     this.sectionModel.set('name', vals.name);
     this.sectionModel.set('status', 'draft');
@@ -308,8 +336,7 @@ App.View.CMSSection = App.View.CMS.extend({
       },
       error : function(err){
         self.trigger('message', err.toString(), 'danger');
-      },
-      fileFields : fileFields
+      }
     });
     return false;
   },
