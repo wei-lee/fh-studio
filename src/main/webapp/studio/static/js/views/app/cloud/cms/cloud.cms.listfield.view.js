@@ -12,7 +12,9 @@ App.View.CMSListField = App.View.CMSSection.extend({
     'click .btn-fieldlist-add' : 'onAddNewRow',
     'click .btn-fieldlist-delete' : 'onDeleteRow',
     'click .btn-fieldlist-duplicate' : 'onDuplicateRow',
-    'click .cms-change': 'triggerChange'
+    'click .cms-change': 'triggerChange',
+    'blur .fb-field-wrapper input' : 'renderDataTable',
+    'blur .fb-field-wrapper textarea' : 'renderDataTable'
   },
   "mode":"",
 
@@ -78,6 +80,10 @@ App.View.CMSListField = App.View.CMSSection.extend({
     return this;
   },
   renderDataTable : function(){
+    if (this.options.mode === "structure"){
+      return;
+    }
+
     // Remove any previous table
     this.$el.find('.listViewDataTable').remove();
     this.table = new App.View.CMSTable({ checkboxes : true, fields : this.fieldList.fields, data : this.fieldList.data, host : this.collection.url });
@@ -330,7 +336,6 @@ App.View.CMSListField = App.View.CMSSection.extend({
         if (massaged.type && massaged.type === "file" ){
           var needsUpload = (field.changedAttributes().value) ? true : false,
           previousFileField = (typeof previousRow[massaged.name] === 'object') ? previousRow[massaged.name] : {};
-          debugger;
 
           previousFileField.type = 'file';
           previousFileField.needsUpload = needsUpload;
@@ -347,8 +352,6 @@ App.View.CMSListField = App.View.CMSSection.extend({
 
         self.fieldList.data[index] = previousRow;
 
-        // Now that we've updated the data, render it in the table
-        self.renderDataTable();
       }else if (self.options.mode === "structure" ){
         // Set the previous fields array at the index where we found the one
         // with matching _id to be our updated massaged field
