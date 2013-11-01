@@ -165,7 +165,7 @@ App.View.CMSSection = App.View.CMS.extend({
         return console.log('No list field found with name: ' + name);
       }
       if(listField.fields.length > 0){
-        table = new App.View.CMSTable({ fields : listField.fields, data : listField.data });
+        table = new App.View.CMSTable({ fields : listField.fields, data : listField.data, host : self.collection.url });
         $(this).find('.fieldlist_table').html(table.render().$el);
       }
 

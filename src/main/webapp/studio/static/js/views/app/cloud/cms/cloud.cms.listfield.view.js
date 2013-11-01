@@ -12,7 +12,9 @@ App.View.CMSListField = App.View.CMSSection.extend({
     'click .btn-fieldlist-add' : 'onAddNewRow',
     'click .btn-fieldlist-delete' : 'onDeleteRow',
     'click .btn-fieldlist-duplicate' : 'onDuplicateRow',
-    'click .cms-change': 'triggerChange'
+    'click .cms-change': 'triggerChange',
+    'blur .fb-field-wrapper input' : 'renderDataTable',
+    'blur .fb-field-wrapper textarea' : 'renderDataTable'
   },
   "mode":"",
 
@@ -78,9 +80,13 @@ App.View.CMSListField = App.View.CMSSection.extend({
     return this;
   },
   renderDataTable : function(){
+    if (this.options.mode === "structure"){
+      return;
+    }
+
     // Remove any previous table
     this.$el.find('.listViewDataTable').remove();
-    this.table = new App.View.CMSTable({ checkboxes : true, fields : this.fieldList.fields, data : this.fieldList.data });
+    this.table = new App.View.CMSTable({ checkboxes : true, fields : this.fieldList.fields, data : this.fieldList.data, host : this.collection.url });
     this.table.$el.addClass('listViewDataTable');
     this.table.render().$el.insertAfter(this.afterEl);
     this.table.$el.find('table').removeClass('table-striped');
@@ -328,30 +334,24 @@ App.View.CMSListField = App.View.CMSSection.extend({
         // Create a field object ready to extend/merge into our previousRow
         // Files are a special case - becomes an object with needsUpload
         if (massaged.type && massaged.type === "file" ){
-          var needsUpload = (field.changedAttributes().value) ? true : false;
-          fObj[massaged.name] = {
-            type : 'file',
-            fieldEl : self.$el.find('input[type=file][data-_id="' + massaged._id + '"]'),
-            listfields : {
-              index : self.editing
-            },
-            needsUpload : needsUpload,
-            name : massaged.name
-          };
+          var needsUpload = (field.changedAttributes().value) ? true : false,
+          previousFileField = (typeof previousRow[massaged.name] === 'object') ? previousRow[massaged.name] : {};
+
+          previousFileField.type = 'file';
+          previousFileField.needsUpload = needsUpload;
+          previousFileField.fieldEl = self.$el.find('input[type=file][data-_id="' + massaged._id + '"]');
+          previousFileField.listFieldsIndex = self.editing;
+          previousFileField.listFieldsName = massaged.name;
+
+          fObj[massaged.name] = previousFileField;
         }else{
           fObj[massaged.name] = massaged.value;
         }
 
         _.extend(previousRow, fObj);
 
-        if (previousRow.type && previousRow.type === "file"){
-
-        }
-
         self.fieldList.data[index] = previousRow;
 
-        // Now that we've updated the data, render it in the table
-        self.renderDataTable();
       }else if (self.options.mode === "structure" ){
         // Set the previous fields array at the index where we found the one
         // with matching _id to be our updated massaged field

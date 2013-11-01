@@ -387,3 +387,8 @@
     max-width: 150px;
     padding: 40px;
 }
+
+.fieldlist_table table img {
+    max-height: 150px;
+    max-width: 200px;
+}
