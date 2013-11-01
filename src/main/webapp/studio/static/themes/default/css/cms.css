@@ -383,7 +383,7 @@
 }
 
 .fb-field-wrapper .subtemplate-wrapper img.img-rounded {
-    height: 150px;
-    width: auto;
+    max-height: 150px;
+    max-width: 150px;
     padding: 40px;
 }
