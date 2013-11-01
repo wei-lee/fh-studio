@@ -6,7 +6,8 @@ Apps.Configuration.Android = Apps.Configuration.Android || {};
 Apps.Configuration.Android.Controller = Apps.Configuration.Support.extend({
   destination: 'android',
 
-  init: function () {
+  init: function() {
+    this.hiddenOptions = {};
     this._super();
   }
 

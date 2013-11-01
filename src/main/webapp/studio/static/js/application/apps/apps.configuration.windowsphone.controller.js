@@ -6,9 +6,16 @@ Apps.Configuration.Windowsphone = Apps.Configuration.Windowsphone || {};
 Apps.Configuration.Windowsphone.Controller = Apps.Configuration.Support.extend({
   destination: 'windowsphone7',
 
-  init: function () {
+  init: function() {
+    this.hiddenOptions = {
+      'auto Rotate': true,
+      'flurry Application Key': true,
+      'orientation': true,
+      'status': true,
+      'version Name': true,
+      "splash Image": true
+    };
     this._super();
-    this.hiddenOptions = {'auto Rotate': true, 'flurry Application Key': true, 'orientation':true, 'status':true, 'version Name':true};
   }
 
 });

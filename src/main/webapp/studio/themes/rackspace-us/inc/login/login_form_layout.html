@@ -2,7 +2,11 @@
 
       <div class="row ">
           <div class="span7 hero-unit" id="hero-register">
+            <% if ("true".equals(studio.getProperty(studio.PROP_FREEREGISTRATION))) { %>
             <%@ include file="register_form.html"%>
+            <% } else { %>
+            <%@ include file="register_interest_form.html"%>
+            <% } %>
            </div><!-- /hero-unit -->
          </div> <!-- /span8 -->
 

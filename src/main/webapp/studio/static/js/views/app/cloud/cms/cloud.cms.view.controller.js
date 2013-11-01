@@ -83,6 +83,7 @@ App.View.CMSController  = Backbone.View.extend({
       self.collection.bind('reset', $.proxy(self.render, self));
       self.$el.removeClass('busy');
       return self.renderCMS();
+
     }, error : function(err){
       console.log('Error fetching CMS data: ' + err.toString());
       self.renderErrorView();
