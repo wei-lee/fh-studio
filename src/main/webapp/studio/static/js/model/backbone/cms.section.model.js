@@ -186,8 +186,8 @@ App.Collection.CMS = Backbone.Collection.extend({
 
           if (f.hasOwnProperty('listfields')){
             debugger;
-            data.listfields = f.listfields;
-            data.name = f.name;
+            data.listFieldsIndex = f.listfields.index;
+            data.listFieldsName = f.name;
           }
 
           request_opts = {
@@ -227,10 +227,10 @@ App.Collection.CMS = Backbone.Collection.extend({
     var lists = _.where(fields, {type : 'list'}),
     list = _.findWhere(lists, { name : f.listName });
 
-    field = _.findWhere(list.fields, { name : f.name });
+    //field = _.findWhere(list.fields, { name : f.name });
 
-    if (field){
-      return field._id;
+    if (list){
+      return list._id;
     }
 
     throw new Error("Could not find field id to upload");
