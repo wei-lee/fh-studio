@@ -80,7 +80,7 @@ App.View.CMSListField = App.View.CMSSection.extend({
   renderDataTable : function(){
     // Remove any previous table
     this.$el.find('.listViewDataTable').remove();
-    this.table = new App.View.CMSTable({ checkboxes : true, fields : this.fieldList.fields, data : this.fieldList.data });
+    this.table = new App.View.CMSTable({ checkboxes : true, fields : this.fieldList.fields, data : this.fieldList.data, host : this.collection.url });
     this.table.$el.addClass('listViewDataTable');
     this.table.render().$el.insertAfter(this.afterEl);
     this.table.$el.find('table').removeClass('table-striped');

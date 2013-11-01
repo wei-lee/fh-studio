@@ -293,9 +293,15 @@ App.Collection.CMS = Backbone.Collection.extend({
       }
       if (f.data){
         _.each(f.data, function(row){
-          self.trimInternalIds(row);
+          for (var key in row){
+            if (row.hasOwnProperty(key)){
+              var d = row[key];
+              if (typeof d === 'object'){
+                row[key] = d.name;
+              }
+            }
+          }
         });
-        f.data = self.trimInternalIds(f.data);
       }
     });
 
