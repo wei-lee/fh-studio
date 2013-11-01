@@ -89,7 +89,7 @@ App.Collection.CMS = Backbone.Collection.extend({
   draft : function(method, model, options){
     var self = this,
     url = this.urls.crupdateSection,
-    filesToUpload = _.where(model.fields, {type : 'file'});
+    filesToUpload = this.getFilesToUpload(model);
 
     console.log("MODEL SAVE ", model);
     delete model.__v;
@@ -136,6 +136,44 @@ App.Collection.CMS = Backbone.Collection.extend({
       }});
     }).error(options.error);
   },
+  getFilesToUpload : function(model){
+    // we need a copy as we want to retain some props that get stripped to go across the wire
+    var self = this,
+    filesToUpload = [],
+    files = [],
+    fieldLists;
+
+    if (model.type && model.type === "list"){
+      _.each(model.values, function(row){
+        _.each(row, function(rowValue){
+          if (typeof rowValue === 'object' && rowValue.type === 'file' && rowValue.needsUpload === true){
+            rowValue.listName = model.name;
+            files.push(_.clone(rowValue));
+            delete rowValue.fieldEl;
+          }
+        });
+      });
+    }else{
+      // We've been passed a full section - find the file fields
+      files = _.where(model.fields, {type : 'file'});
+
+    }
+
+    // Now find any field lists we might need to do magix with
+    fieldLists = _.where(model.fields, {type : 'list'});
+    _.each(fieldLists, function(list){
+      filesToUpload = filesToUpload.concat(self.getFilesToUpload(list));
+    });
+
+    _.each(files, function(f){
+      if (f.needsUpload){
+        filesToUpload.push(_.clone(f));
+        delete f.fieldEl;
+      }
+    });
+
+    return filesToUpload;
+  },
   uploadFiles : function(section, files, options, cb){
     var inst = this.inst = $fw.data.get('inst');
     this.userApiKey = $fw.data.get("userapikey");
@@ -149,24 +187,31 @@ App.Collection.CMS = Backbone.Collection.extend({
       if (!f._id){
         // If we've just created this field, it hasn't yet got an ID - retrieve it from
         // our freshly re-fetched section definitions after the PUT
-        var sectionId = section._id,
-        fields = self.findWhere({ _id : sectionId }).get('fields'),
-        field = _.findWhere(fields, { name :f.name });
-        f._id = field._id;
+        f._id = self.findNewlyCreatedField(section, f);
       }
 
       var temp_form =  $('<form method="POST" enctype="multipart/form-data"></form>'),
-      fileFieldEl = options.fileFields[f.name];
+      fileFieldEl = f.fieldEl[0];
       temp_form.append(fileFieldEl);
       $('body').append(temp_form);
       (function(self, f, fileFieldEl, temp_form){
         uploaders.push(function(cb){
-          var request_opts = {
+          var data = {
+            fileName :f.name
+          },
+          request_opts;
+
+          if (f.hasOwnProperty('listfields')){
+            debugger;
+            data.listfields = f.listfields;
+            data.name = f.name;
+          }
+
+          request_opts = {
             fileInput : $(fileFieldEl),
+            multipart : true,
             url: self.urls.upload.replace("{_id}", f._id),
-            formData: {
-              fileName :f.name
-            },
+            formData: data,
             "headers":{
               "x-fh-auth-app":self.appkey,
               "x-fh-auth-user":self.userApiKey
@@ -183,6 +228,7 @@ App.Collection.CMS = Backbone.Collection.extend({
               return cb("Error uploading files: " + err.error);
             }
           };
+
           $(temp_form).fileupload();
           $(temp_form).fileupload('send', request_opts).success(function (res, textStatus, jqXHR) {
             temp_form.remove();
@@ -202,23 +248,58 @@ App.Collection.CMS = Backbone.Collection.extend({
       return cb(err, res);
     });
   },
+  findNewlyCreatedField : function(section, f){
+    var sectionId = section._id,
+    fields = this.findWhere({ _id : sectionId }).get('fields'),
+    field = _.findWhere(fields, { name :f.name });
+    if (field){
+      return field._id;
+    }
+    var lists = _.where(fields, {type : 'list'}),
+    list = _.findWhere(lists, { name : f.listName });
+
+    field = _.findWhere(list.fields, { name : f.name });
+
+    if (field){
+      return field._id;
+    }
+
+    throw new Error("Could not find field id to upload");
+  },
   /*
     Internally we use backbone CIDs to represent state until it reaches the SS.
     Since these are new fields according to the SS, we don't want to dispatch these
     fake internal IDs - it'll only trigger an update..
    */
   trimInternalIds : function(fields){
-    for (var i=0; i<fields.length; i++){
-      var f = fields[i];
-      if (f._id.length < 24){
+    var self = this;
+
+    _.each(fields, function(f){
+      if (f._id && f._id.length < 24){
         // If it's some arbitrary internal ID we assigned, not a node ObjectID, delete it before pushing
         delete f._id;
       }
+      if (f.type && f.type==="file"){
+        delete f.binaryContentType;
+        delete f.binaryFileName;
+        delete f.binaryHash;
+        delete f.binaryContentType;
+        delete f.fieldEl;
+        delete f.value;
+        delete f.needsUpload;
+      }
       // Cater field lists by recursing - should only happen once..
       if (f.fields){
-        f.fields = this.trimInternalIds(f.fields);
+        f.fields = self.trimInternalIds(f.fields);
       }
-    }
+      if (f.data){
+        _.each(f.data, function(row){
+          self.trimInternalIds(row);
+        });
+        f.data = self.trimInternalIds(f.data);
+      }
+    });
+
     return fields;
   },
   read : function(method, model, options){
