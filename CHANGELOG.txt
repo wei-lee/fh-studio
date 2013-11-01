@@ -5,7 +5,7 @@ Component: fh-studio
 -------------------------------------------------------------------------------
 * 5024 - Update Android SDK to the latest version to fix NPE
 * 5049 - Update JS SDK to the latest version to fix $fh.init issue on WP7
-
+* Upate IBM theme deploy target image
 
 3.17.16 - 2013-10-16 - IR212 - Niall Donnelly
 -------------------------------------------------------------------------------
