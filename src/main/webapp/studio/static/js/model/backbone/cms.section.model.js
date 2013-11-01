@@ -203,7 +203,6 @@ App.Collection.CMS = Backbone.Collection.extend({
 
           if (f.hasOwnProperty('listfields')){
 
-
             data.listFieldsIndex = f.listfields.index;
             data.listFieldsName = f.name;
 
