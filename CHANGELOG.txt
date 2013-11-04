@@ -2,10 +2,10 @@
 Component: fh-studio
 -------------------------------------------------------------------------------
 
-3.17.19 - 2013-11-04 - IR213 - Jason Madigan
--------------------------------------------
-# note this was originally 3.17.17 //however there was an update and so this was bumped up
-* 4537-databrowser
+3.17.19 - 2013-11-04 - IR213 - Jason Madigan / Craig Brookes
+------------------------------------------------------------
+* 5061 - Add vmware cloud deploy img
+* 5063 - Add Samsung Theme
 
 3.17.18 - 2013-09-11 - IR209 - Cian Clarke
 -------------------------------------------
