@@ -385,6 +385,7 @@
 .fb-field-wrapper .subtemplate-wrapper img.img-rounded {
     max-height: 150px;
     max-width: 150px;
+    width: auto;
     padding: 40px;
 }
 

@@ -329,7 +329,7 @@ Apps.Preview.Controller = Controller.extend({
         container.css('-webkit-transform-style', 'preserve-3d');
       }
       
-      $('#preview_wrapper, #preview_frame').unbind('scroll').bind('scroll', function () {
+      $('#preview_wrapper,#preview_frame').unbind('scroll').bind('scroll', function () {
         var el = $(this);
         console.log('PREVIEW SCROLLFIX:' + el.attr('id'));
         // jquery mobile causes preview to jump down and to the right when certain actions happen in the app
@@ -395,7 +395,7 @@ Apps.Preview.Controller = Controller.extend({
     // Clone the preview elements into the new tab/window
     var c_wrapper = $(this.options.container + ' #preview_wrapper').clone().find('#preview_frame').show().end().find('.preview_fix').show().end().find('iframe').show().css('background-color', '#FFF').end().find('#preview_text').hide().end();
     c_wrapper.css({
-      height: $(this.options.container + ' #preview_wrapper').data('height') + 'px',
+      height: $(this.options.container + '#preview_wrapper').data('height') + 'px',
       overflow: 'hidden',
       '-webkit-transform-style': ''
     });
@@ -406,7 +406,7 @@ Apps.Preview.Controller = Controller.extend({
     self.p_window.document.close();
 
     var w_wrapper = $(self.p_window.document).find('#preview_wrapper');
-    self.previewFixes($(this.options.container + ' #preview_wrapper').data('scaled'), w_wrapper);
+    self.previewFixes($(this.options.container + '#preview_wrapper').data('scaled'), w_wrapper);
   },
 
   showInDialog: function (app_url, app_width) {
@@ -471,12 +471,12 @@ Apps.Preview.Controller = Controller.extend({
   },
 
   setContent: function (content) {
-    $(this.options.container + ' #preview_frame').html(content);
+    $(this.options.container + '#preview_frame').html(content);
   },
 
   resizeContent: function (opts) {
     var self = this;
-    var p_frame = $(this.options.container + ' #preview_frame'),
+    var p_frame = $(this.options.container + '#preview_frame'),
         act_width = opts.img_width || opts.width,
         act_height = opts.img_height || opts.height,
         have_img = opts.img_width && opts.img_height,
@@ -514,7 +514,7 @@ Apps.Preview.Controller = Controller.extend({
         "margin-left": 0
       });
       
-      $(this.options.container + ' #preview_wrapper').css({
+      $(this.options.container + '#preview_wrapper').css({
         'transform-style': 'preserve-3d',
         overflow: 'hidden',
         width: act_width + 'px',
@@ -542,7 +542,7 @@ Apps.Preview.Controller = Controller.extend({
         // IE doesn't like it when an empty string is passed in here, so 0,0 will do
         origin: ['0', '0']
       });
-      $(this.options.container + ' #preview_wrapper').css({
+      $(this.options.container + '#preview_wrapper').css({
         overflow: 'auto',
         width: act_width + 'px',
         height: act_height + 'px'
@@ -550,7 +550,7 @@ Apps.Preview.Controller = Controller.extend({
     }
     
     // store scaled height its needed for showing preview in new window
-    $(this.options.container + ' #preview_wrapper').data('height', act_height);
+    $(this.options.container + '#preview_wrapper').data('height', act_height);
     
     // setup size of preview frame
     var p_top = act_offsety,
@@ -577,7 +577,7 @@ Apps.Preview.Controller = Controller.extend({
   },
 
   clearContent: function () {
-    $(this.options.container + ' #preview_frame').empty();
+    $(this.options.container + '#preview_frame').empty();
   },
 
   hideContent: function () {
@@ -591,7 +591,7 @@ Apps.Preview.Controller = Controller.extend({
   },
 
   getContent: function () {
-    return $(this.options.container + ' #preview_frame');
+    return $(this.options.container + '#preview_frame');
   },
   
   calculateScaleFactor: function (px_actual, mm_desired) {
