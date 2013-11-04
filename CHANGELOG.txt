@@ -1,6 +1,10 @@
 -------------------------------------------------------------------------------
 Component: fh-studio
 -------------------------------------------------------------------------------
+3.17.19 - 2013-09-11 - IR214 - Craig Brookes
+
+* 5061 add vmware cloud deploy img
+
 3.17.18 - 2013-09-11 - IR209 - Cian Clarke
 -------------------------------------------
 # note this was originally 3.17.17 //however there was an update and so this was bumped up
