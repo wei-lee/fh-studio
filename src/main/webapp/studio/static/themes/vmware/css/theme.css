@@ -14,3 +14,7 @@
   background-image:url(../../default/img/powered_by_feedhenry.png);
   background-repeat:no-repeat;
 }
+
+.cloud_target_label.feedhenry {
+    background-image: url('/studio/static/themes/vmware/img/vcloud.png');
+}
