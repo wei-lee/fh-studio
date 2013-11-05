@@ -1,14 +1,23 @@
-#forms_container .form-search {
-    float: left;
-    margin-left: 20px;
-}
-#forms_container .form-search input {
-    width: 150px;
-}
-
+/*
+ App.View.FormList styles
+ */
 .formslist table tr {
     cursor: pointer;
 }
 .formslist table tr.info, .formslist table tr:hover {
     background-color: #d9edf7;
+}
+.formslist .formpreview {
+    border: 1px solid #ddd;
+}
+
+.formslist .formpreview .subtemplate-wrapper {
+    border: 0px;
+}
+.formslist .formpreview h4 {
+    margin-left: 8px;
+}
+
+.formslist .formpreview p {
+    margin-left: 10px;
 }
