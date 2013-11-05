@@ -14,7 +14,6 @@ Apps.Cloud.Cms.Controller = Apps.Cloud.Controller.extend({
     this._super();
   },
   show: function(e) {
-    var self = this;
     this._super(this.views.container);
     this.guid = $fw.data.get('inst').guid;
     var self = this,
