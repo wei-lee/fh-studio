@@ -12,6 +12,9 @@
     <li class="apps-tab">
       <a id="apps_tab" href="#tabs-1">Apps</a>
     </li>
+    <li class="forms-tab">
+      <a id="forms_tab" href="#tabs-8">Forms</a>
+    </li>
     <% if(studio.getProperty("pluginsEnabled").equals("true")){ %>
     <li class="plugins-tab">
       <a id="plugins_tab" href="#tabs-2">Plugins</a>
@@ -49,6 +52,8 @@
 
   <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER)) { %>
     <%@ include file="./apps/apps_tab.html" %>
+
+    <%@ include file="./forms/forms_tab.html" %>
 
     <% if(studio.getProperty("pluginsEnabled").equals("true")){ %>
       <%@ include file="./plugins/plugins_snippets.html" %>

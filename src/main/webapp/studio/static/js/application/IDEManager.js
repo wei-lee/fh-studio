@@ -13,7 +13,8 @@ var IDEManager = Class.extend({
       account: new Account.Tab.Manager(),
       reporting: new Reporting.Tab.Manager(),
       environments: new Cloudenvironments.Tab.Manager(),
-      plugins: new Plugins.Tab.Manager()
+      plugins: new Plugins.Tab.Manager(),
+      forms : new Forms.Tab.Manager()
     };
     this.analytics = new analytics.AnalyticsIntegration();
     this.chart = new application.ChartManager();

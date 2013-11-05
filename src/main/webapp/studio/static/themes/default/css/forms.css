@@ -1,0 +1,7 @@
+#forms_container .form-search {
+    float: left;
+    margin-left: 20px;
+}
+#forms_container .form-search input {
+    width: 150px;
+}
