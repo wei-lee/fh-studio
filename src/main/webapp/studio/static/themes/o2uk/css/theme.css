@@ -434,3 +434,6 @@ li.ui-state-active a {
 #connectivity_dialog, #info_dialog {
   top: 46px;
 }
+#environments_tab {
+    width: 125px !important;
+}

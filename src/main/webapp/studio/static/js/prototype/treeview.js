@@ -14,7 +14,7 @@ proto.TreeviewManager = function (params) {
     // TODO: a lot of html construction here. Is this necessary?
     load: function () {
       var dom_obj, anchor_obj, ul_obj, ul_dom, ci, cl;
-      
+
       dom_obj = $('<li>', {
         id: 'root',
         'class': 'folder_item'
@@ -42,7 +42,7 @@ proto.TreeviewManager = function (params) {
     // TODO: a lot of html construction here. Is this necessary?
     generateFileTree: function (node, parentObj) {
       var li_obj, a_obj, li_class, ul_obj;
-      
+
       li_class = node.type === "file" ? 'file_item' : 'folder_item';
 
       li_obj = $('<li>', {
@@ -75,9 +75,9 @@ proto.TreeviewManager = function (params) {
     initTreeview: function () {
       // Set up the Git message
       $fw.client.tab.apps.manageapps.controllers['apps.editor.controller'].initEditorMessage();
-      
+
       var is_template, opts;
-      
+
       is_template = $fw.data.get('template_mode');
       opts = {
         'core': {
@@ -255,23 +255,23 @@ proto.TreeviewManager = function (params) {
       var isRoot = "root" === id;
 
       var isDisabled = false;
-      
-      if ((isFolder && ((isRoot && rootAllowed===false) || !enabled)) || ( scmEnabled === false)) { 
+
+      if ((isFolder && ((isRoot && rootAllowed===false) || !enabled)) || ( scmEnabled === false)) {
         isDisabled = true;
       }
-      
+
       // console.log("checkContextMenuDisabled - " + id + " => " + isDisabled + " ===== enabled = " + enabled + " :: scmEnabled = " + scmEnabled + " :: isFolder = " + isFolder + " :: is Root = " + isRoot);
-      
+
       return isDisabled;
     },
 
-    create: function (current_node, is_file) {      
-      var position, class_name, title; 
-      
+    create: function (current_node, is_file) {
+      var position, class_name, title;
+
       position = "inside";
       class_name = "folder_item temp";
       title = self.defaults.new_folder_name;
-      
+
       if ("file" === self.getItemType(current_node)) {
         position = "after";
       }
@@ -279,7 +279,7 @@ proto.TreeviewManager = function (params) {
         class_name = "file_item temp";
         title = self.defaults.new_file_name;
       }
-      
+
       self.container.jstree("create", current_node, position, {
         attr: {
           'class': class_name
@@ -291,8 +291,8 @@ proto.TreeviewManager = function (params) {
 
     addNode: function (current_node, file_name, file_guid) {
       if (self.container.find("#" + file_guid).length === 0) {
-        var position, class_name; 
-        
+        var position, class_name;
+
         position = "inside";
         class_name = "file_item";
         if ("file" === self.getItemType(current_node)) {
@@ -310,7 +310,7 @@ proto.TreeviewManager = function (params) {
 
     createCallback: function (event, params) {
       var file_name, node, parent, type, path, data;
-      
+
       file_name = params.rslt.name;
       node = params.rslt.obj;
       parent = params.rslt.parent;
@@ -334,14 +334,14 @@ proto.TreeviewManager = function (params) {
       self.server.create(data, function (res) {
         if (res.guid || res.path) {
           var file_id = res.guid || res.path;
-          
+
           if (res.guid != null) {
             self.setItemId(node, res.guid);
           }
           self.makeRealNode(node);
           node.attr('path', path + file_name);
-          
-          //self.setItemPath(node, res.path);          
+
+          //self.setItemPath(node, res.path);
         } else if (res.status === "error") {
           self.container.jstree("delete_node", node);
           $fw.client.dialog.error(res.message);
@@ -351,7 +351,7 @@ proto.TreeviewManager = function (params) {
 
     remove: function (obj) {
       var icon_html, type, node_id;
-      
+
       icon_html = "<span class=\"ui-icon ui-icon-alert content_icon\"></span>";
       type = self.getItemType(obj);
       $fw.client.dialog.showConfirmDialog('Delete ' + js_util.capitalise(type), icon_html + Lang['delete_' + type + '_confirm_text'], function () {
@@ -382,7 +382,7 @@ proto.TreeviewManager = function (params) {
 
     renameCallback: function (event, params) {
       var new_name, old_name, node, type, file_id, data;
-      
+
       new_name = params.rslt.new_name;
       old_name = params.rslt.old_name;
       node = params.rslt.obj;
@@ -408,7 +408,7 @@ proto.TreeviewManager = function (params) {
           self.rollbackFilename(node, old_name);
           $fw.client.dialog.error(res.error);
         } else {
-          //  self.setItemPath(node, res.path);         
+          //  self.setItemPath(node, res.path);
           // callback to editor manager
           $fw.client.tab.apps.manageapps.controllers['apps.editor.controller'].renameCallback(file_id, new_name, old_name);
         }
@@ -418,7 +418,7 @@ proto.TreeviewManager = function (params) {
 
     deleteCallback: function (event, params) {
       var node, type, id, name, path, data;
-      
+
       node = params.args[0];
       id = self.getItemId(node);
       type = self.getItemType(node);
@@ -446,7 +446,7 @@ proto.TreeviewManager = function (params) {
 
     moveCallback: function (event, params) {
       var node, new_parent_node, old_parent_node, type, item_name, copy, data;
-      
+
       node = params.rslt.o;
       new_parent_node = params.rslt.np;
       old_parent_node = params.rslt.op;
@@ -485,7 +485,7 @@ proto.TreeviewManager = function (params) {
 
     setAsDefault: function (current_node) {
       var filePath, data;
-      
+
       filePath = self.getItemPath(current_node);
       if (filePath.charAt(0) === "/") {
         filePath = filePath.substring(1);
@@ -505,7 +505,7 @@ proto.TreeviewManager = function (params) {
 
     doImport: function (current_node) {
       var import_file_wizard, step, current_path, file_path, file_name;
-      
+
       import_file_wizard = proto.Wizard.load('import_file_wizard', {
         validate: true
       });
@@ -515,7 +515,7 @@ proto.TreeviewManager = function (params) {
           location: 'required'
         }
       });
-      // When next is clicked on details page, intercept and send back to details page until 
+      // When next is clicked on details page, intercept and send back to details page until
       // import is attempted
       import_file_wizard.find('#import_file_progress').bind('show', function () {
         console.log('doing import file');
@@ -548,7 +548,7 @@ proto.TreeviewManager = function (params) {
           success: function (result) {
             console.log('import result > ' + JSON.stringify(result));
             if ('string' === typeof result.guid) {
-              // TODO: better way for this temporary workaround for finishing wizard after successful upload  
+              // TODO: better way for this temporary workaround for finishing wizard after successful upload
               import_file_wizard.find('.jw-button-finish').trigger('click');
 
               // All good, finish step
@@ -625,7 +625,7 @@ proto.TreeviewManager = function (params) {
 
     checkDuplicated: function (item_parent, item, name) {
       var duplicated, children, child, ci, cl;
-      
+
       duplicated = false;
       children = item_parent.children('ul').children();
       for (ci = 0, cl = children.length; ci < cl; ci += 1) {
@@ -678,12 +678,13 @@ proto.TreeviewManager = function (params) {
 
     server: {
       call: function (url, data, callback) {
+        data["csrftoken"] = $('input[name="csrftoken"]').val();
         $.post(url, JSON.stringify(data), function (res) {
           callback(res);
         });
       },
       create: function (data, callback) {
-        var url = Constants.CREATE_FILE_URL;        
+        var url = Constants.CREATE_FILE_URL;
         self.server.call(url, data, callback);
       },
       rename: function (data, callback) {
@@ -717,7 +718,7 @@ proto.TreeviewManager = function (params) {
      * Select the File with the given ID
      */
     selectNode: function (file_id) {
-      // TODO: Issue where id is not unique in dom, and used multiple times by jstree (as folder items). 
+      // TODO: Issue where id is not unique in dom, and used multiple times by jstree (as folder items).
       //       workaround is to find file items first, then filter by id
       var file = self.container.find('.file_item').filter('#' + file_id),
         folder = file.parentsUntil('#editor_files_list').filter('.folder_item');

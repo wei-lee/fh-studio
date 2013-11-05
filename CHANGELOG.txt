@@ -2,22 +2,14 @@
 Component: fh-studio
 -------------------------------------------------------------------------------
 
-3.17.12 - 2013-09-18 - IR210 - Jason Madigan
--------------------------------------------------------------------------------
-* 4571 - Use white icon/splash screen by default for builds
+3.17.19 - 2013-11-04 - IR213 - Jason Madigan / Craig Brookes
+------------------------------------------------------------
+* 5061 - Add vmware cloud deploy img
+* 5063 - Add Samsung Theme
 
-
-3.17.11 - 2013-09-10 - IR210 - Michael Nairn
--------------------------------------------------------------------------------
-* 4625 - Remove registration links from rackspace theme
-* 4630 - Remove registartion links from hpcs theme
-
-Both themes are updated to show a "Request an Account" form in place of the registration form when free account
-registration is disabled. Both submit requests to wufoo forms.
-
-3.17.11 - 2013-09-11 - IR209 - Cian Clarke
+3.17.18 - 2013-09-11 - IR209 - Cian Clarke
 -------------------------------------------
-
+# note this was originally 3.17.17 //however there was an update and so this was bumped up
 * 4537-databrowser
 
 NOTES:
@@ -25,6 +17,43 @@ NOTES:
 To be accompanied by changes to Millicore, fh-db, fh-ditch. Also required for the data browser to
 function is updates to user's cloud code in application.js to use new components fh-webapp and
 fh-api in replacement of fh-nodeapp.
+
+3.17.17 - 2013-11-01 - IR213 - Wei Li
+-------------------------------------------------------------------------------
+* 5024 - Update Android SDK to the latest version to fix NPE
+* 5049 - Update JS SDK to the latest version to fix $fh.init issue on WP7
+* Upate IBM theme deploy target image
+
+3.17.16 - 2013-10-16 - IR212 - Niall Donnelly
+-------------------------------------------------------------------------------
+* 2169 - Fix iOS Store Issue  
+* 2434 - Fix O2 Cloud Environments Tab css.
+
+3.17.15 - 2013-10-10 - IR212 - Niall Donnelly & Jason Madigan
+-------------------------------------------------------------------------------
+* 4917 - App Forms branding
+* 4879 -- Open Registration breaks login functionality
+* 2323 -- Added Mubaloo images for mubaloodemo.feedhenry.com
+
+3.17.14 - 2013-09-25 - IR211 - Damian Beresford
+-------------------------------------------------------------------------------
+* 4668 - problem with file editor in chrome
+* 4751 - Zendesk #2202 Cloud Environment tab
+
+3.17.13 - 2013-10-02 - IR210 - Cian Clarke
+-------------------------------------------------------------------------------
+* 4740 - Add Rackspace US theme & landing page
+
+3.17.12 - 2013-09-18 - IR210 - Jason Madigan
+-------------------------------------------------------------------------------
+* 4571 - Use white icon/splash screen by default for builds
+
+3.17.11 - 2013-09-10 - IR210 - Michael Nairn
+-------------------------------------------------------------------------------
+* 4625 - Remove registration links from rackspace theme
+* 4630 - Remove registartion links from hpcs theme
+
+Both themes are updated to show a "Request an Account" form in place of the registration form when free account
 
 3.17.10 - 2013-09-06 - IR209 - Martin Murphy
 -------------------------------------------------------------------------------

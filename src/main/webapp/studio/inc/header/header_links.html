@@ -1,4 +1,4 @@
-<div id="header_user_info">
+<div id="header_user_info" class="<%= pageName %> <% if (studio.isLoggedIn()){ %> loggedin <% } %>">
   
 <% if (studio.isLoggedIn()) { %>
   <!--  only show user details if logged in -->
@@ -6,20 +6,20 @@
 <% } %>
 
 <% if ( studio.getProperty(studio.PROP_AUTHLANDING).equals(studio.IDE_LANDING) || studio.getProperty(studio.PROP_NOAUTHLANDING).equals(studio.IDE_LANDING) ) { %>
-  <a href="/?a=<%=studio.IDE_LANDING%>" class="<%=pageName.equals(studio.IDE_LANDING) ? "active" : ""%>">Home</a>
+  <a href="/?a=<%=studio.IDE_LANDING%>" class="homelink <%=pageName.equals(studio.IDE_LANDING) ? "active" : ""%>">Home</a>
 <% } %>
 
 <% if (studio.isLoggedIn()) { %>
   <!--  only show studio if logged in -->
-  <a href="/?a=<%=studio.IDE_INDEX%>" class="<%=pageName.equals(studio.IDE_INDEX) ? "active" : ""%>">Studio</a>
+  <a href="/?a=<%=studio.IDE_INDEX%>" class="studiolink <%=pageName.equals(studio.IDE_INDEX) ? "active" : ""%>">Studio</a>
 <% } %>
 
-  <a target="_blank" href="<%=studio.getProperty("docs-url")%>">Docs</a>
-  <a target="_blank" href="<%=studio.getProperty("support-url")%>">Support</a>
+  <a target="_blank" class="docslink" href="<%=studio.getProperty("docs-url")%>">Docs</a>
+  <a target="_blank" class="supportlink" href="<%=studio.getProperty("support-url")%>">Support</a>
   
 <% if("true".equals(studio.getProperty("hiring-link"))) { %>
   <!--  only show hiring link if switched on -->
-  <a target="_blank" href="<%=studio.getProperty("hiring-url")%>">We're Hiring</a>
+  <a target="_blank" class="hiringlink" href="<%=studio.getProperty("hiring-url")%>">We're Hiring</a>
 <% } %>
 
 <% if (studio.isLoggedIn()) { %>
@@ -32,15 +32,15 @@
       });
   };
   </script>
-  <a onclick="signOut();">Sign Out</a>
+  <a class="signoutlink" onclick="signOut();">Sign Out</a>
 <% } else { %>
-  <a href="/?a=<%=studio.IDE_LOGIN%>" class="<%=pageName.equals(studio.IDE_LOGIN) ? "active" : ""%>">
+  <a href="/?a=<%=studio.IDE_LOGIN%>" class="loginlink <%=pageName.equals(studio.IDE_LOGIN) ? "active" : ""%>">
   <% if ("true".equals(studio.getProperty(studio.PROP_FREEREGISTRATION))) { %>
     Login/Register
   <% } else { %>
     Login
-  </a>
   <% } %>
+  </a>
 <% } %>
 
 
