@@ -6,7 +6,8 @@ App.View.CMSTable = App.View.CMS.extend({
     this.options = options;
   },
   render : function(){
-    var columns = [],
+    var self = this,
+    columns = [],
     fields = this.options.fields,
     data = this.options.data;
 
@@ -26,7 +27,11 @@ App.View.CMSTable = App.View.CMS.extend({
       (function(f){
         var propFn = function(src){
             if (src.hasOwnProperty(f.name)){
-              return src[f.name];
+              var ret = src[f.name];
+              if (typeof ret === 'object'){
+                return '<img src="' + self.options.host + ret.binaryUrl + '">';
+              }
+              return ret;
             }
             return '';
         };

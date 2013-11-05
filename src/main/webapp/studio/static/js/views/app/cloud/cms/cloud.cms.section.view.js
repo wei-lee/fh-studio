@@ -91,7 +91,11 @@ App.View.CMSSection = App.View.CMS.extend({
       this.$el.find('select[name=parentName]').val(parent);
     }
 
-    this.$el.find('#cmsAppPreview').append($('#app_preview').clone(true).show().width('100%'));
+    // Move in preview div - gets moved out again on hide bt apps.cloud.cms.controller
+    $('#app_preview').insertAfter('#cmsAppPreview div');
+    $fw.client.tab.apps.manageapps.getController('apps.preview.controller').skipPost = true;
+    $fw.client.tab.apps.manageapps.getController('apps.preview.controller').show();
+    this.$el.find('#app_preview').show().width('100%');
 
     this.renderListFieldTables();
     this.renderFilePreviews();
@@ -165,7 +169,7 @@ App.View.CMSSection = App.View.CMS.extend({
         return console.log('No list field found with name: ' + name);
       }
       if(listField.fields.length > 0){
-        table = new App.View.CMSTable({ fields : listField.fields, data : listField.data });
+        table = new App.View.CMSTable({ fields : listField.fields, data : listField.data, host : self.collection.url });
         $(this).find('.fieldlist_table').html(table.render().$el);
       }
 

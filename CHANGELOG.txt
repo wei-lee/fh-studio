@@ -2,6 +2,28 @@
 Component: fh-studio
 -------------------------------------------------------------------------------
 
+3.17.19 - 2013-11-04 - IR213 - Jason Madigan / Craig Brookes
+------------------------------------------------------------
+* 5061 - Add vmware cloud deploy img
+* 5063 - Add Samsung Theme
+
+3.17.18 - 2013-09-11 - IR209 - Cian Clarke
+-------------------------------------------
+# note this was originally 3.17.17 //however there was an update and so this was bumped up
+* 4537-databrowser
+
+NOTES:
+
+To be accompanied by changes to Millicore, fh-db, fh-ditch. Also required for the data browser to
+function is updates to user's cloud code in application.js to use new components fh-webapp and
+fh-api in replacement of fh-nodeapp.
+
+3.17.17 - 2013-11-01 - IR213 - Wei Li
+-------------------------------------------------------------------------------
+* 5024 - Update Android SDK to the latest version to fix NPE
+* 5049 - Update JS SDK to the latest version to fix $fh.init issue on WP7
+* Upate IBM theme deploy target image
+
 3.17.16 - 2013-10-16 - IR212 - Niall Donnelly
 -------------------------------------------------------------------------------
 * 2169 - Fix iOS Store Issue  
@@ -32,18 +54,6 @@ Component: fh-studio
 * 4630 - Remove registartion links from hpcs theme
 
 Both themes are updated to show a "Request an Account" form in place of the registration form when free account
-registration is disabled. Both submit requests to wufoo forms.
-
-3.17.11 - 2013-09-11 - IR209 - Cian Clarke
--------------------------------------------
-
-* 4537-databrowser
-
-NOTES:
-
-To be accompanied by changes to Millicore, fh-db, fh-ditch. Also required for the data browser to
-function is updates to user's cloud code in application.js to use new components fh-webapp and
-fh-api in replacement of fh-nodeapp.
 
 3.17.10 - 2013-09-06 - IR209 - Martin Murphy
 -------------------------------------------------------------------------------

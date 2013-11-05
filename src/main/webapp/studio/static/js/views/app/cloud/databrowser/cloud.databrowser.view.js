@@ -3,7 +3,7 @@ App.View.DataBrowserView = Backbone.View.extend({
     var startRemoving = false;
     var crumb = $('#apps_breadcrumb');
     crumb.children().each(function(index, el){
-      if (startRemoving){
+      if (startRemoving && $(this).prop('tagName').toLowerCase() === "li"){
         $(this).remove();
       }else{
         startRemoving = $(this).text().trim() === "Cloud Management";

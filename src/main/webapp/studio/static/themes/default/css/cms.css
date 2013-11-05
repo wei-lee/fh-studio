@@ -383,7 +383,13 @@
 }
 
 .fb-field-wrapper .subtemplate-wrapper img.img-rounded {
-    height: 150px;
+    max-height: 150px;
+    max-width: 150px;
     width: auto;
     padding: 40px;
+}
+
+.fieldlist_table table img {
+    max-height: 150px;
+    max-width: 200px;
 }
