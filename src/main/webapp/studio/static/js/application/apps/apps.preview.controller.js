@@ -43,7 +43,7 @@ Apps.Preview.Controller = Controller.extend({
         this.showReset();
       }
     }
-    debugger;
+
     if ($.isFunction(this.showPost) && this.skipPost !== true) {
       this.showPost();
     }

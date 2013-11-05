@@ -54,9 +54,15 @@ Apps.Cloud.Cms.Controller = Apps.Cloud.Controller.extend({
           $fw.data.set("inst",inst);
         }
       }
+
+      // Preview pre-setup
+      $('.preview_buttons').hide();
+      $('#app_content').removeClass('span7').addClass('span10');
+      $fw.client.tab.apps.manageapps.getController('apps.preview.controller').hide();
+
       self.view = new App.View.CMSController({ container : self.views.container, mode : $fw.data.get('cloud_environment') });
       box_container.empty().append(self.view.render().$el);
-      $('.preview_buttons').hide();
+
     });
 
 
@@ -66,7 +72,6 @@ Apps.Cloud.Cms.Controller = Apps.Cloud.Controller.extend({
       this.view.trigger('hidden');
       $('#cmsAppPreview #app_preview').insertAfter('#app_content');
       $fw.client.tab.apps.manageapps.getController('apps.preview.controller').skipPost = false;
-      $fw.client.tab.apps.manageapps.getController('apps.preview.controller').show();
       $('#app_preview').width('');
       $('.preview_buttons').show();
     }
