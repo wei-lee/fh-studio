@@ -18,9 +18,13 @@ App.Collection.Form = Backbone.Collection.extend({
       var url = self.url;
       $fw.server.post(url, {}, function(res) {
         if (res && res.length && res.length>0) {
+          var massaged = [];
+          _.each(res, function(r){
+            massaged.push(r.data);
+          });
           self.loaded = true;
           if ($.isFunction(options.success)) {
-            options.success(res, options);
+            options.success(massaged, options);
           }
         } else {
           if ($.isFunction(options.error)) {

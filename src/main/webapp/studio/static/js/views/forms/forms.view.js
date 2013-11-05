@@ -26,5 +26,18 @@ App.View.Forms = Backbone.View.extend({
       cancelText : false
     });
     this.$el.append(this.modalView.render().$el);
+  },
+  formToFormBuilderFields : function(form){
+    var fields = [];
+    _.each(form.Pages, function(p){
+      _.each(p.Fields, function(f){
+        fields.push({
+          label :f.Title,
+          value :f.DefaultVal,
+          field_type : f.Type
+        });
+      });
+    });
+    return fields;
   }
 });

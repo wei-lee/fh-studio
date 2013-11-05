@@ -6,7 +6,8 @@ App.View.FormList = App.View.Forms.extend({
     'formsListMenu' : '#formsListMenu'
   },
   events : {
-    'click .btn-add-form' : 'onCreateForm'
+    'click .btn-add-form' : 'onCreateForm',
+    'click tr' : 'onFormSelected'
   },
   initialize: function(){
     this.compileTemplates();
@@ -17,7 +18,7 @@ App.View.FormList = App.View.Forms.extend({
   },
   render : function(){
     this.$el.empty();
-    this.$el.addClass('span10');
+    this.$el.addClass('span10 formslist');
 
     this.$el.append(this.templates.$formsListMenu());
 
@@ -40,20 +41,20 @@ App.View.FormList = App.View.Forms.extend({
     //Needed fields eventually: Name, Version, Last Updated, Apps using, Submissions, Submissions Total
     columns = [{
       "sTitle": 'Name',
-      "mDataProp": 'data.Name'
+      "mDataProp": 'Name'
     },{
       "sTitle": 'Description',
-      "mDataProp": 'data.Description'
+      "mDataProp": 'Description'
     },{
       "sTitle": 'Updated',
-      "mDataProp": 'data.DateUpdated'
+      "mDataProp": 'DateUpdated'
     }],
     forms = this.collection.toJSON();
 
     this.table = new App.View.DataTable({
       aaData : forms,
       "fnRowCallback": function(nTr, sData, oData, iRow, iCol) {
-        $(nTr).attr('data-index', iRow).attr('data-hash', 'hash');
+        $(nTr).attr('data-index', iRow).attr('data-hash', sData.Hash);
       },
       "aaSorting" : [],
       "aoColumns": columns,
@@ -68,16 +69,44 @@ App.View.FormList = App.View.Forms.extend({
         "sEmptyTable" : "No forms found"
       }
     });
-    this.$el.append(this.table.render().$el);
+    this.table.render();
+    this.table.$el.find('table').removeClass('table-striped');
+    this.$el.append(this.table.$el);
 
     // Add in the view form view
-    var selectMessage = new App.View.FullPageMessageView({ message : 'Select a form above to preview & manage', button : false });
-    this.$el.append(selectMessage.render().$el);
+    this.selectMessage = new App.View.FullPageMessageView({ message : 'Select a form above to preview & manage', button : false });
+    this.$el.append(this.selectMessage.render().$el);
+
+    this.$fbEl = $('<div></div>');
+    this.$el.append(this.$fbEl);
+    this.$fbEl.hide();
+    this.fb = new Formbuilder(this.$fbEl, {
+      noScroll : true,
+      noEditOnDrop : true,
+      bootstrapData: [{"hash" : "1a2b3c4d", "_id" : "123", "label":"Please enter your clearance number","field_type":"text","required":true,"field_options":{},"cid":"c6"}],
+      editStructure : true
+    });
+    this.$fbEl.find('.middle').removeClass('span6');
+    this.$fbEl.find('.right').hide();
 
   },
   onCreateForm : function(e){
     e.preventDefault();
     alert('create');
+  },
+  onFormSelected : function(e){
+    var el = e.target;
+    el = (el.nodeName.toLowerCase==="tr") ? $(el) : $($(el).parents('tr'));
+    this.$el.find('tr').removeClass('info');
 
+    el.addClass('info');
+
+    var index = el.data('index'),
+    form = this.collection.at(index),
+    fields = this.formToFormBuilderFields(form.toJSON());
+
+    this.selectMessage.$el.hide();
+    this.$fbEl.show();
+    this.fb.mainView.collection.reset(fields);
   }
 });
