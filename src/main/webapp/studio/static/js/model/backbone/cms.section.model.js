@@ -243,8 +243,19 @@ App.Collection.CMS = Backbone.Collection.extend({
       })(self, f, fileFieldEl, temp_form);
 
     }
+
+    // Fix for race condition occuring in async proving tough to fix
+    var raceFix = false;
     return async.series(uploaders, function(err, res){
-      return cb(err, res);
+      if (raceFix === true){
+        return;
+      }
+      raceFix = true;
+      if (err){
+        return cb(err);
+      }
+      res = res || {};
+      return cb(null, res);
     });
   },
   findNewlyCreatedField : function(section, f){

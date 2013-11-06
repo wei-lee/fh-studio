@@ -326,7 +326,7 @@
     border-style: dashed;
 }
 
-.response-field-text input.rf-size-large, .response-field-paragraph textarea.rf-size-large {
+.response-field-text input.rf-size-large, .response-field-string input.rf-size-large, .response-field-paragraph textarea.rf-size-large {
     width: 97%;
 }
 

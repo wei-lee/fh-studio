@@ -82,10 +82,21 @@ App.View.FormList = App.View.Forms.extend({
     this.$fbEl = $('<div class="formpreview" />');
     this.$el.append(this.$fbEl);
     this.$fbEl.hide();
+    // Also configure default FormBuilder field setup here to be inline with FH requirements
+    Formbuilder.options.mappings.LABEL = "name";
+    Formbuilder.options.mappings.VALUE = "value";
+    Formbuilder.options.mappings.FIELD_TYPE = "type";
+    Formbuilder.options.mappings.TYPE_ALIASES = {
+      'paragraph' : 'textarea',
+      'checkboxes' : 'checkbox',
+      'dropdown' : 'select',
+      'website' : 'url',
+      'price' : 'money'
+    };
     this.fb = new Formbuilder(this.$fbEl, {
       noScroll : true,
       noEditOnDrop : true,
-      bootstrapData: [{"hash" : "1a2b3c4d", "_id" : "123", "label":"Please enter your clearance number","field_type":"text","required":true,"field_options":{},"cid":"c6"}],
+      bootstrapData: [],
       editStructure : false
       //TODO: editValues : false mode..
     });

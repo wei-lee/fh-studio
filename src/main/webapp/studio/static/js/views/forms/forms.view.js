@@ -27,32 +27,20 @@ App.View.Forms = Backbone.View.extend({
     });
     this.$el.append(this.modalView.render().$el);
   },
-  toFormBuilderType : function(type){
-    switch(type){
-      case "textarea":
-        return "paragraph";
-      default:
-        return type;
-    }
-  },
-  fromFormBuilderType : function(type){
-    switch(type){
-      case "paragraph":
-        return "textarea";
-      default:
-        return type;
-    }
-  },
   formToFormBuilderFields : function(form){
     var self = this,
     pages = form.get('Pages'),
     fields = [];
     pages.each(function(p, i){
       _.each(p.get('Fields'), function(f, i){
+        var notYetDone = ['shortname', 'europhone', 'likert']; // TODO Do these then remove
+        if (notYetDone.indexOf(f.Type)>-1){
+          f.Type = "text";
+        }
         fields.push({
-          label :f.Title,
+          name :f.Title,
           value :f.DefaultVal,
-          field_type : self.toFormBuilderType(f.Type)
+          type : f.Type
         });
         // Push our page break if we have more than 1 page
       });
@@ -62,11 +50,9 @@ App.View.Forms = Backbone.View.extend({
 //
 //      });
 
-
       if (i>0){
-
+        fields.push({ name : 'Page Break', value : '', type : 'file' });
       }
-      fields.push({ label : 'Page Break', value : '', field_type : 'file' });
 
     });
     return fields;
