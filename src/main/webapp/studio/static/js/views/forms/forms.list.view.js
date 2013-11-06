@@ -102,7 +102,10 @@ App.View.FormList = App.View.Forms.extend({
   },
   onCreateForm : function(e){
     e.preventDefault();
-    alert('create');
+    var self = this,
+    createView = new App.View.FormCreate({ collection : this.collection });
+    this.$el.append(createView.render().$el);
+    createView.bind('message', function(){}); // TODO - do we want messages up top like with CMS?
   },
   onFormSelected : function(e){
     var el = e.target;

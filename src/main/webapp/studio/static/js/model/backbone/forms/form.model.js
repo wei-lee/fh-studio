@@ -13,6 +13,9 @@ App.Collection.Form = Backbone.Collection.extend({
   model: App.Model.Form,
   url: '/studio/static/js/model/backbone/mocks/forms.json',
   sync: function (method, model, options) {
+    this[method].apply(this, arguments);
+  },
+  read : function(method, model, options){
     var self = this;
     if(!self.loaded){
       var url = self.url;
@@ -35,5 +38,9 @@ App.Collection.Form = Backbone.Collection.extend({
     } else {
       self.trigger("sync");
     }
+  },
+  create : function(method, model, options){
+    //TODO
+    return options.success(model);
   }
 });
