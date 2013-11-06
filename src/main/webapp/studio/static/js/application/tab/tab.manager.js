@@ -61,6 +61,13 @@ Tab.Manager = Class.extend({
         // tell active controller we're ready for it to do it's thing
         controller.show(e);
 
+        if (self.shown){
+          var oldController = self.getController(self.shown);
+          if (oldController && $.isFunction(oldController.onHide) && self.shown !== controllerName){
+            oldController.onHide();
+          }
+        }
+        self.shown = controllerName;
         return false;
       });
     });

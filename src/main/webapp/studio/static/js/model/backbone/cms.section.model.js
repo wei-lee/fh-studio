@@ -201,11 +201,9 @@ App.Collection.CMS = Backbone.Collection.extend({
           },
           request_opts;
 
-          if (f.hasOwnProperty('listfields')){
-
-            data.listFieldsIndex = f.listfields.index;
-            data.listFieldsName = f.name;
-
+          if (f.hasOwnProperty('listFieldsIndex')){
+            data.listFieldsIndex = f.listFieldsIndex;
+            data.listFieldsName = f.listFieldsName;
           }
 
           request_opts = {
@@ -295,9 +293,18 @@ App.Collection.CMS = Backbone.Collection.extend({
       }
       if (f.data){
         _.each(f.data, function(row){
-          self.trimInternalIds(row);
+          for (var key in row){
+            if (row.hasOwnProperty(key)){
+              var d = row[key];
+              if (typeof d === 'object'){
+                delete d.fieldEl;
+                delete d.needsUpload;
+                delete d.listFieldsIndex;
+                delete d.listFieldsName;
+              }
+            }
+          }
         });
-        f.data = self.trimInternalIds(f.data);
       }
     });
 
@@ -327,9 +334,11 @@ App.Collection.CMS = Backbone.Collection.extend({
     this.appkey = this.inst.apiKey;
 
     var self = this,
+
     url = this.urls.crupdateSection;
     section.modifiedBy = $fw.userProps.email;
     var parent = false;
+
     delete section.hash;
     delete section.data;
     delete section._id;

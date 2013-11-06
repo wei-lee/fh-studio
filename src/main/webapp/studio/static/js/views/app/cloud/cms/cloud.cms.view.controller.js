@@ -1,6 +1,8 @@
-var App = App || {};
+App = App || {};
 App.View = App.View || {};
-var CMS_TOPICS = App.dispatch.topics.CMS;
+
+var CMS_TOPICS = CMS_TOPICS || App.dispatch.topics.CMS;
+
 
 App.View.CMSController  = Backbone.View.extend({
 
@@ -81,6 +83,7 @@ App.View.CMSController  = Backbone.View.extend({
     self.collection = new App.Collection.CMS([], { url : url });
     self.collection.fetch({ reset: true, success : function(){
       self.collection.bind('reset', $.proxy(self.render, self));
+
       self.$el.removeClass('busy');
       return self.renderCMS();
 
@@ -181,6 +184,7 @@ App.View.CMSController  = Backbone.View.extend({
     });
     this.$el.append(enableView.render().$el);
   },
+
   onEditFieldList : function(options){
     var self = this;
     self.active = 'listfield';

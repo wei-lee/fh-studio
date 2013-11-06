@@ -21,6 +21,10 @@ Apps.Cloud.Cms.Controller = Apps.Cloud.Controller.extend({
     $(this.views.container).show();
 
     if (this.view){
+      // If we've already moved the CMS inside, don't destroy it - move it out then destroy the mCMS div
+      if (this.view.$el.find('#app_preview').length>0){
+        self.previewBack();
+      }
       this.view.remove();
       this.view.stopListening(); // TODO Does this still cause issues with formbuilder?
     }
@@ -54,10 +58,33 @@ Apps.Cloud.Cms.Controller = Apps.Cloud.Controller.extend({
           $fw.data.set("inst",inst);
         }
       }
+
+      self.previewToCMS();
+
       self.view = new App.View.CMSController({ container : self.views.container, mode : $fw.data.get('cloud_environment') });
       box_container.empty().append(self.view.render().$el);
+
     });
 
 
+  },
+  onHide : function(){
+    if (this.view){
+      this.previewBack();
+    }
+  },
+  // Moves the app preview into the mCMS view
+  previewToCMS : function(){
+    // Preview pre-setup
+    $('.preview_buttons').hide();
+    $('#app_content').removeClass('span7').addClass('span10');
+    $fw.client.tab.apps.manageapps.getController('apps.preview.controller').hide();
+  },
+  // Moves the CMS back out into it's original location
+  previewBack : function(){
+    $('#cmsAppPreview #app_preview').insertAfter('#app_content');
+    $fw.client.tab.apps.manageapps.getController('apps.preview.controller').skipPost = false;
+    $('#app_preview').width('');
+    $('.preview_buttons').show();
   }
 });

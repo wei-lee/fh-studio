@@ -2,3 +2,7 @@
   background-image: url(../img/corplogo.png) !important;
   margin-left: 0 !important;
 }
+
+.cloud_target_label.feedhenry {
+  background-image: url('/studio/static/themes/ibm/img/softlayer-transparent.png');
+}
