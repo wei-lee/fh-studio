@@ -112,7 +112,7 @@ application.DestinationGeneral = Class.extend({
     console.log('sending request to server');
     console.log('request url ' + that.base_url);
 
-    $.post(that.base_url, data, function(result) {
+    $.post(that.base_url, JSON.stringify(data), function(result) {
 
       console.log('import result > ' + JSON.stringify(result));
       var cacheKey, stageKey;
@@ -558,5 +558,16 @@ application.DestinationGeneral = Class.extend({
         cb(url, false);
       }
     });
+  },
+
+  getMDMConfig: function(wizard, data){
+    if($fw.getClientProp('mdm.enabled') === 'true'){
+      var includeSDK = wizard.find('input.mdm_include_sdk').is(':checked');
+      var pushBinary = wizard.find('input.mdm_push_binary').is(':checked');
+      data.mdm = {"includesdk": includeSDK, "pushbinary": pushBinary};
+      return data;
+    } else {
+      return data;
+    }
   }
 });
