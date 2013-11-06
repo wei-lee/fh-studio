@@ -9,7 +9,8 @@ App.View.FormList = App.View.Forms.extend({
   events : {
     'click .btn-add-form' : 'onCreateForm',
     'click tr' : 'onFormSelected',
-    'click .btn-clone-form' : 'onCloneForm'
+    'click .btn-clone-form' : 'onCloneForm',
+    'click .btn-delete-form' : 'onDeleteForm'
   },
   initialize: function(){
     this.compileTemplates();
@@ -160,4 +161,25 @@ App.View.FormList = App.View.Forms.extend({
     this.$el.append(createView.render().$el);
     createView.bind('message', function(){}); // TODO - do we want messages up top like with CMS?
   },
+  onDeleteForm : function(){
+    var self = this,
+    form = this.collection.at(this.currentForm);
+    var modal = new App.View.Modal({
+      title: 'Confirm Delete',
+      body: "Are you sure you want to delete form " + form.get('Name') + "?",
+      okText: 'Delete',
+      cancelText : 'Cancel',
+      ok: function (e) {
+        self.collection.remove(form, {
+          success : function(){
+
+          },
+          error : function(){
+
+          }
+        });
+      }
+    });
+    this.$el.append(modal.render().$el);
+  }
 });

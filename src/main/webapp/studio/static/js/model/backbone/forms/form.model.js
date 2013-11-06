@@ -71,5 +71,21 @@ App.Collection.Form = Backbone.Collection.extend({
   create : function(method, model, options){
     //TODO
     return options.success(model);
-  }
+  },
+  delete : function(method, model, options){
+    //TODO
+    return options.success(model);
+  },
+  remove : function(model, options){
+    Backbone.Collection.prototype.remove.apply(this, arguments);
+    var self = this,
+    opts = {
+      success : function(){
+        self.trigger('reset');
+        options.success.apply(self, arguments);
+      }, error : options.error
+    };
+    this.sync('delete', model, opts);
+
+  },
 });
