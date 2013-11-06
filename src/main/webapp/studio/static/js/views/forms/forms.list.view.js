@@ -9,6 +9,7 @@ App.View.FormList = App.View.Forms.extend({
   events : {
     'click .btn-add-form' : 'onCreateForm',
     'click tr' : 'onFormSelected',
+    'click .btn-clone-form' : 'onCloneForm'
   },
   initialize: function(){
     this.compileTemplates();
@@ -48,7 +49,16 @@ App.View.FormList = App.View.Forms.extend({
     },{
       "sTitle": 'Updated',
       "mDataProp": 'DateUpdated'
-    }],
+    }/*,{ //TODO: Make these..?
+     "sTitle": 'Apps Using This',
+     "mDataProp": 'Using'
+    },{
+     "sTitle": 'Submissions today',
+     "mDataProp": 'SubmissionsToday'
+    },{
+     "sTitle": 'Submissions',
+     "mDataProp": 'Submissions'
+    }*/],
     forms = this.collection.toJSON(),
     formsListMenu = $(this.templates.$formsListMenu());
 
@@ -114,13 +124,17 @@ App.View.FormList = App.View.Forms.extend({
   onCreateForm : function(e){
     e.preventDefault();
     var self = this,
-    createView = new App.View.FormCreate({ collection : this.collection });
+    createView = new App.View.FormCreateClone({ collection : this.collection });
     this.$el.append(createView.render().$el);
     createView.bind('message', function(){}); // TODO - do we want messages up top like with CMS?
   },
   onFormSelected : function(e){
-    var el = e.target;
-    el = (el.nodeName.toLowerCase==="tr") ? $(el) : $($(el).parents('tr'));
+    var el = e.target,
+    nodeName = el.nodeName.toLowerCase();
+    if (nodeName === 'th'){
+      return;
+    }
+    el = (nodeName==="tr") ? $(el) : $($(el).parents('tr'));
     this.$el.find('tr').removeClass('info');
 
     el.addClass('info');
@@ -137,5 +151,13 @@ App.View.FormList = App.View.Forms.extend({
     this.selectMessage.$el.hide();
     this.$fbEl.show();
     this.fb.mainView.collection.reset(fields);
-  }
+  },
+  onCloneForm : function(e){
+    e.preventDefault();
+    var self = this,
+    form = this.collection.at(this.currentForm),
+    createView = new App.View.FormCreateClone({ collection : this.collection, mode : 'clone', form : form.toJSON() });
+    this.$el.append(createView.render().$el);
+    createView.bind('message', function(){}); // TODO - do we want messages up top like with CMS?
+  },
 });
