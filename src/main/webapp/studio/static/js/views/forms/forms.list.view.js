@@ -116,7 +116,7 @@ App.View.FormList = App.View.Forms.extend({
 
     var index = el.data('index'),
     form = this.collection.at(index),
-    fields = this.formToFormBuilderFields(form.toJSON());
+    fields = this.formToFormBuilderFields(form);
 
     this.$fbEl.find('h4').html(form.get('Name'));
     this.$fbEl.find('p').html(form.get('Description'));

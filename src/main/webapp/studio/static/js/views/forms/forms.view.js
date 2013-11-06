@@ -27,16 +27,47 @@ App.View.Forms = Backbone.View.extend({
     });
     this.$el.append(this.modalView.render().$el);
   },
+  toFormBuilderType : function(type){
+    switch(type){
+      case "textarea":
+        return "paragraph";
+      default:
+        return type;
+    }
+  },
+  fromFormBuilderType : function(type){
+    switch(type){
+      case "paragraph":
+        return "textarea";
+      default:
+        return type;
+    }
+  },
   formToFormBuilderFields : function(form){
-    var fields = [];
-    _.each(form.Pages, function(p){
-      _.each(p.Fields, function(f){
+    var self = this,
+    pages = form.get('Pages'),
+    fields = [];
+    pages.each(function(p, i){
+      _.each(p.get('Fields'), function(f, i){
         fields.push({
           label :f.Title,
           value :f.DefaultVal,
-          field_type : f.Type
+          field_type : self.toFormBuilderType(f.Type)
         });
+        // Push our page break if we have more than 1 page
       });
+
+      //TODO: Relational should mean we can do this, why not?
+//      p.get('Fields').each(function(f, i){
+//
+//      });
+
+
+      if (i>0){
+
+      }
+      fields.push({ label : 'Page Break', value : '', field_type : 'file' });
+
     });
     return fields;
   }
