@@ -8,7 +8,7 @@ App.View.FormList = App.View.Forms.extend({
   },
   events : {
     'click .btn-add-form' : 'onCreateForm',
-    'click tr' : 'onFormSelected'
+    'click tr' : 'onFormSelected',
   },
   initialize: function(){
     this.compileTemplates();
@@ -128,6 +128,8 @@ App.View.FormList = App.View.Forms.extend({
     var index = el.data('index'),
     form = this.collection.at(index),
     fields = this.formToFormBuilderFields(form);
+
+    this.currentForm = index;
 
     this.$fbEl.find('h4').html(form.get('Name'));
     this.$fbEl.find('p').html(form.get('Description'));
