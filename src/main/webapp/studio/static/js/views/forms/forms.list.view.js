@@ -3,7 +3,8 @@ App.View = App.View || {};
 
 App.View.FormList = App.View.Forms.extend({
   templates : {
-    'formsAddForm' : '#formsAddForm'
+    'formsAddForm' : '#formsAddForm',
+    'formsListMenu' : '#formsListMenu'
   },
   events : {
     'click .btn-add-form' : 'onCreateForm',
@@ -48,7 +49,8 @@ App.View.FormList = App.View.Forms.extend({
       "sTitle": 'Updated',
       "mDataProp": 'DateUpdated'
     }],
-    forms = this.collection.toJSON();
+    forms = this.collection.toJSON(),
+    formsListMenu = $(this.templates.$formsListMenu());
 
     this.table = new App.View.DataTable({
       aaData : forms,
@@ -89,11 +91,13 @@ App.View.FormList = App.View.Forms.extend({
     });
 
     // Place holders that get filled when the user clicks a form
-    this.$fbEl.prepend("<p>Form Description</p>");
-    this.$fbEl.prepend("<h4>Form Title</h4>");
+    this.$fbEl.find('.middle').prepend("<p>Form Description</p>");
+    this.$fbEl.find('.middle').prepend("<h4>Form Title</h4>");
 
-    this.$fbEl.find('.middle').removeClass('span6');
-    this.$fbEl.find('.right').hide();
+    this.$fbEl.find('.middle').removeClass('span6').addClass('span9 well');
+    this.$fbEl.find('.right').removeClass('span4').addClass('span2');
+
+    this.$fbEl.find('.right').html(formsListMenu);
 
   },
   onCreateForm : function(e){
