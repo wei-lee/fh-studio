@@ -10,7 +10,7 @@ App.View.FormEdit = App.View.Forms.extend({
     'click tr' : 'onFormSelected'
   },
   initialize: function(options){
-    //this.compileTemplates();
+    this.constructor.__super__.initialize.apply(this, arguments);
     this.options = options;
   },
   render : function(){
@@ -23,16 +23,6 @@ App.View.FormEdit = App.View.Forms.extend({
     this.$el.append(this.$fbEl);
 
     // Also configure default FormBuilder field setup here to be inline with FH requirements
-    Formbuilder.options.mappings.LABEL = "name";
-    Formbuilder.options.mappings.VALUE = "defaultval";
-    Formbuilder.options.mappings.FIELD_TYPE = "type";
-    Formbuilder.options.mappings.TYPE_ALIASES = {
-      'paragraph' : 'textarea',
-      'checkboxes' : 'checkbox',
-      'dropdown' : 'select',
-      'website' : 'url',
-      'price' : 'money'
-    };
     this.fb = new Formbuilder(this.$fbEl, {
       noScroll : true,
       noEditOnDrop : true,

@@ -3,6 +3,9 @@
     "data": {
       "Name": "Simple Form",
       "Description": "This is my form. Please fill it out. It's awesome!",
+      "Using" : "24",
+      "SubmissionsToday" : "10",
+      "Submissions" : "2000",
       "RedirectMessage": "Great! Thanks for filling out my form!",
       "Url": "simple-form",
       "Email": "",
@@ -48,6 +51,9 @@
     "data": {
       "Name": "App Forms Phase II",
       "Description": "This is the sample form being used for development of App Forms Phase II. It contains all standard fields and has multiple pages and rules.",
+      "Using" : "200",
+      "SubmissionsToday" : "45",
+      "Submissions" : "10000",
       "RedirectMessage": "Great! Thanks for filling out my form!",
       "Url": "app-forms-phase-ii",
       "Email": "",

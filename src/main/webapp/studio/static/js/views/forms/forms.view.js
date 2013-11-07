@@ -2,8 +2,37 @@ var App = App || {};
 App.View = App.View || {};
 
 App.View.Forms = Backbone.View.extend({
+  CONSTANTS: {
+    FB : {
+      FIELD_NAME : 'name',
+      FIELD_VALUE : 'defaultval',
+      FIELD_TYPE: 'type',
+      TYPE_ALIASES : {
+        'paragraph' : 'textarea',
+        'checkboxes' : 'checkbox',
+        'dropdown' : 'select',
+        'website' : 'url',
+        'price' : 'money'
+      }
+    },
+    FORM: {
+      NAME: 'Name',
+      DESC: 'Description',
+      UPDATED: 'DateUpdated',
+      USING: 'Using',
+      SUBSTODAY: 'SubmissionsToday',
+      SUBS: 'Submissions'
+
+    }
+  },
   initialize: function(){
     this.compileTemplates();
+
+    // For all forms views apply form builder field mappings
+    Formbuilder.options.mappings.LABEL = this.CONSTANTS.FB.FIELD_NAME;
+    Formbuilder.options.mappings.VALUE = this.CONSTANTS.FB.FIELD_VALUE;
+    Formbuilder.options.mappings.FIELD_TYPE = this.CONSTANTS.FB.FIELD_TYPE;
+    Formbuilder.options.mappings.TYPE_ALIASES = this.CONSTANTS.FB.TYPE_ALIASES;
   },
   formsBreadcrumb : function(path){
     var crumbs = [];

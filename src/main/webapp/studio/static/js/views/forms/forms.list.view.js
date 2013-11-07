@@ -13,11 +13,10 @@ App.View.FormList = App.View.Forms.extend({
     'click .btn-delete-form' : 'onDeleteForm'
   },
   initialize: function(){
-    this.compileTemplates();
+    this.constructor.__super__.initialize.apply(this, arguments);
     this.collection = new App.Collection.Form();
     this.collection.bind('reset', $.proxy(this.render, this));
     this.collection.fetch({ reset : true });
-
   },
   render : function(){
     this.$el.empty();
@@ -43,23 +42,23 @@ App.View.FormList = App.View.Forms.extend({
     //Needed fields eventually: Name, Version, Last Updated, Apps using, Submissions, Submissions Total
     columns = [{
       "sTitle": 'Name',
-      "mDataProp": 'Name'
+      "mDataProp": this.CONSTANTS.FORM.NAME
     },{
       "sTitle": 'Description',
-      "mDataProp": 'Description'
+      "mDataProp": this.CONSTANTS.FORM.DESC
     },{
       "sTitle": 'Updated',
-      "mDataProp": 'DateUpdated'
-    }/*,{ //TODO: Make these..?
+      "mDataProp": this.CONSTANTS.FORM.UPDATED
+    },{ //TODO: Make these..?
      "sTitle": 'Apps Using This',
-     "mDataProp": 'Using'
+     "mDataProp": this.CONSTANTS.FORM.USING
     },{
      "sTitle": 'Submissions today',
-     "mDataProp": 'SubmissionsToday'
+     "mDataProp": this.CONSTANTS.FORM.SUBSTODAY
     },{
      "sTitle": 'Submissions',
-     "mDataProp": 'Submissions'
-    }*/],
+     "mDataProp": this.CONSTANTS.FORM.SUBS
+    }],
     forms = this.collection.toJSON(),
     formsListMenu = $(this.templates.$formsListMenu());
 
@@ -93,17 +92,7 @@ App.View.FormList = App.View.Forms.extend({
     this.$fbEl = $('<div class="formpreview" />');
     this.$el.append(this.$fbEl);
     this.$fbEl.hide();
-    // Also configure default FormBuilder field setup here to be inline with FH requirements
-    Formbuilder.options.mappings.LABEL = "name";
-    Formbuilder.options.mappings.VALUE = "value";
-    Formbuilder.options.mappings.FIELD_TYPE = "type";
-    Formbuilder.options.mappings.TYPE_ALIASES = {
-      'paragraph' : 'textarea',
-      'checkboxes' : 'checkbox',
-      'dropdown' : 'select',
-      'website' : 'url',
-      'price' : 'money'
-    };
+
     this.fb = new Formbuilder(this.$fbEl, {
       noScroll : true,
       noEditOnDrop : true,
