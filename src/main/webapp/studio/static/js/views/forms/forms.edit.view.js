@@ -23,7 +23,8 @@ App.View.FormEdit = App.View.Forms.extend({
     this.options = options;
   },
   render : function(){
-    var fields;
+    var self = this,
+    fields;
     this.form = this.options.form;
     this.collection = this.options.collection;
     fields = this.formToFormBuilderFields(this.form);
@@ -42,8 +43,8 @@ App.View.FormEdit = App.View.Forms.extend({
       bootstrapData: fields
     });
 
-    $('.fb-field-wrapper .subtemplate-wrapper').click(function (){
-      $('.fb-tabs li.configurefield a').trigger('click');
+    this.$el.find('.fb-field-wrapper .subtemplate-wrapper').click(function (){
+      self.$el.find('.fb-tabs li.configurefield a').trigger('click');
     });
 
     // Bug fix for multiple formbuilder views - unbind and re-bind the events
