@@ -28,6 +28,8 @@ App.View.FormEdit = App.View.Forms.extend({
     this.collection = this.options.collection;
     fields = this.formToFormBuilderFields(this.form);
 
+    this.breadcrumb(['Forms', 'Forms List', 'Edit Form']);
+
     this.$el.empty();
     this.$el.addClass('span10 formedit');
     this.$fbEl = $('<div>');
@@ -103,7 +105,7 @@ App.View.FormEdit = App.View.Forms.extend({
     this.form.set(this.CONSTANTS.FORM.DESC, this.$el.find('#formTextareaDesc').val());
     this.collection.sync('update', this.form.toJSON(), { success : function(){
       self.trigger('back');
-      self.$el.trigger('message', 'Form updated successfully');
+      self.message('Form updated successfully');
     }});
   },
   back : function(){

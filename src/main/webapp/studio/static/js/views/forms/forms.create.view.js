@@ -50,9 +50,9 @@ App.View.FormCreateClone = App.View.Modal.extend({
     this.collection.add(vals);
     this.collection.sync('create', vals, { success : function(res){
       var verb = (self.mode === 'create') ? "created" : "cloned";
-      self.$el.trigger('message', 'Form ' + verb + ' successfully');
+      self.message('Form ' + verb + ' successfully');
     }, error : function(err){
-      self.$el.trigger('message', 'Error creating form');
+      self.message('Error creating form');
       console.log('Error creating form');
       console.log(err);
     }});

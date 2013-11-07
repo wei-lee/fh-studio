@@ -1,3 +1,8 @@
+#forms_layout .alert {
+    position: absolute;
+    width: 97%;
+    z-index: 2000;
+}
 /*
  App.View.FormList styles
  */
@@ -5,7 +10,7 @@
     cursor: pointer;
 }
 .formslist table tr.info, .formslist table tr:hover {
-    background-color: #d9edf7;
+    background-color: #f8f8f8;
 }
 
 .formslist .formpreview .subtemplate-wrapper {

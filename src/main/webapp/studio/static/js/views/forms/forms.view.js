@@ -27,9 +27,6 @@ App.View.Forms = Backbone.View.extend({
 
     }
   },
-  events : {
-    'message' : 'showMessage'
-  },
   initialize: function(){
     this.compileTemplates();
 
@@ -39,18 +36,18 @@ App.View.Forms = Backbone.View.extend({
     Formbuilder.options.mappings.FIELD_TYPE = this.CONSTANTS.FB.FIELD_TYPE;
     Formbuilder.options.mappings.TYPE_ALIASES = this.CONSTANTS.FB.TYPE_ALIASES;
   },
-  formsBreadcrumb : function(path){
-    var crumbs = [];
-    crumbs.push('<ul class="breadcrumb">');
-    _.each(path.split('.'), function(crumb, index, list){
+  breadcrumb : function(trail){
+    var crumbs = [],
+    crumbEl = $('#forms_layout ul.breadcrumb');
+    _.each(trail, function(crumb, index, list){
       if (index === list.length-1){
         crumbs.push('<li class="active">' + crumb  + '</li>');
       }else{
         crumbs.push('<li><a href="#">' + crumb + '</a> <span class="divider">/</span></li>');
       }
     });
-    crumbs.push('</ul>');
-    return crumbs.join('');
+    crumbEl.html(crumbs.join(''))
+    return crumbEl;
   },
   modal : function(msg, title){
     title = title || 'Confirm';
@@ -85,7 +82,20 @@ App.View.Forms = Backbone.View.extend({
     });
     return fields;
   },
-  showMessage : function(msg){
-    alert(msg);
+  message : function(msg, cls){
+    cls = cls || 'success';
+    msg = msg || 'Save successful';
+
+    var form_message = Handlebars.compile($('#form_message').html()),
+    alertBox = $(form_message({ cls : cls, msg : msg })),
+    el = $('#forms_container');
+    $(el).prepend(alertBox);
+
+    // Fade out then remove our message
+    setTimeout(function(){
+      alertBox.fadeOut('fast', function(){
+        alertBox.remove();
+      });
+    }, 3000);
   }
 });

@@ -19,6 +19,7 @@ App.View.FormList = App.View.Forms.extend({
     this.collection.fetch({ reset : true });
   },
   render : function(){
+    this.breadcrumb(['Forms', 'Forms List']);
     this.$el.empty();
     this.$el.addClass('span10 formslist');
 
@@ -45,7 +46,8 @@ App.View.FormList = App.View.Forms.extend({
       "mDataProp": this.CONSTANTS.FORM.NAME
     },{
       "sTitle": 'Description',
-      "mDataProp": this.CONSTANTS.FORM.DESC
+      "mDataProp": this.CONSTANTS.FORM.DESC,
+      "sWidth" : "275px"
     },{
       "sTitle": 'Updated',
       "mDataProp": this.CONSTANTS.FORM.UPDATED
