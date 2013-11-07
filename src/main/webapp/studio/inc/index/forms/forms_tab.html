@@ -54,8 +54,8 @@
 <script id="formsListMenu" type="text/x-handlebars-template">
   <ul class="nav nav-pills nav-stacked well">
     <li><a class="btn-edit-form" href="#"><i class="icon-edit"></i>Edit Form</a></li>
-    <li><a class="btn-edit-rules" href="#"><i class="icon-pencil"></i> Edit Rules</a></li>
-    <li><a class="btn-view-submissions" href="#"><i class="icon-envelope"></i> View Submissions</a></li>
+    <li><a class="btn-edit-form-rules" href="#"><i class="icon-pencil"></i> Edit Rules</a></li>
+    <li><a class="btn-view-form-submissions" href="#"><i class="icon-envelope"></i> View Submissions</a></li>
     <li><a class="btn-view-form-apps" href="#"><i class="icon-th-large"></i> View Apps</a></li>
     <li><a class="btn-clone-form" href="#"><i class="icon-retweet"></i> Clone</a></li>
     <li><a class="btn-delete-form" href="#"><i class="icon-trash"></i> Delete</a></li>
@@ -63,20 +63,40 @@
   </ul>
 </script>
 
-<script id="formsModalCreateBody" type="text/x-handlebars-template">
+<script id="formCreateEditForm" type="text/x-handlebars-template">
   <form class="form-horizontal">
-    <div class="control-group">
-      <label class="control-label" for="formInputName">Name</label>
-      <div class="controls">
-        <input type="text" id="formInputName" placeholder="Name" name="Name">
-      </div>
-    </div>
-    <div class="control-group">
-      <label class="control-label" for="formTextareaDesc">Description</label>
-      <div class="controls">
-        <textarea id="formTextareaDesc" placeholder="Description" name="Description"></textarea>
-      </div>
-    </div>
+    <fieldset>
+      <label for="formInputName">Name</label>
+      <input type="text" id="formInputName" placeholder="Name" name="{{ CONSTANTS.FORM.NAME }}">
+      <label for="formTextareaDesc">Description</label>
+      <textarea id="formTextareaDesc" placeholder="Description" name="{{ CONSTANTS.FORM.DESC }}"></textarea>
+    </fieldset>
   </form>
 </script>
 
+<script id="formEditExtraTabs" type="text/x-handlebars-template">
+<li class="formconfig"><a  data-target="#formConfig"><i class="icon icon-cog"></i> Form</a></li>
+  <li class="formpreview"><a  data-target="#formPreview">Preview</a></li>
+</script>
+
+<script id="formEditExtraTabsContent" type="text/x-handlebars-template">
+  <div class="fb-tab-pane" id="formConfig">
+    <h1>Config</h1>
+  </div>
+  <div class="fb-tab-pane" id="formPreview">
+    <h1>Preview</h1>
+  </div>
+</script>
+
+<script id="formSaveCancel" type="text/x-handlebars-template">
+  <div class="row">
+    <div class="btn-group pull-right">
+      <a class="btn btn-danger btn-form-cancel" href="#">Cancel</a>
+      <a class="btn btn-success btn-form-save" href="#">Save</a>
+    </div>
+  </div>
+</script>
+
+<script id="form_back" type="text/x-handlebars-template">
+  <a class="btn btn-forms-back pull-left" href="#"><i class="icon-arrow-left"></i> Back</a>
+</script>

@@ -4,7 +4,10 @@ App.View.FormsController = Backbone.View.extend({
     'click .btn-apps' : 'onApps',
     'click .btn-themes' : 'onThemes',
     'click .btn-submissions' : 'onSubmissions',
-    'click .btn-edit-form' : 'onEditForm'
+    'click .btn-edit-form' : 'onEditForm',
+    'click .btn-edit-form-rules' : 'onEditFormRules',
+    'click .btn-view-form-submissions' : 'onViewFormSubmissions',
+    'click .btn-view-form-apps' : 'onViewAppsUsingThisForm'
   },
   initialize : function(){},
   menuItem : 'forms', // TODO: Trigger events maybe to change if he's active or not..?
@@ -14,13 +17,13 @@ App.View.FormsController = Backbone.View.extend({
     this.menu = new App.View.FormMenu();
     this.$el.append(this.menu.render().$el);
 
-    this.formsList = new App.View.FormList();
-    this.$el.append(this.formsList.render().$el);
+    this.forms = new App.View.FormList();
+    this.$el.append(this.forms.render().$el);
     return this;
   },
   onForms: function(){
     this.menuItem = 'forms';
-    this.formsList.$el.show();
+    this.forms.$el.show();
     if (this.editForm){
       this.editForm.$el.hide();
     }
@@ -34,10 +37,34 @@ App.View.FormsController = Backbone.View.extend({
   onSubmissions : function(){
     this.menuItem = 'submissions';
   },
+  /*
+    Edit Form view switching
+   */
   onEditForm : function(e){
-    var form = this.formsList.collection.at(this.formsList.currentForm);
-    this.formsList.$el.hide();
-    this.editForm = new App.View.FormEdit({ form : form });
+    var form = this.forms.collection.at(this.forms.currentForm);
+    this.forms.$el.hide();
+    this.editForm = new App.View.FormEdit({ form : form, collection : this.forms.collection });
+    this.editForm.bind('back', $.proxy(this.back, this));
     this.$el.append(this.editForm.render().$el);
+  },
+  onEditFormRules : function(e){
+    //TODO
+  },
+  onViewFormSubmissions : function(e){
+    //TODO
+  },
+  onViewAppsUsingThisForm : function(e){
+    //TODO
+  },
+  /*
+
+   */
+  back : function(){
+    _.each([this.editForm], function(view){
+      if (view && view.$el){
+        view.$el.hide();
+      }
+    });
+    this[this.menuItem].$el.show();
   }
 });

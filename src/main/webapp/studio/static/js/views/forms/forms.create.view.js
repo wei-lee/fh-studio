@@ -3,8 +3,9 @@ App.View = App.View || {};
 
 App.View.FormCreateClone = App.View.Modal.extend({
   initialize: function(options){
-    var tpl = Handlebars.compile($('#formsModalCreateBody').html()),
-    body = $(tpl()),
+    this.CONSTANTS = App.View.Forms.prototype.CONSTANTS;
+    var tpl = Handlebars.compile($('#formCreateEditForm').html()),
+    body = $(tpl({ CONSTANTS : this.CONSTANTS })),
     mode = options.mode || 'create';
     this.options = options = {
       title: (options.mode==='create') ? 'Create New Form' : 'Clone Form',
@@ -21,8 +22,8 @@ App.View.FormCreateClone = App.View.Modal.extend({
   render : function(options){
     App.View.Modal.prototype.render.apply(this, arguments);
     if (this.options.mode === 'clone'){
-      this.$el.find('input[name="Name"]').val(this.options.form.Name + " Copy"); // name
-      this.$el.find('textarea[name="Description"]').val(this.options.form.Description || ""); // name
+      this.$el.find('input[name="Name"]').val(this.options.form[this.CONSTANTS.FORM.NAME] + " Copy"); // name
+      this.$el.find('textarea[name="Description"]').val(this.options.form[this.CONSTANTS.FORM.NAME] || ""); // name
     }
 
     return this;
@@ -36,7 +37,7 @@ App.View.FormCreateClone = App.View.Modal.extend({
       vals[el.name] = el.value;
     });
 
-    if (this.mode === 'create'){
+    if (this.options.mode === 'create'){
       vals.DateUpdated = new Date().toString();
       vals.pages = [
         { "Fields": [] }
@@ -48,10 +49,10 @@ App.View.FormCreateClone = App.View.Modal.extend({
     }
     this.collection.add(vals);
     this.collection.sync('create', vals, { success : function(res){
-      self.collection.trigger('reset');
-      self.trigger('message', 'Form created');
+      var verb = (self.mode === 'create') ? "created" : "cloned";
+      self.$el.trigger('message', 'Form ' + verb + ' successfully');
     }, error : function(err){
-      self.trigger('message', 'Error creating form');
+      self.$el.trigger('message', 'Error creating form');
       console.log('Error creating form');
       console.log(err);
     }});

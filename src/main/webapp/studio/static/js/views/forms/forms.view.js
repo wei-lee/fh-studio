@@ -4,9 +4,9 @@ App.View = App.View || {};
 App.View.Forms = Backbone.View.extend({
   CONSTANTS: {
     FB : {
-      FIELD_NAME : 'name',
-      FIELD_VALUE : 'defaultval',
-      FIELD_TYPE: 'type',
+      FIELD_NAME : 'Title',
+      FIELD_VALUE : 'Defaultval',
+      FIELD_TYPE: 'Type',
       TYPE_ALIASES : {
         'paragraph' : 'textarea',
         'checkboxes' : 'checkbox',
@@ -21,9 +21,14 @@ App.View.Forms = Backbone.View.extend({
       UPDATED: 'DateUpdated',
       USING: 'Using',
       SUBSTODAY: 'SubmissionsToday',
-      SUBS: 'Submissions'
+      SUBS: 'Submissions',
+      PAGES: 'Pages',
+      FIELDS: 'Fields'
 
     }
+  },
+  events : {
+    'message' : 'showMessage'
   },
   initialize: function(){
     this.compileTemplates();
@@ -58,32 +63,29 @@ App.View.Forms = Backbone.View.extend({
   },
   formToFormBuilderFields : function(form){
     var self = this,
-    pages = form.get('Pages'),
+    pages = form.get(this.CONSTANTS.FORM.PAGES),
     fields = [];
     pages.each(function(p, i){
-      _.each(p.get('Fields'), function(f, i){
+      _.each(p.get(self.CONSTANTS.FORM.FIELDS), function(f, i){
         var notYetDone = ['shortname', 'europhone', 'likert']; // TODO Do these then remove
         if (notYetDone.indexOf(f.Type)>-1){
           f.Type = "text";
         }
-        fields.push({
-          name :f.Title,
-          value :f.DefaultVal,
-          type : f.Type
-        });
-        // Push our page break if we have more than 1 page
+        fields.push(f);
       });
 
       //TODO: Relational should mean we can do this, why not?
 //      p.get('Fields').each(function(f, i){
 //
 //      });
-
+      // Push our page break if we have more than 1 page
       if (i>0){
-        fields.push({ name : 'Page Break', value : '', type : 'file' });
+        fields.push({ name : 'Page Break', value : '', type : 'page_break' });
       }
-
     });
     return fields;
+  },
+  showMessage : function(msg){
+    alert(msg);
   }
 });

@@ -192,7 +192,7 @@
           var val;
           val = e.target.value;
           this.editing = true;
-          this.model.set('value', val);
+          this.model.set(Formbuilder.options.mappings.VALUE, val);
         },
         clear: function() {
           this.parentView.handleFormUpdate();
@@ -680,6 +680,16 @@
     view: "<input type='text' />\n<% if (units = rf.get(Formbuilder.options.mappings.UNITS)) { %>\n  <%= units %>\n<% } %>",
     edit: "<%= Formbuilder.templates['edit/min_max']() %>\n<%= Formbuilder.templates['edit/units']() %>\n<%= Formbuilder.templates['edit/integer_only']() %>",
     addButton: "<span class=\"symbol\"><span class=\"icon-number\">123</span></span> Number"
+  });
+
+}).call(this);
+
+(function() {
+  Formbuilder.registerField('page_break', {
+    type: 'non_input',
+    view: "<label class='section-name'>Page Break</label>\n<hr>",
+    edit: "",
+    addButton: "<span class='symbol'><span class='icon-minus'></span></span> Page Break"
   });
 
 }).call(this);
