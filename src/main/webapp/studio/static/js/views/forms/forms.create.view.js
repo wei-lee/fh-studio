@@ -38,7 +38,10 @@ App.View.FormCreateClone = App.View.Modal.extend({
     });
 
     if (this.options.mode === 'create'){
-      vals.DateUpdated = new Date().toString();
+      vals[App.View.Forms.prototype.CONSTANTS.FORM.UPDATED] = new Date().toString();
+      vals[App.View.Forms.prototype.CONSTANTS.FORM.USING] = 0;
+      vals[App.View.Forms.prototype.CONSTANTS.FORM.SUBSTODAY] = 0;
+      vals[App.View.Forms.prototype.CONSTANTS.FORM.SUBS] = 0;
       vals.pages = [
         { "Fields": [] }
       ];
@@ -50,9 +53,9 @@ App.View.FormCreateClone = App.View.Modal.extend({
     this.collection.add(vals);
     this.collection.sync('create', vals, { success : function(res){
       var verb = (self.mode === 'create') ? "created" : "cloned";
-      self.message('Form ' + verb + ' successfully');
+      App.View.Forms.prototype.message('Form ' + verb + ' successfully');
     }, error : function(err){
-      self.message('Error creating form');
+      App.View.Forms.prototype.message('Error creating form');
       console.log('Error creating form');
       console.log(err);
     }});
