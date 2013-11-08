@@ -41,6 +41,7 @@ module.exports = function(grunt) {
       'src/main/webapp/studio/static/js/views/app/cloud/cms/cloud.cms.view.js',
       'src/main/webapp/studio/static/js/views/app/cloud/cms/cloud.cms.view.controller.js',
       'src/main/webapp/studio/static/js/views/app/cloud/cms/cloud.cms.tree.view.js',
+        'src/main/webapp/studio/static/js/views/app/cloud/cms/cloud.cms.audit.view.js',
       'src/main/webapp/studio/static/js/views/app/cloud/cms/cloud.cms.section.view.js',
       'src/main/webapp/studio/static/js/views/app/cloud/cms/cloud.cms.listfield.view.js',
       'src/main/webapp/studio/static/js/views/app/cloud/cms/cloud.cms.listfield.topbar.view.js',
