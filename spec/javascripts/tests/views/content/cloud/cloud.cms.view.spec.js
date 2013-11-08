@@ -56,7 +56,8 @@ describe("test CMS view", function(){
     view = new App.View.CMSController({ container : container });
     view.render();
 
-
+    jasmine.log(view);
+    jasmine.log(view.collection.length);
     spyOn(view, "render").andCallThrough();
 
     view.collection.bind('reset', function(){
