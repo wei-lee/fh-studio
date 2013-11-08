@@ -56,16 +56,14 @@ describe("test CMS view", function(){
     view = new App.View.CMSController({ container : container });
     view.render();
 
-    jasmine.log(view);
-    jasmine.log(view.collection.length);
     spyOn(view, "render").andCallThrough();
 
-    view.collection.bind('reset', function(){
-      // Now our view is loaded, make sure our collection has as many entries as we mocked
-      expect(view.collection.length).toEqual(5);
 
-      expect(view.$el.find('.jstree li').length).toEqual(5);
-    });
+    // Now our view is loaded, make sure our collection has as many entries as we mocked
+    expect(view.collection.length).toEqual(5);
+    expect(view.$el.find('.jstree li').length).toEqual(5);
 
+    // Make sure FB starts up ok
+    expect(view.$el.find('.fbContainer').length).toBeGreaterThan(0);
   });
 });
