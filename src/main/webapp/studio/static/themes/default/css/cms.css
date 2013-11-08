@@ -390,6 +390,6 @@
 #cms_container .fb-configure-length {
     display : none;
 }
-#cms_container .fb-label-description textarea {
+#cms_container .fb-field-description {
     display: none;
 }

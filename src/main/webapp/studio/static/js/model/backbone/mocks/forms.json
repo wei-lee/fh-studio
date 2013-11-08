@@ -73,7 +73,8 @@
             "fieldOptions":{
               "definition":{
                 "maxRepeat":5,
-                "minRepeat":2
+                "minRepeat":2,
+                "defaultValue" : "my text field value"
               },
               "validation":{
                 "min":20,
@@ -91,7 +92,8 @@
             "fieldOptions":{
               "definition":{
                 "maxRepeat":5,
-                "minRepeat":3
+                "minRepeat":3,
+                "defaultValue" : "my paragraph value"
               },
               "validation":{
                 "min":50,

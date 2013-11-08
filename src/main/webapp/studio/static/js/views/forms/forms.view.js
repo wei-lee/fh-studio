@@ -5,9 +5,11 @@ App.View.Forms = Backbone.View.extend({
   CONSTANTS: {
     FB : {
       FIELD_NAME : 'name',
-      FIELD_VALUE : 'field_options.defaultValue',
+      FIELD_VALUE : 'fieldOptions.definition.defaultValue',
       FIELD_TYPE: 'type',
       DESCRIPTION: 'helpText',
+      MINREPITIONS: 'fieldOptions.definition.minRepeat',
+      MAXREPITIONS: 'fieldOptions.definition.maxRepeat',
       TYPE_ALIASES : {
         'paragraph' : 'textarea',
         'checkboxes' : 'checkbox',
