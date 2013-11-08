@@ -40,7 +40,8 @@ App.View.FormEdit = App.View.Forms.extend({
     this.fb = new Formbuilder(this.$fbEl, {
       noScroll : true,
       noEditOnDrop : true,
-      bootstrapData: fields
+      bootstrapData: fields,
+      eventFix : true
     });
 
     this.$el.find('.fb-field-wrapper .subtemplate-wrapper').click(function (){

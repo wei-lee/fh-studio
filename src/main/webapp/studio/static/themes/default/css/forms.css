@@ -36,3 +36,19 @@
     margin-top: 5px;
     margin-right: 12px;
 }
+
+/*
+  Formbuilder specific CSS
+ */
+.fb-adminonly {
+    display: none;
+}
+
+.fb-common-wrapper .fb-label-description {
+    float: none;
+    width: auto;
+}
+
+.fb-common-wrapper .fb-common-checkboxes {
+    margin-left: 0px;
+}

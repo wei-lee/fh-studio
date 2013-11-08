@@ -51,9 +51,10 @@
           field_type = Formbuilder.options.mappings.TYPE_ALIASES[field_type];
         }
         attrs = {
-          required: true,
           field_options: {}
         };
+        attrs[Formbuilder.options.mappings.REQUIRED] = true;
+        attrs[Formbuilder.options.mappings.REPEATING] = false;
         attrs[Formbuilder.options.mappings.FIELD_TYPE] = field_type;
         attrs[Formbuilder.options.mappings.LABEL] = "Untitled";
         return (typeof (_base = Formbuilder.fields[field_type]).defaultAttributes === "function" ? _base.defaultAttributes(attrs) : void 0) || attrs;
@@ -75,9 +76,12 @@
         HASH: 'hash',
         FIELD_TYPE: 'field_type',
         REQUIRED: 'required',
+        REPEATING: 'repeating',
         ADMIN_ONLY: 'admin_only',
         OPTIONS: 'field_options.options',
         DESCRIPTION: 'field_options.description',
+        DESCRIPTION_PLACEHOLDER: 'Add a longer description to this field',
+        DESCRIPTION_TITLE: 'Description',
         INCLUDE_OTHER: 'field_options.include_other_option',
         INCLUDE_BLANK: 'field_options.include_blank_option',
         INTEGER_ONLY: 'field_options.integer_only',
@@ -85,8 +89,20 @@
         MAX: 'field_options.max',
         MINLENGTH: 'field_options.minlength',
         MAXLENGTH: 'field_options.maxlength',
+        MINREPITIONS: 'field_options.minRepeat',
+        MAXREPITIONS: 'field_options.maxRepeat',
         LENGTH_UNITS: 'field_options.min_max_length_units',
         TYPE_ALIASES: false
+      },
+      unAliasType: function(type) {
+        var $idx;
+        if (Formbuilder.options.mappings.TYPE_ALIASES) {
+          $idx = _.values(Formbuilder.options.mappings.TYPE_ALIASES).indexOf(type);
+          if ($idx > -1) {
+            type = _.keys(Formbuilder.options.mappings.TYPE_ALIASES)[$idx];
+          }
+        }
+        return type;
       },
       dict: {
         ALL_CHANGES_SAVED: 'All changes saved',
@@ -112,14 +128,9 @@
         return $(".fb-field-wrapper").index($wrapper);
       },
       is_input: function() {
-        var $idx, $type;
+        var $type;
         $type = this.get(Formbuilder.options.mappings.FIELD_TYPE);
-        if (Formbuilder.options.mappings.TYPE_ALIASES) {
-          $idx = _.values(Formbuilder.options.mappings.TYPE_ALIASES).indexOf($type);
-          if ($idx > -1) {
-            $type = _.keys(Formbuilder.options.mappings.TYPE_ALIASES)[$idx];
-          }
-        }
+        $type = Formbuilder.options.unAliasType($type);
         return Formbuilder.inputFields[$type] != null;
       }
     });
@@ -214,16 +225,28 @@
           'click .js-add-option': 'addOption',
           'click .js-remove-option': 'removeOption',
           'click .js-default-updated': 'defaultUpdated',
-          'input .option-label-input': 'forceRender'
+          'input .option-label-input': 'forceRender',
+          'change .fb-repeating input[type=checkbox]': 'toggleRepititionsInputs'
         },
         initialize: function() {
           this.listenTo(this.model, "destroy", this.remove);
           return this.parentView = this.options.parentView;
         },
         render: function() {
+          var $repeatable, $type, commonCheckboxes;
+          commonCheckboxes = this.parentView.options.hasOwnProperty('commonCheckboxes') ? this.parentView.options.commonCheckboxes : true;
+          $repeatable = false;
+          $type = this.model.get(Formbuilder.options.mappings.FIELD_TYPE);
+          $type = Formbuilder.options.unAliasType($type);
+          if (Formbuilder.inputFields[$type] && Formbuilder.inputFields[$type].repeatable && Formbuilder.inputFields[$type].repeatable === true) {
+            $repeatable = true;
+          }
           this.$el.html(Formbuilder.templates["edit/base" + (!this.model.is_input() ? '_non_input' : '')]({
             rf: this.model,
-            editStructure: this.parentView.options.editStructure
+            editStructure: this.parentView.options.editStructure,
+            commonCheckboxes: commonCheckboxes,
+            repeatable: $repeatable,
+            repeating: this.model.get(Formbuilder.options.mappings.REPEATING)
           }));
           rivets.bind(this.$el, {
             model: this.model
@@ -277,6 +300,15 @@
         },
         forceRender: function() {
           return this.model.trigger('change');
+        },
+        toggleRepititionsInputs: function(e) {
+          var $el;
+          $el = $(e.target);
+          if ($el.prop('checked') === true) {
+            return this.$el.find('.fb-repititions input').prop('disabled', false);
+          } else {
+            return this.$el.find('.fb-repititions input').prop('disabled', true);
+          }
         }
       }),
       main: Backbone.View.extend({
@@ -588,6 +620,7 @@
 
 (function() {
   Formbuilder.registerField('address', {
+    repeatable: true,
     view: "<div class='input-line'>\n  <span class='street'>\n    <input type='text' />\n    <label>Address</label>\n  </span>\n</div>\n\n<div class='input-line'>\n  <span class='city'>\n    <input type='text' />\n    <label>City</label>\n  </span>\n\n  <span class='state'>\n    <input type='text' />\n    <label>State / Province / Region</label>\n  </span>\n</div>\n\n<div class='input-line'>\n  <span class='zip'>\n    <input type='text' />\n    <label>Zipcode</label>\n  </span>\n\n  <span class='country'>\n    <select><option>United States</option></select>\n    <label>Country</label>\n  </span>\n</div>",
     edit: "",
     addButton: "<span class=\"symbol\"><span class=\"icon-home\"></span></span> Address"
@@ -597,6 +630,7 @@
 
 (function() {
   Formbuilder.registerField('checkboxes', {
+    repeatable: true,
     view: "<% for (i in (rf.get(Formbuilder.options.mappings.OPTIONS) || [])) { %>\n  <div>\n    <label class='fb-option'>\n      <input type='checkbox' <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].checked && 'checked' %> onclick=\"javascript: return false;\" />\n      <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>\n    </label>\n  </div>\n<% } %>\n\n<% if (rf.get(Formbuilder.options.mappings.INCLUDE_OTHER)) { %>\n  <div class='other-option'>\n    <label class='fb-option'>\n      <input type='checkbox' />\n      Other\n    </label>\n\n    <input type='text' />\n  </div>\n<% } %>",
     edit: "<%= Formbuilder.templates['edit/options']({ includeOther: true }) %>",
     addButton: "<span class=\"symbol\"><span class=\"icon-check-empty\"></span></span> Checkboxes",
@@ -618,6 +652,7 @@
 
 (function() {
   Formbuilder.registerField('date', {
+    repeatable: true,
     view: "<div class='input-line'>\n  <span class='month'>\n    <input type=\"text\" />\n    <label>MM</label>\n  </span>\n\n  <span class='above-line'>/</span>\n\n  <span class='day'>\n    <input type=\"text\" />\n    <label>DD</label>\n  </span>\n\n  <span class='above-line'>/</span>\n\n  <span class='year'>\n    <input type=\"text\" />\n    <label>YYYY</label>\n  </span>\n</div>",
     edit: "",
     addButton: "<span class=\"symbol\"><span class=\"icon-calendar\"></span></span> Date"
@@ -627,6 +662,7 @@
 
 (function() {
   Formbuilder.registerField('dropdown', {
+    repeatable: false,
     view: "<select>\n  <% if (rf.get(Formbuilder.options.mappings.INCLUDE_BLANK)) { %>\n    <option value=''></option>\n  <% } %>\n\n  <% for (i in (rf.get(Formbuilder.options.mappings.OPTIONS) || [])) { %>\n    <option <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].checked && 'selected' %>>\n      <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>\n    </option>\n  <% } %>\n</select>",
     edit: "<%= Formbuilder.templates['edit/options']({ includeBlank: true }) %>",
     addButton: "<span class=\"symbol\"><span class=\"icon-caret-down\"></span></span> Dropdown",
@@ -649,6 +685,7 @@
 
 (function() {
   Formbuilder.registerField('email', {
+    repeatable: true,
     view: "<input type='text' class='rf-size-<%= rf.get(Formbuilder.options.mappings.SIZE) %>' />",
     edit: "",
     addButton: "<span class=\"symbol\"><span class=\"icon-envelope-alt\"></span></span> Email"
@@ -668,6 +705,7 @@
 
 (function() {
   Formbuilder.registerField('file', {
+    repeatable: true,
     view: "<div class=\"file_container\" data-name=\"<%= rf.get(Formbuilder.options.mappings.LABEL) %>\"></div>\n<input type='file' name=\"<%= rf.get(Formbuilder.options.mappings.LABEL) %>\" data-name=\"<%= rf.get(Formbuilder.options.mappings.LABEL) %>\" data-cid='<%= rf.cid %>' data-_id='<%= rf.get('_id') %>'  />",
     edit: "",
     addButton: "<span class=\"symbol\"><span class=\"icon-cloud-upload\"></span></span> File"
@@ -677,6 +715,7 @@
 
 (function() {
   Formbuilder.registerField('number', {
+    repeatable: true,
     view: "<input type='text' />\n<% if (units = rf.get(Formbuilder.options.mappings.UNITS)) { %>\n  <%= units %>\n<% } %>",
     edit: "<%= Formbuilder.templates['edit/min_max']() %>\n<%= Formbuilder.templates['edit/units']() %>\n<%= Formbuilder.templates['edit/integer_only']() %>",
     addButton: "<span class=\"symbol\"><span class=\"icon-number\">123</span></span> Number"
@@ -696,6 +735,7 @@
 
 (function() {
   Formbuilder.registerField('paragraph', {
+    repeatable: true,
     view: "<textarea class='rf-size-<%= rf.get(Formbuilder.options.mappings.SIZE) %>' data-cid='<%= rf.cid %>' data-_id='<%= rf.get('_id') %>' ><%= rf.get(Formbuilder.options.mappings.VALUE) %></textarea>",
     edit: "<%= Formbuilder.templates['edit/size']() %>\n<%= Formbuilder.templates['edit/min_max_length']() %>",
     addButton: "<span class=\"symbol\">&#182;</span> Paragraph",
@@ -709,6 +749,7 @@
 
 (function() {
   Formbuilder.registerField('price', {
+    repeatable: true,
     view: "<div class='input-line'>\n  <span class='above-line'>$</span>\n  <span class='dolars'>\n    <input type='text' />\n    <label>Dollars</label>\n  </span>\n  <span class='above-line'>.</span>\n  <span class='cents'>\n    <input type='text' />\n    <label>Cents</label>\n  </span>\n</div>",
     edit: "",
     addButton: "<span class=\"symbol\"><span class=\"icon-dollar\"></span></span> Price"
@@ -718,6 +759,7 @@
 
 (function() {
   Formbuilder.registerField('radio', {
+    repeatable: true,
     view: "<% for (i in (rf.get(Formbuilder.options.mappings.OPTIONS) || [])) { %>\n  <div>\n    <label class='fb-option'>\n      <input type='radio' <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].checked && 'checked' %> onclick=\"javascript: return false;\" />\n      <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>\n    </label>\n  </div>\n<% } %>\n\n<% if (rf.get(Formbuilder.options.mappings.INCLUDE_OTHER)) { %>\n  <div class='other-option'>\n    <label class='fb-option'>\n      <input type='radio' />\n      Other\n    </label>\n\n    <input type='text' />\n  </div>\n<% } %>",
     edit: "<%= Formbuilder.templates['edit/options']({ includeOther: true }) %>",
     addButton: "<span class=\"symbol\"><span class=\"icon-circle-blank\"></span></span> Multiple Choice",
@@ -749,6 +791,7 @@
 
 (function() {
   Formbuilder.registerField('text', {
+    repeatable: true,
     view: "<% var size = rf.get(Formbuilder.options.mappings.SIZE) || 'large'; %>\n<input type='text' data-cid='<%= rf.cid %>' data-_id='<%= rf.get('_id') %>'  value='<%= rf.get(Formbuilder.options.mappings.VALUE) %>' class='rf-size-<%= size %>' />",
     edit: "<%= Formbuilder.templates['edit/size']() %>\n<%= Formbuilder.templates['edit/min_max_length']() %>",
     addButton: "<span class='symbol'><span class='icon-font'></span></span> Text",
@@ -762,6 +805,7 @@
 
 (function() {
   Formbuilder.registerField('time', {
+    repeatable: true,
     view: "<div class='input-line'>\n  <span class='hours'>\n    <input type=\"text\" />\n    <label>HH</label>\n  </span>\n\n  <span class='above-line'>:</span>\n\n  <span class='minutes'>\n    <input type=\"text\" />\n    <label>MM</label>\n  </span>\n\n  <span class='above-line'>:</span>\n\n  <span class='seconds'>\n    <input type=\"text\" />\n    <label>SS</label>\n  </span>\n\n  <span class='am_pm'>\n    <select>\n      <option>AM</option>\n      <option>PM</option>\n    </select>\n  </span>\n</div>",
     edit: "",
     addButton: "<span class=\"symbol\"><span class=\"icon-time\"></span></span> Time"
@@ -771,6 +815,7 @@
 
 (function() {
   Formbuilder.registerField('website', {
+    repeatable: true,
     view: "<input type='text' class='rf-size-<%= rf.get(Formbuilder.options.mappings.SIZE) %>' placeholder='http://' />",
     edit: "<%= Formbuilder.templates['edit/size']() %>",
     addButton: "<span class=\"symbol\"><span class=\"icon-link\"></span></span> Website"
@@ -788,7 +833,7 @@ with (obj) {
 __p +=
 ((__t = ( Formbuilder.templates['edit/base_header']() )) == null ? '' : __t) +
 '\n' +
-((__t = ( Formbuilder.templates['edit/common']({ editStructure : editStructure }) )) == null ? '' : __t) +
+((__t = ( Formbuilder.templates['edit/common']({ editStructure : editStructure, commonCheckboxes : commonCheckboxes, repeatable : repeatable, repeating : repeating }) )) == null ? '' : __t) +
 '\n' +
 ((__t = ( Formbuilder.fields[rf.get(Formbuilder.options.mappings.FIELD_TYPE)].edit({rf: rf}) )) == null ? '' : __t) +
 '\n';
@@ -827,11 +872,28 @@ return __p
 
 this["Formbuilder"]["templates"]["edit/checkboxes"] = function(obj) {
 obj || (obj = {});
-var __t, __p = '', __e = _.escape;
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<label>\n  <input type=\'checkbox\' data-rv-checked=\'model.' +
+__p += '<label class="fb-required">\n  <input type=\'checkbox\' data-rv-checked=\'model.' +
 ((__t = ( Formbuilder.options.mappings.REQUIRED )) == null ? '' : __t) +
-'\' />\n  Required\n</label>\n<label>\n  <input type=\'checkbox\' data-rv-checked=\'model.' +
+'\' />\n  Required\n</label>\n\n';
+ if (repeatable){ ;
+__p += '\n  <label class="fb-repeating">\n    <input type=\'checkbox\' data-rv-checked=\'model.' +
+((__t = ( Formbuilder.options.mappings.REPEATING )) == null ? '' : __t) +
+'\' />\n    Repeating\n  </label>\n  <label class="fb-repititions">\n    Min. Repititions\n    ';
+ var disabled = (repeating===true) ? "" : "disabled"; ;
+__p += '\n    <input type="text" ' +
+((__t = ( disabled )) == null ? '' : __t) +
+' data-rv-input="model.' +
+((__t = ( Formbuilder.options.mappings.MINREPITIONS )) == null ? '' : __t) +
+'" style="width: 30px" />\n    Max. Repititions\n    <input type="text" ' +
+((__t = ( disabled )) == null ? '' : __t) +
+' data-rv-input="model.' +
+((__t = ( Formbuilder.options.mappings.MAXREPITIONS)) == null ? '' : __t) +
+'" style="width: 30px" />\n  </label>\n';
+ } ;
+__p += '\n<label class="fb-adminonly">\n  <input type=\'checkbox\' data-rv-checked=\'model.' +
 ((__t = ( Formbuilder.options.mappings.ADMIN_ONLY )) == null ? '' : __t) +
 '\' />\n  Admin only\n</label>';
 
@@ -841,13 +903,18 @@ return __p
 
 this["Formbuilder"]["templates"]["edit/common"] = function(obj) {
 obj || (obj = {});
-var __t, __p = '', __e = _.escape;
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
 with (obj) {
 __p += '<div class=\'fb-common-wrapper\'>\n  <div class=\'fb-label-description\'>\n    ' +
 ((__t = ( Formbuilder.templates['edit/label_description']({ editStructure : editStructure }) )) == null ? '' : __t) +
-'\n  </div>\n  <div class=\'fb-common-checkboxes\'>\n    ' +
-((__t = ( Formbuilder.templates['edit/checkboxes']() )) == null ? '' : __t) +
-'\n  </div>\n  <div class=\'fb-clear\'></div>\n</div>\n';
+'\n  </div>\n  ';
+ if (commonCheckboxes){ ;
+__p += '\n  <div class=\'fb-common-checkboxes\'>\n    ' +
+((__t = ( Formbuilder.templates['edit/checkboxes']({repeatable : repeatable, repeating : repeating}) )) == null ? '' : __t) +
+'\n  </div>\n  ';
+ } ;
+__p += '\n  <div class=\'fb-clear\'></div>\n</div>\n';
 
 }
 return __p
@@ -878,9 +945,13 @@ __p += '\n  <div class=\'fb-edit-section-header\'>Name</div>\n  <input type=\'te
  } ;
 __p += '\n<div class=\'fb-edit-section-header\'>Value</div>\n<input type=\'text\' data-rv-input=\'model.' +
 ((__t = ( Formbuilder.options.mappings.VALUE )) == null ? '' : __t) +
-'\' />\n<textarea data-rv-input=\'model.' +
+'\' />\n<div class=\'fb-edit-section-header\'>' +
+((__t = ( Formbuilder.options.mappings.DESCRIPTION_TITLE )) == null ? '' : __t) +
+'</div>\n<textarea data-rv-input=\'model.' +
 ((__t = ( Formbuilder.options.mappings.DESCRIPTION )) == null ? '' : __t) +
-'\'\n  placeholder=\'Add a longer description to this field\'></textarea>';
+'\'\n  placeholder=\'' +
+((__t = ( Formbuilder.options.mappings.DESCRIPTION_PLACEHOLDER )) == null ? '' : __t) +
+'\'></textarea>';
 
 }
 return __p
@@ -904,13 +975,13 @@ this["Formbuilder"]["templates"]["edit/min_max_length"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<!--<div class=\'fb-edit-section-header\'>Length Limit</div>-->\n\n<!--Min-->\n<!--<input type="text" data-rv-input="model.' +
+__p += '<div class="fb-configure-length">\n  <div class=\'fb-edit-section-header\'>Length Limit</div>\n\n  Min\n  <input type="text" data-rv-input="model.' +
 ((__t = ( Formbuilder.options.mappings.MINLENGTH )) == null ? '' : __t) +
-'" style="width: 30px" />-->\n\n<!--&nbsp;&nbsp;-->\n\n<!--Max-->\n<!--<input type="text" data-rv-input="model.' +
+'" style="width: 30px" />\n\n  &nbsp;&nbsp;\n\n  Max\n  <input type="text" data-rv-input="model.' +
 ((__t = ( Formbuilder.options.mappings.MAXLENGTH )) == null ? '' : __t) +
-'" style="width: 30px" />-->\n\n<!--&nbsp;&nbsp;-->\n\n<!--<select data-rv-value="model.' +
+'" style="width: 30px" />\n\n  &nbsp;&nbsp;\n\n  <select data-rv-value="model.' +
 ((__t = ( Formbuilder.options.mappings.LENGTH_UNITS )) == null ? '' : __t) +
-'" style="width: auto;">-->\n  <!--<option value="characters">characters</option>-->\n  <!--<option value="words">words</option>-->\n<!--</select>-->\n';
+'" style="width: auto;">\n    <option value="characters">characters</option>\n    <option value="words">words</option>\n  </select>\n</div>';
 
 }
 return __p

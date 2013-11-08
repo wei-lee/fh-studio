@@ -202,6 +202,7 @@ App.View.CMSSection = App.View.CMS.extend({
       noScroll : true,
       noEditOnDrop : true,
       bootstrapData: fields,
+      commonCheckboxes : false,
       eventFix : true,
       editStructure : this.options.editStructure || false,
       fields : [ 'text', 'paragraph', 'file', 'field_list' ]
