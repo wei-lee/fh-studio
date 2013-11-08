@@ -50,7 +50,7 @@ App.View.CMSListField = App.View.CMSSection.extend({
       this.$el.find('#addField').show();
       this.$el.find('.fb-tabs li.configurefield').show();
       // Disable input in the form fields - we don't want to change values
-      this.$el.find('.fb-response-fields .fb-field-wrapper input, .fb-response-fields .fb-field-wrapper textarea').attr('disabled', true)
+      this.$el.find('.fb-response-fields .fb-field-wrapper input, .fb-response-fields .fb-field-wrapper textarea').attr('disabled', true);
     }else{
       this.$el.find('middle').empty().append('<h3>You do not have permissions to perform this operation</h3>');
       return this;

@@ -4,26 +4,29 @@ App.View = App.View || {};
 App.View.Forms = Backbone.View.extend({
   CONSTANTS: {
     FB : {
-      FIELD_NAME : 'Title',
-      FIELD_VALUE : 'Defaultval',
-      FIELD_TYPE: 'Type',
+      FIELD_NAME : 'name',
+      FIELD_VALUE : 'field_options.defaultValue',
+      FIELD_TYPE: 'type',
+      DESCRIPTION: 'helpText',
       TYPE_ALIASES : {
         'paragraph' : 'textarea',
         'checkboxes' : 'checkbox',
         'dropdown' : 'select',
         'website' : 'url',
-        'price' : 'money'
+        'price' : 'money',
+        'section_break' : 'sectionBreak',
+        'email' : 'emailAddress'
       }
     },
     FORM: {
-      NAME: 'Name',
-      DESC: 'Description',
-      UPDATED: 'DateUpdated',
-      USING: 'Using',
-      SUBSTODAY: 'SubmissionsToday',
-      SUBS: 'Submissions',
-      PAGES: 'Pages',
-      FIELDS: 'Fields'
+      NAME: 'name',
+      DESC: 'description',
+      UPDATED: 'lastUpdated',
+      USING: 'using',
+      SUBSTODAY: 'submissionsToday',
+      SUBS: 'submissions',
+      PAGES: 'pages',
+      FIELDS: 'fields'
 
     }
   },
@@ -46,7 +49,7 @@ App.View.Forms = Backbone.View.extend({
         crumbs.push('<li><a href="#">' + crumb + '</a> <span class="divider">/</span></li>');
       }
     });
-    crumbEl.html(crumbs.join(''))
+    crumbEl.html(crumbs.join(''));
     return crumbEl;
   },
   modal : function(msg, title){
@@ -64,9 +67,9 @@ App.View.Forms = Backbone.View.extend({
     fields = [];
     pages.each(function(p, i){
       _.each(p.get(self.CONSTANTS.FORM.FIELDS), function(f, i){
-        var notYetDone = ['shortname', 'europhone', 'likert']; // TODO Do these then remove
-        if (notYetDone.indexOf(f.Type)>-1){
-          f.Type = "text";
+        var notYetDone = ['shortname', 'europhone', 'likert', 'locationLatLong', 'locationNorthEast', 'locationMap', 'timeField', 'dateTimeField', 'dateTime']; // TODO Do these then remove
+        if (notYetDone.indexOf(f.type)>-1){
+          f.type = "text";
         }
         fields.push(f);
       });

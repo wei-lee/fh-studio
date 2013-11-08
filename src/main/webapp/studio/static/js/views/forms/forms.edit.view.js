@@ -53,8 +53,8 @@ App.View.FormEdit = App.View.Forms.extend({
     mv.$el.find('.fb-tabs a').unbind().on('click', $.proxy(mv.showTab, mv));
 
     // Place holders that get filled when the user clicks a form
-    this.$fbEl.find('.middle').prepend("<p>" + this.form.get(this.CONSTANTS.FORM.DESC) + "</p>");
-    this.$fbEl.find('.middle').prepend("<h4>" + this.form.get(this.CONSTANTS.FORM.NAME) + "</h4>");
+    this.$fbEl.find('.middle').prepend('<p class="desc">' + this.form.get(this.CONSTANTS.FORM.DESC) + "</p>");
+    this.$fbEl.find('.middle').prepend('<h4 class="heading">' + this.form.get(this.CONSTANTS.FORM.NAME) + '</h4>');
     this.$fbEl.find('.middle').prepend(this.templates.$form_back());
 
     this.$fbEl.find('.right .fb-tabs').append(this.templates.$formEditExtraTabs());
@@ -78,9 +78,9 @@ App.View.FormEdit = App.View.Forms.extend({
   updateNameDesc : function(e){
     var el = $(e.target);
     if (el.attr('id')==='formInputName'){
-      this.$el.find('.middle h4').html(el.val());
+      this.$el.find('.middle h4.heading').html(el.val());
     }else{
-      this.$el.find('.middle p').html(el.val());
+      this.$el.find('.middle p.desc').html(el.val());
     }
   },
   onFormSave : function(){

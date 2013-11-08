@@ -9,7 +9,7 @@ App.Model.Form = Backbone.RelationalModel.extend({
   idAttribute: '_id',
   relations: [{
     type: Backbone.HasMany,
-    key: 'Pages',
+    key: 'pages',
     relatedModel: 'App.Model.FormPage',
     collectionType: 'App.Collection.FormPages',
     reverseRelation: {
@@ -23,7 +23,7 @@ App.Model.FormPage = Backbone.RelationalModel.extend({
   idAttribute: '_id',
   relations: [{
     type: Backbone.HasMany,
-    key: 'Fields',
+    key: 'fields',
     relatedModel: 'Field',
     collectionType: 'App.Collection.FormFields',
     reverseRelation: {
@@ -50,13 +50,9 @@ App.Collection.Form = Backbone.Collection.extend({
       var url = self.url;
       $fw.server.post(url, {}, function(res) {
         if (res && res.length && res.length>0) {
-          var massaged = [];
-          _.each(res, function(r){
-            massaged.push(r.data);
-          });
           self.loaded = true;
           if ($.isFunction(options.success)) {
-            options.success(massaged, options);
+            options.success(res, options);
           }
         } else {
           if ($.isFunction(options.error)) {
@@ -73,7 +69,7 @@ App.Collection.Form = Backbone.Collection.extend({
     this.trigger('reset');
     return options.success(model);
   },
-  delete : function(method, model, options){
+  del : function(method, model, options){
     //TODO
     return options.success(model);
   },
@@ -90,7 +86,7 @@ App.Collection.Form = Backbone.Collection.extend({
         options.success.apply(self, arguments);
       }, error : options.error
     };
-    this.sync('delete', model, opts);
+    this.sync('del', model, opts);
 
-  },
+  }
 });
