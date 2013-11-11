@@ -1,6 +1,6 @@
-describe("test CMS view", function(){
+describe("test forms list", function(){
   beforeEach(function () {
-    loadFixtures('../common.html','index/apps/cms.html');
+    loadFixtures('../common.html','index/forms/forms_tab.html');
     jasmine.Clock.useMock();
     //override $fw.server.post function so that it will return mock data
     window.$fw = {
@@ -19,19 +19,16 @@ describe("test CMS view", function(){
       },
       server: {
         post: function(url, data, success, fail){
-          console.log("POST data is");
-          console.log(JSON.stringify(data));
-
           if (data.hasOwnProperty('guid')){
             // HOSTS call
             return success({"hosts":{"development-dyno":"testing","development-name":"testing-v60ttwgovdinr6mylanwld05-dev","development-url":"https://testing-v60ttwgovdinr6mylanwld05-dev_testing.ac.gen.ppa.feedhenry.com","live-dyno":"testing","live-name":"testing-v60ttwgovdinr6mylanwld05-live","live-url":"https://testing-v60ttwgovdinr6mylanwld05-live_testing.ac.gen.ppa.feedhenry.com"},"status":"ok"});
           }else{
-            console.log("Get CMS Data")
-            success(getJSONFixture("cms_sections.json"));
+            console.info("Get Form Data")
+            success(getJSONFixture("forms.json"));
           }
         },
         get : function(url, body, success, fail){
-          success(getJSONFixture("cms_sections.json"));
+          success(getJSONFixture("forms.json"));
         }
       },
       userProps : {
@@ -52,10 +49,7 @@ describe("test CMS view", function(){
   });
 
   it('should have a full populated JSTree', function () {
-    var container = $('<div></div>'),
-    view = new App.View.CMSController({ container : container }),
-    fieldsLen,
-    section;
+    var view = new App.View.FormsController();
 
     view.render();
 
@@ -63,28 +57,16 @@ describe("test CMS view", function(){
 
 
     // Now our view is loaded, make sure our collection has as many entries as we mocked
-    expect(view.collection.length).toEqual(5);
-    expect(view.$el.find('.jstree li').length).toEqual(5);
+    var formsLength = view.forms.collection.length,
+    fixturesLength = getJSONFixture("forms.json").length;
+    expect(formsLength).toEqual(fixturesLength);
 
     // Make sure FB starts up ok
-    expect(view.$el.find('.fbContainer').length).toBeGreaterThan(0);
-    fieldsLen = 2;
-    section = view.collection.findWhere({'_id' : view.section});
-    expect(section.get('fields').length).toEqual(fieldsLen);
-    expect(view.$el.find('.fb-field-wrapper').length).toEqual(fieldsLen);
+    expect(view.$el.find('.datatable tbody tr').length).toEqual(formsLength);
+    view.$el.find('.datatable tbody tr').first().click();
 
-    // Add a field
-    view.$el.find('.fb-add-field-types .btn-primary').first().click();
+    // Verify formbuilder was appended ok
+    expect(view.$el.find('.fb-field-wrapper').length).toEqual(14);
 
-    section = view.collection.findWhere({'_id' : view.section});
-    expect(section.get('fields').length).toEqual(fieldsLen+1);
-    expect(view.$el.find('.fb-field-wrapper').length).toEqual(fieldsLen+1);
-
-    // Remove the field
-    view.$el.find('.fb-field-wrapper .js-clear').last().click();
-
-    section = view.collection.findWhere({'_id' : view.section});
-    expect(section.get('fields').length).toEqual(fieldsLen);
-    expect(view.$el.find('.fb-field-wrapper').length).toEqual(fieldsLen);
   });
 });
