@@ -41,7 +41,8 @@ App.View.FormEdit = App.View.Forms.extend({
       noScroll : true,
       noEditOnDrop : true,
       bootstrapData: fields,
-      eventFix : true
+      eventFix : true,
+      fields : [ 'text', 'paragraph', 'number', 'email', 'website', 'section_break', 'page_break' ] // TODO: Add the rest that we support here
     });
 
     this.$el.find('.fb-field-wrapper .subtemplate-wrapper').click(function (){
