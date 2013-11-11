@@ -468,7 +468,9 @@ application.DestinationGeneral = Class.extend({
 
     var showMDM = false;
     if(res.action.mdm){
-      showMDM = true;
+      if($fw.getClientProp('mdm.provider.showstatus') === 'true'){
+        showMDM = true;
+      }
     }
 
     var showDownload = function(message) {
