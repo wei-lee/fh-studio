@@ -492,7 +492,7 @@ application.DestinationGeneral = Class.extend({
     };
 
     var modal = $('#binary_download_dialog').clone();
-    var html = "<h3>Your build is complete!</h3><br/>";
+    var html = "<h3>Your build is complete!</h3>";
 
     if(showMDM && res.action.mdm.provider_id && res.action.mdm.provider_name){
       html = html + that.appendMDMInfo(res.action.mdm);
@@ -503,11 +503,11 @@ application.DestinationGeneral = Class.extend({
     if (showIPA) {
       html += "  <a target='_blank' class='btn' href='" + ipa_url + "'><i class='icon-download'></i> Download IPA File</a>";
     }
-    html += "</p><br>";
+    html += "</p>";
 
     if (showOTA) {
       that.getOTALink(ota_url, function(otalink, shortened) {
-        html += "<h4>-- or --</h4><br/><p>Install directly onto a device with this OTA link</p>";
+        html += "<h4>-- or --</h4><p>Install directly onto a device with this OTA link</p>";
         html += "<h4><a class='otalink' target='_blank' href='" + otalink + "'>" + otalink + " </a></h4>";
         if (shortened) {
           html += "<img src='" + otalink + ".qr' alt='qr'>";
