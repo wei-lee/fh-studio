@@ -1,5 +1,14 @@
 [
   {
+    "name":"aws sdk",
+    "desc":"Official sdk for AWS",
+    "image":"aws.png",
+    "category":"SaaS Connectors",
+    "npmName":"aws-sdk",
+    "version":"1.12.0",
+    "docs":"http://aws.amazon.com/sdkfornodejs/"
+  },
+  {
     "name" : "MySQL",
     "desc" : "Connects to a relational MySQL Database",
     "image" : "mysql.png",
