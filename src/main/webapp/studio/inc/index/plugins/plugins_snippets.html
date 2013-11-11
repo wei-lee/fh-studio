@@ -1,3 +1,29 @@
+<script type="text/snippet" id="snippet-aws-sdk">
+/*
+ Creates an S3 bucket
+ @param param.query : the query to execute
+ */
+
+
+// ./config.json looks like: { "accessKeyId": "akid", "secretAccessKey": "secret", "region": "us-west-2" };
+var AWS = require('aws-sdk');
+AWS.config.loadFromPath('./config.json');
+var s3 = new AWS.S3();
+
+exports.createBucket = function(params, cb){
+  s3.createBucket({Bucket: 'myBucket'}, function() {
+  var params = {Bucket: 'myBucket', Key: 'myKey', Body: 'Hello!'};
+  s3.putObject(params, function(err, data) {
+    if (err)
+      console.log(err)
+      cb(err);
+    else
+      console.log("Successfully uploaded data to myBucket/myKey");
+      cb();
+  });
+};
+</script>
+
 <script type="text/snippet" id="snippet-mysql">
 /*
  Executes a MySQL Query
