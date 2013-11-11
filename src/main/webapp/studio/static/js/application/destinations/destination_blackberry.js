@@ -62,7 +62,7 @@ application.DestinationBlackberry = application.DestinationGeneral.extend({
       var pk_pass = wizard.find('#app_publish_blackberry_pk_password').val();
       var cert_pass = "";
       var data = {config: config, generateSrc: false, version: version, privateKeyPass: pk_pass, certPass: cert_pass};
-      return this.getMDMConfig(wizard, data);;
+      return this.getMDMConfig(wizard, data);
   },
   
   bindExtraConfig: function(wizard, config) {
