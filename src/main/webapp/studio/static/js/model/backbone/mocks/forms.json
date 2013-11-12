@@ -111,6 +111,7 @@
             "fieldOptions":{
               "definition":{
                 "maxRepeat":5,
+                "defaultValue" : 245,
                 "minRepeat":2
               },
               "validation":{
@@ -136,6 +137,7 @@
             "required":false,
             "fieldOptions":{
               "definition":{
+                "defaultValue" : "support@feedhenry.com",
                 "maxRepeat":5,
                 "minRepeat":1
               }
