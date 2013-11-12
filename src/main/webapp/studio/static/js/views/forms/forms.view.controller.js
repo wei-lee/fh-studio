@@ -41,9 +41,11 @@ App.View.FormsController = Backbone.View.extend({
     Edit Form view switching
    */
   onEditForm : function(e){
-    var form = this.forms.collection.at(this.forms.currentForm);
+    var form = this.forms.collection.at(this.forms.currentForm),
+    menuEl = this.$el.find(".forms_menu_container");
     this.forms.$el.hide();
-    this.editForm = new App.View.FormEdit({ form : form, collection : this.forms.collection });
+
+    this.editForm = new App.View.FormEdit({ form : form, collection : this.forms.collection, $pagesMenuEl : menuEl });
     this.editForm.bind('back', $.proxy(this.back, this));
     this.$el.append(this.editForm.render().$el);
   },

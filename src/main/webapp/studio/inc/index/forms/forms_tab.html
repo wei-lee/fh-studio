@@ -18,33 +18,35 @@
 </script>
 
 <script id="formsMenu" type="text/x-handlebars-template">
-  <ul class="nav nav-list span2 well">
-    <li class="nav-header">Forms</li>
-    <li class="active">
-      <a class="btn-forms" href="#">
-        <i class="icon-list-alt"></i>
-        Forms
-      </a>
-    </li>
-    <li id="myapps_listitem">
-      <a class="btn-themes" href="#">
-        <i class="icon-eye-open"></i>
-        Themes
-      </a>
-    </li>
-    <li>
-      <a class="btn-apps" href="#">
-        <i class="icon-th-large"></i>
-        Apps
-      </a>
-    </li>
-    <li>
-      <a class="btn-submissions" href="#">
-        <i class="icon-envelope"></i>
-        Submissions
-      </a>
-    </li>
-  </ul>
+  <div class="span2 forms_menu_container">
+    <ul class="nav nav-list well">
+      <li class="nav-header">Forms</li>
+      <li class="active">
+        <a class="btn-forms" href="#">
+          <i class="icon-list-alt"></i>
+          Forms
+        </a>
+      </li>
+      <li id="myapps_listitem">
+        <a class="btn-themes" href="#">
+          <i class="icon-eye-open"></i>
+          Themes
+        </a>
+      </li>
+      <li>
+        <a class="btn-apps" href="#">
+          <i class="icon-th-large"></i>
+          Apps
+        </a>
+      </li>
+      <li>
+        <a class="btn-submissions" href="#">
+          <i class="icon-envelope"></i>
+          Submissions
+        </a>
+      </li>
+    </ul>
+  </div>
 </script>
 
 <script id="formsAddForm" type="text/x-handlebars-template">
@@ -109,10 +111,12 @@
 </script>
 
 <script id="form_pages" type="text/x-handlebars-template">
-  <h4>Form Pages</h4>
-  <small>Drag to re-order</small>
-  <div class="form-pages">
-  </div>
+  <ul class="nav nav-list well formpages-menu">
+    <li class="nav-header">Form Pages</li>
+    Drag to re-order
+    <div class="form-pages">
+    </div>
+  </ul>
 </script>
 <script id="form_page" type="text/x-handlebars-template">
   <div class="form-page" data-_id="{{{ _id }}}">

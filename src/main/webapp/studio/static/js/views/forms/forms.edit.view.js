@@ -76,14 +76,14 @@ App.View.FormEdit = App.View.Forms.extend({
 
 
     // Append the page reorderable div below the menu on the LHS
-    var menuContainer = $("#forms_layout .nav.nav-list.span2.well");
+    var menuContainer = self.options.$pagesMenuEl;
     menuContainer.append(this.templates.$form_pages());
     this.form.get(this.CONSTANTS.FORM.PAGES).each(function(p){
       var page = self.templates.$form_page({_id :p.get('_id'), name :p.get('name')});
       menuContainer.find('.form-pages').append(page);
     });
 
-    $('.form-pages').sortable({
+    menuContainer.find('.form-pages').sortable({
       forcePlaceholderSize: true,
       stop : function(e, ui){
         var order = [],
@@ -124,6 +124,7 @@ App.View.FormEdit = App.View.Forms.extend({
         self.fb.mainView.collection.reset(reOrdered);
       }
     });
+    menuContainer.find('.form-page').click($.proxy(this.onFormPageClicked, this));
 
     return this;
   },
@@ -158,11 +159,27 @@ App.View.FormEdit = App.View.Forms.extend({
     this.form.set(this.CONSTANTS.FORM.NAME, this.$el.find('#formInputName').val());
     this.form.set(this.CONSTANTS.FORM.DESC, this.$el.find('#formTextareaDesc').val());
     this.collection.sync('update', this.form.toJSON(), { success : function(){
-      self.trigger('back');
+      self.back();
       self.message('Form updated successfully');
     }});
   },
   back : function(){
+    this.options.$pagesMenuEl.find('.formpages-menu').remove();
+
     this.trigger('back');
+  },
+  onFormPageClicked : function(e){
+    var el = (e.target.nodeName.toLowerCase()==="div") ? $(e.target) : $(e.target).closest('div'),
+    _id = el.data('_id'),
+    model = this.fb.mainView.collection.findWhere({_id : _id}),
+    cid = model && model.cid;
+    if ( el.is('.ui-draggable-dragging') ) {
+      return;
+    }
+
+    var field = this.fb.mainView.$el.find(".fb-field-wrapper").filter(function(){ return $(this).data('cid') === cid; }),
+    scroller = this.$el.find('.middle .fb-response-fields'),
+    scroll = scroller.scrollTop() + field.offset().top - 234;
+    this.$el.find('.middle .fb-response-fields').animate({scrollTop: scroll}, 750);
   }
 });
