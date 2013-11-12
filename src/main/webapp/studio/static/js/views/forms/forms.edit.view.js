@@ -9,7 +9,8 @@ App.View.FormEdit = App.View.Forms.extend({
     formSaveCancel : '#formSaveCancel',
     form_back : '#form_back',
     form_pages : '#form_pages',
-    form_page : '#form_page'
+    form_page : '#form_page',
+    previewOutline : '#preview_outline'
   },
   events : {
     'click .btn-add-form' : 'onCreateForm',
@@ -47,6 +48,10 @@ App.View.FormEdit = App.View.Forms.extend({
       fields : [ 'text', 'paragraph', 'number', 'email', 'website', 'section_break', 'page_break' ] // TODO: Add the rest that we support here
     });
 
+    this.fb.mainView.collection.bind('add', $.proxy(this.updatePreview, this));
+    this.fb.mainView.collection.bind('update', $.proxy(this.updatePreview, this));
+    this.fb.mainView.collection.bind('remove', $.proxy(this.updatePreview, this));
+
     this.$el.find('.fb-field-wrapper .subtemplate-wrapper').click(function (){
       self.$el.find('.fb-tabs li.configurefield a').trigger('click');
     });
@@ -63,6 +68,9 @@ App.View.FormEdit = App.View.Forms.extend({
     this.$fbEl.find('.right .fb-tabs').append(this.templates.$formEditExtraTabs());
     this.$fbEl.find('.right .fb-tab-content').append(this.templates.$formEditExtraTabsContent());
     this.$fbEl.find('.right .fb-tab-content #formConfig').html(this.templates.$formCreateEditForm({ CONSTANTS: this.CONSTANTS }));
+
+    this.$fbEl.find('#formPreview').html(this.templates.$previewOutline());
+    this.updatePreview();
 
     this.$fbEl.find('.middle').removeClass('span6').addClass('span8');
     this.$fbEl.find('.right').removeClass('span4').addClass('span3');
@@ -181,5 +189,11 @@ App.View.FormEdit = App.View.Forms.extend({
     scroller = this.$el.find('.middle .fb-response-fields'),
     scroll = scroller.scrollTop() + field.offset().top - 234;
     this.$el.find('.middle .fb-response-fields').animate({scrollTop: scroll}, 750);
+  },
+  updatePreview: function(){
+    debugger;
+    var html = $(this.$el.find('.fb-response-fields').html());
+    html.find('.actions-wrapper').remove();
+    this.$el.find('.formPreviewContents').html(html)
   }
 });

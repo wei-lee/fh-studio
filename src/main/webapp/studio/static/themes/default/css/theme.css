@@ -1382,10 +1382,10 @@ pre#packagejson strong {
   overflow:visible;
   position: relative;
 }
-#preview_frame {
+#preview_frame, #forms_preview_frame {
   -webkit-transform:scale(1);
 }
-#preview_frame iframe{
+#preview_frame iframe, #forms_preview_frame div.formPreviewContents{
   background-color:#fff;
 }
 
