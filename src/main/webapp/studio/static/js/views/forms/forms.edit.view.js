@@ -7,7 +7,9 @@ App.View.FormEdit = App.View.Forms.extend({
     formEditExtraTabsContent : '#formEditExtraTabsContent',
     formCreateEditForm : '#formCreateEditForm',
     formSaveCancel : '#formSaveCancel',
-    form_back : '#form_back'
+    form_back : '#form_back',
+    form_pages : '#form_pages',
+    form_page : '#form_page'
   },
   events : {
     'click .btn-add-form' : 'onCreateForm',
@@ -73,6 +75,55 @@ App.View.FormEdit = App.View.Forms.extend({
     this.$el.append(this.templates.$formSaveCancel());
 
 
+    // Append the page reorderable div below the menu on the LHS
+    var menuContainer = $("#forms_layout .nav.nav-list.span2.well");
+    menuContainer.append(this.templates.$form_pages());
+    this.form.get(this.CONSTANTS.FORM.PAGES).each(function(p){
+      var page = self.templates.$form_page({_id :p.get('_id'), name :p.get('name')});
+      menuContainer.find('.form-pages').append(page);
+    });
+
+    $('.form-pages').sortable({
+      forcePlaceholderSize: true,
+      stop : function(e, ui){
+        var order = [],
+        reOrdered = [],
+        curPage;
+        menuContainer.find('.form-pages .form-page').each(function(el){
+          order.push($(this).data('_id'));
+        });
+        /*
+          We now have an array of the order of IDs - iterate over formbuilder's fields.
+          . We then flatten reOrdered.
+         */
+        self.fb.mainView.collection.each(function(f){
+          if (f.get('type')==='page_break'){ // TODO Constant
+            /*
+             Every time we find a page, add it and it's subsequent fields to a new array -
+             then push this to reOrdered at indexOf the current page ID in order[].
+             */
+            if (curPage && curPage._id && curPage.length>0){
+              var idx = order.indexOf(curPage._id);
+              reOrdered[idx] = curPage;
+            }
+            curPage = [];
+            curPage._id = f.get('_id');
+          }
+          /*
+          First iteration might make reOrdered look like this:
+          [ undefined, ArrayofFields, undefined]
+          ..and eventually after we come across a few more pages
+          all of reOrdered should be populated
+          */
+          curPage.push(f.toJSON());
+        });
+        var idx = order.indexOf(curPage._id);
+        reOrdered[idx] = curPage;
+        // Lastly now we're done iterating we flatten out our 2d array reOrdered, and load it back into formbuilder
+        reOrdered = _.flatten(reOrdered);
+        self.fb.mainView.collection.reset(reOrdered);
+      }
+    });
 
     return this;
   },

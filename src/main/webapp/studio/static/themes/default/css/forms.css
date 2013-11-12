@@ -37,6 +37,14 @@
     margin-right: 12px;
 }
 
+.form-page {
+    text-align: center;
+    border: 1px dashed #bbb;
+    border-radius: 8px;
+    margin: 12px 0px;
+    cursor: pointer;
+    background: #fff;
+}
 /*
   Formbuilder specific CSS
  */
@@ -51,4 +59,8 @@
 
 .fb-common-wrapper .fb-common-checkboxes {
     margin-left: 0px;
+}
+
+#forms_layout .fb-common-wrapper hr {
+    border-color: #bbb;
 }

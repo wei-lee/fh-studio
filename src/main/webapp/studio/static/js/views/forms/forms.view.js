@@ -68,6 +68,7 @@ App.View.Forms = Backbone.View.extend({
     pages = form.get(this.CONSTANTS.FORM.PAGES),
     fields = [];
     pages.each(function(p, i){
+      fields.push({ name :p.get('name'), value : '', cid :p.get('_id'), _id :p.get('_id'), type : 'page_break' });
       _.each(p.get(self.CONSTANTS.FORM.FIELDS), function(f, i){
         var notYetDone = ['shortname', 'europhone', 'likert', 'locationLatLong', 'locationNorthEast', 'locationMap', 'timeField', 'dateTimeField', 'dateTime']; // TODO Do these then remove
         if (notYetDone.indexOf(f.type)>-1){
@@ -80,10 +81,6 @@ App.View.Forms = Backbone.View.extend({
 //      p.get('Fields').each(function(f, i){
 //
 //      });
-      // Push our page break if we have more than 1 page
-      if (i>0){
-        fields.push({ name : 'Page Break', value : '', type : 'page_break' });
-      }
     });
     return fields;
   },
