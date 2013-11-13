@@ -461,8 +461,8 @@ if (!JSON) {
 
       if (/^[\],:{}\s]*$/
         .test(text.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g, '@')
-        .replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']')
-        .replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
+          .replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']')
+          .replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
 
 // In the third stage we use the eval function to compile the text into a
 // JavaScript structure. The '{' operator is subject to a syntactic ambiguity
@@ -2309,7 +2309,7 @@ CryptoJS.lib.Cipher || (function (undefined) {
           invKeySchedule[invKsRow] = t;
         } else {
           invKeySchedule[invKsRow] = INV_SUB_MIX_0[SBOX[t >>> 24]] ^ INV_SUB_MIX_1[SBOX[(t >>> 16) & 0xff]] ^
-              INV_SUB_MIX_2[SBOX[(t >>> 8) & 0xff]] ^ INV_SUB_MIX_3[SBOX[t & 0xff]];
+            INV_SUB_MIX_2[SBOX[(t >>> 8) & 0xff]] ^ INV_SUB_MIX_3[SBOX[t & 0xff]];
         }
       }
     },
@@ -2430,9 +2430,9 @@ CryptoJS.lib.Cipher || (function (undefined) {
         var M_offset_i = M[offset_i];
 
         M[offset_i] = (
-            (((M_offset_i << 8)  | (M_offset_i >>> 24)) & 0x00ff00ff) |
-                (((M_offset_i << 24) | (M_offset_i >>> 8))  & 0xff00ff00)
-            );
+          (((M_offset_i << 8)  | (M_offset_i >>> 24)) & 0x00ff00ff) |
+            (((M_offset_i << 24) | (M_offset_i >>> 8))  & 0xff00ff00)
+          );
       }
 
       // Shortcuts
@@ -2551,13 +2551,13 @@ CryptoJS.lib.Cipher || (function (undefined) {
       var nBitsTotalH = Math.floor(nBitsTotal / 0x100000000);
       var nBitsTotalL = nBitsTotal;
       dataWords[(((nBitsLeft + 64) >>> 9) << 4) + 15] = (
-          (((nBitsTotalH << 8)  | (nBitsTotalH >>> 24)) & 0x00ff00ff) |
-              (((nBitsTotalH << 24) | (nBitsTotalH >>> 8))  & 0xff00ff00)
-          );
+        (((nBitsTotalH << 8)  | (nBitsTotalH >>> 24)) & 0x00ff00ff) |
+          (((nBitsTotalH << 24) | (nBitsTotalH >>> 8))  & 0xff00ff00)
+        );
       dataWords[(((nBitsLeft + 64) >>> 9) << 4) + 14] = (
-          (((nBitsTotalL << 8)  | (nBitsTotalL >>> 24)) & 0x00ff00ff) |
-              (((nBitsTotalL << 24) | (nBitsTotalL >>> 8))  & 0xff00ff00)
-          );
+        (((nBitsTotalL << 8)  | (nBitsTotalL >>> 24)) & 0x00ff00ff) |
+          (((nBitsTotalL << 24) | (nBitsTotalL >>> 8))  & 0xff00ff00)
+        );
 
       data.sigBytes = (dataWords.length + 1) * 4;
 
@@ -2574,7 +2574,7 @@ CryptoJS.lib.Cipher || (function (undefined) {
         var H_i = H[i];
 
         H[i] = (((H_i << 8)  | (H_i >>> 24)) & 0x00ff00ff) |
-            (((H_i << 24) | (H_i >>> 8))  & 0xff00ff00);
+          (((H_i << 24) | (H_i >>> 8))  & 0xff00ff00);
       }
 
       // Return final computed hash
@@ -3153,13 +3153,13 @@ CryptoJS.lib.Cipher || (function (undefined) {
         } else {
           var gamma0x = W[i - 15];
           var gamma0  = ((gamma0x << 25) | (gamma0x >>> 7))  ^
-              ((gamma0x << 14) | (gamma0x >>> 18)) ^
-              (gamma0x >>> 3);
+            ((gamma0x << 14) | (gamma0x >>> 18)) ^
+            (gamma0x >>> 3);
 
           var gamma1x = W[i - 2];
           var gamma1  = ((gamma1x << 15) | (gamma1x >>> 17)) ^
-              ((gamma1x << 13) | (gamma1x >>> 19)) ^
-              (gamma1x >>> 10);
+            ((gamma1x << 13) | (gamma1x >>> 19)) ^
+            (gamma1x >>> 10);
 
           W[i] = gamma0 + W[i - 7] + gamma1 + W[i - 16];
         }
@@ -3682,13 +3682,13 @@ CryptoJS.lib.Cipher || (function (undefined) {
 
         // Swap endian
         M2i = (
-            (((M2i << 8)  | (M2i >>> 24)) & 0x00ff00ff) |
-                (((M2i << 24) | (M2i >>> 8))  & 0xff00ff00)
-            );
+          (((M2i << 8)  | (M2i >>> 24)) & 0x00ff00ff) |
+            (((M2i << 24) | (M2i >>> 8))  & 0xff00ff00)
+          );
         M2i1 = (
-            (((M2i1 << 8)  | (M2i1 >>> 24)) & 0x00ff00ff) |
-                (((M2i1 << 24) | (M2i1 >>> 8))  & 0xff00ff00)
-            );
+          (((M2i1 << 8)  | (M2i1 >>> 24)) & 0x00ff00ff) |
+            (((M2i1 << 24) | (M2i1 >>> 8))  & 0xff00ff00)
+          );
 
         // Absorb message into state
         var lane = state[i];
@@ -3814,13 +3814,13 @@ CryptoJS.lib.Cipher || (function (undefined) {
 
         // Swap endian
         laneMsw = (
-            (((laneMsw << 8)  | (laneMsw >>> 24)) & 0x00ff00ff) |
-                (((laneMsw << 24) | (laneMsw >>> 8))  & 0xff00ff00)
-            );
+          (((laneMsw << 8)  | (laneMsw >>> 24)) & 0x00ff00ff) |
+            (((laneMsw << 24) | (laneMsw >>> 8))  & 0xff00ff00)
+          );
         laneLsw = (
-            (((laneLsw << 8)  | (laneLsw >>> 24)) & 0x00ff00ff) |
-                (((laneLsw << 24) | (laneLsw >>> 8))  & 0xff00ff00)
-            );
+          (((laneLsw << 8)  | (laneLsw >>> 24)) & 0x00ff00ff) |
+            (((laneLsw << 24) | (laneLsw >>> 8))  & 0xff00ff00)
+          );
 
         // Squeeze state to retrieve hash
         hashWords.push(laneLsw);
@@ -5223,7 +5223,6 @@ Lawnchair.adapter('localFileStorage', (function () {
 
     save : function (obj, callback){
       var key = obj.key;
-      var value = obj.val||obj.value;
       filenameForKey(key, function(hash) {
         window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function gotFS(fileSystem) {
 
@@ -5234,10 +5233,10 @@ Lawnchair.adapter('localFileStorage', (function () {
               writer.onwrite = function() {
                 return callback({
                   key: key,
-                  val: value
+                  val: obj.val
                 });
               };
-              writer.write(value);
+              writer.write(obj.val);
             }, function() {
               fail('[save] Failed to create file writer');
             });
@@ -5347,9 +5346,9 @@ Lawnchair.adapter('webkit-sqlite', (function() {
       console.log('error in sqlite adaptor!', e, i)
     }
   }, now = function() {
-      return new Date()
-    } // FIXME need to use better date fn
-    // not entirely sure if this is needed...
+    return new Date()
+  } // FIXME need to use better date fn
+  // not entirely sure if this is needed...
   if (!Function.prototype.bind) {
     Function.prototype.bind = function(obj) {
       var slice = [].slice,
@@ -5378,10 +5377,10 @@ Lawnchair.adapter('webkit-sqlite', (function() {
         win = function() {
           return cb.call(that, that);
         }
-        // open a connection and create the db if it doesn't exist
-        //FEEDHENRY CHANGE TO ALLOW ERROR CALLBACK
+      // open a connection and create the db if it doesn't exist
+      //FEEDHENRY CHANGE TO ALLOW ERROR CALLBACK
       if (options && 'function' === typeof options.fail) fail = options.fail
-        //END CHANGE
+      //END CHANGE
       this.db = openDatabase(this.name, '1.0.0', this.name, 65536)
       this.db.transaction(function(t) {
         t.executeSql(create, [], win, fail)
@@ -5426,14 +5425,14 @@ Lawnchair.adapter('webkit-sqlite', (function() {
         }, error = error || function() {}, insvals = [],
         ts = now()
 
-        try {
-          for (var i = 0, l = objs.length; i < l; i++) {
-            insvals[i] = [JSON.stringify(objs[i]), ts, objs[i].key];
-          }
-        } catch (e) {
-          fail(e)
-          throw e;
+      try {
+        for (var i = 0, l = objs.length; i < l; i++) {
+          insvals[i] = [JSON.stringify(objs[i]), ts, objs[i].key];
         }
+      } catch (e) {
+        fail(e)
+        throw e;
+      }
 
       that.db.transaction(function(t) {
         for (var i = 0, l = objs.length; i < l; i++)
@@ -5457,14 +5456,14 @@ Lawnchair.adapter('webkit-sqlite', (function() {
       // batch selects support
       sql = 'SELECT id, value FROM ' + this.record + " WHERE id IN (" +
         args.map(function() {
-        return '?'
-      }).join(",") + ")"
+          return '?'
+        }).join(",") + ")"
       // FIXME
       // will always loop the results but cleans it up if not a batch return at the end..
       // in other words, this could be faster
       var win = function(xxx, results) {
         var o, r, lookup = {}
-          // map from results to keys
+        // map from results to keys
         for (var i = 0, l = results.rows.length; i < l; i++) {
           o = JSON.parse(results.rows.item(i).value)
           o.key = results.rows.item(i).id
@@ -5529,8 +5528,8 @@ Lawnchair.adapter('webkit-sqlite', (function() {
         args = keyOrArray;
         sql += "IN (" +
           args.map(function() {
-          return '?'
-        }).join(',') +
+            return '?'
+          }).join(',') +
           ")";
       }
       args = args.map(function(obj) {
@@ -5548,8 +5547,8 @@ Lawnchair.adapter('webkit-sqlite', (function() {
       var nuke = "DELETE FROM " + this.record,
         that = this,
         win = cb ? function() {
-        that.lambda(cb).call(that)
-      } : function() {}
+          that.lambda(cb).call(that)
+        } : function() {}
       this.db.transaction(function(t) {
         t.executeSql(nuke, [], win, fail)
       })
@@ -5562,8 +5561,8 @@ Lawnchair.adapter('webkit-sqlite', (function() {
   var $fh = root.$fh;
   $fh.fh_timeout = 20000;
   $fh.boxprefix = '/box/srv/1.1/';
-  $fh.sdk_version = '1.1.2';
-  
+  $fh.sdk_version = '1.1.1';
+
   var _is_initializing = false;
   var _init_failed = false;
   var _cloud_ready_listeners = [];
@@ -5641,8 +5640,8 @@ Lawnchair.adapter('webkit-sqlite', (function() {
     } else {
       var uuid = __readCookieValue(_mock_uuid_cookie_name);
       if(null == uuid){
-          uuid = __createUUID();
-          __createCookie(_mock_uuid_cookie_name, uuid);
+        uuid = __createUUID();
+        __createCookie(_mock_uuid_cookie_name, uuid);
       }
       return uuid;
     }
@@ -5657,7 +5656,7 @@ Lawnchair.adapter('webkit-sqlite', (function() {
 
     return null;
   };
-  
+
   $fh._getDeviceId = getDeviceId;
   $fh._getCuidMap = getCuidMap;
   var __isSmartMobile = /Android|webOS|iPhone|iPad|iPad|Blackberry|Windows Phone/i.test(navigator.userAgent);
@@ -5672,11 +5671,11 @@ Lawnchair.adapter('webkit-sqlite', (function() {
     var urlParts = uriParts.exec(url);
 
     return ((urlParts[1] == null || urlParts[1] === '') && // no protocol }
-            (urlParts[3] == null || urlParts[3] === '') && // no domain   } - > relative url
-            (urlParts[4] == null || urlParts[4] === ''))|| // no port       }
-            (locParts[1] === urlParts[1] && // protocol matches }
-            locParts[3] === urlParts[3] && // domain matches   }-> absolute url
-            locParts[4] === urlParts[4]); // port matches      }
+      (urlParts[3] == null || urlParts[3] === '') && // no domain   } - > relative url
+      (urlParts[4] == null || urlParts[4] === ''))|| // no port       }
+      (locParts[1] === urlParts[1] && // protocol matches }
+        locParts[3] === urlParts[3] && // domain matches   }-> absolute url
+        locParts[4] === urlParts[4]); // port matches      }
   }
 
 
@@ -5692,32 +5691,32 @@ Lawnchair.adapter('webkit-sqlite', (function() {
     this.responseText = "";
     var self = this;
     this.xdr.onload = function(){
-        self.readyState = 4;
-        self.status = 200;
-        self.statusText = "";
-        self.responseText = self.xdr.responseText;
-        if(self.onreadystatechange){
-            self.onreadystatechange();
-        }
+      self.readyState = 4;
+      self.status = 200;
+      self.statusText = "";
+      self.responseText = self.xdr.responseText;
+      if(self.onreadystatechange){
+        self.onreadystatechange();
+      }
     };
     this.xdr.onerror = function(){
-        if(self.onerror){
-            self.onerror();
-        }
-        self.readyState = 4;
-        self.status = 0;
-        self.statusText = "";
-        if(self.onreadystatechange){
-            self.onreadystatechange();
-        }
+      if(self.onerror){
+        self.onerror();
+      }
+      self.readyState = 4;
+      self.status = 0;
+      self.statusText = "";
+      if(self.onreadystatechange){
+        self.onreadystatechange();
+      }
     };
     this.xdr.ontimeout = function(){
-        self.readyState = 4;
-        self.status = 408;
-        self.statusText = "timeout";
-        if(self.onreadystatechange){
-            self.onreadystatechange();
-        }
+      self.readyState = 4;
+      self.status = 408;
+      self.statusText = "timeout";
+      if(self.onreadystatechange){
+        self.onreadystatechange();
+      }
     };
   }
 
@@ -5747,19 +5746,19 @@ Lawnchair.adapter('webkit-sqlite', (function() {
 
   //first, check if cors if supported by the browser
   /* The following code is used to detect if the browser is supporting CORS. 
-    Most of the browsers implement CORS support using XMLHttpRequest2 object. 
-    The "withCredentials" property is unique in XMLHttpRequest2 object so it is the easiest way to tell if the browser support CORS. Again, IE uses XDomainRequest. 
-    A very good article covering this can be found here: http://www.html5rocks.com/en/tutorials/cors/.*/
+   Most of the browsers implement CORS support using XMLHttpRequest2 object.
+   The "withCredentials" property is unique in XMLHttpRequest2 object so it is the easiest way to tell if the browser support CORS. Again, IE uses XDomainRequest.
+   A very good article covering this can be found here: http://www.html5rocks.com/en/tutorials/cors/.*/
   var __cors_supported = false;
   if(window.XMLHttpRequest){
     var rq = new XMLHttpRequest();
     if('withCredentials' in rq){
-        __cors_supported = true;
+      __cors_supported = true;
     }
     if(!__cors_supported){
-        if(typeof XDomainRequest !== "undefined"){
-            __cors_supported = true;
-        }
+      if(typeof XDomainRequest !== "undefined"){
+        __cors_supported = true;
+      }
     }
   }
 
@@ -5767,9 +5766,9 @@ Lawnchair.adapter('webkit-sqlite', (function() {
   var __xhr = function () {
     var xhr = null;
     if(window.XMLHttpRequest){
-        xhr = new XMLHttpRequest();
+      xhr = new XMLHttpRequest();
     } else if(window.ActiveXObject){
-        xhr = new window.ActiveXObject("Microsoft.XMLHTTP");
+      xhr = new window.ActiveXObject("Microsoft.XMLHTTP");
     }
     return xhr;
   };
@@ -5778,19 +5777,19 @@ Lawnchair.adapter('webkit-sqlite', (function() {
   var __cor = function () {
     var cor = null;
     if(window.XMLHttpRequest){
-        var rq = new XMLHttpRequest();
-        if('withCredentials' in rq){
-            cor = rq;
-        }
+      var rq = new XMLHttpRequest();
+      if('withCredentials' in rq){
+        cor = rq;
+      }
     }
     if(null == cor){
-        if(typeof XDomainRequest !== "undefined"){
-            cor = new XDomainRequestWrapper(new XDomainRequest());
-        }
+      if(typeof XDomainRequest !== "undefined"){
+        cor = new XDomainRequestWrapper(new XDomainRequest());
+      }
     }
     return cor;
   };
-  
+
   var __cb_counts = 0;
 
   var __load_script = function (url, callback) {
@@ -5826,17 +5825,17 @@ Lawnchair.adapter('webkit-sqlite', (function() {
     var o = options ? options : {};
     var sameOrigin = isSameOrigin(options.url);
     if(!sameOrigin){
-        if(typeof window.Phonegap !== "undefined" || typeof window.cordova !== "undefined"){
-            //found phonegap, it should be a hyrbid mobile app, consider as same origin
-            sameOrigin = true;
-        }
+      if(typeof window.Phonegap !== "undefined" || typeof window.cordova !== "undefined"){
+        //found phonegap, it should be a hyrbid mobile app, consider as same origin
+        sameOrigin = true;
+      }
     }
     if(!sameOrigin){
-        if(__isSmartMobile && __isLocalFile){
-            //we can't find phonegap, but we are loading the page use file protocol and the device is a smart phone,
-            //it should be a mobile hyrid app
-            sameOrigin = true;
-        }
+      if(__isSmartMobile && __isLocalFile){
+        //we can't find phonegap, but we are loading the page use file protocol and the device is a smart phone,
+        //it should be a mobile hyrid app
+        sameOrigin = true;
+      }
     }
 
     if (sameOrigin || ((!sameOrigin) && __cors_supported) ) {
@@ -6089,7 +6088,7 @@ Lawnchair.adapter('webkit-sqlite', (function() {
     }); //IE
   }
 
-  $fh._handleAuthResponse = function(endurl, res, success, fail){
+  $fh._handleFhAuthResponse = function(endurl, res, success, fail){
     if(res.status && res.status === "ok"){
       if(res.url){
         if(window.PhoneGap || window.cordova){
@@ -6111,7 +6110,7 @@ Lawnchair.adapter('webkit-sqlite', (function() {
                     }
                   } else {
                     if(fail){
-                        fail("auth_failed", {'message':qmap['message']});
+                      fail("auth_failed", {'message':qmap['message']});
                     }
                   }
                 }
@@ -6123,7 +6122,7 @@ Lawnchair.adapter('webkit-sqlite', (function() {
             success(res);
           }
         } else {
-         document.location.href = res.url;  
+          document.location.href = res.url;
         }
       } else {
         success(res);
@@ -6139,7 +6138,7 @@ Lawnchair.adapter('webkit-sqlite', (function() {
   $fh.init = function(opts, success, fail) {
     if($fh.cloud_props){
       return success($fh.cloud_props);
-    } 
+    }
     if(!_is_initializing){
       _is_initializing = true;
       if(!fail){
@@ -6157,25 +6156,14 @@ Lawnchair.adapter('webkit-sqlite', (function() {
 
       $fh.app_props = opts;
 
-      //dom adapter doens't work on windows phone, so don't specify the adapter if the dom one failed
-      var lcConf = {
+      var storage = new Lawnchair({
         name: "fh_init_storage",
         adapter: "dom",
         fail: function(msg, err) {
           var error_message = 'read/save from/to local storage failed  msg:' + msg + ' err:' + err;
           return fail(error_message, {});
         }
-      };
-
-      var storage = null;
-      try {
-        storage = new Lawnchair(lcConf, function() {});
-      } catch(e){
-        //when dom adapter failed, Lawnchair throws an error
-        lcConf.adapter = undefined;
-        storage = new Lawnchair(lcConf, function() {});
-      }
-      
+      }, function() {});
 
       storage.get('fh_init', function(storage_res) {
         if (storage_res && storage_res.value !== null) {
@@ -6260,21 +6248,21 @@ Lawnchair.adapter('webkit-sqlite', (function() {
       var params = opts.req || {};
       params = _addFhParams(params);
 
-    return $fh.__ajax({
-      "url": url,
-      "type": "POST",
-      "data": JSON.stringify(params),
-      "contentType": "application/json",
-      "timeout" : opts.timeout || $fh.app_props.timeout || $fh.fh_timeout,
-      success: function(res) {
-        if(success){
-          return success(res);
+      return $fh.__ajax({
+        "url": url,
+        "type": "POST",
+        "data": JSON.stringify(params),
+        "contentType": "application/json",
+        "timeout" : opts.timeout || $fh.app_props.timeout || $fh.fh_timeout,
+        success: function(res) {
+          if(success){
+            return success(res);
+          }
+        },
+        error: function(req, statusText, error) {
+          _handleError(fail, req, statusText);
         }
-      },
-      error: function(req, statusText, error) {
-        _handleError(fail, req, statusText);
-      }
-    });
+      });
     }
   };
 
@@ -6317,7 +6305,7 @@ Lawnchair.adapter('webkit-sqlite', (function() {
       "contentType": "application/json",
       "timeout" : opts.timeout || $fh.app_props.timeout || $fh.fh_timeout,
       success: function(res) {
-        $fh._handleAuthResponse(endurl, res, success, fail);
+        $fh._handleFhAuthResponse(endurl, res, success, fail);
       },
       error: function(req, statusText, error) {
         _handleError(fail, req, statusText);
@@ -6476,7 +6464,7 @@ $fh.sync = (function() {
     },
 
     read: function(dataset_id, uid, success, failure) {
-        self.getDataSet(dataset_id, function(dataset) {
+      self.getDataSet(dataset_id, function(dataset) {
         var rec = dataset.data[uid];
         if (!rec) {
           failure("unknown_uid");
@@ -6506,7 +6494,7 @@ $fh.sync = (function() {
         }
         cb(res);
       }, function(err, datatset_id) {
-          self.ConsoleLog(err);
+        self.ConsoleLog(err);
       });
     },
 
@@ -6879,7 +6867,7 @@ $fh.sync = (function() {
               // If the dataset requres syncing, run the sync loop. This may be because the sync interval has passed
               // or because the sync_frequency has been changed or because a change was made to the dataset and the
               // immediate_sync flag set to true
-             self.syncLoop(dataset_id);
+              self.syncLoop(dataset_id);
             }
           }
         }
@@ -6905,12 +6893,12 @@ $fh.sync = (function() {
       self.getDataSet(dataset_id, function(dataset) {
         // save dataset to local storage
         Lawnchair({fail:onFail}, function (){
-             this.save({key:"dataset_" + dataset_id,val:JSON.stringify(dataset)}, function(){
-               //save success
-               if( cb ) {
-                 cb();
-               }
-             });
+          this.save({key:"dataset_" + dataset_id,val:JSON.stringify(dataset)}, function(){
+            //save success
+            if( cb ) {
+              cb();
+            }
+          });
         });
       });
     },
@@ -6925,20 +6913,20 @@ $fh.sync = (function() {
       };
 
       Lawnchair({fail:onFail},function (){
-         this.get( "dataset_" + dataset_id, function (data){
-           if (data && data.val !== null) {
-              var dataset = JSON.parse(data.val);
-              // Datasets should not be auto initialised when loaded - the mange function should be called for each dataset
-              // the user wants sync
-              dataset.initialised = false;
-              self.datasets[dataset_id] = dataset; // TODO: do we need to handle binary data?
-              self.consoleLog('load from local storage success for dataset_id :' + dataset_id);
-              return success(dataset);
-            } else {
-                // no data yet, probably first time. failure calback should handle this
-                return failure();
-            }
-         });
+        this.get( "dataset_" + dataset_id, function (data){
+          if (data && data.val !== null) {
+            var dataset = JSON.parse(data.val);
+            // Datasets should not be auto initialised when loaded - the mange function should be called for each dataset
+            // the user wants sync
+            dataset.initialised = false;
+            self.datasets[dataset_id] = dataset; // TODO: do we need to handle binary data?
+            self.consoleLog('load from local storage success for dataset_id :' + dataset_id);
+            return success(dataset);
+          } else {
+            // no data yet, probably first time. failure calback should handle this
+            return failure();
+          }
+        });
       });
     },
 
