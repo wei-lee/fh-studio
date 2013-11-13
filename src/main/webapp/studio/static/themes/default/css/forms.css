@@ -42,7 +42,7 @@
     border: 1px dashed #bbb;
     border-radius: 8px;
     margin: 12px 0px;
-    cursor: pointer;
+    cursor: move;
     background: #fff;
 }
 /*
@@ -63,6 +63,13 @@
 
 #forms_layout .fb-common-wrapper hr {
     border-color: #bbb;
+}
+
+/*
+  Sort of nasty hack to make the first page of every form not show - it's there for the re-ordering capability, nothing else..
+ */
+#forms_layout .response-field-page_break:first-of-type {
+    /*display: none;*/
 }
 
 .formPreviewContents {

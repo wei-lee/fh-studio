@@ -28,7 +28,8 @@ App.View.Forms = Backbone.View.extend({
       SUBSTODAY: 'submissionsToday',
       SUBS: 'submissions',
       PAGES: 'pages',
-      FIELDS: 'fields'
+      FIELDS: 'fields',
+      PAGE_BREAK: 'page_break'
 
     }
   },
@@ -68,7 +69,7 @@ App.View.Forms = Backbone.View.extend({
     pages = form.get(this.CONSTANTS.FORM.PAGES),
     fields = [];
     pages.each(function(p, i){
-      fields.push({ name :p.get('name'), value : '', cid :p.get('_id'), _id :p.get('_id'), type : 'page_break' });
+      fields.push({ name :p.get('name'), value : '', cid :p.get('_id'), _id :p.get('_id'), type : self.CONSTANTS.FORM.PAGE_BREAK });
       _.each(p.get(self.CONSTANTS.FORM.FIELDS), function(f, i){
         var notYetDone = ['shortname', 'europhone', 'likert', 'locationLatLong', 'locationNorthEast', 'locationMap', 'timeField', 'dateTimeField', 'dateTime']; // TODO Do these then remove
         if (notYetDone.indexOf(f.type)>-1){
