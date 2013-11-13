@@ -357,6 +357,7 @@
           var alias, orig, subview, _i, _len, _ref, _ref1;
           this.options.editStructure = this.options.hasOwnProperty('editStructure') ? this.options.editStructure : true;
           this.options.fields = this.options.hasOwnProperty('fields') ? this.options.fields : [];
+          this.options.addAt = this.options.hasOwnProperty('addAt') ? this.options.addAt : 'last';
           if (Formbuilder.options.mappings.TYPE_ALIASES) {
             _ref = Formbuilder.options.mappings.TYPE_ALIASES;
             for (orig in _ref) {
@@ -490,6 +491,8 @@
         },
         createField: function(attrs, options) {
           var rf;
+          options = options || {};
+          options.at = this.options.addAt === "last" ? this.collection.length : 0;
           rf = this.collection.create(attrs, options);
           this.createAndShowEditView(rf);
           return this.handleFormUpdate();
@@ -602,6 +605,7 @@
       }, opts, {
         formBuilder: this
       }));
+      this.collection = this.mainView.collection;
     }
 
     return Formbuilder;

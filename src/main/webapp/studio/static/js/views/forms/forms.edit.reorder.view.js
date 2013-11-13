@@ -25,7 +25,7 @@ App.View.FormEditReorder = App.View.Forms.extend({
     this.$el.append(this.templates.$form_pages());
 
     pagesQuery[this.CONSTANTS.FB.FIELD_TYPE] = this.CONSTANTS.FORM.PAGE_BREAK;
-    pages = this.fb.mainView.collection.where(pagesQuery);
+    pages = this.fb.collection.where(pagesQuery);
 
     _.each(pages, function(p){
       var page = self.templates.$form_page({_id :p.get('_id'), name :p.get('name')});
@@ -45,7 +45,7 @@ App.View.FormEditReorder = App.View.Forms.extend({
          We now have an array of the order of IDs - iterate over formbuilder's fields.
          . We then flatten reOrdered.
          */
-        self.fb.mainView.collection.each(function(f){
+        self.fb.collection.each(function(f){
           if (f.get('type')==='page_break'){ // TODO Constant
             /*
              Every time we find a page, add it and it's subsequent fields to a new array -
@@ -70,7 +70,7 @@ App.View.FormEditReorder = App.View.Forms.extend({
         reOrdered[idx] = curPage;
         // Lastly now we're done iterating we flatten out our 2d array reOrdered, and load it back into formbuilder
         reOrdered = _.flatten(reOrdered);
-        self.fb.mainView.collection.reset(reOrdered);
+        self.fb.collection.reset(reOrdered);
       }
     });
     this.$el.find('.form-page').click($.proxy(this.onFormPageClicked, this));
@@ -79,7 +79,7 @@ App.View.FormEditReorder = App.View.Forms.extend({
   onFormPageClicked : function(e){
     var el = (e.target.nodeName.toLowerCase()==="div") ? $(e.target) : $(e.target).closest('div'),
     _id = el.data('_id'),
-    model = this.fb.mainView.collection.findWhere({_id : _id}),
+    model = this.fb.collection.findWhere({_id : _id}),
     cid = model && model.cid;
     if ( el.is('.ui-draggable-dragging') ) {
       return;

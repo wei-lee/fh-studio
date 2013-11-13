@@ -44,23 +44,24 @@ App.View.FormEdit = App.View.Forms.extend({
       noEditOnDrop : true,
       bootstrapData: fields,
       eventFix : true,
+      addAt : 'last',
       fields : [ 'text', 'paragraph', 'number', 'email', 'website', 'section_break', 'page_break' ] // TODO: Add the rest that we support here
     });
 
-    this.fb.mainView.collection.bind('add', function(model){
+    this.fb.collection.bind('add', function(model){
       self.updatePreview.apply(self, arguments);
       model.set('_id', model.cid);
       if (model.get(self.CONSTANTS.FB.FIELD_TYPE)===self.CONSTANTS.FORM.PAGE_BREAK){
         self.reorder.render();
       }
     });
-    this.fb.mainView.collection.bind('update', function(model){
+    this.fb.collection.bind('update', function(model){
       self.updatePreview.apply(self, arguments);
       if (model.get(self.CONSTANTS.FB.FIELD_TYPE)===self.CONSTANTS.FORM.PAGE_BREAK){
         self.reorder.render();
       }
     });
-    this.fb.mainView.collection.bind('remove', $.proxy(this.updatePreview, this));
+    this.fb.collection.bind('remove', $.proxy(this.updatePreview, this));
 
     this.$el.find('.fb-field-wrapper .subtemplate-wrapper').click(function (){
       self.$el.find('.fb-tabs li.configurefield a').trigger('click');
@@ -107,34 +108,33 @@ App.View.FormEdit = App.View.Forms.extend({
   },
   onFormSave : function(){
     var self = this,
-    curPage = {},
-    pages = [];
+    curPage,
+    pages = [],
+    first = this.fb.collection.at(0);
 
-    curPage[this.CONSTANTS.FORM.FIELDS] = [];
-
-    this.fb.mainView.collection.each(function(f, i, coll){
+    this.fb.collection.each(function(f, i, coll){
       // For every page break - except the first, that's just a UI thing..
-      if (f.get(self.CONSTANTS.FB.FIELD_TYPE) === self.CONSTANTS.FORM.PAGE_BREAK && i!== 0){
+      if (f.get(self.CONSTANTS.FB.FIELD_TYPE) === self.CONSTANTS.FORM.PAGE_BREAK){
+        if (curPage){
+          pages.push(_.clone(curPage));
+        }
+        curPage = {};
         var p = f.toJSON();
         delete p.cid;
         delete p.field_options;
-        _.extend(curPage, f.toJSON());
-        pages.push(curPage);
-        curPage = {};
+        _.extend(curPage, p);
         curPage[self.CONSTANTS.FORM.FIELDS] = [];
       }else{
         curPage[self.CONSTANTS.FORM.FIELDS].push(f.toJSON());
       }
-
-      if (i === coll.length-1){
-        pages.push(curPage);
-      }
     });
+    // Push the last page
+    pages.push(curPage);
 
     this.form.set(this.CONSTANTS.FORM.PAGES, pages);
     this.form.set(this.CONSTANTS.FORM.NAME, this.$el.find('#formInputName').val());
     this.form.set(this.CONSTANTS.FORM.DESC, this.$el.find('#formTextareaDesc').val());
-    this.fb.mainView.collection.reset([]);
+    this.fb.collection.reset([]);
     this.collection.sync('update', this.form.toJSON(), { success : function(){
       self.back();
       self.message('Form updated successfully');
