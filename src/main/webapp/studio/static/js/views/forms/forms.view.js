@@ -10,10 +10,19 @@ App.View.Forms = Backbone.View.extend({
       DESCRIPTION: 'helpText',
       MINREPITIONS: 'fieldOptions.definition.minRepeat',
       MAXREPITIONS: 'fieldOptions.definition.maxRepeat',
+      OPTIONS : 'fieldOptions.definition.options',
+      MIN: 'fieldOptions.definition.min',
+      MAX: 'fieldOptions.definition.max',
+      MINLENGTH: 'fieldOptions.definition.minlength',
+      MAXLENGTH: 'fieldOptions.definition.maxlength',
+      INCLUDE_OTHER: 'fieldOptions.include_other_option',
+      INCLUDE_BLANK: 'fieldOptions.include_blank_option',
+      SINGLE_CHECKED: 'fieldOptions.definition.checked',
+      FIELD_OPTIONS : 'fieldOptions',
+      LOCATION_UNIT: 'fieldOptions.definition.locationUnit',
       TYPE_ALIASES : {
         'paragraph' : 'textarea',
         'checkboxes' : 'checkbox',
-        'dropdown' : 'select',
         'website' : 'url',
         'price' : 'money',
         'section_break' : 'sectionBreak',
@@ -37,10 +46,9 @@ App.View.Forms = Backbone.View.extend({
     this.compileTemplates();
 
     // For all forms views apply form builder field mappings
-    Formbuilder.options.mappings.LABEL = this.CONSTANTS.FB.FIELD_NAME;
-    Formbuilder.options.mappings.VALUE = this.CONSTANTS.FB.FIELD_VALUE;
-    Formbuilder.options.mappings.FIELD_TYPE = this.CONSTANTS.FB.FIELD_TYPE;
-    Formbuilder.options.mappings.TYPE_ALIASES = this.CONSTANTS.FB.TYPE_ALIASES;
+    _.each(this.CONSTANTS.FB, function(val, key){
+      Formbuilder.options.mappings[key] = val;
+    });
   },
   breadcrumb : function(trail){
     var crumbs = [],
