@@ -45,7 +45,7 @@ App.View.FormEdit = App.View.Forms.extend({
       bootstrapData: fields,
       eventFix : true,
       addAt : 'last',
-      fields : [ 'text', 'paragraph', 'number', 'email', 'website', 'dropdown', 'checkbox', 'location', 'map', 'file', 'photo', 'signature', 'section_break', 'page_break' ] // TODO: Add the rest that we support here
+      fields : [ 'text', 'paragraph', 'number', 'email', 'website', 'dropdown', 'checkbox', 'location', 'map', 'file', 'photo', 'signature', 'autodate', 'section_break', 'page_break' ] // TODO: Add the rest that we support here
     });
 
     this.fb.collection.bind('add', function(model){
@@ -56,6 +56,12 @@ App.View.FormEdit = App.View.Forms.extend({
       }
     });
     this.fb.collection.bind('update', function(model){
+      self.updatePreview.apply(self, arguments);
+      if (model.get(self.CONSTANTS.FB.FIELD_TYPE)===self.CONSTANTS.FORM.PAGE_BREAK){
+        self.reorder.render();
+      }
+    });
+    this.fb.collection.bind('remove', function(model){
       self.updatePreview.apply(self, arguments);
       if (model.get(self.CONSTANTS.FB.FIELD_TYPE)===self.CONSTANTS.FORM.PAGE_BREAK){
         self.reorder.render();

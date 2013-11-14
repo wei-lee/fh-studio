@@ -5,6 +5,7 @@ App.View.Forms = Backbone.View.extend({
   CONSTANTS: {
     FB : {
       FIELD_NAME : 'name',
+      LABEL : 'name',
       FIELD_VALUE : 'fieldOptions.definition.defaultValue',
       FIELD_TYPE: 'type',
       DESCRIPTION: 'helpText',
@@ -20,13 +21,19 @@ App.View.Forms = Backbone.View.extend({
       SINGLE_CHECKED: 'fieldOptions.definition.checked',
       FIELD_OPTIONS : 'fieldOptions',
       LOCATION_UNIT: 'fieldOptions.definition.locationUnit',
+      DATETIME_UNIT: 'fieldOptions.datetimeUnit',
+      FILE_SIZE : 'fieldOptions.definition.file_size',
+      PHOTO_HEIGHT: 'fieldOptions.definition.photoHeight',
+      PHOTO_WIDTH: 'fieldOptions.definition.photoWidth',
+      PHOTO_QUALITY: 'fieldOptions.definition.photoQuality',
+      TIME_AUTOPOPULATE: 'fieldOptions.definition.timeAutopopulate',
       TYPE_ALIASES : {
         'paragraph' : 'textarea',
-        'checkboxes' : 'checkbox',
         'website' : 'url',
         'price' : 'money',
         'section_break' : 'sectionBreak',
-        'email' : 'emailAddress'
+        'email' : 'emailAddress',
+        'autodate' : 'datetime'
       }
     },
     FORM: {
@@ -79,10 +86,6 @@ App.View.Forms = Backbone.View.extend({
     pages.each(function(p, i){
       fields.push({ name :p.get('name'), value : '', cid :p.get('_id'), _id :p.get('_id'), type : self.CONSTANTS.FORM.PAGE_BREAK });
       _.each(p.get(self.CONSTANTS.FORM.FIELDS), function(f, i){
-        var notYetDone = ['shortname', 'europhone', 'likert', 'locationLatLong', 'locationNorthEast', 'locationMap', 'timeField', 'dateTimeField', 'dateTime']; // TODO Do these then remove
-        if (notYetDone.indexOf(f.type)>-1){
-          f.type = "text";
-        }
         fields.push(f);
       });
 

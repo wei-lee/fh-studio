@@ -237,10 +237,11 @@
           {
             "name":"locationLatLongField",
             "helpText":"This is a locationLatLong field",
-            "type":"locationLatLong",
+            "type":"location",
             "required":false,
             "fieldOptions":{
               "definition":{
+                "locationUnit" : "latlong",
                 "maxRepeat":4,
                 "minRepeat":2
               }
@@ -259,10 +260,11 @@
           {
             "name":"locationNorthEastField",
             "helpText":"This is a locationNorthEast field",
-            "type":"locationNorthEast",
+            "type":"location",
             "required":false,
             "fieldOptions":{
               "definition":{
+                "locationUnit" : "eastnorth",
                 "maxRepeat":2,
                 "minRepeat":2
               }
@@ -273,7 +275,7 @@
           {
             "name":"locationMapField",
             "helpText":"This is a locationMap field",
-            "type":"locationMap",
+            "type":"map",
             "required":false,
             "fieldOptions":{
               "definition":{
@@ -287,10 +289,11 @@
           {
             "name":"dateField",
             "helpText":"This is a date field",
-            "type":"date",
+            "type":"datetime",
             "required":false,
             "fieldOptions":{
               "definition":{
+                "datetimeUnit" : "datetime",
                 "maxRepeat":6,
                 "minRepeat":1
               }
@@ -299,12 +302,13 @@
             "repeating":true
           },
           {
-            "name":"timeField",
+            "name":"datetime",
             "helpText":"This is a time field",
-            "type":"time",
+            "type":"datetime",
             "required":false,
             "fieldOptions":{
               "definition":{
+                "datetimeUnit" : "time",
                 "maxRepeat":6,
                 "minRepeat":3
               }
@@ -315,10 +319,11 @@
           {
             "name":"dateTimeField",
             "helpText":"This is a dateTime field",
-            "type":"dateTime",
+            "type":"datetime",
             "required":false,
             "fieldOptions":{
               "definition":{
+                "datetimeUnit" : "datetime",
                 "maxRepeat":6,
                 "minRepeat":1
               }
