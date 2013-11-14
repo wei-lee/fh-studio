@@ -1,13 +1,5 @@
 [
-  {
-    "name":"aws sdk",
-    "desc":"Official sdk for AWS",
-    "image":"aws.png",
-    "category":"SaaS Connectors",
-    "npmName":"aws-sdk",
-    "version":"1.12.0",
-    "docs":"http://aws.amazon.com/sdkfornodejs/"
-  },
+
   {
     "name" : "MySQL",
     "desc" : "Connects to a relational MySQL Database",
@@ -156,26 +148,7 @@
       }
     ]
   },
-  {
-    "name" : "S3",
-    "desc" : "Connects to Amazon S3 Bucket Storage",
-    "image" : "s3.png",
-    "category" : "Remote Storage",
-    "docs" : "https://github.com/learnboost/knox",
-    "npmName" :  "knox",
-    "version" :  "0.5.2",
-    "config" :  [
-      {
-        "desc" :  "Your S3 key",
-        "varName" :  "S3_KEY"
-      },
-      {
-        "desc" :  "Your S3 secret",
-        "varName" :  "S3_SECRET",
-        "field" :  "password"
-      }
-    ]
-  },
+
   {
     "name" : "Dropbox",
     "desc" : "JavaScript client library for the Dropbox API",
@@ -419,6 +392,29 @@
     "docs" : "https://github.com/google/google-api-nodejs-client",
     "version" :  "0.2.13-alpha",
     "config" :  []
+  },
+  {
+    "name":"aws sdk",
+    "desc":"Official sdk for AWS",
+    "image":"aws.png",
+    "category":"SaaS Connectors",
+    "npmName":"aws-sdk",
+    "version":"1.12.0",
+    "docs":"http://aws.amazon.com/sdkfornodejs/",
+    "new":true,
+    "config" : [{
+      "desc":"aws access key id",
+      "varName":"AWS_ACCESS_KEY_ID"
+    },{
+      "desc":"aws access key id",
+      "varName":"AWD_AKID"
+    },{
+      "desc":"aws secret",
+      "varName":"AWS_SECRET"
+    },{
+      "desc":"aws region",
+      "varName":"AWS_REGION"
+    }]
   },
   {
     "name" : "Intercom",

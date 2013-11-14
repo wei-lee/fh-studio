@@ -5,9 +5,13 @@
  */
 
 
-// ./config.json looks like: { "accessKeyId": "akid", "secretAccessKey": "secret", "region": "us-west-2" };
 var AWS = require('aws-sdk');
-AWS.config.loadFromPath('./config.json');
+
+AWS.config.accessKeyId = process.env.AWS_ACCESS_KEY_ID;
+AWS.config.akid = process.env.AWD_AKID;
+AWS.config.secret = process.env.AWS_SECRET;
+AWS.config.region = process.env.AWS_REGION;
+
 var s3 = new AWS.S3();
 
 exports.createBucket = function(params, cb){

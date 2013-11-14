@@ -69,6 +69,9 @@
 </script>
 <script type="text/x-handlebars-template" id="pluginPaneItemTpl">
   <div class="span4 plugin" data-name="{{name}}" data-category="{{category}}" data-id="{{ id }}" data-plugin="{{ name }}">
+    <div class="newlogo {{show}}" >
+        <img class="newlogoimg" style="width:32px; height:32px;" src="/studio/static/themes/default/img/cloud_plugins/New-Logo.png" />
+    </div>
     <h4 class="category">{{category}}</h4>
           {{{ pluginBody }}}
   </div><!--/span4-->
