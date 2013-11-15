@@ -61,14 +61,18 @@ application.DestinationAndroid = application.DestinationGeneral.extend({
       var pk_pass = wizard.find('#app_publish_android_pk_password').val();
       var cert_pass = wizard.find('#app_publish_android_cert_password').val();
       var data = {config: config, generateSrc: false, version: version, privateKeyPass: pk_pass, certPass: cert_pass};
-      return data;
+      return this.getMDMConfig(wizard, data);
   },
   
   bindExtraConfig: function(wizard, config) {
-      if(config !== "debug"){
-          wizard.find("#app_publish_android_info").attr('next', 'app_publish_android_password');
-      } else {
-          wizard.find("#app_publish_android_info").attr('next', 'app_publish_android_progress');
-      }
+    var stepId = 'app_publish_android_info';
+    if($fw.getClientProp('mdm.enabled') === 'true'){
+      stepId = 'app_publish_mdm_config';
+    }
+    if(config !== "debug"){
+      wizard.find("#" + stepId).attr('next', 'app_publish_android_password');
+    } else {
+      wizard.find("#" + stepId).attr('next', 'app_publish_android_progress');
+    }
   }
 });

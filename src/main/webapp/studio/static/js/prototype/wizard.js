@@ -282,6 +282,12 @@ proto.Wizard = {
       wizards.embed_publish_wizard = ['app_publish_embed_info' ,'app_publish_embed_progress'];
     }
 
+    if($fw.getClientProp('mdm.enabled') === 'true'){
+      var wizardNames = ["iphone_publish_wizard", "ipad_publish_wizard", "ios_publish_wizard", "android_publish_wizard", "blackberry_publish_wizard", "windowsphone7_publish_wizard"];
+      _.each(wizardNames, function(val){
+         wizards[val].splice(1, 0, 'app_publish_mdm_config');
+      });
+    }
     return wizards;
   }
 

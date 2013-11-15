@@ -112,7 +112,7 @@ application.DestinationGeneral = Class.extend({
     console.log('sending request to server');
     console.log('request url ' + that.base_url);
 
-    $.post(that.base_url, data, function(result) {
+    $.post(that.base_url, JSON.stringify(data), function(result) {
 
       console.log('import result > ' + JSON.stringify(result));
       var cacheKey, stageKey;
@@ -466,6 +466,13 @@ application.DestinationGeneral = Class.extend({
       showIPA = true;
     }
 
+    var showMDM = false;
+    if(res.action.mdm){
+      if($fw.getClientProp('mdm.provider.showstatus') === 'true'){
+        showMDM = true;
+      }
+    }
+
     var showDownload = function(message) {
       var dialog = $('#binary_download_dialog').clone();
       modal.find(".modal-body").html(message).end().appendTo($("body")).modal({
@@ -485,16 +492,22 @@ application.DestinationGeneral = Class.extend({
     };
 
     var modal = $('#binary_download_dialog').clone();
-    var html = "<h3>Your build is complete!</h3><br/><p> <a target='_blank' class='btn' href='" + source_url + "'> <i class='icon-download'></i> Download </a>";
+    var html = "<h3>Your build is complete!</h3>";
+
+    if(showMDM && res.action.mdm.provider_id && res.action.mdm.provider_name){
+      html = html + that.appendMDMInfo(res.action.mdm);
+    }
+
+    html += "<p> <a target='_blank' class='btn' href='" + source_url + "'> <i class='icon-download'></i> Download </a>";
 
     if (showIPA) {
       html += "  <a target='_blank' class='btn' href='" + ipa_url + "'><i class='icon-download'></i> Download IPA File</a>";
     }
-    html += "</p><br>";
+    html += "</p>";
 
     if (showOTA) {
       that.getOTALink(ota_url, function(otalink, shortened) {
-        html += "<h4>-- or --</h4><br/><p>Install directly onto a device with this OTA link</p>";
+        html += "<h4>-- or --</h4><p>Install directly onto a device with this OTA link</p>";
         html += "<h4><a class='otalink' target='_blank' href='" + otalink + "'>" + otalink + " </a></h4>";
         if (shortened) {
           html += "<img src='" + otalink + ".qr' alt='qr'>";
@@ -558,5 +571,42 @@ application.DestinationGeneral = Class.extend({
         cb(url, false);
       }
     });
+  },
+
+  getMDMConfig: function(wizard, data){
+    if($fw.getClientProp('mdm.enabled') === 'true'){
+      var includeSDK = wizard.find('input.mdm_include_sdk').is(':checked');
+      var pushBinary = wizard.find('input.mdm_push_binary').is(':checked');
+      data.mdm = {"includesdk": includeSDK, "pushbinary": pushBinary};
+      return data;
+    } else {
+      return data;
+    }
+  },
+
+  appendMDMInfo: function(mdm_result){
+    var alert_class ='alert-success';
+    var message = 'Your app has also been deployed to ' + mdm_result.provider_name;
+    var error = null;
+    if(mdm_result.error || mdm_result.upload.result === 'error'){
+      alert_class = 'alert-error';
+      message = 'Failed to deploy your app to ' + mdm_result.provider_name;
+      error = mdm_result.error || mdm_result.upload.error;
+    } else if(mdm_result.install.result === 'error'){
+      alert_class = 'alert-warning';
+      message = 'Your app has been uploaded to ' + mdm_result.provider_name + ' but failed to install';
+      error =  mdm_result.install.error;
+    }
+    var html = [];
+    html.push("<div class='alert "+alert_class+"'>");
+    html.push("<div class='mdm_logo'>");
+    html.push("<a target='_blank' href='"+mdm_result.provider_url+"'><img src='/studio/static/themes/default/img/mdm/"+mdm_result.provider_id+".png'></img></a>");
+    html.push("</div>");
+    html.push("<h5>" + message + "</h5>");
+    if(error){
+      html.push("<p>" + error + "</p>");
+    }
+    html.push("</div>");
+    return html.join('');
   }
 });
