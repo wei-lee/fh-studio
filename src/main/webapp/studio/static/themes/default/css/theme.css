@@ -4206,3 +4206,8 @@ h5.steps{
 .cloud_target_label.vmware {
   background-image: url('/studio/static/themes/default/img/cloud_target_vmware.png');
 }
+
+/* MDM Logos */
+.mdm_logo img {
+  width: 120px;
+}

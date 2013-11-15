@@ -136,7 +136,7 @@ application.DestinationIos = application.DestinationGeneral.extend({
       privateKeyPass: pk_pass,
       certPass: cert_pass
     };
-    return data;
+    return this.getMDMConfig(wizard, data);
   },
 
   getOTALink: function(download_url, cb) {
