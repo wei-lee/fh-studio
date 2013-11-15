@@ -4,7 +4,8 @@ App.View = App.View || {};
 App.View.FormList = App.View.Forms.extend({
   templates : {
     'formsAddForm' : '#formsAddForm',
-    'formsListMenu' : '#formsListMenu'
+    'formsListMenu' : '#formsListMenu',
+    'fullpageLoading' : '#fullpageLoading'
   },
   events : {
     'click .btn-add-form' : 'onCreateForm',
@@ -13,22 +14,33 @@ App.View.FormList = App.View.Forms.extend({
     'click .btn-delete-form' : 'onDeleteForm'
   },
   initialize: function(){
+    var self = this;
     this.constructor.__super__.initialize.apply(this, arguments);
     this.collection = new App.Collection.Form();
-    this.collection.bind('reset', $.proxy(this.render, this));
-    this.collection.fetch({ reset : true });
+
+    this.loaded = false;
+    this.collection.fetch({ reset : true, success : function(){
+      self.loaded = true;
+      self.collection.bind('reset', $.proxy(self.render, self));
+      self.collection.trigger('reset');
+    }});
   },
   render : function(){
     this.breadcrumb(['Forms', 'Forms List']);
     this.$el.empty();
-    this.$el.addClass('span10 formslist');
+    this.$el.addClass('span10 formslist busy');
 
-    if (this.collection.length>0){
-      this.renderList();
-    }else{
-      this.renderEmptyView();
+    this.loading = $(this.templates.$fullpageLoading());
+    this.$el.append(this.loading);
+
+    if (this.loaded){
+      this.$el.removeClass('busy');
+      if (this.collection.length>0){
+        this.renderList();
+      }else{
+        this.renderEmptyView();
+      }
     }
-
     return this;
   },
   renderEmptyView : function(){
@@ -112,6 +124,9 @@ App.View.FormList = App.View.Forms.extend({
 
     this.$fbEl.find('.right').html(formsListMenu);
 
+    // Move the loading to the bottom of this element's dom
+    this.loading.remove();
+    this.$el.append(this.loading);
   },
   onCreateForm : function(e){
     e.preventDefault();
@@ -121,7 +136,8 @@ App.View.FormList = App.View.Forms.extend({
     createView.bind('message', function(){}); // TODO - do we want messages up top like with CMS?
   },
   onFormSelected : function(e){
-    var el = e.target,
+    var self = this,
+    el = e.target,
     nodeName = el.nodeName.toLowerCase();
     if (nodeName === 'th'){
       return;
@@ -132,17 +148,29 @@ App.View.FormList = App.View.Forms.extend({
     el.addClass('info');
 
     var index = el.data('index'),
-    form = this.collection.at(index),
-    fields = this.formToFormBuilderFields(form);
+    form = this.collection.at(index);
 
-    this.currentForm = index;
-
-    this.$fbEl.find('h4').html(form.get('Name'));
-    this.$fbEl.find('p').html(form.get('Description'));
-
+    this.$el.addClass('busy');
+    this.$fbEl.hide();
     this.selectMessage.$el.hide();
-    this.$fbEl.show();
-    this.fb.mainView.collection.reset(fields);
+    //TODO: Fetch the further info about this form here..
+    setTimeout(function(){
+      self.$el.removeClass('busy');
+      // Give the animation some time to finish
+      setTimeout(function(){
+        var fields = self.formToFormBuilderFields(form);
+
+        self.currentForm = index;
+
+        self.$fbEl.find('h4').html(form.get('Name'));
+        self.$fbEl.find('p').html(form.get('Description'));
+
+
+        self.$fbEl.show();
+        self.fb.mainView.collection.reset(fields);
+      }, 500);
+
+    }, 2500);
   },
   onCloneForm : function(e){
     e.preventDefault();
