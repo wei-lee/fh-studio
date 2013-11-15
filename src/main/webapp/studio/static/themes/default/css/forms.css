@@ -3,6 +3,10 @@
     width: 97%;
     z-index: 2000;
 }
+
+#forms_layout .busy div.busyContainer {
+    position: relative;
+}
 /*
  App.View.FormList styles
  */
