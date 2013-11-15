@@ -82,10 +82,39 @@ App.Collection.Form = Backbone.Collection.extend({
     //TODO
     return options.success(model);
   },
-  update : function(method, model, options){
 
+ trimInternalIds : function(fields) {
+    var self = this;
+
+    if (fields._id && fields._id.length < 24){
+        delete f._id;
+    }
+
+    _.each(fields, function(f){
+      if (f._id && f._id.length < 24){
+        // If it's some arbitrary internal ID we assigned, not a node ObjectID, delete it before pushing
+        delete f._id;
+      }
+
+      // Cater field lists by recursing - should only happen once..
+      if (f.fields){
+        f.fields = self.trimInternalIds(f.fields);
+      }
+      if (f.pages){
+        f.pages = self.trimInternalIds(f.pages);
+      }
+    });
+
+    return fields;
+  },
+
+
+  update : function(method, model, options){
     var self = this;
     var url = self.urlUpdate;
+    
+    model.pages = self.trimInternalIds(model.pages);
+
     $.ajax({
       type: 'POST',
       url: url,
