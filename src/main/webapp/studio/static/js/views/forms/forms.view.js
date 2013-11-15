@@ -40,9 +40,9 @@ App.View.Forms = Backbone.View.extend({
       NAME: 'name',
       DESC: 'description',
       UPDATED: 'lastUpdated',
-      USING: 'using',
+      USING: 'appsUsingForm',
       SUBSTODAY: 'submissionsToday',
-      SUBS: 'submissions',
+      SUBS: 'submissionsTotal',
       PAGES: 'pages',
       FIELDS: 'fields',
       PAGE_BREAK: 'page_break'

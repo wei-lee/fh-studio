@@ -66,10 +66,10 @@
 }
 
 /*
-  Sort of nasty hack to make the first page of every form not show - it's there for the re-ordering capability, nothing else..
+  Sort of nasty hack to make the removal marker of first page of every form not show - it's there for the re-ordering capability, nothing else..
  */
-#forms_layout .response-field-page_break:first-of-type {
-    /*display: none;*/
+#forms_layout .response-field-page_break:first-of-type .actions-wrapper {
+    display: none;
 }
 
 .formPreviewContents {
