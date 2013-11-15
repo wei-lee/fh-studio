@@ -40,7 +40,8 @@ App.Collection.FormFields = Backbone.Collection.extend({ model : App.Model.FormF
 App.Collection.Form = Backbone.Collection.extend({
   initialize: function() {},
   model: App.Model.Form,
-  url: '/studio/static/js/model/backbone/mocks/forms.json',
+  url: '/api/v2/forms/form/list',
+  urlUpdate: '/api/v2/forms/form',
   sync: function (method, model, options) {
     this[method].apply(this, arguments);
   },
@@ -48,18 +49,26 @@ App.Collection.Form = Backbone.Collection.extend({
     var self = this;
     if(!self.loaded){
       var url = self.url;
-      $fw.server.post(url, {}, function(res) {
-        if (res && res.length && res.length>0) {
-          self.loaded = true;
-          if ($.isFunction(options.success)) {
-            options.success(res, options);
+      $.ajax({
+        type: 'GET',
+        url: url,
+        cache: true,
+        success: function(res){
+          if (res && res.forms && res.forms.length && res.forms.length>0) {
+            self.loaded = true;
+            if ($.isFunction(options.success)) {
+              options.success(res.forms, options);
+            }
+          } else {
+            if ($.isFunction(options.error)) {
+              options.error(res, options);
+            }
           }
-        } else {
-          if ($.isFunction(options.error)) {
-            options.error(res, options);
-          }
+        },
+        error: function(xhr, status){
+          options.error(arguments);
         }
-      }, options.error, true);
+      });
     } else {
       self.trigger("sync");
     }
@@ -74,8 +83,34 @@ App.Collection.Form = Backbone.Collection.extend({
     return options.success(model);
   },
   update : function(method, model, options){
-    this.trigger('reset');
-    return options.success(model);
+
+    var self = this;
+    var url = self.urlUpdate;
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: JSON.stringify(model),
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      cache: true,
+      success: function(res){
+        if (res) {
+          self.trigger('reset');
+          if ($.isFunction(options.success)) {
+            options.success(res, options);
+          }
+        } else {
+          if ($.isFunction(options.error)) {
+            options.error(res, options);
+          }
+        }
+      },
+      error: function(xhr, status){
+        if ($.isFunction(options.error)) {
+          options.error(arguments);
+        }
+      }
+    });
   },
   remove : function(model, options){
     Backbone.Collection.prototype.remove.apply(this, arguments);
