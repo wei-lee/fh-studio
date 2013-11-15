@@ -128,6 +128,8 @@ App.View.FormEdit = App.View.Forms.extend({
         var p = f.toJSON();
         delete p.cid;
         delete p.field_options;
+        delete p.value;
+        delete p.type;
         _.extend(curPage, p);
         curPage[self.CONSTANTS.FORM.FIELDS] = [];
       }else{
