@@ -205,7 +205,7 @@ App.View.CMSSection = App.View.CMS.extend({
       commonCheckboxes : false,
       eventFix : true,
       editStructure : this.options.editStructure || false,
-      fields : [ 'text', 'paragraph', 'file', 'field_list' ]
+      fields : [ 'text', 'paragraph', 'file', 'list' ]
     });
 
     this.bindFBEvents();
