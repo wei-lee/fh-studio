@@ -27,6 +27,7 @@ App.View.Forms = Backbone.View.extend({
       PHOTO_WIDTH: 'fieldOptions.definition.photoWidth',
       PHOTO_QUALITY: 'fieldOptions.definition.photoQuality',
       TIME_AUTOPOPULATE: 'fieldOptions.definition.timeAutopopulate',
+      VALUE_HEADER : 'Default Value',
       TYPE_ALIASES : {
         'paragraph' : 'textarea',
         'website' : 'url',
