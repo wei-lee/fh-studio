@@ -1187,7 +1187,9 @@ span.label-info {
   text-align: center;
   overflow: hidden;
   cursor: pointer;
+  position: relative;
 }
+
 
 
 #plugins_dashboard_container .plugin img, #plugins_dashboard_container .span4 h2, #plugins_dashboard_container .item  {
@@ -1265,6 +1267,20 @@ span.label-info {
 .plugin h4.category {
   margin-top: 0;
 }
+
+#plugins_dashboard_container .plugin .newlogo{
+    position:absolute;
+    top: 25px;
+    left:120px;
+    height:32px;
+    width:32px;
+}
+
+#plugins_dashboard_container .plugin .newlogoimg{
+    height:32px;
+    width:32px;
+}
+
 
 pre#packagejson {
     width: 350px;
