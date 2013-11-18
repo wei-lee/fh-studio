@@ -49,6 +49,10 @@
     cursor: move;
     background: #fff;
 }
+
+.form-page h4 {
+    word-break: break-all;
+}
 /*
   Formbuilder specific CSS
  */
