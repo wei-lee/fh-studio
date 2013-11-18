@@ -510,6 +510,7 @@ application.DestinationGeneral = Class.extend({
         html += "<h4>-- or --</h4><p>Install directly onto a device with this OTA link</p>";
         html += "<h4><a class='otalink' target='_blank' href='" + otalink + "'>" + otalink + " </a></h4>";
         if (shortened) {
+          // See http://dev.bitly.com/qr_codes.html
           html += "<img src='" + otalink + ".qrcode' alt='qr'>";
         } else {
           // Generate our own
