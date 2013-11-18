@@ -510,7 +510,7 @@ application.DestinationGeneral = Class.extend({
         html += "<h4>-- or --</h4><p>Install directly onto a device with this OTA link</p>";
         html += "<h4><a class='otalink' target='_blank' href='" + otalink + "'>" + otalink + " </a></h4>";
         if (shortened) {
-          html += "<img src='" + otalink + ".qr' alt='qr'>";
+          html += "<img src='" + otalink + ".qrcode' alt='qr'>";
         } else {
           // Generate our own
           html += '<div id="qr_code" data-url="' + otalink + '"></div>';
@@ -537,28 +537,18 @@ application.DestinationGeneral = Class.extend({
   },
 
   getShortenUrl: function(url, cb) {
-    var shortenerRequestBody = {
+    var req = {
       "longUrl": url
     };
-    var req = {
-      url: 'https://www.googleapis.com/urlshortener/v1/url',
-      method: "POST",
-      body: JSON.stringify(shortenerRequestBody),
-      headers: [{
-          "name": "Content-Type",
-          "value": "application/json"
-        }]
-    };
     $.ajax({
-      url: '/box/srv/1.1/act/wid/web',
+      url: '/box/api/shortenurl',
       type: 'POST',
       contentType: "application/json",
       dataType: 'json',
       data: JSON.stringify(req),
       success: function(res) {
-        if (res.status == 200) {
-          var resObj = JSON.parse(res.body);
-          var shortUrl = resObj.id.replace("\\", "");
+        if (res && res.url) {
+          var shortUrl = res.url;
           console.log("ota link is " + shortUrl);
           cb(shortUrl, true);
         } else {
