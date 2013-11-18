@@ -8,6 +8,10 @@
     position: relative;
 }
 
+#forms_container .row.formscontrollerdiv {
+    padding-left: 20px;
+}
+
 /*
  App.View.FormList styles
  */
