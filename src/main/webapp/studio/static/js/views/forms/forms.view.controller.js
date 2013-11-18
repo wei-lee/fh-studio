@@ -10,34 +10,44 @@ App.View.FormsController = Backbone.View.extend({
     'click .btn-view-form-apps' : 'onViewAppsUsingThisForm'
   },
   initialize : function(){},
-  menuItem : 'forms', // TODO: Trigger events maybe to change if he's active or not..?
   render: function(options) {
     var self = this;
 
     this.$el.addClass('row formscontrollerdiv');
 
     this.menu = new App.View.FormMenu();
+    this.bind('menuchange', this.menu.change);
     this.$el.append(this.menu.render().$el);
 
     this.forms = new App.View.FormList();
     this.$el.append(this.forms.render().$el);
+    this.trigger('menuchange', 'forms');
+
     return this;
   },
   onForms: function(){
-    this.menuItem = 'forms';
+    this.trigger('menuchange', 'forms');
     this.forms.$el.show();
     if (this.editForm){
       this.editForm.$el.hide();
     }
   },
   onThemes : function(){
-    this.menuItem = 'themes';
+    this.trigger('menuchange', 'themes');
+    this.trigger('menuchange', 'themes');
+    if (this.themes){
+      //TODO Destroy
+    }
+    debugger;
+    this.themes = new App.View.ThemeList();
+    this.$el.append(this.themes.render().$el);
+    this.forms.$el.hide();
   },
   onApps : function(){
-    this.menuItem = 'apps';
+    this.trigger('menuchange', 'apps');
   },
   onSubmissions : function(){
-    this.menuItem = 'submissions';
+    this.trigger('menuchange', 'submissions');
   },
   /*
     Edit Form view switching
