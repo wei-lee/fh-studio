@@ -4,9 +4,10 @@
     z-index: 2000;
 }
 
-#forms_layout .busy div.busyContainer {
+#forms_layout .busy div.busyContainer, #forms_layout div.busyContainer {
     position: relative;
 }
+
 /*
  App.View.FormList styles
  */
