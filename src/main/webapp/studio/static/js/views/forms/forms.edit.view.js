@@ -33,7 +33,7 @@ App.View.FormEdit = App.View.Forms.extend({
     this.breadcrumb(['Forms', 'Forms List', 'Edit Form']);
 
     this.$el.empty();
-    this.$el.addClass('span8 formedit');
+    this.$el.addClass('span10 formedit');
 
     this.$fbEl = $('<div>');
     this.$el.append(this.$fbEl);
@@ -100,7 +100,7 @@ App.View.FormEdit = App.View.Forms.extend({
     configName.val(this.form.get(this.CONSTANTS.FORM.NAME));
     configDesc.val(this.form.get(this.CONSTANTS.FORM.DESC));
 
-    this.$el.append(this.templates.$formSaveCancel());
+    this.$el.find('.middle').append(this.templates.$formSaveCancel());
 
     return this;
   },

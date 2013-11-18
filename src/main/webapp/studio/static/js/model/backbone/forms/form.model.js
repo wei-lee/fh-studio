@@ -16,7 +16,28 @@ App.Model.Form = Backbone.RelationalModel.extend({
       key: 'form',
       includeInJSON: 'id'
     }
-  }]
+  }],
+  fetchURL : '/api/v2/forms/form/{{id}}',
+  fetch : function(options){
+    var self = this,
+    id = this.get('_id');
+
+    $.ajax({
+      type: 'GET',
+      url: this.fetchURL.replace('{{id}}', id),
+      success: function(res){
+        self.set(res);
+        if ($.isFunction(options.success)) {
+          options.success(res, options);
+        }
+      },
+      error: function(xhr, status){
+        if ($.isFunction(options.error)) {
+          options.error(arguments);
+        }
+      }
+    });
+  }
 });
 
 App.Model.FormPage = Backbone.RelationalModel.extend({

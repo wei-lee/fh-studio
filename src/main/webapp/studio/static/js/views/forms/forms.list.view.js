@@ -153,24 +153,29 @@ App.View.FormList = App.View.Forms.extend({
     this.$el.addClass('busy');
     this.$fbEl.hide();
     this.selectMessage.$el.hide();
-    //TODO: Fetch the further info about this form here..
-    setTimeout(function(){
-      self.$el.removeClass('busy');
-      // Give the animation some time to finish
-      setTimeout(function(){
-        var fields = self.formToFormBuilderFields(form);
 
-        self.currentForm = index;
+    // Fetch the full form definition from the serverside
+    form.fetch({
+      success : function(){
+        self.$el.removeClass('busy');
+        // Give the animation some time to finish
+        setTimeout(function(){
+          var fields = self.formToFormBuilderFields(form);
 
-        self.$fbEl.find('h4').html(form.get('Name'));
-        self.$fbEl.find('p').html(form.get('Description'));
+          self.currentForm = index;
+
+          self.$fbEl.find('h4').html(form.get('Name'));
+          self.$fbEl.find('p').html(form.get('Description'));
 
 
-        self.$fbEl.show();
-        self.fb.mainView.collection.reset(fields);
-      }, 500);
-
-    }, 2500);
+          self.$fbEl.show();
+          self.fb.mainView.collection.reset(fields);
+        }, 500);
+      },
+      error : function(){
+        //TODO
+      }
+    });
   },
   onCloneForm : function(e){
     e.preventDefault();
