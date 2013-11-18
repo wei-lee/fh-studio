@@ -22,8 +22,8 @@ App.View.FormCreateClone = App.View.Modal.extend({
   render : function(options){
     App.View.Modal.prototype.render.apply(this, arguments);
     if (this.options.mode === 'clone'){
-      this.$el.find('input[name="Name"]').val(this.options.form[this.CONSTANTS.FORM.NAME] + " Copy"); // name
-      this.$el.find('textarea[name="Description"]').val(this.options.form[this.CONSTANTS.FORM.NAME] || ""); // name
+      this.$el.find('input[name="name"]').val(this.options.form[this.CONSTANTS.FORM.NAME] + " Copy"); // name
+      this.$el.find('textarea[name="description"]').val(this.options.form[this.CONSTANTS.FORM.NAME] || ""); // name
     }
 
     return this;
@@ -43,12 +43,14 @@ App.View.FormCreateClone = App.View.Modal.extend({
       vals[App.View.Forms.prototype.CONSTANTS.FORM.SUBSTODAY] = 0;
       vals[App.View.Forms.prototype.CONSTANTS.FORM.SUBS] = 0;
       vals.pages = [
-        { "Fields": [] }
+        { "fields": [] }
       ];
     }else{
       // Clone our source with the new prefs
+
       _.extend(this.options.form, vals);
       vals = this.options.form;
+      this.stripIds(vals); // because we're cloning, any elements with an ID won't get created
     }
     this.collection.add(vals);
     this.collection.sync('create', vals, { success : function(res){
@@ -61,7 +63,14 @@ App.View.FormCreateClone = App.View.Modal.extend({
     }});
 
   },
-  doCreateForm: function (sectionParams) {
-
+  stripIds : function(form){
+    delete form._id;
+    _.each(form.pages, function(p){
+      delete p._id;
+      _.each(p.fields, function(f){
+        delete f._id;
+      });
+    });
+    return form;
   }
 });

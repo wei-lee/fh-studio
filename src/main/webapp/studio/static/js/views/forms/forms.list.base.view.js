@@ -1,0 +1,140 @@
+var App = App || {};
+App.View = App.View || {};
+
+App.View.FormListBase = App.View.Forms.extend({
+  templates : {
+    'formsAddForm' : '#formsAddForm',
+    'fullpageLoading' : '#fullpageLoading'
+  },
+  initialize: function(){
+    var self = this;
+
+    App.View.Forms.prototype.initialize.apply(this, arguments);
+
+    this.loaded = false;
+    // Comes from implementee
+    this.collection.fetch({ reset : true, success : function(){
+      self.loaded = true;
+      self.collection.bind('reset', $.proxy(self.render, self));
+      self.collection.trigger('reset');
+    }});
+  },
+  render : function(){
+    this.breadcrumb(['Forms', this.pluralTitle + ' List']);
+    this.$el.empty();
+    this.$el.addClass('span10 ' + this.pluralTitle.toLowerCase() + 'list busy');
+
+    this.loading = $(this.templates.$fullpageLoading());
+    this.$el.append(this.loading);
+
+    if (this.loaded){
+      this.$el.removeClass('busy');
+      if (this.collection.length>0){
+        this.renderList();
+      }else{
+        this.renderEmptyView();
+      }
+    }
+    return this;
+  },
+  renderEmptyView : function(){
+    this.message = new App.View.FullPageMessageView({ message : 'No ' + this.pluralTitle.toLowerCase() + ' found', button : 'Create ' + this.singleTitle, cb :$.proxy(this.onCreate, this)});
+
+    this.$el.append(this.message.render().$el);
+    return this;
+  },
+  renderList : function(){
+    this.$el.append(this.templates.$formsListBaseAdd( { name : this.singleTitle } ));
+    var self = this,
+    data = this.collection.toJSON();
+
+    this.table = new App.View.DataTable({
+      aaData : data,
+      "fnRowCallback": function(nTr, sData, oData, iRow, iCol) {
+        $(nTr).attr('data-index', iRow).attr('data-hash', sData.Hash);
+      },
+      "aaSorting" : [],
+      "aoColumns": this.columns,
+      "bAutoWidth": false,
+      "sPaginationType": 'bootstrap',
+      "sDom": "<'row-fluid'<'span4'f>r>t<'row-fluid'<'pull-left'i><'pull-right'p>>",
+      "bLengthChange": false,
+      "iDisplayLength": 5,
+      "bInfo": true,
+      "oLanguage" : {
+        "sEmptyTable" : "No " + this.pluralTitle.toLowerCase() + " found"
+      }
+    });
+    this.table.render();
+    this.table.$el.find('table').removeClass('table-striped');
+    this.$el.append(this.table.$el);
+    
+    this.$el.append('<br />');
+
+    // Add in the view form view
+    this.selectMessage = new App.View.FullPageMessageView({ message : 'Select a ' + this.singleTitle.toLowerCase() + ' above to preview & manage', button : false });
+    this.$el.append(this.selectMessage.render().$el);
+    return this;
+  },
+  onRowSelected : function(e){
+    var self = this,
+    el = e.target,
+    nodeName = el.nodeName.toLowerCase();
+    if (nodeName === 'th'){
+      return;
+    }
+    el = (nodeName==="tr") ? $(el) : $($(el).parents('tr'));
+    this.$el.find('tr').removeClass('info');
+
+    el.addClass('info');
+
+    this.index = el.data('index');
+    var model = this.collection.at(this.index);
+
+    this.$el.addClass('busy');
+    this.$previewEl.hide();
+    this.selectMessage.$el.hide();
+
+    // Fetch the full form definition from the serverside
+    model.fetch({
+      success : function(updatedModel){
+        self.$el.removeClass('busy');
+        // Give the animation some time to finish
+        setTimeout(function(){
+          self.updatePreview(updatedModel);
+        }, 500);
+      },
+      error : function(){
+        //TODO
+      }
+    });
+  },
+  onCloneForm : function(e){
+    e.preventDefault();
+    var self = this,
+    form = this.collection.at(this.index),
+    createView = new App.View.FormCreateClone({ collection : this.collection, mode : 'clone', form : form.toJSON() });
+    this.$el.append(createView.render().$el);
+  },
+  onDeleteForm : function(){
+    var self = this,
+    form = this.collection.at(this.index);
+    var modal = new App.View.Modal({
+      title: 'Confirm Delete',
+      body: "Are you sure you want to delete form " + form.get('Name') + "?",
+      okText: 'Delete',
+      cancelText : 'Cancel',
+      ok: function (e) {
+        self.collection.remove(form, {
+          success : function(){
+
+          },
+          error : function(){
+
+          }
+        });
+      }
+    });
+    this.$el.append(modal.render().$el);
+  }
+});
