@@ -149,6 +149,7 @@ js/views/forms/forms.create.view.js
 js/views/forms/forms.edit.view.js
 js/views/forms/forms.edit.reorder.view.js
 js/views/forms/forms.view.controller.js
+js/views/forms/forms.fieldrules.view.js
 js/views/plugins/plugins.view.js
 js/views/plugins/plugins.setup.view.js
 js/views/plugins/dashboard/plugins.dashboard.view.js

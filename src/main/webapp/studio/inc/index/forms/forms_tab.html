@@ -17,6 +17,37 @@
   <div id="forms_setup_container"></div>
 </script>
 
+<script id="formsRulesTab" type="text/x-handlebars-template">
+    <div class="span10 well" style="margin-left:10px; ">
+    <ul class="nav nav-tabs">
+        <li class="active">
+            <a href="#">Field Rules</a>
+        </li>
+        <li><a href="#">Page Rules</a></li>
+    </ul>
+    <h4>{{rulesHeading}}</h4>
+    <div class="span11">
+        <button class="btn pull-right createrule">Create Rule</button>
+    </div>
+    <div class="span11 rulesContent">
+        <p>rules shown here</p>
+    </div>
+    </div>
+</script>
+
+<script id="fieldRuleTemplate" type="text/x-handlebars-template">
+      <form class="form-inline">
+          <select>
+              {{#each fields}}
+                <option>{{field}}</option>
+              {{/each}}
+          </select>
+          <select>
+                {{#addFieldRule}}{{fields}}{{/addFieldRule}}
+          </select>
+      </form>
+</script>
+
 <script id="formsMenu" type="text/x-handlebars-template">
   <div class="span2 forms_menu_container">
     <ul class="nav nav-list well">
