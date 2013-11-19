@@ -117,7 +117,7 @@ App.View.FormEdit = App.View.Forms.extend({
     curPage,
     pages = [],
     first = this.fb.collection.at(0);
-
+    
     this.fb.collection.each(function(f, i, coll){
       // For every page break - except the first, that's just a UI thing..
       if (f.get(self.CONSTANTS.FB.FIELD_TYPE) === self.CONSTANTS.FORM.PAGE_BREAK){
@@ -127,8 +127,9 @@ App.View.FormEdit = App.View.Forms.extend({
         curPage = {};
         var p = f.toJSON();
         delete p.cid;
-        delete p.field_options;
+        delete p.fieldOptions;
         delete p.value;
+        delete p.required;
         delete p.type;
         _.extend(curPage, p);
         curPage[self.CONSTANTS.FORM.FIELDS] = [];
