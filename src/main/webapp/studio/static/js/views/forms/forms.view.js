@@ -30,7 +30,7 @@ App.View.Forms = Backbone.View.extend({
       PHOTO_QUALITY: 'fieldOptions.definition.photoQuality',
       TIME_AUTOPOPULATE: 'fieldOptions.definition.timeAutopopulate',
       VALUE : 'fieldOptions.definition.defaultValue',
-      REQUIRED : 'fieldOptions.validation.required',
+      REQUIRED : 'required',
       VALUE_HEADER : 'Default Value',
       TYPE_ALIASES : {
         'paragraph' : 'textarea',
@@ -38,7 +38,8 @@ App.View.Forms = Backbone.View.extend({
         'price' : 'money',
         'section_break' : 'sectionBreak',
         'email' : 'emailAddress',
-        'autodate' : 'datetime'
+        'autodate' : 'dateTime',
+        'map' : 'locationMap'
       }
     },
     FORM: {

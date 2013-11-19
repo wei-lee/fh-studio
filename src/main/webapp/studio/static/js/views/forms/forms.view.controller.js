@@ -37,6 +37,9 @@ App.View.FormsController = Backbone.View.extend({
     if (this.themes){
       this.themes.$el.hide();
     }
+    if (this.editFormRules){
+      this.editFormRules.$el.hide();
+    }
   },
   onThemes : function(){
     this.trigger('menuchange', 'themes');
@@ -48,6 +51,9 @@ App.View.FormsController = Backbone.View.extend({
     this.themes = new App.View.ThemeList();
     this.$el.append(this.themes.render().$el);
     this.forms.$el.hide();
+    if (this.editFormRules){
+      this.editFormRules.$el.hide();
+    }
   },
   onApps : function(){
     this.trigger('menuchange', 'apps');
@@ -62,6 +68,11 @@ App.View.FormsController = Backbone.View.extend({
     var form = this.forms.collection.at(this.forms.index),
     menuEl = this.$el.find(".forms_menu_container");
     this.forms.$el.hide();
+
+    if (this.editFormRules){
+      this.editFormRules.$el.hide();
+    }
+
 
     this.editForm = new App.View.FormEdit({ form : form, collection : this.forms.collection, $pagesMenuEl : menuEl });
     this.editForm.bind('back', $.proxy(this.back, this));
