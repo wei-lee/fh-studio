@@ -277,13 +277,15 @@
 <script id="emptyFullpageContainer" type="text/x-handlebars-template">
   <div class="databrowser emptyContainer">
     <div class="centered">
-      {{{ content }}}
+
     </div>
   </div>
 </script>
 <script id="fullpageEmptyContent" type="text/x-handlebars-template">
-  {{{ message }}}<br />
-  <button type="button" class="btn btn-primary btn-large btn-add-row btn-messageView">{{{ button }}}</button>
+  <div>
+    {{{ message }}}<br />
+    <button type="button" class="btn btn-primary btn-large btn-add-row btn-messageView">{{{ button }}}</button>
+  </div>
 </script>
 
 <script id="fullpageLoading" type="text/x-handlebars-template">

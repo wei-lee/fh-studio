@@ -79,8 +79,9 @@ App.View.CMSListField = App.View.CMSSection.extend({
 
     return this;
   },
-  renderDataTable : function(){
-    if (this.options.mode === "structure"){
+  renderDataTable : function(e){
+    var el = (e && e.target) ? $(e.target) : $('<div>');
+    if (this.options.mode === "structure" || el.attr('type')==='file'){
       return;
     }
 
@@ -310,10 +311,12 @@ App.View.CMSListField = App.View.CMSSection.extend({
 
     row = data[index];
     _.each(fields, function(f){
-      if (!row.hasOwnProperty(f.name)){
-        throw new Error('No propery on this row found with key ' + f.name);
+      if (row.hasOwnProperty(f.name)){
+        f.value = row[f.name];
+      }else{
+        f.value = "";
       }
-      f.value = row[f.name];
+
     });
     this.editing = index;
     fields = this.massageFieldsForFormbuilder(fields);

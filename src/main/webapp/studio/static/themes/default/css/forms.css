@@ -1,0 +1,94 @@
+#forms_layout .alert {
+    position: absolute;
+    width: 97%;
+    z-index: 2000;
+}
+
+#forms_layout .busy div.busyContainer {
+    position: relative;
+}
+/*
+ App.View.FormList styles
+ */
+.formslist table tr {
+    cursor: pointer;
+}
+.formslist table tr.info, .formslist table tr:hover {
+    background-color: #f8f8f8;
+}
+
+.formslist .formpreview .subtemplate-wrapper {
+    border: 0px;
+}
+.formslist .formpreview h4 {
+    margin-left: 8px;
+}
+
+.formslist .formpreview p {
+    margin-left: 10px;
+}
+
+/*
+ App.View.FormEdit styles
+ */
+
+.formedit .fb-add-field-types a.btn {
+    width: 100%;
+}
+
+.formedit .btn-forms-back {
+    margin-top: 5px;
+    margin-right: 12px;
+}
+
+.form-page {
+    text-align: center;
+    border: 1px dashed #bbb;
+    border-radius: 8px;
+    margin: 12px 0px;
+    cursor: move;
+    background: #fff;
+}
+/*
+  Formbuilder specific CSS
+ */
+.fb-adminonly {
+    display: none;
+}
+
+.fb-common-wrapper .fb-label-description {
+    float: none;
+    width: auto;
+}
+
+.fb-common-wrapper .fb-common-checkboxes {
+    margin-left: 0px;
+}
+
+#forms_layout .fb-common-wrapper hr {
+    border-color: #bbb;
+}
+
+/*
+  Sort of nasty hack to make the removal marker of first page of every form not show - it's there for the re-ordering capability, nothing else..
+ */
+#forms_layout .response-field-page_break:first-of-type .actions-wrapper {
+    display: none;
+}
+
+.formPreviewContents {
+    background-color: #fff;
+    overflow: scroll;
+}
+
+.formPreviewContents label {
+    font-size: 2.5em;
+}
+
+.formPreviewContents input, .formPreviewContents textarea {
+    height: 1.5em;
+    font-size: 2.5em;
+    width: 100%;
+    border: 2px solid;
+    margin-top: 10px;
+}

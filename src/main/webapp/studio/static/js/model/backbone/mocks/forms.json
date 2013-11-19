@@ -1,0 +1,457 @@
+[
+  {
+    "updatedBy":"user@example.com",
+    "name":"testFieldsForm",
+    "description":"This form is for testing fields.",
+    "_id":"527d38e73c2397c37e000004",
+    "submissions" : 10000,
+    "submissionsToday" : 12,
+    "using" : 4,
+    "pageRules":[
+      {
+        "sourceField":"527d38e73c2397c37e000006",
+        "targetPage":"527d38e73c2397c37e000005",
+        "type":"skip",
+        "restriction":"contains",
+        "sourceValue":"Something",
+        "_id":"527d38e73c2397c37e000015"
+      },
+      {
+        "sourceField":"527d38e73c2397c37e000007",
+        "targetPage":"527d38e73c2397c37e000005",
+        "type":"skip",
+        "restriction":"isNot",
+        "sourceValue":"Something Else",
+        "_id":"527d38e73c2397c37e000016"
+      },
+      {
+        "sourceField":"527d38e73c2397c37e000008",
+        "targetPage":"527d38e73c2397c37e000005",
+        "type":"skip",
+        "restriction":"is",
+        "sourceValue":"Some Other Thing",
+        "_id":"527d38e73c2397c37e000017"
+      }
+    ],
+    "fieldRules":[
+      {
+        "sourceField":"527d38e73c2397c37e000009",
+        "targetField":"527d38e73c2397c37e000013",
+        "type":"show",
+        "restriction":"contains",
+        "sourceValue":"Something",
+        "_id":"527d38e73c2397c37e000018"
+      },
+      {
+        "sourceField":"527d38e73c2397c37e00000b",
+        "targetField":"527d38e73c2397c37e000009",
+        "type":"hide",
+        "restriction":"contains",
+        "sourceValue":"Something",
+        "_id":"527d38e73c2397c37e000019"
+      },
+      {
+        "sourceField":"527d38e73c2397c37e00000c",
+        "targetField":"527d38e73c2397c37e000008",
+        "type":"show",
+        "restriction":"contains",
+        "sourceValue":"Something",
+        "_id":"527d38e73c2397c37e00001a"
+      }
+    ],
+    "pages":[
+      {
+        "name":"testPage",
+        "description":"This is a test page for the win.",
+        "_id":"527d38e73c2397c37e000005",
+        "fields":[
+          {
+            "name":"textField",
+            "helpText":"This is a text field",
+            "type":"text",
+            "required":false,
+            "fieldOptions":{
+              "definition":{
+                "maxRepeat":5,
+                "minRepeat":2,
+                "defaultValue" : "my text field value"
+              },
+              "validation":{
+                "min":20,
+                "max":100
+              }
+            },
+            "_id":"527d38e73c2397c37e000006",
+            "repeating":true
+          },
+          {
+            "name":"textAreaField",
+            "helpText":"This is a text area field",
+            "type":"textarea",
+            "required":false,
+            "fieldOptions":{
+              "definition":{
+                "maxRepeat":5,
+                "minRepeat":3,
+                "defaultValue" : "my paragraph value"
+              },
+              "validation":{
+                "min":50,
+                "max":100
+              }
+            },
+            "_id":"527d38e73c2397c37e000007",
+            "repeating":true
+          },
+          {
+            "name":"numberField",
+            "helpText":"This is a number field",
+            "type":"number",
+            "required":false,
+            "fieldOptions":{
+              "definition":{
+                "maxRepeat":5,
+                "defaultValue" : 245,
+                "minRepeat":2
+              },
+              "validation":{
+                "min":0,
+                "max":100
+              }
+            },
+            "_id":"527d38e73c2397c37e000008",
+            "repeating":true
+          },
+          {
+            "name":"sectionBreakField",
+            "helpText":"This is a sectionBreak field",
+            "type":"sectionBreak",
+            "required":false,
+            "_id":"527d38e73c2397c37e000013",
+            "repeating":false
+          },
+          {
+            "name":"emailField",
+            "helpText":"This is a Email field",
+            "type":"emailAddress",
+            "required":false,
+            "fieldOptions":{
+              "definition":{
+                "defaultValue" : "support@feedhenry.com",
+                "maxRepeat":5,
+                "minRepeat":1
+              }
+            },
+            "_id":"527d38e73c2397c37e000009",
+            "repeating":true
+          },
+          {
+            "name":"radioField",
+            "helpText":"This is a Radio field",
+            "type":"radio",
+            "required":false,
+            "fieldOptions":{
+              "definition":{
+                "maxRepeat":2,
+                "minRepeat":2,
+                "radioChoices":[
+                  {
+                    "radioVal1":20
+                  },
+                  {
+                    "radioVal2":10
+                  },
+                  {
+                    "radioVal3":130
+                  },
+                  {
+                    "radioVal4":12
+                  }
+                ]
+              },
+              "validation":{
+                "min":0,
+                "max":100
+              }
+            },
+            "_id":"527d38e73c2397c37e00000a",
+            "repeating":true
+          },
+          {
+            "name":"checkboxField",
+            "helpText":"This is a Checkbox field",
+            "type":"checkbox",
+            "required":false,
+            "fieldOptions":{
+              "definition":{
+                "checkboxChoices":[
+                  {
+                    "red":{
+                      "value":1,
+                      "selected":true
+                    }
+                  },
+                  {
+                    "blue":{
+                      "value":2,
+                      "selected":false
+                    }
+                  },
+                  {
+                    "green":{
+                      "value":3,
+                      "selected":false
+                    }
+                  },
+                  {
+                    "purple":{
+                      "value":4,
+                      "selected":false
+                    }
+                  },
+                  {
+                    "black":{
+                      "value":5,
+                      "selected":true
+                    }
+                  }
+                ],
+                "minRepeat":2,
+                "maxRepeat":3
+              },
+              "validation":{
+                "minSelected":2,
+                "maxSelected":3
+              }
+            },
+            "_id":"527d38e73c2397c37e00000c",
+            "repeating":true
+          }
+        ]
+      },
+      {
+        "name":"Second Page",
+        "description":"This is a second page for the win.",
+        "_id":"527d38e73d9397c37e000006",
+        "fields" : [
+          {
+            "name":"locationLatLongField",
+            "helpText":"This is a locationLatLong field",
+            "type":"location",
+            "required":false,
+            "fieldOptions":{
+              "definition":{
+                "locationUnit" : "latlong",
+                "maxRepeat":4,
+                "minRepeat":2
+              }
+            },
+            "_id":"527d38e73c2397c37e00000d",
+            "repeating":true
+          },
+          {
+            "name":"sectionBreak2Field",
+            "helpText":"This is another sectionBreak field",
+            "type":"sectionBreak",
+            "required":false,
+            "_id":"527d38e73c2397c37e000014",
+            "repeating":false
+          },
+          {
+            "name":"locationNorthEastField",
+            "helpText":"This is a locationNorthEast field",
+            "type":"location",
+            "required":false,
+            "fieldOptions":{
+              "definition":{
+                "locationUnit" : "eastnorth",
+                "maxRepeat":2,
+                "minRepeat":2
+              }
+            },
+            "_id":"527d38e73c2397c37e00000e",
+            "repeating":true
+          },
+          {
+            "name":"locationMapField",
+            "helpText":"This is a locationMap field",
+            "type":"map",
+            "required":false,
+            "fieldOptions":{
+              "definition":{
+                "maxRepeat":6,
+                "minRepeat":1
+              }
+            },
+            "_id":"527d38e73c2397c37e00000f",
+            "repeating":true
+          },
+          {
+            "name":"dateField",
+            "helpText":"This is a date field",
+            "type":"datetime",
+            "required":false,
+            "fieldOptions":{
+              "definition":{
+                "datetimeUnit" : "datetime",
+                "maxRepeat":6,
+                "minRepeat":1
+              }
+            },
+            "_id":"527d38e73c2397c37e000010",
+            "repeating":true
+          },
+          {
+            "name":"datetime",
+            "helpText":"This is a time field",
+            "type":"datetime",
+            "required":false,
+            "fieldOptions":{
+              "definition":{
+                "datetimeUnit" : "time",
+                "maxRepeat":6,
+                "minRepeat":3
+              }
+            },
+            "_id":"527d38e73c2397c37e000011",
+            "repeating":true
+          },
+          {
+            "name":"dateTimeField",
+            "helpText":"This is a dateTime field",
+            "type":"datetime",
+            "required":false,
+            "fieldOptions":{
+              "definition":{
+                "datetimeUnit" : "datetime",
+                "maxRepeat":6,
+                "minRepeat":1
+              }
+            },
+            "_id":"527d38e73c2397c37e000012",
+            "repeating":true
+          }
+        ]
+      },
+      {
+        "name":"Third Page",
+        "description":"This is a third page for the win.",
+        "_id":"527d38e73d2397c37e000007",
+        "fields" : [
+          {
+            "name":"textField",
+            "helpText":"This is a text field",
+            "type":"text",
+            "required":false,
+            "fieldOptions":{
+              "definition":{
+                "maxRepeat":5,
+                "minRepeat":2,
+                "defaultValue" : "my text field value"
+              },
+              "validation":{
+                "min":20,
+                "max":100
+              }
+            },
+            "_id":"527d38e73c2397c37e000009",
+            "repeating":true
+          }
+        ]
+      },
+      {
+        "name":"Fourth Page",
+        "description":"This is a third page for the win.",
+        "_id":"527d38e74d2397c37e000007",
+        "fields" : [
+          {
+            "name":"textField",
+            "helpText":"This is a text field",
+            "type":"text",
+            "required":false,
+            "fieldOptions":{
+              "definition":{
+                "maxRepeat":5,
+                "minRepeat":2,
+                "defaultValue" : "my text field value"
+              },
+              "validation":{
+                "min":20,
+                "max":100
+              }
+            },
+            "_id":"527d38e73c2397c37e000010",
+            "repeating":true
+          }
+        ]
+      }
+    ],
+    "lastUpdated":"2013-11-08T19:17:59.776Z",
+    "dateCreated":"2013-11-08T19:17:59.776Z",
+    "pageRef":{
+      "527d38e73c2397c37e000005":0
+    },
+    "fieldRef":{
+      "527d38e73c2397c37e000006":{
+        "page":0,
+        "field":0
+      },
+      "527d38e73c2397c37e000007":{
+        "page":0,
+        "field":1
+      },
+      "527d38e73c2397c37e000008":{
+        "page":0,
+        "field":2
+      },
+      "527d38e73c2397c37e000013":{
+        "page":0,
+        "field":3
+      },
+      "527d38e73c2397c37e000009":{
+        "page":0,
+        "field":4
+      },
+      "527d38e73c2397c37e00000a":{
+        "page":0,
+        "field":5
+      },
+      "527d38e73c2397c37e00000b":{
+        "page":0,
+        "field":6
+      },
+      "527d38e73c2397c37e00000c":{
+        "page":0,
+        "field":7
+      },
+      "527d38e73c2397c37e00000d":{
+        "page":0,
+        "field":8
+      },
+      "527d38e73c2397c37e000014":{
+        "page":0,
+        "field":9
+      },
+      "527d38e73c2397c37e00000e":{
+        "page":0,
+        "field":10
+      },
+      "527d38e73c2397c37e00000f":{
+        "page":0,
+        "field":11
+      },
+      "527d38e73c2397c37e000010":{
+        "page":0,
+        "field":12
+      },
+      "527d38e73c2397c37e000011":{
+        "page":0,
+        "field":13
+      },
+      "527d38e73c2397c37e000012":{
+        "page":0,
+        "field":14
+      }
+    }
+  }
+]

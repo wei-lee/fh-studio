@@ -1,0 +1,138 @@
+<div id="tabs-8">
+  <div id="forms_layout">
+    <div class="row-fluid crumb_container">
+      <ul class="breadcrumb"></ul>
+    </div>
+
+    <div class="row-fluid">
+      <div class="span12" id="forms_container">
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script id="formsContainer" type="text/x-handlebars-template">
+  <div id="forms_dashboard_container"></div>
+  <div id="forms_setup_container"></div>
+</script>
+
+<script id="formsMenu" type="text/x-handlebars-template">
+  <div class="span2 forms_menu_container">
+    <ul class="nav nav-list well">
+      <li class="nav-header">Forms</li>
+      <li class="active">
+        <a class="btn-forms" href="#">
+          <i class="icon-list-alt"></i>
+          Forms
+        </a>
+      </li>
+      <li id="myapps_listitem">
+        <a class="btn-themes" href="#">
+          <i class="icon-eye-open"></i>
+          Themes
+        </a>
+      </li>
+      <li>
+        <a class="btn-apps" href="#">
+          <i class="icon-th-large"></i>
+          Apps
+        </a>
+      </li>
+      <li>
+        <a class="btn-submissions" href="#">
+          <i class="icon-envelope"></i>
+          Submissions
+        </a>
+      </li>
+    </ul>
+  </div>
+</script>
+
+<script id="formsAddForm" type="text/x-handlebars-template">
+    <a class="btn pull-right btn-success btn-add-form" href="#"><i class="icon icon-plus"></i> Add Form</a>
+</script>
+
+<script id="formsListMenu" type="text/x-handlebars-template">
+  <ul class="nav nav-pills nav-stacked well">
+    <li><a class="btn-edit-form" href="#"><i class="icon-edit"></i>Edit Form</a></li>
+    <li><a class="btn-edit-form-rules" href="#"><i class="icon-pencil"></i> Edit Rules</a></li>
+    <li><a class="btn-view-form-submissions" href="#"><i class="icon-envelope"></i> View Submissions</a></li>
+    <li><a class="btn-view-form-apps" href="#"><i class="icon-th-large"></i> View Apps</a></li>
+    <li><a class="btn-clone-form" href="#"><i class="icon-retweet"></i> Clone</a></li>
+    <li><a class="btn-delete-form" href="#"><i class="icon-trash"></i> Delete</a></li>
+
+  </ul>
+</script>
+
+<script id="formCreateEditForm" type="text/x-handlebars-template">
+  <form class="form-horizontal">
+    <fieldset>
+      <label for="formInputName">Name</label>
+      <input type="text" id="formInputName" placeholder="Name" name="{{ CONSTANTS.FORM.NAME }}">
+      <label for="formTextareaDesc">Description</label>
+      <textarea id="formTextareaDesc" placeholder="Description" name="{{ CONSTANTS.FORM.DESC }}"></textarea>
+    </fieldset>
+  </form>
+</script>
+
+<script id="formEditExtraTabs" type="text/x-handlebars-template">
+<li class="formconfig"><a  data-target="#formConfig"><i class="icon icon-cog"></i> Form</a></li>
+  <li class="formpreview"><a  data-target="#formPreview">Preview</a></li>
+</script>
+
+<script id="formEditExtraTabsContent" type="text/x-handlebars-template">
+  <div class="fb-tab-pane" id="formConfig">
+    <h1>Config</h1>
+  </div>
+  <div class="fb-tab-pane" id="formPreview">
+    <h1>Preview</h1>
+  </div>
+</script>
+
+<script id="formSaveCancel" type="text/x-handlebars-template">
+  <div class="row">
+    <div class="btn-group pull-right">
+      <a class="btn btn-danger btn-form-cancel" href="#">Cancel</a>
+      <a class="btn btn-success btn-form-save" href="#">Save</a>
+    </div>
+  </div>
+</script>
+
+<script id="form_back" type="text/x-handlebars-template">
+  <a class="btn btn-forms-back pull-left" href="#"><i class="icon-arrow-left"></i> Back</a>
+</script>
+
+<script id="form_message" type="text/x-handlebars-template">
+  <div class="alert alert-{{ cls }}">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    {{{ msg }}}
+  </div>
+</script>
+
+<script id="form_pages" type="text/x-handlebars-template">
+  <ul class="nav nav-list well formpages-menu">
+    <li class="nav-header">Form Pages</li>
+    Drag to re-order
+    <div class="form-pages">
+    </div>
+  </ul>
+</script>
+<script id="form_page" type="text/x-handlebars-template">
+  <div class="form-page" data-_id="{{{ _id }}}">
+    <h2><i class="icon-file"></i></h2>
+    <h4>{{{ name }}}</h4>
+  </div>
+</script>
+
+<script id="preview_outline" type="text/x-handlebars-template">
+  <div id="preview_wrapper" style="overflow: hidden; width: 227px; height: 470px; -webkit-transform-style: preserve-3d;">
+    <div id="#forms_preview_frame" style="position: absolute; -webkit-transform-origin: 0px 0px; -webkit-transform: scale(0.4585858585858586, 0.4585858585858586); top: 0px; left: 0px; margin-top: 0px; margin-left: 0px; width: 400px; height: 710px; padding: 160px 48px 154px 47px; background-image: url(https://testing.feedhenry.me/studio/static/themes/default/img/preview_device/iphone_5.png); display: block; background-position: initial initial; background-repeat: no-repeat no-repeat;">
+    <div class="formPreviewContents" style="width: 400px; height: 710px;">
+      <h1>Testing</h1>
+
+    </div>
+    </div>
+    <div id="preview_text" style="display: none;"><span id="preview_device_too_large1" class="">Preview size too large for inline display. Click </span><a id="preview_device_open_emulator" class="script-link">here</a><span id="preview_device_too_large2" class=""> to view the preview in the Device Emulator</span></div>
+  </div>
+</script>

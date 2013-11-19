@@ -1,7 +1,7 @@
 App.View.FullPageMessageView = Backbone.View.extend({
   templates : {
-    dataviewEmptyContainer : '#emptyFullpageContainer',
-    dataviewEmptyContent : '#fullpageEmptyContent'
+    emptyFullpageContainer : '#emptyFullpageContainer',
+    fullpageEmptyContent : '#fullpageEmptyContent'
   },
   events : {
     'click button.btn-messageView' : 'onButtonClick'
@@ -12,8 +12,15 @@ App.View.FullPageMessageView = Backbone.View.extend({
   },
   render: function() {
     this.$el.empty();
-    var messageView = this.templates.$dataviewEmptyContent(this.options),
-    container = $(this.templates.$dataviewEmptyContainer( { content : messageView } ));
+    var messageView = $(this.templates.$fullpageEmptyContent(this.options));
+    container = $(this.templates.$emptyFullpageContainer());
+
+    if (this.options && this.options.button === false){
+      messageView.find('button').remove();
+    }
+
+    container.find('.centered').html(messageView);
+
     this.$el.append(container);
     return this;
   },
