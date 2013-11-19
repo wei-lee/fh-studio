@@ -76,6 +76,7 @@
         FIELD_TYPE: 'field_type',
         REQUIRED: 'required',
         REPEATING: 'repeating',
+        VALIDATE_IMMEDIATELY: 'validate_immediately',
         ADMIN_ONLY: 'admin_only',
         FIELD_OPTIONS: 'field_options',
         OPTIONS: 'field_options.options',
@@ -1037,7 +1038,9 @@ function print() { __p += __j.call(arguments, '') }
 with (obj) {
 __p += '<label class="fb-required">\n  <input type=\'checkbox\' data-rv-checked=\'model.' +
 ((__t = ( Formbuilder.options.mappings.REQUIRED )) == null ? '' : __t) +
-'\' />\n  Required\n</label>\n\n';
+'\' />\n  Required\n</label>\n<label class="fb-immediately">\n  <input type=\'checkbox\' data-rv-checked=\'model.' +
+((__t = ( Formbuilder.options.mappings.VALIDATE_IMMEDIATELY )) == null ? '' : __t) +
+'\' />\n  Validate Immediately\n</label>\n';
  if (repeatable){ ;
 __p += '\n  <label class="fb-repeating">\n    <input type=\'checkbox\' data-rv-checked=\'model.' +
 ((__t = ( Formbuilder.options.mappings.REPEATING )) == null ? '' : __t) +
