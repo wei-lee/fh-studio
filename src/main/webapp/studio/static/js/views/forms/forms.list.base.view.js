@@ -110,6 +110,9 @@ App.View.FormListBase = App.View.Forms.extend({
     // Fetch the full form definition from the serverside
     model.fetch({
       success : function(updatedModel){
+        if (self.error){
+          self.error.$el.remove();
+        }
         self.$el.removeClass('busy');
         // Give the animation some time to finish
         setTimeout(function(){
@@ -118,8 +121,12 @@ App.View.FormListBase = App.View.Forms.extend({
       },
       error : function(){
         self.$el.removeClass('busy');
+        if (self.error){
+          self.error.$el.remove();
+        }
         self.error = new App.View.FullPageMessageView({ message : 'Error loading ' + self.pluralTitle.toLowerCase(), button : false, cb : function(){}});
         self.$el.append(self.error.render().$el);
+
       }
     });
   },

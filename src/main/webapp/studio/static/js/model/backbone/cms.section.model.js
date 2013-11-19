@@ -289,6 +289,11 @@ App.Collection.CMS = Backbone.Collection.extend({
         // If it's some arbitrary internal ID we assigned, not a node ObjectID, delete it before pushing
         delete f._id;
       }
+
+      // Delete attributes added by formbuilder that CMS doesnt accept - this could be tidier
+      delete f.fieldOptions;
+      delete f.repeating;
+
       if (f.type && f.type==="file"){
         delete f.binaryContentType;
         delete f.binaryFileName;
