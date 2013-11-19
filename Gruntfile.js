@@ -45,6 +45,7 @@ module.exports = function(grunt) {
       'src/main/webapp/studio/static/js/views/forms/forms.edit.view.js',
       'src/main/webapp/studio/static/js/views/forms/forms.list.view.js',
       'src/main/webapp/studio/static/js/views/forms/forms.menu.view.js',
+      'src/main/webapp/studio/static/js/views/forms/forms.fieldrules.view.js',
       'src/main/webapp/studio/static/js/views/app/cloud/cms/cloud.cms.view.js',
       'src/main/webapp/studio/static/js/views/app/cloud/cms/cloud.cms.view.controller.js',
       'src/main/webapp/studio/static/js/views/app/cloud/cms/cloud.cms.tree.view.js',

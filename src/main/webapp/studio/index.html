@@ -20,7 +20,8 @@ try {
   
   <body style="display:none;">
     <input name="csrftoken" value="<%=csrftoken %>" type="hidden" />
-    <%@ include file="common.html" %>
+
+    <jsp:include page="common.html"/>
     
     <%@ include file="inc/index/main.html"%>
     

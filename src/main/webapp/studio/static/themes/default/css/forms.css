@@ -4,9 +4,14 @@
     z-index: 2000;
 }
 
-#forms_layout .busy div.busyContainer {
+#forms_layout .busy div.busyContainer, #forms_layout div.busyContainer {
     position: relative;
 }
+
+#forms_container .row.formscontrollerdiv {
+    padding-left: 20px;
+}
+
 /*
  App.View.FormList styles
  */
@@ -48,6 +53,10 @@
     margin: 12px 0px;
     cursor: move;
     background: #fff;
+}
+
+.form-page h4 {
+    word-break: break-all;
 }
 /*
   Formbuilder specific CSS

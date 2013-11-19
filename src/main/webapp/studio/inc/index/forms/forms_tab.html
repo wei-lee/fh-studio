@@ -17,6 +17,37 @@
   <div id="forms_setup_container"></div>
 </script>
 
+<script id="formsRulesTab" type="text/x-handlebars-template">
+    <div class="span10 well" style="margin-left:10px; ">
+    <ul class="nav nav-tabs">
+        <li class="active">
+            <a href="#">Field Rules</a>
+        </li>
+        <li><a href="#">Page Rules</a></li>
+    </ul>
+    <h4>{{rulesHeading}}</h4>
+    <div class="span11">
+        <button class="btn pull-right createrule">Create Rule</button>
+    </div>
+    <div class="span11 rulesContent">
+        <p>rules shown here</p>
+    </div>
+    </div>
+</script>
+
+<script id="fieldRuleTemplate" type="text/x-handlebars-template">
+      <form class="form-inline">
+          <select>
+              {{#each fields}}
+                <option>{{field}}</option>
+              {{/each}}
+          </select>
+          <select>
+                {{#addFieldRule}}{{fields}}{{/addFieldRule}}
+          </select>
+      </form>
+</script>
+
 <script id="formsMenu" type="text/x-handlebars-template">
   <div class="span2 forms_menu_container">
     <ul class="nav nav-list well">
@@ -49,8 +80,8 @@
   </div>
 </script>
 
-<script id="formsAddForm" type="text/x-handlebars-template">
-    <a class="btn pull-right btn-success btn-add-form" href="#"><i class="icon icon-plus"></i> Add Form</a>
+<script id="formsListBaseAdd" type="text/x-handlebars-template">
+    <a class="btn pull-right btn-success btn-add-form" href="#"><i class="icon icon-plus"></i> Add {{ name }}</a>
 </script>
 
 <script id="formsListMenu" type="text/x-handlebars-template">
@@ -135,4 +166,20 @@
     </div>
     <div id="preview_text" style="display: none;"><span id="preview_device_too_large1" class="">Preview size too large for inline display. Click </span><a id="preview_device_open_emulator" class="script-link">here</a><span id="preview_device_too_large2" class=""> to view the preview in the Device Emulator</span></div>
   </div>
+</script>
+
+<!-- Themes templates -->
+<script id="themesAddTheme" type="text/x-handlebars-template">
+  <a class="btn pull-right btn-success btn-add-form" href="#"><i class="icon icon-plus"></i> Add Theme</a>
+</script>
+
+<script id="themesListMenu" type="text/x-handlebars-template">
+  <ul class="nav nav-pills nav-stacked well">
+    <li><a class="btn-edit-theme" href="#"><i class="icon-edit"></i>Edit Theme</a></li>
+    <li><a class="btn-preview-theme" href="#"><i class="icon-pencil"></i> Preview Theme</a></li>
+    <li><a class="btn-view-theme-apps" href="#"><i class="icon-th-large"></i> View Apps</a></li>
+    <li><a class="btn-clone-theme" href="#"><i class="icon-retweet"></i> Clone</a></li>
+    <li><a class="btn-delete-theme" href="#"><i class="icon-trash"></i> Delete</a></li>
+
+  </ul>
 </script>

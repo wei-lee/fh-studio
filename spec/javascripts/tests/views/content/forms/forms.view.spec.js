@@ -24,11 +24,11 @@
 //             return success({"hosts":{"development-dyno":"testing","development-name":"testing-v60ttwgovdinr6mylanwld05-dev","development-url":"https://testing-v60ttwgovdinr6mylanwld05-dev_testing.ac.gen.ppa.feedhenry.com","live-dyno":"testing","live-name":"testing-v60ttwgovdinr6mylanwld05-live","live-url":"https://testing-v60ttwgovdinr6mylanwld05-live_testing.ac.gen.ppa.feedhenry.com"},"status":"ok"});
 //           }else{
 //             console.info("Get Form Data")
-//             success(getJSONFixture("forms.json"));
+//             success(getJSONFixture("forms/forms.json"));
 //           }
 //         },
 //         get : function(url, body, success, fail){
-//           success(getJSONFixture("forms.json"));
+//           success(getJSONFixture("forms/forms.json"));
 //         }
 //       },
 //       userProps : {
@@ -47,26 +47,26 @@
 //       }
 //     };
 //   });
-
-//   it('should have a full populated JSTree', function () {
-//     var view = new App.View.FormsController();
-
-//     view.render();
-
-//     spyOn(view, "render").andCallThrough();
-
-
+// 
+// //   it('should have a full populated JSTree', function () {
+// //     var view = new App.View.FormsController();
+// 
+// //     view.render();
+// 
+// //     spyOn(view, "render").andCallThrough();
+// 
+// 
 //     // Now our view is loaded, make sure our collection has as many entries as we mocked
 //     var formsLength = view.forms.collection.length,
-//     fixturesLength = getJSONFixture("forms.json").length;
+//     fixturesLength = getJSONFixture("forms/forms.json").length;
 //     expect(formsLength).toEqual(fixturesLength);
-
-//     // Make sure FB starts up ok
-//     expect(view.$el.find('.datatable tbody tr').length).toEqual(formsLength);
-//     view.$el.find('.datatable tbody tr').first().click();
-
-//     // Verify formbuilder was appended ok
-//     expect(view.$el.find('.fb-field-wrapper').length).toEqual(14);
-
-//   });
-// });
+// 
+// //     // Make sure FB starts up ok
+// //     expect(view.$el.find('.datatable tbody tr').length).toEqual(formsLength);
+// //     view.$el.find('.datatable tbody tr').first().click();
+// 
+// //     // Verify formbuilder was appended ok
+// //     expect(view.$el.find('.fb-field-wrapper').length).toEqual(14);
+// 
+// //   });
+// // });
