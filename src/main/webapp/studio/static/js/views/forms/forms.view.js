@@ -11,6 +11,7 @@ App.View.Forms = Backbone.View.extend({
       DESCRIPTION: 'helpText',
       MINREPITIONS: 'fieldOptions.definition.minRepeat',
       MAXREPITIONS: 'fieldOptions.definition.maxRepeat',
+      VALIDATE_IMMEDIATELY: 'fieldOptions.validation.validateImmediately',
       OPTIONS : 'fieldOptions.definition.options',
       MIN: 'fieldOptions.definition.min',
       MAX: 'fieldOptions.definition.max',
