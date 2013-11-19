@@ -30,6 +30,7 @@ App.View.Forms = Backbone.View.extend({
       PHOTO_QUALITY: 'fieldOptions.definition.photoQuality',
       TIME_AUTOPOPULATE: 'fieldOptions.definition.timeAutopopulate',
       VALUE : 'fieldOptions.definition.defaultValue',
+      REQUIRED : 'fieldOptions.validation.required',
       VALUE_HEADER : 'Default Value',
       TYPE_ALIASES : {
         'paragraph' : 'textarea',
