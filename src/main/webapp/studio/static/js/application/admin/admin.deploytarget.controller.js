@@ -197,14 +197,17 @@ Admin.Deploytarget.Controller = Controller.extend({
   },
 
   bindControls: function() {
-    var self = this;
-    $(this.views.target_list + ' tr td .edit_deploy_target, ' + this.views.target_list + ' tr td:not(.controls,.dataTables_empty)').unbind().live('click', function() {
+    var self = this,
+        edit_selector = 'tr td .edit_deploy_target, ' + this.views.target_list + ' tr td:not(.controls,.dataTables_empty)',
+        delete_selector = 'tr td .delete_deploy_target';
+
+    $(this.views.target_list).off('click', edit_selector).on('click', edit_selector, function() {
       var row = $(this).parent().parent();
       var data = self.dataForRow($(this).closest('tr').get(0));
       self.showEditTarget(this, row, data);
       return false;
     });
-    $(this.views.target_list +' tr td .delete_deploy_target').unbind().live('click', function() {
+    $(this.views.target_list).off('click', delete_selector).on('click', delete_selector, function() {
       var row = $(this).parent().parent();
       var data = self.dataForRow($(this).closest('tr').get(0));
       self.deleteTarget(this, row, data);
