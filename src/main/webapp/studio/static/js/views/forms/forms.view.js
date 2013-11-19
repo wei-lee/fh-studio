@@ -47,7 +47,11 @@ App.View.Forms = Backbone.View.extend({
       PAGES: 'pages',
       FIELDS: 'fields',
       PAGE_BREAK: 'page_break'
-
+    },
+    THEME : {
+      NAME : 'name',
+      UPDATED : 'lastUpdated',
+      USING: 'appsUsingTheme'
     }
   },
   initialize: function(){

@@ -10,40 +10,56 @@ App.View.FormsController = Backbone.View.extend({
     'click .btn-view-form-apps' : 'onViewAppsUsingThisForm'
   },
   initialize : function(){},
-  menuItem : 'forms', // TODO: Trigger events maybe to change if he's active or not..?
   render: function(options) {
     var self = this;
 
     this.$el.addClass('row formscontrollerdiv');
 
     this.menu = new App.View.FormMenu();
+    this.bind('menuchange', function(active){
+      self.active = active;
+      self.menu.change.apply(self, arguments);
+    });
     this.$el.append(this.menu.render().$el);
 
     this.forms = new App.View.FormList();
     this.$el.append(this.forms.render().$el);
+    this.trigger('menuchange', 'forms');
+
     return this;
   },
   onForms: function(){
-    this.menuItem = 'forms';
+    this.trigger('menuchange', 'forms');
     this.forms.$el.show();
     if (this.editForm){
       this.editForm.$el.hide();
     }
+    if (this.themes){
+      this.themes.$el.hide();
+    }
   },
   onThemes : function(){
-    this.menuItem = 'themes';
+    this.trigger('menuchange', 'themes');
+    this.trigger('menuchange', 'themes');
+    if (this.themes){
+      this.themes.$el.remove();
+    }
+
+    this.themes = new App.View.ThemeList();
+    this.$el.append(this.themes.render().$el);
+    this.forms.$el.hide();
   },
   onApps : function(){
-    this.menuItem = 'apps';
+    this.trigger('menuchange', 'apps');
   },
   onSubmissions : function(){
-    this.menuItem = 'submissions';
+    this.trigger('menuchange', 'submissions');
   },
   /*
     Edit Form view switching
    */
   onEditForm : function(e){
-    var form = this.forms.collection.at(this.forms.currentForm),
+    var form = this.forms.collection.at(this.forms.index),
     menuEl = this.$el.find(".forms_menu_container");
     this.forms.$el.hide();
 
@@ -52,7 +68,7 @@ App.View.FormsController = Backbone.View.extend({
     this.$el.append(this.editForm.render().$el);
   },
   onEditFormRules : function(e){
-    var form = this.forms.collection.at(this.forms.currentForm),
+    var form = this.forms.collection.at(this.forms.index),
     menuEl = this.$el.find(".forms_menu_container");
     this.forms.$el.hide();
 
@@ -76,6 +92,6 @@ App.View.FormsController = Backbone.View.extend({
         view.$el.hide();
       }
     });
-    this[this.menuItem].$el.show();
+    this[this.active].$el.show();
   }
 });

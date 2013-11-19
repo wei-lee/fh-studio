@@ -12,5 +12,9 @@ App.View.FormMenu = App.View.Forms.extend({
     var menu = this.templates.$formsMenu();
     this.$el.append(menu);
     return this;
+  },
+  change : function(active){
+    this.$el.find('li').removeClass('active');
+    this.$el.find('.btn-' + active).parent().addClass('active');
   }
 });
