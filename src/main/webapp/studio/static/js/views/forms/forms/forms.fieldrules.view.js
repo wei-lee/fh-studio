@@ -39,8 +39,10 @@ App.View.FormFieldRules = App.View.Forms.extend({
     this.collection = this.options.collection;
     this.fieldRules = this.options.form.get("fieldRules");
     this.pages = this.form.get("pages");
+    this.fields = [];
 
-
+    this.aggreagateFields();
+    console.log("Agg fields ", this.fields);
 
     this.$el.empty();
     this.$el.append(this.templates.$rulesTabs({"rulesHeading":"Show or hide fields based on these rules:"}));
@@ -48,14 +50,19 @@ App.View.FormFieldRules = App.View.Forms.extend({
   },
   createRule : function (e){
     console.log("create rule");
-    $('.rulesContent').append(this.templates.$addRule({"fields":[{
-      "field":"test"
-    }],"rules":this.FIELD_RULES}));
+    $('.rulesContent').append(this.templates.$addRule({"fields":this.fields,"rules":this.FIELD_RULES}));
     return false;
   },
 
   aggreagateFields : function(){
+    console.log("pages ", this.pages);
     for(var i=0; i < this.pages.length; i++){
+       var page = this.pages.models[i];
+      console.log("page ", page);
+      var pageFields = page.get("fields");
+      for(var p=0; p < pageFields.length; p++){
+        this.fields.push(pageFields[p]);
+      }
 
     }
   }
