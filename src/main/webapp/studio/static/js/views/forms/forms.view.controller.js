@@ -65,11 +65,6 @@ App.View.FormsController = Backbone.View.extend({
     menuEl = this.$el.find(".forms_menu_container");
     this.views.forms.$el.hide();
 
-    if (this.editFormRules){
-      this.editFormRules.$el.hide();
-    }
-
-
     var editForm = new App.View.FormEdit({ form : form, collection : this.views.forms.collection, $pagesMenuEl : menuEl });
     editForm.bind('back', $.proxy(this.back, this));
     this.$el.append(editForm.render().$el);
@@ -80,9 +75,10 @@ App.View.FormsController = Backbone.View.extend({
     menuEl = this.$el.find(".forms_menu_container");
     this.views.forms.$el.hide();
 
-    this.editFormRules = new App.View.FormFieldRules({ form : form, collection : this.views.forms.collection, $pagesMenuEl : menuEl });
+    var editFormRules = new App.View.FormFieldRules({ form : form, collection : this.views.forms.collection, $pagesMenuEl : menuEl });
     //this.editForm.bind('back', $.proxy(this.back, this));
-    this.$el.append(this.editFormRules.render().$el);
+    this.$el.append(editFormRules.render().$el);
+    this.subViews.push(editForm);
   },
   onViewFormSubmissions : function(e){
     //TODO
@@ -95,12 +91,16 @@ App.View.FormsController = Backbone.View.extend({
    */
   back : function(){
     // TODO - update breadcrumb
-    _.each([this.editForm], function(view){
-      if (view && view.$el){
-        view.$el.hide();
+    if (this.subViews && this.subViews.length > 0){
+      var toHide = this.subViews.pop();
+      toHide.$el.hide();
+      // If there's still items left in the stack, show it
+      if (this.subViews.length>0){
+        this.subViews[this.subViews.length-1].$el.show();
+      }else{
+        this.views[this.active].$el.show();
       }
-    });
-    this[this.active].$el.show();
+    }
   },
   hideAll : function(){
     _.each(this.views, function(view){
