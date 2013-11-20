@@ -84,7 +84,7 @@ App.View.Forms = Backbone.View.extend({
     });
     this.$el.append(this.modalView.render().$el);
   },
-  formToFormBuilderFields : function(form){
+    formToFormBuilderFields : function(form){
     var self = this,
     pages = form.get(this.CONSTANTS.FORM.PAGES),
     fields = [];

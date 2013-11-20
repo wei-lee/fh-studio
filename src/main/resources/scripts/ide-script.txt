@@ -35,6 +35,7 @@ js/model/backbone/cms.section.model.js
 js/model/backbone/app.model.js
 js/model/backbone/forms/form.model.js
 js/model/backbone/forms/theme.model.js
+js/model/backbone/forms/fieldrules.model.js
 js/model/backbone/metrics/datepicker.model.js
 js/model/backbone/metrics/metrics.model.js
 js/model/backbone/metrics/pie.metrics.model.js

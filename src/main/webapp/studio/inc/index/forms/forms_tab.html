@@ -18,7 +18,7 @@
 </script>
 
 <script id="formsRulesTab" type="text/x-handlebars-template">
-    <div class="span10 well" style="margin-left:10px; ">
+    <div class="span10 well formsContainer" style="margin-left:10px; ">
     <ul class="nav nav-tabs">
         <li class="active">
             <a href="#">Field Rules</a>
@@ -27,25 +27,40 @@
     </ul>
     <h4>{{rulesHeading}}</h4>
     <div class="span11">
-        <button class="btn pull-right createrule">Create Rule</button>
+        <button class="btn pull-right createrule">Create New Rule</button>
     </div>
     <div class="span11 rulesContent">
         <p>rules shown here</p>
+
     </div>
+        <button class="btn-warning pull-right saverules">Save Rules</button>
     </div>
 </script>
 
 <script id="fieldRuleTemplate" type="text/x-handlebars-template">
-      <form class="form-inline">
-          <select>
+      <form class="form-inline rulesForm" style="padding-bottom:8px;">
+          <select class="rulesFieldName">
               {{#each fields}}
-                <option>{{name}}</option>
+                <option data-type="{{type}}"  data-_id="{{_id}}"  {{selected}} >{{name}}</option>
               {{/each}}
           </select>
-          <select>
-                {{#addFieldRule}}{{fields}}{{/addFieldRule}}
+          <select id="fieldConditionals" style="width:130px;">
           </select>
+          <input type="text" name="checkedValue" placeholder="checked value" />
+          <select id="targetAction" style="width:100px;">
+              <option>show</option>
+              <option>hide</option>
+          </select>
+          <select id="targetField">
+              {{#each fields}}
+              <option data-type="{{type}}" data-_id="{{_id}}">{{name}}</option>
+              {{/each}}
+          </select>
+          <button type="button" class="btn btn-large btn-add-rule"><i class="icon-plus"></i>  </button>
+          <button type="button" class="btn btn-large btn-remove-rule"><i class="icon-minus"></i>  </button>
+          <hr/>
       </form>
+
 </script>
 
 <script id="formsMenu" type="text/x-handlebars-template">

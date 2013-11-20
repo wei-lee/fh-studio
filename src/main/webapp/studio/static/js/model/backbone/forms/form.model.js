@@ -18,6 +18,7 @@ App.Model.Form = Backbone.RelationalModel.extend({
     }
   }],
   fetchURL : '/api/v2/forms/form/{{id}}',
+
   fetch : function(options){
     var self = this,
     id = this.get('_id');
