@@ -17,6 +17,18 @@ App.View.FormListBase = App.View.Forms.extend({
       self.loaded = true;
       self.collection.bind('reset', $.proxy(self.render, self));
       self.collection.trigger('reset');
+    }, error : function(){
+      self.$el.removeClass('busy');
+      if (!self.error){
+        self.error = new App.View.FullPageMessageView({ message : 'Error loading ' + self.pluralTitle.toLowerCase(), button : 'Retry', cb: function(){
+          self.error.$el.hide();
+          self.initialize.apply(self, arguments);
+        }});
+        self.$el.append(self.error.render().$el);
+      }else{
+        self.error.$el.show();
+      }
+
     }});
   },
   render : function(){
@@ -98,6 +110,9 @@ App.View.FormListBase = App.View.Forms.extend({
     // Fetch the full form definition from the serverside
     model.fetch({
       success : function(updatedModel){
+        if (self.error){
+          self.error.$el.remove();
+        }
         self.$el.removeClass('busy');
         // Give the animation some time to finish
         setTimeout(function(){
@@ -105,7 +120,13 @@ App.View.FormListBase = App.View.Forms.extend({
         }, 500);
       },
       error : function(){
-        //TODO
+        self.$el.removeClass('busy');
+        if (self.error){
+          self.error.$el.remove();
+        }
+        self.error = new App.View.FullPageMessageView({ message : 'Error loading ' + self.pluralTitle.toLowerCase(), button : false, cb : function(){}});
+        self.$el.append(self.error.render().$el);
+
       }
     });
   },

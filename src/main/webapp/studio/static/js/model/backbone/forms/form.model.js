@@ -92,7 +92,7 @@ App.Collection.Form = Backbone.Collection.extend({
         url: url,
         cache: true,
         success: function(res){
-          if (res && res.forms && res.forms.length && res.forms.length>0) {
+          if (res && res.forms) {
             self.loaded = true;
             if ($.isFunction(options.success)) {
               options.success(res.forms, options);

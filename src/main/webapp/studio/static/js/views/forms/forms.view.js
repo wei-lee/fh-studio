@@ -8,9 +8,11 @@ App.View.Forms = Backbone.View.extend({
       LABEL : 'name',
       FIELD_VALUE : 'fieldOptions.definition.defaultValue',
       FIELD_TYPE: 'type',
-      DESCRIPTION: 'helpText',
+      DESCRIPTION: 'fieldOptions.definition.helpText',
       MINREPITIONS: 'fieldOptions.definition.minRepeat',
       MAXREPITIONS: 'fieldOptions.definition.maxRepeat',
+      REPEATING: 'fieldOptions.definition.repeating',
+      VALIDATE_IMMEDIATELY: 'fieldOptions.validation.validateImmediately',
       OPTIONS : 'fieldOptions.definition.options',
       MIN: 'fieldOptions.definition.min',
       MAX: 'fieldOptions.definition.max',
@@ -27,6 +29,8 @@ App.View.Forms = Backbone.View.extend({
       PHOTO_WIDTH: 'fieldOptions.definition.photoWidth',
       PHOTO_QUALITY: 'fieldOptions.definition.photoQuality',
       TIME_AUTOPOPULATE: 'fieldOptions.definition.timeAutopopulate',
+      VALUE : 'fieldOptions.definition.defaultValue',
+      REQUIRED : 'required',
       VALUE_HEADER : 'Default Value',
       TYPE_ALIASES : {
         'paragraph' : 'textarea',
@@ -34,7 +38,8 @@ App.View.Forms = Backbone.View.extend({
         'price' : 'money',
         'section_break' : 'sectionBreak',
         'email' : 'emailAddress',
-        'autodate' : 'datetime'
+        'autodate' : 'dateTime',
+        'map' : 'locationMap'
       }
     },
     FORM: {

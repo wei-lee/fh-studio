@@ -52,9 +52,11 @@ App.View.FormCreateClone = App.View.Modal.extend({
       vals = this.options.form;
       this.stripIds(vals); // because we're cloning, any elements with an ID won't get created
     }
-    this.collection.add(vals);
+
     this.collection.sync('create', vals, { success : function(res){
       var verb = (self.mode === 'create') ? "created" : "cloned";
+      vals._id = res._id;
+      self.collection.add(vals);
       App.View.Forms.prototype.message('Form ' + verb + ' successfully');
     }, error : function(err){
       App.View.Forms.prototype.message('Error creating form');
