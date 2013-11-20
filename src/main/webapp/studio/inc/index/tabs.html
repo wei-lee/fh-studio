@@ -22,13 +22,6 @@
     <% } %>
   <%}%>
   
-  <% if(studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_DEVADMIN)) {%>
-  <% if(studio.getProperty("cloudEnvironmentEnabled").equals("true")){ %>
-  <li class="environments-tab">
-      <a id="environments_tab" href="#tabs-7">Cloud Environments</a>
-  </li>
-  <%}%>
-  <%}%>
 
   <% if(studio.getProperty("nodejsEnabled").equals("true")){ %>
   <li class="admin-tab">
@@ -52,7 +45,6 @@
 
   <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER)) { %>
     <%@ include file="./apps/apps_tab.html" %>
-
     <%@ include file="./forms/forms_tab.html" %>
 
     <% if(studio.getProperty("pluginsEnabled").equals("true")){ %>
@@ -62,11 +54,7 @@
     
   <%}%>
 
-  <% if(studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_DEVADMIN)) {%>
-  <% if(studio.getProperty("cloudEnvironmentEnabled").equals("true")){ %>
-  <%@ include file="./cloud_environment/cloud_environment_tab.html" %>
-  <%}%>
-  <%}%>
+ 
 
   <% if(studio.getProperty("nodejsEnabled").equals("true")){ %>
     <%@ include file="./admin/admin_tab.html" %>

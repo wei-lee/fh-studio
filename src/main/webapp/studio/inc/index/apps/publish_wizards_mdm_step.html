@@ -1,0 +1,27 @@
+<% if(studio.getProperty("mdm.enabled").equals("true")) {%>
+<div id="app_publish_mdm_config">
+  <div id="app_publish_mdm_info" class="app_publish_mdm_info">
+    <form>
+      <div class="row-fluid">
+        <div class="span8">
+          <h4> Include SDK </h4>
+          <label class="checkbox">
+            <input type="checkbox" class="mdm_include_sdk" value="true"/> Include the <%= studio.getProperty("mdm.provider.name") %> SDK
+          </label>
+        </div>
+        <div class="span4 mdm_logo">
+          <img src='/studio/static/themes/default/img/mdm/<%=studio.getProperty("mdm.provider.id")%>.png'></img>
+        </div>
+      </div>
+      <div class="row-fluid">
+        <div class="span12">
+          <h4> Push to MDM </h4>
+          <label class="checkbox">
+            <input type="checkbox" class="mdm_push_binary" value="true"/> Push the generated app binary to the <%= studio.getProperty("mdm.provider.name") %> App Catalog
+          </label>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<% } %>

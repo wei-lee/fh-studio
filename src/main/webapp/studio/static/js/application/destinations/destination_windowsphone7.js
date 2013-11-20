@@ -27,6 +27,6 @@ application.DestinationWindowsphone7 = application.DestinationGeneral.extend({
   getPublishData: function(config, version_select, wizard) {
       var version = version_select.find("input:checked").val();
       var data = {config: config, generateSrc: false, version: version};
-      return data;
+      return this.getMDMConfig(wizard, data);
   }
 });
