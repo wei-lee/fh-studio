@@ -59,6 +59,9 @@ App.View.Forms = Backbone.View.extend({
       USING: 'appsUsingTheme',
       COLOURS : 'colours',
       TYPOGRAPHY : 'typeography',
+      BORDERS : 'borders',
+      BUTTONS : 'buttons'
+
     }
   },
   initialize: function(){

@@ -119,11 +119,31 @@
     margin-right: 13px;
 }
 
-.themeedit .colorRow {
+.themeedit .themesInnerContainer {
+    display: inline-block;
+    width: 100%;
+    padding: 8px;
+}
+
+.themeedit .colorRow, .themeedit .fontrow, .themeedit .borderrow {
     margin: 8px 0px;
 }
 
-.themeedit .colorRow label {
+.themeedit .themesInnerContainer label {
     display: inline-block;
     width: 120px;
+}
+
+.themeedit .themesInnerContainer select {
+    margin: 0px 4px;
+}
+
+.themeedit .fontrow select.size{
+    width: 70px;
+}
+
+.themeedit .fontrow select.family,
+.themeedit select.style,
+.themeedit .borderrow select.thickness {
+    width: 100px;
 }
