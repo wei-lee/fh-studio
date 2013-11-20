@@ -81,7 +81,7 @@
 </script>
 
 <script id="formsListBaseAdd" type="text/x-handlebars-template">
-    <a class="btn pull-right btn-success btn-add-form" href="#"><i class="icon icon-plus"></i> Add {{ name }}</a>
+    <a class="btn pull-right btn-success btn-add-{{ name }}" href="#"><i class="icon icon-plus"></i> Add {{ name }}</a>
 </script>
 
 <script id="formsListMenu" type="text/x-handlebars-template">
@@ -166,11 +166,6 @@
     </div>
     <div id="preview_text" style="display: none;"><span id="preview_device_too_large1" class="">Preview size too large for inline display. Click </span><a id="preview_device_open_emulator" class="script-link">here</a><span id="preview_device_too_large2" class=""> to view the preview in the Device Emulator</span></div>
   </div>
-</script>
-
-<!-- Themes templates -->
-<script id="themesAddTheme" type="text/x-handlebars-template">
-  <a class="btn pull-right btn-success btn-add-form" href="#"><i class="icon icon-plus"></i> Add Theme</a>
 </script>
 
 <script id="themesListMenu" type="text/x-handlebars-template">

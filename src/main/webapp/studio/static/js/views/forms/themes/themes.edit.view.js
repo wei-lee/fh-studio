@@ -1,18 +1,18 @@
 var App = App || {};
 App.View = App.View || {};
 
-App.View.FormThemesList = App.View.FormListBase.extend({
+App.View.FormThemesEditor = App.View.Form.extend({
   templates : {
     'formsListBaseAdd' : '#formsListBaseAdd',
     'formsListMenu' : '#formsListMenu',
     'fullpageLoading' : '#fullpageLoading',
-    'menu' : '#themesListMenu'
+    'menu' : '#formsListMenu'
   },
   events : {
     'click tr' : 'onRowSelected',
-    'click .btn-add-theme' : 'onCreate',
-    'click .btn-clone-theme' : 'onClone',
-    'click .btn-delete-theme' : 'onDelete'
+    'click .btn-add-form' : 'onCreate',
+    'click .btn-clone-form' : 'onCloneForm',
+    'click .btn-delete-form' : 'onDeleteForm'
 
   },
   initialize: function(){
@@ -35,6 +35,13 @@ App.View.FormThemesList = App.View.FormListBase.extend({
     App.View.FormListBase.prototype.render.apply(this, arguments);
     return this.renderPreview();
   },
+  onCreate : function(e){
+    e.preventDefault();
+    var self = this,
+    createView = new App.View.FormCreateClone({ collection : this.collection, mode : 'create' });
+    this.$el.append(createView.render().$el);
+    createView.bind('message', function(){}); // TODO - do we want messages up top like with CMS?
+  },
   renderPreview : function(){
     this.$previewEl = $('<div class="themepreview" />');
     this.$el.append(this.$previewEl);
@@ -49,6 +56,29 @@ App.View.FormThemesList = App.View.FormListBase.extend({
     return this;
   },
   updatePreview : function(updatedModel){
+
     this.$previewEl.show();
+  },
+  onDeleteTheme : function(){
+    //TODO Common
+    var self = this,
+    form = this.collection.at(this.index);
+    var modal = new App.View.Modal({
+      title: 'Confirm Delete',
+      body: "Are you sure you want to delete theme " + form.get('Name') + "?",
+      okText: 'Delete',
+      cancelText : 'Cancel',
+      ok: function (e) {
+        self.collection.remove(form, {
+          success : function(){
+
+          },
+          error : function(){
+
+          }
+        });
+      }
+    });
+    this.$el.append(modal.render().$el);
   }
 });

@@ -48,7 +48,7 @@ App.View.FormsController = Backbone.View.extend({
       this.themes.$el.remove();
     }
 
-    this.themes = new App.View.ThemeList();
+    this.themes = new App.View.FormThemesList();
     this.$el.append(this.themes.render().$el);
     this.forms.$el.hide();
     if (this.editFormRules){
