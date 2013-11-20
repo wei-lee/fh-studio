@@ -10,6 +10,8 @@ App.View.FormsController = Backbone.View.extend({
     'click .btn-view-form-apps' : 'onViewAppsUsingThisForm'
   },
   initialize : function(){},
+  views : {},
+  subViews : [],
   render: function(options) {
     var self = this;
 
@@ -17,46 +19,40 @@ App.View.FormsController = Backbone.View.extend({
 
     this.menu = new App.View.FormMenu();
     this.bind('menuchange', function(active){
+      self.hideAll();
       self.active = active;
       self.menu.change.apply(self, arguments);
     });
     this.$el.append(this.menu.render().$el);
 
-    this.forms = new App.View.FormList();
-    this.$el.append(this.forms.render().$el);
-    this.trigger('menuchange', 'forms');
+    // Show the default view on first render, forms
+    this.onForms();
 
     return this;
   },
   onForms: function(){
     this.trigger('menuchange', 'forms');
-    this.forms.$el.show();
-    if (this.editForm){
-      this.editForm.$el.hide();
+    if (this.views.forms){
+      this.views.forms.$el.remove();
     }
-    if (this.themes){
-      this.themes.$el.hide();
-    }
-    if (this.editFormRules){
-      this.editFormRules.$el.hide();
-    }
+    this.views.forms = new App.View.FormList();
+    this.$el.append(this.views.forms.render().$el);
   },
   onThemes : function(){
     this.trigger('menuchange', 'themes');
-    this.trigger('menuchange', 'themes');
-    if (this.themes){
-      this.themes.$el.remove();
+    if (this.views.themes){
+      this.views.themes.$el.remove();
     }
-
-    this.themes = new App.View.ThemeList();
-    this.$el.append(this.themes.render().$el);
-    this.forms.$el.hide();
-    if (this.editFormRules){
-      this.editFormRules.$el.hide();
-    }
+    this.views.themes = new App.View.FormThemesList();
+    this.$el.append(this.views.themes.render().$el);
   },
   onApps : function(){
     this.trigger('menuchange', 'apps');
+    if (this.views.apps){
+      this.views.apps.$el.remove();
+    }
+    this.views.apps = new App.View.FormAppsList();
+    this.$el.append(this.views.apps.render().$el);
   },
   onSubmissions : function(){
     this.trigger('menuchange', 'submissions');
@@ -65,25 +61,26 @@ App.View.FormsController = Backbone.View.extend({
     Edit Form view switching
    */
   onEditForm : function(e){
-    var form = this.forms.collection.at(this.forms.index),
+    var form = this.views.forms.collection.at(this.views.forms.index),
     menuEl = this.$el.find(".forms_menu_container");
-    this.forms.$el.hide();
+    this.views.forms.$el.hide();
 
     if (this.editFormRules){
       this.editFormRules.$el.hide();
     }
 
 
-    this.editForm = new App.View.FormEdit({ form : form, collection : this.forms.collection, $pagesMenuEl : menuEl });
-    this.editForm.bind('back', $.proxy(this.back, this));
-    this.$el.append(this.editForm.render().$el);
+    var editForm = new App.View.FormEdit({ form : form, collection : this.views.forms.collection, $pagesMenuEl : menuEl });
+    editForm.bind('back', $.proxy(this.back, this));
+    this.$el.append(editForm.render().$el);
+    this.subViews.push(editForm);
   },
   onEditFormRules : function(e){
-    var form = this.forms.collection.at(this.forms.index),
+    var form = this.views.forms.collection.at(this.views.forms.index),
     menuEl = this.$el.find(".forms_menu_container");
-    this.forms.$el.hide();
+    this.views.forms.$el.hide();
 
-    this.editFormRules = new App.View.FormFieldRules({ form : form, collection : this.forms.collection, $pagesMenuEl : menuEl });
+    this.editFormRules = new App.View.FormFieldRules({ form : form, collection : this.views.forms.collection, $pagesMenuEl : menuEl });
     //this.editForm.bind('back', $.proxy(this.back, this));
     this.$el.append(this.editFormRules.render().$el);
   },
@@ -104,5 +101,10 @@ App.View.FormsController = Backbone.View.extend({
       }
     });
     this[this.active].$el.show();
+  },
+  hideAll : function(){
+    _.each(this.views, function(view){
+      view.$el.hide();
+    });
   }
 });
