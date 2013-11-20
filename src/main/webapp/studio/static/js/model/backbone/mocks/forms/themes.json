@@ -23,42 +23,42 @@
         }
       },
       "typeography" : {
-        "title": [{
+        "title": {
           "fontFamily": "SomeFontFamily",
           "fontStyle": "bold",
           "fontSize": "12pt",
           "fontColour": "#FF0000"
-        }],
-        "description": [{
+        },
+        "description": {
           "fontFamily": "SomeFontFamily",
           "fontStyle": "bold",
           "fontSize": "12pt",
           "fontColour": "#FF0000"
-        }],
-        "fieldTitle": [{
+        },
+        "fieldTitle": {
           "fontFamily": "SomeFontFamily",
           "fontStyle": "bold",
           "fontSize": "2pt",
           "fontColour": "#FF0000"
-        }],
-        "fieldText": [{
+        },
+        "fieldText": {
           "fontFamily": "SomeFontFamily",
           "fontStyle": "bold",
           "fontSize": "18pt",
           "fontColour": "#FF0000"
-        }],
-        "instructions": [{
+        },
+        "instructions": {
           "fontFamily": "SomeFontFamily",
           "fontStyle": "bold",
           "fontSize": "14pt",
           "fontColour": "#FF0000"
-        }],
-        "buttons": [{
+        },
+        "buttons": {
           "fontFamily": "SomeFontFamily",
           "fontStyle": "bold",
           "fontSize": "17pt",
           "fontColour": "#FF0000"
-        }]
+        }
       },
       "borders": {
         "forms": {

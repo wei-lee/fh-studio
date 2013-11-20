@@ -168,6 +168,8 @@
   </div>
 </script>
 
+<!-- Themes specific templates -->
+
 <script id="themesListMenu" type="text/x-handlebars-template">
   <ul class="nav nav-pills nav-stacked well">
     <li><a class="btn-edit-theme" href="#"><i class="icon-edit"></i>Edit Theme</a></li>
@@ -177,4 +179,31 @@
     <li><a class="btn-delete-theme" href="#"><i class="icon-trash"></i> Delete</a></li>
 
   </ul>
+</script>
+
+<script id="themeColourRow" type="text/x-handlebars-template">
+  <div class="colorRow">
+    <label>{{name}}</label>
+    <input type='text' name='{{name}}' value="{{value}}" />
+  </div>
+</script>
+
+
+
+<script id="themeFontRow" type="text/x-handlebars-template">
+  <label>
+
+  </label>
+</script>
+
+<script id="themeName" type="text/x-handlebars-template">
+  <div class="form form-inline pull-left">
+    <label>Theme Name</label>
+    <input type="text">
+  </div>
+</script>
+
+<script id="themePreviewButton" type="text/x-handlebars-template">
+  <a class="btn btn-primary btn-preview-theme pull-right">Preview Theme</a>
+  <br style="clear : both;" />
 </script>

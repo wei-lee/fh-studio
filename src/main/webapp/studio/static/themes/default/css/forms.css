@@ -101,3 +101,29 @@
     border: 2px solid;
     margin-top: 10px;
 }
+
+/*
+   Form Themes styling
+ */
+.themeedit .btn-forms-back {
+    margin-right: 16px;
+}
+
+.themeedit .form.form-inline {
+    padding-top: 3px;
+}
+
+.themeedit .form.form-inline label {
+    font-weight: bold;
+    font-size: 1.3em;
+    margin-right: 13px;
+}
+
+.themeedit .colorRow {
+    margin: 8px 0px;
+}
+
+.themeedit .colorRow label {
+    display: inline-block;
+    width: 120px;
+}

@@ -3,6 +3,7 @@ App.View.FormsController = Backbone.View.extend({
     'click .btn-forms' : 'onForms',
     'click .btn-apps' : 'onApps',
     'click .btn-themes' : 'onThemes',
+    'click .btn-edit-theme' : 'onEditTheme',
     'click .btn-submissions' : 'onSubmissions',
     'click .btn-edit-form' : 'onEditForm',
     'click .btn-edit-form-rules' : 'onEditFormRules',
@@ -46,6 +47,15 @@ App.View.FormsController = Backbone.View.extend({
     }
     this.views.themes = new App.View.FormThemesList();
     this.$el.append(this.views.themes.render().$el);
+  },
+  onEditTheme : function(e){
+    var theme = this.views.themes.collection.at(this.views.themes.index);
+    this.views.themes.$el.hide();
+
+    var editTheme = new App.View.FormThemesEdit({ theme : theme, collection : this.views.themes.collection, readOnly : false});
+    editTheme.bind('back', $.proxy(this.back, this));
+    this.$el.append(editTheme.render().$el);
+    this.subViews.push(editTheme);
   },
   onApps : function(){
     this.trigger('menuchange', 'apps');

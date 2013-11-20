@@ -1,84 +1,73 @@
 var App = App || {};
 App.View = App.View || {};
 
-App.View.FormThemesEditor = App.View.Form.extend({
+App.View.FormThemesEdit = App.View.Forms.extend({
   templates : {
-    'formsListBaseAdd' : '#formsListBaseAdd',
-    'formsListMenu' : '#formsListMenu',
-    'fullpageLoading' : '#fullpageLoading',
-    'menu' : '#formsListMenu'
+    formSaveCancel : '#formSaveCancel',
+    form_back : '#form_back',
+    themeName : '#themeName',
+    themePreviewButton : '#themePreviewButton',
+    themeColourRow : '#themeColourRow'
   },
   events : {
-    'click tr' : 'onRowSelected',
-    'click .btn-add-form' : 'onCreate',
-    'click .btn-clone-form' : 'onCloneForm',
-    'click .btn-delete-form' : 'onDeleteForm'
-
+    'click .btn-form-save' : 'onThemeSave',
+    'click .btn-form-cancel' : 'back',
+    'click .btn-forms-back' : 'back'
   },
-  initialize: function(){
-    this.collection = new App.Collection.FormThemes();
-    this.pluralTitle = 'Themes';
-    this.singleTitle = 'Theme';
-    this.columns = [{
-      "sTitle": 'Name',
-      "mDataProp": this.CONSTANTS.THEME.NAME
-    },{
-      "sTitle": 'Updated',
-      "mDataProp": this.CONSTANTS.THEME.UPDATED
-    },{ //TODO: Make these..?
-      "sTitle": 'Apps Using This',
-      "mDataProp": this.CONSTANTS.THEME.USING
-    }];
+  initialize: function(options){
     this.constructor.__super__.initialize.apply(this, arguments);
+    this.options = options;
+    this.theme = options.theme;
+    this.readOnly = (options.hasOwnProperty('readOnly')) ? options.readOnly : true;
   },
   render : function(){
-    App.View.FormListBase.prototype.render.apply(this, arguments);
-    return this.renderPreview();
-  },
-  onCreate : function(e){
-    e.preventDefault();
-    var self = this,
-    createView = new App.View.FormCreateClone({ collection : this.collection, mode : 'create' });
-    this.$el.append(createView.render().$el);
-    createView.bind('message', function(){}); // TODO - do we want messages up top like with CMS?
-  },
-  renderPreview : function(){
-    this.$previewEl = $('<div class="themepreview" />');
-    this.$el.append(this.$previewEl);
-    this.$previewEl.hide();
+    this.$el.addClass('span10 themeedit');
+    this.breadcrumb(['Forms', 'Themes', 'Edit Theme']);
+    this.$el.append(this.templates.$form_back());
 
-    var menu = $(this.templates.$menu()).addClass('pull-right');
-    this.$previewEl.append(menu);
-
-    // Move the loading to the bottom of this element's dom
-    this.loading.remove();
-    this.$el.append(this.loading);
+    this.$el.append(this.templates.$themeName());
+    this.$el.append(this.templates.$themePreviewButton());
+    this.renderLogo();
+    this.renderColours();
+    this.renderTypography();
     return this;
   },
-  updatePreview : function(updatedModel){
-
-    this.$previewEl.show();
+  renderLogo : function(){
+    // TODO
+    return this;
   },
-  onDeleteTheme : function(){
-    //TODO Common
+  renderColours : function(){
     var self = this,
-    form = this.collection.at(this.index);
-    var modal = new App.View.Modal({
-      title: 'Confirm Delete',
-      body: "Are you sure you want to delete theme " + form.get('Name') + "?",
-      okText: 'Delete',
-      cancelText : 'Cancel',
-      ok: function (e) {
-        self.collection.remove(form, {
-          success : function(){
-
-          },
-          error : function(){
-
-          }
+    colours = this.theme.get(this.CONSTANTS.THEME.COLOURS);
+    _.each(colours, function(subheadings, heading){
+      self.$el.append('<h3>' + heading + '</h3>');
+      _.each(subheadings, function(colorHex, name){
+        var colourInput = $(self.templates.$themeColourRow( { name : name, value : colorHex } ));
+        colourInput.find('input').spectrum({
+          showButtons: false,
+          disabled: self.readOnly,
+          color : colorHex
         });
-      }
+        self.$el.append( colourInput );
+      });
     });
-    this.$el.append(modal.render().$el);
+    return this;
+  },
+  renderTypography : function(){
+    var self = this,
+    typog = this.theme.get(this.CONSTANTS.THEME.TYPOGRAPHY);
+    this.$el.append('<h2>Typography</h2>');
+    _.each(typog, function(fontAttributes, heading){
+      self.$el.append('<label>' + heading + '</label>');
+      self.$el.append('<label>' + name + '</label>');
+      self.$el.append(JSON.stringify(fontAttributes));
+    });
+    return this;
+  },
+  onThemeSave : function(){
+
+  },
+  back : function(){
+    this.trigger('back');
   }
 });
