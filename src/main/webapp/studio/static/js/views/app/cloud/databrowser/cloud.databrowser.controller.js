@@ -69,9 +69,6 @@ App.View.DataBrowserController = Backbone.View.extend({
       cb : function(e){
         self.initialize();
         self.render();
-      },
-      cbMigrate: function (e) {
-        self.showWrapperChangeInstructions()
       }
     });
     self.$el.empty();
