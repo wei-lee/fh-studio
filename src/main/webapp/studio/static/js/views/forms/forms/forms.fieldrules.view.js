@@ -1,28 +1,10 @@
 var App = App || {};
 App.View = App.View || {};
 
-App.View.FormFieldRules = App.View.Forms.extend({
+App.View.FormFieldRules = App.View.Rules.extend({
 
-  FIELD_RULES : {
-    "date":["is on","is before","is after"],
-    "select":["is","is not", "contains","does not contain","begins with","ends with"],
-    "text":["is","is not","contains","does not contain","begins with","ends with"],
-    "email":["is","is not","contains","does not contain","begins with","ends with"],
-    "number":["is equal to","is greater than","is less than"],
-    "textarea":["is","is not","contains","does not contain","begins with","ends with"],
-    "checkbox":["is","is not"]
-  },
 
-//  "type": {type: String, required: true, enum: ["show", "hide"]},
-//  "sourceField": { type: Schema.Types.ObjectId, ref: MODELNAMES.FIELD, required: true},
-//  "restriction": {type: String, required: true, enum: ["is", "isNot", "contains", "doesNotContain", "beginsWith", "endsWith","is equal to","is greater than","is less than"]},
-//  "sourceValue": {type: String, required: true},
-//  "targetField": { type: Schema.Types.ObjectId, ref: MODELNAMES.FIELD, required: true }
 
-  templates : {
-    rulesTabs : '#formsRulesTab',
-    addRule : '#fieldRuleTemplate'
-  },
 
   events:{
     'click .createrule' : 'createRule',
@@ -32,6 +14,7 @@ App.View.FormFieldRules = App.View.Forms.extend({
   fields : [],
 
   initialize: function(options){
+
     App.View.Forms.CONSTANTS = App.View.Forms.CONSTANTS || {};
     App.View.Forms.CONSTANTS["FIELD_RULES"] = this.FIELD_RULES;
 
@@ -49,6 +32,9 @@ App.View.FormFieldRules = App.View.Forms.extend({
     var self = this,
       fields;
     this.form = this.options.form;
+
+
+
     console.log("FORM DEF ", this.form);
     //********** for testing only
 
@@ -59,6 +45,13 @@ App.View.FormFieldRules = App.View.Forms.extend({
       "restriction" : "is not",
       "sourceValue" : "ten"
     });
+    var fakeRule2 = new App.Model.FieldRule({
+      "type":"hide",
+      "sourceField" : "528a0a7eb40f178253000001",
+      "targetField":"528a0a7fb40f178253000002",
+      "restriction" : "is",
+      "sourceValue" : "ten"
+    });
 
 
 
@@ -67,37 +60,50 @@ App.View.FormFieldRules = App.View.Forms.extend({
     this.collection = this.options.collection;
     this.fieldRules = this.options.form.get("fieldRules");
     this.fieldRules.push(fakeRule);
+    this.fieldRules.push(fakeRule2);
     this.pages = this.form.get("pages");
 
 
     this.aggreagateFields();
 
 
-    console.log("called render pages ", this.fieldRules);
+    console.log("called render pages ", self);
 
     $('.formsContainer').remove();
     this.$el.empty();
-    this.$el.append(this.templates.$rulesTabs({"rulesHeading":"Show or hide fields based on these rules:"}));
+    this.$el.append(self.templates.$rulesTabs({"rulesHeading":"Show or hide fields based on these rules:"}));
 
-    var jsonRules = [];
+    //RENDER EXISTING RULES
 
-    if(this.fieldRules && this.fieldRules.length > 0){
-      for(var fr=0; fr < this.fieldRules.length; fr++){
-        var fr = this.fieldRules[fr].toJSON();
-        console.log("Field Rule ", fr);
-        var sf = self.findField(fr.sourceField);
-        var tf = self.findField(fr.targetField);
-        console.log("found fields ", sf, tf);
-        jsonRules.push(fr);
-      }
-    }
-    console.log("jsonrules ", jsonRules);
-    $('.rulesContent').append(this.templates.$addRule({"fields":jsonRules}));
-
+    self.renderExistingRules();
 
     return this;
   },
 
+
+  renderExistingRules : function (){
+    var self = this;
+    self.$el.find('.rulesContent').empty();
+
+    if(this.fieldRules && this.fieldRules.length > 0){
+      for(var r=0; r < this.fieldRules.length; r++){
+        var fr = this.fieldRules[r].toJSON();
+        console.log("Field Rule ", fr);
+        var sf = self.findField(fr.sourceField);
+        //all fields and the rule
+        //jsonRules.push(fr);
+        self.$el.find('.rulesContent').append(this.templates.$addRule({"fields":this.fields,"conditions":App.View.Forms.CONSTANTS.FIELD_RULES[sf.type]}));
+        self.$el.find(".rulesFieldName option[data-_id='"+fr.sourceField+"']").last().attr("selected",true);
+        self.$el.find("#targetField option[data-_id='"+fr.targetField+"']").last().attr("selected",true);
+        self.$el.find("#fieldConditionals option[value='"+fr.restriction+"']").last().attr("selected",true);
+        self.$el.find("#targetAction options[value='"+fr.type+"']").last().attr("selected",true);
+        self.$el.find("input[name='checkedValue']").last().val(fr.sourceValue);
+
+      }
+      self.$el.find('.btn-remove-rule').unbind().bind('click',self.removeRule);
+      self.$el.find('.rulesFieldName').unbind().change(self.onFieldSelectChange);
+    }
+  },
 
   findField : function (id){
     for(var i=0; i < this.fields.length; i++){
@@ -110,8 +116,8 @@ App.View.FormFieldRules = App.View.Forms.extend({
   createRule : function (e){
     console.log("create rule");
     var self = this;
-    $('.rulesContent').append(this.templates.$addRule({"fields":this.fields}));
-    var conditionalSel = $('.rulesForm').find('#fieldConditionals');
+    self.$el.find('.rulesContent').append(this.templates.$addRule({"fields":this.fields}));
+    var conditionalSel = self.$el.find('.rulesContent').find('#fieldConditionals');
     $('.rulesFieldName').unbind().change(this.onFieldSelectChange);
     $('.btn-add-rule').unbind().bind('click',function (){
       self.createRule.apply(self);
@@ -149,7 +155,21 @@ App.View.FormFieldRules = App.View.Forms.extend({
   },
 
   saveRules : function (){
+    var rules = [];
     console.log("save rules");
+    this.$el.find('.rulesForm').each(function (idx, form){
+       console.log("creating rule ", form);
+      var form = $(form);
+      var rule = new App.Model.FieldRule({
+        "type":form.find('#targetAction option:selected').val(),
+        "sourceField" : form.find('.sourceField option:selected').val(),
+        "targetField":form.find('.targetField option:selected').val(),
+        "restriction" : form.find('.fieldConditionals option:selected').val(),
+        "sourceValue" : form.find('input[name="checkedValue"]').val()
+      });
+      rules.push(rule);
+    });
+    console.log("saving rules ", rules);
   },
 
   aggreagateFields : function(){

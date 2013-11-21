@@ -39,19 +39,22 @@
 
 <script id="fieldRuleTemplate" type="text/x-handlebars-template">
       <form class="form-inline rulesForm" style="padding-bottom:8px;">
-          <select class="rulesFieldName">
+          <select class="rulesFieldName sourceField" >
               {{#each fields}}
-                <option data-type="{{type}}"  data-_id="{{_id}}"  {{selected}} >{{name}}</option>
+                <option data-type="{{type}}"  data-_id="{{_id}}" value="{{name}}" >{{name}}</option>
               {{/each}}
           </select>
-          <select id="fieldConditionals" style="width:130px;">
+          <select class="fieldConditionals" id="fieldConditionals" style="width:130px;">
+              {{#each conditions}}
+                <option value="{{this}}">{{this}}</option>
+              {{/each}}
           </select>
           <input type="text" name="checkedValue" placeholder="checked value" />
           <select id="targetAction" style="width:100px;">
-              <option>show</option>
-              <option>hide</option>
+              <option value="show" >show</option>
+              <option value="hide" >hide</option>
           </select>
-          <select id="targetField">
+          <select class="targetField" id="targetField">
               {{#each fields}}
               <option data-type="{{type}}" data-_id="{{_id}}">{{name}}</option>
               {{/each}}
