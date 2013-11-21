@@ -40,6 +40,7 @@ App.View.FormThemesList = App.View.FormListBase.extend({
     this.$el.append(this.$previewEl);
     this.$previewEl.hide();
 
+    this.$previewEl.append('<div id="formPreviewContainer"></div>');
     var menu = $(this.templates.$menu()).addClass('pull-right');
     this.$previewEl.append(menu);
 
@@ -49,6 +50,9 @@ App.View.FormThemesList = App.View.FormListBase.extend({
     return this;
   },
   updatePreview : function(updatedModel){
+    var previewTheme = new App.View.FormThemesEdit({ theme : updatedModel, readOnly : true});
+    this.$previewEl.find('#formPreviewContainer').html(previewTheme.render().$el);
+    previewTheme.$el.removeClass('span10').addClass('span8');
     this.$previewEl.show();
   }
 });

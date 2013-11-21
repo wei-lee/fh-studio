@@ -150,7 +150,7 @@ App.View.FormListBase = App.View.Forms.extend({
       okText: 'Delete',
       cancelText : 'Cancel',
       ok: function (e) {
-        self.collection.remove(model, {
+        model.destroy({
           success : function(){
             self.message(self.singleTitle + ' deleted successfully');
           },

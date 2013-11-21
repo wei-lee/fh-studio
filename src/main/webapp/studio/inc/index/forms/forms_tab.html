@@ -188,7 +188,17 @@
   </div>
 </script>
 
-
+<script id="themeFontRowReadOnly" type="text/x-handlebars-template">
+  <div class="fontrow" data-name="{{ name }}">
+    <label>
+      {{ name }}
+    </label>
+    <div class="size">{{ r.fontSize }}</div>
+    <div class="family">{{ r.fontFamily }}</div>
+    <div class="style">{{ r.fontStyle }}</div>
+    <input class="colour" type='text' name='fontColour' value="{{r.fontColour}}" />
+  </div>
+</script>
 
 <script id="themeFontRow" type="text/x-handlebars-template">
   <div class="fontrow" data-name="{{ name }}">
@@ -215,7 +225,7 @@
       <option value="bold">Bold</option>
       <option value="italic">Italic</option>
     </select>
-    <input class="colour" type='text' name='fontColour' value="{{f.fontColour}}" />
+    <input class="colour" type='text' name='fontColour' value="{{r.fontColour}}" />
   </div>
 </script>
 
@@ -229,6 +239,18 @@
 <script id="themePreviewButton" type="text/x-handlebars-template">
   <a class="btn btn-primary btn-preview-theme pull-right">Preview Theme</a>
   <br style="clear : both;" />
+</script>
+
+<script id="themeBorderRowReadOnly" type="text/x-handlebars-template">
+  <div class="borderrow" data-name="{{ name }}">
+
+    <label>
+      {{ name }}
+    </label>
+    <div class="thickness">{{ r.thickness }}</div>
+    <div class="style">{{ r.style }}</div>
+    <input class="colour" type='text' name='colour' value="{{r.colour}}" />
+  </div>
 </script>
 
 <script id="themeBorderRow" type="text/x-handlebars-template">
@@ -252,17 +274,11 @@
       <option value="double">Double</option>
     </select>
 
-    <input class="colour" type='text' name='colour' value="{{b.colour}}" />
+    <input class="colour" type='text' name='colour' value="{{r.colour}}" />
   </div>
-  Borders
-  Forms
-  Thickness - None | Hairline | Think | Medium | Thick
-  Style - Solid | Dotted | Dashed | Double
-  Colour - Hex value
-  Instructions
-  Thickness - None | Hairline | Thin | Medium | Thick
-  Style - Solid | Dotted | Dashed | Double
-  Colour - Hex value
+</script>
+<script id="themeLogo" type="text/x-handlebars-template">
+  <img alt="Embedded Image" src="data:image/png;base64,{{{ logoBase64 }}}" />
 </script>
 
 <script id="themeButtons" type="text/x-handlebars-template">

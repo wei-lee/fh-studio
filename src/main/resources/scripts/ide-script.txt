@@ -34,6 +34,7 @@ js/model/backbone/alert.model.js
 js/model/backbone/alertnotification.model.js
 js/model/backbone/cms.section.model.js
 js/model/backbone/app.model.js
+js/model/backbone/forms/form.base.model.js
 js/model/backbone/forms/form.model.js
 js/model/backbone/forms/theme.model.js
 js/model/backbone/metrics/datepicker.model.js
