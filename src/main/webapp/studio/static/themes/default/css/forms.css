@@ -101,3 +101,49 @@
     border: 2px solid;
     margin-top: 10px;
 }
+
+/*
+   Form Themes styling
+ */
+.themeedit .btn-forms-back {
+    margin-right: 16px;
+}
+
+.themeedit .form.form-inline {
+    padding-top: 3px;
+}
+
+.themeedit .form.form-inline label {
+    font-weight: bold;
+    font-size: 1.3em;
+    margin-right: 13px;
+}
+
+.themeedit .themesInnerContainer {
+    display: inline-block;
+    width: 100%;
+    padding: 8px;
+}
+
+.themeedit .colorRow, .themeedit .fontrow, .themeedit .borderrow {
+    margin: 8px 0px;
+}
+
+.themeedit .themesInnerContainer label {
+    display: inline-block;
+    width: 120px;
+}
+
+.themeedit .themesInnerContainer select {
+    margin: 0px 4px;
+}
+
+.themeedit .fontrow select.size{
+    width: 70px;
+}
+
+.themeedit .fontrow select.family,
+.themeedit select.style,
+.themeedit .borderrow select.thickness {
+    width: 100px;
+}

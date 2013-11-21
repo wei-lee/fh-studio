@@ -1,7 +1,10 @@
+/*
+  TOOD: This is just a copy-paste placeholder of themes for now, to illustrate it also is a version of FormListBase
+ */
 var App = App || {};
 App.View = App.View || {};
 
-App.View.FormThemesList = App.View.FormListBase.extend({
+App.View.FormAppsList = App.View.FormListBase.extend({
   templates : {
     'formsListBaseAdd' : '#formsListBaseAdd',
     'formsListMenu' : '#formsListMenu',
@@ -13,12 +16,11 @@ App.View.FormThemesList = App.View.FormListBase.extend({
     'click .btn-add-theme' : 'onCreate',
     'click .btn-clone-theme' : 'onClone',
     'click .btn-delete-theme' : 'onDelete'
-
   },
   initialize: function(){
     this.collection = new App.Collection.FormThemes();
-    this.pluralTitle = 'Themes';
-    this.singleTitle = 'Theme';
+    this.pluralTitle = 'Apps';
+    this.singleTitle = 'App';
     this.columns = [{
       "sTitle": 'Name',
       "mDataProp": this.CONSTANTS.THEME.NAME

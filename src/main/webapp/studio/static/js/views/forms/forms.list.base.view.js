@@ -2,10 +2,6 @@ var App = App || {};
 App.View = App.View || {};
 
 App.View.FormListBase = App.View.Forms.extend({
-  templates : {
-    'formsAddForm' : '#formsAddForm',
-    'fullpageLoading' : '#fullpageLoading'
-  },
   initialize: function(){
     var self = this;
 
@@ -56,7 +52,7 @@ App.View.FormListBase = App.View.Forms.extend({
     return this;
   },
   renderList : function(){
-    this.$el.append(this.templates.$formsListBaseAdd( { name : this.singleTitle } ));
+    this.$el.append(this.templates.$formsListBaseAdd( { name : this.singleTitle.toLowerCase() } ));
     var self = this,
     data = this.collection.toJSON();
 
@@ -130,28 +126,36 @@ App.View.FormListBase = App.View.Forms.extend({
       }
     });
   },
-  onCloneForm : function(e){
+  onCreate : function(e){
     e.preventDefault();
     var self = this,
-    form = this.collection.at(this.index),
-    createView = new App.View.FormCreateClone({ collection : this.collection, mode : 'clone', form : form.toJSON() });
+    createView = new App.View.FormCreateClone({ collection : this.collection, mode : 'create', singleTitle : this.singleTitle, pluralTitle : this.pluralTitle });
+    this.$el.append(createView.render().$el);
+    createView.bind('message', function(){}); // TODO - do we want messages up top like with CMS?
+  },
+  onClone : function(e){
+    e.preventDefault();
+    var self = this,
+    cloneSource = this.collection.at(this.index),
+    createView = new App.View.FormCreateClone({ collection : this.collection, mode : 'clone', cloneSource : cloneSource.toJSON(), singleTitle : this.singleTitle, pluralTitle : this.pluralTitle });
     this.$el.append(createView.render().$el);
   },
-  onDeleteForm : function(){
+  onDelete : function(){
     var self = this,
-    form = this.collection.at(this.index);
-    var modal = new App.View.Modal({
+    model = this.collection.at(this.index),
+    nameAttr = (self.singleTitle.toLowerCase()==="form") ? this.CONSTANTS.FORM.NAME : this.CONSTANTS.THEME.NAME,
+    modal = new App.View.Modal({
       title: 'Confirm Delete',
-      body: "Are you sure you want to delete form " + form.get('Name') + "?",
+      body: "Are you sure you want to delete " + self.singleTitle.toLowerCase() + " " + model.get(nameAttr) + "?",
       okText: 'Delete',
       cancelText : 'Cancel',
       ok: function (e) {
-        self.collection.remove(form, {
+        self.collection.remove(model, {
           success : function(){
-
+            self.message(self.singleTitle + ' deleted successfully');
           },
           error : function(){
-
+            self.message('Error deleting ' + self.singleTitle.toLowerCase());
           }
         });
       }

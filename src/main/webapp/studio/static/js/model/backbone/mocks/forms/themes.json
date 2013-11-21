@@ -23,42 +23,42 @@
         }
       },
       "typeography" : {
-        "title": [{
-          "fontFamily": "SomeFontFamily",
+        "title": {
+          "fontFamily": "arial",
+          "fontStyle": "normal",
+          "fontSize": "12pt",
+          "fontColour": "#FF0000"
+        },
+        "description": {
+          "fontFamily": "arial",
           "fontStyle": "bold",
           "fontSize": "12pt",
           "fontColour": "#FF0000"
-        }],
-        "description": [{
-          "fontFamily": "SomeFontFamily",
-          "fontStyle": "bold",
-          "fontSize": "12pt",
-          "fontColour": "#FF0000"
-        }],
-        "fieldTitle": [{
-          "fontFamily": "SomeFontFamily",
+        },
+        "fieldTitle": {
+          "fontFamily": "arial",
           "fontStyle": "bold",
           "fontSize": "2pt",
-          "fontColour": "#FF0000"
-        }],
-        "fieldText": [{
-          "fontFamily": "SomeFontFamily",
+          "fontColour": "#00FF00"
+        },
+        "fieldText": {
+          "fontFamily": "arial",
           "fontStyle": "bold",
           "fontSize": "18pt",
-          "fontColour": "#FF0000"
-        }],
-        "instructions": [{
-          "fontFamily": "SomeFontFamily",
+          "fontColour": "#0000FF"
+        },
+        "instructions": {
+          "fontFamily": "courier",
           "fontStyle": "bold",
           "fontSize": "14pt",
           "fontColour": "#FF0000"
-        }],
-        "buttons": [{
-          "fontFamily": "SomeFontFamily",
-          "fontStyle": "bold",
+        },
+        "buttons": {
+          "fontFamily": "georgia",
+          "fontStyle": "italic",
           "fontSize": "17pt",
           "fontColour": "#FF0000"
-        }]
+        }
       },
       "borders": {
         "forms": {

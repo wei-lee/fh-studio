@@ -101,6 +101,8 @@ var Lang = {
   app_publish_blackberry_info_title: 'Information',
   app_publish_windowsphone7_info_title: 'Information',
 
+  app_publish_mdm_config_title: 'MDM Deployment',
+
   app_publish_iphone_upload_provisionings_title: 'Please upload the provisioning profile',
   app_publish_iphone_upload_progress_title: 'Uploading provisioning profile',
   app_publish_iphone_versions_title: 'iOS SDK information',

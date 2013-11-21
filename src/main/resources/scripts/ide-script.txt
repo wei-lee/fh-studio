@@ -8,6 +8,7 @@ common/js/ui/thirdparty/backbone-deep-model/deep-model.js
 common/js/ui/thirdparty/backbone-relational/backbone-relational.js
 common/js/ui/thirdparty/rivets/rivets.js
 common/js/ui/thirdparty/formbuilder/formbuilder.js
+common/js/ui/thirdparty/spectrum/spectrum.js
 common/js/ui/thirdparty/jquery.scrollWindowTo/index.js
 common/js/ui/thirdparty/jsoneditor/jsoneditor.js
 js/init/namespaces.js
@@ -154,6 +155,8 @@ js/views/forms/forms/forms.edit.view.js
 js/views/forms/forms/forms.edit.reorder.view.js
 js/views/forms/forms/forms.fieldrules.view.js
 js/views/forms/themes/themes.list.view.js
+js/views/forms/themes/themes.edit.view.js
+js/views/forms/apps/formsapps.list.view.js
 js/views/forms/forms.view.controller.js
 js/views/plugins/plugins.view.js
 js/views/plugins/plugins.setup.view.js

@@ -8589,7 +8589,6 @@ $fh.sync = (function() {
 
   var CMS_API_GETALL     = "/mbaas/cms/sections";  // "/mbaas/cms/getAll";
   var CMS_API_GETSECTION = "/cloud/getSection";  // "/mbaas/cms/section/get";
-  var CMS_API_GETFIELD   = "/cloud/getField?fieldid=";   // "/mbaas/cms/field/";
 
   var CMS_FIELD_TYPES_TEXT = ['string', 'paragraph'];
   var CMS_FIELD_TYPES_FILE = ['image', 'file'];
@@ -8717,7 +8716,7 @@ $fh.sync = (function() {
   };
 
   var constructGetFieldURL = function (fieldid) {
-    return getCloudUrlPrefix() + CMS_API_GETFIELD + fieldid;
+    return getCloudUrlPrefix() + fieldid;
   };
 
   //TODO this will change with file handling
@@ -8731,7 +8730,7 @@ $fh.sync = (function() {
       if (CMS_FIELD_TYPES_TEXT.indexOf(field.type) >=0 ) {
         retVal = field.value;
       } else if (CMS_FIELD_TYPES_FILE.indexOf(field.type) >= 0) {
-        retVal = constructGetFieldURL(field.binaryURL);
+        retVal = constructGetFieldURL(field.binaryUrl);
       } else {
         retErr = "Invalid field type: " + field.type;
       }

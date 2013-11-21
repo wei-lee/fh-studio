@@ -99,7 +99,7 @@
 </script>
 
 <script id="formsListBaseAdd" type="text/x-handlebars-template">
-    <a class="btn pull-right btn-success btn-add-form" href="#"><i class="icon icon-plus"></i> Add {{ name }}</a>
+    <a class="btn pull-right btn-success btn-add-{{ name }}" href="#"><i class="icon icon-plus"></i> Add {{ name }}</a>
 </script>
 
 <script id="formsListMenu" type="text/x-handlebars-template">
@@ -186,10 +186,7 @@
   </div>
 </script>
 
-<!-- Themes templates -->
-<script id="themesAddTheme" type="text/x-handlebars-template">
-  <a class="btn pull-right btn-success btn-add-form" href="#"><i class="icon icon-plus"></i> Add Theme</a>
-</script>
+<!-- Themes specific templates -->
 
 <script id="themesListMenu" type="text/x-handlebars-template">
   <ul class="nav nav-pills nav-stacked well">
@@ -200,4 +197,98 @@
     <li><a class="btn-delete-theme" href="#"><i class="icon-trash"></i> Delete</a></li>
 
   </ul>
+</script>
+
+<script id="themeColourRow" type="text/x-handlebars-template">
+  <div class="colorRow">
+    <label>{{name}}</label>
+    <input type='text' name='{{name}}' value="{{value}}" />
+  </div>
+</script>
+
+
+
+<script id="themeFontRow" type="text/x-handlebars-template">
+  <div class="fontrow" data-name="{{ name }}">
+
+    <label>
+      {{ name }}
+    </label>
+    <select class="size" name="fontSize">
+      <option value="11pt">11pt</option>
+      <option value="12pt"> 12pt</option>
+      <option value="14pt"> 14pt</option>
+      <option value="18pt"> 18pt</option>
+    </select>
+
+    <select class="family" name="fontFamily">
+      <option value="arial">Arial</option>
+      <option value="courier">Courier</option>
+      <option value="georgia">Georgia</option>
+      <option value="times">Times</option>
+    </select>
+
+    <select class="style" name="fontStyle">
+      <option value="normal">Normal</option>
+      <option value="bold">Bold</option>
+      <option value="italic">Italic</option>
+    </select>
+    <input class="colour" type='text' name='fontColour' value="{{f.fontColour}}" />
+  </div>
+</script>
+
+<script id="themeName" type="text/x-handlebars-template">
+  <div class="form form-inline pull-left">
+    <label>Theme Name</label>
+    <input type="text" name="themename" value="{{ name }}">
+  </div>
+</script>
+
+<script id="themePreviewButton" type="text/x-handlebars-template">
+  <a class="btn btn-primary btn-preview-theme pull-right">Preview Theme</a>
+  <br style="clear : both;" />
+</script>
+
+<script id="themeBorderRow" type="text/x-handlebars-template">
+  <div class="borderrow" data-name="{{ name }}">
+
+    <label>
+      {{ name }}
+    </label>
+    <select class="thickness" name="thickness">
+      <option value="none">None</option>
+      <option value="hairline">Hairline</option>
+      <option value="thin">Thin</option>
+      <option value="medium">Medium</option>
+      <option value="thick">Thick</option>
+    </select>
+
+    <select class="style" name="style">
+      <option value="solid">Solid</option>
+      <option value="dashed">Dashed</option>
+      <option value="dotted">Dotted</option>
+      <option value="double">Double</option>
+    </select>
+
+    <input class="colour" type='text' name='colour' value="{{b.colour}}" />
+  </div>
+  Borders
+  Forms
+  Thickness - None | Hairline | Think | Medium | Thick
+  Style - Solid | Dotted | Dashed | Double
+  Colour - Hex value
+  Instructions
+  Thickness - None | Hairline | Thin | Medium | Thick
+  Style - Solid | Dotted | Dashed | Double
+  Colour - Hex value
+</script>
+
+<script id="themeButtons" type="text/x-handlebars-template">
+  Form buttons
+  Navigation
+  Colour - Hex Value
+  Action
+  Colour - Hex Value
+  Cancel
+  Colour Hex Value
 </script>
