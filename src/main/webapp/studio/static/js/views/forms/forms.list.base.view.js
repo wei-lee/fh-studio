@@ -15,16 +15,18 @@ App.View.FormListBase = App.View.Forms.extend({
       self.collection.trigger('reset');
     }, error : function(){
       self.$el.removeClass('busy');
-      if (!self.error){
-        self.error = new App.View.FullPageMessageView({ message : 'Error loading ' + self.pluralTitle.toLowerCase(), button : 'Retry', cb: function(){
-          self.error.$el.hide();
-          self.initialize.apply(self, arguments);
-        }});
-        self.$el.append(self.error.render().$el);
-      }else{
-        self.error.$el.show();
-      }
-
+      // Avoid flicker on our loading view
+      setTimeout(function(){
+        if (!self.error){
+          self.error = new App.View.FullPageMessageView({ message : 'Error loading ' + self.pluralTitle.toLowerCase(), button : 'Retry', cb: function(){
+            self.error.$el.hide();
+            self.initialize.apply(self, arguments);
+          }});
+          self.$el.append(self.error.render().$el);
+        }else{
+          self.error.$el.show();
+        }
+      }, 500);
     }});
   },
   render : function(){
@@ -155,7 +157,7 @@ App.View.FormListBase = App.View.Forms.extend({
             self.message(self.singleTitle + ' deleted successfully');
           },
           error : function(){
-            self.message('Error deleting ' + self.singleTitle.toLowerCase());
+            self.message('Error deleting ' + self.singleTitle.toLowerCase(), 'danger');
           }
         });
       }

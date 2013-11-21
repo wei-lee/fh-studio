@@ -12,7 +12,6 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     themeBorderRow : '#themeBorderRow',
     themeBorderRowReadOnly : '#themeBorderRowReadOnly',
     themeFontRowReadOnly : '#themeFontRowReadOnly',
-    themeButtons : '#themeButtons',
     'themeLogo' : '#themeLogo'
   },
   events : {
@@ -196,6 +195,8 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     this.collection.sync('update', this.theme.toJSON(), { success : function(){
       self.back();
       self.message('Theme updated successfully');
+    }, error : function(){
+      self.message('Error updating theme', 'danger');
     }});
   },
   spectrumify : function(input, attrs, attrVal){

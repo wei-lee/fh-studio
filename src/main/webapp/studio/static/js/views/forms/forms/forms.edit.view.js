@@ -8,7 +8,8 @@ App.View.FormEdit = App.View.Forms.extend({
     formCreateEditForm : '#formCreateEditForm',
     formSaveCancel : '#formSaveCancel',
     form_back : '#form_back',
-    previewOutline : '#preview_outline'
+    previewOutline : '#preview_outline',
+    fullpageLoading : '#fullpageLoading'
   },
   events : {
     'click .btn-add-form' : 'onCreateForm',
@@ -34,6 +35,7 @@ App.View.FormEdit = App.View.Forms.extend({
 
     this.$el.empty();
     this.$el.addClass('span10 formedit');
+
 
     this.$fbEl = $('<div>');
     this.$el.append(this.$fbEl);
@@ -118,6 +120,11 @@ App.View.FormEdit = App.View.Forms.extend({
     pages = [],
     first = this.fb.collection.at(0);
 
+    this.loading = $(this.templates.$fullpageLoading());
+    this.$el.append(this.loading).addClass('busy');
+    self.reorder.$el.hide();
+    self.$fbEl.hide();
+
     this.fb.collection.each(function(f, i, coll){
       // For every page break - except the first, that's just a UI thing..
       if (f.get(self.CONSTANTS.FB.FIELD_TYPE) === self.CONSTANTS.FORM.PAGE_BREAK){
@@ -143,15 +150,19 @@ App.View.FormEdit = App.View.Forms.extend({
     this.form.set(this.CONSTANTS.FORM.PAGES, pages);
     this.form.set(this.CONSTANTS.FORM.NAME, this.$el.find('#formInputName').val());
     this.form.set(this.CONSTANTS.FORM.DESC, this.$el.find('#formTextareaDesc').val());
-    this.fb.collection.reset([]);
     this.collection.sync('update', this.form.toJSON(), { success : function(){
+      self.fb.collection.reset([]);
       self.back();
       self.message('Form updated successfully');
+    }, error : function(){
+      self.$el.removeClass('busy');
+      self.loading.remove();
+      self.reorder.$el.show();
+      self.$fbEl.show();
+      self.message('Error updating form', 'danger');
     }});
   },
   back : function(){
-    this.options.$pagesMenuEl.find('.formpages-menu').remove();
-
     this.trigger('back');
   },
   updatePreview: function(){
