@@ -16,8 +16,9 @@ App.Collection.FieldRules = Backbone.Collection.extend({
   initialize: function() {},
   model: App.Model.FieldRule,
   //url: '/studio/static/js/model/backbone/mocks/forms/themes.json', //TODO:
-  urlUpdate: '/api/v2/forms/fieldRules',//TODO:
+  urlUpdate: '/api/v2/forms/form/fieldRules',//TODO:
   sync: function (method, model, options) {
+    console.log("sync called for model");
     this[method].apply(this, arguments);
   },
   read : function(method, model, options){
@@ -88,13 +89,18 @@ App.Collection.FieldRules = Backbone.Collection.extend({
     var self = this;
     var url = self.urlUpdate;
 
-    model.pages = self.trimInternalIds(model.pages);
+    debugger;
+
+   var data = {
+     "formId":model.at(0).get("formId"),
+     "rules": model
+   };
 
 
     $.ajax({
       type: 'POST',
       url: url,
-      data: JSON.stringify(model),
+      data: JSON.stringify(data),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
       success: function(res){

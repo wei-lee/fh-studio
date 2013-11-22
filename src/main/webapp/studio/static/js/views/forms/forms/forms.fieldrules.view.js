@@ -75,42 +75,9 @@ App.View.FormFieldRules = App.View.Rules.extend({
 
     //RENDER EXISTING RULES
 
-    self.renderExistingRules();
+    self.renderExistingRules(this.fieldRules, "field");
 
     return this;
-  },
-
-
-  renderExistingRules : function (){
-    var self = this;
-    self.$el.find('.rulesContent').empty();
-
-    if(this.fieldRules && this.fieldRules.length > 0){
-      for(var r=0; r < this.fieldRules.length; r++){
-        var fr = this.fieldRules[r].toJSON();
-        console.log("Field Rule ", fr);
-        var sf = self.findField(fr.sourceField);
-        //all fields and the rule
-        //jsonRules.push(fr);
-        self.$el.find('.rulesContent').append(this.templates.$addRule({"fields":this.fields,"conditions":App.View.Forms.CONSTANTS.FIELD_RULES[sf.type]}));
-        self.$el.find(".rulesFieldName option[data-_id='"+fr.sourceField+"']").last().attr("selected",true);
-        self.$el.find("#targetField option[data-_id='"+fr.targetField+"']").last().attr("selected",true);
-        self.$el.find("#fieldConditionals option[value='"+fr.restriction+"']").last().attr("selected",true);
-        self.$el.find("#targetAction options[value='"+fr.type+"']").last().attr("selected",true);
-        self.$el.find("input[name='checkedValue']").last().val(fr.sourceValue);
-
-      }
-      self.$el.find('.btn-remove-rule').unbind().bind('click',self.removeRule);
-      self.$el.find('.rulesFieldName').unbind().change(self.onFieldSelectChange);
-    }
-  },
-
-  findField : function (id){
-    for(var i=0; i < this.fields.length; i++){
-      var f = this.fields[i];
-      console.log("looking at ", f, id);
-      if(f._id === id) return f;
-    }
   },
 
   createRule : function (e){
@@ -157,18 +124,22 @@ App.View.FormFieldRules = App.View.Rules.extend({
   saveRules : function (){
     var rules = [];
     console.log("save rules");
+    var self = this;
     this.$el.find('.rulesForm').each(function (idx, form){
        console.log("creating rule ", form);
       var form = $(form);
       var rule = new App.Model.FieldRule({
         "type":form.find('#targetAction option:selected').val(),
-        "sourceField" : form.find('.sourceField option:selected').val(),
-        "targetField":form.find('.targetField option:selected').val(),
+        "sourceField" : form.find('.sourceField option:selected').data("_id"),
+        "targetField":form.find('.targetField option:selected').data("_id"),
         "restriction" : form.find('.fieldConditionals option:selected').val(),
-        "sourceValue" : form.find('input[name="checkedValue"]').val()
+        "sourceValue" : form.find('input[name="checkedValue"]').val(),
+        "formId": self.form.get("_id")
       });
-      rules.push(rule);
+      self.collection.add(rule);
     });
+
+    self.collection.sync("update",self.collection);
     console.log("saving rules ", rules);
   },
 
