@@ -10,12 +10,15 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     themeColourRow : '#themeColourRow',
     themeFontRow : '#themeFontRow',
     themeBorderRow : '#themeBorderRow',
-    themeButtons : '#themeButtons'
+    themeBorderRowReadOnly : '#themeBorderRowReadOnly',
+    themeFontRowReadOnly : '#themeFontRowReadOnly',
+    'themeLogo' : '#themeLogo'
   },
   events : {
     'click .btn-form-save' : 'onThemeSave',
     'click .btn-form-cancel' : 'back',
-    'click .btn-forms-back' : 'back'
+    'click .btn-forms-back' : 'back',
+    'click .btn-preview-theme' : 'onPreviewTheme'
   },
   initialize: function(options){
     this.constructor.__super__.initialize.apply(this, arguments);
@@ -26,16 +29,22 @@ App.View.FormThemesEdit = App.View.Forms.extend({
   render : function(){
     this.$el.addClass('span10 themeedit');
     this.breadcrumb(['Forms', 'Themes', 'Edit Theme']);
-    this.$el.append(this.templates.$form_back());
 
-    this.$el.append(this.templates.$themeName( { name : this.theme.get(this.CONSTANTS.THEME.NAME) }));
-    this.$el.append(this.templates.$themePreviewButton());
-    this.renderLogo();
+    if (!this.readOnly){
+      this.$el.append(this.templates.$form_back());
+      this.$el.append(this.templates.$themeName( { name : this.theme.get(this.CONSTANTS.THEME.NAME) }));
+      this.$el.append(this.templates.$themePreviewButton());
+      this.$el.addClass('preview');
+    }
+
 
     this.$themesInnerContainer = $('<div class="themesInnerContainer"></div>');
     this.$left = $('<div class="span4"></div>');
     this.$right = $('<div class="span7"></div>');
     this.$themesInnerContainer.append(this.$left, this.$right);
+
+    this.$logo = this.renderLogo();
+    this.$left.append(this.$logo);
 
     this.$colours = this.renderColours();
     this.$left.append(this.$colours);
@@ -48,12 +57,24 @@ App.View.FormThemesEdit = App.View.Forms.extend({
 
     this.$el.append(this.$themesInnerContainer);
 
-    this.$el.append(this.templates.$formSaveCancel());
+    if (!this.readOnly){
+      this.$el.append(this.templates.$formSaveCancel());
+    }
+
     return this;
   },
   renderLogo : function(){
-    // TODO
-    return this;
+    var self = this,
+    typogEl = $('<div class="logo"></div>'),
+    logoBase64 = this.theme.get(this.CONSTANTS.THEME.LOGO);
+    typogEl.append('<h4>Logo</h4>');
+    typogEl.append(this.templates.$themeLogo({ logoBase64 : logoBase64}));
+    if (!this.readOnly){
+      var fileBrowse = $('<br /><input type="file" name="logo"><br />');
+      typogEl.append(fileBrowse);
+    }
+
+    return typogEl;
   },
   renderColours : function(){
     var self = this,
@@ -78,18 +99,7 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     typog = this.theme.get(this.CONSTANTS.THEME.TYPOGRAPHY);
     typogEl.append('<h4>Typography</h4>');
     _.each(typog, function(fontAttributes, heading){
-      var fontRow = $(self.templates.$themeFontRow({f : fontAttributes, name : heading})),
-      input = $(fontRow.find('input[name=fontColour]'));
-      self.spectrumify(input, fontAttributes, 'fontColour');
-
-      // Make sure the right select dropdown has the selected attribute to begin with
-      fontRow.find('select').each(function(){
-        var selectName = $(this).attr('name'),
-        selectedValue = fontAttributes[selectName],
-        selectedEl = $(this).find('option[value=' + selectedValue + ']');
-        selectedEl.attr('selected', 'selected');
-      });
-
+      var fontRow = self.selectsRow('Font', heading, fontAttributes);
       typogEl.append(fontRow);
     });
 
@@ -97,25 +107,32 @@ App.View.FormThemesEdit = App.View.Forms.extend({
   },
   renderBorders : function(){
     var self = this,
-    bordersEl = $('<div class="borders"></div>'),
+    bordersEl = $('<div class="Borders"></div>'),
     borders = this.theme.get(this.CONSTANTS.THEME.BORDERS);
     bordersEl.append('<h4>Borders</h4>');
     _.each(borders, function(borderAttributes, heading){
-      var row = $(self.templates.$themeBorderRow({b : borderAttributes, name : heading})),
-      input = $(row.find('input[name=colour]'));
-      self.spectrumify(input, borderAttributes, 'colour');
-
-      // Make sure the right select dropdown has the selected attribute to begin with
-      row.find('select').each(function(){
-        var selectName = $(this).attr('name'),
-        selectedValue = borderAttributes[selectName],
-        selectedEl = $(this).find('option[value=' + selectedValue + ']');
-        selectedEl.attr('selected', 'selected');
-      });
+      var row = self.selectsRow('Border', heading, borderAttributes);
 
       bordersEl.append(row);
     });
     return bordersEl;
+  },
+  selectsRow : function(type, heading, attributes){
+    var tplBaseName = '$theme' + type + 'Row',
+    tplIncReadOnlyName = (this.readOnly) ? tplBaseName + 'ReadOnly' : tplBaseName, // Now includes the "ReadOnly" string if it's needed
+    tpl = this.templates[tplIncReadOnlyName],
+    row = $(tpl({r : attributes, name : heading})),
+    input = $(row.find('input.colour'));
+    this.spectrumify(input, attributes, 'colour');
+
+    // Make sure the right select dropdown has the selected attribute to begin with
+    row.find('select').each(function(){
+      var selectName = $(this).attr('name'),
+      selectedValue = attributes[selectName],
+      selectedEl = $(this).find('option[value=' + selectedValue + ']');
+      selectedEl.attr('selected', 'selected');
+    });
+    return row;
   },
   onThemeSave : function(){
     var self = this,
@@ -172,9 +189,15 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     });
     this.theme.set(this.CONSTANTS.THEME.BORDERS, borders);
 
-    // TODO send to server
-    this.trigger('back');
-    this.message('Theme saved successfully');
+    //TODO: Get logo file
+    this.$el.find('input[type="file"]');
+
+    this.collection.sync('update', this.theme.toJSON(), { success : function(){
+      self.back();
+      self.message('Theme updated successfully');
+    }, error : function(){
+      self.message('Error updating theme', 'danger');
+    }});
   },
   spectrumify : function(input, attrs, attrVal){
     //TODO: Original input is not being updated at present :(
@@ -186,5 +209,8 @@ App.View.FormThemesEdit = App.View.Forms.extend({
   },
   back : function(){
     this.trigger('back');
+  },
+  onPreviewTheme : function(){
+    //TODO...
   }
 });

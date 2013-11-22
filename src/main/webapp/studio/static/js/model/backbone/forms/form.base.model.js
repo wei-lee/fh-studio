@@ -3,37 +3,69 @@ App.Model = App.Model || {};
 App.Collection = App.Collection || {};
 App.collections = App.collections || {};
 
-
-
-App.Model.FieldRule = Backbone.RelationalModel.extend({
+App.Model.FormBase = Backbone.RelationalModel.extend({
   idAttribute: '_id',
+  relations: undefined,
+  fetchURL : undefined,
   fetch : function(options){
-    options.success(this);
+    var self = this,
+    id = this.get('_id');
+
+    $.ajax({
+      type: 'GET',
+      url: this.fetchURL.replace('{{id}}', id),
+      success: function(res){
+        self.set(res);
+        if ($.isFunction(options.success)) {
+          options.success(self, options);
+        }
+      },
+      error: function(xhr, status){
+        if ($.isFunction(options.error)) {
+          options.error(arguments);
+        }
+      }
+    });
+  },
+  destroy : function(options){
+    var self = this,
+    id = this.get('_id');
+    $.ajax({
+      type: 'DELETE',
+      url: this.fetchURL.replace('{{id}}', id),
+      success: function(res){
+        Backbone.Collection.prototype.remove.apply(self, arguments);
+      },
+      error: function(xhr, status){
+        if ($.isFunction(options.error)) {
+          options.error(arguments);
+        }
+      }
+    });
   }
 });
 
-App.Collection.FieldRules = Backbone.Collection.extend({
+App.Collection.FormBase = Backbone.Collection.extend({
   initialize: function() {},
-  model: App.Model.FieldRule,
-  //url: '/studio/static/js/model/backbone/mocks/forms/themes.json', //TODO:
-  urlUpdate: '/api/v2/forms/form/fieldRules',//TODO:
+  model : undefined,
+  url: undefined,
+  urlUpdate: undefined,
   sync: function (method, model, options) {
-    console.log("sync called for model");
     this[method].apply(this, arguments);
   },
   read : function(method, model, options){
     var self = this;
-
     if(!self.loaded){
       var url = self.url;
       $.ajax({
         type: 'GET',
         url: url,
+        cache: true,
         success: function(res){
-          if (res && res.themes && res.themes.length && res.themes.length>0) {
+          if (res && res[self.pluralName]) {
             self.loaded = true;
             if ($.isFunction(options.success)) {
-              options.success(res.themes, options);
+              options.success(res[self.pluralName], options);
             }
           } else {
             if ($.isFunction(options.error)) {
@@ -49,27 +81,24 @@ App.Collection.FieldRules = Backbone.Collection.extend({
       self.trigger("sync");
     }
   },
-  create : function(method, model, options){
-    //TODO
-    this.trigger('reset');
-    return options.success(model);
-  },
   del : function(method, model, options){
     //TODO
     return options.success(model);
   },
-  trimInternalIds : function(pages) {
-    var self = this;
 
-
-
+  trimInternalIds : function(model) {
+    var self = this,
+    pages = model.pages;
+    if (model._id && model._id.length < 24){
+      // If it's some arbitrary internal ID we assigned, not a node ObjectID, delete it before pushing
+      delete model._id;
+    }
     _.each(pages, function(p){
       if (p._id && p._id.length < 24){
         // If it's some arbitrary internal ID we assigned, not a node ObjectID, delete it before pushing
         delete p._id;
         delete p.cid;
       }
-
       // Cater field lists by recursing - should only happen once..
       if (p.fields){
         _.each(p.fields, function(f){
@@ -80,31 +109,26 @@ App.Collection.FieldRules = Backbone.Collection.extend({
           delete f.cid;
         });
       }
-
     });
-
-    return pages;
+    return model;
+  },
+  create : function(method, model, options){
+    return this.update.apply(this, arguments);
   },
   update : function(method, model, options){
     var self = this;
     var url = self.urlUpdate;
 
+    model = self.trimInternalIds(model);
 
-
-
-    var data = {
-     "formId":model.formid,
-     "rules":model.rules
-    };
-
-    console.log("model ",data);
 
     $.ajax({
       type: 'POST',
       url: url,
-      data: JSON.stringify(data),
+      data: JSON.stringify(model),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
+      cache: true,
       success: function(res){
         if (res) {
           self.trigger('reset');
@@ -127,12 +151,12 @@ App.Collection.FieldRules = Backbone.Collection.extend({
   remove : function(model, options){
     Backbone.Collection.prototype.remove.apply(this, arguments);
     var self = this,
-      opts = {
-        success : function(){
-          self.trigger('reset');
-          options.success.apply(self, arguments);
-        }, error : options.error
-      };
+    opts = {
+      success : function(){
+        self.trigger('reset');
+        options.success.apply(self, arguments);
+      }, error : options.error
+    };
     this.sync('del', model, opts);
 
   }
