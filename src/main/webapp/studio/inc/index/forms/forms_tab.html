@@ -66,6 +66,35 @@
 
 </script>
 
+<script id="pageRuleTemplate" type="text/x-handlebars-template">
+    <form class="form-inline pagerulesForm" style="padding-bottom:8px;" data-type="{{formType}}" data-formId="{{formId}}" data-ruleid="{{ruleId}}"  >
+        <select class="rulesFieldName sourceField" >
+            {{#each fields}}
+            <option data-type="{{type}}"  data-_id="{{_id}}" value="{{name}}" >{{name}}</option>
+            {{/each}}
+        </select>
+        <select class="fieldConditionals" id="fieldConditionals" style="width:130px;">
+            {{#each conditions}}
+            <option value="{{this}}">{{this}}</option>
+            {{/each}}
+        </select>
+        <input type="text" name="checkedValue" placeholder="checked value" />
+        <select id="targetAction" style="width:100px;">
+            <option value="show" >show</option>
+            <option value="hide" >hide</option>
+        </select>
+        <select class="targetField" id="targetField">
+            {{#each pages}}
+            <option data-type="{{type}}" data-_id="{{_id}}">{{name}}</option>
+            {{/each}}
+        </select>
+        <button type="button" class="btn btn-large btn-add-rule"><i class="icon-plus"></i>  </button>
+        <button type="button" class="btn btn-large btn-remove-rule"><i class="icon-minus"></i>  </button>
+        <hr/>
+    </form>
+
+</script>
+
 <script id="formsMenu" type="text/x-handlebars-template">
   <div class="span2 forms_menu_container">
     <ul class="nav nav-list well">

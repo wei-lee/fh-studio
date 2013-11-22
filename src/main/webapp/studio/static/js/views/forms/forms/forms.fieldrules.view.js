@@ -53,23 +53,7 @@ App.View.FormFieldRules = App.View.Rules.extend({
     $(this).parent('.rulesForm').remove();
   },
 
-  onFieldSelectChange : function (e){
-    var self = this;
-    var type = $(this).find('option').filter(':selected').data("type").trim();
-    var rulesSelect = $(this).next('select');
-    rulesSelect.empty();
-    var conditionals = App.View.Forms.CONSTANTS.FIELD_RULES[type];
-    if(! conditionals){
 
-    }else{
-      var html = "";
-      for(var i = 0; i < conditionals.length; i++){
-        html+="<option>"+conditionals[i]+"</option>";
-      }
-      console.log("html ", html);
-      rulesSelect.append(html);
-    }
-  },
 
 
 

@@ -25,7 +25,8 @@ App.View.Rules = App.View.Forms.extend({
 
   templates : {
     rulesTabs : '#formsRulesTab',
-    addRule : '#fieldRuleTemplate'
+    addRule : '#fieldRuleTemplate',
+    pageRule : '#pageRuleTemplate'
   },
 
   events:{
@@ -110,6 +111,25 @@ App.View.Rules = App.View.Forms.extend({
     }
   },
 
+
+  onFieldSelectChange : function (e){
+    var self = this;
+    var type = $(this).find('option').filter(':selected').data("type").trim();
+    var rulesSelect = $(this).next('select');
+    rulesSelect.empty();
+    var conditionals = App.View.Forms.CONSTANTS.FIELD_RULES[type];
+    if(! conditionals){
+
+    }else{
+      var html = "";
+      for(var i = 0; i < conditionals.length; i++){
+        html+="<option>"+conditionals[i]+"</option>";
+      }
+      console.log("html ", html);
+      rulesSelect.append(html);
+    }
+  },
+
   renderExistingRules : function (rules, type){
     console.log("render existing")
     if(! rules  || ! type){
@@ -121,8 +141,9 @@ App.View.Rules = App.View.Forms.extend({
     self.$el.find('.rulesContent').empty();
     var target = ("field" === type) ? "targetField" : "targetPage";
     rules = rules.toJSON();
+    var pages = self.pages.toJSON();
 
-    console.log("render existing rules ", rules);
+    console.log("render existing rules ", rules, pages);
 
     if(rules && rules.length > 0){
       for(var r=0; r < rules.length; r++){
@@ -131,7 +152,11 @@ App.View.Rules = App.View.Forms.extend({
         var sf = self.findField(fr.sourceField);
         //all fields and the rule
         //jsonRules.push(fr);
-        self.$el.find('.rulesContent').append(this.templates.$addRule({"fields":this.fields,"conditions":App.View.Forms.CONSTANTS.FIELD_RULES[sf.type],"formType":type,"formId":self.form.get("_id"),"ruleId":fr["_id"]}));
+        if("field" ==  type){
+          self.$el.find('.rulesContent').append(this.templates.$addRule({"fields":this.fields,"conditions":App.View.Forms.CONSTANTS.FIELD_RULES[sf.type],"formType":type,"formId":self.form.get("_id"),"ruleId":fr["_id"]}));
+        }else{
+          self.$el.find('.rulesContent').append(this.templates.$pageRule({"fields":this.fields,"conditions":App.View.Forms.CONSTANTS.FIELD_RULES[sf.type],"formType":type,"formId":self.form.get("_id"),"ruleId":fr["_id"]}));
+        }
         self.$el.find(".rulesFieldName option[data-_id='"+fr.sourceField+"']").last().attr("selected",true);
         self.$el.find("#targetField option[data-_id='"+fr[target]+"']").last().attr("selected",true);
         self.$el.find("#fieldConditionals option[value='"+fr.restriction+"']").last().attr("selected",true);

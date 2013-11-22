@@ -6,13 +6,21 @@ App.View.FormPageRules = App.View.Rules.extend({
 
 
   createRule : function (e){
+
     var self = this;
-    self.$el.find('.rulesContent').append(this.templates.$addRule({"fields":this.fields,"formType":"page","formId":self.form.get("_id")}));
-    $('.rulesFieldName').unbind().change(this.onFieldSelectChange);
-    $('.btn-add-rule').unbind().bind('click',function (){
+    console.log("self pages ", self.pages);
+    var pages = [];
+    for(var i=0; i < self.pages.length; i++){
+      var pn = i + 1;
+      pages.push({"name":"page" + i +pn, "_id":self.pages.at(i).get("_id")});
+    }
+
+    self.$el.find('.rulesContent').append(this.templates.$pageRule({"fields":this.fields,"formType":"page","formId":self.form.get("_id"),"pages":pages}));
+    self.$el.find('.pagerulesForm .rulesFieldName').unbind().change(this.onFieldSelectChange);
+    self.$el.find('.pagerulesForm .btn-add-rule').unbind().bind('click',function (){
       self.createRule.apply(self);
     });
-    $('.btn-remove-rule').unbind().bind('click',self.removeRule);
+    self.$el.find('.pagerulesForm .btn-remove-rule').unbind().bind('click',self.removeRule);
     return false;
   },
 
