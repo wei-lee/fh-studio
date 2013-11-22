@@ -38,6 +38,8 @@ js/model/backbone/forms/form.base.model.js
 js/model/backbone/forms/form.model.js
 js/model/backbone/forms/theme.model.js
 js/model/backbone/forms/formapp.model.js
+js/model/backbone/forms/fieldrules.model.js
+js/model/backbone/forms/pagerule.model.js
 js/model/backbone/metrics/datepicker.model.js
 js/model/backbone/metrics/metrics.model.js
 js/model/backbone/metrics/pie.metrics.model.js
@@ -147,6 +149,7 @@ js/views/analytics/perapp.analytics.view.js
 js/views/analytics/domain.analytics.overview.view.js
 js/views/analytics/project.app.analytics.controller.view.js
 js/views/forms/forms.view.js
+js/views/forms/forms/forms.rules.view.js
 js/views/forms/forms.list.base.view.js
 js/views/forms/forms/forms.menu.view.js
 js/views/forms/forms/forms.list.view.js
@@ -154,6 +157,7 @@ js/views/forms/forms/forms.create.view.js
 js/views/forms/forms/forms.edit.view.js
 js/views/forms/forms/forms.edit.reorder.view.js
 js/views/forms/forms/forms.fieldrules.view.js
+js/views/forms/forms/forms.pagerules.view.js
 js/views/forms/themes/themes.list.view.js
 js/views/forms/themes/themes.edit.view.js
 js/views/forms/apps/formsapps.list.view.js

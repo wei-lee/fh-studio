@@ -82,14 +82,17 @@ App.View.FormsController = Backbone.View.extend({
     this.subViews.push(editForm);
   },
   onEditFormRules : function(e){
+    var self = this;
     var form = this.views.forms.collection.at(this.views.forms.index),
     menuEl = this.$el.find(".forms_menu_container");
     this.views.forms.$el.hide();
 
-    var editFormRules = new App.View.FormFieldRules({ form : form, collection : this.views.forms.collection, $pagesMenuEl : menuEl });
+    var editFormRules = new App.View.FormFieldRules({ form : form, $pagesMenuEl : menuEl });
     //this.editForm.bind('back', $.proxy(this.back, this));
     this.$el.append(editFormRules.render().$el);
     this.subViews.push(editFormRules);
+
+
   },
   onViewFormSubmissions : function(e){
     //TODO

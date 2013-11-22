@@ -16,7 +16,44 @@ App.Model.Form = App.Model.FormBase.extend({
       includeInJSON: 'id'
     }
   }],
-  fetchURL : '/api/v2/forms/form/{{id}}'
+  fetchURL : '/api/v2/forms/form/{{id}}',
+
+  fetch : function(options){
+    var self = this,
+    id = this.get('_id');
+
+    $.ajax({
+      type: 'GET',
+      url: this.fetchURL.replace('{{id}}', id),
+      success: function(res){
+        self.set(res);
+        if ($.isFunction(options.success)) {
+          options.success(self, options);
+        }
+      },
+      error: function(xhr, status){
+        if ($.isFunction(options.error)) {
+          options.error(arguments);
+        }
+      }
+    });
+  },
+  destroy : function(options){
+    var self = this,
+    id = this.get('_id');
+    $.ajax({
+      type: 'DELETE',
+      url: this.fetchURL.replace('{{id}}', id),
+      success: function(res){
+        Backbone.Collection.prototype.remove.apply(self, arguments);
+      },
+      error: function(xhr, status){
+        if ($.isFunction(options.error)) {
+          options.error(arguments);
+        }
+      }
+    });
+  }
 });
 
 App.Model.FormPage = Backbone.RelationalModel.extend({
