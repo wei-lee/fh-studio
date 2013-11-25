@@ -8,7 +8,7 @@ App.View.FormsController = Backbone.View.extend({
     'click .btn-edit-form' : 'onEditForm',
     'click .btn-edit-form-rules' : 'onEditFormRules',
     'click .btn-view-form-submissions' : 'onViewFormSubmissions',
-    'click .btn-view-form-apps' : 'onViewAppsUsingThisForm'
+    'click .formapp-link' : 'onFormAppLoad'
   },
   initialize : function(){},
   views : {},
@@ -97,9 +97,6 @@ App.View.FormsController = Backbone.View.extend({
   onViewFormSubmissions : function(e){
     //TODO
   },
-  onViewAppsUsingThisForm : function(e){
-    //TODO
-  },
   /*
 
    */
@@ -120,5 +117,27 @@ App.View.FormsController = Backbone.View.extend({
     _.each(this.views, function(view){
       view.$el.hide();
     });
+  },
+  /*
+    Jump to an app from the using this form dropdown
+   */
+  onFormAppLoad : function(e){
+    var self = this,
+    el = $(e.target),
+    id = el.data('_id'),
+    view, row;
+    this.onApps();
+    view = this.views.apps;
+    view.bind('rendered', function(){
+      row = view.$el.find($('tr[data-_id="1a"]'));
+
+      if (!row || !id){
+        return;
+      }
+
+      row.nodeName = "tr";
+      view.onRowSelected({ target : row });
+    });
+
   }
 });

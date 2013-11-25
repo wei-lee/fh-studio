@@ -46,6 +46,7 @@ App.View.FormListBase = App.View.Forms.extend({
       }else{
         this.renderEmptyView();
       }
+      this.trigger('rendered');
     }
     return this;
   },
@@ -63,7 +64,7 @@ App.View.FormListBase = App.View.Forms.extend({
     this.table = new App.View.DataTable({
       aaData : data,
       "fnRowCallback": function(nTr, sData, oData, iRow, iCol) {
-        $(nTr).attr('data-index', iRow).attr('data-hash', sData.Hash);
+        $(nTr).attr('data-index', iRow).attr('data-hash', sData.Hash).attr('data-_id', sData._id);
       },
       "aaSorting" : [],
       "aoColumns": this.columns,
