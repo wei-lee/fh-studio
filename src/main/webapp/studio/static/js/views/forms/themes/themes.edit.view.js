@@ -144,6 +144,9 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     typog = {},
     borders = {};
 
+    // Set the name
+    this.theme.set(this.CONSTANTS.THEME.NAME, name);
+
     /*
       Colours
       iterate over every colour section dom node - we use these to separate section titles
@@ -202,7 +205,7 @@ App.View.FormThemesEdit = App.View.Forms.extend({
   spectrumify : function(input, attrs, attrVal){
     //TODO: Original input is not being updated at present :(
     input.spectrum({
-      //showButtons: false,
+      showButtons: false,
       disabled: this.readOnly,
       color : attrs[attrVal]
     });

@@ -23,6 +23,7 @@ App.Collection.FormThemes = App.Collection.FormBase.extend({
     // Add in the default theme spec to this..
     var name = model.name;
     _.extend(model, this.baseTheme);
+    model.name = name;
     model.updatedBy = $fw.userProps.email;
     model.lastUpdated = new Date();
     App.Collection.FormBase.prototype.create.apply(this, arguments);
@@ -46,7 +47,7 @@ App.Collection.FormThemes = App.Collection.FormBase.extend({
         "fieldInstructions": "#FF0000"
       }
     },
-    "typeography" : {
+    "typography" : {
       "title": {
         "fontFamily": "arial",
         "fontStyle": "normal",

@@ -4,7 +4,6 @@ App.View = App.View || {};
 App.View.FormThemesList = App.View.FormListBase.extend({
   templates : {
     'formsListBaseAdd' : '#formsListBaseAdd',
-    'formsListMenu' : '#formsListMenu',
     'fullpageLoading' : '#fullpageLoading',
     'menu' : '#themesListMenu'
   },

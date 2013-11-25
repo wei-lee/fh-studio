@@ -174,3 +174,7 @@
 .themeedit .sp-disabled .sp-dd {
     display: none;
 }
+#forms_layout .app form.formsApps {
+    border: 1px solid #ddd;
+    padding: 20px;
+}
