@@ -14,7 +14,7 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
     this.model = options.model;
     this.forms = new App.Collection.Form();
     this.themes = new App.Collection.FormThemes();
-    this.mode = options.mode || 'create'
+    this.mode = options.mode || 'create';
 
     // Fetch on the forms and themes - only once these are done can we finish..
     var getters = [
@@ -71,6 +71,7 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
   render : function(){
     var self = this,
     name = '';
+    debugger;
     if (!this.loaded){
       this.$el.height(134);
       return this;

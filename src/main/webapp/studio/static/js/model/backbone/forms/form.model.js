@@ -79,5 +79,5 @@ App.Collection.Form = App.Collection.FormBase.extend({
   initialize: function() {},
   model: App.Model.Form,
   url: '/api/v2/forms/form/list',
-  urlUpdate: '/api/v2/forms/form'
+  urlUpdate: '/api/v2/forms/form/'
 });

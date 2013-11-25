@@ -179,7 +179,7 @@
     padding: 20px;
 }
 
-#forms_layout .formsApps .select2-container {
+#forms_layout .formsApps .select2-container, #forms_app_container .formsApps .select2-container {
     width: 220px;
 }
 

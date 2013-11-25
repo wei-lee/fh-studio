@@ -34,7 +34,7 @@ App.Model.FormBase = Backbone.RelationalModel.extend({
       type: 'DELETE',
       url: this.fetchURL.replace('{{id}}', id),
       success: function(res){
-        Backbone.Collection.prototype.remove.apply(self, arguments);
+        Backbone.Model.prototype.destroy.apply(self, [options]);
       },
       error: function(xhr, status){
         if ($.isFunction(options.error)) {

@@ -43,6 +43,16 @@
         </a>
       </li>
       <% } %>
+
+      <li class="nav-header">Forms</li>
+
+      <li class="template-restriction">
+        <a href="#" data-controller="apps.forms.controller">
+          <i class="icon-bar-chart"></i>
+          Manage Forms
+        </a>
+      </li>
+
       <li class="nav-header">Source</li>
       <li>
         <a href="#" data-controller="apps.editor.controller">
@@ -151,28 +161,28 @@
     </ul>
 
     <div id="app_content" class="span7">
-      
+
         <% if(studio.getProps().optBoolean("cloudresources-enabled")){ %>
-        <%@ include file="./cloudresources.html"%>    
+        <%@ include file="./cloudresources.html"%>
         <% } %>
 
 
         <%@ include file="./cloudplugins.html"%>
-        <%@ include file="./cloudnotifications.html"%>    
-        <%@ include file="./logdetails.html"%>    
+        <%@ include file="./cloudnotifications.html"%>
+        <%@ include file="./logdetails.html"%>
 
-        <%@ include file="./quickstart.html"%>       
+        <%@ include file="./quickstart.html"%>
 
         <%@ include file="./manage_details.html"%>
-        
+
         <%@ include file="./manage_frameworks.html"%>
-        
+
         <%@ include file="./manage_icons.html"%>
-        
+
         <%@ include file="./manage_export.html"%>
-        
+
         <%@ include file="./manage_publish.html"%>
-        
+
         <%@ include file="./editor_files.html"%>
 
         <div id="configuration_container" class="tabbable">
@@ -208,19 +218,19 @@
                 </li>
               </ul>
               <div class="tab-content">
-                <%@ include file="./configuration_studio.html"%>            
-                <%@ include file="./configuration_embed.html"%>            
-                <%@ include file="./configuration_iphone.html"%>            
-                <%@ include file="./configuration_ipad.html"%>            
-                <%@ include file="./configuration_ios.html"%>            
-                <%@ include file="./configuration_android.html"%>            
-                <%@ include file="./configuration_blackberry.html"%>            
-                <%@ include file="./configuration_windowsphone7.html"%>            
+                <%@ include file="./configuration_studio.html"%>
+                <%@ include file="./configuration_embed.html"%>
+                <%@ include file="./configuration_iphone.html"%>
+                <%@ include file="./configuration_ipad.html"%>
+                <%@ include file="./configuration_ios.html"%>
+                <%@ include file="./configuration_android.html"%>
+                <%@ include file="./configuration_blackberry.html"%>
+                <%@ include file="./configuration_windowsphone7.html"%>
               </div>
             </div>
           </div>
         </div>
-        
+
        <% if(studio.getProps().optBoolean("enable-per-app-metrics")){ %>
         <%@ include file="../reporting/reports_container.html" %>
        <%}%>
@@ -234,6 +244,7 @@
       <% if(studio.getProps().optBoolean("cms.enabled")){ %>
         <%@ include file="./cms.html"%>
       <% } %>
+      <%@ include file="./forms.html"%>
 
        <%@ include file="./debug_logging.html"%>
 
@@ -246,14 +257,14 @@
        <% if(studio.getProps().optBoolean("stats-enabled")){ %>
          <%@ include file="./stats.html"%>
        <%}%>
-        
+
        <% if(studio.getProps().optBoolean("enable-push-notification")){ %>
         <%@ include file="./push_notification.html"%>
        <%}%>
     </div>
 
     <div id="app_preview" class="well span3">
-      
+
       <div id="preview_header">
         <select id="preview_temporary_select" class="insert-help"></select>
       </div>

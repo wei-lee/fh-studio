@@ -5,7 +5,7 @@ App.View.FormEdit = App.View.Forms.extend({
   templates : {
     formEditExtraTabs : '#formEditExtraTabs',
     formEditExtraTabsContent : '#formEditExtraTabsContent',
-    formCreateEditForm : '#formCreateEditForm',
+    formCreateEditForm : '#formCreateEditform',
     formSaveCancel : '#formSaveCancel',
     form_back : '#form_back',
     previewOutline : '#preview_outline',
