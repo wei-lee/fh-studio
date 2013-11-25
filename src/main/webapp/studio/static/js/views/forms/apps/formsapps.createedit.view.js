@@ -6,16 +6,18 @@ App.View = App.View || {};
 
 App.View.FormAppsCreateEdit = App.View.Forms.extend({
   templates : {
-    'formsApps' : '#formsApps'
+    'formsApps' : '#formsApps',
+    fullpageLoading : '#fullpageLoading'
   },
   initialize: function(options){
     var self = this;
     this.model = options.model;
     this.forms = new App.Collection.Form();
     this.themes = new App.Collection.FormThemes();
+    this.mode = options.mode || 'create'
 
     // Fetch on the forms and themes - only once these are done can we finish..
-    async.parallel([
+    var getters = [
       function(cb){
         self.forms.fetch({
           success : function(res){
@@ -36,29 +38,58 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
           }
         });
       }
-    ], function(err, res){
+    ];
+
+    if (this.mode === 'existing'){
+      this.apps = new App.Collection.Apps();
+      getters.push(function(cb){
+        self.apps.fetch({
+          success : function(res){
+            return cb(null, res);
+          },
+          error : function(err){
+            return cb(err);
+          }
+        });
+      });
+    }
+
+    async.parallel(getters, function(err, res){
       if (err){
         //TODO: Err handling
         return;
       }
-      self.loading = false;
+      self.loaded = true;
       self.render();
 
     });
 
-    this.loading = true;
+    this.loaded = false;
 
     this.compileTemplates();
   },
   render : function(){
-    var self = this;
-
-    if (this.loading){
+    var self = this,
+    name = '';
+    if (!this.loaded){
+      this.$el.height(134);
       return this;
     }
 
-    var name = (this.model) ? this.model.get(this.CONSTANTS.FORMSAPP.NAME) : '';
+    if (this.mode === 'update'){
+      name = this.model.get(this.CONSTANTS.FORMSAPP.NAME);
+    }
+
     this.$el.append(this.templates.$formsApps({ name : name }));
+
+    if (this.mode === 'existing'){
+      var appSelect = $("<select></select>");
+      this.apps.each(function(a){
+        appSelect.append('<option value="' + a.get('id') + '">' + a.get('title') + '</option>');
+      });
+      this.$el.find('.appname').html(appSelect);
+    }
+
     var themesSelect = this.$el.find('#formAppTheme'),
     formsSelect = this.$el.find('#formAppForms');
 
@@ -70,7 +101,7 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
     });
 
     formsSelect.select2({});
-    if (this.model){
+    if (this.mode === 'update'){
       formsSelect.select2('val', this.model.get('forms'));
     }else{
       // A create operation - remove the save buttons

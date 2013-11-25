@@ -7,11 +7,14 @@ App.View = App.View || {};
 App.View.FormAppsList = App.View.FormListBase.extend({
   templates : {
     'formsListBaseAdd' : '#formsListBaseAdd',
-    'fullpageLoading' : '#fullpageLoading'
+    'fullpageLoading' : '#fullpageLoading',
+    'addToExistingApp' : '#addToExistingApp'
   },
   events : {
     'click tr' : 'onRowSelected',
-    'click .btn-add-formsapp' : 'onCreate'
+    'click .btn-add-formsapp' : 'onCreate',
+    'click .btn-add-existing' : 'onCreate',
+    'click .btn-add-existing-app' : 'onAddExisting'
   },
   initialize: function(){
     var self = this;
@@ -40,6 +43,7 @@ App.View.FormAppsList = App.View.FormListBase.extend({
   },
   render : function(){
     App.View.FormListBase.prototype.render.apply(this, arguments);
+    this.$el.prepend(this.templates.$addToExistingApp);
     return this.renderPreview();
   },
   renderPreview : function(){
@@ -53,8 +57,11 @@ App.View.FormAppsList = App.View.FormListBase.extend({
     return this;
   },
   updatePreview : function(updatedModel){
-    var form = new App.View.FormAppsCreateEdit({ model : updatedModel });
+    var form = new App.View.FormAppsCreateEdit({ model : updatedModel, mode : 'update' });
     this.$previewEl.html(form.render().$el);
     this.$previewEl.show();
+  },
+  onAddExisting: function(){
+    var form = new App.View.FormAppsCreateEdit({ mode : 'create' });
   }
 });

@@ -178,3 +178,11 @@
     border: 1px solid #ddd;
     padding: 20px;
 }
+
+#forms_layout .formsApps .select2-container {
+    width: 220px;
+}
+
+#forms_layout .btn-success {
+    text-transform: capitalize;
+}

@@ -58,7 +58,7 @@ App.View.FormCreateClone = App.View.Modal.extend({
     }
 
     if (this.singleId === "formsapp"){
-      var formsApp = new App.View.FormAppsCreateEdit( {} );
+      var formsApp = new App.View.FormAppsCreateEdit( { mode : this.options.mode } );
       this.$el.find('.modal-body').append(formsApp.render().$el);
     }
 
@@ -74,7 +74,7 @@ App.View.FormCreateClone = App.View.Modal.extend({
     });
 
 
-    if (this.options.mode === 'create'){
+    if (this.options.mode === 'create' || this.options.mode === 'existing'){
       vals = self['base' + this.singleId](vals);
     }else{
       // Clone our source with the new prefs
