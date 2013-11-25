@@ -63,7 +63,7 @@ App.View.Forms = Backbone.View.extend({
       BUTTONS : 'buttons',
       LOGO : 'logo'
     },
-    APP : {
+    FORMSAPP : {
       NAME : 'name',
       VERSION : 'version',
       UPDATED : 'lastUpdated',

@@ -128,7 +128,7 @@
 </script>
 
 <script id="formsListBaseAdd" type="text/x-handlebars-template">
-    <a class="btn pull-right btn-success btn-add-{{ name }}" href="#"><i class="icon icon-plus"></i> Add {{ name }}</a>
+    <a class="btn pull-right btn-success btn-add-{{ cls }}" href="#"><i class="icon icon-plus"></i> Add {{ name }}</a>
 </script>
 
 <script id="formsListMenu" type="text/x-handlebars-template">
@@ -143,7 +143,7 @@
   </ul>
 </script>
 
-<script id="formCreateEditForm" type="text/x-handlebars-template">
+<script id="formCreateEditform" type="text/x-handlebars-template">
   <form class="form-horizontal">
     <fieldset>
       <label for="formInputName">Name</label>
@@ -152,6 +152,19 @@
       <textarea id="formTextareaDesc" placeholder="Description" name="{{ CONSTANTS.FORM.DESC }}"></textarea>
     </fieldset>
   </form>
+</script>
+
+<script id="formCreateEdittheme" type="text/x-handlebars-template">
+  <form class="form-horizontal">
+    <fieldset>
+      <label for="formInputName">Name</label>
+      <input type="text" id="formInputName" placeholder="Name" name="{{ CONSTANTS.THEME.NAME }}">
+    </fieldset>
+  </form>
+</script>
+
+<script id="formCreateEditformsapp" type="text/x-handlebars-template">
+  <!-- Gets added by the extra view we add in -->
 </script>
 
 <script id="formEditExtraTabs" type="text/x-handlebars-template">
@@ -345,20 +358,20 @@
   <div class="control-group">
     <label class="control-label" for="inputFormAppName">App Name</label>
     <div class="controls">
-      <input type="text" id="inputFormAppName" class="span4" name="name" value="{{ name }}">
+      <input type="text" id="inputFormAppName" class="" name="name" value="{{ name }}">
     </div>
   </div>
   <div class="control-group">
     <label class="control-label" for="formAppTheme">App Theme</label>
     <div class="controls">
-      <select id="formAppTheme" name="theme" class="span4">
+      <select id="formAppTheme" name="theme" class="">
       </select>
     </div>
   </div>
   <div class="control-group">
     <label class="control-label" for="formAppForms">Forms</label>
     <div class="controls">
-      <select id="formAppForms" name="forms" multiple class="span4">
+      <select id="formAppForms" name="forms" multiple class="">
       </select>
     </div>
   </div>

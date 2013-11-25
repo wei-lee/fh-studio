@@ -161,6 +161,7 @@ js/views/forms/forms/forms.pagerules.view.js
 js/views/forms/themes/themes.list.view.js
 js/views/forms/themes/themes.edit.view.js
 js/views/forms/apps/formsapps.list.view.js
+js/views/forms/apps/formsapps.createedit.view.js
 js/views/forms/forms.view.controller.js
 js/views/plugins/plugins.view.js
 js/views/plugins/plugins.setup.view.js
