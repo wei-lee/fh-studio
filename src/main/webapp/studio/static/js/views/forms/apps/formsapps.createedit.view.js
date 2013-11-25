@@ -71,7 +71,7 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
   render : function(){
     var self = this,
     name = '';
-    debugger;
+
     if (!this.loaded){
       this.$el.height(134);
       return this;

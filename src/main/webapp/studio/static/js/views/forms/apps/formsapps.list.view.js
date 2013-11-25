@@ -36,7 +36,7 @@ App.View.FormAppsList = App.View.FormListBase.extend({
       "mDataProp": this.CONSTANTS.FORMSAPP.FORMS + ".length"
     },{
       "sTitle": 'Theme',
-      "mDataProp": this.CONSTANTS.FORMSAPP.UPDATED
+      "mDataProp": this.CONSTANTS.FORMSAPP.THEME
     }];
 
     return self.constructor.__super__.initialize.apply(self, arguments);
