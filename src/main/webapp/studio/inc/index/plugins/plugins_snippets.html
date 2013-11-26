@@ -1,3 +1,20 @@
+<script type="text/snippet" id="snippet-aws_directconnect">
+/*
+ Displays all connections in this region.
+ @param params.connectionId : ID of the connection.
+ */
+exports.directconnect = function(params, cb){
+  var directconnect = new AWS.DirectConnect();
+  directconnect.describeConnections(params, function (err, data) {
+    if (err) {
+      console.log(err); // an error occurred
+    } else {
+      console.log(data); // successful response
+    }
+  });
+};
+</script>
+
 <script type="text/snippet" id="snippet-mysql">
 /*
  Executes a MySQL Query
