@@ -37,22 +37,6 @@ App.Model.Form = App.Model.FormBase.extend({
         }
       }
     });
-  },
-  destroy : function(options){
-    var self = this,
-    id = this.get('_id');
-    $.ajax({
-      type: 'DELETE',
-      url: this.fetchURL.replace('{{id}}', id),
-      success: function(res){
-        Backbone.Collection.prototype.remove.apply(self, arguments);
-      },
-      error: function(xhr, status){
-        if ($.isFunction(options.error)) {
-          options.error(arguments);
-        }
-      }
-    });
   }
 });
 
