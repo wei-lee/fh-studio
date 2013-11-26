@@ -83,6 +83,10 @@ ul.apps-using-form li.text {
     border-color: #bbb;
 }
 
+#forms_layout .edit-response-field .option-label-input {
+    width: 122px;
+}
+
 /*
   Sort of nasty hack to make the removal marker of first page of every form not show - it's there for the re-ordering capability, nothing else..
  */
