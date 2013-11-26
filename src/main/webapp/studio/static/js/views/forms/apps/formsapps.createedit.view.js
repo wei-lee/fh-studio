@@ -7,7 +7,10 @@ App.View = App.View || {};
 App.View.FormAppsCreateEdit = App.View.Forms.extend({
   templates : {
     'formsApps' : '#formsApps',
-    fullpageLoading : '#fullpageLoading'
+    'fullpageLoading' : '#fullpageLoading'
+  },
+  events : {
+    'click .btn-success' : 'onFormSave'
   },
   initialize: function(options){
     var self = this;
@@ -103,12 +106,17 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
 
     formsSelect.select2({});
     if (this.mode === 'update'){
-      formsSelect.select2('val', this.model.get('forms'));
+      formsSelect.select2('val', this.model.get(self.CONSTANTS.FORMSAPP.FORMS));
     }else{
       // A create operation - remove the save buttons
       this.$el.find('.btn-group').remove();
     }
 
     return this;
+  },
+  onFormSave : function(){
+    var forms = this.$el.find('form.formsApps #formAppForms').val(); //TODO: Theme and name
+    this.model.set(this.CONSTANTS.FORMSAPP.FORMS, forms);
+    this.model.save();
   }
 });

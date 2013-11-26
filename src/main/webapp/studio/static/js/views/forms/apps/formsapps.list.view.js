@@ -45,6 +45,7 @@ App.View.FormAppsList = App.View.FormListBase.extend({
     App.View.FormListBase.prototype.render.apply(this, arguments);
     this.$el.prepend(this.templates.$addToExistingApp);
     return this.renderPreview();
+
   },
   renderPreview : function(){
     this.$previewEl = $('<div class="app" />');
