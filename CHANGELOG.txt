@@ -1,6 +1,13 @@
 -------------------------------------------------------------------------------
 Component: fh-studio
 -------------------------------------------------------------------------------
+3.17.22 - 2013-11-26 - IR215 - David Martin
+--------------------------------------------
+* 5141 - Added new Cloud Plugins and Plugin category for Amazon Node.js Module
+* 5056 - Improvements to autofocus with modals that have input elements
+* 5054 - Improvements to Databrowser migration steps to show more detailed info on initialisation errors
+* 5037 - Fixed Cloud Environment resources sorting alphanumerically (now just sorting numerically)
+
 3.17.21 - 2013-11-11 - IR214 - Wei Li
 ------------------------------------------------------------
 * 5058 - Add support for MDM integration
