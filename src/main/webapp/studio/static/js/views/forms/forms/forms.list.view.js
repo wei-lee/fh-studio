@@ -74,18 +74,36 @@ App.View.FormList = App.View.FormListBase.extend({
   },
   updatePreview : function(updatedModel){
     var fields = this.formToFormBuilderFields(updatedModel),
-    apps = [{name : 'testFieldsForm', _id : '1a'}, {_id : '2a', name : 'Forms App 2' }],
     dropdown = this.$previewEl.find('.apps-using-form');
 
     dropdown.empty();
+    dropdown.append('<li class="text">' + new App.View.Spinner().render().$el.html() + '</li>');
+
+
+
     this.$previewEl.find('h4').html(updatedModel.get(this.CONSTANTS.FORM.NAME));
     this.$previewEl.find('p').html(updatedModel.get(this.CONSTANTS.FORM.DESC));
 
-    _.each(apps, function(d){
-      dropdown.append('<li><a class="formapp-link" data-_id="' + d._id + '" href="#">' + d.name + '</a></li>');
-    });
-
     this.$previewEl.show();
     this.fb.mainView.collection.reset(fields);
+
+    var using = new App.Collection.AppsUsingThisForm({ id : updatedModel.id });
+    using.fetch({
+      success : function(apps){
+        dropdown.empty();
+        if (apps.length>0){
+          _.each(apps, function(d){
+            dropdown.append('<li><a class="formapp-link" data-_id="' + d.inst.guid + '" href="#">' + d.inst.title + '</a></li>');
+          });
+        }else{
+          dropdown.append('<li class="text">No apps using this form</li>')
+        }
+      },
+      error : function(){
+        dropdown.empty().append('<li>Error loading apps using this form</li>');
+      }
+    });
+
+
   }
 });

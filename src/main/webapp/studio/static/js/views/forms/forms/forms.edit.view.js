@@ -57,7 +57,7 @@ App.View.FormEdit = App.View.Forms.extend({
         self.reorder.render();
       }
     });
-    this.fb.collection.bind('update', function(model){
+    this.fb.collection.bind('change', function(model){
       self.updatePreview.apply(self, arguments);
       if (model.get(self.CONSTANTS.FB.FIELD_TYPE)===self.CONSTANTS.FORM.PAGE_BREAK){
         self.reorder.render();

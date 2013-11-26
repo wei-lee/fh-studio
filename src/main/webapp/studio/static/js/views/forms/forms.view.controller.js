@@ -129,7 +129,7 @@ App.View.FormsController = Backbone.View.extend({
     this.onApps();
     view = this.views.apps;
     view.bind('rendered', function(){
-      row = view.$el.find($('tr[data-_id="1a"]'));
+      row = view.$el.find($('tr[data-_id="' + id + '"]'));
 
       if (!row || !id){
         return;

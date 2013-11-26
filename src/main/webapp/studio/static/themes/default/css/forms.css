@@ -58,6 +58,11 @@
 .form-page h4 {
     word-break: break-all;
 }
+
+ul.apps-using-form li.text {
+    padding: 0px 10px;
+}
+
 /*
   Formbuilder specific CSS
  */

@@ -65,3 +65,32 @@ App.Collection.Form = App.Collection.FormBase.extend({
   url: '/api/v2/forms/form/list',
   urlUpdate: '/api/v2/forms/form/'
 });
+App.Collection.AppsUsingThisForm = Backbone.Collection.extend({
+  url : 'https://testing.feedhenry.me/api/v2/forms/formapps/{{id}}',
+  appId : undefined,
+  initialize : function(options){
+    this.options = options;
+  },
+  fetch : function(options){
+    var url = this.url.replace('{{id}}', this.options.id);
+    $.ajax({
+      type: 'GET',
+      url: url,
+      cache: true,
+      success: function(res){
+        if (res) {
+          if ($.isFunction(options.success)) {
+            options.success(res, options);
+          }
+        } else {
+          if ($.isFunction(options.error)) {
+            options.error(res, options);
+          }
+        }
+      },
+      error: function(xhr, status){
+        options.error(arguments);
+      }
+    });
+  }
+});
