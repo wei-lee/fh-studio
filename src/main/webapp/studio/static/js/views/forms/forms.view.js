@@ -12,7 +12,7 @@ App.View.Forms = Backbone.View.extend({
       DESCRIPTION_TITLE : 'Instructions',
       MINREPITIONS: 'fieldOptions.definition.minRepeat',
       MAXREPITIONS: 'fieldOptions.definition.maxRepeat',
-      REPEATING: 'fieldOptions.definition.repeating',
+      REPEATING: 'repeating',
       VALIDATE_IMMEDIATELY: 'fieldOptions.validation.validateImmediately',
       OPTIONS : 'fieldOptions.definition.options',
       LENGTH_UNITS : 'fieldOptions.validation.units',

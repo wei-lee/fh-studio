@@ -66,7 +66,7 @@ App.Collection.Form = App.Collection.FormBase.extend({
   urlUpdate: '/api/v2/forms/form/'
 });
 App.Collection.AppsUsingThisForm = Backbone.Collection.extend({
-  url : 'https://testing.feedhenry.me/api/v2/forms/formapps/{{id}}',
+  url : 'https://testing.feedhenry.me/api/v2/forms/{{id}}/apps',
   appId : undefined,
   initialize : function(options){
     this.options = options;
