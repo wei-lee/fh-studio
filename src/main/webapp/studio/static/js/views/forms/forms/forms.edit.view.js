@@ -47,7 +47,7 @@ App.View.FormEdit = App.View.Forms.extend({
       bootstrapData: fields,
       eventFix : true,
       addAt : 'last',
-      fields : [ 'text', 'paragraph', 'number', 'email', 'website', 'dropdown', 'radio', 'checkbox', 'checkboxes', 'location', 'map', 'file', 'photo', 'signature', 'autodate', 'section_break', 'page_break' ] // TODO: Add the rest that we support here
+      fields : [ 'text', 'paragraph', 'number', 'email', 'website', 'dropdown', 'radio', 'checkboxes', 'location', 'map', 'file', 'photo', 'signature', 'autodate', 'section_break', 'page_break' ] // TODO: Add the rest that we support here
     });
 
     this.fb.collection.bind('add', function(model){
