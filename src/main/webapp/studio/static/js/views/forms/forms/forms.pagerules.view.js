@@ -52,6 +52,9 @@ App.View.FormPageRules = App.View.Rules.extend({
     this.collection = new App.Collection.PageRules(this.pageRules);
     self.renderExistingRules(this.collection, "page",this.pages);
 
+    this.$el.find('.btn-small').tooltip();
+    this.$el.find('.btn-large').tooltip();
+
     return this;
   }
 
