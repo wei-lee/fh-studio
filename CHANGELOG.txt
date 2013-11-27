@@ -7,6 +7,7 @@ Component: fh-studio
 * 5056 - Improvements to autofocus with modals that have input elements
 * 5054 - Improvements to Databrowser migration steps to show more detailed info on initialisation errors
 * 5037 - Fixed Cloud Environment resources sorting alphanumerically (now just sorting numerically)
+* 4930 - Fixed rebinding of buttons in Deployment Targets UI 
 
 3.17.21 - 2013-11-11 - IR214 - Wei Li
 ------------------------------------------------------------
