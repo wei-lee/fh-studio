@@ -4,7 +4,7 @@ module.exports = function(grunt) {
 
     meta: {
       specs: 'spec/javascripts/tests/**/*.spec.js',
-      helpers: ['spec/javascripts/fixtures/globals.js', 'spec/javascripts/helpers/sinon.js', 'spec/javascripts/helpers/jasmine-jquery.js', 'spec/javascripts/helpers/eventhandler.js', 'spec/javascripts/helpers/factory.js']
+      helpers: ['spec/javascripts/fixtures/globals.js', 'spec/javascripts/helpers/sinon.js', 'spec/javascripts/helpers/jasmine-jquery.js', 'spec/javascripts/helpers/eventhandler.js', 'spec/javascripts/helpers/factory.js', 'spec/javascripts/helpers/jasmine.async.js']
     },
 
     jasmine: {
@@ -121,7 +121,8 @@ module.exports = function(grunt) {
         junit: {
           path: 'test-report',
           consolidate: true
-        }
+        },
+        keepRunner : true
       }
     }
   });
