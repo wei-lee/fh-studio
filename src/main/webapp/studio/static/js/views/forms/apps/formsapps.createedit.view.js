@@ -10,7 +10,8 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
     'fullpageLoading' : '#fullpageLoading'
   },
   events : {
-    'click .btn-success' : 'onFormSave'
+    'click .btn-success' : 'onFormSave',
+    'click .btn-app-submissions' : 'onAppSubmissions'
   },
   initialize: function(options){
     var self = this;
@@ -115,8 +116,21 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
     return this;
   },
   onFormSave : function(){
-    var forms = this.$el.find('form.formsApps #formAppForms').val(); //TODO: Theme and name
+    var self = this,
+    forms = this.$el.find('form.formsApps #formAppForms').val(); //TODO: Theme and name?
     this.model.set(this.CONSTANTS.FORMSAPP.FORMS, forms);
-    this.model.save();
+    // We use model.save rather than our usual update on a collection - bit inconsistant..?
+    this.model.save({},
+    {
+      success : function(){
+        self.message('App updated successfully');
+      },
+      error : function(){
+        self.message('Error updating app');
+      }
+    });
+  },
+  onAppSubmissions : function(){
+    // TODO in view.controller really..
   }
 });

@@ -46,6 +46,7 @@ App.Model.FormApp = App.Model.FormBase.extend({
       type: 'POST',
       url: url,
       data: JSON.stringify(forms),
+      contentType : "application/json",
       cache: true,
       success: function(res){
         if (res && res.forms) {
