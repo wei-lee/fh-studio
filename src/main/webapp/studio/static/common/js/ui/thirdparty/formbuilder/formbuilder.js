@@ -309,7 +309,7 @@
           return this.forceRender();
         },
         forceRender: function() {
-          return this.model.trigger('change');
+          return this.model.trigger('change', this.model);
         },
         toggleRepititionsInputs: function(e) {
           var $el;
@@ -706,7 +706,9 @@
     edit: "<%= Formbuilder.templates['edit/options']({ includeOther: true }) %>",
     addButton: "<span class=\"symbol\"><span class=\"icon-check-empty\"></span></span> Checkboxes",
     defaultAttributes: function(attrs) {
-      attrs.field_options.options = [
+      attrs = new Backbone.Model(attrs);
+      attrs.set(Formbuilder.options.mappings.FIELD_TYPE, 'checkboxes');
+      attrs.set(Formbuilder.options.mappings.OPTIONS, [
         {
           label: "",
           checked: false
@@ -714,8 +716,8 @@
           label: "",
           checked: false
         }
-      ];
-      return attrs;
+      ]);
+      return attrs.toJSON();
     }
   });
 

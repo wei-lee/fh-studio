@@ -87,6 +87,10 @@ ul.apps-using-form li.text {
     width: 122px;
 }
 
+#forms_layout .fb-bottom-add {
+    display: none;
+}
+
 /*
   Sort of nasty hack to make the removal marker of first page of every form not show - it's there for the re-ordering capability, nothing else..
  */
