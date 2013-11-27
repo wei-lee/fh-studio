@@ -132,6 +132,7 @@ App.View.Rules = App.View.Forms.extend({
 
     container.find('.conditioncontainer').last().append("<div style=\"margin-top:6px;\" class=\"ruleDefintionContainer\" id='cond"+condNum+"'>" + this.templates.$ruleDefinitions({"fields":this.fields,"formType":"field","formId":self.form.get("_id"),ruleNum:ruleCount,"condNum":condNum}) + " </div>");
     container.find('.btn-add-condition').hide();
+    container.find('.btn-remove-condition').first().hide();
     container.find('.btn-add-condition').last().show();
     container.find('.btn-add-rule').hide().first().show();
     container.find('.btn-remove-rule').hide().first().show();
@@ -348,13 +349,13 @@ App.View.Rules = App.View.Forms.extend({
           var condNum = container.find('.rulesFieldName').length;
           condNum++;
           form.find('div.condition').show().append(this.templates.$addedRuleCondition());
-          form.find('select.conditional').last().find('option').each(function () {
-            if ($(this).val() == rule.ruleConditionalOperator) {
-              $(this).attr("selected", true);
-            } else {
-              $(this).attr("selected", false);
-            }
-          });
+  //          form.find('select.conditional').last().find('option').each(function () {
+  //            if ($(this).val() == rule.ruleConditionalOperator) {
+  //              $(this).attr("selected", true);
+  //            } else {
+  //              $(this).attr("selected", false);
+  //            }
+  //          });
 
           form.find('.conditioncontainer').last().append("<div style=\"margin-top:6px;\" class=\"ruleDefintionContainer\" id='cond" + condNum + "'>" + this.templates.$ruleDefinitions({"fields": this.fields, "formType": "field", "formId": self.form.get("_id"), ruleNum: ruleCount, "condNum": condNum}) + " </div>");
           setFieldConditional(fr[k]);
@@ -365,8 +366,29 @@ App.View.Rules = App.View.Forms.extend({
 
       }
       self.$el.find('.btn-add-condition').hide().last().show();
+      self.$el.find('.btn-remove-condition').first().hide();
       self.$el.find('.btn-add-rule').hide().last().show();
+      self.$el.find('select.conditional option').each(function () {
+        if ($(this).val() == rule.ruleConditionalOperator) {
+          $(this).attr("selected", true);
+        } else {
+          $(this).attr("selected", false);
+        }
+      });
       self.delegateEvents();
     }
+  },
+
+  selectConditionalChange : function (e){
+   console.log("select conditional change" , $(e.target).val());
+    var changedVal = $(e.target).val();
+    this.$el.find('select.conditional:visible option').each(function (){
+      console.log("checking option ", $(this));
+      if ($(this).val() == changedVal) {
+        $(this).attr("selected", true);
+      } else {
+        $(this).attr("selected", false);
+      }
+    });
   }
 });
