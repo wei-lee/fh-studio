@@ -7,6 +7,8 @@ App.View.FormListBase = App.View.Forms.extend({
 
     App.View.Forms.prototype.initialize.apply(this, arguments);
 
+    this.singleId = this.singleTitle.toLowerCase().replace(/ /g, "");
+
     this.loaded = false;
     // Comes from implementee
     this.collection.fetch({ reset : true, success : function(){
@@ -44,6 +46,7 @@ App.View.FormListBase = App.View.Forms.extend({
       }else{
         this.renderEmptyView();
       }
+      this.trigger('rendered');
     }
     return this;
   },
@@ -54,14 +57,14 @@ App.View.FormListBase = App.View.Forms.extend({
     return this;
   },
   renderList : function(){
-    this.$el.append(this.templates.$formsListBaseAdd( { name : this.singleTitle.toLowerCase() } ));
+    this.$el.append(this.templates.$formsListBaseAdd( { name : this.singleTitle.toLowerCase(), cls : this.singleId } ));
     var self = this,
     data = this.collection.toJSON();
 
     this.table = new App.View.DataTable({
       aaData : data,
       "fnRowCallback": function(nTr, sData, oData, iRow, iCol) {
-        $(nTr).attr('data-index', iRow).attr('data-hash', sData.Hash);
+        $(nTr).attr('data-index', iRow).attr('data-hash', sData.Hash).attr('data-_id', sData._id);
       },
       "aaSorting" : [],
       "aoColumns": this.columns,
@@ -131,7 +134,9 @@ App.View.FormListBase = App.View.Forms.extend({
   onCreate : function(e){
     e.preventDefault();
     var self = this,
-    createView = new App.View.FormCreateClone({ collection : this.collection, mode : 'create', singleTitle : this.singleTitle, pluralTitle : this.pluralTitle });
+    el = e.target.nodeName.toLowerCase() === "a" ? $(e.target) : $(e.target).parent(),
+    mode = $(el).data('mode'),
+    createView = new App.View.FormCreateClone({ collection : this.collection, mode : mode, singleTitle : this.singleTitle, singleId : this.singleId, pluralTitle : this.pluralTitle });
     this.$el.append(createView.render().$el);
     createView.bind('message', function(){}); // TODO - do we want messages up top like with CMS?
   },
@@ -139,7 +144,7 @@ App.View.FormListBase = App.View.Forms.extend({
     e.preventDefault();
     var self = this,
     cloneSource = this.collection.at(this.index),
-    createView = new App.View.FormCreateClone({ collection : this.collection, mode : 'clone', cloneSource : cloneSource.toJSON(), singleTitle : this.singleTitle, pluralTitle : this.pluralTitle });
+    createView = new App.View.FormCreateClone({ collection : this.collection, mode : 'clone', cloneSource : cloneSource.toJSON(), singleId : this.singleId, singleTitle : this.singleTitle, pluralTitle : this.pluralTitle });
     this.$el.append(createView.render().$el);
   },
   onDelete : function(){

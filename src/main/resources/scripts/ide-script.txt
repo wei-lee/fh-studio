@@ -149,9 +149,9 @@ js/views/analytics/perapp.analytics.view.js
 js/views/analytics/domain.analytics.overview.view.js
 js/views/analytics/project.app.analytics.controller.view.js
 js/views/forms/forms.view.js
+js/views/forms/forms.menu.view.js
 js/views/forms/forms/forms.rules.view.js
 js/views/forms/forms.list.base.view.js
-js/views/forms/forms/forms.menu.view.js
 js/views/forms/forms/forms.list.view.js
 js/views/forms/forms/forms.create.view.js
 js/views/forms/forms/forms.edit.view.js
@@ -161,6 +161,7 @@ js/views/forms/forms/forms.pagerules.view.js
 js/views/forms/themes/themes.list.view.js
 js/views/forms/themes/themes.edit.view.js
 js/views/forms/apps/formsapps.list.view.js
+js/views/forms/apps/formsapps.createedit.view.js
 js/views/forms/forms.view.controller.js
 js/views/plugins/plugins.view.js
 js/views/plugins/plugins.setup.view.js
@@ -281,6 +282,7 @@ js/application/apps/apps.deploy.controller.js
 js/application/apps/apps.reports.support.js
 js/application/apps/apps.installs.controller.js
 js/application/apps/apps.startups.controller.js
+js/application/apps/apps.forms.controller.js
 js/application/reporting/reporting.controller.js
 js/application/reporting/reporting.app.controller.js
 js/application/reporting/reporting.dashboard.controller.js

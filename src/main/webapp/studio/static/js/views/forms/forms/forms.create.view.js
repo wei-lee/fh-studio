@@ -4,11 +4,15 @@ App.View = App.View || {};
 App.View.FormCreateClone = App.View.Modal.extend({
   initialize: function(options){
     this.CONSTANTS = App.View.Forms.prototype.CONSTANTS;
-    var tpl = Handlebars.compile($('#formCreateEditForm').html()),
+    this.singleTitle = options.singleTitle;
+    this.singleId = options.singleId;
+    this.pluralTitle = options.pluralTitle;
+
+    var tpl = Handlebars.compile($('#formCreateEdit' + this.singleId).html()),
     body = $(tpl({ CONSTANTS : this.CONSTANTS })),
     mode = options.mode || 'create';
-    this.singleTitle = options.singleTitle;
-    this.pluralTitle = options.pluralTitle;
+
+
     this.options = options = {
       title: (options.mode==='create') ? 'Create New ' + this.singleTitle : 'Clone ' + this.singleTitle,
       okText: (options.mode==='create') ? 'Create' : 'Clone',
@@ -22,7 +26,7 @@ App.View.FormCreateClone = App.View.Modal.extend({
 
     return this.constructor.__super__.initialize.apply(this, [options]);
   },
-  baseForm : function(vals){
+  baseform : function(vals){
     vals[App.View.Forms.prototype.CONSTANTS.FORM.UPDATED] = new Date().toString();
     vals[App.View.Forms.prototype.CONSTANTS.FORM.USING] = 0;
     vals[App.View.Forms.prototype.CONSTANTS.FORM.SUBSTODAY] = 0;
@@ -32,26 +36,30 @@ App.View.FormCreateClone = App.View.Modal.extend({
     ];
     return vals;
   },
-  baseTheme : function(vals){
+  basetheme : function(vals){
     vals[App.View.Forms.prototype.CONSTANTS.THEME.UPDATED] = new Date();
     vals[App.View.Forms.prototype.CONSTANTS.THEME.USING] = 0;
     return vals;
   },
+  baseformsapp : function(vals){
+    vals[App.View.Forms.prototype.CONSTANTS.FORMSAPP.UPDATED] = new Date();
+    return vals;
+  },
   render : function(options){
     App.View.Modal.prototype.render.apply(this, arguments);
+    var constObj = this.CONSTANTS[this.singleId.toUpperCase().replace(" ","")];
     if (this.options.mode === 'clone'){
-      this.$el.find('input[name="name"]').val(this.options.cloneSource[this.CONSTANTS[this.singleTitle.toUpperCase()].NAME] + " Copy"); // name
+      this.$el.find('input[name="name"]').val(this.options.cloneSource[constObj.NAME] + " Copy"); // name
 
       // Form has a desc - populate it - theme does not, remove it..
-      if (this.singleTitle.toLowerCase() === "form"){
-        this.$el.find('textarea[name="description"]').val(this.options.cloneSource[this.CONSTANTS[this.singleTitle.toUpperCase()].DESC] || ""); // name
+      if (this.singleId.toLowerCase() === "form"){
+        this.$el.find('textarea[name="description"]').val(this.options.cloneSource[constObj.DESC] || ""); // name
       }
     }
 
-    // Theme has no description - remove this box
-    if (this.singleTitle.toLowerCase() === "theme"){
-      this.$el.find('textarea[name="description"]').remove();
-      this.$el.find('label[for=formTextareaDesc]').remove();
+    if (this.singleId === "formsapp"){
+      var formsApp = new App.View.FormAppsCreateEdit( { mode : this.options.mode } );
+      this.$el.find('.modal-body').append(formsApp.render().$el);
     }
 
     return this;
@@ -66,8 +74,8 @@ App.View.FormCreateClone = App.View.Modal.extend({
     });
 
 
-    if (this.options.mode === 'create'){
-      vals = self['base' + this.singleTitle](vals);
+    if (this.options.mode === 'create' || this.options.mode === 'existing'){
+      vals = self['base' + this.singleId](vals);
     }else{
       // Clone our source with the new prefs
 

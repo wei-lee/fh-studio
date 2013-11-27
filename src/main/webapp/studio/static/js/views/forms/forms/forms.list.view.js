@@ -13,7 +13,6 @@ App.View.FormList = App.View.FormListBase.extend({
     'click .btn-add-form' : 'onCreate',
     'click .btn-clone-form' : 'onClone',
     'click .btn-delete-form' : 'onDelete'
-
   },
   initialize: function(){
     this.collection = new App.Collection.Form();
@@ -74,11 +73,37 @@ App.View.FormList = App.View.FormListBase.extend({
     return this;
   },
   updatePreview : function(updatedModel){
-    var fields = this.formToFormBuilderFields(updatedModel);
+    var fields = this.formToFormBuilderFields(updatedModel),
+    dropdown = this.$previewEl.find('.apps-using-form');
+
+    dropdown.empty();
+    dropdown.append('<li class="text">' + new App.View.Spinner().render().$el.html() + '</li>');
+
+
+
     this.$previewEl.find('h4').html(updatedModel.get(this.CONSTANTS.FORM.NAME));
     this.$previewEl.find('p').html(updatedModel.get(this.CONSTANTS.FORM.DESC));
 
     this.$previewEl.show();
     this.fb.mainView.collection.reset(fields);
+
+    var using = new App.Collection.AppsUsingThisForm({ id : updatedModel.id });
+    using.fetch({
+      success : function(apps){
+        dropdown.empty();
+        if (apps.length>0){
+          _.each(apps, function(d){
+            dropdown.append('<li><a class="formapp-link" data-_id="' + d.inst.guid + '" href="#">' + d.inst.title + '</a></li>');
+          });
+        }else{
+          dropdown.append('<li class="text">No apps using this form</li>')
+        }
+      },
+      error : function(){
+        dropdown.empty().append('<li>Error loading apps using this form</li>');
+      }
+    });
+
+
   }
 });

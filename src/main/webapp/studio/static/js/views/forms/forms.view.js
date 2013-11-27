@@ -9,15 +9,17 @@ App.View.Forms = Backbone.View.extend({
       FIELD_VALUE : 'fieldOptions.definition.defaultValue',
       FIELD_TYPE: 'type',
       DESCRIPTION: 'fieldOptions.definition.helpText',
+      DESCRIPTION_TITLE : 'Instructions',
       MINREPITIONS: 'fieldOptions.definition.minRepeat',
       MAXREPITIONS: 'fieldOptions.definition.maxRepeat',
       REPEATING: 'fieldOptions.definition.repeating',
       VALIDATE_IMMEDIATELY: 'fieldOptions.validation.validateImmediately',
       OPTIONS : 'fieldOptions.definition.options',
+      LENGTH_UNITS : 'fieldOptions.validation.units',
       MIN: 'fieldOptions.definition.min',
       MAX: 'fieldOptions.definition.max',
-      MINLENGTH: 'fieldOptions.definition.minlength',
-      MAXLENGTH: 'fieldOptions.definition.maxlength',
+      MINLENGTH: 'fieldOptions.definition.min',
+      MAXLENGTH: 'fieldOptions.definition.max',
       INCLUDE_OTHER: 'fieldOptions.include_other_option',
       INCLUDE_BLANK: 'fieldOptions.include_blank_option',
       SINGLE_CHECKED: 'fieldOptions.definition.checked',
@@ -63,7 +65,7 @@ App.View.Forms = Backbone.View.extend({
       BUTTONS : 'buttons',
       LOGO : 'logo'
     },
-    APP : {
+    FORMSAPP : {
       NAME : 'name',
       VERSION : 'version',
       UPDATED : 'lastUpdated',

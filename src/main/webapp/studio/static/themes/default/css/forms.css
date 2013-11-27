@@ -58,6 +58,11 @@
 .form-page h4 {
     word-break: break-all;
 }
+
+ul.apps-using-form li.text {
+    padding: 0px 10px;
+}
+
 /*
   Formbuilder specific CSS
  */
@@ -76,6 +81,14 @@
 
 #forms_layout .fb-common-wrapper hr {
     border-color: #bbb;
+}
+
+#forms_layout .edit-response-field .option-label-input {
+    width: 122px;
+}
+
+#forms_layout .fb-bottom-add {
+    display: none;
 }
 
 /*
@@ -177,4 +190,12 @@
 #forms_layout .app form.formsApps {
     border: 1px solid #ddd;
     padding: 20px;
+}
+
+#forms_layout .formsApps .select2-container, #forms_app_container .formsApps .select2-container {
+    width: 220px;
+}
+
+#forms_layout .btn-success {
+    text-transform: capitalize;
 }
