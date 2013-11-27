@@ -126,14 +126,14 @@ App.Collection.FieldRules = Backbone.Collection.extend({
   },
   remove : function(model, options){
     Backbone.Collection.prototype.remove.apply(this, arguments);
-    var self = this,
-      opts = {
-        success : function(){
-          self.trigger('reset');
-          options.success.apply(self, arguments);
-        }, error : options.error
-      };
-    this.sync('del', model, opts);
+//    var self = this,
+//      opts = {
+//        success : function(){
+//          self.trigger('reset');
+//          options.success.apply(self, arguments);
+//        }, error : options.error
+//      };
+    //this.sync('del', model, opts);
 
   }
 });

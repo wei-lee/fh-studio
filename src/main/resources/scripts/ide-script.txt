@@ -156,6 +156,7 @@ js/views/forms/forms/forms.list.view.js
 js/views/forms/forms/forms.create.view.js
 js/views/forms/forms/forms.edit.view.js
 js/views/forms/forms/forms.edit.reorder.view.js
+js/views/forms/forms/forms.editrules.view.js
 js/views/forms/forms/forms.fieldrules.view.js
 js/views/forms/forms/forms.pagerules.view.js
 js/views/forms/themes/themes.list.view.js
