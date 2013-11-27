@@ -69,6 +69,22 @@ App.View.Rules = App.View.Forms.extend({
     }
   },
 
+  aggreagateShowFields : function (){
+    this.targetFields = [{
+      "name":"select a field",
+      "type" :""
+    }];
+    for(var i=0; i < this.pages.length; i++){
+      var page = this.pages.models[i];
+
+      var pageFields = page.get("fields");
+      for(var p=0; p < pageFields.length; p++){
+        var fieldType = pageFields[p].type.trim();
+        this.targetFields.push(pageFields[p]);
+      }
+    }
+  },
+
   removeRule: function (e) {
     var self = this;
     var ruleNumber = $(e.target).data("rulenum");
@@ -279,7 +295,7 @@ App.View.Rules = App.View.Forms.extend({
         var fr = rules[r].ruleConditionalStatements;
         self.$el.find('.rulesContent').last().append(this.templates.$addRule({"fields": this.fields, "formType": type, "formId": self.form.get("_id"), ruleNum: ruleCount, ruleId: rule._id}));
         self.$el.find('#rule' + ruleCount + ' .ruleDefintionContainer').append(this.templates.$ruleDefinitions({"fields": this.fields, "formType": type, "formId": self.form.get("_id"), ruleNum: ruleCount}));
-        self.$el.find('#rule' + ruleCount + ' .ruleResult').append(this.templates.$ruleResults({"fields": this.fields, "formType": type, "formId": self.form.get("_id"), ruleNum: ruleCount}));
+        self.$el.find('#rule' + ruleCount + ' .ruleResult').append(this.templates.$ruleResults({"fields": this.targetFields, "formType": type, "formId": self.form.get("_id"), ruleNum: ruleCount}));
 
         if (type == "page") {
           self.$el.find('select#targetField').replaceWith(this.templates.$targetFieldSelect({"pages": pages}));
