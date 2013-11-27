@@ -26,7 +26,6 @@ App.View.Rules = App.View.Forms.extend({
   templates: {
     rulesTabs: '#formsRulesTab',
     addRule: '#fieldRuleTemplate',
-    pageRule: '#pageRuleTemplate',
     ruleResults: "#ruleResult",
     ruleDefinitions: '#ruleDefinitions',
     addedRuleCondition: '#addedRuleCondition',
