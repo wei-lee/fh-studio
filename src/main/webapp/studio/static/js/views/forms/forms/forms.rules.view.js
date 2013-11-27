@@ -9,8 +9,7 @@ App.View.Rules = App.View.Forms.extend({
     "text": ["is", "is not", "contains", "does not contain", "begins with", "ends with"],
     "emailAddress": ["is", "is not", "contains", "does not contain", "begins with", "ends with"],
     "number": ["is equal to", "is greater than", "is less than"],
-    "textarea": ["is", "is not", "contains", "does not contain", "begins with", "ends with"],
-    "checkbox": ["is", "is not"]
+    "textarea": ["is", "is not", "contains", "does not contain", "begins with", "ends with"]
   },
   //todo all the rules seem to be the same in wufoo so just have one set of rules?
   PAGE_RULES: {
@@ -19,9 +18,10 @@ App.View.Rules = App.View.Forms.extend({
     "text": ["is", "is not", "contains", "does not contain", "begins with", "ends with"],
     "emailAddress": ["is", "is not", "contains", "does not contain", "begins with", "ends with"],
     "number": ["is equal to", "is greater than", "is less than"],
-    "textarea": ["is", "is not", "contains", "does not contain", "begins with", "ends with"],
-    "checkbox": ["is", "is not"]
+    "textarea": ["is", "is not", "contains", "does not contain", "begins with", "ends with"]
   },
+
+  "EXCLUDED_FIELD_TYPES" : ["checkbox"],
 
   templates: {
     rulesTabs: '#formsRulesTab',
@@ -36,55 +36,108 @@ App.View.Rules = App.View.Forms.extend({
 
   events: {
     'click .createrule': 'createRule',
-    'click a#fieldRules': 'fieldRulesTab',
-    'click a#pageRules': 'pageRulesTab',
     'click .btn-add-condition': 'createCondition',
     'click .btn-remove-condition': 'removeCondition',
     'click .btn-remove-rule': 'removeRule',
     'click .btn-add-rule': 'createRule',
     'change .rulesFieldName': 'onFieldSelectChange',
-    'change select.conditional': 'selectConditionalChange'
+    'change select.conditional': 'selectConditionalChange',
+    'click .saverules' : 'saveRules'
+  },
+
+  aggreagateFields : function(type){
+    this.fields = [{
+      "name":"select a field",
+      "type" :""
+    }];
+    var rules = ("field" == type) ? this.FIELD_RULES : this.PAGE_RULES;
+    console.log("pages ", this.pages);
+    for(var i=0; i < this.pages.length; i++){
+      var page = this.pages.models[i];
+
+      var pageFields = page.get("fields");
+      for(var p=0; p < pageFields.length; p++){
+        var fieldType = pageFields[p].type.trim();
+        var repeating = pageFields[p].repeating;
+        console.log("pagefield ", pageFields[p], "is repeating ", repeating);
+        if(rules[fieldType] && this.EXCLUDED_FIELD_TYPES.indexOf(fieldType) == -1 && ! repeating){
+          console.log("rules for this field type", rules[fieldType]);
+          pageFields[p].rules = this.FIELD_RULES[fieldType];
+          this.fields.push(pageFields[p]);
+        }
+      }
+    }
   },
 
   removeRule: function (e) {
     var self = this;
-    var formId = $(e.target).data("rulenum");
-    var form = self.$el.find('#rule' + formId);
+    var ruleNumber = $(e.target).data("rulenum");
+    var form = self.$el.find('#rule' + ruleNumber);
     var container = form.parent('.formRuleContainer');
     var ruleid = form.data("ruleid");
     container.remove();
     if (ruleid) {
       var model = self.collection.findWhere({"_id": ruleid});
-      console.log("found model to remove ", model);
       self.collection.remove(model, {
         "success": function () {
-          console.log("success callback");
-        }, "error": function () {
-          console.log("error callback");
+
+        },
+        "error": function () {
+
         }});
     }
     return false;
+  },
+
+  createCondition : function (e){
+    console.log("called createCondition");
+    var self=this;
+    var ruleCount =  self.$el.find('.rulesForm:visible').length;
+    var formId = $(e.target).data("rulenum");
+    var form = self.$el.find('#rule'+formId);
+    var container = form.parent('.formRuleContainer');
+    var ruleid = form.data("ruleid");
+    var condNum = container.find('.rulesFieldName:visible').length;
+    console.log("condition number ", condNum, "rule count ", ruleCount, "ruleform id ", formId);
+
+    console.log(container);
+    container.find('.condition').show().append(this.templates.$addedRuleCondition());
+    //if there are previous conditions set the select to the same value
+    var conditionalSelects = container.find('select.conditional');
+    var conditionalOpts = container.find('select.conditional option');
+    var prevVal = conditionalSelects.first().val();
+
+    conditionalOpts.each(function (){
+      if($(this).val() === prevVal){
+        $(this).attr("selected",true);
+      }else{
+        $(this).attr("selected",false);
+      }
+    });
+
+    container.find('.conditioncontainer').last().append("<div style=\"margin-top:6px;\" class=\"ruleDefintionContainer\" id='cond"+condNum+"'>" + this.templates.$ruleDefinitions({"fields":this.fields,"formType":"field","formId":self.form.get("_id"),ruleNum:ruleCount,"condNum":condNum}) + " </div>");
+    container.find('.btn-add-condition').hide();
+    container.find('.btn-add-condition').last().show();
+    container.find('.btn-add-rule').hide().first().show();
+    container.find('.btn-remove-rule').hide().first().show();
+    conditionalSelects.unbind('change').bind('change',function (){
+      var val = $(this).val();
+      conditionalOpts.each(function (){
+        if($(this).val() === val){
+          $(this).attr("selected",true);
+        }else{
+          $(this).attr("selected",false);
+        }
+      });
+    });
+    console.log("delegating events");
+    //self.delegateEvents();
+
 
   },
 
 
-  fieldRulesTab: function () {
-    var self = this;
-    var editFormRules = new App.View.FormFieldRules({ form: self.form, $pagesMenuEl: self.options.$pagesMenuEl });
-    //this.editForm.bind('back', $.proxy(this.back, this));
-    self.$el.append(editFormRules.render().$el);
-    self.$el.find('a#fieldRules').parent('li').addClass("active");
-    self.$el.find('a#pageRules').parent('li').removeClass("active");
 
-  },
-
-  pageRulesTab: function () {
-    var self = this;
-    var editPageRules = new App.View.FormPageRules({form: self.form, $pagesMenuEl: self.options.$pagesMenuEl});
-    self.$el.append(editPageRules.render().$el);
-    self.$el.find('a#fieldRules').parent('li').removeClass("active");
-    self.$el.find('a#pageRules').parent('li').addClass("active");
-  },
 
 
   formatPages: function (toFormat) {
@@ -109,8 +162,6 @@ App.View.Rules = App.View.Forms.extend({
       var target = ("field" === type) ? "targetField" : "targetPage";
       var existingRule = self.collection.findWhere({"_id": form.data("ruleid")});
 
-      console.log("existing rule is ", existingRule);
-
       var data = {
         "type": form.find('#targetAction option:selected').val(),
         "ruleConditionalOperator": form.find('select.conditional').val() || "and",
@@ -134,7 +185,6 @@ App.View.Rules = App.View.Forms.extend({
           restriction: $(this).find('select.fieldConditionals option:selected').val(),
           sourceValue: $(this).find('input[name="checkedValue"]').val()
         };
-        console.log("adding statement ", statement);
         data.ruleConditionalStatements.push(statement);
       });
 
@@ -146,14 +196,12 @@ App.View.Rules = App.View.Forms.extend({
       }
 
       if (existingRule) {
-        console.log("updating existing rule ", existingRule);
         existingRule.set("type", data.type);
         existingRule.set("ruleConditionalStatements", data.ruleConditionalStatements);
         existingRule.set("ruleConditionalOperator", data.ruleConditionalOperator);
         existingRule.set(target, data[target]);
       } else {
         var rule;
-
         if("field" == type){
           rule = new App.Model.FieldRule(data);
         }else if("page" == type){
@@ -164,35 +212,20 @@ App.View.Rules = App.View.Forms.extend({
     });
 
     self.collection.sync("update", {"rules": self.collection, "formid": self.form.get("_id")}, {"success": function (data) {
-      console.log("called back to success function", data);
       if("field" == type){
-        console.log("saving field rules after save ");
         self.options.form.set("fieldRules", data);
       }else if("page" == type){
-        console.log("saving page rules after save ");
         self.options.form.set("pageRules", data);
       }
-     // self.render();
       App.View.Forms.prototype.message('updated rules successfully');
-      console.log("saved rules ", self.collection);
 
     }
     ,"error":function (data){
-        console.log("error from save ", data);
+        App.View.Forms.prototype.message('failed to update the rules');
     }});
 
 
   },
-
-
-  findField: function (id) {
-    for (var i = 0; i < this.fields.length; i++) {
-      var f = this.fields[i];
-      console.log("looking at ", f, id);
-      if (f._id === id) return f;
-    }
-  },
-
 
   onFieldSelectChange: function (e) {
     var self = this;
@@ -215,11 +248,8 @@ App.View.Rules = App.View.Forms.extend({
   removeCondition: function (e) {
 
     var condId = $(e.target).data("conditionnum");
-    console.log("remove condition", condId);
-
     var container = this.$el.find('#cond' + condId).parent('.conditioncontainer');
     var ruleContainer = container.parent().prev('.ruleDefintionContainer');
-    console.log("rule container ", ruleContainer);
     ruleContainer.find('.btn-add-condition').last().show();
     container.remove();
     this.delegateEvents();
@@ -227,7 +257,6 @@ App.View.Rules = App.View.Forms.extend({
 
 
   renderExistingRules: function (rules, type, pages) {
-    console.log("render existing RULES ****** ", type, rules);
     if (!rules || !type) {
       console.log("no rules passed");
       return;
@@ -239,12 +268,11 @@ App.View.Rules = App.View.Forms.extend({
     rules = rules.toJSON();
     var pages = self.formatPages(pages);
 
-    var ruleCount = self.$el.find('.rulesForm').length;
-
-    console.log("rules", rules);
+    var ruleCount = self.$el.find('.rulesForm:visible').length;
+    ruleCount = (ruleCount == 0) ? 1 : ruleCount;
 
     if (rules && rules.length > 0) {
-      console.log("rules", rules);
+
       //each rule now has  ruleConditionalStatements and a ruleConditionalOperator
       for (var r = 0; r < rules.length; r++) {
         var rule = rules[r];
@@ -293,7 +321,6 @@ App.View.Rules = App.View.Forms.extend({
           }
         });
         self.$el.find('select#targetField option').each(function () {
-          console.log($(this).data("_id"), rule[target], target);
           if ($(this).data("_id") == rule[target]) {
             $(this).attr("selected", true);
           } else {
@@ -301,7 +328,6 @@ App.View.Rules = App.View.Forms.extend({
           }
         });
         for (var k = 1; k < fr.length; k++) {
-          console.log("statement ", fr[k]);
           var form = self.$el.find('#rule' + ruleCount);
           var container = form.parent('.formRuleContainer');
           var condNum = container.find('.rulesFieldName').length;
@@ -320,15 +346,12 @@ App.View.Rules = App.View.Forms.extend({
           setTargetField(fr[k]);
           setValue(fr[k]);
         }
-        //fr will now be an array of statements
-        console.log("Field Rule ", fr);
         ruleCount++;
 
       }
+      self.$el.find('.btn-add-condition').hide().last().show();
+      self.$el.find('.btn-add-rule').hide().last().show();
       self.delegateEvents();
     }
   }
-
-
-
 });
