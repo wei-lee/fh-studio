@@ -81,11 +81,11 @@
     {{/each}}
     </select>
     <input type="text" name="checkedValue" placeholder="checked value" />
-    <button type="button" class="btn btn-small btn-add-condition" data-rulenum="{{ruleNum}}" data-conditionnum="{{condNum}}"  ><i data-rulenum="{{ruleNum}}" data-conditionnum="{{condNum}}" class="icon-plus"></i>  </button>
-    <button type="button" class="btn btn-small btn-remove-condition" data-rulenum="{{ruleNum}}" data-conditionnum="{{condNum}}" ><i data-rulenum="{{ruleNum}}" data-conditionnum="{{condNum}}" class="icon-minus"></i>  </button>
+    <button type="button" class="btn btn-small btn-add-condition" data-placement="right" data-toggle="tooltip" data-original-title="click to add a new condition to this rule" data-rulenum="{{ruleNum}}" data-conditionnum="{{condNum}}"  ><i data-rulenum="{{ruleNum}}" data-conditionnum="{{condNum}}" class="icon-plus"></i>  </button>
+    <button type="button" class="btn btn-small btn-remove-condition"  data-placement="right" data-toggle="tooltip" data-original-title="click to remove this condition" data-rulenum="{{ruleNum}}" data-conditionnum="{{condNum}}" ><i data-rulenum="{{ruleNum}}" data-conditionnum="{{condNum}}" class="icon-minus"></i>  </button>
 
-    <button type="button" data-ruleid="{{ruleId}}"   style="margin-left:20px;" class="btn btn-large btn-primary btn-add-rule"><i data-rulenum="{{ruleNum}}" class="icon-plus"></i>  </button>
-    <button type="button" data-ruleid="{{ruleId}}"  data-rulenum="{{ruleNum}}" class="btn btn-large btn-primary btn-remove-rule"><i data-rulenum="{{ruleNum}}" class="icon-minus"></i>  </button>
+    <button type="button" data-ruleid="{{ruleId}}" data-placement="right" data-toggle="tooltip" data-original-title="click to add a new rule"   style="margin-left:20px;" class="btn btn-large btn-primary btn-add-rule"><i data-rulenum="{{ruleNum}}" class="icon-plus"></i>  </button>
+    <button type="button" data-ruleid="{{ruleId}}"  data-rulenum="{{ruleNum}}" data-placement="right" data-toggle="tooltip" data-original-title="click to remove this rule" class="btn btn-large btn-primary btn-remove-rule"><i data-rulenum="{{ruleNum}}" class="icon-minus"></i>  </button>
 </script>
 
 <script id="ruleResult" type="text/x-handlebars-template">

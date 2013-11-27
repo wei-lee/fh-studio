@@ -31,6 +31,9 @@ App.View.FormFieldRules = App.View.Rules.extend({
     this.$el.append(self.templates.$rulesTabs({"rulesHeading":"Show or hide fields based on these rules:"}));
     this.collection = new App.Collection.FieldRules(this.fieldRules);
     self.renderExistingRules(this.collection, "field", this.collection);
+    this.$el.find('.btn-small').tooltip();
+    this.$el.find('.btn-large').tooltip();
+
     return this;
   },
 
