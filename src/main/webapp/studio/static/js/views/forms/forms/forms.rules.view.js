@@ -58,9 +58,7 @@ App.View.Rules = App.View.Forms.extend({
       for(var p=0; p < pageFields.length; p++){
         var fieldType = pageFields[p].type.trim();
         var repeating = pageFields[p].repeating;
-        console.log("pagefield ", pageFields[p], "is repeating ", repeating);
         if(rules[fieldType] && this.EXCLUDED_FIELD_TYPES.indexOf(fieldType) == -1 && ! repeating){
-          console.log("rules for this field type", rules[fieldType]);
           pageFields[p].rules = this.FIELD_RULES[fieldType];
           this.fields.push(pageFields[p]);
         }
@@ -86,6 +84,8 @@ App.View.Rules = App.View.Forms.extend({
 
   removeRule: function (e) {
     var self = this;
+    this.$el.find('.btn-small').tooltip('hide');
+    this.$el.find('.btn-large').tooltip('hide');
     var ruleNumber = $(e.target).data("rulenum");
     var form = self.$el.find('#rule' + ruleNumber);
     var container = form.parent('.formRuleContainer');
@@ -101,11 +101,11 @@ App.View.Rules = App.View.Forms.extend({
 
         }});
     }
+
     return false;
   },
 
   createCondition : function (e){
-    console.log("called createCondition");
     var self=this;
     var ruleCount =  self.$el.find('.rulesForm:visible').length;
     var formId = $(e.target).data("rulenum");
@@ -113,9 +113,6 @@ App.View.Rules = App.View.Forms.extend({
     var container = form.parent('.formRuleContainer');
     var ruleid = form.data("ruleid");
     var condNum = container.find('.rulesFieldName:visible').length;
-    console.log("condition number ", condNum, "rule count ", ruleCount, "ruleform id ", formId);
-
-    console.log(container);
     container.find('.condition').show().append(this.templates.$addedRuleCondition());
     //if there are previous conditions set the select to the same value
     var conditionalSelects = container.find('select.conditional');
@@ -146,10 +143,6 @@ App.View.Rules = App.View.Forms.extend({
         }
       });
     });
-    console.log("delegating events");
-    //self.delegateEvents();
-
-
   },
 
 
@@ -256,19 +249,21 @@ App.View.Rules = App.View.Forms.extend({
       for (var i = 0; i < conditionals.length; i++) {
         html += "<option value='" + conditionals[i] + "'>" + conditionals[i] + "</option>";
       }
-      console.log("html ", html);
       rulesSelect.append(html);
     }
   },
 
   removeCondition: function (e) {
 
+    this.$el.find('.btn-small').tooltip('hide');
+    this.$el.find('.btn-large').tooltip('hide');
     var condId = $(e.target).data("conditionnum");
     var container = this.$el.find('#cond' + condId).parent('.conditioncontainer');
     var ruleContainer = container.parent().prev('.ruleDefintionContainer');
     ruleContainer.find('.btn-add-condition').last().show();
     container.remove();
     this.delegateEvents();
+
   },
 
 
@@ -349,13 +344,6 @@ App.View.Rules = App.View.Forms.extend({
           var condNum = container.find('.rulesFieldName').length;
           condNum++;
           form.find('div.condition').show().append(this.templates.$addedRuleCondition());
-  //          form.find('select.conditional').last().find('option').each(function () {
-  //            if ($(this).val() == rule.ruleConditionalOperator) {
-  //              $(this).attr("selected", true);
-  //            } else {
-  //              $(this).attr("selected", false);
-  //            }
-  //          });
 
           form.find('.conditioncontainer').last().append("<div style=\"margin-top:6px;\" class=\"ruleDefintionContainer\" id='cond" + condNum + "'>" + this.templates.$ruleDefinitions({"fields": this.fields, "formType": "field", "formId": self.form.get("_id"), ruleNum: ruleCount, "condNum": condNum}) + " </div>");
           setFieldConditional(fr[k]);
@@ -369,12 +357,10 @@ App.View.Rules = App.View.Forms.extend({
          console.log("looking at visible rulesForm ", this);
          $(this).find('.btn-add-condition').hide().last().show();
          $(this).find('.btn-remove-condition').first().hide();
-         $(this).find('.btn-add-rule').hide().last().show();
+         $(this).find('.btn-add-rule').hide().first().show();
          $(this).find('.btn-remove-rule').hide().first().show();
       });
-//      self.$el.find('.btn-add-condition').hide().last().show();
-//      self.$el.find('.btn-remove-condition').first().hide();
-//      self.$el.find('.btn-add-rule').hide().last().show();
+
       self.$el.find('select.conditional option').each(function () {
         if ($(this).val() == rule.ruleConditionalOperator) {
           $(this).attr("selected", true);
@@ -387,10 +373,8 @@ App.View.Rules = App.View.Forms.extend({
   },
 
   selectConditionalChange : function (e){
-   console.log("select conditional change" , $(e.target).val());
     var changedVal = $(e.target).val();
     this.$el.find('select.conditional:visible option').each(function (){
-      console.log("checking option ", $(this));
       if ($(this).val() == changedVal) {
         $(this).attr("selected", true);
       } else {
