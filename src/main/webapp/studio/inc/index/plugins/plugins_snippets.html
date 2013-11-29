@@ -1,3 +1,193 @@
+<script type="text/snippet" id="snippet-aws_directconnect">
+/*
+ Displays all connections in this region.
+ */
+exports.directconnect = function(params, cb){
+  var AWS = require('aws-sdk');
+  var directconnect = new AWS.DirectConnect();
+  directconnect.describeConnections(params, function (err, data) {
+    if (err) {
+      console.log(err); // an error occurred
+    } else {
+      console.log(data); // successful response
+    }
+  });
+};
+</script>
+
+<script type="text/snippet" id="snippet-aws_ec2">
+/*
+  Calls the DescribeAccountAttributes API operation.
+ */
+exports.ec2 = function(params, cb){
+  var AWS = require('aws-sdk');
+  var ec2 = new AWS.EC2();
+  ec2.describeAccountAttributes(params, function (err, data) {
+    if (err) {
+      console.log(err); // an error occurred
+    } else {
+      console.log(data); // successful response
+    }
+  });
+};
+</script>
+
+<script type="text/snippet" id="snippet-aws_cloudfront">
+/*
+  List distributions.
+ */
+exports.cloudfront = function(params, cb){
+  var AWS = require('aws-sdk');
+  var cloudfront = new AWS.CloudFront();
+  cloudfront.listDistributions(params, function (err, data) {
+    if (err) {
+      console.log(err); // an error occurred
+    } else {
+      console.log(data); // successful response
+    }
+  });
+};
+</script>
+
+<script type="text/snippet" id="snippet-aws_glacier">
+/*
+  This operation lists all vaults owned by the calling user's account. The list returned in the response is ASCII-sorted by vault name.
+ */
+exports.glacier = function(params, cb){
+  var AWS = require('aws-sdk');
+  var glacier = new AWS.Glacier();
+  glacier.listVaults(params, function (err, data) {
+    if (err) {
+      console.log(err); // an error occurred
+    } else {
+      console.log(data); // successful response
+    }
+  });
+};
+</script>
+
+<script type="text/snippet" id="snippet-aws_s3">
+/*
+  Returns a list of all buckets owned by the authenticated sender of the request.
+ */
+exports.s3 = function(params, cb){
+  var AWS = require('aws-sdk');
+  var s3 = new AWS.S3();
+  s3.listBuckets(params, function (err, data) {
+    if (err) {
+      console.log(err); // an error occurred
+    } else {
+      console.log(data); // successful response
+    }
+  });
+};
+</script>
+
+<script type="text/snippet" id="snippet-aws_dynamodb">
+/*
+  Returns an array of all the tables associated with the current account and endpoint.
+ */
+exports.dynamodb = function(params, cb){
+  var AWS = require('aws-sdk');
+  var dynamodb = new AWS.DynamoDB();
+  dynamodb.listTables(params, function (err, data) {
+    if (err) {
+      console.log(err); // an error occurred
+    } else {
+      console.log(data); // successful response
+    }
+  });
+};
+</script>
+
+<script type="text/snippet" id="snippet-aws_rds">
+/*
+  Returns a list of the available DB engines
+ */
+exports.rds = function(params, cb){
+  var AWS = require('aws-sdk');
+  var rds = new AWS.RDS();
+  rds.describeDBEngineVersions(params, function (err, data) {
+    if (err) {
+      console.log(err); // an error occurred
+    } else {
+      console.log(data); // successful response
+    }
+  });
+};
+</script>
+
+<script type="text/snippet" id="snippet-aws_ses">
+/*
+  Returns a list containing all of the identities (email addresses and domains) for a specific AWS Account, regardless of verification status.
+ */
+exports.ses = function(params, cb){
+  var AWS = require('aws-sdk');
+  var ses = new AWS.SES();
+  ses.listIdentities(params, function (err, data) {
+    if (err) {
+      console.log(err); // an error occurred
+    } else {
+      console.log(data); // successful response
+    }
+  });
+};
+</script>
+
+<script type="text/snippet" id="snippet-aws_sns">
+/*
+  The ListPlatformApplications action lists the platform application objects for the supported push notification services, such as APNS and GCM
+ */
+exports.sns = function(params, cb){
+  var AWS = require('aws-sdk');
+  var sns = new AWS.SNS();
+  sns.listPlatformApplications(params, function (err, data) {
+    if (err) {
+      console.log(err); // an error occurred
+    } else {
+      console.log(data); // successful response
+    }
+  });
+};
+</script>
+
+<script type="text/snippet" id="snippet-aws_sqs">
+/*
+  Returns a list of your queues
+ */
+exports.sqs = function(params, cb){
+  var AWS = require('aws-sdk');
+  var sqs = new AWS.SQS();
+  sqs.listQueues(params, function (err, data) {
+    if (err) {
+      console.log(err); // an error occurred
+    } else {
+      console.log(data); // successful response
+    }
+  });
+};
+</script>
+
+<script type="text/snippet" id="snippet-aws">
+/*
+  Using the S3 class in the aws-sdk module, create a new bucket and put an object in it
+ */
+exports.aws = function(params, cb){
+  var AWS = require('aws-sdk');
+  var s3 = new AWS.S3();
+
+  s3.createBucket({Bucket: 'myBucket'}, function() {
+    var params = {Bucket: 'myBucket', Key: 'myKey', Body: 'Hello!'};
+    s3.putObject(params, function(err, data) {
+      if (err)
+        console.log(err)
+      else
+        console.log("Successfully uploaded data to myBucket/myKey");
+    });
+  });
+};
+</script>
+
 <script type="text/snippet" id="snippet-mysql">
 /*
  Executes a MySQL Query
