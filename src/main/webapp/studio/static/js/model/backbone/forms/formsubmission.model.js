@@ -14,7 +14,7 @@ App.Collection.FormSubmissions = App.Collection.FormBase.extend({
     console.log("FormSubmissions opts " , options);
 
     if(options["formid"]) this.formId = options["formid"];
-    if(options["appid"]) this.appId = options["appid"];
+    if(options["appId"]) this.appId = options["appId"];
   },
   model: App.Model.FormSubmission,
   urlRead: '/api/v2/forms/submission',
