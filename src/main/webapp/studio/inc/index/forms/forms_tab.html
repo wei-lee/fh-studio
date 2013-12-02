@@ -441,7 +441,7 @@
 
     <!--TODO move styes to css sheet -->
 
-    <select class="pull-left hide formSelect" style="margin-left:6px; width:190px;">
+    <select class="pull-left hide formSelect" style="margin-left:6px; margin-right:6px; width:190px;">
         <option value="" >Select an Form</option>
         {{#each forms}}
             <option value="{{_id}}" >{{name}}</option>
@@ -450,7 +450,7 @@
 </script>
 
 <script type="text/x-handlebars-template" id="appSelect">
-    <select class="pull-left appSelect" style="margin-left:6px; width:190px;">
+    <select class="pull-left appSelect" style="margin-right:6px; width:190px;">
         <option value="" >Select an App</option>
         {{#each apps}}
         <option value="{{id}}" >{{title}}</option>

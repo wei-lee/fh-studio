@@ -83,6 +83,7 @@ App.Collection.FormSubmissions = App.Collection.FormBase.extend({
           }
         },
         error: function(xhr, status){
+          App.View.Forms.prototype.message('failed to update ' + status);
           options.error(arguments);
         }
       });

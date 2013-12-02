@@ -113,6 +113,7 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
       },
       "error":function (err){
         console.log("error apps using form ", err);
+        App.View.Forms.prototype.message('failed to retrieve submissions');
       }});
     });
   },
