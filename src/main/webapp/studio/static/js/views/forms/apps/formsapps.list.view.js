@@ -36,7 +36,7 @@ App.View.FormAppsList = App.View.FormListBase.extend({
       "mDataProp": this.CONSTANTS.FORMSAPP.FORMS + ".length"
     },{
       "sTitle": 'Theme',
-      "mDataProp": this.CONSTANTS.FORMSAPP.UPDATED
+      "mDataProp": this.CONSTANTS.FORMSAPP.THEMENAME
     }];
 
     return self.constructor.__super__.initialize.apply(self, arguments);
@@ -63,6 +63,7 @@ App.View.FormAppsList = App.View.FormListBase.extend({
     this.$previewEl.show();
   },
   onAddExisting: function(){
+    debugger;
     var form = new App.View.FormAppsCreateEdit({ mode : 'create' });
   }
 });

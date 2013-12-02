@@ -19,7 +19,6 @@ App.Model.FormApp = App.Model.FormBase.extend({
       success: function(res){
         if (res && res.forms) {
           if ($.isFunction(options.success)) {
-            self.set('forms', res.forms);
             return options.success(self);
           }
         } else {
@@ -40,19 +39,26 @@ App.Model.FormApp = App.Model.FormBase.extend({
   },
   update : function(method, model, options){
     var self = this,
+    constObj = App.View.Forms.prototype.CONSTANTS.FORMSAPP,
     url = this.fetchURL.replace('{{id}}', model.get('_id')),
-    forms = model.get('forms');
+    updateObject = {
+      title : model.get(constObj.NAME),
+      forms : model.get(constObj.FORMS),
+      theme : model.get(constObj.THEME)
+    };
+
     $.ajax({
       type: 'POST',
       url: url,
-      data: JSON.stringify(forms),
+      data: JSON.stringify(updateObject),
       contentType : "application/json",
       cache: true,
       success: function(res){
-        if (res && res.forms) {
+        if (res) {
           if ($.isFunction(options.success)) {
-            self.set('forms', res.forms);
-            return options.success(self);
+            var setRes = (res.length) ? res[0] : res; //TODO Shouldn't need this, API returns an array
+            self.set(setRes);
+            return options.success(self.toJSON());
           }
         } else {
           if ($.isFunction(options.error)) {
@@ -64,14 +70,17 @@ App.Model.FormApp = App.Model.FormBase.extend({
         options.error(arguments);
       }
     });
+  },
+  create : function(){
+    this.update.apply(this, arguments);
   }
 
 });
 
 App.Collection.FormApps = App.Collection.FormBase.extend({
-  pluralName : 'apps',
+  pluralName : false,
   initialize: function() {},
   model: App.Model.FormApp,
-  url: '/studio/static/js/model/backbone/mocks/forms/formapps.json',
+  url: 'http://testing.feedhenry.me:8181/api/v2/forms/apps',
   urlUpdate: '/api/v2/forms/form'
 });

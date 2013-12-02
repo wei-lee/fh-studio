@@ -58,8 +58,9 @@ App.View.FormCreateClone = App.View.Modal.extend({
     }
 
     if (this.singleId === "formsapp"){
-      var formsApp = new App.View.FormAppsCreateEdit( { mode : this.options.mode } );
-      this.$el.find('.modal-body').append(formsApp.render().$el);
+      // Delegate entire view to FormsAppsCreateEdit view, and it's own save function
+      this.formsApp = new App.View.FormAppsCreateEdit( { mode : this.options.mode, collection : this.collection } );
+      this.$el.find('.modal-body').append(this.formsApp.render().$el);
     }
 
     return this;
@@ -68,6 +69,19 @@ App.View.FormCreateClone = App.View.Modal.extend({
     var self = this,
     formEl = this.$el.find('form'),
     vals = {};
+
+    if (this.singleId === "formsapp"){
+      // Delegate save to FormsAppsCreateEdit view
+      var options = {
+        success : function(model){
+          self.collection.add(model.toJSON());
+          self.collection.trigger('reset');
+        }
+      };
+      return this.formsApp.onFormSave.apply(this.formsApp, [options]);
+    }
+
+
 
     $($(formEl).serializeArray()).each(function(idx, el){
       vals[el.name] = el.value;

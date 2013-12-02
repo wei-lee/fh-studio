@@ -62,10 +62,17 @@ App.Collection.FormBase = Backbone.Collection.extend({
         url: url,
         cache: true,
         success: function(res){
-          if (res && res[self.pluralName]) {
+          if ((res && res[self.pluralName]) || self.pluralName === false) {
             self.loaded = true;
             if ($.isFunction(options.success)) {
-              options.success(res[self.pluralName], options);
+              var ret = (self.pluralName) ? res[self.pluralName] : res;
+              //TODO - Shouldn't need this, insconsistant APIs
+              _.each(ret, function(item){
+                if (item.hasOwnProperty('id')){
+                  item._id = item.id;
+                }
+              });
+              options.success(ret, options);
             }
           } else {
             if ($.isFunction(options.error)) {
