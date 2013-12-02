@@ -67,6 +67,11 @@ App.View.FormsController = Backbone.View.extend({
   },
   onSubmissions : function(){
     this.trigger('menuchange', 'submissions');
+    if (this.views.submissions){
+      this.views.submissions.$el.remove();
+    }
+    this.views.submissions = new App.View.FormSubmissionsTabs({"forms": this.views.forms.collection});
+    this.$el.append(this.views.submissions.render().$el);
   },
   /*
     Edit Form view switching
@@ -95,7 +100,7 @@ App.View.FormsController = Backbone.View.extend({
 
   },
   onViewFormSubmissions : function(e){
-    //TODO
+    console.log("view submissions");
   },
 
   onViewAppsUsingThisForm : function(e){

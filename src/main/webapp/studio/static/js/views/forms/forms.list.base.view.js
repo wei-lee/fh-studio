@@ -61,6 +61,9 @@ App.View.FormListBase = App.View.Forms.extend({
     var self = this,
     data = this.collection.toJSON();
 
+
+    console.log("renderList ",data);
+
     this.table = new App.View.DataTable({
       aaData : data,
       "fnRowCallback": function(nTr, sData, oData, iRow, iCol) {
@@ -89,6 +92,24 @@ App.View.FormListBase = App.View.Forms.extend({
     this.$el.append(this.selectMessage.render().$el);
     return this;
   },
+
+  getDataForRow : function (e){
+    var self = this,
+      el = e.target,
+      nodeName = el.nodeName.toLowerCase();
+    if (nodeName === 'th'){
+      return;
+    }
+    el = (nodeName==="tr") ? $(el) : $($(el).parents('tr'));
+    this.$el.find('tr').removeClass('info');
+
+    el.addClass('info');
+
+    this.index = el.data('index');
+    var model = this.collection.at(this.index);
+    return model;
+  },
+
   onRowSelected : function(e){
     var self = this,
     el = e.target,
