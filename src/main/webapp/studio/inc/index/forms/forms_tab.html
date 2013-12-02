@@ -16,7 +16,7 @@
   <div id="forms_dashboard_container"></div>
   <div id="forms_setup_container"></div>
 </script>
-
+<!-- field rule templates --------->
 <script id="formsRulesTab" type="text/x-handlebars-template">
     <div class="span10 well formsContainer" style="margin-left:10px; ">
     <ul class="nav nav-tabs">
@@ -38,7 +38,7 @@
     </div>
     </div>
 </script>
-<!-- field rule templates --------->
+
 
 <script id="fieldRuleTemplate" type="text/x-handlebars-template">
     <div class="row-fluid formRuleContainer">
@@ -148,6 +148,8 @@
 <script id="formsListBaseAdd" type="text/x-handlebars-template">
     <a data-mode="create" class="btn pull-right btn-success btn-add-{{ cls }}" href="#"><i class="icon icon-plus"></i> Add {{ name }}</a>
 </script>
+
+
 
 <script id="formsListMenu" type="text/x-handlebars-template">
   <ul class="nav nav-pills nav-stacked well">
@@ -411,5 +413,44 @@
 
 <script id="addToExistingApp" type="text/x-handlebars-template">
   <a data-mode="existing" class="btn pull-right btn-success btn-add-existing" href="#"><i class="icon icon-plus"></i> Add Forms to Existing App</a>
+</script>
+
+<!-- form submission templates -->
+
+<script id="formsSubmissionsTab" type="text/x-handlebars-template">
+    <div class="span10 well submissionsContainer" style="margin-left:10px; ">
+        <ul class="nav nav-tabs submissionTabs">
+            <li class="active" >
+                <a href="#" id="recentSubmissions" >Recent Submissions</a>
+            </li>
+            <li >
+                <a href="#" id="perFormSubmissions" >Per Form Submissions</a>
+            </li>
+            <li><a href="#" id="perAppSubmissions">Per App Submissions</a></li>
+        </ul>
+
+        <div class="span12 row-fluid submissions">
+            <p>Table goes here</p>
+        </div>
+    </div>
+</script>
+
+<script id="submissionListExport" type="text/x-handlebars-template">
+    <a data-mode="create" class="btn pull-right btn-primary btn-export" href="#" ><i class="icon icon-download"></i> Export Submissions</a>
+    <a data-mode="create" class="btn pull-right btn-warning btn-add-submission hide" style="margin-right:6px;" href="#"><i class="icon icon-upload"></i> Add Submissions</a>
+
+    <!--TODO move styes to css sheet -->
+    <select class="pull-right hide appSelect" style="margin-right:6px; width:190px;">
+        <option value="" >Select an App</option>
+        {{#each forms}}
+        <option value="{{_id}}" >{{name}}</option>
+        {{/each}}
+    </select>
+    <select class="pull-right hide formSelect" style="margin-right:6px; width:190px;">
+        <option value="" >Select an Form</option>
+        {{#each forms}}
+            <option value="{{_id}}" >{{name}}</option>
+        {{/each}}
+    </select>
 </script>
 

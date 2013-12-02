@@ -49,42 +49,6 @@ App.Collection.FieldRules = Backbone.Collection.extend({
       self.trigger("sync");
     }
   },
-  create : function(method, model, options){
-    //TODO
-    this.trigger('reset');
-    return options.success(model);
-  },
-  del : function(method, model, options){
-    //TODO
-    return options.success(model);
-  },
-  trimInternalIds : function(pages) {
-    var self = this;
-
-
-
-    _.each(pages, function(p){
-      if (p._id && p._id.length < 24){
-        // If it's some arbitrary internal ID we assigned, not a node ObjectID, delete it before pushing
-        delete p._id;
-        delete p.cid;
-      }
-
-      // Cater field lists by recursing - should only happen once..
-      if (p.fields){
-        _.each(p.fields, function(f){
-          if (f._id && f._id.length < 24){
-            // If it's some arbitrary internal ID we assigned, not a node ObjectID, delete it before pushing
-            delete f._id;
-          }
-          delete f.cid;
-        });
-      }
-
-    });
-
-    return pages;
-  },
   update : function(method, model, options){
     var self = this;
     var url = self.urlUpdate;
@@ -123,17 +87,5 @@ App.Collection.FieldRules = Backbone.Collection.extend({
         }
       }
     });
-  },
-  remove : function(model, options){
-    Backbone.Collection.prototype.remove.apply(this, arguments);
-//    var self = this,
-//      opts = {
-//        success : function(){
-//          self.trigger('reset');
-//          options.success.apply(self, arguments);
-//        }, error : options.error
-//      };
-    //this.sync('del', model, opts);
-
   }
 });

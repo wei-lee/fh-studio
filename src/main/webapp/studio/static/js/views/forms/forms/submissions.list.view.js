@@ -1,0 +1,150 @@
+var App = App || {};
+App.View = App.View || {};
+
+App.View.SubmissionList = App.View.FormListBase.extend({
+  templates : {
+    'formsListBaseAdd' : '#formsListBaseAdd',
+    'fullpageLoading' : '#fullpageLoading',
+    'addToExistingApp' : '#addToExistingApp',
+    'submissionListExport' : '#submissionListExport'
+  },
+  events : {
+    'click tr' : 'onRowSelected',
+    'click .btn-add-formsapp' : 'onCreate',
+    'click .btn-add-existing' : 'onCreate',
+    'click .btn-add-existing-app' : 'onAddExisting',
+    'click .btn-export':'exportSubmissionData'
+  },
+  initialize: function(){
+    var self = this;
+    this.collection = new App.Collection.FormSubmissions([],{"formid":this.options.formId,"appId":this.options.appId});
+    this.formsCol =  this.options.forms;
+
+    this.pluralTitle = 'Forms Submissions';
+    this.singleTitle = 'Forms Submission';
+    this.columns = [{
+      "sTitle": 'Form Name',
+      "mDataProp": "appCloudName"
+    },{
+      "sTitle": 'App Name',
+      "mDataProp": "appCloudName"
+    },{
+      "sTitle": 'App Env',
+      "mDataProp": "appEnvironment"
+    },{
+      "sTitle": 'Date/Time Received',
+      "mDataProp": "deviceFormTimestamp"
+    },{
+      "sTitle": 'Form Field 1',
+      "mDataProp": "field1val"
+    },
+    {
+      "sTitle": 'Form Field 2',
+      "mDataProp": "field2val"
+    },{
+      "sTitle": 'Form Field 3',
+      "mDataProp": "field3val"
+    },{
+        "bVisible":false,
+        "mDataProp": "_id"
+      }
+   ];
+
+    this.on('rendered', function (){
+     console.log("got rendered");
+      var formSelect = self.$el.find('select.formSelect');
+      console.log("show select" , formSelect);
+    });
+
+    return self.constructor.__super__.initialize.apply(self, arguments);
+  },
+  render : function(){
+    console.log("render submission list");
+    App.View.FormListBase.prototype.render.apply(this, arguments);
+    this.$el.prepend(this.templates.$submissionListExport({"forms":this.formsCol.toJSON()}));
+    this.$el.find('.btn-success').remove();
+    if("singleForm" == this.options.listType){
+      console.log("show select")
+      var formSelect = this.$el.find('select.formSelect');
+      console.log("show select" , formSelect);
+      formSelect.show();
+      this.$el.find('.btn-add-submission').show();
+    }else if ("appAndForm" == this.options.listType){
+      console.log("show select")
+      var formSelect = this.$el.find('select.formSelect');
+      console.log("show select" , formSelect);
+      formSelect.show();
+      var appSelect = this.$el.find('select.appSelect').show();
+      this.$el.find('.btn-add-submission').show();
+    }
+    return this.renderPreview();
+  },
+
+  renderList : function(){
+
+    this.$el.append(this.templates.$formsListBaseAdd( { name : this.singleTitle.toLowerCase(), cls : this.singleId } ));
+    var self = this,
+      data = this.collection.toJSON();
+
+    console.log("renderList sub ",self.options);
+
+    this.table = new App.View.DataTable({
+      aaData : data,
+      "fnRowCallback": function(nTr, sData, oData, iRow, iCol) {
+        $(nTr).attr('data-index', iRow).attr('data-hash', sData.Hash).attr('data-_id', sData._id);
+      },
+      "aaSorting" : [],
+      "aoColumns": this.columns,
+      "bAutoWidth": false,
+      "sPaginationType": 'bootstrap',
+      "sDom": "<'row-fluid'<'span4'f>r>t<'row-fluid'<'pull-left'i><'pull-right'p>>",
+      "bLengthChange": false,
+      "iDisplayLength": 5,
+      "bInfo": true,
+      "oLanguage" : {
+        "sEmptyTable" : "No " + this.pluralTitle.toLowerCase() + " found"
+      }
+    });
+    this.table.render();
+    this.table.$el.find('table').removeClass('table-striped');
+    this.$el.append(this.table.$el);
+
+    this.$el.append('<br />');
+
+    // Add in the view form view
+    this.selectMessage = new App.View.FullPageMessageView({ message : 'Select a ' + this.singleTitle.toLowerCase() + ' above to preview & manage', button : false });
+    this.$el.append(this.selectMessage.render().$el);
+
+    return this;
+  },
+
+  renderPreview : function(){
+    this.$previewEl = $('<div class="app" />');
+    this.$el.append(this.$previewEl);
+    this.$previewEl.hide();
+
+    // Move the loading to the bottom of this element's dom
+    this.loading.remove();
+    this.$el.append(this.loading);
+    return this;
+  },
+
+  exportSubmissionData : function (){
+    console.log("export submision data");
+  },
+
+  onRowSelected : function (e){
+
+    var model = this.getDataForRow(e);
+    console.log("model from table ", model);
+  },
+
+  updatePreview : function(updatedModel){
+    var form = new App.View.FormAppsCreateEdit({ model : updatedModel, mode : 'update' });
+    this.$previewEl.html(form.render().$el);
+    this.$previewEl.show();
+  },
+  onAddExisting: function(){
+    var form = new App.View.FormAppsCreateEdit({ mode : 'create' });
+  }
+});
