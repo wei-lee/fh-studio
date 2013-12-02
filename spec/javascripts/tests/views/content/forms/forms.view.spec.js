@@ -6,10 +6,11 @@ describe("test forms list", function(){
     themesList = getJSONFixture("forms/themes.json"),
     appsList = getJSONFixture("forms/formapps.json");
     loadFixtures('../common.html','index/forms/forms_tab.html');
-    jasmine.Clock.useMock();
 
     App.Model.FormBase.prototype.fetch = function(options){
+      this.set(formsList.forms[0]);
       return options.success(formsList.forms[0]);
+
     };
     App.Model.FormBase.prototype.destroy = function(options){
       return options.success.apply(this, arguments);
@@ -44,14 +45,16 @@ describe("test forms list", function(){
 
     // Make sure FB starts up ok
     expect(view.$el.find('.datatable tbody tr').length).toEqual(formsLength);
+
+
+//    formsView.fb.collection.bind('reset', function(){
+//
+//
+//    });
+    view.$el.find('.datatable tbody tr').first().click();
     done();
-    // async stuff failing
-    //    formsView.fb.collection.bind('reset', function(){
-    //      debugger;
-    //      expect(formsView.$el.find('.fb-field-wrapper').length).toEqual(14);
-    //      done();
-    //    });
-    //    view.$el.find('.datatable tbody tr').first().click();
+
+
   });
 
 
@@ -89,12 +92,5 @@ describe("test forms list", function(){
     //view.$el.find('.datatable tbody tr').first().click();
 
   });
-
-//  async.it("Should allow timeouts", function(done){
-//    setTimeout(function(){
-//      done();
-//    }, 100);
-//
-//  });
 
 });
