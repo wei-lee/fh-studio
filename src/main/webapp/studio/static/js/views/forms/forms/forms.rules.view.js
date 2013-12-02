@@ -4,7 +4,7 @@ App.View = App.View || {};
 App.View.Rules = App.View.Forms.extend({
 
   FIELD_RULES: {
-    "date": ["is on", "is before", "is after"],
+    "dateTime": ["is on", "is before", "is after"],
     "select": ["is", "is not", "contains", "does not contain", "begins with", "ends with"],
     "text": ["is", "is not", "contains", "does not contain", "begins with", "ends with"],
     "emailAddress": ["is", "is not", "contains", "does not contain", "begins with", "ends with"],
@@ -15,7 +15,7 @@ App.View.Rules = App.View.Forms.extend({
   },
   //todo all the rules seem to be the same in wufoo so just have one set of rules?
   PAGE_RULES: {
-    "date": ["is on", "is before", "is after"],
+    "dateTime": ["is on", "is before", "is after"],
     "select": ["is", "is not", "contains", "does not contain", "begins with", "ends with"],
     "text": ["is", "is not", "contains", "does not contain", "begins with", "ends with"],
     "emailAddress": ["is", "is not", "contains", "does not contain", "begins with", "ends with"],

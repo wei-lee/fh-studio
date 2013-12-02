@@ -429,7 +429,7 @@
             <li><a href="#" id="perAppSubmissions">Per App Submissions</a></li>
         </ul>
 
-        <div class="span12 row-fluid submissions">
+        <div class="row-fluid submissions">
             <p>Table goes here</p>
         </div>
     </div>
@@ -440,16 +440,20 @@
     <a data-mode="create" class="btn pull-right btn-warning btn-add-submission hide" style="margin-right:6px;" href="#"><i class="icon icon-upload"></i> Add Submissions</a>
 
     <!--TODO move styes to css sheet -->
-    <select class="pull-right hide appSelect" style="margin-right:6px; width:190px;">
-        <option value="" >Select an App</option>
-        {{#each forms}}
-        <option value="{{_id}}" >{{name}}</option>
-        {{/each}}
-    </select>
-    <select class="pull-right hide formSelect" style="margin-right:6px; width:190px;">
+
+    <select class="pull-left hide formSelect" style="margin-left:6px; width:190px;">
         <option value="" >Select an Form</option>
         {{#each forms}}
             <option value="{{_id}}" >{{name}}</option>
+        {{/each}}
+    </select>
+</script>
+
+<script type="text/x-handlebars-template" id="appSelect">
+    <select class="pull-left appSelect" style="margin-left:6px; width:190px;">
+        <option value="" >Select an App</option>
+        {{#each forms}}
+        <option value="{{_id}}" >{{name}}</option>
         {{/each}}
     </select>
 </script>

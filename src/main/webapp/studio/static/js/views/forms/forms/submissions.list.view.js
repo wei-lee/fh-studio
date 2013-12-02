@@ -50,39 +50,18 @@ App.View.SubmissionList = App.View.FormListBase.extend({
       }
    ];
 
-    this.on('rendered', function (){
-     console.log("got rendered");
-      var formSelect = self.$el.find('select.formSelect');
-      console.log("show select" , formSelect);
-    });
-
     return self.constructor.__super__.initialize.apply(self, arguments);
   },
   render : function(){
-    console.log("render submission list");
     App.View.FormListBase.prototype.render.apply(this, arguments);
-    this.$el.prepend(this.templates.$submissionListExport({"forms":this.formsCol.toJSON()}));
-    this.$el.find('.btn-success').remove();
-    if("singleForm" == this.options.listType){
-      console.log("show select")
-      var formSelect = this.$el.find('select.formSelect');
-      console.log("show select" , formSelect);
-      formSelect.show();
-      this.$el.find('.btn-add-submission').show();
-    }else if ("appAndForm" == this.options.listType){
-      console.log("show select")
-      var formSelect = this.$el.find('select.formSelect');
-      console.log("show select" , formSelect);
-      formSelect.show();
-      var appSelect = this.$el.find('select.appSelect').show();
-      this.$el.find('.btn-add-submission').show();
-    }
+
+
     return this.renderPreview();
   },
 
   renderList : function(){
 
-    this.$el.append(this.templates.$formsListBaseAdd( { name : this.singleTitle.toLowerCase(), cls : this.singleId } ));
+   // this.$el.append(this.templates.$formsListBaseAdd( { name : this.singleTitle.toLowerCase(), cls : this.singleId } ));
     var self = this,
       data = this.collection.toJSON();
 
@@ -114,6 +93,9 @@ App.View.SubmissionList = App.View.FormListBase.extend({
     // Add in the view form view
     this.selectMessage = new App.View.FullPageMessageView({ message : 'Select a ' + this.singleTitle.toLowerCase() + ' above to preview & manage', button : false });
     this.$el.append(this.selectMessage.render().$el);
+
+    //if("singleForm" == this.options.listType)
+    $('.submissionslist').removeClass("span10").addClass("row-fluid");
 
     return this;
   },

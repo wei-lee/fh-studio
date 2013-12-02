@@ -9,7 +9,9 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
   },
 
   templates : {
-    'formsSubmissionsTab':'#formsSubmissionsTab'
+    'formsSubmissionsTab':'#formsSubmissionsTab',
+    'submissionListExport':'#submissionListExport',
+    'appSelect':'#appSelect'
   },
 
   initialize :  function (){
@@ -18,10 +20,10 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
   },
 
   render : function (){
-    var jsonForms = this.options.forms.toJSON();
+    this.jsonForms = this.options.forms.toJSON();
     console.log("RENDER SUBMISSIONS TAB");
     this.$el.empty();
-    this.$el.html(this.templates.$formsSubmissionsTab({forms:jsonForms}));
+    this.$el.html(this.templates.$formsSubmissionsTab({forms:this.jsonForms}));
     this.recentSubmissions();
 
     return this;
@@ -47,21 +49,60 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
     if(this.submissions){
       this.submissions.remove();
     }
-    this.submissions = new App.View.SubmissionList({"forms":this.options.forms, "listType":"singleForm"});
-    this.$el.find('.submissions').empty().append(this.submissions.render().$el);
+
+    var submissionsContainer = this.$el.find('.submissions');
+    submissionsContainer.empty();//.append(this.submissions.render().$el);
+    submissionsContainer.prepend(this.templates.$submissionListExport({"forms":this.jsonForms}));
+    this.$el.find('.btn-success').remove();
+    var formSelect = this.$el.find('select.formSelect');
+    formSelect.show();
+    this.$el.find('.btn-add-submission').show();
+    formSelect.on('change', function(e){
+      var selectTarget = $(e.target);
+      submissionsContainer.find('.submissionslist').empty();
+      self.submissions = new App.View.SubmissionList({"forms":this.options.forms, "listType":"singleForm","formId":selectTarget.val()});
+      submissionsContainer.append(self.submissions.render().$el);
+    });
+
 
   },
 
   perAppSubmissions : function (e){
+    console.log("PER FORM SUBMISSIONS");
     var self = this;
     self.switchActive(e);
-    console.log("perAppSubmissions");
+
     if(this.submissions){
       this.submissions.remove();
     }
-    this.submissions = new App.View.SubmissionList({"forms":this.options.forms, "listType":"appAndForm"});
-    this.$el.find('.submissions').empty().append(this.submissions.render().$el);
 
+    var submissionsContainer = this.$el.find('.submissions');
+    submissionsContainer.empty();//.append(this.submissions.render().$el);
+    submissionsContainer.prepend(this.templates.$submissionListExport({"forms":this.jsonForms}));
+    this.$el.find('.btn-success').remove();
+    var formSelect = this.$el.find('select.formSelect');
+    formSelect.show();
+    this.$el.find('.btn-add-submission').show();
+
+    formSelect.unbind("change").on('change', function(e){
+      var selectTarget = $(e.target);
+//      //get apps for form and show apps dropdown
+      submissionsContainer.find('.submissionslist').empty();
+      submissionsContainer.append(self.templates.$appSelect({"forms":self.jsonForms}));
+      var appsUsingFormColl = new App.Collection.AppsUsingThisForm({"id":selectTarget.val()});
+//
+      appsUsingFormColl.fetch({"success": function (res){
+        console.log("success apps using form ", res);
+        var appSelect = $('.appSelect').unbind("change").on("change", function (e){
+          var val= $(e.target).val();
+          self.submissions = new App.View.SubmissionList({"apps":res, "listType":"singleForm","formId":selectTarget.val(),"appId":val});
+          submissionsContainer.append(self.submissions.render().$el);
+        });
+      },
+      "error":function (err){
+        console.log("error apps using form ", err);
+      }});
+    });
   },
 
   switchActive : function (e){

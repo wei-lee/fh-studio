@@ -61,6 +61,7 @@ App.View.FormListBase = App.View.Forms.extend({
     var self = this,
     data = this.collection.toJSON();
 
+
     console.log("renderList ",data);
 
     this.table = new App.View.DataTable({
