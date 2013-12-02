@@ -415,8 +415,12 @@ Cloudenvironments.View.AppsResourceTableView = Backbone.View.extend({
         }, 
         {
           "sTitle": js_util.capitalise(this.resource),
+          "bUseRendered": false,
           "mDataProp": function(source){
-            return source[self.resource] + self.resourceModel.getUnit();
+            return source[self.resource];
+          },
+          "fnRender": function(oObj) {
+            return oObj.aData[self.resource] + self.resourceModel.getUnit();
           }
         }];
     } else {
@@ -436,23 +440,31 @@ Cloudenvironments.View.AppsResourceTableView = Backbone.View.extend({
         "mDataProp": "state"
       }, {
         "sTitle": "Memory",
-        "mDataProp": function(source){
-          return source.memory + "MB";
+        "mDataProp": "memory",
+        "bUseRendered": false,
+        "fnRender": function(oObj){
+          return oObj.aData.memory + "MB";
         }
       }, {
         "sTitle": "CPU",
-        "mDataProp": function(source){
-          return source.cpu + "%";
+        "mDataProp": "cpu",
+        "bUseRendered": false,
+        "fnRender": function(oObj){
+          return oObj.aData.cpu + "%";
         }
       }, {
         "sTitle": "Disk",
-        "mDataProp": function(source){
-          return source.disk + "MB";
+        "mDataProp": "disk",
+        "bUseRendered": false,
+        "fnRender": function(oObj){
+          return oObj.aData.disk + "MB";
         }
       }, {
         "sTitle": "Last Modified",
-        "mDataProp": function(source){
-          return moment(source.lastModified).utc().format("YYYY-MM-DD HH:mm:ss");
+        "mDataProp": "lastModified",
+        "bUseRendered": false,
+        "fnRender": function(oObj){
+          return moment(oObj.aData.lastModified).utc().format("YYYY-MM-DD HH:mm:ss");
         }
       }];
     }

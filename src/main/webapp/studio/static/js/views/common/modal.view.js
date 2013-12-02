@@ -29,7 +29,9 @@ App.View.Modal = Backbone.View.extend({
       dialog.find('#modal-cancel').remove();
     }
     this.$el.append(dialog);
-    this.$el.find('#' + this.options.id).modal();
+    this.$el.find('#' + this.options.id).modal().on('shown', function () {
+      self.$el.find('#' + self.options.id).find('input,textarea,select').filter(':visible:first').focus();
+    });
     return this;
   },
   modalOk : function(){
