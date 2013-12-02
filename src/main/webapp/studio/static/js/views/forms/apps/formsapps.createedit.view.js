@@ -16,6 +16,7 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
   initialize: function(options){
     var self = this;
     this.model = options.model;
+    this.collection = options.collection;
     this.forms = new App.Collection.Form();
     this.themes = new App.Collection.FormThemes();
     this.mode = options.mode || 'create';
@@ -109,6 +110,7 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
     if (this.mode === 'update'){
       var vals = _.pluck(this.model.get(self.CONSTANTS.FORMSAPP.FORMS), '_id');
       formsSelect.select2('val', vals);
+      themesSelect.val(this.model.get('theme')._id);
     }else{
       // A create operation - remove the save buttons
       this.$el.find('.btn-group').remove();
@@ -134,17 +136,14 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
     }
 
     this.model.set(this.CONSTANTS.FORMSAPP.FORMS, forms);
-    this.model.set(this.CONSTANTS.FORMSAPP.THEME, theme);
+    this.model.set(this.CONSTANTS.FORMSAPP.THEMENAME, theme);
     this.model.set(this.CONSTANTS.FORMSAPP.NAME, name);
 
     // We use model.save rather than our usual update on a collection - bit inconsistant..?
     this.model.save({},
     {
       success : function(){
-        if ($.isFunction(options.success)) {
-          options.success(self.model);
-        }
-        self.message('App updated successfully');
+        self.collection.fetch({reset : true});
       },
       error : function(){
         self.message('Error updating app');

@@ -17,7 +17,7 @@ App.Model.FormApp = App.Model.FormBase.extend({
       url: url,
       cache: true,
       success: function(res){
-        if (res && res.forms) {
+        if (res) {
           if ($.isFunction(options.success)) {
             return options.success(self);
           }
@@ -32,7 +32,6 @@ App.Model.FormApp = App.Model.FormBase.extend({
       }
     });
 
-    return options.success(this);
   },
   sync : function(method){
     this[method].apply(this, arguments);
@@ -44,7 +43,7 @@ App.Model.FormApp = App.Model.FormBase.extend({
     updateObject = {
       title : model.get(constObj.NAME),
       forms : model.get(constObj.FORMS),
-      theme : model.get(constObj.THEME)
+      theme : model.get(constObj.THEMENAME)
     };
 
     $.ajax({
@@ -56,8 +55,6 @@ App.Model.FormApp = App.Model.FormBase.extend({
       success: function(res){
         if (res) {
           if ($.isFunction(options.success)) {
-            var setRes = (res.length) ? res[0] : res; //TODO Shouldn't need this, API returns an array
-            self.set(setRes);
             return options.success(self.toJSON());
           }
         } else {
@@ -81,6 +78,6 @@ App.Collection.FormApps = App.Collection.FormBase.extend({
   pluralName : false,
   initialize: function() {},
   model: App.Model.FormApp,
-  url: 'http://testing.feedhenry.me:8181/api/v2/forms/apps',
+  url: '/api/v2/forms/apps',
   urlUpdate: '/api/v2/forms/form'
 });

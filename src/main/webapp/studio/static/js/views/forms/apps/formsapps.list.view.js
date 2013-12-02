@@ -58,12 +58,12 @@ App.View.FormAppsList = App.View.FormListBase.extend({
     return this;
   },
   updatePreview : function(updatedModel){
-    var form = new App.View.FormAppsCreateEdit({ model : updatedModel, mode : 'update' });
+    var form = new App.View.FormAppsCreateEdit({ model : updatedModel, mode : 'update', collection : this.collection });
     this.$previewEl.html(form.render().$el);
     this.$previewEl.show();
   },
   onAddExisting: function(){
-    debugger;
-    var form = new App.View.FormAppsCreateEdit({ mode : 'create' });
+    var form = new App.View.FormAppsCreateEdit({ mode : 'create', collection : this.collection });
+    // TODO - API?
   }
 });

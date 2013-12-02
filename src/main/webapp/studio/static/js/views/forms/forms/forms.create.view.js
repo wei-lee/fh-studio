@@ -14,8 +14,8 @@ App.View.FormCreateClone = App.View.Modal.extend({
 
 
     this.options = options = {
-      title: (options.mode==='create') ? 'Create New ' + this.singleTitle : 'Clone ' + this.singleTitle,
-      okText: (options.mode==='create') ? 'Create' : 'Clone',
+      title: (options.mode==='clone') ? 'Clone ' + this.singleTitle : 'Create New ' + this.singleTitle,
+      okText: (options.mode==='clone') ? 'Clone' : 'Create',
       ok : this.ok,
       body : body,
       collection : options.collection,
@@ -59,7 +59,7 @@ App.View.FormCreateClone = App.View.Modal.extend({
 
     if (this.singleId === "formsapp"){
       // Delegate entire view to FormsAppsCreateEdit view, and it's own save function
-      this.formsApp = new App.View.FormAppsCreateEdit( { mode : this.options.mode, collection : this.collection } );
+      this.formsApp = new App.View.FormAppsCreateEdit( { mode : this.options.mode, collection : this.options.collection } );
       this.$el.find('.modal-body').append(this.formsApp.render().$el);
     }
 
@@ -71,17 +71,8 @@ App.View.FormCreateClone = App.View.Modal.extend({
     vals = {};
 
     if (this.singleId === "formsapp"){
-      // Delegate save to FormsAppsCreateEdit view
-      var options = {
-        success : function(model){
-          self.collection.add(model.toJSON());
-          self.collection.trigger('reset');
-        }
-      };
-      return this.formsApp.onFormSave.apply(this.formsApp, [options]);
+      return this.formsApp.onFormSave.apply(this.formsApp, arguments);
     }
-
-
 
     $($(formEl).serializeArray()).each(function(idx, el){
       vals[el.name] = el.value;
