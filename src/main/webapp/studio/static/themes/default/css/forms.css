@@ -188,7 +188,6 @@ ul.apps-using-form li.text {
     display: none;
 }
 #forms_layout .app form.formsApps {
-    border: 1px solid #ddd;
     padding: 20px;
 }
 

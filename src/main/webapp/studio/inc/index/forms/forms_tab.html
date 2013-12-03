@@ -159,7 +159,7 @@
   <ul class="nav nav-pills nav-stacked well">
     <li><a class="btn-edit-form" href="#"><i class="icon-edit"></i>Edit Form</a></li>
     <li><a class="btn-edit-form-rules" href="#"><i class="icon-pencil"></i> Edit Rules</a></li>
-    <li><a class="btn-view-form-submissions" href="#"><i class="icon-envelope"></i> View Submissions</a></li>
+    <li><a class="btn-form-submissions" href="#"><i class="icon-envelope"></i> View Submissions</a></li>
     <li class="dropdown">
       <a class="dropdown-toggle"
          data-toggle="dropdown"
@@ -387,32 +387,35 @@
 </script>
 
 <script id="formsApps" type="text/x-handlebars-template">
-<form class="form-horizontal formsApps">
-  <div class="control-group">
-    <label class="control-label" for="inputFormAppName">App Name</label>
-    <div class="controls appname">
-      <input type="text" id="inputFormAppName" class="" name="name" value="{{ name }}">
+<div class="well">
+  <form class="form-horizontal formsApps span6">
+    <div class="control-group">
+      <label class="control-label" for="inputFormAppName">App Name</label>
+      <div class="controls appname">
+        <input type="text" id="inputFormAppName" class="" name="name" value="{{ name }}">
+      </div>
     </div>
-  </div>
-  <div class="control-group">
-    <label class="control-label" for="formAppTheme">App Theme</label>
-    <div class="controls">
-      <select id="formAppTheme" name="theme" class="">
-      </select>
+    <div class="control-group">
+      <label class="control-label" for="formAppTheme">App Theme</label>
+      <div class="controls">
+        <select id="formAppTheme" name="theme" class="">
+        </select>
+      </div>
     </div>
-  </div>
-  <div class="control-group">
-    <label class="control-label" for="formAppForms">Forms</label>
-    <div class="controls">
-      <select id="formAppForms" name="forms" multiple class="">
-      </select>
+    <div class="control-group">
+      <label class="control-label" for="formAppForms">Forms</label>
+      <div class="controls">
+        <select id="formAppForms" name="forms" multiple class="">
+        </select>
+      </div>
     </div>
-  </div>
-  <div class="btn-group">
-    <a href="#" class="btn btn-primary btn-app-submissions">App Submissions</a>
-    <a href="#" class="btn btn-success">Save</a>
-  </div>
-</form>
+    <div class="btn-group pull-right">
+      <a href="#" class="btn btn-primary btn-app-submissions">View Submissions &raquo;</a>
+      <a href="#" class="btn btn-success">Save</a>
+    </div>
+  </form>
+  <br style="clear: both;" />
+</div>
 </script>
 
 <script id="addToExistingApp" type="text/x-handlebars-template">

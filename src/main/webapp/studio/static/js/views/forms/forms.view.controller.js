@@ -5,9 +5,10 @@ App.View.FormsController = Backbone.View.extend({
     'click .btn-themes' : 'onThemes',
     'click .btn-edit-theme' : 'onEditTheme',
     'click .btn-submissions' : 'onSubmissions',
+    'click .btn-app-submissions' : 'onAppSubmissions',
+    'click .btn-form-submissions' : 'onFormSubmissions',
     'click .btn-edit-form' : 'onEditForm',
     'click .btn-edit-form-rules' : 'onEditFormRules',
-    'click .btn-view-form-submissions' : 'onViewFormSubmissions',
     'click .formapp-link' : 'onFormAppLoad'
   },
   initialize : function(){
@@ -76,6 +77,14 @@ App.View.FormsController = Backbone.View.extend({
     this.views.submissions = new App.View.FormSubmissionsTabs({"forms": this.views.forms.collection});
     this.$el.append(this.views.submissions.render().$el);
   },
+  onAppSubmissions : function(){
+    this.onSubmissions();
+    var view = this.views.submissions;
+  },
+  onFormSubmissions : function(){
+    this.onSubmissions();
+    var view = this.views.submissions;
+  },
   /*
     Edit Form view switching
    */
@@ -102,14 +111,6 @@ App.View.FormsController = Backbone.View.extend({
 
 
   },
-  onViewFormSubmissions : function(e){
-    console.log("view submissions");
-  },
-
-  onViewAppsUsingThisForm : function(e){
-    //TODO
-  },
-
   /*
 
    */
