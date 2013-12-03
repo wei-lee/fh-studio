@@ -75,7 +75,7 @@ App.Model.FormApp = App.Model.FormBase.extend({
 });
 
 App.Collection.FormApps = App.Collection.FormBase.extend({
-  pluralName : false,
+  pluralName : 'apps',
   initialize: function() {},
   model: App.Model.FormApp,
   url: '/api/v2/forms/apps',
