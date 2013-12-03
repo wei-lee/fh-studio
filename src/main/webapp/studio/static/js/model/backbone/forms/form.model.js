@@ -16,7 +16,7 @@ App.Model.Form = App.Model.FormBase.extend({
       includeInJSON: 'id'
     }
   }],
-  fetchURL : '/api/v2/forms/form/{{id}}',
+  fetchURL : '/api/v2/forms/form/{{id}}'
 });
 
 App.Model.FormPage = Backbone.RelationalModel.extend({

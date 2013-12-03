@@ -6,7 +6,6 @@ App.View.FormPageRules = App.View.Rules.extend({
 
   createRule : function (e){
     var self = this;
-    var self = this;
     console.log("self pages ", self.pages);
     var pages = [];
     for(var i=0; i < self.pages.length; i++){

@@ -17,13 +17,8 @@ App.Collection.PageRules = Backbone.Collection.extend({
   model: App.Model.FieldRule,
   //url: '/studio/static/js/model/backbone/mocks/forms/themes.json', //TODO:
   urlUpdate: '/api/v2/forms/form/pagerules',
-  sync: function (method, model, options) {
-    console.log("sync called for model");
-    this[method].apply(this, arguments);
-  },
 
   sync: function (method, model, options) {
-    console.log("sync called for model");
     this[method].apply(this, arguments);
   },
   read : function(method, model, options){
