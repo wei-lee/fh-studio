@@ -16,6 +16,7 @@ App.View.FormThemesList = App.View.FormListBase.extend({
   },
   initialize: function(){
     this.collection = new App.Collection.FormThemes();
+    console.log("collection ", this.collection);
     this.pluralTitle = 'Themes';
     this.singleTitle = 'Theme';
     this.columns = [{

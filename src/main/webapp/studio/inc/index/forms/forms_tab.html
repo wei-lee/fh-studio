@@ -464,37 +464,62 @@
 </script>
 
 <script type="text/x-handlebars-template" id="formSubmissionDetail">
-    <div class="span6" id="submissionDetails" style="overflow:hidden" ></div>
+    <div class="span6" id="submissionDetails" style="overflow:hidden" >
+        <h5>Form Submission</h5>
+        <form class="form-horizontal">
+            {{#each formFields}}
+            <div class="control-group">
+                <label class="control-label" >{{fieldId.name}}:</label>
+                <div class="controls">
+                   {{#createFormField this}}{{/createFormField}}
+                </div>
+            </div>
+            {{/each}}
+        </form>
+    </div>
     <div class="span6" id="submissionMeta" >
+        <h5>Submission Information</h5>
         <form class="form-horizontal">
             <div class="control-group">
                 <label class="control-label" for="inputDateTime">Date/Time Recieved:</label>
                 <div class="controls">
-                    <input type="text" id="inputDateTime" placeholder="Date/time">
+                    <input type="text" value="{{deviceFormTimestamp}}" id="inputDateTime" placeholder="Date/time">
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputUser">Recieved From User:</label>
                 <div class="controls">
-                    <input type="password" id="inputUser" placeholder="user">
+                    <input type="text" value="{{userId}}" id="inputUser" placeholder="user">
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputApp">Recieved From App:</label>
                 <div class="controls">
-                    <input type="password" id="inputApp" placeholder="app">
+                    <input type="text" value="{{appCloudName}}" id="inputApp" placeholder="app">
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputDevice">Recieved From Device:</label>
                 <div class="controls">
-                    <input type="password" id="inputDevice" placeholder="device">
+                    <input type="text" value="{{deviceId}}" id="inputDevice" placeholder="device">
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputIp">Recieved From Ip:</label>
                 <div class="controls">
-                    <input type="password" id="inputIp" placeholder="ipaddress">
+                    <input type="text" value="{{deviceIPAddress}}" id="inputIp" placeholder="ipaddress">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputEditedTime">Date time edited:</label>
+                <div class="controls">
+                    <input type="text" id="inputEditedTime" placeholder="date time edited">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputEditedBy">Edited By:</label>
+                <div class="controls">
+                    <input type="text" id="inputEditedBy" placeholder="edited by">
                 </div>
             </div>
         </form>

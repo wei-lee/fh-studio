@@ -125,45 +125,6 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
     };
 
     formApps.fetch(ret);
-
-
-//    this.$el.find('.btn-success').remove();
-//    var formSelect = this.$el.find('select.formSelect');
-//    formSelect.show();
-//    this.$el.find('.btn-add-submission').show();
-//
-//    formSelect.unbind("change").on('change', function(e){
-//      var selectTarget = $(e.target);
-////      //get apps for form and show apps dropdown
-//      submissionsContainer.find('.submissionslist').empty();
-//      var appsUsingFormColl = new App.Collection.AppsUsingThisForm({"id":selectTarget.val()});
-////
-//      appsUsingFormColl.fetch({"success": function (res){
-//
-//        var appnames = [];
-//        if(res && res[0] && "ok" == res[0].status){
-//          for(var i=0; i < res.length; i++){
-//              appnames.push({
-//                "title":res[i].inst.title,
-//                "id":res[i].inst.guid
-//              });
-//          }
-//          console.log("setting up appinfo",appnames);
-//          submissionsContainer.append(self.templates.$appSelect({"apps":appnames}));
-//          var appSelect = $('.appSelect').unbind("change").on("change", function (e){
-//            var val= $(e.target).val();
-//            submissionsContainer.find('.submissionslist').empty();
-//            console.log("appid ", val);
-//            self.submissions = new App.View.SubmissionList({"apps":appnames, "listType":"singleForm","formId":selectTarget.val(),"appId":val});
-//            submissionsContainer.append(self.submissions.render().$el);
-//          });
-//        }
-//      },
-//      "error":function (err){
-//        console.log("error apps using form ", err);
-//        App.View.Forms.prototype.message('failed to retrieve submissions');
-//      }});
-//    });
   },
 
   switchActive : function (e){
