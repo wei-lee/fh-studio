@@ -10,7 +10,10 @@ App.View.FormsController = Backbone.View.extend({
     'click .btn-view-form-submissions' : 'onViewFormSubmissions',
     'click .formapp-link' : 'onFormAppLoad'
   },
-  initialize : function(){},
+  initialize : function(){
+
+
+  },
   views : {},
   subViews : [],
   render: function(options) {

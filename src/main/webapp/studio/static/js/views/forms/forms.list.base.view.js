@@ -16,6 +16,7 @@ App.View.FormListBase = App.View.Forms.extend({
       self.collection.bind('reset', $.proxy(self.render, self));
       self.collection.trigger('reset');
     }, error : function(){
+      console.log("in error callback");
       self.$el.removeClass('busy');
       // Avoid flicker on our loading view
       setTimeout(function(){

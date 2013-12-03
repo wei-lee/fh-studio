@@ -66,7 +66,7 @@ App.Collection.FormThemes = App.Collection.FormBase.extend({
         "fontSize": "2pt",
         "fontColour": "#00FF00"
       },
-      "fieldText": {
+      "fieldInput": {
         "fontFamily": "arial",
         "fontStyle": "bold",
         "fontSize": "18pt",
@@ -95,7 +95,17 @@ App.Collection.FormThemes = App.Collection.FormBase.extend({
         "thickness": "thick",
         "style": "dotted",
         "colour": "#FF0000"
-      }
+      },
+      "fieldInput": {
+        "thickness": "thick",
+        "style": "dotted",
+        "colour": "#FF0000"
+      },
+      "fieldArea": {
+          "thickness": "thick",
+          "style": "dotted",
+          "colour": "#FF0000"
+        }
     }
   }
 });

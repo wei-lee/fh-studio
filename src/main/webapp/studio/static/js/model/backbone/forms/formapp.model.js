@@ -79,5 +79,62 @@ App.Collection.FormApps = App.Collection.FormBase.extend({
   initialize: function() {},
   model: App.Model.FormApp,
   url: '/api/v2/forms/apps',
-  urlUpdate: '/api/v2/forms/form'
+
+  urlUpdate: '/api/v2/forms/form',
+  fetch : function(options){
+    console.log("fetch called");
+//    // Get the forms associated with this form app.
+    var self = this;
+    $.ajax({
+      type: 'GET',
+      url: self.url,
+      cache: true,
+      success: function(res){
+        if (res) {
+          if ($.isFunction(options.success)) {
+            return options.success(res);
+          }
+        } else {
+          if ($.isFunction(options.error)) {
+            options.error(res, options);
+          }
+        }
+      },
+      error: function(xhr, status){
+        options.error(arguments);
+      }
+    });
+//
+
+  },
+  sync : function(method){
+    this[method].apply(this, arguments);
+  },
+  update : function(method, model, options){
+    var self = this,
+      url = this.fetchURL.replace('{{id}}', model.get('_id')),
+      forms = model.get('forms');
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: JSON.stringify(forms),
+      contentType : "application/json",
+      cache: true,
+      success: function(res){
+        if (res && res.forms) {
+          if ($.isFunction(options.success)) {
+            self.set('forms', res.forms);
+            return options.success(self);
+          }
+        } else {
+          if ($.isFunction(options.error)) {
+            options.error(res, options);
+          }
+        }
+      },
+      error: function(xhr, status){
+        options.error(arguments);
+      }
+    });
+  }
 });

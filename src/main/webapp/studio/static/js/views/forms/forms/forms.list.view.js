@@ -96,7 +96,7 @@ App.View.FormList = App.View.FormListBase.extend({
             dropdown.append('<li><a class="formapp-link" data-_id="' + d.inst.guid + '" href="#">' + d.inst.title + '</a></li>');
           });
         }else{
-          dropdown.append('<li class="text">No apps using this form</li>')
+          dropdown.append('<li class="text">No apps using this form</li>');
         }
       },
       error : function(){

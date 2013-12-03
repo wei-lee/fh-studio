@@ -123,18 +123,22 @@
           Forms
         </a>
       </li>
+     {{#checkRole "formseditor,formsadmin" }}
       <li id="myapps_listitem">
         <a class="btn-themes" href="#">
           <i class="icon-eye-open"></i>
           Themes
         </a>
       </li>
+      {{/checkRole }}
+      {{#checkRole "formsviewer,formsadmin" }}
       <li>
         <a class="btn-apps" href="#">
           <i class="icon-th-large"></i>
           Apps
         </a>
       </li>
+      {{/checkRole }}
       <li>
         <a class="btn-submissions" href="#">
           <i class="icon-envelope"></i>
@@ -416,6 +420,7 @@
 </script>
 
 <!-- form submission templates -->
+<!--TODO move styes to css sheet -->
 
 <script id="formsSubmissionsTab" type="text/x-handlebars-template">
     <div class="span10 well submissionsContainer" style="margin-left:10px; ">
@@ -438,13 +443,13 @@
 <script id="submissionListExport" type="text/x-handlebars-template">
     <a data-mode="create" class="btn pull-right btn-primary btn-export" href="#" ><i class="icon icon-download"></i> Export Submissions</a>
     <a data-mode="create" class="btn pull-right btn-warning btn-add-submission hide" style="margin-right:6px;" href="#"><i class="icon icon-upload"></i> Add Submissions</a>
+</script>
 
-    <!--TODO move styes to css sheet -->
-
-    <select class="pull-left hide formSelect" style="margin-left:6px; margin-right:6px; width:190px;">
-        <option value="" >Select an Form</option>
+<script type="text/x-handlebars-template" id="formSelect">
+    <select class="pull-left formSelect" style="margin-left:6px; margin-right:6px; width:190px;">
+        <option value="" >All Forms</option>
         {{#each forms}}
-            <option value="{{_id}}" >{{name}}</option>
+        <option value="{{_id}}" >{{name}}</option>
         {{/each}}
     </select>
 </script>
@@ -457,4 +462,70 @@
         {{/each}}
     </select>
 </script>
+
+<script type="text/x-handlebars-template" id="formSubmissionDetail">
+    <div class="span6" id="submissionDetails" style="overflow:hidden" >
+        <h5>Form Submission</h5>
+        <form class="form-horizontal">
+            {{#each formFields}}
+            <div class="control-group">
+                <label class="control-label" >{{fieldId.name}}:</label>
+                <div class="controls">
+                   {{#createFormField this}}{{/createFormField}}
+                </div>
+            </div>
+            {{/each}}
+        </form>
+    </div>
+    <div class="span6" id="submissionMeta" >
+        <h5>Submission Information</h5>
+        <form class="form-horizontal">
+            <div class="control-group">
+                <label class="control-label" for="inputDateTime">Date/Time Recieved:</label>
+                <div class="controls">
+                    <input type="text" value="{{deviceFormTimestamp}}" id="inputDateTime" placeholder="Date/time">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputUser">Recieved From User:</label>
+                <div class="controls">
+                    <input type="text" value="{{userId}}" id="inputUser" placeholder="user">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputApp">Recieved From App:</label>
+                <div class="controls">
+                    <input type="text" value="{{appCloudName}}" id="inputApp" placeholder="app">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputDevice">Recieved From Device:</label>
+                <div class="controls">
+                    <input type="text" value="{{deviceId}}" id="inputDevice" placeholder="device">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputIp">Recieved From Ip:</label>
+                <div class="controls">
+                    <input type="text" value="{{deviceIPAddress}}" id="inputIp" placeholder="ipaddress">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputEditedTime">Date time edited:</label>
+                <div class="controls">
+                    <input type="text" id="inputEditedTime" placeholder="date time edited">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputEditedBy">Edited By:</label>
+                <div class="controls">
+                    <input type="text" id="inputEditedBy" placeholder="edited by">
+                </div>
+            </div>
+        </form>
+    </div>
+</script>
+
+
+<!-- end form submission templates -->
 

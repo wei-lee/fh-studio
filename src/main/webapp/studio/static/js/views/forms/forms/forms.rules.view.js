@@ -4,7 +4,7 @@ App.View = App.View || {};
 App.View.Rules = App.View.Forms.extend({
 
   FIELD_RULES: {
-    "dateTime": ["is on", "is before", "is after"],
+    "dateTime": ["is at", "is before", "is after"],
     "select": ["is", "is not", "contains", "does not contain", "begins with", "ends with"],
     "text": ["is", "is not", "contains", "does not contain", "begins with", "ends with"],
     "emailAddress": ["is", "is not", "contains", "does not contain", "begins with", "ends with"],
@@ -15,7 +15,7 @@ App.View.Rules = App.View.Forms.extend({
   },
   //todo all the rules seem to be the same in wufoo so just have one set of rules?
   PAGE_RULES: {
-    "dateTime": ["is on", "is before", "is after"],
+    "dateTime": ["is at", "is before", "is after"],
     "select": ["is", "is not", "contains", "does not contain", "begins with", "ends with"],
     "text": ["is", "is not", "contains", "does not contain", "begins with", "ends with"],
     "emailAddress": ["is", "is not", "contains", "does not contain", "begins with", "ends with"],
@@ -170,7 +170,7 @@ App.View.Rules = App.View.Forms.extend({
 
     //go through each visible rule and build a new model for each need to check for existing rules and update them
     this.$el.find('.rule:visible').each(function (idx, form) {
-      var form = $(form);
+      form = $(form);
       type = form.data("type");
       var target = ("field" === type) ? "targetField" : "targetPage";
       var existingRule = self.collection.findWhere({"_id": form.data("ruleid")});
@@ -281,10 +281,30 @@ App.View.Rules = App.View.Forms.extend({
     self.$el.find('.rulesContent').empty();
     var target = ("field" === type) ? "targetField" : "targetPage";
     rules = rules.toJSON();
-    var pages = self.formatPages(pages);
+    pages = self.formatPages(pages);
 
     var ruleCount = self.$el.find('.rulesForm:visible').length;
-    ruleCount = (ruleCount == 0) ? 1 : ruleCount;
+    ruleCount = (ruleCount === 0) ? 1 : ruleCount;
+
+    function setTargetField(rule) {
+      var rFieldName = self.$el.find('select.rulesFieldName').last('.sourceField');
+      rFieldName.find('option[data-_id="' + rule.sourceField + '"]').attr("selected", true);
+      rFieldName.trigger("change");
+    }
+
+    function setFieldConditional(rule) {
+      self.$el.find('select.fieldConditionals').last().find('option').each(function () {
+        if ($(this).val() == rule.restriction) {
+          $(this).attr("selected", true);
+        } else {
+          $(this).attr("selected", false);
+        }
+      });
+    }
+
+    function setValue(rule) {
+      self.$el.find('input[name="checkedValue"]').last().val(rule.sourceValue);
+    }
 
     if (rules && rules.length > 0) {
 
@@ -302,25 +322,7 @@ App.View.Rules = App.View.Forms.extend({
         var firstRule = fr[0];
 
 
-        function setTargetField(rule) {
-          var rFieldName = self.$el.find('select.rulesFieldName').last('.sourceField');
-          rFieldName.find('option[data-_id="' + rule.sourceField + '"]').attr("selected", true);
-          rFieldName.trigger("change");
-        }
 
-        function setFieldConditional(rule) {
-          self.$el.find('select.fieldConditionals').last().find('option').each(function () {
-            if ($(this).val() == rule.restriction) {
-              $(this).attr("selected", true);
-            } else {
-              $(this).attr("selected", false);
-            }
-          });
-        }
-
-        function setValue(rule) {
-          self.$el.find('input[name="checkedValue"]').last().val(rule.sourceValue);
-        }
 
 
         setTargetField(firstRule);

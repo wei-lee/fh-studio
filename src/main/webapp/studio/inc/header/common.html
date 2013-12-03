@@ -1,3 +1,8 @@
+<%@ page contentType="text/html" pageEncoding="UTF-8" session="false" trimDirectiveWhitespaces="true" import="java.util.List" %>
+<jsp:useBean id="studio" scope="request" class="com.feedhenry.studio.StudioBean"></jsp:useBean>
+<%
+String pageName = studio.getPageName();
+%>
 <title>FeedHenry Studio</title>
 
 <!-- common styles -->
