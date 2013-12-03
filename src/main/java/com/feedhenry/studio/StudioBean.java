@@ -111,6 +111,7 @@ public class StudioBean {
   private String mDomain = null;
   private boolean mLoggedIn = false;
   private String mTheme = null;
+  private String mPageName = null;
   private JSONObject mStudioProps = null;
   private JSONObject mCoreProps = null;
   private JSONObject mUserProps = null;
@@ -137,6 +138,8 @@ public class StudioBean {
   public boolean initreq(HttpServletRequest pRequest, HttpServletResponse pResponse, String pPageName) throws Exception {
     String redirectUrl = null;
     boolean proceed = true;
+
+    mPageName = pPageName;
 
     // Allow mDomain to be forwarded with request
     if (null != pRequest.getAttribute("Domain")) {
@@ -290,7 +293,11 @@ public class StudioBean {
     return proceed;
   }
 
-   private String generateCsrfHash(){
+  public String getPageName() {
+    return mPageName;
+  }
+
+  private String generateCsrfHash(){
     String salt = "UhwwE5p-d7ssOpcmq";
     return DigestUtils.md5Hex(new Date().toString() + salt);
   }

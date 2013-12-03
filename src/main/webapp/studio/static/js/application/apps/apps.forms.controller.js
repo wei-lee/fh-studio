@@ -9,7 +9,6 @@ Apps.Forms.Controller = Apps.Controller.extend({
     this._super();
   },
   show: function(e) {
-    debugger;
     this._super(this.views.container);
     var self = this,
     box_container = $($(this.views.container).find('.fh-box-inner'));
