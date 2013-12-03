@@ -100,7 +100,7 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
       submissionsContainer.append(self.templates.$appSelect({"apps":appnames}));
       submissionsContainer.append(self.templates.$formSelect({"forms":self.jsonForms}));
       var formSelect = self.$el.find('select.formSelect');
-      var appSelect = $('.appSelect')
+      var appSelect = $('.appSelect');
       var formid;
       var appid;
       formSelect.on('change', function(e){
