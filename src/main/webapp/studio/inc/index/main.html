@@ -1,3 +1,10 @@
+
+<%@ page contentType="text/html" pageEncoding="UTF-8" session="false" trimDirectiveWhitespaces="true" %>
+<jsp:useBean id="studio" scope="request" class="com.feedhenry.studio.StudioBean"></jsp:useBean>
+<%
+String pageName = studio.getPageName();
+%>
+
 <div id="main_layout_wrapper">
   
   <%@ include file="../header/notification.html"%>
