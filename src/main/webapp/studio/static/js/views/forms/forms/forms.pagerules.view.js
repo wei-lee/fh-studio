@@ -10,7 +10,7 @@ App.View.FormPageRules = App.View.Rules.extend({
     var pages = [];
     for(var i=0; i < self.pages.length; i++){
       var pn = i + 1;
-      pages.push({"name":"page" + i +pn, "_id":self.pages.at(i).get("_id")});
+      pages.push({"name":"page" +pn, "_id":self.pages.at(i).get("_id")});
     }
     var ruleCount =  self.$el.find('.rulesForm').length;
     ruleCount++;
