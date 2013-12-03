@@ -2,6 +2,9 @@
 jasmine.getFixtures().fixturesPath = 'src/main/webapp/studio/inc';
 jasmine.getJSONFixtures().fixturesPath = 'src/main/webapp/studio/static/js/model/backbone/mocks';
 
+jasmine.CATCH_EXCEPTIONS = false;
+jasmine.VERBOSE = true;
+
 // spy on view & assert element triggers correct callback on view when clicked
 var testEventHandler = function(fn, id) {
   spyOn(this.view, fn);
