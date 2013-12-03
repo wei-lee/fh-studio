@@ -441,10 +441,14 @@
 
     <!--TODO move styes to css sheet -->
 
-    <select class="pull-left hide formSelect" style="margin-left:6px; margin-right:6px; width:190px;">
-        <option value="" >Select an Form</option>
+
+</script>
+
+<script type="text/x-handlebars-template" id="formSelect">
+    <select class="pull-left formSelect" style="margin-left:6px; margin-right:6px; width:190px;">
+        <option value="" >All Forms</option>
         {{#each forms}}
-            <option value="{{_id}}" >{{name}}</option>
+        <option value="{{_id}}" >{{name}}</option>
         {{/each}}
     </select>
 </script>
