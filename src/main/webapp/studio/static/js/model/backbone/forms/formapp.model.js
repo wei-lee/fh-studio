@@ -81,32 +81,6 @@ App.Collection.FormApps = App.Collection.FormBase.extend({
   url: '/api/v2/forms/apps',
 
   urlUpdate: '/api/v2/forms/form',
-  fetch : function(options){
-    console.log("fetch called");
-//    // Get the forms associated with this form app.
-    var self = this;
-    $.ajax({
-      type: 'GET',
-      url: self.url,
-      cache: true,
-      success: function(res){
-        if (res) {
-          if ($.isFunction(options.success)) {
-            return options.success(res);
-          }
-        } else {
-          if ($.isFunction(options.error)) {
-            options.error(res, options);
-          }
-        }
-      },
-      error: function(xhr, status){
-        options.error(arguments);
-      }
-    });
-//
-
-  },
   sync : function(method){
     this[method].apply(this, arguments);
   },
