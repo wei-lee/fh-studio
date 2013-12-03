@@ -66,11 +66,11 @@ App.View.Forms = Backbone.View.extend({
       LOGO : 'logo'
     },
     FORMSAPP : {
-      NAME : 'name',
+      NAME : 'title',
       VERSION : 'version',
-      UPDATED : 'lastUpdated',
+      UPDATED : 'modified',
       FORMS : 'forms',
-      THEME : 'theme'
+      THEMENAME : 'theme.name'
     }
   },
   initialize: function(){

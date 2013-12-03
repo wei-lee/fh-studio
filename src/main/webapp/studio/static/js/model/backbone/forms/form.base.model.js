@@ -55,31 +55,33 @@ App.Collection.FormBase = Backbone.Collection.extend({
   },
   read : function(method, model, options){
     var self = this;
-    if(!self.loaded){
-      var url = self.url;
-      $.ajax({
-        type: 'GET',
-        url: url,
-        cache: true,
-        success: function(res){
-          if (res && res[self.pluralName]) {
-            self.loaded = true;
-            if ($.isFunction(options.success)) {
-              options.success(res[self.pluralName], options);
-            }
-          } else {
-            if ($.isFunction(options.error)) {
-              options.error(res, options);
-            }
+    var url = self.url;
+    $.ajax({
+      type: 'GET',
+      url: url,
+      cache: true,
+      success: function(res){
+        if ((res && res[self.pluralName]) || self.pluralName === false) {
+          if ($.isFunction(options.success)) {
+            var ret = (self.pluralName) ? res[self.pluralName] : res;
+            //TODO - Shouldn't need this, insconsistant APIs
+            _.each(ret, function(item){
+              if (item.hasOwnProperty('id')){
+                item._id = item.id;
+              }
+            });
+            options.success(ret, options);
           }
-        },
-        error: function(xhr, status){
-          options.error(arguments);
+        } else {
+          if ($.isFunction(options.error)) {
+            options.error(res, options);
+          }
         }
-      });
-    } else {
-      self.trigger("sync");
-    }
+      },
+      error: function(xhr, status){
+        options.error(arguments);
+      }
+    });
   },
   del : function(method, model, options){
     //TODO

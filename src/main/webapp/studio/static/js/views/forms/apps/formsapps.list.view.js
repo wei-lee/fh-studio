@@ -36,7 +36,7 @@ App.View.FormAppsList = App.View.FormListBase.extend({
       "mDataProp": this.CONSTANTS.FORMSAPP.FORMS + ".length"
     },{
       "sTitle": 'Theme',
-      "mDataProp": this.CONSTANTS.FORMSAPP.UPDATED
+      "mDataProp": this.CONSTANTS.FORMSAPP.THEMENAME
     }];
 
     return self.constructor.__super__.initialize.apply(self, arguments);
@@ -58,11 +58,12 @@ App.View.FormAppsList = App.View.FormListBase.extend({
     return this;
   },
   updatePreview : function(updatedModel){
-    var form = new App.View.FormAppsCreateEdit({ model : updatedModel, mode : 'update' });
+    var form = new App.View.FormAppsCreateEdit({ model : updatedModel, mode : 'update', collection : this.collection });
     this.$previewEl.html(form.render().$el);
     this.$previewEl.show();
   },
   onAddExisting: function(){
-    var form = new App.View.FormAppsCreateEdit({ mode : 'create' });
+    var form = new App.View.FormAppsCreateEdit({ mode : 'create', collection : this.collection });
+    // TODO - API?
   }
 });

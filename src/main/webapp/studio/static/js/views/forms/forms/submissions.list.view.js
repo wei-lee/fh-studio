@@ -116,9 +116,14 @@ App.View.SubmissionList = App.View.FormListBase.extend({
   },
 
   onRowSelected : function (e){
-
+    var self = this;
     var model = this.getDataForRow(e);
     console.log("model from table ", model);
+    if(self.submissionDetail){
+      self.submissionDetail.remove();
+    }
+    self.submissionDetail = new App.View.SubmissionDetail({"submission":model});
+    self.submissionDetail.render();
   },
 
   updatePreview : function(updatedModel){

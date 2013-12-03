@@ -17,9 +17,8 @@ App.Model.FormApp = App.Model.FormBase.extend({
       url: url,
       cache: true,
       success: function(res){
-        if (res && res.forms) {
+        if (res) {
           if ($.isFunction(options.success)) {
-            self.set('forms', res.forms);
             return options.success(self);
           }
         } else {
@@ -33,26 +32,30 @@ App.Model.FormApp = App.Model.FormBase.extend({
       }
     });
 
-    return options.success(this);
   },
   sync : function(method){
     this[method].apply(this, arguments);
   },
   update : function(method, model, options){
     var self = this,
+    constObj = App.View.Forms.prototype.CONSTANTS.FORMSAPP,
     url = this.fetchURL.replace('{{id}}', model.get('_id')),
-    forms = model.get('forms');
+    updateObject = {
+      title : model.get(constObj.NAME),
+      forms : model.get(constObj.FORMS),
+      theme : model.get(constObj.THEMENAME)
+    };
+
     $.ajax({
       type: 'POST',
       url: url,
-      data: JSON.stringify(forms),
+      data: JSON.stringify(updateObject),
       contentType : "application/json",
       cache: true,
       success: function(res){
-        if (res && res.forms) {
+        if (res) {
           if ($.isFunction(options.success)) {
-            self.set('forms', res.forms);
-            return options.success(self);
+            return options.success(self.toJSON());
           }
         } else {
           if ($.isFunction(options.error)) {
@@ -64,15 +67,19 @@ App.Model.FormApp = App.Model.FormBase.extend({
         options.error(arguments);
       }
     });
+  },
+  create : function(){
+    this.update.apply(this, arguments);
   }
 
 });
 
 App.Collection.FormApps = App.Collection.FormBase.extend({
-  pluralName : 'apps',
+  pluralName : false,
   initialize: function() {},
   model: App.Model.FormApp,
   url: '/api/v2/forms/apps',
+
   urlUpdate: '/api/v2/forms/form',
   fetch : function(options){
     console.log("fetch called");

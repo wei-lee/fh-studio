@@ -1,3 +1,4 @@
+//$fw.getUserProp("roles");
 var App = App || {};
 App.View = App.View || {};
 
@@ -55,6 +56,7 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
     submissionsContainer.empty();//.append(this.submissions.render().$el);
     submissionsContainer.prepend(this.templates.$submissionListExport({"forms":this.jsonForms}));
     this.$el.find('.btn-success').remove();
+    submissionsContainer.append(self.templates.$formSelect({"forms":self.jsonForms}));
     var formSelect = this.$el.find('select.formSelect');
     formSelect.show();
     this.$el.find('.btn-add-submission').show();
@@ -89,7 +91,7 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
       console.log("data ret", data);
       for(var i=0; i < data.length; i++){
         appnames.push({
-          "id":data[i].app,
+          "id":data[i].id,
           "title":data[i].title
         });
       }
@@ -97,10 +99,22 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
       submissionsContainer.empty();//.append(this.submissions.render().$el);
       submissionsContainer.append(self.templates.$appSelect({"apps":appnames}));
       submissionsContainer.append(self.templates.$formSelect({"forms":self.jsonForms}));
-      var appSelect = $('.appSelect').unbind("change").on("change", function (e){
-        var val= $(e.target).val();
+      var formSelect = self.$el.find('select.formSelect');
+      var appSelect = $('.appSelect')
+      var formid;
+      var appid;
+      formSelect.on('change', function(e){
+        var selectTarget = $(e.target);
+        formid = selectTarget.val();
         submissionsContainer.find('.submissionslist').empty();
-        self.submissions = new App.View.SubmissionList({"apps":appnames, "listType":"singleForm","appId":val});
+        self.submissions = new App.View.SubmissionList({"forms":this.options.forms, "listType":"singleForm","formId":selectTarget.val(),"appId":appid});
+        submissionsContainer.append(self.submissions.render().$el);
+      });
+      appSelect.unbind("change").on("change", function (e){
+        var val= $(e.target).val();
+        appid = val;
+        submissionsContainer.find('.submissionslist').empty();
+        self.submissions = new App.View.SubmissionList({"apps":appnames, "listType":"singleForm","appId":val,"formId":formid});
         submissionsContainer.append(self.submissions.render().$el);
 
       });

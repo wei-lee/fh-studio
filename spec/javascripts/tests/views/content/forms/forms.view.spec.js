@@ -74,7 +74,7 @@ describe("test forms list", function(){
     //view.$el.find('.datatable tbody tr').first().click();
     //expect(themesView.$el.find('.colorRow').length).toBeGreaterThan(0);
 
-  });
+  });.
 
   async.it("Should have a fully populated apps list", function(done){
     var view = new App.View.FormsController();

@@ -132,12 +132,12 @@ App.View.FormListBase = App.View.Forms.extend({
     // Fetch the full form definition from the serverside
     model.fetch({
       success : function(updatedModel){
-        if (self.error){
-          self.error.$el.remove();
-        }
         self.$el.removeClass('busy');
         // Give the animation some time to finish
         setTimeout(function(){
+          if (self.error){
+            self.error.$el.remove();
+          }
           self.updatePreview(updatedModel);
         }, 500);
       },

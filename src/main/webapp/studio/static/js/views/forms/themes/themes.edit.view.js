@@ -70,7 +70,7 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     typogEl.append('<h4>Logo</h4>');
     typogEl.append(this.templates.$themeLogo({ logoBase64 : logoBase64}));
     if (!this.readOnly){
-      var fileBrowse = $('<br /><input type="file" name="logo"><br />');
+      var fileBrowse = $('<br /><input type="file" id="logoUpload" name="logo"><br />');
       typogEl.append(fileBrowse);
     }
 
@@ -142,7 +142,8 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     borderRows = this.$el.find('.borderrow'),
     colours = {},
     typog = {},
-    borders = {};
+    borders = {},
+    fileInput, file;
 
     // Set the name
     this.theme.set(this.CONSTANTS.THEME.NAME, name);
@@ -192,15 +193,42 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     });
     this.theme.set(this.CONSTANTS.THEME.BORDERS, borders);
 
-    //TODO: Get logo file
-    this.$el.find('input[type="file"]');
+    /*
+     Last but not least, logo - an async html5 get base64 function
+     */
+    fileInput = this.$el.find('input#logoUpload');
+    if (fileInput.length>0 && fileInput[0].files && fileInput[0].files.length>0){
+      fileInput = fileInput[0];
+      file = fileInput.files[0];
+      
+      // 1mb max file size
+      if (file.size > 1048576){
+        return self.message('Error updating theme - logo must be <1mb', 'danger');
+      }
 
-    this.collection.sync('update', this.theme.toJSON(), { success : function(){
-      self.back();
-      self.message('Theme updated successfully');
-    }, error : function(){
-      self.message('Error updating theme', 'danger');
-    }});
+      if (file.type.indexOf("image/")===-1){
+        return self.message('Error updating theme - logo must be an image', 'danger');
+      }
+      var filereader = new FileReader();
+      filereader.readAsDataURL(file);
+      filereader.onload = function(e) {
+        var b64 = e.target.result.replace("data:image/png;base64,", "").replace("data:image/jpg;base64,", "");
+        self.theme.set(self.CONSTANTS.THEME.LOGO, b64);
+        return done();
+      };
+    }else{
+      // No image to upload - all done
+      return done();
+    }
+
+    function done(){
+      self.collection.sync('update', self.theme.toJSON(), { success : function(){
+        self.back();
+        self.message('Theme updated successfully');
+      }, error : function(){
+        self.message('Error updating theme', 'danger');
+      }});
+    }
   },
   spectrumify : function(input, attrs, attrVal){
     //TODO: Original input is not being updated at present :(

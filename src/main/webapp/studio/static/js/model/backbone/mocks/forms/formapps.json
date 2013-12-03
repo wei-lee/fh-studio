@@ -1,15 +1,51 @@
-{
-  "apps" :
-          [
-            {
-              "_id" : "EFCFNYAbND8oRXsg8Va4BoER",
-              "updatedBy":"user@example.com",
-              "name":"testFieldsForm",
-              "description":"This form is for testing fields.",
-              "version" : 0,
-              "lastUpdated" : "2012/12/12",
-              "theme" : "528f89c75e09f4341e000001",
-              "forms" : ["528666dd465df68f4f000002", "528b9f79907798837e00000b"]
-            }
-          ]
-}
+[
+  {
+    app: "EFCFNWowbqlRuEUDPTDBo11J",
+    config: {
+      appcloud: {
+        wrapper: {
+          dev: {
+            module: "fh-webapp"
+          }
+        }
+      },
+      deploy: {
+        url: {
+          dev: "https://testing-efcfnyabnd8orxsg8va4boer-dev_testing.feedhenry.me"
+        }
+      },
+      icon: {
+        small: "default"
+      },
+      notification_email: "cian.clarke@feedhenry.com",
+      preview: {
+        device: "iphone_4"
+      }
+    },
+    description: "",
+    domain: "testing",
+    email: "cian.clarke@feedhenry.com",
+    icon: "/studio/static/themes/default/img/icon/small.png",
+    id: "EFCFNYAbND8oRXsg8Va4BoER",
+    modified: "2013-11-27 16:02:25",
+    title: "Carillion",
+    version: 10,
+    width: 320,
+    forms: [
+      {
+        _id: "528666dd465df68f4f000002",
+        description: "myfirstform",
+        name: "myfirstformtest234",
+        updatedBy: "cian.clarke@feedhenry.com",
+        pageRules: [ ],
+        fieldRules: [ ],
+        pages: [
+          "528b9d51791eda407d000001"
+        ],
+        lastUpdated: "2013-11-15T18:24:29.185Z",
+        dateCreated: "2013-11-15T18:24:29.185Z"
+      }
+    ],
+    numForms: 1
+  }
+]

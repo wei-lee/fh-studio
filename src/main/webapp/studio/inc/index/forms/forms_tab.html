@@ -123,18 +123,22 @@
           Forms
         </a>
       </li>
+     {{#checkRole "formseditor,formsadmin" }}
       <li id="myapps_listitem">
         <a class="btn-themes" href="#">
           <i class="icon-eye-open"></i>
           Themes
         </a>
       </li>
+      {{/checkRole }}
+      {{#checkRole "formsviewer,formsadmin" }}
       <li>
         <a class="btn-apps" href="#">
           <i class="icon-th-large"></i>
           Apps
         </a>
       </li>
+      {{/checkRole }}
       <li>
         <a class="btn-submissions" href="#">
           <i class="icon-envelope"></i>
@@ -416,6 +420,7 @@
 </script>
 
 <!-- form submission templates -->
+<!--TODO move styes to css sheet -->
 
 <script id="formsSubmissionsTab" type="text/x-handlebars-template">
     <div class="span10 well submissionsContainer" style="margin-left:10px; ">
@@ -438,10 +443,6 @@
 <script id="submissionListExport" type="text/x-handlebars-template">
     <a data-mode="create" class="btn pull-right btn-primary btn-export" href="#" ><i class="icon icon-download"></i> Export Submissions</a>
     <a data-mode="create" class="btn pull-right btn-warning btn-add-submission hide" style="margin-right:6px;" href="#"><i class="icon icon-upload"></i> Add Submissions</a>
-
-    <!--TODO move styes to css sheet -->
-
-
 </script>
 
 <script type="text/x-handlebars-template" id="formSelect">
@@ -461,4 +462,45 @@
         {{/each}}
     </select>
 </script>
+
+<script type="text/x-handlebars-template" id="formSubmissionDetail">
+    <div class="span6" id="submissionDetails" style="overflow:hidden" ></div>
+    <div class="span6" id="submissionMeta" >
+        <form class="form-horizontal">
+            <div class="control-group">
+                <label class="control-label" for="inputDateTime">Date/Time Recieved:</label>
+                <div class="controls">
+                    <input type="text" id="inputDateTime" placeholder="Date/time">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputUser">Recieved From User:</label>
+                <div class="controls">
+                    <input type="password" id="inputUser" placeholder="user">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputApp">Recieved From App:</label>
+                <div class="controls">
+                    <input type="password" id="inputApp" placeholder="app">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputDevice">Recieved From Device:</label>
+                <div class="controls">
+                    <input type="password" id="inputDevice" placeholder="device">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputIp">Recieved From Ip:</label>
+                <div class="controls">
+                    <input type="password" id="inputIp" placeholder="ipaddress">
+                </div>
+            </div>
+        </form>
+    </div>
+</script>
+
+
+<!-- end form submission templates -->
 

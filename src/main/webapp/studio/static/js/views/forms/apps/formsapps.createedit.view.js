@@ -16,6 +16,7 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
   initialize: function(options){
     var self = this;
     this.model = options.model;
+    this.collection = options.collection;
     this.forms = new App.Collection.Form();
     this.themes = new App.Collection.FormThemes();
     this.mode = options.mode || 'create';
@@ -88,7 +89,7 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
     this.$el.append(this.templates.$formsApps({ name : name }));
 
     if (this.mode === 'existing'){
-      var appSelect = $("<select></select>");
+      var appSelect = $('<select id="existingAppSelect"></select>');
       this.apps.each(function(a){
         appSelect.append('<option value="' + a.get('id') + '">' + a.get('title') + '</option>');
       });
@@ -107,7 +108,9 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
 
     formsSelect.select2({});
     if (this.mode === 'update'){
-      formsSelect.select2('val', this.model.get(self.CONSTANTS.FORMSAPP.FORMS));
+      var vals = _.pluck(this.model.get(self.CONSTANTS.FORMSAPP.FORMS), '_id');
+      formsSelect.select2('val', vals);
+      themesSelect.val(this.model.get('theme')._id);
     }else{
       // A create operation - remove the save buttons
       this.$el.find('.btn-group').remove();
@@ -115,15 +118,32 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
 
     return this;
   },
-  onFormSave : function(){
+  onFormSave : function(options){
     var self = this,
-    forms = this.$el.find('form.formsApps #formAppForms').val(); //TODO: Theme and name?
+    forms = this.$el.find('form.formsApps #formAppForms').val() || [], //TODO: Theme and name?
+    theme = this.$el.find('form.formsApps #formAppTheme').val(),
+    name = this.$el.find('form.formsApps #inputFormAppName').val(),
+    id;
+
+    if (!this.model){
+      // Associating with an existing formapp, or creating from scratch
+      id = this.$el.find('form.formsApps select#existingAppSelect').val();
+      name = this.$el.find('form.formsApps select#existingAppSelect option:selected').html();
+      this.model = new App.Model.FormApp({
+        _id : id
+      });
+      this.model.set(this.CONSTANTS.FORMSAPP.UPDATED, new Date());
+    }
+
     this.model.set(this.CONSTANTS.FORMSAPP.FORMS, forms);
+    this.model.set(this.CONSTANTS.FORMSAPP.THEMENAME, theme);
+    this.model.set(this.CONSTANTS.FORMSAPP.NAME, name);
+
     // We use model.save rather than our usual update on a collection - bit inconsistant..?
     this.model.save({},
     {
       success : function(){
-        self.message('App updated successfully');
+        self.collection.fetch({reset : true});
       },
       error : function(){
         self.message('Error updating app');

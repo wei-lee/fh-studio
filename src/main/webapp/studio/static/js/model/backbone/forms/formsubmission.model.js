@@ -92,39 +92,6 @@ App.Collection.FormSubmissions = App.Collection.FormBase.extend({
     }
   },
   update : function(method, model, options){
-    var self = this;
-    var url = self.urlUpdate;
-
-    var data = {
-      "formId":model.formid,
-      "rules":model.rules
-    };
-
-    console.log("model ",data);
-
-    $.ajax({
-      type: 'POST',
-      url: url,
-      data: JSON.stringify(data),
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      success: function(res){
-        if (res) {
-          self.trigger('reset');
-          if ($.isFunction(options.success)) {
-            options.success(res, options);
-          }
-        } else {
-          if ($.isFunction(options.error)) {
-            options.error(res, options);
-          }
-        }
-      },
-      error: function(xhr, status){
-        if ($.isFunction(options.error)) {
-          options.error(arguments);
-        }
-      }
-    });
+   console.log("not yet implemented");
   }
 });
