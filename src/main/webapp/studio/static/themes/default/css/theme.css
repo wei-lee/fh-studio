@@ -1079,6 +1079,9 @@ span.label-info {
 .app_generate_destinations .destination #dest_windowsphone7_icon {
  background-image: url("../img/export/windowsphone7.png");
 }
+.app_generate_destinations .destination #dest_windowsphone_icon {
+ background-image: url("../img/export/windowsphone.png");
+}
 .app_generate_destinations .destination #dest_embed_icon {
  background-image: url("../img/export/embed.png");
 }

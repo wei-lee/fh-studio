@@ -162,7 +162,7 @@ Config = {
       {'id':'android', 'name':'Android Application', 'source': true, 'binary':true, 'versions':['1.5', '1.6', '2.0.1', '2.1']},
       {'id':'blackberry', 'name':'Blackberry', 'source': true, 'binary': "true" === $fw.getClientProp("blackberry-binary-enabled") ? true : false},
       {'id':'windowsphone7', 'name':'Windows Phone 7', 'source': true, 'binary': "true" === $fw.getClientProp("wp7-binary-enabled") ? true : false},
-      {'id':'windowsphone', 'name':'Windows Phone 8', 'source': true, 'binary': "true" === $fw.getClientProp("wp-binary-enabled") ? true : false},
+      {'id':'windowsphone', 'name':'Windows Phone 8', 'source': "true" === $fw.getClientProp("windowsphone-enabled"), 'binary': "true" === $fw.getClientProp("windowsphone-enabled")},
       {'id':'feedhenry', 'name':'Feedhenry', 'source': true, 'binary': false},
       {'id':'embed', 'name':'Embed', 'source': false, 'binary': true}
     ]

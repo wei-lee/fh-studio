@@ -4,7 +4,7 @@ application.DestinationWindowsphone7 = application.DestinationGeneral.extend({
   },
   
   'export': function(){
-      console.log("Windowsphone7 :: Export");
+      console.log("Windowsphone :: Export");
       this.doAsyncExport();
   },
   
@@ -12,8 +12,8 @@ application.DestinationWindowsphone7 = application.DestinationGeneral.extend({
     console.log("Publish :: " + this.destination_id);
     var main_container = $('#manage_publish_container');
     main_container.find(".dashboard-content").hide();
-    this.enableButton(main_container.find("#app_windowsphone7_build_debug"), "debug", "You can build debug version of the app.");
-    this.enableButton(main_container.find("#app_windowsphone7_build_release"), "release", "You can build release version of the app. ");
+    this.enableButton(main_container.find("#app_"+this.destination_id+"_build_debug"), "debug", "You can build debug version of the app.");
+    this.enableButton(main_container.find("#app_"+this.destination_id+"_build_release"), "release", "You can build release version of the app. ");
     main_container.find('#app_publish_' + this.destination_id + '_build').show();
     main_container.find("#app_publish_" + this.destination_id).show();
   },

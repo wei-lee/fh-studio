@@ -26,6 +26,7 @@ var Lang = {
   export_android_title: 'Android',
   export_blackberry_title: 'Blackberry',
   export_windowsphone7_title: 'Windows Phone 7',
+  export_windowsphone_title: 'Windows Phone 8',
   export_feedhenry_title: 'Feedhenry',
   export_embed_title: 'Embed',
 
@@ -100,6 +101,7 @@ var Lang = {
   app_publish_ipad_info_title: 'Information',
   app_publish_blackberry_info_title: 'Information',
   app_publish_windowsphone7_info_title: 'Information',
+  app_publish_windowsphone_info_title: 'Information',
 
   app_publish_mdm_config_title: 'MDM Deployment',
 
@@ -367,7 +369,7 @@ var Lang = {
   configuration_embed_header: 'Embed Configuration',
   configuration_studio_header: 'Studio Preview Configuration',
   configuration_blackberry_header: 'Blackberry Configuration',
-  configuration_windowsphone7_header: 'Windows Phone 7 Configuration',
+  configuration_windowsphone7_header: 'Windows Phone Configuration',
 
   report_installsdate_header: 'App Installs by Date',
   report_installsdest_header: 'App Installs by Destination',
@@ -476,12 +478,19 @@ var Lang = {
   apps_list_refresh_title: '',
   apps_list_search_caption_text: 'Search Apps (Case sensitive)',
   windowsphone7_export_wizard_supertitle: 'Windows Phone 7 Export',
+  windowsphone_export_wizard_supertitle: 'Windows Phone 8 Export',
   app_export_windowsphone7_versions_title: 'Please select the Windows Phone 7 SDK version',
   app_export_windowsphone7_progress_title: 'Exporting App',
+  app_export_windowsphone_versions_title: 'Please select the Windows Phone SDK version',
+  app_export_windowsphone_progress_title: 'Exporting App',
 
   windowsphone7_publish_wizard_supertitle: 'Windows Phone 7 Build',
   app_publish_windowsphone7_versions_title: 'Please select the Windows Phone 7 SDK version',
   app_publish_windowsphone7_progress_title: 'Buiding App',
+
+  windowsphone_publish_wizard_supertitle: 'Windows Phone 8 Build',
+  app_publish_windowsphone_versions_title: 'Please select the Windows Phone SDK version',
+  app_publish_windowsphone_progress_title: 'Buiding App',
 
 
   blackberry_export_wizard_supertitle: 'Blackberry Export',
