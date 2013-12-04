@@ -88,11 +88,12 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
 
     ret.success = function (data){
       var appnames = [];
-      console.log("data ret", data);
+
       for(var i=0; i < data.length; i++){
+        console.log("data ret", data[i]);
         appnames.push({
-          "id":data[i].id,
-          "title":data[i].title
+          "id":data.at(i).get("id"),
+          "title":data.at(i).get("title")
         });
       }
       var submissionsContainer = self.$el.find('.submissions');

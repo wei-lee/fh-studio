@@ -6,23 +6,7 @@ App.View.FormMenu = App.View.Forms.extend({
     'formsMenu' : '#formsMenu'
   },
   initialize: function(){
-    Handlebars.registerHelper("checkRole", function (req, options){
-      console.log("required ", req);
-      var reqRoles = req.split(",");
-      var userRoles = $fw.getUserProp("roles");
-      var hasPerm = false;
-      for(var i =0; i < reqRoles.length; i++){
-        if(userRoles.indexOf(reqRoles[i]) != -1){
-          hasPerm = true;
-          break;
-        }
-      }
-      if(hasPerm)
-        return options.fn(this);
-      else{
-        return false;
-      }
-    });
+
     this.compileTemplates();
   },
   render : function(){

@@ -17,7 +17,7 @@ App.Collection.FormSubmissions = App.Collection.FormBase.extend({
     if(options["appId"]) this.appId = options["appId"];
   },
   model: App.Model.FormSubmission,
-  urlRead: '/api/v2/forms/submission',
+  urlRead: '/studio/static/js/model/backbone/mocks/forms/submissions.json',
   sync: function (method, model, options) {
     console.log("sync called for model");
     this[method].apply(this, arguments);
@@ -67,9 +67,10 @@ App.Collection.FormSubmissions = App.Collection.FormBase.extend({
             for(var i=0; i < res.submissions.length; i++){
               var sub = res.submissions[i];
               console.log("submission formfield  ", sub.formFields[0].fieldValues[0]);
-              sub.field1val = sub.formFields[0].fieldValues[0];
-              sub.field2val = sub.formFields[1].fieldValues[0];
-              sub.field3val = sub.formFields[2].fieldValues[0];
+              //selections
+              sub.field1val = ('object' === typeof  sub.formFields[0].fieldValues[0]) ? sub.formFields[0].fieldValues[0].selections[0] : sub.formFields[0].fieldValues[0];
+              sub.field2val = ('object' === typeof  sub.formFields[1].fieldValues[0]) ? sub.formFields[1].fieldValues[0].selections[0] : sub.formFields[1].fieldValues[0];
+              sub.field3val = ('object' === typeof  sub.formFields[2].fieldValues[0]) ? sub.formFields[2].fieldValues[0].selections[0] : sub.formFields[2].fieldValues[0];
             }
 
             self.loaded = true;
