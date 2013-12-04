@@ -4261,3 +4261,10 @@ h5.steps{
 select#targetAction{
     width:100px;
 }
+
+select.formSelect{
+    margin-left:6px; margin-right:6px; width:190px;
+}
+select.appSelect{
+    margin-right:6px; width:190px;
+}

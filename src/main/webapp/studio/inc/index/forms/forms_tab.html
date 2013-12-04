@@ -448,7 +448,7 @@
 </script>
 
 <script type="text/x-handlebars-template" id="formSelect">
-    <select class="pull-left formSelect" style="margin-left:6px; margin-right:6px; width:190px;">
+    <select class="pull-left formSelect" >
         <option value="" >All Forms</option>
         {{#each forms}}
         <option value="{{_id}}" >{{name}}</option>
@@ -457,7 +457,7 @@
 </script>
 
 <script type="text/x-handlebars-template" id="appSelect">
-    <select class="pull-left appSelect" style="margin-right:6px; width:190px;">
+    <select class="pull-left appSelect" >
         <option value="" >Select an App</option>
         {{#each apps}}
         <option value="{{id}}" >{{title}}</option>
