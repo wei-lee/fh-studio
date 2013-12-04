@@ -149,6 +149,7 @@ js/views/analytics/analytics.overview.view.js
 js/views/analytics/perapp.analytics.view.js
 js/views/analytics/domain.analytics.overview.view.js
 js/views/analytics/project.app.analytics.controller.view.js
+js/views/forms/viewhelpers/viewhelpers.js
 js/views/forms/forms.view.js
 js/views/forms/forms.menu.view.js
 js/views/forms/forms/forms.rules.view.js
