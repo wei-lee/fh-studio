@@ -8,31 +8,6 @@ App.collections = App.collections || {};
 App.Model.FormApp = App.Model.FormBase.extend({
   fetchURL : '/api/v2/forms/apps/{{id}}',
   fetchFormsURL : '/api/v2/forms/apps/{{id}}',
-  fetch : function(options){
-    // Get the forms associated with this form app.
-    var self = this,
-    url = this.fetchFormsURL.replace('{{id}}', self.get('_id'));
-    $.ajax({
-      type: 'GET',
-      url: url,
-      cache: true,
-      success: function(res){
-        if (res) {
-          if ($.isFunction(options.success)) {
-            return options.success(self);
-          }
-        } else {
-          if ($.isFunction(options.error)) {
-            options.error(res, options);
-          }
-        }
-      },
-      error: function(xhr, status){
-        options.error(arguments);
-      }
-    });
-
-  },
   sync : function(method){
     this[method].apply(this, arguments);
   },

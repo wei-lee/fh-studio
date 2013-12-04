@@ -149,6 +149,7 @@ js/views/analytics/analytics.overview.view.js
 js/views/analytics/perapp.analytics.view.js
 js/views/analytics/domain.analytics.overview.view.js
 js/views/analytics/project.app.analytics.controller.view.js
+js/views/forms/viewhelpers/viewhelpers.js
 js/views/forms/forms.view.js
 js/views/forms/forms.menu.view.js
 js/views/forms/forms/forms.rules.view.js
@@ -161,8 +162,8 @@ js/views/forms/forms/forms.editrules.view.js
 js/views/forms/forms/forms.fieldrules.view.js
 js/views/forms/forms/forms.pagerules.view.js
 js/views/forms/forms/forms.submissiondetail.view.js
-js/views/forms/forms/submissions.list.view.js
-js/views/forms/forms/submissions.tab.view.js
+js/views/forms/submissions/submissions.list.view.js
+js/views/forms/submissions/submissions.tab.view.js
 js/views/forms/themes/themes.list.view.js
 js/views/forms/themes/themes.edit.view.js
 js/views/forms/apps/formsapps.list.view.js

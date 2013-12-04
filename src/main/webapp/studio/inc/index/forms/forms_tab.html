@@ -139,12 +139,14 @@
         </a>
       </li>
       {{/checkRole }}
+      {{#checkRole "formsviewer,formseditor,formsadmin"}}
       <li>
         <a class="btn-submissions" href="#">
           <i class="icon-envelope"></i>
           Submissions
         </a>
       </li>
+      {{/checkRole}}
     </ul>
   </div>
 </script>
@@ -523,6 +525,19 @@
                 </div>
             </div>
         </form>
+        <div class="span5">
+            <button class="btn btn-large btn-block btn-primary" id="printSubmission" type="button">Print Submission</button>
+            {{#checkRole "formsadmin,formseditor"}}
+            <button class="btn btn-large btn-block btn-warning" id="editSubmission" type="button">Edit Submission</button>
+            {{/checkRole}}
+        </div>
+        <div class="span5">
+            <button class="btn btn-large btn-block btn-primary" id="emailSubmission" type="button">Email Submission</button>
+            {{#checkRole "formsadmin,formseditor"}}
+            <button class="btn btn-large btn-block btn-warning" id="deleteSubmission" type="button">Delete Submission</button>
+            {{/checkRole}}
+        </div>
+        <div class="span12"></div>
     </div>
 </script>
 
