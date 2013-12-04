@@ -90,7 +90,6 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
       var appnames = [];
 
       for(var i=0; i < data.length; i++){
-        console.log("data ret", data[i]);
         appnames.push({
           "id":data.at(i).get("id"),
           "title":data.at(i).get("title")

@@ -4227,3 +4227,37 @@ h5.steps{
 .mdm_logo img {
   width: 120px;
 }
+
+
+
+.formsContainer{
+    margin-left:10px;
+}
+
+.rulesForm{
+    padding-bottom:8px;
+}
+
+.rulesForm.condition{
+    margin-top:6px; margin-bottom:6px;
+}
+
+.rulesForm.ruleResult{
+    margin:0px; margin-top: 6px; margin-bottom:6px;
+}
+
+.conditioncontainer.conditional{
+    width:100px;
+}
+
+.fieldConditionals{
+    width:130px;
+}
+
+.btn-add-rule{
+    margin-left:20px;
+}
+
+select#targetAction{
+    width:100px;
+}

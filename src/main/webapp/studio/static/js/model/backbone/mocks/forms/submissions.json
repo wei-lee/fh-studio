@@ -188,6 +188,26 @@
         "fieldValues": [
           "529daa0151ae23875d00000d"
         ]
+      },
+      {
+        "fieldId": {
+          "name": "date field",
+          "helpText": "This is an date field",
+          "type": "dateTime",
+          "required": false,
+          "fieldOptions": {
+            "definition": {
+              "file_size": 100,
+              "maxRepeat": 5,
+              "minRepeat": 2
+            }
+          },
+          "_id": "529daa0151ae23875d000003",
+          "repeating": false
+        },
+        "fieldValues": [
+          "2013-12-21 09:00"
+        ]
       }
     ]
   }
