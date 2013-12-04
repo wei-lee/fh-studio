@@ -6,7 +6,9 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
   events : {
     'click a#recentSubmissions':  'recentSubmissions',
     'click a#perFormSubmissions': 'perFormSubmissions',
-    'click a#perAppSubmissions':  'perAppSubmissions'
+    'click a#perAppSubmissions':  'perAppSubmissions',
+    'click .btn-export':'onExportSubmission',
+    'click .btn-add-submission' : 'onAddSubmission'
   },
 
   templates : {
@@ -34,13 +36,16 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
   recentSubmissions : function (e){
     console.log("RECENT SUBMISSIONS");
     var self = this;
-   if(e) self.switchActive(e);
+    if(e) self.switchActive(e);
 
     if(this.submissions){
       this.submissions.remove();
     }
+
     this.submissions = new App.View.SubmissionList({"forms":this.options.forms});
     this.$el.find('.submissions').empty().append(this.submissions.render().$el);
+    this.$el.find('.submissions').prepend(this.templates.$submissionListExport());
+    this.active = 'recent';
   },
 
   perFormSubmissions : function (e){
@@ -54,7 +59,7 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
 
     var submissionsContainer = this.$el.find('.submissions');
     submissionsContainer.empty();//.append(this.submissions.render().$el);
-    submissionsContainer.prepend(this.templates.$submissionListExport({"forms":this.jsonForms}));
+    submissionsContainer.prepend(this.templates.$submissionListExport());
     this.$el.find('.btn-success').remove();
     submissionsContainer.append(self.templates.$formSelect({"forms":self.jsonForms}));
     var formSelect = this.$el.find('select.formSelect');
@@ -66,7 +71,7 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
       self.submissions = new App.View.SubmissionList({"forms":this.options.forms, "listType":"singleForm","formId":selectTarget.val()});
       submissionsContainer.append(self.submissions.render().$el);
     });
-
+    this.active = 'perform';
 
   },
 
@@ -100,6 +105,7 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
       submissionsContainer.empty();//.append(this.submissions.render().$el);
       submissionsContainer.append(self.templates.$appSelect({"apps":appnames}));
       submissionsContainer.append(self.templates.$formSelect({"forms":self.jsonForms}));
+      submissionsContainer.append(self.templates.$submissionListExport());
       var formSelect = self.$el.find('select.formSelect');
       var appSelect = $('.appSelect');
       var formid;
@@ -126,6 +132,7 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
     };
 
     formApps.fetch(ret);
+    this.active = 'perapp';
   },
 
   switchActive : function (e){
@@ -133,8 +140,56 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
     ele.parent('li').addClass("active");
     ele.parent('li').siblings('li').removeClass("active");
 
+  },
+  onExportSubmission : function(e){
+    var req = {},
+    form, app, submission;
+
+
+    if (this.active === "recent"){
+      submission = this.submissions.index;
+      if (typeof submission === "undefined"){
+        return this.modal('Please select a submission to export', 'Error');
+      }
+      submission = this.submissions.collection.at(submission);
+      submission = submission.get('_id');
+      req.submission = submission;
+
+    }else if (this.active === "perapp" || this.active === "perform"){
+      form = this.$el.find('select.formSelect').val();
+      if (form && form !== ""){
+        req.form = form;
+      }
+    }
+
+    if (this.active === "perapp"){
+      app = this.$el.find('select.appSelect').val();
+      req.app = app;
+    }
+
+    // Validation to make sure we have enough info to do an export
+    if (this.active === "perform" && (!form || form === "")){
+      return this.modal('Please select a form to export', 'Error');
+    }
+
+    if (this.active === "perapp" && (!app || app === "")){
+      return this.modal('Please select an app to export', 'Error');
+    }
+
+    // Depends on completion of https://www.assembla.com/spaces/feedhenry-platform/tickets/5268-supercore-api---submission-export#/activity/ticket:
+//    $.ajax({
+//      type: 'POST',
+//      url: '/api/v2/forms/submission/export',
+//      data : req,
+//      success: function(res){
+//        self.message('Data exported successfully');
+//      },
+//      error: function(xhr, status){
+//        self.message('Error exporting data', 'danger');
+//      }
+//    });
+  },
+  onAddSubmission: function(e){
+
   }
-
-
-
 });

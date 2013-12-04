@@ -13,7 +13,6 @@ App.View.SubmissionList = App.View.FormListBase.extend({
     'click .btn-add-formsapp' : 'onCreate',
     'click .btn-add-existing' : 'onCreate',
     'click .btn-add-existing-app' : 'onAddExisting',
-    'click .btn-export':'exportSubmissionData'
   },
   initialize: function(){
     var self = this;
@@ -110,11 +109,9 @@ App.View.SubmissionList = App.View.FormListBase.extend({
     this.$el.append(this.loading);
     return this;
   },
+  onAddSubmission : function(e){
 
-  exportSubmissionData : function (){
-    console.log("export submision data");
   },
-
   onRowSelected : function (e){
     var self = this;
     var model = this.getDataForRow(e);
