@@ -18,7 +18,7 @@
 </script>
 <!-- field rule templates --------->
 <script id="formsRulesTab" type="text/x-handlebars-template">
-    <div class="span10 well formsContainer" style="margin-left:10px; ">
+    <div class="span10 well formsContainer" >
     <ul class="nav nav-tabs">
         <li class="active" >
             <a href="#" id="fieldRules" >Field Rules</a>
@@ -42,14 +42,14 @@
 
 <script id="fieldRuleTemplate" type="text/x-handlebars-template">
     <div class="row-fluid formRuleContainer">
-      <form class="form-inline rulesForm rule" id="rule{{ruleNum}}" style="padding-bottom:8px;" data-type="{{formType}}" data-formId="{{formId}}" data-ruleid="{{ruleId}}"  >
+      <form class="form-inline rulesForm rule" id="rule{{ruleNum}}" data-type="{{formType}}" data-formId="{{formId}}" data-ruleid="{{ruleId}}"  >
           <div class="row-fluid ruleDefintionContainer">
 
           </div>
-          <div class="row-fluid hide condition" style="margin-top:6px; margin-bottom:6px;">
+          <div class="row-fluid hide condition" >
 
           </div>
-          <div class="row-fluid ruleResult" style="margin:0px; margin-top: 6px; margin-bottom:6px; ">
+          <div class="row-fluid ruleResult">
           </div>
       </form>
       <div class="row-fluid ruleline"><hr/></div>
@@ -61,7 +61,7 @@
 
 <script id="addedRuleCondition" type="text/x-handlebars-template">
     <div class="row-fluid conditioncontainer" >
-        <select class="conditional" style="width:100px;">
+        <select class="conditional" >
             <option value="or">OR</option>
             <option value="and">AND</option>
         </select>
@@ -75,7 +75,7 @@
     <option data-type="{{type}}"  data-_id="{{_id}}" value="{{name}}" >{{name}}</option>
     {{/each}}
     </select>
-    <select class="fieldConditionals" id="fieldConditionals" style="width:130px;">
+    <select class="fieldConditionals" id="fieldConditionals" >
     {{#each conditions}}
     <option value="{{this}}">{{this}}</option>
     {{/each}}
@@ -84,12 +84,12 @@
     <button type="button" class="btn btn-small btn-add-condition" data-placement="right" data-toggle="tooltip" data-original-title="click to add a new condition to this rule" data-rulenum="{{ruleNum}}" data-conditionnum="{{condNum}}"  ><i data-rulenum="{{ruleNum}}" data-conditionnum="{{condNum}}" class="icon-plus"></i>  </button>
     <button type="button" class="btn btn-small btn-remove-condition"  data-placement="right" data-toggle="tooltip" data-original-title="click to remove this condition" data-rulenum="{{ruleNum}}" data-conditionnum="{{condNum}}" ><i data-rulenum="{{ruleNum}}" data-conditionnum="{{condNum}}" class="icon-minus"></i>  </button>
 
-    <button type="button" data-ruleid="{{ruleId}}" data-placement="right" data-toggle="tooltip" data-original-title="click to add a new rule"   style="margin-left:20px;" class="btn btn-large btn-primary btn-add-rule"><i data-rulenum="{{ruleNum}}" class="icon-plus"></i>  </button>
+    <button type="button" data-ruleid="{{ruleId}}" data-placement="right" data-toggle="tooltip" data-original-title="click to add a new rule"  class="btn btn-large btn-primary btn-add-rule"><i data-rulenum="{{ruleNum}}" class="icon-plus"></i>  </button>
     <button type="button" data-ruleid="{{ruleId}}"  data-rulenum="{{ruleNum}}" data-placement="right" data-toggle="tooltip" data-original-title="click to remove this rule" class="btn btn-large btn-primary btn-remove-rule"><i data-rulenum="{{ruleNum}}" class="icon-minus"></i>  </button>
 </script>
 
 <script id="ruleResult" type="text/x-handlebars-template">
-        <select id="targetAction" style="width:100px;">
+        <select id="targetAction" >
             <option value="show" >show</option>
             <option value="hide" >hide</option>
         </select>
@@ -451,7 +451,7 @@
 </script>
 
 <script type="text/x-handlebars-template" id="formSelect">
-    <select class="pull-left formSelect" style="margin-left:6px; margin-right:6px; width:190px;">
+    <select class="pull-left formSelect" >
         <option value="" >All Forms</option>
         {{#each forms}}
         <option value="{{_id}}" >{{name}}</option>
@@ -460,7 +460,7 @@
 </script>
 
 <script type="text/x-handlebars-template" id="appSelect">
-    <select class="pull-left appSelect" style="margin-right:6px; width:190px;">
+    <select class="pull-left appSelect" >
         <option value="" >Select an App</option>
         {{#each apps}}
         <option value="{{id}}" >{{title}}</option>
@@ -488,43 +488,43 @@
             <div class="control-group">
                 <label class="control-label" for="inputDateTime">Date/Time Recieved:</label>
                 <div class="controls">
-                    <input type="text" value="{{deviceFormTimestamp}}" id="inputDateTime" placeholder="Date/time">
+                    <input disabled type="text" value="{{deviceFormTimestamp}}" id="inputDateTime" placeholder="Date/time">
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputUser">Recieved From User:</label>
                 <div class="controls">
-                    <input type="text" value="{{userId}}" id="inputUser" placeholder="user">
+                    <input disabled type="text" value="{{userId}}" id="inputUser" placeholder="user">
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputApp">Recieved From App:</label>
                 <div class="controls">
-                    <input type="text" value="{{appCloudName}}" id="inputApp" placeholder="app">
+                    <input disabled type="text" value="{{appCloudName}}" id="inputApp" placeholder="app">
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputDevice">Recieved From Device:</label>
                 <div class="controls">
-                    <input type="text" value="{{deviceId}}" id="inputDevice" placeholder="device">
+                    <input disabled type="text" value="{{deviceId}}" id="inputDevice" placeholder="device">
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputIp">Recieved From Ip:</label>
                 <div class="controls">
-                    <input type="text" value="{{deviceIPAddress}}" id="inputIp" placeholder="ipaddress">
+                    <input disabled type="text" value="{{deviceIPAddress}}" id="inputIp" placeholder="ipaddress">
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputEditedTime">Date time edited:</label>
                 <div class="controls">
-                    <input type="text" id="inputEditedTime" placeholder="date time edited">
+                    <input disabled type="text" id="inputEditedTime" placeholder="date time edited">
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputEditedBy">Edited By:</label>
                 <div class="controls">
-                    <input type="text" id="inputEditedBy" placeholder="edited by">
+                    <input disabled type="text" id="inputEditedBy" placeholder="edited by">
                 </div>
             </div>
         </form>

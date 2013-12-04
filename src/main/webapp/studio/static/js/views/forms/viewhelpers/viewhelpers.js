@@ -10,17 +10,17 @@ Handlebars.registerHelper("createFormField", function (options, context){
       case "emailAddress":
       case "dateTime":
         for(i=0; i < options.fieldValues.length; i++){
-          ret+="<div class='row-fluid'><input type='text' value='"+options.fieldValues[i]+"'></div>";
+          ret+="<div class='row-fluid'><input disabled type='text' value='"+options.fieldValues[i]+"'></div>";
         }
         break;
       case "textarea":
         for( i=0; i < options.fieldValues.length; i++){
-          ret+="<div class='row-fluid'><textarea>"+options.fieldValues[i]+"</textarea></div>";
+          ret+="<div class='row-fluid'><textarea disabled>"+options.fieldValues[i]+"</textarea></div>";
         }
         break;
       case "dropdown":
         for( i=0; i < options.fieldValues.length; i++){
-          ret+="<select><option value='"+options.fieldValues[i]+"' selected >"+options.fieldValues[i]+"</option></select>";
+          ret+="<select disabled><option value='"+options.fieldValues[i]+"' selected >"+options.fieldValues[i]+"</option></select>";
         }
         break;
       case "photo":
@@ -40,7 +40,7 @@ Handlebars.registerHelper("createFormField", function (options, context){
           console.log("creating checkboxes ", fValues.selections);
           ret+="<div class='row-fluid'>";
           for(var k=0; k < fValues.selections.length; k++ ){
-            ret+="<input type='checkbox' checked value='"+fValues.selections[k]+"'> " +fValues.selections[k]+" ";
+            ret+="<input disabled type='checkbox' checked value='"+fValues.selections[k]+"'> " +fValues.selections[k]+" ";
           }
           ret+="<hr/></div>";
         }
@@ -48,12 +48,12 @@ Handlebars.registerHelper("createFormField", function (options, context){
 
       case "radio":
         for( i=0; i < options.fieldValues.length; i++){
-          ret+="<div class='row-fluid'><input type='radio'  checked value='"+options.fieldValues[i]+"'> "+options.fieldValues[i]+ "<hr/></div>";
+          ret+="<div class='row-fluid'><input disabled type='radio'  checked value='"+options.fieldValues[i]+"'> "+options.fieldValues[i]+ "<hr/></div>";
         }
         break;
       case "location":
         for( i=0; i < options.fieldValues.length; i++){
-          ret+="<div class='row-fluid'>LonLat: <input type='text' value='"+options.fieldValues[i].long+ "," + options.fieldValues[i].lat + "'> <button class='btn-mini icon-location-arrow'></button> <hr/></div>";
+          ret+="<div class='row-fluid'>LonLat: <input disabled type='text' value='"+options.fieldValues[i].long+ "," + options.fieldValues[i].lat + "'> <button class='btn-mini icon-location-arrow'></button> <hr/></div>";
         }
         break;
       default:
