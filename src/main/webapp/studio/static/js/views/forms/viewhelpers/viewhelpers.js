@@ -18,31 +18,42 @@ Handlebars.registerHelper("createFormField", function (options, context){
           ret+="<div class='row-fluid'><textarea>"+options.fieldValues[i]+"</textarea></div>";
         }
         break;
-      case "dropDown":
+      case "dropdown":
         for( i=0; i < options.fieldValues.length; i++){
-          ret+="<select><option value='"+options.fieldValues[i]+"' >"+options.filedValues[i]+"</option></select>";
+          ret+="<select><option value='"+options.fieldValues[i]+"' selected >"+options.fieldValues[i]+"</option></select>";
         }
         break;
       case "photo":
       case "signature":
         for( i=0; i < options.fieldValues.length; i++){
-          ret+="<div class='row-fluid'><img style='width: 80%' src="+options.fieldValues[i]+"></div>";
+          ret+="<div class='row-fluid'><img style='width: 40%' src="+options.fieldValues[i]+"></div>";
         }
         break;
       case "file":
         for( i=0; i < options.fieldValues.length; i++){
-          ret+="<div class='row-fluid'><a href='"+options.fieldValues[i]+"'><button class='btn-small icon-download'>Download</button></a></div>";
+          ret+="<div class='row-fluid '><a href='/api/v2/forms/submission/file/"+options.fieldValues[i]+"' class='btn-small downloadfile icon-download'   data-groupid='"+options.fieldValues[i]+"' >Download</a></hr></div>";
         }
         break;
       case "checkbox":
         for( i=0; i < options.fieldValues.length; i++){
-          ret+="<div class='row-fluid'><input type='checkbox' checked value='"+options.fieldValues[i]+"'>"+options.fieldValues[i]+"</div>";
+          var fValues = options.fieldValues[i];
+          console.log("creating checkboxes ", fValues.selections);
+          ret+="<div class='row-fluid'>";
+          for(var k=0; k < fValues.selections.length; k++ ){
+            ret+="<input type='checkbox' checked value='"+fValues.selections[k]+"'> " +fValues.selections[k]+" ";
+          }
+          ret+="<hr/></div>";
         }
         break;
 
       case "radio":
         for( i=0; i < options.fieldValues.length; i++){
-          ret+="<div class='row-fluid'><input type='radio'  checked value='"+options.fieldValues[i]+"'>"+options.fieldValues[i]+"</div>";
+          ret+="<div class='row-fluid'><input type='radio'  checked value='"+options.fieldValues[i]+"'> "+options.fieldValues[i]+ "<hr/></div>";
+        }
+        break;
+      case "location":
+        for( i=0; i < options.fieldValues.length; i++){
+          ret+="<div class='row-fluid'>LonLat: <input type='text' value='"+options.fieldValues[i].long+ "," + options.fieldValues[i].lat + "'> <button class='btn-mini icon-location-arrow'></button> <hr/></div>";
         }
         break;
       default:

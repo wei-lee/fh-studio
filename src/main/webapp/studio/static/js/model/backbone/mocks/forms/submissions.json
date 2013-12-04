@@ -28,7 +28,7 @@
     "formFields": [
       {
         "fieldId": {
-          "name": "TestField0",
+          "name": "Text Field 1",
           "helpText": "This is a text field",
           "type": "text",
           "required": false,
@@ -41,11 +41,11 @@
           "_id": "529daa0151ae23875d000006",
           "repeating": false
         },
-        "fieldValues": ["TestFieldValue0"]
+        "fieldValues": ["text field value"]
       },
       {
         "fieldId": {
-          "name": "TestField1",
+          "name": "Text Field 2",
           "helpText": "This is a text field",
           "type": "text",
           "required": false,
@@ -58,13 +58,13 @@
           "_id": "529daa0151ae23875d000007",
           "repeating": false
         },
-        "fieldValues": ["TestFieldValue1"]
+        "fieldValues": ["Text Value 2"]
       },
       {
         "fieldId": {
-          "name": "TestField2",
-          "helpText": "This is a text field",
-          "type": "text",
+          "name": "select field",
+          "helpText": "This is a select field",
+          "type": "dropdown",
           "required": false,
           "fieldOptions": {
             "validation": {
@@ -72,44 +72,15 @@
               "max": 20
             }
           },
-          "_id": "529daa0151ae23875d000008",
+          "_id": "529daa0151ae23875d000007",
           "repeating": false
         },
-        "fieldValues": ["TestFieldValue2"]
-      }
-    ]
-  },
-  {
-    "_id": "529daa0151ae23875d00000d",
-    "appCloudName": "appCloudName123456",
-    "appEnvironment": "devLive",
-    "appId": "wVNnjK3UZkGPIJkToPxdjZqR",
-    "deviceFormTimestamp": "2013-12-03T09:53:05.345Z",
-    "deviceIPAddress": "192.168.1.1",
-    "deviceId": "device123456",
-    "formId": "529daa0151ae23875d000001",
-    "masterFormTimestamp": "2013-12-03T09:53:05.440Z",
-    "userId": "user123456",
-    "comments": [
-      {
-        "madeBy": "somePerson@example.com",
-        "madeOn": "2013-12-03T09:53:05.345Z",
-        "value": "This is a comment"
+        "fieldValues": ["select value"]
       },
       {
-        "madeBy": "somePerson@example.com",
-        "madeOn": "2013-12-03T09:53:05.345Z",
-        "value": "This is another comment"
-      }
-    ],
-    "status": "complete",
-    "submissionStartedTimestamp": "2013-12-03T09:53:05.645Z",
-    "submissionCompletedTimestamp": "2013-12-03T09:53:05.826Z",
-    "formFields": [
-      {
         "fieldId": {
-          "name": "radio button",
-          "helpText": "This is a text field",
+          "name": "Radio Field repeat",
+          "helpText": "This is a radio field",
           "type": "radio",
           "required": false,
           "fieldOptions": {
@@ -118,33 +89,16 @@
               "max": 20
             }
           },
-          "_id": "529daa0151ae23875d000006",
-          "repeating": false
+          "_id": "529daa0151ae23875d000008",
+          "repeating": true
         },
-        "fieldValues": [{"selections" : ["red", "blue", "green", "purple"]}, {"selections" : ["red", "blue", "purple"]}]
+        "fieldValues": ["blue","red"]
       },
       {
         "fieldId": {
-          "name": "another text field",
-          "helpText": "This is a text field",
-          "type": "text",
-          "required": false,
-          "fieldOptions": {
-            "validation": {
-              "min": 5,
-              "max": 20
-            }
-          },
-          "_id": "529daa0151ae23875d000007",
-          "repeating": false
-        },
-        "fieldValues": ["textfield value"]
-      },
-      {
-        "fieldId": {
-          "name": "Test Me",
-          "helpText": "This is a text field",
-          "type": "text",
+          "name": "Radio Field",
+          "helpText": "This is a radio field",
+          "type": "radio",
           "required": false,
           "fieldOptions": {
             "validation": {
@@ -155,7 +109,85 @@
           "_id": "529daa0151ae23875d000008",
           "repeating": false
         },
-        "fieldValues": ["another value"]
+        "fieldValues": ["red"]
+      },
+      {
+        "fieldId": {
+          "name": "checkbox",
+          "helpText": "This is a text field",
+          "type": "checkbox",
+          "required": false,
+          "fieldOptions": {
+            "validation": {
+              "min": 5,
+              "max": 20
+            }
+          },
+          "_id": "529daa0151ae23875d000006",
+          "repeating": true
+        },
+        "fieldValues": [{"selections" : ["red", "blue", "green", "purple"]}]
+      },
+      {
+        "fieldId": {
+          "name": "location",
+          "helpText": "This is a location field",
+          "type": "location",
+          "required": false,
+          "fieldOptions": {
+            "validation": {
+              "min": 5,
+              "max": 20
+            }
+          },
+          "_id": "529daa0151ae23875d000006",
+          "repeating": true
+        },
+        "fieldValues": [ {
+          "lat":"5.555848",
+          "long":"-52.031250"
+        }]
+      },
+      {
+        "fieldId": {
+          "name": "fileField",
+          "helpText": "This is a file field",
+          "type": "file",
+          "required": false,
+          "fieldOptions": {
+            "definition": {
+              "file_size": 100,
+              "maxRepeat": 5,
+              "minRepeat": 2
+            }
+          },
+          "_id": "529daa0151ae23875d000003",
+          "repeating": true
+        },
+        "fieldValues": [
+          "529daa0151ae23875d00000d",
+          "529daa0151ae23875d000011"
+        ]
+      },
+      {
+        "fieldId": {
+          "name": "imageField",
+          "helpText": "This is an image field",
+          "type": "photo",
+          "required": false,
+          "fieldOptions": {
+            "definition": {
+              "file_size": 100,
+              "maxRepeat": 5,
+              "minRepeat": 2
+            }
+          },
+          "_id": "529daa0151ae23875d000003",
+          "repeating": false
+        },
+        "fieldValues": [
+          "529daa0151ae23875d00000d"
+        ]
       }
     ]
   }

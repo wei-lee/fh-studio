@@ -67,9 +67,10 @@ App.Collection.FormSubmissions = App.Collection.FormBase.extend({
             for(var i=0; i < res.submissions.length; i++){
               var sub = res.submissions[i];
               console.log("submission formfield  ", sub.formFields[0].fieldValues[0]);
-              sub.field1val = sub.formFields[0].fieldValues[0];
-              sub.field2val = sub.formFields[1].fieldValues[0];
-              sub.field3val = sub.formFields[2].fieldValues[0];
+              //selections
+              sub.field1val = ('object' === typeof  sub.formFields[0].fieldValues[0]) ? sub.formFields[0].fieldValues[0].selections[0] : sub.formFields[0].fieldValues[0];
+              sub.field2val = ('object' === typeof  sub.formFields[1].fieldValues[0]) ? sub.formFields[1].fieldValues[0].selections[0] : sub.formFields[1].fieldValues[0];
+              sub.field3val = ('object' === typeof  sub.formFields[2].fieldValues[0]) ? sub.formFields[2].fieldValues[0].selections[0] : sub.formFields[2].fieldValues[0];
             }
 
             self.loaded = true;
