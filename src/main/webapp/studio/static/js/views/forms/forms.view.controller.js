@@ -9,7 +9,9 @@ App.View.FormsController = Backbone.View.extend({
     'click .btn-form-submissions' : 'onFormSubmissions',
     'click .btn-edit-form' : 'onEditForm',
     'click .btn-edit-form-rules' : 'onEditFormRules',
-    'click .formapp-link' : 'onFormAppLoad'
+    'click .formapp-link' : 'onFormAppLoad',
+    'click .btn-add-submission' : 'onAddSubmission',
+    'click #editSubmission' : 'onEditSubmission'
   },
   initialize : function(){
 
@@ -153,5 +155,44 @@ App.View.FormsController = Backbone.View.extend({
       view.onRowSelected({ target : row });
     });
 
+  },
+  onAddSubmission: function(e){
+    return this.onAddEditSubmission('add');
+  },
+  onEditSubmission : function(){
+    return this.onAddEditSubmission('edit');
+  },
+  onAddEditSubmission : function(mode){
+    var submissionsView = this.views.submissions,
+    submissionsEl = submissionsView.$el,
+    formId, formModel, addEdit, submissionModel;
+
+
+
+    if (mode === "edit"){
+      submissionModel = submissionsView.submissions.index;
+      submissionModel = submissionsView.submissions.collection.at(submissionModel);
+      formId = submissionModel.get('formId');
+      if (!submissionModel){
+        return submissionsView.modal('Could not locate submission', 'Error');
+      }
+    }else if (mode==="add"){
+      formId = submissionsEl.find('select.formSelect').val();
+    }
+    formModel = this.views.forms.collection.findWhere({ "_id" : formId });
+
+    if (!formModel){
+      return submissionsView.modal('Please select a form', 'Error');
+    }
+
+
+
+    addEdit = new App.View.SubmissionsAddEdit({ form : formModel, submission : submissionModel });
+
+    submissionsEl.hide();
+
+    this.$el.append(addEdit.render().$el);
+    addEdit.bind('back', $.proxy(this.back, this));
+    this.subViews.push(addEdit);
   }
 });

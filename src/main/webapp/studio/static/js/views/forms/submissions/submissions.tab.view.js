@@ -7,8 +7,7 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
     'click a#recentSubmissions':  'recentSubmissions',
     'click a#perFormSubmissions': 'perFormSubmissions',
     'click a#perAppSubmissions':  'perAppSubmissions',
-    'click .btn-export':'onExportSubmission',
-    'click .btn-add-submission' : 'onAddSubmission'
+    'click .btn-export':'onExportSubmission'
   },
 
   templates : {
@@ -187,8 +186,5 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
 //        self.message('Error exporting data', 'danger');
 //      }
 //    });
-  },
-  onAddSubmission: function(e){
-
   }
 });

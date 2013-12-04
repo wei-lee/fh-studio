@@ -164,6 +164,7 @@ js/views/forms/forms/forms.pagerules.view.js
 js/views/forms/forms/forms.submissiondetail.view.js
 js/views/forms/submissions/submissions.list.view.js
 js/views/forms/submissions/submissions.tab.view.js
+js/views/forms/submissions/submissions.addedit.view.js
 js/views/forms/themes/themes.list.view.js
 js/views/forms/themes/themes.edit.view.js
 js/views/forms/apps/formsapps.list.view.js
