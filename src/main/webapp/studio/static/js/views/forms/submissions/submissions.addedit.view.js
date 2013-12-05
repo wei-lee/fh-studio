@@ -50,7 +50,45 @@ App.View.SubmissionsAddEdit = App.View.Forms.extend({
     return this;
   },
   onSubmit : function(){
-    var fields = this.fb.collection.toJSON();
+    var self = this,
+    url = 'api/v2/forms/submission/{{id}}/submitData',
+    formId = this.options.form.get('_id'),
+    appId = this.options.appId,
+    fields = this.fb.collection,
+    submission = {
+      "userId" : $fw.userProps.email,
+      "appId": appId,
+      "appCloudName": "appCloudName123456",// TODO: What is this?
+      "appEnvironment": "live", //TODO: Can we assume this?
+      "deviceId": "studio",
+      "deviceFormTimestamp": new Date().getTime(),
+      "comments": [],
+      "formFields": []
+    };
+    fields.each(function(field){
+      if (field.get(self.CONSTANTS.FB.FIELD_TYPE) === self.CONSTANTS.FORM.PAGE_BREAK){
+        return;
+      }
+      var formField = {
+        "fieldId" : field.get('_id'),
+        "fieldValues" : [field.get(self.CONSTANTS.FB.VALUE)] // TODO Must we handle multi fields?
+      };
+      submission.formFields.push(formField);
+    });
+    $.ajax({
+      type: 'POST',
+      url: url.replace('{{id}}', formId),
+      data : JSON.stringify(submission),
+      contentType: "application/json; charset=utf-8",
+      success: function(res){
+        self.back();
+        self.message('Submission saved successfully');
+      },
+      error: function(xhr, status){
+        self.message('Error saving submission', 'danger');
+        console.log(xhr.responseText);
+      }
+    });
   },
   back : function(){
     this.trigger('back');

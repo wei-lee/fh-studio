@@ -165,7 +165,7 @@ App.View.FormsController = Backbone.View.extend({
   onAddEditSubmission : function(mode){
     var submissionsView = this.views.submissions,
     submissionsEl = submissionsView.$el,
-    formId, formModel, addEdit, submissionModel;
+    formId, appId, formModel, addEdit, submissionModel;
 
 
 
@@ -173,12 +173,15 @@ App.View.FormsController = Backbone.View.extend({
       submissionModel = submissionsView.submissions.index;
       submissionModel = submissionsView.submissions.collection.at(submissionModel);
       formId = submissionModel.get('formId');
+      appId = submissionModel.get('appId');
       if (!submissionModel){
         return submissionsView.modal('Could not locate submission', 'Error');
       }
     }else if (mode==="add"){
       formId = submissionsEl.find('select.formSelect').val();
+      appId = submissionsEl.find('select.appSelect').val();
     }
+    formId = '52a0dc9fd74184710e000004'; // TODO remove this hardcoding
     formModel = this.views.forms.collection.findWhere({ "_id" : formId });
 
     if (!formModel){
@@ -187,7 +190,7 @@ App.View.FormsController = Backbone.View.extend({
 
 
 
-    addEdit = new App.View.SubmissionsAddEdit({ form : formModel, submission : submissionModel });
+    addEdit = new App.View.SubmissionsAddEdit({ form : formModel, submission : submissionModel, appId : appId });
 
     submissionsEl.hide();
 
