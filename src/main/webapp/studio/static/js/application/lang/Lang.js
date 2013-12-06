@@ -102,6 +102,7 @@ var Lang = {
   app_publish_blackberry_info_title: 'Information',
   app_publish_windowsphone7_info_title: 'Information',
   app_publish_windowsphone_info_title: 'Information',
+  app_publish_windowsphone_versions_text: 'The app will be built using Windows Phone SDK 8.0',
 
   app_publish_mdm_config_title: 'MDM Deployment',
 
