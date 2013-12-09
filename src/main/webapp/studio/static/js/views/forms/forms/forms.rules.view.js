@@ -214,6 +214,11 @@ App.View.Rules = App.View.Forms.extend({
       var topLevelCondition = form.find('select.fieldConditionals').find('option:selected').val();
       var topLevelCheckedVal = form.find('input[name="checkedValue"]').val();
 
+      if(!  topLevelCheckedVal || "" === topLevelCheckedVal){
+        App.View.Forms.prototype.message('please complete the required fields');
+        return;
+      }
+
       data.ruleConditionalStatements.push({
         sourceField: topLevelSourceField,
         restriction: topLevelCondition,
