@@ -104,6 +104,7 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
       submissionsContainer.append(self.templates.$appSelect({"apps":appnames}));
       submissionsContainer.append(self.templates.$formSelect({"forms":self.jsonForms}));
       submissionsContainer.append(self.templates.$submissionListExport());
+      self.$el.find('.btn-add-submission').show();
       var formSelect = self.$el.find('select.formSelect');
       var appSelect = $('.appSelect');
       var formid;
