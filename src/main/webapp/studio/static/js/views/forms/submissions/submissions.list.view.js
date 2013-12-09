@@ -12,7 +12,7 @@ App.View.SubmissionList = App.View.FormListBase.extend({
     'click tr' : 'onRowSelected',
     'click .btn-add-formsapp' : 'onCreate',
     'click .btn-add-existing' : 'onCreate',
-    'click .btn-add-existing-app' : 'onAddExisting',
+    'click .btn-add-existing-app' : 'onAddExisting'
   },
   initialize: function(){
     var self = this;
