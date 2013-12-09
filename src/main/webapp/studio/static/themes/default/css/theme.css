@@ -4211,3 +4211,12 @@ h5.steps{
 .mdm_logo img {
   width: 120px;
 }
+
+.cleanstagearea {
+  float: left;
+  margin-left: 20px;
+  font-size: 14px;
+}
+.cleanstagearea input {
+  margin-left: 10px;
+}

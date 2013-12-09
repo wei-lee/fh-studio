@@ -1,6 +1,10 @@
 -------------------------------------------------------------------------------
 Component: fh-studio
 -------------------------------------------------------------------------------
+3.17.23 - 2013-12-04 - IR216 - Damian Beresford
+-----------------------------------------------
+* 5286 - fh-studio work for 'clean' checkbox on deploy screen
+
 3.17.22 - 2013-11-26 - IR215 - David Martin
 --------------------------------------------
 * 5141 - Added new Cloud Plugins and Plugin category for Amazon Node.js Module
