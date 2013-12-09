@@ -491,7 +491,7 @@ var Lang = {
 
   windowsphone_publish_wizard_supertitle: 'Windows Phone 8 Build',
   app_publish_windowsphone_versions_title: 'Please select the Windows Phone SDK version',
-  app_publish_windowsphone_progress_title: 'Buiding App',
+  app_publish_windowsphone_progress_title: 'Building App',
 
 
   blackberry_export_wizard_supertitle: 'Blackberry Export',
