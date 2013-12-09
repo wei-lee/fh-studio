@@ -12,7 +12,7 @@ App.View.SubmissionList = App.View.FormListBase.extend({
     'click tr' : 'onRowSelected',
     'click .btn-add-formsapp' : 'onCreate',
     'click .btn-add-existing' : 'onCreate',
-    'click .btn-add-existing-app' : 'onAddExisting',
+    'click .btn-add-existing-app' : 'onAddExisting'
   },
   initialize: function(){
     var self = this;
@@ -53,8 +53,6 @@ App.View.SubmissionList = App.View.FormListBase.extend({
   },
   render : function(){
     App.View.FormListBase.prototype.render.apply(this, arguments);
-
-
     return this.renderPreview();
   },
 
@@ -64,7 +62,6 @@ App.View.SubmissionList = App.View.FormListBase.extend({
     var self = this,
       data = this.collection.toJSON();
 
-    console.log("renderList sub ",self.options);
 
     this.table = new App.View.DataTable({
       aaData : data,
@@ -100,6 +97,7 @@ App.View.SubmissionList = App.View.FormListBase.extend({
   },
 
   renderPreview : function(){
+    console.log("render preview submissions");
     this.$previewEl = $('<div class="app" />');
     this.$el.append(this.$previewEl);
     this.$previewEl.hide();

@@ -92,5 +92,5 @@ App.View.SubmissionsAddEdit = App.View.Forms.extend({
   },
   back : function(){
     this.trigger('back');
-  },
+  }
 });

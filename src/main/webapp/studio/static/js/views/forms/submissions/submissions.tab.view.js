@@ -64,9 +64,12 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
     var formSelect = this.$el.find('select.formSelect');
     formSelect.show();
     this.$el.find('.btn-add-submission').show();
-    formSelect.on('change', function(e){
+    this.selectMessage = new App.View.FullPageMessageView({ message : 'Select a form from the options above.', button : false });
+    submissionsContainer.append(this.selectMessage.render().$el);
+    formSelect.unbind('change').on('change', function(e){
+      submissionsContainer.find('.emptyContainer').remove();
       var selectTarget = $(e.target);
-      submissionsContainer.find('.submissionslist').empty();
+      submissionsContainer.find('.submissionslist').remove();
       self.submissions = new App.View.SubmissionList({"forms":this.options.forms, "listType":"singleForm","formId":selectTarget.val()});
       submissionsContainer.append(self.submissions.render().$el);
     });
@@ -105,21 +108,39 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
       submissionsContainer.append(self.templates.$formSelect({"forms":self.jsonForms}));
       submissionsContainer.append(self.templates.$submissionListExport());
       self.$el.find('.btn-add-submission').show();
+      this.selectMessage = new App.View.FullPageMessageView({ message : 'Select a form and an app from the options above.', button : false });
+      submissionsContainer.append(this.selectMessage.render().$el);
       var formSelect = self.$el.find('select.formSelect');
       var appSelect = $('.appSelect');
       var formid;
       var appid;
-      formSelect.on('change', function(e){
+      formSelect.unbind('change').on('change', function(e){
+        submissionsContainer.find('.emptyContainer').remove();
+        //check app select has a value else wait.
         var selectTarget = $(e.target);
+        console.log("appselect val", appSelect.val());
+        if(appSelect.val() === ""){
+          console.log("appselect val empty");
+          self.selectMessage = new App.View.FullPageMessageView({ message : 'now Select an app from the options above.', button : false });
+          submissionsContainer.append(self.selectMessage.render().$el);
+          return;
+        }
         formid = selectTarget.val();
-        submissionsContainer.find('.submissionslist').empty();
+        submissionsContainer.find('.submissionslist').remove();
         self.submissions = new App.View.SubmissionList({"forms":this.options.forms, "listType":"singleForm","formId":selectTarget.val(),"appId":appid});
         submissionsContainer.append(self.submissions.render().$el);
       });
       appSelect.unbind("change").on("change", function (e){
         var val= $(e.target).val();
+        submissionsContainer.find('.emptyContainer').remove();
+        if(formSelect.val() === ""){
+          console.log("appselect val empty");
+          self.selectMessage = new App.View.FullPageMessageView({ message : 'Now select a form from the options above.', button : false });
+          submissionsContainer.append(self.selectMessage.render().$el);
+          return;
+        }
         appid = val;
-        submissionsContainer.find('.submissionslist').empty();
+        submissionsContainer.find('.submissionslist').remove();
         self.submissions = new App.View.SubmissionList({"apps":appnames, "listType":"singleForm","appId":val,"formId":formid});
         submissionsContainer.append(self.submissions.render().$el);
 

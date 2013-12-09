@@ -470,7 +470,7 @@
 </script>
 
 <script type="text/x-handlebars-template" id="formSubmissionDetail">
-    <div class="span6" id="submissionDetails" style="overflow:scroll" >
+    <div class="span7" id="submissionDetails" style="overflow:scroll" >
         <h5>Form Submission</h5>
         <form class="form-horizontal">
             {{#each formFields}}
@@ -483,7 +483,7 @@
             {{/each}}
         </form>
     </div>
-    <div class="span6" id="submissionMeta" >
+    <div class="span5" id="submissionMeta" >
         <h5>Submission Information</h5>
         <form class="form-horizontal">
             <div class="control-group">
@@ -529,16 +529,13 @@
                 </div>
             </div>
         </form>
-        <div class="span5">
-            <button class="btn btn-large btn-block btn-primary" id="printSubmission" type="button">Print Submission</button>
+        <div class="span12">
+            <button class="btn btn-large btn-primary" id="printSubmission" type="button">Print Submission</button>
             {{#checkRole "formsadmin,formseditor"}}
-            <button class="btn btn-large btn-block btn-warning" id="editSubmission" type="button">Edit Submission</button>
+            <button class="btn btn-large btn-warning" id="editSubmission" type="button">Edit Submission</button>
             {{/checkRole}}
-        </div>
-        <div class="span5">
-            <button class="btn btn-large btn-block btn-primary" id="emailSubmission" type="button">Email Submission</button>
             {{#checkRole "formsadmin,formseditor"}}
-            <button class="btn btn-large btn-block btn-warning" id="deleteSubmission" type="button">Delete Submission</button>
+            <button class="btn btn-large btn-danger" id="deleteSubmission" type="button">Delete Submission</button>
             {{/checkRole}}
         </div>
         <div class="span12"></div>
