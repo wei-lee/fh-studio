@@ -28,7 +28,8 @@ App.View.PluginsSetup = App.View.PluginsView.extend({
     header = this.templates.$pluginsHeader({ title : 'Using ' + plugin.name });
 
     plugin.npmName = plugin.npmName || plugin.name.toLowerCase();
-    code = $('#snippet-' + plugin.npmName.replace(".","")).html();
+    plugin.snippetName = plugin.snippetName || plugin.npmName;
+    code = $('#snippet-' + plugin.snippetName.replace(".","")).html();
     if (code && code!==""){
       code = this.templates.$pluginSetupCode({ code : code });
     }

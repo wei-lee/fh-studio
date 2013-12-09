@@ -4,6 +4,22 @@ Component: fh-studio
 3.18.00 - 2013-11-01 - IR213 - Craig Brookes/Cian Clarke
 * mCMS
 
+3.17.22 - 2013-11-26 - IR215 - David Martin
+--------------------------------------------
+* 5141 - Added new Cloud Plugins and Plugin category for Amazon Node.js Module
+* 5056 - Improvements to autofocus with modals that have input elements
+* 5054 - Improvements to Databrowser migration steps to show more detailed info on initialisation errors
+* 5037 - Fixed Cloud Environment resources sorting alphanumerically (now just sorting numerically)
+* 4930 - Fixed rebinding of buttons in Deployment Targets UI 
+* 4647 - Using henr.ie shortend urls for builds
+
+3.17.21 - 2013-11-11 - IR214 - Wei Li
+------------------------------------------------------------
+* 5058 - Add support for MDM integration
+
+3.17.20 - 2013-11-04 - IR213 - Craig Brookes
+------------------------------------------------------------
+* 5133 js sdk update
 
 3.17.19 - 2013-11-04 - IR213 - Jason Madigan / Craig Brookes
 ------------------------------------------------------------

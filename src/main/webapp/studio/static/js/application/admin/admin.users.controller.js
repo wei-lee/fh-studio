@@ -26,7 +26,10 @@ Admin.Users.Controller = Controller.extend({
     "portaladmin": "Domain Administrator",
     "devadmin": "Developer Administrator",
     "analytics": "Analytics",
-    "dev": "Developer"
+    "dev": "Developer",
+    "formsadmin": "Forms Administrator",
+    "formsviewer": "Forms Viewer",
+    "formseditor": "Forms Editor"
   },
 
   rolesToRemove: {

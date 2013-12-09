@@ -4,7 +4,7 @@ module.exports = function(grunt) {
 
     meta: {
       specs: 'spec/javascripts/tests/**/*.spec.js',
-      helpers: ['spec/javascripts/fixtures/globals.js', 'spec/javascripts/helpers/sinon.js', 'spec/javascripts/helpers/jasmine-jquery.js', 'spec/javascripts/helpers/eventhandler.js', 'spec/javascripts/helpers/factory.js']
+      helpers: ['spec/javascripts/fixtures/globals.js', 'spec/javascripts/helpers/sinon.js', 'spec/javascripts/helpers/jasmine-jquery.js', 'spec/javascripts/helpers/eventhandler.js', 'spec/javascripts/helpers/factory.js', 'spec/javascripts/helpers/jasmine.async.js']
     },
 
     jasmine: {
@@ -14,11 +14,13 @@ module.exports = function(grunt) {
       'src/main/webapp/studio/static/js/model/backbone/alert.model.js',
       'src/main/webapp/studio/static/js/model/backbone/alertnotification.model.js',
       'src/main/webapp/studio/static/js/views/common/datatable.view.js',
+      'src/main/webapp/studio/static/js/views/common/modal.view.js',
+      'src/main/webapp/studio/static/js/views/common/fullpage_message.js',
       'src/main/webapp/studio/static/js/views/common/swap_select.view.js',
-//      'src/main/webapp/studio/static/js/views/plugins/plugins.view.js',
+      'src/main/webapp/studio/static/js/views/plugins/plugins.view.js',
 //      'src/main/webapp/studio/static/js/views/plugins/dashboard/plugins.dashboard.view.js',
 //      'src/main/webapp/studio/static/js/views/plugins/plugins.controller.js',
-      'src/main/webapp/studio/static/js/model/backbone/plugin.model.js',
+//      'src/main/webapp/studio/static/js/model/backbone/plugin.model.js',
       'src/main/webapp/studio/static/js/views/app/cloud/cloud.sysevents.view.js',
       'src/main/webapp/studio/static/js/views/app/cloud/cloud.alerts.view.js',
       'src/main/webapp/studio/static/js/views/app/cloud/cloud.alertnotifications.view.js',
@@ -34,10 +36,35 @@ module.exports = function(grunt) {
       'src/main/webapp/studio/static/js/views/app/cloud/databrowser/cloud.databrowser.dataview.pagination.js',
       'src/main/webapp/studio/static/js/views/app/cloud/databrowser/cloud.databrowser.migrate.view.js',
       'src/main/webapp/studio/static/js/views/app/cloud/databrowser/cloud.databrowser.controller.js',
-        'src/main/webapp/studio/static/js/model/backbone/cms.section.model.js',
+      'src/main/webapp/studio/static/js/application/dispatch/dispatch.js',
+      'src/main/webapp/studio/static/js/model/backbone/cms.section.model.js',
+      'src/main/webapp/studio/static/js/views/forms/forms.view.js',
+      'src/main/webapp/studio/static/js/model/backbone/forms/form.base.model.js',
+      'src/main/webapp/studio/static/js/model/backbone/forms/form.base.model.js',
+      'src/main/webapp/studio/static/js/model/backbone/forms/form.model.js',
+      'src/main/webapp/studio/static/js/model/backbone/forms/theme.model.js',
+      'src/main/webapp/studio/static/js/model/backbone/forms/formapp.model.js',
+      'src/main/webapp/studio/static/js/model/backbone/forms/fieldrules.model.js',
+      'src/main/webapp/studio/static/js/model/backbone/forms/pagerule.model.js',
+      'src/main/webapp/studio/static/js/views/forms/forms.view.js',
+      'src/main/webapp/studio/static/js/views/forms/forms.menu.view.js',
+      'src/main/webapp/studio/static/js/views/forms/forms/forms.rules.view.js',
+      'src/main/webapp/studio/static/js/views/forms/forms.list.base.view.js',
+      'src/main/webapp/studio/static/js/views/forms/forms/forms.list.view.js',
+      'src/main/webapp/studio/static/js/views/forms/forms/forms.create.view.js',
+      'src/main/webapp/studio/static/js/views/forms/forms/forms.edit.view.js',
+      'src/main/webapp/studio/static/js/views/forms/forms/forms.edit.reorder.view.js',
+      'src/main/webapp/studio/static/js/views/forms/forms/forms.fieldrules.view.js',
+      'src/main/webapp/studio/static/js/views/forms/forms/forms.pagerules.view.js',
+      'src/main/webapp/studio/static/js/views/forms/themes/themes.list.view.js',
+      'src/main/webapp/studio/static/js/views/forms/themes/themes.edit.view.js',
+      'src/main/webapp/studio/static/js/views/forms/apps/formsapps.list.view.js',
+      'src/main/webapp/studio/static/js/views/forms/apps/formsapps.createedit.view.js',
+      'src/main/webapp/studio/static/js/views/forms/forms.view.controller.js',
       'src/main/webapp/studio/static/js/views/app/cloud/cms/cloud.cms.view.js',
       'src/main/webapp/studio/static/js/views/app/cloud/cms/cloud.cms.view.controller.js',
       'src/main/webapp/studio/static/js/views/app/cloud/cms/cloud.cms.tree.view.js',
+      'src/main/webapp/studio/static/js/views/app/cloud/cms/cloud.cms.audit.view.js',
       'src/main/webapp/studio/static/js/views/app/cloud/cms/cloud.cms.section.view.js',
       'src/main/webapp/studio/static/js/views/app/cloud/cms/cloud.cms.listfield.view.js',
       'src/main/webapp/studio/static/js/views/app/cloud/cms/cloud.cms.listfield.topbar.view.js',
@@ -57,11 +84,12 @@ module.exports = function(grunt) {
         'src/main/webapp/studio/static/common/js/ui/thirdparty/jquery/plugins/jquery.dataTables.fhext.js',
         'src/main/webapp/studio/static/common/js/ui/thirdparty/select2/select2.js',
         'src/main/webapp/studio/static/common/js/ui/thirdparty/backbone/backbone.js',
+        'src/main/webapp/studio/static/common/js/ui/thirdparty/backbone-relational/backbone-relational.js',
         'src/main/webapp/studio/static/common/js/ui/thirdparty/highcharts/moment.js',
         'src/main/webapp/studio/static/common/js/ui/thirdparty/handlebars/handlebars.js',
         'src/main/webapp/studio/static/common/js/ui/thirdparty/handlebars/helpers.js',
         'src/main/webapp/studio/static/common/js/ui/thirdparty/jsoneditor/jsoneditor.js',
-        'src/main/webapp/studio/static/common/js/ui/thirdparty/async/async.min.js',
+        'src/main/webapp/studio/static/common/js/ui/thirdparty/async/async.js',
         'src/main/webapp/studio/static/common/js/ui/thirdparty/backbone-deep-model/deep-model.js',
         'src/main/webapp/studio/static/common/js/ui/thirdparty/rivets/rivets.js',
         'src/main/webapp/studio/static/common/js/ui/thirdparty/formbuilder/formbuilder.js',
@@ -93,7 +121,8 @@ module.exports = function(grunt) {
         junit: {
           path: 'test-report',
           consolidate: true
-        }
+        },
+        keepRunner : true
       }
     }
   });

@@ -1,6 +1,5 @@
 var App = App || {};
 App.View = App.View || {};
-
 App.View.DataTable = Backbone.View.extend({
   options: null,
   table: null,

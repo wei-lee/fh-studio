@@ -1,0 +1,200 @@
+#forms_layout .alert {
+    position: absolute;
+    width: 97%;
+    z-index: 2000;
+}
+
+#forms_layout .busy div.busyContainer, #forms_layout div.busyContainer {
+    position: relative;
+}
+
+#forms_container .row.formscontrollerdiv {
+    padding-left: 20px;
+}
+
+/*
+ App.View.FormList styles
+ */
+.formslist table tr {
+    cursor: pointer;
+}
+.formslist table tr.info, .formslist table tr:hover {
+    background-color: #f8f8f8;
+}
+
+.formslist .formpreview .subtemplate-wrapper {
+    border: 0px;
+}
+.formslist .formpreview h4 {
+    margin-left: 8px;
+}
+
+.formslist .formpreview p {
+    margin-left: 10px;
+}
+
+/*
+ App.View.FormEdit styles
+ */
+
+.formedit .fb-add-field-types a.btn {
+    width: 100%;
+}
+
+.formedit .btn-forms-back {
+    margin-top: 5px;
+    margin-right: 12px;
+}
+
+.form-page {
+    text-align: center;
+    border: 1px dashed #bbb;
+    border-radius: 8px;
+    margin: 12px 0px;
+    cursor: move;
+    background: #fff;
+}
+
+.form-page h4 {
+    word-break: break-all;
+}
+
+ul.apps-using-form li.text {
+    padding: 0px 10px;
+}
+
+/*
+  Formbuilder specific CSS
+ */
+.fb-adminonly {
+    display: none;
+}
+
+.fb-common-wrapper .fb-label-description {
+    float: none;
+    width: auto;
+}
+
+.fb-common-wrapper .fb-common-checkboxes {
+    margin-left: 0px;
+}
+
+#forms_layout .fb-common-wrapper hr {
+    border-color: #bbb;
+}
+
+#forms_layout .edit-response-field .option-label-input {
+    width: 122px;
+}
+
+#forms_layout .fb-bottom-add {
+    display: none;
+}
+
+/*
+  Sort of nasty hack to make the removal marker of first page of every form not show - it's there for the re-ordering capability, nothing else..
+ */
+#forms_layout .response-field-page_break:first-of-type .actions-wrapper {
+    display: none;
+}
+
+.formPreviewContents {
+    background-color: #fff;
+    overflow: scroll;
+}
+
+.formPreviewContents label {
+    font-size: 2.5em;
+}
+
+.formPreviewContents input, .formPreviewContents textarea {
+    height: 1.5em;
+    font-size: 2.5em;
+    width: 100%;
+    border: 2px solid;
+    margin-top: 10px;
+}
+
+/*
+   Form Themes styling
+ */
+.themeedit .btn-forms-back {
+    margin-right: 16px;
+}
+
+.themeedit .form.form-inline {
+    padding-top: 3px;
+}
+
+.themeedit .form.form-inline label {
+    font-weight: bold;
+    font-size: 1.3em;
+    margin-right: 13px;
+}
+
+.themeedit .themesInnerContainer {
+    display: inline-block;
+    width: 100%;
+    padding: 8px;
+}
+
+.themeedit .colorRow, .themeedit .fontrow, .themeedit .borderrow {
+    margin: 8px 0px;
+}
+
+.themeedit .themesInnerContainer label {
+    display: inline-block;
+    width: 120px;
+}
+
+.themeedit .themesInnerContainer select {
+    margin: 0px 4px;
+}
+
+
+/*
+  Formedit preview
+ */
+.themeedit .fontrow div.size,
+.themeedit .fontrow div.family,
+.themeedit div.style,
+.themeedit .borderrow div.thickness {
+    display: inline-block;
+    width: 50px;
+}
+
+.themeedit .fontrow select.size{
+    width: 70px;
+}
+
+.themeedit .fontrow select.family,
+.themeedit select.style,
+.themeedit .borderrow select.thickness {
+    width: 100px;
+}
+
+/*
+    When spectrum is disabled, just showing a colour box, hide the dropdown arrow and big border
+ */
+.themeedit .sp-replacer.sp-disabled {
+    padding: 1px;
+}
+
+.themeedit .sp-disabled .sp-preview {
+    margin-right: 0px
+}
+
+.themeedit .sp-disabled .sp-dd {
+    display: none;
+}
+#forms_layout .app form.formsApps {
+    padding: 20px;
+}
+
+#forms_layout .formsApps .select2-container, #forms_app_container .formsApps .select2-container {
+    width: 220px;
+}
+
+#forms_layout .btn-success {
+    text-transform: capitalize;
+}

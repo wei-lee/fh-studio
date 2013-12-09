@@ -1,3 +1,8 @@
+<%@ page contentType="text/html" pageEncoding="UTF-8" session="false" trimDirectiveWhitespaces="true" %>
+<jsp:useBean id="studio" scope="request" class="com.feedhenry.studio.StudioBean"></jsp:useBean>
+<%
+String pageName = studio.getPageName();
+%>
 <div class="ui-layout-ignore">
   <%@ include file="./dialogs/info_dialog.html"%>
   <%@ include file="./dialogs/connectivity_dialog.html"%>
@@ -12,6 +17,9 @@
     <li class="apps-tab">
       <a id="apps_tab" href="#tabs-1">Apps</a>
     </li>
+    <li class="forms-tab">
+      <a id="forms_tab" href="#tabs-8">Forms</a>
+    </li>
     <% if(studio.getProperty("pluginsEnabled").equals("true")){ %>
     <li class="plugins-tab">
       <a id="plugins_tab" href="#tabs-2">Plugins</a>
@@ -19,13 +27,6 @@
     <% } %>
   <%}%>
   
-  <% if(studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_DEVADMIN)) {%>
-  <% if(studio.getProperty("cloudEnvironmentEnabled").equals("true")){ %>
-  <li class="environments-tab">
-      <a id="environments_tab" href="#tabs-7">Cloud Environments</a>
-  </li>
-  <%}%>
-  <%}%>
 
   <% if(studio.getProperty("nodejsEnabled").equals("true")){ %>
   <li class="admin-tab">
@@ -49,6 +50,7 @@
 
   <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER)) { %>
     <%@ include file="./apps/apps_tab.html" %>
+    <%@ include file="./forms/forms_tab.html" %>
 
     <% if(studio.getProperty("pluginsEnabled").equals("true")){ %>
       <%@ include file="./plugins/plugins_snippets.html" %>
@@ -57,11 +59,7 @@
     
   <%}%>
 
-  <% if(studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_DEVADMIN)) {%>
-  <% if(studio.getProperty("cloudEnvironmentEnabled").equals("true")){ %>
-  <%@ include file="./cloud_environment/cloud_environment_tab.html" %>
-  <%}%>
-  <%}%>
+ 
 
   <% if(studio.getProperty("nodejsEnabled").equals("true")){ %>
     <%@ include file="./admin/admin_tab.html" %>

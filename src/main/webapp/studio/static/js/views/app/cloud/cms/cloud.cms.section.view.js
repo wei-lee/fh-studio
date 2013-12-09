@@ -159,7 +159,7 @@ App.View.CMSSection = App.View.CMS.extend({
   },
   renderListFieldTables : function(){
     var self = this;
-    $(this.$el.find('.response-field-field_list')).each(function(){
+    $(this.$el.find('.response-field-list')).each(function(){
       //self
       var name = $(this).find('.fieldlist_table').data('name'),
       listField = _.findWhere(self.section.fields, { name : name }),
@@ -190,11 +190,22 @@ App.View.CMSSection = App.View.CMS.extend({
       }
       this.fb.stopListening();
     }
+
+    // Also configure default FormBuilder field setup here to be inline with FH requirements
+    Formbuilder.options.mappings.LABEL = "name";
+    Formbuilder.options.mappings.VALUE = "value";
+    Formbuilder.options.mappings.FIELD_TYPE = "type";
+    Formbuilder.options.mappings.TYPE_ALIASES = {
+      'text' : 'string'
+    };
     this.fb = new Formbuilder(this.$fbEl, {
       noScroll : true,
       noEditOnDrop : true,
       bootstrapData: fields,
-      editStructure : this.options.editStructure || false
+      commonCheckboxes : false,
+      eventFix : true,
+      editStructure : this.options.editStructure || false,
+      fields : [ 'text', 'paragraph', 'file', 'list' ]
     });
 
     this.bindFBEvents();
@@ -264,22 +275,18 @@ App.View.CMSSection = App.View.CMS.extend({
     _.each(fields, function(field){
       switch(field.type){
         case "string":
-          field.field_type = "text";
           delete field.fields;
           delete field.data;
           break;
         case "list":
-          field.field_type = "field_list";
           field.values = field.data || [];
           field.fields = field.fields || [];
           break;
         default:
           delete field.fields;
           delete field.data;
-          field.field_type = field.type;
           break;
       }
-      field.label = field.name;
       field.value = field.value || "";
     });
 
@@ -287,28 +294,16 @@ App.View.CMSSection = App.View.CMS.extend({
   },
   massageFieldFromFormBuilder : function(model){
     var field = model.toJSON();
-    switch(field.field_type){
-      case "field_list":
-        // FormBuilder doesn't give us the values of lists, we need to retrieve them ourselves.
-        // if a user has changed the list structure or data, we've already copied it to the model - so we can
-        // just copy it directly..
-        field.type = "list";
-        field.fields = field.fields || [];
-        field.data = field.data || [];
-        break;
-      case "text":
-        field.type = "string";
-        break;
-      default:
-        field.type = field.field_type;
-        break;
+    if (field.type === 'list'){
+      // FormBuilder doesn't give us the values of lists, we need to retrieve them ourselves.
+      // if a user has changed the list structure or data, we've already copied it to the model - so we can
+      // just copy it directly..
+      field.fields = field.fields || [];
+      field.data = field.data || [];
     }
-    field.name = _.clone(field.label);
     field._id = field._id || model.cid;
     field.value = field.value || "";
-    delete field.field_type;
     delete field.required;
-    delete field.label;
     delete field.cid;
     delete field.field_options;
     return field;
@@ -329,6 +324,7 @@ App.View.CMSSection = App.View.CMS.extend({
 
     this.sectionModel.set('name', vals.name);
     this.sectionModel.set('status', 'draft');
+
     this.collection.sync('draft', this.sectionModel.toJSON(), {
       success : function(){
         App.dispatch.trigger(CMS_TOPICS.AUDIT, "Section draft saved with values: " + JSON.stringify(self.section));

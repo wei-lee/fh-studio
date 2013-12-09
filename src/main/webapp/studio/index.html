@@ -1,5 +1,4 @@
-<%@ page contentType="text/html" pageEncoding="UTF-8" session="false" trimDirectiveWhitespaces="true"
-    import="java.util.List" %>
+<%@ page contentType="text/html" pageEncoding="UTF-8" session="false" trimDirectiveWhitespaces="true" %>
 <jsp:useBean id="studio" scope="request" class="com.feedhenry.studio.StudioBean"></jsp:useBean>
 <%
 studio.init( application );
@@ -15,14 +14,15 @@ try {
 
   <head>
     <!-- common head elements -->
-    <%@ include file="inc/header/common.html"%>
+    <jsp:include page="inc/header/common.html"/>
   </head>
   
   <body style="display:none;">
     <input name="csrftoken" value="<%=csrftoken %>" type="hidden" />
-    <%@ include file="common.html" %>
+
+    <jsp:include page="common.html"/>
     
-    <%@ include file="inc/index/main.html"%>
+    <jsp:include page="inc/index/main.html"/>
     
 	  <script type="text/javascript" id="IntercomSettingsScriptTag">
 	  if ($fw.getUserProp('created') != null) {
