@@ -342,8 +342,10 @@ App.View.Rules = App.View.Forms.extend({
 
       //each rule now has  ruleConditionalStatements and a ruleConditionalOperator
       for (var r = 0; r < rules.length; r++) {
+
         var rule = rules[r];
         var fr = rules[r].ruleConditionalStatements;
+        console.log("looking at rule ", rule);
         self.$el.find('.rulesContent').last().append(this.templates.$addRule({"fields": this.fields, "formType": type, "formId": self.form.get("_id"), ruleNum: ruleCount, ruleId: rule._id}));
         self.$el.find('#rule' + ruleCount + ' .ruleDefintionContainer').append(this.templates.$ruleDefinitions({"fields": this.fields, "formType": type, "formId": self.form.get("_id"), ruleNum: ruleCount}));
         self.$el.find('#rule' + ruleCount + ' .ruleResult').append(this.templates.$ruleResults({"fields": this.targetFields, "formType": type, "formId": self.form.get("_id"), ruleNum: ruleCount}));
@@ -363,13 +365,14 @@ App.View.Rules = App.View.Forms.extend({
 
 
         self.$el.find('select#targetAction option').each(function () {
-          if ($(this).val() == rule.type) {
+          if ($(this).val() === rule.type) {
+            console.log("these are equal for target action")
             $(this).attr("selected", true);
           } else {
             $(this).attr("selected", false);
           }
         });
-        self.$el.find('select#targetField option').each(function () {
+        self.$el.find('form[data-ruleid="'+rule._id+'"] select#targetField option').each(function () {
           if ($(this).data("_id") == rule[target]) {
             $(this).attr("selected", true);
           } else {
