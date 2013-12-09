@@ -13,6 +13,12 @@ App.View.Rules = App.View.Forms.extend({
     "checkboxes":["is","is not"],
     "radio": ["is", "is not", "contains", "does not contain", "begins with", "ends with"]
   },
+
+  targets : {
+    "targetField":[],
+    "targetPage":[]
+  },
+
   //todo all the rules seem to be the same in wufoo so just have one set of rules?
   PAGE_RULES: {
     "dateTime": ["is at", "is before", "is after"],
@@ -45,7 +51,24 @@ App.View.Rules = App.View.Forms.extend({
     'click .btn-add-rule': 'createRule',
     'change .rulesFieldName': 'onFieldSelectChange',
     'change select.conditional': 'selectConditionalChange',
-    'click .saverules' : 'saveRules'
+    'click .saverules' : 'saveRules',
+    'change #targetField' : 'checkTarget'
+  },
+
+  checkTarget : function (e){
+    var self = this;
+    var checked = [];
+    self.$el.find('select#targetField:visible').each(function (){
+      var val = $(this).val();
+      if(checked.indexOf(val) != -1){
+        console.log("duplicate target found");
+        App.View.Forms.prototype.message('Warning duplicate target for ' + val + ' found.' );
+        $(this).closest('.rulesForm').find('.icon-warning-sign').show();
+      }else{
+        checked.push(val);
+        $(this).closest('.rulesForm').find('.icon-warning-sign').hide();
+      }
+    });
   },
 
   aggreagateFields : function(type){
@@ -61,8 +84,13 @@ App.View.Rules = App.View.Forms.extend({
       var pageFields = page.get("fields");
       for(var p=0; p < pageFields.length; p++){
         var fieldType = pageFields[p].type.trim();
+
         var repeating = pageFields[p].repeating;
+
+        console.log("checking for field type ", fieldType , rules[fieldType], repeating);
+
         if(rules[fieldType] && this.EXCLUDED_FIELD_TYPES.indexOf(fieldType) == -1 && ! repeating){
+          console.log("shoud add a field  *** ", pageFields[p]);
           pageFields[p].rules = this.FIELD_RULES[fieldType];
           this.fields.push(pageFields[p]);
         }
@@ -130,6 +158,7 @@ App.View.Rules = App.View.Forms.extend({
         $(this).attr("selected",false);
       }
     });
+    console.log("this.fields ", this.fields);
 
     container.find('.conditioncontainer').last().append("<div style=\"margin-top:6px;\" class=\"ruleDefintionContainer\" id='cond"+condNum+"'>" + this.templates.$ruleDefinitions({"fields":this.fields,"formType":"field","formId":self.form.get("_id"),ruleNum:ruleCount,"condNum":condNum}) + " </div>");
     container.find('.btn-add-condition').hide();
@@ -227,8 +256,10 @@ App.View.Rules = App.View.Forms.extend({
     self.collection.sync("update", {"rules": self.collection, "formid": self.form.get("_id")}, {"success": function (data) {
       if("field" == type){
         self.options.form.set("fieldRules", data);
+        console.log("set field rules to ",data);
       }else if("page" == type){
         self.options.form.set("pageRules", data);
+        console.log("set page rules to ",data);
       }
       App.View.Forms.prototype.message('updated rules successfully');
 
@@ -272,6 +303,7 @@ App.View.Rules = App.View.Forms.extend({
 
 
   renderExistingRules: function (rules, type, pages) {
+    console.log("render existing rules **** ", rules);
     if (!rules || !type) {
       console.log("no rules passed");
       return;
@@ -375,6 +407,7 @@ App.View.Rules = App.View.Forms.extend({
         }
       });
       self.delegateEvents();
+    //  self.checkTarget();
     }
   },
 
