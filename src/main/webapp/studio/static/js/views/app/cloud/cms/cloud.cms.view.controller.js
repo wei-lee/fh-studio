@@ -31,6 +31,7 @@ App.View.CMSController  = Backbone.View.extend({
     App.dispatch.bind(CMS_TOPICS.SECTION_DISCARD_DRAFT, $.proxy(this.onDiscardDraft, this));
   },
   render: function(options){
+    console.log('DEBUG App.View.CMSController render');
     var self = this;
 
     // If not enabled, show the enable view
@@ -82,7 +83,7 @@ App.View.CMSController  = Backbone.View.extend({
 
     self.collection = new App.Collection.CMS([], { url : url });
     self.collection.fetch({ reset: true, success : function(){
-      self.collection.bind('reset', $.proxy(self.render, self));
+      //self.collection.bind('reset', $.proxy(self.render, self));
 
       self.$el.removeClass('busy');
       return self.renderCMS();

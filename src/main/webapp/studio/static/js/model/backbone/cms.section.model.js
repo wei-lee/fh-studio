@@ -3,7 +3,8 @@ App.Model = App.Model || {};
 App.Collection = App.Collection || {};
 App.collections = App.collections || {};
 
-
+var synccount = 0;
+var readcount = 0;
 
 App.Model.CmsSection = Backbone.Model.extend({
 });
@@ -43,6 +44,12 @@ App.Collection.CMS = Backbone.Collection.extend({
 
   },
   sync: function (method, model, options) {
+    console.log('DEBUG: sync cms section model');
+    synccount += 1;
+    if (synccount > 100) {
+      console.log('DEBUG: too many sync events. returning');
+      return;
+    }
     var self = this;
     options = options || {};
     options.success = options.success || function(){
@@ -327,6 +334,12 @@ App.Collection.CMS = Backbone.Collection.extend({
     return fields;
   },
   read : function(method, model, options){
+    console.log('DEBUG: read cms section model');
+    readcount += 1;
+    if (readcount > 100) {
+      console.log('DEBUG: too many read events. returning');
+      return;
+    }
     var inst = this.inst = $fw.data.get('inst');
     this.userApiKey = $fw.data.get("userapikey");
     this.guid = this.inst.guid;

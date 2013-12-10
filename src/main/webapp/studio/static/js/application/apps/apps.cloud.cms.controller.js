@@ -75,16 +75,18 @@ Apps.Cloud.Cms.Controller = Apps.Cloud.Controller.extend({
   },
   // Moves the app preview into the mCMS view
   previewToCMS : function(){
+    console.log('Moving preview out YO! (previewToCMS)');
     // Preview pre-setup
-    $('.preview_buttons').hide();
-    $('#app_content').removeClass('span7').addClass('span10');
-    $fw.client.tab.apps.manageapps.getController('apps.preview.controller').hide();
+    // $('.preview_buttons').hide();
+    // $('#app_content').removeClass('span7').addClass('span10');
+    // $fw.client.tab.apps.manageapps.getController('apps.preview.controller').hide();
   },
   // Moves the CMS back out into it's original location
   previewBack : function(){
-    $('#cmsAppPreview #app_preview').insertAfter('#app_content');
-    $fw.client.tab.apps.manageapps.getController('apps.preview.controller').skipPost = false;
-    $('#app_preview').width('');
-    $('.preview_buttons').show();
+    console.log('Moving preview back YO! (previewBack)');
+    // $('#cmsAppPreview #app_preview').insertAfter('#app_content');
+    // $fw.client.tab.apps.manageapps.getController('apps.preview.controller').skipPost = false;
+    // $('#app_preview').width('');
+    // $('.preview_buttons').show();
   }
 });
