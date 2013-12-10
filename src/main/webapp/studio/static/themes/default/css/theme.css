@@ -1187,9 +1187,7 @@ span.label-info {
   text-align: center;
   overflow: hidden;
   cursor: pointer;
-  position: relative;
 }
-
 
 
 #plugins_dashboard_container .plugin img, #plugins_dashboard_container .span4 h2, #plugins_dashboard_container .item  {
@@ -1398,10 +1396,10 @@ pre#packagejson strong {
   overflow:visible;
   position: relative;
 }
-#preview_frame, #forms_preview_frame {
+#preview_frame {
   -webkit-transform:scale(1);
 }
-#preview_frame iframe, #forms_preview_frame div.formPreviewContents{
+#preview_frame iframe{
   background-color:#fff;
 }
 
@@ -4228,6 +4226,14 @@ h5.steps{
   width: 120px;
 }
 
+.cleanstagearea {
+  float: left;
+  margin-left: 20px;
+  font-size: 14px;
+}
+.cleanstagearea input {
+  margin-left: 10px;
+}
 
 
 .formsContainer{
