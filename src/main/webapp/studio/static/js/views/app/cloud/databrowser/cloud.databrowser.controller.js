@@ -63,7 +63,7 @@ App.View.DataBrowserController = Backbone.View.extend({
     tpl = $('#dataviewPackageJsonChange').html();
     tpl = Handlebars.compile(tpl);
 
-    var messageView = new App.View.DataBrowserMessageView({
+    var messageView = new App.View.FullPageMessageView({
       message : '<h2>There was an issue loading the databrowser<br/>Verify all necessary migration steps have been taken and your cloud app has been redeployed</h2>' + tpl(),
       button : 'Try again',
       cb : function(e){
@@ -109,7 +109,7 @@ App.View.DataBrowserController = Backbone.View.extend({
     tpl = $('#dataviewPackageJsonChange').html();
     tpl = Handlebars.compile(tpl);
 
-    var messageView = new App.View.DataBrowserMessageView({ message : '<h2>Nearly done!</h2>' + tpl(), button : 'Deploy &raquo;', cb : function(e){
+    var messageView = new App.View.FullPageMessageView({ message : '<h2>Nearly done!</h2>' + tpl(), button : 'Deploy &raquo;', cb : function(e){
       $('a[data-controller="apps.deploy.controller"]').trigger("click");
     }});
     self.$el.append(messageView.render().$el);
@@ -188,7 +188,7 @@ App.View.DataBrowserController = Backbone.View.extend({
     var tpl = $('#dataviewGoDeploy').html();
     tpl = Handlebars.compile(tpl);
     //check app props and show update information or deploy information
-    var messageView = new App.View.DataBrowserMessageView({ message : tpl(), button : 'Deploy &raquo;', cb : function(e){
+    var messageView = new App.View.FullPageMessageView({ message : tpl(), button : 'Deploy &raquo;', cb : function(e){
       // Jump to the deploy page
       $('a[data-controller="apps.deploy.controller"]').trigger("click");
     }});
