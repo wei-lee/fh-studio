@@ -67,6 +67,10 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
     this.selectMessage = new App.View.FullPageMessageView({ message : 'Select a form from the options above.', button : false });
     submissionsContainer.append(this.selectMessage.render().$el);
     formSelect.unbind('change').on('change', function(e){
+      console.log("val is " + $(this).val() );
+      if("" === $(this).val()){
+         return $('a#perFormSubmissions').trigger('click');
+      }
       submissionsContainer.find('.emptyContainer').remove();
       var selectTarget = $(e.target);
       submissionsContainer.find('.submissionslist').remove();

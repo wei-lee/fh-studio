@@ -47,7 +47,7 @@ App.View.FormPageRules = App.View.Rules.extend({
     var self = this;
     $('.formsContainer').remove();
     this.$el.empty();
-    this.$el.append(self.templates.$rulesTabs({"rulesHeading":"Show or hide pages based on these rules:"}));
+    this.$el.append(self.templates.$rulesTabs({"rulesHeading":"Show or hide pages based on these rules:","type":"page"}));
     this.collection = new App.Collection.PageRules(this.pageRules);
     self.renderExistingRules(this.collection, "page",this.pages);
 

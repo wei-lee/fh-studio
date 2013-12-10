@@ -62,6 +62,24 @@ App.View.SubmissionList = App.View.FormListBase.extend({
     var self = this,
       data = this.collection.toJSON();
 
+    console.log("renderList data ", data);
+
+    //validate ok
+    if("singleForm" === this.options.listType){
+      var dataOb = data[0];
+
+      var tableIndex = 4;
+      for(var i=0; i < 2; i++){
+        var field = dataOb.formFields[i];
+        console.log("assigning field ", field);
+        this.columns[tableIndex].sTitle = field.fieldId.name;
+        var fieldNum = i + 1;
+        dataOb["field" + fieldNum + "val"] = field.fieldValues[0];
+        tableIndex+=1;
+
+      }
+
+    }
 
     this.table = new App.View.DataTable({
       aaData : data,
@@ -93,6 +111,7 @@ App.View.SubmissionList = App.View.FormListBase.extend({
     //if("singleForm" == this.options.listType)
     $('.submissionslist').removeClass("span10").addClass("row-fluid");
 
+
     return this;
   },
 
@@ -105,6 +124,10 @@ App.View.SubmissionList = App.View.FormListBase.extend({
     // Move the loading to the bottom of this element's dom
     this.loading.remove();
     this.$el.append(this.loading);
+    console.log("found search input", $('.form-search:visible').html());
+    if("singleForm" == this.options.listType){
+      $('.form-search').parent().append('<div style="width:100px; float:right; margin-right: 50px;"><a href="">Advanced Search</a></div>')
+    }
     return this;
   },
   onAddSubmission : function(e){

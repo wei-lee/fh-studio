@@ -4268,3 +4268,7 @@ select.formSelect{
 select.appSelect{
     margin-right:6px; width:190px;
 }
+
+#submissionDetails{
+   border-right: dashed 1px #d3d3d3;
+}

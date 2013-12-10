@@ -34,7 +34,7 @@
 
     </div>
     <div class="span11">
-        <button class="btn-warning pull-right saverules">Save Rules</button>
+        <button class="btn-warning pull-right saverules" data-type="{{type}}">Save Rules</button>
     </div>
     </div>
 </script>
@@ -60,7 +60,7 @@
 </script>
 
 <script id="addedRuleCondition" type="text/x-handlebars-template">
-    <div class="row-fluid conditioncontainer" >
+    <div class="row-fluid conditioncontainer" id="{{condNum}}" >
         <select class="conditional" >
             <option value="or">OR</option>
             <option value="and">AND</option>
@@ -449,6 +449,7 @@
 <script id="submissionListExport" type="text/x-handlebars-template">
     <a data-mode="create" class="btn pull-right btn-primary btn-export" href="#" ><i class="icon icon-download"></i> Export Submissions</a>
     <a data-mode="create" class="btn pull-right btn-warning btn-add-submission hide" style="margin-right:6px;" href="#"><i class="icon icon-upload"></i> Add Submissions</a>
+
 </script>
 
 <script type="text/x-handlebars-template" id="formSelect">

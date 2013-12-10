@@ -122,15 +122,17 @@ App.View.Rules = App.View.Forms.extend({
     var form = self.$el.find('#rule' + ruleNumber);
     var container = form.parent('.formRuleContainer');
     var ruleid = form.data("ruleid");
+    console.log("looking for model with id ", ruleid, self.collection.models);
     container.remove();
     if (ruleid) {
       var model = self.collection.findWhere({"_id": ruleid});
+      console.log("found model to removce ", model);
       self.collection.remove(model, {
         "success": function () {
 
         },
-        "error": function () {
-
+        "error": function (er) {
+          console.log("failed to remove from model ", er);
         }});
     }
 
@@ -144,8 +146,9 @@ App.View.Rules = App.View.Forms.extend({
     var form = self.$el.find('#rule'+formId);
     var container = form.parent('.formRuleContainer');
     var ruleid = form.data("ruleid");
-    var condNum = container.find('.rulesFieldName:visible').length;
-    container.find('.condition').show().append(this.templates.$addedRuleCondition());
+    //data-conditionnum
+    var condNum = $('.conditioncontainer').length;
+    container.find('.condition').show().append(this.templates.$addedRuleCondition({"condNum":condNum}));
     //if there are previous conditions set the select to the same value
     var conditionalSelects = container.find('select.conditional');
     var conditionalOpts = container.find('select.conditional option');
@@ -160,7 +163,7 @@ App.View.Rules = App.View.Forms.extend({
     });
     console.log("this.fields ", this.fields);
 
-    container.find('.conditioncontainer').last().append("<div style=\"margin-top:6px;\" class=\"ruleDefintionContainer\" id='cond"+condNum+"'>" + this.templates.$ruleDefinitions({"fields":this.fields,"formType":"field","formId":self.form.get("_id"),ruleNum:ruleCount,"condNum":condNum}) + " </div>");
+    container.find('.conditioncontainer').last().append("<div style=\"margin-top:6px;\" class=\"ruleDefintionContainer\" id='cond"+condNum+"'>" + this.templates.$ruleDefinitions({"fields":this.fields,"formType":"field","formId":self.form.get("_id"),ruleNum:formId,"condNum":condNum}) + " </div>");
     container.find('.btn-add-condition').hide();
     container.find('.btn-remove-condition').first().hide();
     container.find('.btn-add-condition').last().show();
@@ -176,6 +179,8 @@ App.View.Rules = App.View.Forms.extend({
         }
       });
     });
+
+    self.delegateEvents();
   },
 
 
@@ -195,7 +200,7 @@ App.View.Rules = App.View.Forms.extend({
 
     var rules = [];
     var self = this;
-    var type;
+    var type = self.$el.find('.saverules').data("type");
 
     //go through each visible rule and build a new model for each need to check for existing rules and update them
     this.$el.find('.rule:visible').each(function (idx, form) {
@@ -259,6 +264,7 @@ App.View.Rules = App.View.Forms.extend({
     });
 
     self.collection.sync("update", {"rules": self.collection, "formid": self.form.get("_id")}, {"success": function (data) {
+      console.log("rule type ", type);
       if("field" == type){
         self.options.form.set("fieldRules", data);
         console.log("set field rules to ",data);
@@ -298,7 +304,8 @@ App.View.Rules = App.View.Forms.extend({
     this.$el.find('.btn-small').tooltip('hide');
     this.$el.find('.btn-large').tooltip('hide');
     var condId = $(e.target).data("conditionnum");
-    var container = this.$el.find('#cond' + condId).parent('.conditioncontainer');
+    var container = this.$el.find('.conditioncontainer#' + condId);
+    console.log("looking for condition container ", '.conditioncontainer#' + condId, "found ", container);
     var ruleContainer = container.parent().prev('.ruleDefintionContainer');
     ruleContainer.find('.btn-add-condition').last().show();
     container.remove();
@@ -316,12 +323,14 @@ App.View.Rules = App.View.Forms.extend({
 
     var self = this;
     self.$el.find('.rulesContent').empty();
+
     var target = ("field" === type) ? "targetField" : "targetPage";
+
     rules = rules.toJSON();
+
     pages = self.formatPages(pages);
 
-    var ruleCount = self.$el.find('.rulesForm:visible').length;
-    ruleCount = (ruleCount === 0) ? 1 : ruleCount;
+    self.ruleCount = self.$el.find('.rulesForm:visible').length;
 
     function setTargetField(rule) {
       var rFieldName = self.$el.find('select.rulesFieldName').last('.sourceField');
@@ -342,31 +351,28 @@ App.View.Rules = App.View.Forms.extend({
     function setValue(rule) {
       self.$el.find('input[name="checkedValue"]').last().val(rule.sourceValue);
     }
-
     if (rules && rules.length > 0) {
 
-      //each rule now has  ruleConditionalStatements and a ruleConditionalOperator
+      //each rule now has  ruleConditionalStatements and a ruleConditionalOperator the first ruleConditionalStatement is the top level then any after that are sub rules.
       for (var r = 0; r < rules.length; r++) {
 
         var rule = rules[r];
         var fr = rules[r].ruleConditionalStatements;
         console.log("looking at rule ", rule);
-        self.$el.find('.rulesContent').last().append(this.templates.$addRule({"fields": this.fields, "formType": type, "formId": self.form.get("_id"), ruleNum: ruleCount, ruleId: rule._id}));
-        self.$el.find('#rule' + ruleCount + ' .ruleDefintionContainer').append(this.templates.$ruleDefinitions({"fields": this.fields, "formType": type, "formId": self.form.get("_id"), ruleNum: ruleCount}));
-        self.$el.find('#rule' + ruleCount + ' .ruleResult').append(this.templates.$ruleResults({"fields": this.targetFields, "formType": type, "formId": self.form.get("_id"), ruleNum: ruleCount}));
+        //recreate rule;
+        self.$el.find('.rulesContent').last().append(this.templates.$addRule({"fields": this.fields, "formType": type, "formId": self.form.get("_id"), ruleNum: self.ruleCount, ruleId: rule._id}));
+        self.$el.find('#rule' + self.ruleCount + ' .ruleDefintionContainer').append(this.templates.$ruleDefinitions({"fields": this.fields, "formType": type, "formId": self.form.get("_id"), ruleNum: self.ruleCount}));
+        self.$el.find('#rule' + self.ruleCount + ' .ruleResult').append(this.templates.$ruleResults({"fields": this.targetFields, "formType": type, "formId": self.form.get("_id"), ruleNum: self.ruleCount}));
 
+        // if its a page rule swap out the select type.
         if (type == "page") {
           self.$el.find('select#targetField').replaceWith(this.templates.$targetFieldSelect({"pages": pages}));
         }
-        var firstRule = fr[0];
+        var firstRuleCondition = fr[0];
 
-
-
-
-
-        setTargetField(firstRule);
-        setFieldConditional(firstRule);
-        setValue(firstRule);
+        setTargetField(firstRuleCondition);
+        setFieldConditional(firstRuleCondition);
+        setValue(firstRuleCondition);
 
 
         self.$el.find('select#targetAction option').each(function () {
@@ -384,21 +390,26 @@ App.View.Rules = App.View.Forms.extend({
             $(this).attr("selected", false);
           }
         });
+        var condNum = 0;
         for (var k = 1; k < fr.length; k++) {
-          var form = self.$el.find('#rule' + ruleCount);
-          var container = form.parent('.formRuleContainer');
-          var condNum = container.find('.rulesFieldName').length;
-          condNum++;
-          form.find('div.condition').show().append(this.templates.$addedRuleCondition());
-
-          form.find('.conditioncontainer').last().append("<div style=\"margin-top:6px;\" class=\"ruleDefintionContainer\" id='cond" + condNum + "'>" + this.templates.$ruleDefinitions({"fields": this.fields, "formType": "field", "formId": self.form.get("_id"), ruleNum: ruleCount, "condNum": condNum}) + " </div>");
-          setFieldConditional(fr[k]);
-          setTargetField(fr[k]);
-          setValue(fr[k]);
+          var subCondition = fr[k];
+          console.log("rendering sub condition ", subCondition);
+          console.log("rule count is " , self.ruleCount);
+          var form = self.$el.find('#rule' + self.ruleCount);
+          console.log("found form ", form);
+           var container = form.parent('.formRuleContainer');
+          self.condNum = k;
+          form.find('div.condition').show().append(this.templates.$addedRuleCondition({"condNum":k}));
+          form.find('.conditioncontainer').last().append("<div style=\"margin-top:6px;\" class=\"ruleDefintionContainer\" id='cond" + k + "'>" + this.templates.$ruleDefinitions({"fields": this.fields, "formType": "field", "formId": self.form.get("_id"), ruleNum: self.ruleCount, "condNum": condNum}) + " </div>");
+          setFieldConditional(subCondition);
+          setTargetField(subCondition);
+          setValue(subCondition);
         }
-        ruleCount++;
+        self.ruleCount++;
 
       }
+
+
       self.$el.find('.rulesForm').each(function (){
          console.log("looking at visible rulesForm ", this);
          $(this).find('.btn-add-condition').hide().last().show();
