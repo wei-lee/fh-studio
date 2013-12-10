@@ -71,32 +71,32 @@ App.View.Rules = App.View.Forms.extend({
     });
   },
 
-  aggreagateFields : function(type){
-    this.fields = [{
-      "name":"select a field",
-      "type" :""
-    }];
-    var rules = ("field" == type) ? this.FIELD_RULES : this.PAGE_RULES;
-    console.log("pages ", this.pages);
-    for(var i=0; i < this.pages.length; i++){
-      var page = this.pages.models[i];
-
-      var pageFields = page.get("fields");
-      for(var p=0; p < pageFields.length; p++){
-        var fieldType = pageFields[p].type.trim();
-
-        var repeating = pageFields[p].repeating;
-
-        console.log("checking for field type ", fieldType , rules[fieldType], repeating);
-
-        if(rules[fieldType] && this.EXCLUDED_FIELD_TYPES.indexOf(fieldType) == -1 && ! repeating){
-          console.log("shoud add a field  *** ", pageFields[p]);
-          pageFields[p].rules = this.FIELD_RULES[fieldType];
-          this.fields.push(pageFields[p]);
-        }
-      }
-    }
-  },
+//  aggreagateFields : function(type){
+//    this.fields = [{
+//      "name":"select a field",
+//      "type" :""
+//    }];
+//    var rules = ("field" == type) ? this.FIELD_RULES : this.PAGE_RULES;
+//    console.log("pages ", this.pages);
+//    for(var i=0; i < this.pages.length; i++){
+//      var page = this.pages.models[i];
+//
+//      var pageFields = page.get("fields");
+//      for(var p=0; p < pageFields.length; p++){
+//        var fieldType = pageFields[p].type.trim();
+//
+//        var repeating = pageFields[p].repeating;
+//
+//        console.log("checking for field type ", fieldType , rules[fieldType], repeating);
+//
+//        if(rules[fieldType] && this.EXCLUDED_FIELD_TYPES.indexOf(fieldType) == -1 && ! repeating){
+//          console.log("shoud add a field  *** ", pageFields[p]);
+//          pageFields[p].rules = this.FIELD_RULES[fieldType];
+//          this.fields.push(pageFields[p]);
+//        }
+//      }
+//    }
+//  },
 
   aggreagateShowFields : function (){
     this.targetFields = [{

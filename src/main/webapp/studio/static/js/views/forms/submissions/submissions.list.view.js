@@ -6,18 +6,38 @@ App.View.SubmissionList = App.View.FormListBase.extend({
     'formsListBaseAdd' : '#formsListBaseAdd',
     'fullpageLoading' : '#fullpageLoading',
     'addToExistingApp' : '#addToExistingApp',
-    'submissionListExport' : '#submissionListExport'
+    'submissionListExport' : '#submissionListExport',
+    'advancedSearch' : '#advancedSearch',
+    'advancedSearchForm':'#advancedSearchForm',
+    'fieldRuleTemplate':"#fieldRuleTemplate",
+    'searchFieldName':'#searchFieldName',
+    'addedRuleCondition':'#addedRuleCondition'
   },
   events : {
     'click tr' : 'onRowSelected',
     'click .btn-add-formsapp' : 'onCreate',
     'click .btn-add-existing' : 'onCreate',
-    'click .btn-add-existing-app' : 'onAddExisting'
+    'click .btn-add-existing-app' : 'onAddExisting',
+    'click .advancedSearch' : 'advancedSearch',
+    'change .searchFieldName': 'onFieldSelectChange',
+    'click .btn-add-crit' : 'addCrit',
+    'click .btn-remove-crit':'removeCrit',
+    'click .btn-search' : 'doSearch',
+    'change .conditional' : 'conditionalChange',
+    'click .btn-cancel':'cancelSearch'
   },
   initialize: function(){
     var self = this;
+    console.log("init list view " , self.options);
+
     this.collection = new App.Collection.FormSubmissions([],{"formid":this.options.formId,"appId":this.options.appId});
     this.formsCol =  this.options.forms;
+    if(this.options.formId && this.formsCol ){
+      this.form = this.formsCol.findWhere({"_id":this.options.formId});
+      this.pages = this.form.get("pages");
+        //mixin view.mixins.js
+      this.aggregateFields();
+    }
 
     this.pluralTitle = 'Forms Submissions';
     this.singleTitle = 'Forms Submission';
@@ -54,6 +74,32 @@ App.View.SubmissionList = App.View.FormListBase.extend({
   render : function(){
     App.View.FormListBase.prototype.render.apply(this, arguments);
     return this.renderPreview();
+  },
+
+  addCrit : function (){
+    var self = this;
+    var container = self.$el.find('.databrowser:visible');
+    var critNum = self.$el.find('.searchCondition').length;
+    container.find('.advancedSearchContainer').append("<div class='searchCondition' id='"+critNum+"'>" + self.templates.$addedRuleCondition({}) + "<div class='row-fluid' style='padding-bottom: 5px; padding-top: 5px;'> " + self.templates.$searchFieldName({"fields":self.fields,"critNum":critNum}) + "</div></div>");
+  },
+
+  removeCrit : function (e){
+    var critId = $(e.target).data("crit");
+    var self = this;
+    console.log("removing crit ", critId);
+    self.$el.find('.searchCondition#'+critId).remove();
+    return false;
+  },
+
+  conditionalChange : function (e){
+    console.log("conditional changed");
+    var self = this;
+    var val = $(e.target).val();
+    self.$el.find('.conditional').each(function (){
+      if(val !== $(this).val()){
+          $(this).val(val);
+      }
+    });
   },
 
   renderList : function(){
@@ -115,8 +161,46 @@ App.View.SubmissionList = App.View.FormListBase.extend({
     return this;
   },
 
+
+  onFieldSelectChange: function (e) {
+    console.log("select change populate conditions");
+    var self = this;
+    var type = $(e.target).find('option').filter(':selected').data("type").trim();
+    var rulesSelect = $(e.target).next('select');
+    rulesSelect.empty();
+    var conditionals = Constants.APP_FORMS.FIELD_RULES[type];
+    if (!conditionals) {
+        console.log("no conditionals found");
+    } else {
+      var html = "";
+      for (var i = 0; i < conditionals.length; i++) {
+        html += "<option value='" + conditionals[i] + "'>" + conditionals[i] + "</option>";
+      }
+      rulesSelect.append(html);
+    }
+  },
+
+  advancedSearch : function (e){
+    var self = this;
+    console.log("advanced search called ", self.options);
+    var formModel = self.options.forms.findWhere({"_id" : self.options.formId});
+    console.log("formModel found ", formModel);
+    //remove message view replace with rules like view with a single search criterea
+    var container = self.$el.find('.databrowser:visible');
+
+    var table = self.$el.find('.dataTables_wrapper');
+    table.hide();
+    container.empty();
+    container.append(self.templates.$advancedSearchForm({"formid":self.options.formId,"appid":self.options.appId}));
+    container.find('.advancedSearchContainer').append("<div class='searchCondition' id='0'>"+self.templates.$searchFieldName({"fields":self.fields,"critNum":0})+ "</div>");
+    $('.databrowser":visible').removeClass('emptyContainer');
+    self.$el.find('.btn-remove-crit').first().remove();
+    return false;
+  },
+
   renderPreview : function(){
     console.log("render preview submissions");
+    var self = this;
     this.$previewEl = $('<div class="app" />');
     this.$el.append(this.$previewEl);
     this.$previewEl.hide();
@@ -126,7 +210,7 @@ App.View.SubmissionList = App.View.FormListBase.extend({
     this.$el.append(this.loading);
     console.log("found search input", $('.form-search:visible').html());
     if("singleForm" == this.options.listType){
-      $('.form-search').parent().append('<div style="width:100px; float:right; margin-right: 50px;"><a href="">Advanced Search</a></div>')
+      self.$el.find('.form-search').parent().append(self.templates.$advancedSearch());
     }
     return this;
   },
@@ -151,5 +235,17 @@ App.View.SubmissionList = App.View.FormListBase.extend({
   },
   onAddExisting: function(){
     var form = new App.View.FormAppsCreateEdit({ mode : 'create' });
+  },
+  doSearch : function (e){
+    var btn = $(e.target);
+    var appid = btn.data("appid");
+    var formid = btn.data("formid");
+    console.log("searching form " + formid + " with app " + appid);
+    return false;
+  },
+  cancelSearch : function (){
+    $('.formSelect:visible').trigger("change");
+    return false;
   }
+
 });

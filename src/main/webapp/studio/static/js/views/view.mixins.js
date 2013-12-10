@@ -35,9 +35,41 @@ App.View.TemplateMixins = {
   }
 };
 
+
+App.View.FormsMixins = {
+  "aggregateFields" : function (){
+    this.fields = [{
+      "name":"select a field",
+      "type" :""
+    }];
+    var rules = Constants.APP_FORMS.FIELD_RULES;
+    if(! this.pages){
+      throw new Error("no pages found aggregate fields");
+    }
+    for(var i=0; i < this.pages.length; i++){
+      var page = this.pages.models[i];
+      var pageFields = page.get("fields");
+      for(var p=0; p < pageFields.length; p++){
+        var fieldType = pageFields[p].type.trim();
+
+        var repeating = pageFields[p].repeating;
+
+        if(rules[fieldType] && Constants.APP_FORMS.EXCLUDED_FIELD_TYPES.indexOf(fieldType) == -1 && ! repeating){
+          pageFields[p].rules = rules[fieldType];
+          this.fields.push(pageFields[p]);
+        }
+      }
+    }
+  }
+};
+
 _.extend(App.View.Forms.prototype, App.View.TemplateMixins);
 _.extend(App.View.CMS.prototype, App.View.TemplateMixins);
 _.extend(App.View.CMSController.prototype, App.View.TemplateMixins);
 _.extend(App.View.PluginsView.prototype, App.View.TemplateMixins);
 _.extend(App.View.DataBrowserView.prototype, App.View.TemplateMixins);
 _.extend(App.View.FullPageMessageView.prototype, App.View.TemplateMixins);
+
+//forms
+_.extend(App.View.SubmissionList.prototype, App.View.FormsMixins);
+_.extend(App.View.Rules.prototype, App.View.FormsMixins);

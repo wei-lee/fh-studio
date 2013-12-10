@@ -48,7 +48,7 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
   },
 
   perFormSubmissions : function (e){
-    console.log("PER FORM SUBMISSIONS");
+    console.log("PER FORM SUBMISSIONS ", this.options);
     var self = this;
     self.switchActive(e);
 
@@ -74,7 +74,7 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
       submissionsContainer.find('.emptyContainer').remove();
       var selectTarget = $(e.target);
       submissionsContainer.find('.submissionslist').remove();
-      self.submissions = new App.View.SubmissionList({"forms":this.options.forms, "listType":"singleForm","formId":selectTarget.val()});
+      self.submissions = new App.View.SubmissionList({"forms":self.options.forms, "listType":"singleForm","formId":selectTarget.val()});
       submissionsContainer.append(self.submissions.render().$el);
     });
     this.active = 'perform';
@@ -131,11 +131,12 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
         }
         formid = selectTarget.val();
         submissionsContainer.find('.submissionslist').remove();
-        self.submissions = new App.View.SubmissionList({"forms":this.options.forms, "listType":"singleForm","formId":selectTarget.val(),"appId":appid});
+        self.submissions = new App.View.SubmissionList({"forms":self.options.forms, "listType":"singleForm","formId":selectTarget.val(),"appId":appid});
         submissionsContainer.append(self.submissions.render().$el);
       });
       appSelect.unbind("change").on("change", function (e){
         var val= $(e.target).val();
+        appid =val;
         submissionsContainer.find('.emptyContainer').remove();
         if(formSelect.val() === ""){
           console.log("appselect val empty");
@@ -143,7 +144,7 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
           submissionsContainer.append(self.selectMessage.render().$el);
           return;
         }
-        appid = val;
+
         submissionsContainer.find('.submissionslist').remove();
         self.submissions = new App.View.SubmissionList({"apps":appnames, "listType":"singleForm","appId":val,"formId":formid});
         submissionsContainer.append(self.submissions.render().$el);

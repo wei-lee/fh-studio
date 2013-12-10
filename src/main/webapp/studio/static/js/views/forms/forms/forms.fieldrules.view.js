@@ -24,7 +24,7 @@ App.View.FormFieldRules = App.View.Rules.extend({
     this.form = this.options.form;
     this.fieldRules = this.options.form.get("fieldRules");
     this.pages = this.form.get("pages");
-    this.aggreagateFields("fields");
+    this.aggregateFields();
     this.aggreagateShowFields();
     $('.formsContainer').remove();
     this.$el.empty();

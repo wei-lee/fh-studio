@@ -1,58 +1,62 @@
 <div id="tabs-8">
-  <div id="forms_layout">
-    <div class="row-fluid crumb_container">
-      <ul class="breadcrumb"></ul>
-    </div>
+    <div id="forms_layout">
+        <div class="row-fluid crumb_container">
+            <ul class="breadcrumb"></ul>
+        </div>
 
-    <div class="row-fluid">
-      <div class="span12" id="forms_container">
+        <div class="row-fluid">
+            <div class="span12" id="forms_container">
 
-      </div>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 <script id="formsContainer" type="text/x-handlebars-template">
-  <div id="forms_dashboard_container"></div>
-  <div id="forms_setup_container"></div>
+    <div id="forms_dashboard_container"></div>
+    <div id="forms_setup_container"></div>
 </script>
 <!-- field rule templates --------->
 <script id="formsRulesTab" type="text/x-handlebars-template">
-    <div class="span10 well formsContainer" >
-    <ul class="nav nav-tabs">
-        <li class="active" >
-            <a href="#" id="fieldRules" >Field Rules</a>
-        </li>
-        <li><a href="#" id="pageRules">Page Rules</a></li>
-    </ul>
-    <h4>{{rulesHeading}}</h4>
-    <div class="span11">
-        <button class="btn pull-right createrule">Create New Rule</button>
-    </div>
-    <div class="span11 rulesContent">
-        <p>rules shown here</p>
+    <div class="span10 well formsContainer">
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a href="#" id="fieldRules">Field Rules</a>
+            </li>
+            <li><a href="#" id="pageRules">Page Rules</a></li>
+        </ul>
+        <h4>{{rulesHeading}}</h4>
 
-    </div>
-    <div class="span11">
-        <button class="btn-warning pull-right saverules" data-type="{{type}}">Save Rules</button>
-    </div>
+        <div class="span11">
+            <button class="btn pull-right createrule">Create New Rule</button>
+        </div>
+        <div class="span11 rulesContent">
+            <p>rules shown here</p>
+
+        </div>
+        <div class="span11">
+            <button class="btn-warning pull-right saverules" data-type="{{type}}">Save Rules</button>
+        </div>
     </div>
 </script>
 
 
 <script id="fieldRuleTemplate" type="text/x-handlebars-template">
     <div class="row-fluid formRuleContainer">
-      <form class="form-inline rulesForm rule" id="rule{{ruleNum}}" data-type="{{formType}}" data-formId="{{formId}}" data-ruleid="{{ruleId}}"  >
-          <div class="row-fluid ruleDefintionContainer">
+        <form class="form-inline rulesForm rule" id="rule{{ruleNum}}" data-type="{{formType}}" data-formId="{{formId}}"
+              data-ruleid="{{ruleId}}">
+            <div class="row-fluid ruleDefintionContainer">
 
-          </div>
-          <div class="row-fluid hide condition" >
+            </div>
+            <div class="row-fluid hide condition">
 
-          </div>
-          <div class="row-fluid ruleResult" style="padding-top:5px;">
-          </div>
-      </form>
-      <div class="row-fluid ruleline"><hr/></div>
+            </div>
+            <div class="row-fluid ruleResult" style="padding-top:5px;">
+            </div>
+        </form>
+        <div class="row-fluid ruleline">
+            <hr/>
+        </div>
 
     </div>
 
@@ -60,8 +64,8 @@
 </script>
 
 <script id="addedRuleCondition" type="text/x-handlebars-template">
-    <div class="row-fluid conditioncontainer" id="{{condNum}}" >
-        <select class="conditional" >
+    <div class="row-fluid conditioncontainer" style="margin-top:5px;" id="{{condNum}}">
+        <select class="conditional">
             <option value="or">OR</option>
             <option value="and">AND</option>
         </select>
@@ -71,34 +75,45 @@
 
 <script id="ruleDefinitions" type="text/x-handlebars-template">
     <i class="icon-warning-sign hide"></i>
-    <select class="rulesFieldName sourceField" >
-    {{#each fields}}
-        <option data-type="{{type}}"  data-_id="{{_id}}" value="{{name}}" >{{name}}</option>
-    {{/each}}
+    <select class="rulesFieldName sourceField">
+        {{#each fields}}
+        <option data-type="{{type}}" data-_id="{{_id}}" value="{{name}}">{{name}}</option>
+        {{/each}}
     </select>
-    <select class="fieldConditionals" id="fieldConditionals" >
-    {{#each conditions}}
+    <select class="fieldConditionals" id="fieldConditionals">
+        {{#each conditions}}
         <option value="{{this}}">{{this}}</option>
-    {{/each}}
+        {{/each}}
     </select>
-    <input type="text" name="checkedValue" class="required" placeholder="checked value" />
-    <button type="button" class="btn btn-small btn-add-condition" data-placement="right" data-toggle="tooltip" data-original-title="click to add a new condition to this rule" data-rulenum="{{ruleNum}}" data-conditionnum="{{condNum}}"  ><i data-rulenum="{{ruleNum}}" data-conditionnum="{{condNum}}" class="icon-plus"></i>  </button>
-    <button type="button" class="btn btn-small btn-remove-condition"  data-placement="right" data-toggle="tooltip" data-original-title="click to remove this condition" data-rulenum="{{ruleNum}}" data-conditionnum="{{condNum}}" ><i data-rulenum="{{ruleNum}}" data-conditionnum="{{condNum}}" class="icon-minus"></i>  </button>
+    <input type="text" name="checkedValue" class="required" placeholder="checked value"/>
+    <button type="button" class="btn btn-small btn-add-condition" data-placement="right" data-toggle="tooltip"
+            data-original-title="click to add a new condition to this rule" data-rulenum="{{ruleNum}}"
+            data-conditionnum="{{condNum}}"><i data-rulenum="{{ruleNum}}" data-conditionnum="{{condNum}}"
+                                               class="icon-plus"></i></button>
+    <button type="button" class="btn btn-small btn-remove-condition" data-placement="right" data-toggle="tooltip"
+            data-original-title="click to remove this condition" data-rulenum="{{ruleNum}}"
+            data-conditionnum="{{condNum}}"><i data-rulenum="{{ruleNum}}" data-conditionnum="{{condNum}}"
+                                               class="icon-minus"></i></button>
 
-    <button type="button" data-ruleid="{{ruleId}}" data-placement="right" data-toggle="tooltip" data-original-title="click to add a new rule"  class="btn btn-large btn-primary btn-add-rule"><i data-rulenum="{{ruleNum}}" class="icon-plus"></i>  </button>
-    <button type="button" data-ruleid="{{ruleId}}"  data-rulenum="{{ruleNum}}" data-placement="right" data-toggle="tooltip" data-original-title="click to remove this rule" class="btn btn-large btn-primary btn-remove-rule"><i data-rulenum="{{ruleNum}}" class="icon-minus"></i>  </button>
+    <button type="button" data-ruleid="{{ruleId}}" data-placement="right" data-toggle="tooltip"
+            data-original-title="click to add a new rule" class="btn btn-large btn-primary btn-add-rule"><i
+            data-rulenum="{{ruleNum}}" class="icon-plus"></i></button>
+    <button type="button" data-ruleid="{{ruleId}}" data-rulenum="{{ruleNum}}" data-placement="right"
+            data-toggle="tooltip" data-original-title="click to remove this rule"
+            class="btn btn-large btn-primary btn-remove-rule"><i data-rulenum="{{ruleNum}}" class="icon-minus"></i>
+    </button>
 </script>
 
 <script id="ruleResult" type="text/x-handlebars-template">
-        <select id="targetAction" style="margin-left:13px;" >
-            <option value="show" >show</option>
-            <option value="hide" >hide</option>
-        </select>
-        <select class="targetField" id="targetField">
-            {{#each fields}}
-            <option data-type="{{type}}" data-_id="{{_id}}">{{name}}</option>
-            {{/each}}
-        </select>
+    <select id="targetAction" style="margin-left:13px;">
+        <option value="show">show</option>
+        <option value="hide">hide</option>
+    </select>
+    <select class="targetField" id="targetField">
+        {{#each fields}}
+        <option data-type="{{type}}" data-_id="{{_id}}">{{name}}</option>
+        {{/each}}
+    </select>
 </script>
 
 
@@ -113,316 +128,330 @@
 <!-- field rule templates --------->
 
 
-
 <script id="formsMenu" type="text/x-handlebars-template">
-  <div class="span2 forms_menu_container">
-    <ul class="nav nav-list well">
-      <li class="nav-header">Forms</li>
-      <li class="active">
-        <a class="btn-forms" href="#">
-          <i class="icon-list-alt"></i>
-          Forms
-        </a>
-      </li>
-     {{#checkRole "formseditor,formsadmin" }}
-      <li id="myapps_listitem">
-        <a class="btn-themes" href="#">
-          <i class="icon-eye-open"></i>
-          Themes
-        </a>
-      </li>
-      {{/checkRole }}
-      {{#checkRole "formsviewer,formsadmin" }}
-      <li>
-        <a class="btn-apps" href="#">
-          <i class="icon-th-large"></i>
-          Apps
-        </a>
-      </li>
-      {{/checkRole }}
-      {{#checkRole "formsviewer,formseditor,formsadmin"}}
-      <li>
-        <a class="btn-submissions" href="#">
-          <i class="icon-envelope"></i>
-          Submissions
-        </a>
-      </li>
-      {{/checkRole}}
-    </ul>
-  </div>
+    <div class="span2 forms_menu_container">
+        <ul class="nav nav-list well">
+            <li class="nav-header">Forms</li>
+            <li class="active">
+                <a class="btn-forms" href="#">
+                    <i class="icon-list-alt"></i>
+                    Forms
+                </a>
+            </li>
+            {{#checkRole "formseditor,formsadmin" }}
+            <li id="myapps_listitem">
+                <a class="btn-themes" href="#">
+                    <i class="icon-eye-open"></i>
+                    Themes
+                </a>
+            </li>
+            {{/checkRole }}
+            {{#checkRole "formsviewer,formsadmin" }}
+            <li>
+                <a class="btn-apps" href="#">
+                    <i class="icon-th-large"></i>
+                    Apps
+                </a>
+            </li>
+            {{/checkRole }}
+            {{#checkRole "formsviewer,formseditor,formsadmin"}}
+            <li>
+                <a class="btn-submissions" href="#">
+                    <i class="icon-envelope"></i>
+                    Submissions
+                </a>
+            </li>
+            {{/checkRole}}
+        </ul>
+    </div>
 </script>
+
+
+<!-- advanced search form -->
+
 
 <script id="formsListBaseAdd" type="text/x-handlebars-template">
-    <a data-mode="create" class="btn pull-right btn-success btn-add-{{ cls }}" href="#"><i class="icon icon-plus"></i> Add {{ name }}</a>
+    <a data-mode="create" class="btn pull-right btn-success btn-add-{{ cls }}" href="#"><i class="icon icon-plus"></i>
+        Add {{ name }}</a>
 </script>
-
 
 
 <script id="formsListMenu" type="text/x-handlebars-template">
-  <ul class="nav nav-pills nav-stacked well">
-    <li><a class="btn-edit-form" href="#"><i class="icon-edit"></i>Edit Form</a></li>
-    <li><a class="btn-edit-form-rules" href="#"><i class="icon-pencil"></i> Edit Rules</a></li>
-    <li><a class="btn-form-submissions" href="#"><i class="icon-envelope"></i> View Submissions</a></li>
-    <li class="dropdown">
-      <a class="dropdown-toggle"
-         data-toggle="dropdown"
-         href="#">
-        <i class="icon-th-large"></i> Apps
-        <b class="caret"></b>
-      </a>
-      <ul class="dropdown-menu apps-using-form">
-      </ul>
-    </li>
-    <li><a class="btn-clone-form" href="#"><i class="icon-retweet"></i> Clone</a></li>
-    <li><a class="btn-delete-form" href="#"><i class="icon-trash"></i> Delete</a></li>
+    <ul class="nav nav-pills nav-stacked well">
+        <li><a class="btn-edit-form" href="#"><i class="icon-edit"></i>Edit Form</a></li>
+        <li><a class="btn-edit-form-rules" href="#"><i class="icon-pencil"></i> Edit Rules</a></li>
+        <li><a class="btn-form-submissions" href="#"><i class="icon-envelope"></i> View Submissions</a></li>
+        <li class="dropdown">
+            <a class="dropdown-toggle"
+               data-toggle="dropdown"
+               href="#">
+                <i class="icon-th-large"></i> Apps
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu apps-using-form">
+            </ul>
+        </li>
+        <li><a class="btn-clone-form" href="#"><i class="icon-retweet"></i> Clone</a></li>
+        <li><a class="btn-delete-form" href="#"><i class="icon-trash"></i> Delete</a></li>
 
-  </ul>
+    </ul>
 </script>
 
 <script id="formCreateEditform" type="text/x-handlebars-template">
-  <form class="form-horizontal">
-    <fieldset>
-      <label for="formInputName">Name</label>
-      <input type="text" id="formInputName" placeholder="Name" name="{{ CONSTANTS.FORM.NAME }}">
-      <label for="formTextareaDesc">Description</label>
-      <textarea id="formTextareaDesc" placeholder="Description" name="{{ CONSTANTS.FORM.DESC }}"></textarea>
-    </fieldset>
-  </form>
+    <form class="form-horizontal">
+        <fieldset>
+            <label for="formInputName">Name</label>
+            <input type="text" id="formInputName" placeholder="Name" name="{{ CONSTANTS.FORM.NAME }}">
+            <label for="formTextareaDesc">Description</label>
+            <textarea id="formTextareaDesc" placeholder="Description" name="{{ CONSTANTS.FORM.DESC }}"></textarea>
+        </fieldset>
+    </form>
 </script>
 
 <script id="formCreateEdittheme" type="text/x-handlebars-template">
-  <form class="form-horizontal">
-    <fieldset>
-      <label for="formInputName">Name</label>
-      <input type="text" id="formInputName" placeholder="Name" name="{{ CONSTANTS.THEME.NAME }}">
-    </fieldset>
-  </form>
+    <form class="form-horizontal">
+        <fieldset>
+            <label for="formInputName">Name</label>
+            <input type="text" id="formInputName" placeholder="Name" name="{{ CONSTANTS.THEME.NAME }}">
+        </fieldset>
+    </form>
 </script>
 
 <script id="formCreateEditformsapp" type="text/x-handlebars-template">
-  <!-- Gets added by the extra view we add in -->
+    <!-- Gets added by the extra view we add in -->
 </script>
 
 <script id="formEditExtraTabs" type="text/x-handlebars-template">
-<li class="formconfig"><a  data-target="#formConfig"><i class="icon icon-cog"></i> Form</a></li>
-  <li class="formpreview"><a  data-target="#formPreview">Preview</a></li>
+    <li class="formconfig"><a data-target="#formConfig"><i class="icon icon-cog"></i> Form</a></li>
+    <li class="formpreview"><a data-target="#formPreview">Preview</a></li>
 </script>
 
 <script id="formEditExtraTabsContent" type="text/x-handlebars-template">
-  <div class="fb-tab-pane" id="formConfig">
-    <h1>Config</h1>
-  </div>
-  <div class="fb-tab-pane" id="formPreview">
-    <h1>Preview</h1>
-  </div>
+    <div class="fb-tab-pane" id="formConfig">
+        <h1>Config</h1>
+    </div>
+    <div class="fb-tab-pane" id="formPreview">
+        <h1>Preview</h1>
+    </div>
 </script>
 
 <script id="formSaveCancel" type="text/x-handlebars-template">
-  <div class="row">
-    <div class="btn-group pull-right">
-      <a class="btn btn-danger btn-form-cancel" href="#">Cancel</a>
-      <a class="btn btn-success btn-form-save" href="#">Save</a>
+    <div class="row">
+        <div class="btn-group pull-right">
+            <a class="btn btn-danger btn-form-cancel" href="#">Cancel</a>
+            <a class="btn btn-success btn-form-save" href="#">Save</a>
+        </div>
     </div>
-  </div>
 </script>
 
 <script id="form_back" type="text/x-handlebars-template">
-  <a class="btn btn-forms-back pull-left" href="#"><i class="icon-arrow-left"></i> Back</a>
+    <a class="btn btn-forms-back pull-left" href="#"><i class="icon-arrow-left"></i> Back</a>
 </script>
 
 <script id="form_message" type="text/x-handlebars-template">
-  <div class="alert alert-{{ cls }}">
-    <button type="button" class="close" data-dismiss="alert">&times;</button>
-    {{{ msg }}}
-  </div>
+    <div class="alert alert-{{ cls }}">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{{ msg }}}
+    </div>
 </script>
 
 <script id="form_pages" type="text/x-handlebars-template">
-  <ul class="nav nav-list well formpages-menu">
-    <li class="nav-header">Form Pages</li>
-    Drag to re-order
-    <div class="form-pages">
-    </div>
-  </ul>
+    <ul class="nav nav-list well formpages-menu">
+        <li class="nav-header">Form Pages</li>
+        Drag to re-order
+        <div class="form-pages">
+        </div>
+    </ul>
 </script>
 <script id="form_page" type="text/x-handlebars-template">
-  <div class="form-page" data-_id="{{{ _id }}}">
-    <h2><i class="icon-file"></i></h2>
-    <h4>{{{ name }}}</h4>
-  </div>
+    <div class="form-page" data-_id="{{{ _id }}}">
+        <h2><i class="icon-file"></i></h2>
+        <h4>{{{ name }}}</h4>
+    </div>
 </script>
 
 <script id="preview_outline" type="text/x-handlebars-template">
-  <div id="preview_wrapper" style="overflow: hidden; width: 227px; height: 470px; -webkit-transform-style: preserve-3d;">
-    <div id="#forms_preview_frame" style="position: absolute; -webkit-transform-origin: 0px 0px; -webkit-transform: scale(0.4585858585858586, 0.4585858585858586); top: 0px; left: 0px; margin-top: 0px; margin-left: 0px; width: 400px; height: 710px; padding: 160px 48px 154px 47px; background-image: url(https://testing.feedhenry.me/studio/static/themes/default/img/preview_device/iphone_5.png); display: block; background-position: initial initial; background-repeat: no-repeat no-repeat;">
-    <div class="formPreviewContents" style="width: 400px; height: 710px;">
-      <h1>Testing</h1>
+    <div id="preview_wrapper"
+         style="overflow: hidden; width: 227px; height: 470px; -webkit-transform-style: preserve-3d;">
+        <div id="#forms_preview_frame"
+             style="position: absolute; -webkit-transform-origin: 0px 0px; -webkit-transform: scale(0.4585858585858586, 0.4585858585858586); top: 0px; left: 0px; margin-top: 0px; margin-left: 0px; width: 400px; height: 710px; padding: 160px 48px 154px 47px; background-image: url(https://testing.feedhenry.me/studio/static/themes/default/img/preview_device/iphone_5.png); display: block; background-position: initial initial; background-repeat: no-repeat no-repeat;">
+            <div class="formPreviewContents" style="width: 400px; height: 710px;">
+                <h1>Testing</h1>
 
+            </div>
+        </div>
+        <div id="preview_text" style="display: none;"><span id="preview_device_too_large1" class="">Preview size too large for inline display. Click </span><a
+                id="preview_device_open_emulator" class="script-link">here</a><span id="preview_device_too_large2"
+                                                                                    class=""> to view the preview in the Device Emulator</span>
+        </div>
     </div>
-    </div>
-    <div id="preview_text" style="display: none;"><span id="preview_device_too_large1" class="">Preview size too large for inline display. Click </span><a id="preview_device_open_emulator" class="script-link">here</a><span id="preview_device_too_large2" class=""> to view the preview in the Device Emulator</span></div>
-  </div>
 </script>
 
 <!-- Themes specific templates -->
 
 <script id="themesListMenu" type="text/x-handlebars-template">
-  <ul class="nav nav-pills nav-stacked well">
-    <li><a class="btn-edit-theme" href="#"><i class="icon-edit"></i>Edit Theme</a></li>
-    <li><a class="btn-preview-theme" href="#"><i class="icon-pencil"></i> Preview Theme</a></li>
-    <li><a class="btn-view-theme-apps" href="#"><i class="icon-th-large"></i> View Apps</a></li>
-    <li><a class="btn-clone-theme" href="#"><i class="icon-retweet"></i> Clone</a></li>
-    <li><a class="btn-delete-theme" href="#"><i class="icon-trash"></i> Delete</a></li>
+    <ul class="nav nav-pills nav-stacked well">
+        <li><a class="btn-edit-theme" href="#"><i class="icon-edit"></i>Edit Theme</a></li>
+        <li><a class="btn-preview-theme" href="#"><i class="icon-pencil"></i> Preview Theme</a></li>
+        <li><a class="btn-view-theme-apps" href="#"><i class="icon-th-large"></i> View Apps</a></li>
+        <li><a class="btn-clone-theme" href="#"><i class="icon-retweet"></i> Clone</a></li>
+        <li><a class="btn-delete-theme" href="#"><i class="icon-trash"></i> Delete</a></li>
 
-  </ul>
+    </ul>
 </script>
 
 <script id="themeColourRow" type="text/x-handlebars-template">
-  <div class="colorRow">
-    <label>{{name}}</label>
-    <input type='text' name='{{name}}' value="{{value}}" />
-  </div>
+    <div class="colorRow">
+        <label>{{name}}</label>
+        <input type='text' name='{{name}}' value="{{value}}"/>
+    </div>
 </script>
 
 <script id="themeFontRowReadOnly" type="text/x-handlebars-template">
-  <div class="fontrow" data-name="{{ name }}">
-    <label>
-      {{ name }}
-    </label>
-    <div class="size">{{ r.fontSize }}</div>
-    <div class="family">{{ r.fontFamily }}</div>
-    <div class="style">{{ r.fontStyle }}</div>
-    <input class="colour" type='text' name='fontColour' value="{{r.fontColour}}" />
-  </div>
+    <div class="fontrow" data-name="{{ name }}">
+        <label>
+            {{ name }}
+        </label>
+
+        <div class="size">{{ r.fontSize }}</div>
+        <div class="family">{{ r.fontFamily }}</div>
+        <div class="style">{{ r.fontStyle }}</div>
+        <input class="colour" type='text' name='fontColour' value="{{r.fontColour}}"/>
+    </div>
 </script>
 
 <script id="themeFontRow" type="text/x-handlebars-template">
-  <div class="fontrow" data-name="{{ name }}">
+    <div class="fontrow" data-name="{{ name }}">
 
-    <label>
-      {{ name }}
-    </label>
-    <select class="size" name="fontSize">
-      <option value="11pt">11pt</option>
-      <option value="12pt"> 12pt</option>
-      <option value="14pt"> 14pt</option>
-      <option value="18pt"> 18pt</option>
-    </select>
+        <label>
+            {{ name }}
+        </label>
+        <select class="size" name="fontSize">
+            <option value="11pt">11pt</option>
+            <option value="12pt"> 12pt</option>
+            <option value="14pt"> 14pt</option>
+            <option value="18pt"> 18pt</option>
+        </select>
 
-    <select class="family" name="fontFamily">
-      <option value="arial">Arial</option>
-      <option value="courier">Courier</option>
-      <option value="georgia">Georgia</option>
-      <option value="times">Times</option>
-    </select>
+        <select class="family" name="fontFamily">
+            <option value="arial">Arial</option>
+            <option value="courier">Courier</option>
+            <option value="georgia">Georgia</option>
+            <option value="times">Times</option>
+        </select>
 
-    <select class="style" name="fontStyle">
-      <option value="normal">Normal</option>
-      <option value="bold">Bold</option>
-      <option value="italic">Italic</option>
-    </select>
-    <input class="colour" type='text' name='fontColour' value="{{r.fontColour}}" />
-  </div>
+        <select class="style" name="fontStyle">
+            <option value="normal">Normal</option>
+            <option value="bold">Bold</option>
+            <option value="italic">Italic</option>
+        </select>
+        <input class="colour" type='text' name='fontColour' value="{{r.fontColour}}"/>
+    </div>
 </script>
 
 <script id="themeName" type="text/x-handlebars-template">
-  <div class="form form-inline pull-left">
-    <label>Theme Name</label>
-    <input type="text" name="themename" value="{{ name }}">
-  </div>
+    <div class="form form-inline pull-left">
+        <label>Theme Name</label>
+        <input type="text" name="themename" value="{{ name }}">
+    </div>
 </script>
 
 <script id="themePreviewButton" type="text/x-handlebars-template">
-  <a class="btn btn-primary btn-preview-theme pull-right">Preview Theme</a>
-  <br style="clear : both;" />
+    <a class="btn btn-primary btn-preview-theme pull-right">Preview Theme</a>
+    <br style="clear : both;"/>
 </script>
 
 <script id="themeBorderRowReadOnly" type="text/x-handlebars-template">
-  <div class="borderrow" data-name="{{ name }}">
+    <div class="borderrow" data-name="{{ name }}">
 
-    <label>
-      {{ name }}
-    </label>
-    <div class="thickness">{{ r.thickness }}</div>
-    <div class="style">{{ r.style }}</div>
-    <input class="colour" type='text' name='colour' value="{{r.colour}}" />
-  </div>
+        <label>
+            {{ name }}
+        </label>
+
+        <div class="thickness">{{ r.thickness }}</div>
+        <div class="style">{{ r.style }}</div>
+        <input class="colour" type='text' name='colour' value="{{r.colour}}"/>
+    </div>
 </script>
 
 <script id="themeBorderRow" type="text/x-handlebars-template">
-  <div class="borderrow" data-name="{{ name }}">
+    <div class="borderrow" data-name="{{ name }}">
 
-    <label>
-      {{ name }}
-    </label>
-    <select class="thickness" name="thickness">
-      <option value="none">None</option>
-      <option value="hairline">Hairline</option>
-      <option value="thin">Thin</option>
-      <option value="medium">Medium</option>
-      <option value="thick">Thick</option>
-    </select>
+        <label>
+            {{ name }}
+        </label>
+        <select class="thickness" name="thickness">
+            <option value="none">None</option>
+            <option value="hairline">Hairline</option>
+            <option value="thin">Thin</option>
+            <option value="medium">Medium</option>
+            <option value="thick">Thick</option>
+        </select>
 
-    <select class="style" name="style">
-      <option value="solid">Solid</option>
-      <option value="dashed">Dashed</option>
-      <option value="dotted">Dotted</option>
-      <option value="double">Double</option>
-    </select>
+        <select class="style" name="style">
+            <option value="solid">Solid</option>
+            <option value="dashed">Dashed</option>
+            <option value="dotted">Dotted</option>
+            <option value="double">Double</option>
+        </select>
 
-    <input class="colour" type='text' name='colour' value="{{r.colour}}" />
-  </div>
+        <input class="colour" type='text' name='colour' value="{{r.colour}}"/>
+    </div>
 </script>
 
 
 <script id="themeButtons" type="text/x-handlebars-template">
-  Form buttons
-  Navigation
-  Colour - Hex Value
-  Action
-  Colour - Hex Value
-  Cancel
-  Colour Hex Value
+    Form buttons
+    Navigation
+    Colour - Hex Value
+    Action
+    Colour - Hex Value
+    Cancel
+    Colour Hex Value
 </script>
 
 <script id="themeLogo" type="text/x-handlebars-template">
-  <img alt="Embedded Image" src="data:image/png;base64,{{{ logoBase64 }}}" />
+    <img alt="Embedded Image" src="data:image/png;base64,{{{ logoBase64 }}}"/>
 </script>
 
 <script id="formsApps" type="text/x-handlebars-template">
-<div class="well">
-  <form class="form-horizontal formsApps span6">
-    <div class="control-group">
-      <label class="control-label" for="inputFormAppName">App Name</label>
-      <div class="controls appname">
-        <input type="text" id="inputFormAppName" class="" name="name" value="{{ name }}">
-      </div>
+    <div class="well">
+        <form class="form-horizontal formsApps span6">
+            <div class="control-group">
+                <label class="control-label" for="inputFormAppName">App Name</label>
+
+                <div class="controls appname">
+                    <input type="text" id="inputFormAppName" class="" name="name" value="{{ name }}">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="formAppTheme">App Theme</label>
+
+                <div class="controls">
+                    <select id="formAppTheme" name="theme" class="">
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="formAppForms">Forms</label>
+
+                <div class="controls">
+                    <select id="formAppForms" name="forms" multiple class="">
+                    </select>
+                </div>
+            </div>
+            <div class="btn-group pull-right">
+                <a href="#" class="btn btn-primary btn-app-submissions">View Submissions &raquo;</a>
+                <a href="#" class="btn btn-success">Save</a>
+            </div>
+        </form>
+        <br style="clear: both;"/>
     </div>
-    <div class="control-group">
-      <label class="control-label" for="formAppTheme">App Theme</label>
-      <div class="controls">
-        <select id="formAppTheme" name="theme" class="">
-        </select>
-      </div>
-    </div>
-    <div class="control-group">
-      <label class="control-label" for="formAppForms">Forms</label>
-      <div class="controls">
-        <select id="formAppForms" name="forms" multiple class="">
-        </select>
-      </div>
-    </div>
-    <div class="btn-group pull-right">
-      <a href="#" class="btn btn-primary btn-app-submissions">View Submissions &raquo;</a>
-      <a href="#" class="btn btn-success">Save</a>
-    </div>
-  </form>
-  <br style="clear: both;" />
-</div>
 </script>
 
 <script id="addToExistingApp" type="text/x-handlebars-template">
-  <a data-mode="existing" class="btn pull-right btn-success btn-add-existing" href="#"><i class="icon icon-plus"></i> Add Forms to Existing App</a>
+    <a data-mode="existing" class="btn pull-right btn-success btn-add-existing" href="#"><i class="icon icon-plus"></i>
+        Add Forms to Existing App</a>
 </script>
 
 <!-- form submission templates -->
@@ -431,11 +460,11 @@
 <script id="formsSubmissionsTab" type="text/x-handlebars-template">
     <div class="span10 well submissionsContainer" style="margin-left:10px; ">
         <ul class="nav nav-tabs submissionTabs">
-            <li class="active" >
-                <a href="#" id="recentSubmissions" >Recent Submissions</a>
+            <li class="active">
+                <a href="#" id="recentSubmissions">Recent Submissions</a>
             </li>
-            <li >
-                <a href="#" id="perFormSubmissions" >Per Form Submissions</a>
+            <li>
+                <a href="#" id="perFormSubmissions">Per Form Submissions</a>
             </li>
             <li><a href="#" id="perAppSubmissions">Per App Submissions</a></li>
         </ul>
@@ -447,84 +476,97 @@
 </script>
 
 <script id="submissionListExport" type="text/x-handlebars-template">
-    <a data-mode="create" class="btn pull-right btn-primary btn-export" href="#" ><i class="icon icon-download"></i> Export Submissions</a>
-    <a data-mode="create" class="btn pull-right btn-warning btn-add-submission hide" style="margin-right:6px;" href="#"><i class="icon icon-upload"></i> Add Submissions</a>
+    <a data-mode="create" class="btn pull-right btn-primary btn-export" href="#"><i class="icon icon-download"></i>
+        Export Submissions</a>
+    <a data-mode="create" class="btn pull-right btn-warning btn-add-submission hide" style="margin-right:6px;" href="#"><i
+            class="icon icon-upload"></i> Add Submissions</a>
 
 </script>
 
 <script type="text/x-handlebars-template" id="formSelect">
-    <select class="pull-left formSelect" >
-        <option value="" >All Forms</option>
+    <select class="pull-left formSelect">
+        <option value="">All Forms</option>
         {{#each forms}}
-        <option value="{{_id}}" >{{name}}</option>
+        <option value="{{_id}}">{{name}}</option>
         {{/each}}
     </select>
 </script>
 
 <script type="text/x-handlebars-template" id="appSelect">
-    <select class="pull-left appSelect" >
-        <option value="" >Select an App</option>
+    <select class="pull-left appSelect">
+        <option value="">Select an App</option>
         {{#each apps}}
-        <option value="{{id}}" >{{title}}</option>
+        <option value="{{id}}">{{title}}</option>
         {{/each}}
     </select>
 </script>
 
 <script type="text/x-handlebars-template" id="formSubmissionDetail">
-    <div class="span7" id="submissionDetails" style="overflow:scroll" >
+    <div class="span7" id="submissionDetails" style="overflow:scroll">
         <h5>Form Submission</h5>
+
         <form class="form-horizontal">
             {{#each formFields}}
             <div class="control-group">
-                <label class="control-label" >{{fieldId.name}}:</label>
+                <label class="control-label">{{fieldId.name}}:</label>
+
                 <div class="controls">
-                   {{#createFormField this}}{{/createFormField}}
+                    {{#createFormField this}}{{/createFormField}}
                 </div>
             </div>
             {{/each}}
         </form>
     </div>
-    <div class="span5" id="submissionMeta" >
+    <div class="span5" id="submissionMeta">
         <h5>Submission Information</h5>
+
         <form class="form-horizontal">
             <div class="control-group">
                 <label class="control-label" for="inputDateTime">Date/Time Recieved:</label>
+
                 <div class="controls">
-                    <input disabled type="text" value="{{deviceFormTimestamp}}" id="inputDateTime" placeholder="Date/time">
+                    <input disabled type="text" value="{{deviceFormTimestamp}}" id="inputDateTime"
+                           placeholder="Date/time">
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputUser">Recieved From User:</label>
+
                 <div class="controls">
                     <input disabled type="text" value="{{userId}}" id="inputUser" placeholder="user">
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputApp">Recieved From App:</label>
+
                 <div class="controls">
                     <input disabled type="text" value="{{appCloudName}}" id="inputApp" placeholder="app">
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputDevice">Recieved From Device:</label>
+
                 <div class="controls">
                     <input disabled type="text" value="{{deviceId}}" id="inputDevice" placeholder="device">
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputIp">Recieved From Ip:</label>
+
                 <div class="controls">
                     <input disabled type="text" value="{{deviceIPAddress}}" id="inputIp" placeholder="ipaddress">
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputEditedTime">Date time edited:</label>
+
                 <div class="controls">
                     <input disabled type="text" id="inputEditedTime" placeholder="date time edited">
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputEditedBy">Edited By:</label>
+
                 <div class="controls">
                     <input disabled type="text" id="inputEditedBy" placeholder="edited by">
                 </div>
@@ -546,3 +588,50 @@
 
 <!-- end form submission templates -->
 
+<script type="text/x-handlebars-template" id="advancedSearch">
+    <div style="width:100px; float:right; margin-right: 50px;"><a class="advancedSearch" href="">Advanced Search</a>
+    </div>
+</script>
+
+<script type="text/x-handlebars-template" id="advancedSearchForm">
+
+
+    <div class="row-fluid span12 well ">
+        <h4>Advanced Search</h4>
+
+        <form class="form-horizontal  advancedSearchContainer">
+
+        </form>
+        <div class="span5" style="padding: 8px;">
+            <button style="margin:2px;" class="btn-primary btn-search pull-right" data-formid="{{formid}}"
+                    data-appid="{{appid}}">Search
+            </button>
+            <button style="margin:2px;" class="btn-warning btn-cancel pull-right" data-formid="{{formid}}"
+                    data-appid="{{appid}}">Cancel
+            </button>
+        </div>
+
+    </div>
+
+</script>
+
+<script type="text/x-handlebars-template" id="searchFieldName">
+    <select class="searchFieldName sourceField">
+        {{#each fields}}
+        <option data-type="{{type}}" data-_id="{{_id}}" value="{{name}}">{{name}}</option>
+        {{/each}}
+    </select>
+    <select class="fieldConditionals" id="fieldConditionals">
+        {{#each conditions}}
+        <option value="{{this}}">{{this}}</option>
+        {{/each}}
+    </select>
+    <input type="text" placeholder="checked value">
+    <button type="button" data-placement="right" data-toggle="tooltip"
+            data-original-title="click to add a new search criteria" class="btn btn-large btn-primary btn-add-crit"><i
+            class="icon-plus"></i></button>
+    <button type="button" data-placement="right" data-toggle="tooltip" data-crit="{{critNum}}"
+            data-original-title="click to remove a new search criteria"
+            class="btn btn-large btn-primary btn-remove-crit"><i data-crit="{{critNum}}" class="icon-minus"></i>
+    </button>
+</script>
