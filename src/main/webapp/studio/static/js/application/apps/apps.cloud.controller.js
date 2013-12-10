@@ -69,7 +69,7 @@ Apps.Cloud.Controller = Apps.Controller.extend({
   refreshSingleStatus: function(env) {
     var self = this;
     var status_light = $('.status_light.' + env);
-    console.log('refreshSingleStatus: ' + env + self.period_status_check_interval);
+    //console.log('refreshSingleStatus: ' + env + self.period_status_check_interval);
     self.pingCloud(env, function() {
       // Success
       status_light.addClass('okay');

@@ -92,10 +92,11 @@ App.View.CMSSection = App.View.CMS.extend({
     }
 
     // Move in preview div - gets moved out again on hide bt apps.cloud.cms.controller
-    $('#app_preview').insertAfter('#cmsAppPreview div');
-    $fw.client.tab.apps.manageapps.getController('apps.preview.controller').skipPost = true;
-    $fw.client.tab.apps.manageapps.getController('apps.preview.controller').show();
-    this.$el.find('#app_preview').show().width('100%');
+    console.log('Moving preview out YO! (view render)');
+    // $('#app_preview').insertAfter('#cmsAppPreview div');
+    // $fw.client.tab.apps.manageapps.getController('apps.preview.controller').skipPost = true;
+    // $fw.client.tab.apps.manageapps.getController('apps.preview.controller').show();
+    // this.$el.find('#app_preview').show().width('100%');
 
     this.renderListFieldTables();
     this.renderFilePreviews();
