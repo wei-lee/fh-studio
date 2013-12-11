@@ -377,7 +377,6 @@ App.View.Rules = App.View.Forms.extend({
 
         self.$el.find('select#targetAction option').each(function () {
           if ($(this).val() === rule.type) {
-
             $(this).attr("selected", true);
           } else {
             $(this).attr("selected", false);
