@@ -330,17 +330,16 @@ label.error
 }
 
 /* Header */
-#header_logo
-{
-  float:left;
-  width:240px;
-  height:40px;
-  margin:8px 0 0 13px;
-  background-image:url(../img/feedhenry_logo.png);
-  background-repeat:no-repeat;
+#header_logo {
+  float: left;
+  width: 240px;
+  height: 40px;
+  margin: 10px 0 10px 13px;
+  background-image: url(../img/feedhenry_logo.png);
+  background-repeat: no-repeat;
 }
-#header_logo_east
-{
+
+#header_logo_east {
 	background:none;
 	width:0;
 	height:0;

@@ -33,6 +33,8 @@ $.extend(Constants, {
 
 $.extend(Constants, {
 
+  KEY_REVOKE_URL: Constants.IDE_URL_PREFIX + "api/revoke",
+
   LOGOUT_URL: Constants.ACT_URL_PREFIX + "sys/auth/logout",
 	VALIDATE_COOKIE : Constants.IDE_URL_PREFIX + "user/validate",
 
