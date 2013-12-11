@@ -11,7 +11,8 @@ App.View.FormsController = Backbone.View.extend({
     'click .btn-edit-form-rules' : 'onEditFormRules',
     'click .formapp-link' : 'onFormAppLoad',
     'click .btn-add-submission' : 'onAddSubmission',
-    'click #editSubmission' : 'onEditSubmission'
+    'click #editSubmission' : 'onEditSubmission',
+    'click #printSubmission' : 'onPrintSubmission'
   },
   initialize : function(){
 
@@ -197,5 +198,9 @@ App.View.FormsController = Backbone.View.extend({
     this.$el.append(addEdit.render().$el);
     addEdit.bind('back', $.proxy(this.back, this));
     this.subViews.push(addEdit);
+  },
+  onPrintSubmission: function(e) {
+    e.preventDefault();
+    window.print();
   }
 });
