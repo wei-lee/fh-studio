@@ -292,7 +292,7 @@
 <script id="themesListMenu" type="text/x-handlebars-template">
     <ul class="nav nav-pills nav-stacked well">
         <li><a class="btn-edit-theme" href="#"><i class="icon-edit"></i>Edit Theme</a></li>
-      <!--  <li><a class="btn-preview-theme" href="#"><i class="icon-pencil"></i> Preview Theme</a></li>-->
+        <li><a class="btn-preview-theme" href="#"><i class="icon-pencil"></i> Preview Theme</a></li>
         <li class="dropdown">
             <a class="dropdown-toggle"
                data-toggle="dropdown"
@@ -609,7 +609,22 @@
     <div class="row-fluid span12 well ">
         <h4>Advanced Search</h4>
 
-        <form class="form-horizontal  advancedSearchContainer">
+        <form class="form-inline">
+            <input type="checkbox" checked id="advancedUseFields">Use Fields
+            <input type="checkbox" id="advancedUseMetaData">Use Meta Data
+            <input type="checkbox" id="advancedUseRepeating">Use Repeating Fields
+        </form>
+        <form class="form-horizontal  advancedSearchContainer" style="margin-top:5px;">
+            <div class="row-fluid advancedSearchContainerFields well" style="padding:5px;">
+
+            </div>
+            <div class="row-fluid hide advancedSearchContainerFieldsRepeating well " style="padding:5px;">
+
+
+            </div>
+            <div class="row-fluid hide advancedSearchContainerFieldsMeta well" style="padding:5px;">
+
+            </div>
 
         </form>
         <div class="span5" style="padding: 8px;">
@@ -626,9 +641,48 @@
 </script>
 
 <script type="text/x-handlebars-template" id="searchFieldName">
+    <div class='searchCondition' id="advancedSearchContainerFields{{critNum}}">
+        <div class="row-fluid hide conditioncontainer" style="margin-top:5px; margin-bottom:5px;">
+           <select class="conditional">
+               <option value="or">OR</option>
+               <option value="and">AND</option>
+           </select>
+        </div>
+    <label class="advancedLabel">Search Regular Fields:</label>
     <select class="searchFieldName sourceField">
         {{#each fields}}
-        <option data-type="{{type}}" data-_id="{{_id}}" value="{{name}}">{{name}}</option>
+        <option data-type="{{type}}" data-_id="{{_id}}" value="{{name}}"><b>{{name}}</b></option>
+
+        {{/each}}
+    </select>
+    <select class="fieldConditionals" id="fieldConditionals">
+        {{#each conditions}}
+            <option value="{{this}}">{{this}}</option>
+        {{/each}}
+    </select>
+    <input type="text" placeholder="checked value">
+    <button type="button" data-placement="right" data-toggle="tooltip"
+            data-original-title="click to add a new search criteria" data-critType="field" data-ctrlfield=".advancedSearchContainerFields"
+            class="btn btn-large btn-primary btn-add-crit"><i class="icon-plus" data-critType="field" data-ctrlfield="advancedSearchContainerFields"></i></button>
+    <button type="button" data-placement="right" data-toggle="tooltip" data-crit="{{critNum}}"
+            data-original-title="click to remove a new search criteria"
+            class="btn btn-large btn-primary btn-remove-crit"  data-ctrlfield=".advancedSearchContainerFields" ><i data-crit="{{critNum}}" data-ctrlfield="advancedSearchContainerFields" class="icon-minus"></i>
+    </button>
+    </div>
+</script>
+
+<script type="text/x-handlebars-template" id="searchRepeatingField">
+    <div class="row-fluid repeating" id="advancedSearchContainerFieldsRepeating{{critNum}}">
+        <div class="row-fluid hide conditioncontainer" style="margin-top:5px; margin-bottom:5px;">
+            <select class="conditional">
+                <option value="or">OR</option>
+                <option value="and">AND</option>
+            </select>
+        </div>
+    <label class="advancedLabel" >Search Repeating Fields:</label>
+    <select class="searchFieldName sourceField">
+        {{#each fields}}
+        <option data-type="{{type}}" data-_id="{{_id}}" value="{{name}}"><b>{{name}}</b></option>
         {{/each}}
     </select>
     <select class="fieldConditionals" id="fieldConditionals">
@@ -638,10 +692,47 @@
     </select>
     <input type="text" placeholder="checked value">
     <button type="button" data-placement="right" data-toggle="tooltip"
-            data-original-title="click to add a new search criteria" class="btn btn-large btn-primary btn-add-crit"><i
-            class="icon-plus"></i></button>
+            data-original-title="click to add a new search criteria" data-critType="repeating"
+            class="btn btn-large btn-primary btn-add-crit"><i
+            class="icon-plus" data-critType="repeating"></i></button>
     <button type="button" data-placement="right" data-toggle="tooltip" data-crit="{{critNum}}"
             data-original-title="click to remove a new search criteria"
-            class="btn btn-large btn-primary btn-remove-crit"><i data-crit="{{critNum}}" class="icon-minus"></i>
+            class="btn btn-large btn-primary btn-remove-crit" data-ctrlfield="advancedSearchContainerFieldsRepeating" ><i  data-ctrlfield="advancedSearchContainerFieldsRepeating" data-crit="{{critNum}}" class="icon-minus"></i>
     </button>
+    </div>
+</script>
+
+<script type="text/x-handlebars-template" id="searchMeta">
+    <div class="row-fluid metaData" id="advancedSearchContainerFieldsMeta{{critNum}}">
+        <div class="row-fluid hide conditioncontainer" style="margin-top:5px; margin-bottom:5px;">
+            <select class="conditional">
+                <option value="or">OR</option>
+                <option value="and">AND</option>
+            </select>
+        </div>
+        <label class="advancedLabel">Meta Data Search:</label>
+        <select class="searchMeta">
+            <option data-type="" value="">Select a Meta Field</option>
+            <option data-type="date" value="date/time received">Date/TimeRecieved</option>
+            <option data-type="text" value="recieved from">Recieved From</option>
+            <option data-type="text" value="from app">From App</option>
+            <option data-type="text" value="from device">From Device</option>
+            <option data-type="text" value="from ip">From Ip Address</option>
+            <option data-type="date" value="edited time">Edited Time</option>
+        </select>
+        <select class="fieldConditionals" id="fieldConditionals">
+            <option value=""></option>
+        </select>
+        <input type="text" placeholder="checked value">
+        <button type="button" data-placement="right" data-toggle="tooltip"
+                data-original-title="click to add a new search criteria" data-critType="meta"
+                class="btn btn-large btn-primary btn-add-crit"
+                data-ctrlfield=".advancedSearchContainerFieldsMeta"><i
+                class="icon-plus" data-critType="meta"  data-crit="{{critNum}}" ></i></button>
+        <button type="button" data-placement="right" data-toggle="tooltip"
+                data-original-title="click to remove a new search criteria"
+                class="btn btn-large btn-primary btn-remove-crit" data-ctrlfield="advancedSearchContainerFieldsMeta"
+                data-crit="{{critNum}}" ><i  data-ctrlfield="advancedSearchContainerFieldsMeta" data-crit="{{critNum}}" class="icon-minus"></i>
+        </button>
+    </div>
 </script>

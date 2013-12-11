@@ -60,6 +60,25 @@ App.View.FormsMixins = {
         }
       }
     }
+  },
+  "aggregateRepeating" : function (){
+    this.repeatingFields = [{
+      "name":"select a field",
+      "type" :""
+    }];
+    for(var i=0; i < this.pages.length; i++){
+      var page = this.pages.models[i];
+      var pageFields = page.get("fields");
+      for(var p=0; p < pageFields.length; p++){
+        var fieldType = pageFields[p].type.trim();
+
+        var repeating = pageFields[p].repeating;
+
+        if(repeating && Constants.APP_FORMS.EXCLUDED_FIELD_TYPES.indexOf(fieldType) == -1){
+          this.repeatingFields.push(pageFields[p]);
+        }
+      }
+    }
   }
 };
 

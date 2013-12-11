@@ -11,7 +11,9 @@ App.View.SubmissionList = App.View.FormListBase.extend({
     'advancedSearchForm':'#advancedSearchForm',
     'fieldRuleTemplate':"#fieldRuleTemplate",
     'searchFieldName':'#searchFieldName',
-    'addedRuleCondition':'#addedRuleCondition'
+    'addedRuleCondition':'#addedRuleCondition',
+    'searchMeta':'#searchMeta',
+    'searchRepeatingField':'#searchRepeatingField'
   },
   events : {
     'click tr' : 'onRowSelected',
@@ -24,7 +26,9 @@ App.View.SubmissionList = App.View.FormListBase.extend({
     'click .btn-remove-crit':'removeCrit',
     'click .btn-search' : 'doSearch',
     'change .conditional' : 'conditionalChange',
-    'click .btn-cancel':'cancelSearch'
+    'click .btn-cancel':'cancelSearch',
+    'click #advancedUseMetaData' :'enableMetaData',
+    'click #advancedUseRepeating' :'enableRepeating'
   },
   initialize: function(){
     var self = this;
@@ -76,23 +80,50 @@ App.View.SubmissionList = App.View.FormListBase.extend({
     return this.renderPreview();
   },
 
-  addCrit : function (){
+  addCrit : function (e){
     var self = this;
     var container = self.$el.find('.databrowser:visible');
     var critNum = self.$el.find('.searchCondition').length;
-    container.find('.advancedSearchContainer').append("<div class='searchCondition' id='"+critNum+"'>" + self.templates.$addedRuleCondition({}) + "<div class='row-fluid' style='padding-bottom: 5px; padding-top: 5px;'> " + self.templates.$searchFieldName({"fields":self.fields,"critNum":critNum}) + "</div></div>");
+    var ele = $(e.target);
+    var type = ele.data("crittype");
+    console.log("adding crit type ", type);
+
+    switch (type){
+      case "field" :
+        container.find('.advancedSearchContainerFields').append("<div class='row-fluid' style='padding-bottom: 5px; padding-top: 5px;'> " + self.templates.$searchFieldName({"fields":self.fields,"critNum":critNum}) + "</div>");
+        container.find('#advancedSearchContainerFields'+critNum+'> .conditioncontainer').show();
+        container.find('#advancedSearchContainerFields'+critNum+'> .advancedLabel').hide();
+        break;
+      case "meta":
+        critNum = container.find('.metaData').length;
+        container.find('.advancedSearchContainerFieldsMeta').append(self.templates.$searchMeta({"critNum":critNum}));
+        container.find('#advancedSearchContainerFieldsMeta'+critNum+'> .conditioncontainer').show();
+        container.find('#advancedSearchContainerFieldsMeta'+critNum+'> .advancedLabel').hide();
+        break;
+      case "repeating":
+        critNum = container.find('.repeating').length;
+        container.find('.advancedSearchContainerFieldsRepeating').append(self.templates.$searchRepeatingField({fields:self.repeatingFields,"critNum":critNum}));
+        container.find('#advancedSearchContainerFieldsRepeating'+critNum+'> .conditioncontainer').show();
+        container.find('#advancedSearchContainerFieldsRepeating'+critNum+'> .advancedLabel').hide();
+       break;
+      default :
+        break;
+    }
+
+
+
   },
 
   removeCrit : function (e){
     var critId = $(e.target).data("crit");
+    var ctrlEle = $(e.target).data('ctrlfield');
     var self = this;
-    console.log("removing crit ", critId);
-    self.$el.find('.searchCondition#'+critId).remove();
+    console.log('#'+ctrlEle+critId);
+    self.$el.find('#'+ctrlEle+critId).remove();
     return false;
   },
 
   conditionalChange : function (e){
-    console.log("conditional changed");
     var self = this;
     var val = $(e.target).val();
     self.$el.find('.conditional').each(function (){
@@ -104,11 +135,9 @@ App.View.SubmissionList = App.View.FormListBase.extend({
 
   renderList : function(){
 
-   // this.$el.append(this.templates.$formsListBaseAdd( { name : this.singleTitle.toLowerCase(), cls : this.singleId } ));
     var self = this,
       data = this.collection.toJSON();
 
-    console.log("renderList data ", data);
 
     //validate ok
     if("singleForm" === this.options.listType){
@@ -182,9 +211,9 @@ App.View.SubmissionList = App.View.FormListBase.extend({
 
   advancedSearch : function (e){
     var self = this;
-    console.log("advanced search called ", self.options);
+    self.aggregateRepeating();
+    console.log("advanced search called ", self.fields);
     var formModel = self.options.forms.findWhere({"_id" : self.options.formId});
-    console.log("formModel found ", formModel);
     //remove message view replace with rules like view with a single search criterea
     var container = self.$el.find('.databrowser:visible');
 
@@ -192,9 +221,19 @@ App.View.SubmissionList = App.View.FormListBase.extend({
     table.hide();
     container.empty();
     container.append(self.templates.$advancedSearchForm({"formid":self.options.formId,"appid":self.options.appId}));
-    container.find('.advancedSearchContainer').append("<div class='searchCondition' id='0'>"+self.templates.$searchFieldName({"fields":self.fields,"critNum":0})+ "</div>");
+    container.find('.advancedSearchContainerFields').append("<div class='searchCondition' id='0'>"+self.templates.$searchFieldName({"fields":self.fields,"critNum":0})+"</div>");
+    console.log("repeating fields ", self.repeatingFields);
+    var repeatingValues = [];
+    var maxRep = self.repeatingFields[1].fieldOptions.definition.maxRepeat;
+
+    for(var i=1; i < maxRep; i++){
+      repeatingValues.push("value number " + i );
+    }
+    console.log("repeating values ", repeatingValues);
+    container.find('.advancedSearchContainerFieldsRepeating').append(self.templates.$searchRepeatingField({"fields":self.repeatingFields,"repeats":repeatingValues,"critNum":0}));
+    container.find('.advancedSearchContainerFieldsMeta').append(self.templates.$searchMeta({"critNum":0}))
     $('.databrowser":visible').removeClass('emptyContainer');
-    self.$el.find('.btn-remove-crit').first().remove();
+    container.find('.btn-remove-crit').first().remove();
     return false;
   },
 
@@ -237,15 +276,47 @@ App.View.SubmissionList = App.View.FormListBase.extend({
     var form = new App.View.FormAppsCreateEdit({ mode : 'create' });
   },
   doSearch : function (e){
+    var self = this;
     var btn = $(e.target);
     var appid = btn.data("appid");
     var formid = btn.data("formid");
     console.log("searching form " + formid + " with app " + appid);
+    var options =
+    {
+      "success":function (res){
+        var submissions = res.submissions;
+        self.collection = new  App.Collection.FormSubmissions(submissions,{});
+        self.render();
+      },
+      "error": function (err){
+        console.log("search error ", err);
+        App.View.Forms.prototype.message('there was an error retrieving search results');
+      }
+    };
+    this.collection.findBySearchParams({},options);
     return false;
   },
   cancelSearch : function (){
     $('.formSelect:visible').trigger("change");
     return false;
+  },
+  enableMetaData : function (){
+    var metaData = $('.advancedSearchContainerFieldsMeta');
+    if(metaData.is(":visible")){
+      metaData.hide();
+    }else{
+      metaData.show();
+    }
+
+  },
+  enableRepeating : function (){
+    var repeating = $('.advancedSearchContainerFieldsRepeating');
+    if(repeating.is(':visible')){
+      repeating.hide();
+    }else{
+      repeating.show();
+    }
+
   }
 
 });

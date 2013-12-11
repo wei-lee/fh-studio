@@ -24,25 +24,27 @@ App.Collection.FormSubmissions = App.Collection.FormBase.extend({
   },
 
 
-  readByFormId :  function (formId,success, error){
-
+  findBySearchParams : function (params, options){
     $.ajax({
       type: 'POST',
-      url: url,
-      data : {"formId":formId},
+      url: this.urlRead,
+      data : JSON.stringify({}),
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
       success: function(res){
         console.log("response read by id ", res);
-        success(res);
+        options.success(res);
       },
       error: function(xhr, status){
         console.log("error read by id ", status);
-        error(status);
-
+        options.error(status);
       }
     });
   },
 
   read : function(method, model, options){
+
+    console.log("read form submissions called");
 
     var self = this;
     var data  = {};
