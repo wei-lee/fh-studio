@@ -1,9 +1,16 @@
 -------------------------------------------------------------------------------
 Component: fh-studio
 -------------------------------------------------------------------------------
+3.17.24 - 2013-12-09 - IR216 - Wei Li, Jason Madigan
+--------------------------------------------
+* 5246 - Add support for building windows phone 8 apps
+* 5311 - Fixed a bug where API Keys could not be revoked
+* 5228 - Bay state health theme - "baystatehealth"
+
 3.17.23 - 2013-12-04 - IR216 - Damian Beresford
 -----------------------------------------------
 * 5286 - fh-studio work for 'clean' checkbox on deploy screen
+
 
 3.17.22 - 2013-11-26 - IR215 - David Martin
 --------------------------------------------
