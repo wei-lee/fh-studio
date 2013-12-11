@@ -198,3 +198,22 @@ ul.apps-using-form li.text {
 #forms_layout .btn-success {
     text-transform: capitalize;
 }
+
+@media print {
+    .ui-tabs {
+        position: inherit;
+    }
+    .submission-buttons {
+        display: none !important;
+    }
+    .submissionslist .databrowser, .submissionslist .databrowser.emptyContainer {
+        position:absolute;
+        top:0;
+        left:0;
+        background:white;
+        z-index: 100;
+        width:100%;
+        margin:0;
+        padding:0;
+    }
+}
