@@ -35,7 +35,7 @@ App.View.FormPageRules = App.View.Rules.extend({
     this.pageRules = this.options.form.get("pageRules");
     this.pages = this.form.get("pages");
     console.log("init form page rule view ",this.form, this.pages);
-    this.aggreagateFields("page");
+    this.aggregateFields();
     this.aggreagateShowFields();
 
     _.bindAll(this);

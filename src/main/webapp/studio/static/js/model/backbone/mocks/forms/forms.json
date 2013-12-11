@@ -161,12 +161,34 @@
       "description":"dont walk by",
       "name":"Avoid Incidents - Don't walk by",
       "updatedBy":"cian.clarke@feedhenry.com",
-      "pageRules":[
-
-      ],
-      "fieldRules":[
-
-      ],
+      "pageRules": [{
+        "type": "show",
+        "targetPage": "52a5a6b72fd7c9c269000002",
+        "_id": "52a745e1dd9feb4430000001",
+        "ruleConditionalStatements": [{
+          "sourceField": "52a5a6b72fd7c9c269000006",
+          "restriction": "is not",
+          "sourceValue": "asdasdas"
+        }],
+        "ruleConditionalOperator": "and",
+        "relationType": "and"
+      }],
+      "fieldRules": [{
+        "type": "show",
+        "targetField": "52a5a6b72fd7c9c269000005",
+        "_id": "52a740c767554a4330000001",
+        "ruleConditionalStatements": [{
+          "sourceField": "52a5a6b72fd7c9c269000006",
+          "restriction": "is",
+          "sourceValue": "sdasdasd"
+        }, {
+          "sourceField": "52a5a6b72fd7c9c269000007",
+          "restriction": "is not",
+          "sourceValue": "asdasd"
+        }],
+        "ruleConditionalOperator": "or",
+        "relationType": "and"
+      }],
       "pages":[
         {
           "_id":"528b9f79907798837e00000a",

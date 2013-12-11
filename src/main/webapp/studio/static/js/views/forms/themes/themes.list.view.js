@@ -50,9 +50,29 @@ App.View.FormThemesList = App.View.FormListBase.extend({
     return this;
   },
   updatePreview : function(updatedModel){
+    console.log("updatePreview",updatedModel);
     var previewTheme = new App.View.FormThemesEdit({ theme : updatedModel, readOnly : true});
     this.$previewEl.find('#formPreviewContainer').html(previewTheme.render().$el);
     previewTheme.$el.removeClass('span10').addClass('span8');
     this.$previewEl.show();
+
+    dropdown = this.$previewEl.find('.apps-using-theme');
+
+    dropdown.empty();
+
+
+
+    var appsUsingTheme = updatedModel.get("apps");
+    if(appsUsingTheme.length > 0){
+      console.log("there are apps using this theme");
+              if (appsUsingTheme.length>0){
+          _.each(appsUsingTheme, function(d){
+            dropdown.append('<li><a class="formapp-link" data-_id="' + d.id + '" href="#">' + d.title + '</a></li>');
+          });
+        }else{
+          dropdown.append('<li class="text">No apps using this form</li>');
+        }
+    }
+
   }
 });

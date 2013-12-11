@@ -292,8 +292,18 @@
 <script id="themesListMenu" type="text/x-handlebars-template">
     <ul class="nav nav-pills nav-stacked well">
         <li><a class="btn-edit-theme" href="#"><i class="icon-edit"></i>Edit Theme</a></li>
-        <li><a class="btn-preview-theme" href="#"><i class="icon-pencil"></i> Preview Theme</a></li>
-        <li><a class="btn-view-theme-apps" href="#"><i class="icon-th-large"></i> View Apps</a></li>
+      <!--  <li><a class="btn-preview-theme" href="#"><i class="icon-pencil"></i> Preview Theme</a></li>-->
+        <li class="dropdown">
+            <a class="dropdown-toggle"
+               data-toggle="dropdown"
+               href="#">
+                <i class="icon-th-large"></i> Apps
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu apps-using-theme">
+            </ul>
+        </li>
+        <!--<li><a class="btn-view-theme-apps" href="#"><i class="icon-th-large"></i> View Apps</a></li>-->
         <li><a class="btn-clone-theme" href="#"><i class="icon-retweet"></i> Clone</a></li>
         <li><a class="btn-delete-theme" href="#"><i class="icon-trash"></i> Delete</a></li>
 

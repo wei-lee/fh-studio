@@ -22,6 +22,7 @@ App.View.EditFormRules = Backbone.View.extend({
     if(this.editFormRules){
       this.editFormRules.remove();
     }
+
     this.editFormRules = new App.View.FormFieldRules({ form: self.options.form, $pagesMenuEl: self.options.$pagesMenuEl });
     //this.editForm.bind('back', $.proxy(this.back, this));
 
