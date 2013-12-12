@@ -1,6 +1,11 @@
 -------------------------------------------------------------------------------
 Component: fh-studio
 -------------------------------------------------------------------------------
+
+3.17.25 - 2013-12-12 - IR216 - Jason Madigan
+--------------------------------------------
+* 5348 - Resolved an issue with Landing Pages not rendering in domains with custom landing pages
+
 3.17.24 - 2013-12-09 - IR216 - Wei Li, Jason Madigan
 --------------------------------------------
 * 5246 - Add support for building windows phone 8 apps
