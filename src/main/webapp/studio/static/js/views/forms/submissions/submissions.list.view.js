@@ -284,9 +284,6 @@ App.View.SubmissionList = App.View.FormListBase.extend({
     }
     return this;
   },
-  onAddSubmission : function(e){
-
-  },
   onRowSelected : function (e){
     var self = this;
     var model = this.getDataForRow(e);

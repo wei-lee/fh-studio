@@ -52,6 +52,7 @@ App.View.SubmissionsAddEdit = App.View.Forms.extend({
   onSubmit : function(){
     var self = this,
     url = 'api/v2/forms/submission/{{id}}/submitData',
+    confirmUrl = '/api/v2/forms/submission/{{id}}/complete',
     formId = this.options.form.get('_id'),
     appId = this.options.appId,
     fields = this.fb.collection,
@@ -75,20 +76,39 @@ App.View.SubmissionsAddEdit = App.View.Forms.extend({
       };
       submission.formFields.push(formField);
     });
+
+
     $.ajax({
       type: 'POST',
       url: url.replace('{{id}}', formId),
       data : JSON.stringify(submission),
       contentType: "application/json; charset=utf-8",
       success: function(res){
-        self.back();
-        self.message('Submission saved successfully');
+        var submissionId = res.submissionId;
+        $.ajax({
+          type: 'POST',
+          url: confirmUrl.replace('{{id}}', submissionId),
+          data : JSON.stringify({}),
+          contentType: "application/json; charset=utf-8",
+          success: function(res){
+            self.back();
+            self.message('Submission saved successfully');
+          },
+          error: function(xhr, status){
+            self.message('Error confirming submission', 'danger');
+            console.log(err.responseText);
+          }
+        });
       },
       error: function(xhr, status){
         self.message('Error saving submission', 'danger');
-        console.log(xhr.responseText);
+        console.log(err.responseText);
+        return;
       }
     });
+
+
+
   },
   back : function(){
     this.trigger('back');
