@@ -150,6 +150,7 @@ App.View.SubmissionList = App.View.FormListBase.extend({
   conditionalChange : function (e){
     var self = this;
     var val = $(e.target).val();
+    self.clauseOperator  = val;
     self.$el.find('.conditional').each(function (){
       if(val !== $(this).val()){
           $(this).val(val);
@@ -244,7 +245,7 @@ App.View.SubmissionList = App.View.FormListBase.extend({
     container.append(self.templates.$advancedSearchForm({"formid":self.options.formId,"appid":self.options.appId}));
     container.find('.advancedSearchContainerFields').append(self.templates.$searchFieldName({"fields":self.fields,"critNum":0}));
     container.find('.advancedSearchContainerFieldsRepeating').append(self.templates.$searchRepeatingField({"fields":self.repeatingFields,"critNum":0}));
-    container.find('.advancedSearchContainerFieldsMeta').append(self.templates.$searchMeta({"critNum":0}))
+    container.find('.advancedSearchContainerFieldsMeta').append(self.templates.$searchMeta({"critNum":0}));
     $('.databrowser":visible').removeClass('emptyContainer');
     container.find('.btn-remove-crit').first().remove();
     return false;
@@ -296,7 +297,7 @@ App.View.SubmissionList = App.View.FormListBase.extend({
     var searchQuery = {
       "appId":appid,
       "formId":formid,
-      "clauseOperator":"and",
+      "clauseOperator":self.clauseOperator || "and",
       "queryFields":{
         "clauses":[]
       },
