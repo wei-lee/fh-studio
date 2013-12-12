@@ -38,6 +38,16 @@ App.View.SubmissionList = App.View.FormListBase.extend({
     'meta':'.advancedSearchContainerFieldsMeta'
   },
 
+  eleDefs:{
+    "SEARCH_CONDITION":".searchCondition",
+    "SEARCH_CONTAINER_FIELDS":"#advancedSearchContainerFields",
+    "SEARCH_CONTAINER_META":"#advancedSearchContainerFieldsMeta",
+    "SEARCH_CONTAINER_REPEATING":"#advancedSearchContainerFieldsRepeating",
+    "SEARCH_CONTAINER_FIELDS_CLASS":".advancedSearchContainerFields",
+    "SEARCH_CONTAINER_META_CLASS":".advancedSearchContainerFieldsMeta",
+    "SEARCH_CONTAINER_REPEATING_CLASS":".advancedSearchContainerFieldsRepeating"
+  },
+
   initialize: function(){
     var self = this;
     this.collection = new App.Collection.FormSubmissions([],{"formid":this.options.formId,"appId":this.options.appId});
@@ -96,27 +106,27 @@ App.View.SubmissionList = App.View.FormListBase.extend({
   addCrit : function (e){
     var self = this;
     var container = self.$el.find('.databrowser:visible');
-    var critNum = self.$el.find('.searchCondition').length;
+    var critNum = self.$el.find(self.eleDefs.SEARCH_CONDITION).length;
     var ele = $(e.target);
     var type = ele.data("crittype");
 
     switch (type){
       case "field" :
-        container.find('.advancedSearchContainerFields').append("<div class='row-fluid' style='padding-bottom: 5px; padding-top: 5px;'> " + self.templates.$searchFieldName({"fields":self.fields,"critNum":critNum}) + "</div>");
-        container.find('#advancedSearchContainerFields'+critNum+'> .conditioncontainer').show();
-        container.find('#advancedSearchContainerFields'+critNum+'> .advancedLabel').hide();
+        container.find(self.eleDefs.SEARCH_CONTAINER_FIELDS_CLASS).append("<div class='row-fluid' style='padding-bottom: 5px; padding-top: 5px;'> " + self.templates.$searchFieldName({"fields":self.fields,"critNum":critNum}) + "</div>");
+        container.find(self.eleDefs.SEARCH_CONTAINER_FIELDS+critNum+'> .conditioncontainer').show();
+        container.find(self.eleDefs.SEARCH_CONTAINER_FIELDS+critNum+'> .advancedLabel').hide();
         break;
       case "meta":
         critNum = container.find('.metaData').length;
-        container.find('.advancedSearchContainerFieldsMeta').append(self.templates.$searchMeta({"critNum":critNum}));
-        container.find('#advancedSearchContainerFieldsMeta'+critNum+'> .conditioncontainer').show();
-        container.find('#advancedSearchContainerFieldsMeta'+critNum+'> .advancedLabel').hide();
+        container.find(self.eleDefs.SEARCH_CONTAINER_META_CLASS).append(self.templates.$searchMeta({"critNum":critNum}));
+        container.find(self.eleDefs.SEARCH_CONTAINER_META+critNum+'> .conditioncontainer').show();
+        container.find(self.eleDefs.SEARCH_CONTAINER_META+critNum+'> .advancedLabel').hide();
         break;
       case "repeating":
         critNum = container.find('.repeating').length;
-        container.find('.advancedSearchContainerFieldsRepeating').append(self.templates.$searchRepeatingField({fields:self.repeatingFields,"critNum":critNum}));
-        container.find('#advancedSearchContainerFieldsRepeating'+critNum+'> .conditioncontainer').show();
-        container.find('#advancedSearchContainerFieldsRepeating'+critNum+'> .advancedLabel').hide();
+        container.find(self.eleDefs.SEARCH_CONTAINER_REPEATING_CLASS).append(self.templates.$searchRepeatingField({fields:self.repeatingFields,"critNum":critNum}));
+        container.find(self.eleDefs.SEARCH_CONTAINER_REPEATING+critNum+'> .conditioncontainer').show();
+        container.find(self.eleDefs.SEARCH_CONTAINER_REPEATING+critNum+'> .advancedLabel').hide();
        break;
       default :
         break;
@@ -133,11 +143,10 @@ App.View.SubmissionList = App.View.FormListBase.extend({
     var ctrlEle = ele.data('ctrlfield');
     var type = ele.data("crittype");
 
-    //check if there are non left and if so hide the ctrlfield
+
     var ctrlDiv = self.$el.find('div.'+ctrlEle);
 
     if(ctrlDiv.find('.btn-add-crit').length == 1){
-      console.log("trigger click on type ", type);
       if("field" == type) $('#advancedUseFields').trigger("click");
       else if("meta" == type) $('#advancedUseMetaData').trigger('click');
       else if("repeating" == type) $('#advancedUseRepeating').trigger('click');
@@ -215,19 +224,21 @@ App.View.SubmissionList = App.View.FormListBase.extend({
     this.selectMessage = new App.View.FullPageMessageView({ message : 'Select a ' + this.singleTitle.toLowerCase() + ' above to preview & manage', button : false });
     this.$el.append(this.selectMessage.render().$el);
 
-    //if("singleForm" == this.options.listType)
     $('.submissionslist').removeClass("span10").addClass("row-fluid");
-
-
     return this;
   },
 
 
   onFieldSelectChange: function (e) {
-    console.log("select change populate conditions");
     var self = this;
     var type = $(e.target).find('option').filter(':selected').data("type").trim();
     var rulesSelect = $(e.target).next('select');
+    var checkedVal = $(e.target).parent().find('input.checkedValue');
+    if("dateTime" == type){
+      checkedVal.replaceWith(' <input type="date" class="checkedValue" placeholder="checked value">')
+    }else if(checkedVal.attr("type") !== "text"){
+      checkedVal.replaceWith(' <input type="text" class="checkedValue" placeholder="checked value">');
+    }
     rulesSelect.empty();
     var conditionals = Constants.APP_FORMS.FIELD_RULES[type];
     if (!conditionals) {
@@ -250,16 +261,15 @@ App.View.SubmissionList = App.View.FormListBase.extend({
     table.hide();
     container.empty();
     container.append(self.templates.$advancedSearchForm({"formid":self.options.formId,"appid":self.options.appId}));
-    container.find('.advancedSearchContainerFields').append(self.templates.$searchFieldName({"fields":self.fields,"critNum":0}));
-    container.find('.advancedSearchContainerFieldsRepeating').append(self.templates.$searchRepeatingField({"fields":self.repeatingFields,"critNum":0}));
-    container.find('.advancedSearchContainerFieldsMeta').append(self.templates.$searchMeta({"critNum":0}));
+    container.find(self.eleDefs.SEARCH_CONTAINER_FIELDS_CLASS).append(self.templates.$searchFieldName({"fields":self.fields,"critNum":0}));
+    container.find(self.eleDefs.SEARCH_CONTAINER_REPEATING_CLASS).append(self.templates.$searchRepeatingField({"fields":self.repeatingFields,"critNum":0}));
+    container.find(self.eleDefs.SEARCH_CONTAINER_META_CLASS).append(self.templates.$searchMeta({"critNum":0}));
     $('.databrowser":visible').removeClass('emptyContainer');
     container.find('.btn-remove-crit').first().remove();
     return false;
   },
 
   renderPreview : function(){
-    console.log("render preview submissions");
     var self = this;
     this.$previewEl = $('<div class="app" />');
     this.$el.append(this.$previewEl);
@@ -280,7 +290,6 @@ App.View.SubmissionList = App.View.FormListBase.extend({
   onRowSelected : function (e){
     var self = this;
     var model = this.getDataForRow(e);
-    console.log("model from table ", model);
     if(self.submissionDetail){
       self.submissionDetail.remove();
     }
@@ -323,9 +332,15 @@ App.View.SubmissionList = App.View.FormListBase.extend({
             "value":""
           };
           var _this = $(this);
+          var checkedVal = _this.find('input.checkedValue');
+          var value = checkedVal.val();
+          if(checkedVal.attr("type") === "date"){
+            value = moment(checkedVal.val()).format("YYYY/mm/dd hh:mm:ss");
+            console.log("value date ", value);
+          }
           crit["fieldId"] = _this.find('select.searchFieldName').val();
           crit["restriction"] = _this.find('select.fieldConditionals').val();
-          crit["value"] = _this.find('input.checkedValue').val();
+          crit["value"] = value
           cb(undefined, crit);
         });
       }else if("repeating" === type){
@@ -336,9 +351,15 @@ App.View.SubmissionList = App.View.FormListBase.extend({
             "value":""
           };
           var _this = $(this);
+          var checkedVal = _this.find('input.checkedValue');
+          var value = checkedVal.val();
+          if(checkedVal.attr("type") === "date"){
+            value = moment(checkedVal.val()).format("YYYY/mm/dd hh:mm:ss");
+            console.log("value date ", value);
+          }
           crit["fieldId"] = _this.find('select.searchFieldName').val();
           crit["restriction"] = _this.find('select.fieldConditionals').val();
-          crit["value"] = _this.find('input.checkedValue').val();
+          crit["value"] = value;
           cb(undefined, crit);
         });
       }else if("meta" === type){
@@ -349,9 +370,16 @@ App.View.SubmissionList = App.View.FormListBase.extend({
             "value": ""
           };
           var _this = $(this);
+          var checkedVal = _this.find('input.checkedValue');
+          var value = checkedVal.val();
+          if(checkedVal.attr("type") === "date"){
+            value = moment(checkedVal.val()).format("YYYY/mm/dd hh:mm:ss");
+            console.log("value date ", value);
+          }
+
             metaCrit.metaName = _this.find('select.searchFieldName').val();
             metaCrit.restriction = _this.find('select.fieldConditionals').val();
-            metaCrit.value = _this.find('input.checkedValue').val();
+            metaCrit.value = value;
             cb(undefined, metaCrit);
         });
       }
@@ -395,7 +423,8 @@ App.View.SubmissionList = App.View.FormListBase.extend({
     return false;
   },
   enableMetaData : function (){
-    var metaData = $('.advancedSearchContainerFieldsMeta');
+    var self = this;
+    var metaData = $(self.eleDefs.SEARCH_CONTAINER_META_CLASS);
     if(metaData.is(":visible")){
       metaData.hide();
     }else{
@@ -404,7 +433,8 @@ App.View.SubmissionList = App.View.FormListBase.extend({
 
   },
   enableRepeating : function (){
-    var repeating = $('.advancedSearchContainerFieldsRepeating');
+    var self = this;
+    var repeating = $(self.eleDefs.SEARCH_CONTAINER_REPEATING_CLASS);
     if(repeating.is(':visible')){
       repeating.hide();
     }else{
@@ -413,7 +443,8 @@ App.View.SubmissionList = App.View.FormListBase.extend({
 
   },
   enableFields : function (){
-    var fields = $('.advancedSearchContainerFields');
+    var self = this;
+    var fields = $(self.eleDefs.SEARCH_CONTAINER_FIELDS_CLASS);
     if(fields.is(':visible')){
       fields.hide();
     }else{
