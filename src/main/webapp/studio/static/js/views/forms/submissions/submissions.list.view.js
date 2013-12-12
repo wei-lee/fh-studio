@@ -28,19 +28,30 @@ App.View.SubmissionList = App.View.FormListBase.extend({
     'change .conditional' : 'conditionalChange',
     'click .btn-cancel':'cancelSearch',
     'click #advancedUseMetaData' :'enableMetaData',
-    'click #advancedUseRepeating' :'enableRepeating'
+    'click #advancedUseRepeating' :'enableRepeating',
+    'click #advancedUseFields' :'enableFields'
   },
+
+  searchContainers : {
+    'fields':'.advancedSearchContainerFields',
+    'repeating':'.advancedSearchContainerFieldsRepeating',
+    'meta':'.advancedSearchContainerFieldsMeta'
+  },
+
   initialize: function(){
     var self = this;
-    console.log("init list view " , self.options);
-
     this.collection = new App.Collection.FormSubmissions([],{"formid":this.options.formId,"appId":this.options.appId});
     this.formsCol =  this.options.forms;
     if(this.options.formId && this.formsCol ){
       this.form = this.formsCol.findWhere({"_id":this.options.formId});
-      this.pages = this.form.get("pages");
+      if(! this.form){
+        self.displayMessage("not form found!");
+
+      }else{
+        this.pages = this.form.get("pages");
         //mixin view.mixins.js
-      this.aggregateFields();
+        this.aggregateFields();
+      }
     }
 
     this.pluralTitle = 'Forms Submissions';
@@ -80,13 +91,14 @@ App.View.SubmissionList = App.View.FormListBase.extend({
     return this.renderPreview();
   },
 
+
+
   addCrit : function (e){
     var self = this;
     var container = self.$el.find('.databrowser:visible');
     var critNum = self.$el.find('.searchCondition').length;
     var ele = $(e.target);
     var type = ele.data("crittype");
-    console.log("adding crit type ", type);
 
     switch (type){
       case "field" :
@@ -115,11 +127,23 @@ App.View.SubmissionList = App.View.FormListBase.extend({
   },
 
   removeCrit : function (e){
-    var critId = $(e.target).data("crit");
-    var ctrlEle = $(e.target).data('ctrlfield');
     var self = this;
-    console.log('#'+ctrlEle+critId);
-    self.$el.find('#'+ctrlEle+critId).remove();
+    var ele =  $(e.target);
+    var critId = ele.data("crit");
+    var ctrlEle = ele.data('ctrlfield');
+    var type = ele.data("crittype");
+
+    //check if there are non left and if so hide the ctrlfield
+    var ctrlDiv = self.$el.find('div.'+ctrlEle);
+
+    if(ctrlDiv.find('.btn-add-crit').length == 1){
+      console.log("trigger click on type ", type);
+      if("field" == type) $('#advancedUseFields').trigger("click");
+      else if("meta" == type) $('#advancedUseMetaData').trigger('click');
+      else if("repeating" == type) $('#advancedUseRepeating').trigger('click');
+    }else{
+      self.$el.find('#'+ctrlEle+critId).remove();
+    }
     return false;
   },
 
@@ -212,25 +236,14 @@ App.View.SubmissionList = App.View.FormListBase.extend({
   advancedSearch : function (e){
     var self = this;
     self.aggregateRepeating();
-    console.log("advanced search called ", self.fields);
-    var formModel = self.options.forms.findWhere({"_id" : self.options.formId});
     //remove message view replace with rules like view with a single search criterea
     var container = self.$el.find('.databrowser:visible');
-
     var table = self.$el.find('.dataTables_wrapper');
     table.hide();
     container.empty();
     container.append(self.templates.$advancedSearchForm({"formid":self.options.formId,"appid":self.options.appId}));
-    container.find('.advancedSearchContainerFields').append("<div class='searchCondition' id='0'>"+self.templates.$searchFieldName({"fields":self.fields,"critNum":0})+"</div>");
-    console.log("repeating fields ", self.repeatingFields);
-    var repeatingValues = [];
-    var maxRep = self.repeatingFields[1].fieldOptions.definition.maxRepeat;
-
-    for(var i=1; i < maxRep; i++){
-      repeatingValues.push("value number " + i );
-    }
-    console.log("repeating values ", repeatingValues);
-    container.find('.advancedSearchContainerFieldsRepeating').append(self.templates.$searchRepeatingField({"fields":self.repeatingFields,"repeats":repeatingValues,"critNum":0}));
+    container.find('.advancedSearchContainerFields').append(self.templates.$searchFieldName({"fields":self.fields,"critNum":0}));
+    container.find('.advancedSearchContainerFieldsRepeating').append(self.templates.$searchRepeatingField({"fields":self.repeatingFields,"critNum":0}));
     container.find('.advancedSearchContainerFieldsMeta').append(self.templates.$searchMeta({"critNum":0}))
     $('.databrowser":visible').removeClass('emptyContainer');
     container.find('.btn-remove-crit').first().remove();
@@ -280,7 +293,79 @@ App.View.SubmissionList = App.View.FormListBase.extend({
     var btn = $(e.target);
     var appid = btn.data("appid");
     var formid = btn.data("formid");
-    console.log("searching form " + formid + " with app " + appid);
+    var searchQuery = {
+      "appId":appid,
+      "formId":formid,
+      "clauseOperator":"and",
+      "queryFields":{
+        "clauses":[]
+      },
+      "queryMeta":{
+        "clauses":[]
+      }
+    };
+
+    //gather up fields search crit
+    function getCrit(critCont, type, cb){
+      if(type === "field"){
+        $(critCont).find('.searchCondition:visible').each(function (){
+          var crit = {
+            "fieldId":"",
+            "restriction":"",
+            "value":""
+          };
+          var _this = $(this);
+          crit["fieldId"] = _this.find('select.searchFieldName').val();
+          crit["restriction"] = _this.find('select.fieldConditionals').val();
+          crit["value"] = _this.find('input.checkedValue').val();
+          cb(undefined, crit);
+        });
+      }else if("repeating" === type){
+        $(critCont).find('.repeating:visible').each(function (){
+          var crit = {
+            "fieldId":"",
+            "restriction":"",
+            "value":""
+          };
+          var _this = $(this);
+          crit["fieldId"] = _this.find('select.searchFieldName').val();
+          crit["restriction"] = _this.find('select.fieldConditionals').val();
+          crit["value"] = _this.find('input.checkedValue').val();
+          cb(undefined, crit);
+        });
+      }else if("meta" === type){
+        $(critCont).find('.metaData:visible').each(function (){
+          var metaCrit ={
+            "metaName": "",
+            "restriction": "",
+            "value": ""
+          };
+          var _this = $(this);
+            metaCrit.metaName = _this.find('select.searchFieldName').val();
+            metaCrit.restriction = _this.find('select.fieldConditionals').val();
+            metaCrit.value = _this.find('input.checkedValue').val();
+            cb(undefined, metaCrit);
+        });
+      }
+    }
+
+    self.$el.find(self.searchContainers["fields"]).each(function (){
+      getCrit(this,"field", function (err, ok){
+        searchQuery.queryFields.clauses.push(ok);
+      });
+    });
+
+    self.$el.find(self.searchContainers["repeating"]).each(function (){
+      getCrit(this,"repeating", function (err, ok){
+        searchQuery.queryFields.clauses.push(ok);
+      });
+    });
+
+    self.$el.find(self.searchContainers["meta"]).each(function (){
+        getCrit(this,"meta",function(err, ok){
+          searchQuery.queryMeta.clauses.push(ok);
+        });
+    });
     var options =
     {
       "success":function (res){
@@ -290,10 +375,11 @@ App.View.SubmissionList = App.View.FormListBase.extend({
       },
       "error": function (err){
         console.log("search error ", err);
-        App.View.Forms.prototype.message('there was an error retrieving search results');
+        self.alertMessage("there was an error during your search");
       }
     };
-    this.collection.findBySearchParams({},options);
+    this.collection.search(searchQuery,options);
+
     return false;
   },
   cancelSearch : function (){
@@ -317,6 +403,14 @@ App.View.SubmissionList = App.View.FormListBase.extend({
       repeating.show();
     }
 
+  },
+  enableFields : function (){
+    var fields = $('.advancedSearchContainerFields');
+    if(fields.is(':visible')){
+      fields.hide();
+    }else{
+      fields.show();
+    }
   }
 
 });

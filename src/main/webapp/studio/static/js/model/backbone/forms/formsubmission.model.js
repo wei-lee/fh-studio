@@ -8,6 +8,8 @@ App.collections = App.collections || {};
 App.Model.FormSubmission = App.Model.FormBase.extend({
 
 });
+
+
 // '/api/v2/forms/submission',
 App.Collection.FormSubmissions = App.Collection.FormBase.extend({
   initialize: function(models,options) {
@@ -18,28 +20,10 @@ App.Collection.FormSubmissions = App.Collection.FormBase.extend({
   },
   model: App.Model.FormSubmission,
   urlRead: '/studio/static/js/model/backbone/mocks/forms/submissions.json',
+  urlSearch : '/studio/static/js/model/backbone/mocks/forms/submissions.json', //change to be the search url
   sync: function (method, model, options) {
     console.log("sync called for model");
     this[method].apply(this, arguments);
-  },
-
-
-  findBySearchParams : function (params, options){
-    $.ajax({
-      type: 'POST',
-      url: this.urlRead,
-      data : JSON.stringify({}),
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      success: function(res){
-        console.log("response read by id ", res);
-        options.success(res);
-      },
-      error: function(xhr, status){
-        console.log("error read by id ", status);
-        options.error(status);
-      }
-    });
   },
 
   read : function(method, model, options){
@@ -96,5 +80,23 @@ App.Collection.FormSubmissions = App.Collection.FormBase.extend({
   },
   update : function(method, model, options){
    console.log("not yet implemented");
+  },
+  search : function (queryOb, options){
+    $.ajax({
+      type: 'POST',
+      url: this.urlSearch,
+      data : JSON.stringify(queryOb),
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      success: function(res){
+        console.log("response read by id ", res);
+        options.success(res);
+      },
+      error: function(xhr, status){
+        console.log("error read by id ", status);
+        options.error(status);
+      }
+    });
   }
+
 });

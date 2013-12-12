@@ -36,6 +36,13 @@ App.View.TemplateMixins = {
 };
 
 
+App.View.UtilMixins = {
+  "displayMessage": function(mess){
+    App.View.Forms.prototype.message(mess);
+  }
+};
+
+
 App.View.FormsMixins = {
   "aggregateFields" : function (){
     this.fields = [{
@@ -92,3 +99,4 @@ _.extend(App.View.FullPageMessageView.prototype, App.View.TemplateMixins);
 //forms
 _.extend(App.View.SubmissionList.prototype, App.View.FormsMixins);
 _.extend(App.View.Rules.prototype, App.View.FormsMixins);
+_.extend(App.View.SubmissionList.prototype, App.View.UtilMixins);
