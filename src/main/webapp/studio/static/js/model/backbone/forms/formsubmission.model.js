@@ -19,7 +19,7 @@ App.Collection.FormSubmissions = App.Collection.FormBase.extend({
     if(options["appId"]) this.appId = options["appId"];
   },
   model: App.Model.FormSubmission,
-  urlRead: '/studio/static/js/model/backbone/mocks/forms/submissions.json',
+  urlRead: '/api/v2/forms/submission',
   urlSearch : '/studio/static/js/model/backbone/mocks/forms/submissions.json', //change to be the search url
   sync: function (method, model, options) {
     console.log("sync called for model");
