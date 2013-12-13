@@ -181,6 +181,13 @@ App.View.SubmissionList = App.View.FormListBase.extend({
       for(var i=0; i < 2; i++){
         var field = dataOb.formFields[i];
         console.log("assigning field ", field);
+        // Allow form submissions to only have one field
+        if (!field){
+          this.columns[tableIndex].sTitle = '';
+          dataOb["field" + fieldNum + "val"] = "";
+          continue;
+        }
+
         this.columns[tableIndex].sTitle = field.fieldId.name;
         var fieldNum = i + 1;
         dataOb["field" + fieldNum + "val"] = field.fieldValues[0];
@@ -276,9 +283,6 @@ App.View.SubmissionList = App.View.FormListBase.extend({
       self.$el.find('.form-search').parent().append(self.templates.$advancedSearch());
     }
     return this;
-  },
-  onAddSubmission : function(e){
-
   },
   onRowSelected : function (e){
     var self = this;

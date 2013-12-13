@@ -53,10 +53,24 @@ App.Collection.FormSubmissions = App.Collection.FormBase.extend({
             for(var i=0; i < res.submissions.length; i++){
               var sub = res.submissions[i];
               console.log("submission formfield  ", sub.formFields[0].fieldValues[0]);
-              //selections
-              sub.field1val = ('object' === typeof  sub.formFields[0].fieldValues[0]) ? sub.formFields[0].fieldValues[0].selections[0] : sub.formFields[0].fieldValues[0];
-              sub.field2val = ('object' === typeof  sub.formFields[1].fieldValues[0]) ? sub.formFields[1].fieldValues[0].selections[0] : sub.formFields[1].fieldValues[0];
-              sub.field3val = ('object' === typeof  sub.formFields[2].fieldValues[0]) ? sub.formFields[2].fieldValues[0].selections[0] : sub.formFields[2].fieldValues[0];
+
+              sub.field1val = '';
+              sub.field2val = '';
+              sub.field3val = '';
+
+              for (var j=0; sub.formFields && j< sub.formFields.length; j++){
+                if (j===3){
+                  break;
+                }
+                var firstField = sub.formFields[j],
+                firstValue = (typeof firstField === 'object' && firstField.fieldValues && firstField.fieldValues.length>0) ? firstField.fieldValues[0] : false;
+                if (firstValue){
+                  // Check if multi-select type e.g. radio or checkboxes
+                  var idx = j + 1;
+                  sub['field' + (idx) + 'val'] = ('object' === typeof  firstValue) ? firstValue.selections[0] : firstValue;
+                }
+              }
+
             }
 
             self.loaded = true;

@@ -182,7 +182,7 @@ App.View.FormsController = Backbone.View.extend({
       formId = submissionsEl.find('select.formSelect').val();
       appId = submissionsEl.find('select.appSelect').val();
     }
-    formId = '52a0dc9fd74184710e000004'; // TODO remove this hardcoding
+
     formModel = this.views.forms.collection.findWhere({ "_id" : formId });
 
     if (!formModel){
