@@ -23,8 +23,12 @@ App.View.SubmissionDetail = App.View.Forms.extend({
     var self = this;
     var container = $('.emptyContainer');
     container.empty();
-    var data = self.options.submission.toJSON();
-    data.deviceFormTimestamp = moment(data.deviceFormTimestamp).format('MMMM Do YYYY, h:mm:ss a');
+    var data = {};
+    if(self.options.submission){
+      data = self.options.submission.toJSON();
+      data.deviceFormTimestamp = moment(data.deviceFormTimestamp).format('MMMM Do YYYY, h:mm:ss a');
+    }
+
     container.append(self.templates.$submissionDetail(data));
       $('.downloadfile').unbind('click').bind('click',self.downloadFile);
 

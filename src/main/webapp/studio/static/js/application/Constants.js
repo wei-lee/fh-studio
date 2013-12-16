@@ -197,6 +197,25 @@ $.extend(Constants, {
   ENVIRONMENT_TARGET_PUSH_URL : Constants.ENVIRONMENT_TARGET_MANAGE_PREFIX + "push",
   ENVIRONMENT_TARGET_UPDATE_URL : Constants.ENVIRONMENT_TARGET_MANAGE_PREFIX + "update",
   ENVIRONMENT_TARGET_DELETE_URL : Constants.ENVIRONMENT_TARGET_MANAGE_PREFIX + "delete",
-  ENVIRONMENT_TARGET_UNSET_URL : Constants.ENVIRONMENT_TARGET_MANAGE_PREFIX + "unset"
+  ENVIRONMENT_TARGET_UNSET_URL : Constants.ENVIRONMENT_TARGET_MANAGE_PREFIX + "unset",
+
+//"text", "textarea", "number", "emailAddress", "dropdown", "radio", "checkboxes", "location", "locationMap", "photo", "signature", "file", "dateTime", "sectionBreak", "matrix"
+  APP_FORMS : {
+    "FIELD_RULES" : {
+      "dateTime": ["is at", "is before", "is after"],
+      "dropdown": ["is", "is not", "contains", "does not contain", "begins with", "ends with"],
+      "text": ["is", "is not", "contains", "does not contain", "begins with", "ends with"],
+      "emailAddress": ["is", "is not", "contains", "does not contain", "begins with", "ends with"],
+      "number": ["is equal to", "is greater than", "is less than"],
+      "textarea": ["is", "is not", "contains", "does not contain", "begins with", "ends with"],
+      "checkboxes":["is","is not"],
+      "radio": ["is", "is not", "contains", "does not contain", "begins with", "ends with"],
+      "url":["is", "is not", "contains", "does not contain", "begins with", "ends with"]
+    },
+    "EXCLUDED_FIELD_TYPES" : ["file","photo","signature","location"],
+    "EXCLUDED_SEARCH_FIELD_TYPES":["file","photo","signature"],
+    "ALL_FIELD_TYPES":["text", "textarea", "number", "emailAddress", "dropdown", "radio", "checkboxes", "location", "locationMap", "photo", "signature", "file", "dateTime", "sectionBreak", "matrix"]
+  }
+
 
 });

@@ -8,6 +8,8 @@ App.collections = App.collections || {};
 App.Model.FormSubmission = App.Model.FormBase.extend({
 
 });
+
+
 // '/api/v2/forms/submission',
 App.Collection.FormSubmissions = App.Collection.FormBase.extend({
   initialize: function(models,options) {
@@ -17,32 +19,16 @@ App.Collection.FormSubmissions = App.Collection.FormBase.extend({
     if(options["appId"]) this.appId = options["appId"];
   },
   model: App.Model.FormSubmission,
-  urlRead: '/studio/static/js/model/backbone/mocks/forms/submissions.json',
+  urlRead: '/api/v2/forms/submission',
+  urlSearch : '/studio/static/js/model/backbone/mocks/forms/submissions.json', //change to be the search url
   sync: function (method, model, options) {
     console.log("sync called for model");
     this[method].apply(this, arguments);
   },
 
-
-  readByFormId :  function (formId,success, error){
-
-    $.ajax({
-      type: 'POST',
-      url: url,
-      data : {"formId":formId},
-      success: function(res){
-        console.log("response read by id ", res);
-        success(res);
-      },
-      error: function(xhr, status){
-        console.log("error read by id ", status);
-        error(status);
-
-      }
-    });
-  },
-
   read : function(method, model, options){
+
+    console.log("read form submissions called");
 
     var self = this;
     var data  = {};
@@ -67,10 +53,24 @@ App.Collection.FormSubmissions = App.Collection.FormBase.extend({
             for(var i=0; i < res.submissions.length; i++){
               var sub = res.submissions[i];
               console.log("submission formfield  ", sub.formFields[0].fieldValues[0]);
-              //selections
-              sub.field1val = ('object' === typeof  sub.formFields[0].fieldValues[0]) ? sub.formFields[0].fieldValues[0].selections[0] : sub.formFields[0].fieldValues[0];
-              sub.field2val = ('object' === typeof  sub.formFields[1].fieldValues[0]) ? sub.formFields[1].fieldValues[0].selections[0] : sub.formFields[1].fieldValues[0];
-              sub.field3val = ('object' === typeof  sub.formFields[2].fieldValues[0]) ? sub.formFields[2].fieldValues[0].selections[0] : sub.formFields[2].fieldValues[0];
+
+              sub.field1val = '';
+              sub.field2val = '';
+              sub.field3val = '';
+
+              for (var j=0; sub.formFields && j< sub.formFields.length; j++){
+                if (j===3){
+                  break;
+                }
+                var firstField = sub.formFields[j],
+                firstValue = (typeof firstField === 'object' && firstField.fieldValues && firstField.fieldValues.length>0) ? firstField.fieldValues[0] : false;
+                if (firstValue){
+                  // Check if multi-select type e.g. radio or checkboxes
+                  var idx = j + 1;
+                  sub['field' + (idx) + 'val'] = ('object' === typeof  firstValue) ? firstValue.selections[0] : firstValue;
+                }
+              }
+
             }
 
             self.loaded = true;
@@ -94,5 +94,23 @@ App.Collection.FormSubmissions = App.Collection.FormBase.extend({
   },
   update : function(method, model, options){
    console.log("not yet implemented");
+  },
+  search : function (queryOb, options){
+    $.ajax({
+      type: 'POST',
+      url: this.urlSearch,
+      data : JSON.stringify(queryOb),
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      success: function(res){
+        console.log("response read by id ", res);
+        options.success(res);
+      },
+      error: function(xhr, status){
+        console.log("error read by id ", status);
+        options.error(status);
+      }
+    });
   }
+
 });

@@ -34,10 +34,12 @@ App.View.FormAppsList = App.View.FormListBase.extend({
     },{
       "sTitle": '# Forms In This App',
       "mDataProp": this.CONSTANTS.FORMSAPP.FORMS + ".length"
-    },{
-      "sTitle": 'Theme',
-      "mDataProp": this.CONSTANTS.FORMSAPP.THEMENAME
-    }];
+    }
+//    },{
+//      "sTitle": 'Theme',
+//      "mDataProp": this.CONSTANTS.FORMSAPP.THEMENAME
+//    }
+];
 
     return self.constructor.__super__.initialize.apply(self, arguments);
   },

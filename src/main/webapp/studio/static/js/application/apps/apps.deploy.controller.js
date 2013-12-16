@@ -246,7 +246,7 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
 
       // class name determines deploy target image, so whitelabel-able
       var label = $('<div>').addClass('cloud_target_label ' + target_name.toLowerCase());
-      
+
       if (target.fields.id !== 'default') {
         label.text(label_name);
       } else {
@@ -348,6 +348,8 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     if(runtime){
       params.runtime = runtime;
     }
+    var clean = $(self.container).find('#deploy_clean_stage').is(':checked');
+    params.clean = clean;
     $fw.server.post(url, params, function (res) {
       if (res.status === "ok") {
         self.deployStarted(res.cacheKey, self.sub_container, 'live');
@@ -375,6 +377,9 @@ Apps.Deploy.Controller = Apps.Cloud.Controller.extend({
     if(runtime){
       params.runtime = runtime;
     }
+    var clean = $(self.container).find('#deploy_clean_stage').is(':checked');
+    params.clean = clean;
+
     $fw.server.post(url, params, function (res) {
       if (res.status === "ok") {
         self.deployStarted(res.cacheKey, self.sub_container, 'dev');

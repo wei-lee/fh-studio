@@ -11,7 +11,8 @@ App.View.FormsController = Backbone.View.extend({
     'click .btn-edit-form-rules' : 'onEditFormRules',
     'click .formapp-link' : 'onFormAppLoad',
     'click .btn-add-submission' : 'onAddSubmission',
-    'click #editSubmission' : 'onEditSubmission'
+    'click #editSubmission' : 'onEditSubmission',
+    'click #printSubmission' : 'onPrintSubmission'
   },
   initialize : function(){
 
@@ -181,7 +182,7 @@ App.View.FormsController = Backbone.View.extend({
       formId = submissionsEl.find('select.formSelect').val();
       appId = submissionsEl.find('select.appSelect').val();
     }
-    formId = '52a0dc9fd74184710e000004'; // TODO remove this hardcoding
+
     formModel = this.views.forms.collection.findWhere({ "_id" : formId });
 
     if (!formModel){
@@ -197,5 +198,9 @@ App.View.FormsController = Backbone.View.extend({
     this.$el.append(addEdit.render().$el);
     addEdit.bind('back', $.proxy(this.back, this));
     this.subViews.push(addEdit);
+  },
+  onPrintSubmission: function(e) {
+    e.preventDefault();
+    window.print();
   }
 });
