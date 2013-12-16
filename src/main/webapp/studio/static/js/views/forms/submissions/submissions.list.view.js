@@ -235,7 +235,7 @@ App.View.SubmissionList = App.View.FormListBase.extend({
     var rulesSelect = $(e.target).next('select');
     var checkedVal = $(e.target).parent().find('input.checkedValue');
     if("dateTime" == type){
-      checkedVal.replaceWith(' <input type="date" class="checkedValue" placeholder="checked value">')
+      checkedVal.replaceWith(' <input type="date" class="checkedValue" placeholder="checked value">');
     }else if(checkedVal.attr("type") !== "text"){
       checkedVal.replaceWith(' <input type="text" class="checkedValue" placeholder="checked value">');
     }
@@ -337,7 +337,7 @@ App.View.SubmissionList = App.View.FormListBase.extend({
           }
           crit["fieldId"] = _this.find('select.searchFieldName').val();
           crit["restriction"] = _this.find('select.fieldConditionals').val();
-          crit["value"] = value
+          crit["value"] = value;
           cb(undefined, crit);
         });
       }else if("repeating" === type){

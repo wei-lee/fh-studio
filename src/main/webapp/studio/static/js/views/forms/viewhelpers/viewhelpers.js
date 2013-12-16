@@ -3,6 +3,8 @@ Handlebars.registerHelper("createFormField", function (options, context){
   console.log("got createFormField ", options);
   var ret = "";
   var i;
+  var def = {};
+
   if(options.fieldId){
     switch (options.fieldId.type){
       case "text":
@@ -52,13 +54,28 @@ Handlebars.registerHelper("createFormField", function (options, context){
         }
         break;
       case "location":
-        for( i=0; i < options.fieldValues.length; i++){
-          ret+="<div class='row-fluid'>LonLat: <input disabled type='text' value='"+options.fieldValues[i]['long']+ "," + options.fieldValues[i].lat + "'>  <hr/></div>";
+        console.log("options ", options.fieldId);
+        if(options.fieldId.fieldOptions.definition && "northEast" === options.fieldId.fieldOptions.definition.locationUnit){
+          for( i=0; i < options.fieldValues.length; i++){
+            ret+="<div class='row-fluid'><input disabled type='text' value='zone: "+options.fieldValues[i]['zone']+ ", eastings: " + options.fieldValues[i]['eastings'] + ", northings: " + options.fieldValues[i]['northings']+" '> <hr/></div>";
+          }
+        }else{
+          for( i=0; i < options.fieldValues.length; i++){
+            ret+="<div class='row-fluid'>LonLat: <input disabled type='text' value='"+options.fieldValues[i]['long']+ "," + options.fieldValues[i].lat + "'>  <hr/></div>";
+          }
         }
         break;
       case 'locationMap':
-        for( i=0; i < options.fieldValues.length; i++){
-          ret+="<div class='row-fluid'><input disabled type='text' value='zone: "+options.fieldValues[i]['zone']+ ", eastings: " + options.fieldValues[i]['eastings'] + ", northings: " + options.fieldValues[i]['northings']+" '> <hr/></div>";
+        console.log("options ", options);
+        if(options.fieldId.fieldOptions.definition && "northEast" === options.fieldId.fieldOptions.definition.locationUnit){
+          for( i=0; i < options.fieldValues.length; i++){
+            ret+="<div class='row-fluid'><input disabled type='text' value='zone: "+options.fieldValues[i]['zone']+ ", eastings: " + options.fieldValues[i]['eastings'] + ", northings: " + options.fieldValues[i]['northings']+" '> <hr/></div>";
+          }
+        }else{
+          for( i=0; i < options.fieldValues.length; i++){
+            ret+="<div class='row-fluid'>LonLat: <input disabled type='text' value='"+options.fieldValues[i]['long']+ "," + options.fieldValues[i].lat + "'>  <hr/></div>";
+          }
+
         }
         break;
       default:

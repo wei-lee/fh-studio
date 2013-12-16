@@ -3,16 +3,7 @@ App.View = App.View || {};
 
 App.View.Rules = App.View.Forms.extend({
 
-  FIELD_RULES: {
-    "dateTime": ["is at", "is before", "is after"],
-    "select": ["is", "is not", "contains", "does not contain", "begins with", "ends with"],
-    "text": ["is", "is not", "contains", "does not contain", "begins with", "ends with"],
-    "emailAddress": ["is", "is not", "contains", "does not contain", "begins with", "ends with"],
-    "number": ["is equal to", "is greater than", "is less than"],
-    "textarea": ["is", "is not", "contains", "does not contain", "begins with", "ends with"],
-    "checkboxes":["is","is not"],
-    "radio": ["is", "is not", "contains", "does not contain", "begins with", "ends with"]
-  },
+  FIELD_RULES: Constants.APP_FORMS.FIELD_RULES,
 
   targets : {
     "targetField":[],
@@ -20,16 +11,7 @@ App.View.Rules = App.View.Forms.extend({
   },
 
   //todo all the rules seem to be the same in wufoo so just have one set of rules?
-  PAGE_RULES: {
-    "dateTime": ["is at", "is before", "is after"],
-    "select": ["is", "is not", "contains", "does not contain", "begins with", "ends with"],
-    "text": ["is", "is not", "contains", "does not contain", "begins with", "ends with"],
-    "emailAddress": ["is", "is not", "contains", "does not contain", "begins with", "ends with"],
-    "number": ["is equal to", "is greater than", "is less than"],
-    "textarea": ["is", "is not", "contains", "does not contain", "begins with", "ends with"],
-    "checkboxes":["is","is not"],
-    "radio": ["is", "is not", "contains", "does not contain", "begins with", "ends with"]
-  },
+  PAGE_RULES: Constants.APP_FORMS.FIELD_RULES,
 
   "EXCLUDED_FIELD_TYPES" : ["checkbox"],
 

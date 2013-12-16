@@ -135,6 +135,9 @@
           "type": "location",
           "required": false,
           "fieldOptions": {
+            "definition":{
+              "locationUnit":""
+            },
             "validation": {
               "min": 5,
               "max": 20
@@ -217,6 +220,7 @@
           "required": false,
           "fieldOptions": {
             "definition": {
+              "locationUnit":"northEast",
               "file_size": 100,
               "maxRepeat": 5,
               "minRepeat": 2
