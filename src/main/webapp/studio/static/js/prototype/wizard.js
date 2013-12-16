@@ -264,6 +264,8 @@ proto.Wizard = {
       android_cert_wizard: ['android_cert_upload', 'android_cert_finish'],
       windowsphone7_export_wizard: ['app_export_windowsphone7_versions', 'app_export_windowsphone7_progress'],
       windowsphone7_publish_wizard: ['app_publish_windowsphone7_versions', 'app_publish_windowsphone7_progress'],
+      windowsphone_export_wizard: ['app_export_windowsphone_progress'],
+      windowsphone_publish_wizard: ['app_publish_windowsphone_progress'],
       blackberry_export_wizard: ['app_export_blackberry_versions', 'app_export_blackberry_progress'],
       blackberry_publish_wizard: ['app_publish_blackberry_versions', 'app_publish_blackberry_password', 'app_publish_blackberry_progress'],
       blackberry_getstarted_wizard: ['blackberry_csk_upload', 'blackberry_csk_finish', 'blackberry_db_upload', 'blackberry_db_finish'],
@@ -279,6 +281,7 @@ proto.Wizard = {
       wizards.android_publish_wizard = ['app_publish_android_info', 'app_publish_android_versions', 'app_publish_android_password', 'app_publish_android_progress'];
       wizards.blackberry_publish_wizard = ['app_publish_blackberry_info', 'app_publish_blackberry_password', 'app_publish_blackberry_progress'];
       wizards.windowsphone7_publish_wizard = ['app_publish_windowsphone7_info','app_publish_windowsphone7_progress'];
+      wizards.windowsphone_publish_wizard = ['app_publish_windowsphone_info','app_publish_windowsphone_progress'];
       wizards.embed_publish_wizard = ['app_publish_embed_info' ,'app_publish_embed_progress'];
     }
 
