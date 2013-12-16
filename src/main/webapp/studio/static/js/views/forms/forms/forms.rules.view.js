@@ -99,7 +99,6 @@ App.View.Rules = App.View.Forms.extend({
     container.remove();
     if (ruleid) {
       var model = self.collection.findWhere({"_id": ruleid});
-      console.log("found model to removce ", model);
       self.collection.remove(model, {
         "success": function () {
 

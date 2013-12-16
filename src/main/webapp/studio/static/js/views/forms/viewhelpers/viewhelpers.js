@@ -53,7 +53,12 @@ Handlebars.registerHelper("createFormField", function (options, context){
         break;
       case "location":
         for( i=0; i < options.fieldValues.length; i++){
-          ret+="<div class='row-fluid'>LonLat: <input disabled type='text' value='"+options.fieldValues[i]['long']+ "," + options.fieldValues[i].lat + "'> <button class='btn-mini icon-location-arrow'></button> <hr/></div>";
+          ret+="<div class='row-fluid'>LonLat: <input disabled type='text' value='"+options.fieldValues[i]['long']+ "," + options.fieldValues[i].lat + "'>  <hr/></div>";
+        }
+        break;
+      case 'locationMap':
+        for( i=0; i < options.fieldValues.length; i++){
+          ret+="<div class='row-fluid'><input disabled type='text' value='zone: "+options.fieldValues[i]['zone']+ ", eastings: " + options.fieldValues[i]['eastings'] + ", northings: " + options.fieldValues[i]['northings']+" '> <hr/></div>";
         }
         break;
       default:
