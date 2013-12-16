@@ -39,6 +39,27 @@ App.View.TemplateMixins = {
 App.View.UtilMixins = {
   "displayMessage": function(mess){
     App.View.Forms.prototype.message(mess);
+  },
+  updateProgressBar: function(value) {
+    var progress_bar = this.progressModal.find('.progress .bar');
+    progress_bar.css('width', value + '%');
+    this.current_progress = value;
+  },
+  appendProgressLog: function(message) {
+    var log_area = this.progressModal.find('textarea');
+    var current = log_area.val();
+    log_area.val(current + message + "\n");
+    log_area.scrollTop(99999);
+    log_area.scrollTop(log_area.scrollTop() * 12);
+  },
+  destroyProgressModal: function() {
+    var self = this;
+
+    self.progressModal.modal('hide');
+    setTimeout(function() {
+      self.progressModal.remove();
+      self.progressModal = null;
+    }, 2000);
   }
 };
 
@@ -100,3 +121,4 @@ _.extend(App.View.FullPageMessageView.prototype, App.View.TemplateMixins);
 _.extend(App.View.SubmissionList.prototype, App.View.FormsMixins);
 _.extend(App.View.Rules.prototype, App.View.FormsMixins);
 _.extend(App.View.SubmissionList.prototype, App.View.UtilMixins);
+_.extend(App.View.FormAppsCreateEdit.prototype, App.View.UtilMixins);
