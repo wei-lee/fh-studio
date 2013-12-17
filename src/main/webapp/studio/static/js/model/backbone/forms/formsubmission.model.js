@@ -19,8 +19,10 @@ App.Collection.FormSubmissions = App.Collection.FormBase.extend({
     if(options["appId"]) this.appId = options["appId"];
   },
   model: App.Model.FormSubmission,
-  urlRead: '/studio/static/js/model/backbone/mocks/forms/submissions.json',
+  urlRead: '/api/v2/forms/submission',
   urlSearch : '/studio/static/js/model/backbone/mocks/forms/submissions.json', //change to be the search url
+  urlGetSubmission : '/api/v2/forms/submission/{{id}}',
+
   sync: function (method, model, options) {
     console.log("sync called for model");
     this[method].apply(this, arguments);
@@ -89,6 +91,31 @@ App.Collection.FormSubmissions = App.Collection.FormBase.extend({
       self.trigger("sync");
     }
   },
+
+  readSubmissionDetail : function (subid,options){
+    var self = this;
+    var url =this.urlGetSubmission.replace('{{id}}', subid);
+    $.ajax({
+      type:"GET",
+      "url":url,
+      contentType:"application/json",
+      dataType:"json",
+      success : function (res){
+        var model = self.findWhere({"_id":res._id});
+        console.log("found model ",model);
+        if(model){
+          model.set(res);
+        }else{
+          model  = new   App.Model.FormSubmission(res);
+        }
+        options.success(model);
+      },
+      error : function (res){
+        options.error(res);
+      }
+    });
+  },
+
   update : function(method, model, options){
    console.log("not yet implemented");
   },
