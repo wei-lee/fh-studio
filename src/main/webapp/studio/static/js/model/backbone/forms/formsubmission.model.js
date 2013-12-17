@@ -101,8 +101,8 @@ App.Collection.FormSubmissions = App.Collection.FormBase.extend({
       contentType:"application/json",
       dataType:"json",
       success : function (res){
+        //we already have a submission with the id so update that.
         var model = self.findWhere({"_id":res._id});
-        console.log("found model ",model);
         if(model){
           model.set(res);
         }else{
