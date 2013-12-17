@@ -287,11 +287,20 @@ App.View.SubmissionList = App.View.FormListBase.extend({
   onRowSelected : function (e){
     var self = this;
     var model = this.getDataForRow(e);
+    console.log(model);
+    self.collection.readSubmissionDetail(model.get("_id"),{"success": function (res){
+        console.log("submission detail ", res);
+
+      self.submissionDetail = new App.View.SubmissionDetail({"submission":res});
+      self.submissionDetail.render();
+    },"error":function (res){
+        console.log("submission error ", res);
+    }});
+
     if(self.submissionDetail){
       self.submissionDetail.remove();
     }
-    self.submissionDetail = new App.View.SubmissionDetail({"submission":model});
-    self.submissionDetail.render();
+
   },
 
   updatePreview : function(updatedModel){
