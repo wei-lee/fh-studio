@@ -3,6 +3,8 @@ Handlebars.registerHelper("createFormField", function (options, context){
   console.log("got createFormField ", options);
   var ret = "";
   var i;
+  var def = {};
+
   if(options.fieldId){
     switch (options.fieldId.type){
       case "text":
@@ -26,12 +28,12 @@ Handlebars.registerHelper("createFormField", function (options, context){
       case "photo":
       case "signature":
         for( i=0; i < options.fieldValues.length; i++){
-          ret+="<div class='row-fluid'><img style='width: 40%' src="+options.fieldValues[i]+"></div>";
+          ret+="<div class='row-fluid'><img style='width: 40%' src='/api/v2/forms/submission/file/"+options.fieldValues[i].groupId+"'></div>";
         }
         break;
       case "file":
         for( i=0; i < options.fieldValues.length; i++){
-          ret+="<div class='row-fluid '><a href='/api/v2/forms/submission/file/"+options.fieldValues[i]+"' class='btn-small downloadfile icon-download'   data-groupid='"+options.fieldValues[i]+"' >Download</a></hr></div>";
+          ret+="<div class='row-fluid '><a href='/api/v2/forms/submission/file/"+options.fieldValues[i].groupId+"' class='btn-small downloadfile icon-download'   data-groupid='"+options.fieldValues[i]+"' >Download</a></hr></div>";
         }
         break;
       case "checkbox":
@@ -52,8 +54,28 @@ Handlebars.registerHelper("createFormField", function (options, context){
         }
         break;
       case "location":
-        for( i=0; i < options.fieldValues.length; i++){
-          ret+="<div class='row-fluid'>LonLat: <input disabled type='text' value='"+options.fieldValues[i]['long']+ "," + options.fieldValues[i].lat + "'> <button class='btn-mini icon-location-arrow'></button> <hr/></div>";
+        console.log("options ", options.fieldId);
+        if(options.fieldId.fieldOptions.definition && "northEast" === options.fieldId.fieldOptions.definition.locationUnit){
+          for( i=0; i < options.fieldValues.length; i++){
+            ret+="<div class='row-fluid'><input disabled type='text' value='zone: "+options.fieldValues[i]['zone']+ ", eastings: " + options.fieldValues[i]['eastings'] + ", northings: " + options.fieldValues[i]['northings']+" '> <hr/></div>";
+          }
+        }else{
+          for( i=0; i < options.fieldValues.length; i++){
+            ret+="<div class='row-fluid'>LonLat: <input disabled type='text' value='"+options.fieldValues[i]['long']+ "," + options.fieldValues[i].lat + "'>  <hr/></div>";
+          }
+        }
+        break;
+      case 'locationMap':
+        console.log("options ", options);
+        if(options.fieldId.fieldOptions.definition && "northEast" === options.fieldId.fieldOptions.definition.locationUnit){
+          for( i=0; i < options.fieldValues.length; i++){
+            ret+="<div class='row-fluid'><input disabled type='text' value='zone: "+options.fieldValues[i]['zone']+ ", eastings: " + options.fieldValues[i]['eastings'] + ", northings: " + options.fieldValues[i]['northings']+" '> <hr/></div>";
+          }
+        }else{
+          for( i=0; i < options.fieldValues.length; i++){
+            ret+="<div class='row-fluid'>LonLat: <input disabled type='text' value='"+options.fieldValues[i]['long']+ "," + options.fieldValues[i].lat + "'>  <hr/></div>";
+          }
+
         }
         break;
       default:

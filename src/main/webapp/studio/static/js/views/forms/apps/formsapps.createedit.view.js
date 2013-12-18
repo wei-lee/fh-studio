@@ -1,6 +1,3 @@
-/*
- TOOD: This is just a copy-paste placeholder of themes for now, to illustrate it also is a version of FormListBase
- */
 var App = App || {};
 App.View = App.View || {};
 
@@ -20,6 +17,7 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
     this.forms = new App.Collection.Form();
     this.themes = new App.Collection.FormThemes();
     this.mode = options.mode || 'create';
+
 
     // Fetch on the forms and themes - only once these are done can we finish..
     var getters = [
@@ -62,20 +60,27 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
     async.parallel(getters, function(err, res){
       if (err){
         //TODO: Err handling
+        self.trigger("error",err);
         return;
+
       }
       self.loaded = true;
       self.render();
+      self.trigger("rendered");
 
     });
 
     this.loaded = false;
 
+
     this.compileTemplates();
   },
   render : function(){
+
     var self = this,
     name = '';
+
+
 
     if (!this.loaded){
       this.$el.height(134);
@@ -115,10 +120,11 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
       // A create operation - remove the save buttons
       this.$el.find('.btn-group').remove();
     }
-
     return this;
   },
-  onFormSave : function(options){
+  onFormSave : function(e){
+    var create = $(e.target).hasClass("button-add-formsapp");
+    console.log("is create ", create);
     var self = this,
     forms = this.$el.find('form.formsApps #formAppForms').val() || [], //TODO: Theme and name?
     theme = this.$el.find('form.formsApps #formAppTheme').val(),
@@ -126,29 +132,101 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
     id;
 
     if (!this.model){
+
       // Associating with an existing formapp, or creating from scratch
       id = this.$el.find('form.formsApps select#existingAppSelect').val();
-      name = this.$el.find('form.formsApps select#existingAppSelect option:selected').html();
+      if(id){
+        console.log("the id is ", id);
+        this.model = this.collection.findWhere({"_id":id});
+        console.log("found model ", this.model);
+        name = this.$el.find('form.formsApps select#existingAppSelect option:selected').html();
+      }
+    }
+    if(! this.model){
       this.model = new App.Model.FormApp({
         _id : id
       });
-      this.model.set(this.CONSTANTS.FORMSAPP.UPDATED, new Date());
     }
+    this.model.set(this.CONSTANTS.FORMSAPP.UPDATED, new Date());
 
     this.model.set(this.CONSTANTS.FORMSAPP.FORMS, forms);
     this.model.set(this.CONSTANTS.FORMSAPP.THEMENAME, theme);
     this.model.set(this.CONSTANTS.FORMSAPP.NAME, name);
 
     // We use model.save rather than our usual update on a collection - bit inconsistant..?
+    var cacheKey;
     this.model.save({},
     {
-      success : function(){
-        self.collection.fetch({reset : true});
+      success : function(res){
+        if(create){
+          self.progressModal = $('#generic_progress_modal').clone();
+          self.progressModal.find('h3').text("Deploying App").end().find('h4').text("info").end().appendTo($("body")).one('shown', trackCreate).modal();
+          self.collection.fetch({reset : true});
+          cacheKey = res.get('cacheKey');
+        }
       },
       error : function(){
-        self.message('Error updating app');
+        self.message('Error creating or updating app');
       }
     });
+
+    function trackCreate (){
+      var new_guid;
+      self.current_progress = 0;
+      this.active_async_task = new ASyncServerTask({
+        cacheKey: cacheKey
+      }, {
+        updateInterval: Properties.cache_lookup_interval,
+        maxTime: Properties.cache_lookup_timeout,
+        // 5 minutes
+        maxRetries: Properties.cache_lookup_retries,
+        timeout: function(res) {
+          console.log('timeout error > ' + JSON.stringify(res));
+          self.updateProgressBar(100);
+          if (typeof fail != 'undefined') {
+            fail();
+          }
+        },
+        update: function(res) {
+          for (var i = 0; i < res.log.length; i++) {
+            if (typeof res.action.guid != 'undefined') {
+              new_guid = res.action.guid;
+              console.log('GUID for new app > ' + new_guid);
+            }
+            self.appendProgressLog(res.log[i]);
+            console.log("Current progress> " + self.current_progress);
+          }
+          self.updateProgressBar(self.current_progress + 1);
+        },
+        complete: function(res) {
+
+          self.updateProgressBar(75);
+        },
+        error: function(res) {
+          console.log('clone error > ' + JSON.stringify(res));
+          self.updateProgressBar(100);
+          $fw.client.dialog.error('App generation failed.' + "<br /> Error Message:" + res.error);
+
+          if (typeof fail != 'undefined') {
+            fail();
+          }
+        },
+        retriesLimit: function() {
+          console.log('retriesLimit exceeded: ' + Properties.cache_lookup_retries);
+          $fw.client.dialog.error('App generation failed.');
+          self.updateProgressBar(100);
+          if (typeof fail != 'undefined') {
+            fail();
+          }
+        },
+        end: function() {
+          self.destroyProgressModal();
+          $('.btn-apps').trigger("click");
+        }
+      });
+     this.active_async_task.run();
+
+    }
   },
   onAppSubmissions : function(){
     // TODO in view.controller really..

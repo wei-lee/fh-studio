@@ -647,7 +647,30 @@ Apps.Generate.Controller = GenerateApp.Controller = Class.extend({
   bind: function() {
     var self = this;
     $('.generate_single_wufoo_app').unbind().click(function() {
-      self.generators.wufoo_single.show();
+      if(true){
+        //todo change to be some property
+        this.collection = new App.Collection.FormApps();
+        this.pluralTitle = 'Forms Apps';
+        this.singleTitle = 'Forms App';
+        var mode = "create";
+        this.singleId = this.singleTitle.toLowerCase().replace(/ /g, "");
+        var createView = new App.View.FormAppsCreateEdit({ collection : this.collection, mode : mode, singleTitle : this.singleTitle, singleId : this.singleId, pluralTitle : this.pluralTitle });
+
+
+        self.generators.wufoo_single.show();
+        var step = $('.app_generator').find('.step_1').empty();
+        $('.app_generator').find('.step_2').remove();
+
+        createView.on("rendered", function (){
+          console.log("rendered called");
+          step.html(createView.$el);
+        });
+
+
+      }else{
+        self.generators.wufoo_single.show();
+      }
+
     });
     $('.generate_multi_wufoo_app').unbind().click(function() {
       self.generators.wufoo_multi.show();

@@ -12,8 +12,7 @@ Apps.Configuration.Windowsphone.Controller = Apps.Configuration.Support.extend({
       'flurry Application Key': true,
       'orientation': true,
       'status': true,
-      'version Name': true,
-      "splash Image": true
+      'version Name': true
     };
     this._super();
   }

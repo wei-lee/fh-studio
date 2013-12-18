@@ -6,12 +6,19 @@ App.View.EditFormRules = Backbone.View.extend({
 
   events : {
     'click a#fieldRules': 'fieldRulesTab',
-    'click a#pageRules': 'pageRulesTab'
+    'click a#pageRules': 'pageRulesTab',
+    'click .btn-forms-back':'goBack'
   },
 
   render : function (){
     this.fieldRulesTab();
     return this;
+  },
+
+  goBack : function (){
+    console.log("called go back");
+    this.options.viewController.back();
+    return;
   },
 
   fieldRulesTab: function () {

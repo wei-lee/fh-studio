@@ -21,15 +21,14 @@ App.Collection.FormSubmissions = App.Collection.FormBase.extend({
   model: App.Model.FormSubmission,
   urlRead: '/api/v2/forms/submission',
   urlSearch : '/studio/static/js/model/backbone/mocks/forms/submissions.json', //change to be the search url
+  urlGetSubmission : '/api/v2/forms/submission/{{id}}',
+
   sync: function (method, model, options) {
     console.log("sync called for model");
     this[method].apply(this, arguments);
   },
 
   read : function(method, model, options){
-
-    console.log("read form submissions called");
-
     var self = this;
     var data  = {};
     if(this.formId){
@@ -92,6 +91,31 @@ App.Collection.FormSubmissions = App.Collection.FormBase.extend({
       self.trigger("sync");
     }
   },
+
+  readSubmissionDetail : function (subid,options){
+    var self = this;
+    var url =this.urlGetSubmission.replace('{{id}}', subid);
+    $.ajax({
+      type:"GET",
+      "url":url,
+      contentType:"application/json",
+      dataType:"json",
+      success : function (res){
+        //we already have a submission with the id so update that.
+        var model = self.findWhere({"_id":res._id});
+        if(model){
+          model.set(res);
+        }else{
+          model  = new   App.Model.FormSubmission(res);
+        }
+        options.success(model);
+      },
+      error : function (res){
+        options.error(res);
+      }
+    });
+  },
+
   update : function(method, model, options){
    console.log("not yet implemented");
   },

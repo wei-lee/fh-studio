@@ -135,6 +135,9 @@
           "type": "location",
           "required": false,
           "fieldOptions": {
+            "definition":{
+              "locationUnit":""
+            },
             "validation": {
               "min": 5,
               "max": 20
@@ -208,7 +211,33 @@
         "fieldValues": [
           "2013-12-21 09:00"
         ]
+      },
+      {
+        "fieldId": {
+          "name": "northing eastings",
+          "helpText": "location map",
+          "type": "locationMap",
+          "required": false,
+          "fieldOptions": {
+            "definition": {
+              "locationUnit":"northEast",
+              "file_size": 100,
+              "maxRepeat": 5,
+              "minRepeat": 2
+            }
+          },
+          "_id": "529daa0151ae23875d000003",
+          "repeating": false
+        },
+        "fieldValues": [
+          {
+            "zone":"11U",
+            "eastings":"594934",
+            "northings":"5636174"
+          }
+        ]
       }
+
     ]
   }
 ]}

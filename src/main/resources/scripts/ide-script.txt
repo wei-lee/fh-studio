@@ -342,6 +342,7 @@ js/application/destinations/destination_ios.js
 js/application/destinations/destination_ipad.js
 js/application/destinations/destination_iphone.js
 js/application/destinations/destination_windowsphone7.js
+js/application/destinations/destination_windowsphone.js
 js/application/destinations/destination_embed.js
 js/analytics/AnalyticsIntegration.js
 js/prototype/tabs.js
