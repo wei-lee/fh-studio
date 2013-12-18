@@ -123,7 +123,8 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
     return this;
   },
   onFormSave : function(e){
-    var create = $(e.target).hasClass("button-add-formsapp");
+    console.log(e.target);
+    var create = $(e.target).hasClass("btn-add-formsapp");
     console.log("is create ", create);
     var self = this,
     forms = this.$el.find('form.formsApps #formAppForms').val() || [], //TODO: Theme and name?
@@ -158,7 +159,8 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
     this.model.save({},
     {
       success : function(res){
-        if(create){
+        console.log("response ", res);
+        if(res && res.get("cacheKey")){
           self.progressModal = $('#generic_progress_modal').clone();
           self.progressModal.find('h3').text("Deploying App").end().find('h4').text("info").end().appendTo($("body")).one('shown', trackCreate).modal();
           self.collection.fetch({reset : true});
@@ -181,7 +183,6 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
         // 5 minutes
         maxRetries: Properties.cache_lookup_retries,
         timeout: function(res) {
-          console.log('timeout error > ' + JSON.stringify(res));
           self.updateProgressBar(100);
           if (typeof fail != 'undefined') {
             fail();
