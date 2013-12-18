@@ -106,8 +106,8 @@ App.View.FormListBase = App.View.Forms.extend({
 
     el.addClass('info');
 
-    this.index = el.data('index');
-    var model = this.collection.at(this.index);
+    this._id = el.data('_id');
+    var model = this.collection.findWhere({ _id : this._id});
     return model;
   },
 
@@ -123,8 +123,8 @@ App.View.FormListBase = App.View.Forms.extend({
 
     el.addClass('info');
 
-    this.index = el.data('index');
-    var model = this.collection.at(this.index);
+    this._id = el.data('_id');
+    var model = this.collection.findWhere({_id : this._id});
 
     this.$el.addClass('busy');
     this.$previewEl.hide();
@@ -165,13 +165,13 @@ App.View.FormListBase = App.View.Forms.extend({
   onClone : function(e){
     e.preventDefault();
     var self = this,
-    cloneSource = this.collection.at(this.index),
+    cloneSource = this.collection.findWhere({_id : this._id}),
     createView = new App.View.FormCreateClone({ collection : this.collection, mode : 'clone', cloneSource : cloneSource.toJSON(), singleId : this.singleId, singleTitle : this.singleTitle, pluralTitle : this.pluralTitle });
     this.$el.append(createView.render().$el);
   },
   onDelete : function(){
     var self = this,
-    model = this.collection.at(this.index),
+    model = this.collection.findWhere({_id : this._id}),
     nameAttr = (self.singleTitle.toLowerCase()==="form") ? this.CONSTANTS.FORM.NAME : this.CONSTANTS.THEME.NAME,
     modal = new App.View.Modal({
       title: 'Confirm Delete',

@@ -56,7 +56,7 @@ App.View.FormsController = Backbone.View.extend({
     this.$el.append(this.views.themes.render().$el);
   },
   onEditTheme : function(e){
-    var theme = this.views.themes.collection.at(this.views.themes.index);
+    var theme = this.views.themes.collection.findWhere({_id : this.views.themes._id});
     this.views.themes.$el.hide();
 
     var editTheme = new App.View.FormThemesEdit({ theme : theme, collection : this.views.themes.collection, readOnly : false});
@@ -92,7 +92,7 @@ App.View.FormsController = Backbone.View.extend({
     Edit Form view switching
    */
   onEditForm : function(e){
-    var form = this.views.forms.collection.at(this.views.forms.index),
+    var form = this.views.forms.collection.findWhere({ _id : this.views.forms._id }),
     menuEl = this.$el.find(".forms_menu_container");
     this.views.forms.$el.hide();
 
@@ -103,7 +103,7 @@ App.View.FormsController = Backbone.View.extend({
   },
   onEditFormRules : function(e){
     var self = this;
-    var form = this.views.forms.collection.at(this.views.forms.index),
+    var form = this.views.forms.collection.findWhere({ _id : this.views.forms._id }),
     menuEl = this.$el.find(".forms_menu_container");
     this.views.forms.$el.hide();
 
