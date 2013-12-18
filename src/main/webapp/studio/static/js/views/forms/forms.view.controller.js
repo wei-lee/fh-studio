@@ -82,7 +82,16 @@ App.View.FormsController = Backbone.View.extend({
   },
   onAppSubmissions : function(){
     this.onSubmissions();
-    var view = this.views.submissions;
+    var view = this.views.submissions,
+    appId = this.views.apps._id,
+    e = { target : view.$el.find('a#perAppSubmissions') }; // spoof an event object so it can switch tab
+
+    // Select this form in the dropdown and trigger the change event needed
+    view.bind('perAppSubmissionsRendered', function(){
+      view.$el.find('.appSelect').val(appId).trigger('change');
+    });
+
+    view.perAppSubmissions(e);
   },
   onFormSubmissions : function(){
     this.onSubmissions();

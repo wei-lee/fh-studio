@@ -150,6 +150,8 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
         submissionsContainer.append(self.submissions.render().$el);
 
       });
+
+      self.trigger('perAppSubmissionsRendered'); // Used by view controller to tell when we're ready to select the relevant app ID in the dropdown form
     };
 
     ret.error = function (err){
