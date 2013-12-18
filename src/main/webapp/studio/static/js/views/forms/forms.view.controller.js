@@ -86,7 +86,12 @@ App.View.FormsController = Backbone.View.extend({
   },
   onFormSubmissions : function(){
     this.onSubmissions();
-    var view = this.views.submissions;
+    var formId = this.views.forms._id,
+    view = this.views.submissions,
+    e = { target : view.$el.find('a#perFormSubmissions') }; // spoof an event object so it can switch tab
+    view.perFormSubmissions(e);
+    // Select this form in the dropdown and trigger the change event needed
+    view.$el.find('.formSelect').val(formId).trigger('change');
   },
   /*
     Edit Form view switching
