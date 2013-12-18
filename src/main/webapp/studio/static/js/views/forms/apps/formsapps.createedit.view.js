@@ -60,14 +60,18 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
     async.parallel(getters, function(err, res){
       if (err){
         //TODO: Err handling
+        self.trigger("error",err);
         return;
+
       }
       self.loaded = true;
       self.render();
+      self.trigger("rendered");
 
     });
 
     this.loaded = false;
+
 
     this.compileTemplates();
   },
@@ -116,12 +120,11 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
       // A create operation - remove the save buttons
       this.$el.find('.btn-group').remove();
     }
-    this.$el.find('.btn-success').removeAttr("data-dismiss");
-
     return this;
   },
   onFormSave : function(e){
-
+    var create = $(e.target).hasClass("button-add-formsapp");
+    console.log("is create ", create);
     var self = this,
     forms = this.$el.find('form.formsApps #formAppForms').val() || [], //TODO: Theme and name?
     theme = this.$el.find('form.formsApps #formAppTheme').val(),
@@ -133,16 +136,18 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
       // Associating with an existing formapp, or creating from scratch
       id = this.$el.find('form.formsApps select#existingAppSelect').val();
       if(id){
+        console.log("the id is ", id);
         this.model = this.collection.findWhere({"_id":id});
         console.log("found model ", this.model);
         name = this.$el.find('form.formsApps select#existingAppSelect option:selected').html();
-      } else{
-        this.model = new App.Model.FormApp({
-          _id : id
-        });
       }
-      this.model.set(this.CONSTANTS.FORMSAPP.UPDATED, new Date());
     }
+    if(! this.model){
+      this.model = new App.Model.FormApp({
+        _id : id
+      });
+    }
+    this.model.set(this.CONSTANTS.FORMSAPP.UPDATED, new Date());
 
     this.model.set(this.CONSTANTS.FORMSAPP.FORMS, forms);
     this.model.set(this.CONSTANTS.FORMSAPP.THEMENAME, theme);
@@ -153,11 +158,12 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
     this.model.save({},
     {
       success : function(res){
-        self.progressModal = $('#generic_progress_modal').clone();
-        self.progressModal.find('h3').text("Deploying App").end().find('h4').text("info").end().appendTo($("body")).one('shown', trackCreate).modal();
-        self.collection.fetch({reset : true});
-        console.log("returned res ", res);
-        cacheKey = res.get('tasks')[0];
+        if(create){
+          self.progressModal = $('#generic_progress_modal').clone();
+          self.progressModal.find('h3').text("Deploying App").end().find('h4').text("info").end().appendTo($("body")).one('shown', trackCreate).modal();
+          self.collection.fetch({reset : true});
+          cacheKey = res.get('cacheKey');
+        }
       },
       error : function(){
         self.message('Error creating or updating app');
@@ -166,6 +172,7 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
 
     function trackCreate (){
       var new_guid;
+      self.current_progress = 0;
       this.active_async_task = new ASyncServerTask({
         cacheKey: cacheKey
       }, {
@@ -214,6 +221,7 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
         },
         end: function() {
           self.destroyProgressModal();
+          $('.btn-apps').trigger("click");
         }
       });
      this.active_async_task.run();

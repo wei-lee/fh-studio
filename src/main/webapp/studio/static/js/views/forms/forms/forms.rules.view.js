@@ -210,10 +210,12 @@ App.View.Rules = App.View.Forms.extend({
         var rule;
         if("field" == type){
           rule = new App.Model.FieldRule(data);
+          self.collection.add(rule);
         }else if("page" == type){
           rule = new App.Model.PageRule(data);
+          self.collection.add(rule);
         }
-        self.collection.add(rule);
+
       }
     });
 
@@ -222,9 +224,11 @@ App.View.Rules = App.View.Forms.extend({
       if("field" == type){
         self.options.form.set("fieldRules", data);
         console.log("set field rules to ",data);
+        $('#fieldRules').trigger('click');
       }else if("page" == type){
         self.options.form.set("pageRules", data);
         console.log("set page rules to ",data);
+        $('#pageRules').trigger('click');
       }
       App.View.Forms.prototype.message('updated rules successfully');
 

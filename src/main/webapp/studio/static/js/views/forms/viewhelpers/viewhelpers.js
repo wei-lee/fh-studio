@@ -28,12 +28,12 @@ Handlebars.registerHelper("createFormField", function (options, context){
       case "photo":
       case "signature":
         for( i=0; i < options.fieldValues.length; i++){
-          ret+="<div class='row-fluid'><img style='width: 40%' src="+options.fieldValues[i]+"></div>";
+          ret+="<div class='row-fluid'><img style='width: 40%' src='/api/v2/forms/submission/file/"+options.fieldValues[i].groupId+"'></div>";
         }
         break;
       case "file":
         for( i=0; i < options.fieldValues.length; i++){
-          ret+="<div class='row-fluid '><a href='/api/v2/forms/submission/file/"+options.fieldValues[i]+"' class='btn-small downloadfile icon-download'   data-groupid='"+options.fieldValues[i]+"' >Download</a></hr></div>";
+          ret+="<div class='row-fluid '><a href='/api/v2/forms/submission/file/"+options.fieldValues[i].groupId+"' class='btn-small downloadfile icon-download'   data-groupid='"+options.fieldValues[i]+"' >Download</a></hr></div>";
         }
         break;
       case "checkbox":

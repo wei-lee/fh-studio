@@ -65,6 +65,7 @@ App.View.FormAppsList = App.View.FormListBase.extend({
     this.$previewEl.show();
   },
   onAddExisting: function(){
+
     var form = new App.View.FormAppsCreateEdit({ mode : 'create', collection : this.collection });
     // TODO - API?
   }

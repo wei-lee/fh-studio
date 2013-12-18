@@ -8,7 +8,7 @@ App.collections = App.collections || {};
 App.Model.FormApp = App.Model.FormBase.extend({
   fetchURL : '/api/v2/forms/apps/{{id}}',
   fetchFormsURL : '/api/v2/forms/apps/{{id}}',
-  createUrl : '/studio/static/js/model/backbone/mocks/forms/appcreate.json' , ///api/v2/forms/apps'
+  createUrl : '/api/v2/forms/apps' , ///api/v2/forms/apps'
   sync : function(method){
     this[method].apply(this, arguments);
   },
