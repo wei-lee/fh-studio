@@ -7,7 +7,7 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
     'click a#recentSubmissions':  'recentSubmissions',
     'click a#perFormSubmissions': 'perFormSubmissions',
     'click a#perAppSubmissions':  'perAppSubmissions',
-    'click .btn-export':'onExportSubmission'
+    'submit .submissionExportForm':'onExportSubmission'
   },
 
   templates : {
@@ -170,7 +170,8 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
   },
   onExportSubmission : function(e){
     var req = {},
-    form, app, submission;
+    form = this.$el.find('.submissionExportForm'),
+    formId, app, submission;
 
 
     if (this.active === "recent"){
@@ -183,37 +184,27 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
       req.submission = submission;
 
     }else if (this.active === "perapp" || this.active === "perform"){
-      form = this.$el.find('select.formSelect').val();
-      if (form && form !== ""){
-        req.form = form;
+      formId = this.$el.find('select.formSelect').val();
+      if (formId && formId !== ""){
+        form.find('input[name=formId]').val(formId);
       }
     }
 
     if (this.active === "perapp"){
       app = this.$el.find('select.appSelect').val();
-      req.app = app;
+      form.find('input[name=appId]').val(app);
     }
 
     // Validation to make sure we have enough info to do an export
-    if (this.active === "perform" && (!form || form === "")){
+    if (this.active === "perform" && (!formId || formId === "")){
+      e.preventDefault();
       return this.modal('Please select a form to export', 'Error');
     }
 
     if (this.active === "perapp" && (!app || app === "")){
+      e.preventDefault();
       return this.modal('Please select an app to export', 'Error');
     }
 
-    // Depends on completion of https://www.assembla.com/spaces/feedhenry-platform/tickets/5268-supercore-api---submission-export#/activity/ticket:
-//    $.ajax({
-//      type: 'POST',
-//      url: '/api/v2/forms/submission/export',
-//      data : req,
-//      success: function(res){
-//        self.message('Data exported successfully');
-//      },
-//      error: function(xhr, status){
-//        self.message('Error exporting data', 'danger');
-//      }
-//    });
   }
 });

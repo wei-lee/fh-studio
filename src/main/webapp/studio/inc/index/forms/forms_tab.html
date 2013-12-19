@@ -489,8 +489,11 @@
 </script>
 
 <script id="submissionListExport" type="text/x-handlebars-template">
-    <a data-mode="create" class="btn pull-right btn-primary btn-export" href="#"><i class="icon icon-download"></i>
-        Export Submissions</a>
+    <form class="submissionExportForm" method="POST" action="/api/v2/forms/submission/export">
+      <input type="hidden" name="appId">
+      <input type="hidden" name="formId">
+      <button type="submit" data-mode="create" class="btn pull-right btn-primary btn-export" ><i class="icon icon-download"></i> Export Submissions</button>
+    </form>
     <a data-mode="create" class="btn pull-right btn-warning btn-add-submission hide" style="margin-right:6px;" href="#"><i
             class="icon icon-upload"></i> Add Submissions</a>
 
