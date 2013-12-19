@@ -71,7 +71,7 @@ App.View.SubmissionList = App.View.FormListBase.extend({
       "mDataProp": "formName"
     },{
       "sTitle": 'App Name',
-      "mDataProp": "appCloudName"
+      "mDataProp": "appName"
     },{
       "sTitle": 'App Env',
       "mDataProp": "appEnvironment"
