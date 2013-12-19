@@ -167,6 +167,7 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
           cacheKey = res.get('cacheKey');
         }
         App.View.Forms.prototype.message("completed");
+        self.collection.fetch({reset : true});
       },
       error : function(){
         self.message('Error creating or updating app');
