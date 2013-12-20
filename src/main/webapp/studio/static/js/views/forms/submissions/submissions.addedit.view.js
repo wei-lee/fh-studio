@@ -59,10 +59,11 @@ App.View.SubmissionsAddEdit = App.View.Forms.extend({
     submission = {
       "userId" : $fw.userProps.email,
       "appId": appId,
-      "appCloudName": "appCloudName123456",// TODO: What is this?
+      "appCloudName": "appCloudName123456",// TODO: What is this? is it something like this.views.apps.collection.findWhere({_id : appId }).toJSON().title?
       "appEnvironment": "live", //TODO: Can we assume this?
       "deviceId": "studio",
       "deviceFormTimestamp": new Date().getTime(),
+      "timezoneOffset" : new Date().getTimezoneOffset(),
       "comments": [],
       "formFields": []
     };
@@ -96,13 +97,13 @@ App.View.SubmissionsAddEdit = App.View.Forms.extend({
           },
           error: function(xhr, status){
             self.message('Error confirming submission', 'danger');
-            console.log(err.responseText);
+            console.log(xhr.responseText);
           }
         });
       },
       error: function(xhr, status){
         self.message('Error saving submission', 'danger');
-        console.log(err.responseText);
+        console.log(xhr.responseText);
         return;
       }
     });

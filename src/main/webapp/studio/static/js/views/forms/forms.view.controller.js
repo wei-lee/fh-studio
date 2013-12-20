@@ -56,7 +56,7 @@ App.View.FormsController = Backbone.View.extend({
     this.$el.append(this.views.themes.render().$el);
   },
   onEditTheme : function(e){
-    var theme = this.views.themes.collection.at(this.views.themes.index);
+    var theme = this.views.themes.collection.findWhere({_id : this.views.themes._id});
     this.views.themes.$el.hide();
 
     var editTheme = new App.View.FormThemesEdit({ theme : theme, collection : this.views.themes.collection, readOnly : false});
@@ -82,17 +82,31 @@ App.View.FormsController = Backbone.View.extend({
   },
   onAppSubmissions : function(){
     this.onSubmissions();
-    var view = this.views.submissions;
+    var view = this.views.submissions,
+    appId = this.views.apps._id,
+    e = { target : view.$el.find('a#perAppSubmissions') }; // spoof an event object so it can switch tab
+
+    // Select this form in the dropdown and trigger the change event needed
+    view.bind('perAppSubmissionsRendered', function(){
+      view.$el.find('.appSelect').val(appId).trigger('change');
+    });
+
+    view.perAppSubmissions(e);
   },
   onFormSubmissions : function(){
     this.onSubmissions();
-    var view = this.views.submissions;
+    var formId = this.views.forms._id,
+    view = this.views.submissions,
+    e = { target : view.$el.find('a#perFormSubmissions') }; // spoof an event object so it can switch tab
+    view.perFormSubmissions(e);
+    // Select this form in the dropdown and trigger the change event needed
+    view.$el.find('.formSelect').val(formId).trigger('change');
   },
   /*
     Edit Form view switching
    */
   onEditForm : function(e){
-    var form = this.views.forms.collection.at(this.views.forms.index),
+    var form = this.views.forms.collection.findWhere({ _id : this.views.forms._id }),
     menuEl = this.$el.find(".forms_menu_container");
     this.views.forms.$el.hide();
 
@@ -103,7 +117,7 @@ App.View.FormsController = Backbone.View.extend({
   },
   onEditFormRules : function(e){
     var self = this;
-    var form = this.views.forms.collection.at(this.views.forms.index),
+    var form = this.views.forms.collection.findWhere({ _id : this.views.forms._id }),
     menuEl = this.$el.find(".forms_menu_container");
     this.views.forms.$el.hide();
 
