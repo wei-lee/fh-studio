@@ -124,11 +124,64 @@ module.exports = function(grunt) {
         },
         keepRunner : true
       }
+    },
+    concat: {
+      options: {
+        // define a string to put between each file in the concatenated output
+        separator: ';'
+      },
+      dist: {
+        // the files to concatenate
+        src: [
+          'src/main/webapp/studio/static/js/views/common/modal.view.js',
+          'src/main/webapp/studio/static/js/model/backbone/forms/*.js',
+          'src/main/webapp/studio/static/js/views/forms/forms.view.js',
+          'src/main/webapp/studio/static/js/views/forms/forms.list.base.view.js',
+          'src/main/webapp/studio/static/js/views/forms/forms.menu.view.js',
+          'src/main/webapp/studio/static/js/views/forms/forms.view.controller.js',
+          'src/main/webapp/studio/static/js/views/forms/forms/forms.rules.view.js',
+          'src/main/webapp/studio/static/js/views/forms/**/*.js'
+        ],
+        // the location of the resulting JS file
+        dest: 'dist/forms/appforms.js'
+      }
+    },
+    copy: {
+      main: {
+        files: [
+          // includes files within path
+          {expand: true, src: ['src/main/webapp/studio/static/themes/default/css/forms.css'], dest: 'dist/forms', flatten: true, filter: 'isFile'},
+          {expand: true, src: ['src/main/webapp/studio/inc/index/forms/forms_tab.html'], dest: 'dist/forms', flatten: true, filter: 'isFile'},
+          {expand: true, src: ['src/main/webapp/studio/static/common/js/ui/thirdparty/underscore.js'],dest: 'dist/forms/vendor', flatten: true, filter: 'isFile'},
+          {expand: true, src: ['src/main/webapp/studio/static/common/js/ui/thirdparty/jquery/jquery.js'], dest: 'dist/forms/vendor', flatten: true, filter: 'isFile'},
+          {expand: true, src: ['src/main/webapp/studio/static/common/js/ui/thirdparty/bootstrap/bootstrap.js'], dest: 'dist/forms/vendor', flatten: true, filter: 'isFile'},
+          {expand: true, src: ['src/main/webapp/studio/static/common/js/ui/thirdparty/jquery/plugins/jquery.dataTables.min.js'], dest: 'dist/forms/vendor', flatten: true, filter: 'isFile'},
+          {expand: true, src: ['src/main/webapp/studio/static/common/js/ui/thirdparty/jquery/plugins/jquery.dataTables.fhext.js'],dest: 'dist/forms/vendor', flatten: true, filter: 'isFile'},
+          {expand: true, src: ['src/main/webapp/studio/static/common/js/ui/thirdparty/select2/select2.js'],dest: 'dist/forms/vendor', flatten: true, filter: 'isFile'},
+          {expand: true, src: ['src/main/webapp/studio/static/common/js/ui/thirdparty/backbone/backbone.js'],dest: 'dist/forms/vendor', flatten: true, filter: 'isFile'},
+          {expand: true, src: ['src/main/webapp/studio/static/common/js/ui/thirdparty/backbone-relational/backbone-relational.js'],dest: 'dist/forms/vendor', flatten: true, filter: 'isFile'},
+          {expand: true, src: ['src/main/webapp/studio/static/common/js/ui/thirdparty/highcharts/moment.js'],dest: 'dist/forms/vendor', flatten: true, filter: 'isFile'},
+          {expand: true, src: ['src/main/webapp/studio/static/common/js/ui/thirdparty/handlebars/handlebars.js'],dest: 'dist/forms/vendor', flatten: true, filter: 'isFile'},
+          {expand: true, src: ['src/main/webapp/studio/static/common/js/ui/thirdparty/handlebars/helpers.js'],dest: 'dist/forms/vendor', flatten: true, filter: 'isFile'},
+          {expand: true, src: ['src/main/webapp/studio/static/common/js/ui/thirdparty/jsoneditor/jsoneditor.js'],dest: 'dist/forms/vendor', flatten: true, filter: 'isFile'},
+          {expand: true, src: ['src/main/webapp/studio/static/common/js/ui/thirdparty/async/async.js'],dest: 'dist/forms/vendor', flatten: true, filter: 'isFile'},
+          {expand: true, src: ['src/main/webapp/studio/static/common/js/ui/thirdparty/backbone-deep-model/deep-model.js'],dest: 'dist/forms/vendor', flatten: true, filter: 'isFile'},
+          {expand: true, src: ['src/main/webapp/studio/static/common/js/ui/thirdparty/rivets/rivets.js'],dest: 'dist/forms/vendor', flatten: true, filter: 'isFile'},
+          {expand: true, src: ['src/main/webapp/studio/static/common/js/ui/thirdparty/formbuilder/formbuilder.js'],dest: 'dist/forms/vendor', flatten: true, filter: 'isFile'},
+          {expand: true, src: ['src/main/webapp/studio/static/common/js/ui/thirdparty/underscore.string.js'],dest: 'dist/forms/vendor', flatten: true, filter: 'isFile'},
+          {expand: true, src: ['src/main/webapp/studio/static/common/js/ui/thirdparty/underscore.mixin.deepExtend/index.js'], dest: 'dist/forms/vendor', flatten: true, filter: 'isFile'},
+          {expand: true, src: ['src/main/webapp/studio/static/common/js/ui/thirdparty/backbone/backbone.js'], dest: 'dist/forms/vendor', flatten: true, filter: 'isFile'}
+        ]
+      }
     }
+
   });
 
   grunt.loadNpmTasks('grunt-contrib-jasmine');
+  grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-copy');
 
   // Default task.
   grunt.registerTask('default', ['jasmine']);
+  grunt.registerTask('forms', ['concat', 'copy']);
 };
