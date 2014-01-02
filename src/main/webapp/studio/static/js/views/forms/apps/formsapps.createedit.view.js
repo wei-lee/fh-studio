@@ -163,10 +163,13 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
           self.progressModal.find('h3').text("Deploying App").end().find('h4').text("info").end().appendTo($("body")).one('shown', trackCreate).modal();
           self.collection.fetch({reset : true});
           cacheKey = res.get('cacheKey');
+        }else{
+          self.message('App updated successfully');
         }
       },
       error : function(){
-        self.message('Error creating or updating app');
+        var verb = (create) ? 'creating' : 'updating';
+        self.message('Error ' + verb + ' app', 'danger');
       }
     });
 
