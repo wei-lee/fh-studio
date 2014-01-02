@@ -90,12 +90,12 @@ module.exports = function(grunt) {
         'src/main/webapp/studio/static/common/js/ui/thirdparty/handlebars/helpers.js',
         'src/main/webapp/studio/static/common/js/ui/thirdparty/jsoneditor/jsoneditor.js',
         'src/main/webapp/studio/static/common/js/ui/thirdparty/async/async.js',
+        'src/main/webapp/studio/static/common/js/ui/thirdparty/spectrum/spectrum.js',
         'src/main/webapp/studio/static/common/js/ui/thirdparty/backbone-deep-model/deep-model.js',
         'src/main/webapp/studio/static/common/js/ui/thirdparty/rivets/rivets.js',
         'src/main/webapp/studio/static/common/js/ui/thirdparty/formbuilder/formbuilder.js',
         'src/main/webapp/studio/static/common/js/ui/thirdparty/underscore.string.js',
         'src/main/webapp/studio/static/common/js/ui/thirdparty/underscore.mixin.deepExtend/index.js',
-        'src/main/webapp/studio/static/common/js/ui/thirdparty/jquery-ui/jquery-ui.js',
         'src/main/webapp/studio/static/common/js/ui/thirdparty/jquery-ui/jquery-ui.js',
         'src/main/webapp/studio/static/common/js/ui/thirdparty/jquery/plugins/jquery.jstree.js',
         'src/main/webapp/studio/static/common/js/ui/thirdparty/jquery/plugins/jquery.cookie.js',
@@ -134,6 +134,9 @@ module.exports = function(grunt) {
         // the files to concatenate
         src: [
           'src/main/webapp/studio/static/js/views/common/modal.view.js',
+          'src/main/webapp/studio/static/js/views/common/fullpage_message.js',
+          'src/main/webapp/studio/static/js/views/common/datatable.view.js',
+          'src/main/webapp/studio/static/js/views/common/spinner.view.js',
           'src/main/webapp/studio/static/js/model/backbone/forms/*.js',
           'src/main/webapp/studio/static/js/views/forms/forms.view.js',
           'src/main/webapp/studio/static/js/views/forms/forms.list.base.view.js',
@@ -143,17 +146,27 @@ module.exports = function(grunt) {
           'src/main/webapp/studio/static/js/views/forms/**/*.js'
         ],
         // the location of the resulting JS file
-        dest: 'dist/forms/appforms.js'
+        dest: 'dist/forms/appforms/appforms.js'
       }
     },
     copy: {
       main: {
         files: [
-          // includes files within path
-          {expand: true, src: ['src/main/webapp/studio/static/themes/default/css/forms.css'], dest: 'dist/forms', flatten: true, filter: 'isFile'},
-          {expand: true, src: ['src/main/webapp/studio/inc/index/forms/forms_tab.html'], dest: 'dist/forms', flatten: true, filter: 'isFile'},
+          // Mock JSON to render standalone views
+          {expand: true, src: ['src/main/webapp/studio/static/js/model/backbone/mocks/forms/forms.json'], dest: 'dist/forms/json', flatten: true, filter: 'isFile'},
+          {expand: true, src: ['src/main/webapp/studio/static/js/model/backbone/mocks/forms/themes.json'], dest: 'dist/forms/json', flatten: true, filter: 'isFile'},
+          // CSS Files required
+          {expand: true, src: ['src/main/webapp/studio/static/themes/default/css/forms.css'], dest: 'dist/forms/appforms', flatten: true, filter: 'isFile'},
+          {expand: true, src: ['src/main/webapp/studio/static/common/css/ui/framework/bootstrap.css'], dest: 'dist/forms/vendor', flatten: true, filter: 'isFile'},
+          {expand: true, src: ['src/main/webapp/studio/static/common/js/ui/thirdparty/formbuilder/formbuilder.css'], dest: 'dist/forms/vendor', flatten: true, filter: 'isFile'},
+          {expand: true, src: ['src/main/webapp/studio/static/common/js/ui/thirdparty/spectrum/spectrum.css'], dest: 'dist/forms/vendor', flatten: true, filter: 'isFile'},
+          // HTML files
+          {expand: true, src: ['src/main/webapp/studio/inc/index/forms/forms_tab.html'], dest: 'dist/forms/appforms', flatten: true, filter: 'isFile'},
+          {expand: true, src: ['src/main/webapp/studio/common.html'], dest: 'dist/forms/appforms', flatten: true, filter: 'isFile'},
+          // Third party frameworks
           {expand: true, src: ['src/main/webapp/studio/static/common/js/ui/thirdparty/underscore.js'],dest: 'dist/forms/vendor', flatten: true, filter: 'isFile'},
           {expand: true, src: ['src/main/webapp/studio/static/common/js/ui/thirdparty/jquery/jquery.js'], dest: 'dist/forms/vendor', flatten: true, filter: 'isFile'},
+          {expand: true, src: ['src/main/webapp/studio/static/common/js/ui/thirdparty/jquery-ui/jquery-ui.js'], dest: 'dist/forms/vendor', flatten: true, filter: 'isFile'},
           {expand: true, src: ['src/main/webapp/studio/static/common/js/ui/thirdparty/bootstrap/bootstrap.js'], dest: 'dist/forms/vendor', flatten: true, filter: 'isFile'},
           {expand: true, src: ['src/main/webapp/studio/static/common/js/ui/thirdparty/jquery/plugins/jquery.dataTables.min.js'], dest: 'dist/forms/vendor', flatten: true, filter: 'isFile'},
           {expand: true, src: ['src/main/webapp/studio/static/common/js/ui/thirdparty/jquery/plugins/jquery.dataTables.fhext.js'],dest: 'dist/forms/vendor', flatten: true, filter: 'isFile'},
@@ -170,7 +183,10 @@ module.exports = function(grunt) {
           {expand: true, src: ['src/main/webapp/studio/static/common/js/ui/thirdparty/formbuilder/formbuilder.js'],dest: 'dist/forms/vendor', flatten: true, filter: 'isFile'},
           {expand: true, src: ['src/main/webapp/studio/static/common/js/ui/thirdparty/underscore.string.js'],dest: 'dist/forms/vendor', flatten: true, filter: 'isFile'},
           {expand: true, src: ['src/main/webapp/studio/static/common/js/ui/thirdparty/underscore.mixin.deepExtend/index.js'], dest: 'dist/forms/vendor', flatten: true, filter: 'isFile'},
-          {expand: true, src: ['src/main/webapp/studio/static/common/js/ui/thirdparty/backbone/backbone.js'], dest: 'dist/forms/vendor', flatten: true, filter: 'isFile'}
+          {expand: true, src: ['src/main/webapp/studio/static/common/js/ui/thirdparty/backbone/backbone.js'], dest: 'dist/forms/vendor', flatten: true, filter: 'isFile'},
+          {expand: true, src: ['src/main/webapp/studio/static/common/js/ui/thirdparty/spectrum/spectrum.js'], dest: 'dist/forms/vendor', flatten: true, filter: 'isFile'},
+          // Standalone code used to instantiate appforms component
+          {expand: true, src: ['standalone/forms/*'], dest: 'dist/forms', filter: 'isFile', flatten : true}
         ]
       }
     }

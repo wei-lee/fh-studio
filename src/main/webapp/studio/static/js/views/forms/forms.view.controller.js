@@ -23,7 +23,7 @@ App.View.FormsController = Backbone.View.extend({
   render: function(options) {
     var self = this;
 
-    this.$el.addClass('row formscontrollerdiv');
+    this.$el.addClass('row formscontrollerdiv row-fluid');
 
     this.menu = new App.View.FormMenu();
     this.bind('menuchange', function(active){

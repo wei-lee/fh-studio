@@ -1,0 +1,58 @@
+<script type="text/javascript" src="../../dist/forms/vendor/jquery.js"></script>
+<script type="text/javascript" src="../../dist/forms/vendor/jquery-ui.js"></script>
+<script type="text/javascript" src="../../dist/forms/vendor/underscore.js"></script>
+<script type="text/javascript" src="../../dist/forms/vendor/bootstrap.js"></script>
+<script type="text/javascript" src="../../dist/forms/vendor/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="../../dist/forms/vendor/jquery.dataTables.fhext.js"></script>
+<script type="text/javascript" src="../../dist/forms/vendor/select2.js"></script>
+<script type="text/javascript" src="../../dist/forms/vendor/backbone.js"></script>
+<script type="text/javascript" src="../../dist/forms/vendor/backbone-relational.js"></script>
+<script type="text/javascript" src="../../dist/forms/vendor/moment.js"></script>
+<script type="text/javascript" src="../../dist/forms/vendor/handlebars.js"></script>
+<script type="text/javascript" src="../../dist/forms/vendor/helpers.js"></script>
+<script type="text/javascript" src="../../dist/forms/vendor/jsoneditor.js"></script>
+<script type="text/javascript" src="../../dist/forms/vendor/async.js"></script>
+<script type="text/javascript" src="../../dist/forms/vendor/deep-model.js"></script>
+<script type="text/javascript" src="../../dist/forms/vendor/rivets.js"></script>
+<script type="text/javascript" src="../../dist/forms/vendor/formbuilder.js"></script>
+<script type="text/javascript" src="../../dist/forms/vendor/underscore.string.js"></script>
+<script type="text/javascript" src="../../dist/forms/vendor/spectrum.js"></script>
+<script type="text/javascript" src="../../dist/forms/vendor/index.js"></script>
+
+<iframe src="../../dist/forms/appforms/forms_tab.html" style="display: none;"></iframe>
+<iframe src="../../dist/forms/appforms/common.html" style="display: none;"></iframe>
+
+<link rel="stylesheet" type="text/css" href="../../dist/forms/vendor/bootstrap.css">
+<link rel="stylesheet" type="text/css" href="../../dist/forms/vendor/formbuilder.css">
+<link rel="stylesheet" type="text/css" href="../../dist/forms/vendor/spectrum.css">
+<link rel="stylesheet" type="text/css" href="../../dist/forms/appforms/forms.css">
+<script type="text/javascript" src="../../dist/forms/appforms/appforms.js"></script>
+<script type="text/javascript" src="iframeloader.js"></script>
+<script type="text/javascript" src="appforms.mixins.js"></script>
+
+<script type="text/javascript">
+  var $fw = $fw || {};
+  $fw.getUserProp = $fw.getUserProp || function(prop){
+    if (prop === "roles"){
+      return ["devadmin", "sub", "formsadmin", "formsviewer", "dev", "portaladmin", "formseditor", "analytics"];
+    }
+  };
+
+  $(document).ready(function(){
+    iFrameLoader.load(function(){
+      init();
+    });
+  });
+
+  var init = function(){
+    var forms = new App.View.FormsController();
+    forms.render();
+    $('#forms_layout').append(forms.$el);
+  }
+</script>
+
+<div id="templateContainer">
+  <!-- Templates get injected here from iFrames -->
+  <script id="spinner-template" type="text/x-handlebars-template">
+  </script>
+</div>

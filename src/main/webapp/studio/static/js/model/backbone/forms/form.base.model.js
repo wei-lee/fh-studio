@@ -32,6 +32,7 @@ App.Model.FormBase = Backbone.RelationalModel.extend({
     id = this.get('_id');
     $.ajax({
       type: 'DELETE',
+      dataType : 'json',
       url: this.fetchURL.replace('{{id}}', id),
       success: function(res){
         Backbone.Model.prototype.destroy.apply(self, [options]);
@@ -58,6 +59,7 @@ App.Collection.FormBase = Backbone.Collection.extend({
     var url = self.url;
     $.ajax({
       type: 'GET',
+      dataType : 'json',
       url: url,
       cache: true,
       success: function(res){
