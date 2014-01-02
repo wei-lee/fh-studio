@@ -183,7 +183,7 @@ module.exports = function(grunt) {
   baseConfig.jasmine.options.vendor = baseVendorLibs.concat(formsVendorLibs.concat(extraStudioVendorLibs));
 
   // inject our forms vendor libs into the copy task for forms
-  formsVendorLibs.forEach(function(file){
+  baseVendorLibs.concat(formsVendorLibs).forEach(function(file){
     baseConfig.copy.main.files.push({
       expand: true,
       src: [file],
