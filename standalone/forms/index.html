@@ -31,12 +31,6 @@
 <script type="text/javascript" src="appforms.mixins.js"></script>
 
 <script type="text/javascript">
-  var $fw = $fw || {};
-  $fw.getUserProp = $fw.getUserProp || function(prop){
-    if (prop === "roles"){
-      return ["devadmin", "sub", "formsadmin", "formsviewer", "dev", "portaladmin", "formseditor", "analytics"];
-    }
-  };
 
   $(document).ready(function(){
     iFrameLoader.load(function(){
