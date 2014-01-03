@@ -35,10 +35,12 @@ App.Model.FormBase.prototype.fetch = function(options){
 };
 // End block for MOCK data
 
+var FH_APIURL = 'https://testing.feedhenry.me';
+FH_APIURL +=  '/api/v2';
 
 // This block for LIVE data
 //$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
-//  options.url = options.url.replace(/\b.*?api\/v2/, 'https://testing.feedhenry.me/api/v2')
+//  options.url = options.url.replace(/\b.*?api\/v2/, FH_APIURL)
 //  options.headers = options.headers || {};
 //  options.headers['x-fh-auth-user'] = '5e37dd4f6fa26b42c1d8f455d602542bb8853c7e' // User api key header. Will require a preflight request from the browser with a Access-Control-Request-Headers header set.
 //});

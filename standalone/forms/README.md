@@ -15,6 +15,9 @@ Also worth nothing is the mixins (`appforms.mixins.js`) required to polyfill som
 Lastly, in a production environment iFrames cannot be used to include the static HTML template assets - they need to be included in the built HTML file, or included using serverside includes. 
 
 ## Communicating with the FeedHenry Forms API
-To switch between mock and live data, see the bottom of `appforms.mixins.js` - note comments `// This block for MOCK data` and `// This block for LIVE data`.
+To switch between mock and live data, see the bottom of `appforms.mixins.js`.
+
+1. Update FH_APIURL to point to the Studio URL of your choice
+2. Note comments `// This block for MOCK data` and `// This block for LIVE data`.
 By default, the LIVE data block is commented out. To receive live data, comment out the block between the comments for MOCK, and remove the comments in the live section. 
 To go back to receiving mock data, revert this change. 
