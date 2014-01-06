@@ -40,7 +40,7 @@ FH_APIURL +=  '/api/v2';
 
 // This block for LIVE data
 //$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
-//  options.url = options.url.replace(/\b.*?api\/v2/, FH_APIURL)
+//  options.url = options.url.replace(/\/?\b.*?api\/v2/, FH_APIURL);
 //  options.headers = options.headers || {};
 //  options.headers['x-fh-auth-user'] = '5e37dd4f6fa26b42c1d8f455d602542bb8853c7e' // User api key header. Will require a preflight request from the browser with a Access-Control-Request-Headers header set.
 //});

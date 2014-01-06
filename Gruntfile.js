@@ -164,6 +164,14 @@ module.exports = function(grunt) {
           {expand: true, src: ['src/main/webapp/studio/static/js/model/backbone/mocks/forms/themes.json'], dest: 'dist/forms/json', flatten: true, filter: 'isFile'},
           // CSS Files required
           {expand: true, src: ['src/main/webapp/studio/static/themes/default/css/forms.css'], dest: 'dist/forms/appforms', flatten: true, filter: 'isFile'},
+
+          // Fonts
+          {expand: true, src: ['src/main/webapp/studio/static/themes/default/css/font/fontawesome-webfont.svg'], dest: 'dist/forms/appforms/font', flatten: true, filter: 'isFile'},
+          {expand: true, src: ['src/main/webapp/studio/static/themes/default/css/font/fontawesome-webfont.ttf'], dest: 'dist/forms/appforms/font', flatten: true, filter: 'isFile'},
+          {expand: true, src: ['src/main/webapp/studio/static/themes/default/css/font/fontawesome-webfont.woff'], dest: 'dist/forms/appforms/font', flatten: true, filter: 'isFile'},
+
+          // Vendor CSS
+          {expand: true, src: ['src/main/webapp/studio/static/themes/default/css/font-awesome.css'], dest: 'dist/forms/appforms', flatten: true, filter: 'isFile'},
           {expand: true, src: ['src/main/webapp/studio/static/common/css/ui/framework/bootstrap.css'], dest: 'dist/forms/vendor', flatten: true, filter: 'isFile'},
           {expand: true, src: ['src/main/webapp/studio/static/common/js/ui/thirdparty/formbuilder/formbuilder.css'], dest: 'dist/forms/vendor', flatten: true, filter: 'isFile'},
           {expand: true, src: ['src/main/webapp/studio/static/common/js/ui/thirdparty/spectrum/spectrum.css'], dest: 'dist/forms/vendor', flatten: true, filter: 'isFile'},
