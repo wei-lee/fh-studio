@@ -283,8 +283,11 @@ ul.apps-using-form li.text {
     //TODO: Button styles...
  */
 #forms_container .btn-group .btn.btn-primary,
+#forms_container .btn.btn-create-base,
 #forms_container .btn-group .btn.btn-secondary,
 #forms_container .btn-forms-back,
+#forms_container .btn-export,
+#forms_container .btn-add-submission,formCreateEdit
 #forms_container .btn-add-form,
 #forms_container .btn-add-theme {
     font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
@@ -300,7 +303,9 @@ ul.apps-using-form li.text {
     background-color: #2d72a8;
 }
 
-#forms_container .btn-group .btn.btn-secondary, #forms_container .btn-forms-back {
+#forms_container .btn.btn-secondary,
+#forms_container .btn-group .btn.btn-secondary,
+#forms_container .btn-forms-back {
     background-color: #3fa9f5;
 }
 

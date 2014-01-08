@@ -9,9 +9,8 @@ App.View.FormGroupsList = App.View.FormListBase.extend({
   },
   events : {
     'click tr' : 'onRowSelected',
-    'click .btn-add-theme' : 'onCreate',
-    'click .btn-clone-theme' : 'onClone',
-    'click .btn-delete-theme' : 'onDelete'
+    'click .btn-add-group' : 'onCreate',
+    'click .btn-save-group' : 'onSaveGroup'
 
   },
   initialize: function(){
@@ -109,5 +108,23 @@ App.View.FormGroupsList = App.View.FormListBase.extend({
     this.$previewEl.find('#formGroupForms').select2('val', formsIds);
 
     self.$previewEl.show();
+  },
+  onSaveGroup : function(){
+    var model = this.collection.findWhere({_id : this._id}),
+    form = this.$el.find('form.formsGroups'),
+    updatedGroup = {
+      name : form.find('input[name=name]').val(),
+      forms : form.find('select#formGroupForms').val(),
+      users : form.find('select#formGroupUsers').val(),
+    }
+    model.set(updatedGroup);
+    model.save({
+      success : function(){
+        self.message('Group updated successfully');
+      },
+      error: function(){
+        self.message('Error updating group', 'danger');
+      }
+    });
   }
 });
