@@ -165,6 +165,14 @@
                 </a>
             </li>
             {{/checkRole}}
+          {{#checkRole "formsviewer,formseditor,formsadmin"}}
+          <li>
+            <a class="btn-groups" href="#">
+              <i class="icon-group"></i>
+              Groups
+            </a>
+          </li>
+          {{/checkRole}}
         </ul>
     </div>
 </script>
@@ -741,4 +749,44 @@
                 data-crit="{{critNum}}" ><i  data-ctrlfield="advancedSearchContainerFieldsMeta" data-crit="{{critNum}}" data-critType="meta" class="icon-minus"></i>
         </button>
     </div>
+</script>
+
+<script type="text/x-handlebars-template" id="formGroupEdit">
+  <div class="well">
+    <form class="form-horizontal formsGroups span6">
+      <div class="control-group">
+        <label class="control-label" for="inputFormGroupName">Group Name</label>
+
+        <div class="controls groupname">
+          <input type="text" id="inputFormGroupName" class="" name="name" value="{{ name }}">
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="formGroupUsers">Users</label>
+
+        <div class="controls">
+          <select id="formGroupUsers" multiple name="users" class="">
+            {{#each users}}
+            <option value="{{_id}}">{{name}}</option>
+            {{/each}}
+          </select>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="formGroupForms">Forms</label>
+
+        <div class="controls">
+          <select id="formGroupForms" name="forms" multiple class="">
+            {{#each forms}}
+            <option value="{{_id}}">{{name}}</option>
+            {{/each}}
+          </select>
+        </div>
+      </div>
+      <div class="btn-group pull-right">
+        <a href="#" class="btn btn-success">Save Group</a>
+      </div>
+    </form>
+    <br style="clear: both;"/>
+  </div>
 </script>

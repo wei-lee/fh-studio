@@ -5,6 +5,7 @@ App.View.FormsController = Backbone.View.extend({
     'click .btn-themes' : 'onThemes',
     'click .btn-edit-theme' : 'onEditTheme',
     'click .btn-submissions' : 'onSubmissions',
+    'click .btn-groups' : 'onGroups',
     'click .btn-app-submissions' : 'onAppSubmissions',
     'click .btn-form-submissions' : 'onFormSubmissions',
     'click .btn-edit-form' : 'onEditForm',
@@ -101,6 +102,14 @@ App.View.FormsController = Backbone.View.extend({
     view.perFormSubmissions(e);
     // Select this form in the dropdown and trigger the change event needed
     view.$el.find('.formSelect').val(formId).trigger('change');
+  },
+  onGroups : function(){
+    this.trigger('menuchange', 'groups');
+    if (this.views.groups){
+      this.views.groups.$el.remove();
+    }
+    this.views.groups= new App.View.FormGroupsList();
+    this.$el.append(this.views.groups.render().$el);
   },
   /*
     Edit Form view switching
