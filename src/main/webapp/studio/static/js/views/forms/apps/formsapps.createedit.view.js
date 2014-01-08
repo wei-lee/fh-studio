@@ -8,6 +8,7 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
   },
   events : {
     'click .btn-success' : 'onFormSave',
+    'click .btn-success-create' : 'onFormSave',
     'click .btn-app-submissions' : 'onAppSubmissions'
   },
   initialize: function(options){
@@ -83,7 +84,7 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
 
 
     if (!this.loaded){
-      this.$el.height(134);
+      this.$el.height(360); // TODO was 134);
       return this;
     }
 
@@ -126,10 +127,10 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
     var create = $(e.target).hasClass("button-add-formsapp");
     console.log("is create ", create);
     var self = this,
-    forms = this.$el.find('form.formsApps #formAppForms').val() || [], //TODO: Theme and name?
-    theme = this.$el.find('form.formsApps #formAppTheme').val(),
-    name = this.$el.find('form.formsApps #inputFormAppName').val(),
-    id;
+      forms = this.$el.find('form.formsApps #formAppForms').val() || [], //TODO: Theme and name?
+      theme = this.$el.find('form.formsApps #formAppTheme').val(),
+      name = this.$el.find('form.formsApps #inputFormAppName').val(),
+      id;
 
     if (!this.model){
 
@@ -159,10 +160,12 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
     {
       success : function(res){
         if(create){
+          console.log('success handler for model.save()');
+          console.log('do progress for: ',res.get('serverResponse'));
           self.progressModal = $('#generic_progress_modal').clone();
           self.progressModal.find('h3').text("Deploying App").end().find('h4').text("info").end().appendTo($("body")).one('shown', trackCreate).modal();
           self.collection.fetch({reset : true});
-          cacheKey = res.get('cacheKey');
+          cacheKey = res.get('serverResponse').cacheKey;
         }else{
           self.message('App updated successfully');
         }

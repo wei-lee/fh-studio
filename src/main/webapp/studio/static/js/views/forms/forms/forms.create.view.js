@@ -7,7 +7,7 @@ App.View.FormCreateClone = App.View.Modal.extend({
     this.singleTitle = options.singleTitle;
     this.singleId = options.singleId;
     this.pluralTitle = options.pluralTitle;
-
+    var autoHide = options.autoHide;
     var tpl = Handlebars.compile($('#formCreateEdit' + this.singleId).html()),
     body = $(tpl({ CONSTANTS : this.CONSTANTS })),
     mode = options.mode || 'create';
@@ -20,9 +20,9 @@ App.View.FormCreateClone = App.View.Modal.extend({
       body : body,
       collection : options.collection,
       mode : mode,
-      cloneSource : options.cloneSource
+      cloneSource : options.cloneSource,
+      autoHide: autoHide
     };
-
 
     return this.constructor.__super__.initialize.apply(this, [options]);
   },
@@ -100,7 +100,6 @@ App.View.FormCreateClone = App.View.Modal.extend({
       console.log('Error creating ' + self.singleTitle.toLowerCase());
       console.log(err);
     }});
-
   },
   stripIds : function(item){
     delete item._id;

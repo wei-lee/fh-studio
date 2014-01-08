@@ -646,6 +646,17 @@ Apps.Generate.Controller = GenerateApp.Controller = Class.extend({
 
   bind: function() {
     var self = this;
+    $('.generate_appforms_app').unbind().click(function() {
+      self.generators.appforms.show();
+    });
+    $('.show_wufoo_generator_app').unbind().click(function() {
+      self.showWufooList();
+    });
+
+    $('.hide_wufoo_generator_app').unbind().click(function() {
+      self.hideWufooList();
+    });
+
     $('.generate_single_wufoo_app').unbind().click(function() {
       if(true){
         //todo change to be some property
@@ -717,6 +728,14 @@ Apps.Generate.Controller = GenerateApp.Controller = Class.extend({
 
   },
 
+  showWufooList: function () {
+    $('#generator_list').show();
+  },
+
+  hideWufooList: function () {
+    $('#generator_list').hide();
+  },
+
   hide: function () {
     $('#generate_app').hide();
   },
@@ -729,11 +748,15 @@ Apps.Generate.Controller = GenerateApp.Controller = Class.extend({
   },
 
   hideGeneratorList: function() {
+    $('#appforms_generator_list').hide();
+    this.hideWufooList();
     $('#generator_list').hide();
   },
 
   showGeneratorList: function() {
-    $('#generator_list').show();
+    $('#appforms_generator_list').show();
+    this.hideWufooList();
     $('.app_generator:visible').hide();
   }
+
 });

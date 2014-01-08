@@ -8,7 +8,8 @@ App.collections = App.collections || {};
 App.Model.FormApp = App.Model.FormBase.extend({
   fetchURL : '/api/v2/forms/apps/{{id}}',
   fetchFormsURL : '/api/v2/forms/apps/{{id}}',
-  createUrl : '/api/v2/forms/apps' , ///api/v2/forms/apps'
+  createURL : '/api/v2/forms/apps',
+
   sync : function(method){
     this[method].apply(this, arguments);
   },
@@ -16,13 +17,18 @@ App.Model.FormApp = App.Model.FormBase.extend({
     console.log('app model ', model);
     var self = this,
     constObj = App.View.Forms.prototype.CONSTANTS.FORMSAPP,
-    url = this.fetchURL.replace('{{id}}', model.get('_id')),
+    url,
     updateObject = {
       title : model.get(constObj.NAME),
       forms : model.get(constObj.FORMS),
       theme : model.get(constObj.THEMENAME)
     };
 
+    if (method === 'update') {
+      url = this.fetchURL.replace('{{id}}', model.get('_id'));
+    } else {
+      url = this.createURL;
+    }
     $.ajax({
       type: 'POST',
       url: url,
@@ -32,7 +38,9 @@ App.Model.FormApp = App.Model.FormBase.extend({
       success: function(res){
         if (res) {
           if ($.isFunction(options.success)) {
-            return options.success(self.toJSON());
+            var merge = self.toJSON();
+            merge.serverResponse = res;
+            return options.success(merge);
           }
         } else {
           if ($.isFunction(options.error)) {
