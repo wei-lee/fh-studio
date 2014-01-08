@@ -94,8 +94,6 @@ App.View.FormEdit = App.View.Forms.extend({
     this.$fbEl.find('#formPreview').html(this.templates.$previewOutline());
     this.updatePreview();
 
-    this.$fbEl.find('.middle').removeClass('span6').addClass('span7');
-    this.$fbEl.find('.right').removeClass('span4').addClass('span3');
 
     var configName = $(this.$fbEl.find('input[name="' + this.CONSTANTS.FORM.NAME + '"]')),
     configDesc = $(this.$fbEl.find('textarea[name="' + this.CONSTANTS.FORM.DESC + '"]'));

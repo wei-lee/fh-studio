@@ -20,7 +20,7 @@
 <script id="formsRulesTab" type="text/x-handlebars-template">
     <div class="span10 well formsContainer">
         <div class="row-fluid" style="margin-bottom:6px;">
-            <a class="btn btn-forms-back pull-left" href="#"><i class="icon-arrow-left"></i> Back</a>
+            <a class="btn btn-forms-back pull-left" href="#"><i class="icon-arrow-left"></i></a>
         </div>
         <ul class="nav nav-tabs">
             <li class="active">
@@ -188,24 +188,27 @@
 
 
 <script id="formsListMenu" type="text/x-handlebars-template">
-    <ul class="nav nav-pills nav-stacked well">
-        <li><a class="btn-edit-form" href="#"><i class="icon-edit"></i>Edit Form</a></li>
-        <li><a class="btn-edit-form-rules" href="#"><i class="icon-pencil"></i> Edit Rules</a></li>
-        <li><a class="btn-form-submissions" href="#"><i class="icon-envelope"></i> View Submissions</a></li>
-        <li class="dropdown">
-            <a class="dropdown-toggle"
-               data-toggle="dropdown"
-               href="#">
-                <i class="icon-th-large"></i> Apps
-                <b class="caret"></b>
-            </a>
-            <ul class="dropdown-menu apps-using-form">
-            </ul>
-        </li>
-        <li><a class="btn-clone-form" href="#"><i class="icon-retweet"></i> Clone</a></li>
-        <li><a class="btn-delete-form" href="#"><i class="icon-trash"></i> Delete</a></li>
+  <div class="formsmenu">
+    <h4>Form Menu</h4>
 
-    </ul>
+  <ul class="nav nav-pills nav-stacked well">
+      <li><a class="btn-edit-form" href="#"><i class="icon-edit"></i>Edit Form</a></li>
+      <li><a class="btn-edit-form-rules" href="#"><i class="icon-pencil"></i> Edit Rules</a></li>
+      <li><a class="btn-form-submissions" href="#"><i class="icon-envelope"></i> View Submissions</a></li>
+      <li class="dropdown">
+          <a class="dropdown-toggle"
+             data-toggle="dropdown"
+             href="#">
+              <i class="icon-th-large"></i> Apps
+              <b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu apps-using-form">
+          </ul>
+      </li>
+      <li><a class="btn-clone-form" href="#"><i class="icon-retweet"></i> Clone</a></li>
+      <li><a class="btn-delete-form" href="#"><i class="icon-trash"></i> Delete</a></li>
+  </ul>
+  </div>
 </script>
 
 <script id="formCreateEditform" type="text/x-handlebars-template">
@@ -249,14 +252,14 @@
 <script id="formSaveCancel" type="text/x-handlebars-template">
     <div class="row">
         <div class="btn-group pull-right">
-            <a class="btn btn-danger btn-form-cancel" href="#">Cancel</a>
-            <a class="btn btn-success btn-form-save" href="#">Save</a>
+            <a class="btn btn-secondary btn-form-cancel" href="#">Cancel</a>
+            <a class="btn btn-success btn-primary" href="#">Save</a>
         </div>
     </div>
 </script>
 
 <script id="form_back" type="text/x-handlebars-template">
-    <a class="btn btn-forms-back pull-left" href="#"><i class="icon-arrow-left"></i> Back</a>
+    <a class="btn btn-forms-back pull-left" href="#"><i class="icon-arrow-left"></i></a>
 </script>
 
 <script id="form_message" type="text/x-handlebars-template">
@@ -301,7 +304,7 @@
 <!-- Themes specific templates -->
 
 <script id="themesListMenu" type="text/x-handlebars-template">
-    <ul class="nav nav-pills nav-stacked well">
+    <ul class="nav nav-pills nav-stacked">
         <li><a class="btn-edit-theme" href="#"><i class="icon-edit"></i>Edit Theme</a></li>
         <li><a class="btn-preview-theme" href="#"><i class="icon-pencil"></i> Preview Theme</a></li>
         <li class="dropdown">
@@ -317,7 +320,6 @@
         <!--<li><a class="btn-view-theme-apps" href="#"><i class="icon-th-large"></i> View Apps</a></li>-->
         <li><a class="btn-clone-theme" href="#"><i class="icon-retweet"></i> Clone</a></li>
         <li><a class="btn-delete-theme" href="#"><i class="icon-trash"></i> Delete</a></li>
-
     </ul>
 </script>
 

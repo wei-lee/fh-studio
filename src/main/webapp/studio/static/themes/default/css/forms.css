@@ -37,13 +37,10 @@
  App.View.FormEdit styles
  */
 
-.formedit .fb-add-field-types a.btn {
-    width: 100%;
-}
-
-.formedit .btn-forms-back {
+#forms_container .btn.btn-forms-back {
     margin-top: 5px;
     margin-right: 12px;
+    padding: 6px 14px;
 }
 
 .form-page {
@@ -226,6 +223,7 @@ ul.apps-using-form li.text {
     margin-top: 11px;
     font-size: 15px;
     display: none;
+    text-align: center;
 }
 .sp-replacer:hover .sp-dd {
     display: block;
@@ -278,4 +276,106 @@ ul.apps-using-form li.text {
         margin:0;
         padding:0;
     }
+}
+
+/*
+  Bootstrap overrides that may not be appropriate for nGUI:
+    //TODO: Button styles...
+ */
+#forms_container .btn-group .btn.btn-primary,
+#forms_container .btn-group .btn.btn-secondary,
+#forms_container .btn-forms-back,
+#forms_container .btn-add-form,
+#forms_container .btn-add-theme {
+    font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+    background-image: none;
+    border: 0px;
+    color: #fff;
+    border-radius: 0;
+    text-transform: uppercase;
+    margin-left: 10px;
+    font-size: 12px;
+    font-weight: 100;
+    padding: 10px 20px;
+    background-color: #2d72a8;
+}
+
+#forms_container .btn-group .btn.btn-secondary, #forms_container .btn-forms-back {
+    background-color: #3fa9f5;
+}
+
+
+/*
+Improved formbuilder.js styling - TODO: Should this be applied to CMS Also?
+*/
+
+#forms_container .fb-field-wrapper .subtemplate-wrapper {
+    background-color: #f7f7f5;
+}
+
+#forms_container .fb-field-wrapper.editing .subtemplate-wrapper .icon-inline {
+    color: #3fa9f6;
+}
+
+#forms_container ul.fb-tabs {
+    padding-left: 0px;
+}
+#forms_container .fb-tabs li {
+    width:  25%;
+}
+
+#forms_container .fb-tabs li a, #forms_container .fb-tabs li:hover a {
+    background-color: #82bbd8;
+    border-bottom: 2px solid #277aac;
+    border-radius: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    border-top: 2px solid transparent;
+    color: #fff;
+    font-weight: 100;
+    margin: 0px;
+    text-align: center;
+    padding: 10px 0px;
+}
+
+#forms_container .fb-tabs li.active a {
+    border-left: 0px;
+    border-right: 0px;
+    border-bottom: 2px solid #fff;
+    border-top: 2px solid #277aac;
+    background-color: #fff;
+    color: #666;
+}
+
+#forms_container .fb-tab-content .fb-tab-pane {
+    padding: 0px;
+}
+#forms_container .fb-edit-section-header {
+    border-bottom: 3px solid #84b9d9;
+}
+
+#forms_container .fb-common-wrapper .fb-label-description input, #forms_container .fb-common-wrapper .fb-label-description textarea {
+    width: 92%;
+}
+
+#forms_container .fb-add-field-types .btn.btn-primary{
+    background-image: none;
+    background-color: #3ea9f5;
+    border: 2px dashed #005f9b;
+    text-align: left;
+    width: 38%;
+}
+
+#forms_container .middle h4.title {
+    display: inline-block;
+}
+
+#forms_container .formsmenu h4, #forms_container .middle h4.title {
+    border-bottom: 3px solid #82bbd8;
+    margin-bottom: 0px;
+}
+
+#forms_container .formsmenu .well {
+    border: 0;
+    padding: 2px 4px 0px 0px
 }
