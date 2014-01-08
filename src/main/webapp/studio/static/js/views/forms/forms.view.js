@@ -9,7 +9,7 @@ App.View.Forms = Backbone.View.extend({
       LABEL : 'name',
       FIELD_VALUE : 'fieldOptions.definition.defaultValue',
       FIELD_TYPE: 'type',
-      DESCRIPTION: 'fieldOptions.definition.helpText',
+      DESCRIPTION: 'helpText',
       DESCRIPTION_TITLE : 'Instructions',
       MINREPITIONS: 'fieldOptions.definition.minRepeat',
       MAXREPITIONS: 'fieldOptions.definition.maxRepeat',

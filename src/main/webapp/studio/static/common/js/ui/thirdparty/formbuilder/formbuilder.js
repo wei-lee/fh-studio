@@ -952,7 +952,12 @@
     icon: 'icon-minus',
     view: "<label class='section-name'><%= rf.get(Formbuilder.options.mappings.LABEL) %></label>\n<p><%= rf.get(Formbuilder.options.mappings.DESCRIPTION) %></p>\n<hr style=\"border-bottom: 2px dashed #bbb\">",
     edit: "<div class='fb-edit-section-header'>Label</div>\n<input type='text' data-rv-input='model.<%= Formbuilder.options.mappings.LABEL %>' />\n<textarea data-rv-input='model.<%= Formbuilder.options.mappings.DESCRIPTION %>'\n  placeholder='Add a longer description to this field'></textarea>",
-    addButton: "<span class='symbol'><span class='icon-minus'></span></span> Section Break"
+    addButton: "<span class='symbol'><span class='icon-minus'></span></span> Section Break",
+    defaultAttributes: function(attrs) {
+      attrs = new Backbone.Model(attrs);
+      attrs.set(Formbuilder.options.mappings.REQUIRED, false);
+      return attrs.toJSON();
+    }
   });
 
 }).call(this);

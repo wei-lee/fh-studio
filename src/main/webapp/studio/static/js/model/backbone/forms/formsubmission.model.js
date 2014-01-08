@@ -51,7 +51,7 @@ App.Collection.FormSubmissions = App.Collection.FormBase.extend({
           if (res.submissions ) {
             for(var i=0; i < res.submissions.length; i++){
               var sub = res.submissions[i];
-              console.log("submission formfield  ", sub.formFields[0].fieldValues[0]);
+              //console.log("submission formfield  ", sub.formFields[0].fieldValues[0]);
 
               sub.field1val = '';
               sub.field2val = '';
