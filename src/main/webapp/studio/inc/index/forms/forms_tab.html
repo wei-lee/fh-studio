@@ -1,3 +1,6 @@
+<%@ page contentType="text/html" pageEncoding="UTF-8" session="false" trimDirectiveWhitespaces="true" %>
+<jsp:useBean id="studio" scope="request" class="com.feedhenry.studio.StudioBean"></jsp:useBean>
+
 <div id="tabs-8">
     <div id="forms_layout">
         <div class="row-fluid crumb_container">
@@ -474,7 +477,18 @@
             </div>
         </form>
         <br style="clear: both;"/>
+        <!--div class="forms_progress row-fluid">
+            <h4>Progress</h4>
+
+            <div class="progress active">
+                <div class="bar" style="width: 0%;"></div>
+            </div>
+            <textarea class="progresslog span12" readonly=""></textarea>
+        </div -->
     </div>
+</script>
+
+<script id="forms_progress" type="text/x-handlebars-template">
 </script>
 
 <script id="addToExistingApp" type="text/x-handlebars-template">

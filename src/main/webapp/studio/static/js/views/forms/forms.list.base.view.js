@@ -155,16 +155,16 @@ App.View.FormListBase = App.View.Forms.extend({
   },
   onCreate : function(e){
     e.preventDefault();
+console.log('creating view for modal');
     var self = this,
     el = e.target.nodeName.toLowerCase() === "a" ? $(e.target) : $(e.target).parent(),
-    mode = $(el).data('mode'),
-    createView = new App.View.FormCreateClone({ collection : this.collection, mode : mode, singleTitle : this.singleTitle, singleId : this.singleId, pluralTitle : this.pluralTitle });
-
+    mode = $(el).data('mode');
+    var createView = new App.View.FormCreateClone({collection : this.collection, mode : mode, singleTitle : this.singleTitle, singleId : this.singleId, pluralTitle : this.pluralTitle });
     this.$el.append(createView.render().$el);
-    createView.bind('message', function(){});
-
+    createView.bind('message', function(){}); // TODO - do we want messages up top like with CMS?
+console.log('returning from onCreate');
   },
-  onClone : function(e){
+ onClone : function(e){
     e.preventDefault();
     var self = this,
     cloneSource = this.collection.findWhere({_id : this._id}),

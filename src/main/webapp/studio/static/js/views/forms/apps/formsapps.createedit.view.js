@@ -7,6 +7,8 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
     'fullpageLoading' : '#fullpageLoading'
   },
   events : {
+    'click .btn-success' : 'onFormSave',
+    'click .btn-success-create' : 'onFormSave',
     'click .btn-save-app' : 'onFormSave',
     'click .btn-app-submissions' : 'onAppSubmissions'
   },
@@ -22,6 +24,7 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
     // Fetch on the forms and themes - only once these are done can we finish..
     var getters = [
       function(cb){
+
         self.forms.fetch({
           success : function(res){
             cb(null, res);
@@ -57,7 +60,13 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
       });
     }
 
+
+    this.loaded = false;
+    this.compileTemplates();
+
     async.parallel(getters, function(err, res){
+console.log('formsapps.createedit.view parallel - err:', err);
+
       if (err){
         //TODO: Err handling
         self.trigger("error",err);
@@ -66,24 +75,18 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
       }
       self.loaded = true;
       self.render();
+console.log('formsapps.createedit.view parallel sending rendered trigger');
       self.trigger("rendered");
 
     });
-
-    this.loaded = false;
-
-
-    this.compileTemplates();
   },
   render : function(){
 
     var self = this,
     name = '';
 
-
-
     if (!this.loaded){
-      this.$el.height(134);
+      this.$el.height(360); // TODO was 134);
       return this;
     }
 
@@ -105,13 +108,14 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
     formsSelect = this.$el.find('#formAppForms');
 
     this.forms.each(function(f){
+console.log('formsapps.createedit.view render - each form:', f.get(self.CONSTANTS.FORM.NAME));
       formsSelect.append('<option value="' + f.get('_id') + '">' + f.get(self.CONSTANTS.FORM.NAME) + '</option>');
     });
     this.themes.each(function(f){
       themesSelect.append('<option value="' + f.get('_id') + '">' + f.get(self.CONSTANTS.THEME.NAME) + '</option>');
     });
 
-    formsSelect.select2({});
+    formsSelect.select2();
     if (this.mode === 'update'){
       var vals = _.pluck(this.model.get(self.CONSTANTS.FORMSAPP.FORMS), '_id');
       formsSelect.select2('val', vals);
@@ -123,13 +127,19 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
     return this;
   },
   onFormSave : function(e){
-    var create = $(e.target).hasClass("button-add-formsapp");
-    console.log("is create ", create);
+    var create = (this.mode === 'create'); //$(e.target).hasClass("button-add-formsapp");
+    return this.saveForm(create);
+  },
+  saveForm : function (created, cb) {
+    if (!cb) {
+      cb = function(){};
+    }
+    console.log("is create ", created);
     var self = this,
-    forms = this.$el.find('form.formsApps #formAppForms').val() || [], //TODO: Theme and name?
-    theme = this.$el.find('form.formsApps #formAppTheme').val(),
-    name = this.$el.find('form.formsApps #inputFormAppName').val(),
-    id;
+      forms = this.$el.find('form.formsApps #formAppForms').val() || [], //TODO: Theme and name?
+      theme = this.$el.find('form.formsApps #formAppTheme').val(),
+      name = this.$el.find('form.formsApps #inputFormAppName').val(),
+      id;
 
     if (!this.model){
 
@@ -158,17 +168,19 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
     this.model.save({},
     {
       success : function(res){
-        if(create){
+        if(created){
+          console.log('success handler for model.save()');
+          console.log('do progress for: ',res.get('serverResponse'));
+          cacheKey = res.get('serverResponse').cacheKey;
           self.progressModal = $('#generic_progress_modal').clone();
-          self.progressModal.find('h3').text("Deploying App").end().find('h4').text("info").end().appendTo($("body")).one('shown', trackCreate).modal();
+          self.progressModal.find('h3').text("Importing AppForms App").end().find('h4').text("Import log").end().appendTo($("body")).one('shown', trackCreate).modal();
           self.collection.fetch({reset : true});
-          cacheKey = res.get('cacheKey');
         }else{
           self.message('App updated successfully');
         }
       },
       error : function(){
-        var verb = (create) ? 'creating' : 'updating';
+        var verb = (created) ? 'creating' : 'updating';
         self.message('Error ' + verb + ' app', 'danger');
       }
     });
@@ -225,6 +237,9 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
         end: function() {
           self.destroyProgressModal();
           $('.btn-apps').trigger("click");
+          setTimeout(function() {
+            cb(new_guid);
+          }, 10);
         }
       });
      this.active_async_task.run();
