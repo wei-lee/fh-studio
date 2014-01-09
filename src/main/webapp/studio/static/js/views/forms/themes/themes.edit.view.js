@@ -81,40 +81,46 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     coloursEl = $('<div class="colours"></div>'),
     colours = this.theme.get(this.CONSTANTS.THEME.COLOURS);
     _.each(colours, function(subheadings, heading){
-      coloursEl.append('<h4>' + heading + '</h4>');
-      var colourSection = $('<div class="coloursection" data-section="' + heading + '"></div>');
+      var sectionContainer = $('<div class=" themesection ' + heading + '"></div>');
+      sectionContainer.append('<h4>' + heading + '</h4>');
+
+      var colourSection = $('<div class="coloursection well themesectionBody" data-section="' + heading + '"></div>');
       _.each(subheadings, function(colorHex, name){
         var colourInput = $(self.templates.$themeColourRow( { name : name, value : colorHex } )),
         input = $(colourInput.find('input'));
         self.spectrumify(input, { color : colorHex }, 'color');
         colourSection.append( colourInput );
       });
-      coloursEl.append(colourSection);
+      sectionContainer.append(colourSection);
+      coloursEl.append(sectionContainer);
     });
     return coloursEl;
   },
   renderTypography : function(){
     var self = this,
-    typogEl = $('<div class="typography"></div>'),
+    typogEl = $('<div class="typography  themesection"></div>'),
+    typogElBody = $('<div class="themesectionBody well"></div>'),
     typog = this.theme.get(this.CONSTANTS.THEME.TYPOGRAPHY);
     typogEl.append('<h4>Typography</h4>');
     _.each(typog, function(fontAttributes, heading){
       var fontRow = self.selectsRow('Font', heading, fontAttributes);
-      typogEl.append(fontRow);
+      typogElBody.append(fontRow);
     });
-
+    typogEl.append(typogElBody);
     return typogEl;
   },
   renderBorders : function(){
     var self = this,
-    bordersEl = $('<div class="Borders"></div>'),
+    bordersEl = $('<div class="borders  themesection"></div>'),
+    bordersElBody = $('<div class="themesectionBody well"></div>'),
     borders = this.theme.get(this.CONSTANTS.THEME.BORDERS);
     bordersEl.append('<h4>Borders</h4>');
     _.each(borders, function(borderAttributes, heading){
       var row = self.selectsRow('Border', heading, borderAttributes);
 
-      bordersEl.append(row);
+      bordersElBody.append(row);
     });
+    bordersEl.append(bordersElBody);
     return bordersEl;
   },
   selectsRow : function(type, heading, attributes){

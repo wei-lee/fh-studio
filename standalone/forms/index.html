@@ -1,0 +1,53 @@
+<script type="text/javascript" src="vendor/jquery.js"></script>
+<script type="text/javascript" src="vendor/jquery-ui.js"></script>
+<script type="text/javascript" src="vendor/underscore.js"></script>
+<script type="text/javascript" src="vendor/bootstrap.js"></script>
+<script type="text/javascript" src="vendor/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="vendor/jquery.dataTables.fhext.js"></script>
+<script type="text/javascript" src="vendor/select2.js"></script>
+<script type="text/javascript" src="vendor/backbone.js"></script>
+<script type="text/javascript" src="vendor/backbone-relational.js"></script>
+<script type="text/javascript" src="vendor/moment.js"></script>
+<script type="text/javascript" src="vendor/handlebars.js"></script>
+<script type="text/javascript" src="vendor/helpers.js"></script>
+<script type="text/javascript" src="vendor/jsoneditor.js"></script>
+<script type="text/javascript" src="vendor/async.js"></script>
+<script type="text/javascript" src="vendor/deep-model.js"></script>
+<script type="text/javascript" src="vendor/rivets.js"></script>
+<script type="text/javascript" src="vendor/formbuilder.js"></script>
+<script type="text/javascript" src="vendor/underscore.string.js"></script>
+<script type="text/javascript" src="vendor/spectrum.js"></script>
+<script type="text/javascript" src="vendor/index.js"></script>
+
+<iframe src="appforms/forms_tab.html" style="display: none;"></iframe>
+<iframe src="appforms/common.html" style="display: none;"></iframe>
+
+<link rel="stylesheet" type="text/css" href="vendor/bootstrap.css">
+<link rel="stylesheet" type="text/css" href="vendor/formbuilder.css">
+<link rel="stylesheet" type="text/css" href="vendor/spectrum.css">
+<link rel="stylesheet" type="text/css" href="appforms/forms.css">
+<link rel="stylesheet" type="text/css" href="appforms/font-awesome.css">
+<script type="text/javascript" src="appforms/appforms.js"></script>
+<script type="text/javascript" src="iframeloader.js"></script>
+<script type="text/javascript" src="appforms.mixins.js"></script>
+
+<script type="text/javascript">
+
+  $(document).ready(function(){
+    iFrameLoader.load(function(){
+      init();
+    });
+  });
+
+  var init = function(){
+    var forms = new App.View.FormsController();
+    forms.render();
+    $('#forms_layout').append(forms.$el);
+  }
+</script>
+
+<div id="templateContainer">
+  <!-- Templates get injected here from iFrames -->
+  <script id="spinner-template" type="text/x-handlebars-template">
+  </script>
+</div>

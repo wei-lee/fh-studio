@@ -7,7 +7,7 @@ App.View.FormCreateClone = App.View.Modal.extend({
     this.singleTitle = options.singleTitle;
     this.singleId = options.singleId;
     this.pluralTitle = options.pluralTitle;
-
+    var autoHide = options.autoHide;
     var tpl = Handlebars.compile($('#formCreateEdit' + this.singleId).html()),
     body = $(tpl({ CONSTANTS : this.CONSTANTS })),
     mode = options.mode || 'create';
@@ -20,9 +20,9 @@ App.View.FormCreateClone = App.View.Modal.extend({
       body : body,
       collection : options.collection,
       mode : mode,
-      cloneSource : options.cloneSource
+      cloneSource : options.cloneSource,
+      autoHide: autoHide
     };
-
 
     return this.constructor.__super__.initialize.apply(this, [options]);
   },
@@ -70,8 +70,11 @@ App.View.FormCreateClone = App.View.Modal.extend({
     formEl = this.$el.find('form'),
     vals = {};
 
-    if (this.singleId === "formsapp"){
-      return this.formsApp.onFormSave.apply(this.formsApp, arguments);
+    if (this.singleId === "formsapp") {
+      var create = (self.options.mode === 'create');
+      return this.formsApp.saveForm.apply(this.formsApp, [create, function(new_guid) {
+        console.log('modal returned with new guid:', new_guid);
+      }]);
     }
 
     $($(formEl).serializeArray()).each(function(idx, el){
@@ -100,7 +103,6 @@ App.View.FormCreateClone = App.View.Modal.extend({
       console.log('Error creating ' + self.singleTitle.toLowerCase());
       console.log(err);
     }});
-
   },
   stripIds : function(item){
     delete item._id;

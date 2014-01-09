@@ -1,3 +1,6 @@
+<%@ page contentType="text/html" pageEncoding="UTF-8" session="false" trimDirectiveWhitespaces="true" %>
+<jsp:useBean id="studio" scope="request" class="com.feedhenry.studio.StudioBean"></jsp:useBean>
+
 <div id="tabs-8">
     <div id="forms_layout">
         <div class="row-fluid crumb_container">
@@ -20,7 +23,7 @@
 <script id="formsRulesTab" type="text/x-handlebars-template">
     <div class="span10 well formsContainer">
         <div class="row-fluid" style="margin-bottom:6px;">
-            <a class="btn btn-forms-back pull-left" href="#"><i class="icon-arrow-left"></i> Back</a>
+            <a class="btn btn-forms-back pull-left" href="#"><i class="icon-arrow-left"></i></a>
         </div>
         <ul class="nav nav-tabs">
             <li class="active">
@@ -165,6 +168,14 @@
                 </a>
             </li>
             {{/checkRole}}
+          {{#checkRole "formsviewer,formseditor,formsadmin"}}
+          <li>
+            <a class="btn-groups" href="#">
+              <i class="icon-group"></i>
+              Groups
+            </a>
+          </li>
+          {{/checkRole}}
         </ul>
     </div>
 </script>
@@ -174,30 +185,33 @@
 
 
 <script id="formsListBaseAdd" type="text/x-handlebars-template">
-    <a data-mode="create" class="btn pull-right btn-success btn-add-{{ cls }}" href="#"><i class="icon icon-plus"></i>
+    <a data-mode="create" class="btn pull-right btn-primary btn-create-base btn-add-{{ cls }}" href="#"><i class="icon icon-plus"></i>
         Add {{ name }}</a>
 </script>
 
 
 <script id="formsListMenu" type="text/x-handlebars-template">
-    <ul class="nav nav-pills nav-stacked well">
-        <li><a class="btn-edit-form" href="#"><i class="icon-edit"></i>Edit Form</a></li>
-        <li><a class="btn-edit-form-rules" href="#"><i class="icon-pencil"></i> Edit Rules</a></li>
-        <li><a class="btn-form-submissions" href="#"><i class="icon-envelope"></i> View Submissions</a></li>
-        <li class="dropdown">
-            <a class="dropdown-toggle"
-               data-toggle="dropdown"
-               href="#">
-                <i class="icon-th-large"></i> Apps
-                <b class="caret"></b>
-            </a>
-            <ul class="dropdown-menu apps-using-form">
-            </ul>
-        </li>
-        <li><a class="btn-clone-form" href="#"><i class="icon-retweet"></i> Clone</a></li>
-        <li><a class="btn-delete-form" href="#"><i class="icon-trash"></i> Delete</a></li>
+  <div class="formsmenu">
+    <h4>Form Menu</h4>
 
-    </ul>
+  <ul class="nav nav-pills nav-stacked well">
+      <li><a class="btn-edit-form" href="#"><i class="icon-edit"></i>Edit Form</a></li>
+      <li><a class="btn-edit-form-rules" href="#"><i class="icon-pencil"></i> Edit Rules</a></li>
+      <li><a class="btn-form-submissions" href="#"><i class="icon-envelope"></i> View Submissions</a></li>
+      <li class="dropdown">
+          <a class="dropdown-toggle"
+             data-toggle="dropdown"
+             href="#">
+              <i class="icon-th-large"></i> Apps
+              <b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu apps-using-form">
+          </ul>
+      </li>
+      <li><a class="btn-clone-form" href="#"><i class="icon-retweet"></i> Clone</a></li>
+      <li><a class="btn-delete-form" href="#"><i class="icon-trash"></i> Delete</a></li>
+  </ul>
+  </div>
 </script>
 
 <script id="formCreateEditform" type="text/x-handlebars-template">
@@ -241,14 +255,14 @@
 <script id="formSaveCancel" type="text/x-handlebars-template">
     <div class="row">
         <div class="btn-group pull-right">
-            <a class="btn btn-danger btn-form-cancel" href="#">Cancel</a>
-            <a class="btn btn-success btn-form-save" href="#">Save</a>
+            <a class="btn btn-secondary btn-form-cancel" href="#">Cancel</a>
+            <a class="btn btn-success btn-primary" href="#">Save</a>
         </div>
     </div>
 </script>
 
 <script id="form_back" type="text/x-handlebars-template">
-    <a class="btn btn-forms-back pull-left" href="#"><i class="icon-arrow-left"></i> Back</a>
+    <a class="btn btn-forms-back pull-left" href="#"><i class="icon-arrow-left"></i></a>
 </script>
 
 <script id="form_message" type="text/x-handlebars-template">
@@ -293,7 +307,9 @@
 <!-- Themes specific templates -->
 
 <script id="themesListMenu" type="text/x-handlebars-template">
-    <ul class="nav nav-pills nav-stacked well">
+  <div class="formsmenu">
+    <h4>Theme Menu</h4>
+    <ul class="nav nav-pills nav-stacked">
         <li><a class="btn-edit-theme" href="#"><i class="icon-edit"></i>Edit Theme</a></li>
         <li><a class="btn-preview-theme" href="#"><i class="icon-pencil"></i> Preview Theme</a></li>
         <li class="dropdown">
@@ -309,14 +325,14 @@
         <!--<li><a class="btn-view-theme-apps" href="#"><i class="icon-th-large"></i> View Apps</a></li>-->
         <li><a class="btn-clone-theme" href="#"><i class="icon-retweet"></i> Clone</a></li>
         <li><a class="btn-delete-theme" href="#"><i class="icon-trash"></i> Delete</a></li>
-
     </ul>
+  </div>
 </script>
 
 <script id="themeColourRow" type="text/x-handlebars-template">
     <div class="colorRow">
-        <label>{{name}}</label>
         <input type='text' name='{{name}}' value="{{value}}"/>
+        <label>{{name}}</label>
     </div>
 </script>
 
@@ -424,7 +440,9 @@
 </script>
 
 <script id="themeLogo" type="text/x-handlebars-template">
+  <div class="logosection well themesectionBody">
     <img alt="Embedded Image" src="data:image/png;base64,{{{ logoBase64 }}}"/>
+  </div>
 </script>
 
 <script id="formsApps" type="text/x-handlebars-template">
@@ -454,16 +472,27 @@
                 </div>
             </div>
             <div class="btn-group pull-right">
-                <a href="#" class="btn btn-primary btn-app-submissions">View Submissions &raquo;</a>
-                <a href="#" class="btn btn-success">Save</a>
+                <a href="#" class="btn btn-secondary btn-app-submissions">View Submissions &raquo;</a>
+                <a href="#" class="btn btn-primary btn-save-app">Save</a>
             </div>
         </form>
         <br style="clear: both;"/>
+        <!--div class="forms_progress row-fluid">
+            <h4>Progress</h4>
+
+            <div class="progress active">
+                <div class="bar" style="width: 0%;"></div>
+            </div>
+            <textarea class="progresslog span12" readonly=""></textarea>
+        </div -->
     </div>
 </script>
 
+<script id="forms_progress" type="text/x-handlebars-template">
+</script>
+
 <script id="addToExistingApp" type="text/x-handlebars-template">
-    <a data-mode="existing" class="btn pull-right btn-success btn-add-existing" href="#"><i class="icon icon-plus"></i>
+    <a data-mode="existing" class="btn pull-right btn-secondary btn-create-base btn-add-existing" href="#"><i class="icon icon-plus"></i>
         Add Forms to Existing App</a>
 </script>
 
@@ -492,9 +521,9 @@
     <form class="submissionExportForm" method="POST" action="/api/v2/forms/submission/export">
       <input type="hidden" name="appId">
       <input type="hidden" name="formId">
-      <button type="submit" data-mode="create" class="btn pull-right btn-primary btn-export" ><i class="icon icon-download"></i> Export Submissions</button>
+      <button type="submit" style="height: auto;" data-mode="create" class="btn pull-right btn-secondary btn-export" ><i class="icon icon-download"></i> Export Submissions</button>
     </form>
-    <a data-mode="create" class="btn pull-right btn-warning btn-add-submission hide" style="margin-right:6px;" href="#"><i
+    <a data-mode="create" class="btn pull-right btn-primary btn-add-submission hide" style="margin-right:6px;" href="#"><i
             class="icon icon-upload"></i> Add Submissions</a>
 
 </script>
@@ -741,4 +770,44 @@
                 data-crit="{{critNum}}" ><i  data-ctrlfield="advancedSearchContainerFieldsMeta" data-crit="{{critNum}}" data-critType="meta" class="icon-minus"></i>
         </button>
     </div>
+</script>
+
+<script type="text/x-handlebars-template" id="formGroupEdit">
+  <div class="well">
+    <form class="form-horizontal formsGroups span6">
+      <div class="control-group">
+        <label class="control-label" for="inputFormGroupName">Group Name</label>
+
+        <div class="controls groupname">
+          <input type="text" id="inputFormGroupName" class="" name="name" value="{{ name }}">
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="formGroupUsers">Users</label>
+
+        <div class="controls">
+          <select id="formGroupUsers" multiple name="users" class="">
+            {{#each users}}
+            <option value="{{_id}}">{{name}}</option>
+            {{/each}}
+          </select>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="formGroupForms">Forms</label>
+
+        <div class="controls">
+          <select id="formGroupForms" name="forms" multiple class="">
+            {{#each forms}}
+            <option value="{{_id}}">{{name}}</option>
+            {{/each}}
+          </select>
+        </div>
+      </div>
+      <div class="btn-group">
+        <a href="#" class="btn btn-primary btn-save-group">Save Group</a>
+      </div>
+    </form>
+    <br style="clear: both;"/>
+  </div>
 </script>

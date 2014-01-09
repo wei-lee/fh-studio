@@ -9,9 +9,6 @@ App.View.FormFieldRules = App.View.Rules.extend({
 
   initialize: function(options){
 
-    App.View.Forms.CONSTANTS = App.View.Forms.CONSTANTS || {};
-    App.View.Forms.CONSTANTS["FIELD_RULES"] = this.FIELD_RULES;
-
     this.constructor.__super__.initialize.apply(this, arguments);
     this.options = options;
 

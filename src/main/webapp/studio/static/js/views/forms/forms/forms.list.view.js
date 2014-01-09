@@ -58,10 +58,11 @@ App.View.FormList = App.View.FormListBase.extend({
     });
 
     // Place holders that get filled when the user clicks a form
-    this.$previewEl.find('.middle').prepend("<p>Form Description</p>");
-    this.$previewEl.find('.middle').prepend("<h4>Form Title</h4>");
+    this.$previewEl.find('.middle').prepend('<p class="desc">Form Description</p>');
+    this.$previewEl.find('.middle').prepend('<h4 class="title">Form Title</h4>');
 
-    this.$previewEl.find('.middle').removeClass('span6').addClass('span9 well');
+    this.$previewEl.find('.middle').removeClass('span6').addClass('span9');
+    this.$previewEl.find('.middle .fb-response-fields').addClass('well')
     this.$previewEl.find('.right').removeClass('span4').addClass('span2');
 
     var menu = $(this.templates.$menu());
@@ -81,8 +82,8 @@ App.View.FormList = App.View.FormListBase.extend({
 
 
 
-    this.$previewEl.find('h4').html(updatedModel.get(this.CONSTANTS.FORM.NAME));
-    this.$previewEl.find('p').html(updatedModel.get(this.CONSTANTS.FORM.DESC));
+    this.$previewEl.find('h4.title').html('Form Preview: ' + updatedModel.get(this.CONSTANTS.FORM.NAME));
+    this.$previewEl.find('p.desc').html(updatedModel.get(this.CONSTANTS.FORM.DESC));
 
     this.$previewEl.show();
     this.fb.mainView.collection.reset(fields);

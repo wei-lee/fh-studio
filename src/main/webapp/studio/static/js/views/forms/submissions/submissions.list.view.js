@@ -240,12 +240,12 @@ App.View.SubmissionList = App.View.FormListBase.extend({
       checkedVal.replaceWith(' <input type="text" class="checkedValue" placeholder="checked value">');
     }
     rulesSelect.empty();
-    var conditionals = Constants.APP_FORMS.FIELD_RULES[type];
+    var conditionals = this.CONSTANTS.FIELD_RULES[type];
     if (!conditionals) {
         console.log("no conditionals found");
     } else {
       var html = "";
-      for (var i = 0; i < conditionals.length; i++) {
+      for (var i = 0; i  < conditionals.length; i++) {
         html += "<option value='" + conditionals[i] + "'>" + conditionals[i] + "</option>";
       }
       rulesSelect.append(html);

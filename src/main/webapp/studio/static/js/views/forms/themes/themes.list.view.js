@@ -62,7 +62,7 @@ App.View.FormThemesList = App.View.FormListBase.extend({
 
 
 
-    var appsUsingTheme = updatedModel.get("apps");
+    var appsUsingTheme = updatedModel.get("apps") || [];
     if(appsUsingTheme.length > 0){
       console.log("there are apps using this theme");
               if (appsUsingTheme.length>0){

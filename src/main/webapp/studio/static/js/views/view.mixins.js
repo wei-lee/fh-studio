@@ -70,7 +70,7 @@ App.View.FormsMixins = {
       "name":"select a field",
       "type" :""
     }];
-    var rules = Constants.APP_FORMS.FIELD_RULES;
+    var rules = App.View.Forms.prototype.CONSTANTS.FIELD_RULES;
     if(! this.pages){
       throw new Error("no pages found aggregate fields");
     }
@@ -83,7 +83,7 @@ App.View.FormsMixins = {
 
           var repeating = pageFields[p].repeating;
 
-          if(rules[fieldType] && Constants.APP_FORMS.EXCLUDED_FIELD_TYPES.indexOf(fieldType) == -1 && ! repeating){
+          if(rules[fieldType] && App.View.Forms.prototype.CONSTANTS.EXCLUDED_FIELD_TYPES.indexOf(fieldType) == -1 && ! repeating){
             pageFields[p].rules = rules[fieldType];
             this.fields.push(pageFields[p]);
           }
@@ -104,7 +104,7 @@ App.View.FormsMixins = {
 
         var repeating = pageFields[p].repeating;
 
-        if(repeating && Constants.APP_FORMS.EXCLUDED_FIELD_TYPES.indexOf(fieldType) == -1){
+        if(repeating && App.View.Forms.prototype.CONSTANTS.EXCLUDED_FIELD_TYPES.indexOf(fieldType) == -1){
           this.repeatingFields.push(pageFields[p]);
         }
       }
