@@ -283,6 +283,7 @@ ul.apps-using-form li.text {
     //TODO: Button styles...
  */
 #forms_container .btn-group .btn.btn-primary,
+#forms_container .btn.btn-primary,
 #forms_container .btn.btn-create-base,
 #forms_container .btn-group .btn.btn-secondary,
 #forms_container .btn-forms-back,
@@ -369,6 +370,10 @@ Improved formbuilder.js styling - TODO: Should this be applied to CMS Also?
     border: 2px dashed #005f9b;
     text-align: left;
     width: 38%;
+}
+
+#forms_container .edit-response-field input[type=text], #forms_container .edit-response-field textarea {
+    width: 100%;
 }
 
 #forms_container .middle h4.title {
