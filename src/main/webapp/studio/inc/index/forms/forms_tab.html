@@ -772,41 +772,45 @@
 </script>
 
 <script type="text/x-handlebars-template" id="formGroupEdit">
-  <div class="well">
-    <form class="form-horizontal formsGroups span6">
-      <div class="control-group">
-        <label class="control-label" for="inputFormGroupName">Group Name</label>
+  <div>
+    <h4 class="title"></h4>
+    <div class="well">
 
-        <div class="controls groupname">
-          <input type="text" id="inputFormGroupName" class="" name="name" value="{{ name }}">
-        </div>
-      </div>
-      <div class="control-group">
-        <label class="control-label" for="formGroupUsers">Users</label>
+      <form class="form-horizontal formsGroups span6">
+        <div class="control-group">
+          <label class="control-label" for="inputFormGroupName">Group Name</label>
 
-        <div class="controls">
-          <select id="formGroupUsers" multiple name="users" class="">
-            {{#each users}}
-            <option value="{{_id}}">{{name}}</option>
-            {{/each}}
-          </select>
+          <div class="controls groupname">
+            <input type="text" id="inputFormGroupName" class="input-xxlarge" name="name" value="{{ name }}">
+          </div>
         </div>
-      </div>
-      <div class="control-group">
-        <label class="control-label" for="formGroupForms">Forms</label>
+        <div class="control-group">
+          <label class="control-label" for="formGroupUsers">Users</label>
 
-        <div class="controls">
-          <select id="formGroupForms" name="forms" multiple class="">
-            {{#each forms}}
-            <option value="{{_id}}">{{name}}</option>
-            {{/each}}
-          </select>
+          <div class="controls">
+            <select id="formGroupUsers" multiple name="users" class="input-xxlarge">
+              {{#each users}}
+              <option value="{{_id}}">{{name}}</option>
+              {{/each}}
+            </select>
+          </div>
         </div>
-      </div>
-      <div class="btn-group">
-        <a href="#" class="btn btn-primary btn-save-group">Save Group</a>
-      </div>
-    </form>
-    <br style="clear: both;"/>
+        <div class="control-group">
+          <label class="control-label" for="formGroupForms">Forms</label>
+
+          <div class="controls">
+            <select id="formGroupForms" name="forms" multiple class="input-xxlarge">
+              {{#each forms}}
+              <option value="{{_id}}">{{name}}</option>
+              {{/each}}
+            </select>
+          </div>
+        </div>
+        <div class="btn-group">
+          <a href="#" class="btn btn-primary btn-save-group">Save Group</a>
+        </div>
+      </form>
+      <br style="clear: both;"/>
+    </div>
   </div>
 </script>
