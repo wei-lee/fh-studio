@@ -382,6 +382,7 @@ Improved formbuilder.js styling - TODO: Should this be applied to CMS Also?
     border: 2px dashed #005f9b;
     text-align: left;
     width: 38%;
+    padding: 6px 0px 6px 9px;
 }
 
 #forms_container .edit-response-field input[type=text], #forms_container .edit-response-field textarea {
