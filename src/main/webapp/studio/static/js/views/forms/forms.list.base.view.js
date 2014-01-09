@@ -83,7 +83,7 @@ App.View.FormListBase = App.View.Forms.extend({
       }
     });
     this.table.render();
-    this.table.$el.find('table').removeClass('table-striped');
+    this.table.$el.find('table').removeClass('table-striped').removeClass('table-bordered');
     this.$el.append(this.table.$el);
     
     this.$el.append('<br />');

@@ -9,6 +9,7 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
   events : {
     'click .btn-success' : 'onFormSave',
     'click .btn-success-create' : 'onFormSave',
+    'click .btn-save-app' : 'onFormSave',
     'click .btn-app-submissions' : 'onAppSubmissions'
   },
   initialize: function(options){
