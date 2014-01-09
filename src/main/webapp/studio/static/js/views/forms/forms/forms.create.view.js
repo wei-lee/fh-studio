@@ -70,8 +70,11 @@ App.View.FormCreateClone = App.View.Modal.extend({
     formEl = this.$el.find('form'),
     vals = {};
 
-    if (this.singleId === "formsapp"){
-      return this.formsApp.onFormSave.apply(this.formsApp, arguments);
+    if (this.singleId === "formsapp") {
+      var create = (self.options.mode === 'create');
+      return this.formsApp.saveForm.apply(this.formsApp, [create, function(new_guid) {
+        console.log('modal returned with new guid:', new_guid);
+      }]);
     }
 
     $($(formEl).serializeArray()).each(function(idx, el){

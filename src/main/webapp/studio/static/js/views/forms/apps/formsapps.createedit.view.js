@@ -114,7 +114,7 @@ console.log('formsapps.createedit.view render - each form:', f.get(self.CONSTANT
       themesSelect.append('<option value="' + f.get('_id') + '">' + f.get(self.CONSTANTS.THEME.NAME) + '</option>');
     });
 
-    formsSelect.select2({ width: 'resolve' });
+    formsSelect.select2();
     if (this.mode === 'update'){
       var vals = _.pluck(this.model.get(self.CONSTANTS.FORMSAPP.FORMS), '_id');
       formsSelect.select2('val', vals);
@@ -126,8 +126,14 @@ console.log('formsapps.createedit.view render - each form:', f.get(self.CONSTANT
     return this;
   },
   onFormSave : function(e){
-    var create = $(e.target).hasClass("button-add-formsapp");
-    console.log("is create ", create);
+    var create = (this.mode === 'create'); //$(e.target).hasClass("button-add-formsapp");
+    return this.saveForm(create);
+  },
+  saveForm : function (created, cb) {
+    if (!cb) {
+      cb = function(){};
+    }
+    console.log("is create ", created);
     var self = this,
       forms = this.$el.find('form.formsApps #formAppForms').val() || [], //TODO: Theme and name?
       theme = this.$el.find('form.formsApps #formAppTheme').val(),
@@ -161,19 +167,19 @@ console.log('formsapps.createedit.view render - each form:', f.get(self.CONSTANT
     this.model.save({},
     {
       success : function(res){
-        if(create){
+        if(created){
           console.log('success handler for model.save()');
           console.log('do progress for: ',res.get('serverResponse'));
-          self.progressModal = $('#generic_progress_modal').clone();
-          self.progressModal.find('h3').text("Deploying App").end().find('h4').text("info").end().appendTo($("body")).one('shown', trackCreate).modal();
-          self.collection.fetch({reset : true});
           cacheKey = res.get('serverResponse').cacheKey;
+          self.progressModal = $('#generic_progress_modal').clone();
+          self.progressModal.find('h3').text("Importing AppForms App").end().find('h4').text("Import log").end().appendTo($("body")).one('shown', trackCreate).modal();
+          self.collection.fetch({reset : true});
         }else{
           self.message('App updated successfully');
         }
       },
       error : function(){
-        var verb = (create) ? 'creating' : 'updating';
+        var verb = (created) ? 'creating' : 'updating';
         self.message('Error ' + verb + ' app', 'danger');
       }
     });
@@ -230,6 +236,9 @@ console.log('formsapps.createedit.view render - each form:', f.get(self.CONSTANT
         end: function() {
           self.destroyProgressModal();
           $('.btn-apps').trigger("click");
+          setTimeout(function() {
+            cb(new_guid);
+          }, 10);
         }
       });
      this.active_async_task.run();

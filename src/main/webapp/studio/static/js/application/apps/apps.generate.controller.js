@@ -157,6 +157,9 @@ GenerateApp.Models.Wufoo = Class.extend({
   }
 });
 
+
+
+
 GenerateApp.Controllers.Wufoo = Controller.extend({
   config: null,
   parent_controller: null,
@@ -630,6 +633,261 @@ GenerateApp.Controllers.WufooSelection = GenerateApp.Controllers.Wufoo.extend({
   }
 });
 
+
+
+//
+//  START  Appforms3 controller
+//
+GenerateApp.Controllers.AppForms3 = Controller.extend({
+  config: null,
+  parent_controller: null,
+  type: null,
+  current_progress: 0,
+  alert_timeout: 10000,
+  container: '#appforms3_generator_form',
+
+  showError: function(message) {
+    var self = this;
+    var alerts_area = $(this.container).find('#alerts');
+    var alert = $('<div>').addClass('alert fade in alert-error').text(message);
+    var close_button = $('<button>').addClass('close').attr("data-dismiss", "alert").text("x");
+    alert.append(close_button);
+    alerts_area.append(alert);
+    setTimeout(function() {
+      alert.slideUp(function () {
+        alert.remove();
+      });
+    }, self.alert_timeout);
+  },
+
+  showSuccess: function(message) {
+    var self = this;
+    var alerts_area = $(this.container).find('#alerts');
+    var alert = $('<div>').addClass('alert fade in alert-success').text(message);
+    var close_button = $('<button>').addClass('close').attr("data-dismiss", "alert").text("x");
+    alert.append(close_button);
+    alerts_area.append(alert);
+    setTimeout(function() {
+      alert.slideUp(function () {
+        alert.remove();
+      });
+    }, self.alert_timeout);
+  },
+
+  init: function(params) {
+    var self = this;
+    params = params || {};
+    this.config = params.config || null;
+    this.parent_controller = params.controller || null;
+  },
+
+  bind: function() {
+    var self = this;
+    $(self.container).find('.cancel_generate_app:visible').unbind().click(function() {
+      self.hide();
+      return false;
+    });
+
+    $(self.container).find('.generate_app:visible').unbind().click(function(e) {
+      self.generateApp(e);
+      return false;
+    });
+  },
+
+  hideLoader: function() {
+    $(this.container).find('.loader').hide();
+  },
+
+  showLoader: function() {
+    $(this.container).find('.loader').show();
+  },
+
+  generateApp: function(e) {
+    var self = this;
+    var title = "Generating Your App";
+    var message = "We're generating your app...";
+
+    var name = $('.wufoo_app_name:visible').val();
+
+console.log('generating step. <<<<<<<<<<<<<<<<<<')
+    self.createView.saveForm(true, function(new_guid) {
+      console.log('new_guid', new_guid);
+      // Reset state back to the manage tab/build app
+      $fw.state.set('manage_apps_accordion_accordion_item_manage', 'selected', 4);
+      $fw.state.set('manage_apps_accordion_app', 'selected', 0);
+      $fw.data.set('template_mode', false);
+      $fw.client.tab.apps.manageapps.show(new_guid);
+    });
+  },
+
+
+  OLDgenerateApp: function() {
+    var self = this;
+    var title = "Generating Your App";
+    var message = "We're generating your app...";
+
+    var name = $('.wufoo_app_name:visible').val();
+
+    self.showProgressModal(title, message, function () {
+      self.clearProgressModal();
+      self.appendProgressLog('Cloning App Forms app template.');
+
+      // Import template & configure
+      var import_url = Constants.IMPORT_APP_VIA_URL;
+      debugger;  // template_url removed from controller obj
+      params = {
+        //url: self.template_url,
+        title: name
+      };
+
+      $fw.server.post(import_url, params, function(res) {
+        if (res.cacheKey) {
+          var cacheKey = res.cacheKey;
+          self.appendProgressLog('Fetching template.');
+          self.updateProgressBar(10);
+
+          var new_guid = null;
+
+          // Poll cacheKey
+          var import_task = new ASyncServerTask({
+            cacheKey: cacheKey
+          }, {
+            updateInterval: Properties.cache_lookup_interval,
+            maxTime: Properties.cache_lookup_timeout,
+            // 5 minutes
+            maxRetries: Properties.cache_lookup_retries,
+            timeout: function(res) {
+              console.log('timeout error > ' + JSON.stringify(res));
+              $fw.client.dialog.error($fw.client.lang.getLangString('scm_trigger_error'));
+              self.updateProgressBar(100);
+              if (typeof fail != 'undefined') {
+                fail();
+              }
+            },
+            update: function(res) {
+              for (var i = 0; i < res.log.length; i++) {
+                if (typeof res.action.guid != 'undefined') {
+                  new_guid = res.action.guid;
+                  console.log('GUID for new app > ' + new_guid);
+                }
+                self.appendProgressLog(res.log[i]);
+                console.log("Current progress> " + self.current_progress);
+              }
+              self.updateProgressBar(self.current_progress + 1);
+            },
+            complete: function(res) {
+              console.log('SCM refresh successful > ' + JSON.stringify(res));
+              self.updateProgressBar(75);
+            },
+            error: function(res) {
+              console.log('clone error > ' + JSON.stringify(res));
+              $fw.client.dialog.error('App generation failed.' + "<br /> Error Message:" + res.error);
+              self.updateProgressBar(100);
+              if (typeof fail != 'undefined') {
+                fail();
+              }
+            },
+            retriesLimit: function() {
+              console.log('retriesLimit exceeded: ' + Properties.cache_lookup_retries);
+              $fw.client.dialog.error('App generation failed.');
+              self.updateProgressBar(100);
+              if (typeof fail != 'undefined') {
+                fail();
+              }
+            },
+            end: function() {
+              self.destroyProgressModal();
+              setTimeout(function() {
+                // Reset state back to the manage tab/build app
+                $fw.state.set('manage_apps_accordion_accordion_item_manage', 'selected', 4);
+                $fw.state.set('manage_apps_accordion_app', 'selected', 0);
+                $fw.data.set('template_mode', false);
+                $fw.client.tab.apps.manageapps.show(new_guid);
+              }, 250);
+            }
+          });
+          import_task.run();
+        } else {
+          self.showError("Template fetching failed, we couldn't generate your app. Please try again.");
+        }
+      });
+    });
+  },
+
+  show: function() {
+    var self = this;
+
+    self.parent_controller.hideGeneratorList();
+
+    // TODO BELOW FROM PREVIOUS UFOO CONTROLLER LOCATION
+        //todo change to be some property
+        this.collection = new App.Collection.FormApps();
+        this.pluralTitle = 'Forms Apps';
+        this.singleTitle = 'Forms App';
+        var mode = "create";
+        this.singleId = this.singleTitle.toLowerCase().replace(/ /g, "");
+console.log('APPS: creating view');
+        self.createView = new App.View.FormAppsCreateEdit({ collection : this.collection, mode : mode, singleTitle : this.singleTitle, singleId : this.singleId, pluralTitle : this.pluralTitle });
+        //self.generators.wufoo_single.show();
+        var step = $(self.container).find('.step_1').empty();
+        $(self.container).find('.step_2').remove();
+
+console.log('APPS: creating listener for rendered');
+        self.createView.on("rendered", function (){
+          console.log("APPS: rendered called");
+          step.html(self.createView.$el);
+        });
+
+    // TODO ABOVE FROM PREVIOUS UFOO CONTROLLER LOCATION
+
+    $(self.container + ' #wufoo_auth_group').hide();
+    $(self.container + ' #wufoo_apikey_group').hide();
+
+    $(self.container).show();
+    self.bind();
+    self.enableAllInputs();
+  },
+
+  hide: function() {
+    $(this.container).hide();
+    this.parent_controller.showGeneratorList();
+  },
+
+  enableAllInputs: function() {
+    var self = this;
+    var inputs = $(self.container).find('input, select, button');
+    $.each(inputs, function(i, input) {
+      $(input).removeAttr("disabled");
+      $(input).removeClass("disabled");
+    });
+  },
+
+  disableInputs: function() {
+    var self = this;
+    $(self.container).find('.available_forms').empty().attr("disabled", "disabled");
+    $(self.container).find('input[name=storage_type]').each(function(i, input) {
+      $(input).attr("disabled", "disabled");
+    });
+    $(self.container).find('.generate_app, .view_selected_form').attr("disabled", "disabled");
+  }
+
+});
+
+
+//
+//  END  Appforms3 controller
+//
+
+
+
+
+
+
+
+
+
+
+
 var Apps = Apps || {};
 Apps.Generate = Apps.Generate || {};
 
@@ -647,24 +905,7 @@ Apps.Generate.Controller = GenerateApp.Controller = Class.extend({
   bind: function() {
     var self = this;
     $('.generate_appforms_app').unbind().click(function() {
-        //todo change to be some property
-        this.collection = new App.Collection.FormApps();
-        this.pluralTitle = 'Forms Apps';
-        this.singleTitle = 'Forms App';
-        var mode = "create";
-        this.singleId = this.singleTitle.toLowerCase().replace(/ /g, "");
-console.log('APPS: creating view');
-        var createView = new App.View.FormAppsCreateEdit({ collection : this.collection, mode : mode, singleTitle : this.singleTitle, singleId : this.singleId, pluralTitle : this.pluralTitle });
-
-        self.generators.wufoo_single.show();
-        var step = $('.app_generator:first').find('.step_1').empty();
-        $('.app_generator:first').find('.step_2').remove();
-
-console.log('APPS: creating listener for rendered');
-        createView.on("rendered", function (){
-          console.log("APPS: rendered called");
-          step.html(createView.$el);
-        });
+      self.generators.appforms3.show();
     });
 
     $('.show_wufoo_generator_app').unbind().click(function() {
@@ -721,6 +962,10 @@ console.log('APPS: creating listener for rendered');
 
     });
 
+    var appforms3 = new GenerateApp.Controllers.AppForms3({
+        controller: this
+    });
+    self.generators.appforms3 = appforms3;
   },
 
   showWufooList: function () {
