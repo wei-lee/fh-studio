@@ -57,23 +57,26 @@ App.Model.FormApp = App.Model.FormBase.extend({
     console.log("create app called ");
     var self = this;
     var constObj = App.View.Forms.prototype.CONSTANTS.FORMSAPP,
-
+    url = this.createURL;
     updateObject = {
       title : model.get(constObj.NAME),
       forms : model.get(constObj.FORMS),
       theme : model.get(constObj.THEMENAME)
     };
-
+console.log('model.create - method:',method,', updateObject: ', updateObject, ', createURL: ', url);
     $.ajax({
       type: 'POST',
-      url: this.createUrl,
+      url: url, 
       data: JSON.stringify(updateObject),
       contentType : "application/json",
       cache: false,
       success: function(res){
+console.log('success func:');
         if (res) {
           if ($.isFunction(options.success)) {
-            return options.success(res);
+            var merge = self.toJSON();
+            merge.serverResponse = res;
+            return options.success(merge);
           }
         } else {
           if ($.isFunction(options.error)) {
@@ -82,6 +85,7 @@ App.Model.FormApp = App.Model.FormBase.extend({
         }
       },
       error: function(xhr, status){
+console.log('error func');
         options.error(arguments);
       }
     });

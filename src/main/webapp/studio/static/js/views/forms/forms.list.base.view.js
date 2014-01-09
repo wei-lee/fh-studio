@@ -166,10 +166,10 @@ console.log('returning from onCreate');
   },
 
   onProgress : function(e) {
-    var interval = setInterval(function(){
-console.log('formsmodalprgress: doOperation() -- i: ', Date.now());
-        //App.dispatch.trigger("appforms.audit", "Create App " + self.auditMessage);
-    }, 1000);
+//     var interval = setInterval(function(){
+// console.log('formsmodalprgress: doOperation() -- i: ', Date.now());
+//         //App.dispatch.trigger("appforms.audit", "Create App " + self.auditMessage);
+//     }, 1000);
 //     e.preventDefault();
 // console.log('creating view for progress modal');
 //     var self = this,

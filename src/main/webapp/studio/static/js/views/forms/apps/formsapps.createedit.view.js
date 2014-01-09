@@ -23,6 +23,7 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
     // Fetch on the forms and themes - only once these are done can we finish..
     var getters = [
       function(cb){
+
         self.forms.fetch({
           success : function(res){
             cb(null, res);
@@ -58,7 +59,13 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
       });
     }
 
+
+    this.loaded = false;
+    this.compileTemplates();
+
     async.parallel(getters, function(err, res){
+console.log('formsapps.createedit.view parallel - err:', err);
+
       if (err){
         //TODO: Err handling
         self.trigger("error",err);
@@ -67,21 +74,15 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
       }
       self.loaded = true;
       self.render();
+console.log('formsapps.createedit.view parallel sending rendered trigger');
       self.trigger("rendered");
 
     });
-
-    this.loaded = false;
-
-
-    this.compileTemplates();
   },
   render : function(){
 
     var self = this,
     name = '';
-
-
 
     if (!this.loaded){
       this.$el.height(360); // TODO was 134);
@@ -106,13 +107,14 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
     formsSelect = this.$el.find('#formAppForms');
 
     this.forms.each(function(f){
+console.log('formsapps.createedit.view render - each form:', f.get(self.CONSTANTS.FORM.NAME));
       formsSelect.append('<option value="' + f.get('_id') + '">' + f.get(self.CONSTANTS.FORM.NAME) + '</option>');
     });
     this.themes.each(function(f){
       themesSelect.append('<option value="' + f.get('_id') + '">' + f.get(self.CONSTANTS.THEME.NAME) + '</option>');
     });
 
-    formsSelect.select2({});
+    formsSelect.select2({ width: 'resolve' });
     if (this.mode === 'update'){
       var vals = _.pluck(this.model.get(self.CONSTANTS.FORMSAPP.FORMS), '_id');
       formsSelect.select2('val', vals);
