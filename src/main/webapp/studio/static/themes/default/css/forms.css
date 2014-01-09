@@ -413,26 +413,30 @@ Improved formbuilder.js styling - TODO: Should this be applied to CMS Also?
 #forms_container .input-prepend input {
     border-radius: 0;
     padding: 10px 20px;
-    height: 42px;
+    height: 40px;
 }
 
 /*
   Style the LHS menu more flat-like
  */
-.forms_menu_container .nav-list a {
-    border-left: 2px solid transparent
+.forms_menu_container .nav-list a,
+.forms_menu_container .nav-list li:hover a {
+    border-left: 3px solid transparent;
+    padding: 5px 15px;
+    background: none;
+    color: #666;
 }
 
 .forms_menu_container .nav-list .active a {
     color: #0082bf;
     font-weight: normal;
     text-shadow: none;
+    background: #eee;
 }
 
 .forms_menu_container .nav-list li:hover a,
 .forms_menu_container .nav-list .active a  {
-    background: #eee;
-    border-left: 2px solid #0082bf;
+    border-left: 3px solid #0082bf;
 }
 
 
