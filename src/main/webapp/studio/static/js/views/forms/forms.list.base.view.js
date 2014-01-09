@@ -164,25 +164,7 @@ console.log('creating view for modal');
     createView.bind('message', function(){}); // TODO - do we want messages up top like with CMS?
 console.log('returning from onCreate');
   },
-
-  onProgress : function(e) {
-//     var interval = setInterval(function(){
-// console.log('formsmodalprgress: doOperation() -- i: ', Date.now());
-//         //App.dispatch.trigger("appforms.audit", "Create App " + self.auditMessage);
-//     }, 1000);
-//     e.preventDefault();
-// console.log('creating view for progress modal');
-//     var self = this,
-//     el = e.target.nodeName.toLowerCase() === "a" ? $(e.target) : $(e.target).parent(),
-//     mode = 'progress';
-//     var createView = new App.View.FormModalProgress({collection : this.collection, mode : mode, singleTitle : this.singleTitle, singleId : this.singleId, pluralTitle : this.pluralTitle });
-//     this.$el.append(createView.render().$el);
-//     createView.bind('message', function(){}); // TODO - do we want messages up top like with CMS?
-// console.log('returning from onProgress');
-
-  },
-
-  onClone : function(e){
+ onClone : function(e){
     e.preventDefault();
     var self = this,
     cloneSource = this.collection.findWhere({_id : this._id}),
