@@ -8,6 +8,7 @@ App.collections = App.collections || {};
 App.Model.FormGroup = App.Model.FormBase.extend({
   idAttribute: '_id',
   url: '/studio/static/js/model/backbone/mocks/forms/groups.json',
+  fetchURL: '/studio/static/js/model/backbone/mocks/forms/groups.json',
   // Unlike our other form models, a group already has the info it needs - no server fetch required
   fetch : function(options){
     options.success(this);

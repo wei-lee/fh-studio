@@ -10,7 +10,8 @@ App.View.FormGroupsList = App.View.FormListBase.extend({
   events : {
     'click tr' : 'onRowSelected',
     'click .btn-add-group' : 'onCreate',
-    'click .btn-save-group' : 'onSaveGroup'
+    'click .btn-save-group' : 'onSaveGroup',
+    'click .btn-delete-group' : 'onDeleteGroup'
 
   },
   initialize: function(){
@@ -141,5 +142,27 @@ App.View.FormGroupsList = App.View.FormListBase.extend({
     this.$el.find('tr.info').removeClass('info');
 
     this.updatePreview(model);
+  },
+  onDeleteGroup : function(){
+    var self = this,
+    model = this.collection.findWhere({_id : this._id}),
+    modal = new App.View.Modal({
+      title: 'Confirm Delete',
+      body: "Are you sure you want to delete " + model.get('name') + "?",
+      okText: 'Delete',
+      cancelText : 'Cancel',
+      ok: function (e) {
+        model.destroy({
+          success : function(){
+            self.message('Group deleted successfully');
+            self.$previewEl.hide();
+            self.selectMessage.$el.show();
+          }, error : function(){
+            self.message('Error deleting group', 'danger');
+          }
+        });
+      }
+    });
+    this.$el.append(modal.render().$el);
   }
 });
