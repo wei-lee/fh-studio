@@ -408,15 +408,16 @@ Improved formbuilder.js styling - TODO: Should this be applied to CMS Also?
     padding: 2px 4px 0px 0px
 }
 
-#forms_container .input-prepend button.btn {
+#forms_container .input-prepend button.btn, #forms_container .input-append a.btn {
     border-radius: 0;
     background-image: none;
     background-color: #2d72a8;
     color: white;
     padding: 10px 20px;
+    margin-left: 0px;
 }
 
-#forms_container .input-prepend input {
+#forms_container .input-prepend input, #forms_container .input-append input {
     border-radius: 0;
     padding: 10px 20px;
     height: 40px;
@@ -450,4 +451,21 @@ Improved formbuilder.js styling - TODO: Should this be applied to CMS Also?
     background: none;
     border: 0;
     border-right: 1px solid #eee;
+}
+
+#forms_container form.notifications {
+    margin-left: 0;
+}
+
+#forms_container form.notifications .control-label {
+    width: 118px;
+}
+
+#forms_container form.notifications .control-group:first-of-type {
+    margin-bottom: 0;
+}
+#forms_container form.notifications select {
+    width: 294px;
+    border-radius: 0px;
+    height: 200px;
 }

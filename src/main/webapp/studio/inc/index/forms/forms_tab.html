@@ -196,6 +196,7 @@
   <ul class="nav nav-pills nav-stacked well">
       <li><a class="btn-edit-form" href="#"><i class="icon-edit"></i>Edit Form</a></li>
       <li><a class="btn-edit-form-rules" href="#"><i class="icon-pencil"></i> Edit Rules</a></li>
+      <li><a class="btn-edit-form-notifications" href="#"><i class="icon-bullhorn"></i> Edit Notifications</a></li>
       <li><a class="btn-form-submissions" href="#"><i class="icon-envelope"></i> View Submissions</a></li>
       <li class="dropdown">
           <a class="dropdown-toggle"
@@ -255,7 +256,7 @@
     <div class="row">
         <div class="btn-group pull-right">
             <a class="btn btn-secondary btn-form-cancel" href="#">Cancel</a>
-            <a class="btn btn-success btn-primary" href="#">Save</a>
+            <a class="btn btn-success btn-primary btn-form-save" href="#">Save</a>
         </div>
     </div>
 </script>
@@ -813,4 +814,36 @@
       <br style="clear: both;"/>
     </div>
   </div>
+</script>
+
+<script type="text/x-handlebars-template" id="form_notifications">
+  <form class="notifications form-horizontal span10">
+    <div class="control-group">
+      <label class="control-label" for="inputEmail">Add Email</label>
+      <div class="controls">
+        <div class="input-append">
+          <input class="span12" id="inputEmail" type="text" placeholder="some@example.com">
+          <a class="btn btn-primary btn-add-email-notification" type="button"><i class="icon icon-plus"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="formNotificationSubscribers"></label>
+      <div class="controls">
+        <select class="" id="formNotificationSubscribers"  multiple>
+          {{#each emails}}
+            <option>{{email}}</option>
+          {{/each}}
+        </select>
+        <a href="#" class="btn btn-danger btn-remove-email disabled"><i class="icon icon-minus"></i></a>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+        <a herf="#" style="margin-top: 0px;" class="btn btn-secondary btn-forms-back">Back</a>
+        <a herf="#" class="btn btn-primary btn-save-notifications">Save</a>
+      </div>
+    </div>
+  </form>
+
 </script>

@@ -10,6 +10,7 @@ App.View.FormsController = Backbone.View.extend({
     'click .btn-form-submissions' : 'onFormSubmissions',
     'click .btn-edit-form' : 'onEditForm',
     'click .btn-edit-form-rules' : 'onEditFormRules',
+    'click .btn-edit-form-notifications' : 'onEditFormNotifications',
     'click .formapp-link' : 'onFormAppLoad',
     'click .btn-add-submission' : 'onAddSubmission',
     'click #editSubmission' : 'onEditSubmission',
@@ -134,6 +135,19 @@ App.View.FormsController = Backbone.View.extend({
     //this.editForm.bind('back', $.proxy(this.back, this));
     this.$el.append(editFormRules.render().$el);
     this.subViews.push(editFormRules);
+
+
+  },
+  onEditFormNotifications : function(e){
+    var self = this;
+    var form = this.views.forms.collection.findWhere({ _id : this.views.forms._id });
+
+    this.views.forms.$el.hide();
+
+    var formNotifications = new App.View.FormNotifications({ form : form });
+    formNotifications.bind('back', $.proxy(this.back, this));
+    this.$el.append(formNotifications.render().$el);
+    this.subViews.push(formNotifications);
 
 
   },
