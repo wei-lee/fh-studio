@@ -10,7 +10,8 @@ App.View.FormGroupsList = App.View.FormListBase.extend({
   events : {
     'click tr' : 'onRowSelected',
     'click .btn-add-group' : 'onCreate',
-    'click .btn-save-group' : 'onSaveGroup'
+    'click .btn-save-group' : 'onSaveGroup',
+    'click .btn-delete-group' : 'onDeleteGroup'
 
   },
   initialize: function(){
@@ -83,48 +84,85 @@ App.View.FormGroupsList = App.View.FormListBase.extend({
     formsIds = updatedModel.get('forms'),
     groupObject = {
       name : updatedModel.get('name'),
-      users : [],
-      forms : []
+      users : this.users.toJSON(),
+      forms : this.forms.toJSON()
     }, tpl;
 
-    // Iterate over user and form _id's - map them to full form objects for the template to render
-    _.each(usersIds, function(id){
-      var user = self.users.findWhere({_id : id});
-      if (user){
-        groupObject.users.push(user.toJSON());
-      }
-    });
-    _.each(formsIds, function(id){
-      var form = self.forms.findWhere({_id : id});
-      if (form){
-        groupObject.forms.push(form.toJSON());
-      }
-    });
-
-    tpl = this.templates.$formGroupEdit(groupObject);
+    tpl = $(this.templates.$formGroupEdit(groupObject));
     this.$previewEl.find('#groupPreviewContainer').html(tpl);
-    this.$previewEl.find('select').select2();
-    this.$previewEl.find('#formGroupUsers').select2('val', usersIds);
-    this.$previewEl.find('#formGroupForms').select2('val', formsIds);
+    tpl.find('select').select2();
+    tpl.find('#formGroupUsers').select2('val', usersIds);
+    tpl.find('#formGroupForms').select2('val', formsIds);
+
+    if (this._id && typeof this._id==='string'){
+      tpl.find('h4.title').html('Edit Group: ' + groupObject.name);
+    }else{
+      tpl.find('h4.title').html('Create New Group');
+    }
 
     self.$previewEl.show();
+    this.selectMessage.$el.hide();
   },
   onSaveGroup : function(){
-    var model = this.collection.findWhere({_id : this._id}),
+    var self = this,
     form = this.$el.find('form.formsGroups'),
     updatedGroup = {
       name : form.find('input[name=name]').val(),
       forms : form.find('select#formGroupForms').val(),
       users : form.find('select#formGroupUsers').val(),
+    },
+    model;
+
+    if (this._id && typeof this._id==='string'){
+      model = this.collection.findWhere({_id : this._id});
+      updatedGroup._id = this._id;
+    }else{
+      model = new App.Model.FormGroup();
     }
-    model.set(updatedGroup);
-    model.save({
+
+    model.save(updatedGroup, {
       success : function(){
         self.message('Group updated successfully');
+        self.$previewEl.hide();
+        self.selectMessage.$el.show();
       },
       error: function(){
         self.message('Error updating group', 'danger');
       }
     });
+  },
+  onCreate : function(){
+    var model = new App.Model.FormGroup({
+      users : [],
+      groups : [],
+      name : ''
+    });
+    // Deselect all table rows
+    this._id = undefined;
+    this.$el.find('tr.info').removeClass('info');
+
+    this.updatePreview(model);
+  },
+  onDeleteGroup : function(){
+    var self = this,
+    model = this.collection.findWhere({_id : this._id}),
+    modal = new App.View.Modal({
+      title: 'Confirm Delete',
+      body: "Are you sure you want to delete " + model.get('name') + "?",
+      okText: 'Delete',
+      cancelText : 'Cancel',
+      ok: function (e) {
+        model.destroy({
+          success : function(){
+            self.message('Group deleted successfully');
+            self.$previewEl.hide();
+            self.selectMessage.$el.show();
+          }, error : function(){
+            self.message('Error deleting group', 'danger');
+          }
+        });
+      }
+    });
+    this.$el.append(modal.render().$el);
   }
 });
