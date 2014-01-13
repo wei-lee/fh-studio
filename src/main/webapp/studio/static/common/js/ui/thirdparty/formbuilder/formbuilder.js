@@ -290,6 +290,7 @@
           return this.forceRender();
         },
         removeOption: function(e) {
+          console.log("removeOption called");
           var $el, index, options;
           $el = $(e.currentTarget);
           index = this.$el.find(".js-remove-option").index($el);

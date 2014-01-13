@@ -71,6 +71,7 @@ App.View.FormEditReorder = App.View.Forms.extend({
         // Lastly now we're done iterating we flatten out our 2d array reOrdered, and load it back into formbuilder
         reOrdered = _.flatten(reOrdered);
         self.fb.collection.reset(reOrdered);
+
       }
     });
     this.$el.find('.form-page').click($.proxy(this.onFormPageClicked, this));

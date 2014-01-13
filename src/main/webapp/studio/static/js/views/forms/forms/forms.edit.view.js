@@ -31,6 +31,7 @@ App.View.FormEdit = App.View.Forms.extend({
     this.collection = this.options.collection;
     fields = this.formToFormBuilderFields(this.form);
 
+
     this.breadcrumb(['Forms', 'Forms List', 'Edit Form']);
 
     this.$el.empty();
@@ -50,26 +51,58 @@ App.View.FormEdit = App.View.Forms.extend({
       fields : [ 'text', 'paragraph', 'number', 'email', 'website', 'dropdown', 'radio', 'checkboxes', 'location', 'map', 'file', 'photo', 'signature', 'autodate', 'section_break', 'page_break' ] // TODO: Add the rest that we support here
     });
 
+
+    var fb = this.fb;
+
     this.fb.collection.bind('add', function(model){
-      self.updatePreview.apply(self, arguments);
+      console.log("add collection ** " , model);
+      console.log("existing fields ", self.form.get("fields"));
+      console.log("fb collection ", self.fb.collection);
+
       model.set('_id', model.cid);
       if (model.get(self.CONSTANTS.FB.FIELD_TYPE)===self.CONSTANTS.FORM.PAGE_BREAK){
         self.reorder.render();
       }
+      var col = self.fb.collection;
+
+      console.log("form builder collection", col);
+
+      //self.updatePreview.apply(self, arguments);
     });
     this.fb.collection.bind('change', function(model){
-      self.updatePreview.apply(self, arguments);
+      console.log("change collection ", model);
+      //self.updatePreview.apply(self, arguments);
       if (model.get(self.CONSTANTS.FB.FIELD_TYPE)===self.CONSTANTS.FORM.PAGE_BREAK){
         self.reorder.render();
       }
+      self.syncModelAndFormBuilder();
+      self.updatePreview.apply(self, arguments);
     });
     this.fb.collection.bind('remove', function(model){
+      var _idRemoved = model.get("_id");
+      var fieldRefs = self.form.get("fieldRef");
+      var pages = self.form.get("pages");
+      for(var i=0; i < pages.length; i++){
+        var p = pages.at(i);
+        var fields = p.get("fields");
+        p.removeFieldFromPage(_idRemoved);
+        if(fieldRefs && fieldRefs.hasOwnProperty(_idRemoved)){
+          delete fieldRefs[_idRemoved];
+        }
+        //reset the fieldref indexes otherwise $fh.forms gives out.
+        for(var fi =0; fi < fields.length; fi++){
+          if(fieldRefs[fields[fi]._id]){
+            fieldRefs[fields[fi]._id].field = fi;
+          }
+        }
+        self.form.set("fieldref",fieldRefs);
+      }
       self.updatePreview.apply(self, arguments);
       if (model.get(self.CONSTANTS.FB.FIELD_TYPE)===self.CONSTANTS.FORM.PAGE_BREAK){
         self.reorder.render();
       }
     });
-    this.fb.collection.bind('remove', $.proxy(this.updatePreview, this));
+    //this.fb.collection.bind('remove', $.proxy(this.updatePreview, this));
 
     this.$el.find('.fb-field-wrapper .subtemplate-wrapper').click(function (){
       self.$el.find('.fb-tabs li.configurefield a').trigger('click');
@@ -112,17 +145,12 @@ App.View.FormEdit = App.View.Forms.extend({
       this.$el.find('.middle p.desc').html(el.val());
     }
   },
-  onFormSave : function(){
+
+  syncModelAndFormBuilder : function (){
+    this.fb.collection.sort();
     var self = this,
-    curPage,
-    pages = [],
-    first = this.fb.collection.at(0);
-
-    this.loading = $(this.templates.$fullpageLoading());
-    this.$el.append(this.loading).addClass('busy');
-    self.reorder.$el.hide();
-    self.$fbEl.hide();
-
+      curPage,
+      pages = [];
     this.fb.collection.each(function(f, i, coll){
       // For every page break - except the first, that's just a UI thing..
       if (f.get(self.CONSTANTS.FB.FIELD_TYPE) === self.CONSTANTS.FORM.PAGE_BREAK){
@@ -137,18 +165,34 @@ App.View.FormEdit = App.View.Forms.extend({
         delete p.required;
         delete p.type;
         _.extend(curPage, p);
-        curPage[self.CONSTANTS.FORM.FIELDS] = [];
+        curPage["fields"] = [];
       }else{
         console.log("curPage", curPage);
         curPage[self.CONSTANTS.FORM.FIELDS].push(f.toJSON());
       }
     });
     // Push the last page
-    pages.push(curPage);
+    if(curPage){
+      pages.push(curPage);
+    }
 
     this.form.set(this.CONSTANTS.FORM.PAGES, pages);
     this.form.set(this.CONSTANTS.FORM.NAME, this.$el.find('#formInputName').val());
     this.form.set(this.CONSTANTS.FORM.DESC, this.$el.find('#formTextareaDesc').val());
+  },
+
+  onFormSave : function(){
+    var self = this,
+    curPage,
+    pages = [];
+    //first = this.fb.collection.at(0);
+
+    this.loading = $(this.templates.$fullpageLoading());
+    this.$el.append(this.loading).addClass('busy');
+    self.reorder.$el.hide();
+    self.$fbEl.hide();
+
+    self.syncModelAndFormBuilder();
     this.collection.sync('update', this.form.toJSON(), { success : function(){
       self.fb.collection.reset([]);
       self.back();
@@ -165,8 +209,25 @@ App.View.FormEdit = App.View.Forms.extend({
     this.trigger('back');
   },
   updatePreview: function(){
-    var html = $(this.$el.find('.fb-response-fields').html());
-    html.find('.actions-wrapper').remove();
-    this.$el.find('.formPreviewContents').html(html);
+    console.log("update preview called");
+    var self = this;
+    console.log(self.form.get("fieldRef"));
+
+    var rawData = JSON.stringify(self.form.toJSON());
+
+
+
+    $fh.forms.init({
+        config: {
+          "cloudHost": "", "appid": new Date().getTime()
+        },
+        "updateForms" : false
+      },function (){
+        console.log(" cb rendering form");
+
+    });
+    $fh.forms.renderFormFromJSON({rawData:rawData,"container":self.$el.find('.formPreviewContents')});
+
+
   }
 });
