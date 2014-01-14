@@ -6,24 +6,31 @@ App.View.FormNotifications = App.View.Forms.extend({
     form_back : '#form_back',
     form_notifications : '#form_notifications'
   },
-  initialize: function(options){
-    var self = this;
-    this.constructor.__super__.initialize.apply(this, arguments);
-    this.collection = new App.Collection.FormNotifications();
-    this.collection.fetch({
-      success : function(){
-        self.loaded = true;
-        self.render();
-      }
-    });
-    this.options = options;
-  },
+  emailValidation : /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/,
   events : {
     'click .btn-forms-back' : 'onBack',
     'click .btn-add-email-notification' : 'onAddEmail',
     'click .btn-remove-email' : 'onRemoveEmail',
     'click .btn-save-notifications' : 'onSaveNotifications',
     'change select' : 'onSelectChanged'
+  },
+  initialize: function(options){
+    var self = this;
+    this.constructor.__super__.initialize.apply(this, arguments);
+    this.collection = new App.Collection.FormNotifications(options);
+    this.collection.fetch({
+      reset : true,
+      success : function(){
+        self.loaded = true;
+        self.render();
+      },
+      error : function(){
+        console.log("Error loading notifications collection: ");
+        console.log(arguments);
+        self.render();
+      }
+    });
+    this.options = options;
   },
   render : function(){
     this.$el.empty();
@@ -43,9 +50,12 @@ App.View.FormNotifications = App.View.Forms.extend({
   },
   onAddEmail : function(){
     var email = this.$el.find('#inputEmail').val();
-    //TODO: Validate?
-    this.$el.find('select').append('<option>' + email + '</option>');
 
+    if (!this.emailValidation.test(email) || email === '' || !email){
+      return this.modal('Invalid email specified', 'Error');
+    }
+
+    this.$el.find('select').append('<option>' + email + '</option>');
     this.$el.find('#inputEmail').val('');
   },
   onSaveNotifications : function(){

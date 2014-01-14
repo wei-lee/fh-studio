@@ -144,7 +144,7 @@ App.View.FormsController = Backbone.View.extend({
 
     this.views.forms.$el.hide();
 
-    var formNotifications = new App.View.FormNotifications({ form : form });
+    var formNotifications = new App.View.FormNotifications({ form : form, _id : form.get('_id') });
     formNotifications.bind('back', $.proxy(this.back, this));
     this.$el.append(formNotifications.render().$el);
     this.subViews.push(formNotifications);
