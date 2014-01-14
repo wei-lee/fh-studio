@@ -34,7 +34,7 @@ App.View.FormEdit = App.View.Forms.extend({
     fields = this.formToFormBuilderFields(this.form);
     //move to a template
     this.themes.fetch({"success": function (themes) {
-      var themeselect = "<select style='margin:auto;' id='themeSelect'><option value='none'>None</option>";
+      var themeselect = "<select style='margin-left:70px;' id='themeSelect'><option value='none'>Apply Theme: None</option>";
       themes.forEach(function (theme) {
         themeselect += "<option value='" + theme.get("_id") + "'>" + theme.get("name") + "</option>";
       });
