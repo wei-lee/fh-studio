@@ -29,6 +29,9 @@ App.View.FormGroupsList = App.View.FormListBase.extend({
 
     this.forms =  new App.Collection.Form();
     this.users = new App.Collection.Users();
+    this.themes = new App.Collection.FormThemes();
+    this.apps = new App.Collection.FormApps();
+
     async.parallel([
       function(cb){
         self.forms.fetch({
@@ -53,14 +56,44 @@ App.View.FormGroupsList = App.View.FormListBase.extend({
             return cb("Error retrieving users");
           }
         });
+      },
+      function(cb){
+        self.themes.fetch({
+          reset : true,
+          success : function(res){
+            return cb(null, res);
+          },
+          error : function(){
+            console.log(arguments);
+            return cb("Error retrieving themes");
+          }
+        });
+      },
+      function(cb){
+        self.apps.fetch({
+          reset : true,
+          success : function(res){
+            return cb(null, res);
+          },
+          error : function(){
+            console.log(arguments);
+            return cb("Error retrieving apps");
+          }
+        });
       }
     ], function(err, res){
-      self.loaded = true;
+      self.postLoaded = true;
+      self.render();
     });
     self.constructor.__super__.initialize.apply(self, arguments);
   },
   render : function(){
     var self = this;
+    if (self.postLoaded === true){
+      self.loaded = true;
+    }else{
+      self.loaded = false;
+    }
     App.View.FormListBase.prototype.render.apply(this, arguments);
     return this.renderPreview();
   },
@@ -82,10 +115,14 @@ App.View.FormGroupsList = App.View.FormListBase.extend({
     var self = this,
     usersIds = updatedModel.get('users'),
     formsIds = updatedModel.get('forms'),
+    themesIds = updatedModel.get('themes'),
+    appsIds = updatedModel.get('apps'),
     groupObject = {
       name : updatedModel.get('name'),
       users : this.users.toJSON(),
-      forms : this.forms.toJSON()
+      forms : this.forms.toJSON(),
+      themes : this.themes.toJSON(),
+      apps : this.apps.toJSON()
     }, tpl;
 
     tpl = $(this.templates.$formGroupEdit(groupObject));
@@ -93,6 +130,8 @@ App.View.FormGroupsList = App.View.FormListBase.extend({
     tpl.find('select').select2();
     tpl.find('#formGroupUsers').select2('val', usersIds);
     tpl.find('#formGroupForms').select2('val', formsIds);
+    tpl.find('#formGroupThemes').select2('val', themesIds);
+    tpl.find('#formGroupApps').select2('val', appsIds);
 
     if (this._id && typeof this._id==='string'){
       tpl.find('h4.title').html('Edit Group: ' + groupObject.name);
@@ -110,6 +149,8 @@ App.View.FormGroupsList = App.View.FormListBase.extend({
       name : form.find('input[name=name]').val(),
       forms : form.find('select#formGroupForms').val(),
       users : form.find('select#formGroupUsers').val(),
+      themes : form.find('select#formGroupThemes').val(),
+      apps : form.find('select#formGroupApps').val()
     },
     model;
 
@@ -135,6 +176,8 @@ App.View.FormGroupsList = App.View.FormListBase.extend({
     var model = new App.Model.FormGroup({
       users : [],
       groups : [],
+      themes : [],
+      apps : [],
       name : ''
     });
     // Deselect all table rows

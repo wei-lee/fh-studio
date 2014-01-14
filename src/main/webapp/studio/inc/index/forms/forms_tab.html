@@ -807,6 +807,28 @@
             </select>
           </div>
         </div>
+        <div class="control-group">
+          <label class="control-label" for="formGroupThemes">Themes</label>
+
+          <div class="controls">
+            <select id="formGroupThemes" name="themes" multiple class="input-xxlarge">
+              {{#each themes}}
+              <option value="{{_id}}">{{name}}</option>
+              {{/each}}
+            </select>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="formGroupApps">Apps</label>
+
+          <div class="controls">
+            <select id="formGroupApps" name="apps" multiple class="input-xxlarge">
+              {{#each apps}}
+              <option value="{{id}}">{{title}}</option>
+              {{/each}}
+            </select>
+          </div>
+        </div>
         <div class="btn-group">
           <a href="#" class="btn btn-primary btn-save-group">Save Group</a>
           <a href="#" class="btn btn-danger btn-delete-group">Delete Group</a>
