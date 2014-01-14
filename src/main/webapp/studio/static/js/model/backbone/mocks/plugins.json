@@ -362,6 +362,22 @@
     "tested": false,
     "category": "Remote Database",
     "version":  "0.4.2",
+    "config" :  [
+      {
+        "desc" :  "MSSQL User Name",
+        "varName" :  "MSSQL_USER"
+      },
+      {
+        "desc" :  "MSSQL User Password",
+        "varName" :  "MSSQL_PASSWORD"
+      },{
+        "desc" :  "MSSQL Server name/address",
+        "varName" :  "MSSQL_SERVER"
+      },{
+        "desc" :  "MSSQL Database Name",
+        "varName" :  "MSSQL_DATABASE"
+      }
+    ],
     "docs":  "https://github.com/patriksimek/node-mssql"
   },
   {
@@ -861,6 +877,20 @@
     "tested": false,
     "category": "Tools",
     "version":  "0.2.2",
+    "config" :  [
+      {
+        "desc" :  "Your Auth0 domain, e.g. 'yourdomain.auth0.com'",
+        "varName" :  "AUTH0_DOMAIN"
+      },
+      {
+        "desc" :  "Your Auth0 Client ID",
+        "varName" :  "AUTH0_CLIENT_ID"
+      },
+      {
+        "desc" :  "Your Auth0 Client Secret",
+        "varName" :  "AUTH0_CLIENT_SECRET"
+      }
+    ], 
     "docs":  "https://github.com/auth0/node-auth0"
   }
 ]

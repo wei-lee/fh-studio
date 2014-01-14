@@ -762,11 +762,11 @@ exports.netweaver = function(){
   var sql = require('mssql'); 
 
   var config = {
-    user: '...',
-    password: '...',
-    server: 'localhost',
-    database: '...'
-  }
+    user: process.env.MSSQL_USER,
+    password: process.env.MSSQL_PASSWORD,
+    server: process.env.MSSQL_SERVER,
+    database: process.env.MSSQL_DATABASE
+  };
 
   var connection = new sql.Connection(config, function(err) {
     // ... error checks
@@ -800,9 +800,9 @@ exports.netweaver = function(){
 var Auth0 = require('auth0');
 
 var api = new Auth0({
-  domain:       'yourdomain.auth0.com',
-  clientID:     'your-client-id',
-  clientSecret: 'your-client-secret'
+  domain:       process.env.AUTH0_DOMAIN,
+  clientID:     process.env.AUTH0_CLIENT_ID,
+  clientSecret: process.env.AUTH0_CLIENT_SECRET
 });
 </script>
 
