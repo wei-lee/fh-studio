@@ -757,3 +757,39 @@ exports.netweaver = function(){
  });
 };
 </script>
+
+<script type="text/snippet" id="snippet-mssql">
+  var sql = require('mssql'); 
+
+  var config = {
+    user: '...',
+    password: '...',
+    server: 'localhost',
+    database: '...'
+  }
+
+  var connection = new sql.Connection(config, function(err) {
+    // ... error checks
+
+    // Query
+
+    var request = new sql.Request(connection1); // or: var request = connection.request();
+    request.query('select 1 as number', function(err, recordset) {
+        // ... error checks
+
+        console.dir(recordset);
+    });
+
+    // Stored Procedure
+
+    var request = new sql.Request(connection1);
+    request.input('input_parameter', sql.Int, value);
+    request.output('output_parameter', sql.Int);
+    request.execute('procedure_name', function(err, recordsets, returnValue) {
+        // ... error checks
+
+        console.dir(recordsets);
+    });
+  });
+};
+</script>

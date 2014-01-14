@@ -834,5 +834,13 @@
     "category" : "Tools",
     "version" :  "0.2.5",
     "docs" :  "https://github.com/caolan/async"
+  },
+  {
+    "name" : "MSSQL",
+    "desc" : "MSSQL database connector for NodeJS",
+    "image": "mssql.png",
+    "category": "Remote Database",
+    "version":  "0.4.2",
+    "docs":  "https://github.com/patriksimek/node-mssql"
   }
 ]
