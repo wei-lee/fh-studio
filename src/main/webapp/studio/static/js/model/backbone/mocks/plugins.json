@@ -844,13 +844,15 @@
     "version" :  "0.2.5",
     "docs" :  "https://github.com/caolan/async"
   },{
-    "name" : "NewRelic",
+    "name" : "New Relic",
     "desc" : "New Relic for Node.js",
     "image": "newrelic.png",
     "tested": false,
     "category": "Tools",
     "version":  "1.2.0",
-    "docs":  "https://github.com/newrelic/node-newrelic"
+    "docs":  "https://github.com/newrelic/node-newrelic",
+    "step2Subtext" : "This package instruments your application for performance monitoring with New Relic.",
+    "snippetName": "newrelic"
   },
   {
     "name" : "Auth0",

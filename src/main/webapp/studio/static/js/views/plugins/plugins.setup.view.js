@@ -5,7 +5,8 @@ App.View.PluginsSetup = App.View.PluginsView.extend({
     pluginSetupEnvVariables : '#pluginSetupEnvVariables',
     pluginSetupCode : '#pluginSetupCode',
     pluginSetupImage : '#pluginSetupImage',
-    pluginsHeader : '#pluginsHeader'
+    pluginsHeader : '#pluginsHeader',
+    pluginStep2Subtext : '#pluginStep2Subtext'
   },
   plugin : undefined,
   initialize : function(options){
@@ -31,7 +32,8 @@ App.View.PluginsSetup = App.View.PluginsView.extend({
     plugin.snippetName = plugin.snippetName || plugin.npmName;
     code = $('#snippet-' + plugin.snippetName.replace(".","")).html();
     if (code && code!==""){
-      code = this.templates.$pluginSetupCode({ code : code });
+      codeSubtext = plugin.step2Subtext || this.templates.$pluginStep2Subtext();
+      code = this.templates.$pluginSetupCode({ code : code, subtext : codeSubtext });
     }
 
     if (config && !_.isEmpty(config)){
