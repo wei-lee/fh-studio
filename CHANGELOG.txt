@@ -5,6 +5,7 @@ Component: fh-studio
 -----------------------------------------------
 * #5324 - Add mssql node module as a Cloud Plugin
 * #5326 - Add Auth0 as a Cloud Plugin
+* #5325 - Add New Relic as a Cloud Plugin
 
 3.17.26 - 2014-01-07 - IR218 - Wei Li
 --------------------------------------------
