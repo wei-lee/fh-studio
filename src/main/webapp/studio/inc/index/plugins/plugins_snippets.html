@@ -793,3 +793,15 @@ exports.netweaver = function(){
   });
 };
 </script>
+
+<script type="text/snippet" id="snippet-auth0">
+/* Initialize your client class with the credentials in the settings section of the dashboard. */
+
+var Auth0 = require('auth0');
+
+var api = new Auth0({
+  domain:       'yourdomain.auth0.com',
+  clientID:     'your-client-id',
+  clientSecret: 'your-client-secret'
+});
+</script>

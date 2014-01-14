@@ -842,5 +842,12 @@
     "category": "Remote Database",
     "version":  "0.4.2",
     "docs":  "https://github.com/patriksimek/node-mssql"
+  },{
+    "name" : "Auth0",
+    "desc" : "Client library for the Auth0 platform",
+    "image": "auth0.png",
+    "category": "Tools",
+    "version":  "0.2.2",
+    "docs":  "https://github.com/auth0/node-auth0"
   }
 ]
