@@ -35,7 +35,8 @@ App.Model.FormBase = Backbone.RelationalModel.extend({
       dataType : 'json',
       url: this.fetchURL.replace('{{id}}', id),
       success: function(res){
-        Backbone.Model.prototype.destroy.apply(self, [options]);
+        self.trigger('destroy', self, self.collection, options);
+
       },
       error: function(xhr, status){
         if ($.isFunction(options.error)) {

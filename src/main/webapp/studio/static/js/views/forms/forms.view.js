@@ -76,8 +76,7 @@ App.View.Forms = Backbone.View.extend({
       THEMENAME : 'theme.name'
     },
     GROUPS: {
-      NAME: 'name',
-      DESC: 'description'
+      NAME: 'name'
     },
     FIELD_RULES : {
       "dateTime": ["is at", "is before", "is after"],

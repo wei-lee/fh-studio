@@ -23,9 +23,31 @@ App.View.FormGroupsList = App.View.FormListBase.extend({
       "sTitle": 'Name',
       "mDataProp": this.CONSTANTS.GROUPS.NAME
     },{
-      "sTitle": 'Description',
-      "mDataProp": this.CONSTANTS.GROUPS.DESC
-    }];
+      "sTitle": 'Users',
+      "mDataProp": function(group){
+        if (group.users && group.users.length){
+          return group.users.length;
+        }
+        return 0;
+      }
+    },{
+      "sTitle": 'Forms',
+      "mDataProp": function(group){
+        if (group.forms && group.forms.length){
+          return group.forms.length;
+        }
+        return 0;
+      }
+    },{
+      "sTitle": 'Themes',
+      "mDataProp": function(group){
+        if (group.themes && group.themes.length){
+          return group.themes.length;
+        }
+        return 0;
+      }
+    }
+    ];
 
     this.forms =  new App.Collection.Form();
     this.users = new App.Collection.Users();
@@ -82,6 +104,9 @@ App.View.FormGroupsList = App.View.FormListBase.extend({
         });
       }
     ], function(err, res){
+      if (err){
+        return;
+      }
       self.postLoaded = true;
       self.render();
     });
@@ -162,10 +187,18 @@ App.View.FormGroupsList = App.View.FormListBase.extend({
     }
 
     model.save(updatedGroup, {
+      type: 'post',
       success : function(){
+        if (typeof updatedGroup._id === 'undefined'){
+          self.collection.add(model, {silent : true}); // supress any request or reset event
+        }
+
         self.message('Group updated successfully');
+        self.collection.trigger('reset');
         self.$previewEl.hide();
         self.selectMessage.$el.show();
+
+
       },
       error: function(){
         self.message('Error updating group', 'danger');
