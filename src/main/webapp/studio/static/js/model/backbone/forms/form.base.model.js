@@ -35,7 +35,8 @@ App.Model.FormBase = Backbone.RelationalModel.extend({
       dataType : 'json',
       url: this.fetchURL.replace('{{id}}', id),
       success: function(res){
-        Backbone.Model.prototype.destroy.apply(self, [options]);
+        self.trigger('destroy', self, self.collection, options);
+
       },
       error: function(xhr, status){
         if ($.isFunction(options.error)) {
@@ -55,8 +56,10 @@ App.Collection.FormBase = Backbone.Collection.extend({
     this[method].apply(this, arguments);
   },
   read : function(method, model, options){
-    var self = this;
-    var url = self.url;
+    var self = this,
+    url = self.url,
+    csrfToken = $('input[name="csrftoken"]').val();
+    url += "?csrftoken=" + csrfToken;
     $.ajax({
       type: 'GET',
       dataType : 'json',
@@ -120,8 +123,10 @@ App.Collection.FormBase = Backbone.Collection.extend({
     return this.update.apply(this, arguments);
   },
   update : function(method, model, options){
-    var self = this;
-    var url = self.urlUpdate;
+    var self = this,
+    url = self.urlUpdate,
+    csrfToken = $('input[name="csrftoken"]').val();
+    url += "?csrftoken=" + csrfToken;
 
     model = self.trimInternalIds(model);
 

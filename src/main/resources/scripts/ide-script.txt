@@ -43,6 +43,7 @@ js/model/backbone/forms/fieldrules.model.js
 js/model/backbone/forms/pagerule.model.js
 js/model/backbone/forms/formsubmission.model.js
 js/model/backbone/forms/group.model.js
+js/model/backbone/forms/notification.model.js
 js/model/backbone/metrics/datepicker.model.js
 js/model/backbone/metrics/metrics.model.js
 js/model/backbone/metrics/pie.metrics.model.js
@@ -160,6 +161,7 @@ js/views/forms/forms/forms.list.view.js
 js/views/forms/forms/forms.create.view.js
 js/views/forms/forms/forms.edit.view.js
 js/views/forms/forms/forms.edit.reorder.view.js
+js/views/forms/forms/forms.notifications.view.js
 js/views/forms/forms/forms.editrules.view.js
 js/views/forms/forms/forms.fieldrules.view.js
 js/views/forms/forms/forms.pagerules.view.js

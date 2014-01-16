@@ -282,32 +282,43 @@ ul.apps-using-form li.text {
   Bootstrap overrides that may not be appropriate for nGUI:
     //TODO: Button styles...
  */
+#forms_container .btn,
 #forms_container .btn-group .btn.btn-primary,
 #forms_container .btn.btn-primary,
+#forms_container .btn.btn-secondary,
+#forms_container .btn#modal-cancel,
 #forms_container .btn.btn-create-base,
 #forms_container .btn-group .btn.btn-secondary,
 #forms_container .btn-forms-back,
 #forms_container .btn-export,
-#forms_container .btn-add-submission,formCreateEdit
+#forms_container .btn-add-submission,
 #forms_container .btn-add-form,
 #forms_container .btn-add-theme {
     font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
     background-image: none;
     border: 0px;
-    color: #fff;
     border-radius: 0;
     text-transform: uppercase;
     margin-left: 10px;
     font-size: 12px;
     font-weight: 100;
     padding: 10px 20px;
+    height: auto;
+    text-shadow: none;
+}
+
+#forms_container .btn-group .btn.btn-primary,
+#forms_container .btn.btn-primary {
     background-color: #2d72a8;
+    color: #fff;
 }
 
 #forms_container .btn.btn-secondary,
+#forms_container .btn#modal-cancel,
 #forms_container .btn-group .btn.btn-secondary,
 #forms_container .btn-forms-back {
     background-color: #3fa9f5;
+    color: #fff;
 }
 
 
@@ -323,14 +334,15 @@ Improved formbuilder.js styling - TODO: Should this be applied to CMS Also?
     color: #3fa9f6;
 }
 
-#forms_container ul.fb-tabs {
+#forms_container ul.nav-tabs {
     padding-left: 0px;
 }
-#forms_container .fb-tabs li {
+#forms_container .fb-tabs li, #forms_container .nav-tabs li {
     width:  25%;
 }
 
-#forms_container .fb-tabs li a, #forms_container .fb-tabs li:hover a {
+#forms_container .nav-tabs li a,
+#forms_container .nav-tabs li a:hover {
     background-color: #82bbd8;
     border-bottom: 2px solid #277aac;
     border-radius: 0px;
@@ -344,7 +356,7 @@ Improved formbuilder.js styling - TODO: Should this be applied to CMS Also?
     padding: 10px 0px;
 }
 
-#forms_container .fb-tabs li.active a {
+#forms_container .nav-tabs li.active a {
     border-left: 0px;
     border-right: 0px;
     border-bottom: 2px solid #fff;
@@ -370,22 +382,90 @@ Improved formbuilder.js styling - TODO: Should this be applied to CMS Also?
     border: 2px dashed #005f9b;
     text-align: left;
     width: 38%;
+    padding: 6px 0px 6px 9px;
 }
 
 #forms_container .edit-response-field input[type=text], #forms_container .edit-response-field textarea {
     width: 100%;
 }
 
-#forms_container .middle h4.title {
+#forms_container h4.title {
     display: inline-block;
 }
 
-#forms_container .formsmenu h4, #forms_container .middle h4.title {
+#forms_container .formsmenu h4, #forms_container h4.title {
     border-bottom: 3px solid #82bbd8;
     margin-bottom: 0px;
+}
+
+#forms_container .fb-response-fields.well, #forms_container #groupPreviewContainer .well {
+    margin-top: 0px;
+    border: 0px;
 }
 
 #forms_container .formsmenu .well {
     border: 0;
     padding: 2px 4px 0px 0px
+}
+
+#forms_container .input-prepend button.btn, #forms_container .input-append a.btn {
+    border-radius: 0;
+    background-image: none;
+    background-color: #2d72a8;
+    color: white;
+    padding: 10px 20px;
+    margin-left: 0px;
+}
+
+#forms_container .input-prepend input, #forms_container .input-append input {
+    border-radius: 0;
+    padding: 10px 20px;
+    height: 40px;
+}
+
+/*
+  Style the LHS menu more flat-like
+ */
+.forms_menu_container .nav-list a,
+.forms_menu_container .nav-list li:hover a {
+    border-left: 3px solid transparent;
+    padding: 5px 15px;
+    background: none;
+    color: #666;
+}
+
+.forms_menu_container .nav-list .active a {
+    color: #0082bf;
+    font-weight: normal;
+    text-shadow: none;
+    background: #eee;
+}
+
+.forms_menu_container .nav-list li:hover a,
+.forms_menu_container .nav-list .active a  {
+    border-left: 3px solid #0082bf;
+}
+
+
+.forms_menu_container ul.nav-list {
+    background: none;
+    border: 0;
+    border-right: 1px solid #eee;
+}
+
+#forms_container form.notifications {
+    margin-left: 0;
+}
+
+#forms_container form.notifications .control-label {
+    width: 118px;
+}
+
+#forms_container form.notifications .control-group:first-of-type {
+    margin-bottom: 0;
+}
+#forms_container form.notifications select {
+    width: 294px;
+    border-radius: 0px;
+    height: 200px;
 }
