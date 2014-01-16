@@ -9,7 +9,8 @@ App.View.FormEdit = App.View.Forms.extend({
     formSaveCancel: '#formSaveCancel',
     form_back: '#form_back',
     previewOutline: '#preview_outline',
-    fullpageLoading: '#fullpageLoading'
+    fullpageLoading: '#fullpageLoading',
+    themeselect:'#theme_select'
   },
   events: {
     'click .btn-add-form': 'onCreateForm',
@@ -32,16 +33,20 @@ App.View.FormEdit = App.View.Forms.extend({
     this.themes = new App.Collection.FormThemes();
 
     fields = this.formToFormBuilderFields(this.form);
-    //move to a template
+    //TODO move to a template
     this.themes.fetch({"success": function (themes) {
-      var themeselect = "<select style='margin-left:70px;' id='themeSelect'><option value='none'>Apply Theme: None</option>";
-      themes.forEach(function (theme) {
-        themeselect += "<option value='" + theme.get("_id") + "'>" + theme.get("name") + "</option>";
-      });
-      themeselect += "</select>";
-      self.$el.find('#formPreview').append("<div style='height:60px;'>" +
-        themeselect
-        + " </select></div>");
+      self.$el.find('#formPreview').find('#themeSelect').empty();
+      var templateThemes = [];
+      if(themes){
+        themes.forEach(function (th){
+          templateThemes.push({
+            "_id":th.get("_id"),
+            "name":th.get("name")
+          });
+        });
+        self.$el.find('#formPreview').append(self.templates.$themeselect({"themes":templateThemes}));
+      }
+
 
       self.$el.find('#themeSelect').change(function () {
         var val = $(this).val();

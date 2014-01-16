@@ -179,6 +179,16 @@
     </div>
 </script>
 
+<script id="theme_select" type="text/x-handlebars-template">
+    <div class="span6 offset3">
+    <select id='themeSelect'><option value='none'>Apply Theme: None</option>
+        {{#each themes}}
+        <option value="{{_id}}" data-_id="{{_id}}">{{name}}</option>
+        {{/each}}
+    </select>
+    </div>
+</script>
+
 
 <!-- advanced search form -->
 
