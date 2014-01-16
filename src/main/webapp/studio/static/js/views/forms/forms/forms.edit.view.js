@@ -19,7 +19,8 @@ App.View.FormEdit = App.View.Forms.extend({
     'keyup #formTextareaDesc': 'updateNameDesc',
     'click .btn-form-save': 'onFormSave',
     'click .btn-form-cancel': 'back',
-    'click .btn-forms-back': 'back'
+    'click .btn-forms-back': 'back',
+    'change #themeSelect' : 'themeSelect'
   },
   initialize: function (options) {
     this.constructor.__super__.initialize.apply(this, arguments);
@@ -48,16 +49,7 @@ App.View.FormEdit = App.View.Forms.extend({
       }
 
 
-      self.$el.find('#themeSelect').change(function () {
-        var val = $(this).val();
-        var prevWrapper = $("#preview_wrapper");
-        prevWrapper.find('style').remove();
-        if('none' === val){
-          return;
-        }
-        var theme = self.themes.findWhere({"_id":val });
-        prevWrapper.append('<style>'+theme.get("css")+'</style>');
-      });
+      //self.$el.find('#themeSelect').change();
     }, "error": function (er) {
       console.log("themes error ", er);
     }});
@@ -165,6 +157,17 @@ App.View.FormEdit = App.View.Forms.extend({
     }
   },
 
+  themeSelect :function (e) {
+    var self = this;
+    var val = $(e.target).val();
+    var prevWrapper = $("#preview_wrapper");
+    prevWrapper.find('style').remove();
+    if('none' === val){
+      return;
+    }
+    var theme = self.themes.findWhere({"_id":val });
+    prevWrapper.append('<style>'+theme.get("css")+'</style>');
+  },
   syncModelAndFormBuilder: function () {
     this.fb.collection.sort();
     var self = this,
