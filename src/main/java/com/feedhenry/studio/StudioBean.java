@@ -238,8 +238,8 @@ public class StudioBean {
       } else {
         // redirect to corporate site
         proceed = false;
-        log.error("Got Exception from props endpoint (" + statusCode + "), redirecting to corporate site\nResponse Body:\n" + sb.toString());
-        redirectUrl = CORPORATE_WEBSITE_URL;
+        log.error("Got Exception from props endpoint (" + statusCode + ")\nResponse Body:\n" + sb.toString());
+        pResponse.sendError(500);
       }
     }
 
