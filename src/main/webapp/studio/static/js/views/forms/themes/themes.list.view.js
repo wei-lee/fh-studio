@@ -52,8 +52,6 @@ App.View.FormThemesList = App.View.FormListBase.extend({
     // Move the loading to the bottom of this element's dom
     this.loading.remove();
     this.$el.append(this.loading);
-
-
     return this;
   },
 
@@ -71,7 +69,6 @@ App.View.FormThemesList = App.View.FormListBase.extend({
       "updateForms": false
     }, function () {
       console.log(" cb rendering form");
-
     });//todo figure out why this callback is not being called in studio
 
     var ele = self.$el.find('div.formPreviewContents');
@@ -93,8 +90,6 @@ App.View.FormThemesList = App.View.FormListBase.extend({
 
     dropdown.empty();
 
-
-
     var appsUsingTheme = updatedModel.get("apps") || [];
     if(appsUsingTheme.length > 0){
               if (appsUsingTheme.length>0){
@@ -106,9 +101,7 @@ App.View.FormThemesList = App.View.FormListBase.extend({
         }
 
     }
-    console.log("Update preview called");
     self.formCollection.fetch({"success":function (forms){
-      console.log("got forms ", forms);
       var formData = [];
       forms.forEach(function (f){
         formData.push({

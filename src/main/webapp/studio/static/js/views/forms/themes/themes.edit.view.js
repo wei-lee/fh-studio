@@ -200,12 +200,12 @@ App.View.FormThemesEdit = App.View.Forms.extend({
 
     $(colourSections).each(function(){
       var el = $(this),
-        sectionName = el.data('section');
+      sectionName = el.data('section');
       colours[sectionName] = {};
       // Iterate over every specific colour input in this section - key value parts here
       el.find('input').each(function(){
         var inputName = $(this).attr('name'),
-          value = $(this).val();
+        value = $(this).val();
         colours[sectionName][inputName] = value;
       });
     });
@@ -217,7 +217,7 @@ App.View.FormThemesEdit = App.View.Forms.extend({
      */
     $(fontRows).each(function(){
       var name = $(this).data('name'),
-        row = {};
+      row = {};
       $($(this).find('input, select').serializeArray()).each(function(){
         row[this.name] = this.value;
       });
@@ -230,7 +230,7 @@ App.View.FormThemesEdit = App.View.Forms.extend({
      */
     $(borderRows).each(function(){
       var name = $(this).data('name'),
-        row = {};
+      row = {};
       $($(this).find('input, select').serializeArray()).each(function(){
         row[this.name] = this.value;
       });
