@@ -7,7 +7,7 @@ App.View.Rules = App.View.Forms.extend({
     "targetPage":[]
   },
 
-  "EXCLUDED_FIELD_TYPES" : ["checkbox"],
+  "EXCLUDED_FIELD_TYPES" : ["checkboxes"],
 
   templates: {
     rulesTabs: '#formsRulesTab',
