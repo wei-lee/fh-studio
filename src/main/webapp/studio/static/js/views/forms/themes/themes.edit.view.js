@@ -12,19 +12,45 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     themeBorderRow : '#themeBorderRow',
     themeBorderRowReadOnly : '#themeBorderRowReadOnly',
     themeFontRowReadOnly : '#themeFontRowReadOnly',
-    'themeLogo' : '#themeLogo'
+    'themeLogo' : '#themeLogo',
+    previewOutline: '#preview_outline',
+    formselect:'#form_select'
   },
   events : {
     'click .btn-form-save' : 'onThemeSave',
     'click .btn-form-cancel' : 'back',
     'click .btn-forms-back' : 'back',
-    'click .btn-preview-theme' : 'onPreviewTheme'
+    'click .btn-preview-theme' : 'onPreviewTheme',
+    'change #formSelect' : 'formSelect'
   },
   initialize: function(options){
     this.constructor.__super__.initialize.apply(this, arguments);
     this.options = options;
     this.theme = options.theme;
     this.readOnly = (options.hasOwnProperty('readOnly')) ? options.readOnly : true;
+    this.formCollection = new App.Collection.Form();
+    $fh.forms.init({
+      config: {
+        "cloudHost": "", "appid": new Date().getTime()
+      },
+      "updateForms": false
+    }, function () {
+      console.log("fh forms callback");
+    });//todo figure out why this callback is not being called in studio, as we are currently only rendering forms we don't need a full setup.
+
+  },
+  formSelect : function (e){
+    var self = this;
+    var formId = $(e.target).val();
+    var form = this.formCollection.findWhere({"_id":formId});
+    var rawData = (form) ? JSON.stringify(form.toJSON()) : undefined;
+    var ele = self.$el.find('div.formPreviewContents');
+
+    if(! rawData){
+      ele.html("");
+    }else{
+      $fh.forms.renderFormFromJSON({rawData: rawData, "container": ele});
+    }
   },
   render : function(){
     this.$el.addClass('span10 themeedit');
@@ -37,11 +63,11 @@ App.View.FormThemesEdit = App.View.Forms.extend({
       this.$el.addClass('preview');
     }
 
-
     this.$themesInnerContainer = $('<div class="themesInnerContainer"></div>');
-    this.$left = $('<div class="span4"></div>');
-    this.$right = $('<div class="span7"></div>');
-    this.$themesInnerContainer.append(this.$left, this.$right);
+    this.$left = $('<div id="leftThemeContainer" class="span3"></div>');
+    this.$right = $('<div id="centerThemeContainer" class="span4"></div>');
+    this.$preview = $('<div id="previewContainer" class="span3 hide"></div>');
+    this.$themesInnerContainer.append(this.$left, this.$right, this.$preview);
 
     this.$logo = this.renderLogo();
     this.$left.append(this.$logo);
@@ -60,6 +86,11 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     if (!this.readOnly){
       this.$el.append(this.templates.$formSaveCancel());
     }
+
+    var prevWrapper = this.$el.first("#themesInnerContainer");
+    prevWrapper.find('style').remove();
+    prevWrapper.append('<style id="themeStyle">'+this.theme.get("css")+'</style>');
+    this.$el.find('.btn-preview-theme').trigger("click");
 
     return this;
   },
@@ -88,6 +119,9 @@ App.View.FormThemesEdit = App.View.Forms.extend({
       _.each(subheadings, function(colorHex, name){
         var colourInput = $(self.templates.$themeColourRow( { name : name, value : colorHex } )),
         input = $(colourInput.find('input'));
+        input.change(function(){
+          self.syncThemeModel.call(self);
+        });
         self.spectrumify(input, { color : colorHex }, 'color');
         colourSection.append( colourInput );
       });
@@ -104,6 +138,9 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     typogEl.append('<h4>Typography</h4>');
     _.each(typog, function(fontAttributes, heading){
       var fontRow = self.selectsRow('Font', heading, fontAttributes);
+      fontRow.change(function(){
+         self.syncThemeModel.call(self);
+      });
       typogElBody.append(fontRow);
     });
     typogEl.append(typogElBody);
@@ -117,7 +154,9 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     bordersEl.append('<h4>Borders</h4>');
     _.each(borders, function(borderAttributes, heading){
       var row = self.selectsRow('Border', heading, borderAttributes);
-
+      row.change(function (){
+         self.syncThemeModel.call(self);
+      });
       bordersElBody.append(row);
     });
     bordersEl.append(bordersElBody);
@@ -140,33 +179,33 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     });
     return row;
   },
-  onThemeSave : function(){
-    var self = this,
-    name = this.$el.find('input[name=themename]').val(),
-    colourSections = this.$el.find('.coloursection'),
-    fontRows = this.$el.find('.fontrow'),
-    borderRows = this.$el.find('.borderrow'),
-    colours = {},
-    typog = {},
-    borders = {},
-    fileInput, file;
 
+  syncThemeModel : function (){
+    var self = this,
+      name = this.$el.find('input[name=themename]').val(),
+      colourSections = this.$el.find('.coloursection'),
+      fontRows = this.$el.find('.fontrow'),
+      borderRows = this.$el.find('.borderrow'),
+      colours = {},
+      typog = {},
+      borders = {},
+      fileInput, file;
     // Set the name
     this.theme.set(this.CONSTANTS.THEME.NAME, name);
 
     /*
-      Colours
-      iterate over every colour section dom node - we use these to separate section titles
+     Colours
+     iterate over every colour section dom node - we use these to separate section titles
      */
 
     $(colourSections).each(function(){
       var el = $(this),
-      sectionName = el.data('section');
+        sectionName = el.data('section');
       colours[sectionName] = {};
       // Iterate over every specific colour input in this section - key value parts here
       el.find('input').each(function(){
         var inputName = $(this).attr('name'),
-        value = $(this).val();
+          value = $(this).val();
         colours[sectionName][inputName] = value;
       });
     });
@@ -174,11 +213,11 @@ App.View.FormThemesEdit = App.View.Forms.extend({
 
 
     /*
-      Typography
+     Typography
      */
     $(fontRows).each(function(){
       var name = $(this).data('name'),
-      row = {};
+        row = {};
       $($(this).find('input, select').serializeArray()).each(function(){
         row[this.name] = this.value;
       });
@@ -187,11 +226,11 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     this.theme.set(this.CONSTANTS.THEME.TYPOGRAPHY, typog);
 
     /*
-      Borders
+     Borders
      */
     $(borderRows).each(function(){
       var name = $(this).data('name'),
-      row = {};
+        row = {};
       $($(this).find('input, select').serializeArray()).each(function(){
         row[this.name] = this.value;
       });
@@ -199,10 +238,21 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     });
     this.theme.set(this.CONSTANTS.THEME.BORDERS, borders);
 
+    var css = App.forms.themeCSSGenerator(this.theme.toJSON())();
+    var prevWrapper = self.$el.first("#themesInnerContainer");
+    prevWrapper.find('style').remove();
+    prevWrapper.append('<style id="themeStyle">'+css+'</style>');
+
+  },
+
+  onThemeSave : function(){
+   var self = this;
+   self.syncThemeModel();
+
     /*
      Last but not least, logo - an async html5 get base64 function
      */
-    fileInput = this.$el.find('input#logoUpload');
+    var fileInput = this.$el.find('input#logoUpload');
     if (fileInput.length>0 && fileInput[0].files && fileInput[0].files.length>0){
       fileInput = fileInput[0];
       file = fileInput.files[0];
@@ -248,6 +298,41 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     this.trigger('back');
   },
   onPreviewTheme : function(){
-    //TODO...
+    var self = this;
+    var themeInner = self.$el.find('.themesInnerContainer');
+    var prevButton = self.$el.find('.btn-preview-theme');
+    var prevVisible = prevButton.data("visible");
+    if(true === prevVisible ){
+
+      prevButton.text("Show Preview");
+      prevButton.data("visible",false);
+      themeInner.find('#previewContainer').hide();
+      themeInner.find('#centerThemeContainer').show();
+    } else{
+      themeInner.find('#centerThemeContainer').hide();
+      self.formCollection.fetch({"success":function (forms){
+        var formData = [];
+        forms.forEach(function (f){
+           formData.push({
+             "name": f.get("name"),
+             "_id": f.get("_id")
+           });
+        });
+        //make some space for our preview
+        themeInner.find('#leftThemeContainer').removeClass("span4").addClass("span3");
+        themeInner.find('#centerThemeContainer').removeClass('span4').addClass('span6');
+        prevButton.text("Hide Preview");
+        prevButton.data("visible",true);
+        themeInner.find('#centerThemeContainer').show();
+        themeInner.find('#previewContainer').show().html(self.templates.$previewOutline());
+        self.$el.find('#previewContainer').append("<div class='span3'></div> ");
+        self.$el.find('#previewContainer').append(self.templates.$formselect({"forms":formData}));
+      },"error":function (err){
+        console.log("forms fetch error ", err);
+        self.message('Error fetching forms ', 'danger');
+      }});
+
+    }
+
   }
 });

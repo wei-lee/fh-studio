@@ -75,6 +75,7 @@ App.Collection.Form = App.Collection.FormBase.extend({
   url: '/api/v2/forms/form/list',
   urlUpdate: '/api/v2/forms/form/',
   urlDelete: '/api/v2/forms/form/'
+
 });
 App.Collection.AppsUsingThisForm = Backbone.Collection.extend({
   url : '/api/v2/forms/{{id}}/apps',

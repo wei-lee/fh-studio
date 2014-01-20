@@ -34,7 +34,7 @@ App.View.FormEdit = App.View.Forms.extend({
     this.themes = new App.Collection.FormThemes();
 
     fields = this.formToFormBuilderFields(this.form);
-    //TODO move to a template
+
     this.themes.fetch({"success": function (themes) {
       self.$el.find('#formPreview').find('#themeSelect').empty();
       var templateThemes = [];
@@ -47,9 +47,6 @@ App.View.FormEdit = App.View.Forms.extend({
         });
         self.$el.find('#formPreview').append(self.templates.$themeselect({"themes":templateThemes}));
       }
-
-
-      //self.$el.find('#themeSelect').change();
     }, "error": function (er) {
       console.log("themes error ", er);
     }});
@@ -160,7 +157,7 @@ App.View.FormEdit = App.View.Forms.extend({
   themeSelect :function (e) {
     var self = this;
     var val = $(e.target).val();
-    var prevWrapper = $("#preview_wrapper");
+    var prevWrapper = self.$el.first("#preview_wrapper");
     prevWrapper.find('style').remove();
     if('none' === val){
       return;
@@ -203,11 +200,7 @@ App.View.FormEdit = App.View.Forms.extend({
   },
 
   onFormSave: function () {
-    var self = this,
-      curPage,
-      pages = [];
-    //first = this.fb.collection.at(0);
-
+    var self = this;
     this.loading = $(this.templates.$fullpageLoading());
     this.$el.append(this.loading).addClass('busy');
     self.reorder.$el.hide();
@@ -232,8 +225,6 @@ App.View.FormEdit = App.View.Forms.extend({
   updatePreview: function () {
     var self = this;
     var rawData = JSON.stringify(self.form.toJSON());
-
-
     $fh.forms.init({
       config: {
         "cloudHost": "", "appid": new Date().getTime()

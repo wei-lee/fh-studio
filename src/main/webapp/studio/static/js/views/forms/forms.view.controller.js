@@ -163,6 +163,7 @@ App.View.FormsController = Backbone.View.extend({
       if (this.subViews.length>0){
         this.subViews[this.subViews.length-1].$el.show();
       }else{
+        console.log("active view ", this.active);
         this.views[this.active].$el.show();
       }
     }

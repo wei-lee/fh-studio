@@ -13,6 +13,7 @@ common/js/ui/thirdparty/jquery.scrollWindowTo/index.js
 common/js/ui/thirdparty/jsoneditor/jsoneditor.js
 common/js/api/appFormjs-core.min.js
 common/js/api/appFormjs-backbone.min.js
+common/js/api/appFormsThemeCssGenerator.js
 js/init/namespaces.js
 common/js/ui/thirdparty/handlebars/handlebars.js
 common/js/ui/thirdparty/handlebars/helpers.js
