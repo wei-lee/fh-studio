@@ -38,6 +38,7 @@ App.View.FormThemesEdit = App.View.Forms.extend({
       console.log("fh forms callback");
     });//todo figure out why this callback is not being called in studio, as we are currently only rendering forms we don't need a full setup.
 
+
   },
   formSelect : function (e){
     var self = this;
@@ -52,7 +53,35 @@ App.View.FormThemesEdit = App.View.Forms.extend({
       $fh.forms.renderFormFromJSON({rawData: rawData, "container": ele});
     }
   },
+
+  onPreviewTheme : function (e){
+    var self = this;
+    var prevButton = $(e.target);
+    var prevVisible = prevButton.data("visible");
+    var leftContainer = self.$el.find('#leftThemeContainer');
+    var centerContainer = self.$el.find('#centerThemeContainer');
+    var prevContainer = self.$el.find('#previewContainer');
+    if(true === prevVisible ){
+
+      prevButton.text("Show Preview");
+      prevButton.data("visible",false);
+      prevContainer.hide();
+      //expand the edit area
+      leftContainer.removeClass("span3").addClass("span4");
+      centerContainer.removeClass('span6').addClass('span7');
+
+    }else{
+      //shrink edit area
+      prevButton.text("Hide Preview");
+      prevButton.data("visible",true);
+      leftContainer.removeClass("span4").addClass("span3");
+      centerContainer.removeClass('span7').addClass('span6');
+      prevContainer.show();
+    }
+  },
+
   render : function(){
+    var self = this;
     this.$el.addClass('span10 themeedit');
     this.breadcrumb(['Forms', 'Themes', 'Edit Theme']);
 
@@ -66,7 +95,7 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     this.$themesInnerContainer = $('<div class="themesInnerContainer"></div>');
     this.$left = $('<div id="leftThemeContainer" class="span3"></div>');
     this.$right = $('<div id="centerThemeContainer" class="span4"></div>');
-    this.$preview = $('<div id="previewContainer" class="span3 hide"></div>');
+    this.$preview = $('<div id="previewContainer" class="span3 hide" style="width: 227px;"></div>');
     this.$themesInnerContainer.append(this.$left, this.$right, this.$preview);
 
     this.$logo = this.renderLogo();
@@ -87,11 +116,32 @@ App.View.FormThemesEdit = App.View.Forms.extend({
       this.$el.append(this.templates.$formSaveCancel());
     }
 
-    var prevWrapper = this.$el.first("#themesInnerContainer");
-    prevWrapper.find('style').remove();
-    prevWrapper.append('<style id="themeStyle">'+this.theme.get("css")+'</style>');
-    this.$el.find('.btn-preview-theme').trigger("click");
 
+    if (!this.readOnly){
+      var prevWrapper = this.$el.first("#themesInnerContainer");
+      prevWrapper.find('style').remove();
+      prevWrapper.append('<style id="themeStyle">'+this.theme.get("css")+'</style>');
+      this.$el.find('.btn-preview-theme').trigger("click");
+
+      this.$el.find('#leftThemeContainer').removeClass("span4").addClass("span3");
+      this.$el.find('#centerThemeContainer').removeClass('span4').addClass('span6');
+
+      self.formCollection.fetch({"success":function (forms){
+        var formData = [];
+        forms.forEach(function (f){
+           formData.push({
+             "name": f.get("name"),
+             "_id": f.get("_id")
+           });
+        });
+        self.formData = formData;
+        self.renderPreview();
+      },"error":function (err){
+        console.log("forms fetch error ", err);
+        self.message('Error fetching forms ', 'danger');
+      }});
+
+    }
     return this;
   },
   renderLogo : function(){
@@ -297,42 +347,15 @@ App.View.FormThemesEdit = App.View.Forms.extend({
   back : function(){
     this.trigger('back');
   },
-  onPreviewTheme : function(){
+  renderPreview : function(){
     var self = this;
     var themeInner = self.$el.find('.themesInnerContainer');
     var prevButton = self.$el.find('.btn-preview-theme');
     var prevVisible = prevButton.data("visible");
-    if(true === prevVisible ){
-
-      prevButton.text("Show Preview");
-      prevButton.data("visible",false);
-      themeInner.find('#previewContainer').hide();
-      themeInner.find('#centerThemeContainer').show();
-    } else{
-      themeInner.find('#centerThemeContainer').hide();
-      self.formCollection.fetch({"success":function (forms){
-        var formData = [];
-        forms.forEach(function (f){
-           formData.push({
-             "name": f.get("name"),
-             "_id": f.get("_id")
-           });
-        });
-        //make some space for our preview
-        themeInner.find('#leftThemeContainer').removeClass("span4").addClass("span3");
-        themeInner.find('#centerThemeContainer').removeClass('span4').addClass('span6');
-        prevButton.text("Hide Preview");
-        prevButton.data("visible",true);
-        themeInner.find('#centerThemeContainer').show();
-        themeInner.find('#previewContainer').show().html(self.templates.$previewOutline());
-        self.$el.find('#previewContainer').append("<div class='span3'></div> ");
-        self.$el.find('#previewContainer').append(self.templates.$formselect({"forms":formData}));
-      },"error":function (err){
-        console.log("forms fetch error ", err);
-        self.message('Error fetching forms ', 'danger');
-      }});
-
-    }
-
+    themeInner.find('#leftThemeContainer').removeClass("span4").addClass("span3");
+    themeInner.find('#centerThemeContainer').removeClass('span4').addClass('span6');
+    themeInner.find('#previewContainer').show().html(self.templates.$previewOutline());
+    self.$el.find('#previewContainer').append("<div class='span3'></div> ");
+    self.$el.find('#previewContainer').append(self.templates.$formselect({"forms":self.formData}));
   }
 });

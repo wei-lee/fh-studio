@@ -36,7 +36,7 @@ App.View.FormEdit = App.View.Forms.extend({
     fields = this.formToFormBuilderFields(this.form);
 
     this.themes.fetch({"success": function (themes) {
-      self.$el.find('#formPreview').find('#themeSelect').empty();
+      self.$el.find('#formPreview').find('#themeSelect').remove();
       var templateThemes = [];
       if(themes){
         themes.forEach(function (th){
