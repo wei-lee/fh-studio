@@ -55,7 +55,7 @@ App.View.FormsController = Backbone.View.extend({
       this.views.themes.$el.remove();
     }
     this.views.themes = new App.View.FormThemesList();
-    this.$el.append(this.views.themes.render().$el);
+    this.$el.append(this.views.themes.$el);
   },
   onEditTheme : function(e){
     var theme = this.views.themes.collection.findWhere({_id : this.views.themes._id});

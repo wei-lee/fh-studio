@@ -7,7 +7,7 @@ App.View.Rules = App.View.Forms.extend({
     "targetPage":[]
   },
 
-  "EXCLUDED_FIELD_TYPES" : ["checkbox"],
+  "EXCLUDED_FIELD_TYPES" : ["checkboxes"],
 
   templates: {
     rulesTabs: '#formsRulesTab',
@@ -257,7 +257,6 @@ App.View.Rules = App.View.Forms.extend({
     this.$el.find('.btn-large').tooltip('hide');
     var condId = $(e.target).data("conditionnum");
     var container = this.$el.find('.conditioncontainer#' + condId);
-    console.log("looking for condition container ", '.conditioncontainer#' + condId, "found ", container);
     var ruleContainer = container.parent().prev('.ruleDefintionContainer');
     ruleContainer.find('.btn-add-condition').last().show();
     container.remove();

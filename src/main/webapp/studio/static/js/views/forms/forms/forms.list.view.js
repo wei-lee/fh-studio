@@ -93,7 +93,9 @@ App.View.FormList = App.View.FormListBase.extend({
         dropdown.empty();
         if (apps.length>0){
           _.each(apps, function(d){
-            dropdown.append('<li><a class="formapp-link" data-_id="' + d.inst.guid + '" href="#">' + d.inst.title + '</a></li>');
+            if(d && d.inst){
+              dropdown.append('<li><a class="formapp-link" data-_id="' + d.inst.guid + '" href="#">' + d.inst.title + '</a></li>');
+            }
           });
         }else{
           dropdown.append('<li class="text">No apps using this form</li>');

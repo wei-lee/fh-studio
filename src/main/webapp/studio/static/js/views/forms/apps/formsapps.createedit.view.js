@@ -164,9 +164,14 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
     {
       success : function(res){
         if(created){
+          var response = res.get("serverResponse").result;
+          try{
+            response = JSON.parse(response);
+          }catch(e){
+            console.log("error parsing json respone ", e);
+          }
           console.log('success handler for model.save()');
-          console.log('do progress for: ',res.get('serverResponse'));
-          cacheKey = res.get('serverResponse').cacheKey;
+          cacheKey = response.cacheKey;
           self.progressModal = $('#generic_progress_modal').clone();
           self.progressModal.find('h3').text("Importing AppForms App").end().find('h4').text("Import log").end().appendTo($("body")).one('shown', trackCreate).modal();
           self.collection.fetch({reset : true});

@@ -1,6 +1,12 @@
 -------------------------------------------------------------------------------
 Component: fh-studio
 -------------------------------------------------------------------------------
+3.18.00 - 2014-01-20 - IR219 - Craig Brookes
+* added new dependencies for fh forms work: These depenedencies are created and maintained in the jssdk project
+
+src/main/webapp/studio/static/common/js/api/appFormjs-backbone.min.js
+src/main/webapp/studio/static/common/js/api/appFormjs-core.min.js
+src/main/webapp/studio/static/common/js/api/appFormsThemeCssGenerator.js
 
 3.17.25 - 2013-12-12 - IR216 - Jason Madigan
 --------------------------------------------

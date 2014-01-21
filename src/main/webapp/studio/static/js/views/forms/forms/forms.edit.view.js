@@ -45,9 +45,9 @@ App.View.FormEdit = App.View.Forms.extend({
       noScroll : true,
       noEditOnDrop : true,
       bootstrapData: fields,
-      eventFix : true,
-      addAt : 'last',
-      fields : [ 'text', 'paragraph', 'number', 'email', 'website', 'dropdown', 'radio', 'checkboxes', 'location', 'map', 'file', 'photo', 'signature', 'autodate', 'section_break', 'page_break' ]
+      eventFix: true,
+      addAt: 'last',
+      fields: [ 'text', 'paragraph', 'number', 'email', 'website', 'dropdown', 'radio', 'checkboxes', 'location', 'map', 'file', 'photo', 'signature', 'autodate', 'section_break', 'page_break' ]
     });
 
     this.fb.collection.bind('add', function(model){
@@ -163,7 +163,6 @@ App.View.FormEdit = App.View.Forms.extend({
   },
   back : function(){
     this.trigger('back');
-    this.breadcrumb(['Forms', 'Forms List']);
   },
   updatePreview: function(){
     var html = $(this.$el.find('.fb-response-fields').html());
