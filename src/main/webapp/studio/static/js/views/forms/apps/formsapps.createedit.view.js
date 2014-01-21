@@ -65,17 +65,13 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
     this.compileTemplates();
 
     async.parallel(getters, function(err, res){
-console.log('formsapps.createedit.view parallel - err:', err);
-
       if (err){
-        //TODO: Err handling
-        self.trigger("error",err);
+        self.message('Error retrieving existing forms, apps or themes', 'danger');
+        console.log(err);
         return;
-
       }
       self.loaded = true;
       self.render();
-console.log('formsapps.createedit.view parallel sending rendered trigger');
       self.trigger("rendered");
 
     });
@@ -108,7 +104,6 @@ console.log('formsapps.createedit.view parallel sending rendered trigger');
     formsSelect = this.$el.find('#formAppForms');
 
     this.forms.each(function(f){
-console.log('formsapps.createedit.view render - each form:', f.get(self.CONSTANTS.FORM.NAME));
       formsSelect.append('<option value="' + f.get('_id') + '">' + f.get(self.CONSTANTS.FORM.NAME) + '</option>');
     });
     this.themes.each(function(f){
