@@ -62,7 +62,7 @@ App.View.FormList = App.View.FormListBase.extend({
     this.$previewEl.find('.middle').prepend('<h4 class="title">Form Title</h4>');
 
     this.$previewEl.find('.middle').removeClass('span6').addClass('span9');
-    this.$previewEl.find('.middle .fb-response-fields').addClass('well')
+    this.$previewEl.find('.middle .fb-response-fields').addClass('well');
     this.$previewEl.find('.right').removeClass('span4').addClass('span2');
 
     var menu = $(this.templates.$menu());

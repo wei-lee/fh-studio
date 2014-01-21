@@ -709,7 +709,6 @@ GenerateApp.Controllers.AppForms3 = Controller.extend({
 
     var name = $('.wufoo_app_name:visible').val();
 
-console.log('generating step. <<<<<<<<<<<<<<<<<<')
     self.createView.saveForm(true, function(new_guid) {
       console.log('new_guid', new_guid);
       // Reset state back to the manage tab/build app
@@ -734,7 +733,6 @@ console.log('generating step. <<<<<<<<<<<<<<<<<<')
 
       // Import template & configure
       var import_url = Constants.IMPORT_APP_VIA_URL;
-      debugger;  // template_url removed from controller obj
       params = {
         //url: self.template_url,
         title: name
