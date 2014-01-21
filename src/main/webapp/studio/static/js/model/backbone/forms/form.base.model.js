@@ -69,7 +69,6 @@ App.Collection.FormBase = Backbone.Collection.extend({
         if ((res && res[self.pluralName]) || self.pluralName === false) {
           if ($.isFunction(options.success)) {
             var ret = (self.pluralName) ? res[self.pluralName] : res;
-            //TODO - Shouldn't need this, insconsistant APIs
             _.each(ret, function(item){
               if (item.hasOwnProperty('id')){
                 item._id = item.id;
@@ -89,7 +88,6 @@ App.Collection.FormBase = Backbone.Collection.extend({
     });
   },
   del : function(method, model, options){
-    //TODO
     return options.success(model);
   },
 
