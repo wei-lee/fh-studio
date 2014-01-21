@@ -246,6 +246,7 @@ App.View.FormThemesEdit = App.View.Forms.extend({
   },
   back : function(){
     this.trigger('back');
+    this.breadcrumb(['Forms', 'Themes List']);
   },
   onPreviewTheme : function(){
     //TODO...

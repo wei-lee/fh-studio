@@ -163,6 +163,7 @@ App.View.FormEdit = App.View.Forms.extend({
   },
   back : function(){
     this.trigger('back');
+    this.breadcrumb(['Forms', 'Forms List']);
   },
   updatePreview: function(){
     var html = $(this.$el.find('.fb-response-fields').html());
