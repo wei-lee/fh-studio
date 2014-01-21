@@ -155,7 +155,6 @@ App.View.FormsController = Backbone.View.extend({
 
    */
   back : function(){
-    // TODO - update breadcrumb
     if (this.subViews && this.subViews.length > 0){
       var toHide = this.subViews.pop();
       toHide.$el.remove();

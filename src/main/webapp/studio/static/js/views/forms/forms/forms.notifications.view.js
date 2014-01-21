@@ -35,7 +35,7 @@ App.View.FormNotifications = App.View.Forms.extend({
   render : function(){
     this.$el.empty();
     if (!this.loaded){
-      return this; // TODO Loading
+      return this;
     }
 
     var form  = this.options.form;

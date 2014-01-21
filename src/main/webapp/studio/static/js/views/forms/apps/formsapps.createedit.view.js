@@ -136,7 +136,7 @@ console.log('formsapps.createedit.view render - each form:', f.get(self.CONSTANT
     }
     console.log("is create ", created);
     var self = this,
-      forms = this.$el.find('form.formsApps #formAppForms').val() || [], //TODO: Theme and name?
+      forms = this.$el.find('form.formsApps #formAppForms').val() || [],
       theme = this.$el.find('form.formsApps #formAppTheme').val(),
       name = this.$el.find('form.formsApps #inputFormAppName').val(),
       id;
@@ -245,8 +245,5 @@ console.log('formsapps.createedit.view render - each form:', f.get(self.CONSTANT
      this.active_async_task.run();
 
     }
-  },
-  onAppSubmissions : function(){
-    // TODO in view.controller really..
   }
 });
