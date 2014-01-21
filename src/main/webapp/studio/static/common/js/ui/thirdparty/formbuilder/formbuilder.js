@@ -290,7 +290,6 @@
           return this.forceRender();
         },
         removeOption: function(e) {
-          console.log("removeOption called");
           var $el, index, options;
           $el = $(e.currentTarget);
           index = this.$el.find(".js-remove-option").index($el);
@@ -502,6 +501,7 @@
                 _this.createAndShowEditView(rf);
               }
               _this.handleFormUpdate();
+              _this.trigger('reorder');
               return true;
             },
             update: function(e, ui) {
