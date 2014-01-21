@@ -45,7 +45,8 @@ App.View.Forms = Backbone.View.extend({
         'email' : 'emailAddress',
         'autodate' : 'dateTime',
         'map' : 'locationMap'
-      }
+      },
+      SUPPORTED_FIELDS : [ 'text', 'paragraph', 'number', 'email', 'website', 'dropdown', 'radio', 'checkboxes', 'location', 'map', 'file', 'photo', 'signature', 'autodate', 'section_break', 'page_break' ]
     },
     FORM: {
       NAME: 'name',

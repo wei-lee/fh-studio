@@ -337,7 +337,6 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     }
   },
   spectrumify : function(input, attrs, attrVal){
-    //TODO: Original input is not being updated at present :(
     input.spectrum({
       showButtons: false,
       disabled: this.readOnly,
