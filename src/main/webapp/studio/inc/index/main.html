@@ -1,9 +1,12 @@
-
 <%@ page contentType="text/html" pageEncoding="UTF-8" session="false" trimDirectiveWhitespaces="true" %>
 <jsp:useBean id="studio" scope="request" class="com.feedhenry.studio.StudioBean"></jsp:useBean>
 <%
 String pageName = studio.getPageName();
 %>
+
+<script id="spinner-template" type="text/x-handlebars-template">
+<img src="<%=studio.getStaticAssetPath("themes/default/img/throbber.gif")%>" alt="loading"/> <span class="spinner_text">{{text}}</span>
+</script>
 
 <div id="main_layout_wrapper">
   

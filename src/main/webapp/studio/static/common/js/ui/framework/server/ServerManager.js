@@ -21,6 +21,14 @@ ServerManager = function (ajax_caller, opts) {
       self.ajax('POST', url, params, success, fail, no_payload, timeout);
     },
 
+    put: function (url, params, success, fail, no_payload, timeout) {
+      self.ajax('PUT', url, params, success, fail, no_payload, timeout);
+    },
+
+    del: function (url, params, success, fail, no_payload, timeout) {
+      self.ajax('DELETE', url, params, success, fail, no_payload, timeout);
+    },
+
     ajax: function (method, url, params, success, fail, no_payload, timeout) {
       var data = no_payload ? params : self.initRequestData(params);
 
@@ -119,6 +127,8 @@ ServerManager = function (ajax_caller, opts) {
   return {
     get: self.get,
     post: self.post,
+    put : self.put,
+    del : self.del,
     initReqestData: self.initRequestData,
     setAjaxCaller: self.setAjaxCaller,
     setOpts: self.setOpts
