@@ -151,7 +151,7 @@
                 </a>
             </li>
             {{/checkRole }}
-            {{#checkRole "formsviewer,formsadmin" }}
+            {{#checkRole "formseditor,formsadmin" }}
             <li>
                 <a class="btn-apps" href="#">
                     <i class="icon-th-large"></i>
@@ -159,7 +159,7 @@
                 </a>
             </li>
             {{/checkRole }}
-            {{#checkRole "formsviewer,formseditor,formsadmin"}}
+            {{#checkRole "submissionsviewer,formseditor,formsadmin"}}
             <li>
                 <a class="btn-submissions" href="#">
                     <i class="icon-envelope"></i>
@@ -167,7 +167,7 @@
                 </a>
             </li>
             {{/checkRole}}
-          {{#checkRole "formsviewer,formseditor,formsadmin"}}
+          {{#checkRole "formsadmin"}}
           <li>
             <a class="btn-groups" href="#">
               <i class="icon-group"></i>

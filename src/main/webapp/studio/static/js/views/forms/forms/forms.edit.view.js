@@ -87,6 +87,12 @@ App.View.FormEdit = App.View.Forms.extend({
       self.syncModelAndFormBuilder();
       self.updatePreview.apply(self, arguments);
     });
+
+    this.fb.on('reorder', function (){
+      console.log("formbuilder change function ");
+    });
+
+
     this.fb.collection.bind('remove', function (model) {
       var _idRemoved = model.get("_id");
       var fieldRefs = self.form.get("fieldRef");
