@@ -273,9 +273,17 @@ public class StudioBean {
 
     // Check if user should be using a different version of studio
     if (mStudioProps != null && studioVersion != null && null == redirectUrl && studioVersion.length() > 0) {
-      String redirect = requiredProtocol + "://" + serverName + "/" + studioVersion;
-      redirectUrl = redirect;
-      proceed = false;
+      String path = pRequest.getRequestURI();
+      String queryString = pRequest.getQueryString();
+      if (!path.equals("/studio/activate.html") || !path.equals("/studio/reset.html")) {
+          String redirect = requiredProtocol + "://" + serverName + "/" + studioVersion;
+          
+          if (queryString != null) {
+        	  redirect = redirect + "/?" + queryString;
+          }
+          redirectUrl = redirect;
+          proceed = false;
+      }
     }
 
     if (null != redirectUrl) {
