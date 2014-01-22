@@ -281,6 +281,7 @@ public class StudioBean {
     if (null != redirectUrl) {
       // If a redirect url has been set, send the redirect.
       log.info("Redirecting to " + redirectUrl);
+      mInput = JSONObject.fromObject(pRequest.getParameterMap());
       pResponse.sendRedirect(redirectUrl);
     } else {
       setNoCacheHeaders(pResponse);
@@ -527,7 +528,7 @@ public class StudioBean {
 
   public List<String> getThemes() throws Exception {
     JSONArray themes = mStudioProps.getJSONArray("themes");
-
+    
     // Theme override?
     if (mInput.has("theme")) {
       JSONArray theme_override = mInput.getJSONArray("theme");
