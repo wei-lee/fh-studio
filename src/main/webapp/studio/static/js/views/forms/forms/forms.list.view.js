@@ -28,7 +28,7 @@ App.View.FormList = App.View.FormListBase.extend({
     },{
       "sTitle": 'Updated',
       "mDataProp": this.CONSTANTS.FORM.UPDATED
-    },{ //TODO: Make these..?
+    },{
       "sTitle": 'Apps Using This',
       "mDataProp": this.CONSTANTS.FORM.USING
     },{
@@ -54,7 +54,6 @@ App.View.FormList = App.View.FormListBase.extend({
       noEditOnDrop : true,
       bootstrapData: [],
       editStructure : false
-      //TODO: editValues : false mode..
     });
 
     // Place holders that get filled when the user clicks a form

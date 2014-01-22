@@ -68,6 +68,5 @@ App.View.FormAppsList = App.View.FormListBase.extend({
 console.log('App.View.FormAppsList - onAddExisting()');
     var form = new App.View.FormAppsCreateEdit({ mode : 'create', collection : this.collection });
 console.log('App.View.FormAppsList - onAddExisting() create appedit returned with:' , form);
-    // TODO - API?
   }
 });

@@ -45,7 +45,8 @@ App.View.Forms = Backbone.View.extend({
         'email' : 'emailAddress',
         'autodate' : 'dateTime',
         'map' : 'locationMap'
-      }
+      },
+      SUPPORTED_FIELDS : [ 'text', 'paragraph', 'number', 'email', 'website', 'dropdown', 'radio', 'checkboxes', 'location', 'map', 'file', 'photo', 'signature', 'autodate', 'section_break', 'page_break' ]
     },
     FORM: {
       NAME: 'name',
@@ -132,11 +133,6 @@ App.View.Forms = Backbone.View.extend({
       _.each(p.get(self.CONSTANTS.FORM.FIELDS), function(f, i){
         fields.push(f);
       });
-
-      //TODO: Relational should mean we can do this, why not?
-//      p.get('Fields').each(function(f, i){
-//
-//      });
     });
     return fields;
   },

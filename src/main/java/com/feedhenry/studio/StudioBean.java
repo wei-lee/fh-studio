@@ -34,8 +34,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 public class StudioBean {
 
-  private static final String CORPORATE_WEBSITE_URL = "http://www.feedhenry.com";
-  private static final String INVALID_DOMAIN_REDIRECT_URL = CORPORATE_WEBSITE_URL;
   // studio props endpoint
   private static final String PROPS_ENDPOINT = "/box/srv/1.1/studio/props";
 
@@ -223,8 +221,14 @@ public class StudioBean {
           // issue with domain, unable to get props
           // redirect to corporate website
           proceed = false;
-          redirectUrl = INVALID_DOMAIN_REDIRECT_URL;
-          log.info("Invalid domain requested - redirecting to " + redirectUrl + ", Got error from props endpoint: " + mCoreProps.toString());
+          redirectUrl = mCoreProps.optString("redirect", null);
+          if (redirectUrl == null){
+            log.info("Invalid domain requested - sending 404");
+            pResponse.sendError(404, "Invalid domain requested: " + referer);
+            return proceed;
+          } else {
+            log.info("Invalid domain requested - redirecting to " + redirectUrl + ", Got error from props endpoint: " + mCoreProps.toString());
+          }
         } else {
           // unable to get props info from core, send 500
           proceed = false;
@@ -234,8 +238,8 @@ public class StudioBean {
       } else {
         // redirect to corporate site
         proceed = false;
-        log.error("Got Exception from props endpoint (" + statusCode + "), redirecting to corporate site\nResponse Body:\n" + sb.toString());
-        redirectUrl = CORPORATE_WEBSITE_URL;
+        log.error("Got Exception from props endpoint (" + statusCode + ")\nResponse Body:\n" + sb.toString());
+        pResponse.sendError(500);
       }
     }
 

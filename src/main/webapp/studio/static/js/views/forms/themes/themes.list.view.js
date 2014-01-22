@@ -29,7 +29,7 @@ App.View.FormThemesList = App.View.FormListBase.extend({
     },{
       "sTitle": 'Updated',
       "mDataProp": this.CONSTANTS.THEME.UPDATED
-    },{ //TODO: Make these..?
+    },{
       "sTitle": 'Apps Using This',
       "mDataProp": this.CONSTANTS.THEME.USING
     }];

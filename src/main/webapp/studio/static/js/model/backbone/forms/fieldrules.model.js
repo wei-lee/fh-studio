@@ -15,8 +15,7 @@ App.Model.FieldRule = Backbone.RelationalModel.extend({
 App.Collection.FieldRules = Backbone.Collection.extend({
   initialize: function() {},
   model: App.Model.FieldRule,
-  //url: '/studio/static/js/model/backbone/mocks/forms/themes.json', //TODO:
-  urlUpdate: '/api/v2/forms/form/fieldRules',//TODO:
+  urlUpdate: '/api/v2/forms/form/fieldRules',
   sync: function (method, model, options) {
     console.log("sync called for model");
     this[method].apply(this, arguments);

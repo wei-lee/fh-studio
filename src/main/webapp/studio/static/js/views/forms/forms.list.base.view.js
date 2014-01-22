@@ -161,7 +161,6 @@ console.log('creating view for modal');
     mode = $(el).data('mode');
     var createView = new App.View.FormCreateClone({collection : this.collection, mode : mode, singleTitle : this.singleTitle, singleId : this.singleId, pluralTitle : this.pluralTitle });
     this.$el.append(createView.render().$el);
-    createView.bind('message', function(){}); // TODO - do we want messages up top like with CMS?
 console.log('returning from onCreate');
   },
  onClone : function(e){
