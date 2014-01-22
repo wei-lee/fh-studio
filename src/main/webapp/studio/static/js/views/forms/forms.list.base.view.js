@@ -16,7 +16,6 @@ App.View.FormListBase = App.View.Forms.extend({
       self.collection.bind('reset', $.proxy(self.render, self));
       self.collection.trigger('reset');
     }, error : function(){
-      console.log("in error callback");
       self.$el.removeClass('busy');
       // Avoid flicker on our loading view
       setTimeout(function(){
@@ -62,8 +61,6 @@ App.View.FormListBase = App.View.Forms.extend({
     var self = this,
     data = this.collection.toJSON();
 
-
-    console.log("renderList ",data);
 
     this.table = new App.View.DataTable({
       aaData : data,
@@ -155,13 +152,11 @@ App.View.FormListBase = App.View.Forms.extend({
   },
   onCreate : function(e){
     e.preventDefault();
-console.log('creating view for modal');
     var self = this,
     el = e.target.nodeName.toLowerCase() === "a" ? $(e.target) : $(e.target).parent(),
     mode = $(el).data('mode');
     var createView = new App.View.FormCreateClone({collection : this.collection, mode : mode, singleTitle : this.singleTitle, singleId : this.singleId, pluralTitle : this.pluralTitle });
     this.$el.append(createView.render().$el);
-console.log('returning from onCreate');
   },
  onClone : function(e){
     e.preventDefault();

@@ -73,7 +73,6 @@ App.View.FormCreateClone = App.View.Modal.extend({
     if (this.singleId === "formsapp") {
       var create = (self.options.mode === 'create');
       return this.formsApp.saveForm.apply(this.formsApp, [create, function(new_guid) {
-        console.log('modal returned with new guid:', new_guid);
       }]);
     }
 

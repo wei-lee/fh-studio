@@ -139,7 +139,6 @@ App.View.FormEdit = App.View.Forms.extend({
         _.extend(curPage, p);
         curPage[self.CONSTANTS.FORM.FIELDS] = [];
       }else{
-        console.log("curPage", curPage);
         curPage[self.CONSTANTS.FORM.FIELDS].push(f.toJSON());
       }
     });
