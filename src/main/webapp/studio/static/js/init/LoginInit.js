@@ -19,14 +19,14 @@ function init() {
     return b;
   })(window.location.search.substr(1).split('&'));
 
+  var msg;
   if ('undefined' !== typeof INFO_MESSAGE && INFO_MESSAGE.length > 0) {
-    var msg = Lang[INFO_MESSAGE] || null;
+    msg = Lang[INFO_MESSAGE] || null;
     if (msg !== null) {
       $('#info_area p').text(msg).parent().show();
     }
   } else if (qs.message) {
-    debugger;
-    var msg = Lang[qs.message] || null;
+    msg = Lang[qs.message] || null;
     if (msg !== null) {
       $('#info_area p').text(msg).parent().show();
     }
