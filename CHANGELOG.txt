@@ -1,6 +1,11 @@
 -------------------------------------------------------------------------------
 Component: fh-studio
 -------------------------------------------------------------------------------
+
+3.17.29 - 2014-01-23 - IR219 - Jason Madigan
+-----------------------------------------------
+* 5719 - Activation link could be broken on NGUI redirects
+
 3.17.28 - 2014-01-17 - IR219 - Damian Beresford
 -----------------------------------------------
 * 3114 - Need a property to override website redirected to for unknown domains

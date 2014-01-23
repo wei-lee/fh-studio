@@ -275,6 +275,8 @@ public class StudioBean {
     if (mStudioProps != null && studioVersion != null && null == redirectUrl && studioVersion.length() > 0) {
       String path = pRequest.getRequestURI();
       String queryString = pRequest.getQueryString();
+      
+      // TODO: Alter these with new NGUI redirects
       if (!path.equals("/studio/activate.html") || !path.equals("/studio/reset.html")) {
           String redirect = requiredProtocol + "://" + serverName + "/" + studioVersion;
           
