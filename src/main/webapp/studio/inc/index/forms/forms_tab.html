@@ -137,12 +137,14 @@
 <script id="formsMenu" type="text/x-handlebars-template">
     <div class="span2 forms_menu_container">
         <ul class="nav nav-list">
+            {{#checkRole "formseditor,formsadmin" }}
             <li class="active">
                 <a class="btn-forms" href="#">
                     <i class="icon-list-alt"></i>
                     Forms
                 </a>
             </li>
+            {{/checkRole}}
             {{#checkRole "formseditor,formsadmin" }}
             <li id="myapps_listitem">
                 <a class="btn-themes" href="#">
@@ -159,7 +161,7 @@
                 </a>
             </li>
             {{/checkRole }}
-            {{#checkRole "submissionsviewer,formseditor,formsadmin"}}
+            {{#checkRole "submissionsviewer,submissionseditor,formsadmin"}}
             <li>
                 <a class="btn-submissions" href="#">
                     <i class="icon-envelope"></i>
