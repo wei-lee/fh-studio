@@ -133,6 +133,11 @@ App.View.Forms = Backbone.View.extend({
       _.each(p.get(self.CONSTANTS.FORM.FIELDS), function(f, i){
         fields.push(f);
       });
+
+      //TODO: Relational should mean we can do this, why not?
+//      p.get('Fields').each(function(f, i){
+//
+//      });
     });
     return fields;
   },
