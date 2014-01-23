@@ -12,10 +12,23 @@ App.View.FormCreateClone = App.View.Modal.extend({
     body = $(tpl({ CONSTANTS : this.CONSTANTS })),
     mode = options.mode || 'create';
 
+    var title;
+    var okText;
+
+    if (options.mode === 'clone') {
+      title = 'Clone ' + this.singleTitle;
+      okText = 'Clone';
+    } else if (options.mode === 'existing') {
+      title = 'Associate Forms with existing ' + this.singleTitle;
+      okText = 'Associate';      
+    } else {
+      title = 'Create New ' + this.singleTitle;
+      okText = 'Create';
+    }
 
     this.options = options = {
-      title: (options.mode==='clone') ? 'Clone ' + this.singleTitle : 'Create New ' + this.singleTitle,
-      okText: (options.mode==='clone') ? 'Clone' : 'Create',
+      title: title,
+      okText: okText,
       ok : this.ok,
       body : body,
       collection : options.collection,

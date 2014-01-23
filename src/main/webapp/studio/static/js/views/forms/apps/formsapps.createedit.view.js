@@ -82,7 +82,7 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
     name = '';
 
     if (!this.loaded){
-      this.$el.height(360); // TODO was 134);
+      this.$el.height(134);
       return this;
     }
 

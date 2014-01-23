@@ -155,6 +155,7 @@ App.View.FormListBase = App.View.Forms.extend({
     var self = this,
     el = e.target.nodeName.toLowerCase() === "a" ? $(e.target) : $(e.target).parent(),
     mode = $(el).data('mode');
+console.log('onCreate - mode:', mode, ', singleTitle:', this.singleTitle, ', singleId:', this.singleId, 'pluralTitle:', this.pluralTitle);
     var createView = new App.View.FormCreateClone({collection : this.collection, mode : mode, singleTitle : this.singleTitle, singleId : this.singleId, pluralTitle : this.pluralTitle });
     this.$el.append(createView.render().$el);
   },
