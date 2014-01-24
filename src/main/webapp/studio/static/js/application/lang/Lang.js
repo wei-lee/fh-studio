@@ -472,6 +472,7 @@ var Lang = {
   configuration_android_Package_Name_help_icon: "The Java package name of the application. Please follow the convention of Java package names. A default unique package name is provided.",
   configuration_enable_MonkeyTalk_help_icon: "Once enabled, the <a href='http://www.gorillalogic.com/monkeytalk' target='_blank'>MonkeyTalk</a> client agent will be included automatically. MonkeyTalk is a powerful automated testing tool.",
   configuration_simulator_Only_help_icon: "Once enabled, the binary will be built for simulator only.",
+  configuration_old_Style_Status_Bar_help_icon: "Since iOS 7, the status bar will appear on top the webview. If you want to use the old style status bar, please check this option.",
   ios_configuration_replace_general_notes: "Please specify this setting in iPhone and iPad's configurations.",
   apps_list_search_text: 'Search Apps',
   apps_list_search_title: '',
