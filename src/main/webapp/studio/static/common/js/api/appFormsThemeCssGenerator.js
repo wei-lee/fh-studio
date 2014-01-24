@@ -4,62 +4,47 @@ var themeCSSFunctions = {};
 var App = App || {};
 App.forms = App.forms || {};
 
-
 themeCSSFunctions[FH_APPFORM_PREFIX] = {
   "logo" : function(themeJSON){
-    var logoStr = "background-image:url(\"data:image/png;base64,";
-    if(themeJSON.logo){
-      logoStr = logoStr.concat(themeJSON.logo.toString());
+    var logoStr = "";
+    var base64Image = themeJSON.logo.base64String;
+    var imageHeight = themeJSON.logo.height;
+    var imageWidth = themeJSON.logo.width;
+
+
+    if(base64Image){
+      logoStr += "background-image: url(\"" + base64Image + "\");"
+      logoStr += "height: " + imageHeight + "px;";
+      logoStr += "width:" + imageWidth + "px;";
+      return logoStr;
     } else {
       return "";
     }
-
-    logoStr = logoStr.concat("\");");
-    return logoStr;
   },
   "button_navigation" : function(themeJSON){
-    var navButtonStr = "";
-
-    if(themeJSON.colours.buttons.navigation){
-      navButtonStr = navButtonStr.concat(this.getBackgroundColour(themeJSON.colours.buttons.navigation));
-    } else {
-      return null;
-    }
-
-    navButtonStr = navButtonStr.concat(this.getButtonFont(themeJSON));
-
-    return navButtonStr;
+    return this.get_button_css(themeJSON, "navigation", "buttons");
+  },
+  "button_navigation_active" : function(themeJSON){
+    return this.get_button_css(themeJSON, "navigation_active", "buttons_active");
   },
   "button_action" : function(themeJSON){
-    var actionButtonStr = "";
-
-    if(themeJSON.colours.buttons.action){
-      actionButtonStr = actionButtonStr.concat(this.getBackgroundColour(themeJSON.colours.buttons.action));
-    } else {
-      return null;
-    }
-
-    actionButtonStr = actionButtonStr.concat(this.getButtonFont(themeJSON));
-    return actionButtonStr;
+    return this.get_button_css(themeJSON, "action", "buttons");
+  },
+  "button_action_active" : function(themeJSON){
+    return this.get_button_css(themeJSON, "action_active", "buttons");
   },
   "button_cancel" : function(themeJSON){
-    var cancelButtonStr = "";
-
-    if(themeJSON.colours.buttons.cancel){
-      cancelButtonStr = cancelButtonStr.concat(this.getBackgroundColour(themeJSON.colours.buttons.cancel));
-    } else {
-      return null;
-    }
-
-    cancelButtonStr = cancelButtonStr.concat(this.getButtonFont(themeJSON));
-
-    return cancelButtonStr;
+    return this.get_button_css(themeJSON, "cancel", "buttons");
+  },
+  "button_cancel_active" : function(themeJSON){
+    return this.get_button_css(themeJSON, "cancel_active", "buttons");
   },
   "navigation" : function(themeJSON){
     var navigationBarStr = "";
+    var navigationBarColour = themeJSON.colours.backgrounds.navigationBar;
 
-    if(themeJSON.colours.backgrounds.navigationBar){
-      navigationBarStr = navigationBarStr.concat(this.getBackgroundColour(themeJSON.colours.backgrounds.navigationBar));
+    if(navigationBarColour){
+      navigationBarStr = navigationBarStr.concat(this.getBackgroundColour(navigationBarColour));
     } else {
       return null;
     }
@@ -129,20 +114,35 @@ themeCSSFunctions[FH_APPFORM_PREFIX] = {
   },
   "field_area": function(themeJSON){
     var fieldAreaStr = "";
+    var fieldAreaBorder = themeJSON.borders.fieldArea;
+    var fieldAreaBackgroundColor = themeJSON.colours.backgrounds.fieldArea;
 
-    if(themeJSON.colours.backgrounds.fieldArea){
-      fieldAreaStr = fieldAreaStr.concat(this.getBackgroundColour(themeJSON.colours.backgrounds.fieldArea));
+    if(fieldAreaBackgroundColor){
+      fieldAreaStr = fieldAreaStr.concat(this.getBackgroundColour(fieldAreaBackgroundColor));
     } else {
       return null;
     }
 
-    if(themeJSON.borders.fieldArea){
-      fieldAreaStr = fieldAreaStr.concat(this.getBorder(themeJSON.borders.fieldArea));
+    if(fieldAreaBorder){
+      fieldAreaStr = fieldAreaStr.concat(this.getBorder(fieldAreaBorder));
     } else {
       return null;
     }
 
     return fieldAreaStr;
+  },
+  "field_area_last_child" : function(themeJSON){
+    //Needs to inherit the border styling from fh_appform_field_area
+    var fieldAreaLastStr = "";
+    var fieldAreaBorder = themeJSON.borders.fieldArea;
+
+    if(fieldAreaBorder){
+      fieldAreaLastStr = fieldAreaLastStr.concat(this.getBorder(fieldAreaBorder));
+    } else {
+      return null;
+    }
+
+    return fieldAreaLastStr;
   },
   "field_input": function(themeJSON){
     var fieldInputStr = "";
@@ -178,7 +178,7 @@ themeCSSFunctions[FH_APPFORM_PREFIX] = {
 
     return fieldInputStr;
   },
-  "field_instructions": function(themeJSON){
+  "field_instructions": function(themeJSON){ //TODO Functionalise this
     var fieldInstructionsStr = "";
 
     //background
@@ -242,13 +242,204 @@ themeCSSFunctions[FH_APPFORM_PREFIX] = {
 
     return descriptionStr;
   },
-  "getButtonFont" : function(themeJSON){
+  "error" : function(themeJSON){
+    var errCss = "";
+
+    var errorTypography = themeJSON.typography.error;
+    var errorColor = themeJSON.colours.backgrounds.error;
+    var errorBorder = themeJSON.borders.error;
+
+    if(errorTypography){
+      if(this.getFontDetails(errorTypography) != null){
+        errCss = errCss.concat(this.getFontDetails(errorTypography));
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+
+    if(errorColor){
+      errCss = errCss.concat(this.getBackgroundColour(errorColor));
+    } else {
+      return null;
+    }
+
+    if(errorBorder){
+      errCss = errCss.concat(this.getBorder(errorBorder));
+    } else {
+      return null;
+    }
+
+    return errCss;
+  },
+  "field_section_break_title": function(themeJSON){
+    var sectionBreakTitleCSS = "";
+    var sectionBreakTitleTypography = themeJSON.typography.section_break_title;
+
+    if(sectionBreakTitleTypography){
+      sectionBreakTitleCSS = sectionBreakTitleCSS.concat(this.getFontDetails(sectionBreakTitleTypography));
+    } else {
+      return null;
+    }
+
+    return sectionBreakTitleCSS;
+  },
+  "field_section_break_description": function(themeJSON){
+    var sectionBreakDescriptionCSS = "";
+    var sectionBreakDescriptionTypography = themeJSON.typography.section_break_description;
+
+    if(sectionBreakDescriptionTypography){
+      sectionBreakDescriptionCSS = sectionBreakDescriptionCSS.concat(this.getFontDetails(sectionBreakDescriptionTypography));
+    } else {
+      return null;
+    }
+
+    return sectionBreakDescriptionCSS;
+  },
+  "page_title" : function(themeJSON){
+    var pageTitleCSS = "";
+    var pageTitleTypography = themeJSON.typography.page_title;
+
+    if(pageTitleTypography){
+      pageTitleCSS = pageTitleCSS.concat(this.getFontDetails(pageTitleTypography));
+    } else {
+      return null;
+    }
+
+    return pageTitleCSS;
+  },
+  "page_description" : function(themeJSON){
+    var pageDescriptionCSS = "";
+    var pageDescriptionTypography = themeJSON.typography.page_description;
+
+    if(pageDescriptionTypography){
+      pageDescriptionCSS = pageDescriptionCSS.concat(this.getFontDetails(pageDescriptionTypography));
+    } else {
+      return null;
+    }
+
+    return pageDescriptionCSS;
+  },
+  "progress_wrapper" : function(themeJSON){
+    //No generated css for the progress_wrapper
+    return "";
+  },
+  "progress_steps" : function(themeJSON){
+    var progressStepsCSS = "";
+    var progressStepsBackground = themeJSON.colours.backgrounds.progress_steps;
+    var progressStepsBorder = themeJSON.borders.progress_steps;
+    if(progressStepsBackground){
+      progressStepsCSS = progressStepsCSS.concat(this.getBackgroundColour(progressStepsBackground));
+    } else {
+      return null;
+    }
+
+    if(progressStepsBorder){
+      progressStepsCSS = progressStepsCSS.concat(this.getBorder(progressStepsBorder));
+    } else {
+      return null;
+    }
+
+
+    return progressStepsCSS;
+
+  },
+  "progress_steps_number_container" : function(themeJSON){
+    var progressStepsContainerCSS = "";
+    var progressStepsContainerBackground = themeJSON.colours.backgrounds.progress_steps_number_container;
+    var progressStepsContainerBorder = themeJSON.borders.progress_steps_number_container;
+    var progressStepsContainerTypography = themeJSON.typography.progress_steps_number_container;
+
+    if(progressStepsContainerBackground){
+      progressStepsContainerCSS = progressStepsContainerCSS.concat(this.getBackgroundColour(progressStepsContainerBackground));
+    } else {
+      return null;
+    }
+
+    if(progressStepsContainerBorder){
+      progressStepsContainerCSS = progressStepsContainerCSS.concat(this.getBorder(progressStepsContainerBorder));
+    } else {
+      return null;
+    }
+
+    if(progressStepsContainerTypography){
+      progressStepsContainerCSS = progressStepsContainerCSS.concat(this.getFontDetails(progressStepsContainerTypography));
+    } else {
+      return null;
+    }
+
+    return progressStepsContainerCSS;
+  },
+  "progress_steps_number_container_active" : function(themeJSON){
+    var progressStepsContainerActiveCSS = "";
+    var progressStepsContainerActiveBackground = themeJSON.colours.backgrounds.progress_steps_number_container_active;
+    var progressStepsContainerActiveBorder = themeJSON.borders.progress_steps_number_container_active;
+    var progressStepsContainerActiveTypography = themeJSON.typography.progress_steps_number_container_active;
+
+    if(progressStepsContainerActiveBackground){
+      progressStepsContainerActiveCSS = progressStepsContainerActiveCSS.concat(this.getBackgroundColour(progressStepsContainerActiveBackground));
+    } else {
+      return null;
+    }
+
+    if(progressStepsContainerActiveBorder){
+      progressStepsContainerActiveCSS = progressStepsContainerActiveCSS.concat(this.getBorder(progressStepsContainerActiveBorder));
+    } else {
+      return null;
+    }
+
+    if(progressStepsContainerActiveTypography){
+      progressStepsContainerActiveCSS = progressStepsContainerActiveCSS.concat(this.getFontDetails(progressStepsContainerActiveTypography));
+    } else {
+      return null;
+    }
+
+    return progressStepsContainerActiveCSS;
+  },
+  "field_required": function(themeJSON){
+    //Required is a bit special --> it has a color associated with it only. Also has the 'content' bit. Stored in colours.backgrounds.
+    var requiredCSS = "";
+    var requiredColour = themeJSON.colours.backgrounds.field_required;
+
+    //Background Color -->set to set the text color.
+    if(requiredColour){
+      requiredCSS += "color: " + requiredColour + ";";
+    } else {
+      return null;
+    }
+
+    return requiredCSS;
+  },
+  "action_bar" : function(themeJSON){
+    //No theme generation needed for the fh_appform_action_bar.
+    return "";
+  },
+  "section_area" : function(themeJSON){
+    var sectionCSSString = "";
+
+    var sectionBackgroundColour = themeJSON.colours.backgrounds.section_area;
+
+    if(sectionBackgroundColour){
+      sectionCSSString += this.getBackgroundColour(sectionBackgroundColour);
+    } else {
+      return null;
+    }
+
+    return sectionCSSString;
+  },
+  "hidden" : function(themeJSON){
+    return "";
+  },
+  "getButtonFont" : function(themeJSON, active){
     var buttonFontCSS = "";
+    var buttonName = active ? active : "buttons";
+    var buttonTypography = themeJSON.typography[buttonName];
 
-    if(themeJSON.typography.buttons){
+    if(buttonTypography){
 
-      if(this.getFontDetails(themeJSON.typography.buttons) != null){
-        buttonFontCSS = buttonFontCSS.concat(this.getFontDetails(themeJSON.typography.buttons));
+      if(this.getFontDetails(buttonTypography) != null){
+        buttonFontCSS = buttonFontCSS.concat(this.getFontDetails(buttonTypography));
       } else {
         return null;
       }
@@ -262,7 +453,11 @@ themeCSSFunctions[FH_APPFORM_PREFIX] = {
     var borderStr = "";
 
     if(borderField.thickness){
-      borderStr = borderStr.concat("border-width:" + borderField.thickness + ";" );
+      if(borderField.thickness == "none"){
+        return borderStr.concat("border:" + borderField.thickness + ";" );
+      } else {
+        borderStr = borderStr.concat("border-width:" + borderField.thickness + ";" );
+      }
     } else {
       return null;
     }
@@ -323,30 +518,338 @@ themeCSSFunctions[FH_APPFORM_PREFIX] = {
   },
   "getBackgroundColour" : function(colourField){
     return "background-color:" + colourField + ";"
+  },
+  "get_button_css": function(themeJSON, button_name, button_font){
+    var buttonStr = "";
+    var buttonColor = themeJSON.colours.buttons[button_name];
+
+    if(buttonColor){
+      buttonStr = buttonStr.concat(this.getBackgroundColour(buttonColor));
+    } else {
+      return null;
+    }
+
+    buttonStr = buttonStr.concat(this.getButtonFont(themeJSON, button_font));
+
+    return buttonStr;
   }
 };
+
 
 App.forms.themeCSSGenerator = function(themeJSON){
   var generatedCSSJSON = {};
 
+  //All of these have to build values that are customizable.
   generatedCSSJSON[FH_APPFORM_PREFIX] = {
-    "logo" : "",
-    "button_navigation" : "",
-    "button_action" : "",
-    "button_cancel" : "",
-    "navigation" : "",
-    "header" : "",
-    "body" : "",
-    "form" : "",
-    "field_title": "",
-    "field_area": "",
-    "field_input": "",
-    "field_instructions": "",
-    "title": "",
-    "description": ""
+    "button_navigation" : {
+      "generatedCSS": "",
+      "staticCSSAdditions": {
+        "border-radius": "5px"
+      },
+      "classNameAdditions": [],
+      "classAdditions": {}
+    },
+    "button_navigation_active": {
+      "generatedCSS": "",
+      "parentClass" : "button_navigation",
+      "staticCSSAdditions": {
+        "border-radius": "5px"
+      },
+      "classNameAdditions": [":active"],
+      "classAdditions": {}
+    },
+    "button_action" : {
+      "generatedCSS": "",
+      "staticCSSAdditions": {
+        "border-radius": "5px"
+      },
+      "classNameAdditions": [],
+      "classAdditions": {
+        ".special_button" :{
+          "width": "100\%",
+          "margin-top": "10px",
+          "line-height": "28px"
+        },
+        ".special_button.fh_appform_removeInputBtn" :{
+          "width": "50\%",
+          "margin-top": "10px",
+          "line-height": "28px"
+        },
+        ".special_button.fh_appform_addInputBtn" :{
+          "width": "50\%",
+          "margin-top": "10px",
+          "line-height": "28px"
+        }
+      }
+    },
+    "button_action_active" : {
+      "generatedCSS": "",
+      "parentClass" : "button_action",
+      "staticCSSAdditions": {
+        "border-radius": "5px"
+      },
+      "classNameAdditions": [":active"],
+      "classAdditions": {}
+    },
+    "button_cancel" : {
+      "generatedCSS": "",
+      "staticCSSAdditions": {
+        "border-radius": "5px"
+      },
+      "classNameAdditions": [],
+      "classAdditions": {}
+    },
+    "button_cancel_active" : {
+      "generatedCSS": "",
+      "parentClass" : "button_cancel",
+      "staticCSSAdditions": {
+        "border-radius": "5px"
+      },
+      "classNameAdditions": [":active"],
+      "classAdditions": {}
+    },
+    "navigation" : {
+      "generatedCSS": "",
+      "staticCSSAdditions": {},
+      "classNameAdditions": [],
+      "classAdditions": {}
+    },
+    "header" : {
+      "generatedCSS": "",
+      "staticCSSAdditions": {},
+      "classNameAdditions": [],
+      "classAdditions": {}
+    },
+    "body" : {
+      "generatedCSS": "",
+      "staticCSSAdditions": {},
+      "classNameAdditions": [],
+      "classAdditions": {}
+    },
+    "form" : {
+      "generatedCSS": "",
+      "staticCSSAdditions": {
+        "padding": "5px"
+      },
+      "classNameAdditions": [],
+      "classAdditions": {}
+    },
+    "field_title": {
+      "generatedCSS": "",
+      "staticCSSAdditions": {
+        "display": "block"
+      },
+      "classNameAdditions": [],
+      "classAdditions": {
+        ".fh_appform_field_numbering":{
+          "display" : "inline-block"
+        }
+      }
+    },
+    "field_area": {
+      "generatedCSS": "",
+      "staticCSSAdditions": {
+        "padding": "5px",
+        "border-bottom": "none",
+        "border-radius": "5px"
+      },
+      "classNameAdditions": [],
+      "classAdditions": {
+        ":last-child" : {
+          "inheritedCSS" : themeCSSFunctions[FH_APPFORM_PREFIX].field_area_last_child(themeJSON)
+        },
+        ".fh_appform_field_section_break" : {
+          "border" : "none",
+          "background" : "transparent"
+        }
+      }
+    },
+    "field_input": {
+      "generatedCSS": "",
+      "staticCSSAdditions": {
+        "width": "100%",
+        "border-radius": "5px",
+        "line-height": "1.4em",
+        "padding": "5px 0px 5px 5px"
+      },
+      "classNameAdditions": [],
+      "classNameAdditionsChildren": [],
+      "classAdditions": {}
+    },
+    "field_instructions": {
+      "generatedCSS": "",
+      "staticCSSAdditions": {
+        "margin-bottom": "10px",
+        "border-radius": "5px"
+      },
+      "classNameAdditions": [],
+      "classAdditions": {}
+    },
+    "title": {
+      "generatedCSS": "",
+      "staticCSSAdditions": {
+        "text-align": "center"
+      },
+      "classNameAdditions": [],
+      "classAdditions": {}
+    },
+    "description": {
+      "generatedCSS": "",
+      "staticCSSAdditions": {
+        "text-align": "center"
+      },
+      "classNameAdditions": [],
+      "classAdditions": {}
+    },
+    "error": {
+      "generatedCSS": "",
+      "staticCSSAdditions": {
+      },
+      "classNameAdditions": [],
+      "classAdditions": {}
+    },
+    "field_section_break_title": {
+      "generatedCSS": "",
+      "staticCSSAdditions": {
+        "text-align" : "center"
+      },
+      "classNameAdditions": [],
+      "classAdditions": {}
+    },
+    "field_section_break_description": {
+      "generatedCSS": "",
+      "staticCSSAdditions": {
+        "text-align" : "center"
+      },
+      "classNameAdditions": [],
+      "classAdditions": {}
+    },
+    "page_title": {
+      "generatedCSS": "",
+      "staticCSSAdditions": {
+        "text-align": "center"
+      },
+      "classNameAdditions": [],
+      "classAdditions": {}
+    },
+    "page_description" : {
+      "generatedCSS": "",
+      "staticCSSAdditions": {
+        "text-align": "center"
+      },
+      "classNameAdditions": [],
+      "classAdditions": {}
+    },
+    "progress_wrapper" : {
+      "generatedCSS": "",
+      "staticCSSAdditions": {
+        "padding-top": "20px",
+        "padding-bottom": "10px"
+      },
+      "classNameAdditions": [],
+      "classAdditions": {}
+    },
+    "progress_steps" : {
+      "generatedCSS": "",
+      "staticCSSAdditions": {
+        "width" : "100\%"
+      },
+      "classNameAdditions": [],
+      "classAdditions": {
+        " td": {
+          "text-align": "center"
+        },
+        " td.active .fh_appform_page_title": {
+          "text-align": "center",
+          "display": "inline"
+        },
+        " .fh_appform_page_title" : {
+          "padding-left": "10px",
+          "display": "none"
+        },
+        " .number" : {
+          "padding-top": "4px"
+        }
+      }
+    },
+    "progress_steps_number_container" : {
+      "generatedCSS": "",
+      "parentClass" : "progress_steps",
+      "staticCSSAdditions": {
+        "display": "inline-block",
+        "border-radius": "13px",
+        "padding-left": "10px",
+        "padding-right": "10px",
+        "margin-top": "5px",
+        "margin-bottom" : "5px"
+      },
+      "classNameAdditions": [" .number_container"],
+      "classAdditions": {}
+    },
+    "progress_steps_number_container_active" : {
+      "generatedCSS": "",
+      "parentClass" : "progress_steps",
+      "staticCSSAdditions": {},
+      "classNameAdditions": [" td.active .number_container"],
+      "classAdditions": {}
+    },
+    "field_required" : {
+      "generatedCSS": "",
+      "staticCSSAdditions": {
+        "content": "' *'",
+        "display" : "inline"
+      },
+      "classNameAdditions": [":first-child:after"],
+      "classAdditions": {}
+    },
+    "action_bar": {
+      "generatedCSS": "",
+      "staticCSSAdditions": {
+        "padding": "18px 20px 18px 20px"
+      },
+      "classNameAdditions": [],
+      "classAdditions": {
+        " button.fh_appform_two_button" : {
+          "width": "50%"
+        },
+        " button.fh_appform_three_button" : {
+          "width": "33.3%"
+        }
+      }
+    },
+    "section_area" : {
+      "generatedCSS": "",
+      "staticCSSAdditions": {
+        "padding": "5px",
+        "border-radius": "5px",
+        "margin-top": "5px"
+      },
+      "classNameAdditions": [],
+      "classAdditions": {}
+    },
+    "hidden" : {
+      "generatedCSS": "",
+      "staticCSSAdditions": {
+        "display": "none"
+      },
+      "classNameAdditions": [],
+      "classAdditions": {}
+    },
+    "logo" : {
+      "generatedCSS": "",
+      "staticCSSAdditions": {
+        "background-position" : "center",
+        "background-repeat" : "no-repeat",
+        "width" : "100\%"
+      },
+      "classNameAdditions": [],
+      "classAdditions": {}
+    }
   };
 
   function processThemeJSON(){
+
+    var fullThemeCSSString = "";
 
     for(var cssClass in generatedCSSJSON[FH_APPFORM_PREFIX]){
       var generatedCSS = themeCSSFunctions[FH_APPFORM_PREFIX][cssClass](themeJSON);
@@ -356,18 +859,74 @@ App.forms.themeCSSGenerator = function(themeJSON){
         generatedCSS = "";
       }
 
-      generatedCSSJSON[FH_APPFORM_PREFIX][cssClass] = generatedCSS;
+      //Have generated all of the css dynamic content, need to add in the static content.
+      generatedCSS += getStaticCSSString(generatedCSSJSON[FH_APPFORM_PREFIX][cssClass].staticCSSAdditions);
+
+      var cssStr = "";
+      var printCSSClass = generatedCSSJSON[FH_APPFORM_PREFIX][cssClass].parentClass ? generatedCSSJSON[FH_APPFORM_PREFIX][cssClass].parentClass : cssClass;
+      var cssClassName = "." + FH_APPFORM_PREFIX + printCSSClass;
+      var classNameAdditions = "";
+
+      //Building the css class name
+      for(var classAdditionIndex = 0; classAdditionIndex < generatedCSSJSON[FH_APPFORM_PREFIX][cssClass].classNameAdditions.length; classAdditionIndex++){
+        classNameAdditions += generatedCSSJSON[FH_APPFORM_PREFIX][cssClass].classNameAdditions[classAdditionIndex];
+      }
+
+      if(generatedCSSJSON[FH_APPFORM_PREFIX][cssClass].classNameAdditionsChildren){
+        for(var classAdditionIndex = 0; classAdditionIndex < generatedCSSJSON[FH_APPFORM_PREFIX][cssClass].classNameAdditionsChildren.length; classAdditionIndex++){
+          classNameAdditions += cssClassName + generatedCSSJSON[FH_APPFORM_PREFIX][cssClass].classNameAdditionsChildren[classAdditionIndex];
+        }
+      }
+
+      cssStr = cssClassName + classNameAdditions + "{" + generatedCSS + "}";
+
+      fullThemeCSSString += cssStr;
+
+      fullThemeCSSString += generateSubClassCSS(cssClassName, generatedCSSJSON[FH_APPFORM_PREFIX][cssClass].classAdditions);
+
+
+      generatedCSSJSON[FH_APPFORM_PREFIX][cssClass].generatedCSS = generatedCSS;
     }
 
-    //Finished generating css --> now combine all of the strings
+    fullThemeCSSString = addAdditionalLibraries(fullThemeCSSString);
 
-    var cssStr = "";
-    for(var cssClass in generatedCSSJSON[FH_APPFORM_PREFIX]){
-      cssStr += "." + FH_APPFORM_PREFIX + cssClass + "{" + generatedCSSJSON[FH_APPFORM_PREFIX][cssClass] + "}";
+    return fullThemeCSSString;
+  }
+
+  function addAdditionalLibraries(fullThemeCSSString){
+    for(var libraryName in librariesNeeded){
+      fullThemeCSSString += librariesNeeded[libraryName];
     }
 
-    return cssStr;
+    return fullThemeCSSString;
+  }
 
+  function generateSubClassCSS(superCSSClassName, classAdditions){
+    var subCSSStr = "";
+    for(var subClass in classAdditions){
+      var subClassCSS = "";
+      var subClassName = superCSSClassName + subClass;
+      var subClassDetails = classAdditions[subClass];
+
+      for(var subClassKey in subClassDetails){
+        if(subClassKey != "inheritedCSS"){
+          subClassCSS += subClassKey + ":" + subClassDetails[subClassKey] + ";";
+        } else {
+          subClassCSS += subClassDetails[subClassKey];
+        }
+      }
+
+      subCSSStr += subClassName + "{" + subClassCSS + "}";
+    }
+    return subCSSStr;
+  }
+
+  function getStaticCSSString(staticJSON){
+    var staticCSSString = "";
+    for(var styleKey in staticJSON){
+      staticCSSString += styleKey + ":" + staticJSON[styleKey] + ";";
+    }
+    return staticCSSString;
   }
 
   return processThemeJSON;
