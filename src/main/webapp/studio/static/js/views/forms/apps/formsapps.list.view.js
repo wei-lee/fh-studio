@@ -13,8 +13,7 @@ App.View.FormAppsList = App.View.FormListBase.extend({
   events : {
     'click tr' : 'onRowSelected',
     'click .btn-add-formsapp' : 'onCreate',
-    'click .btn-add-existing' : 'onCreate',
-    'click .btn-add-existing-app' : 'onAddExisting'
+    'click .btn-add-existing' : 'onCreate'
   },
   initialize: function(){
     var self = this;
@@ -63,10 +62,5 @@ App.View.FormAppsList = App.View.FormListBase.extend({
     var form = new App.View.FormAppsCreateEdit({ model : updatedModel, mode : 'update', collection : this.collection });
     this.$previewEl.html(form.render().$el);
     this.$previewEl.show();
-  },
-  onAddExisting: function(){
-
-    var form = new App.View.FormAppsCreateEdit({ mode : 'create', collection : this.collection });
-    // TODO - API?
   }
 });

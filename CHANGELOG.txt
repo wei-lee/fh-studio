@@ -1,6 +1,25 @@
 -------------------------------------------------------------------------------
 Component: fh-studio
 -------------------------------------------------------------------------------
+3.18.00 - 2014-01-20 - IR219 - Craig Brookes
+* added new dependencies for fh forms work: These depenedencies are created and maintained in the jssdk project
+
+src/main/webapp/studio/static/common/js/api/appFormjs-backbone.min.js
+src/main/webapp/studio/static/common/js/api/appFormjs-core.min.js
+src/main/webapp/studio/static/common/js/api/appFormsThemeCssGenerator.js
+3.17.28 - 2014-01-17 - IR219 - Damian Beresford
+-----------------------------------------------
+* 3114 - Need a property to override website redirected to for unknown domains
+
+3.17.27 - 2014-01-14 - IR219 - Damian Beresford
+-----------------------------------------------
+* 5324 - Add mssql node module as a Cloud Plugin
+* 5326 - Add Auth0 as a Cloud Plugin
+* 5325 - Add New Relic as a Cloud Plugin
+
+3.17.26 - 2014-01-07 - IR218 - Wei Li
+--------------------------------------------
+* 5525 - Fix ios native sdk armv7s linker error
 
 3.17.25 - 2013-12-12 - IR216 - Jason Madigan
 --------------------------------------------

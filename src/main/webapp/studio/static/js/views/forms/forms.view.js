@@ -17,16 +17,16 @@ App.View.Forms = Backbone.View.extend({
       VALIDATE_IMMEDIATELY: 'fieldOptions.validation.validateImmediately',
       OPTIONS : 'fieldOptions.definition.options',
       LENGTH_UNITS : 'fieldOptions.validation.units',
-      MIN: 'fieldOptions.definition.min',
-      MAX: 'fieldOptions.definition.max',
+      MIN: 'fieldOptions.validation.min',
+      MAX: 'fieldOptions.validation.max',
       MINLENGTH: 'fieldOptions.definition.min',
       MAXLENGTH: 'fieldOptions.definition.max',
       INCLUDE_OTHER: 'fieldOptions.definition.include_other_option',
       INCLUDE_BLANK: 'fieldOptions.definition.include_blank_option',
       SINGLE_CHECKED: 'fieldOptions.definition.checked',
       FIELD_OPTIONS : 'fieldOptions',
-      FIELD_FORMAT_MODE : 'fieldOptions.definition.field_format_mode',
-      FIELD_FORMAT_STRING : 'fieldOptions.definition.field_format_string',
+      FIELD_FORMAT_MODE : 'fieldOptions.validation.field_format_mode',
+      FIELD_FORMAT_STRING : 'fieldOptions.validation.field_format_string',
       LOCATION_UNIT: 'fieldOptions.definition.locationUnit',
       DATETIME_UNIT: 'fieldOptions.definition.datetimeUnit',
       FILE_SIZE : 'fieldOptions.definition.file_size',
@@ -45,7 +45,8 @@ App.View.Forms = Backbone.View.extend({
         'email' : 'emailAddress',
         'autodate' : 'dateTime',
         'map' : 'locationMap'
-      }
+      },
+      SUPPORTED_FIELDS : [ 'text', 'paragraph', 'number', 'email', 'website', 'dropdown', 'radio', 'checkboxes', 'location', 'map', 'file', 'photo', 'signature', 'autodate', 'section_break', 'page_break' ]
     },
     FORM: {
       NAME: 'name',
@@ -74,6 +75,9 @@ App.View.Forms = Backbone.View.extend({
       UPDATED : 'modified',
       FORMS : 'forms',
       THEMENAME : 'theme.name'
+    },
+    GROUPS: {
+      NAME: 'name'
     },
     FIELD_RULES : {
       "dateTime": ["is at", "is before", "is after"],
@@ -130,10 +134,6 @@ App.View.Forms = Backbone.View.extend({
         fields.push(f);
       });
 
-      //TODO: Relational should mean we can do this, why not?
-//      p.get('Fields').each(function(f, i){
-//
-//      });
     });
     return fields;
   },

@@ -16,7 +16,6 @@ App.View.EditFormRules = Backbone.View.extend({
   },
 
   goBack : function (){
-    console.log("called go back");
     this.options.viewController.back();
     return;
   },

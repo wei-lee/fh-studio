@@ -16,7 +16,6 @@ App.View.FormListBase = App.View.Forms.extend({
       self.collection.bind('reset', $.proxy(self.render, self));
       self.collection.trigger('reset');
     }, error : function(){
-      console.log("in error callback");
       self.$el.removeClass('busy');
       // Avoid flicker on our loading view
       setTimeout(function(){
@@ -52,9 +51,9 @@ App.View.FormListBase = App.View.Forms.extend({
     return this;
   },
   renderEmptyView : function(){
-    this.message = new App.View.FullPageMessageView({ message : 'No ' + this.pluralTitle.toLowerCase() + ' found', button : 'Create ' + this.singleTitle, cb :$.proxy(this.onCreate, this)});
+    this.fullpagemessage = new App.View.FullPageMessageView({ message : 'No ' + this.pluralTitle.toLowerCase() + ' found', button : 'Create ' + this.singleTitle, cb :$.proxy(this.onCreate, this)});
 
-    this.$el.append(this.message.render().$el);
+    this.$el.append(this.fullpagemessage.render().$el);
     return this;
   },
   renderList : function(){
@@ -62,8 +61,6 @@ App.View.FormListBase = App.View.Forms.extend({
     var self = this,
     data = this.collection.toJSON();
 
-
-    console.log("renderList ",data);
 
     this.table = new App.View.DataTable({
       aaData : data,
@@ -83,7 +80,7 @@ App.View.FormListBase = App.View.Forms.extend({
       }
     });
     this.table.render();
-    this.table.$el.find('table').removeClass('table-striped');
+    this.table.$el.find('table').removeClass('table-striped').removeClass('table-bordered');
     this.$el.append(this.table.$el);
     
     this.$el.append('<br />');
@@ -157,14 +154,12 @@ App.View.FormListBase = App.View.Forms.extend({
     e.preventDefault();
     var self = this,
     el = e.target.nodeName.toLowerCase() === "a" ? $(e.target) : $(e.target).parent(),
-    mode = $(el).data('mode'),
-    createView = new App.View.FormCreateClone({ collection : this.collection, mode : mode, singleTitle : this.singleTitle, singleId : this.singleId, pluralTitle : this.pluralTitle });
-
+    mode = $(el).data('mode');
+console.log('onCreate - mode:', mode, ', singleTitle:', this.singleTitle, ', singleId:', this.singleId, 'pluralTitle:', this.pluralTitle);
+    var createView = new App.View.FormCreateClone({collection : this.collection, mode : mode, singleTitle : this.singleTitle, singleId : this.singleId, pluralTitle : this.pluralTitle });
     this.$el.append(createView.render().$el);
-    createView.bind('message', function(){});
-
   },
-  onClone : function(e){
+ onClone : function(e){
     e.preventDefault();
     var self = this,
     cloneSource = this.collection.findWhere({_id : this._id}),

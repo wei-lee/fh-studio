@@ -37,13 +37,10 @@
  App.View.FormEdit styles
  */
 
-.formedit .fb-add-field-types a.btn {
-    width: 100%;
-}
-
-.formedit .btn-forms-back {
+#forms_container .btn.btn-forms-back {
     margin-top: 5px;
     margin-right: 12px;
+    padding: 6px 14px;
 }
 
 .form-page {
@@ -142,13 +139,33 @@ ul.apps-using-form li.text {
     margin: 8px 0px;
 }
 
-.themeedit .themesInnerContainer label {
+.themeedit .colorRow {
+    width: 75px;
+    text-align: center;
+    display: inline-block;
+}
+
+.themeedit .themesInnerContainer .fontrow label, .themeedit .themesInnerContainer .borderrow label {
     display: inline-block;
     width: 240px;
 }
 
 .themeedit .themesInnerContainer select {
     margin: 0px 4px;
+}
+
+.themeedit h4 {
+    font-size: 14px;
+}
+
+.themeedit .well.themesectionBody {
+    border: 4px solid #82bbd8;
+    border-radius: 0px;
+    border-bottom: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    background-color: #f7f7f5;
+    padding: 4px;
 }
 
 
@@ -187,6 +204,49 @@ ul.apps-using-form li.text {
 .themeedit .sp-disabled .sp-dd {
     display: none;
 }
+/*
+    Style spectrum out of box as we wish
+ */
+.themeedit .sp-replacer {
+    padding: 0px;
+    border: 0px;
+}
+.themeedit .sp-dd {
+    padding: 0px 0px;
+    height: 22px;
+    line-height: 21px;
+    position: absolute;
+    background-color: #fff;
+    border-radius: 28px;
+    width: 22px;
+    margin-left: 8px;
+    margin-top: 11px;
+    font-size: 15px;
+    display: none;
+    text-align: center;
+}
+.sp-replacer:hover .sp-dd {
+    display: block;
+}
+.sp-replacer.sp-disabled:hover .sp-dd {
+    display: none;
+}
+/* These are put at top level in DOM so no .themeedit prefix */
+.sp-container.sp-palette-disabled {
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    background-color: #fff;
+}
+
+.themeedit .sp-replacer .sp-preview {
+    width: 30px;
+    height: 30px;
+    margin: 0;
+    padding: 0;
+    border: 4px solid #fff;
+}
+
+
 #forms_layout .app form.formsApps {
     padding: 20px;
 }
@@ -216,4 +276,196 @@ ul.apps-using-form li.text {
         margin:0;
         padding:0;
     }
+}
+
+/*
+  Bootstrap overrides that may not be appropriate for nGUI:
+    //TODO: Button styles...
+ */
+#forms_container .btn,
+#forms_container .btn-group .btn.btn-primary,
+#forms_container .btn.btn-primary,
+#forms_container .btn.btn-secondary,
+#forms_container .btn#modal-cancel,
+#forms_container .btn.btn-create-base,
+#forms_container .btn-group .btn.btn-secondary,
+#forms_container .btn-forms-back,
+#forms_container .btn-export,
+#forms_container .btn-add-submission,
+#forms_container .btn-add-form,
+#forms_container .btn-add-theme {
+    font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+    background-image: none;
+    border: 0px;
+    border-radius: 0;
+    text-transform: uppercase;
+    margin-left: 10px;
+    font-size: 12px;
+    font-weight: 100;
+    padding: 10px 20px;
+    height: auto;
+    text-shadow: none;
+}
+
+#forms_container .btn-group .btn.btn-primary,
+#forms_container .btn.btn-primary {
+    background-color: #2d72a8;
+    color: #fff;
+}
+
+#forms_container .btn.btn-secondary,
+#forms_container .btn#modal-cancel,
+#forms_container .btn-group .btn.btn-secondary,
+#forms_container .btn-forms-back {
+    background-color: #3fa9f5;
+    color: #fff;
+}
+
+
+/*
+Improved formbuilder.js styling - TODO: Should this be applied to CMS Also?
+*/
+
+#forms_container .fb-field-wrapper .subtemplate-wrapper {
+    background-color: #f7f7f5;
+}
+
+#forms_container .fb-field-wrapper.editing .subtemplate-wrapper .icon-inline {
+    color: #3fa9f6;
+}
+
+#forms_container ul.nav-tabs {
+    padding-left: 0px;
+}
+#forms_container .fb-tabs li, #forms_container .nav-tabs li {
+    width:  25%;
+}
+
+#forms_container .nav-tabs li a,
+#forms_container .nav-tabs li a:hover {
+    background-color: #82bbd8;
+    border-bottom: 2px solid #277aac;
+    border-radius: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    border-top: 2px solid transparent;
+    color: #fff;
+    font-weight: 100;
+    margin: 0px;
+    text-align: center;
+    padding: 10px 0px;
+}
+
+#forms_container .nav-tabs li.active a {
+    border-left: 0px;
+    border-right: 0px;
+    border-bottom: 2px solid #fff;
+    border-top: 2px solid #277aac;
+    background-color: #fff;
+    color: #666;
+}
+
+#forms_container .fb-tab-content .fb-tab-pane {
+    padding: 0px;
+}
+#forms_container .fb-edit-section-header {
+    border-bottom: 3px solid #84b9d9;
+}
+
+#forms_container .fb-common-wrapper .fb-label-description input, #forms_container .fb-common-wrapper .fb-label-description textarea {
+    width: 92%;
+}
+
+#forms_container .fb-add-field-types .btn.btn-primary{
+    background-image: none;
+    background-color: #3ea9f5;
+    border: 2px dashed #005f9b;
+    text-align: left;
+    width: 38%;
+    padding: 6px 0px 6px 9px;
+}
+
+#forms_container .edit-response-field input[type=text], #forms_container .edit-response-field textarea {
+    width: 100%;
+}
+
+#forms_container h4.title {
+    display: inline-block;
+}
+
+#forms_container .formsmenu h4, #forms_container h4.title {
+    border-bottom: 3px solid #82bbd8;
+    margin-bottom: 0px;
+}
+
+#forms_container .fb-response-fields.well, #forms_container #groupPreviewContainer .well {
+    margin-top: 0px;
+    border: 0px;
+}
+
+#forms_container .formsmenu .well {
+    border: 0;
+    padding: 2px 4px 0px 0px
+}
+
+#forms_container .input-prepend button.btn, #forms_container .input-append a.btn {
+    border-radius: 0;
+    background-image: none;
+    background-color: #2d72a8;
+    color: white;
+    padding: 10px 20px;
+    margin-left: 0px;
+}
+
+#forms_container .input-prepend input, #forms_container .input-append input {
+    border-radius: 0;
+    padding: 10px 20px;
+    height: 40px;
+}
+
+/*
+  Style the LHS menu more flat-like
+ */
+.forms_menu_container .nav-list a,
+.forms_menu_container .nav-list li:hover a {
+    border-left: 3px solid transparent;
+    padding: 5px 15px;
+    background: none;
+    color: #666;
+}
+
+.forms_menu_container .nav-list .active a {
+    color: #0082bf;
+    font-weight: normal;
+    text-shadow: none;
+    background: #eee;
+}
+
+.forms_menu_container .nav-list li:hover a,
+.forms_menu_container .nav-list .active a  {
+    border-left: 3px solid #0082bf;
+}
+
+
+.forms_menu_container ul.nav-list {
+    background: none;
+    border: 0;
+    border-right: 1px solid #eee;
+}
+
+#forms_container form.notifications {
+    margin-left: 0;
+}
+
+#forms_container form.notifications .control-label {
+    width: 118px;
+}
+
+#forms_container form.notifications .control-group:first-of-type {
+    margin-bottom: 0;
+}
+#forms_container form.notifications select {
+    width: 294px;
+    border-radius: 0px;
+    height: 200px;
 }

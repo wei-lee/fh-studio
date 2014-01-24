@@ -46,7 +46,7 @@ App.View.FormEditReorder = App.View.Forms.extend({
          . We then flatten reOrdered.
          */
         self.fb.collection.each(function(f){
-          if (f.get('type')==='page_break'){ // TODO Constant
+          if (f.get('type')=== self.CONSTANTS.FORM.PAGE_BREAK ){
             /*
              Every time we find a page, add it and it's subsequent fields to a new array -
              then push this to reOrdered at indexOf the current page ID in order[].
@@ -71,6 +71,7 @@ App.View.FormEditReorder = App.View.Forms.extend({
         // Lastly now we're done iterating we flatten out our 2d array reOrdered, and load it back into formbuilder
         reOrdered = _.flatten(reOrdered);
         self.fb.collection.reset(reOrdered);
+
       }
     });
     this.$el.find('.form-page').click($.proxy(this.onFormPageClicked, this));

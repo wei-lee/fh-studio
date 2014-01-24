@@ -6,7 +6,6 @@ App.View.FormPageRules = App.View.Rules.extend({
 
   createRule : function (e){
     var self = this;
-    console.log("self pages ", self.pages);
     var pages = [];
     for(var i=0; i < self.pages.length; i++){
       var pn = i + 1;
@@ -34,7 +33,6 @@ App.View.FormPageRules = App.View.Rules.extend({
     this.collection = this.options.collection;
     this.pageRules = this.options.form.get("pageRules");
     this.pages = this.form.get("pages");
-    console.log("init form page rule view ",this.form, this.pages);
     this.aggregateFields();
     this.aggreagateShowFields();
 
@@ -43,7 +41,6 @@ App.View.FormPageRules = App.View.Rules.extend({
   },
 
   render : function (){
-    console.log("called render in pagerules");
     var self = this;
     $('.formsContainer').remove();
     this.$el.empty();

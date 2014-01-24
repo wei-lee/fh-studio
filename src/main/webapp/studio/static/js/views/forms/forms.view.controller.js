@@ -5,10 +5,12 @@ App.View.FormsController = Backbone.View.extend({
     'click .btn-themes' : 'onThemes',
     'click .btn-edit-theme' : 'onEditTheme',
     'click .btn-submissions' : 'onSubmissions',
+    'click .btn-groups' : 'onGroups',
     'click .btn-app-submissions' : 'onAppSubmissions',
     'click .btn-form-submissions' : 'onFormSubmissions',
     'click .btn-edit-form' : 'onEditForm',
     'click .btn-edit-form-rules' : 'onEditFormRules',
+    'click .btn-edit-form-notifications' : 'onEditFormNotifications',
     'click .formapp-link' : 'onFormAppLoad',
     'click .btn-add-submission' : 'onAddSubmission',
     'click #editSubmission' : 'onEditSubmission',
@@ -53,7 +55,7 @@ App.View.FormsController = Backbone.View.extend({
       this.views.themes.$el.remove();
     }
     this.views.themes = new App.View.FormThemesList();
-    this.$el.append(this.views.themes.render().$el);
+    this.$el.append(this.views.themes.$el);
   },
   onEditTheme : function(e){
     var theme = this.views.themes.collection.findWhere({_id : this.views.themes._id});
@@ -102,6 +104,14 @@ App.View.FormsController = Backbone.View.extend({
     // Select this form in the dropdown and trigger the change event needed
     view.$el.find('.formSelect').val(formId).trigger('change');
   },
+  onGroups : function(){
+    this.trigger('menuchange', 'groups');
+    if (this.views.groups){
+      this.views.groups.$el.remove();
+    }
+    this.views.groups= new App.View.FormGroupsList();
+    this.$el.append(this.views.groups.render().$el);
+  },
   /*
     Edit Form view switching
    */
@@ -128,11 +138,23 @@ App.View.FormsController = Backbone.View.extend({
 
 
   },
+  onEditFormNotifications : function(e){
+    var self = this;
+    var form = this.views.forms.collection.findWhere({ _id : this.views.forms._id });
+
+    this.views.forms.$el.hide();
+
+    var formNotifications = new App.View.FormNotifications({ form : form, _id : form.get('_id') });
+    formNotifications.bind('back', $.proxy(this.back, this));
+    this.$el.append(formNotifications.render().$el);
+    this.subViews.push(formNotifications);
+
+
+  },
   /*
 
    */
   back : function(){
-    // TODO - update breadcrumb
     if (this.subViews && this.subViews.length > 0){
       var toHide = this.subViews.pop();
       toHide.$el.remove();

@@ -26,6 +26,7 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
     this.jsonForms = this.options.forms.toJSON();
     console.log("RENDER SUBMISSIONS TAB");
     this.$el.empty();
+    this.$el.addClass('span10');
     this.$el.html(this.templates.$formsSubmissionsTab({forms:this.jsonForms}));
     this.recentSubmissions();
 

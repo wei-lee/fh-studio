@@ -30,7 +30,38 @@ App.Model.FormPage = Backbone.RelationalModel.extend({
       key: 'page',
       includeInJSON: 'id'
     }
-  }]
+  }],
+
+  "findFieldById" : function (id , cb){
+    var fields = this.get("fields");
+    var field;
+    var index;
+    if(fields){
+      for(var i=0; i < fields.length; i++){
+        var f = fields[i];
+        if(f && f.get("_id") === id){
+          field = f;
+          index = i;
+          break;
+        }
+      }
+    }
+    cb(undefined, field, index);
+  },
+
+  "removeFieldFromPage":function (fieldId){
+    var fields = this.get("fields");
+    if(fields){
+      for(var i=0; i < fields.length; i++){
+        var f = fields[i];
+        if(f && f._id === fieldId){
+          console.log("found field removing it " , f);
+          this.get("fields").splice(i,1);
+        }
+      }
+    }
+  }
+
 });
 
 App.Model.FormField = Backbone.RelationalModel.extend({idAttribute: '_id'});
