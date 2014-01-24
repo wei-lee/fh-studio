@@ -535,7 +535,6 @@ themeCSSFunctions[FH_APPFORM_PREFIX] = {
   }
 };
 
-
 App.forms.themeCSSGenerator = function(themeJSON){
   var generatedCSSJSON = {};
 
@@ -886,16 +885,6 @@ App.forms.themeCSSGenerator = function(themeJSON){
 
 
       generatedCSSJSON[FH_APPFORM_PREFIX][cssClass].generatedCSS = generatedCSS;
-    }
-
-    fullThemeCSSString = addAdditionalLibraries(fullThemeCSSString);
-
-    return fullThemeCSSString;
-  }
-
-  function addAdditionalLibraries(fullThemeCSSString){
-    for(var libraryName in librariesNeeded){
-      fullThemeCSSString += librariesNeeded[libraryName];
     }
 
     return fullThemeCSSString;
