@@ -4,12 +4,6 @@ var themeCSSFunctions = {};
 var App = App || {};
 App.forms = App.forms || {};
 
-
-
-var FH_APPFORM_PREFIX = "fh_appform_";
-var themeCSSFunctions = {};
-var librariesNeeded = {}
-
 themeCSSFunctions[FH_APPFORM_PREFIX] = {
   "logo" : function(themeJSON){
     var logoStr = "";
