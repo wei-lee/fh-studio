@@ -5,18 +5,22 @@ App.View.FormThemesList = App.View.FormListBase.extend({
   templates : {
     'formsListBaseAdd' : '#formsListBaseAdd',
     'fullpageLoading' : '#fullpageLoading',
-    'menu' : '#themesListMenu'
+    'menu' : '#themesListMenu',
+    previewOutline: '#preview_outline',
+    formselect:'#form_select'
   },
   events : {
     'click tr' : 'onRowSelected',
     'click .btn-add-theme' : 'onCreate',
     'click .btn-clone-theme' : 'onClone',
-    'click .btn-delete-theme' : 'onDelete'
+    'click .btn-delete-theme' : 'onDelete',
+    'change #formSelect' : 'formSelect'
 
   },
   initialize: function(){
+    var self = this;
     this.collection = new App.Collection.FormThemes();
-    console.log("collection ", this.collection);
+    this.formCollection = new App.Collection.Form();
     this.pluralTitle = 'Themes';
     this.singleTitle = 'Theme';
     this.columns = [{
@@ -25,15 +29,43 @@ App.View.FormThemesList = App.View.FormListBase.extend({
     },{
       "sTitle": 'Updated',
       "mDataProp": this.CONSTANTS.THEME.UPDATED
-    },{ //TODO: Make these..?
+    },{
       "sTitle": 'Apps Using This',
       "mDataProp": this.CONSTANTS.THEME.USING
     }];
+
+    $fh.forms.init({
+      config: {
+        "cloudHost": "", "appid": new Date().getTime()
+      },
+      "updateForms": false
+    }, function () {
+      console.log(" cb rendering form");
+    });//todo figure out why this callback is not being called in studio
+
+
     this.constructor.__super__.initialize.apply(this, arguments);
   },
   render : function(){
-    App.View.FormListBase.prototype.render.apply(this, arguments);
-    return this.renderPreview();
+    var self = this;
+    self.formCollection.fetch({"success":function (forms){
+      self.formData = [];
+      forms.forEach(function (f){
+        self.formData.push({
+          "name": f.get("name"),
+          "_id": f.get("_id")
+        });
+      });
+      self.renderPreview();
+    },"error": function (err){
+      console.log("err fetching forms ", err);
+      self.message('Error fetching forms ', 'danger');
+      self.renderPreview();
+    }
+    });
+
+   App.View.FormListBase.prototype.render.apply(this, arguments);
+   return this;
   },
   renderPreview : function(){
     this.$previewEl = $('<div class="themepreview" />');
@@ -41,38 +73,72 @@ App.View.FormThemesList = App.View.FormListBase.extend({
     this.$previewEl.hide();
 
     this.$previewEl.append('<div id="formPreviewContainer"></div>');
-    var menu = $(this.templates.$menu()).addClass('pull-right');
-    this.$previewEl.append(menu);
+
+
 
     // Move the loading to the bottom of this element's dom
     this.loading.remove();
     this.$el.append(this.loading);
     return this;
   },
-  updatePreview : function(updatedModel){
-    console.log("updatePreview",updatedModel);
-    var previewTheme = new App.View.FormThemesEdit({ theme : updatedModel, readOnly : true});
+
+  formSelect : function (e){
+    var self = this;
+    var formId = $(e.target).val();
+    var form = this.formCollection.findWhere({"_id":formId});
+
+    var rawData = (form) ? JSON.stringify(form.toJSON()) : undefined;
+
+
+
+    var ele = self.$el.find('div.formPreviewContents');
+    if(! rawData){
+      ele.html("");
+    }else{
+      $fh.forms.renderFormFromJSON({rawData: rawData, "container": ele});
+    }
+  },
+
+  /**
+   *
+   * Note this is called when a row in a table is clicked.
+   */
+  updatePreview: function (updatedModel) {
+    var self = this;
+    var previewTheme = new App.View.FormThemesEdit({ theme: updatedModel, readOnly: true});
     this.$previewEl.find('#formPreviewContainer').html(previewTheme.render().$el);
-    previewTheme.$el.removeClass('span10').addClass('span8');
+
+
+
+    previewTheme.$el.removeClass('span10');
     this.$previewEl.show();
 
     dropdown = this.$previewEl.find('.apps-using-theme');
 
     dropdown.empty();
 
-
-
     var appsUsingTheme = updatedModel.get("apps") || [];
-    if(appsUsingTheme.length > 0){
-      console.log("there are apps using this theme");
-              if (appsUsingTheme.length>0){
-          _.each(appsUsingTheme, function(d){
-            dropdown.append('<li><a class="formapp-link" data-_id="' + d.id + '" href="#">' + d.title + '</a></li>');
-          });
-        }else{
-          dropdown.append('<li class="text">No apps using this form</li>');
-        }
+    if (appsUsingTheme.length > 0) {
+      if (appsUsingTheme.length > 0) {
+        _.each(appsUsingTheme, function (d) {
+          dropdown.append('<li><a class="formapp-link" data-_id="' + d.id + '" href="#">' + d.title + '</a></li>');
+        });
+      } else {
+        dropdown.append('<li class="text">No apps using this form</li>');
+      }
+
     }
+
+
+    var prevContainer = self.$el.find('#previewContainer');
+    prevContainer.html(self.templates.$previewOutline()).show();
+    prevContainer.append(self.templates.$formselect({"forms":self.formData}));
+    prevContainer.find('style').remove();
+    prevContainer.append("<style id='themeStyle'>"+updatedModel.get('css')+"</style>");
+    self.$el.find('.themesInnerContainer').append(self.templates.$menu());
+
+
+
 
   }
 });

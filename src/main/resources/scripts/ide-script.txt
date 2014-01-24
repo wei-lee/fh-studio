@@ -11,6 +11,9 @@ common/js/ui/thirdparty/formbuilder/formbuilder.js
 common/js/ui/thirdparty/spectrum/spectrum.js
 common/js/ui/thirdparty/jquery.scrollWindowTo/index.js
 common/js/ui/thirdparty/jsoneditor/jsoneditor.js
+common/js/api/appFormjs-core.min.js
+common/js/api/appFormjs-backbone.min.js
+common/js/api/appFormsThemeCssGenerator.js
 js/init/namespaces.js
 common/js/ui/thirdparty/handlebars/handlebars.js
 common/js/ui/thirdparty/handlebars/helpers.js
@@ -28,6 +31,7 @@ js/application/dialog/DialogManager.js
 js/application/controller.js
 js/model/backbone/event.model.js
 js/application/dispatch/dispatch.js
+js/model/backbone/user.model.js
 js/model/backbone/plugin.model.js
 js/model/backbone/databrowser.model.js
 js/model/backbone/alert.model.js
@@ -41,6 +45,8 @@ js/model/backbone/forms/formapp.model.js
 js/model/backbone/forms/fieldrules.model.js
 js/model/backbone/forms/pagerule.model.js
 js/model/backbone/forms/formsubmission.model.js
+js/model/backbone/forms/group.model.js
+js/model/backbone/forms/notification.model.js
 js/model/backbone/metrics/datepicker.model.js
 js/model/backbone/metrics/metrics.model.js
 js/model/backbone/metrics/pie.metrics.model.js
@@ -158,6 +164,7 @@ js/views/forms/forms/forms.list.view.js
 js/views/forms/forms/forms.create.view.js
 js/views/forms/forms/forms.edit.view.js
 js/views/forms/forms/forms.edit.reorder.view.js
+js/views/forms/forms/forms.notifications.view.js
 js/views/forms/forms/forms.editrules.view.js
 js/views/forms/forms/forms.fieldrules.view.js
 js/views/forms/forms/forms.pagerules.view.js
@@ -169,6 +176,7 @@ js/views/forms/themes/themes.list.view.js
 js/views/forms/themes/themes.edit.view.js
 js/views/forms/apps/formsapps.list.view.js
 js/views/forms/apps/formsapps.createedit.view.js
+js/views/forms/groups/groups.list.view.js
 js/views/forms/forms.view.controller.js
 js/views/plugins/plugins.view.js
 js/views/plugins/plugins.setup.view.js

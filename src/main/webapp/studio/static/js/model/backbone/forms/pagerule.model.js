@@ -15,7 +15,6 @@ App.Model.PageRule = Backbone.RelationalModel.extend({
 App.Collection.PageRules = Backbone.Collection.extend({
   initialize: function() {},
   model: App.Model.FieldRule,
-  //url: '/studio/static/js/model/backbone/mocks/forms/themes.json', //TODO:
   urlUpdate: '/api/v2/forms/form/pagerules',
 
   sync: function (method, model, options) {
@@ -43,12 +42,10 @@ App.Collection.PageRules = Backbone.Collection.extend({
     }
   },
   create : function(method, model, options){
-    //TODO
     this.trigger('reset');
     return options.success(model);
   },
   del : function(method, model, options){
-    //TODO
     return options.success(model);
   },
   trimInternalIds : function(pages) {

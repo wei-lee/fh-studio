@@ -1,6 +1,5 @@
 Handlebars.registerHelper("createFormField", function (options, context){
   //"location", "locationMap", "sectionBreak", "matrix"
-  console.log("got createFormField ", options);
   var ret = "";
   var i;
   var def = {};
@@ -39,7 +38,6 @@ Handlebars.registerHelper("createFormField", function (options, context){
       case "checkbox":
         for( i=0; i < options.fieldValues.length; i++){
           var fValues = options.fieldValues[i];
-          console.log("creating checkboxes ", fValues.selections);
           ret+="<div class='row-fluid'>";
           for(var k=0; k < fValues.selections.length; k++ ){
             ret+="<input disabled type='checkbox' checked value='"+fValues.selections[k]+"'> " +fValues.selections[k]+" ";
@@ -54,7 +52,6 @@ Handlebars.registerHelper("createFormField", function (options, context){
         }
         break;
       case "location":
-        console.log("options ", options.fieldId);
         if(options.fieldId.fieldOptions.definition && "northEast" === options.fieldId.fieldOptions.definition.locationUnit){
           for( i=0; i < options.fieldValues.length; i++){
             ret+="<div class='row-fluid'><input disabled type='text' value='zone: "+options.fieldValues[i]['zone']+ ", eastings: " + options.fieldValues[i]['eastings'] + ", northings: " + options.fieldValues[i]['northings']+" '> <hr/></div>";
@@ -66,7 +63,6 @@ Handlebars.registerHelper("createFormField", function (options, context){
         }
         break;
       case 'locationMap':
-        console.log("options ", options);
         if(options.fieldId.fieldOptions.definition && "northEast" === options.fieldId.fieldOptions.definition.locationUnit){
           for( i=0; i < options.fieldValues.length; i++){
             ret+="<div class='row-fluid'><input disabled type='text' value='zone: "+options.fieldValues[i]['zone']+ ", eastings: " + options.fieldValues[i]['eastings'] + ", northings: " + options.fieldValues[i]['northings']+" '> <hr/></div>";
@@ -87,7 +83,6 @@ Handlebars.registerHelper("createFormField", function (options, context){
 
 
 Handlebars.registerHelper("checkRole", function (req, options){
-  console.log("required ", req);
   var reqRoles = req.split(",");
   var userRoles = $fw.getUserProp("roles");
   var hasPerm = false;

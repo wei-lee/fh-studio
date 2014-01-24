@@ -68,10 +68,10 @@ App.View.SubmissionList = App.View.FormListBase.extend({
     this.singleTitle = 'Forms Submission';
     this.columns = [{
       "sTitle": 'Form Name',
-      "mDataProp": "appCloudName"
+      "mDataProp": "formName"
     },{
       "sTitle": 'App Name',
-      "mDataProp": "appCloudName"
+      "mDataProp": "appName"
     },{
       "sTitle": 'App Env',
       "mDataProp": "appEnvironment"
@@ -286,6 +286,9 @@ App.View.SubmissionList = App.View.FormListBase.extend({
   },
   onRowSelected : function (e){
     var self = this;
+    this.selectMessage = new App.View.FullPageMessageView({ message : 'Loading .... ', button : false });
+    this.$el.find('.emptyContainer').empty().append(this.selectMessage.render().$el);
+    $('.submissionslist').removeClass("span10").addClass("row-fluid");
     var model = this.getDataForRow(e);
     console.log(model);
     self.collection.readSubmissionDetail(model.get("_id"),{"success": function (res){

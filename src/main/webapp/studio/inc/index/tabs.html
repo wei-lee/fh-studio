@@ -57,8 +57,8 @@ String pageName = studio.getPageName();
   <%@ include file="./dashboard/dashboard_tab.html" %>
 
   <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER)) { %>
-    <%@ include file="./apps/apps_tab.html" %>
-    <%@ include file="./forms/forms_tab.html" %>
+    <jsp:include page="./apps/apps_tab.html" />
+   <jsp:include page="./forms/forms_tab.html" />
 
     <% if(studio.getProperty("pluginsEnabled").equals("true")){ %>
       <%@ include file="./plugins/plugins_snippets.html" %>

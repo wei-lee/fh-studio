@@ -35,13 +35,11 @@ App.View.FormFieldRules = App.View.Rules.extend({
   },
 
   createRule : function (e){
-    console.log("createRule");
     var self = this;
     var ruleCount =  self.$el.find('.rulesForm').length;
     ruleCount++;
     self.$el.find('.rulesContent').append(this.templates.$addRule({"fields":this.fields,"formType":"field","formId":self.form.get("_id"),ruleNum:ruleCount}));
 
-    console.log("this.fields", self.fields);
     self.$el.find('#rule'+ruleCount+' .ruleDefintionContainer').append(this.templates.$ruleDefinitions({"fields":this.fields,"formType":"field","formId":self.form.get("_id"),ruleNum:ruleCount}));
     self.$el.find('#rule'+ruleCount+' .ruleResult').append(this.templates.$ruleResults({"fields":this.targetFields,"formType":"field","formId":self.form.get("_id"),ruleNum:ruleCount}));
     self.$el.find('#rule'+ruleCount+'  .btn-remove-condition').first().hide();
