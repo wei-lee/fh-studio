@@ -12,8 +12,10 @@ src/main/webapp/studio/static/common/js/api/appFormsThemeCssGenerator.js
 * 5180, 5181 add forms rules views to the forms tab
 * 5239, 5270 app forms submission lists and details views
 * 5630 preview forms and themes in studio
+* 5078 main appforms work - base views & models, form list & edit, theme list & edit, app list & edit, group list & edit
 
-property added to cluster-common studiojs-appforms-enabled = false
+property added to cluster-common:
+    studio-js-appforms-enabled = false
 
 
 3.17.28 - 2014-01-17 - IR219 - Damian Beresford
