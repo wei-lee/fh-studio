@@ -86,7 +86,7 @@ App.View.FormEdit = App.View.Forms.extend({
         self.reorder.render();
       }
       var fieldRefs = self.form.get("fieldRef");
-      debugger;
+
       fieldRefs[model.cid] = model;
     });
     this.fb.collection.bind('change', function (model) {
