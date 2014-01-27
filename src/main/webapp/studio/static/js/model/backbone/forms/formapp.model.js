@@ -7,7 +7,6 @@ App.collections = App.collections || {};
 
 App.Model.FormApp = App.Model.FormBase.extend({
   fetchURL : '/api/v2/forms/apps/{{id}}',
-  fetchFormsURL : '/api/v2/forms/apps/{{id}}',
   createURL : '/api/v2/forms/apps',
 
   sync : function(method){
