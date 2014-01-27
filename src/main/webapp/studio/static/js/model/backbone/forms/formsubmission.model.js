@@ -92,7 +92,7 @@ App.Collection.FormSubmissions = App.Collection.FormBase.extend({
     }
   },
 
-  search : function (queryOb, options){
+  search : function (queryOb, options){      //NOTE THIS USES MOCK DATA AS SERVERSIDE IS NOT DONE
     $.ajax({
       type: 'POST',
       url: this.urlSearch,
