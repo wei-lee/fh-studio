@@ -291,7 +291,7 @@ App.View.SubmissionList = App.View.FormListBase.extend({
     $('.submissionslist').removeClass("span10").addClass("row-fluid");
     var model = this.getDataForRow(e);
     console.log(model);
-    self.collection.readSubmissionDetail(model.get("_id"),{"success": function (res){
+    model.fetch({"success": function (res){
       if(self.submissionDetail){
         self.submissionDetail.remove();
       }

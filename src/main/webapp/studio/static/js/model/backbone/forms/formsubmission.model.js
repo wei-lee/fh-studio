@@ -6,7 +6,7 @@ App.collections = App.collections || {};
 
 
 App.Model.FormSubmission = App.Model.FormBase.extend({
-
+   fetchURL : "/api/v2/forms/submission/{{id}}"
 });
 
 
@@ -92,33 +92,6 @@ App.Collection.FormSubmissions = App.Collection.FormBase.extend({
     }
   },
 
-  readSubmissionDetail : function (subid,options){
-    var self = this;
-    var url =this.urlGetSubmission.replace('{{id}}', subid);
-    $.ajax({
-      type:"GET",
-      "url":url,
-      contentType:"application/json",
-      dataType:"json",
-      success : function (res){
-        //we already have a submission with the id so update that.
-        var model = self.findWhere({"_id":res._id});
-        if(model){
-          model.set(res);
-        }else{
-          model  = new   App.Model.FormSubmission(res);
-        }
-        options.success(model);
-      },
-      error : function (res){
-        options.error(res);
-      }
-    });
-  },
-
-  update : function(method, model, options){
-   console.log("not yet implemented");
-  },
   search : function (queryOb, options){
     $.ajax({
       type: 'POST',

@@ -10,10 +10,11 @@ App.Model.FormBase = Backbone.RelationalModel.extend({
   fetch : function(options){
     var self = this,
     id = this.get('_id');
+    var csrfToken = $('input[name="csrftoken"]').val();
 
     $.ajax({
       type: 'GET',
-      url: this.fetchURL.replace('{{id}}', id),
+      url: this.fetchURL.replace('{{id}}', id) + "?csrftoken="+csrfToken,
       success: function(res){
         self.set(res);
         if ($.isFunction(options.success)) {
