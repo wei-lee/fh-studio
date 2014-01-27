@@ -124,7 +124,9 @@ App.View.FormListBase = App.View.Forms.extend({
     var model = this.collection.findWhere({_id : this._id});
 
     this.$el.addClass('busy');
-    this.$previewEl.hide();
+    if (this.$previewEl){
+      this.$previewEl.hide();
+    }
     this.selectMessage.$el.hide();
 
     // Fetch the full form definition from the serverside
