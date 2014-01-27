@@ -85,6 +85,9 @@ App.View.FormEdit = App.View.Forms.extend({
       if (model.get(self.CONSTANTS.FB.FIELD_TYPE) === self.CONSTANTS.FORM.PAGE_BREAK) {
         self.reorder.render();
       }
+      var fieldRefs = self.form.get("fieldRef");
+      debugger;
+      fieldRefs[model.cid] = model;
     });
     this.fb.collection.bind('change', function (model) {
       if (model.get(self.CONSTANTS.FB.FIELD_TYPE) === self.CONSTANTS.FORM.PAGE_BREAK) {
@@ -200,6 +203,23 @@ App.View.FormEdit = App.View.Forms.extend({
     // Push the last page
     if (curPage) {
       pages.push(curPage);
+    }
+
+
+
+    for (var i = 0; i < pages.length; i++) {
+      var p = pages[i];
+
+      var fields = p["fields"];
+      //reset the fieldref ind
+      // exes otherwise $fh.forms gives out.
+      var fieldRefs = self.form.get("fieldRef");
+      var resetRef = {};
+      for (var fi = 0; fi < fields.length; fi++) {
+        resetRef[fields[fi]._id] = {"page":i,"field":fi};
+      }
+      console.log("fieldRefs set to ", resetRef);
+      self.form.set("fieldRef", resetRef);
     }
 
     this.form.set(this.CONSTANTS.FORM.PAGES, pages);
