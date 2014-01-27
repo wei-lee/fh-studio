@@ -147,7 +147,7 @@ App.View.FormThemesEdit = App.View.Forms.extend({
   renderLogo : function(){
     var self = this,
     typogEl = $('<div class="logo"></div>'),
-    logoBase64 = this.theme.get(this.CONSTANTS.THEME.LOGO);
+    logoBase64 = this.theme.get(this.CONSTANTS.THEME.LOGO).base64String;
     typogEl.append('<h4>Logo</h4>');
     typogEl.append(this.templates.$themeLogo({ logoBase64 : logoBase64}));
     if (!this.readOnly){
@@ -319,8 +319,21 @@ App.View.FormThemesEdit = App.View.Forms.extend({
       filereader.readAsDataURL(file);
       filereader.onload = function(e) {
         var b64 = e.target.result.replace("data:image/png;base64,", "").replace("data:image/jpg;base64,", "");
-        self.theme.set(self.CONSTANTS.THEME.LOGO, b64);
-        return done();
+
+        //Getting image height and width
+        var image = new Image();
+
+        image.onload = function(){
+
+          var themeLogo = {};
+          themeLogo.base64String = b64;
+          themeLogo.height = image.height;
+          themeLogo.width = image.width;
+          self.theme.set(self.CONSTANTS.THEME.LOGO, themeLogo);
+          return done();
+        };
+
+        image.src = b64;
       };
     }else{
       // No image to upload - all done

@@ -74,11 +74,20 @@ App.View.FormEdit = App.View.Forms.extend({
 
     var fb = this.fb;
 
+    this.fb.mainView.on("reorder", function (){
+       console.log("form reordered");
+      self.syncModelAndFormBuilder();
+      self.updatePreview();
+    });
+
     this.fb.collection.bind('add', function (model) {
       model.set('_id', model.cid);
       if (model.get(self.CONSTANTS.FB.FIELD_TYPE) === self.CONSTANTS.FORM.PAGE_BREAK) {
         self.reorder.render();
       }
+      var fieldRefs = self.form.get("fieldRef");
+
+      fieldRefs[model.cid] = model;
     });
     this.fb.collection.bind('change', function (model) {
       if (model.get(self.CONSTANTS.FB.FIELD_TYPE) === self.CONSTANTS.FORM.PAGE_BREAK) {
@@ -155,6 +164,7 @@ App.View.FormEdit = App.View.Forms.extend({
   },
 
   themeSelect :function (e) {
+    console.log("theme select");
     var self = this;
     var val = $(e.target).val();
     var prevWrapper = self.$el.first("#preview_wrapper");
@@ -163,6 +173,7 @@ App.View.FormEdit = App.View.Forms.extend({
       return;
     }
     var theme = self.themes.findWhere({"_id":val });
+    console.log("have css ", theme.get("css"));
     prevWrapper.append('<style>'+theme.get("css")+'</style>');
   },
   syncModelAndFormBuilder: function () {
@@ -194,6 +205,23 @@ App.View.FormEdit = App.View.Forms.extend({
       pages.push(curPage);
     }
 
+
+
+    for (var i = 0; i < pages.length; i++) {
+      var p = pages[i];
+
+      var fields = p["fields"];
+      //reset the fieldref ind
+      // exes otherwise $fh.forms gives out.
+      var fieldRefs = self.form.get("fieldRef");
+      var resetRef = {};
+      for (var fi = 0; fi < fields.length; fi++) {
+        resetRef[fields[fi]._id] = {"page":i,"field":fi};
+      }
+      console.log("fieldRefs set to ", resetRef);
+      self.form.set("fieldRef", resetRef);
+    }
+
     this.form.set(this.CONSTANTS.FORM.PAGES, pages);
     this.form.set(this.CONSTANTS.FORM.NAME, this.$el.find('#formInputName').val());
     this.form.set(this.CONSTANTS.FORM.DESC, this.$el.find('#formTextareaDesc').val());
@@ -223,8 +251,10 @@ App.View.FormEdit = App.View.Forms.extend({
     this.trigger('back');
   },
   updatePreview: function () {
+    console.log("update preview called");
     var self = this;
     var rawData = JSON.stringify(self.form.toJSON());
+    console.log("update preview raw data", self.form.toJSON());
     $fh.forms.init({
       config: {
         "cloudHost": "", "appid": new Date().getTime()
