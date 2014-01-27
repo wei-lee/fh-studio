@@ -15,9 +15,5 @@ App.Model.FieldRule = Backbone.RelationalModel.extend({
 App.Collection.FieldRules = App.Collection.FormBase.extend({
   initialize: function() {},
   model: App.Model.FieldRule,
-  urlUpdate: '/api/v2/forms/form/fieldRules',
-  sync: function (method, model, options) {
-    model.formId = model.formid;
-    this[method].apply(this, arguments);
-  }
+  urlUpdate: '/api/v2/forms/form/fieldRules'
 });

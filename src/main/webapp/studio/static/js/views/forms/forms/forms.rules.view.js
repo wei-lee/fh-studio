@@ -213,7 +213,7 @@ App.View.Rules = App.View.Forms.extend({
       }
     });
 
-    self.collection.sync("update", {"rules": self.collection, "formid": self.form.get("_id")}, {"success": function (data) {
+    self.collection.sync("update", {"rules": self.collection, "formId": self.form.get("_id")}, {"success": function (data) {
       console.log("rule type ", type);
       if("field" == type){
         self.options.form.set("fieldRules", data);
