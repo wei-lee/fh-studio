@@ -51,9 +51,9 @@ App.View.FormListBase = App.View.Forms.extend({
     return this;
   },
   renderEmptyView : function(){
-    this.fullpagemessage = new App.View.FullPageMessageView({ message : 'No ' + this.pluralTitle.toLowerCase() + ' found', button : 'Create ' + this.singleTitle, cb :$.proxy(this.onCreate, this)});
+    this.message = new App.View.FullPageMessageView({ message : 'No ' + this.pluralTitle.toLowerCase() + ' found', button : 'Create ' + this.singleTitle, cb :$.proxy(this.onCreate, this)});
 
-    this.$el.append(this.fullpagemessage.render().$el);
+    this.$el.append(this.message.render().$el);
     return this;
   },
   renderList : function(){

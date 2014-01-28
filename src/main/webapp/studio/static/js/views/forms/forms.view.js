@@ -133,7 +133,6 @@ App.View.Forms = Backbone.View.extend({
       _.each(p.get(self.CONSTANTS.FORM.FIELDS), function(f, i){
         fields.push(f);
       });
-
     });
     return fields;
   },

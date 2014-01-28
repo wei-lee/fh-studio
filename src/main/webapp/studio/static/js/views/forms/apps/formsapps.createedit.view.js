@@ -82,7 +82,7 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
     name = '';
 
     if (!this.loaded){
-      this.$el.height(134);
+      this.$el.height(360); // TODO was 134);
       return this;
     }
 
@@ -104,7 +104,6 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
     formsSelect = this.$el.find('#formAppForms');
 
     this.forms.each(function(f){
-console.log('formsapps.createedit.view render - each form:', f.get(self.CONSTANTS.FORM.NAME));
       formsSelect.append('<option value="' + f.get('_id') + '">' + f.get(self.CONSTANTS.FORM.NAME) + '</option>');
     });
     this.themes.each(function(f){

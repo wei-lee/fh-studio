@@ -13,7 +13,8 @@ App.View.FormAppsList = App.View.FormListBase.extend({
   events : {
     'click tr' : 'onRowSelected',
     'click .btn-add-formsapp' : 'onCreate',
-    'click .btn-add-existing' : 'onCreate'
+    'click .btn-add-existing' : 'onProgress',
+    'click .btn-add-existing-app' : 'onProgress'
   },
   initialize: function(){
     var self = this;
@@ -62,5 +63,10 @@ App.View.FormAppsList = App.View.FormListBase.extend({
     var form = new App.View.FormAppsCreateEdit({ model : updatedModel, mode : 'update', collection : this.collection });
     this.$previewEl.html(form.render().$el);
     this.$previewEl.show();
+  },
+  onAddExisting: function(){
+console.log('App.View.FormAppsList - onAddExisting()');
+    var form = new App.View.FormAppsCreateEdit({ mode : 'create', collection : this.collection });
+console.log('App.View.FormAppsList - onAddExisting() create appedit returned with:' , form);
   }
 });
