@@ -30,7 +30,7 @@ App.View.SubmissionDetail = App.View.Forms.extend({
     }
 
     container.append(self.templates.$submissionDetail(data));
-      $('.downloadfile').unbind('click').bind('click',self.downloadFile);
+    $('.downloadfile').unbind('click').bind('click',self.downloadFile);
 
   },
 

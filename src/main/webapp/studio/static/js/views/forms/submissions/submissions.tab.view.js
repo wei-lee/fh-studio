@@ -156,7 +156,8 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
     };
 
     ret.error = function (err){
-
+        console.log("error ", err);
+        App.View.Forms.prototype.message("failed to get forms", "warning");
     };
 
     formApps.fetch(ret);
