@@ -1,8 +1,8 @@
+var App = App || {};
+App.forms = App.forms || {};
 
 var FH_APPFORM_PREFIX = "fh_appform_";
 var themeCSSFunctions = {};
-var App = App || {};
-App.forms = App.forms || {};
 
 themeCSSFunctions[FH_APPFORM_PREFIX] = {
   "logo" : function(themeJSON){
@@ -13,7 +13,7 @@ themeCSSFunctions[FH_APPFORM_PREFIX] = {
 
 
     if(base64Image){
-      logoStr += "background-image: url(\"" + base64Image + "\");"
+      logoStr += "background-image: url(\"" + base64Image + "\");";
       logoStr += "height: " + imageHeight + "px;";
       logoStr += "width:" + imageWidth + "px;";
       return logoStr;
@@ -404,7 +404,7 @@ themeCSSFunctions[FH_APPFORM_PREFIX] = {
 
     //Background Color -->set to set the text color.
     if(requiredColour){
-      requiredCSS += "color: " + requiredColour + ";";
+      requiredCSS = this.getBackgroundColour(requiredColour);
     } else {
       return null;
     }
@@ -517,7 +517,10 @@ themeCSSFunctions[FH_APPFORM_PREFIX] = {
     return fontCSS;
   },
   "getBackgroundColour" : function(colourField){
-    return "background-color:" + colourField + ";"
+    return "background-color:" + colourField + ";";
+  },
+  "getButtonBorder" : function(buttonColor){
+    return "border: 1px solid " + buttonColor + ";";
   },
   "get_button_css": function(themeJSON, button_name, button_font){
     var buttonStr = "";
@@ -525,6 +528,7 @@ themeCSSFunctions[FH_APPFORM_PREFIX] = {
 
     if(buttonColor){
       buttonStr = buttonStr.concat(this.getBackgroundColour(buttonColor));
+      buttonStr = buttonStr.concat(this.getButtonBorder(buttonColor));
     } else {
       return null;
     }
@@ -535,7 +539,7 @@ themeCSSFunctions[FH_APPFORM_PREFIX] = {
   }
 };
 
-App.forms.themeCSSGenerator = function(themeJSON){
+App.forms.themeCSSGenerator =  function(themeJSON){
   var generatedCSSJSON = {};
 
   //All of these have to build values that are customizable.
@@ -565,17 +569,17 @@ App.forms.themeCSSGenerator = function(themeJSON){
       "classNameAdditions": [],
       "classAdditions": {
         ".special_button" :{
-          "width": "100\%",
+          "width": "100%",
           "margin-top": "10px",
           "line-height": "28px"
         },
         ".special_button.fh_appform_removeInputBtn" :{
-          "width": "50\%",
+          "width": "50%",
           "margin-top": "10px",
           "line-height": "28px"
         },
         ".special_button.fh_appform_addInputBtn" :{
-          "width": "50\%",
+          "width": "50%",
           "margin-top": "10px",
           "line-height": "28px"
         }
@@ -673,7 +677,18 @@ App.forms.themeCSSGenerator = function(themeJSON){
       },
       "classNameAdditions": [],
       "classNameAdditionsChildren": [],
-      "classAdditions": {}
+      "classAdditions": {
+        " .radio": {
+          "margin-right": "10px"
+        },
+        " .checkbox": {
+          "margin-right": "10px",
+          "display" : "inline"
+        }," .choice": {
+          "margin-right" : "10px",
+          "display" : "inline"
+        }
+      }
     },
     "field_instructions": {
       "generatedCSS": "",
@@ -725,17 +740,13 @@ App.forms.themeCSSGenerator = function(themeJSON){
     },
     "page_title": {
       "generatedCSS": "",
-      "staticCSSAdditions": {
-        "text-align": "center"
-      },
+      "staticCSSAdditions": {},
       "classNameAdditions": [],
       "classAdditions": {}
     },
     "page_description" : {
       "generatedCSS": "",
-      "staticCSSAdditions": {
-        "text-align": "center"
-      },
+      "staticCSSAdditions": {},
       "classNameAdditions": [],
       "classAdditions": {}
     },
@@ -751,18 +762,17 @@ App.forms.themeCSSGenerator = function(themeJSON){
     "progress_steps" : {
       "generatedCSS": "",
       "staticCSSAdditions": {
-        "width" : "100\%"
+        "width" : "100%"
       },
       "classNameAdditions": [],
       "classAdditions": {
         " td": {
           "text-align": "center"
         },
-        " td.active .fh_appform_page_title": {
-          "text-align": "center",
-          "display": "inline"
+        " td .active .page_title": {
+          "text-align": "center"
         },
-        " .fh_appform_page_title" : {
+        " .page_title" : {
           "padding-left": "10px",
           "display": "none"
         },
@@ -839,7 +849,7 @@ App.forms.themeCSSGenerator = function(themeJSON){
       "staticCSSAdditions": {
         "background-position" : "center",
         "background-repeat" : "no-repeat",
-        "width" : "100\%"
+        "width" : "100%"
       },
       "classNameAdditions": [],
       "classAdditions": {}
@@ -858,21 +868,28 @@ App.forms.themeCSSGenerator = function(themeJSON){
         generatedCSS = "";
       }
 
+      var cssClassInfo = generatedCSSJSON[FH_APPFORM_PREFIX][cssClass];
+
       //Have generated all of the css dynamic content, need to add in the static content.
-      generatedCSS += getStaticCSSString(generatedCSSJSON[FH_APPFORM_PREFIX][cssClass].staticCSSAdditions);
+      generatedCSS += getStaticCSSString(cssClassInfo.staticCSSAdditions);
+
+//      if(cssClass == "button_navigation"){
+//        console.log("generatedCSS", generatedCSS);
+//      }
 
       var cssStr = "";
-      var printCSSClass = generatedCSSJSON[FH_APPFORM_PREFIX][cssClass].parentClass ? generatedCSSJSON[FH_APPFORM_PREFIX][cssClass].parentClass : cssClass;
-      var cssClassName = "." + FH_APPFORM_PREFIX + printCSSClass;
+      var printCSSClass = cssClassInfo.parentClass ? cssClassInfo.parentClass : cssClass;
+      var cssClassName = ".fh_appform_container " + "." + FH_APPFORM_PREFIX + printCSSClass;
       var classNameAdditions = "";
 
       //Building the css class name
-      for(var classAdditionIndex = 0; classAdditionIndex < generatedCSSJSON[FH_APPFORM_PREFIX][cssClass].classNameAdditions.length; classAdditionIndex++){
+      var classAdditionIndex;
+      for(classAdditionIndex=0; classAdditionIndex < generatedCSSJSON[FH_APPFORM_PREFIX][cssClass].classNameAdditions.length; classAdditionIndex++){
         classNameAdditions += generatedCSSJSON[FH_APPFORM_PREFIX][cssClass].classNameAdditions[classAdditionIndex];
       }
 
       if(generatedCSSJSON[FH_APPFORM_PREFIX][cssClass].classNameAdditionsChildren){
-        for(var classAdditionIndex = 0; classAdditionIndex < generatedCSSJSON[FH_APPFORM_PREFIX][cssClass].classNameAdditionsChildren.length; classAdditionIndex++){
+        for(classAdditionIndex=0; classAdditionIndex < generatedCSSJSON[FH_APPFORM_PREFIX][cssClass].classNameAdditionsChildren.length; classAdditionIndex++){
           classNameAdditions += cssClassName + generatedCSSJSON[FH_APPFORM_PREFIX][cssClass].classNameAdditionsChildren[classAdditionIndex];
         }
       }
@@ -881,7 +898,7 @@ App.forms.themeCSSGenerator = function(themeJSON){
 
       fullThemeCSSString += cssStr;
 
-      fullThemeCSSString += generateSubClassCSS(cssClassName, generatedCSSJSON[FH_APPFORM_PREFIX][cssClass].classAdditions);
+      fullThemeCSSString += generateSubClassCSS(cssClassName, cssClassInfo.classAdditions);
 
 
       generatedCSSJSON[FH_APPFORM_PREFIX][cssClass].generatedCSS = generatedCSS;
@@ -920,4 +937,9 @@ App.forms.themeCSSGenerator = function(themeJSON){
 
   return processThemeJSON;
 };
+
+
+
+
+
 
