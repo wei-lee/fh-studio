@@ -13,7 +13,7 @@ App.View.FormAppsList = App.View.FormListBase.extend({
   events : {
     'click tr' : 'onRowSelected',
     'click .btn-add-formsapp' : 'onCreate',
-    'click .btn-add-existing' : 'onProgress',
+    'click .btn-add-existing' : 'onCreate',
     'click .btn-add-existing-app' : 'onProgress'
   },
   initialize: function(){
