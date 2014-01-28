@@ -6,7 +6,7 @@ App.collections = App.collections || {};
 
 
 App.Model.FormSubmission = App.Model.FormBase.extend({
-
+   fetchURL : "/api/v2/forms/submission/{{id}}"
 });
 
 
@@ -21,15 +21,14 @@ App.Collection.FormSubmissions = App.Collection.FormBase.extend({
   model: App.Model.FormSubmission,
   urlRead: '/api/v2/forms/submission',
   urlSearch : '/studio/static/js/model/backbone/mocks/forms/submissions.json', //change to be the search url
+  urlGetSubmission : '/api/v2/forms/submission/{{id}}',
+
   sync: function (method, model, options) {
     console.log("sync called for model");
     this[method].apply(this, arguments);
   },
 
   read : function(method, model, options){
-
-    console.log("read form submissions called");
-
     var self = this;
     var data  = {};
     if(this.formId){
@@ -52,7 +51,7 @@ App.Collection.FormSubmissions = App.Collection.FormBase.extend({
           if (res.submissions ) {
             for(var i=0; i < res.submissions.length; i++){
               var sub = res.submissions[i];
-              console.log("submission formfield  ", sub.formFields[0].fieldValues[0]);
+              //console.log("submission formfield  ", sub.formFields[0].fieldValues[0]);
 
               sub.field1val = '';
               sub.field2val = '';
@@ -92,10 +91,8 @@ App.Collection.FormSubmissions = App.Collection.FormBase.extend({
       self.trigger("sync");
     }
   },
-  update : function(method, model, options){
-   console.log("not yet implemented");
-  },
-  search : function (queryOb, options){
+
+  search : function (queryOb, options){      //NOTE THIS USES MOCK DATA AS SERVERSIDE IS NOT DONE
     $.ajax({
       type: 'POST',
       url: this.urlSearch,

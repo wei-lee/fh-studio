@@ -1,8 +1,9 @@
 Handlebars.registerHelper("createFormField", function (options, context){
   //"location", "locationMap", "sectionBreak", "matrix"
-  console.log("got createFormField ", options);
   var ret = "";
   var i;
+  var def = {};
+
   if(options.fieldId){
     switch (options.fieldId.type){
       case "text":
@@ -26,18 +27,17 @@ Handlebars.registerHelper("createFormField", function (options, context){
       case "photo":
       case "signature":
         for( i=0; i < options.fieldValues.length; i++){
-          ret+="<div class='row-fluid'><img style='width: 40%' src="+options.fieldValues[i]+"></div>";
+          ret+="<div class='row-fluid'><img style='width: 40%' src='/api/v2/forms/submission/file/"+options.fieldValues[i].groupId+"'></div>";
         }
         break;
       case "file":
         for( i=0; i < options.fieldValues.length; i++){
-          ret+="<div class='row-fluid '><a href='/api/v2/forms/submission/file/"+options.fieldValues[i]+"' class='btn-small downloadfile icon-download'   data-groupid='"+options.fieldValues[i]+"' >Download</a></hr></div>";
+          ret+="<div class='row-fluid '><a href='/api/v2/forms/submission/file/"+options.fieldValues[i].groupId+"' class='btn-small downloadfile icon-download'   data-groupid='"+options.fieldValues[i]+"' >Download</a></hr></div>";
         }
         break;
       case "checkbox":
         for( i=0; i < options.fieldValues.length; i++){
           var fValues = options.fieldValues[i];
-          console.log("creating checkboxes ", fValues.selections);
           ret+="<div class='row-fluid'>";
           for(var k=0; k < fValues.selections.length; k++ ){
             ret+="<input disabled type='checkbox' checked value='"+fValues.selections[k]+"'> " +fValues.selections[k]+" ";
@@ -52,8 +52,26 @@ Handlebars.registerHelper("createFormField", function (options, context){
         }
         break;
       case "location":
-        for( i=0; i < options.fieldValues.length; i++){
-          ret+="<div class='row-fluid'>LonLat: <input disabled type='text' value='"+options.fieldValues[i]['long']+ "," + options.fieldValues[i].lat + "'> <button class='btn-mini icon-location-arrow'></button> <hr/></div>";
+        if(options.fieldId.fieldOptions.definition && "northEast" === options.fieldId.fieldOptions.definition.locationUnit){
+          for( i=0; i < options.fieldValues.length; i++){
+            ret+="<div class='row-fluid'><input disabled type='text' value='zone: "+options.fieldValues[i]['zone']+ ", eastings: " + options.fieldValues[i]['eastings'] + ", northings: " + options.fieldValues[i]['northings']+" '> <hr/></div>";
+          }
+        }else{
+          for( i=0; i < options.fieldValues.length; i++){
+            ret+="<div class='row-fluid'>LonLat: <input disabled type='text' value='"+options.fieldValues[i]['long']+ "," + options.fieldValues[i].lat + "'>  <hr/></div>";
+          }
+        }
+        break;
+      case 'locationMap':
+        if(options.fieldId.fieldOptions.definition && "northEast" === options.fieldId.fieldOptions.definition.locationUnit){
+          for( i=0; i < options.fieldValues.length; i++){
+            ret+="<div class='row-fluid'><input disabled type='text' value='zone: "+options.fieldValues[i]['zone']+ ", eastings: " + options.fieldValues[i]['eastings'] + ", northings: " + options.fieldValues[i]['northings']+" '> <hr/></div>";
+          }
+        }else{
+          for( i=0; i < options.fieldValues.length; i++){
+            ret+="<div class='row-fluid'>LonLat: <input disabled type='text' value='"+options.fieldValues[i]['long']+ "," + options.fieldValues[i].lat + "'>  <hr/></div>";
+          }
+
         }
         break;
       default:
@@ -65,7 +83,6 @@ Handlebars.registerHelper("createFormField", function (options, context){
 
 
 Handlebars.registerHelper("checkRole", function (req, options){
-  console.log("required ", req);
   var reqRoles = req.split(",");
   var userRoles = $fw.getUserProp("roles");
   var hasPerm = false;

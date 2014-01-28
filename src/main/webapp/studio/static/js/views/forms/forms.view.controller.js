@@ -5,10 +5,12 @@ App.View.FormsController = Backbone.View.extend({
     'click .btn-themes' : 'onThemes',
     'click .btn-edit-theme' : 'onEditTheme',
     'click .btn-submissions' : 'onSubmissions',
+    'click .btn-groups' : 'onGroups',
     'click .btn-app-submissions' : 'onAppSubmissions',
     'click .btn-form-submissions' : 'onFormSubmissions',
     'click .btn-edit-form' : 'onEditForm',
     'click .btn-edit-form-rules' : 'onEditFormRules',
+    'click .btn-edit-form-notifications' : 'onEditFormNotifications',
     'click .formapp-link' : 'onFormAppLoad',
     'click .btn-add-submission' : 'onAddSubmission',
     'click #editSubmission' : 'onEditSubmission',
@@ -23,7 +25,7 @@ App.View.FormsController = Backbone.View.extend({
   render: function(options) {
     var self = this;
 
-    this.$el.addClass('row formscontrollerdiv');
+    this.$el.addClass('row formscontrollerdiv row-fluid');
 
     this.menu = new App.View.FormMenu();
     this.bind('menuchange', function(active){
@@ -53,10 +55,10 @@ App.View.FormsController = Backbone.View.extend({
       this.views.themes.$el.remove();
     }
     this.views.themes = new App.View.FormThemesList();
-    this.$el.append(this.views.themes.render().$el);
+    this.$el.append(this.views.themes.$el);
   },
   onEditTheme : function(e){
-    var theme = this.views.themes.collection.at(this.views.themes.index);
+    var theme = this.views.themes.collection.findWhere({_id : this.views.themes._id});
     this.views.themes.$el.hide();
 
     var editTheme = new App.View.FormThemesEdit({ theme : theme, collection : this.views.themes.collection, readOnly : false});
@@ -82,17 +84,39 @@ App.View.FormsController = Backbone.View.extend({
   },
   onAppSubmissions : function(){
     this.onSubmissions();
-    var view = this.views.submissions;
+    var view = this.views.submissions,
+    appId = this.views.apps._id,
+    e = { target : view.$el.find('a#perAppSubmissions') }; // spoof an event object so it can switch tab
+
+    // Select this form in the dropdown and trigger the change event needed
+    view.bind('perAppSubmissionsRendered', function(){
+      view.$el.find('.appSelect').val(appId).trigger('change');
+    });
+
+    view.perAppSubmissions(e);
   },
   onFormSubmissions : function(){
     this.onSubmissions();
-    var view = this.views.submissions;
+    var formId = this.views.forms._id,
+    view = this.views.submissions,
+    e = { target : view.$el.find('a#perFormSubmissions') }; // spoof an event object so it can switch tab
+    view.perFormSubmissions(e);
+    // Select this form in the dropdown and trigger the change event needed
+    view.$el.find('.formSelect').val(formId).trigger('change');
+  },
+  onGroups : function(){
+    this.trigger('menuchange', 'groups');
+    if (this.views.groups){
+      this.views.groups.$el.remove();
+    }
+    this.views.groups= new App.View.FormGroupsList();
+    this.$el.append(this.views.groups.render().$el);
   },
   /*
     Edit Form view switching
    */
   onEditForm : function(e){
-    var form = this.views.forms.collection.at(this.views.forms.index),
+    var form = this.views.forms.collection.findWhere({ _id : this.views.forms._id }),
     menuEl = this.$el.find(".forms_menu_container");
     this.views.forms.$el.hide();
 
@@ -103,14 +127,27 @@ App.View.FormsController = Backbone.View.extend({
   },
   onEditFormRules : function(e){
     var self = this;
-    var form = this.views.forms.collection.at(this.views.forms.index),
+    var form = this.views.forms.collection.findWhere({ _id : this.views.forms._id }),
     menuEl = this.$el.find(".forms_menu_container");
     this.views.forms.$el.hide();
 
-    var editFormRules = new App.View.EditFormRules({ form : form, $pagesMenuEl : menuEl });
+    var editFormRules = new App.View.EditFormRules({ form : form, $pagesMenuEl : menuEl, viewController: this });
     //this.editForm.bind('back', $.proxy(this.back, this));
     this.$el.append(editFormRules.render().$el);
     this.subViews.push(editFormRules);
+
+
+  },
+  onEditFormNotifications : function(e){
+    var self = this;
+    var form = this.views.forms.collection.findWhere({ _id : this.views.forms._id });
+
+    this.views.forms.$el.hide();
+
+    var formNotifications = new App.View.FormNotifications({ form : form, _id : form.get('_id') });
+    formNotifications.bind('back', $.proxy(this.back, this));
+    this.$el.append(formNotifications.render().$el);
+    this.subViews.push(formNotifications);
 
 
   },
@@ -118,15 +155,15 @@ App.View.FormsController = Backbone.View.extend({
 
    */
   back : function(){
-    // TODO - update breadcrumb
     if (this.subViews && this.subViews.length > 0){
-      var toHide = this.subViews.pop();
+      var toHide = this.subViews.pop(),
+      active = this.views[this.active];
       toHide.$el.remove();
       // If there's still items left in the stack, show it
       if (this.subViews.length>0){
         this.subViews[this.subViews.length-1].$el.show();
-      }else{
-        this.views[this.active].$el.show();
+      }else if (active && active.$el){
+        active.$el.show();
       }
     }
   },

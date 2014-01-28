@@ -30,7 +30,38 @@ App.Model.FormPage = Backbone.RelationalModel.extend({
       key: 'page',
       includeInJSON: 'id'
     }
-  }]
+  }],
+
+  "findFieldById" : function (id , cb){
+    var fields = this.get("fields");
+    var field;
+    var index;
+    if(fields){
+      for(var i=0; i < fields.length; i++){
+        var f = fields[i];
+        if(f && f.get("_id") === id){
+          field = f;
+          index = i;
+          break;
+        }
+      }
+    }
+    cb(undefined, field, index);
+  },
+
+  "removeFieldFromPage":function (fieldId){
+    var fields = this.get("fields");
+    if(fields){
+      for(var i=0; i < fields.length; i++){
+        var f = fields[i];
+        if(f && f._id === fieldId){
+          console.log("found field removing it " , f);
+          this.get("fields").splice(i,1);
+        }
+      }
+    }
+  }
+
 });
 
 App.Model.FormField = Backbone.RelationalModel.extend({idAttribute: '_id'});
@@ -45,32 +76,18 @@ App.Collection.Form = App.Collection.FormBase.extend({
   urlUpdate: '/api/v2/forms/form/',
   urlDelete: '/api/v2/forms/form/'
 });
-App.Collection.AppsUsingThisForm = Backbone.Collection.extend({
-  url : '/api/v2/forms/{{id}}/apps',
-  appId : undefined,
+
+App.Model.AppUsingThisForm = App.Model.FormBase.extend({});
+App.Collection.AppsUsingThisForm = App.Collection.FormBase.extend({
+  pluralName : false,
+  model : App.Model.AppUsingThisForm,
+  urlBase : '/api/v2/forms/{{id}}/apps',
   initialize : function(options){
     this.options = options;
   },
   fetch : function(options){
-    var url = this.url.replace('{{id}}', this.options.id);
-    $.ajax({
-      type: 'GET',
-      url: url,
-      cache: true,
-      success: function(res){
-        if (res) {
-          if ($.isFunction(options.success)) {
-            options.success(res, options);
-          }
-        } else {
-          if ($.isFunction(options.error)) {
-            options.error(res, options);
-          }
-        }
-      },
-      error: function(xhr, status){
-        options.error(arguments);
-      }
-    });
+    this.url = this.urlBase.replace('{{id}}', this.options.id);
+    // Form Base Read expects method, model, options - we only need to pass options
+    return App.Collection.FormBase.prototype.read.apply(this, ['read', null, options]);
   }
 });

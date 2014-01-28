@@ -2,36 +2,12 @@ var App = App || {};
 App.View = App.View || {};
 
 App.View.Rules = App.View.Forms.extend({
-
-  FIELD_RULES: {
-    "dateTime": ["is at", "is before", "is after"],
-    "select": ["is", "is not", "contains", "does not contain", "begins with", "ends with"],
-    "text": ["is", "is not", "contains", "does not contain", "begins with", "ends with"],
-    "emailAddress": ["is", "is not", "contains", "does not contain", "begins with", "ends with"],
-    "number": ["is equal to", "is greater than", "is less than"],
-    "textarea": ["is", "is not", "contains", "does not contain", "begins with", "ends with"],
-    "checkboxes":["is","is not"],
-    "radio": ["is", "is not", "contains", "does not contain", "begins with", "ends with"]
-  },
-
   targets : {
     "targetField":[],
     "targetPage":[]
   },
 
-  //todo all the rules seem to be the same in wufoo so just have one set of rules?
-  PAGE_RULES: {
-    "dateTime": ["is at", "is before", "is after"],
-    "select": ["is", "is not", "contains", "does not contain", "begins with", "ends with"],
-    "text": ["is", "is not", "contains", "does not contain", "begins with", "ends with"],
-    "emailAddress": ["is", "is not", "contains", "does not contain", "begins with", "ends with"],
-    "number": ["is equal to", "is greater than", "is less than"],
-    "textarea": ["is", "is not", "contains", "does not contain", "begins with", "ends with"],
-    "checkboxes":["is","is not"],
-    "radio": ["is", "is not", "contains", "does not contain", "begins with", "ends with"]
-  },
-
-  "EXCLUDED_FIELD_TYPES" : ["checkbox"],
+  "EXCLUDED_FIELD_TYPES" : ["checkboxes"],
 
   templates: {
     rulesTabs: '#formsRulesTab',
@@ -99,7 +75,6 @@ App.View.Rules = App.View.Forms.extend({
     container.remove();
     if (ruleid) {
       var model = self.collection.findWhere({"_id": ruleid});
-      console.log("found model to removce ", model);
       self.collection.remove(model, {
         "success": function () {
 
@@ -229,21 +204,25 @@ App.View.Rules = App.View.Forms.extend({
         var rule;
         if("field" == type){
           rule = new App.Model.FieldRule(data);
+          self.collection.add(rule);
         }else if("page" == type){
           rule = new App.Model.PageRule(data);
+          self.collection.add(rule);
         }
-        self.collection.add(rule);
+
       }
     });
 
-    self.collection.sync("update", {"rules": self.collection, "formid": self.form.get("_id")}, {"success": function (data) {
+    self.collection.sync("update", {"rules": self.collection, "formId": self.form.get("_id")}, {"success": function (data) {
       console.log("rule type ", type);
       if("field" == type){
         self.options.form.set("fieldRules", data);
         console.log("set field rules to ",data);
+        $('#fieldRules').trigger('click');
       }else if("page" == type){
         self.options.form.set("pageRules", data);
         console.log("set page rules to ",data);
+        $('#pageRules').trigger('click');
       }
       App.View.Forms.prototype.message('updated rules successfully');
 
@@ -260,7 +239,7 @@ App.View.Rules = App.View.Forms.extend({
     var type = $(e.target).find('option').filter(':selected').data("type").trim();
     var rulesSelect = $(e.target).next('select');
     rulesSelect.empty();
-    var conditionals = App.View.Forms.CONSTANTS.FIELD_RULES[type];
+    var conditionals = this.CONSTANTS.FIELD_RULES[type];
     if (!conditionals) {
 
     } else {
@@ -278,7 +257,6 @@ App.View.Rules = App.View.Forms.extend({
     this.$el.find('.btn-large').tooltip('hide');
     var condId = $(e.target).data("conditionnum");
     var container = this.$el.find('.conditioncontainer#' + condId);
-    console.log("looking for condition container ", '.conditioncontainer#' + condId, "found ", container);
     var ruleContainer = container.parent().prev('.ruleDefintionContainer');
     ruleContainer.find('.btn-add-condition').last().show();
     container.remove();

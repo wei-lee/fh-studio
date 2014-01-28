@@ -16,7 +16,6 @@ App.View.FormListBase = App.View.Forms.extend({
       self.collection.bind('reset', $.proxy(self.render, self));
       self.collection.trigger('reset');
     }, error : function(){
-      console.log("in error callback");
       self.$el.removeClass('busy');
       // Avoid flicker on our loading view
       setTimeout(function(){
@@ -63,8 +62,6 @@ App.View.FormListBase = App.View.Forms.extend({
     data = this.collection.toJSON();
 
 
-    console.log("renderList ",data);
-
     this.table = new App.View.DataTable({
       aaData : data,
       "fnRowCallback": function(nTr, sData, oData, iRow, iCol) {
@@ -83,7 +80,7 @@ App.View.FormListBase = App.View.Forms.extend({
       }
     });
     this.table.render();
-    this.table.$el.find('table').removeClass('table-striped');
+    this.table.$el.find('table').removeClass('table-striped').removeClass('table-bordered');
     this.$el.append(this.table.$el);
     
     this.$el.append('<br />');
@@ -106,8 +103,8 @@ App.View.FormListBase = App.View.Forms.extend({
 
     el.addClass('info');
 
-    this.index = el.data('index');
-    var model = this.collection.at(this.index);
+    this._id = el.data('_id');
+    var model = this.collection.findWhere({ _id : this._id});
     return model;
   },
 
@@ -123,11 +120,13 @@ App.View.FormListBase = App.View.Forms.extend({
 
     el.addClass('info');
 
-    this.index = el.data('index');
-    var model = this.collection.at(this.index);
+    this._id = el.data('_id');
+    var model = this.collection.findWhere({_id : this._id});
 
     this.$el.addClass('busy');
-    this.$previewEl.hide();
+    if (this.$previewEl){
+      this.$previewEl.hide();
+    }
     this.selectMessage.$el.hide();
 
     // Fetch the full form definition from the serverside
@@ -157,21 +156,21 @@ App.View.FormListBase = App.View.Forms.extend({
     e.preventDefault();
     var self = this,
     el = e.target.nodeName.toLowerCase() === "a" ? $(e.target) : $(e.target).parent(),
-    mode = $(el).data('mode'),
-    createView = new App.View.FormCreateClone({ collection : this.collection, mode : mode, singleTitle : this.singleTitle, singleId : this.singleId, pluralTitle : this.pluralTitle });
+    mode = $(el).data('mode');
+console.log('onCreate - mode:', mode, ', singleTitle:', this.singleTitle, ', singleId:', this.singleId, 'pluralTitle:', this.pluralTitle);
+    var createView = new App.View.FormCreateClone({collection : this.collection, mode : mode, singleTitle : this.singleTitle, singleId : this.singleId, pluralTitle : this.pluralTitle });
     this.$el.append(createView.render().$el);
-    createView.bind('message', function(){}); // TODO - do we want messages up top like with CMS?
   },
-  onClone : function(e){
+ onClone : function(e){
     e.preventDefault();
     var self = this,
-    cloneSource = this.collection.at(this.index),
+    cloneSource = this.collection.findWhere({_id : this._id}),
     createView = new App.View.FormCreateClone({ collection : this.collection, mode : 'clone', cloneSource : cloneSource.toJSON(), singleId : this.singleId, singleTitle : this.singleTitle, pluralTitle : this.pluralTitle });
     this.$el.append(createView.render().$el);
   },
   onDelete : function(){
     var self = this,
-    model = this.collection.at(this.index),
+    model = this.collection.findWhere({_id : this._id}),
     nameAttr = (self.singleTitle.toLowerCase()==="form") ? this.CONSTANTS.FORM.NAME : this.CONSTANTS.THEME.NAME,
     modal = new App.View.Modal({
       title: 'Confirm Delete',

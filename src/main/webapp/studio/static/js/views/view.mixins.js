@@ -39,6 +39,27 @@ App.View.TemplateMixins = {
 App.View.UtilMixins = {
   "displayMessage": function(mess){
     App.View.Forms.prototype.message(mess);
+  },
+  updateProgressBar: function(value) {
+    var progress_bar = this.progressModal.find('.progress .bar');
+    progress_bar.css('width', value + '%');
+    this.current_progress = value;
+  },
+  appendProgressLog: function(message) {
+    var log_area = this.progressModal.find('textarea');
+    var current = log_area.val();
+    log_area.val(current + message + "\n");
+    log_area.scrollTop(99999);
+    log_area.scrollTop(log_area.scrollTop() * 12);
+  },
+  destroyProgressModal: function() {
+    var self = this;
+
+    self.progressModal.modal('hide');
+    setTimeout(function() {
+      self.progressModal.remove();
+      self.progressModal = null;
+    }, 2000);
   }
 };
 
@@ -49,21 +70,23 @@ App.View.FormsMixins = {
       "name":"select a field",
       "type" :""
     }];
-    var rules = Constants.APP_FORMS.FIELD_RULES;
+    var rules = App.View.Forms.prototype.CONSTANTS.FIELD_RULES;
     if(! this.pages){
       throw new Error("no pages found aggregate fields");
     }
     for(var i=0; i < this.pages.length; i++){
       var page = this.pages.models[i];
       var pageFields = page.get("fields");
-      for(var p=0; p < pageFields.length; p++){
-        var fieldType = pageFields[p].type.trim();
+      if(pageFields && pageFields.length){
+        for(var p=0; p < pageFields.length; p++){
+          var fieldType = pageFields[p].type.trim();
 
-        var repeating = pageFields[p].repeating;
+          var repeating = pageFields[p].repeating;
 
-        if(rules[fieldType] && Constants.APP_FORMS.EXCLUDED_FIELD_TYPES.indexOf(fieldType) == -1 && ! repeating){
-          pageFields[p].rules = rules[fieldType];
-          this.fields.push(pageFields[p]);
+          if(rules[fieldType] && App.View.Forms.prototype.CONSTANTS.EXCLUDED_FIELD_TYPES.indexOf(fieldType) == -1 && ! repeating){
+            pageFields[p].rules = rules[fieldType];
+            this.fields.push(pageFields[p]);
+          }
         }
       }
     }
@@ -81,7 +104,7 @@ App.View.FormsMixins = {
 
         var repeating = pageFields[p].repeating;
 
-        if(repeating && Constants.APP_FORMS.EXCLUDED_FIELD_TYPES.indexOf(fieldType) == -1){
+        if(repeating && App.View.Forms.prototype.CONSTANTS.EXCLUDED_FIELD_TYPES.indexOf(fieldType) == -1){
           this.repeatingFields.push(pageFields[p]);
         }
       }
@@ -100,3 +123,4 @@ _.extend(App.View.FullPageMessageView.prototype, App.View.TemplateMixins);
 _.extend(App.View.SubmissionList.prototype, App.View.FormsMixins);
 _.extend(App.View.Rules.prototype, App.View.FormsMixins);
 _.extend(App.View.SubmissionList.prototype, App.View.UtilMixins);
+_.extend(App.View.FormAppsCreateEdit.prototype, App.View.UtilMixins);

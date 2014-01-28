@@ -7,22 +7,35 @@ App.View.FormCreateClone = App.View.Modal.extend({
     this.singleTitle = options.singleTitle;
     this.singleId = options.singleId;
     this.pluralTitle = options.pluralTitle;
-
+    var autoHide = options.autoHide;
     var tpl = Handlebars.compile($('#formCreateEdit' + this.singleId).html()),
     body = $(tpl({ CONSTANTS : this.CONSTANTS })),
     mode = options.mode || 'create';
 
+    var title;
+    var okText;
+
+    if (options.mode === 'clone') {
+      title = 'Clone ' + this.singleTitle;
+      okText = 'Clone';
+    } else if (options.mode === 'existing') {
+      title = 'Associate Forms with existing ' + this.singleTitle;
+      okText = 'Associate';      
+    } else {
+      title = 'Create New ' + this.singleTitle;
+      okText = 'Create';
+    }
 
     this.options = options = {
-      title: (options.mode==='clone') ? 'Clone ' + this.singleTitle : 'Create New ' + this.singleTitle,
-      okText: (options.mode==='clone') ? 'Clone' : 'Create',
+      title: title,
+      okText: okText,
       ok : this.ok,
       body : body,
       collection : options.collection,
       mode : mode,
-      cloneSource : options.cloneSource
+      cloneSource : options.cloneSource,
+      autoHide: autoHide
     };
-
 
     return this.constructor.__super__.initialize.apply(this, [options]);
   },
@@ -70,8 +83,10 @@ App.View.FormCreateClone = App.View.Modal.extend({
     formEl = this.$el.find('form'),
     vals = {};
 
-    if (this.singleId === "formsapp"){
-      return this.formsApp.onFormSave.apply(this.formsApp, arguments);
+    if (this.singleId === "formsapp") {
+      var create = (self.options.mode === 'create');
+      return this.formsApp.saveForm.apply(this.formsApp, [create, function(new_guid) {
+      }]);
     }
 
     $($(formEl).serializeArray()).each(function(idx, el){
@@ -100,7 +115,6 @@ App.View.FormCreateClone = App.View.Modal.extend({
       console.log('Error creating ' + self.singleTitle.toLowerCase());
       console.log(err);
     }});
-
   },
   stripIds : function(item){
     delete item._id;

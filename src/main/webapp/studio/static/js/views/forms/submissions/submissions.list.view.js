@@ -68,10 +68,10 @@ App.View.SubmissionList = App.View.FormListBase.extend({
     this.singleTitle = 'Forms Submission';
     this.columns = [{
       "sTitle": 'Form Name',
-      "mDataProp": "appCloudName"
+      "mDataProp": "formName"
     },{
       "sTitle": 'App Name',
-      "mDataProp": "appCloudName"
+      "mDataProp": "appName"
     },{
       "sTitle": 'App Env',
       "mDataProp": "appEnvironment"
@@ -240,12 +240,12 @@ App.View.SubmissionList = App.View.FormListBase.extend({
       checkedVal.replaceWith(' <input type="text" class="checkedValue" placeholder="checked value">');
     }
     rulesSelect.empty();
-    var conditionals = Constants.APP_FORMS.FIELD_RULES[type];
+    var conditionals = this.CONSTANTS.FIELD_RULES[type];
     if (!conditionals) {
         console.log("no conditionals found");
     } else {
       var html = "";
-      for (var i = 0; i < conditionals.length; i++) {
+      for (var i = 0; i  < conditionals.length; i++) {
         html += "<option value='" + conditionals[i] + "'>" + conditionals[i] + "</option>";
       }
       rulesSelect.append(html);
@@ -286,12 +286,23 @@ App.View.SubmissionList = App.View.FormListBase.extend({
   },
   onRowSelected : function (e){
     var self = this;
+    this.selectMessage = new App.View.FullPageMessageView({ message : 'Loading .... ', button : false });
+    this.$el.find('.emptyContainer').empty().append(this.selectMessage.render().$el);
+    $('.submissionslist').removeClass("span10").addClass("row-fluid");
     var model = this.getDataForRow(e);
-    if(self.submissionDetail){
-      self.submissionDetail.remove();
-    }
-    self.submissionDetail = new App.View.SubmissionDetail({"submission":model});
-    self.submissionDetail.render();
+    console.log(model);
+    model.fetch({"success": function (res){
+      if(self.submissionDetail){
+        self.submissionDetail.remove();
+      }
+      self.submissionDetail = new App.View.SubmissionDetail({"submission":res});
+      self.submissionDetail.render();
+    },"error":function (res){
+        console.log("submission error ", res);
+    }});
+
+
+
   },
 
   updatePreview : function(updatedModel){

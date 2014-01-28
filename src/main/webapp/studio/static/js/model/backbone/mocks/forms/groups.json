@@ -1,0 +1,13 @@
+{
+  "groups":[
+    {
+      "_id":"528666dd465df68f4f000002",
+      "description":"My super group",
+      "name":"Sales team",
+      "users" : ["hYQ765qgYNGzkeJkF_xoWNAx"],
+      "forms" : ["529f583974ab2af917000016", "529cb68920bf5c1711000002"],
+      "themes" : ["52a7a5ece6c80a5425000001"],
+      "apps" : ["EFCFNYAbND8oRXsg8Va4BoER"]
+    }
+  ]
+}

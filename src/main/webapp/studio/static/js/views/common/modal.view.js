@@ -1,3 +1,5 @@
+App = App || {};
+App.View = App.View || {};
 App.View.Modal = Backbone.View.extend({
   options: null,
   defaults: {
