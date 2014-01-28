@@ -156,13 +156,14 @@ App.View.FormsController = Backbone.View.extend({
    */
   back : function(){
     if (this.subViews && this.subViews.length > 0){
-      var toHide = this.subViews.pop();
+      var toHide = this.subViews.pop(),
+      active = this.views[this.active];
       toHide.$el.remove();
       // If there's still items left in the stack, show it
       if (this.subViews.length>0){
         this.subViews[this.subViews.length-1].$el.show();
-      }else{
-        this.views[this.active].$el.show();
+      }else if (active && active.$el){
+        active.$el.show();
       }
     }
   },
