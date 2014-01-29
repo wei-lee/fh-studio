@@ -62,7 +62,7 @@ App.Model.FormApp = App.Model.FormBase.extend({
       forms : model.get(constObj.FORMS),
       theme : model.get(constObj.THEMENAME)
     };
-console.log('model.create - method:',method,', updateObject: ', updateObject, ', createURL: ', url);
+
     $.ajax({
       type: 'POST',
       url: url, 
@@ -70,7 +70,6 @@ console.log('model.create - method:',method,', updateObject: ', updateObject, ',
       contentType : "application/json",
       cache: false,
       success: function(res){
-console.log('success func:');
         if (res) {
           if ($.isFunction(options.success)) {
             var merge = self.toJSON();
@@ -84,7 +83,6 @@ console.log('success func:');
         }
       },
       error: function(xhr, status){
-console.log('error func');
         options.error(arguments);
       }
     });

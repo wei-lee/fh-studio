@@ -51,9 +51,9 @@ App.View.FormListBase = App.View.Forms.extend({
     return this;
   },
   renderEmptyView : function(){
-    this.message = new App.View.FullPageMessageView({ message : 'No ' + this.pluralTitle.toLowerCase() + ' found', button : 'Create ' + this.singleTitle, cb :$.proxy(this.onCreate, this)});
+    this.fullpagemessage = new App.View.FullPageMessageView({ message : 'No ' + this.pluralTitle.toLowerCase() + ' found', button : 'Create ' + this.singleTitle, cb :$.proxy(this.onCreate, this)});
 
-    this.$el.append(this.message.render().$el);
+    this.$el.append(this.fullpagemessage.render().$el);
     return this;
   },
   renderList : function(){
@@ -157,7 +157,6 @@ App.View.FormListBase = App.View.Forms.extend({
     var self = this,
     el = e.target.nodeName.toLowerCase() === "a" ? $(e.target) : $(e.target).parent(),
     mode = $(el).data('mode');
-console.log('onCreate - mode:', mode, ', singleTitle:', this.singleTitle, ', singleId:', this.singleId, 'pluralTitle:', this.pluralTitle);
     var createView = new App.View.FormCreateClone({collection : this.collection, mode : mode, singleTitle : this.singleTitle, singleId : this.singleId, pluralTitle : this.pluralTitle });
     this.$el.append(createView.render().$el);
   },
