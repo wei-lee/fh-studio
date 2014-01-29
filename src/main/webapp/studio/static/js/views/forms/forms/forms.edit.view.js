@@ -82,7 +82,7 @@ App.View.FormEdit = App.View.Forms.extend({
 
     this.fb.collection.bind('add', function (model) {
       model.set('_id', model.cid);
-      if (model.get(self.CONSTANTS.FB.FIELD_TYPE) === self.CONSTANTS.FORM.PAGE_BREAK) {
+      if (model.get(self.CONSTANTS.FB.FIELD_TYPE)===self.CONSTANTS.FORM.PAGE_BREAK){
         self.reorder.render();
       }
       var fieldRefs = self.form.get("fieldRef");
@@ -143,6 +143,8 @@ App.View.FormEdit = App.View.Forms.extend({
 
     this.$fbEl.find('#formPreview').html(this.templates.$previewOutline());
 
+    this.$fbEl.find('.middle').removeClass('span6').addClass('span7');
+    this.$fbEl.find('.right').removeClass('span4').addClass('span3');
 
     var configName = $(this.$fbEl.find('input[name="' + this.CONSTANTS.FORM.NAME + '"]')),
     configDesc = $(this.$fbEl.find('textarea[name="' + this.CONSTANTS.FORM.DESC + '"]'));
@@ -239,6 +241,7 @@ App.View.FormEdit = App.View.Forms.extend({
       self.fb.collection.reset([]);
       self.back();
       self.message('Form updated successfully');
+    }, error: function () {
     }, error: function () {
       self.$el.removeClass('busy');
       self.loading.remove();

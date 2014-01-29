@@ -96,20 +96,20 @@ ul.apps-using-form li.text {
 }
 
 .formPreviewContents {
-    background-color: #fff;
+    /*background-color: #fff;*/
     overflow: scroll;
 }
 
 .formPreviewContents label {
-    font-size: 2.5em;
+    /*font-size: 2.5em;*/
 }
 
 .formPreviewContents input, .formPreviewContents textarea {
-    height: 1.5em;
-    font-size: 2.5em;
-    width: 100%;
-    border: 2px solid;
-    margin-top: 10px;
+    /*height: 1.5em;*/
+    /*font-size: 2.5em;*/
+    /*width: 100%;*/
+    /*border: 2px solid;*/
+    /*margin-top: 10px;*/
 }
 
 /*

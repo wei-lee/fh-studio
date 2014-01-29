@@ -149,7 +149,7 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     typogEl = $('<div class="logo"></div>'),
     logoBase64 = this.theme.get(this.CONSTANTS.THEME.LOGO).base64String;
     typogEl.append('<h4>Logo</h4>');
-    typogEl.append(this.templates.$themeLogo({ logoBase64 : logoBase64}));
+    typogEl.append(this.templates.$themeLogo({ "logoBase64" : logoBase64}));
     if (!this.readOnly){
       var fileBrowse = $('<br /><input type="file" id="logoUpload" name="logo"><br />');
       typogEl.append(fileBrowse);
