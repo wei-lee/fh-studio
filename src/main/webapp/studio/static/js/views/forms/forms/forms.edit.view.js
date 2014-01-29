@@ -242,7 +242,6 @@ App.View.FormEdit = App.View.Forms.extend({
       self.back();
       self.message('Form updated successfully');
     }, error: function () {
-    }, error: function () {
       self.$el.removeClass('busy');
       self.loading.remove();
       self.reorder.$el.show();
