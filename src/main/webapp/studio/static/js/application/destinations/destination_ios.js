@@ -123,7 +123,7 @@ application.DestinationIos = application.DestinationGeneral.extend({
   },
 
   getPublishData: function (config, versions_select, wizard) {
-    var version = "6.0";//wizard.find(export_version_id + ' input:checked').val();
+    var version = "7.0";//wizard.find(export_version_id + ' input:checked').val();
     var pk_pass = wizard.find("#app_publish_" + this.destination_id + "_pk_password").val();
     var cert_pass = wizard.find("#app_publish_" + this.destination_id + "_cert_password").val();
     console.log("cert pass: " + cert_pass);
