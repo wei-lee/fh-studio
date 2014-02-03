@@ -50,7 +50,7 @@ App.View.FormGroupsList = App.View.FormListBase.extend({
     ];
 
     this.forms =  new App.Collection.Form();
-    this.users = new App.Collection.Users();
+    this.users = new App.Collection.FormUsers();
     this.themes = new App.Collection.FormThemes();
     this.apps = new App.Collection.FormApps();
 
