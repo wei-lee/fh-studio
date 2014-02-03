@@ -7,7 +7,8 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
     'click a#recentSubmissions':  'recentSubmissions',
     'click a#perFormSubmissions': 'perFormSubmissions',
     'click a#perAppSubmissions':  'perAppSubmissions',
-    'submit .submissionExportForm':'onExportSubmission'
+    'submit .submissionExportForm':'onExportSubmission',
+    'click #downloadSubmissionPdf' : 'onDownloadSubmissionPdf'
   },
 
   templates : {
@@ -208,5 +209,10 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
       return this.modal('Please select an app to export', 'Error');
     }
 
+  },
+  onDownloadSubmissionPdf: function(e) {
+    e.preventDefault();
+    var model = this.submissions.collection.get(this.submissions._id);
+    window.location.href = model.getDownloadUrl();
   }
 });
