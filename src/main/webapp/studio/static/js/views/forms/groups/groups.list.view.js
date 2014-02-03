@@ -59,10 +59,11 @@ App.View.FormGroupsList = App.View.FormListBase.extend({
         self.forms.fetch({
           reset : true,
           success : function(res){
+
             return cb(null, res);
           },
           error : function(){
-            console.log(arguments);
+
             return cb("Error retrieving forms");
           }
         });
@@ -71,10 +72,11 @@ App.View.FormGroupsList = App.View.FormListBase.extend({
         self.users.fetch({
           reset : true,
           success : function(res){
+
             return cb(null, res);
           },
           error : function(){
-            console.log(arguments);
+
             return cb("Error retrieving users");
           }
         });
@@ -83,6 +85,7 @@ App.View.FormGroupsList = App.View.FormListBase.extend({
         self.themes.fetch({
           reset : true,
           success : function(res){
+            console.log("themes fetched");
             return cb(null, res);
           },
           error : function(){
@@ -95,6 +98,7 @@ App.View.FormGroupsList = App.View.FormListBase.extend({
         self.apps.fetch({
           reset : true,
           success : function(res){
+            console.log("apps fetched");
             return cb(null, res);
           },
           error : function(){
@@ -136,7 +140,7 @@ App.View.FormGroupsList = App.View.FormListBase.extend({
     return this;
   },
   updatePreview : function(updatedModel){
-    console.log("updatePreview",updatedModel);
+
     var self = this,
     usersIds = updatedModel.get('users'),
     formsIds = updatedModel.get('forms'),

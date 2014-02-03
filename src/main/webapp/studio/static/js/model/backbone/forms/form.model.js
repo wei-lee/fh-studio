@@ -91,12 +91,13 @@ App.Collection.AppsUsingThisForm = App.Collection.FormBase.extend({
     return App.Collection.FormBase.prototype.read.apply(this, ['read', null, options]);
   }
 });
-
-App.Collection.FormUsers = App.Collection.FormBase.extend({
-  url : "/box/api/forms/users",
-  model : App.Model.FormUser
-});
-
 App.Model.FormUser = Backbone.Model.extend({
 
 });
+
+App.Collection.FormUsers = App.Collection.FormBase.extend({
+  url : "/box/api/forms/users",
+  model : App.Model.FormUser,
+  "pluralName":"result"
+});
+
