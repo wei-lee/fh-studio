@@ -115,7 +115,7 @@ var Lang = {
   app_publish_iphone_pk_password_text_help_icon: 'If you have secured your private key with a password, please enter it here.',
   app_publish_iphone_cert_password_text: 'Please enter the password for your certificate (if any)',
   app_publish_iphone_cert_password_text_help_icon: 'If you have secured your certificate with a password, please enter it here.',
-  app_publish_iphone_versions_text: 'The app will be built using iOS SDK 6 and can be installed on devices running iOS 4.3 and above.',
+  app_publish_iphone_versions_text: 'The app will be built using iOS SDK 7 and can be installed on devices running iOS 4.3 and above.',
 
   ipad_publish_wizard_supertitle: 'iPad Build',
   app_publish_ipad_select_provisionings_text: 'Please select the Provisioning Profile',
@@ -130,7 +130,7 @@ var Lang = {
   app_publish_ipad_pk_password_text_help_icon: 'If you have secured your private key with a password, please enter it here.',
   app_publish_ipad_cert_password_text: 'Please enter the password for your certificate (if any)',
   app_publish_ipad_cert_password_text_help_icon: 'If you have secured your certificate with a password, please enter it here.',
-  app_publish_ipad_versions_text: 'The app will be built using iOS SDK 6 and can be installed on devices running iOS 4.3 and above.',
+  app_publish_ipad_versions_text: 'The app will be built using iOS SDK 7 and can be installed on devices running iOS 4.3 and above.',
 
   app_publish_ios_info_title: 'Information',
   ios_publish_wizard_supertitle: 'iOS Universal Build',
@@ -145,7 +145,7 @@ var Lang = {
   app_publish_ios_pk_password_text_help_icon: 'If you have secured your private key with a password, please enter it here.',
   app_publish_ios_cert_password_text: 'Please enter the password for your certificate (if any)',
   app_publish_ios_cert_password_text_help_icon: 'If you have secured your certificate with a password, please enter it here.',
-  app_publish_ios_versions_text: 'The app will be built using iOS SDK 6 and can be installed on devices running iOS 4.3 and above.',
+  app_publish_ios_versions_text: 'The app will be built using iOS SDK 7 and can be installed on devices running iOS 4.3 and above.',
 
   android_getstarted_wizard_supertitle: 'Android Get Started',
   android_getstarted_resources_title: 'Resources Check',

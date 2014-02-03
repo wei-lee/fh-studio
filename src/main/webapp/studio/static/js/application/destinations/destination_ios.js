@@ -107,7 +107,7 @@ application.DestinationIos = application.DestinationGeneral.extend({
   },
 
   getExportData: function (wizard) {
-    var version = "6.0";//wizard.find(export_version_id + ' input:checked').val();
+    var version = "7.0";//wizard.find(export_version_id + ' input:checked').val();
     console.log("Export version: " + version);
     if (version === "" || version === undefined) {
       proto.Wizard.jumpToStep(wizard, 2, "Please select the SDK version");
