@@ -812,7 +812,7 @@
           <div class="controls">
             <select id="formGroupUsers" multiple name="users" class="input-xxlarge">
               {{#each users}}
-              <option value="{{_id}}">{{name}}</option>
+              <option value="{{guid}}">{{email}}</option>
               {{/each}}
             </select>
           </div>
@@ -845,7 +845,7 @@
           <div class="controls">
             <select id="formGroupApps" name="apps" multiple class="input-xxlarge">
               {{#each apps}}
-              <option value="{{id}}">{{title}}</option>
+              <option value="{{guid}}">{{title}}</option>
               {{/each}}
             </select>
           </div>

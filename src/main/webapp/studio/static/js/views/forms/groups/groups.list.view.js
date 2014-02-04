@@ -85,11 +85,9 @@ App.View.FormGroupsList = App.View.FormListBase.extend({
         self.themes.fetch({
           reset : true,
           success : function(res){
-            console.log("themes fetched");
             return cb(null, res);
           },
           error : function(){
-            console.log(arguments);
             return cb("Error retrieving themes");
           }
         });
@@ -98,11 +96,9 @@ App.View.FormGroupsList = App.View.FormListBase.extend({
         self.apps.fetch({
           reset : true,
           success : function(res){
-            console.log("apps fetched");
             return cb(null, res);
           },
           error : function(){
-            console.log(arguments);
             return cb("Error retrieving apps");
           }
         });
@@ -146,6 +142,7 @@ App.View.FormGroupsList = App.View.FormListBase.extend({
     formsIds = updatedModel.get('forms'),
     themesIds = updatedModel.get('themes'),
     appsIds = updatedModel.get('apps'),
+
     groupObject = {
       name : updatedModel.get('name'),
       users : this.users.toJSON(),
@@ -153,7 +150,6 @@ App.View.FormGroupsList = App.View.FormListBase.extend({
       themes : this.themes.toJSON(),
       apps : this.apps.toJSON()
     }, tpl;
-
     tpl = $(this.templates.$formGroupEdit(groupObject));
     this.$previewEl.find('#groupPreviewContainer').html(tpl);
     tpl.find('select').select2();
@@ -169,27 +165,26 @@ App.View.FormGroupsList = App.View.FormListBase.extend({
     }
 
     self.$previewEl.show();
-    this.selectMessage.$el.hide();
+    //self.selectMessage.$el.hide();
   },
   onSaveGroup : function(){
+
     var self = this,
     form = this.$el.find('form.formsGroups'),
     updatedGroup = {
       name : form.find('input[name=name]').val(),
-      forms : form.find('select#formGroupForms').val(),
-      users : form.find('select#formGroupUsers').val(),
-      themes : form.find('select#formGroupThemes').val(),
-      apps : form.find('select#formGroupApps').val()
+      forms : form.find('select#formGroupForms').val() || [],
+      users : form.find('select#formGroupUsers').val() || [],
+      themes : form.find('select#formGroupThemes').val() || [],
+      apps : form.find('select#formGroupApps').val() || []
     },
     model;
-
     if (this._id && typeof this._id==='string'){
       model = this.collection.findWhere({_id : this._id});
       updatedGroup._id = this._id;
     }else{
       model = new App.Model.FormGroup();
     }
-
     model.save(updatedGroup, {
       type: 'post',
       success : function(){
@@ -201,7 +196,6 @@ App.View.FormGroupsList = App.View.FormListBase.extend({
         self.collection.trigger('reset');
         self.$previewEl.hide();
         self.selectMessage.$el.show();
-
 
       },
       error: function(){
@@ -215,6 +209,7 @@ App.View.FormGroupsList = App.View.FormListBase.extend({
       groups : [],
       themes : [],
       apps : [],
+      forms:[],
       name : ''
     });
     // Deselect all table rows
