@@ -299,7 +299,9 @@ public class StudioBean {
       setNoCacheHeaders(pResponse);
       String csrfHash = generateCsrfHash(); 
       pResponse.setHeader("SET-COOKIE", "scrf="+csrfHash+"; HttpOnly;");
-      mStudioProps.put("csrf", csrfHash);
+      if(null != mStudioProps){
+        mStudioProps.put("csrf", csrfHash);
+      }
       pRequest.setAttribute("csrftoken", csrfHash);
       setXFrameOptionHeaders(pResponse);
       mInput = JSONObject.fromObject(pRequest.getParameterMap());

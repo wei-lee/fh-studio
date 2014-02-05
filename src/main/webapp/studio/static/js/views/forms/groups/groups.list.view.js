@@ -165,6 +165,7 @@ App.View.FormGroupsList = App.View.FormListBase.extend({
     }
 
     self.$previewEl.show();
+    self.$el.find('.emptyContainer:visible').hide();
     //self.selectMessage.$el.hide();
   },
   onSaveGroup : function(){
