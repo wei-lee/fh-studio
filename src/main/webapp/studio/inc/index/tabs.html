@@ -12,16 +12,16 @@ String pageName = studio.getPageName();
   <li class="dashboard-tab">
     <a id="dashboard_tab" href="#tabs-4">Dashboard</a>
   </li>
-
+    <% if(studio.getProperty("appforms-enabled").equals("true") && studio.hasFormsRole()){ %>
+    <li class="forms-tab">
+        <a id="forms_tab" href="#tabs-8">Forms</a>
+    </li>
+    <% } %>
   <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER)) { %>
     <li class="apps-tab">
       <a id="apps_tab" href="#tabs-1">Apps</a>
     </li>
-    <% if(studio.getProperty("appforms-enabled").equals("true")){ %>
-        <li class="forms-tab">
-          <a id="forms_tab" href="#tabs-8">Forms</a>
-        </li>
-    <% } %>
+
     <% if(studio.getProperty("pluginsEnabled").equals("true")){ %>
     <li class="plugins-tab">
       <a id="plugins_tab" href="#tabs-2">Plugins</a>
@@ -58,11 +58,13 @@ String pageName = studio.getPageName();
 <div id="main_tabs_panels" class="ui-layout-content">
   <%@ include file="./dashboard/dashboard_tab.html" %>
 
+    <% if(studio.getProperty("appforms-enabled").equals("true") && studio.hasFormsRole()){ %>
+    <jsp:include page="./forms/forms_tab.html" />
+    <% } %>
+
   <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER)) { %>
     <jsp:include page="./apps/apps_tab.html" />
-    <% if(studio.getProperty("appforms-enabled").equals("true")){ %>
-        <jsp:include page="./forms/forms_tab.html" />
-    <% } %>
+
 
     <% if(studio.getProperty("pluginsEnabled").equals("true")){ %>
       <%@ include file="./plugins/plugins_snippets.html" %>

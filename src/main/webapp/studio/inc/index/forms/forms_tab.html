@@ -487,7 +487,7 @@
                 <label class="control-label" for="formAppForms">Forms</label>
 
                 <div class="controls">
-                    <select id="formAppForms" name="forms" multiple class="">
+                    <select id="formAppForms" name="forms" multiple class="span7">
                     </select>
                 </div>
             </div>
@@ -638,6 +638,7 @@
             </div>
         </form>
         <div class="span12 submission-buttons">
+            <button class="btn btn-large btn-primary" id="downloadSubmissionPdf" type="button">Download PDF</button>
             <button class="btn btn-large btn-primary" id="printSubmission" type="button">Print Submission</button>
             {{#checkRole "formsadmin,formseditor"}}
             <button class="btn btn-large btn-warning" id="editSubmission" type="button">Edit Submission</button>
@@ -811,7 +812,7 @@
           <div class="controls">
             <select id="formGroupUsers" multiple name="users" class="input-xxlarge">
               {{#each users}}
-              <option value="{{_id}}">{{name}}</option>
+              <option value="{{guid}}">{{userId}}</option>
               {{/each}}
             </select>
           </div>
@@ -844,7 +845,7 @@
           <div class="controls">
             <select id="formGroupApps" name="apps" multiple class="input-xxlarge">
               {{#each apps}}
-              <option value="{{id}}">{{title}}</option>
+              <option value="{{guid}}">{{title}}</option>
               {{/each}}
             </select>
           </div>

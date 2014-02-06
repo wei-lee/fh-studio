@@ -1,4 +1,4 @@
-package com.feedhenry.studio;
+ package com.feedhenry.studio;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -58,6 +58,8 @@ public class StudioBean {
   // If perms for a particular endpoint/s change, we need to update these
   public static final String ROLE_CUSTOMERADMIN = "customeradmin";
   public static final String ROLE_RESELLERADMIN = "reselleradmin";
+  public static final String ROLE_FORMSADMIN = "formsadmin";
+
   public static final String ROLE_DEVADMIN = "devadmin";
   public static final String[] GROUP_REPORTING = new String[] { "analytics" };
   public static final String[] GROUP_ARM = new String[] { "portaladmin" };
@@ -297,7 +299,9 @@ public class StudioBean {
       setNoCacheHeaders(pResponse);
       String csrfHash = generateCsrfHash(); 
       pResponse.setHeader("SET-COOKIE", "scrf="+csrfHash+"; HttpOnly;");
-      mStudioProps.put("csrf", csrfHash);
+      if(null != mStudioProps){
+        mStudioProps.put("csrf", csrfHash);
+      }
       pRequest.setAttribute("csrftoken", csrfHash);
       setXFrameOptionHeaders(pResponse);
       mInput = JSONObject.fromObject(pRequest.getParameterMap());
@@ -759,6 +763,20 @@ public class StudioBean {
       }
     }
     return hasRole;
+  }
+
+  public boolean hasFormsRole() throws Exception{
+    boolean has = false;
+    String[] formRoles = {"formsadmin","submissionseditor","formseditor","submissionsviewer"};
+    if(null == mUserProps) return has;
+
+    for(String r : formRoles){
+      if(mUserProps.getJSONArray("roles").contains(r)){
+        has = true;
+        break;
+      }
+    }
+    return has;
   }
 
   public void error(Exception pException) throws Exception {
