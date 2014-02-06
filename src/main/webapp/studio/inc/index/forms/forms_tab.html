@@ -207,16 +207,34 @@
         Add {{ name }}</a>
 </script>
 
+<script id="templateTabs" type="text/x-handlebars-template">
+    <ul class="nav nav-tabs">
+        <li>
+            <a href="#" id="view{{singleTitle}}">{{pluralTitle}}</a>
+        </li>
+        <li>
+            <a href="#" id="view{{singleTitle}}Templates">{{singleTitle}} Templates</a>
+        </li>
+    </ul>
+</script>
+
 
 <script id="formsListMenu" type="text/x-handlebars-template">
   <div class="formsmenu">
+      {{#if formView}}
     <h4>Form Menu</h4>
+      {{else}}
+      <h4>Form Template Menu</h4>
+      {{/if}}
 
   <ul class="nav nav-pills nav-stacked well">
+      {{#if formView}}
       <li><a class="btn-edit-form" href="#"><i class="icon-edit"></i>Edit Form</a></li>
       <li><a class="btn-edit-form-rules" href="#"><i class="icon-pencil"></i> Edit Rules</a></li>
       <li><a class="btn-edit-form-notifications" href="#"><i class="icon-bullhorn"></i> Edit Notifications</a></li>
       <li><a class="btn-form-submissions" href="#"><i class="icon-envelope"></i> View Submissions</a></li>
+      {{/if}}
+      {{#if formView}}
       <li class="dropdown">
           <a class="dropdown-toggle"
              data-toggle="dropdown"
@@ -227,8 +245,15 @@
           <ul class="dropdown-menu apps-using-form">
           </ul>
       </li>
-      <li><a class="btn-clone-form" href="#"><i class="icon-retweet"></i> Clone</a></li>
+      {{/if}}
+      {{#if formView}}
+        <li><a class="btn-clone-form" href="#"><i class="icon-retweet"></i> Clone</a></li>
+      {{else}}
+        <li><a class="btn-clone-form" href="#"><i class="icon-retweet"></i>Import Form Template</a></li>
+      {{/if}}
+      {{#if formView}}
       <li><a class="btn-delete-form" href="#"><i class="icon-trash"></i> Delete</a></li>
+      {{/if}}
   </ul>
   </div>
 </script>
@@ -326,23 +351,39 @@
 
 <script id="themesListMenu" type="text/x-handlebars-template">
   <div class="formsmenu span2">
-    <h4>Theme Menu</h4>
+
+    {{#if themeView}}
+      <h4>Theme Menu</h4>
+    {{else}}
+      <h4>Theme Template Menu</h4>
+    {{/if}}
+
     <ul class="nav nav-pills nav-stacked">
-        <li><a class="btn-edit-theme" href="#"><i class="icon-edit"></i>Edit Theme</a></li>
-        <li><a class="btn-preview-theme" href="#"><i class="icon-pencil"></i> Preview Theme</a></li>
-        <li class="dropdown">
-            <a class="dropdown-toggle"
-               data-toggle="dropdown"
-               href="#">
-                <i class="icon-th-large"></i> Apps
-                <b class="caret"></b>
-            </a>
-            <ul class="dropdown-menu apps-using-theme">
-            </ul>
-        </li>
+        {{#if themeView}}
+            <li><a class="btn-edit-theme" href="#"><i class="icon-edit"></i>Edit Theme</a></li>
+        {{/if}}
+            <li><a class="btn-preview-theme" href="#"><i class="icon-pencil"></i> Preview Theme</a></li>
+        {{#if themeView}}
+            <li class="dropdown">
+                <a class="dropdown-toggle"
+                   data-toggle="dropdown"
+                   href="#">
+                    <i class="icon-th-large"></i> Apps
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu apps-using-theme">
+                </ul>
+            </li>
+        {{/if}}
         <!--<li><a class="btn-view-theme-apps" href="#"><i class="icon-th-large"></i> View Apps</a></li>-->
-        <li><a class="btn-clone-theme" href="#"><i class="icon-retweet"></i> Clone</a></li>
-        <li><a class="btn-delete-theme" href="#"><i class="icon-trash"></i> Delete</a></li>
+        {{#if themeView}}
+            <li><a class="btn-clone-theme" href="#"><i class="icon-retweet"></i> Clone</a></li>
+        {{else}}
+            <li><a class="btn-clone-theme" href="#"><i class="icon-retweet"></i> Import Theme Template</a></li>
+        {{/if}}
+        {{#if themeView}}
+            <li><a class="btn-delete-theme" href="#"><i class="icon-trash"></i> Delete</a></li>
+        {{/if}}
     </ul>
   </div>
 </script>

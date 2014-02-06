@@ -35,6 +35,9 @@ App.View.FormListBase = App.View.Forms.extend({
     this.breadcrumb(['Forms', this.pluralTitle + ' List']);
     this.$el.empty();
     this.$el.addClass('span10 ' + this.pluralTitle.toLowerCase() + 'list busy');
+    if(this.templates.$templateTabs){
+      this.$el.append(this.templates.$templateTabs({"pluralTitle": this.pluralTitle, "singleTitle": this.singleTitle}));
+    }
 
     this.loading = $(this.templates.$fullpageLoading());
     this.$el.append(this.loading);
@@ -57,7 +60,9 @@ App.View.FormListBase = App.View.Forms.extend({
     return this;
   },
   renderList : function(){
-    this.$el.append(this.templates.$formsListBaseAdd( { name : this.singleTitle.toLowerCase(), cls : this.singleId } ));
+    if(this.templates.$formsListBaseAdd && !this.viewingTemplates){
+      this.$el.append(this.templates.$formsListBaseAdd( { name : this.singleTitle.toLowerCase(), cls : this.singleId } ));
+    }
     var self = this,
     data = this.collection.toJSON();
 
@@ -164,7 +169,7 @@ App.View.FormListBase = App.View.Forms.extend({
     e.preventDefault();
     var self = this,
     cloneSource = this.collection.findWhere({_id : this._id}),
-    createView = new App.View.FormCreateClone({ collection : this.collection, mode : 'clone', cloneSource : cloneSource.toJSON(), singleId : this.singleId, singleTitle : this.singleTitle, pluralTitle : this.pluralTitle });
+    createView = new App.View.FormCreateClone({ collection : this.collection, mode : 'clone', cloneSource : cloneSource.toJSON(), singleId : this.singleId, singleTitle : this.singleTitle, pluralTitle : this.pluralTitle, viewingTemplates: this.viewingTemplates });
     this.$el.append(createView.render().$el);
   },
   onDelete : function(){

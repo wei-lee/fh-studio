@@ -7,6 +7,7 @@ App.View.FormCreateClone = App.View.Modal.extend({
     this.singleTitle = options.singleTitle;
     this.singleId = options.singleId;
     this.pluralTitle = options.pluralTitle;
+    this.viewingTemplates = options.viewingTemplates;
     var autoHide = options.autoHide;
     var tpl = Handlebars.compile($('#formCreateEdit' + this.singleId).html()),
     body = $(tpl({ CONSTANTS : this.CONSTANTS })),
@@ -107,7 +108,9 @@ App.View.FormCreateClone = App.View.Modal.extend({
     this.collection.sync('create', vals, { success : function(res){
       var verb = (self.mode === 'create') ? "created" : "cloned";
       vals._id = res._id;
-      self.collection.add(vals);
+      if(!self.viewingTemplates){
+        self.collection.add(vals);
+      }
       self.collection.trigger('reset');
       App.View.Forms.prototype.message(self.singleTitle + ' ' + verb + ' successfully');
     }, error : function(err){

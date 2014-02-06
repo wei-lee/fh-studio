@@ -19,6 +19,20 @@ App.Model.Form = App.Model.FormBase.extend({
   fetchURL : '/api/v2/forms/form/{{id}}'
 });
 
+App.Model.FormTemplate = App.Model.FormBase.extend({
+  relations: [{
+    type: Backbone.HasMany,
+    key: 'pages',
+    relatedModel: 'App.Model.FormPage',
+    collectionType: 'App.Collection.FormPages',
+    reverseRelation: {
+      key: 'form',
+      includeInJSON: 'id'
+    }
+  }],
+  fetchURL : '/api/v2/forms/templates/form/{{id}}'
+});
+
 App.Model.FormPage = Backbone.RelationalModel.extend({
   idAttribute: '_id',
   relations: [{
@@ -75,6 +89,14 @@ App.Collection.Form = App.Collection.FormBase.extend({
   url: '/api/v2/forms/form/list',
   urlUpdate: '/api/v2/forms/form/',
   urlDelete: '/api/v2/forms/form/'
+});
+
+App.Collection.FormTemplate = App.Collection.FormBase.extend({
+  pluralName : 'forms',
+  initialize: function() {},
+  model: App.Model.FormTemplate,
+  urlUpdate: '/api/v2/forms/form/',
+  url: '/api/v2/forms/templates/form/list'
 });
 
 App.Model.AppUsingThisForm = App.Model.FormBase.extend({});
