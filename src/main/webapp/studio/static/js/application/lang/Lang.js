@@ -115,7 +115,7 @@ var Lang = {
   app_publish_iphone_pk_password_text_help_icon: 'If you have secured your private key with a password, please enter it here.',
   app_publish_iphone_cert_password_text: 'Please enter the password for your certificate (if any)',
   app_publish_iphone_cert_password_text_help_icon: 'If you have secured your certificate with a password, please enter it here.',
-  app_publish_iphone_versions_text: 'The app will be built using iOS SDK 6 and can be installed on devices running iOS 4.3 and above.',
+  app_publish_iphone_versions_text: 'The app will be built using iOS SDK 7 and can be installed on devices running iOS 4.3 and above.',
 
   ipad_publish_wizard_supertitle: 'iPad Build',
   app_publish_ipad_select_provisionings_text: 'Please select the Provisioning Profile',
@@ -130,7 +130,7 @@ var Lang = {
   app_publish_ipad_pk_password_text_help_icon: 'If you have secured your private key with a password, please enter it here.',
   app_publish_ipad_cert_password_text: 'Please enter the password for your certificate (if any)',
   app_publish_ipad_cert_password_text_help_icon: 'If you have secured your certificate with a password, please enter it here.',
-  app_publish_ipad_versions_text: 'The app will be built using iOS SDK 6 and can be installed on devices running iOS 4.3 and above.',
+  app_publish_ipad_versions_text: 'The app will be built using iOS SDK 7 and can be installed on devices running iOS 4.3 and above.',
 
   app_publish_ios_info_title: 'Information',
   ios_publish_wizard_supertitle: 'iOS Universal Build',
@@ -145,7 +145,7 @@ var Lang = {
   app_publish_ios_pk_password_text_help_icon: 'If you have secured your private key with a password, please enter it here.',
   app_publish_ios_cert_password_text: 'Please enter the password for your certificate (if any)',
   app_publish_ios_cert_password_text_help_icon: 'If you have secured your certificate with a password, please enter it here.',
-  app_publish_ios_versions_text: 'The app will be built using iOS SDK 6 and can be installed on devices running iOS 4.3 and above.',
+  app_publish_ios_versions_text: 'The app will be built using iOS SDK 7 and can be installed on devices running iOS 4.3 and above.',
 
   android_getstarted_wizard_supertitle: 'Android Get Started',
   android_getstarted_resources_title: 'Resources Check',
@@ -472,6 +472,7 @@ var Lang = {
   configuration_android_Package_Name_help_icon: "The Java package name of the application. Please follow the convention of Java package names. A default unique package name is provided.",
   configuration_enable_MonkeyTalk_help_icon: "Once enabled, the <a href='http://www.gorillalogic.com/monkeytalk' target='_blank'>MonkeyTalk</a> client agent will be included automatically. MonkeyTalk is a powerful automated testing tool.",
   configuration_simulator_Only_help_icon: "Once enabled, the binary will be built for simulator only.",
+  configuration_old_Style_Status_Bar_help_icon: "Since iOS 7, the status bar will appear on top the webview. If you want to use the old style status bar, please check this option.",
   ios_configuration_replace_general_notes: "Please specify this setting in iPhone and iPad's configurations.",
   apps_list_search_text: 'Search Apps',
   apps_list_search_title: '',
