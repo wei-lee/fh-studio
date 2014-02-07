@@ -52,7 +52,7 @@ App.View.FormGroupsList = App.View.FormListBase.extend({
     this.forms =  new App.Collection.Form();
     this.users = new App.Collection.FormUsers();
     this.themes = new App.Collection.FormThemes();
-    this.apps = new App.Collection.FormApps();
+    this.apps = new App.Collection.FormsListApps();
 
     async.parallel([
       function(cb){
@@ -96,6 +96,7 @@ App.View.FormGroupsList = App.View.FormListBase.extend({
         self.apps.fetch({
           reset : true,
           success : function(res){
+            console.log("fetched apps", res);
             return cb(null, res);
           },
           error : function(){
@@ -150,6 +151,8 @@ App.View.FormGroupsList = App.View.FormListBase.extend({
       themes : this.themes.toJSON(),
       apps : this.apps.toJSON()
     }, tpl;
+
+    console.log("GROUPS OBJECT ", groupObject);
     tpl = $(this.templates.$formGroupEdit(groupObject));
     this.$previewEl.find('#groupPreviewContainer').html(tpl);
     tpl.find('select').select2();

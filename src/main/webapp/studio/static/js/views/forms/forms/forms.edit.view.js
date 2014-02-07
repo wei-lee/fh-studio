@@ -20,8 +20,10 @@ App.View.FormEdit = App.View.Forms.extend({
     'click .btn-form-save': 'onFormSave',
     'click .btn-form-cancel': 'back',
     'click .btn-forms-back': 'back',
-    'change #themeSelect' : 'themeSelect'
+    'change #themeSelect' : 'themeSelect',
+    'change input.minReps': 'checkMinReps'
   },
+
   initialize: function (options) {
     this.constructor.__super__.initialize.apply(this, arguments);
     this.options = options;
@@ -253,7 +255,6 @@ App.View.FormEdit = App.View.Forms.extend({
     this.trigger('back');
   },
   updatePreview: function () {
-    console.log("update preview called");
     var self = this;
     var rawData = JSON.stringify(self.form.toJSON());
     console.log("update preview raw data", self.form.toJSON());
