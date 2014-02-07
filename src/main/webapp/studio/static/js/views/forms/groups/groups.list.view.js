@@ -52,7 +52,7 @@ App.View.FormGroupsList = App.View.FormListBase.extend({
     this.forms =  new App.Collection.Form();
     this.users = new App.Collection.FormUsers();
     this.themes = new App.Collection.FormThemes();
-    this.apps = new App.Collection.FormApps();
+    this.apps = new App.Collection.Apps();
 
     async.parallel([
       function(cb){
