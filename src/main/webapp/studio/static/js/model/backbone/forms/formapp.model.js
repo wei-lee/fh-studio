@@ -128,3 +128,10 @@ App.Collection.FormApps = App.Collection.FormBase.extend({
     });
   }
 });
+
+App.Collection.FormsListApps = App.Collection.FormBase.extend({
+  pluralName : 'result',
+  initialize: function() {},
+  model: App.Model.App,
+  url: '/box/api/forms/listapps'
+});

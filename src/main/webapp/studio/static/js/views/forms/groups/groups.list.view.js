@@ -50,19 +50,20 @@ App.View.FormGroupsList = App.View.FormListBase.extend({
     ];
 
     this.forms =  new App.Collection.Form();
-    this.users = new App.Collection.Users();
+    this.users = new App.Collection.FormUsers();
     this.themes = new App.Collection.FormThemes();
-    this.apps = new App.Collection.FormApps();
+    this.apps = new App.Collection.FormsListApps();
 
     async.parallel([
       function(cb){
         self.forms.fetch({
           reset : true,
           success : function(res){
+
             return cb(null, res);
           },
           error : function(){
-            console.log(arguments);
+
             return cb("Error retrieving forms");
           }
         });
@@ -71,10 +72,11 @@ App.View.FormGroupsList = App.View.FormListBase.extend({
         self.users.fetch({
           reset : true,
           success : function(res){
+
             return cb(null, res);
           },
           error : function(){
-            console.log(arguments);
+
             return cb("Error retrieving users");
           }
         });
@@ -86,7 +88,6 @@ App.View.FormGroupsList = App.View.FormListBase.extend({
             return cb(null, res);
           },
           error : function(){
-            console.log(arguments);
             return cb("Error retrieving themes");
           }
         });
@@ -95,10 +96,10 @@ App.View.FormGroupsList = App.View.FormListBase.extend({
         self.apps.fetch({
           reset : true,
           success : function(res){
+            console.log("fetched apps", res);
             return cb(null, res);
           },
           error : function(){
-            console.log(arguments);
             return cb("Error retrieving apps");
           }
         });
@@ -136,12 +137,13 @@ App.View.FormGroupsList = App.View.FormListBase.extend({
     return this;
   },
   updatePreview : function(updatedModel){
-    console.log("updatePreview",updatedModel);
+
     var self = this,
     usersIds = updatedModel.get('users'),
     formsIds = updatedModel.get('forms'),
     themesIds = updatedModel.get('themes'),
     appsIds = updatedModel.get('apps'),
+
     groupObject = {
       name : updatedModel.get('name'),
       users : this.users.toJSON(),
@@ -150,6 +152,7 @@ App.View.FormGroupsList = App.View.FormListBase.extend({
       apps : this.apps.toJSON()
     }, tpl;
 
+    console.log("GROUPS OBJECT ", groupObject);
     tpl = $(this.templates.$formGroupEdit(groupObject));
     this.$previewEl.find('#groupPreviewContainer').html(tpl);
     tpl.find('select').select2();
@@ -165,27 +168,27 @@ App.View.FormGroupsList = App.View.FormListBase.extend({
     }
 
     self.$previewEl.show();
-    this.selectMessage.$el.hide();
+    self.$el.find('.emptyContainer:visible').hide();
+    //self.selectMessage.$el.hide();
   },
   onSaveGroup : function(){
+
     var self = this,
     form = this.$el.find('form.formsGroups'),
     updatedGroup = {
       name : form.find('input[name=name]').val(),
-      forms : form.find('select#formGroupForms').val(),
-      users : form.find('select#formGroupUsers').val(),
-      themes : form.find('select#formGroupThemes').val(),
-      apps : form.find('select#formGroupApps').val()
+      forms : form.find('select#formGroupForms').val() || [],
+      users : form.find('select#formGroupUsers').val() || [],
+      themes : form.find('select#formGroupThemes').val() || [],
+      apps : form.find('select#formGroupApps').val() || []
     },
     model;
-
     if (this._id && typeof this._id==='string'){
       model = this.collection.findWhere({_id : this._id});
       updatedGroup._id = this._id;
     }else{
       model = new App.Model.FormGroup();
     }
-
     model.save(updatedGroup, {
       type: 'post',
       success : function(){
@@ -197,7 +200,6 @@ App.View.FormGroupsList = App.View.FormListBase.extend({
         self.collection.trigger('reset');
         self.$previewEl.hide();
         self.selectMessage.$el.show();
-
 
       },
       error: function(){
@@ -211,6 +213,7 @@ App.View.FormGroupsList = App.View.FormListBase.extend({
       groups : [],
       themes : [],
       apps : [],
+      forms:[],
       name : ''
     });
     // Deselect all table rows

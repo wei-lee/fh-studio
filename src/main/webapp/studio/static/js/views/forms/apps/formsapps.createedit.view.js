@@ -47,7 +47,7 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
     ];
 
     if (this.mode === 'existing'){
-      this.apps = new App.Collection.Apps();
+      this.apps = new App.Collection.FormApps();
       getters.push(function(cb){
         self.apps.fetch({
           success : function(res){

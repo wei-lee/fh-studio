@@ -528,7 +528,7 @@
                 <label class="control-label" for="formAppForms">Forms</label>
 
                 <div class="controls">
-                    <select id="formAppForms" name="forms" multiple class="">
+                    <select id="formAppForms" name="forms" multiple class="span7">
                     </select>
                 </div>
             </div>
@@ -853,7 +853,7 @@
           <div class="controls">
             <select id="formGroupUsers" multiple name="users" class="input-xxlarge">
               {{#each users}}
-              <option value="{{_id}}">{{name}}</option>
+              <option value="{{guid}}">{{userId}}</option>
               {{/each}}
             </select>
           </div>
@@ -886,7 +886,7 @@
           <div class="controls">
             <select id="formGroupApps" name="apps" multiple class="input-xxlarge">
               {{#each apps}}
-              <option value="{{id}}">{{title}}</option>
+              <option value="{{guid}}">{{title}}</option>
               {{/each}}
             </select>
           </div>
