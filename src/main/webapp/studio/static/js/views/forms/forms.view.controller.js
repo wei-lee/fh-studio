@@ -22,6 +22,20 @@ App.View.FormsController = Backbone.View.extend({
   },
   views : {},
   subViews : [],
+  getActiveForms: function(){
+    if(this.views.forms){
+      return this.views.forms.listForms;
+    } else {
+      return {};
+    }
+  },
+  getActiveThemes: function(){
+    if(this.views.themes){
+      return this.views.themes.listThemes;
+    } else {
+      return {};
+    }
+  },
   render: function(options) {
     var self = this;
 
@@ -46,7 +60,7 @@ App.View.FormsController = Backbone.View.extend({
     if (this.views.forms){
       this.views.forms.$el.remove();
     }
-    this.views.forms = new App.View.FormList();
+    this.views.forms = new App.View.FormListAll();
     this.$el.append(this.views.forms.render().$el);
   },
   onThemes : function(){
@@ -54,14 +68,14 @@ App.View.FormsController = Backbone.View.extend({
     if (this.views.themes){
       this.views.themes.$el.remove();
     }
-    this.views.themes = new App.View.FormThemesList();
-    this.$el.append(this.views.themes.$el);
+    this.views.themes = new App.View.ThemeListAll();
+    this.$el.append(this.views.themes.render().$el);
   },
   onEditTheme : function(e){
-    var theme = this.views.themes.collection.findWhere({_id : this.views.themes._id});
+    var theme = this.getActiveThemes().collection.findWhere({_id : this.getActiveThemes()._id});
     this.views.themes.$el.hide();
 
-    var editTheme = new App.View.FormThemesEdit({ theme : theme, collection : this.views.themes.collection, readOnly : false});
+    var editTheme = new App.View.FormThemesEdit({ theme : theme, collection : this.getActiveThemes().collection, readOnly : false});
     editTheme.bind('back', $.proxy(this.back, this));
     this.$el.append(editTheme.render().$el);
     this.subViews.push(editTheme);
@@ -79,7 +93,7 @@ App.View.FormsController = Backbone.View.extend({
     if (this.views.submissions){
       this.views.submissions.$el.remove();
     }
-    this.views.submissions = new App.View.FormSubmissionsTabs({"forms": this.views.forms.collection});
+    this.views.submissions = new App.View.FormSubmissionsTabs({"forms": this.getActiveForms().collection});
     this.$el.append(this.views.submissions.render().$el);
   },
   onAppSubmissions : function(){
@@ -97,7 +111,7 @@ App.View.FormsController = Backbone.View.extend({
   },
   onFormSubmissions : function(){
     this.onSubmissions();
-    var formId = this.views.forms._id,
+    var formId = this.getActiveForms()._id,
     view = this.views.submissions,
     e = { target : view.$el.find('a#perFormSubmissions') }; // spoof an event object so it can switch tab
     view.perFormSubmissions(e);
@@ -116,18 +130,18 @@ App.View.FormsController = Backbone.View.extend({
     Edit Form view switching
    */
   onEditForm : function(e){
-    var form = this.views.forms.collection.findWhere({ _id : this.views.forms._id }),
+    var form = this.getActiveForms().collection.findWhere({ _id : this.getActiveForms()._id }),
     menuEl = this.$el.find(".forms_menu_container");
     this.views.forms.$el.hide();
 
-    var editForm = new App.View.FormEdit({ form : form, collection : this.views.forms.collection});
+    var editForm = new App.View.FormEdit({ form : form, collection : this.getActiveForms().collection});
     editForm.bind('back', $.proxy(this.back, this));
     this.$el.append(editForm.render().$el);
     this.subViews.push(editForm);
   },
   onEditFormRules : function(e){
     var self = this;
-    var form = this.views.forms.collection.findWhere({ _id : this.views.forms._id }),
+    var form = this.getActiveForms().collection.findWhere({ _id : this.getActiveForms()._id }),
     menuEl = this.$el.find(".forms_menu_container");
     this.views.forms.$el.hide();
 
@@ -135,12 +149,10 @@ App.View.FormsController = Backbone.View.extend({
     //this.editForm.bind('back', $.proxy(this.back, this));
     this.$el.append(editFormRules.render().$el);
     this.subViews.push(editFormRules);
-
-
   },
   onEditFormNotifications : function(e){
     var self = this;
-    var form = this.views.forms.collection.findWhere({ _id : this.views.forms._id });
+    var form = this.getActiveForms().collection.findWhere({ _id : this.getActiveForms()._id });
 
     this.views.forms.$el.hide();
 
@@ -220,7 +232,7 @@ App.View.FormsController = Backbone.View.extend({
       appId = submissionsEl.find('select.appSelect').val();
     }
 
-    formModel = this.views.forms.collection.findWhere({ "_id" : formId });
+    formModel = this.getActiveForms().collection.findWhere({ "_id" : formId });
 
     if (!formModel){
       return submissionsView.modal('Please select a form', 'Error');

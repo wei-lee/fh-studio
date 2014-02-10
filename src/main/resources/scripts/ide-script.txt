@@ -160,7 +160,8 @@ js/views/forms/forms.view.js
 js/views/forms/forms.menu.view.js
 js/views/forms/forms/forms.rules.view.js
 js/views/forms/forms.list.base.view.js
-js/views/forms/forms/forms.list.view.js
+js/views/forms/forms/forms.listparent.view.js
+js/views/forms/forms/forms.listall.view.js
 js/views/forms/forms/forms.create.view.js
 js/views/forms/forms/forms.edit.view.js
 js/views/forms/forms/forms.edit.reorder.view.js
@@ -172,7 +173,9 @@ js/views/forms/forms/forms.submissiondetail.view.js
 js/views/forms/submissions/submissions.list.view.js
 js/views/forms/submissions/submissions.tab.view.js
 js/views/forms/submissions/submissions.addedit.view.js
-js/views/forms/themes/themes.list.view.js
+js/views/forms/themes/themes.listparent.view.js
+js/views/forms/themes/themes.listall.view.js
+js/views/forms/themes/themes.list-templates.view.js
 js/views/forms/themes/themes.edit.view.js
 js/views/forms/apps/formsapps.list.view.js
 js/views/forms/apps/formsapps.createedit.view.js

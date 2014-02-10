@@ -1,13 +1,15 @@
 var App = App || {};
 App.View = App.View || {};
 
-App.View.FormThemesList = App.View.FormListBase.extend({
+
+//TODO - Need to abstract this.
+App.View.ThemeListTemplates = App.View.FormListBase.extend({
   templates : {
-    'formsListBaseAdd' : '#formsListBaseAdd',
     'fullpageLoading' : '#fullpageLoading',
     'menu' : '#themesListMenu',
     previewOutline: '#preview_outline',
-    formselect:'#form_select'
+    formselect:'#form_select',
+    'templateTabs': '#templateTabs'
   },
   events : {
     'click tr' : 'onRowSelected',
@@ -15,11 +17,10 @@ App.View.FormThemesList = App.View.FormListBase.extend({
     'click .btn-clone-theme' : 'onClone',
     'click .btn-delete-theme' : 'onDelete',
     'change #formSelect' : 'formSelect'
-
   },
   initialize: function(){
     var self = this;
-    this.collection = new App.Collection.FormThemes();
+    this.collection = new App.Collection.FormThemeTemplate();
     this.formCollection = new App.Collection.Form();
     this.pluralTitle = 'Themes';
     this.singleTitle = 'Theme';
@@ -29,9 +30,6 @@ App.View.FormThemesList = App.View.FormListBase.extend({
     },{
       "sTitle": 'Updated',
       "mDataProp": this.CONSTANTS.THEME.UPDATED
-    },{
-      "sTitle": 'Apps Using This',
-      "mDataProp": this.CONSTANTS.THEME.USING
     }];
 
     $fh.forms.init({
@@ -64,8 +62,10 @@ App.View.FormThemesList = App.View.FormListBase.extend({
     }
     });
 
-   App.View.FormListBase.prototype.render.apply(this, arguments);
-   return this;
+    App.View.FormListBase.prototype.render.apply(this, arguments);
+    self.$el.find('a#viewTheme').parent('li').removeClass("active");
+    self.$el.find('a#viewThemeTemplates').parent('li').addClass("active");
+    return this;
   },
   renderPreview : function(){
     this.$previewEl = $('<div class="themepreview" />');
@@ -135,10 +135,6 @@ App.View.FormThemesList = App.View.FormListBase.extend({
     prevContainer.append(self.templates.$formselect({"forms":self.formData}));
     prevContainer.find('style').remove();
     prevContainer.append("<style id='themeStyle'>"+updatedModel.get('css')+"</style>");
-    self.$el.find('.themesInnerContainer').append(self.templates.$menu());
-
-
-
-
+    self.$el.find('.themesInnerContainer').append(self.templates.$menu({"themeView" : false}));
   }
 });

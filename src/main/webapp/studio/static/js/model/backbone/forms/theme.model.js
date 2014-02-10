@@ -8,9 +8,11 @@ App.collections = App.collections || {};
 App.Model.FormTheme = App.Model.FormBase.extend({
   idAttribute: '_id',
   fetchURL : '/api/v2/forms/theme/{{id}}'
-//  fetch : function(options){
-//    options.success(this);
-//  }
+});
+
+App.Model.FormThemeTemplate = App.Model.FormBase.extend({
+  idAttribute: '_id',
+  fetchURL : '/api/v2/forms/templates/theme/{{id}}'
 });
 
 App.Collection.FormThemes = App.Collection.FormBase.extend({
@@ -190,4 +192,12 @@ App.Collection.FormThemes = App.Collection.FormBase.extend({
       }
     }
   }
+});
+
+App.Collection.FormThemeTemplate = App.Collection.FormBase.extend({
+  pluralName : 'themes',
+  initialize: function() {},
+  model: App.Model.FormThemeTemplate,
+  urlUpdate: '/api/v2/forms/theme',
+  url: '/api/v2/forms/templates/theme/list'
 });

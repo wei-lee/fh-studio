@@ -82,6 +82,8 @@ module.exports = function(grunt) {
         'src/main/webapp/studio/static/js/views/forms/forms/forms.rules.view.js',
         'src/main/webapp/studio/static/js/views/forms/forms.list.base.view.js',
         'src/main/webapp/studio/static/js/views/forms/forms/forms.list.view.js',
+        'src/main/webapp/studio/static/js/views/forms/forms/forms.list-templates.view.js',
+        'src/main/webapp/studio/static/js/views/forms/forms/forms.listall.view.js',
         'src/main/webapp/studio/static/js/views/forms/forms/forms.create.view.js',
         'src/main/webapp/studio/static/js/views/forms/forms/forms.edit.view.js',
         'src/main/webapp/studio/static/js/views/forms/forms/forms.edit.reorder.view.js',
