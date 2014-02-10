@@ -174,7 +174,6 @@ js/views/forms/submissions/submissions.list.view.js
 js/views/forms/submissions/submissions.tab.view.js
 js/views/forms/submissions/submissions.addedit.view.js
 js/views/forms/themes/themes.listparent.view.js
-js/views/forms/themes/themes.list.view.js
 js/views/forms/themes/themes.listall.view.js
 js/views/forms/themes/themes.list-templates.view.js
 js/views/forms/themes/themes.edit.view.js

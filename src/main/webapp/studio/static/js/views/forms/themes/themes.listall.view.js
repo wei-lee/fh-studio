@@ -24,7 +24,6 @@ App.View.ThemeListAll = Backbone.View.extend({
 
   render : function (){
     this.themesTab();
-    console.log("Render");
     return this;
   },
 

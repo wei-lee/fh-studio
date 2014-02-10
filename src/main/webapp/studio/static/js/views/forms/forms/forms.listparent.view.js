@@ -142,7 +142,5 @@ App.View.FormListParent = App.View.FormListBase.extend({
     });
 
     this.fb.mainView.$el.find('input').attr('disabled', true);
-
-
   }
 });

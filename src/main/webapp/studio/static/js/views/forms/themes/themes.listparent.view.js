@@ -19,7 +19,7 @@ App.View.FormThemesListParent = App.View.FormListBase.extend({
   },
   initialize: function(params){
     var self = this;
-    self.formCollection = new App.Collection.Form();
+    self.themeCollection = new App.Collection.FormThemes();
     self.pluralTitle = 'Themes';
     self.singleTitle = 'Theme';
 
@@ -69,7 +69,7 @@ App.View.FormThemesListParent = App.View.FormListBase.extend({
   },
   render : function(){
     var self = this;
-    self.formCollection.fetch({"success":function (forms){
+    self.themeCollection.fetch({"success":function (forms){
       self.formData = [];
       forms.forEach(function (f){
         self.formData.push({
@@ -109,11 +109,10 @@ App.View.FormThemesListParent = App.View.FormListBase.extend({
     this.$el.append(this.loading);
     return this;
   },
-
   formSelect : function (e){
     var self = this;
     var formId = $(e.target).val();
-    var form = this.formCollection.findWhere({"_id":formId});
+    var form = this.themeCollection.findWhere({"_id":formId});
 
     var rawData = (form) ? JSON.stringify(form.toJSON()) : undefined;
 
