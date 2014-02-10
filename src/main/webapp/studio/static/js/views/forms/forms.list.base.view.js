@@ -114,7 +114,6 @@ App.View.FormListBase = App.View.Forms.extend({
   },
 
   onRowSelected : function(e){
-    debugger;
     var self = this,
     el = e.target,
     nodeName = el.nodeName.toLowerCase();
