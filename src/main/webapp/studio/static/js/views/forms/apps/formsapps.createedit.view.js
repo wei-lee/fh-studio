@@ -47,7 +47,7 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
     ];
 
     if (this.mode === 'existing'){
-      this.apps = new App.Collection.FormApps();
+      this.apps = new App.Collection.FormsListFilteredApps();
       getters.push(function(cb){
         self.apps.fetch({
           success : function(res){
@@ -95,7 +95,7 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
     if (this.mode === 'existing'){
       var appSelect = $('<select id="existingAppSelect"></select>');
       this.apps.each(function(a){
-        appSelect.append('<option value="' + a.get('id') + '">' + a.get('title') + '</option>');
+        appSelect.append('<option value="' + a.get('guid') + '">' + a.get('title') + '</option>');
       });
       this.$el.find('.appname').html(appSelect);
     }
@@ -123,7 +123,7 @@ console.log('formsapps.createedit.view render - each form:', f.get(self.CONSTANT
     return this;
   },
   onFormSave : function(e){
-    var create = (this.mode === 'create'); //$(e.target).hasClass("button-add-formsapp");
+    var create = (this.mode === 'create');
     return this.saveForm(create);
   },
   saveForm : function (created, cb) {

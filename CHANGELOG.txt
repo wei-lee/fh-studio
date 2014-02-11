@@ -1,6 +1,10 @@
 -------------------------------------------------------------------------------
 Component: fh-studio
 -------------------------------------------------------------------------------
+3.17.32 - 2014-02-10 - IR221 - mmurphy
+-----------------------------------------------
+* 5961 - add forms to existing apps needs to filter apps by group 
+
 3.18.00 - 2014-01-20 - IR219 - Craig Brookes
 * added new dependencies for fh forms work: These depenedencies are created and maintained in the jssdk project
 
