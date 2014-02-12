@@ -44,13 +44,23 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     var self = this;
     var formId = $(e.target).val();
     var form = this.formCollection.findWhere({"_id":formId});
-    var rawData = (form) ? JSON.stringify(form.toJSON()) : undefined;
-    var ele = self.$el.find('div.formPreviewContents');
 
-    if(! rawData){
-      ele.html("");
-    }else{
-      $fh.forms.renderFormFromJSON({rawData: rawData, "container": ele});
+    if(form){
+      form.fetch({
+        success : function(form){
+          var rawData = (form) ? JSON.stringify(form.toJSON()) : undefined;
+          var ele = self.$el.find('div.formPreviewContents');
+
+          if(! rawData){
+            ele.html("");
+          }else{
+            $fh.forms.renderFormFromJSON({rawData: rawData, "container": ele});
+          }
+        },
+        error : function(){
+          dropdown.empty().append('<li>Error loading apps using this form</li>');
+        }
+      });
     }
   },
 
