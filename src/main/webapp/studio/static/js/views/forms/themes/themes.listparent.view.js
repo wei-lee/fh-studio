@@ -20,6 +20,7 @@ App.View.FormThemesListParent = App.View.FormListBase.extend({
   initialize: function(params){
     var self = this;
     self.themeCollection = new App.Collection.FormThemes();
+    self.formCollection = new App.Collection.Form();
     self.pluralTitle = 'Themes';
     self.singleTitle = 'Theme';
 
@@ -69,7 +70,7 @@ App.View.FormThemesListParent = App.View.FormListBase.extend({
   },
   render : function(){
     var self = this;
-    self.themeCollection.fetch({"success":function (forms){
+    self.formCollection.fetch({"success":function (forms){
       self.formData = [];
       forms.forEach(function (f){
         self.formData.push({
@@ -102,8 +103,6 @@ App.View.FormThemesListParent = App.View.FormListBase.extend({
 
     this.$previewEl.append('<div id="formPreviewContainer"></div>');
 
-
-
     // Move the loading to the bottom of this element's dom
     this.loading.remove();
     this.$el.append(this.loading);
@@ -112,18 +111,25 @@ App.View.FormThemesListParent = App.View.FormListBase.extend({
   formSelect : function (e){
     var self = this;
     var formId = $(e.target).val();
-    var form = this.themeCollection.findWhere({"_id":formId});
+    var form = this.formCollection.findWhere({"_id":formId});
 
     var rawData = (form) ? JSON.stringify(form.toJSON()) : undefined;
+    var dropdown = this.$previewEl.find('.apps-using-theme');
 
-
-
-    var ele = self.$el.find('div.formPreviewContents');
-    if(! rawData){
-      ele.html("");
-    }else{
-      $fh.forms.renderFormFromJSON({rawData: rawData, "container": ele});
-    }
+    form.fetch({
+      success : function(form){
+        rawData = (form) ? JSON.stringify(form.toJSON()) : undefined;
+        var ele = self.$el.find('div.formPreviewContents');
+        if(! rawData){
+          ele.html("");
+        }else{
+          $fh.forms.renderFormFromJSON({rawData: rawData, "container": ele});
+        }
+      },
+      error : function(){
+        dropdown.empty().append('<li>Error loading apps using this form</li>');
+      }
+    });
   },
 
   /**
@@ -135,12 +141,10 @@ App.View.FormThemesListParent = App.View.FormListBase.extend({
     var previewTheme = new App.View.FormThemesEdit({ theme: updatedModel, readOnly: true});
     this.$previewEl.find('#formPreviewContainer').html(previewTheme.render().$el);
 
-
-
     previewTheme.$el.removeClass('span10');
     this.$previewEl.show();
 
-    dropdown = this.$previewEl.find('.apps-using-theme');
+    var dropdown = this.$previewEl.find('.apps-using-theme');
 
     dropdown.empty();
 
