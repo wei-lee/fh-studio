@@ -24,3 +24,4 @@ TAGS
 .*DS_Store
 hs_err_pid12896.log hs_err_pid2943.log
 _SpecRunner.html
+.ant-targets-build.xml
