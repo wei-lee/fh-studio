@@ -35,9 +35,7 @@ App.View.SubmissionList = App.View.FormListBase.extend({
 
   deleteSubmission : function (e){
     var subid = $(e.target).data("subid");
-    console.log("subid ", subid);
     var sub = this.collection.findWhere({"_id":subid});
-    console.log("found sub ", sub);
     sub.destroy({"success": function (){},"error": function (e){
       self.displayMessage("error deleting submission!");
       console.log("error deleting ", e);
