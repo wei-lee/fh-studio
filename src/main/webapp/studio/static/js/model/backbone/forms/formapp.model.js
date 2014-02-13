@@ -135,3 +135,10 @@ App.Collection.FormsListApps = App.Collection.FormBase.extend({
   model: App.Model.App,
   url: '/box/api/forms/listapps'
 });
+
+App.Collection.FormsListFilteredApps = App.Collection.FormBase.extend({
+  pluralName : 'result',
+  initialize: function() {},
+  model: App.Model.App,
+  url: '/api/v2/forms/apps/list'
+});

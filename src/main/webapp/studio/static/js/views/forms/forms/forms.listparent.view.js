@@ -1,12 +1,12 @@
 var App = App || {};
 App.View = App.View || {};
 
-App.View.FormList = App.View.FormListBase.extend({
+App.View.FormListParent = App.View.FormListBase.extend({
   templates : {
     'formsListBaseAdd' : '#formsListBaseAdd',
     'formsListMenu' : '#formsListMenu',
     'fullpageLoading' : '#fullpageLoading',
-    'menu' : '#formsListMenu'
+    'templateTabs': '#templateTabs'
   },
   events : {
     'click tr' : 'onRowSelected',
@@ -14,10 +14,37 @@ App.View.FormList = App.View.FormListBase.extend({
     'click .btn-clone-form' : 'onClone',
     'click .btn-delete-form' : 'onDelete'
   },
-  initialize: function(){
-    this.collection = new App.Collection.Form();
+  initialiseFormTemplateList: function(params){
+    this.collection = params.collection;
     this.pluralTitle = 'Forms';
     this.singleTitle = 'Form';
+    this.columns = [{
+      "sTitle": 'Name',
+      "mDataProp": this.CONSTANTS.FORM.NAME
+    },{
+      "sTitle": 'Description',
+      "mDataProp": this.CONSTANTS.FORM.DESC,
+      "sWidth" : "275px"
+    }];
+    this.constructor.__super__.initialize.apply(this, arguments);
+  },
+  initialize: function(params){
+    var self = this;
+    self.pluralTitle = 'Forms';
+    self.singleTitle = 'Form';
+    if(params.formList){
+      self.viewingTemplates = false;
+      self.initialiseFormList(params);
+    } else if(params.formTemplateList){
+      self.viewingTemplates = true;
+      self.initialiseFormTemplateList(params);
+    } else {
+      console.log("ERROR");
+    }
+  },
+  initialiseFormList: function(params){
+    this.collection = params.collection;
+
     this.columns = [{
       "sTitle": 'Name',
       "mDataProp": this.CONSTANTS.FORM.NAME
@@ -29,27 +56,37 @@ App.View.FormList = App.View.FormListBase.extend({
       "sTitle": 'Updated',
       "mDataProp": this.CONSTANTS.FORM.UPDATED
     },{
-      "sTitle": 'Apps Using This',
+      "sTitle": 'Apps Using This Form',
       "mDataProp": this.CONSTANTS.FORM.USING
     },{
-      "sTitle": 'Submissions today',
+      "sTitle": 'Submissions Today',
       "mDataProp": this.CONSTANTS.FORM.SUBSTODAY
     },{
-      "sTitle": 'Submissions',
+      "sTitle": 'Total Submissions',
       "mDataProp": this.CONSTANTS.FORM.SUBS
     }];
     this.constructor.__super__.initialize.apply(this, arguments);
   },
   render : function(){
+    var self = this;
     App.View.FormListBase.prototype.render.apply(this, arguments);
-    return this.renderPreview();
+
+    if(self.viewingTemplates){
+      self.$el.find('a#viewForm').parent('li').removeClass("active");
+      self.$el.find('a#viewFormTemplates').parent('li').addClass("active");
+    } else {
+      self.$el.find('a#viewForm').parent('li').addClass("active");
+      self.$el.find('a#viewFormTemplates').parent('li').removeClass("active");
+    }
+    return self.renderPreview();
   },
   renderPreview : function(){
-    this.$previewEl = $('<div class="formpreview" />');
-    this.$el.append(this.$previewEl);
-    this.$previewEl.hide();
+    var self = this;
+    self.$previewEl = $('<div class="formpreview" />');
+    self.$el.append(self.$previewEl);
+    self.$previewEl.hide();
 
-    this.fb = new Formbuilder(this.$previewEl, {
+    self.fb = new Formbuilder(self.$previewEl, {
       noScroll : true,
       noEditOnDrop : true,
       bootstrapData: [],
@@ -57,20 +94,20 @@ App.View.FormList = App.View.FormListBase.extend({
     });
 
     // Place holders that get filled when the user clicks a form
-    this.$previewEl.find('.middle').prepend('<p class="desc">Form Description</p>');
-    this.$previewEl.find('.middle').prepend('<h4 class="title">Form Title</h4>');
+    self.$previewEl.find('.middle').prepend('<p class="desc">Form Description</p>');
+    self.$previewEl.find('.middle').prepend('<h4 class="title">Form Title</h4>');
 
-    this.$previewEl.find('.middle').removeClass('span6').addClass('span9');
-    this.$previewEl.find('.middle .fb-response-fields').addClass('well');
-    this.$previewEl.find('.right').removeClass('span4').addClass('span2');
+    self.$previewEl.find('.middle').removeClass('span6').addClass('span9');
+    self.$previewEl.find('.middle .fb-response-fields').addClass('well');
+    self.$previewEl.find('.right').removeClass('span4').addClass('span2');
 
-    var menu = $(this.templates.$menu());
-    this.$previewEl.find('.right').html(menu);
+    var menu = $(self.templates.$formsListMenu({"formView" : self.viewingTemplates === false}));
+    self.$previewEl.find('.right').html(menu);
 
     // Move the loading to the bottom of this element's dom
-    this.loading.remove();
-    this.$el.append(this.loading);
-    return this;
+    self.loading.remove();
+    self.$el.append(self.loading);
+    return self;
   },
   updatePreview : function(updatedModel){
     var fields = this.formToFormBuilderFields(updatedModel),
@@ -78,8 +115,6 @@ App.View.FormList = App.View.FormListBase.extend({
 
     dropdown.empty();
     dropdown.append('<li class="text">' + new App.View.Spinner().render().$el.html() + '</li>');
-
-
 
     this.$previewEl.find('h4.title').html('Form Preview: ' + updatedModel.get(this.CONSTANTS.FORM.NAME));
     this.$previewEl.find('p.desc').html(updatedModel.get(this.CONSTANTS.FORM.DESC));
@@ -107,7 +142,5 @@ App.View.FormList = App.View.FormListBase.extend({
     });
 
     this.fb.mainView.$el.find('input').attr('disabled', true);
-
-
   }
 });
