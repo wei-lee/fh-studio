@@ -836,7 +836,7 @@ Admin.Users.Controller = Controller.extend({
           text: from_item,
           value: from_item
         });
-      } else {
+      } else if(from_item[0] && from_item[1]) {
         fromModels.push({
           text: from_item[0],
           value: from_item[1]
