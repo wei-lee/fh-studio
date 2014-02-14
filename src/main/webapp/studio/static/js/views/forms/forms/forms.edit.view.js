@@ -200,7 +200,11 @@ App.View.FormEdit = App.View.Forms.extend({
         delete p.type;
         _.extend(curPage, p);
         curPage[self.CONSTANTS.FORM.FIELDS] = [];
-      }else{
+      }else if (f.get(self.CONSTANTS.FB.FIELD_TYPE) === self.CONSTANTS.FB.TYPE_ALIASES.section_break){
+        var p = f.toJSON();
+        p.required = false;
+        curPage[self.CONSTANTS.FORM.FIELDS].push(p);
+      } else {
         curPage[self.CONSTANTS.FORM.FIELDS].push(f.toJSON());
       }
     });
