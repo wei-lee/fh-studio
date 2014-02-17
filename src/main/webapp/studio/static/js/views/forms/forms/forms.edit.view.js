@@ -73,9 +73,6 @@ App.View.FormEdit = App.View.Forms.extend({
       fields: self.CONSTANTS.FB.SUPPORTED_FIELDS
     });
 
-
-    var fb = this.fb;
-
     this.fb.mainView.on("reorder", function (){
        console.log("form reordered");
       self.syncModelAndFormBuilder();
@@ -154,6 +151,8 @@ App.View.FormEdit = App.View.Forms.extend({
     configDesc.val(this.form.get(this.CONSTANTS.FORM.DESC));
     this.$el.find('.middle').append(this.templates.$formSaveCancel());
 
+    this.fb.mainView.$el.find('.response-field-page_break').first().hide();
+
     self.updatePreview();
 
     return this;
@@ -187,12 +186,13 @@ App.View.FormEdit = App.View.Forms.extend({
       pages = [];
     this.fb.collection.each(function (f, i, coll) {
       // For every page break - except the first, that's just a UI thing..
+      var p;
       if (f.get(self.CONSTANTS.FB.FIELD_TYPE) === self.CONSTANTS.FORM.PAGE_BREAK) {
         if (curPage) {
           pages.push(_.clone(curPage));
         }
         curPage = {};
-        var p = f.toJSON();
+        p = f.toJSON();
         delete p.cid;
         delete p.fieldOptions;
         delete p.value;
@@ -201,10 +201,14 @@ App.View.FormEdit = App.View.Forms.extend({
         _.extend(curPage, p);
         curPage[self.CONSTANTS.FORM.FIELDS] = [];
       }else if (f.get(self.CONSTANTS.FB.FIELD_TYPE) === self.CONSTANTS.FB.TYPE_ALIASES.section_break){
-        var p = f.toJSON();
-        p.required = false;
-        curPage[self.CONSTANTS.FORM.FIELDS].push(p);
-      } else {
+          p = f.toJSON();
+          p.required = false;
+          curPage[self.CONSTANTS.FORM.FIELDS].push(p);
+      } else{
+        //if cur page is undefined add one as this means current page break moved
+        if(! curPage){
+          curPage = {"fields":[]};
+        }
         curPage[self.CONSTANTS.FORM.FIELDS].push(f.toJSON());
       }
     });
@@ -212,9 +216,6 @@ App.View.FormEdit = App.View.Forms.extend({
     if (curPage) {
       pages.push(curPage);
     }
-
-
-
     for (var i = 0; i < pages.length; i++) {
       var p = pages[i];
 
