@@ -85,7 +85,6 @@ App.View.FormListParent = App.View.FormListBase.extend({
     self.$previewEl = $('<div class="formpreview" />');
     self.$el.append(self.$previewEl);
     self.$previewEl.hide();
-
     self.fb = new Formbuilder(self.$previewEl, {
       noScroll : true,
       noEditOnDrop : true,
