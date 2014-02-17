@@ -34,10 +34,6 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
     return this;
   },
 
-  deleteSubmission : function (e){
-    var subid = $(e.target).data("subid");
-
-  },
 
   recentSubmissions : function (e){
     var self = this;
