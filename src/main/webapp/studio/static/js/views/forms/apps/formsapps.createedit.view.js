@@ -142,9 +142,7 @@ console.log('formsapps.createedit.view render - each form:', f.get(self.CONSTANT
       // Associating with an existing formapp, or creating from scratch
       id = this.$el.find('form.formsApps select#existingAppSelect').val();
       if(id){
-        console.log("the id is ", id);
         this.model = this.collection.findWhere({"_id":id});
-        console.log("found model ", this.model);
         name = this.$el.find('form.formsApps select#existingAppSelect option:selected').html();
       }
     }

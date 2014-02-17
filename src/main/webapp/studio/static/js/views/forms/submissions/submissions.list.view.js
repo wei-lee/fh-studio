@@ -29,7 +29,17 @@ App.View.SubmissionList = App.View.FormListBase.extend({
     'click .btn-cancel':'cancelSearch',
     'click #advancedUseMetaData' :'enableMetaData',
     'click #advancedUseRepeating' :'enableRepeating',
-    'click #advancedUseFields' :'enableFields'
+    'click #advancedUseFields' :'enableFields',
+    'click #deleteSubmission' : 'deleteSubmission'
+  },
+
+  deleteSubmission : function (e){
+    var subid = $(e.target).data("subid");
+    var sub = this.collection.findWhere({"_id":subid});
+    sub.destroy({"success": function (){},"error": function (e){
+      self.displayMessage("error deleting submission!");
+      console.log("error deleting ", e);
+    }});
   },
 
   searchContainers : {

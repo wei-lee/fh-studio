@@ -34,8 +34,8 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
     return this;
   },
 
+
   recentSubmissions : function (e){
-    console.log("RECENT SUBMISSIONS");
     var self = this;
     if(e) self.switchActive(e);
 

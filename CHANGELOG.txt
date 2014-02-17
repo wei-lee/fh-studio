@@ -1,13 +1,34 @@
 -------------------------------------------------------------------------------
 Component: fh-studio
 -------------------------------------------------------------------------------
+3.18.01 - 2014-02-10 - IR221 - mmurphy
+-----------------------------------------------
+* 5961 - add forms to existing apps needs to filter apps by group 
+
+3.18.00 - 2014-01-20 - IR219 - Craig Brookes
+* added new dependencies for fh forms work: These depenedencies are created and maintained in the jssdk project
+
+src/main/webapp/studio/static/common/js/api/appFormjs-backbone.min.js
+src/main/webapp/studio/static/common/js/api/appFormjs-core.min.js
+src/main/webapp/studio/static/common/js/api/appFormsThemeCssGenerator.js
+
+* 5180, 5181 add forms rules views to the forms tab
+* 5239, 5270 app forms submission lists and details views
+* 5630 preview forms and themes in studio
+* 5078 main appforms work - base views & models, form list & edit, theme list & edit, app list & edit, group list & edit
+
+property added to cluster-common:
+    studio-js-appforms-enabled = false
+    
+Note: cms work is included in this as we needed to reuse the formbuilder etc
+    
 3.17.33 - 2014-02-13 - IR221 - Michael Nairn
 -----------------------------------------------
 * 5436 - Update js sdk, ngui changes
 
 3.17.32 - 2014-02-13 - IR221 - James Kelly
 -----------------------------------------------
-* 3111 - zendesk fixed black spaces where this role should be
+* 3111 - zendesk fixed black spaces where this role should be    
 
 3.17.31 - 2014-02-03 - IR220 - Wei Li
 -----------------------------------------------
