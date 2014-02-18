@@ -2,6 +2,9 @@ var App = App || {};
 App.View = App.View || {};
 
 App.View.FormThemesListParent = App.View.FormListBase.extend({
+
+
+
   templates : {
     'formsListBaseAdd' : '#formsListBaseAdd',
     'fullpageLoading' : '#fullpageLoading',
@@ -144,27 +147,27 @@ App.View.FormThemesListParent = App.View.FormListBase.extend({
     previewTheme.$el.removeClass('span10');
     this.$previewEl.show();
 
-    var dropdown = this.$previewEl.find('.apps-using-theme');
 
-    dropdown.empty();
-
-    var appsUsingTheme = updatedModel.get("apps") || [];
-    if (appsUsingTheme.length > 0) {
-      if (appsUsingTheme.length > 0) {
-        _.each(appsUsingTheme, function (d) {
-          dropdown.append('<li><a class="formapp-link" data-_id="' + d.id + '" href="#">' + d.title + '</a></li>');
-        });
-      } else {
-        dropdown.append('<li class="text">No apps using this form</li>');
-      }
-
-    }
     var prevContainer = self.$el.find('#previewContainer');
     prevContainer.html(self.templates.$previewOutline()).show();
     prevContainer.append(self.templates.$formselect({"forms":self.formData}));
     prevContainer.find('style').remove();
     prevContainer.append("<style id='themeStyle'>"+updatedModel.get('css')+"</style>");
     self.$el.find('.themesInnerContainer').append(self.templates.$menu({"themeView" : this.viewingTemplates === false}));
+
+    var dropdown = this.$el.find('.apps-using-theme');
+    dropdown.empty();
+
+    var appsUsingTheme = updatedModel.get("apps") || [];
+
+    if (appsUsingTheme.length > 0) {
+      _.each(appsUsingTheme, function (d) {
+
+        dropdown.append('<li><a class="formapp-link" data-_id="' + d.appId + '" href="#">' + d.title + '</a></li>');
+      });
+    } else {
+      dropdown.append('<li class="text">No apps using this form</li>');
+    }
   },
   onDelete : function(){
     var self = this;
