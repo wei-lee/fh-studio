@@ -20,7 +20,8 @@ App.Model.FormApp = App.Model.FormBase.extend({
     updateObject = {
       title : model.get(constObj.NAME),
       forms : model.get(constObj.FORMS),
-      theme : model.get(constObj.THEMENAME)
+      theme : model.get(constObj.THEMENAME),
+      AppConfig : model.get(constObj.APP_CONFIG)
     };
 
     if (method === 'update') {
