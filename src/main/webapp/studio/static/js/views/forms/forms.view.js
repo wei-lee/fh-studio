@@ -75,7 +75,7 @@ App.View.Forms = Backbone.View.extend({
       UPDATED : 'modified',
       FORMS : 'forms',
       THEMENAME : 'theme.name',
-      APP_CONFIG: 'AppConfig'
+      APP_CONFIG: 'config'
     },
     GROUPS: {
       NAME: 'name'

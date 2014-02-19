@@ -119,9 +119,9 @@ console.log('formsapps.createedit.view render - each form:', f.get(self.CONSTANT
 
     // Set up App Config checkboxes
     if (appConfig){
-      this.$el.find('input#appFormLogging').attr('checked', appConfig.client.logger);
-      this.$el.find('input#appFormDebug').attr('checked', appConfig.client.debug_mode);
-      this.$el.find('input#appFormCloudLogging').attr('checked', appConfig.cloud.logger.enabled);
+      this.$el.find('input#appFormLogging').prop('checked', appConfig.client.logger);
+      this.$el.find('input#appFormDebug').prop('checked', appConfig.client.debug_mode);
+      this.$el.find('input#appFormCloudLogging').prop('checked', appConfig.cloud.logging.enabled);
     }
 
     return this;
@@ -177,17 +177,30 @@ console.log('formsapps.createedit.view render - each form:', f.get(self.CONSTANT
     },
     cloudConfig = {
       logging : {
-        enabled : this.$el.find('input#appFormCloudLogging').attr('checked') === 'checked'
+        enabled : this.$el.find('input#appFormCloudLogging').prop('checked')
       }
     };
 
-    // Iterate over every empty key, finding the input with it's name in this view, as we've followed this convention.
+    // Iterate over every empty key in client config, finding the input with it's name in this view, as we've followed this convention.
     _.each(clientConfig, function(value, key){
-      var formVal = self.$el.find('input[name=' + key + ']').val();
-      clientConfig[key] = formVal;
+      var input = self.$el.find('input[name=' + key + ']'),
+      formVal;
+
+      if (input.attr('type') === 'checkbox' ){
+        formVal = $('input[type=checkbox]').prop('checked');
+      }else{
+        formVal = input.val();
+      }
+
+      if (formVal === "" && clientConfig[key] === undefined){
+        delete clientConfig[key];
+      }else{
+        clientConfig[key] = formVal;
+      }
     });
 
     this.model.set(this.CONSTANTS.FORMSAPP.APP_CONFIG, { client : clientConfig, cloud : cloudConfig});
+
 
     // We use model.save rather than our usual update on a collection - bit inconsistant..?
     var cacheKey;
