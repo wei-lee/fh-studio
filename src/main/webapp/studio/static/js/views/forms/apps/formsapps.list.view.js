@@ -1,6 +1,3 @@
-/*
-  TOOD: This is just a copy-paste placeholder of themes for now, to illustrate it also is a version of FormListBase
- */
 var App = App || {};
 App.View = App.View || {};
 
