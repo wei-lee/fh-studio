@@ -79,14 +79,23 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
   render : function(){
 
     var self = this,
-    appConfig = this.model.get(this.CONSTANTS.FORMSAPP.APP_CONFIG);
+    appConfig,
+    appData;
+
+    if (this.model){
+      appConfig = this.model.get(this.CONSTANTS.FORMSAPP.APP_CONFIG);
+      appData = this.model.toJSON();
+    }else{
+      appData = { title : ''};
+    }
+    appData.isUpdate = this.mode === 'update';
 
     if (!this.loaded){
       this.$el.height(360); // TODO was 134);
       return this;
     }
 
-    this.$el.append(this.templates.$formsApps(this.model.toJSON()));
+    this.$el.append(this.templates.$formsApps(appData));
 
     if (this.mode === 'existing'){
       var appSelect = $('<select id="existingAppSelect"></select>');

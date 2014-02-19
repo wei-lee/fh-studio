@@ -535,107 +535,109 @@
                   </div>
               </div>
             </fieldset>
-            <fieldset>
-              <legend>Camera Settings</legend>
-              <div class="control-group">
-                <label class="control-label" for="appFormQuality">Quality</label>
+            {{#if isUpdate}}
+              <fieldset>
+                <legend>Camera Settings</legend>
+                <div class="control-group">
+                  <label class="control-label" for="appFormQuality">Quality</label>
 
-                <div class="controls">
-                  <input type="number" id="appFormQuality" class="" name="quality" value="{{ quality }}"><span class="help-inline">%</span>
+                  <div class="controls">
+                    <input type="number" id="appFormQuality" class="" name="quality" value="{{ quality }}"><span class="help-inline">%</span>
+                  </div>
                 </div>
-              </div>
-              <div class="control-group">
-                <label class="control-label" for="appFormTargetHeight">Target Height</label>
+                <div class="control-group">
+                  <label class="control-label" for="appFormTargetHeight">Target Height</label>
 
-                <div class="controls">
-                  <input type="number" id="appFormTargetHeight" class="" name="targetHeight" value="{{ targetHeight }}"><span class="help-inline">px</span>
+                  <div class="controls">
+                    <input type="number" id="appFormTargetHeight" class="" name="targetHeight" value="{{ targetHeight }}"><span class="help-inline">px</span>
+                  </div>
                 </div>
-              </div>
 
-              <div class="control-group">
-                <label class="control-label" for="appFormTargetWidth">Target Width</label>
+                <div class="control-group">
+                  <label class="control-label" for="appFormTargetWidth">Target Width</label>
 
-                <div class="controls">
-                  <input type="number" id="appFormTargetWidth" class="" name="targetWidth" value="{{ targetWidth }}"><span class="help-inline">px</span>
+                  <div class="controls">
+                    <input type="number" id="appFormTargetWidth" class="" name="targetWidth" value="{{ targetWidth }}"><span class="help-inline">px</span>
+                  </div>
                 </div>
-              </div>
-            </fieldset>
-            <fieldset>
-              <legend>Submission</legend>
-              <div class="control-group">
-                <label class="control-label" for="appFormMaxRetries">Max Retries</label>
+              </fieldset>
+              <fieldset>
+                <legend>Submission</legend>
+                <div class="control-group">
+                  <label class="control-label" for="appFormMaxRetries">Max Retries</label>
 
-                <div class="controls">
-                  <input type="number" id="appFormMaxRetries" class="" name="max_retries" value="{{ max_retries}}">
+                  <div class="controls">
+                    <input type="number" id="appFormMaxRetries" class="" name="max_retries" value="{{ max_retries}}">
+                  </div>
                 </div>
-              </div>
 
-              <div class="control-group">
-                <label class="control-label" for="appFormTimeout">Timeout</label>
+                <div class="control-group">
+                  <label class="control-label" for="appFormTimeout">Timeout</label>
 
-                <div class="controls">
-                  <input type="number" id="appFormTimeout" class="" name="timeout" value="{{ timeout}}"><span class="help-inline">seconds</span>
+                  <div class="controls">
+                    <input type="number" id="appFormTimeout" class="" name="timeout" value="{{ timeout}}"><span class="help-inline">seconds</span>
+                  </div>
                 </div>
-              </div>
 
-              <div class="control-group">
-                <label class="control-label" for="appFormMinSentItems">Min. Sent Items To Save</label>
+                <div class="control-group">
+                  <label class="control-label" for="appFormMinSentItems">Min. Sent Items To Save</label>
 
-                <div class="controls">
-                  <input type="number" id="appFormMinSentItems" class="" name="sent_save_min" value="{{ sent_save_min}}">
+                  <div class="controls">
+                    <input type="number" id="appFormMinSentItems" class="" name="sent_save_min" value="{{ sent_save_min}}">
+                  </div>
                 </div>
-              </div>
 
-              <div class="control-group">
-                <label class="control-label" for="appFormMaxSentItems">Max. Sent Items To Save</label>
+                <div class="control-group">
+                  <label class="control-label" for="appFormMaxSentItems">Max. Sent Items To Save</label>
 
-                <div class="controls">
-                  <input type="number" id="appFormMaxSentItems" class="" name="sent_save_max" value="{{ sent_save_max}}">
+                  <div class="controls">
+                    <input type="number" id="appFormMaxSentItems" class="" name="sent_save_max" value="{{ sent_save_max}}">
+                  </div>
                 </div>
-              </div>
 
-            </fieldset>
+              </fieldset>
 
-            <fieldset>
-              <legend>Client Logging</legend>
-              <div class="control-group">
-                <label class="control-label" for="appFormLogging">Logging Enabled</label>
-                <div class="controls">
-                  <input type="checkbox" id="appFormLogging" class="" name="logger">
+              <fieldset>
+                <legend>Client Logging</legend>
+                <div class="control-group">
+                  <label class="control-label" for="appFormLogging">Logging Enabled</label>
+                  <div class="controls">
+                    <input type="checkbox" id="appFormLogging" class="" name="logger">
+                  </div>
                 </div>
-              </div>
 
-              <div class="control-group">
-                <label class="control-label" for="appFormLogLineLimit">Log Limit</label>
-                <div class="controls">
-                  <input type="number" id="appFormLogLineLimit" class="" name="log_line_limit" value="{{ log_line_limit}}"><span class="help-inline"># lines</span>
+                <div class="control-group">
+                  <label class="control-label" for="appFormLogLineLimit">Log Limit</label>
+                  <div class="controls">
+                    <input type="number" id="appFormLogLineLimit" class="" name="log_line_limit" value="{{ log_line_limit}}"><span class="help-inline"># lines</span>
+                  </div>
                 </div>
-              </div>
 
-              <div class="control-group">
-                <label class="control-label" for="appFormLogEmail">Log Email</label>
-                <div class="controls">
-                  <input type="email" id="appFormLogEmail" class="" name="log_email" value="{{ log_email}}">
+                <div class="control-group">
+                  <label class="control-label" for="appFormLogEmail">Log Email</label>
+                  <div class="controls">
+                    <input type="email" id="appFormLogEmail" class="" name="log_email" value="{{ log_email}}">
+                  </div>
                 </div>
-              </div>
 
-              <div class="control-group">
-                <label class="control-label" for="appFormDebug">Debug Mode Enabled</label>
-                <div class="controls">
-                  <input type="checkbox" id="appFormDebug" class="" name="debug_mode">
+                <div class="control-group">
+                  <label class="control-label" for="appFormDebug">Debug Mode Enabled</label>
+                  <div class="controls">
+                    <input type="checkbox" id="appFormDebug" class="" name="debug_mode">
+                  </div>
                 </div>
-              </div>
-            </fieldset>
+              </fieldset>
 
-            <fieldset>
-              <legend>Cloud Logging</legend>
-              <div class="control-group">
-                <label class="control-label" for="appFormCloudLogging">Logging Enabled</label>
-                <div class="controls">
-                  <input type="checkbox" id="appFormCloudLogging" class="" name="form_notifications">
+              <fieldset>
+                <legend>Cloud Logging</legend>
+                <div class="control-group">
+                  <label class="control-label" for="appFormCloudLogging">Logging Enabled</label>
+                  <div class="controls">
+                    <input type="checkbox" id="appFormCloudLogging" class="" name="form_notifications">
+                  </div>
                 </div>
-              </div>
-            </fieldset>
+              </fieldset>
+            {{/if}}
             <div class="btn-group pull-right">
                 <a href="#" class="btn btn-secondary btn-app-submissions">View Submissions &raquo;</a>
                 <a href="#" class="btn btn-primary btn-save-app">Save</a>
