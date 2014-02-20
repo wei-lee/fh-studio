@@ -16,7 +16,7 @@ App.View.FormPageRules = App.View.Rules.extend({
     self.$el.find('.rulesContent').append(this.templates.$addRule({"fields":this.fields,"formType":"page","formId":self.form.get("_id"),ruleNum:ruleCount}));
 
     self.$el.find('#rule'+ruleCount+' .ruleDefintionContainer').append(this.templates.$ruleDefinitions({"fields":this.fields,"formType":"field","formId":self.form.get("_id"),ruleNum:ruleCount}));
-    self.$el.find('#rule'+ruleCount+' .ruleResult').append(this.templates.$ruleResults({"fields":this.fields,"formType":"field","formId":self.form.get("_id"),ruleNum:ruleCount}));
+    self.$el.find('#rule'+ruleCount+' .ruleResult').append(this.templates.$ruleResults({"fieldRule": false, "fields":this.fields,"formType":"field","formId":self.form.get("_id"),ruleNum:ruleCount}));
     self.$el.find('select#targetField:visible').replaceWith(this.templates.$targetFieldSelect({"pages":pages}));
     self.$el.find('#rule'+ruleCount+' .btn-remove-condition').first().hide();
     self.delegateEvents();

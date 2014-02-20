@@ -177,7 +177,8 @@ App.View.FormThemesEdit = App.View.Forms.extend({
 
       var colourSection = $('<div class="coloursection well themesectionBody" data-section="' + heading + '"></div>');
       _.each(subheadings, function(colorHex, name){
-        var colourInput = $(self.templates.$themeColourRow( { name : name, value : colorHex } )),
+        var formattedName = self.CONSTANTS.THEME.DESCRIPTIONS[name];
+        var colourInput = $(self.templates.$themeColourRow( { formattedName: formattedName, name : name, value : colorHex } )),
         input = $(colourInput.find('input'));
         input.change(function(){
           self.syncThemeModel.call(self);
@@ -223,10 +224,12 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     return bordersEl;
   },
   selectsRow : function(type, heading, attributes){
+    var self = this;
+    var formattedName = self.CONSTANTS.THEME.DESCRIPTIONS[heading];
     var tplBaseName = '$theme' + type + 'Row',
     tplIncReadOnlyName = (this.readOnly) ? tplBaseName + 'ReadOnly' : tplBaseName, // Now includes the "ReadOnly" string if it's needed
     tpl = this.templates[tplIncReadOnlyName],
-    row = $(tpl({r : attributes, name : heading})),
+    row = $(tpl({r : attributes, name : heading, formattedName: formattedName})),
     input = $(row.find('input.colour'));
     this.spectrumify(input, attributes, 'colour');
 
