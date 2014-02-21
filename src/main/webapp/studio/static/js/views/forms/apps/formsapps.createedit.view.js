@@ -106,7 +106,8 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
     }
 
     var themesSelect = this.$el.find('#formAppTheme'),
-    formsSelect = this.$el.find('#formAppForms');
+    formsSelect = this.$el.find('#formAppForms'),
+    adminUserSelect = this.$el.find('#appFormAdminUsers');
 
     this.forms.each(function(f){
 console.log('formsapps.createedit.view render - each form:', f.get(self.CONSTANTS.FORM.NAME));
@@ -117,20 +118,17 @@ console.log('formsapps.createedit.view render - each form:', f.get(self.CONSTANT
     });
 
     formsSelect.select2();
+    adminUserSelect.select2({ tags:[""], tokenSeparators: [",", " "]});
+
     if (this.mode === 'update'){
       var vals = _.pluck(this.model.get(self.CONSTANTS.FORMSAPP.FORMS), '_id');
       formsSelect.select2('val', vals);
       themesSelect.val(this.model.get('theme')._id);
+      adminUserSelect.select2('val', this.model.get('config').client.config_admin_user);
+
     }else{
       // A create operation - remove the save buttons
       this.$el.find('.btn-group').remove();
-    }
-
-    // Set up App Config checkboxes
-    if (appConfig){
-      this.$el.find('input#appFormLogging').prop('checked', appConfig.client.logger);
-      this.$el.find('input#appFormDebug').prop('checked', appConfig.client.debug_mode);
-      this.$el.find('input#appFormCloudLogging').prop('checked', appConfig.cloud.logging.enabled);
     }
 
     return this;
@@ -182,7 +180,8 @@ console.log('formsapps.createedit.view render - each form:', f.get(self.CONSTANT
       "max_retries" : undefined,
       "timeout" : undefined,
       "log_line_limit": undefined,
-      "log_email": undefined
+      "log_email": undefined,
+      "config_admin_user" : undefined
     },
     cloudConfig = {
       logging : {
@@ -207,6 +206,13 @@ console.log('formsapps.createedit.view render - each form:', f.get(self.CONSTANT
         clientConfig[key] = formVal;
       }
     });
+
+    // Admin users gets split out as an array
+    if (typeof clientConfig.config_admin_user === 'string'){
+      clientConfig.config_admin_user = clientConfig.config_admin_user.split(',');
+    }else{
+      clientConfig.config_admin_user = [];
+    }
 
     this.model.set(this.CONSTANTS.FORMSAPP.APP_CONFIG, { client : clientConfig, cloud : cloudConfig});
 
