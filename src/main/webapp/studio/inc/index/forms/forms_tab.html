@@ -113,7 +113,11 @@
 <script id="ruleResult" type="text/x-handlebars-template">
     <select id="targetAction" style="margin-left:13px;">
         <option value="show">show</option>
+        {{#if fieldRule}}
         <option value="hide">hide</option>
+        {{else}}
+        <option value="skip">skip</option>
+        {{/if}}
     </select>
     <select class="targetField" id="targetField">
         {{#each fields}}
@@ -334,9 +338,9 @@
 <script id="preview_outline" type="text/x-handlebars-template">
     <div id="preview_wrapper"
          style="overflow: hidden; width: 227px; height: 470px; -webkit-transform-style: preserve-3d;">
-        <div id="#forms_preview_frame"
+        <div class="fh_appform_container" id="#forms_preview_frame"
              style="position: absolute; -webkit-transform-origin: 0px 0px; -webkit-transform: scale(0.4585858585858586, 0.4585858585858586); top: 0px; left: 0px; margin-top: 0px; margin-left: 0px; width: 400px; height: 710px; padding: 160px 48px 154px 47px; background-image: url(https://testing.feedhenry.me/studio/static/themes/default/img/preview_device/iphone_5.png); display: block; background-position: initial initial; background-repeat: no-repeat no-repeat;">
-            <div class="formPreviewContents" style="width: 400px; height: 710px;">
+            <div class="formPreviewContents fh_appform_body" style="width: 400px; height: 710px;">
 
             </div>
         </div>
@@ -391,14 +395,14 @@
 <script id="themeColourRow" type="text/x-handlebars-template">
     <div class="colorRow">
         <input type='text' name='{{name}}' value="{{value}}"/>
-        <label>{{name}}</label>
+        <label>{{formattedName}}</label>
     </div>
 </script>
 
 <script id="themeFontRowReadOnly" type="text/x-handlebars-template">
     <div class="fontrow" data-name="{{ name }}">
         <label>
-            {{ name }}
+            {{ formattedName }}
         </label>
 
         <div class="size">{{ r.fontSize }}</div>
@@ -412,7 +416,7 @@
     <div class="fontrow" data-name="{{ name }}">
 
         <label>
-            {{ name }}
+            {{ formattedName }}
         </label>
         <select class="size" name="fontSize">
             <option value="11pt">11pt</option>
@@ -453,7 +457,7 @@
     <div class="borderrow" data-name="{{ name }}">
 
         <label>
-            {{ name }}
+            {{ formattedName }}
         </label>
 
         <div class="thickness">{{ r.thickness }}</div>
@@ -466,7 +470,7 @@
     <div class="borderrow" data-name="{{ name }}">
 
         <label>
-            {{ name }}
+            {{ formattedName }}
         </label>
         <select class="thickness" name="thickness">
             <option value="none">None</option>
