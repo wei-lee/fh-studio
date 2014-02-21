@@ -195,7 +195,7 @@ console.log('formsapps.createedit.view render - each form:', f.get(self.CONSTANT
       formVal;
 
       if (input.attr('type') === 'checkbox' ){
-        formVal = $('input[type=checkbox]').prop('checked');
+        formVal = input.prop('checked');
       }else{
         formVal = input.val();
       }
