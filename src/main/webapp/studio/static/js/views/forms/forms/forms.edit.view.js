@@ -265,7 +265,9 @@ App.View.FormEdit = App.View.Forms.extend({
     console.log("update preview raw data", self.form.toJSON());
     $fh.forms.init({
       config: {
-        "cloudHost": "", "appid": new Date().getTime()
+        "cloudHost": "",
+        "appid": new Date().getTime(),
+        "studioMode": true
       },
       "updateForms": false
     }, function () {

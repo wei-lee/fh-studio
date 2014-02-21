@@ -31,7 +31,9 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     this.formCollection = new App.Collection.Form();
     $fh.forms.init({
       config: {
-        "cloudHost": "", "appid": new Date().getTime(),"studioMode":true
+        "cloudHost": "",
+        "appid": new Date().getTime(),
+        "studioMode":true
       },
       "updateForms": false
     }, function () {
