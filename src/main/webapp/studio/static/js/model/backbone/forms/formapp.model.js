@@ -22,6 +22,8 @@ App.Model.FormApp = App.Model.FormBase.extend({
       forms : model.get(constObj.FORMS),
       theme : model.get(constObj.THEMENAME)
     };
+    updateObject[constObj.APP_CONFIG] = model.get(constObj.APP_CONFIG);
+
 
     if (method === 'update') {
       url = this.fetchURL.replace('{{id}}', model.get('_id'));

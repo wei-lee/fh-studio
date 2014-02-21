@@ -113,7 +113,11 @@
 <script id="ruleResult" type="text/x-handlebars-template">
     <select id="targetAction" style="margin-left:13px;">
         <option value="show">show</option>
+        {{#if fieldRule}}
         <option value="hide">hide</option>
+        {{else}}
+        <option value="skip">skip</option>
+        {{/if}}
     </select>
     <select class="targetField" id="targetField">
         {{#each fields}}
@@ -334,9 +338,9 @@
 <script id="preview_outline" type="text/x-handlebars-template">
     <div id="preview_wrapper"
          style="overflow: hidden; width: 227px; height: 470px; -webkit-transform-style: preserve-3d;">
-        <div id="#forms_preview_frame"
-             style="position: absolute; -webkit-transform-origin: 0px 0px; -webkit-transform: scale(0.4585858585858586, 0.4585858585858586); top: 0px; left: 0px; margin-top: 0px; margin-left: 0px; width: 400px; height: 710px; padding: 160px 48px 154px 47px; background-image: url(/studio/static/themes/default/img/preview_device/iphone_5.png); display: block; background-position: initial initial; background-repeat: no-repeat no-repeat;">
-            <div class="formPreviewContents" style="width: 400px; height: 710px;">
+        <div class="fh_appform_container" id="#forms_preview_frame"
+             style="position: absolute; -webkit-transform-origin: 0px 0px; -webkit-transform: scale(0.4585858585858586, 0.4585858585858586); top: 0px; left: 0px; margin-top: 0px; margin-left: 0px; width: 400px; height: 710px; padding: 160px 48px 154px 47px; background-image: url(https://testing.feedhenry.me/studio/static/themes/default/img/preview_device/iphone_5.png); display: block; background-position: initial initial; background-repeat: no-repeat no-repeat;">
+            <div class="formPreviewContents fh_appform_body" style="width: 400px; height: 710px;">
 
             </div>
         </div>
@@ -391,14 +395,14 @@
 <script id="themeColourRow" type="text/x-handlebars-template">
     <div class="colorRow">
         <input type='text' name='{{name}}' value="{{value}}"/>
-        <label>{{name}}</label>
+        <label>{{formattedName}}</label>
     </div>
 </script>
 
 <script id="themeFontRowReadOnly" type="text/x-handlebars-template">
     <div class="fontrow" data-name="{{ name }}">
         <label>
-            {{ name }}
+            {{ formattedName }}
         </label>
 
         <div class="size">{{ r.fontSize }}</div>
@@ -412,7 +416,7 @@
     <div class="fontrow" data-name="{{ name }}">
 
         <label>
-            {{ name }}
+            {{ formattedName }}
         </label>
         <select class="size" name="fontSize">
             <option value="11pt">11pt</option>
@@ -453,7 +457,7 @@
     <div class="borderrow" data-name="{{ name }}">
 
         <label>
-            {{ name }}
+            {{ formattedName }}
         </label>
 
         <div class="thickness">{{ r.thickness }}</div>
@@ -466,7 +470,7 @@
     <div class="borderrow" data-name="{{ name }}">
 
         <label>
-            {{ name }}
+            {{ formattedName }}
         </label>
         <select class="thickness" name="thickness">
             <option value="none">None</option>
@@ -509,29 +513,135 @@
 <script id="formsApps" type="text/x-handlebars-template">
     <div class="well">
         <form class="form-horizontal formsApps span6">
-            <div class="control-group">
-                <label class="control-label" for="inputFormAppName">App Name</label>
+            <fieldset>
+              <legend>Form Details</legend>
+              <div class="control-group">
+                  <label class="control-label" for="inputFormAppName">App Name</label>
 
-                <div class="controls appname">
-                    <input type="text" id="inputFormAppName" class="" name="name" value="{{ name }}">
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="formAppTheme">App Theme</label>
+                  <div class="controls appname">
+                      <input type="text" id="inputFormAppName" class="" name="name" value="{{ title }}">
+                  </div>
+              </div>
+              <div class="control-group">
+                  <label class="control-label" for="formAppTheme">App Theme</label>
 
-                <div class="controls">
-                    <select id="formAppTheme" name="theme" class="">
-                    </select>
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="formAppForms">Forms</label>
+                  <div class="controls">
+                      <select id="formAppTheme" name="theme" class="">
+                      </select>
+                  </div>
+              </div>
+              <div class="control-group">
+                  <label class="control-label" for="formAppForms">Forms</label>
 
-                <div class="controls">
-                    <select id="formAppForms" name="forms" multiple class="span7">
-                    </select>
+                  <div class="controls">
+                      <select id="formAppForms" name="forms" multiple class="span7">
+                      </select>
+                  </div>
+              </div>
+            </fieldset>
+            {{#if isUpdate}}
+              <fieldset>
+                <legend>Camera Settings</legend>
+                <div class="control-group">
+                  <label class="control-label" for="appFormQuality">Quality</label>
+
+                  <div class="controls">
+                    <input type="number" id="appFormQuality" class="" name="quality" value="{{ quality }}"><span class="help-inline">%</span>
+                  </div>
                 </div>
-            </div>
+                <div class="control-group">
+                  <label class="control-label" for="appFormTargetHeight">Target Height</label>
+
+                  <div class="controls">
+                    <input type="number" id="appFormTargetHeight" class="" name="targetHeight" value="{{ targetHeight }}"><span class="help-inline">px</span>
+                  </div>
+                </div>
+
+                <div class="control-group">
+                  <label class="control-label" for="appFormTargetWidth">Target Width</label>
+
+                  <div class="controls">
+                    <input type="number" id="appFormTargetWidth" class="" name="targetWidth" value="{{ targetWidth }}"><span class="help-inline">px</span>
+                  </div>
+                </div>
+              </fieldset>
+              <fieldset>
+                <legend>Submission</legend>
+                <div class="control-group">
+                  <label class="control-label" for="appFormMaxRetries">Max Retries</label>
+
+                  <div class="controls">
+                    <input type="number" id="appFormMaxRetries" class="" name="max_retries" value="{{ max_retries}}">
+                  </div>
+                </div>
+
+                <div class="control-group">
+                  <label class="control-label" for="appFormTimeout">Timeout</label>
+
+                  <div class="controls">
+                    <input type="number" id="appFormTimeout" class="" name="timeout" value="{{ timeout}}"><span class="help-inline">seconds</span>
+                  </div>
+                </div>
+
+                <div class="control-group">
+                  <label class="control-label" for="appFormMinSentItems">Min. Sent Items To Save</label>
+
+                  <div class="controls">
+                    <input type="number" id="appFormMinSentItems" class="" name="sent_save_min" value="{{ sent_save_min}}">
+                  </div>
+                </div>
+
+                <div class="control-group">
+                  <label class="control-label" for="appFormMaxSentItems">Max. Sent Items To Save</label>
+
+                  <div class="controls">
+                    <input type="number" id="appFormMaxSentItems" class="" name="sent_save_max" value="{{ sent_save_max}}">
+                  </div>
+                </div>
+
+              </fieldset>
+
+              <fieldset>
+                <legend>Client Logging</legend>
+                <div class="control-group">
+                  <label class="control-label" for="appFormLogging">Logging Enabled</label>
+                  <div class="controls">
+                    <input type="checkbox" id="appFormLogging" class="" name="logger">
+                  </div>
+                </div>
+
+                <div class="control-group">
+                  <label class="control-label" for="appFormLogLineLimit">Log Limit</label>
+                  <div class="controls">
+                    <input type="number" id="appFormLogLineLimit" class="" name="log_line_limit" value="{{ log_line_limit}}"><span class="help-inline"># lines</span>
+                  </div>
+                </div>
+
+                <div class="control-group">
+                  <label class="control-label" for="appFormLogEmail">Log Email</label>
+                  <div class="controls">
+                    <input type="email" id="appFormLogEmail" class="" name="log_email" value="{{ log_email}}">
+                  </div>
+                </div>
+
+                <div class="control-group">
+                  <label class="control-label" for="appFormDebug">Debug Mode Enabled</label>
+                  <div class="controls">
+                    <input type="checkbox" id="appFormDebug" class="" name="debug_mode">
+                  </div>
+                </div>
+              </fieldset>
+
+              <fieldset>
+                <legend>Cloud Logging</legend>
+                <div class="control-group">
+                  <label class="control-label" for="appFormCloudLogging">Logging Enabled</label>
+                  <div class="controls">
+                    <input type="checkbox" id="appFormCloudLogging" class="" name="form_notifications">
+                  </div>
+                </div>
+              </fieldset>
+            {{/if}}
             <div class="btn-group pull-right">
                 <a href="#" class="btn btn-secondary btn-app-submissions">View Submissions &raquo;</a>
                 <a href="#" class="btn btn-primary btn-save-app">Save</a>

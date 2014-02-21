@@ -296,6 +296,7 @@ App.View.SubmissionList = App.View.FormListBase.extend({
   },
   onRowSelected : function (e){
     var self = this;
+    console.log("onRowSelected submissions ");
     this.selectMessage = new App.View.FullPageMessageView({ message : 'Loading .... ', button : false });
     this.$el.find('.emptyContainer').empty().append(this.selectMessage.render().$el);
     $('.submissionslist').removeClass("span10").addClass("row-fluid");

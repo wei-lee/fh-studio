@@ -16,8 +16,10 @@ App.View.FormsController = Backbone.View.extend({
     'click #editSubmission' : 'onEditSubmission',
     'click #printSubmission' : 'onPrintSubmission'
   },
-  initialize : function(){
 
+
+
+  initialize : function(){
 
   },
   views : {},
@@ -38,9 +40,8 @@ App.View.FormsController = Backbone.View.extend({
   },
   render: function(options) {
     var self = this;
-
     this.$el.addClass('row formscontrollerdiv row-fluid');
-
+    var userRoles = $fw.getUserProp("roles");
     this.menu = new App.View.FormMenu();
     this.bind('menuchange', function(active){
       self.hideAll();
@@ -51,7 +52,12 @@ App.View.FormsController = Backbone.View.extend({
     this.$el.append(this.menu.render().$el);
 
     // Show the default view on first render, forms
-    this.onForms();
+
+    if(userRoles && (userRoles.indexOf("formseditor") != -1 || userRoles.indexOf("formsadmin") != -1)){
+      this.onForms();
+    }else if(userRoles && (userRoles.indexOf("submissionsviewer") != -1 || userRoles.indexOf("submissionseditor") != -1)){
+      this.onSubmissions();
+    }
 
     return this;
   },
@@ -93,7 +99,7 @@ App.View.FormsController = Backbone.View.extend({
     if (this.views.submissions){
       this.views.submissions.$el.remove();
     }
-    this.views.submissions = new App.View.FormSubmissionsTabs({"forms": this.getActiveForms().collection});
+    this.views.submissions = new App.View.FormSubmissionsTabs({"forms": new App.Collection.Form()});
     this.$el.append(this.views.submissions.render().$el);
   },
   onAppSubmissions : function(){

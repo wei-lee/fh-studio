@@ -79,18 +79,23 @@ App.View.FormAppsCreateEdit = App.View.Forms.extend({
   render : function(){
 
     var self = this,
-    name = '';
+    appConfig,
+    appData;
+
+    if (this.model){
+      appConfig = this.model.get(this.CONSTANTS.FORMSAPP.APP_CONFIG);
+      appData = this.model.toJSON();
+    }else{
+      appData = { title : ''};
+    }
+    appData.isUpdate = this.mode === 'update';
 
     if (!this.loaded){
       this.$el.height(360); // TODO was 134);
       return this;
     }
 
-    if (this.mode === 'update'){
-      name = this.model.get(this.CONSTANTS.FORMSAPP.NAME);
-    }
-
-    this.$el.append(this.templates.$formsApps({ name : name }));
+    this.$el.append(this.templates.$formsApps(appData));
 
     if (this.mode === 'existing'){
       var appSelect = $('<select id="existingAppSelect"></select>');
@@ -120,6 +125,14 @@ console.log('formsapps.createedit.view render - each form:', f.get(self.CONSTANT
       // A create operation - remove the save buttons
       this.$el.find('.btn-group').remove();
     }
+
+    // Set up App Config checkboxes
+    if (appConfig){
+      this.$el.find('input#appFormLogging').prop('checked', appConfig.client.logger);
+      this.$el.find('input#appFormDebug').prop('checked', appConfig.client.debug_mode);
+      this.$el.find('input#appFormCloudLogging').prop('checked', appConfig.cloud.logging.enabled);
+    }
+
     return this;
   },
   onFormSave : function(e){
@@ -156,6 +169,47 @@ console.log('formsapps.createedit.view render - each form:', f.get(self.CONSTANT
     this.model.set(this.CONSTANTS.FORMSAPP.FORMS, forms);
     this.model.set(this.CONSTANTS.FORMSAPP.THEMENAME, theme);
     this.model.set(this.CONSTANTS.FORMSAPP.NAME, name);
+
+    // Now retrieve client config
+    var clientConfig = {
+      "sent_save_min": undefined,
+      "sent_save_max": undefined,
+      "targetWidth": undefined,
+      "targetHeight": undefined,
+      "quality": undefined,
+      "debug_mode": undefined,
+      "logger" : undefined,
+      "max_retries" : undefined,
+      "timeout" : undefined,
+      "log_line_limit": undefined,
+      "log_email": undefined
+    },
+    cloudConfig = {
+      logging : {
+        enabled : this.$el.find('input#appFormCloudLogging').prop('checked')
+      }
+    };
+
+    // Iterate over every empty key in client config, finding the input with it's name in this view, as we've followed this convention.
+    _.each(clientConfig, function(value, key){
+      var input = self.$el.find('input[name=' + key + ']'),
+      formVal;
+
+      if (input.attr('type') === 'checkbox' ){
+        formVal = $('input[type=checkbox]').prop('checked');
+      }else{
+        formVal = input.val();
+      }
+
+      if (formVal === "" && clientConfig[key] === undefined){
+        delete clientConfig[key];
+      }else{
+        clientConfig[key] = formVal;
+      }
+    });
+
+    this.model.set(this.CONSTANTS.FORMSAPP.APP_CONFIG, { client : clientConfig, cloud : cloudConfig});
+
 
     // We use model.save rather than our usual update on a collection - bit inconsistant..?
     var cacheKey;
