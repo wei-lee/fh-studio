@@ -176,7 +176,6 @@ App.View.FormEdit = App.View.Forms.extend({
       return;
     }
     var theme = self.themes.findWhere({"_id":val });
-    console.log("have css ", theme.get("css"));
     prevWrapper.append('<style>'+theme.get("css")+'</style>');
   },
   syncModelAndFormBuilder: function () {
