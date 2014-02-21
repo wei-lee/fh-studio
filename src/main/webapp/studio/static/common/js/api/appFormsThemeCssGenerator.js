@@ -4,6 +4,8 @@ App.forms = App.forms || {};
 var FH_APPFORM_PREFIX = "fh_appform_";
 var themeCSSFunctions = {};
 
+
+
 themeCSSFunctions[FH_APPFORM_PREFIX] = {
   "logo" : function(themeJSON){
     var logoStr = "";
@@ -404,7 +406,7 @@ themeCSSFunctions[FH_APPFORM_PREFIX] = {
 
     //Background Color -->set to set the text color.
     if(requiredColour){
-      requiredCSS = this.getBackgroundColour(requiredColour);
+      requiredCSS = requiredCSS.concat("color:" + requiredColour + ";");
     } else {
       return null;
     }
@@ -539,7 +541,7 @@ themeCSSFunctions[FH_APPFORM_PREFIX] = {
   }
 };
 
-App.forms.themeCSSGenerator =  function(themeJSON){
+App.forms.themeCSSGenerator = function(themeJSON){
   var generatedCSSJSON = {};
 
   //All of these have to build values that are customizable.
@@ -937,7 +939,6 @@ App.forms.themeCSSGenerator =  function(themeJSON){
 
   return processThemeJSON;
 };
-
 
 
 

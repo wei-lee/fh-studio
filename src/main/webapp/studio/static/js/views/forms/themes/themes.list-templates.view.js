@@ -34,7 +34,9 @@ App.View.ThemeListTemplates = App.View.FormListBase.extend({
 
     $fh.forms.init({
       config: {
-        "cloudHost": "", "appid": new Date().getTime()
+        "cloudHost": "",
+        "appid": new Date().getTime(),
+        "studioMode": true
       },
       "updateForms": false
     }, function () {

@@ -176,7 +176,6 @@ App.View.FormEdit = App.View.Forms.extend({
       return;
     }
     var theme = self.themes.findWhere({"_id":val });
-    console.log("have css ", theme.get("css"));
     prevWrapper.append('<style>'+theme.get("css")+'</style>');
   },
   syncModelAndFormBuilder: function () {
@@ -265,7 +264,9 @@ App.View.FormEdit = App.View.Forms.extend({
     console.log("update preview raw data", self.form.toJSON());
     $fh.forms.init({
       config: {
-        "cloudHost": "", "appid": new Date().getTime()
+        "cloudHost": "",
+        "appid": new Date().getTime(),
+        "studioMode": true
       },
       "updateForms": false
     }, function () {
