@@ -23,7 +23,13 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     'click .btn-preview-theme' : 'onPreviewTheme',
     'change #formSelect' : 'formSelect'
   },
+  colorChanged: function(e){
+    var self = this;
+    console.log("COLOR CHANGED: ", e);
+    self.syncThemeModel.call(self);
+  },
   initialize: function(options){
+    var self = this;
     this.constructor.__super__.initialize.apply(this, arguments);
     this.options = options;
     this.theme = options.theme;
@@ -38,9 +44,10 @@ App.View.FormThemesEdit = App.View.Forms.extend({
       "updateForms": false
     }, function () {
       console.log("fh forms callback");
-    });//todo figure out why this callback is not being called in studio, as we are currently only rendering forms we don't need a full setup.
+    });
 
-
+    self.off("changedTheme");
+    self.on("changedTheme", self.colorChanged);
   },
   formSelect : function (e){
     var self = this;
@@ -182,10 +189,10 @@ App.View.FormThemesEdit = App.View.Forms.extend({
         var formattedName = self.CONSTANTS.THEME.DESCRIPTIONS[name];
         var colourInput = $(self.templates.$themeColourRow( { formattedName: formattedName, name : name, value : colorHex } )),
         input = $(colourInput.find('input'));
-        input.change(function(){
-          self.syncThemeModel.call(self);
-        });
-        self.spectrumify(input, { color : colorHex }, 'color');
+//        input.change(function(){
+//          self.syncThemeModel.call(self);
+//        });
+        self.spectrumify(colourInput, { color : colorHex, "name": name }, 'color');
         colourSection.append( colourInput );
       });
       sectionContainer.append(colourSection);
@@ -201,9 +208,9 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     typogEl.append('<h4>Typography</h4>');
     _.each(typog, function(fontAttributes, heading){
       var fontRow = self.selectsRow('Font', heading, fontAttributes);
-      fontRow.change(function(){
-         self.syncThemeModel.call(self);
-      });
+//      fontRow.change(function(){
+//         self.syncThemeModel.call(self);
+//      });
       typogElBody.append(fontRow);
     });
     typogEl.append(typogElBody);
@@ -217,9 +224,9 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     bordersEl.append('<h4>Borders</h4>');
     _.each(borders, function(borderAttributes, heading){
       var row = self.selectsRow('Border', heading, borderAttributes);
-      row.change(function (){
-         self.syncThemeModel.call(self);
-      });
+//      row.change(function (){
+//         self.syncThemeModel.call(self);
+//      });
       bordersElBody.append(row);
     });
     bordersEl.append(bordersElBody);
@@ -233,7 +240,8 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     tpl = this.templates[tplIncReadOnlyName],
     row = $(tpl({r : attributes, name : heading, formattedName: formattedName})),
     input = $(row.find('input.colour'));
-    this.spectrumify(input, attributes, 'colour');
+    attributes.name = "font" + heading;
+    this.spectrumify(row, attributes, 'colour');
 
     // Make sure the right select dropdown has the selected attribute to begin with
     row.find('select').each(function(){
@@ -364,12 +372,49 @@ App.View.FormThemesEdit = App.View.Forms.extend({
       }});
     }
   },
-  spectrumify : function(input, attrs, attrVal){
-    input.spectrum({
-      showButtons: false,
-      disabled: this.readOnly,
-      color : attrs[attrVal]
-    });
+  spectrumify : function(colorRow, attrs, attrVal){
+    var self = this;
+    var input = colorRow.find('input');
+    var altField = ".col_" + attrs["name"];
+    var colorDisplay = colorRow.find(altField);
+
+    colorDisplay.css("background-color", attrs[attrVal]);
+
+    if(!this.readOnly){
+      var colorPickerInput = input.colorpicker({
+        altField: altField,
+        altAlpha: true,
+        altProperties: "background-color,color",
+        alpha: true,
+        parts:	['header', 'map', 'bar', 'hex', 'alpha', 'footer', 'preview'],
+        layout: {
+          preview:	[0, 0, 2, 1],
+          hex:		[2, 0, 1, 1],
+          map:		[0, 1, 3, 3],	// Left, Top, Width, Height (in table cells).
+          bar:		[3, 1, 1, 3],
+          alpha:		[3, 0, 1, 1]
+        },
+        inline: false,
+        color : attrs[attrVal],
+        colorFormat: 'RGBA',
+        rgb: false,
+        hsv: false,
+        title: "Choose A Color",
+        select: function(formatted, colorpicker){
+          console.log("SELECT");
+          self.trigger("changedTheme");
+        },
+        close: function(formatted, colorpicker){
+          console.log("CLOSE");
+          self.trigger("changedTheme");
+        }
+      });
+
+      colorDisplay.click(function(e){
+        e.preventDefault();
+        colorPickerInput.colorpicker('open');
+      });
+    }
   },
   back : function(){
     this.trigger('back');

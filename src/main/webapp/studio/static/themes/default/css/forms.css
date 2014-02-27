@@ -139,6 +139,16 @@ ul.apps-using-form li.text {
     margin: 8px 0px;
 }
 
+.themeedit .colorPickerContainer {
+    border: 1px solid;
+    display:inline-block;
+}
+
+.themeedit .colorPicker{
+    width: 25px;
+    height:25px;
+}
+
 .themeedit .colorRow {
     width: 75px;
     text-align: center;

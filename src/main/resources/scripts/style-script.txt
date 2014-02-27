@@ -10,6 +10,7 @@ common/css/ui/framework/codemirror/jscolors.css
 common/css/ui/framework/bootstrap.css
 common/js/ui/thirdparty/formbuilder/formbuilder.css
 common/js/ui/thirdparty/spectrum/spectrum.css
+common/js/ui/thirdparty/jquery-colorpicker/jquery.colorpicker.css
 common/css/ui/framework/datetimepicker.css
 common/css/ui/framework/bootstrap-datepicker.css
 common/css/ui/framework/select2/select2.css
