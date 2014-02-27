@@ -189,10 +189,7 @@ App.View.FormThemesEdit = App.View.Forms.extend({
         var formattedName = self.CONSTANTS.THEME.DESCRIPTIONS[name];
         var colourInput = $(self.templates.$themeColourRow( { formattedName: formattedName, name : name, value : colorHex } )),
         input = $(colourInput.find('input'));
-//        input.change(function(){
-//          self.syncThemeModel.call(self);
-//        });
-        self.spectrumify(colourInput, { color : colorHex, "name": name }, 'color');
+        self.spectrumify(colourInput, { color : colorHex, "name": name }, 'color', 'background');
         colourSection.append( colourInput );
       });
       sectionContainer.append(colourSection);
@@ -208,9 +205,6 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     typogEl.append('<h4>Typography</h4>');
     _.each(typog, function(fontAttributes, heading){
       var fontRow = self.selectsRow('Font', heading, fontAttributes);
-//      fontRow.change(function(){
-//         self.syncThemeModel.call(self);
-//      });
       typogElBody.append(fontRow);
     });
     typogEl.append(typogElBody);
@@ -220,13 +214,10 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     var self = this,
     bordersEl = $('<div class="borders  themesection"></div>'),
     bordersElBody = $('<div class="themesectionBody well"></div>'),
-    borders = this.theme.get(this.CONSTANTS.THEME.BORDERS);
+    borders = self.theme.get(self.CONSTANTS.THEME.BORDERS);
     bordersEl.append('<h4>Borders</h4>');
     _.each(borders, function(borderAttributes, heading){
       var row = self.selectsRow('Border', heading, borderAttributes);
-//      row.change(function (){
-//         self.syncThemeModel.call(self);
-//      });
       bordersElBody.append(row);
     });
     bordersEl.append(bordersElBody);
@@ -236,12 +227,12 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     var self = this;
     var formattedName = self.CONSTANTS.THEME.DESCRIPTIONS[heading];
     var tplBaseName = '$theme' + type + 'Row',
-    tplIncReadOnlyName = (this.readOnly) ? tplBaseName + 'ReadOnly' : tplBaseName, // Now includes the "ReadOnly" string if it's needed
+    tplIncReadOnlyName = (self.readOnly) ? tplBaseName + 'ReadOnly' : tplBaseName, // Now includes the "ReadOnly" string if it's needed
     tpl = this.templates[tplIncReadOnlyName],
-    row = $(tpl({r : attributes, name : heading, formattedName: formattedName})),
+    row = $(tpl({type: type.toLowerCase(), r : attributes, name : heading, formattedName: formattedName})),
     input = $(row.find('input.colour'));
-    attributes.name = "font" + heading;
-    this.spectrumify(row, attributes, 'colour');
+    attributes.name = heading;
+    self.spectrumify(row, attributes, 'colour', type.toLowerCase());
 
     // Make sure the right select dropdown has the selected attribute to begin with
     row.find('select').each(function(){
@@ -372,10 +363,10 @@ App.View.FormThemesEdit = App.View.Forms.extend({
       }});
     }
   },
-  spectrumify : function(colorRow, attrs, attrVal){
+  spectrumify : function(colorRow, attrs, attrVal, type){
     var self = this;
     var input = colorRow.find('input');
-    var altField = ".col_" + attrs["name"];
+    var altField = ".col_" + type + "_" + attrs["name"];
     var colorDisplay = colorRow.find(altField);
 
     colorDisplay.css("background-color", attrs[attrVal]);

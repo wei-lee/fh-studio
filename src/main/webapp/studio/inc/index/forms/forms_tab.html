@@ -395,7 +395,7 @@
 <script id="themeColourRow" type="text/x-handlebars-template">
     <div class="colorRow">
         <input type='text' name='{{name}}' class="colour" value="{{value}}" style="display:none;"/>
-        <div class="colorPickerContainer"><div class="colorPicker col_{{name}}" style="background-color:{{value}};"></div></div>
+        <div class="colorPickerContainer"><div class="colorPicker col_background_{{name}}" style="background-color:{{value}};"></div></div>
         <label>{{formattedName}}</label>
     </div>
 </script>
@@ -409,7 +409,7 @@
         <div class="size">{{ r.fontSize }}</div>
         <div class="family">{{ r.fontFamily }}</div>
         <div class="style">{{ r.fontStyle }}</div>
-        <div class="colorPickerContainer"><div class="colorPicker col_{{name}}" style="background-color:{{r.fontColour}};"></div></div>
+        <div class="colorPickerContainer"><div class="colorPicker col_{{type}}_{{name}}" style="background-color:{{r.fontColour}};"></div></div>
         <input class="colour" type='text' name='fontColour' value="{{r.fontColour}}" style="display:none;"/>
     </div>
 </script>
@@ -439,7 +439,7 @@
             <option value="bold">Bold</option>
             <option value="italic">Italic</option>
         </select>
-        <div class="colorPickerContainer"><div class="colorPicker col_{{name}}" style="background-color:{{r.fontColour}};"></div></div>
+        <div class="colorPickerContainer"><div class="colorPicker col_{{type}}_{{name}}" style="background-color:{{r.fontColour}};"></div></div>
         <input class="colour" type='text' name='fontColour' value="{{r.fontColour}}"  style="display:none;"/>
     </div>
 </script>
@@ -465,7 +465,7 @@
 
         <div class="thickness">{{ r.thickness }}</div>
         <div class="style">{{ r.style }}</div>
-        <div class="colorPickerContainer"><div class="colorPicker col_{{name}}" style="background-color:{{r.colour}};"></div></div>
+        <div class="colorPickerContainer"><div class="colorPicker col_{{type}}_{{name}}" style="background-color:{{r.colour}};"></div></div>
         <input class="colour" type='text' name='colour' value="{{r.colour}}" style="display:none"/>
     </div>
 </script>
@@ -490,7 +490,7 @@
             <option value="dotted">Dotted</option>
             <option value="double">Double</option>
         </select>
-        <div class="colorPickerContainer"><div class="colorPicker col_{{name}}" style="background-color:{{r.colour}};"></div></div>
+        <div class="colorPickerContainer"><div class="colorPicker col_{{type}}_{{name}}" style="background-color:{{r.colour}};"></div></div>
         <input class="colour" type='text' name='colour' value="{{r.colour}}" style="display:none"/>
     </div>
 </script>
