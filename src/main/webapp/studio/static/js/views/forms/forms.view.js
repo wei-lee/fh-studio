@@ -80,10 +80,13 @@ App.View.Forms = Backbone.View.extend({
         "field_required": "Required Icon",
         "section_area": "Section Area",
         "navigation": "Navigation",
+        "button_navigation" : "Navigation Button",
         "navigation_active": "Navigation (Selected)",
         "action": "Action",
+        "button_action" : "Action Button",
         "action_active": "Action (Active)",
         "cancel": "Cancel",
+        "button_cancel": "Cancel Button",
         "cancel_active": "Cancel (Active)",
         "title": "Title",
         "description" : "Description",
@@ -96,9 +99,6 @@ App.View.Forms = Backbone.View.extend({
         "buttons_active": "Buttons (Selected)",
         "section_break_title": "Section Break Title",
         "section_break_description": "Section Break Description"
-
-
-
       },
       TYPOGRAPHY : 'typography',
       BORDERS : 'borders',

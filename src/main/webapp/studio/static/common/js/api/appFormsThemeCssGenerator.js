@@ -4,8 +4,6 @@ App.forms = App.forms || {};
 var FH_APPFORM_PREFIX = "fh_appform_";
 var themeCSSFunctions = {};
 
-
-
 themeCSSFunctions[FH_APPFORM_PREFIX] = {
   "logo" : function(themeJSON){
     var logoStr = "";
@@ -33,13 +31,13 @@ themeCSSFunctions[FH_APPFORM_PREFIX] = {
     return this.get_button_css(themeJSON, "action", "buttons");
   },
   "button_action_active" : function(themeJSON){
-    return this.get_button_css(themeJSON, "action_active", "buttons");
+    return this.get_button_css(themeJSON, "action_active", "buttons_active");
   },
   "button_cancel" : function(themeJSON){
     return this.get_button_css(themeJSON, "cancel", "buttons");
   },
   "button_cancel_active" : function(themeJSON){
-    return this.get_button_css(themeJSON, "cancel_active", "buttons");
+    return this.get_button_css(themeJSON, "cancel_active", "buttons_active");
   },
   "navigation" : function(themeJSON){
     var navigationBarStr = "";
@@ -180,7 +178,7 @@ themeCSSFunctions[FH_APPFORM_PREFIX] = {
 
     return fieldInputStr;
   },
-  "field_instructions": function(themeJSON){ //TODO Functionalise this
+  "field_instructions": function(themeJSON){
     var fieldInstructionsStr = "";
 
     //background
@@ -526,13 +524,23 @@ themeCSSFunctions[FH_APPFORM_PREFIX] = {
   },
   "get_button_css": function(themeJSON, button_name, button_font){
     var buttonStr = "";
+    var buttonBorderKey = "button_" + button_name;
     var buttonColor = themeJSON.colours.buttons[button_name];
+
 
     if(buttonColor){
       buttonStr = buttonStr.concat(this.getBackgroundColour(buttonColor));
-      buttonStr = buttonStr.concat(this.getButtonBorder(buttonColor));
     } else {
       return null;
+    }
+
+    //Border is the same for active and inactive buttons
+    if(button_font === 'buttons'){
+      if(themeJSON.borders[buttonBorderKey]){
+        buttonStr = buttonStr.concat(this.getBorder(themeJSON.borders[buttonBorderKey]));
+      } else {
+        return null;
+      }
     }
 
     buttonStr = buttonStr.concat(this.getButtonFont(themeJSON, button_font));
@@ -875,10 +883,6 @@ App.forms.themeCSSGenerator = function(themeJSON){
       //Have generated all of the css dynamic content, need to add in the static content.
       generatedCSS += getStaticCSSString(cssClassInfo.staticCSSAdditions);
 
-//      if(cssClass == "button_navigation"){
-//        console.log("generatedCSS", generatedCSS);
-//      }
-
       var cssStr = "";
       var printCSSClass = cssClassInfo.parentClass ? cssClassInfo.parentClass : cssClass;
       var cssClassName = ".fh_appform_container " + "." + FH_APPFORM_PREFIX + printCSSClass;
@@ -939,8 +943,6 @@ App.forms.themeCSSGenerator = function(themeJSON){
 
   return processThemeJSON;
 };
-
-
 
 
 

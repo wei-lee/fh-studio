@@ -150,6 +150,21 @@ App.Collection.FormThemes = App.Collection.FormBase.extend({
       }
     },
     "borders": {
+      "button_navigation": {
+        "thickness": "thick",
+        "style": "double",
+        "colour": "#5363c1"
+      },
+      "button_action": {
+        "thickness": "thick",
+        "style": "double",
+        "colour": "#5363c1"
+      },
+      "button_cancel": {
+        "thickness": "thick",
+        "style": "double",
+        "colour": "#5363c1"
+      },
       "forms": {
         "thickness": "medium",
         "style": "solid",
