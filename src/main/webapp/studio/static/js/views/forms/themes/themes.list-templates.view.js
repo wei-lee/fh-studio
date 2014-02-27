@@ -1,36 +1,37 @@
 var App = App || {};
 App.View = App.View || {};
 
-
-//TODO - Need to abstract this.
 App.View.ThemeListTemplates = App.View.FormListBase.extend({
-  templates : {
-    'fullpageLoading' : '#fullpageLoading',
-    'menu' : '#themesListMenu',
+  templates: {
+    'fullpageLoading': '#fullpageLoading',
+    'menu': '#themesListMenu',
     previewOutline: '#preview_outline',
-    formselect:'#form_select',
+    formselect: '#form_select',
     'templateTabs': '#templateTabs'
   },
-  events : {
-    'click tr' : 'onRowSelected',
-    'click .btn-add-theme' : 'onCreate',
-    'click .btn-clone-theme' : 'onClone',
-    'click .btn-delete-theme' : 'onDelete',
-    'change #formSelect' : 'formSelect'
+  events: {
+    'click tr': 'onRowSelected',
+    'click .btn-add-theme': 'onCreate',
+    'click .btn-clone-theme': 'onClone',
+    'click .btn-delete-theme': 'onDelete',
+    'change #formSelect': 'formSelect'
   },
-  initialize: function(){
+  initialize: function () {
     var self = this;
-    this.collection = new App.Collection.FormThemeTemplate();
-    this.formCollection = new App.Collection.Form();
-    this.pluralTitle = 'Themes';
-    this.singleTitle = 'Theme';
-    this.columns = [{
-      "sTitle": 'Name',
-      "mDataProp": this.CONSTANTS.THEME.NAME
-    },{
-      "sTitle": 'Updated',
-      "mDataProp": this.CONSTANTS.THEME.UPDATED
-    }];
+    self.collection = new App.Collection.FormThemeTemplate();
+    self.formCollection = new App.Collection.Form();
+    self.pluralTitle = 'Themes';
+    self.singleTitle = 'Theme';
+    self.columns = [
+      {
+        "sTitle": 'Name',
+        "mDataProp": self.CONSTANTS.THEME.NAME
+      },
+      {
+        "sTitle": 'Updated',
+        "mDataProp": self.CONSTANTS.THEME.UPDATED
+      }
+    ];
 
     $fh.forms.init({
       config: {
@@ -41,62 +42,61 @@ App.View.ThemeListTemplates = App.View.FormListBase.extend({
       "updateForms": false
     }, function () {
       console.log(" cb rendering form");
-    });//todo figure out why this callback is not being called in studio
+    });
 
 
-    this.constructor.__super__.initialize.apply(this, arguments);
+    self.constructor.__super__.initialize.apply(self, arguments);
   },
-  render : function(){
+  render: function () {
     var self = this;
-    self.formCollection.fetch({"success":function (forms){
+    self.formCollection.fetch({"success": function (forms) {
       self.formData = [];
-      forms.forEach(function (f){
+      forms.forEach(function (f) {
         self.formData.push({
           "name": f.get("name"),
           "_id": f.get("_id")
         });
       });
       self.renderPreview();
-    },"error": function (err){
-      console.log("err fetching forms ", err);
-      self.message('Error fetching forms ', 'danger');
+    }, "error": function (err) {
+      console.log("err fetching themes ", err);
+      self.message('Error fetching themes ', 'danger');
       self.renderPreview();
     }
     });
 
-    App.View.FormListBase.prototype.render.apply(this, arguments);
+    App.View.FormListBase.prototype.render.apply(self, arguments);
     self.$el.find('a#viewTheme').parent('li').removeClass("active");
     self.$el.find('a#viewThemeTemplates').parent('li').addClass("active");
-    return this;
+    return self;
   },
-  renderPreview : function(){
-    this.$previewEl = $('<div class="themepreview" />');
-    this.$el.append(this.$previewEl);
-    this.$previewEl.hide();
+  renderPreview: function () {
+    var self = this;
+    self.$previewEl = $('<div class="themepreview" />');
+    self.$el.append(this.$previewEl);
+    self.$previewEl.hide();
 
-    this.$previewEl.append('<div id="formPreviewContainer"></div>');
-
+    self.$previewEl.append('<div id="formPreviewContainer"></div>');
 
 
     // Move the loading to the bottom of this element's dom
-    this.loading.remove();
-    this.$el.append(this.loading);
-    return this;
+    self.loading.remove();
+    self.$el.append(self.loading);
+    return self;
   },
 
-  formSelect : function (e){
+  formSelect: function (e) {
     var self = this;
     var formId = $(e.target).val();
-    var form = this.formCollection.findWhere({"_id":formId});
+    var form = self.formCollection.findWhere({"_id": formId});
 
     var rawData = (form) ? JSON.stringify(form.toJSON()) : undefined;
 
 
-
     var ele = self.$el.find('div.formPreviewContents');
-    if(! rawData){
+    if (!rawData) {
       ele.html("");
-    }else{
+    } else {
       $fh.forms.renderFormFromJSON({rawData: rawData, "container": ele});
     }
   },
@@ -108,14 +108,13 @@ App.View.ThemeListTemplates = App.View.FormListBase.extend({
   updatePreview: function (updatedModel) {
     var self = this;
     var previewTheme = new App.View.FormThemesEdit({ theme: updatedModel, readOnly: true});
-    this.$previewEl.find('#formPreviewContainer').html(previewTheme.render().$el);
-
+    self.$previewEl.find('#formPreviewContainer').html(previewTheme.render().$el);
 
 
     previewTheme.$el.removeClass('span10');
-    this.$previewEl.show();
+    self.$previewEl.show();
 
-    dropdown = this.$previewEl.find('.apps-using-theme');
+    dropdown = self.$previewEl.find('.apps-using-theme');
 
     dropdown.empty();
 
@@ -134,9 +133,9 @@ App.View.ThemeListTemplates = App.View.FormListBase.extend({
 
     var prevContainer = self.$el.find('#previewContainer');
     prevContainer.html(self.templates.$previewOutline()).show();
-    prevContainer.append(self.templates.$formselect({"forms":self.formData}));
+    prevContainer.append(self.templates.$formselect({"forms": self.formData}));
     prevContainer.find('style').remove();
-    prevContainer.append("<style id='themeStyle'>"+updatedModel.get('css')+"</style>");
-    self.$el.find('.themesInnerContainer').append(self.templates.$menu({"themeView" : false}));
+    prevContainer.append("<style id='themeStyle'>" + updatedModel.get('css') + "</style>");
+    self.$el.find('.themesInnerContainer').append(self.templates.$menu({"themeView": false}));
   }
 });

@@ -3,8 +3,6 @@ App.View = App.View || {};
 
 App.View.FormThemesListParent = App.View.FormListBase.extend({
 
-
-
   templates : {
     'formsListBaseAdd' : '#formsListBaseAdd',
     'fullpageLoading' : '#fullpageLoading',
@@ -36,7 +34,7 @@ App.View.FormThemesListParent = App.View.FormListBase.extend({
       "updateForms": false
     }, function () {
       console.log(" cb rendering form");
-    });//todo figure out why this callback is not being called in studio
+    });
 
     if(params.themeList === true){
       self.viewingTemplates = false;

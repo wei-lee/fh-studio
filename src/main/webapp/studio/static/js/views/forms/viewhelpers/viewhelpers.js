@@ -14,6 +14,11 @@ Handlebars.registerHelper("createFormField", function (options, context){
           ret+="<div class='row-fluid'><input disabled type='text' value='"+options.fieldValues[i]+"'></div>";
         }
         break;
+      case "url":
+        for(i=0; i < options.fieldValues.length; i++){
+          ret+="<div class='row-fluid'><a href='" + options.fieldValues[i] + "'>" + options.fieldValues[i] + "</a></div>";
+        }
+        break;
       case "textarea":
         for( i=0; i < options.fieldValues.length; i++){
           ret+="<div class='row-fluid'><textarea disabled>"+options.fieldValues[i]+"</textarea></div>";
@@ -35,7 +40,7 @@ Handlebars.registerHelper("createFormField", function (options, context){
           ret+="<div class='row-fluid '><a href='/api/v2/forms/submission/file/"+options.fieldValues[i].groupId+"' class='btn-small downloadfile icon-download'   data-groupid='"+options.fieldValues[i]+"' >Download</a></hr></div>";
         }
         break;
-      case "checkbox":
+      case "checkboxes":
         for( i=0; i < options.fieldValues.length; i++){
           var fValues = options.fieldValues[i];
           ret+="<div class='row-fluid'>";
