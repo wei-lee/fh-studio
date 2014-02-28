@@ -90,7 +90,6 @@ App.View.Forms = Backbone.View.extend({
         "page_title": "Page Title",
         "page_description": "Page Description",
         "fieldTitle": "Field Title",
-        "fieldInput": "Field Input",
         "instructions": "Instructions",
         "buttons": "Buttons",
         "buttons_active": "Buttons (Selected)",
