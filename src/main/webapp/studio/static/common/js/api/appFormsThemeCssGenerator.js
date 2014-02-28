@@ -40,11 +40,53 @@ themeCSSFunctions[FH_APPFORM_PREFIX] = {
     return this.get_button_css(themeJSON, "cancel_active", "buttons_active");
   },
   "navigation" : function(themeJSON){
+    //Navigation has background, font and border attributes
     var navigationBarStr = "";
     var navigationBarColour = themeJSON.colours.backgrounds.navigationBar;
+    var navigationBarFont = themeJSON.typography.navigationBar;
+    var navigationbarBorder = themeJSON.borders.navigationBar;
 
     if(navigationBarColour){
       navigationBarStr = navigationBarStr.concat(this.getBackgroundColour(navigationBarColour));
+    } else {
+      return null;
+    }
+
+    if(navigationBarFont){
+      navigationBarStr = navigationBarStr.concat(this.getFontDetails(navigationBarFont));
+    } else{
+      return null;
+    }
+
+    if(navigationbarBorder){
+      navigationBarStr = navigationBarStr.concat(this.getBorder(navigationbarBorder));
+    } else {
+      return null;
+    }
+
+    return navigationBarStr;
+  },
+  "navigation_active" : function(themeJSON){
+    //Navigation has background, font and border attributes
+    var navigationBarStr = "";
+    var navigationBarColour = themeJSON.colours.backgrounds.navigationBar_active;
+    var navigationBarFont = themeJSON.typography.navigationBar_active;
+    var navigationbarBorder = themeJSON.borders.navigationBar_active;
+
+    if(navigationBarColour){
+      navigationBarStr = navigationBarStr.concat(this.getBackgroundColour(navigationBarColour));
+    } else {
+      return null;
+    }
+
+    if(navigationBarFont){
+      navigationBarStr = navigationBarStr.concat(this.getFontDetails(navigationBarFont));
+    } else{
+      return null;
+    }
+
+    if(navigationbarBorder){
+      navigationBarStr = navigationBarStr.concat(this.getBorder(navigationbarBorder));
     } else {
       return null;
     }
@@ -557,7 +599,8 @@ App.forms.themeCSSGenerator = function(themeJSON){
     "button_navigation" : {
       "generatedCSS": "",
       "staticCSSAdditions": {
-        "border-radius": "5px"
+        "border-radius": "5px",
+        "padding": "10px 12px"
       },
       "classNameAdditions": [],
       "classAdditions": {}
@@ -566,7 +609,8 @@ App.forms.themeCSSGenerator = function(themeJSON){
       "generatedCSS": "",
       "parentClass" : "button_navigation",
       "staticCSSAdditions": {
-        "border-radius": "5px"
+        "border-radius": "5px",
+        "padding": "10px 12px"
       },
       "classNameAdditions": [":active"],
       "classAdditions": {}
@@ -574,7 +618,8 @@ App.forms.themeCSSGenerator = function(themeJSON){
     "button_action" : {
       "generatedCSS": "",
       "staticCSSAdditions": {
-        "border-radius": "5px"
+        "border-radius": "5px",
+        "padding": "10px 12px"
       },
       "classNameAdditions": [],
       "classAdditions": {
@@ -599,7 +644,8 @@ App.forms.themeCSSGenerator = function(themeJSON){
       "generatedCSS": "",
       "parentClass" : "button_action",
       "staticCSSAdditions": {
-        "border-radius": "5px"
+        "border-radius": "5px",
+        "padding": "10px 12px"
       },
       "classNameAdditions": [":active"],
       "classAdditions": {}
@@ -607,7 +653,8 @@ App.forms.themeCSSGenerator = function(themeJSON){
     "button_cancel" : {
       "generatedCSS": "",
       "staticCSSAdditions": {
-        "border-radius": "5px"
+        "border-radius": "5px",
+        "padding": "10px 12px"
       },
       "classNameAdditions": [],
       "classAdditions": {}
@@ -616,7 +663,8 @@ App.forms.themeCSSGenerator = function(themeJSON){
       "generatedCSS": "",
       "parentClass" : "button_cancel",
       "staticCSSAdditions": {
-        "border-radius": "5px"
+        "border-radius": "5px",
+        "padding": "10px 12px"
       },
       "classNameAdditions": [":active"],
       "classAdditions": {}
@@ -624,7 +672,14 @@ App.forms.themeCSSGenerator = function(themeJSON){
     "navigation" : {
       "generatedCSS": "",
       "staticCSSAdditions": {},
-      "classNameAdditions": [],
+      "classNameAdditions": [" li"],
+      "classAdditions": {}
+    },
+    "navigation_active" : {
+      "generatedCSS": "",
+      "parentClass" : "navigation",
+      "staticCSSAdditions": {},
+      "classNameAdditions": [" li.active"],
       "classAdditions": {}
     },
     "header" : {
@@ -637,7 +692,8 @@ App.forms.themeCSSGenerator = function(themeJSON){
       "generatedCSS": "",
       "staticCSSAdditions": {},
       "classNameAdditions": [],
-      "classAdditions": {}
+      "classAdditions": {},
+      "makeGlobal": true
     },
     "form" : {
       "generatedCSS": "",
@@ -886,6 +942,10 @@ App.forms.themeCSSGenerator = function(themeJSON){
       var cssStr = "";
       var printCSSClass = cssClassInfo.parentClass ? cssClassInfo.parentClass : cssClass;
       var cssClassName = ".fh_appform_container " + "." + FH_APPFORM_PREFIX + printCSSClass;
+
+      if(generatedCSSJSON[FH_APPFORM_PREFIX][cssClass].makeGlobal){
+        cssClassName = "." + FH_APPFORM_PREFIX + printCSSClass;
+      }
       var classNameAdditions = "";
 
       //Building the css class name
@@ -943,7 +1003,3 @@ App.forms.themeCSSGenerator = function(themeJSON){
 
   return processThemeJSON;
 };
-
-
-
-

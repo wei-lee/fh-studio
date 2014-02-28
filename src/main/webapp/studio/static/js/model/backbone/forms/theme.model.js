@@ -50,6 +50,7 @@ App.Collection.FormThemes = App.Collection.FormBase.extend({
       "backgrounds": {
         "headerBar": "#15a47c",
         "navigationBar": "#844b82",
+        "navigationBar_active": "#123b82",
         "body": "#6a2f55",
         "form": "#9ae46f",
         "fieldArea": "#bda17a",
@@ -64,6 +65,18 @@ App.Collection.FormThemes = App.Collection.FormBase.extend({
       }
     },
     "typography": {
+      "navigationBar": {
+        "fontFamily": "arial",
+        "fontStyle": "bold",
+        "fontSize": "12pt",
+        "fontColour": "#34cf75"
+      },
+      "navigationBar_active":{
+        "fontFamily": "arial",
+        "fontStyle": "bold",
+        "fontSize": "12pt",
+        "fontColour": "#34cf75"
+      },
       "title": {
         "fontFamily": "arial",
         "fontStyle": "bold",
@@ -150,6 +163,16 @@ App.Collection.FormThemes = App.Collection.FormBase.extend({
       }
     },
     "borders": {
+      "navigationBar": {
+        "thickness": "thick",
+        "style": "double",
+        "colour": "#5363c1"
+      },
+      "navigationBar_active":{
+        "thickness": "thick",
+        "style": "double",
+        "colour": "#5363c1"
+      },
       "button_navigation": {
         "thickness": "thick",
         "style": "double",

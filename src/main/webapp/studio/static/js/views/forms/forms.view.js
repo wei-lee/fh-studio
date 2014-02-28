@@ -66,7 +66,8 @@ App.View.Forms = Backbone.View.extend({
       COLOURS : 'colours',
       DESCRIPTIONS : {
         "headerBar": "Header Bar",
-        "navigationBar": "Navigation Bar",
+        "navigationBar": "Header Buttons",
+        "navigationBar_active": "Header Buttons (Active)",
         "body": "Body",
         "form": "Form Area",
         "forms": "Form Area",
