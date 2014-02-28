@@ -178,7 +178,7 @@ module.exports = function(grunt) {
           {expand: true, src: ['src/main/webapp/studio/static/common/js/ui/thirdparty/formbuilder/formbuilder.css'], dest: 'dist/forms/vendor', flatten: true, filter: 'isFile'},
           {expand: true, src: ['src/main/webapp/studio/static/common/js/ui/thirdparty/spectrum/spectrum.css'], dest: 'dist/forms/vendor', flatten: true, filter: 'isFile'},
           // HTML files
-          {expand: true, src: ['src/main/webapp/studio/inc/index/forms/forms_tab.html'], dest: 'dist/forms/appforms', flatten: true, filter: 'isFile'},
+          {expand: true, src: ['src/main/webapp/studio/inc/index/forms/forms_tab.html','src/main/webapp/studio/inc/index/forms/submission_template.html'], dest: 'dist/forms/appforms', flatten: true, filter: 'isFile'},
           {expand: true, src: ['src/main/webapp/studio/common.html'], dest: 'dist/forms/appforms', flatten: true, filter: 'isFile'},
           // Third party frameworks get pushed in later
 

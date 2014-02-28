@@ -2,82 +2,159 @@ Handlebars.registerHelper("createFormField", function (options, context){
   //"location", "locationMap", "sectionBreak", "matrix"
   var ret = "";
   var i;
-  var def = {};
+  var template;
+  var def;
 
-  if(options.fieldId){
-    switch (options.fieldId.type){
+  console.log("OPTIONS ARE : ", options);
+
+  if(options){
+    console.log("TYPE IS : ", options.type);
+    switch (options.type){
       case "text":
       case "number":
       case "emailAddress":
       case "dateTime":
-        for(i=0; i < options.fieldValues.length; i++){
-          ret+="<div class='row-fluid'><input disabled type='text' value='"+options.fieldValues[i]+"'></div>";
+      case "url":
+        template ="<div class='row-fluid'><input disabled type='text' name='"+options._id+"' placeholder='no value present' value='{val}' /></div>";
+        if(! options.values || options.values.length < 1){
+          ret = template.replace("{val}","");
+        }else{
+          for(i=0; i < options.values.length; i++){
+            var val = options.values[i];
+            ret+=template.replace("{val}",val);
+          }
         }
         break;
       case "textarea":
-        for( i=0; i < options.fieldValues.length; i++){
-          ret+="<div class='row-fluid'><textarea disabled>"+options.fieldValues[i]+"</textarea></div>";
+        template = "<div class='row-fluid'><textarea name='"+options._id+"' placeholder='no value present' disabled>{val}</textarea></div>";
+        if(!options.values || options.values.length < 1){
+          ret = template;
+        }else{
+          for( i=0; i < options.values.length; i++){
+            ret+=template.replace("{val}",options.values[i]);
+          }
         }
         break;
       case "dropdown":
-        for( i=0; i < options.fieldValues.length; i++){
-          ret+="<select disabled><option value='"+options.fieldValues[i]+"' selected >"+options.fieldValues[i]+"</option></select>";
+        var selectOpts = options.fieldOptions.definition.options;
+        ret = "<select disabled name='"+options._id+"'>";
+        template = "<option value='{val}' {selected} >{val}</option>";
+        ret+=template.replace(/\{val\}/g,"");
+        for(i=0; i < selectOpts.length; i++){
+
+          if(options.values && options.values[0]){
+            if(options.values[0] == selectOpts[i].label){
+              ret+=template.replace(/\{val\}/g,selectOpts[i].label).replace("{selected}","selected");
+            }else{
+              ret+=template.replace(/\{val\}/g,selectOpts[i].label).replace("{selected}","");
+            }
+          }
         }
+        ret+="</select>";
         break;
       case "photo":
       case "signature":
-        for( i=0; i < options.fieldValues.length; i++){
-          ret+="<div class='row-fluid'><img style='width: 40%' src='/api/v2/forms/submission/file/"+options.fieldValues[i].groupId+"'></div>";
+        template = "<div class='row-fluid'>{val} </div><input data-filehash='{hash}' data-groupid='{groupid}' disabled type='file' name='"+options._id+"' /> ";
+        if(!options.values || options.values.length < 1){
+          ret = template.replace("{val}","no "+options.type+" present").replace("{hash}","").replace("{groupid}","");
+        }else{
+          for( i=0; i < options.values.length; i++){
+            ret+=template.replace("{val}","<img style='width: 40%' src='"+options.values[i].url+"'>").replace("{hash}",options.values[i].hashName).replace("{groupid}",options.values[i].groupId);
+          }
         }
         break;
       case "file":
-        for( i=0; i < options.fieldValues.length; i++){
-          ret+="<div class='row-fluid '><a href='/api/v2/forms/submission/file/"+options.fieldValues[i].groupId+"' class='btn-small downloadfile icon-download'   data-groupid='"+options.fieldValues[i]+"' >Download</a></hr></div>";
-        }
-        break;
-      case "checkbox":
-        for( i=0; i < options.fieldValues.length; i++){
-          var fValues = options.fieldValues[i];
-          ret+="<div class='row-fluid'>";
-          for(var k=0; k < fValues.selections.length; k++ ){
-            ret+="<input disabled type='checkbox' checked value='"+fValues.selections[k]+"'> " +fValues.selections[k]+" ";
+        template = "<div class='row-fluid'>{val}</div> <input data-filehash='{hash}' data-exists='{exists}' data-groupid='{groupid}' disabled type='file' name='"+options._id+"'>";
+
+        if(!options.values || options.values.length < 1){
+          ret = template.replace("{val}","no "+options.type+" present").replace("{hash}","").replace("{exists}",false).replace("{groupid}","");
+        }else{
+          for( i=0; i < options.values.length; i++){
+            ret+=template.replace("{val}","<a href='"+options.values[i].downloadUrl+"' class='btn-small downloadfile icon-download'>" +options.values[i].downloadUrl+"</a>")
+              .replace("{hash}",options.values[i].hashName).replace('{exists}',true).replace("{groupid}",options.values[i].groupId);
           }
-          ret+="<hr/></div>";
+        }
+
+        break;
+      case "checkboxes":
+
+        template = "<div class='row-fluid'><input name='"+options._id+"' disabled type='checkbox' {checked} value='{val}'> {label}</div>";
+        if(! options.values || options.values.length < 1){
+          def = options.fieldOptions.definition;
+          for(i=0; i < def.options.length; i++){
+            ret+=template.replace("{checked}","").replace("{label}",def.options[i].label).replace("{val}","");
+          }
+        }else{
+          for( i=0; i < options.values.length; i++){
+            var fValues = options.values[i];
+            ret+="<div class='row-fluid'>";
+            for(var k=0; k < fValues.selections.length; k++ ){
+              ret+="<input name='"+options._id+"' disabled type='checkbox' checked value='"+fValues.selections[k]+"'> " +fValues.selections[k]+" ";
+            }
+            ret+="</div>";
+          }
         }
         break;
 
       case "radio":
-        for( i=0; i < options.fieldValues.length; i++){
-          ret+="<div class='row-fluid'><input disabled type='radio'  checked value='"+options.fieldValues[i]+"'> "+options.fieldValues[i]+ "<hr/></div>";
+
+        template = "<div class='row-fluid'><input name='"+options._id+"' disabled type='radio' {checked} value={val} > {label} </div>";
+
+        if(! options.values || options.values.length < 1){
+          def = options.fieldOptions.definition;
+          for(i=0; i < def.options.length; i++){
+            ret+=template.replace("{checked}","").replace("{label}",def.options[i].label).replace("{val}","");
+          }
+        }
+        else{
+          for( i=0; i < options.values.length; i++){
+            ret+=template.replace(options.values[i]).replace("{checked}","checked").replace("{label}",options.values[i]);
+          }
         }
         break;
       case "location":
-        if(options.fieldId.fieldOptions.definition && "northEast" === options.fieldId.fieldOptions.definition.locationUnit){
-          for( i=0; i < options.fieldValues.length; i++){
-            ret+="<div class='row-fluid'><input disabled type='text' value='zone: "+options.fieldValues[i]['zone']+ ", eastings: " + options.fieldValues[i]['eastings'] + ", northings: " + options.fieldValues[i]['northings']+" '> <hr/></div>";
+        if(options.fieldOptions.definition && "northEast" === options.fieldOptions.definition.locationUnit){
+          template = "<div class='row-fluid'><input name='"+options._id+"' disabled type='text' placeholder='no value present' value='{val}' /></div>";
+          if(! options.values || options.values.length < 1){
+             ret = template.replace("{val}","");
+          }else{
+            for( i=0; i < options.values.length; i++){
+              ret+=template.replace("{val}",options.values[i]['zone']+ ", eastings: " + options.values[i]['eastings'] + ", northings: " + options.values[i]['northings']);
+            }
           }
         }else{
-          for( i=0; i < options.fieldValues.length; i++){
-            ret+="<div class='row-fluid'>LonLat: <input disabled type='text' value='"+options.fieldValues[i]['long']+ "," + options.fieldValues[i].lat + "'>  <hr/></div>";
+          template = "<div class='row-fluid'><input name='"+options._id+"' placeholder='no value present' disabled type='text' value='{val}' /></div>";
+          if(! options.values || options.values.length < 1){
+            ret = template.replace("{val}","");
+          }else{
+            for( i=0; i < options.values.length; i++){
+              ret+=template.replace('{val}',options.values[i]['long']+ "," + options.values[i].lat);
+            }
           }
         }
         break;
       case 'locationMap':
-        if(options.fieldId.fieldOptions.definition && "northEast" === options.fieldId.fieldOptions.definition.locationUnit){
-          for( i=0; i < options.fieldValues.length; i++){
-            ret+="<div class='row-fluid'><input disabled type='text' value='zone: "+options.fieldValues[i]['zone']+ ", eastings: " + options.fieldValues[i]['eastings'] + ", northings: " + options.fieldValues[i]['northings']+" '> <hr/></div>";
+        console.log("location map opts ", options);
+        template = "<div class='row-fluid'><input disabled placeholder='no value present' name='"+options._id+"' type='text' value='{val}'></div>";
+        if(! options.values || options.values.length < 1){
+          ret=template.replace("{val}",'');
+        }
+        else if(options.fieldOptions && options.fieldOptions.definition && "northEast" === options.fieldOptions.definition.locationUnit){
+          for( i=0; i < options.values.length; i++){
+            ret+=template.replace("{val}","zone: "+options.values[i]['zone']+ ", eastings: " + options.values[i]['eastings'] + ", northings: " + options.values[i]['northings']);
           }
         }else{
-          for( i=0; i < options.fieldValues.length; i++){
-            ret+="<div class='row-fluid'>LonLat: <input disabled type='text' value='"+options.fieldValues[i]['long']+ "," + options.fieldValues[i].lat + "'>  <hr/></div>";
+          for( i=0; i < options.values.length; i++){
+            ret+=template.replace("{val}",options.values[i]['long']+ "," + options.values[i].lat);
           }
-
         }
         break;
       default:
         break;
     }
   }
+
+
   return ret;
 });
 
@@ -97,4 +174,64 @@ Handlebars.registerHelper("checkRole", function (req, options){
   else{
     return false;
   }
+});
+
+Handlebars.registerHelper('is', function() {
+  var args = Array.prototype.splice.call(arguments, 0);
+  if (args.length < 3) throw new Error("Handlebars helper error - must specify at least one field type to match, and the field type to check against e.g. {{#is 'text' fieldType}}foo{{/is}}");
+  var options = args.pop();
+  var fieldType = args.pop();
+  if (args.indexOf(fieldType) > -1) {
+    return options.fn(this);
+  } else {
+    if ('function' === typeof options.inverse) {
+      return options.inverse(this);
+    }
+  }
+});
+
+Handlebars.registerHelper('createFormLabel', function (fieldType, options){
+
+  var ret='<span class="symbol"><span class="icon {class}"></span></span>';
+
+  switch (fieldType){
+    case "text":
+      ret = ret.replace("{class}","icon-font");
+      break;
+    case "emailAddress":
+      ret = ret.replace("{class}","icon-envelope-alt");
+      break;
+    case "number":
+      ret = ret.replace("{class}","icon-number");
+      break;
+    case "url":
+      ret = ret.replace("{class}","icon-link");
+      break;
+    case "radio":
+      ret = ret.replace("{class}","icon-circle-blank");
+      break;
+    case 'locationMap':
+      ret = ret.replace("{class}","icon-map-marker");
+      break;
+    case "file":
+      ret = ret.replace("{class}","icon-cloud-upload");
+      break;
+    case "location":
+      ret = ret.replace("{class}","icon-location-arrow");
+      break;
+    case "dateTime":
+      ret = ret.replace("{class}","icon-calendar");
+      break;
+    case "dropdown":
+      ret = ret.replace("{class}","icon-caret-down");
+      break;
+    case "checkbox":
+      ret = ret.replace("{class}","icon-check");
+      break;
+    case "textarea":
+      ret = ret.replace("{class}","icon-align-justify");
+      break;
+  }
+
+  return ret;
 });

@@ -23,13 +23,17 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
     _.bindAll(this);
   },
 
+
   render : function (){
-    this.jsonForms = this.options.forms.toJSON();
-    console.log("RENDER SUBMISSIONS TAB");
-    this.$el.empty();
-    this.$el.addClass('span10');
-    this.$el.html(this.templates.$formsSubmissionsTab({forms:this.jsonForms}));
-    this.recentSubmissions();
+    var self = this;
+    this.formsCollection.fetch({"success":function (forms){
+      self.jsonForms = forms.toJSON();
+      console.log("RENDER SUBMISSIONS TAB");
+      self.$el.empty();
+      self.$el.addClass('span10');
+      self.$el.html(self.templates.$formsSubmissionsTab({forms:self.jsonForms,"formsCol":self.formsCollection}));
+      self.recentSubmissions();
+    }});
 
     return this;
   },

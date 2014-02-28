@@ -131,13 +131,18 @@ App.View.Forms = Backbone.View.extend({
     "EXCLUDED_SEARCH_FIELD_TYPES":["file","photo","signature"],
     "ALL_FIELD_TYPES":["text", "textarea", "number", "emailAddress", "dropdown", "radio", "checkboxes", "location", "locationMap", "photo", "signature", "file", "dateTime", "sectionBreak", "matrix"]
   },
+
+
+
   initialize: function(){
     this.compileTemplates();
-
     // For all forms views apply form builder field mappings
     _.each(this.CONSTANTS.FB, function(val, key){
       Formbuilder.options.mappings[key] = val;
     });
+
+   this.formsCollection = new App.Collection.Form();
+
   },
   breadcrumb : function(trail){
     var crumbs = [],

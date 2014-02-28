@@ -469,3 +469,14 @@ Improved formbuilder.js styling - TODO: Should this be applied to CMS Also?
     border-radius: 0px;
     height: 200px;
 }
+
+.submissionDetail input{
+    background-color: #fff;
+}
+.submissionDetail textarea{
+    background-color: #fff;
+}
+
+.submissionDetail select{
+    background-color: #fff;
+}

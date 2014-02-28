@@ -305,7 +305,7 @@ App.View.SubmissionList = App.View.FormListBase.extend({
       if(self.submissionDetail){
         self.submissionDetail.remove();
       }
-      self.submissionDetail = new App.View.SubmissionDetail({"submission":res});
+      self.submissionDetail = new App.View.SubmissionDetail({"submission":res, form:self.form, formsCol:self.formsCol});
       self.submissionDetail.render();
     },"error":function (res){
         console.log("submission error ", res);
