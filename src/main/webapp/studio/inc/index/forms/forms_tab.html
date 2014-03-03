@@ -403,7 +403,7 @@
 <script id="themeFontRowReadOnly" type="text/x-handlebars-template">
     <div class="fontrow" data-name="{{ name }}">
         <label>
-            {{ formattedName }}
+            {{ label}}
         </label>
 
         <div class="size">{{ r.fontSize }}</div>
@@ -418,7 +418,7 @@
     <div class="fontrow" data-name="{{ name }}">
 
         <label>
-            {{ formattedName }}
+            {{ label }}
         </label>
         <select class="size" name="fontSize">
             <option value="11pt">11pt</option>
@@ -460,7 +460,7 @@
     <div class="borderrow" data-name="{{ name }}">
 
         <label>
-            {{ formattedName }}
+            {{ label }}
         </label>
 
         <div class="thickness">{{ r.thickness }}</div>
@@ -474,7 +474,7 @@
     <div class="borderrow" data-name="{{ name }}">
 
         <label>
-            {{ formattedName }}
+            {{ label }}
         </label>
         <select class="thickness" name="thickness">
             <option value="none">None</option>

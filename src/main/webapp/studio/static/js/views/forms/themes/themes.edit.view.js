@@ -1,10 +1,8 @@
-var App = App || {};
 App.View = App.View || {};
 
 App.View.FormThemesEdit = App.View.Forms.extend({
   templates : {
     formSaveCancel : '#formSaveCancel',
-    form_back : '#form_back',
     themeName : '#themeName',
     themePreviewButton : '#themePreviewButton',
     themeColourRow : '#themeColourRow',
@@ -67,7 +65,7 @@ App.View.FormThemesEdit = App.View.Forms.extend({
           }
         },
         error : function(){
-          dropdown.empty().append('<li>Error loading apps using this form</li>');
+          self.$el.find('#formSelect').empty().append('<li>Error loading apps using this form</li>');
         }
       });
     }
@@ -100,15 +98,24 @@ App.View.FormThemesEdit = App.View.Forms.extend({
   },
 
   render : function(){
-    var self = this;
-    this.$el.addClass('span10 themeedit');
+    var self = this,
+    classes = (typeof $fw === 'undefined') ? "themeedit row-fluid" : "span10 themeedit";
+    this.$el.addClass(classes);
     this.breadcrumb(['Forms', 'Themes', 'Edit Theme']);
 
+    if (this.options.subnavbar) {
+      this.$el.prepend('<div class="subnav_container"></div>');
+      this.options.subnavbar.setElement(this.$('.subnav_container')).render();
+      this.$container = $('<div class="container_with_subnav"></div>');
+    }else{
+      this.$container = $('<div class=""></div>');
+    }
+
+
     if (!this.readOnly){
-      this.$el.append(this.templates.$form_back());
-      this.$el.append(this.templates.$themeName( { name : this.theme.get(this.CONSTANTS.THEME.NAME) }));
-      this.$el.append(this.templates.$themePreviewButton());
-      this.$el.addClass('preview');
+      this.$container.append(this.templates.$themeName( { name : this.theme.get(this.CONSTANTS.THEME.NAME) }));
+      this.$container.append(this.templates.$themePreviewButton());
+      this.$container.addClass('preview');
     }
 
     this.$themesInnerContainer = $('<div class="themesInnerContainer"></div>');
@@ -129,10 +136,10 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     this.$borders = this.renderBorders();
     this.$right.append(this.$borders);
 
-    this.$el.append(this.$themesInnerContainer);
+    this.$container.append(this.$themesInnerContainer);
 
     if (!this.readOnly){
-      this.$el.append(this.templates.$formSaveCancel());
+      this.$container.append(this.templates.$formSaveCancel());
     }
 
 
@@ -148,10 +155,10 @@ App.View.FormThemesEdit = App.View.Forms.extend({
       self.formCollection.fetch({"success":function (forms){
         var formData = [];
         forms.forEach(function (f){
-           formData.push({
-             "name": f.get("name"),
-             "_id": f.get("_id")
-           });
+          formData.push({
+            "name": f.get("name"),
+            "_id": f.get("_id")
+          });
         });
         self.formData = formData;
         self.renderPreview();
@@ -161,6 +168,7 @@ App.View.FormThemesEdit = App.View.Forms.extend({
       }});
 
     }
+    this.$el.append(this.$container);
     return this;
   },
   renderLogo : function(){
@@ -168,7 +176,7 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     typogEl = $('<div class="logo"></div>'),
     logoBase64 = this.theme.get(this.CONSTANTS.THEME.LOGO).base64String;
     typogEl.append('<h4>Logo</h4>');
-    typogEl.append(this.templates.$themeLogo({ "logoBase64" : logoBase64}));
+    typogEl.append(this.templates.$themeLogo({ logoBase64 : logoBase64}));
     if (!this.readOnly){
       var fileBrowse = $('<br /><input type="file" id="logoUpload" name="logo"><br />');
       typogEl.append(fileBrowse);
@@ -186,8 +194,8 @@ App.View.FormThemesEdit = App.View.Forms.extend({
 
       var colourSection = $('<div class="coloursection well themesectionBody" data-section="' + heading + '"></div>');
       _.each(subheadings, function(colorHex, name){
-        var formattedName = self.CONSTANTS.THEME.DESCRIPTIONS[name];
-        var colourInput = $(self.templates.$themeColourRow( { formattedName: formattedName, name : name, value : colorHex } )),
+        var label = self.CONSTANTS.THEME.DESCRIPTIONS[name] || self.deCamelCase(name),
+        colourInput = $(self.templates.$themeColourRow( { name : name, value : colorHex, label : label } )),
         input = $(colourInput.find('input'));
         self.spectrumify(colourInput, { color : colorHex, "name": name }, 'color', 'background');
         colourSection.append( colourInput );
@@ -205,6 +213,9 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     typogEl.append('<h4>Typography</h4>');
     _.each(typog, function(fontAttributes, heading){
       var fontRow = self.selectsRow('Font', heading, fontAttributes);
+      fontRow.change(function(){
+        self.syncThemeModel.call(self);
+      });
       typogElBody.append(fontRow);
     });
     typogEl.append(typogElBody);
@@ -218,18 +229,20 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     bordersEl.append('<h4>Borders</h4>');
     _.each(borders, function(borderAttributes, heading){
       var row = self.selectsRow('Border', heading, borderAttributes);
+      row.change(function (){
+         self.syncThemeModel.call(self);
+      });
       bordersElBody.append(row);
     });
     bordersEl.append(bordersElBody);
     return bordersEl;
   },
   selectsRow : function(type, heading, attributes){
-    var self = this;
     var formattedName = self.CONSTANTS.THEME.DESCRIPTIONS[heading];
     var tplBaseName = '$theme' + type + 'Row',
     tplIncReadOnlyName = (self.readOnly) ? tplBaseName + 'ReadOnly' : tplBaseName, // Now includes the "ReadOnly" string if it's needed
     tpl = this.templates[tplIncReadOnlyName],
-    row = $(tpl({type: type.toLowerCase(), r : attributes, name : heading, formattedName: formattedName})),
+    row = $(tpl({r : attributes, name : heading, formattedName: formattedName})),
     input = $(row.find('input.colour'));
     attributes.name = heading;
     self.spectrumify(row, attributes, 'colour', type.toLowerCase());
@@ -246,14 +259,14 @@ App.View.FormThemesEdit = App.View.Forms.extend({
 
   syncThemeModel : function (){
     var self = this,
-      name = this.$el.find('input[name=themename]').val(),
-      colourSections = this.$el.find('.coloursection'),
-      fontRows = this.$el.find('.fontrow'),
-      borderRows = this.$el.find('.borderrow'),
-      colours = {},
-      typog = {},
-      borders = {},
-      fileInput, file;
+    name = this.$el.find('input[name=themename]').val(),
+    colourSections = this.$el.find('.coloursection'),
+    fontRows = this.$el.find('.fontrow'),
+    borderRows = this.$el.find('.borderrow'),
+    colours = {},
+    typog = {},
+    borders = {},
+    fileInput, file;
     // Set the name
     this.theme.set(this.CONSTANTS.THEME.NAME, name);
 
@@ -309,9 +322,12 @@ App.View.FormThemesEdit = App.View.Forms.extend({
 
   },
 
-  onThemeSave : function(){
-   var self = this;
-   self.syncThemeModel();
+  onThemeSave : function(e){
+    if (e){
+      e.preventDefault();
+    }
+    var self = this;
+    self.syncThemeModel();
 
     /*
      Last but not least, logo - an async html5 get base64 function
@@ -320,7 +336,7 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     if (fileInput.length>0 && fileInput[0].files && fileInput[0].files.length>0){
       fileInput = fileInput[0];
       file = fileInput.files[0];
-      
+
       // 1mb max file size
       if (file.size > 1048576){
         return self.message('Error updating theme - logo must be <1mb', 'danger');
@@ -355,12 +371,15 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     }
 
     function done(){
-      self.collection.sync('update', self.theme.toJSON(), { success : function(){
-        self.back();
-        self.message('Theme updated successfully');
-      }, error : function(){
-        self.message('Error updating theme', 'danger');
-      }});
+      self.theme.save({}, {
+        success : function(res){
+          self.back();
+          self.message('Theme updated successfully');
+        },
+        error : function(){
+          self.message('Error updating theme', 'danger');
+        }
+      });
     }
   },
   spectrumify : function(colorRow, attrs, attrVal, type){
@@ -407,7 +426,11 @@ App.View.FormThemesEdit = App.View.Forms.extend({
       });
     }
   },
-  back : function(){
+  back : function(e){
+    if (e){
+      e.preventDefault();
+    }
+
     this.trigger('back');
     this.breadcrumb(['Forms', 'Themes List']);
   },
@@ -421,5 +444,13 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     themeInner.find('#previewContainer').show().html(self.templates.$previewOutline());
     self.$el.find('#previewContainer').append("<div class='span3'></div> ");
     self.$el.find('#previewContainer').append(self.templates.$formselect({"forms":self.formData}));
+    // Direct lookup on the thing that needs relative for some reason doesn't work
+    self.$el.find('#preview_wrapper').children('div').css('position', 'relative'); // new preview fix
+  },
+  // Convert camel case attribute names to plain english - they all can be easily converted, so no need for big language map file
+  deCamelCase : function(camelCaseName){
+    camelCaseName = camelCaseName.replace( /([A-Z])/g, " $1" ); // Add spaces
+    camelCaseName = camelCaseName.charAt(0).toUpperCase() + camelCaseName.slice(1); // First letter goes to caps, then add the rest
+    return camelCaseName;
   }
 });
