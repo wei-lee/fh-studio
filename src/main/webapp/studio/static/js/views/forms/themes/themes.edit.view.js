@@ -238,11 +238,12 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     return bordersEl;
   },
   selectsRow : function(type, heading, attributes){
-    var formattedName = self.CONSTANTS.THEME.DESCRIPTIONS[heading];
+    var self = this;
+    var formattedName = this.CONSTANTS.THEME.DESCRIPTIONS[heading];
     var tplBaseName = '$theme' + type + 'Row',
     tplIncReadOnlyName = (self.readOnly) ? tplBaseName + 'ReadOnly' : tplBaseName, // Now includes the "ReadOnly" string if it's needed
     tpl = this.templates[tplIncReadOnlyName],
-    row = $(tpl({r : attributes, name : heading, formattedName: formattedName})),
+    row = $(tpl({r : attributes, name : heading, label: formattedName})),
     input = $(row.find('input.colour'));
     attributes.name = heading;
     self.spectrumify(row, attributes, 'colour', type.toLowerCase());
