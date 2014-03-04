@@ -291,6 +291,21 @@ proto.Wizard = {
          wizards[val].splice(1, 0, 'app_publish_mdm_config');
       });
     }
+
+    if($fw.getClientProp('cordova-version-selection') === 'true'){
+      var index = 1;
+      if($fw.getClientProp('mdm.enabled') === 'true'){
+        index = 2;
+      }
+      var wizardNames = ["iphone_publish_wizard", "ipad_publish_wizard", "ios_publish_wizard", "android_publish_wizard"];
+      _.each(wizardNames, function(val){
+         wizards[val].splice(index, 0, 'app_publish_cordova_versions_config');
+      });
+      var exportWizards = ["iphone_export_wizard", "ipad_export_wizard", "ios_export_wizard", "android_export_wizard"];
+      _.each(exportWizards, function(val){
+         wizards[val].splice(0, 0, 'app_publish_cordova_versions_config');
+      });
+    }
     return wizards;
   }
 

@@ -40,7 +40,7 @@ application.DestinationGeneral = Class.extend({
     var that = this;
     var main_container = $('#manage_export_container');
     main_container.find(".dashboard-content").hide();
-    main_container.find("#app_export_wizard_container").show();
+    main_container.find("#app_export_wizard_container").show().empty();
     var wizard_name = this.destination_id + "_export_wizard";
     var progress_id = '#app_export_' + this.destination_id + '_progress';
     var export_version_id = '#app_export_' + this.destination_id + '_versions';
@@ -569,6 +569,16 @@ application.DestinationGeneral = Class.extend({
       var includeSDK = wizard.find('input.mdm_include_sdk').is(':checked');
       var pushBinary = wizard.find('input.mdm_push_binary').is(':checked');
       data.mdm = {"includesdk": includeSDK, "pushbinary": pushBinary};
+      return data;
+    } else {
+      return data;
+    }
+  },
+
+  getCordovaVersion: function(wizard, data){
+    if($fw.getClientProp('cordova-version-selection') === 'true'){
+      var cordova_version = wizard.find('#app_publish_cordova_versions_config input:checked').val();
+      data.cordova_version = cordova_version;
       return data;
     } else {
       return data;

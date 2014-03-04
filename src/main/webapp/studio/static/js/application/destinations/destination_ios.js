@@ -119,6 +119,7 @@ application.DestinationIos = application.DestinationGeneral.extend({
       version: version,
       deviceType: this.destination_id
     };
+    data = this.getCordovaVersion(wizard, data);
     return data;
   },
 
@@ -136,7 +137,9 @@ application.DestinationIos = application.DestinationGeneral.extend({
       privateKeyPass: pk_pass,
       certPass: cert_pass
     };
-    return this.getMDMConfig(wizard, data);
+    data = this.getMDMConfig(wizard, data);
+    data = this.getCordovaVersion(wizard, data);
+    return data;
   },
 
   getOTALink: function(download_url, cb) {
