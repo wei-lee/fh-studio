@@ -42,7 +42,21 @@ App.View.SubmissionDetail = App.View.Forms.extend({
       var _ele = $(this);
       $(this).attr('disabled',false);
       if('file' === _ele.attr("type")){
+//        $(this).on('change', function (){
+//           console.log("field value changed ", $(this).val());
+//        });
         self.enableFileUpload(_ele);
+      }else{
+        $(this).on('blur', function (){
+          console.log('input update ', $(this));
+          var _this = $(this);
+          var index = _this.data('index');
+          var id = _this.attr('name');
+          var field = self.options.submission.findFormField(id);
+          console.log("found matching form field ", field, "updating value at index ", index);
+          field.fieldValues[index] = _this.val();
+          console.log("submission updated ", self.options.submission.toJSON());
+        });
       }
     });
     self.enableSubmissionEditActions(subid);
@@ -51,26 +65,27 @@ App.View.SubmissionDetail = App.View.Forms.extend({
 
   updateSubmission : function (){
     var self = this;
+
+    console.log("update submission ", self.options.submission.toJSON());
+
     var files = Object.keys(self.filesToSubmit);
     for(var i=0; i < files.length; i++){
       var sub = self.filesToSubmit[files[i]].submit();
       sub.success(function (result, textStatus, jqXHR) {
         //remove file from filesToSubmit
-        console.log("file submission was successful");
         self.options.submission.fetch({
           "success":function (sub){
             console.log("updated submission fetched ",sub);
+            self.render();
           } ,
           "error": function (err){
             console.log("failed to fetch sub ",err);
+            //show error message
           }});
       })
-      .error(function (jqXHR, textStatus, errorThrown) {})
-      .complete(function (result, textStatus, jqXHR) {
-              console.log("submission complete");
-
-
-        });
+      .error(function (jqXHR, textStatus, errorThrown) {
+        //show error message
+      });
     }
 
 
@@ -78,11 +93,67 @@ App.View.SubmissionDetail = App.View.Forms.extend({
 
   filesToSubmit : {},
 
+  process_file : function (params, cb) {
+//  var inputValue = params.value;
+//  var isStore = params.isStore === undefined ? true : params.isStore;
+//  if (typeof inputValue == 'undefined' || inputValue == null) {
+//    return cb(null, null);
+//  }
+//  if (typeof inputValue != 'object' || !inputValue instanceof HTMLInputElement && !inputValue instanceof File && !checkFileObj(inputValue)) {
+//    throw 'the input value for file field should be a html file input element or a File object';
+//  }
+//  if (checkFileObj(inputValue)) {
+//    return cb(null, inputValue);
+//  }
+//  var file = inputValue;
+//  if (inputValue instanceof HTMLInputElement) {
+//    file = inputValue.files[0];  // 1st file only, not support many files yet.
+//  }
+//  var rtnJSON = {
+//    'fileName': file.name,
+//    'fileSize': file.size,
+//    'fileType': file.type,
+//    'fileUpdateTime': file.lastModifiedDate.getTime(),
+//    'hashName': '',
+//    'contentType': 'binary'
+//  };
+//  var name = file.name + new Date().getTime() + Math.ceil(Math.random() * 100000);
+//  appForm.utils.md5(name, function (err, res) {
+//    var hashName = res;
+//    if (err) {
+//      hashName = name;
+//    }
+//    hashName = 'filePlaceHolder' + hashName;
+//    rtnJSON.hashName = hashName;
+//    if (isStore) {
+//      appForm.utils.fileSystem.save(hashName, file, function (err, res) {
+//        if (err) {
+//          console.error(err);
+//          cb(err);
+//        } else {
+//          cb(null, rtnJSON);
+//        }
+//      });
+//    } else {
+//      cb(null, rtnJSON);
+//    }
+//  });
+  },
+
   enableFileUpload: function(ele){
     var self = this;
-    var url =  "/api/v2/forms/submission/"+self.submission._id+"/"+ele.attr('name')+"/"+ele.data('groupid')+"/updateFile";
+    var groupId = ele.data("groupid");
+    var url;
+     if(groupId && "" !== groupId){
+      url = "/api/v2/forms/submission/"+self.submission._id+"/"+ele.attr('name')+"/"+groupId+"/updateFile";
+     }else{
+       //create a file id update the submission field with this id this will be sent to the server first then the file submission
+       url = "/api/v2/forms/submission/"+self.submission._id+"/:fieldId/:fileId/submitFile";
+     }
 
-    console.log("url ", url, ele.data("filehash"));
+
+
+    console.log("url ", url, ele.data("groupid"));
 
 
     ele.fileupload('destroy').fileupload({
@@ -97,7 +168,8 @@ App.View.SubmissionDetail = App.View.Forms.extend({
       add: function(e, data) {
         ele.hide();
         console.log("data file upload ", data );
-
+        //if this element has a file hash replace the file data at the index in the submission else add the file data
+        //to the field def values at index 0
         self.filesToSubmit[data.paramName] = data;
         //self.filesToSubmit.push(data);
 
@@ -115,7 +187,6 @@ App.View.SubmissionDetail = App.View.Forms.extend({
           }});
 
         ele.show();
-        self.showAlert(err ? 'error' : 'success', message);
       }
     });
   },

@@ -15,30 +15,31 @@ Handlebars.registerHelper("createFormField", function (options, context){
       case "emailAddress":
       case "dateTime":
       case "url":
-        template ="<div class='row-fluid'><input disabled type='text' name='"+options._id+"' placeholder='no value present' value='{val}' /></div>";
+        template ="<div class='row-fluid'><input data-index='{idx}' disabled type='text' name='"+options._id+"' placeholder='no value present' value='{val}' /></div>";
         if(! options.values || options.values.length < 1){
-          ret = template.replace("{val}","");
+          ret = template.replace("{val}","").replace('{idx}',0);
         }else{
           for(i=0; i < options.values.length; i++){
             var val = options.values[i];
-            ret+=template.replace("{val}",val);
+            ret+=template.replace("{val}",val).replace('{idx}',i);
           }
         }
         break;
       case "textarea":
-        template = "<div class='row-fluid'><textarea name='"+options._id+"' placeholder='no value present' disabled>{val}</textarea></div>";
+        template = "<div class='row-fluid'><textarea data-index='{idx}' name='"+options._id+"' placeholder='no value present' disabled>{val}</textarea></div>";
         if(!options.values || options.values.length < 1){
-          ret = template;
+          ret = template.replace("{idx}",0).replace('{val}',"");
         }else{
           for( i=0; i < options.values.length; i++){
-            ret+=template.replace("{val}",options.values[i]);
+            ret+=template.replace("{val}",options.values[i]).replace('{idx}',i);
           }
         }
         break;
       case "dropdown":
+        //todo revisit this as I think I need a select per answer.
         var selectOpts = options.fieldOptions.definition.options;
-        ret = "<select disabled name='"+options._id+"'>";
-        template = "<option value='{val}' {selected} >{val}</option>";
+        ret = "<select disabled name='"+options._id+"' >";
+        template = "<option value='{val}' data-index='{idx}' {selected} >{val}</option>";
         ret+=template.replace(/\{val\}/g,"");
         for(i=0; i < selectOpts.length; i++){
 
@@ -54,42 +55,44 @@ Handlebars.registerHelper("createFormField", function (options, context){
         break;
       case "photo":
       case "signature":
-        template = "<div class='row-fluid'>{val} </div><input data-filehash='{hash}' data-groupid='{groupid}' disabled type='file' name='"+options._id+"' /> ";
+        template = "<div class='row-fluid'>{val} </div><input data-index='{idx}' data-filehash='{hash}' data-groupid='{groupid}' disabled type='file' name='"+options._id+"' /> ";
         if(!options.values || options.values.length < 1){
-          ret = template.replace("{val}","no "+options.type+" present").replace("{hash}","").replace("{groupid}","");
+          ret = template.replace("{val}","no "+options.type+" present").replace("{hash}","").replace("{groupid}","").replace('{idx}',0);
         }else{
           for( i=0; i < options.values.length; i++){
-            ret+=template.replace("{val}","<img style='width: 40%' src='"+options.values[i].url+"'>").replace("{hash}",options.values[i].hashName).replace("{groupid}",options.values[i].groupId);
+            ret+=template.replace("{val}","<img style='width: 40%' src='"+options.values[i].url+"?rand="+Math.random()+"'>")
+              .replace("{hash}",options.values[i].hashName).replace("{groupid}",options.values[i].groupId).replace('{idx}',i);
           }
         }
         break;
       case "file":
-        template = "<div class='row-fluid'>{val}</div> <input data-filehash='{hash}' data-exists='{exists}' data-groupid='{groupid}' disabled type='file' name='"+options._id+"'>";
+        template = "<div class='row-fluid'>{val}</div> <input data-filehash='{hash}' data-index='{idx}' data-exists='{exists}' data-groupid='{groupid}' disabled type='file' name='"+options._id+"'>";
 
         if(!options.values || options.values.length < 1){
-          ret = template.replace("{val}","no "+options.type+" present").replace("{hash}","").replace("{exists}",false).replace("{groupid}","");
+          ret = template.replace("{val}","no "+options.type+" present").replace("{hash}","").replace("{exists}",false).replace("{groupid}","").replace('{idx}',0);
         }else{
           for( i=0; i < options.values.length; i++){
             ret+=template.replace("{val}","<a href='"+options.values[i].downloadUrl+"' class='btn-small downloadfile icon-download'>" +options.values[i].downloadUrl+"</a>")
-              .replace("{hash}",options.values[i].hashName).replace('{exists}',true).replace("{groupid}",options.values[i].groupId);
+              .replace("{hash}",options.values[i].hashName).replace('{exists}',true)
+              .replace("{groupid}",options.values[i].groupId).replace('{idx}',i);
           }
         }
 
         break;
       case "checkboxes":
 
-        template = "<div class='row-fluid'><input name='"+options._id+"' disabled type='checkbox' {checked} value='{val}'> {label}</div>";
+        template = "<div class='row-fluid'><input name='"+options._id+"' disabled type='checkbox' data-index='{idx}' {checked} value='{val}'> {label}</div>";
         if(! options.values || options.values.length < 1){
           def = options.fieldOptions.definition;
           for(i=0; i < def.options.length; i++){
-            ret+=template.replace("{checked}","").replace("{label}",def.options[i].label).replace("{val}","");
+            ret+=template.replace("{checked}","").replace("{label}",def.options[i].label).replace("{val}","").replace('{idx}',0);
           }
         }else{
           for( i=0; i < options.values.length; i++){
             var fValues = options.values[i];
             ret+="<div class='row-fluid'>";
             for(var k=0; k < fValues.selections.length; k++ ){
-              ret+="<input name='"+options._id+"' disabled type='checkbox' checked value='"+fValues.selections[k]+"'> " +fValues.selections[k]+" ";
+              ret+="<input name='"+options._id+"' data-index='"+k+"' disabled type='checkbox' checked value='"+fValues.selections[k]+"'> " +fValues.selections[k]+" ";
             }
             ret+="</div>";
           }
@@ -98,54 +101,54 @@ Handlebars.registerHelper("createFormField", function (options, context){
 
       case "radio":
 
-        template = "<div class='row-fluid'><input name='"+options._id+"' disabled type='radio' {checked} value={val} > {label} </div>";
+        template = "<div class='row-fluid'><input data-index='{idx}' name='"+options._id+"' disabled type='radio' {checked} value={val} > {label} </div>";
 
         if(! options.values || options.values.length < 1){
           def = options.fieldOptions.definition;
           for(i=0; i < def.options.length; i++){
-            ret+=template.replace("{checked}","").replace("{label}",def.options[i].label).replace("{val}","");
+            ret+=template.replace("{checked}","").replace("{label}",def.options[i].label).replace("{val}","").replace('{idx}',0);
           }
         }
         else{
           for( i=0; i < options.values.length; i++){
-            ret+=template.replace(options.values[i]).replace("{checked}","checked").replace("{label}",options.values[i]);
+            ret+=template.replace(options.values[i]).replace("{checked}","checked").replace("{label}",options.values[i]).replace('{idx}',i);
           }
         }
         break;
       case "location":
         if(options.fieldOptions.definition && "northEast" === options.fieldOptions.definition.locationUnit){
-          template = "<div class='row-fluid'><input name='"+options._id+"' disabled type='text' placeholder='no value present' value='{val}' /></div>";
+          template = "<div class='row-fluid'><input name='"+options._id+"' disabled type='text' placeholder='no value present' value='{val}' data-index={idx} /></div>";
           if(! options.values || options.values.length < 1){
-             ret = template.replace("{val}","");
+             ret = template.replace("{val}","").replace('{idx}',0);
           }else{
             for( i=0; i < options.values.length; i++){
-              ret+=template.replace("{val}",options.values[i]['zone']+ ", eastings: " + options.values[i]['eastings'] + ", northings: " + options.values[i]['northings']);
+              ret+=template.replace("{val}",options.values[i]['zone']+ ", eastings: " + options.values[i]['eastings'] + ", northings: " + options.values[i]['northings']).replace('{idx}',i);
             }
           }
         }else{
-          template = "<div class='row-fluid'><input name='"+options._id+"' placeholder='no value present' disabled type='text' value='{val}' /></div>";
+          template = "<div class='row-fluid'><input name='"+options._id+"' data-idx='{idx}' placeholder='no value present' disabled type='text' value='{val}' /></div>";
           if(! options.values || options.values.length < 1){
-            ret = template.replace("{val}","");
+            ret = template.replace("{val}","").replace('{idx}',0);
           }else{
             for( i=0; i < options.values.length; i++){
-              ret+=template.replace('{val}',options.values[i]['long']+ "," + options.values[i].lat);
+              ret+=template.replace('{val}',options.values[i]['long']+ "," + options.values[i].lat).replace('{idx}',i);
             }
           }
         }
         break;
       case 'locationMap':
         console.log("location map opts ", options);
-        template = "<div class='row-fluid'><input disabled placeholder='no value present' name='"+options._id+"' type='text' value='{val}'></div>";
+        template = "<div class='row-fluid'><input disabled placeholder='no value present' name='"+options._id+"' type='text' value='{val}' data-index='{idx}'></div>";
         if(! options.values || options.values.length < 1){
-          ret=template.replace("{val}",'');
+          ret=template.replace("{val}",'').replace('{idx}',0);
         }
         else if(options.fieldOptions && options.fieldOptions.definition && "northEast" === options.fieldOptions.definition.locationUnit){
           for( i=0; i < options.values.length; i++){
-            ret+=template.replace("{val}","zone: "+options.values[i]['zone']+ ", eastings: " + options.values[i]['eastings'] + ", northings: " + options.values[i]['northings']);
+            ret+=template.replace("{val}","zone: "+options.values[i]['zone']+ ", eastings: " + options.values[i]['eastings'] + ", northings: " + options.values[i]['northings']).replace('{idx}',i);
           }
         }else{
           for( i=0; i < options.values.length; i++){
-            ret+=template.replace("{val}",options.values[i]['long']+ "," + options.values[i].lat);
+            ret+=template.replace("{val}",options.values[i]['long']+ "," + options.values[i].lat).replace('{idx}',i);
           }
         }
         break;
