@@ -120,6 +120,9 @@ application.DestinationIos = application.DestinationGeneral.extend({
       deviceType: this.destination_id
     };
     data = this.getCordovaVersion(wizard, data);
+    if(data.cordova_version && data.cordova_version === "2.2"){
+      data.version = "6.0";
+    }
     return data;
   },
 
