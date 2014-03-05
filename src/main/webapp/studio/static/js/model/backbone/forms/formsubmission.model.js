@@ -7,6 +7,7 @@ App.collections = App.collections || {};
 
 App.Model.FormSubmission = App.Model.FormBase.extend({
   fetchURL : "/api/v2/forms/submission/{{id}}",
+  url : "/api/v2/forms/submission",
   getDownloadUrl: function() {
     return this.fetchURL.replace('{{id}}', this.id) + ".pdf";
   },

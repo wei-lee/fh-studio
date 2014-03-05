@@ -24,12 +24,12 @@ App.View.SubmissionDetail = App.View.Forms.extend({
 
   initialize : function (){
     this.constructor.__super__.initialize.apply(this, arguments);
+    console.log("options ", this.options);
     var self = this;
     delete self.submission;
     if(self.options.submission){
       self.submission = self.options.submission.toJSON();
     }
-
     _.bindAll(this);
   },
 
@@ -54,8 +54,9 @@ App.View.SubmissionDetail = App.View.Forms.extend({
           var id = _this.attr('name');
           var field = self.options.submission.findFormField(id);
           console.log("found matching form field ", field, "updating value at index ", index);
-          field.fieldValues[index] = _this.val();
-          console.log("submission updated ", self.options.submission.toJSON());
+          if(field && field.fieldValues){
+            field.fieldValues[index] = _this.val();
+          }
         });
       }
     });
@@ -68,25 +69,31 @@ App.View.SubmissionDetail = App.View.Forms.extend({
 
     console.log("update submission ", self.options.submission.toJSON());
 
-    var files = Object.keys(self.filesToSubmit);
-    for(var i=0; i < files.length; i++){
-      var sub = self.filesToSubmit[files[i]].submit();
-      sub.success(function (result, textStatus, jqXHR) {
-        //remove file from filesToSubmit
-        self.options.submission.fetch({
-          "success":function (sub){
-            console.log("updated submission fetched ",sub);
-            self.render();
-          } ,
-          "error": function (err){
-            console.log("failed to fetch sub ",err);
-            //show error message
-          }});
-      })
-      .error(function (jqXHR, textStatus, errorThrown) {
-        //show error message
-      });
-    }
+    self.options.submission.save({"success": function (){
+
+    },"error": function (){
+
+    }});
+
+//    var files = Object.keys(self.filesToSubmit);
+//    for(var i=0; i < files.length; i++){
+//      var sub = self.filesToSubmit[files[i]].submit();
+//      sub.success(function (result, textStatus, jqXHR) {
+//        //remove file from filesToSubmit
+//        self.options.submission.fetch({
+//          "success":function (sub){
+//            console.log("updated submission fetched ",sub);
+//            self.render();
+//          } ,
+//          "error": function (err){
+//            console.log("failed to fetch sub ",err);
+//            //show error message
+//          }});
+//      })
+//      .error(function (jqXHR, textStatus, errorThrown) {
+//        //show error message
+//      });
+//    }
 
 
   },
@@ -148,13 +155,20 @@ App.View.SubmissionDetail = App.View.Forms.extend({
       url = "/api/v2/forms/submission/"+self.submission._id+"/"+ele.attr('name')+"/"+groupId+"/updateFile";
      }else{
        //create a file id update the submission field with this id this will be sent to the server first then the file submission
+
        url = "/api/v2/forms/submission/"+self.submission._id+"/:fieldId/:fileId/submitFile";
+
+       ele = $(ele);
+       var index = ele.data('index');
+       var id = ele.attr('name');
+       console.log("id ", id);
+       var field = self.options.submission.findFormField(id);
+       console.log("found matching form field ", field, "updating value at index ", index, self.options.submission);
+
+
      }
 
-
-
     console.log("url ", url, ele.data("groupid"));
-
 
     ele.fileupload('destroy').fileupload({
       url: url,

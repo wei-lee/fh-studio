@@ -45,6 +45,43 @@ App.Model.FormBase = Backbone.RelationalModel.extend({
         }
       }
     });
+  },
+  save : function (options){
+    var self = this,
+    id = this.get('_id');
+    var url = this.fetchURL.replace('{{id}}', id),
+    csrfToken = $('input[name="csrftoken"]').val();
+    url += "?csrftoken=" + csrfToken;
+
+
+
+
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: JSON.stringify(this.toJSON()),
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      cache: true,
+      success: function(res){
+        if (res) {
+          self.trigger('reset');
+          if ($.isFunction(options.success)) {
+            options.success(res, options);
+          }
+        } else {
+          if ($.isFunction(options.error)) {
+            options.error(res, options);
+          }
+        }
+      },
+      error: function(xhr, status){
+        if ($.isFunction(options.error)) {
+          options.error(arguments);
+        }
+      }
+    });
+
   }
 });
 
