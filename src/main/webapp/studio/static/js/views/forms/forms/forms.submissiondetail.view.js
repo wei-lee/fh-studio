@@ -4,7 +4,6 @@ App.View = App.View || {};
 App.View.SubmissionDetail = App.View.Forms.extend({
 
   templates : {
-    "submissionDetail" : '#formSubmissionDetail',
     "submissionEditActions":'#submissionEditActions',
     "submissionActions":'#submissionActions'
   },
