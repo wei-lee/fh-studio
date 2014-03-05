@@ -1,173 +1,155 @@
 Handlebars.registerHelper("hasLength", function (options, context){
-  console.log("hasLength", options.length);
   if(options.length > 0){
     return context.fn(this);
   }
   return false;
 });
 
-
-Handlebars.registerHelper("createFormField", function (options, context){
+Handlebars.registerHelper("createFormField", function (options, editMode, context){
   //"location", "locationMap", "sectionBreak", "matrix"
-  var ret = "";
-  var i;
-  var template;
-  var def;
+  var i= 0,
+  template;
 
-  console.log("OPTIONS ARE : ", options);
+  if (!options){
+    return;
+  }
 
-  if(options){
-    console.log("TYPE IS : ", options.type);
+  // Apply context data to each template so we can effectively render it
+  options.data = [];
+  // Iterate over field values (in case of multi-field form) - often this is just a single element in the array.
+  for (i=0; i<options.values.length; i++){
+    var val = options.values[i],
+    definition = options && options.fieldOptions && options.fieldOptions.definition || false, // convenience property
+    data = {};
+    data.val = val; // Could be a number of things - just a string, array of strings, object - all depends on options.type
+    data._id = options._id;
+    data.idx = i;
+    data.disabled = editMode===true ? '' : 'disabled';
+    if (definition && definition.options){
+      data.label = options.fieldOptions.definition.options[i].label;
+    }
+
+    // Multiple input fields, within a type which can already have many arrays of fields (hasMultiple)
+    if (options.type === 'radio' || options.type === 'checkboxes' || options.type === "dropdown"){
+      data.options = []; // Tempalte iterates over these to draw the radios or checkboxes or dropdown options
+      for (var j=0; definition.options && j<definition.options.length; j++){
+        var opt = definition.options[j],
+        optData = {
+          label : opt.label,
+          _id : options._id,
+          idx : j
+        };
+        // Some use the checked prop, some use selected..
+        if (options.type === 'checkboxes'){
+          // NB Checkboxes has a "selections" object where the array lives, unlike radio and dropdown because who needs to be consistant
+          optData.checked = val.selections.indexOf(opt.label)>-1 ? 'checked' : '';
+        }else{
+          optData.selected = val.indexOf(opt.label)>-1 ? 'selected' : '';
+          optData.checked = val.indexOf(opt.label)>-1 ? 'checked' : '';
+        }
+        data.options.push(optData);
+      }
+    }
+
+    if (options.type === 'location' || options.type === 'locationMap'){
+      if (definition && definition.locationUnit==='latlong'){
+        data.lat = val.lat;
+        data.long = val.long;
+        data.maplink = "http://maps.google.com/maps?z=12&t=m&q=loc:" + val.lat + "+" + val.long;
+      }else{
+        data.zone = val.zone;
+        data.eastings = val.eastings;
+        data.northings = val.northings;
+      }
+    }
+
+    if (options.type === 'photo' || options.type === 'signature' || options.type === 'file'){
+      data.url = val.downloadUrl + '?rand=' + Math.random();
+      data.val = val.url || val.downloadUrl;
+      data.groupid = val.groupId;
+      data.hash = val.hashName;
+    }
+    options.data.push(data);
+  }
+
+  template = Handlebars.compile(_templateForField(options));
+  template = template(options);
+  return template;
+
+
+  function _templateForField(options){
+    var template;
     switch (options.type){
       case "text":
       case "number":
       case "emailAddress":
       case "dateTime":
       case "url":
-        template ="<div class='row-fluid'><input data-index='{idx}' disabled type='text' name='"+options._id+"' placeholder='no value present' value='{val}' /></div>";
-        if(! options.values || options.values.length < 1){
-          ret = template.replace("{val}","").replace('{idx}',0);
-        }else{
-          for(i=0; i < options.values.length; i++){
-            var val = options.values[i];
-            ret+=template.replace("{val}",val).replace('{idx}',i);
-          }
-        }
+        template = (editMode) ? "<input data-index='{{idx}}' {{disabled}} type='text' name='{{_id}}' placeholder='No value present' value='{{val}}' />" : "{{val}}";
         break;
       case "textarea":
-        template = "<div class='row-fluid'><textarea data-index='{idx}' name='"+options._id+"' placeholder='no value present' disabled>{val}</textarea></div>";
-        if(!options.values || options.values.length < 1){
-          ret = template.replace("{idx}",0).replace('{val}',"");
-        }else{
-          for( i=0; i < options.values.length; i++){
-            ret+=template.replace("{val}",options.values[i]).replace('{idx}',i);
-          }
-        }
+        template = (editMode) ? "<textarea data-index='{{idx}}' name='{{_id}}' placeholder='No value present' {{disabled}}>{{val}}</textarea>" : "<p>{{val}}</p>";
         break;
       case "dropdown":
-        //todo revisit this as I think I need a select per answer.
-        var selectOpts = options.fieldOptions.definition.options;
-        ret = "<select disabled name='"+options._id+"' >";
-        template = "<option value='{val}' data-index='{idx}' {selected} >{val}</option>";
-        ret+=template.replace(/\{val\}/g,"");
-        for(i=0; i < selectOpts.length; i++){
-
-          if(options.values && options.values[0]){
-            if(options.values[0] == selectOpts[i].label){
-              ret+=template.replace(/\{val\}/g,selectOpts[i].label).replace("{selected}","selected");
-            }else{
-              ret+=template.replace(/\{val\}/g,selectOpts[i].label).replace("{selected}","");
-            }
-          }
-        }
-        ret+="</select>";
+        template = "<select {{disabled}} name='{{_id}}' >" +
+          "{{#each options}}" +
+            "<option value='{{label}}' data-index='{{idx}}' {{selected}}>{{label}}</option>" +
+          "{{/each}}"+
+        "</select>";
         break;
       case "photo":
       case "signature":
-        template = "<div class='row-fluid'>{val} </div><input class='hide' data-index='{idx}' data-filehash='{hash}' data-groupid='{groupid}' disabled type='file' name='"+options._id+"' /> ";
-        if(!options.values || options.values.length < 1){
-          ret = template.replace("{val}","no "+options.type+" present").replace("{hash}","").replace("{groupid}","").replace('{idx}',0);
-        }else{
-          for( i=0; i < options.values.length; i++){
-            ret+=template.replace("{val}","<img style='width: 40%' src='"+options.values[i].url+"?rand="+Math.random()+"'>")
-              .replace("{hash}",options.values[i].hashName).replace("{groupid}",options.values[i].groupId).replace('{idx}',i);
-          }
-        }
+        template = "<img style='width: 40%' src='{{url}}'><input class='hide' data-index='{{idx}}' data-filehash='{{hash}}' data-groupid='{{groupid}}' {{disabled}} type='file' name='{{_id}}' />";
         break;
       case "file":
-        template = "<div class='row-fluid'>{val}</div> <input class='hide' data-filehash='{hash}' data-index='{idx}' data-exists='{exists}' data-groupid='{groupid}' disabled type='file' name='"+options._id+"'>";
-
-        if(!options.values || options.values.length < 1){
-          ret = template.replace("{val}","no "+options.type+" present").replace("{hash}","").replace("{exists}",false).replace("{groupid}","").replace('{idx}',0);
-        }else{
-          for( i=0; i < options.values.length; i++){
-            ret+=template.replace("{val}","<a href='"+options.values[i].downloadUrl+"' class='btn-small downloadfile icon-download'>" +options.values[i].downloadUrl+"</a>")
-              .replace("{hash}",options.values[i].hashName).replace('{exists}',true)
-              .replace("{groupid}",options.values[i].groupId).replace('{idx}',i);
-          }
-        }
-
+        template = "<a class='btn-small downloadfile icon-download' href='{{url}}' class='btn-small downloadfile icon-download'>{{url}}</a>" +
+        "<input class='hide' data-filehash='{{hash}}' data-index='{{idx}}' data-exists='{exists}' data-groupid='{{groupid}}' {{disabled}} type='file' name='{{_id}}'>";
         break;
       case "checkboxes":
-
-        template = "<div class='row-fluid'><input name='"+options._id+"' disabled type='checkbox' data-index='{idx}' {checked} value='{val}'> {label}</div>";
-        if(! options.values || options.values.length < 1){
-          def = options.fieldOptions.definition;
-          for(i=0; i < def.options.length; i++){
-            ret+=template.replace("{checked}","").replace("{label}",def.options[i].label).replace("{val}","").replace('{idx}',0);
-          }
-        }else{
-          for( i=0; i < options.values.length; i++){
-            var fValues = options.values[i];
-            ret+="<div class='row-fluid'>";
-            for(var k=0; k < fValues.selections.length; k++ ){
-              ret+="<input name='"+options._id+"' data-index='"+k+"' disabled type='checkbox' checked value='"+fValues.selections[k]+"'> " +fValues.selections[k]+" ";
-            }
-            ret+="</div>";
-          }
-        }
+        template = "{{#each options}}" +
+            "<input name='{{label}}' {{disabled}} type='checkbox' data-index='{{idx}}' {{checked}} value='{{val}}'> {{label}}" +
+          "{{/each}}";
         break;
-
       case "radio":
-
-        template = "<div class='row-fluid'><input data-index='{idx}' name='"+options._id+"' disabled type='radio' {checked} value={val} > {label} </div>";
-
-        if(! options.values || options.values.length < 1){
-          def = options.fieldOptions.definition;
-          for(i=0; i < def.options.length; i++){
-            ret+=template.replace("{checked}","").replace("{label}",def.options[i].label).replace("{val}","").replace('{idx}',0);
-          }
-        }
-        else{
-          for( i=0; i < options.values.length; i++){
-            ret+=template.replace(options.values[i]).replace("{checked}","checked").replace("{label}",options.values[i]).replace('{idx}',i);
-          }
-        }
+        template = "{{#each options}}" +
+          "<input data-index='{{idx}}' name='{{label}}' {{disabled}} type='radio' {{checked}} value={{val}} > {{label}}" +
+        "{{/each}}";
         break;
       case "location":
-        if(options.fieldOptions.definition && "northEast" === options.fieldOptions.definition.locationUnit){
-          template = "<div class='row-fluid'><input name='"+options._id+"' disabled type='text' placeholder='no value present' value='{val}' data-index={idx} /></div>";
-          if(! options.values || options.values.length < 1){
-             ret = template.replace("{val}","").replace('{idx}',0);
-          }else{
-            for( i=0; i < options.values.length; i++){
-              ret+=template.replace("{val}",options.values[i]['zone']+ ", eastings: " + options.values[i]['eastings'] + ", northings: " + options.values[i]['northings']).replace('{idx}',i);
-            }
-          }
-        }else{
-          template = "<div class='row-fluid'><input name='"+options._id+"' data-idx='{idx}' placeholder='no value present' disabled type='text' value='{val}' /></div>";
-          if(! options.values || options.values.length < 1){
-            ret = template.replace("{val}","").replace('{idx}',0);
-          }else{
-            for( i=0; i < options.values.length; i++){
-              ret+=template.replace('{val}',options.values[i]['long']+ "," + options.values[i].lat).replace('{idx}',i);
-            }
-          }
-        }
-        break;
       case 'locationMap':
-        console.log("location map opts ", options);
-        template = "<div class='row-fluid'><input disabled placeholder='no value present' name='"+options._id+"' type='text' value='{val}' data-index='{idx}'></div>";
-        if(! options.values || options.values.length < 1){
-          ret=template.replace("{val}",'').replace('{idx}',0);
-        }
-        else if(options.fieldOptions && options.fieldOptions.definition && "northEast" === options.fieldOptions.definition.locationUnit){
-          for( i=0; i < options.values.length; i++){
-            ret+=template.replace("{val}","zone: "+options.values[i]['zone']+ ", eastings: " + options.values[i]['eastings'] + ", northings: " + options.values[i]['northings']).replace('{idx}',i);
+        if(options.fieldOptions.definition && "northEast" === options.fieldOptions.definition.locationUnit){
+          if (editMode){
+            template = "Eastings: <input name='eastings' {{disabled}} type='text' placeholder='No value present' value='{{eastings}}' data-index={{idx}} /><br />" +
+            "Northings: <input name='northings' {{disabled}} type='text' placeholder='No value present' value='{{northings}}' data-index={{idx}} /><br />" +
+            "Zone: <input name='zone' {{disabled}} type='text' placeholder='No value present' value='{{zone}}' data-index={{idx}} /><br />";
+          }else{
+            template = "Eastings: {{eastings}}, <br />" +
+            "Northings: {{northings}}, <br />" +
+            "Zone: {{zone}}";
           }
         }else{
-          for( i=0; i < options.values.length; i++){
-            ret+=template.replace("{val}",options.values[i]['long']+ "," + options.values[i].lat).replace('{idx}',i);
+          // Map link for non-northings eastings for convenience
+          template = "<a class='maplink pull-right' target='_blank' href='{{maplink}}'><i class='icon icon-map-marker'></i></a>";
+          if (editMode){
+            template += "Latitude: <input name='lat' data-idx='{{idx}}' placeholder='No value present' {{disabled}} type='text' value='{{lat}}' /><br/>"+
+            "Longitude: <input name='long' data-idx='{{idx}}' placeholder='No value present' {{disabled}} type='text' value='{{long}}' />";
+          }else{
+            template += "Latitude: {{lat}},<br /> Longitude: {{long}}";
           }
+
         }
         break;
       default:
         break;
     }
+    template = "{{#each data}}" +
+    "<div class='row-fluid'>" +
+    template +
+    "</div>" +
+    "{{/each}}";
+    return template;
   }
 
-
-  return ret;
 });
 
 
@@ -176,7 +158,7 @@ Handlebars.registerHelper("checkRole", function (req, options){
   var userRoles = $fw.getUserProp("roles");
   var hasPerm = false;
   for(var i =0; i < reqRoles.length; i++){
-    if(userRoles.indexOf(reqRoles[i]) != -1){
+    if(userRoles.indexOf(reqRoles[i]) !== -1){
       hasPerm = true;
       break;
     }

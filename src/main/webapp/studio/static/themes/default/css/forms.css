@@ -484,3 +484,17 @@ Improved formbuilder.js styling - TODO: Should this be applied to CMS Also?
 .submissionDetail input:enabled{
     border:1px solid #979393;
 }
+
+.submissionDetail a.maplink {
+    text-decoration: none;
+    font-size: 30px;
+}
+
+.submissionDetail .dl-horizontal dt {
+    width: 180px;
+}
+
+.submissionDetail {
+  border: 1px solid #ccc;
+  padding: 10px;
+}

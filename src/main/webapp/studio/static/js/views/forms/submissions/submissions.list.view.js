@@ -296,17 +296,20 @@ App.View.SubmissionList = App.View.FormListBase.extend({
   },
   onRowSelected : function (e){
     var self = this;
-    this.selectMessage = new App.View.FullPageMessageView({ message : 'Loading .... ', button : false });
-    this.$el.find('.emptyContainer').empty().append(this.selectMessage.render().$el);
+    if(this.submissionDetail){
+      this.submissionDetail.remove();
+    }
+    this.selectMessage.options.message = "Loading...";
+    this.selectMessage.render();
+    this.selectMessage.$el.show();
     $('.submissionslist').removeClass("span10").addClass("row-fluid");
     var model = this.getDataForRow(e);
     console.log(model);
     model.fetch({"success": function (res){
-      if(self.submissionDetail){
-        self.submissionDetail.remove();
-      }
       self.submissionDetail = new App.View.SubmissionDetail({"submission":res, form:self.form, formsCol:self.formsCol});
-      self.submissionDetail.render();
+      self.$el.append(self.submissionDetail.render().$el);
+      self.selectMessage.$el.hide();
+
     },"error":function (res){
         console.log("submission error ", res);
     }});
