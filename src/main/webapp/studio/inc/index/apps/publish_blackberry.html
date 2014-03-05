@@ -41,6 +41,10 @@
 
       <%@ include file="publish_wizards_mdm_step.html" %>
 
+      <% if(studio.showCordovaVersionSelection("blackberry")) {%>
+        <%@ include file="publish_wizards_cordova_version_step.html" %>
+      <%}%>
+
       <div id="app_publish_blackberry_password">
         <div id="app_publish_blackberry_password_text" class="insert-lang-block"></div>
         <div class="form-field ui-helper-reset ui-helper-clearfix">

@@ -1,6 +1,8 @@
 
   <form id="android_export_form">
     <!-- div id="app_export_android_versions" config-radio="build-options-android"></div-->
-    <%@ include file="publish_wizards_cordova_version_step.html" %>
+      <% if(studio.showCordovaVersionSelection("android")) {%>
+        <%@ include file="publish_wizards_cordova_version_step.html" %>
+      <%}%>
     <div id="app_export_android_progress" class="progress-step"></div>
   </form>

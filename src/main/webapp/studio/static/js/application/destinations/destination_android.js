@@ -72,7 +72,7 @@ application.DestinationAndroid = application.DestinationGeneral.extend({
     if($fw.getClientProp('mdm.enabled') === 'true'){
       stepId = 'app_publish_mdm_config';
     }
-    if($fw.getClientProp('cordova-version-selection') === 'true'){
+    if(this.getCordovaSelectionEnabled()){
       stepId = 'app_publish_cordova_versions_config';
     }
     if(config !== "debug"){

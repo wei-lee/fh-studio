@@ -575,8 +575,18 @@ application.DestinationGeneral = Class.extend({
     }
   },
 
+  getCordovaSelectionEnabled: function(){
+    var enabled = false;
+    var propName = 'destination.' + this.destination_id + '.cordova.version-selection';
+    var destConf = $fw.getClientProp(propName);
+    if( destConf === 'true' || (typeof destConf === "undefined" && $fw.getClientProp('destination.default.cordova.version-selection') === 'true')){
+      enabled = true;
+    }
+    return enabled;
+  },
+
   getCordovaVersion: function(wizard, data){
-    if($fw.getClientProp('cordova-version-selection') === 'true'){
+    if(this.getCordovaSelectionEnabled()){
       var cordova_version = wizard.find('#app_publish_cordova_versions_config input:checked').val();
       data.cordova_version = cordova_version;
       return data;
