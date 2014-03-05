@@ -30,8 +30,10 @@
     </form>
     </div>
     <div class="span4">
+      {{#if sub}}
         <h2>Meta Data</h2>
         <span>{{sub.deviceFormTimestamp}}</span>
+      {{/if}}
     </div>
   {{#if controls}}
       <div class="span12 submission-buttons" style="padding:8px;">
