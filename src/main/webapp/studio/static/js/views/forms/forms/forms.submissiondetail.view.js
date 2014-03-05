@@ -261,7 +261,7 @@ App.View.SubmissionDetail = App.View.Forms.extend({
       "success": function (f){
         self.mergeSubmissionAndForm(f,subData, function (merged){
           //need to turn this into a json object.
-          var renderData = {"form":{"pages":[]}};
+          var renderData = {"form":{"pages":[]},"sub":subData};
           var pages = merged.get("pages");
 
           pages.forEach(function (p, idx){
@@ -271,6 +271,7 @@ App.View.SubmissionDetail = App.View.Forms.extend({
           });
           renderData._id = subData._id;
           renderData.controls = true;
+          console.log("renderData ", renderData);
           var html = self.submissionTemplate(renderData);
           self.$el.append(html);
           self.enableSubmissionActions(subData._id);

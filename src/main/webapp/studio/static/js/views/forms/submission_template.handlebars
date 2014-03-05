@@ -1,5 +1,5 @@
 <div class="row-fluid submissionDetail" style="background-color:#F0F0EE">
-
+    <div class="span8">
     <form class="form-horizontal" id="submissionForm">
       {{#form}}
         {{#each pages}}
@@ -28,6 +28,11 @@
 
       {{/form}}
     </form>
+    </div>
+    <div class="span4">
+        <h2>Meta Data</h2>
+        <span>{{sub.deviceFormTimestamp}}</span>
+    </div>
   {{#if controls}}
       <div class="span12 submission-buttons" style="padding:8px;">
 
