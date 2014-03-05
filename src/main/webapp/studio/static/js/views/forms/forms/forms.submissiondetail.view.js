@@ -5,7 +5,6 @@ App.View.SubmissionDetail = App.View.Forms.extend({
 
   templates : {
     "submissionDetail" : '#formSubmissionDetail',
-    "submissionTemplate":'#submissionTemplate',
     "submissionEditActions":'#submissionEditActions',
     "submissionActions":'#submissionActions'
 
@@ -28,6 +27,8 @@ App.View.SubmissionDetail = App.View.Forms.extend({
     var self = this;
     delete self.submission;
     if(self.options.submission){
+
+
       self.submission = self.options.submission.toJSON();
     }
     _.bindAll(this);
@@ -205,28 +206,48 @@ App.View.SubmissionDetail = App.View.Forms.extend({
     });
   },
 
+  loadSumissionTemplate : function (cb){
+    var self = this;
+
+    if(! self.submissionTemplate){
+      $.ajax({
+        "url":'/studio/static/js/views/forms/submission_template.handlebars',
+        "success":function (temp){
+          console.log("loaded template ", temp);
+          self.submissionTemplate = Handlebars.compile(temp);
+          cb();
+        },
+        "dataType":"text"
+      });
+    }else{
+      cb();
+    }
+  },
+
 
   render : function (){
     var self = this;
     self.$el.empty();
     var subData = {};
     if(self.options.submission){
-      subData = self.options.submission.toJSON();
-      console.log("SUBMISSION ", subData);
-      subData.deviceFormTimestamp = moment(subData.deviceFormTimestamp).format('MMMM Do YYYY, h:mm:ss a');
-      var form = self.formsCollection.findWhere({"_id": subData.formId});
-      if(!form){
-        self.formsCollection.fetch({"success":function (){
-          form = self.formsCollection.findWhere({"_id": subData.formId});
-          self.processForm(form, subData);
-        },
-        "error": function (){
+      self.loadSumissionTemplate(function (){
+          subData = self.options.submission.toJSON();
+          console.log("SUBMISSION ", subData);
+          subData.deviceFormTimestamp = moment(subData.deviceFormTimestamp).format('MMMM Do YYYY, h:mm:ss a');
+          var form = self.formsCollection.findWhere({"_id": subData.formId});
+          if(!form){
+            self.formsCollection.fetch({"success":function (){
+              form = self.formsCollection.findWhere({"_id": subData.formId});
+              self.processForm(form, subData);
+            },
+              "error": function (){
 
-        }});
-      }
-      else{
-        self.processForm(form, subData);
-      }
+              }});
+          }
+          else{
+            self.processForm(form, subData);
+          }
+      });
     }else{
       //no submission?
       console.log("no submission passed ");
@@ -249,7 +270,8 @@ App.View.SubmissionDetail = App.View.Forms.extend({
 
           });
           renderData._id = subData._id;
-          var html = self.templates.$submissionTemplate(renderData);
+          renderData.controls = true;
+          var html = self.submissionTemplate(renderData);
           self.$el.append(html);
           self.enableSubmissionActions(subData._id);
         });
@@ -283,8 +305,9 @@ App.View.SubmissionDetail = App.View.Forms.extend({
 
 
   mergeSubmissionAndForm: function (form, submission, cb){
+
     //return merged data
-    console.log("form pages ", form.get('pages'));
+    console.log("form submission ", submission);
     async.mapSeries(form.get('pages'), function(page, mcb0) {
       var fields = page.get("fields");
       async.mapSeries(fields, function(field, mcb1) {

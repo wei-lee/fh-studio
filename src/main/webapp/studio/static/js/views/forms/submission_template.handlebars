@@ -1,0 +1,36 @@
+<div class="row-fluid submissionDetail" style="background-color:#F0F0EE">
+
+    <form class="form-horizontal" id="submissionForm">
+      {{#form}}
+        {{#each pages}}
+            <div class="row-fluid" style="text-align:left;border-bottom:1px dotted #4E4D4B; margin-bottom:4px;">
+                <span style="color:rgb(61, 60, 60); font-size:16px; font-weight:bold; padding:4px;" >Page:{{name}}</span>
+            </div>
+
+
+          {{#each fields}}
+
+              <div class="control-group">
+                  <label class="control-label submissionLabel" style="font-weight:bold; font-size:14px;">{{#createFormLabel type}}{{/createFormLabel}} {{name}}:</label>
+
+                  <div class="controls">
+                    {{#createFormField this}}{{/createFormField}}
+                  </div>
+              </div>
+
+
+            {{#is 'sectionBreak' type}}
+                <div class="page-break"></div>
+            {{/is}}
+
+          {{/each}}
+        {{/each}}
+
+      {{/form}}
+    </form>
+  {{#if controls}}
+      <div class="span12 submission-buttons" style="padding:8px;">
+
+      </div>
+  {{/if}}
+</div>
