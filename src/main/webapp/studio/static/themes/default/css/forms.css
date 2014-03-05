@@ -480,3 +480,7 @@ Improved formbuilder.js styling - TODO: Should this be applied to CMS Also?
 .submissionDetail select{
     background-color: #fff;
 }
+
+.submissionDetail input:enabled{
+    border:1px solid #979393;
+}

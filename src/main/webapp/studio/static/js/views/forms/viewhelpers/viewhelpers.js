@@ -1,3 +1,12 @@
+Handlebars.registerHelper("hasLength", function (options, context){
+  console.log("hasLength", options.length);
+  if(options.length > 0){
+    return context.fn(this);
+  }
+  return false;
+});
+
+
 Handlebars.registerHelper("createFormField", function (options, context){
   //"location", "locationMap", "sectionBreak", "matrix"
   var ret = "";
@@ -55,7 +64,7 @@ Handlebars.registerHelper("createFormField", function (options, context){
         break;
       case "photo":
       case "signature":
-        template = "<div class='row-fluid'>{val} </div><input data-index='{idx}' data-filehash='{hash}' data-groupid='{groupid}' disabled type='file' name='"+options._id+"' /> ";
+        template = "<div class='row-fluid'>{val} </div><input class='hide' data-index='{idx}' data-filehash='{hash}' data-groupid='{groupid}' disabled type='file' name='"+options._id+"' /> ";
         if(!options.values || options.values.length < 1){
           ret = template.replace("{val}","no "+options.type+" present").replace("{hash}","").replace("{groupid}","").replace('{idx}',0);
         }else{
@@ -66,7 +75,7 @@ Handlebars.registerHelper("createFormField", function (options, context){
         }
         break;
       case "file":
-        template = "<div class='row-fluid'>{val}</div> <input data-filehash='{hash}' data-index='{idx}' data-exists='{exists}' data-groupid='{groupid}' disabled type='file' name='"+options._id+"'>";
+        template = "<div class='row-fluid'>{val}</div> <input class='hide' data-filehash='{hash}' data-index='{idx}' data-exists='{exists}' data-groupid='{groupid}' disabled type='file' name='"+options._id+"'>";
 
         if(!options.values || options.values.length < 1){
           ret = template.replace("{val}","no "+options.type+" present").replace("{hash}","").replace("{exists}",false).replace("{groupid}","").replace('{idx}',0);
