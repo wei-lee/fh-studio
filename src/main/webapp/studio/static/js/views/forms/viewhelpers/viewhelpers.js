@@ -122,12 +122,12 @@ Handlebars.registerHelper("createFormField", function (options, editMode, contex
         break;
       case "checkboxes":
         template = "{{#each options}}" +
-            "<input name='{{label}}' {{disabled}} class='formVal' type='checkbox' data-index='{{idx}}' {{checked}} value='{{val}}'> {{label}}" +
+            "<input name='{{label}}' {{disabled}} class='formVal' type='checkbox' data-index='{{idx}}' {{checked}} value='{{val}}'> {{label}}<br />" +
           "{{/each}}";
         break;
       case "radio":
         template = "{{#each options}}" +
-          "<input data-index='{{idx}}' class='formVal' name='{{label}}' {{disabled}} type='radio' {{checked}} value={{val}} > {{label}}" +
+          "<input data-index='{{idx}}' class='formVal' name='{{label}}' {{disabled}} type='radio' {{checked}} value={{val}} > {{label}}<br />" +
         "{{/each}}";
         break;
       case "location":
@@ -138,18 +138,18 @@ Handlebars.registerHelper("createFormField", function (options, editMode, contex
             "Northings: <input class='formVal' name='northings' {{disabled}} type='text' placeholder='No value present' value='{{northings}}' data-index={{idx}} /><br />" +
             "Zone: <input name='zone' class='formVal' {{disabled}} type='text' placeholder='No value present' value='{{zone}}' data-index={{idx}} /><br />";
           }else{
-            template = "Eastings: {{eastings}}, <br />" +
-            "Northings: {{northings}}, <br />" +
-            "Zone: {{zone}}";
+            template = "<label>Eastings:</label> {{eastings}}, <br />" +
+            "<label>Northings:</label> {{northings}}, <br />" +
+            "<label>Zone:</label> {{zone}}";
           }
         }else{
           // Map link for non-northings eastings for convenience
           template = "<a class='maplink pull-right' target='_blank' href='{{maplink}}'><i class='icon icon-map-marker'></i></a>";
           if (editMode){
-            template += "Latitude: <input name='lat' class='formVal' data-idx='{{idx}}' placeholder='No value present' {{disabled}} type='text' value='{{lat}}' /><br/>"+
-            "Longitude: <input name='long' data-idx='{{idx}}' placeholder='No value present' {{disabled}} type='text' value='{{long}}' />";
+            template += "<label>Latitude:</label> <input name='lat' class='formVal' data-idx='{{idx}}' placeholder='No value present' {{disabled}} type='text' value='{{lat}}' /><br/>"+
+            "<label>Longitude:</label> <input name='long' data-idx='{{idx}}' placeholder='No value present' {{disabled}} type='text' value='{{long}}' />";
           }else{
-            template += "Latitude: {{lat}},<br /> Longitude: {{long}}";
+            template += "<label>Latitude:</label> {{lat}},<br /> <label>Longitude:</label> {{long}}";
           }
 
         }

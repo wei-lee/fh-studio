@@ -481,10 +481,6 @@ Improved formbuilder.js styling - TODO: Should this be applied to CMS Also?
     background-color: #fff;
 }
 
-.submissionDetail input:enabled{
-    border:1px solid #979393;
-}
-
 .submissionDetail a.maplink {
     text-decoration: none;
     font-size: 30px;
@@ -493,8 +489,26 @@ Improved formbuilder.js styling - TODO: Should this be applied to CMS Also?
 .submissionDetail .dl-horizontal dt {
     width: 180px;
 }
+.submissionDetail .dl-horizontal dt, .submissionDetail .dl-horizontal dd {
+    padding: 4px;
+}
 
-.submissionDetail {
-  border: 1px solid #ccc;
-  padding: 10px;
+
+.submissionDetail td.fieldlabel {
+    font-weight: bold;
+    text-align: right;
+}
+
+.submissionDetail h5 {
+    text-align: left;
+    border-bottom: 2px solid #277aac;
+    margin-bottom: 10px;
+    font-weight: normal;
+    font-size: 16px;
+}
+
+.submissionDetail .formfield label {
+    width: 100px;
+    display: inline-block;
+    font-style: italic;
 }

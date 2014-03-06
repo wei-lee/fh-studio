@@ -16,7 +16,7 @@ App.View.SubmissionList = App.View.FormListBase.extend({
     'searchRepeatingField':'#searchRepeatingField'
   },
   events : {
-    'click tr' : 'onRowSelected',
+    'click table.datatable tr' : 'onRowSelected',
     'click .btn-add-formsapp' : 'onCreate',
     'click .btn-add-existing' : 'onCreate',
     'click .btn-add-existing-app' : 'onAddExisting',
@@ -304,7 +304,11 @@ App.View.SubmissionList = App.View.FormListBase.extend({
     this.selectMessage.$el.show();
     $('.submissionslist').removeClass("span10").addClass("row-fluid");
     var model = this.getDataForRow(e);
-    console.log(model);
+
+    if (!model){
+      this.message("Error loading form submission", "error");
+    }
+
     model.fetch({"success": function (res){
       self.submissionDetail = new App.View.SubmissionDetail({"submission":res, form:self.form, formsCol:self.formsCol});
       self.$el.append(self.submissionDetail.render().$el);
@@ -432,7 +436,7 @@ App.View.SubmissionList = App.View.FormListBase.extend({
       },
       "error": function (err){
         console.log("search error ", err);
-        self.alertMessage("there was an error during your search");
+        self.message("there was an error during your search");
       }
     };
     this.collection.search(searchQuery,options);
