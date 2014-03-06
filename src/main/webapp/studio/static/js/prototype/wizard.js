@@ -299,7 +299,7 @@ proto.Wizard = {
         enabled = true;
       }
       return enabled;
-    }
+    };
 
     var wizardsMap = {
       "android":[{"name":"android_export_wizard", "index": 0, "mdm": false}, {"name":"android_publish_wizard", "index": 1, "mdm": true}],
@@ -311,8 +311,8 @@ proto.Wizard = {
                 {"name":"ios_export_wizard", "index": 0, "mdm": false}],
       "blackberry": [{"name":"blackberry_export_wizard", "index": 1, "mdm": false},{"name":"blackberry_publish_wizard", "index": 1, "mdm": true}],
       "windowsphone7": [{"name":"windowsphone7_export_wizard", "index": 1, "mdm": false},{"name":"windowsphone7_publish_wizard", "index": 1, "mdm": true}],
-      "windowsphone": [{"name":"windowsphone_export_wizard", "index": 0, "mdm": false},{"name":"windowsphone_publish_wizard", "index": 1, "mdm": true}],
-    }
+      "windowsphone": [{"name":"windowsphone_export_wizard", "index": 0, "mdm": false},{"name":"windowsphone_publish_wizard", "index": 1, "mdm": true}]
+    };
 
     _.each(wizardsMap, function(wizardsArray, dest){
       if(isCordovaVersionSelectionEnabled(dest)){
