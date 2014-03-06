@@ -62,6 +62,8 @@ App.View.SubmissionDetail = App.View.Forms.extend({
             field.fieldValues[index] = _this.val();
           }else{
             //not an existing field on the
+            field = self.getFormField(id);
+
           }
         });
       }
