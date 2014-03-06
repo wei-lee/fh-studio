@@ -4222,3 +4222,8 @@ h5.steps{
 .cleanstagearea input {
   margin-left: 10px;
 }
+
+.file_name_cutoff {
+  overflow: hidden;
+  width: 80px;
+}

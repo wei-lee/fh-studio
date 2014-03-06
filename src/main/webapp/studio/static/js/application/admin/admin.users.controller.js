@@ -425,6 +425,7 @@ Admin.Users.Controller = Controller.extend({
       add: function(e, data) {
         setTimeout(function() {
           $('form', parent).data('import_users_file_data', data);
+          $('#cover_input_file_name').html(data.files[0].name);
           return false;
         }, 100);
       }
@@ -920,7 +921,6 @@ Admin.Users.Controller = Controller.extend({
         }
       }, fail, true);
     }
-
   },
 
   getCustomers: function(success, fail) {
