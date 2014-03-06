@@ -24,7 +24,6 @@ App.View.SubmissionDetail = App.View.Forms.extend({
     if(self.options.submission){
       self.submission = self.options.submission.toJSON();
     }
-    self.loadSubmissionTemplate(function (){});
     _.bindAll(this);
   },
 
@@ -33,37 +32,44 @@ App.View.SubmissionDetail = App.View.Forms.extend({
    *
    */
   editSubmission : function (e) {
-    var subid = $(e.target).data("subid");
+    //make new edit submission view and render
     var self = this;
-    self.editMode = true;
-    self.render();
-    //remove disabled
-    self.$el.find(':disabled').each(function (){
-      var _ele = $(this);
-      $(this).attr('disabled',false);
-      if('file' === _ele.attr("type")){
-        _ele.show();
-//        $(this).on('change', function (){
-//           console.log("field value changed ", $(this).val());
-//        });
-        self.enableFileUpload(_ele);
-      }else{
-        $(this).on('blur', function (){
-          var _this = $(this);
-          var index = _this.data('index');
-          var id = _this.attr('name');
-          var field = self.options.submission.findFormField(id);
-          console.log("found matching form field ", field, "updating value at index ", index);
-          if(field && field.fieldValues){
-            field.fieldValues[index] = _this.val();
-          }else{
-            //not an existing field on the
-            field = self.getFormField(id);
+    var editView = new App.View.SubmissionEdit({"preparedSubmission":self.viewData, "model":self.options.submission, "form":self.form});
+    editView.render();
 
-          }
-        });
-      }
-    });
+//    var subid = $(e.target).data("subid");
+//
+//    self.editMode = true;
+//    self.render();
+//    //remove disabled
+//    self.$el.find(':disabled').each(function (){
+//      var _ele = $(this);
+//      _ele.attr('disabled',false);
+//      var type = _ele.attr("type");
+//      console.log("enabling type ", type);
+//      if('file' === _ele.attr("type")){
+//        _ele.show();
+////        $(this).on('change', function (){
+////           console.log("field value changed ", $(this).val());
+////        });
+//        self.enableFileUpload(_ele);
+//      }else{
+//        $(this).on('blur', function (){
+//          var _this = $(this);
+//          var index = _this.data('index');
+//          var id = _this.attr('name');
+//          var field = self.options.submission.findFormField(id);
+//          console.log("found matching form field ", field, "updating value at index ", index);
+//          if(field && field.fieldValues){
+//            field.fieldValues[index] = _this.val();
+//          }else{
+//            //not an existing field on the
+//            field = self.getFormField(id);
+//
+//          }
+//        });
+//      }
+//    });
 
   },
 
@@ -105,150 +111,59 @@ App.View.SubmissionDetail = App.View.Forms.extend({
   filesToSubmit : {},
 
   //redundant remove in future
-  getFormField : function (id){
-    var field;
-    console.log("no field found try get the form field def");
-    var pages = self.form.get("pages");
-    console.log("form pages ", pages);
-    for(var i=0; i < pages.length; i++){
-      var page = pages.at(i);
-      var fields = page.get("fields");
-      fields.forEach(function (f){
-        console.log('field ', f);
-        if(f._id === id){
-          console.log('field found ', f);
-          field = f;
-        }
-      });
-    }
-    // ok to do this as foreach is not async
-    return field;
-  },
-
-  enableFileUpload: function(ele){
-    var self = this;
-    var groupId = ele.data("groupid");
-    var url;
-     if(groupId && "" !== groupId){
-      url = "/api/v2/forms/submission/"+self.submission._id+"/"+ele.attr('name')+"/"+groupId+"/updateFile";
-     }else{
-       //create a file id update the submission field with this id this will be sent to the server first then the file submission
-       ele = $(ele);
-       var index = ele.data('index');
-       var id = ele.attr('name');
-
-       url = "/api/v2/forms/submission/"+self.submission._id+"/"+id+"/:fileId/submitFile";
 
 
-       console.log("id ", id);
-       var field = self.options.submission.findFormField(id);
-       if(! field){
-        field = self.getFormField(id);
-       }
-       self.options.submission.formFields.push(field);
 
-       console.log("found matching form field ", field, "updating value at index ", index, self.options.submission);
-
-
-     }
-
-    console.log("url ", url, ele.data("groupid"));
-
-    ele.fileupload('destroy').fileupload({
-      url: url,
-      dataType: 'json',
-      replaceFileInput: false,
-      formData: [{
-        name: 'hashName',
-        value: ele.data("filehash")
-      }],
-      dropZone: ele,
-      add: function(e, data) {
-        ele.hide();
-        console.log("data file upload ", data );
-        //if this element has a file hash replace the file data at the index in the submission else add the file data
-        //to the field def values at index 0
-        self.filesToSubmit[data.paramName] = data;
-        //self.filesToSubmit.push(data);
-
-      },
-      done: function(e, data) {
-        console.log('done called ', data);
-        delete self.filesToSubmit[data.paramName];
-
-        self.options.submission.fetch({
-          "success":function (sub){
-            console.log("updated submission fetched ",sub);
-          } ,
-          "error": function (err){
-            console.log("failed to fetch sub ",err);
-          }});
-
-        ele.show();
-      }
-    });
-  },
 
   /**
    * END SUBMISSION EDIT CODE
    *
    */
 
-  loadSubmissionTemplate : function (cb){
+ render : function (){
     var self = this;
-
-    if(! self.submissionTemplate){
-      $.ajax({
-        "url":'/studio/static/js/views/forms/submission_template.handlebars',
-        "success":function (temp){
-
-          self.submissionTemplate = Handlebars.compile(temp);
-          cb();
-        },
-        "dataType":"text"
-      });
-    }else{
-      cb();
-    }
-  },
-
-
-  render : function (){
-    var self = this;
-    if (!this.submissionTemplate){
-      this.loadSubmissionTemplate(function (){
-        self.render();
-      });
-      return this;
-    }
-
     self.$el.empty();
     var subData = {};
     if(self.options.submission){
       subData = self.options.submission.toJSON();
-      console.log("SUBMISSION ", subData);
       subData.deviceFormTimestamp = moment(subData.deviceFormTimestamp).format('MMMM Do YYYY, h:mm:ss a');
-      self.form = self.formsCollection.findWhere({"_id": subData.formId});
-      if(!self.form){ //if no form fetch a copy down
-        self.formsCollection.fetch({"success":function (){
-          self.form = self.formsCollection.findWhere({"_id": subData.formId});
-          self.processForm(self.form, subData);
-        },"error": function (){
-
-        }});
-      }
-      else{
-          self.processForm(self.form, subData);
-      }
     }else{
-      //no submission?
-      console.log("no submission passed ");
+     console.log("no submission passed");
+     return this;
     }
+
+    async.parallel([
+      function template (callback){
+        self.loadTemplate("submissionTemplate",'/studio/static/js/views/forms/submission_template.handlebars',function (err, temp){
+          self.submissionTemplate = temp;
+          callback(err);
+        });
+      },
+      function form(callback){
+        if(!self.form){ //if no form fetch a copy down
+          self.formsCollection.fetch({"success":function (){
+            self.form = self.formsCollection.findWhere({"_id": subData.formId});
+            callback();
+          }
+          ,"error": function (err){
+            console.error("error fetching forms ",err);
+          }});
+        }
+      }],function doRender (){
+        self.processForm(self.form, subData, function (err, viewData){
+          self.viewData = viewData;
+          var html = self.submissionTemplate(viewData);
+          self.$el.append(html);
+        });
+      });
+
     return this;
   },
 
 
-  processForm : function (form, subData){
+
+
+  processForm : function (form, subData ,cb){
     var self = this;
     form.fetch({
       "success": function (f){
@@ -264,18 +179,14 @@ App.View.SubmissionDetail = App.View.Forms.extend({
           renderData._id = subData._id;
           renderData.controls = true;
           renderData.editMode = self.editMode;
-          var html = self.submissionTemplate(renderData);
-          self.$el.append(html);
-          if (self.editMode){
-            self.enableSubmissionEditActions(subData._id);
-          }else{
-            self.enableSubmissionActions(subData._id);
-          }
+
+          cb(undefined, renderData);
+          self.enableSubmissionActions(subData._id);
         });
       } ,
       "error": function (e){
+        cb(e);
         console.log("error fetching ", e);
-
       }
     });
   },
@@ -284,13 +195,6 @@ App.View.SubmissionDetail = App.View.Forms.extend({
     var self = this;
     self.editMode = false;
     return self.render();
-    self.$el.find(':enabled').each(function (){
-      var _this = $(this);
-      _this.attr("disabled",true);
-      if("file" == _this.attr("type")){
-        _this.hide();
-      }
-    });
     var subId = $(e.target).data('subid');
   },
 
@@ -299,11 +203,7 @@ App.View.SubmissionDetail = App.View.Forms.extend({
     self.$el.find('.submission-buttons').empty().append(self.templates.$submissionActions({"_id":subId}));
   },
 
-  enableSubmissionEditActions : function (subId){
-    var self = this;
 
-    self.$el.find('.submission-buttons').empty().append(self.templates.$submissionEditActions({"_id":subId}));
-  },
 
 
   mergeSubmissionAndForm: function (form, submission, cb){

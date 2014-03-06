@@ -7,6 +7,8 @@ Handlebars.registerHelper("hasLength", function (options, context){
 
 Handlebars.registerHelper("createFormField", function (options, editMode, context){
   //"location", "locationMap", "sectionBreak", "matrix"
+  console.log("options createFormField ", options);
+
   var i= 0,
   template;
 
@@ -16,6 +18,7 @@ Handlebars.registerHelper("createFormField", function (options, editMode, contex
 
   // Apply context data to each template so we can effectively render it
   options.data = [];
+  if(options.values.length < 1)options.data.push({});
   // Iterate over field values (in case of multi-field form) - often this is just a single element in the array.
   for (i=0; i<options.values.length; i++){
     var val = options.values[i],
@@ -64,7 +67,13 @@ Handlebars.registerHelper("createFormField", function (options, editMode, contex
     }
 
     if (options.type === 'photo' || options.type === 'signature' || options.type === 'file'){
-      data.url = val.downloadUrl + '?rand=' + Math.random();
+      data.url = val.downloadUrl || val.url;
+      //only need random seed for photo
+
+      if('photo' === options.type){
+        console.log("addubg rand to url ", options);
+        data.url+= '?rand=' + Math.random();
+      }
       data.val = val.url || val.downloadUrl;
       data.groupid = val.groupId;
       data.hash = val.hashName;
@@ -72,8 +81,13 @@ Handlebars.registerHelper("createFormField", function (options, editMode, contex
     options.data.push(data);
   }
 
+
   template = Handlebars.compile(_templateForField(options));
+  options.hide = (editMode) ? "formVal" : "hide formVal";
   template = template(options);
+  if(options.type == "file"){
+    console.log("file type template" , options , template);
+  }
   return template;
 
 
@@ -85,13 +99,13 @@ Handlebars.registerHelper("createFormField", function (options, editMode, contex
       case "emailAddress":
       case "dateTime":
       case "url":
-        template = (editMode) ? "<input data-index='{{idx}}' {{disabled}} type='text' name='{{_id}}' placeholder='No value present' value='{{val}}' />" : "{{val}}";
+        template = (editMode) ? "<input data-index='{{idx}}' {{disabled}} type='text' name='{{_id}}' placeholder='No value present' value='{{val}}' class='formVal' />" : "{{val}}";
         break;
       case "textarea":
-        template = (editMode) ? "<textarea data-index='{{idx}}' name='{{_id}}' placeholder='No value present' {{disabled}}>{{val}}</textarea>" : "<p>{{val}}</p>";
+        template = (editMode) ? "<textarea data-index='{{idx}}' name='{{_id}}' placeholder='No value present' {{disabled}} class='formVal' >{{val}}</textarea>" : "<p>{{val}}</p>";
         break;
       case "dropdown":
-        template = "<select {{disabled}} name='{{_id}}' >" +
+        template = "<select class='formVal' {{disabled}} name='{{_id}}' >" +
           "{{#each options}}" +
             "<option value='{{label}}' data-index='{{idx}}' {{selected}}>{{label}}</option>" +
           "{{/each}}"+
@@ -99,29 +113,30 @@ Handlebars.registerHelper("createFormField", function (options, editMode, contex
         break;
       case "photo":
       case "signature":
-        template = "<img style='width: 40%' src='{{url}}'><input class='hide' data-index='{{idx}}' data-filehash='{{hash}}' data-groupid='{{groupid}}' {{disabled}} type='file' name='{{_id}}' />";
+        template = "<img style='width: 40%' src='{{url}}'><input class='{{hide}}' data-index='{{idx}}' data-filehash='{{hash}}' data-groupid='{{groupid}}' {{disabled}} type='file' name='{{_id}}' />";
         break;
       case "file":
+        console.log("template for file returned");
         template = "<a class='btn-small downloadfile icon-download' href='{{url}}' class='btn-small downloadfile icon-download'>{{url}}</a>" +
-        "<input class='hide' data-filehash='{{hash}}' data-index='{{idx}}' data-exists='{exists}' data-groupid='{{groupid}}' {{disabled}} type='file' name='{{_id}}'>";
+        "<input class='{{hide}}' data-filehash='{{hash}}' data-index='{{idx}}' data-exists='{{exists}}' data-groupid='{{groupid}}' {{disabled}} type='file' name='{{_id}}'>";
         break;
       case "checkboxes":
         template = "{{#each options}}" +
-            "<input name='{{label}}' {{disabled}} type='checkbox' data-index='{{idx}}' {{checked}} value='{{val}}'> {{label}}" +
+            "<input name='{{label}}' {{disabled}} class='formVal' type='checkbox' data-index='{{idx}}' {{checked}} value='{{val}}'> {{label}}" +
           "{{/each}}";
         break;
       case "radio":
         template = "{{#each options}}" +
-          "<input data-index='{{idx}}' name='{{label}}' {{disabled}} type='radio' {{checked}} value={{val}} > {{label}}" +
+          "<input data-index='{{idx}}' class='formVal' name='{{label}}' {{disabled}} type='radio' {{checked}} value={{val}} > {{label}}" +
         "{{/each}}";
         break;
       case "location":
       case 'locationMap':
         if(options.fieldOptions.definition && "northEast" === options.fieldOptions.definition.locationUnit){
           if (editMode){
-            template = "Eastings: <input name='eastings' {{disabled}} type='text' placeholder='No value present' value='{{eastings}}' data-index={{idx}} /><br />" +
-            "Northings: <input name='northings' {{disabled}} type='text' placeholder='No value present' value='{{northings}}' data-index={{idx}} /><br />" +
-            "Zone: <input name='zone' {{disabled}} type='text' placeholder='No value present' value='{{zone}}' data-index={{idx}} /><br />";
+            template = "Eastings: <input class='formVal' name='eastings' {{disabled}} type='text' placeholder='No value present' value='{{eastings}}' data-index={{idx}} /><br />" +
+            "Northings: <input class='formVal' name='northings' {{disabled}} type='text' placeholder='No value present' value='{{northings}}' data-index={{idx}} /><br />" +
+            "Zone: <input name='zone' class='formVal' {{disabled}} type='text' placeholder='No value present' value='{{zone}}' data-index={{idx}} /><br />";
           }else{
             template = "Eastings: {{eastings}}, <br />" +
             "Northings: {{northings}}, <br />" +
@@ -131,7 +146,7 @@ Handlebars.registerHelper("createFormField", function (options, editMode, contex
           // Map link for non-northings eastings for convenience
           template = "<a class='maplink pull-right' target='_blank' href='{{maplink}}'><i class='icon icon-map-marker'></i></a>";
           if (editMode){
-            template += "Latitude: <input name='lat' data-idx='{{idx}}' placeholder='No value present' {{disabled}} type='text' value='{{lat}}' /><br/>"+
+            template += "Latitude: <input name='lat' class='formVal' data-idx='{{idx}}' placeholder='No value present' {{disabled}} type='text' value='{{lat}}' /><br/>"+
             "Longitude: <input name='long' data-idx='{{idx}}' placeholder='No value present' {{disabled}} type='text' value='{{long}}' />";
           }else{
             template += "Latitude: {{lat}},<br /> Longitude: {{long}}";

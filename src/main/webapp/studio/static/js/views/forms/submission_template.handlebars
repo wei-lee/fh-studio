@@ -42,8 +42,8 @@
               <label class="control-label submissionLabel" style="font-weight:bold; font-size:14px;">{{#createFormLabel type}}{{/createFormLabel}} {{name}}:</label>
 
               <div class="controls">
-                {{#createFormField this}}{{/createFormField}}
-              </div>
+
+              </div>   {{#createFormField this true}}{{/createFormField}}
           </div>
       {{/each}}
       {{/hasLength}}
@@ -80,7 +80,10 @@
     </div>
   {{#if controls}}
       <div class="span12 submission-buttons" style="padding:8px;">
-
+        {{#if editMode}}
+          <button class="btn btn-large btn-primary" id="cancelEdit" data-subid="{{_id}}" type="button">Cancel</button>
+          <button class="btn btn-large btn-danger" id="updateSubmission" data-subid="{{_id}}" type="button">Update Submission</button>
+        {{/if}}
       </div>
   {{/if}}
 </div>

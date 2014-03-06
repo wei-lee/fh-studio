@@ -193,5 +193,26 @@ App.View.Forms = Backbone.View.extend({
         alertBox.remove();
       });
     }, 3000);
+  },
+
+  loadedTemplates : { },
+
+  loadTemplate : function (id, path,cb){
+
+    var self = this;
+    if(self.loadedTemplates[id]){
+      console.log("already have template ", id);
+      return cb(undefined,self.loadedTemplates[id]);
+    }
+    $.ajax({
+      "url":path,
+      "success":function (temp){
+
+        var t = Handlebars.compile(temp);
+        self.loadedTemplates[id] = t;
+        cb(undefined,t);
+      },
+      "dataType":"text"
+    });
   }
 });
