@@ -107,7 +107,7 @@ var Lang = {
   app_publish_mdm_config_title: 'MDM Deployment',
   app_publish_cordova_versions_config_title: 'Choose Cordova Version',
 
-  app_publish_cordova_versions_info_text: ['Please choose which version of Cordova to use.', '<br />You can use third party Cordova plugins when build the app using Cordova 3 and above. Please see docs page for more details.'],
+  app_publish_cordova_versions_info_text: ['Please choose which version of Cordova to use.', '<br />You can use third party Cordova plugins when build the app using Cordova 3 and above. Please see <a href="http://docs.feedhenry.com/v2/cordova_plugins.html" target="_blank">docs page</a> for more details.'],
 
   app_publish_iphone_upload_provisionings_title: 'Please upload the provisioning profile',
   app_publish_iphone_upload_progress_title: 'Uploading provisioning profile',
