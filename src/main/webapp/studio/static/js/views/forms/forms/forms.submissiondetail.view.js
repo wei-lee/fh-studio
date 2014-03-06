@@ -4,15 +4,10 @@ App.View = App.View || {};
 App.View.SubmissionDetail = App.View.Forms.extend({
 
   templates : {
-    "submissionDetail" : '#formSubmissionDetail',
     "submissionEditActions":'#submissionEditActions',
     "submissionActions":'#submissionActions'
   },
-
   FILE_UPLOAD_URL : "/api/v2/forms/submission/file/", //note this is used here as we need to use the jquery fileupload plugin
-
-  el : '.emptyContainer > .centered',
-
   events : {
     'click .downloadfile' : "downloadFile",
     'click #editSubmission' : 'editSubmission',
@@ -27,10 +22,9 @@ App.View.SubmissionDetail = App.View.Forms.extend({
     var self = this;
     delete self.submission;
     if(self.options.submission){
-
-
       self.submission = self.options.submission.toJSON();
     }
+    self.loadSubmissionTemplate(function (){});
     _.bindAll(this);
   },
 
@@ -41,6 +35,8 @@ App.View.SubmissionDetail = App.View.Forms.extend({
   editSubmission : function (e) {
     var subid = $(e.target).data("subid");
     var self = this;
+    self.editMode = true;
+    self.render();
     //remove disabled
     self.$el.find(':disabled').each(function (){
       var _ele = $(this);
@@ -68,7 +64,7 @@ App.View.SubmissionDetail = App.View.Forms.extend({
         });
       }
     });
-    self.enableSubmissionEditActions(subid);
+
   },
 
 
@@ -198,7 +194,7 @@ App.View.SubmissionDetail = App.View.Forms.extend({
    *
    */
 
-  loadSumissionTemplate : function (cb){
+  loadSubmissionTemplate : function (cb){
     var self = this;
 
     if(! self.submissionTemplate){
@@ -219,30 +215,36 @@ App.View.SubmissionDetail = App.View.Forms.extend({
 
   render : function (){
     var self = this;
+    if (!this.submissionTemplate){
+      this.loadSubmissionTemplate(function (){
+        self.render();
+      });
+      return this;
+    }
+
     self.$el.empty();
     var subData = {};
     if(self.options.submission){
-      self.loadSumissionTemplate(function (){
-        subData = self.options.submission.toJSON();
-        console.log("SUBMISSION ", subData);
-        subData.deviceFormTimestamp = moment(subData.deviceFormTimestamp).format('MMMM Do YYYY, h:mm:ss a');
-        self.form = self.formsCollection.findWhere({"_id": subData.formId});
-        if(!self.form){ //if no form fetch a copy down
-          self.formsCollection.fetch({"success":function (){
+      subData = self.options.submission.toJSON();
+      console.log("SUBMISSION ", subData);
+      subData.deviceFormTimestamp = moment(subData.deviceFormTimestamp).format('MMMM Do YYYY, h:mm:ss a');
+      self.form = self.formsCollection.findWhere({"_id": subData.formId});
+      if(!self.form){ //if no form fetch a copy down
+        self.formsCollection.fetch({"success":function (){
           self.form = self.formsCollection.findWhere({"_id": subData.formId});
           self.processForm(self.form, subData);
-          },"error": function (){
+        },"error": function (){
 
-          }});
-        }
-        else{
-            self.processForm(self.form, subData);
-        }
-      });
+        }});
+      }
+      else{
+          self.processForm(self.form, subData);
+      }
     }else{
       //no submission?
       console.log("no submission passed ");
     }
+    return this;
   },
 
 
@@ -254,18 +256,21 @@ App.View.SubmissionDetail = App.View.Forms.extend({
           //need to turn this into a json object.
           var renderData = {"form":{"pages":[]},"sub":subData};
           var pages = merged.get("pages");
-
           pages.forEach(function (p, idx){
             if(!p.name) p.name = "page " + (idx +1);
             renderData.form.pages.push(p.toJSON());
-
           });
           renderData.missing = form.missing;
           renderData._id = subData._id;
           renderData.controls = true;
+          renderData.editMode = self.editMode;
           var html = self.submissionTemplate(renderData);
           self.$el.append(html);
-          self.enableSubmissionActions(subData._id);
+          if (self.editMode){
+            self.enableSubmissionEditActions(subData._id);
+          }else{
+            self.enableSubmissionActions(subData._id);
+          }
         });
       } ,
       "error": function (e){
@@ -277,6 +282,8 @@ App.View.SubmissionDetail = App.View.Forms.extend({
 
   cancelEdit : function (e){
     var self = this;
+    self.editMode = false;
+    return self.render();
     self.$el.find(':enabled').each(function (){
       var _this = $(this);
       _this.attr("disabled",true);
@@ -285,7 +292,6 @@ App.View.SubmissionDetail = App.View.Forms.extend({
       }
     });
     var subId = $(e.target).data('subid');
-    self.enableSubmissionActions(subId);
   },
 
   enableSubmissionActions : function (subId){

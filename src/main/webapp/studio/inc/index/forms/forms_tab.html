@@ -728,91 +728,6 @@
     </select>
 </script>
 
-<script type="text/x-handlebars-template" id="formSubmissionDetail">
-    <div class="span7" id="submissionDetails" style="overflow:scroll">
-        <h5>Form Submission</h5>
-
-        <form class="form-horizontal">
-            {{#each formFields}}
-            <div class="control-group">
-                <label class="control-label">{{fieldId.name}}:</label>
-
-                <div class="controls">
-                    {{#createFormField this}}{{/createFormField}}
-                </div>
-            </div>
-            {{/each}}
-        </form>
-    </div>
-    <div class="span5" id="submissionMeta">
-        <h5>Submission Information</h5>
-
-        <form class="form-horizontal">
-            <div class="control-group">
-                <label class="control-label" for="inputDateTime">Date/Time Recieved:</label>
-
-                <div class="controls">
-                    <input disabled type="text" value="{{deviceFormTimestamp}}" id="inputDateTime"
-                           placeholder="Date/time">
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="inputUser">Recieved From User:</label>
-
-                <div class="controls">
-                    <input disabled type="text" value="{{userId}}" id="inputUser" placeholder="user">
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="inputApp">Recieved From App:</label>
-
-                <div class="controls">
-                    <input disabled type="text" value="{{appCloudName}}" id="inputApp" placeholder="app">
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="inputDevice">Recieved From Device:</label>
-
-                <div class="controls">
-                    <input disabled type="text" value="{{deviceId}}" id="inputDevice" placeholder="device">
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="inputIp">Recieved From Ip:</label>
-
-                <div class="controls">
-                    <input disabled type="text" value="{{deviceIPAddress}}" id="inputIp" placeholder="ipaddress">
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="inputEditedTime">Date time edited:</label>
-
-                <div class="controls">
-                    <input disabled type="text" id="inputEditedTime" placeholder="date time edited">
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="inputEditedBy">Edited By:</label>
-
-                <div class="controls">
-                    <input disabled type="text" id="inputEditedBy" placeholder="edited by">
-                </div>
-            </div>
-        </form>
-        <div class="span12 submission-buttons">
-            <button class="btn btn-large btn-primary" id="downloadSubmissionPdf" type="button">Download PDF</button>
-            <button class="btn btn-large btn-primary" id="printSubmission" type="button">Print Submission</button>
-            {{#checkRole "formsadmin,formseditor"}}
-            <button class="hidden btn btn-large btn-warning" id="editSubmission" type="button">Edit Submission</button>
-            {{/checkRole}}
-            {{#checkRole "formsadmin,formseditor"}}
-            <button class="btn btn-large btn-danger" id="deleteSubmission" data-subid="{{_id}}" type="button">Delete Submission</button>
-            {{/checkRole}}
-        </div>
-        <div class="span12"></div>
-    </div>
-</script>
-
 
 <!-- end form submission templates -->
 
@@ -1072,6 +987,7 @@
             <label class="control-label submissionLabel" style="font-weight:bold; font-size:14px;">{{#createFormLabel type}}{{/createFormLabel}} {{name}}:</label>
 
             <div class="controls">
+
                 {{#createFormField this}}{{/createFormField}}
             </div>
         </div>

@@ -1,5 +1,5 @@
-<div class="row-fluid submissionDetail" style="background-color:#F0F0EE">
-    <div class="span8">
+<div class="row-fluid submissionDetail">
+    <div class="span6">
     <form class="form-horizontal" id="submissionForm">
       {{#form}}
         {{#each pages}}
@@ -14,7 +14,11 @@
                   <label class="control-label submissionLabel" style="font-weight:bold; font-size:14px;">{{#createFormLabel type}}{{/createFormLabel}} {{name}}:</label>
 
                   <div class="controls">
-                    {{#createFormField this}}{{/createFormField}}
+                  {{#if ../../../editMode}}
+                    {{#createFormField this true}}{{/createFormField}}
+                  {{else}}
+                    {{#createFormField this false}}{{/createFormField}}
+                  {{/if}}
                   </div>
               </div>
 
@@ -45,10 +49,33 @@
       {{/hasLength}}
     </form>
     </div>
-    <div class="span4">
+    <div class="span6">
       {{#if sub}}
-        <h2>Meta Data</h2>
-        <span>{{sub.deviceFormTimestamp}}</span>
+        {{#sub}}
+          <h5>Submission Information</h5>
+          <dl class="dl-horizontal">
+            <dt>Date/Time Received:</dt>
+            <dd>{{deviceFormTimestamp}}</dd>
+
+            <dt>Received From User:</dt>
+            <dd>{{userId}}</dd>
+
+            <dt>Received From App:</dt>
+            <dd>{{appCloudName}}</dd>
+
+            <dt>Received From Device:</dt>
+            <dd>{{deviceId}}</dd>
+
+            <dt>Received From Ip:</dt>
+            <dd>{{deviceIPAddress}}</dd>
+
+            <dt>Edited:</dt>
+            <dd></dd>
+
+            <dt>Edited By:</dt>
+            <dd></dd>
+            </dl>
+          {{/sub}}
       {{/if}}
     </div>
   {{#if controls}}
