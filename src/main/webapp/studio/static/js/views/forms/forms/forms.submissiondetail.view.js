@@ -146,6 +146,8 @@ App.View.SubmissionDetail = App.View.Forms.extend({
           ,"error": function (err){
             console.error("error fetching forms ",err);
           }});
+        }else{
+          return callback();
         }
       }],function doRender (){
         self.processForm(self.form, subData, function (err, viewData){
