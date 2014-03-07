@@ -16,7 +16,7 @@ App.View.SubmissionEdit = App.View.Forms.extend({
     'click .downloadfile' : "downloadFile",
     'click #editSubmission' : 'editSubmission',
     'click #updateSubmission' : 'updateSubmission',
-    'blur .formVal' : 'updateModel'
+    'change .formVal' : 'updateModel'
   },
 
   templates : {
@@ -43,7 +43,7 @@ App.View.SubmissionEdit = App.View.Forms.extend({
       var sub = self.filesToSubmit[files[i]].submit();
       sub.success(function (result, textStatus, jqXHR) {
         //remove file from filesToSubmit
-        self.options.submission.fetch({
+        self.submission.fetch({
           "success":function (sub){
             console.log("updated submission fetched ",sub);
             self.render();
@@ -57,7 +57,7 @@ App.View.SubmissionEdit = App.View.Forms.extend({
         //show error message
       });
     }
-    self.submission.complete()
+    self.submission.complete();
     },"error": function (){
 
     }});
@@ -108,6 +108,43 @@ App.View.SubmissionEdit = App.View.Forms.extend({
 
   updateModel : function (e){
     console.log("update model called" , $(e.target).val());
+    var self = this;
+    var _this = $(e.target);
+    var index = _this.data('index') || 0;
+    var id = _this.data('_id');
+    var type = _this.attr("type");
+    var field = self.submission.findFormField(id);
+    var val = _this.val();
+    var fieldValues = [];
+    if('radio' === type){
+      console.log("radio type getting val");
+      val = $('input[name="'+id+'"]:checked').val();
+    }
+
+
+    console.log("found matching form field ", field, "updating value at index ", index);
+    if(field && field.fieldValues){
+      if('checkbox' == type){
+        field.fieldValues[index].selections[index] = _this.val();
+      }else{
+        field.fieldValues[index] = _this.val();
+      }
+    }else{
+      //not an existing field on the submission
+      field = self.getFormField(id);
+      console.log("found non submission field ", field, "updating with val ",_this.val() ,_this);
+      var newField = {
+        "fieldId":field._id,
+        "fieldValues":[val]
+      };
+      if('checkbox' === type){
+        newField.fieldValues= {"selections":[val]};
+      }
+      self.submission.get('formFields').push(newField);
+
+      console.log("updated submission ", self.submission);
+
+    }
   },
 
 

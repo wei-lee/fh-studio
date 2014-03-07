@@ -7,8 +7,6 @@ Handlebars.registerHelper("hasLength", function (options, context){
 
 Handlebars.registerHelper("createFormField", function (options, editMode, context){
   //"location", "locationMap", "sectionBreak", "matrix"
-  console.log("options createFormField ", options);
-
   var i= 0,
   template;
 
@@ -17,12 +15,42 @@ Handlebars.registerHelper("createFormField", function (options, editMode, contex
   }
 
   // Apply context data to each template so we can effectively render it
+  var definition = options && options.fieldOptions && options.fieldOptions.definition || false; // convenience property
   options.data = [];
-  if(options.values.length < 1)options.data.push({"_id":options._id});
+
+  if(options.values.length < 1){
+    options.data.push({"_id":options._id});
+    var dudVal = ('checkbox' === options.type) ? {} : [];
+    buildMulti(options.data[0],definition,[],0);
+  }
+
+  function buildMulti(data, definition, val, index){
+    data.options = []; // Tempalte iterates over these to draw the radios or checkboxes or dropdown options
+    for (var j=0; definition.options && j<definition.options.length; j++){
+      var opt = definition.options[j],
+        optData = {
+          label : opt.label,
+          _id : options._id,
+          idx : index
+        };
+      // Some use the checked prop, some use selected..
+      if (options.type === 'checkboxes'){
+        val.selections = val.selections || [];
+        // NB Checkboxes has a "selections" object where the array lives, unlike radio and dropdown because who needs to be consistant
+        optData.checked = val.selections.indexOf(opt.label)>-1 ? 'checked' : '';
+      }else{
+        optData.selected = val.indexOf(opt.label)>-1 ? 'selected' : '';
+        optData.checked = val.indexOf(opt.label)>-1 ? 'checked' : '';
+      }
+      data.options.push(optData);
+    }
+  }
+
+
+
   // Iterate over field values (in case of multi-field form) - often this is just a single element in the array.
   for (i=0; i<options.values.length; i++){
     var val = options.values[i],
-    definition = options && options.fieldOptions && options.fieldOptions.definition || false, // convenience property
     data = {};
     data.val = val; // Could be a number of things - just a string, array of strings, object - all depends on options.type
     data._id = options._id;
@@ -35,23 +63,8 @@ Handlebars.registerHelper("createFormField", function (options, editMode, contex
     // Multiple input fields, within a type which can already have many arrays of fields (hasMultiple)
     if (options.type === 'radio' || options.type === 'checkboxes' || options.type === "dropdown"){
       data.options = []; // Tempalte iterates over these to draw the radios or checkboxes or dropdown options
-      for (var j=0; definition.options && j<definition.options.length; j++){
-        var opt = definition.options[j],
-        optData = {
-          label : opt.label,
-          _id : options._id,
-          idx : j
-        };
-        // Some use the checked prop, some use selected..
-        if (options.type === 'checkboxes'){
-          // NB Checkboxes has a "selections" object where the array lives, unlike radio and dropdown because who needs to be consistant
-          optData.checked = val.selections.indexOf(opt.label)>-1 ? 'checked' : '';
-        }else{
-          optData.selected = val.indexOf(opt.label)>-1 ? 'selected' : '';
-          optData.checked = val.indexOf(opt.label)>-1 ? 'checked' : '';
-        }
-        data.options.push(optData);
-      }
+      buildMulti(data,definition,val,i);
+
     }
 
     if (options.type === 'location' || options.type === 'locationMap'){
@@ -85,9 +98,6 @@ Handlebars.registerHelper("createFormField", function (options, editMode, contex
   template = Handlebars.compile(_templateForField(options));
   options.hide = (editMode) ? "formVal" : "hide formVal";
   template = template(options);
-  if(options.type == "file"){
-    console.log("file type template" , options , template);
-  }
   return template;
 
 
@@ -99,13 +109,13 @@ Handlebars.registerHelper("createFormField", function (options, editMode, contex
       case "emailAddress":
       case "dateTime":
       case "url":
-        template = (editMode) ? "<input data-index='{{idx}}' {{disabled}} type='text' name='{{_id}}' placeholder='No value present' value='{{val}}' class='formVal' />" : "{{val}}";
+        template = (editMode) ? "<input data-index='{{idx}}' {{disabled}} type='text' name='{{_id}}' placeholder='No value present' value='{{val}}' class='formVal' data-_id='{{_id}}'  />" : "{{val}}";
         break;
       case "textarea":
-        template = (editMode) ? "<textarea data-index='{{idx}}' name='{{_id}}' placeholder='No value present' {{disabled}} class='formVal' >{{val}}</textarea>" : "<p>{{val}}</p>";
+        template = (editMode) ? "<textarea data-index='{{idx}}' name='{{_id}}' placeholder='No value present' {{disabled}} class='formVal' data-_id='{{_id}}'  >{{val}}</textarea>" : "<p>{{val}}</p>";
         break;
       case "dropdown":
-        template = "<select class='formVal' {{disabled}} name='{{_id}}' >" +
+        template = "<select class='formVal' data-_id='{{_id}}'  {{disabled}} name='{{_id}}' >" +
           "{{#each options}}" +
             "<option value='{{label}}' data-index='{{idx}}' {{selected}}>{{label}}</option>" +
           "{{/each}}"+
@@ -116,27 +126,26 @@ Handlebars.registerHelper("createFormField", function (options, editMode, contex
         template = "<img style='width: 40%' src='{{url}}'><input class='{{hide}}' data-index='{{idx}}' data-filehash='{{hash}}' data-groupid='{{groupid}}' {{disabled}} type='file' name='{{_id}}' />";
         break;
       case "file":
-        console.log("template for file returned");
         template = "<a class='btn-small downloadfile icon-download' href='{{url}}' class='btn-small downloadfile icon-download'>{{url}}</a>" +
         "<input class='{{hide}}' data-filehash='{{hash}}' data-index='{{idx}}' data-exists='{{exists}}' data-groupid='{{groupid}}' {{disabled}} type='file' name='{{_id}}'>";
         break;
       case "checkboxes":
         template = "{{#each options}}" +
-            "<input name='{{label}}' {{disabled}} class='formVal' type='checkbox' data-index='{{idx}}' {{checked}} value='{{val}}'> {{label}}<br />" +
+            "<input name='{{label}}' {{disabled}} class='formVal' data-_id='{{_id}}'  type='checkbox' data-index='{{idx}}' {{checked}} value='{{label}}'> {{label}}<br />" +
           "{{/each}}";
         break;
       case "radio":
         template = "{{#each options}}" +
-          "<input data-index='{{idx}}' class='formVal' name='{{label}}' {{disabled}} type='radio' {{checked}} value={{val}} > {{label}}<br />" +
+          "<input data-index='{{idx}}' class='formVal' data-_id='{{_id}}'  data-_id='{{_id}}' name='radio{{idx}}' {{disabled}} type='radio' {{checked}} value={{label}} > {{label}}<br />" +
         "{{/each}}";
         break;
       case "location":
       case 'locationMap':
         if(options.fieldOptions.definition && "northEast" === options.fieldOptions.definition.locationUnit){
           if (editMode){
-            template = "Eastings: <input class='formVal' name='eastings' {{disabled}} type='text' placeholder='No value present' value='{{eastings}}' data-index={{idx}} /><br />" +
-            "Northings: <input class='formVal' name='northings' {{disabled}} type='text' placeholder='No value present' value='{{northings}}' data-index={{idx}} /><br />" +
-            "Zone: <input name='zone' class='formVal' {{disabled}} type='text' placeholder='No value present' value='{{zone}}' data-index={{idx}} /><br />";
+            template = "Eastings: <input class='formVal' data-_id='{{_id}}'  name='eastings' {{disabled}} type='text' placeholder='No value present' value='{{eastings}}' data-index={{idx}} /><br />" +
+            "Northings: <input class='formVal' data-_id='{{_id}}'  name='northings' {{disabled}} type='text' placeholder='No value present' value='{{northings}}' data-index={{idx}} /><br />" +
+            "Zone: <input name='zone' class='formVal' data-_id='{{_id}}'  {{disabled}} type='text' placeholder='No value present' value='{{zone}}' data-index={{idx}} /><br />";
           }else{
             template = "<label>Eastings:</label> {{eastings}}, <br />" +
             "<label>Northings:</label> {{northings}}, <br />" +
@@ -146,7 +155,7 @@ Handlebars.registerHelper("createFormField", function (options, editMode, contex
           // Map link for non-northings eastings for convenience
           template = "<a class='maplink pull-right' target='_blank' href='{{maplink}}'><i class='icon icon-map-marker'></i></a>";
           if (editMode){
-            template += "<label>Latitude:</label> <input name='lat' class='formVal' data-idx='{{idx}}' placeholder='No value present' {{disabled}} type='text' value='{{lat}}' /><br/>"+
+            template += "<label>Latitude:</label> <input name='lat' class='formVal' data-_id='{{_id}}'  data-idx='{{idx}}' placeholder='No value present' {{disabled}} type='text' value='{{lat}}' /><br/>"+
             "<label>Longitude:</label> <input name='long' data-idx='{{idx}}' placeholder='No value present' {{disabled}} type='text' value='{{long}}' />";
           }else{
             template += "<label>Latitude:</label> {{lat}},<br /> <label>Longitude:</label> {{long}}";
