@@ -8,9 +8,10 @@ App.View.SubmissionEdit = App.View.Forms.extend({
     _.bindAll(this);
   },
 
-  el : '.submissionDetail',
+
 
   FILE_UPLOAD_URL : "/api/v2/forms/submission/file/", //note this is used here as we need to use the jquery fileupload plugin
+  FILE_PLACE_HOLDER : 'filePlaceHolder',
   events : {
     'click .downloadfile' : "downloadFile",
     'click #editSubmission' : 'editSubmission',
@@ -21,6 +22,46 @@ App.View.SubmissionEdit = App.View.Forms.extend({
   templates : {
     "submissionEditActions":'#submissionEditActions',
     "submissionActions":'#submissionActions'
+  },
+
+  updateSubmission : function (){
+    //save model upload files
+    var self = this;
+    console.log("saving ", self.submission.toJSON());
+    var formFields = self.submission.get('formFields');
+    formFields = async.map(formFields, function (f, cb){
+      if(f.fieldId && f.fieldId._id) f.fieldId = f.fieldId._id;
+      return f;
+    });
+
+    console.log("submission formfields ", formFields);
+    self.submission.save({"success": function (){
+         //upload files
+   var files = Object.keys(self.filesToSubmit);
+      //needs to be async series
+    for(var i=0; i < files.length; i++){
+      var sub = self.filesToSubmit[files[i]].submit();
+      sub.success(function (result, textStatus, jqXHR) {
+        //remove file from filesToSubmit
+        self.options.submission.fetch({
+          "success":function (sub){
+            console.log("updated submission fetched ",sub);
+            self.render();
+          } ,
+          "error": function (err){
+            console.log("failed to fetch sub ",err);
+            //show error message
+          }});
+      })
+      .error(function (jqXHR, textStatus, errorThrown) {
+        //show error message
+      });
+    }
+    self.submission.complete()
+    },"error": function (){
+
+    }});
+
   },
 
   getFormField : function (id){
@@ -57,16 +98,10 @@ App.View.SubmissionEdit = App.View.Forms.extend({
         self.options.preparedSubmission.editMode = true;
         self.options.preparedSubmission.controls = true;
         var html = self.submissionTemplate(self.options.preparedSubmission);
-        self.$el.replaceWith(html);
-        self.enableSubmissionEditActions(self.options.preparedSubmission._id);
+        self.$el.empty().append(html);
         self.enableFileUpload();
       });
     return this;
-  },
-
-  enableSubmissionEditActions : function (subId){
-    var self = this;
-    self.$el.find('.submission-buttons').empty().append(self.templates.$submissionEditActions({"_id":subId}));
   },
 
   filesToSubmit : {},
@@ -80,17 +115,19 @@ App.View.SubmissionEdit = App.View.Forms.extend({
     var self = this;
     self.$el.find('input[type="file"]').each(function (){
       var ele  = $(this);
+      console.log("element ", ele);
       var groupId = ele.data("groupid");
       var url;
       if(groupId && "" !== groupId){
-        url = "/api/v2/forms/submission/"+self.submission._id+"/"+ele.attr('name')+"/"+groupId+"/updateFile";
+        url = "/api/v2/forms/submission/"+self.submission.get('_id')+"/"+ele.attr('name')+"/"+groupId+"/updateFile";
       }else{
         //create a file id update the submission field with this id this will be sent to the server first then the file submission
-        ele = $(ele);
+        var createdHash = self.FILE_PLACE_HOLDER + new Date().getTime() + $fw.getUserProps().guid.replace(/[^a-z0-9]/ig,'');
+        ele.data('filehash',createdHash);
         var index = ele.data('index');
         var id = ele.attr('name');
 
-        url = "/api/v2/forms/submission/"+self.submission._id+"/"+id+"/:fileId/submitFile";
+        url = "/api/v2/forms/submission/"+self.submission.get('_id')+"/"+id+"/"+createdHash+"/submitFile";
 
 
         console.log("SUBMISSION ", self.submission);
@@ -99,6 +136,8 @@ App.View.SubmissionEdit = App.View.Forms.extend({
           field = self.getFormField(id);
         }
 
+        field["fieldId"] =id;
+        field['hashName']= createdHash;
         self.submission.get('formFields').push(field);
 
         console.log("found matching form field ", field, "updating value at index ", index, self.submission);
@@ -119,7 +158,15 @@ App.View.SubmissionEdit = App.View.Forms.extend({
         dropZone: ele,
         add: function(e, data) {
           ele.hide();
-          console.log("data file upload ", data );
+          console.log("data file upload ", ele.data('filehash'),ele.attr('name'));
+          var field = self.getFormField(ele.attr('name'));
+          console.log("updating field with vals", field, data);
+          field.fieldValues = [{}];
+          field.fieldValues[0].fileSize = data.files[0].size;
+          field.fieldValues[0].fileType = data.files[0].type;
+          field.fieldValues[0].fileName = data.files[0].name;
+          field.fieldValues[0].hashName = ele.data("filehash");
+          field.fieldValues[0].fieldId = field.fieldId;
           //if this element has a file hash replace the file data at the index in the submission else add the file data
           //to the field def values at index 0
           self.filesToSubmit[data.paramName] = data;

@@ -23,7 +23,23 @@ App.Model.FormSubmission = App.Model.FormBase.extend({
       }
     }
     return undefined;
+  },
+  "complete": function (){
+    $.ajax({
+      type: 'POST',
+      url: "/api/v2/forms/submission/"+this.id+"/complete",
+      data: JSON.stringify({}),
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      success: function(res){
+
+      },
+      "error":function (){
+
+      }
+    });
   }
+
 });
 
 

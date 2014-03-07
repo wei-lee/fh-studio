@@ -18,7 +18,7 @@ Handlebars.registerHelper("createFormField", function (options, editMode, contex
 
   // Apply context data to each template so we can effectively render it
   options.data = [];
-  if(options.values.length < 1)options.data.push({});
+  if(options.values.length < 1)options.data.push({"_id":options._id});
   // Iterate over field values (in case of multi-field form) - often this is just a single element in the array.
   for (i=0; i<options.values.length; i++){
     var val = options.values[i],

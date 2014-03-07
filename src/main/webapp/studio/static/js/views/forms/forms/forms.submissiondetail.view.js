@@ -11,8 +11,8 @@ App.View.SubmissionDetail = App.View.Forms.extend({
   events : {
     'click .downloadfile' : "downloadFile",
     'click #editSubmission' : 'editSubmission',
-    'click #cancelEdit' : 'cancelEdit',
-    'click #updateSubmission' : 'updateSubmission'
+    'click #cancelEdit' : 'cancelEdit'
+
 
   },
 
@@ -34,7 +34,7 @@ App.View.SubmissionDetail = App.View.Forms.extend({
   editSubmission : function (e) {
     //make new edit submission view and render
     var self = this;
-    var editView = new App.View.SubmissionEdit({"preparedSubmission":self.viewData, "model":self.options.submission, "form":self.form});
+    var editView = new App.View.SubmissionEdit({"preparedSubmission":self.viewData, "model":self.options.submission, "form":self.form, "el":self.$el});
     editView.render();
 
 //    var subid = $(e.target).data("subid");
@@ -79,11 +79,7 @@ App.View.SubmissionDetail = App.View.Forms.extend({
 
     console.log("update submission ", self.options.submission.toJSON());
 
-    self.options.submission.save({"success": function (){
 
-    },"error": function (){
-
-    }});
 
 //    var files = Object.keys(self.filesToSubmit);
 //    for(var i=0; i < files.length; i++){
@@ -121,8 +117,10 @@ App.View.SubmissionDetail = App.View.Forms.extend({
    */
 
  render : function (){
+
     var self = this;
     self.$el.empty();
+
     var subData = {};
     if(self.options.submission){
       subData = self.options.submission.toJSON();
@@ -237,7 +235,9 @@ App.View.SubmissionDetail = App.View.Forms.extend({
               break;
             case 'file':
               field.values.forEach(function(val) {
-                val.downloadUrl = self.FILE_UPLOAD_URL + val.groupId + "?rand="+Math.random();
+                if(null != val){
+                  val.downloadUrl = self.FILE_UPLOAD_URL + val.groupId + "?rand="+Math.random();
+                }
               });
               return mcb1();
             default:
