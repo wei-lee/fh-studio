@@ -512,3 +512,21 @@ Improved formbuilder.js styling - TODO: Should this be applied to CMS Also?
     display: inline-block;
     font-style: italic;
 }
+
+.submissionDetail input[type=file] {
+    display: none;
+}
+
+.submissionDetail.editMode input[type=file] {
+    display: block;
+}
+.submissionDetail .icon-repeat {
+    margin-top: 3px;
+}
+.submissionDetail ol {
+    margin-left: 30px;
+}
+
+.submissionDetail ol, .submissionDetail ol li {
+    list-style: decimal;
+}
