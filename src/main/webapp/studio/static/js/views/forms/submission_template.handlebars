@@ -1,33 +1,30 @@
 <div class="row-fluid submissionDetail">
     <div class="span6">
-    <form class="form-horizontal" id="submissionForm">
+    <form class="" id="submissionForm">
       {{#form}}
         {{#each pages}}
-            <div class="row-fluid" style="text-align:left;border-bottom:1px dotted #4E4D4B; margin-bottom:4px;">
-                <span style="color:rgb(61, 60, 60); font-size:16px; font-weight:bold; padding:4px;" >Page:{{name}}</span>
-            </div>
+            <h5 class="pageheading">
+                <icon class="icon-file"></i> {{name}}
+            </h5>
 
+          <table class="table table-striped">
+            {{#each fields}}
+              <tr>
+                <td class="fieldlabel">{{#createFormLabel type}}{{/createFormLabel}} {{name}}:</td>
 
-          {{#each fields}}
-
-              <div class="control-group">
-                  <label class="control-label submissionLabel" style="font-weight:bold; font-size:14px;">{{#createFormLabel type}}{{/createFormLabel}} {{name}}:</label>
-
-                  <div class="controls">
+                <td class="formfield">
                   {{#if ../../../editMode}}
                     {{#createFormField this true}}{{/createFormField}}
                   {{else}}
                     {{#createFormField this false}}{{/createFormField}}
                   {{/if}}
-                  </div>
-              </div>
-
-
-            {{#is 'sectionBreak' type}}
-                <div class="page-break"></div>
-            {{/is}}
-
-          {{/each}}
+                </td>
+              </tr>
+              {{#is 'sectionBreak' type}}
+                  <div class="page-break"></div>
+              {{/is}}
+            {{/each}}
+          </table>
         {{/each}}
 
 
@@ -52,28 +49,26 @@
     <div class="span6">
       {{#if sub}}
         {{#sub}}
-          <h5>Submission Information</h5>
+          <h5 class="submissionheading"><icon class="icon-info-sign"></i> Submission Information</h5>
           <dl class="dl-horizontal">
             <dt>Date/Time Received:</dt>
-            <dd>{{deviceFormTimestamp}}</dd>
+            <dd>{{deviceFormTimestamp}}&nbsp;</dd>
 
             <dt>Received From User:</dt>
-            <dd>{{userId}}</dd>
+            <dd>{{userId}}&nbsp;</dd>
 
             <dt>Received From App:</dt>
-            <dd>{{appCloudName}}</dd>
+            <dd>{{appCloudName}}&nbsp;</dd>
 
             <dt>Received From Device:</dt>
-            <dd>{{deviceId}}</dd>
+            <dd>{{deviceId}}&nbsp;</dd>
 
             <dt>Received From Ip:</dt>
-            <dd>{{deviceIPAddress}}</dd>
+            <dd>{{deviceIPAddress}}&nbsp;</dd>
 
             <dt>Edited:</dt>
-            <dd></dd>
+            <dd>{{updatedTimestamp}}&nbsp;</dd>
 
-            <dt>Edited By:</dt>
-            <dd></dd>
             </dl>
           {{/sub}}
       {{/if}}
