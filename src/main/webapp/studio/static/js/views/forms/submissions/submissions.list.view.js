@@ -299,6 +299,7 @@ App.View.SubmissionList = App.View.FormListBase.extend({
   },
   onRowSelected : function (e){
     var self = this;
+    self.$submissionContainer.hide();
     this.selectMessage.options.message = "Loading...";
     this.selectMessage.render();
     this.selectMessage.$el.show();
@@ -311,7 +312,7 @@ App.View.SubmissionList = App.View.FormListBase.extend({
 
     model.fetch({"success": function (res){
       self.submissionDetail = new App.View.SubmissionDetail({"submission":res, form:self.form, formsCol:self.formsCol});
-      self.$submissionContainer.html(self.submissionDetail.render().$el);
+      self.$submissionContainer.show().html(self.submissionDetail.render().$el);
       self.selectMessage.$el.hide();
 
     },"error":function (res){

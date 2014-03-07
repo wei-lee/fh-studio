@@ -65,7 +65,10 @@ App.Model.FormBase = Backbone.RelationalModel.extend({
       cache: true,
       success: function(res){
         if (res) {
-          self.trigger('reset');
+          if (!options.silent){
+            self.trigger('reset');
+          }
+
           if ($.isFunction(options.success)) {
             options.success(res, options);
           }

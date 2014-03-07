@@ -26,8 +26,14 @@ App.View.SubmissionDetail = App.View.Forms.extend({
   editSubmission : function (e) {
     //make new edit submission view and render
     var self = this;
-    var editView = new App.View.SubmissionEdit({"preparedSubmission":self.viewData, "model":self.options.submission, "form":self.form, "el":self.$el});
-    editView.render();
+    self.editView = new App.View.SubmissionEdit({"preparedSubmission":self.viewData, "model":self.options.submission, "form":self.form, "el":self.$el});
+    self.editView.render();
+    //TODO: this would be better implemented with submissiondetail and submissionedit subclasses of a parent view with shared logic.
+    //TODO: SubmissionEdit should be bound to a view by this.append(editView.render().$el), rather than passing this.$el and emptying it
+    self.editView.on('saved', function(){
+      self.editMode = false;
+      self.render();
+    });
 
 
   },
@@ -131,35 +137,35 @@ App.View.SubmissionDetail = App.View.Forms.extend({
         var fields = page.get("fields");
         async.mapSeries(fields, function(field, mcb1) {
           var subFieldMatch = _(submission.formFields).find(function(subField) {
-          var matched = subField.fieldId._id.toString() === field._id.toString(); // need toString() as ids are objects
-          if(matched){
-            subField.matched = true;
+            var matched = subField.fieldId._id.toString() === field._id.toString(); // need toString() as ids are objects
+            if(matched){
+              subField.matched = true;
+            }
+            return matched;
+          });
+          if(subFieldMatch){
+            field.values =  (subFieldMatch.fieldValues || []);
           }
-          return matched;
-        });
-        if(subFieldMatch){
-          field.values =  (subFieldMatch.fieldValues || []);
-        }
-        else{
-          field.values= [];
-        }
-        switch(field.type) {
-          case 'photo':
-            async.map(field.values, function(val, mcb2) {
-              val.url = self.FILE_UPLOAD_URL + val.groupId+"?rand=" + Math.random();
-              mcb2();
-            }, mcb1);
-              break;
-            case 'file':
-              field.values.forEach(function(val) {
-                if(null != val){
-                  val.downloadUrl = self.FILE_UPLOAD_URL + val.groupId + "?rand="+Math.random();
-                }
-              });
-              return mcb1();
-            default:
-              return mcb1();
+          else{
+            field.values= [];
           }
+          switch(field.type) {
+            case 'photo':
+              async.map(field.values, function(val, mcb2) {
+                val.url = self.FILE_UPLOAD_URL + val.groupId+"?rand=" + Math.random();
+                mcb2();
+              }, mcb1);
+                break;
+              case 'file':
+                field.values.forEach(function(val) {
+                  if(null !== val){
+                    val.downloadUrl = self.FILE_UPLOAD_URL + val.groupId + "?rand="+Math.random();
+                  }
+                });
+                return mcb1();
+              default:
+                return mcb1();
+            }
         }, mcb0);
       }, function(err, results) {
         return callback(undefined,form);

@@ -31,25 +31,49 @@ App.View.SubmissionEdit = App.View.Forms.extend({
       return f;
     });
 
-    self.submission.save({"success": function (){
-       //upload files
-      var files = Object.keys(self.filesToSubmit);
-      //needs to be async series
-      async.each(files, function (f,cb){
-        var sub = self.filesToSubmit[f].submit();
-        sub.success(function (result, textStatus, jqXHR) {
-          //remove file from filesToSubmit
-          cb();
-        }).error(function (jqXHR, textStatus, errorThrown) {
-          //show error message
-          cb(errorThrown);
+    self.submission.save({
+      silent: true,
+      "success": function (){
+         //upload files
+        var files = Object.keys(self.filesToSubmit);
+        //needs to be async series
+        async.each(files, function (f,cb){
+          var sub = self.filesToSubmit[f].submit();
+          sub.success(function (result, textStatus, jqXHR) {
+            //remove file from filesToSubmit
+            cb();
+          }).error(function (jqXHR, textStatus, errorThrown) {
+            cb(errorThrown);
+          });
+        },function done(err){
+          if (err){
+            console.log(err);
+            return self.message('Error uploading files', 'error');
+          }
+
+          self.submission.complete(function(err, res){
+            if (err){
+              console.log(err);
+              return self.message('Error completing submission', 'error');
+            }
+            // We somehow change the schema of the submission - something happens to missing fields on save which causes them to be un-renderable. Just re-load for now..
+            //TODO: This this...
+            self.submission.fetch({
+              success: function(){
+                self.trigger('saved');
+              },
+              error : function(){
+                self.message('Error loading newly saved submission');
+              }
+            });
+
+            return self.message('Submission updated successfully');
+          });
         });
-      },function done(err){
-        self.submission.complete();
-      });
-    },"error": function (){
-      // TODO error handling?
-    }});
+      },"error": function (){
+        return self.message('Error saving submission', 'error');
+      }
+    });
     return false;
   },
 
