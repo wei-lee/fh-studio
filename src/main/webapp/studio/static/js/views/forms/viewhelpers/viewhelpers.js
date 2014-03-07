@@ -69,10 +69,10 @@ Handlebars.registerHelper("createFormField", function (options, editMode, contex
 
     if (options.type === 'location' || options.type === 'locationMap'){
       if (definition && definition.locationUnit==='latlong'){
-        val = val || {lat : 'No value', lon : 'No value'};
+        data.maplink = (!val) ? 'javascript:false' : "http://maps.google.com/maps?z=12&t=m&q=loc:" + val.lat + "+" + val.long;
+        val = val || {lat : 'No value', long : 'No value'};
         data.lat = val.lat;
         data.long = val.long;
-        data.maplink = "http://maps.google.com/maps?z=12&t=m&q=loc:" + val.lat + "+" + val.long;
       }else{
         val = val || {eastings : 'No value', northings: 'No value', zone : 'No value'};
         data.zone = val.zone;
