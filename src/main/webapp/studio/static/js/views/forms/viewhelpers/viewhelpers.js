@@ -69,10 +69,12 @@ Handlebars.registerHelper("createFormField", function (options, editMode, contex
 
     if (options.type === 'location' || options.type === 'locationMap'){
       if (definition && definition.locationUnit==='latlong'){
+        val = val || {lat : 'No value', lon : 'No value'};
         data.lat = val.lat;
         data.long = val.long;
         data.maplink = "http://maps.google.com/maps?z=12&t=m&q=loc:" + val.lat + "+" + val.long;
       }else{
+        val = val || {eastings : 'No value', northings: 'No value', zone : 'No value'};
         data.zone = val.zone;
         data.eastings = val.eastings;
         data.northings = val.northings;
@@ -166,11 +168,21 @@ Handlebars.registerHelper("createFormField", function (options, editMode, contex
       default:
         break;
     }
-    template = "{{#each data}}" +
-    "<div class='row-fluid'>" +
-    template +
-    "</div>" +
-    "{{/each}}";
+    if (options.repeating && options.repeating === true){
+      template = "<i class='pull-left icon icon-repeat'></i>" +
+      "<ol>" +
+      "{{#each data}}" +
+      "<li>" +
+      template +
+      "</li>" +
+      "{{/each}}" +
+      "</ol>";
+    }else{
+      template = "{{#each data}}" +
+      template +
+      "{{/each}}";
+    }
+
     return template;
   }
 

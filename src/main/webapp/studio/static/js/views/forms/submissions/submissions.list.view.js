@@ -306,7 +306,7 @@ App.View.SubmissionList = App.View.FormListBase.extend({
     var model = this.getDataForRow(e);
 
     if (!model){
-      this.message("Error loading form submission", "error");
+      return this.message("Error loading form submission", "error");
     }
 
     model.fetch({"success": function (res){
