@@ -12,8 +12,6 @@ App.View.SubmissionDetail = App.View.Forms.extend({
     'click .downloadfile' : "downloadFile",
     'click #editSubmission' : 'editSubmission',
     'click #cancelEdit' : 'cancelEdit'
-
-
   },
 
   initialize : function (){
@@ -24,13 +22,7 @@ App.View.SubmissionDetail = App.View.Forms.extend({
     if(self.options.submission){
       self.submission = self.options.submission.toJSON();
     }
-    _.bindAll(this);
   },
-
-  /**
-   *  NOTE EDIT FUNCTIONS MOVING TO THE EDIT VIEW
-   *
-   */
   editSubmission : function (e) {
     //make new edit submission view and render
     var self = this;

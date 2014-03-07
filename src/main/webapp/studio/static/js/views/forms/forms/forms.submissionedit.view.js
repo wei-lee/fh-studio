@@ -2,10 +2,8 @@ App.View.SubmissionEdit = App.View.Forms.extend({
 
   initialize : function (){
     this.constructor.__super__.initialize.apply(this, arguments);
-    console.log("options ", this.options);
     this.submission = this.options.model;
     this.form = this.options.form;
-    _.bindAll(this);
   },
 
 
@@ -27,48 +25,45 @@ App.View.SubmissionEdit = App.View.Forms.extend({
   updateSubmission : function (){
     //save model upload files
     var self = this;
-    console.log("saving ", self.submission.toJSON());
     var formFields = self.submission.get('formFields');
     formFields = async.map(formFields, function (f, cb){
       if(f.fieldId && f.fieldId._id) f.fieldId = f.fieldId._id;
       return f;
     });
 
-    console.log("submission formfields ", formFields);
     self.submission.save({"success": function (){
-         //upload files
-   var files = Object.keys(self.filesToSubmit);
+       //upload files
+      var files = Object.keys(self.filesToSubmit);
       //needs to be async series
-   async.each(files, function (f,cb){
-     var sub = self.filesToSubmit[f].submit();
-     sub.success(function (result, textStatus, jqXHR) {
-       //remove file from filesToSubmit
-       cb();
-     }).error(function (jqXHR, textStatus, errorThrown) {
-         //show error message
-        cb(errorThrown);
-     });
-   },function done(err){
-     self.submission.complete();
-   });
-  },"error": function (){}});
-
+      async.each(files, function (f,cb){
+        var sub = self.filesToSubmit[f].submit();
+        sub.success(function (result, textStatus, jqXHR) {
+          //remove file from filesToSubmit
+          cb();
+        }).error(function (jqXHR, textStatus, errorThrown) {
+          //show error message
+          cb(errorThrown);
+        });
+      },function done(err){
+        self.submission.complete();
+      });
+    },"error": function (){
+      // TODO error handling?
+    }});
     return false;
   },
 
   getFormField : function (id){
     var self = this;
     var field;
-    console.log("no field found try get the form field def");
+
     var pages = self.form.get("pages");
-    console.log("form pages ", pages);
+
     for(var i=0; i < pages.length; i++){
       var page = pages.at(i);
       var fields = page.get("fields");
       fields.forEach(function (f){
-        console.log('field ', f);
         if(f._id === id){
-          console.log('field found ', f);
           field = f;
         }
       });
@@ -76,7 +71,6 @@ App.View.SubmissionEdit = App.View.Forms.extend({
     // ok to do this as foreach is not async
     return field;
   },
-
   render : function (){
     var self = this;
     async.parallel([
@@ -95,11 +89,8 @@ App.View.SubmissionEdit = App.View.Forms.extend({
       });
     return this;
   },
-
   filesToSubmit : {},
-
   updateModel : function (e){
-    console.log("update model called" , $(e.target).val());
     var self = this;
     var _this = $(e.target);
     var index = _this.data('index') || 0;
@@ -109,14 +100,11 @@ App.View.SubmissionEdit = App.View.Forms.extend({
     var val = _this.val();
     var fieldValues = [];
     if('radio' === type){
-      console.log("radio type getting val");
       val = $('input[name="'+id+'"]:checked').val();
     }
 
-
-    console.log("found matching form field ", field, "updating value at index ", index);
     if(field && field.fieldValues){
-      if('checkbox' == type){
+      if('checkbox' === type){
         var checkBoxIndex = _this.data('checkbox-index');
         if(! _this.is(':checked')){
           field.fieldValues[index].selections.splice(checkBoxIndex,1);
@@ -137,11 +125,8 @@ App.View.SubmissionEdit = App.View.Forms.extend({
         newField.fieldValues= {"selections":[val]};
       }
       self.submission.get('formFields').push(newField);
-
     }
   },
-
-
   enableFileUpload: function(){
     var self = this;
     self.$el.find('input[type="file"]').each(function (){
@@ -168,10 +153,6 @@ App.View.SubmissionEdit = App.View.Forms.extend({
         field["_id"] = id;
         field['hashName']= createdHash;
         self.submission.get('formFields').push(field);
-
-        console.log("found matching form field ", field, "updating value at index ", index, self.submission);
-
-
       }
 
       ele.fileupload('destroy').fileupload({
@@ -185,9 +166,9 @@ App.View.SubmissionEdit = App.View.Forms.extend({
         dropZone: ele,
         add: function(e, data) {
           ele.hide();
-          console.log("data file upload ", ele.data('filehash'),ele.attr('name'));
+
           var field = self.getFormField(ele.attr('name'));
-          console.log("updating field with vals", field, data);
+
           field.fieldValues = [{}];
           field.fieldValues[0].fileSize = data.files[0].size;
           field.fieldValues[0].fileType = data.files[0].type;
@@ -198,30 +179,22 @@ App.View.SubmissionEdit = App.View.Forms.extend({
           //to the field def values at index 0
           self.filesToSubmit[data.paramName] = data;
 
-          console.log("ready to submit file ", self.submission);
+
           //self.filesToSubmit.push(data);
 
         },
         done: function(e, data) {
-
           delete self.filesToSubmit[data.paramName];
-
           self.submission.fetch({
             "success":function (sub){
-              console.log("updated submission fetched ",sub);
+              //TODO Should something not happen here
             } ,
             "error": function (err){
-              console.log("failed to fetch sub ",err);
+              //TODO Should something not happen here
             }});
-
           ele.show();
         }
       });
     });
-
   }
-
-
-
-
 });
