@@ -39,29 +39,21 @@ App.View.SubmissionEdit = App.View.Forms.extend({
          //upload files
    var files = Object.keys(self.filesToSubmit);
       //needs to be async series
-    for(var i=0; i < files.length; i++){
-      var sub = self.filesToSubmit[files[i]].submit();
-      sub.success(function (result, textStatus, jqXHR) {
-        //remove file from filesToSubmit
-        self.submission.fetch({
-          "success":function (sub){
-            console.log("updated submission fetched ",sub);
-            self.render();
-          } ,
-          "error": function (err){
-            console.log("failed to fetch sub ",err);
-            //show error message
-          }});
-      })
-      .error(function (jqXHR, textStatus, errorThrown) {
-        //show error message
-      });
-    }
-    self.submission.complete();
-    },"error": function (){
+   async.each(files, function (f,cb){
+     var sub = self.filesToSubmit[f].submit();
+     sub.success(function (result, textStatus, jqXHR) {
+       //remove file from filesToSubmit
+       cb();
+     }).error(function (jqXHR, textStatus, errorThrown) {
+         //show error message
+        cb(errorThrown);
+     });
+   },function done(err){
+     self.submission.complete();
+   });
+  },"error": function (){}});
 
-    }});
-
+    return false;
   },
 
   getFormField : function (id){
@@ -125,14 +117,18 @@ App.View.SubmissionEdit = App.View.Forms.extend({
     console.log("found matching form field ", field, "updating value at index ", index);
     if(field && field.fieldValues){
       if('checkbox' == type){
-        field.fieldValues[index].selections[index] = _this.val();
+        var checkBoxIndex = _this.data('checkbox-index');
+        if(! _this.is(':checked')){
+          field.fieldValues[index].selections.splice(checkBoxIndex,1);
+        }else{
+          field.fieldValues[index].selections[checkBoxIndex] = _this.val();
+        }
       }else{
         field.fieldValues[index] = _this.val();
       }
     }else{
       //not an existing field on the submission
       field = self.getFormField(id);
-      console.log("found non submission field ", field, "updating with val ",_this.val() ,_this);
       var newField = {
         "fieldId":field._id,
         "fieldValues":[val]
@@ -142,8 +138,6 @@ App.View.SubmissionEdit = App.View.Forms.extend({
       }
       self.submission.get('formFields').push(newField);
 
-      console.log("updated submission ", self.submission);
-
     }
   },
 
@@ -152,7 +146,6 @@ App.View.SubmissionEdit = App.View.Forms.extend({
     var self = this;
     self.$el.find('input[type="file"]').each(function (){
       var ele  = $(this);
-      console.log("element ", ele);
       var groupId = ele.data("groupid");
       var url;
       if(groupId && "" !== groupId){
@@ -166,14 +159,13 @@ App.View.SubmissionEdit = App.View.Forms.extend({
 
         url = "/api/v2/forms/submission/"+self.submission.get('_id')+"/"+id+"/"+createdHash+"/submitFile";
 
-
-        console.log("SUBMISSION ", self.submission);
         var field = self.submission.findFormField(id);
         if(! field){
           field = self.getFormField(id);
         }
 
         field["fieldId"] =id;
+        field["_id"] = id;
         field['hashName']= createdHash;
         self.submission.get('formFields').push(field);
 
@@ -182,12 +174,10 @@ App.View.SubmissionEdit = App.View.Forms.extend({
 
       }
 
-      console.log("url ", url, ele.data("groupid"));
-
       ele.fileupload('destroy').fileupload({
         url: url,
         dataType: 'json',
-        replaceFileInput: false,
+        replaceFileInput: true,
         formData: [{
           name: 'hashName',
           value: ele.data("filehash")
@@ -202,16 +192,18 @@ App.View.SubmissionEdit = App.View.Forms.extend({
           field.fieldValues[0].fileSize = data.files[0].size;
           field.fieldValues[0].fileType = data.files[0].type;
           field.fieldValues[0].fileName = data.files[0].name;
-          field.fieldValues[0].hashName = ele.data("filehash");
+          field.fieldValues[0].hashName = field.hashName;
           field.fieldValues[0].fieldId = field.fieldId;
           //if this element has a file hash replace the file data at the index in the submission else add the file data
           //to the field def values at index 0
           self.filesToSubmit[data.paramName] = data;
+
+          console.log("ready to submit file ", self.submission);
           //self.filesToSubmit.push(data);
 
         },
         done: function(e, data) {
-          console.log('done called ', data);
+
           delete self.filesToSubmit[data.paramName];
 
           self.submission.fetch({

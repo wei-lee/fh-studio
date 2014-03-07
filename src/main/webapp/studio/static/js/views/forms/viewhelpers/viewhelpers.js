@@ -18,9 +18,10 @@ Handlebars.registerHelper("createFormField", function (options, editMode, contex
   var definition = options && options.fieldOptions && options.fieldOptions.definition || false; // convenience property
   options.data = [];
 
-  if(options.values.length < 1){
+  console.log("TYPE ",options.type , options.values);
+
+  if(options.values.length < 1 || (options.values && options.values.selections)){           //no values
     options.data.push({"_id":options._id});
-    var dudVal = ('checkbox' === options.type) ? {} : [];
     buildMulti(options.data[0],definition,[],0);
   }
 
@@ -34,7 +35,9 @@ Handlebars.registerHelper("createFormField", function (options, editMode, contex
           idx : index
         };
       // Some use the checked prop, some use selected..
+      console.log("OPTIONS TYPE ", options.type);
       if (options.type === 'checkboxes'){
+        console.log("DEF FOR CHECKBOXES ",definition, options.values);
         val.selections = val.selections || [];
         // NB Checkboxes has a "selections" object where the array lives, unlike radio and dropdown because who needs to be consistant
         optData.checked = val.selections.indexOf(opt.label)>-1 ? 'checked' : '';
@@ -84,7 +87,6 @@ Handlebars.registerHelper("createFormField", function (options, editMode, contex
       //only need random seed for photo
 
       if('photo' === options.type){
-        console.log("addubg rand to url ", options);
         data.url+= '?rand=' + Math.random();
       }
       data.val = val.url || val.downloadUrl;
@@ -131,7 +133,7 @@ Handlebars.registerHelper("createFormField", function (options, editMode, contex
         break;
       case "checkboxes":
         template = "{{#each options}}" +
-            "<input name='{{label}}' {{disabled}} class='formVal' data-_id='{{_id}}'  type='checkbox' data-index='{{idx}}' {{checked}} value='{{label}}'> {{label}}<br />" +
+            "<input data-checkbox-index='{{@index}}' name='{{_id}}' {{disabled}} class='formVal' data-_id='{{_id}}'  type='checkbox' data-index='{{idx}}' {{checked}} value='{{label}}'> {{label}}<br />" +
           "{{/each}}";
         break;
       case "radio":
