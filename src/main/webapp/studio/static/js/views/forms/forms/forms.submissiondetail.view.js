@@ -43,8 +43,6 @@ App.View.SubmissionDetail = App.View.Forms.extend({
  render : function (){
 
     var self = this;
-    self.$el.empty();
-
     var subData = {};
     if(self.options.submission){
       subData = self.options.submission.toJSON();
@@ -76,6 +74,7 @@ App.View.SubmissionDetail = App.View.Forms.extend({
       }],function doRender (){
         self.processForm(self.form, subData, function (err, viewData){
           self.viewData = viewData;
+          self.$el.empty();
           var html = self.submissionTemplate(viewData);
           self.$el.append(html);
         });
