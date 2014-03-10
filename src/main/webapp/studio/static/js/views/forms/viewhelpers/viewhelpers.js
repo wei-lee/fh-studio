@@ -68,7 +68,7 @@ Handlebars.registerHelper("createFormField", function (options, editMode, contex
 
     if (options.type === 'location' || options.type === 'locationMap'){
       if (definition && definition.locationUnit==='latlong'){
-        data.maplink = (!val) ? 'javascript:false' : "http://maps.google.com/maps?z=12&t=m&q=loc:" + val.lat + "+" + val.long;
+        data.maplink = (!val) ? false : "http://maps.google.com/maps?z=12&t=m&q=loc:" + val.lat + "+" + val.long;
         val = val || {lat : 'No value', long : 'No value'};
         data.lat = val.lat;
         data.long = val.long;
@@ -153,7 +153,7 @@ Handlebars.registerHelper("createFormField", function (options, editMode, contex
           }
         }else{
           // Map link for non-northings eastings for convenience
-          template = "<a class='maplink pull-right' target='_blank' href='{{maplink}}'><i class='icon icon-map-marker'></i></a>";
+          template = "{{#if maplink}}<a class='maplink pull-right' target='_blank' href='{{maplink}}'><i class='icon icon-map-marker'></i></a>{{/if}}";
           if (editMode){
             template += "<label>Latitude:</label> <input name='lat' class='formVal' data-_id='{{_id}}'  data-idx='{{idx}}' placeholder='No value present' {{disabled}} type='text' value='{{lat}}' /><br/>"+
             "<label>Longitude:</label> <input name='long' data-idx='{{idx}}' placeholder='No value present' {{disabled}} type='text' value='{{long}}' />";
