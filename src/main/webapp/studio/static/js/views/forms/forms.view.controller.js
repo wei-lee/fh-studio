@@ -41,7 +41,6 @@ App.View.FormsController = Backbone.View.extend({
     var self = this;
     var userRoles = $fw.getUserProp("roles");
     this.$el.addClass('row formscontrollerdiv row-fluid');
-    var userRoles = $fw.getUserProp("roles");
     this.menu = new App.View.FormMenu();
     this.bind('menuchange', function(active){
       self.hideAll();
