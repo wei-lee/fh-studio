@@ -451,7 +451,11 @@ var themeCSSGenerator = function (themeJSON, styleStructure) {
               },
               {
                 "key": "padding",
-                "value": "5px 5px 5px 5px"
+                "value": "12px 0px 12px 0px"
+              },
+              {
+                "key": "margin-top",
+                "value": "10px"
               }
             ],
             "classAdditions": [
@@ -533,7 +537,11 @@ var themeCSSGenerator = function (themeJSON, styleStructure) {
               },
               {
                 "key": "padding",
-                "value": "5px 5px 5px 5px"
+                "value": "12px 0px 12px 0px"
+              },
+              {
+                "key": "margin-top",
+                "value": "10px"
               }
             ],
             "classAdditions": [
@@ -581,7 +589,11 @@ var themeCSSGenerator = function (themeJSON, styleStructure) {
               },
               {
                 "key": "padding",
-                "value": "5px 5px 5px 5px"
+                "value": "12px 0px 12px 0px"
+              },
+              {
+                "key": "margin-top",
+                "value": "10px"
               }
             ],
             "classAdditions": [
@@ -663,7 +675,11 @@ var themeCSSGenerator = function (themeJSON, styleStructure) {
               },
               {
                 "key": "padding",
-                "value": "5px 5px 5px 5px"
+                "value": "12px 0px 12px 0px"
+              },
+              {
+                "key": "margin-top",
+                "value": "10px"
               }
             ],
             "classAdditions": [
@@ -711,7 +727,11 @@ var themeCSSGenerator = function (themeJSON, styleStructure) {
               },
               {
                 "key": "padding",
-                "value": "5px 5px 5px 5px"
+                "value": "12px 0px 12px 0px"
+              },
+              {
+                "key": "margin-top",
+                "value": "10px"
               }
             ],
             "classAdditions": [
@@ -793,7 +813,11 @@ var themeCSSGenerator = function (themeJSON, styleStructure) {
               },
               {
                 "key": "padding",
-                "value": "5px 5px 5px 5px"
+                "value": "12px 0px 12px 0px"
+              },
+              {
+                "key": "margin-top",
+                "value": "10px"
               }
             ],
             "classAdditions": [

@@ -254,21 +254,19 @@ App.View.FormThemesEdit = App.View.Forms.extend({
   },
   selectsRow: function(type, fullSectionId, attributes, colourVal){
     var self = this;
-//    var formattedName = this.CONSTANTS.THEME.DESCRIPTIONS[heading];
     var tplBaseName = '$theme' + type + 'Row',
     tplIncReadOnlyName = (self.readOnly) ? tplBaseName + 'ReadOnly' : tplBaseName, // Now includes the "ReadOnly" string if it's needed
     tpl = self.templates[tplIncReadOnlyName],
     row = $(tpl({r : attributes, name : fullSectionId})),
     input = $(row.find('input.colour'));
-    var colorHex = "";
 
     self.spectrumify(row, colourVal, fullSectionId, type);
 
     // Make sure the right select dropdown has the selected attribute to begin with
     row.find('select').each(function(){
-      var selectName = $(self).attr('name'),
+      var selectName = $(this).attr('name'),
       selectedValue = attributes[selectName],
-      selectedEl = $(self).find('option[value=' + selectedValue + ']');
+      selectedEl = $(this).find('option[value=' + selectedValue + ']');
       selectedEl.attr('selected', 'selected');
     });
     return row;
