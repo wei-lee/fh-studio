@@ -13,7 +13,6 @@ App.View.FormsController = Backbone.View.extend({
     'click .btn-edit-form-notifications' : 'onEditFormNotifications',
     'click .formapp-link' : 'onFormAppLoad',
     'click .btn-add-submission' : 'onAddSubmission',
-    'click #editSubmission' : 'onEditSubmission',
     'click #printSubmission' : 'onPrintSubmission'
   },
 
@@ -40,6 +39,7 @@ App.View.FormsController = Backbone.View.extend({
   },
   render: function(options) {
     var self = this;
+    var userRoles = $fw.getUserProp("roles");
     this.$el.addClass('row formscontrollerdiv row-fluid');
     var userRoles = $fw.getUserProp("roles");
     this.menu = new App.View.FormMenu();

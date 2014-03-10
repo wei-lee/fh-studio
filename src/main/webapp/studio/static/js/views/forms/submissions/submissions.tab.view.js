@@ -23,21 +23,17 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
     _.bindAll(this);
   },
 
+
   render : function (){
     var self = this;
-    this.options.forms.fetch({
-      "success":function (forms){
-        self.jsonForms = self.options.forms.toJSON();
-        self.$el.empty();
-        self.$el.addClass('span10');
-        self.$el.html(self.templates.$formsSubmissionsTab({forms:self.jsonForms}));
-        self.recentSubmissions();
-      },
-      "error": function (e){
-         console.error("error fetching forms ", e);
-      }
-    });
-
+    this.formsCollection.fetch({"success":function (forms){
+      self.jsonForms = forms.toJSON();
+      console.log("RENDER SUBMISSIONS TAB");
+      self.$el.empty();
+      self.$el.addClass('span10');
+      self.$el.html(self.templates.$formsSubmissionsTab({forms:self.jsonForms,"formsCol":self.formsCollection}));
+      self.recentSubmissions();
+    }});
 
     return this;
   },

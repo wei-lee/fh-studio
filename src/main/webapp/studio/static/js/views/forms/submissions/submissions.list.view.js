@@ -16,7 +16,7 @@ App.View.SubmissionList = App.View.FormListBase.extend({
     'searchRepeatingField':'#searchRepeatingField'
   },
   events : {
-    'click tr' : 'onRowSelected',
+    'click table.datatable tr' : 'onRowSelected',
     'click .btn-add-formsapp' : 'onCreate',
     'click .btn-add-existing' : 'onCreate',
     'click .btn-add-existing-app' : 'onAddExisting',
@@ -234,6 +234,9 @@ App.View.SubmissionList = App.View.FormListBase.extend({
     this.selectMessage = new App.View.FullPageMessageView({ message : 'Select a ' + this.singleTitle.toLowerCase() + ' above to preview & manage', button : false });
     this.$el.append(this.selectMessage.render().$el);
 
+    this.$submissionContainer = $('<div class="submissionContainer"></div>');
+    this.$el.append(this.$submissionContainer);
+
     $('.submissionslist').removeClass("span10").addClass("row-fluid");
     return this;
   },
@@ -296,18 +299,22 @@ App.View.SubmissionList = App.View.FormListBase.extend({
   },
   onRowSelected : function (e){
     var self = this;
-    console.log("onRowSelected submissions ");
-    this.selectMessage = new App.View.FullPageMessageView({ message : 'Loading .... ', button : false });
-    this.$el.find('.emptyContainer').empty().append(this.selectMessage.render().$el);
+    self.$submissionContainer.hide();
+    this.selectMessage.options.message = "Loading...";
+    this.selectMessage.render();
+    this.selectMessage.$el.show();
     $('.submissionslist').removeClass("span10").addClass("row-fluid");
     var model = this.getDataForRow(e);
-    console.log(model);
+
+    if (!model){
+      return this.message("Error loading form submission", "error");
+    }
+
     model.fetch({"success": function (res){
-      if(self.submissionDetail){
-        self.submissionDetail.remove();
-      }
-      self.submissionDetail = new App.View.SubmissionDetail({"submission":res});
-      self.submissionDetail.render();
+      self.submissionDetail = new App.View.SubmissionDetail({"submission":res, form:self.form, formsCol:self.formsCol});
+      self.$submissionContainer.show().html(self.submissionDetail.render().$el);
+      self.selectMessage.$el.hide();
+
     },"error":function (res){
         console.log("submission error ", res);
     }});
@@ -430,7 +437,7 @@ App.View.SubmissionList = App.View.FormListBase.extend({
       },
       "error": function (err){
         console.log("search error ", err);
-        self.alertMessage("there was an error during your search");
+        self.message("there was an error during your search");
       }
     };
     this.collection.search(searchQuery,options);

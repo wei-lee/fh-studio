@@ -395,14 +395,14 @@
 <script id="themeColourRow" type="text/x-handlebars-template">
     <div class="colorRow">
         <input type='text' name='{{name}}' value="{{value}}"/>
-        <label>{{formattedName}}</label>
+        <label>{{label}}</label>
     </div>
 </script>
 
 <script id="themeFontRowReadOnly" type="text/x-handlebars-template">
     <div class="fontrow" data-name="{{ name }}">
         <label>
-            {{ formattedName }}
+            {{ label}}
         </label>
 
         <div class="size">{{ r.fontSize }}</div>
@@ -416,7 +416,7 @@
     <div class="fontrow" data-name="{{ name }}">
 
         <label>
-            {{ formattedName }}
+            {{ label }}
         </label>
         <select class="size" name="fontSize">
             <option value="11pt">11pt</option>
@@ -457,7 +457,7 @@
     <div class="borderrow" data-name="{{ name }}">
 
         <label>
-            {{ formattedName }}
+            {{ label }}
         </label>
 
         <div class="thickness">{{ r.thickness }}</div>
@@ -470,7 +470,7 @@
     <div class="borderrow" data-name="{{ name }}">
 
         <label>
-            {{ formattedName }}
+            {{ label }}
         </label>
         <select class="thickness" name="thickness">
             <option value="none">None</option>
@@ -728,91 +728,6 @@
     </select>
 </script>
 
-<script type="text/x-handlebars-template" id="formSubmissionDetail">
-    <div class="span7" id="submissionDetails" style="overflow:scroll">
-        <h5>Form Submission</h5>
-
-        <form class="form-horizontal">
-            {{#each formFields}}
-            <div class="control-group">
-                <label class="control-label">{{fieldId.name}}:</label>
-
-                <div class="controls">
-                    {{#createFormField this}}{{/createFormField}}
-                </div>
-            </div>
-            {{/each}}
-        </form>
-    </div>
-    <div class="span5" id="submissionMeta">
-        <h5>Submission Information</h5>
-
-        <form class="form-horizontal">
-            <div class="control-group">
-                <label class="control-label" for="inputDateTime">Date/Time Recieved:</label>
-
-                <div class="controls">
-                    <input disabled type="text" value="{{deviceFormTimestamp}}" id="inputDateTime"
-                           placeholder="Date/time">
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="inputUser">Recieved From User:</label>
-
-                <div class="controls">
-                    <input disabled type="text" value="{{userId}}" id="inputUser" placeholder="user">
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="inputApp">Recieved From App:</label>
-
-                <div class="controls">
-                    <input disabled type="text" value="{{appCloudName}}" id="inputApp" placeholder="app">
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="inputDevice">Recieved From Device:</label>
-
-                <div class="controls">
-                    <input disabled type="text" value="{{deviceId}}" id="inputDevice" placeholder="device">
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="inputIp">Recieved From Ip:</label>
-
-                <div class="controls">
-                    <input disabled type="text" value="{{deviceIPAddress}}" id="inputIp" placeholder="ipaddress">
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="inputEditedTime">Date time edited:</label>
-
-                <div class="controls">
-                    <input disabled type="text" id="inputEditedTime" placeholder="date time edited">
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="inputEditedBy">Edited By:</label>
-
-                <div class="controls">
-                    <input disabled type="text" id="inputEditedBy" placeholder="edited by">
-                </div>
-            </div>
-        </form>
-        <div class="span12 submission-buttons">
-            <button class="btn btn-large btn-primary" id="downloadSubmissionPdf" type="button">Download PDF</button>
-            <button class="btn btn-large btn-primary" id="printSubmission" type="button">Print Submission</button>
-            {{#checkRole "formsadmin,formseditor"}}
-            <button class="hidden btn btn-large btn-warning" id="editSubmission" type="button">Edit Submission</button>
-            {{/checkRole}}
-            {{#checkRole "formsadmin,formseditor"}}
-            <button class="btn btn-large btn-danger" id="deleteSubmission" data-subid="{{_id}}" type="button">Delete Submission</button>
-            {{/checkRole}}
-        </div>
-        <div class="span12"></div>
-    </div>
-</script>
-
 
 <!-- end form submission templates -->
 
@@ -1053,3 +968,64 @@
   </form>
 
 </script>
+
+
+<script type="text/x-handlebars-template" id="submissionTemplate">
+<div class="row-fluid submissionDetail" style="background-color:#F0F0EE">
+
+    <form class="form-horizontal" id="submissionForm">
+        {{#form}}
+        {{#each pages}}
+        <div class="row-fluid" style="text-align:left;border-bottom:1px dotted #4E4D4B; margin-bottom:4px;">
+            <span style="color:rgb(61, 60, 60); font-size:16px; font-weight:bold; padding:4px;" >Page:{{name}}</span>
+        </div>
+
+
+        {{#each fields}}
+
+        <div class="control-group">
+            <label class="control-label submissionLabel" style="font-weight:bold; font-size:14px;">{{#createFormLabel type}}{{/createFormLabel}} {{name}}:</label>
+
+            <div class="controls">
+
+                {{#createFormField this}}{{/createFormField}}
+            </div>
+        </div>
+
+
+        {{#is 'sectionBreak' type}}
+        <div class="page-break"></div>
+        {{/is}}
+
+        {{/each}}
+        {{/each}}
+
+        {{/form}}
+    </form>
+    {{#if controls}}
+        <div class="span12 submission-buttons" style="padding:8px;">
+
+        </div>
+    {{/if}}
+</div>
+</script>
+
+<script type="text/x-handlebars-template" id="submissionEditActions">
+    <button class="btn btn-large btn-primary" id="cancelEdit" data-subid="{{_id}}" type="button">Cancel</button>
+    <button class="btn btn-large btn-danger" id="updateSubmission" data-subid="{{_id}}" type="button">Update Submission</button>
+</script>
+
+<script type="text/x-handlebars-template" id="submissionActions">
+    <button class="btn btn-large btn-primary" id="downloadSubmissionPdf" type="button">Download PDF</button>
+    <button class="btn btn-large btn-primary" id="printSubmission" type="button">Print Submission</button>
+    {{#checkRole "formsadmin,formseditor"}}
+    <button class="hidden btn btn-large btn-warning" data-subid="{{_id}}" id="editSubmission" type="button">Edit Submission</button>
+    {{/checkRole}}
+    {{#checkRole "formsadmin,formseditor"}}
+    <button class="btn btn-large btn-danger" id="deleteSubmission" data-subid="{{_id}}" type="button">Delete Submission</button>
+    {{/checkRole}}
+    {{#checkRole "formsadmin,formseditor"}}
+    <button class="btn btn-large btn-danger" id="editSubmission" data-subid="{{_id}}" type="button">Edit Submission</button>
+    {{/checkRole}}
+</script>
+

@@ -53,7 +53,8 @@ App.Model.FormPage = Backbone.RelationalModel.extend({
     if(fields){
       for(var i=0; i < fields.length; i++){
         var f = fields[i];
-        if(f && f.get("_id") === id){
+        if(! f) f = fields.at(i);
+        if(f && f.get && f.get("_id") === id){
           field = f;
           index = i;
           break;

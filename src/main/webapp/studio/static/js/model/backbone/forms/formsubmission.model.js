@@ -7,9 +7,39 @@ App.collections = App.collections || {};
 
 App.Model.FormSubmission = App.Model.FormBase.extend({
   fetchURL : "/api/v2/forms/submission/{{id}}",
+  url : "/api/v2/forms/submission",
   getDownloadUrl: function() {
     return this.fetchURL.replace('{{id}}', this.id) + ".pdf";
+  },
+  "findFormField": function (id){
+    var formFields = this.get("formFields");
+
+    if(formFields){
+      for(var i=0; i < formFields.length; i++){
+        var field = formFields[i];
+        if(field.fieldId && id === field.fieldId._id){
+          return field;
+        }
+      }
+    }
+    return undefined;
+  },
+  "complete": function (cb){
+    $.ajax({
+      type: 'POST',
+      url: "/api/v2/forms/submission/"+this.id+"/complete",
+      data: JSON.stringify({}),
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      success: function(res){
+        return cb(null, res);
+      },
+      "error":function (err){
+        return cb(err);
+      }
+    });
   }
+
 });
 
 

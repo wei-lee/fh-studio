@@ -1,0 +1,85 @@
+<div class="row-fluid submissionDetail {{#if editMode}}editMode{{/if}}">
+    <div class="span6">
+    <form class="" id="submissionForm">
+      {{#form}}
+        {{#each pages}}
+            <h5 class="pageheading">
+                <icon class="icon-file"></i> {{name}}
+            </h5>
+
+          <table class="table table-striped">
+            {{#each fields}}
+              <tr>
+                <td class="fieldlabel">{{#createFormLabel type}}{{/createFormLabel}} {{name}}:</td>
+
+                <td class="formfield">
+                  {{#if ../../../editMode}}
+                    {{#createFormField this true}}{{/createFormField}}
+                  {{else}}
+                    {{#createFormField this false}}{{/createFormField}}
+                  {{/if}}
+                </td>
+              </tr>
+              {{#is 'sectionBreak' type}}
+                  <div class="page-break"></div>
+              {{/is}}
+            {{/each}}
+          </table>
+        {{/each}}
+
+
+
+      {{/form}}
+      {{#hasLength missing}}
+      <h5 class="missingheading"><i class="icon icon-question-sign"></i> Fields No Longer Present</h5>
+      <table class="table table-striped">
+        {{#each missing}}
+          <tr>
+            <td class="fieldlabel">
+              {{#createFormLabel type}}{{/createFormLabel}} {{name}}:
+            </td>
+            <td class="formfield">
+              {{#createFormField this true}}{{/createFormField}}
+            </td>
+          </tr>
+        {{/each}}
+      </table>
+      {{/hasLength}}
+    </form>
+    </div>
+    <div class="span6">
+      {{#if sub}}
+        {{#sub}}
+          <h5 class="submissionheading"><i class="icon-info-sign"></i> Submission Information</h5>
+          <dl class="dl-horizontal">
+            <dt>Date/Time Received:</dt>
+            <dd>{{deviceFormTimestamp}}&nbsp;</dd>
+
+            <dt>Received From User:</dt>
+            <dd>{{userId}}&nbsp;</dd>
+
+            <dt>Received From App:</dt>
+            <dd>{{appCloudName}}&nbsp;</dd>
+
+            <dt>Received From Device:</dt>
+            <dd>{{deviceId}}&nbsp;</dd>
+
+            <dt>Received From Ip:</dt>
+            <dd>{{deviceIPAddress}}&nbsp;</dd>
+
+            <dt>Edited:</dt>
+            <dd>{{updatedTimestamp}}&nbsp;</dd>
+
+            </dl>
+          {{/sub}}
+      {{/if}}
+    </div>
+  {{#if controls}}
+      <div class="span12 submission-buttons" style="padding:8px;">
+        {{#if editMode}}
+          <button class="btn btn-large btn-primary" id="cancelEdit" data-subid="{{_id}}" type="button">Cancel</button>
+          <button class="btn btn-large btn-danger" id="updateSubmission" data-subid="{{_id}}" type="button">Update Submission</button>
+        {{/if}}
+      </div>
+  {{/if}}
+</div>
