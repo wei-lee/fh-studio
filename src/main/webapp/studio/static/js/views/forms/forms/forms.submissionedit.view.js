@@ -122,6 +122,8 @@ App.View.SubmissionEdit = App.View.Forms.extend({
     var type = _this.attr("type");
     var field = self.submission.findFormField(id);
     var val = _this.val();
+    var subType = _this.data("subtype");
+
     var fieldValues = [];
     if('radio' === type){
       val = $('input[name="'+id+'"]:checked').val();
@@ -135,6 +137,13 @@ App.View.SubmissionEdit = App.View.Forms.extend({
         }else{
           field.fieldValues[index].selections[checkBoxIndex] = _this.val();
         }
+      }else if(subType && 'location' == subType){
+        var bound = _this.attr('name');
+        var valOb = field.fieldValues[index];
+        if(! valOb || 'object' !== typeof  valOb){
+          field.fieldValues[index] = {};
+        }
+        field.fieldValues[index][bound] = val;
       }else{
         field.fieldValues[index] = _this.val();
       }

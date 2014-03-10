@@ -16,7 +16,6 @@ App.View.SubmissionDetail = App.View.Forms.extend({
 
   initialize : function (){
     this.constructor.__super__.initialize.apply(this, arguments);
-    console.log("options ", this.options);
     var self = this;
     delete self.submission;
     if(self.options.submission){
@@ -151,6 +150,7 @@ App.View.SubmissionDetail = App.View.Forms.extend({
           }
           switch(field.type) {
             case 'photo':
+            case 'signature':
               async.map(field.values, function(val, mcb2) {
                 val.url = self.FILE_UPLOAD_URL + val.groupId+"?rand=" + Math.random();
                 mcb2();

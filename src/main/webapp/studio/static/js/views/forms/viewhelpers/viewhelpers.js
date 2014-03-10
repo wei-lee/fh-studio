@@ -72,6 +72,9 @@ Handlebars.registerHelper("createFormField", function (options, editMode, contex
         val = val || {lat : 'No value', long : 'No value'};
         data.lat = val.lat;
         data.long = val.long;
+      }else if ('locationMap' === options.type){
+        data.lat = val.lat;
+        data.long = val.long;
       }else{
         val = val || {eastings : 'No value', northings: 'No value', zone : 'No value'};
         data.zone = val.zone;
@@ -141,7 +144,7 @@ Handlebars.registerHelper("createFormField", function (options, editMode, contex
         break;
       case "location":
       case 'locationMap':
-        if(options.fieldOptions.definition && "northEast" === options.fieldOptions.definition.locationUnit){
+        if(options.fieldOptions && options.fieldOptions.definition && "northEast" === options.fieldOptions.definition.locationUnit){
           if (editMode){
             template = "Eastings: <input class='formVal' data-_id='{{_id}}'  name='eastings' {{disabled}} type='text' placeholder='No value present' value='{{eastings}}' data-index={{idx}} /><br />" +
             "Northings: <input class='formVal' data-_id='{{_id}}'  name='northings' {{disabled}} type='text' placeholder='No value present' value='{{northings}}' data-index={{idx}} /><br />" +
@@ -155,8 +158,8 @@ Handlebars.registerHelper("createFormField", function (options, editMode, contex
           // Map link for non-northings eastings for convenience
           template = "<a class='maplink pull-right' target='_blank' href='{{maplink}}'><i class='icon icon-map-marker'></i></a>";
           if (editMode){
-            template += "<label>Latitude:</label> <input name='lat' class='formVal' data-_id='{{_id}}'  data-idx='{{idx}}' placeholder='No value present' {{disabled}} type='text' value='{{lat}}' /><br/>"+
-            "<label>Longitude:</label> <input name='long' data-idx='{{idx}}' placeholder='No value present' {{disabled}} type='text' value='{{long}}' />";
+            template += "<label>Latitude:</label> <input name='lat' data-subtype='location' class='formVal' data-_id='{{_id}}'  data-idx='{{idx}}' placeholder='No value present' {{disabled}} type='text' value='{{lat}}' /><br/>"+
+            "<label>Longitude:</label> <input data-subtype='location' name='long' data-_id='{{_id}}'  data-idx='{{idx}}' class='formVal' placeholder='No value present' {{disabled}} type='text' value='{{long}}' />";
           }else{
             template += "<label>Latitude:</label> {{lat}},<br /> <label>Longitude:</label> {{long}}";
           }
