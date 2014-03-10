@@ -122,9 +122,9 @@ App.Collection.FormBase = Backbone.Collection.extend({
     return this.update.apply(this, arguments);
   },
   update : function(method, model, options){
-    var self = this,
-    url = self.urlUpdate,
-    csrfToken = $('input[name="csrftoken"]').val();
+    var self = this;
+    var url = self.urlUpdate;
+    var csrfToken = $('input[name="csrftoken"]').val();
     url += "?csrftoken=" + csrfToken;
 
     model = self.trimInternalIds(model);

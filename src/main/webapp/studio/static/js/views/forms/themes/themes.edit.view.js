@@ -12,7 +12,10 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     themeFontRowReadOnly : '#themeFontRowReadOnly',
     'themeLogo' : '#themeLogo',
     previewOutline: '#preview_outline',
-    formselect:'#form_select'
+    formselect:'#form_select',
+    themeFunctionalAreas: "#theme_functional_areas",
+    themeFunctionalAreasSection: "#theme_functional_areas_section",
+    themeFunctionalAreasRow: "#theme_functional_areas_row"
   },
   events : {
     'click .btn-form-save' : 'onThemeSave',
@@ -96,61 +99,101 @@ App.View.FormThemesEdit = App.View.Forms.extend({
       prevContainer.show();
     }
   },
+  getThemeElementVal : function(sectionIndex, subSectionIndex, elementType){
+    var self = this;
+    return self.theme.get(self.CONSTANTS.THEME.SECTIONS)[sectionIndex][self.CONSTANTS.THEME.SUBSECTIONS][subSectionIndex][elementType];
+  },
 
   render : function(){
     var self = this,
     classes = (typeof $fw === 'undefined') ? "themeedit row-fluid" : "span10 themeedit";
-    this.$el.addClass(classes);
-    this.breadcrumb(['Forms', 'Themes', 'Edit Theme']);
+    self.$el.addClass(classes);
+    self.breadcrumb(['Forms', 'Themes', 'Edit Theme']);
 
     if (this.options.subnavbar) {
-      this.$el.prepend('<div class="subnav_container"></div>');
-      this.options.subnavbar.setElement(this.$('.subnav_container')).render();
-      this.$container = $('<div class="container_with_subnav"></div>');
+      self.$el.prepend('<div class="subnav_container"></div>');
+      self.options.subnavbar.setElement(this.$('.subnav_container')).render();
+      self.$container = $('<div class="container_with_subnav"></div>');
     }else{
-      this.$container = $('<div class=""></div>');
+      self.$container = $('<div class=""></div>');
     }
 
 
     if (!this.readOnly){
-      this.$container.append(this.templates.$themeName( { name : this.theme.get(this.CONSTANTS.THEME.NAME) }));
-      this.$container.append(this.templates.$themePreviewButton());
-      this.$container.addClass('preview');
+      self.$container.append(self.templates.$themeName( { name : self.theme.get(self.CONSTANTS.THEME.NAME) }));
+      self.$container.append(self.renderLogo());
+      self.$container.append(self.templates.$themePreviewButton());
+      self.$container.addClass('preview');
+    } else {
+      self.$container.append(self.renderLogo());
     }
 
-    this.$themesInnerContainer = $('<div class="themesInnerContainer"></div>');
-    this.$left = $('<div id="leftThemeContainer" class="span3"></div>');
-    this.$right = $('<div id="centerThemeContainer" class="span4"></div>');
-    this.$preview = $('<div id="previewContainer" class="span3 hide" style="width: 227px;"></div>');
-    this.$themesInnerContainer.append(this.$left, this.$right, this.$preview);
+    self.$themesInnerContainer = $('<div class="themesInnerContainer"></div>');
+    self.$left = $('<div id="leftThemeContainer" class="span3"></div>');
+    self.$right = $('<div id="centerThemeContainer" class="span4"></div>');
+    self.$preview = $('<div id="previewContainer" class="span3 hide" style="width: 227px;"></div>');
+    self.$themesInnerContainer.append(self.$left, self.$right, self.$preview);
 
-    this.$logo = this.renderLogo();
-    this.$left.append(this.$logo);
+    self.$themeFunctionalAreasTable= $('<div id="themeConfigurator" class="themeConfigContainer"><div class="configTitleContainer"><div class="configTitle">Sections</div><div class="configTitle">Typography</div><div class="configTitle">Background Color</div><div class="configTitle">Border</div></div></div>');
 
-    this.$colours = this.renderColours();
-    this.$left.append(this.$colours);
 
-    this.$typography = this.renderTypography();
-    this.$right.append(this.$typography);
+    _.each(self.theme.get(self.CONSTANTS.THEME.STRUCTURE)[self.CONSTANTS.THEME.SECTIONS], function(strThemeSection, strThemeSectionIdx){
+      var sectionContainer = $('<div class="configSectionContainer"></div>');
+      sectionContainer.append($('<div class="configSectionTitleContainer"><div class="configSectionTitle">' + strThemeSection.label + '</div><div class="configSectionTitleEmpty"></div><div class="configSectionTitleEmpty"></div class="configSectionTitleEmpty"><div class="configSectionTitleEmpty"></div></div>'));
+      _.each(strThemeSection[self.CONSTANTS.THEME.SUBSECTIONS], function(strSubSection, strThemeSubSectionIdx){
+        var fullSectionId = strThemeSection.id + "_" + strSubSection.id;
+        var functionAreasRow = $('<div class="configSubSectionContainer" id="' + fullSectionId + '"></div>');
+        var typographyHtml = "<div class='fontrow'></div>";
+        var backgroundHtml = "<div class='colorRow'></div>";
+        var borderHtml = "<div class='borderrow'></div>";
+        var subSectionHeading = strSubSection.label;
+        functionAreasRow.append($('<div class="configSubSectionHeading">' + subSectionHeading + '</div>'));
 
-    this.$borders = this.renderBorders();
-    this.$right.append(this.$borders);
 
-    this.$container.append(this.$themesInnerContainer);
+        if(strSubSection.style.typography){
+          var typographyInfo = self.getThemeElementVal(strThemeSectionIdx, strThemeSubSectionIdx, self.CONSTANTS.THEME.TYPOGRAPHY);
+          typographyHtml = self.renderTypography(fullSectionId, typographyInfo);
+        }
+
+        functionAreasRow.append(typographyHtml);
+
+        if(strSubSection.style.background){
+          var backgroundInfo = self.getThemeElementVal(strThemeSectionIdx, strThemeSubSectionIdx, self.CONSTANTS.THEME.BACKGROUND);
+          backgroundHtml = self.renderColours(fullSectionId, backgroundInfo);
+        }
+
+        functionAreasRow.append(backgroundHtml);
+
+        if(strSubSection.style.border){
+          var borderInfo = self.getThemeElementVal(strThemeSectionIdx, strThemeSubSectionIdx, self.CONSTANTS.THEME.BORDERS);
+          borderHtml = self.renderBorders(fullSectionId, borderInfo);
+        }
+
+        functionAreasRow.append(borderHtml);
+
+        sectionContainer.append(functionAreasRow);
+
+        self.$themeFunctionalAreasTable.append(sectionContainer);
+      });
+    });
+
+    self.$left.append(this.$themeFunctionalAreasTable);
+
+    self.$container.append(self.$themesInnerContainer);
 
     if (!this.readOnly){
-      this.$container.append(this.templates.$formSaveCancel());
+      self.$container.append(self.templates.$formSaveCancel());
     }
 
 
     if (!this.readOnly){
-      var prevWrapper = this.$el.first("#themesInnerContainer");
+      var prevWrapper = self.$el.first("#themesInnerContainer");
       prevWrapper.find('style').remove();
       prevWrapper.append('<style id="themeStyle">'+this.theme.get("css")+'</style>');
-      this.$el.find('.btn-preview-theme').trigger("click");
+      self.$el.find('.btn-preview-theme').trigger("click");
 
-      this.$el.find('#leftThemeContainer').removeClass("span4").addClass("span3");
-      this.$el.find('#centerThemeContainer').removeClass('span4').addClass('span6');
+      self.$el.find('#leftThemeContainer').removeClass("span4").addClass("span3");
+      self.$el.find('#centerThemeContainer').removeClass('span4').addClass('span6');
 
       self.formCollection.fetch({"success":function (forms){
         var formData = [];
@@ -168,158 +211,209 @@ App.View.FormThemesEdit = App.View.Forms.extend({
       }});
 
     }
-    this.$el.append(this.$container);
-    return this;
+    self.$el.append(self.$container);
+    return self;
   },
   renderLogo : function(){
-    var self = this,
-    typogEl = $('<div class="logo"></div>'),
-    logoBase64 = this.theme.get(this.CONSTANTS.THEME.LOGO).base64String;
+    var self = this;
+    var typogEl = $('<div class="logo"></div>');
+    var logoBase64 = self.theme.get(this.CONSTANTS.THEME.LOGO).base64String;
     typogEl.append('<h4>Logo</h4>');
-    typogEl.append(this.templates.$themeLogo({ logoBase64 : logoBase64}));
-    if (!this.readOnly){
+    typogEl.append(self.templates.$themeLogo({ logoBase64 : logoBase64}));
+    if (!self.readOnly){
       var fileBrowse = $('<br /><input type="file" id="logoUpload" name="logo"><br />');
       typogEl.append(fileBrowse);
     }
-
     return typogEl;
   },
-  renderColours : function(){
-    var self = this,
-    coloursEl = $('<div class="colours"></div>'),
-    colours = this.theme.get(this.CONSTANTS.THEME.COLOURS);
-    _.each(colours, function(subheadings, heading){
-      var sectionContainer = $('<div class=" themesection ' + heading + '"></div>');
-      sectionContainer.append('<h4>' + heading + '</h4>');
-
-      var colourSection = $('<div class="coloursection well themesectionBody" data-section="' + heading + '"></div>');
-      _.each(subheadings, function(colorHex, name){
-        var label = self.CONSTANTS.THEME.DESCRIPTIONS[name] || self.deCamelCase(name),
-        colourInput = $(self.templates.$themeColourRow( { name : name, value : colorHex, label : label } )),
-        input = $(colourInput.find('input'));
-        self.spectrumify(colourInput, { color : colorHex, "name": name }, 'color', 'background');
-        colourSection.append( colourInput );
-      });
-      sectionContainer.append(colourSection);
-      coloursEl.append(sectionContainer);
-    });
-    return coloursEl;
-  },
-  renderTypography : function(){
-    var self = this,
-    typogEl = $('<div class="typography  themesection"></div>'),
-    typogElBody = $('<div class="themesectionBody well"></div>'),
-    typog = this.theme.get(this.CONSTANTS.THEME.TYPOGRAPHY);
-    typogEl.append('<h4>Typography</h4>');
-    _.each(typog, function(fontAttributes, heading){
-      var fontRow = self.selectsRow('Font', heading, fontAttributes);
-      fontRow.change(function(){
-        self.syncThemeModel.call(self);
-      });
-      typogElBody.append(fontRow);
-    });
-    typogEl.append(typogElBody);
-    return typogEl;
-  },
-  renderBorders : function(){
-    var self = this,
-    bordersEl = $('<div class="borders  themesection"></div>'),
-    bordersElBody = $('<div class="themesectionBody well"></div>'),
-    borders = self.theme.get(self.CONSTANTS.THEME.BORDERS);
-    bordersEl.append('<h4>Borders</h4>');
-    _.each(borders, function(borderAttributes, heading){
-      var row = self.selectsRow('Border', heading, borderAttributes);
-      row.change(function (){
-         self.syncThemeModel.call(self);
-      });
-      bordersElBody.append(row);
-    });
-    bordersEl.append(bordersElBody);
-    return bordersEl;
-  },
-  selectsRow : function(type, heading, attributes){
+  renderColours : function(fullSectionId, backgroundInfo){
     var self = this;
-    var formattedName = this.CONSTANTS.THEME.DESCRIPTIONS[heading];
+    var colorHex = backgroundInfo.background_color;
+
+    var colourInput = $(self.templates.$themeColourRow( {id: fullSectionId, value : colorHex } )),
+    input = $(colourInput.find('input'));
+    self.spectrumify(colourInput, colorHex, fullSectionId, "color");
+    return colourInput;
+  },
+  renderTypography : function(fullSectionId, typographyInfo){
+    var self = this;
+    var fontRow = self.selectsRow('Font', fullSectionId, typographyInfo, typographyInfo.fontColour);
+    fontRow.change(function(){
+      self.syncThemeModel.call(self);
+    });
+
+    return fontRow;
+  },
+  renderBorders : function(fullSectionId, borderInfo){
+    var self = this;
+    var row = self.selectsRow('Border', fullSectionId, borderInfo, borderInfo.colour);
+    row.change(function (){
+      self.syncThemeModel.call(self);
+    });
+    return row;
+  },
+  selectsRow: function(type, fullSectionId, attributes, colourVal){
+    var self = this;
+//    var formattedName = this.CONSTANTS.THEME.DESCRIPTIONS[heading];
     var tplBaseName = '$theme' + type + 'Row',
     tplIncReadOnlyName = (self.readOnly) ? tplBaseName + 'ReadOnly' : tplBaseName, // Now includes the "ReadOnly" string if it's needed
-    tpl = this.templates[tplIncReadOnlyName],
-    row = $(tpl({r : attributes, name : heading, label: formattedName})),
+    tpl = self.templates[tplIncReadOnlyName],
+    row = $(tpl({r : attributes, name : fullSectionId})),
     input = $(row.find('input.colour'));
-    attributes.name = heading;
-    self.spectrumify(row, attributes, 'colour', type.toLowerCase());
+    var colorHex = "";
+
+    self.spectrumify(row, colourVal, fullSectionId, type);
 
     // Make sure the right select dropdown has the selected attribute to begin with
     row.find('select').each(function(){
-      var selectName = $(this).attr('name'),
+      var selectName = $(self).attr('name'),
       selectedValue = attributes[selectName],
-      selectedEl = $(this).find('option[value=' + selectedValue + ']');
+      selectedEl = $(self).find('option[value=' + selectedValue + ']');
       selectedEl.attr('selected', 'selected');
     });
     return row;
   },
 
   syncThemeModel : function (){
-    var self = this,
-    name = this.$el.find('input[name=themename]').val(),
-    colourSections = this.$el.find('.coloursection'),
-    fontRows = this.$el.find('.fontrow'),
-    borderRows = this.$el.find('.borderrow'),
-    colours = {},
-    typog = {},
-    borders = {},
-    fileInput, file;
-    // Set the name
-    this.theme.set(this.CONSTANTS.THEME.NAME, name);
+    var self = this;
+    var themeName = self.$el.find('input[name=themename]').val();
 
-    /*
-     Colours
-     iterate over every colour section dom node - we use these to separate section titles
-     */
 
-    $(colourSections).each(function(){
-      var el = $(this),
-      sectionName = el.data('section');
-      colours[sectionName] = {};
-      // Iterate over every specific colour input in this section - key value parts here
-      el.find('input').each(function(){
-        var inputName = $(this).attr('name'),
-        value = $(this).val();
-        colours[sectionName][inputName] = value;
+    var sectionVals = [];
+
+    _.each(self.theme.get(self.CONSTANTS.THEME.STRUCTURE)[self.CONSTANTS.THEME.SECTIONS], function(strThemeSection, strThemeSectionIdx){
+
+      var sectionObject = {id: strThemeSection.id, label: strThemeSection.label, "sub_sections": []};
+      _.each(strThemeSection[self.CONSTANTS.THEME.SUBSECTIONS], function(strSubSection, strThemeSubSectionIdx){
+        var subSectionObject = {id: strSubSection.id, label: strSubSection.label};
+        var fullSectionId = strThemeSection.id + "_" + strSubSection.id;
+
+        var sectionContainer = self.$el.find('#' + fullSectionId + '.configSubSectionContainer');
+        if(strSubSection.style.typography){
+          var fontRow = sectionContainer.find('.fontrow');
+
+          var fontSize = fontRow.find('select.size').val();
+          var fontFamily = fontRow.find('select.family').val();
+          var fontStyle = fontRow.find('select.style').val();
+          var fontColour = fontRow.find('input.colour').val();
+          subSectionObject[self.CONSTANTS.THEME.TYPOGRAPHY] = {
+            "fontSize": fontSize,
+            "fontFamily": fontFamily,
+            "fontStyle": fontStyle,
+            "fontColour": fontColour
+          };
+        }
+
+
+        if(strSubSection.style.background){
+          var colorRow = sectionContainer.find('.colorRow');
+
+          var backgroundInput = colorRow.find('input.colour');
+          var backgroundVal = backgroundInput.val();
+          subSectionObject[self.CONSTANTS.THEME.BACKGROUND] = {"background_color": backgroundVal};
+        }
+
+
+        if(strSubSection.style.border){
+          var borderRow = sectionContainer.find('.borderrow');
+
+          var thickness  = borderRow.find('select.thickness');
+          var style = borderRow.find('select.style');
+          var borderColor = borderRow.find('input.colour');
+
+          var thicknessVal = thickness.val();
+          var styleVal = style.val();
+          var borderColorVal = borderColor.val();
+          subSectionObject[self.CONSTANTS.THEME.BORDERS] = {
+            "thickness": thicknessVal,
+            "style": styleVal,
+            "colour": borderColorVal
+          };
+        }
+
+        sectionObject.sub_sections.push(subSectionObject);
       });
+
+      sectionVals.push(sectionObject);
     });
-    this.theme.set(this.CONSTANTS.THEME.COLOURS, colours);
+
+    self.theme.set(self.CONSTANTS.THEME.SECTIONS, sectionVals);
+    self.theme.set(self.CONSTANTS.THEME.NAME, themeName);
+    var themeGenerationResult = App.forms.themeCSSGenerator(self.theme.toJSON()).generateThemeCSS();
+
+    if(themeGenerationResult.generationResult.failed){
+      console.log("Theme generation failed: ", themeGenerationResult.generationResult);
+      return;
+    }
+    var css = themeGenerationResult.generatedCSS;
+    self.theme.set(self.CONSTANTS.THEME.CSS, css);
 
 
-    /*
-     Typography
-     */
-    $(fontRows).each(function(){
-      var name = $(this).data('name'),
-      row = {};
-      $($(this).find('input, select').serializeArray()).each(function(){
-        row[this.name] = this.value;
-      });
-      typog[name] = row;
-    });
-    this.theme.set(this.CONSTANTS.THEME.TYPOGRAPHY, typog);
-
-    /*
-     Borders
-     */
-    $(borderRows).each(function(){
-      var name = $(this).data('name'),
-      row = {};
-      $($(this).find('input, select').serializeArray()).each(function(){
-        row[this.name] = this.value;
-      });
-      borders[name] = row;
-    });
-    this.theme.set(this.CONSTANTS.THEME.BORDERS, borders);
-
-    var css = App.forms.themeCSSGenerator(this.theme.toJSON())();
     var prevWrapper = self.$el.first("#themesInnerContainer");
     prevWrapper.find('style').remove();
     prevWrapper.append('<style id="themeStyle">'+css+'</style>');
+
+
+//    name = this.$el.find('input[name=themename]').val(),
+//    colourSections = this.$el.find('.coloursection'),
+//    fontRows = this.$el.find('.fontrow'),
+//    borderRows = this.$el.find('.borderrow'),
+//    colours = {},
+//    typog = {},
+//    borders = {},
+//    fileInput, file;
+//    // Set the name
+//    self.theme.set(this.CONSTANTS.THEME.NAME, name);
+//
+//    /*
+//     Colours
+//     iterate over every colour section dom node - we use these to separate section titles
+//     */
+//
+//    $(colourSections).each(function(){
+//      var el = $(this),
+//      sectionName = el.data('section');
+//      colours[sectionName] = {};
+//      // Iterate over every specific colour input in this section - key value parts here
+//      el.find('input').each(function(){
+//        var inputName = $(this).attr('name'),
+//        value = $(this).val();
+//        colours[sectionName][inputName] = value;
+//      });
+//    });
+//    self.theme.set(self.CONSTANTS.THEME.COLOURS, colours);
+//
+//
+//    /*
+//     Typography
+//     */
+//    $(fontRows).each(function(){
+//      var name = $(this).data('name'),
+//      row = {};
+//      $($(this).find('input, select').serializeArray()).each(function(){
+//        row[this.name] = this.value;
+//      });
+//      typog[name] = row;
+//    });
+//    self.theme.set(self.CONSTANTS.THEME.TYPOGRAPHY, typog);
+//
+//    /*
+//     Borders
+//     */
+//    $(borderRows).each(function(){
+//      var name = $(this).data('name'),
+//      row = {};
+//      $($(this).find('input, select').serializeArray()).each(function(){
+//        row[this.name] = this.value;
+//      });
+//      borders[name] = row;
+//    });
+//    self.theme.set(self.CONSTANTS.THEME.BORDERS, borders);
+//
+//    var css = App.forms.themeCSSGenerator(this.theme.toJSON())();
+//    var prevWrapper = self.$el.first("#themesInnerContainer");
+//    prevWrapper.find('style').remove();
+//    prevWrapper.append('<style id="themeStyle">'+css+'</style>');
 
   },
 
@@ -383,13 +477,13 @@ App.View.FormThemesEdit = App.View.Forms.extend({
       });
     }
   },
-  spectrumify : function(colorRow, attrs, attrVal, type){
+  spectrumify : function(colorRow, colorVal, fieldId, fieldType){
     var self = this;
     var input = colorRow.find('input');
-    var altField = ".col_" + type + "_" + attrs["name"];
+    var fullFieldId = fieldType ? fieldType.toLowerCase() + "_" + fieldId : fieldId;
+    var altField = "." + fullFieldId;
     var colorDisplay = colorRow.find(altField);
-
-    colorDisplay.css("background-color", attrs[attrVal]);
+    colorDisplay.css("background-color", colorVal);
 
     if(!this.readOnly){
       var colorPickerInput = input.colorpicker({
@@ -406,7 +500,7 @@ App.View.FormThemesEdit = App.View.Forms.extend({
           alpha:		[3, 0, 1, 1]
         },
         inline: false,
-        color : attrs[attrVal],
+        color : colorVal,
         colorFormat: 'RGBA',
         rgb: false,
         hsv: false,
@@ -425,7 +519,7 @@ App.View.FormThemesEdit = App.View.Forms.extend({
         e.preventDefault();
         colorPickerInput.colorpicker('open');
       });
-    }
+   }
   },
   back : function(e){
     if (e){
