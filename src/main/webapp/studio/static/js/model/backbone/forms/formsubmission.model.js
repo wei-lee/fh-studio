@@ -24,7 +24,7 @@ App.Model.FormSubmission = App.Model.FormBase.extend({
     }
     return undefined;
   },
-  "complete": function (){
+  "complete": function (cb){
     $.ajax({
       type: 'POST',
       url: "/api/v2/forms/submission/"+this.id+"/complete",
@@ -32,10 +32,10 @@ App.Model.FormSubmission = App.Model.FormBase.extend({
       contentType: "application/json; charset=utf-8",
       dataType: "json",
       success: function(res){
-
+        return cb(null, res);
       },
-      "error":function (){
-
+      "error":function (err){
+        return cb(err);
       }
     });
   }

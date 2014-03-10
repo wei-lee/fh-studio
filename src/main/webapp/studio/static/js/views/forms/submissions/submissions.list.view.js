@@ -234,6 +234,9 @@ App.View.SubmissionList = App.View.FormListBase.extend({
     this.selectMessage = new App.View.FullPageMessageView({ message : 'Select a ' + this.singleTitle.toLowerCase() + ' above to preview & manage', button : false });
     this.$el.append(this.selectMessage.render().$el);
 
+    this.$submissionContainer = $('<div class="submissionContainer"></div>');
+    this.$el.append(this.$submissionContainer);
+
     $('.submissionslist').removeClass("span10").addClass("row-fluid");
     return this;
   },
@@ -296,9 +299,7 @@ App.View.SubmissionList = App.View.FormListBase.extend({
   },
   onRowSelected : function (e){
     var self = this;
-    if(this.submissionDetail){
-      this.submissionDetail.remove();
-    }
+    self.$submissionContainer.hide();
     this.selectMessage.options.message = "Loading...";
     this.selectMessage.render();
     this.selectMessage.$el.show();
@@ -311,7 +312,7 @@ App.View.SubmissionList = App.View.FormListBase.extend({
 
     model.fetch({"success": function (res){
       self.submissionDetail = new App.View.SubmissionDetail({"submission":res, form:self.form, formsCol:self.formsCol});
-      self.$el.append(self.submissionDetail.render().$el);
+      self.$submissionContainer.show().html(self.submissionDetail.render().$el);
       self.selectMessage.$el.hide();
 
     },"error":function (res){

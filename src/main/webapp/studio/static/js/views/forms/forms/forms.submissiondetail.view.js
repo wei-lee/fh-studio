@@ -12,8 +12,6 @@ App.View.SubmissionDetail = App.View.Forms.extend({
     'click .downloadfile' : "downloadFile",
     'click #editSubmission' : 'editSubmission',
     'click #cancelEdit' : 'cancelEdit'
-
-
   },
 
   initialize : function (){
@@ -24,18 +22,18 @@ App.View.SubmissionDetail = App.View.Forms.extend({
     if(self.options.submission){
       self.submission = self.options.submission.toJSON();
     }
-    _.bindAll(this);
   },
-
-  /**
-   *  NOTE EDIT FUNCTIONS MOVING TO THE EDIT VIEW
-   *
-   */
   editSubmission : function (e) {
     //make new edit submission view and render
     var self = this;
-    var editView = new App.View.SubmissionEdit({"preparedSubmission":self.viewData, "model":self.options.submission, "form":self.form, "el":self.$el});
-    editView.render();
+    self.editView = new App.View.SubmissionEdit({"preparedSubmission":self.viewData, "model":self.options.submission, "form":self.form, "el":self.$el});
+    self.editView.render();
+    //TODO: this would be better implemented with submissiondetail and submissionedit subclasses of a parent view with shared logic.
+    //TODO: SubmissionEdit should be bound to a view by this.append(editView.render().$el), rather than passing this.$el and emptying it
+    self.editView.on('saved', function(){
+      self.editMode = false;
+      self.render();
+    });
 
 
   },
@@ -43,8 +41,6 @@ App.View.SubmissionDetail = App.View.Forms.extend({
  render : function (){
 
     var self = this;
-    self.$el.empty();
-
     var subData = {};
     if(self.options.submission){
       subData = self.options.submission.toJSON();
@@ -76,6 +72,7 @@ App.View.SubmissionDetail = App.View.Forms.extend({
       }],function doRender (){
         self.processForm(self.form, subData, function (err, viewData){
           self.viewData = viewData;
+          self.$el.empty();
           var html = self.submissionTemplate(viewData);
           self.$el.append(html);
         });
@@ -140,35 +137,35 @@ App.View.SubmissionDetail = App.View.Forms.extend({
         var fields = page.get("fields");
         async.mapSeries(fields, function(field, mcb1) {
           var subFieldMatch = _(submission.formFields).find(function(subField) {
-          var matched = subField.fieldId._id.toString() === field._id.toString(); // need toString() as ids are objects
-          if(matched){
-            subField.matched = true;
+            var matched = subField.fieldId._id.toString() === field._id.toString(); // need toString() as ids are objects
+            if(matched){
+              subField.matched = true;
+            }
+            return matched;
+          });
+          if(subFieldMatch){
+            field.values =  (subFieldMatch.fieldValues || []);
           }
-          return matched;
-        });
-        if(subFieldMatch){
-          field.values =  (subFieldMatch.fieldValues || []);
-        }
-        else{
-          field.values= [];
-        }
-        switch(field.type) {
-          case 'photo':
-            async.map(field.values, function(val, mcb2) {
-              val.url = self.FILE_UPLOAD_URL + val.groupId+"?rand=" + Math.random();
-              mcb2();
-            }, mcb1);
-              break;
-            case 'file':
-              field.values.forEach(function(val) {
-                if(null != val){
-                  val.downloadUrl = self.FILE_UPLOAD_URL + val.groupId + "?rand="+Math.random();
-                }
-              });
-              return mcb1();
-            default:
-              return mcb1();
+          else{
+            field.values= [];
           }
+          switch(field.type) {
+            case 'photo':
+              async.map(field.values, function(val, mcb2) {
+                val.url = self.FILE_UPLOAD_URL + val.groupId+"?rand=" + Math.random();
+                mcb2();
+              }, mcb1);
+                break;
+              case 'file':
+                field.values.forEach(function(val) {
+                  if(null !== val){
+                    val.downloadUrl = self.FILE_UPLOAD_URL + val.groupId + "?rand="+Math.random();
+                  }
+                });
+                return mcb1();
+              default:
+                return mcb1();
+            }
         }, mcb0);
       }, function(err, results) {
         return callback(undefined,form);

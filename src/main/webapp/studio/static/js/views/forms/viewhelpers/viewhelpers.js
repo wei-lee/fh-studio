@@ -18,8 +18,6 @@ Handlebars.registerHelper("createFormField", function (options, editMode, contex
   var definition = options && options.fieldOptions && options.fieldOptions.definition || false; // convenience property
   options.data = [];
 
-  console.log("TYPE ",options.type , options.values);
-
   if(options.values.length < 1 || (options.values && options.values.selections)){           //no values
     options.data.push({"_id":options._id});
     buildMulti(options.data[0],definition,[],0);
@@ -35,9 +33,7 @@ Handlebars.registerHelper("createFormField", function (options, editMode, contex
           idx : index
         };
       // Some use the checked prop, some use selected..
-      console.log("OPTIONS TYPE ", options.type);
       if (options.type === 'checkboxes'){
-        console.log("DEF FOR CHECKBOXES ",definition, options.values);
         val.selections = val.selections || [];
         // NB Checkboxes has a "selections" object where the array lives, unlike radio and dropdown because who needs to be consistant
         optData.checked = val.selections.indexOf(opt.label)>-1 ? 'checked' : '';
