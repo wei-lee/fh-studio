@@ -50,6 +50,7 @@ App.View.SubmissionEdit = App.View.Forms.extend({
      });
    },function done(err){
      self.submission.complete();
+     self.message('Updated Submission');
    });
   },"error": function (){}});
 
