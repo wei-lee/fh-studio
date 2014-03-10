@@ -68,10 +68,17 @@ Handlebars.registerHelper("createFormField", function (options, editMode, contex
 
     if (options.type === 'location' || options.type === 'locationMap'){
       if (definition && definition.locationUnit==='latlong'){
-        data.maplink = (!val) ? false : "http://maps.google.com/maps?z=12&t=m&q=loc:" + val.lat + "+" + val.long;
-        val = val || {lat : 'No value', long : 'No value'};
+        if (val && val.lat && val['long']){
+          data.maplink = "http://maps.google.com/maps?z=12&t=m&q=loc:" + val.lat + "+" + val['long'];
+        }else{
+          data.maplink = false;
+          val = {};
+          val['lat'] = 'No value';
+          val['long'] = 'No value';
+        }
+
         data.lat = val.lat;
-        data.long = val.long;
+        data['long'] = val['long'];
       }else{
         val = val || {eastings : 'No value', northings: 'No value', zone : 'No value'};
         data.zone = val.zone;
