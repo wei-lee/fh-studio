@@ -130,12 +130,14 @@ App.View.SubmissionDetail = App.View.Forms.extend({
     var self = this;
 
     form.missing = [];
+    var pages = form.get('pages');
 
     async.series([function (callback){
-      async.mapSeries(form.get('pages'), function(page, mcb0) {
+      async.mapSeries(pages, function(page, mcb0) {
         var fields = page.get("fields");
         async.mapSeries(fields, function(field, mcb1) {
           var subFieldMatch = _(submission.formFields).find(function(subField) {
+            //match the submission field to the existing formField
             var matched = subField.fieldId._id.toString() === field._id.toString(); // need toString() as ids are objects
             if(matched){
               subField.matched = true;
@@ -143,7 +145,7 @@ App.View.SubmissionDetail = App.View.Forms.extend({
             return matched;
           });
           if(subFieldMatch){
-            field.values =  (subFieldMatch.fieldValues || []);
+            field.values =  subFieldMatch.fieldValues || [];
           }
           else{
             field.values= [];
@@ -159,7 +161,7 @@ App.View.SubmissionDetail = App.View.Forms.extend({
               case 'file':
                 field.values.forEach(function(val) {
                   if(null !== val){
-                    val.downloadUrl = self.FILE_UPLOAD_URL + val.groupId + "?rand="+Math.random();
+                    val.downloadUrl = self.FILE_UPLOAD_URL + val.groupId;
                   }
                 });
                 return mcb1();
@@ -174,9 +176,35 @@ App.View.SubmissionDetail = App.View.Forms.extend({
       async.mapSeries(submission.formFields, function (subField, dcb){
         if(!subField.matched){
           subField.fieldId.values = subField.fieldValues;
-          form.missing.push(subField.fieldId);
+          //attempt to match missing subfield with page
+          async.mapSeries(pages, function(page, mcb0) {
+            if(subField.fieldId && subField.fieldId.pageData){
+              if(subField.fieldId.pageData._id === page.get("_id")){
+                subField.fieldId.missing = true;
+                subField.matched = true;
+                page.get("fields").push(subField.fieldId);
+              }
+            }else{
+              form.missing.push(subField.fieldId);
+            }
+            mcb0();
+          }, function (){
+            if(! subField.matched){
+              if(subField && subField.fieldId && subField.fieldId.pageData){
+                pages.push({
+                  "_id":subField.fieldId.pageData._id,
+                  "name":subField.fieldId.pageData.name + "(page no longer exists)",
+                  "fields":[subField.fieldId]
+                });
+              }else{
+                form.missing.push(subField.fieldId);
+              }
+            }
+            dcb();
+          });
+        }else{
+          dcb();
         }
-        dcb();
       },callback);
     }],function(err, res){
       cb(res[0]);

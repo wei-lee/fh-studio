@@ -216,7 +216,10 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
   },
   onDownloadSubmissionPdf: function(e) {
     e.preventDefault();
-    var model = this.submissions.collection.get(this.submissions._id);
+    var subId = $(e.target).data("subid");
+    console.log("subId for download ", subId);
+    var model = this.submissions.collection.get(subId);
+    console.log("got submission ", model);
     window.location.href = model.getDownloadUrl();
   }
 });

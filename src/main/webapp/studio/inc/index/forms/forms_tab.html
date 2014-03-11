@@ -256,7 +256,7 @@
         <li><a class="btn-clone-form" href="#"><i class="icon-retweet"></i>Import Form Template</a></li>
       {{/if}}
       {{#if formView}}
-      <li><a class="btn-delete-form" href="#"><i class="icon-trash"></i> Delete</a></li>
+      <li><a class="btn-delete-form" data-warning="All submissions will also be deleted!" href="#"><i class="icon-trash"></i> Delete</a></li>
       {{/if}}
   </ul>
   </div>
@@ -1016,7 +1016,7 @@
 </script>
 
 <script type="text/x-handlebars-template" id="submissionActions">
-    <button class="btn btn-large btn-primary" id="downloadSubmissionPdf" type="button">Download PDF</button>
+    <button class="btn btn-large btn-primary" id="downloadSubmissionPdf" data-subid="{{_id}}" type="button">Download PDF</button>
     <button class="btn btn-large btn-primary" id="printSubmission" type="button">Print Submission</button>
     {{#checkRole "formsadmin,formseditor"}}
     <button class="hidden btn btn-large btn-warning" data-subid="{{_id}}" id="editSubmission" type="button">Edit Submission</button>

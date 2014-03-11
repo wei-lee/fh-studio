@@ -115,6 +115,7 @@ App.View.SubmissionEdit = App.View.Forms.extend({
   },
   filesToSubmit : {},
   updateModel : function (e){
+    console.log("updagte model");
     var self = this;
     var _this = $(e.target);
     var index = _this.data('index') || 0;
@@ -159,6 +160,7 @@ App.View.SubmissionEdit = App.View.Forms.extend({
       }
       self.submission.get('formFields').push(newField);
     }
+    console.log("submssion updated" , self.submission);
   },
   enableFileUpload: function(){
     var self = this;

@@ -9,6 +9,7 @@ App.Model.FormSubmission = App.Model.FormBase.extend({
   fetchURL : "/api/v2/forms/submission/{{id}}",
   url : "/api/v2/forms/submission",
   getDownloadUrl: function() {
+    console.log("download url id ", this.id);
     return this.fetchURL.replace('{{id}}', this.id) + ".pdf";
   },
   "findFormField": function (id){

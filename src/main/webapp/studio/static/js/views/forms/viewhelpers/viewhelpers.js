@@ -49,10 +49,12 @@ Handlebars.registerHelper("createFormField", function (options, editMode, contex
 
   // Iterate over field values (in case of multi-field form) - often this is just a single element in the array.
   for (i=0; i<options.values.length; i++){
+
     var val = options.values[i],
     data = {};
     data.val = val; // Could be a number of things - just a string, array of strings, object - all depends on options.type
     data._id = options._id;
+    data.missingText = (options.missing) ? "This field has been removed from the form":"";
     data.idx = i;
     data.disabled = editMode===true ? '' : 'disabled';
     if (definition && definition.options){
@@ -100,6 +102,7 @@ Handlebars.registerHelper("createFormField", function (options, editMode, contex
 
   template = Handlebars.compile(_templateForField(options));
   options.hide = (editMode) ? "formVal" : "hide formVal";
+
   template = template(options);
   return template;
 
@@ -112,7 +115,7 @@ Handlebars.registerHelper("createFormField", function (options, editMode, contex
       case "emailAddress":
       case "dateTime":
       case "url":
-        template = (editMode) ? "<input data-index='{{idx}}' {{disabled}} type='text' name='{{_id}}' placeholder='No value present' value='{{val}}' class='formVal' data-_id='{{_id}}'  />" : "{{val}}";
+        template = (editMode) ? "<input data-index='{{idx}}' {{disabled}} type='text' name='{{_id}}' placeholder='No value present' value='{{val}}' class='formVal' data-_id='{{_id}}'  />" : "{{val}} <span class='help-inline' style='color: orange;'>{{missingText}}</span>";
         break;
       case "textarea":
         template = (editMode) ? "<textarea data-index='{{idx}}' name='{{_id}}' placeholder='No value present' {{disabled}} class='formVal' data-_id='{{_id}}'  >{{val}}</textarea>" : "<p>{{val}}</p>";
