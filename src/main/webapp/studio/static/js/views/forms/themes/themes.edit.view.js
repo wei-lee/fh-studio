@@ -351,68 +351,6 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     prevWrapper.find('style').remove();
     prevWrapper.append('<style id="themeStyle">'+css+'</style>');
 
-
-//    name = this.$el.find('input[name=themename]').val(),
-//    colourSections = this.$el.find('.coloursection'),
-//    fontRows = this.$el.find('.fontrow'),
-//    borderRows = this.$el.find('.borderrow'),
-//    colours = {},
-//    typog = {},
-//    borders = {},
-//    fileInput, file;
-//    // Set the name
-//    self.theme.set(this.CONSTANTS.THEME.NAME, name);
-//
-//    /*
-//     Colours
-//     iterate over every colour section dom node - we use these to separate section titles
-//     */
-//
-//    $(colourSections).each(function(){
-//      var el = $(this),
-//      sectionName = el.data('section');
-//      colours[sectionName] = {};
-//      // Iterate over every specific colour input in this section - key value parts here
-//      el.find('input').each(function(){
-//        var inputName = $(this).attr('name'),
-//        value = $(this).val();
-//        colours[sectionName][inputName] = value;
-//      });
-//    });
-//    self.theme.set(self.CONSTANTS.THEME.COLOURS, colours);
-//
-//
-//    /*
-//     Typography
-//     */
-//    $(fontRows).each(function(){
-//      var name = $(this).data('name'),
-//      row = {};
-//      $($(this).find('input, select').serializeArray()).each(function(){
-//        row[this.name] = this.value;
-//      });
-//      typog[name] = row;
-//    });
-//    self.theme.set(self.CONSTANTS.THEME.TYPOGRAPHY, typog);
-//
-//    /*
-//     Borders
-//     */
-//    $(borderRows).each(function(){
-//      var name = $(this).data('name'),
-//      row = {};
-//      $($(this).find('input, select').serializeArray()).each(function(){
-//        row[this.name] = this.value;
-//      });
-//      borders[name] = row;
-//    });
-//    self.theme.set(self.CONSTANTS.THEME.BORDERS, borders);
-//
-//    var css = App.forms.themeCSSGenerator(this.theme.toJSON())();
-//    var prevWrapper = self.$el.first("#themesInnerContainer");
-//    prevWrapper.find('style').remove();
-//    prevWrapper.append('<style id="themeStyle">'+css+'</style>');
-
   },
 
   onThemeSave : function(e){
