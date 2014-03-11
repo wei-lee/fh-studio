@@ -124,14 +124,14 @@ App.View.SubmissionDetail = App.View.Forms.extend({
 
 
 
-
+  //TODO tidy up and also perhaps this belongs in fh-forms to be done on the server side.
   mergeSubmissionAndForm: function (form, submission, cb){
     var self = this;
 
     form.missing = [];
     var pages = form.get('pages');
 
-    async.series([function (callback){
+    async.series([function mapSubmissionFieldToExistingFormsFields (callback){
       async.mapSeries(pages, function(page, mcb0) {
         var fields = page.get("fields");
         async.mapSeries(fields, function(field, mcb1) {
@@ -172,7 +172,8 @@ App.View.SubmissionDetail = App.View.Forms.extend({
         return callback(undefined,form);
       });
     }, function (callback){
-      async.mapSeries(submission.formFields, function (subField, dcb){
+      async.mapSeries(submission.formFields, function matchRemovedFieldsWithPages (subField, dcb){
+        //only interested if no match in existing form found
         if(!subField.matched){
           subField.fieldId.values = subField.fieldValues;
           //attempt to match missing subfield with page
@@ -184,10 +185,12 @@ App.View.SubmissionDetail = App.View.Forms.extend({
                 page.get("fields").push(subField.fieldId);
               }
             }else{
+              //allow for submissions that have not had pageid and name populated.
               form.missing.push(subField.fieldId);
             }
             mcb0();
-          }, function (){
+          }, function createMissingPageForField (){
+            //finally if still no match recreate a form page for that and any other fields that belong to the same page id
             if(! subField.matched){
               if(subField && subField.fieldId && subField.fieldId.pageData){
                 pages.push({
