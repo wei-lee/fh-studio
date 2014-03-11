@@ -115,7 +115,6 @@ App.View.SubmissionDetail = App.View.Forms.extend({
     var self = this;
     self.editMode = false;
     return self.render();
-    var subId = $(e.target).data('subid');
   },
 
   enableSubmissionActions : function (subId){

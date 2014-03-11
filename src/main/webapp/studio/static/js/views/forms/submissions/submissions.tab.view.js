@@ -180,16 +180,8 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
     form = this.$el.find('.submissionExportForm'),
     formId, app, submission;
 
-
     if (this.active === "recent"){
-      submission = this.submissions.index;
-      if (typeof submission === "undefined"){
-        return this.modal('Please select a submission to export', 'Error');
-      }
-      submission = this.submissions.collection.at(submission);
-      submission = submission.get('_id');
-      req.submission = submission;
-
+      var self = this;
     }else if (this.active === "perapp" || this.active === "perform"){
       formId = this.$el.find('select.formSelect').val();
       if (formId && formId !== ""){
@@ -215,6 +207,7 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
 
   },
   onDownloadSubmissionPdf: function(e) {
+    console.log("onDownloadSubmissionPdf");
     e.preventDefault();
     var subId = $(e.target).data("subid");
     console.log("subId for download ", subId);

@@ -15,8 +15,10 @@ App.View.FormsController = Backbone.View.extend({
     'click .btn-add-submission' : 'onAddSubmission',
     'click #printSubmission' : 'onPrintSubmission'
   },
-  initialize : function(){
 
+
+
+  initialize : function(){
 
   },
   views : {},
@@ -39,7 +41,6 @@ App.View.FormsController = Backbone.View.extend({
     var self = this;
     var userRoles = $fw.getUserProp("roles");
     this.$el.addClass('row formscontrollerdiv row-fluid');
-
     this.menu = new App.View.FormMenu();
     this.bind('menuchange', function(active){
       self.hideAll();
@@ -97,7 +98,7 @@ App.View.FormsController = Backbone.View.extend({
     if (this.views.submissions){
       this.views.submissions.$el.remove();
     }
-    this.views.submissions = new App.View.FormSubmissionsTabs({"forms": this.getActiveForms().collection});
+    this.views.submissions = new App.View.FormSubmissionsTabs({"forms": new App.Collection.Form()});
     this.$el.append(this.views.submissions.render().$el);
   },
   onAppSubmissions : function(){
