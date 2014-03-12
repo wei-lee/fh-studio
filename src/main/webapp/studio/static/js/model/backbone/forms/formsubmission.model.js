@@ -8,6 +8,7 @@ App.collections = App.collections || {};
 App.Model.FormSubmission = App.Model.FormBase.extend({
   fetchURL : "/api/v2/forms/submission/{{id}}",
   url : "/api/v2/forms/submission",
+  updateUrl : "/api/v2/forms/submission/{{id}}",
   getDownloadUrl: function() {
     console.log("download url id ", this.id);
     return this.fetchURL.replace('{{id}}', this.id) + ".pdf";
@@ -39,6 +40,46 @@ App.Model.FormSubmission = App.Model.FormBase.extend({
         return cb(err);
       }
     });
+  },
+  save : function (options){
+    var self = this,
+      id = this.get('_id');
+    var url = this.updateUrl.replace('{{id}}', id),
+      csrfToken = $('input[name="csrftoken"]').val();
+    url += "?csrftoken=" + csrfToken;
+
+
+
+
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: JSON.stringify(this.toJSON()),
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      cache: true,
+      success: function(res){
+        if (res) {
+          if (!options.silent){
+            self.trigger('reset');
+          }
+
+          if ($.isFunction(options.success)) {
+            options.success(res, options);
+          }
+        } else {
+          if ($.isFunction(options.error)) {
+            options.error(res, options);
+          }
+        }
+      },
+      error: function(xhr, status){
+        if ($.isFunction(options.error)) {
+          options.error(arguments);
+        }
+      }
+    });
+
   }
 
 });
