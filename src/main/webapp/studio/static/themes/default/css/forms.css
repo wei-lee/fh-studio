@@ -469,3 +469,64 @@ Improved formbuilder.js styling - TODO: Should this be applied to CMS Also?
     border-radius: 0px;
     height: 200px;
 }
+
+.submissionDetail input{
+    background-color: #fff;
+}
+.submissionDetail textarea{
+    background-color: #fff;
+}
+
+.submissionDetail select{
+    background-color: #fff;
+}
+
+.submissionDetail a.maplink {
+    text-decoration: none;
+    font-size: 30px;
+}
+
+.submissionDetail .dl-horizontal dt {
+    width: 180px;
+}
+.submissionDetail .dl-horizontal dt, .submissionDetail .dl-horizontal dd {
+    padding: 4px;
+}
+
+
+.submissionDetail td.fieldlabel {
+    font-weight: bold;
+    text-align: right;
+}
+
+.submissionDetail h5 {
+    text-align: left;
+    border-bottom: 2px solid #277aac;
+    margin-bottom: 10px;
+    font-weight: normal;
+    font-size: 16px;
+}
+
+.submissionDetail .formfield label {
+    width: 100px;
+    display: inline-block;
+    font-style: italic;
+}
+
+.submissionDetail input[type=file] {
+    display: none;
+}
+
+.submissionDetail.editMode input[type=file] {
+    display: block;
+}
+.submissionDetail .icon-repeat {
+    margin-top: 3px;
+}
+.submissionDetail ol {
+    margin-left: 30px;
+}
+
+.submissionDetail ol, .submissionDetail ol li {
+    list-style: decimal;
+}

@@ -169,6 +169,7 @@ js/views/forms/forms/forms.notifications.view.js
 js/views/forms/forms/forms.editrules.view.js
 js/views/forms/forms/forms.fieldrules.view.js
 js/views/forms/forms/forms.pagerules.view.js
+js/views/forms/forms/forms.submissionedit.view.js
 js/views/forms/forms/forms.submissiondetail.view.js
 js/views/forms/submissions/submissions.list.view.js
 js/views/forms/submissions/submissions.tab.view.js

@@ -59,7 +59,7 @@ String pageName = studio.getPageName();
   <%@ include file="./dashboard/dashboard_tab.html" %>
 
     <% if(studio.getProperty("appforms-enabled").equals("true") && studio.hasFormsRole()){ %>
-    <jsp:include page="./forms/forms_tab.html" />
+        <jsp:include page="./forms/forms_tab.html" />
     <% } %>
 
   <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER)) { %>

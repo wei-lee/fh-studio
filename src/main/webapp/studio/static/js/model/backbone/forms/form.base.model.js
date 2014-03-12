@@ -45,7 +45,8 @@ App.Model.FormBase = Backbone.RelationalModel.extend({
         }
       }
     });
-  }
+  },
+
 });
 
 App.Collection.FormBase = Backbone.Collection.extend({

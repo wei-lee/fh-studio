@@ -23,13 +23,17 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
     _.bindAll(this);
   },
 
+
   render : function (){
-    this.jsonForms = this.options.forms.toJSON();
-    console.log("RENDER SUBMISSIONS TAB");
-    this.$el.empty();
-    this.$el.addClass('span10');
-    this.$el.html(this.templates.$formsSubmissionsTab({forms:this.jsonForms}));
-    this.recentSubmissions();
+    var self = this;
+    this.formsCollection.fetch({"success":function (forms){
+      self.jsonForms = forms.toJSON();
+      console.log("RENDER SUBMISSIONS TAB");
+      self.$el.empty();
+      self.$el.addClass('span10');
+      self.$el.html(self.templates.$formsSubmissionsTab({forms:self.jsonForms,"formsCol":self.formsCollection}));
+      self.recentSubmissions();
+    }});
 
     return this;
   },
@@ -176,16 +180,8 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
     form = this.$el.find('.submissionExportForm'),
     formId, app, submission;
 
-
     if (this.active === "recent"){
-      submission = this.submissions.index;
-      if (typeof submission === "undefined"){
-        return this.modal('Please select a submission to export', 'Error');
-      }
-      submission = this.submissions.collection.at(submission);
-      submission = submission.get('_id');
-      req.submission = submission;
-
+      var self = this;
     }else if (this.active === "perapp" || this.active === "perform"){
       formId = this.$el.find('select.formSelect').val();
       if (formId && formId !== ""){
@@ -211,8 +207,12 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
 
   },
   onDownloadSubmissionPdf: function(e) {
+    console.log("onDownloadSubmissionPdf");
     e.preventDefault();
-    var model = this.submissions.collection.get(this.submissions._id);
+    var subId = $(e.target).data("subid");
+    console.log("subId for download ", subId);
+    var model = this.submissions.collection.get(subId);
+    console.log("got submission ", model);
     window.location.href = model.getDownloadUrl();
   }
 });
