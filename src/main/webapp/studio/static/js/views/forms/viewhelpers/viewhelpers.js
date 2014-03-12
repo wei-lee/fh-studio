@@ -80,7 +80,7 @@ Handlebars.registerHelper("createFormField", function (options, editMode, contex
         }
 
         data.lat = val.lat;
-        data.long = val.long;
+        data['long'] = val['long'];
       }else if ('locationMap' === options.type){
         data.lat = val.lat;
         data['long'] = val['long'];
