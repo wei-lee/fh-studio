@@ -415,8 +415,8 @@ var themeCSSGenerator = function (themeJSON, styleStructure) {
             "staticCSS": []
           },
           {
-            "id": "required",
-            "label": "Required Symbol (*)",
+            "id": "numbering",
+            "label": "Numbering",
             "style": {
               "typography": true,
               "background": false,
@@ -435,14 +435,21 @@ var themeCSSGenerator = function (themeJSON, styleStructure) {
                 "key": "padding-top",
                 "value": "5px"
               }
-            ],
-            "classAdditions": [{
-              "classNameAddition": ":after",
-              "cssAdditions": [{
-                "key": "content",
-                "value": "\"*\""
-              }]
-            }]
+            ]
+          },
+          {
+            "id": "required",
+            "label": "Required Symbol (*)",
+            "style": {
+              "typography": true,
+              "background": false,
+              "border": false
+            },
+            "staticCSS": [{
+              "key": "content",
+              "value": "\"*\""
+            }],
+            "class_name": "field_required:after"
           }
         ]
       },
@@ -1188,6 +1195,16 @@ var themeCSSGenerator = function (themeJSON, styleStructure) {
               "colour": "#542134"
             }
 
+          },
+          {
+            "id": "numbering",
+            "label": "Numbering",
+            "typography": {
+              "fontSize": "13pt",
+              "fontFamily": "arial",
+              "fontStyle": "bold",
+              "fontColour": "#654234"
+            }
           },
           {
             "id": "required",
