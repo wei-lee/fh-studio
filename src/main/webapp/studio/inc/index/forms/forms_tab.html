@@ -393,82 +393,55 @@
 </script>
 
 
-<script id="theme_functional_areas" type="text/x-handlebars-template">
-    <table class="themeEditTable">
-        <tr>
-            <td>{{logoHtml}}</td>
-            <td>Typography</td>
-            <td>Background</td>
-            <td>Border</td>
-        </tr>
-    </table>
-</script>
-
-<script id="theme_functional_areas_section" type="text/x-handlebars-template">
-    <tr>
-        <td>{{label}}</td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-</script>
-
-<script id="theme_functional_areas_row" type="text/x-handlebars-template">
-    <tr>
-        <td>{{label}}</td>
-        <td>{{typographyHtml}}</td>
-        <td>{{backgroundHtml}}</td>
-        <td>{{borderHtml}}</td>
-    </tr>
-</script>
-
 <script id="themeColourRow" type="text/x-handlebars-template">
     <div class="colorRow">
-        <input type='text' name='{{id}}' class="colour" value="{{value}}" style="display:none;"/>
-        <div class="colorPickerContainer"><div class="colorPicker color_{{id}}" style="background-color:{{value}};"></div></div>
+        <div class='styleEleTitle'>Background Color: </div>
+        <div class='styleOptionsContainer'>
+            <input type='text' name='{{id}}' class="colour" value="{{value}}" style="display:none;"/>
+            <div class="colorPickerContainer"><div class="colorPicker color_{{id}}" style="background-color:{{value}};"></div></div>
+        </div>
     </div>
 </script>
 
 <script id="themeFontRowReadOnly" type="text/x-handlebars-template">
     <div class="fontrow" data-name="{{ name }}">
-        <div class="size">{{ r.fontSize }}</div>
-        <div class="family">{{ r.fontFamily }}</div>
-        <div class="style">{{ r.fontStyle }}</div>
-        <div class="colorPickerContainer"><div class="colorPicker font_{{name}}" style="background-color:{{r.fontColour}};"></div></div>
-        <input class="colour" type='text' name='fontColour' value="{{r.fontColour}}" style="display:none;"/>
+        <div class='styleEleTitle'>Typography: </div>
+        <div class='styleOptionsContainer'>
+            <div class="size">{{ r.fontSize }}</div>
+            <div class="family">{{ r.fontFamily }}</div>
+            <div class="style">{{ r.fontStyle }}</div>
+            <div class="colorPickerContainer"><div class="colorPicker font_{{name}}" style="background-color:{{r.fontColour}};"></div></div>
+            <input class="colour" type='text' name='fontColour' value="{{r.fontColour}}" style="display:none;"/>
+        </div>
     </div>
 </script>
 
 <script id="themeFontRow" type="text/x-handlebars-template">
     <div class="fontrow" data-name="{{ name }}">
-        <select class="size" name="fontSize">
-            <option value="11pt">11pt</option>
-            <option value="12pt"> 12pt</option>
-            <option value="14pt"> 14pt</option>
-            <option value="18pt"> 18pt</option>
-        </select>
+        <div class='styleEleTitle'>Typography: </div>
+        <div class='styleOptionsContainer'>
+            <select class="size" name="fontSize">
+                <option value="11pt">11pt</option>
+                <option value="12pt"> 12pt</option>
+                <option value="14pt"> 14pt</option>
+                <option value="18pt"> 18pt</option>
+            </select>
 
-        <select class="family" name="fontFamily">
-            <option value="arial">Arial</option>
-            <option value="courier">Courier</option>
-            <option value="georgia">Georgia</option>
-            <option value="times">Times</option>
-        </select>
+            <select class="family" name="fontFamily">
+                <option value="arial">Arial</option>
+                <option value="courier">Courier</option>
+                <option value="georgia">Georgia</option>
+                <option value="times">Times</option>
+            </select>
 
-        <select class="style" name="fontStyle">
-            <option value="normal">Normal</option>
-            <option value="bold">Bold</option>
-            <option value="italic">Italic</option>
-        </select>
-        <div class="colorPickerContainer"><div class="colorPicker font_{{name}}" style="background-color:{{r.fontColour}};"></div></div>
-        <input class="colour" type='text' name='fontColour' value="{{r.fontColour}}"  style="display:none;"/>
-    </div>
-</script>
-
-<script id="themeName" type="text/x-handlebars-template">
-    <div class="form form-inline pull-left">
-        <label>Theme Name</label>
-        <input type="text" name="themename" value="{{ name }}">
+            <select class="style" name="fontStyle">
+                <option value="normal">Normal</option>
+                <option value="bold">Bold</option>
+                <option value="italic">Italic</option>
+            </select>
+            <div class="colorPickerContainer"><div class="colorPicker font_{{name}}" style="background-color:{{r.fontColour}};"></div></div>
+            <input class="colour" type='text' name='fontColour' value="{{r.fontColour}}"  style="display:none;"/>
+        </div>
     </div>
 </script>
 
@@ -479,31 +452,44 @@
 
 <script id="themeBorderRowReadOnly" type="text/x-handlebars-template">
     <div class="borderrow" data-name="{{ name }}">
-        <div class="thickness">{{ r.thickness }}</div>
-        <div class="style">{{ r.style }}</div>
-        <div class="colorPickerContainer"><div class="colorPicker border_{{name}}" style="background-color:{{r.colour}};"></div></div>
-        <input class="colour" type='text' name='colour' value="{{r.colour}}" style="display:none"/>
+        <div class='styleEleTitle'>Border: </div>
+        <div class='styleOptionsContainer'>
+            <div class="thickness">{{ r.thickness }}</div>
+            <div class="style">{{ r.style }}</div>
+            <div class="colorPickerContainer"><div class="colorPicker border_{{name}}" style="background-color:{{r.colour}};"></div></div>
+            <input class="colour" type='text' name='colour' value="{{r.colour}}" style="display:none"/>
+        </div>
     </div>
 </script>
 
 <script id="themeBorderRow" type="text/x-handlebars-template">
     <div class="borderrow" data-name="{{ name }}">
-        <select class="thickness" name="thickness">
-            <option value="none">None</option>
-            <option value="hairline">Hairline</option>
-            <option value="thin">Thin</option>
-            <option value="medium">Medium</option>
-            <option value="thick">Thick</option>
-        </select>
+        <div class='styleEleTitle'>Border: </div>
+        <div class='styleOptionsContainer'>
+            <select class="thickness" name="thickness">
+                <option value="none">None</option>
+                <option value="hairline">Hairline</option>
+                <option value="thin">Thin</option>
+                <option value="medium">Medium</option>
+                <option value="thick">Thick</option>
+            </select>
 
-        <select class="style" name="style">
-            <option value="solid">Solid</option>
-            <option value="dashed">Dashed</option>
-            <option value="dotted">Dotted</option>
-            <option value="double">Double</option>
-        </select>
-        <div class="colorPickerContainer"><div class="colorPicker border_{{name}}" style="background-color:{{r.colour}};"></div></div>
-        <input class="colour" type='text' name='colour' value="{{r.colour}}" style="display:none"/>
+            <select class="style" name="style">
+                <option value="solid">Solid</option>
+                <option value="dashed">Dashed</option>
+                <option value="dotted">Dotted</option>
+                <option value="double">Double</option>
+            </select>
+            <div class="colorPickerContainer"><div class="colorPicker border_{{name}}" style="background-color:{{r.colour}};"></div></div>
+            <input class="colour" type='text' name='colour' value="{{r.colour}}" style="display:none"/>
+        </div>
+    </div>
+</script>
+
+<script id="themeName" type="text/x-handlebars-template">
+    <div class="form form-inline pull-left">
+        <label>Theme Name</label>
+        <input type="text" name="themename" value="{{ name }}">
     </div>
 </script>
 
@@ -521,7 +507,23 @@
 <script id="themeLogo" type="text/x-handlebars-template">
 
   <div class="logosection well themesectionBody">
-    <img alt="Embedded Image" src="{{{ logoBase64 }}}"/>
+      <div class="themeNameContainer" data-title="Theme Name">
+          {{#if readOnly}}
+          <h4 class="title">Theme Preview: {{ name }}</h4>
+          {{else}}
+          <h4>Theme Name </h4><input type="text" name="themename" value="{{ name }}">
+          {{/if}}
+      </div>
+
+
+      <div class="themeLogoContainer" data-title="Logo">
+          <h4>Logo </h4><img alt="Embedded Image" src="{{{ logoBase64 }}}"/>
+          {{#if readOnly}}
+
+          {{else}}
+          <input type="file" id="logoUpload" name="logo"><br />
+          {{/if}}
+      </div>
   </div>
 
 </script>

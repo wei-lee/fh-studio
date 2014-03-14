@@ -1,15 +1,9 @@
-#forms_layout .alert {
-    position: absolute;
-    width: 97%;
-    z-index: 2000;
+div.appforms {
+    margin-top: 14px;
 }
 
-#forms_layout .busy div.busyContainer, #forms_layout div.busyContainer {
+.formsListBase.busy div.busyContainer, .formsListBase div.busyContainer {
     position: relative;
-}
-
-#forms_container .row.formscontrollerdiv {
-    padding-left: 20px;
 }
 
 /*
@@ -36,13 +30,6 @@
 /*
  App.View.FormEdit styles
  */
-
-#forms_container .btn.btn-forms-back {
-    margin-top: 5px;
-    margin-right: 12px;
-    padding: 6px 14px;
-}
-
 .form-page {
     text-align: center;
     border: 1px dashed #bbb;
@@ -67,49 +54,49 @@ ul.apps-using-form li.text {
     display: none;
 }
 
-.fb-common-wrapper .fb-label-description {
+.appforms .fb-common-wrapper .fb-label-description {
     float: none;
     width: auto;
 }
 
-.fb-common-wrapper .fb-common-checkboxes {
+.appforms .fb-common-wrapper .fb-common-checkboxes {
     margin-left: 0px;
 }
 
-#forms_layout .fb-common-wrapper hr {
+.appforms .fb-common-wrapper hr {
     border-color: #bbb;
 }
 
-#forms_layout .edit-response-field .option-label-input {
-    width: 122px;
+.appforms .edit-response-field input[type=text].option-label-input {
+    width: 50%;
 }
 
-#forms_layout .fb-bottom-add {
+.appforms .fb-bottom-add {
     display: none;
 }
 
 /*
   Sort of nasty hack to make the removal marker of first page of every form not show - it's there for the re-ordering capability, nothing else..
  */
-#forms_layout .response-field-page_break:first-of-type .actions-wrapper {
+.appforms .response-field-page_break:first-of-type .actions-wrapper {
     display: none;
 }
 
 .formPreviewContents {
-    /*background-color: #fff;*/
+    background-color: #fff;
     overflow: scroll;
 }
 
 .formPreviewContents label {
-    /*font-size: 2.5em;*/
+    font-size: 2.5em;
 }
 
 .formPreviewContents input, .formPreviewContents textarea {
-    /*height: 1.5em;*/
-    /*font-size: 2.5em;*/
-    /*width: 100%;*/
-    /*border: 2px solid;*/
-    /*margin-top: 10px;*/
+    height: 1.5em;
+    font-size: 2.5em;
+    width: 100%;
+    border: 2px solid;
+    margin-top: 10px;
 }
 
 /*
@@ -135,6 +122,575 @@ ul.apps-using-form li.text {
     padding: 8px;
 }
 
+.themeedit .themesInnerContainer .fontrow label, .themeedit .themesInnerContainer .borderrow label {
+    display: inline-block;
+    width: 120px;
+}
+
+.themeedit .themesInnerContainer select {
+    margin: 0px 4px;
+}
+
+.themeedit h4 {
+    font-size: 14px;
+}
+
+.themeedit .well.themesectionBody {
+    /*border: 4px solid @nav-accent-colour;*/
+    border-radius: 0px;
+    border-bottom: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    background-color: #f7f7f5;
+    padding: 4px;
+}
+
+
+/*
+  Formedit preview
+ */
+.themeedit .fontrow div.size,
+.themeedit .fontrow div.family,
+.themeedit div.style,
+.themeedit .borderrow div.thickness {
+    display: inline-block;
+    width: 50px;
+}
+
+.themeedit .fontrow select.size{
+    width: 70px;
+}
+
+.themeedit .fontrow select.family,
+.themeedit select.style,
+.themeedit .borderrow select.thickness {
+    width: 100px;
+}
+
+/*
+    When spectrum is disabled, just showing a colour box, hide the dropdown arrow and big border
+ */
+.themeedit .sp-replacer.sp-disabled {
+    padding: 1px;
+}
+
+.themeedit .sp-disabled .sp-preview {
+    margin-right: 0px
+}
+
+.themeedit .sp-disabled .sp-dd {
+    display: none;
+}
+/*
+    Style spectrum out of box as we wish
+ */
+.themeedit .sp-replacer {
+    padding: 0px;
+    border: 0px;
+}
+.themeedit .sp-dd {
+    padding: 0px 0px;
+    height: 22px;
+    line-height: 21px;
+    position: absolute;
+    background-color: #fff;
+    border-radius: 28px;
+    width: 22px;
+    margin-left: 8px;
+    margin-top: 11px;
+    font-size: 15px;
+    display: none;
+    text-align: center;
+}
+.sp-replacer:hover .sp-dd {
+    display: block;
+}
+.sp-replacer.sp-disabled:hover .sp-dd {
+    display: none;
+}
+/* These are put at top level in DOM so no .themeedit prefix */
+.sp-container.sp-palette-disabled {
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    background-color: #fff;
+}
+
+.themeedit .sp-replacer .sp-preview {
+    width: 30px;
+    height: 30px;
+    margin: 0;
+    padding: 0;
+    border: 4px solid #fff;
+}
+
+.appforms.editapp h3 {
+    margin-bottom: 0px;
+}
+
+.appforms form.formsApps {
+    margin-left: 5px;
+}
+.appforms form.formsApps legend {
+    font-size: 14px;
+    margin-bottom: 0px;
+    height: auto;
+    line-height: 20px;
+    padding-bottom: 4px;
+}
+
+.appforms .app form.formsApps {
+    padding: 20px;
+}
+
+.appforms .formsApps .select2-container, #forms_app_container .formsApps .select2-container {
+    width: 220px;
+}
+
+.appNameSelectOrCreate .select2-result.needsCreate .select2-match:after {
+    content: " (Create App)";
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.dashboard-app .dashboard-actions {
+    margin-top: 130px;
+}
+
+/*@media print {*/
+/*.ui-tabs {*/
+/*position: inherit;*/
+/*}*/
+/*.submission-buttons {*/
+/*display: none !important;*/
+/*}*/
+/*.submissionslist .databrowser, .submissionslist .databrowser.emptyContainer {*/
+/*position:absolute;*/
+/*top:0;*/
+/*left:0;*/
+/*background:white;*/
+/*z-index: 100;*/
+/*width:100%;*/
+/*margin:0;*/
+/*padding:0;*/
+/*}*/
+/*}*/
+
+/*
+Improved formbuilder.js styling - TODO: Should this be applied to CMS Also?
+*/
+
+.appforms .fb-field-wrapper .subtemplate-wrapper {
+    background-color: #f7f7f5;
+}
+
+.appforms .fb-field-wrapper.editing .subtemplate-wrapper .icon-inline {
+    color: #3fa9f6;
+}
+
+.appforms ul.nav-tabs {
+    padding-left: 0px;
+}
+.appforms .fb-tabs li, .appforms .nav-tabs li {
+    width:  25%;
+}
+
+/*.appforms .nav-tabs li a,*/
+/*.appforms .nav-tabs li a:hover {*/
+/*background-color: @nav-accent-colour;*/
+/*border-bottom: 2px solid #277aac;*/
+/*border-radius: 0px;*/
+/*border-left: 0px;*/
+/*border-right: 0px;*/
+/*border-top: 2px solid transparent;*/
+/*color: #fff;*/
+/*margin: 0px;*/
+/*text-align: center;*/
+/*}*/
+
+.appforms .nav-tabs li.active a {
+    border-left: 0px;
+    border-right: 0px;
+    border-bottom: 2px solid #fff;
+    border-top: 2px solid #277aac;
+    background-color: #fff;
+    color: #666;
+}
+
+.appforms .fb-tab-content .fb-tab-pane {
+    padding: 0px;
+}
+.appforms .fb-edit-section-header {
+    border-bottom: 3px solid #84b9d9;
+}
+
+.appforms .fb-common-wrapper .fb-label-description input[type=text], .appforms .fb-common-wrapper .fb-label-description textarea {
+    width: 92%;
+}
+
+.appforms .fb-add-field-types .btn.btn-primary{
+    background-image: none;
+    background-color: #3ea9f5;
+    border: 2px dashed #005f9b;
+    text-align: left;
+    width: 38%;
+    padding: 6px 0px 6px 9px;
+}
+
+.appforms .edit-response-field input[type=text], .appforms .edit-response-field textarea {
+    width: 100%;
+}
+
+.appforms h4.title {
+    display: inline-block;
+}
+
+/*.appforms .formsmenu h4, .appforms h4.title {*/
+/*border-bottom: 3px solid @nav-accent-colour;*/
+/*margin-bottom: 0px;*/
+/*}*/
+
+.appforms .fb-response-fields.well, .appforms #groupPreviewContainer .well {
+    margin-top: 0px;
+    border: 0px;
+}
+
+.appforms .formsmenu .well {
+    border: 0;
+    padding: 2px 4px 0px 0px
+}
+
+/*
+  Style the LHS menu more flat-like
+ */
+.forms_menu_container .nav-list a,
+.forms_menu_container .nav-list li:hover a {
+    border-left: 3px solid transparent;
+    padding: 5px 15px;
+    background: none;
+    color: #666;
+}
+
+.forms_menu_container .nav-list .active a {
+    color: #0082bf;
+    font-weight: normal;
+    text-shadow: none;
+    background: #eee;
+}
+
+.forms_menu_container .nav-list li:hover a,
+.forms_menu_container .nav-list .active a  {
+    border-left: 3px solid #0082bf;
+}
+
+
+.forms_menu_container ul.nav-list {
+    background: none;
+    border: 0;
+    border-right: 1px solid #eee;
+}
+
+.appforms form.formnotifications {
+    margin-left: 0;
+}
+
+.appforms form.formnotifications .control-label {
+    width: 118px;
+}
+
+.appforms form.formnotifications .control-group:first-of-type {
+    margin-bottom: 0;
+}
+.appforms form.formnotifications select {
+    width: 294px;
+    border-radius: 0px;
+    height: 200px;
+}
+
+.fb-save-wrapper {
+    display: none;
+}
+
+.appforms .fb-field-wrapper .actions-wrapper {
+    bottom: auto;
+}
+
+.appforms .fb-field-wrapper.response-field-text input,
+.appforms .fb-field-wrapper.response-field-textarea {
+    width: 75%;
+    cursor: text;
+}
+
+.formdashboard .stat {
+    text-align: center;
+    width: 146px;
+    float: left;
+    display: inline-block;
+}
+
+.formdashboard .themeStat {
+    text-align: center;
+    width: 146px;
+    display: inline-block;
+}
+
+.formdashboard .stat h3 {
+    font-size: 3em;
+    font-weight: 100;
+    text-align: center;
+}
+
+.formdashboard.dashboard-theme hr, .formdashboard.dashboard-form hr {
+    clear: both;
+}
+
+.formdashboard .formpreview {
+    height: 400px;
+    overflow-y: scroll;
+    border-left: 1px solid #ddd;
+}
+
+#forms_preview_frame {
+    position: relative !important;
+    display: none;
+}
+
+.appforms .apppreview {
+}
+
+/*
+ Hide extra preview controls we don't want
+ */
+.appforms .preview_area #scale,
+.appforms .preview_area #orientation,
+.appforms .preview_area #device,
+.appforms .preview_area .preview_actions {
+//  display: none;
+}
+
+.appforms .super_list_row .subitem {
+    padding: 0px;
+}
+
+.appforms .super_list_row .subitem strong {
+    overflow: visible;
+    font-weight: normal;
+    font-size: 0.9em;
+}
+
+.form-create .preview_container {
+    height: 450px;
+    overflow-y: scroll;
+}
+
+.form-create .choose_template .item {
+    height: 150px;
+}
+.form-create .preview-title {
+    margin-top: 30px;
+}
+
+.form-create .catgrid .item .icon i {
+    padding-left: 0px;
+}
+
+/*
+ Some rules styling
+ */
+.formRuleContainer {
+    border: 1px solid #ddd;
+    margin: 12px 0px;
+    border-radius: 12px;
+    padding: 13px;
+}
+.formRuleContainer label {
+    width: 35px;
+}
+
+/*
+ Submission specific styles
+ */
+.submissionDetail input{
+    background-color: #fff;
+}
+.submissionDetail textarea{
+    background-color: #fff;
+}
+
+.submissionDetail select{
+    background-color: #fff;
+}
+
+.submissionDetail a.maplink {
+    text-decoration: none;
+    font-size: 30px;
+}
+
+.submissionDetail .dl-horizontal dt {
+    width: 180px;
+}
+.submissionDetail .dl-horizontal dt, .submissionDetail .dl-horizontal dd {
+    padding: 4px;
+}
+
+
+.submissionDetail td.fieldlabel {
+    font-weight: bold;
+    text-align: right;
+}
+
+.submissionDetail h5 {
+    text-align: left;
+    border-bottom: 2px solid #277aac;
+    margin-bottom: 10px;
+    font-weight: normal;
+    font-size: 16px;
+    color: #666;
+    text-transform: none;
+}
+
+.submissionDetail .formfield label {
+    width: 100px;
+    display: inline-block;
+    font-style: italic;
+}
+
+.submissionDetail input[type=file] {
+    display: none;
+}
+
+.submissionDetail.editMode input[type=file] {
+    display: block;
+}
+.submissionDetail .icon-repeat {
+    margin-top: 3px;
+}
+.submissionDetail ol {
+    margin-left: 30px;
+}
+
+.submissionDetail ol, .submissionDetail ol li {
+    list-style: decimal;
+}
+
+
+/* FORM COLOR PICKER */
+.ui-colorpicker, .ui-dialog.ui-colorpicker {
+    border: 1px solid #19a3db;
+    border-radius: 10px;
+    width: 400px;
+    background: #FFFCFC;
+    top: 20px!important;
+    /* left: 0px!important; */
+    /* right: 10px; */
+    position: fixed;
+    margin-bottom: 15px;
+    margin-top: 15px;
+    padding: 39px 19px 14px;
+    border: 1px solid #ddd;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    border-bottom: #b3b3b3 3px solid;
+}
+
+.ui-colorpicker, .ui-dialog.ui-colorpicker:after {
+    content: attr(data-title);
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    padding: 3px 7px;
+    font-size: 14px;
+    font-weight: bold;
+    background-color: #158bbb;
+    border: transparent;
+    color: #fff;
+    -webkit-border-radius: 4px 0 4px 0;
+    -moz-border-radius: 4px 0 4px 0;
+    border-radius: 4px 0 4px 0;
+    -webkit-font-smoothing: antialiased;
+}
+
+
+.ui-colorpicker .ui-dialog-titlebar {
+    background: #444545;
+    margin-top: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    border-radius: 5px;
+    display: none;
+}
+
+.ui-colorpicker .ui-dialog-title{
+    color: #158bbb;
+    font-weight: bold;
+    margin-left: 5px;
+    font-size: 1.3em;
+}
+
+.ui-colorpicker .ui-colorpicker-preview{
+    margin-top: 5px;
+    margin-left: 5px;
+    width: 100%;
+}
+
+.ui-colorpicker table td{
+    padding-left: 5px;
+}
+
+.ui-colorpicker .ui-colorpicker-hex-container,.ui-colorpicker .ui-colorpicker-alpha-container{
+    padding: 5px;
+}
+
+.ui-colorpicker .ui-colorpicker-a input{
+    padding: 0px 1px 0px 5px;
+    text-align: center;
+    margin-top: 14px;
+}
+
+.ui-colorpicker .ui-colorpicker-hex input{
+    width:auto;
+    margin-top: 8px;
+}
+
+.ui-colorpicker .ui-colorpicker-hex label{
+    display:inline;
+    margin-right:5px;
+    font-weight:bold;
+    color: #999999;
+}
+
+.ui-colorpicker .ui-colorpicker-buttonset.ui-buttonset{
+    display:none;
+}
+
+.ui-colorpicker .ui-colorpicker-mode{
+    display:none;
+}
+
+/*
+   Form Themes styling
+ */
+.themeedit .btn-forms-back {
+    margin-right: 16px;
+}
+
+.themeedit .form.form-inline {
+    padding-top: 3px;
+}
+
+.themeedit .form.form-inline label {
+    font-weight: bold;
+    font-size: 1.3em;
+    margin-right: 13px;
+}
+
+.themeedit .themesInnerContainer {
+    display: inline-block;
+    /* width: 71%; */
+    padding: 8px;
+    padding-left: 0px;
+}
+
 .themeedit .colorRow, .themeedit .fontrow, .themeedit .borderrow {
     margin: 8px 0px;
 }
@@ -142,6 +698,7 @@ ul.apps-using-form li.text {
 .themeedit .colorPickerContainer {
     border: 1px solid;
     display:inline-block;
+    vertical-align: bottom;
 }
 
 .themeedit .colorPicker{
@@ -150,9 +707,9 @@ ul.apps-using-form li.text {
 }
 
 .themeedit .colorRow {
-    width: 25%;
-    text-align: center;
-    display: inline-block;
+//  width: 25%;
+//  text-align: center;
+//  display: inline-block;
 }
 
 .themeedit .themesInnerContainer .fontrow label, .themeedit .themesInnerContainer .borderrow label {
@@ -165,11 +722,13 @@ ul.apps-using-form li.text {
 }
 
 .themeedit h4 {
-    font-size: 14px;
+    font-size: 17px;
+    /* color: #158bbb; */
+    font-weight: bold;
 }
 
 .themeedit .well.themesectionBody {
-    border: 4px solid #82bbd8;
+    /*border: 4px solid @nav-accent-colour;*/
     border-radius: 0px;
     border-bottom: 0px;
     border-left: 0px;
@@ -201,6 +760,7 @@ ul.apps-using-form li.text {
 .themeedit select.style,
 .themeedit .borderrow select.thickness {
     width: 100px;
+    padding: 5px;
 }
 
 /*
@@ -272,24 +832,24 @@ ul.apps-using-form li.text {
     text-transform: capitalize;
 }
 
-@media print {
-    .ui-tabs {
-        position: inherit;
-    }
-    .submission-buttons {
-        display: none !important;
-    }
-    .submissionslist .databrowser, .submissionslist .databrowser.emptyContainer {
-        position:absolute;
-        top:0;
-        left:0;
-        background:white;
-        z-index: 100;
-        width:100%;
-        margin:0;
-        padding:0;
-    }
-}
+/*@media print {*/
+/*.ui-tabs {*/
+/*position: inherit;*/
+/*}*/
+/*.submission-buttons {*/
+/*display: none !important;*/
+/*}*/
+/*.submissionslist .databrowser, .submissionslist .databrowser.emptyContainer {*/
+/*position:absolute;*/
+/*top:0;*/
+/*left:0;*/
+/*background:white;*/
+/*z-index: 100;*/
+/*width:100%;*/
+/*margin:0;*/
+/*padding:0;*/
+/*}*/
+/*}*/
 
 /*
   Bootstrap overrides that may not be appropriate for nGUI:
@@ -488,27 +1048,25 @@ Improved formbuilder.js styling - TODO: Should this be applied to CMS Also?
 **/
 
 #themeConfigurator.themeConfigContainer {
-    width: 750px;
-
+    width: 97%;
     display: inline-block;
-    border: 1px solid #277aac;
-    border-radius: 5px;
+    padding-right: 9px;
 }
 
 #themeConfigurator.themeConfigContainer .configTitleContainer{
     display: block;
 
     width: 100%;
-    border-bottom: 1px solid blue;
+    /* border-bottom: 1px solid blue; */
 }
 
 #themeConfigurator.themeConfigContainer .configTitleContainer .configTitle{
     display: inline-block;
 
     width: 25%;
-    background: linear-gradient(to bottom, #2e72ab 0%,#285f96 100%);
+    /* background: #333; */
     text-align: center;
-    color: #fff;
+    /* color: #158bbb; */
     font-weight: bold;
     padding: 5px 0px 5px 0px;
     font-family: inherit;
@@ -528,7 +1086,7 @@ Improved formbuilder.js styling - TODO: Should this be applied to CMS Also?
     font-family: inherit;
 
     font-size: 1.5em;
-    background-color: #d9edf7;
+    /* background-color: #444545; */
     padding: 3px 5px 3px 5px;
 }
 
@@ -544,38 +1102,183 @@ Improved formbuilder.js styling - TODO: Should this be applied to CMS Also?
 #themeConfigurator.themeConfigContainer .configSectionContainer .configSubSectionContainer{
     width: 100%;
 
-    background-color: lightblue;
+    /* background-color: #444545; */
     height: auto;
 }
 
 #themeConfigurator.themeConfigContainer .configSectionContainer .configSubSectionContainer .configSubSectionHeading{
-    display: inline-block;
+    display: block;
 
-    width: 19%;
+    width: 100%;
     font-family: inherit;
     font-size: 1.2em;
-    margin-left: 40px;
+//  margin-left: 40px;
     vertical-align: middle;
 }
 
 #themeConfigurator.themeConfigContainer .configSectionContainer .configSubSectionContainer .colorRow{
-    display: inline-block;
-
-    width: 25%;
+    display: block;
+    width: 100%;
     font-family: inherit;
+    vertical-align: top;
+    /* padding: 5px; */
+    margin-left: 5%;
 }
 
 #themeConfigurator.themeConfigContainer .configSectionContainer .configSubSectionContainer .fontrow{
-    display: inline-block;
-
-    width: 25%;
+    display: block;
+    width: 100%;
     font-family: inherit;
     vertical-align: top;
+    padding: 5px;
+    margin-left: 5%;
 }
 
 #themeConfigurator.themeConfigContainer .configSectionContainer .configSubSectionContainer .borderrow{
-    display: inline-block;
-
-    width: 25%;
+    display: block;
+    width: 100%;
     font-family: inherit;
+    padding: 5px;
+    margin-left: 5%;
+}
+
+#themeConfigurator.themeConfigContainer .configSectionContainer .configSubSectionContainer .colorRow .styleEleTitle,
+#themeConfigurator.themeConfigContainer .configSectionContainer .configSubSectionContainer .fontrow .styleEleTitle,
+#themeConfigurator.themeConfigContainer .configSectionContainer .configSubSectionContainer .borderrow .styleEleTitle{
+    display: inline-block;
+    float: left;
+    width: 21%;
+}
+
+#themeConfigurator.themeConfigContainer .configSectionContainer .configSubSectionContainer .colorRow .styleOptionsContainer,
+#themeConfigurator.themeConfigContainer .configSectionContainer .configSubSectionContainer .fontrow .styleOptionsContainer,
+#themeConfigurator.themeConfigContainer .configSectionContainer .configSubSectionContainer .borderrow .styleOptionsContainer{
+    display: inline-block;
+    margin-left: 10px;
+}
+
+input.ui-colorpicker-hex-alpha{
+    display:none;
+}
+
+a.ui-dialog-titlebar-close.ui-corner-all{
+    display:none;
+}
+
+.ui-colorpicker-preview-initial, .ui-colorpicker-preview-current{
+    width:50%;
+    float: left;
+}
+
+.ui-colorpicker-preview-initial-alpha, .ui-colorpicker-preview-current-alpha {
+    width: 100%;
+}
+
+.ui-colorpicker-rgb label, .ui-colorpicker-hsv label, .ui-colorpicker-hsl label, .ui-colorpicker-lab label, .ui-colorpicker-cmyk label, .ui-colorpicker-alpha label{
+    display:inline;
+    margin-right:5px;
+    font-weight: bold;
+    color: #999999;
+}
+
+.ui-colorpicker-cancel.ui-button{
+    width:40%;
+    border-radius:5px;
+    padding:5px 5px 5px 5px;
+    margin: 5px 5px 5px 5px;
+    display:inline-block;
+    background-color: #f5f5f5;
+    background-image: none;
+    background-repeat: repeat-x;
+    border: 1px solid #cccccc;
+    border-bottom: 3px solid;
+    border-color: #e6e6e6 #e6e6e6 #bfbfbf;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    border-bottom-color: #b3b3b3;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    filter: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+.ui-colorpicker-ok.ui-button{
+    width:40%;
+    border-radius:5px;
+    padding:5px 5px 5px 5px;
+    margin: 5px 5px 5px 63px;
+    display:inline-block;
+    /* color: #ffffff; */
+    /* text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25); */
+    /* background-color: #5bb75b; */
+    background-image: -moz-linear-gradient(top, #62c462, #51a351);
+    /* background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#62c462), to(#51a351)); */
+    /* background-image: -webkit-linear-gradient(top, #62c462, #51a351); */
+    background-image: -o-linear-gradient(top, #62c462, #51a351);
+    /* background-image: linear-gradient(to bottom, #62c462, #51a351); */
+    /* background-repeat: repeat-x; */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff62c462', endColorstr='#ff51a351', GradientType=0);
+    /* border-color: #51a351 #51a351 #387038; */
+    /* border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25); */
+}
+
+.themeLogoContainer {
+    display: inline-block;
+    margin-left: 28%;
+
+}
+
+.themeLogoContainerLabel{
+    color:#158bbb;
+}
+
+.themeNameContainer{
+    display: inline-block;
+}
+
+.themeNameContainer .name{
+    color: #999999;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.themeStatsContainer {
+    display: inline-block;
+    margin-left: 32%;
+}
+
+.sliderControl{
+    /* display:inline; */
+    font-size:30px;
+    /* float: right; */
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.sliderControlSubSection{
+    position: relative;
+    top: -19px;
+    right: 15px;
+}
+
+
+
+.appforms .nav-tabs li a,
+.appforms .nav-tabs li a:hover {
+    /*background-color: @nav-accent-colour;*/
+    border-bottom: 2px solid #277aac;
+    border-radius: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    border-top: 2px solid transparent;
+    color: #fff;
+    margin: 0px;
+    text-align: center;
+}
+
+#previewContainer .selectContainer{
+    text-align: center;
 }

@@ -12,30 +12,25 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     themeFontRowReadOnly : '#themeFontRowReadOnly',
     'themeLogo' : '#themeLogo',
     previewOutline: '#preview_outline',
-    formselect:'#form_select',
-    themeFunctionalAreas: "#theme_functional_areas",
-    themeFunctionalAreasSection: "#theme_functional_areas_section",
-    themeFunctionalAreasRow: "#theme_functional_areas_row"
+    formselect:'#form_select'
   },
   events : {
     'click .btn-form-save' : 'onThemeSave',
     'click .btn-form-cancel' : 'back',
     'click .btn-forms-back' : 'back',
-    'click .btn-preview-theme' : 'onPreviewTheme',
     'change #formSelect' : 'formSelect'
   },
   colorChanged: function(e){
     var self = this;
-    console.log("COLOR CHANGED: ", e);
     self.syncThemeModel.call(self);
   },
   initialize: function(options){
     var self = this;
-    this.constructor.__super__.initialize.apply(this, arguments);
-    this.options = options;
-    this.theme = options.theme;
-    this.readOnly = (options.hasOwnProperty('readOnly')) ? options.readOnly : true;
-    this.formCollection = new App.Collection.Form();
+    self.constructor.__super__.initialize.apply(self, arguments);
+    self.options = options;
+    self.theme = options.theme;
+    self.readOnly = (options.hasOwnProperty('readOnly')) ? options.readOnly : true;
+    self.formCollection = new App.Collection.Form();
     $fh.forms.init({
       config: {
         "cloudHost": "",
@@ -44,11 +39,7 @@ App.View.FormThemesEdit = App.View.Forms.extend({
       },
       "updateForms": false
     }, function () {
-      console.log("fh forms callback");
     });
-
-    self.off("changedTheme");
-    self.on("changedTheme", self.colorChanged);
   },
   formSelect : function (e){
     var self = this;
@@ -73,32 +64,6 @@ App.View.FormThemesEdit = App.View.Forms.extend({
       });
     }
   },
-
-  onPreviewTheme : function (e){
-    var self = this;
-    var prevButton = $(e.target);
-    var prevVisible = prevButton.data("visible");
-    var leftContainer = self.$el.find('#leftThemeContainer');
-    var centerContainer = self.$el.find('#centerThemeContainer');
-    var prevContainer = self.$el.find('#previewContainer');
-    if(true === prevVisible ){
-
-      prevButton.text("Show Preview");
-      prevButton.data("visible",false);
-      prevContainer.hide();
-      //expand the edit area
-      leftContainer.removeClass("span3").addClass("span4");
-      centerContainer.removeClass('span6').addClass('span7');
-
-    }else{
-      //shrink edit area
-      prevButton.text("Hide Preview");
-      prevButton.data("visible",true);
-      leftContainer.removeClass("span4").addClass("span3");
-      centerContainer.removeClass('span7').addClass('span6');
-      prevContainer.show();
-    }
-  },
   getThemeElementVal : function(sectionIndex, subSectionIndex, elementType){
     var self = this;
     return self.theme.get(self.CONSTANTS.THEME.SECTIONS)[sectionIndex][self.CONSTANTS.THEME.SUBSECTIONS][subSectionIndex][elementType];
@@ -106,7 +71,7 @@ App.View.FormThemesEdit = App.View.Forms.extend({
 
   render : function(){
     var self = this,
-    classes = (typeof $fw === 'undefined') ? "themeedit row-fluid" : "span10 themeedit";
+    classes = self.readOnly ? "span12 themeedit" : "span10 themeedit";
     self.$el.addClass(classes);
     self.breadcrumb(['Forms', 'Themes', 'Edit Theme']);
 
@@ -119,58 +84,105 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     }
 
 
-    if (!this.readOnly){
-      self.$container.append(self.templates.$themeName( { name : self.theme.get(self.CONSTANTS.THEME.NAME) }));
+    if (!self.readOnly){
       self.$container.append(self.renderLogo());
-      self.$container.append(self.templates.$themePreviewButton());
       self.$container.addClass('preview');
     } else {
       self.$container.append(self.renderLogo());
     }
 
     self.$themesInnerContainer = $('<div class="themesInnerContainer"></div>');
-    self.$left = $('<div id="leftThemeContainer" class="span3"></div>');
-    self.$right = $('<div id="centerThemeContainer" class="span4"></div>');
-    self.$preview = $('<div id="previewContainer" class="span3 hide" style="width: 227px;"></div>');
-    self.$themesInnerContainer.append(self.$left, self.$right, self.$preview);
+    self.$left = $('<div id="leftThemeContainer" class=""></div>');
+    if(self.readOnly){
+      self.$left.addClass('span5');
+    } else {
+      self.$left.addClass('span7');
+    }
+    self.$preview = $('<div id="previewContainer" class="boxed-group Info" data-title="Preview"></div>');
+    if(self.readOnly){
+      self.$preview.addClass('span5');
+    } else {
+      self.$preview.addClass('span5');
+    }
+    self.$themesInnerContainer.append(self.$left, self.$preview);
 
-    self.$themeFunctionalAreasTable= $('<div id="themeConfigurator" class="themeConfigContainer"><div class="configTitleContainer"><div class="configTitle">Sections</div><div class="configTitle">Typography</div><div class="configTitle">Background Color</div><div class="configTitle">Border</div></div></div>');
-
+    self.$themeFunctionalAreasTable= $('<div id="themeConfigurator" class="themeConfigContainer boxed-group Info" data-title="Theme Configuration"></div>');
 
     _.each(self.theme.get(self.CONSTANTS.THEME.STRUCTURE)[self.CONSTANTS.THEME.SECTIONS], function(strThemeSection, strThemeSectionIdx){
-      var sectionContainer = $('<div class="configSectionContainer"></div>');
-      sectionContainer.append($('<div class="configSectionTitleContainer"><div class="configSectionTitle">' + strThemeSection.label + '</div><div class="configSectionTitleEmpty"></div><div class="configSectionTitleEmpty"></div class="configSectionTitleEmpty"><div class="configSectionTitleEmpty"></div></div>'));
+      var sectionContainer = $('<div class="configSectionContainer boxed-group Info" data-title="' + strThemeSection.label + '"></div>');
+      var sliderControl = $('<div class="sliderControl"><i class="icon-circle-arrow-up icon-4"></i></div>');
+      sectionContainer.append(sliderControl);
+      sliderControl.click(function(e){
+        var icon = $(this).find('.icon-4');
+        if(icon.hasClass('icon-circle-arrow-up')){
+
+          icon.addClass('icon-circle-arrow-down');
+          icon.removeClass('icon-circle-arrow-up');
+        } else {
+
+          icon.addClass('icon-circle-arrow-up');
+          icon.removeClass('icon-circle-arrow-down');
+        }
+        $(sectionContainer).find('.configSubSectionContainer').slideToggle('slow');
+      });
+
       _.each(strThemeSection[self.CONSTANTS.THEME.SUBSECTIONS], function(strSubSection, strThemeSubSectionIdx){
         var fullSectionId = strThemeSection.id + "_" + strSubSection.id;
         var functionAreasRow = $('<div class="configSubSectionContainer" id="' + fullSectionId + '"></div>');
-        var typographyHtml = "<div class='fontrow'></div>";
-        var backgroundHtml = "<div class='colorRow'></div>";
-        var borderHtml = "<div class='borderrow'></div>";
+        var typographyElement = "";
+        var backgroundElement = "";
+        var borderElement = "";
         var subSectionHeading = strSubSection.label;
         functionAreasRow.append($('<div class="configSubSectionHeading">' + subSectionHeading + '</div>'));
+        var stylingContainer = $('<div class="stylingContainer"></div>');
 
 
-        if(strSubSection.style.typography){
-          var typographyInfo = self.getThemeElementVal(strThemeSectionIdx, strThemeSubSectionIdx, self.CONSTANTS.THEME.TYPOGRAPHY);
-          typographyHtml = self.renderTypography(fullSectionId, typographyInfo);
-        }
+        //Adding sliders for styling
+        var sliderControl = $('<div class="sliderControlSubSection"><i class="icon-circle-arrow-up icon-2"></i></div>');
+        functionAreasRow.append(sliderControl);
+        sliderControl.click(function(e){
+          var icon = $(this).find('.icon-2');
+          if(icon.hasClass('icon-circle-arrow-up')){
+            icon.addClass('icon-circle-arrow-down');
+            icon.removeClass('icon-circle-arrow-up');
+          } else {
+            icon.addClass('icon-circle-arrow-up');
+            icon.removeClass('icon-circle-arrow-down');
+          }
 
-        functionAreasRow.append(typographyHtml);
+          $(functionAreasRow).find('.stylingContainer').slideToggle('slow');
+        });
+
+        functionAreasRow.append(stylingContainer);
 
         if(strSubSection.style.background){
           var backgroundInfo = self.getThemeElementVal(strThemeSectionIdx, strThemeSubSectionIdx, self.CONSTANTS.THEME.BACKGROUND);
-          backgroundHtml = self.renderColours(fullSectionId, backgroundInfo);
+          backgroundElement = self.renderColours(fullSectionId, backgroundInfo);
+        } else {
+          backgroundElement = "";
         }
 
-        functionAreasRow.append(backgroundHtml);
+        stylingContainer.append(backgroundElement);
+
+        if(strSubSection.style.typography){
+          var typographyInfo = self.getThemeElementVal(strThemeSectionIdx, strThemeSubSectionIdx, self.CONSTANTS.THEME.TYPOGRAPHY);
+          typographyElement = self.renderTypography(fullSectionId, typographyInfo);
+        } else {
+          typographyElement = "";
+        }
+
+        stylingContainer.append(typographyElement);
+
 
         if(strSubSection.style.border){
           var borderInfo = self.getThemeElementVal(strThemeSectionIdx, strThemeSubSectionIdx, self.CONSTANTS.THEME.BORDERS);
-          borderHtml = self.renderBorders(fullSectionId, borderInfo);
+          borderElement = self.renderBorders(fullSectionId, borderInfo);
+        } else {
+          borderElement = "";
         }
 
-        functionAreasRow.append(borderHtml);
-
+        stylingContainer.append(borderElement);
+        functionAreasRow.append(stylingContainer);
         sectionContainer.append(functionAreasRow);
 
         self.$themeFunctionalAreasTable.append(sectionContainer);
@@ -184,54 +196,44 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     if (!this.readOnly){
       self.$container.append(self.templates.$formSaveCancel());
     }
+    var prevWrapper = self.$el.first("#themesInnerContainer");
+    prevWrapper.find('style').remove();
+    prevWrapper.append('<style id="themeStyle">'+this.theme.get("css")+'</style>');
+    self.$el.find('.btn-preview-theme').trigger("click");
 
-
-    if (!this.readOnly){
-      var prevWrapper = self.$el.first("#themesInnerContainer");
-      prevWrapper.find('style').remove();
-      prevWrapper.append('<style id="themeStyle">'+this.theme.get("css")+'</style>');
-      self.$el.find('.btn-preview-theme').trigger("click");
-
-      self.$el.find('#leftThemeContainer').removeClass("span4").addClass("span3");
-      self.$el.find('#centerThemeContainer').removeClass('span4').addClass('span6');
-
-      self.formCollection.fetch({"success":function (forms){
-        var formData = [];
-        forms.forEach(function (f){
-          formData.push({
-            "name": f.get("name"),
-            "_id": f.get("_id")
-          });
+//    self.$left.removeClass("span9").addClass("span6");
+    self.formCollection.fetch({"success":function (forms){
+      var formData = [];
+      forms.forEach(function (f){
+        formData.push({
+          "name": f.get("name"),
+          "_id": f.get("_id")
         });
-        self.formData = formData;
-        self.renderPreview();
-      },"error":function (err){
-        console.log("forms fetch error ", err);
-        self.message('Error fetching forms ', 'danger');
-      }});
-
-    }
+      });
+      self.formData = formData;
+      self.renderPreview();
+    },"error":function (err){
+      self.message('Error fetching forms ', 'danger');
+    }});
     self.$el.append(self.$container);
     return self;
   },
   renderLogo : function(){
     var self = this;
-    var typogEl = $('<div class="logo"></div>');
     var logoBase64 = self.theme.get(this.CONSTANTS.THEME.LOGO).base64String;
-    typogEl.append('<h4>Logo</h4>');
-    typogEl.append(self.templates.$themeLogo({ logoBase64 : logoBase64}));
-    if (!self.readOnly){
-      var fileBrowse = $('<br /><input type="file" id="logoUpload" name="logo"><br />');
-      typogEl.append(fileBrowse);
+    self.$themeLogo = $(self.templates.$themeLogo({ logoBase64 : logoBase64, readOnly: self.readOnly, name: self.theme.get(self.CONSTANTS.THEME.NAME)}));
+    if(self.options.statsDiv){
+      self.$themeLogo.find('.themeStatsContainer').append(self.options.statsDiv);
     }
-    return typogEl;
+
+    return self.$themeLogo;
   },
   renderColours : function(fullSectionId, backgroundInfo){
     var self = this;
     var colorHex = backgroundInfo.background_color;
 
     var colourInput = $(self.templates.$themeColourRow( {id: fullSectionId, value : colorHex } )),
-    input = $(colourInput.find('input'));
+      input = $(colourInput.find('input'));
     self.spectrumify(colourInput, colorHex, fullSectionId, "color");
     return colourInput;
   },
@@ -255,18 +257,18 @@ App.View.FormThemesEdit = App.View.Forms.extend({
   selectsRow: function(type, fullSectionId, attributes, colourVal){
     var self = this;
     var tplBaseName = '$theme' + type + 'Row',
-    tplIncReadOnlyName = (self.readOnly) ? tplBaseName + 'ReadOnly' : tplBaseName, // Now includes the "ReadOnly" string if it's needed
-    tpl = self.templates[tplIncReadOnlyName],
-    row = $(tpl({r : attributes, name : fullSectionId})),
-    input = $(row.find('input.colour'));
+      tplIncReadOnlyName = (self.readOnly) ? tplBaseName + 'ReadOnly' : tplBaseName, // Now includes the "ReadOnly" string if it's needed
+      tpl = self.templates[tplIncReadOnlyName],
+      row = $(tpl({r : attributes, name : fullSectionId})),
+      input = $(row.find('input.colour'));
 
     self.spectrumify(row, colourVal, fullSectionId, type);
 
     // Make sure the right select dropdown has the selected attribute to begin with
     row.find('select').each(function(){
       var selectName = $(this).attr('name'),
-      selectedValue = attributes[selectName],
-      selectedEl = $(this).find('option[value=' + selectedValue + ']');
+        selectedValue = attributes[selectName],
+        selectedEl = $(this).find('option[value=' + selectedValue + ']');
       selectedEl.attr('selected', 'selected');
     });
     return row;
@@ -340,7 +342,7 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     var themeGenerationResult = App.forms.themeCSSGenerator(self.theme.toJSON()).generateThemeCSS();
 
     if(themeGenerationResult.generationResult.failed){
-      console.log("Theme generation failed: ", themeGenerationResult.generationResult);
+      console.error("Theme generation failed: ", themeGenerationResult.generationResult);
       return;
     }
     var css = themeGenerationResult.generatedCSS;
@@ -429,25 +431,25 @@ App.View.FormThemesEdit = App.View.Forms.extend({
         alpha: true,
         parts:	['header', 'map', 'bar', 'hex', 'alpha', 'footer', 'preview'],
         layout: {
-          preview:	[0, 0, 2, 1],
-          hex:		[2, 0, 1, 1],
-          map:		[0, 1, 3, 3],	// Left, Top, Width, Height (in table cells).
-          bar:		[3, 1, 1, 3],
-          alpha:		[3, 0, 1, 1]
+          preview:	[0, 0, 3, 1],
+          hex:		[0, 1, 1, 1],
+          alpha:		[1, 1, 2, 1],
+          map:		[0, 2, 3, 3],	// Left, Top, Width, Height (in table cells).
+          bar:		[3, 2, 1, 3]
         },
-        inline: false,
+        inline: true,
+        draggable: false,
         color : colorVal,
+        buttonClass: "btn-primary",
         colorFormat: 'RGBA',
         rgb: false,
         hsv: false,
         title: "Choose A Color",
         select: function(formatted, colorpicker){
-          console.log("SELECT");
-          self.trigger("changedTheme");
+          self.colorChanged();
         },
         close: function(formatted, colorpicker){
-          console.log("CLOSE");
-          self.trigger("changedTheme");
+          self.colorChanged();
         }
       });
 
@@ -455,7 +457,7 @@ App.View.FormThemesEdit = App.View.Forms.extend({
         e.preventDefault();
         colorPickerInput.colorpicker('open');
       });
-   }
+    }
   },
   back : function(e){
     if (e){
@@ -465,23 +467,26 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     this.trigger('back');
     this.breadcrumb(['Forms', 'Themes List']);
   },
-  renderPreview : function(){
+  renderPreview: function () {
     var self = this;
     var themeInner = self.$el.find('.themesInnerContainer');
     var prevButton = self.$el.find('.btn-preview-theme');
     var prevVisible = prevButton.data("visible");
-    themeInner.find('#leftThemeContainer').removeClass("span4").addClass("span3");
+//    self.$left.removeClass("span4").addClass("span7");
     themeInner.find('#centerThemeContainer').removeClass('span4').addClass('span6');
-    themeInner.find('#previewContainer').show().html(self.templates.$previewOutline());
-    self.$el.find('#previewContainer').append("<div class='span3'></div> ");
-    self.$el.find('#previewContainer').append(self.templates.$formselect({"forms":self.formData}));
+    self.$preview.show().html(self.templates.$previewOutline());
+    var formContainer = $('<div class="selectContainer"></div>');
+    formContainer.append(self.templates.$formselect({"forms": self.formData}));
+    self.$preview.append(formContainer);
     // Direct lookup on the thing that needs relative for some reason doesn't work
-    self.$el.find('#preview_wrapper').children('div').css('position', 'relative'); // new preview fix
-  },
-  // Convert camel case attribute names to plain english - they all can be easily converted, so no need for big language map file
-  deCamelCase : function(camelCaseName){
-    camelCaseName = camelCaseName.replace( /([A-Z])/g, " $1" ); // Add spaces
-    camelCaseName = camelCaseName.charAt(0).toUpperCase() + camelCaseName.slice(1); // First letter goes to caps, then add the rest
-    return camelCaseName;
+//    self.$el.find('#preview_wrapper').children('div').css('position', 'relative'); // new preview fix
+    var firstFormId;
+
+    if (self.formData) {
+      firstFormId = self.formData[0]._id;
+    }
+
+    self.$preview.find('#formSelect option[value="' + firstFormId + '"]').attr("selected", "selected");
+    self.$preview.find('#formSelect').trigger('change');
   }
 });
