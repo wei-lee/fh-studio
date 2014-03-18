@@ -66,7 +66,16 @@ App.View.FormThemesEdit = App.View.Forms.extend({
   },
   getThemeElementVal : function(sectionIndex, subSectionIndex, elementType){
     var self = this;
-    return self.theme.get(self.CONSTANTS.THEME.SECTIONS)[sectionIndex][self.CONSTANTS.THEME.SUBSECTIONS][subSectionIndex][elementType];
+    var defaultTheme = App.forms.themeCSSGenerator().baseTheme;
+    var sections = self.theme.get(self.CONSTANTS.THEME.SECTIONS) ? self.theme.get(self.CONSTANTS.THEME.SECTIONS) : defaultTheme[self.CONSTANTS.THEME.SECTIONS];
+
+    var subSections = sections[sectionIndex][self.CONSTANTS.THEME.SUBSECTIONS] ? sections[sectionIndex][self.CONSTANTS.THEME.SUBSECTIONS] : defaultTheme[self.CONSTANTS.THEME.SECTIONS][sectionIndex][self.CONSTANTS.THEME.SUBSECTIONS];
+
+    var element = subSections[subSectionIndex] ? subSections[subSectionIndex] : defaultTheme[self.CONSTANTS.THEME.SECTIONS][sectionIndex][self.CONSTANTS.THEME.SUBSECTIONS][subSectionIndex];
+
+    var elementVal = element[elementType] ? element[elementType] : defaultTheme[self.CONSTANTS.THEME.SECTIONS][sectionIndex][self.CONSTANTS.THEME.SUBSECTIONS][subSectionIndex][elementType];
+
+    return elementVal;
   },
 
   render : function(){
@@ -108,7 +117,9 @@ App.View.FormThemesEdit = App.View.Forms.extend({
 
     self.$themeFunctionalAreasTable= $('<div id="themeConfigurator" class="themeConfigContainer boxed-group Info" data-title="Theme Configuration"></div>');
 
-    _.each(self.theme.get(self.CONSTANTS.THEME.STRUCTURE)[self.CONSTANTS.THEME.SECTIONS], function(strThemeSection, strThemeSectionIdx){
+    var themeStructure = App.forms.themeCSSGenerator().styleStructure;
+
+    _.each(themeStructure[self.CONSTANTS.THEME.SECTIONS], function(strThemeSection, strThemeSectionIdx){
       var sectionContainer = $('<div class="configSectionContainer boxed-group Info" data-title="' + strThemeSection.label + '"></div>');
       var sliderControl = $('<div class="sliderControl"><i class="icon-circle-arrow-up icon-4"></i></div>');
       sectionContainer.append(sliderControl);
@@ -281,7 +292,9 @@ App.View.FormThemesEdit = App.View.Forms.extend({
 
     var sectionVals = [];
 
-    _.each(self.theme.get(self.CONSTANTS.THEME.STRUCTURE)[self.CONSTANTS.THEME.SECTIONS], function(strThemeSection, strThemeSectionIdx){
+    var themeStructure = App.forms.themeCSSGenerator().styleStructure;
+
+    _.each(themeStructure[self.CONSTANTS.THEME.SECTIONS], function(strThemeSection, strThemeSectionIdx){
 
       var sectionObject = {id: strThemeSection.id, label: strThemeSection.label, "sub_sections": []};
       _.each(strThemeSection[self.CONSTANTS.THEME.SUBSECTIONS], function(strSubSection, strThemeSubSectionIdx){
