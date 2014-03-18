@@ -1351,7 +1351,7 @@ var themeCSSGenerator = function (themeJSON, styleStructure) {
         return null;
       }
     } else {
-      console.log("No section found for section id: ", sectionId)
+      console.log("No section found for section id: ", sectionId);
       return null;
     }
   }
@@ -1435,7 +1435,7 @@ var themeCSSGenerator = function (themeJSON, styleStructure) {
         }
       };
 
-      if (styleDefinition[styleType] == true) {
+      if (styleDefinition[styleType] === true) {
         var subSectionStyleDefinition = findSection(sectionId, subSectionId);
         if (subSectionStyleDefinition == null) {
           console.log("Expected style definition for section id: ", sectionId, " and subsection id: ", subSectionId);
@@ -1453,10 +1453,10 @@ var themeCSSGenerator = function (themeJSON, styleStructure) {
           console.log("Expected style function for type: ", styleType);
           return null;
         }
-      } else if (styleDefinition[styleType] == false) {
+      } else if (styleDefinition[styleType] === false) {
         return "";//No style, return empty string
       } else {
-        return null
+        return null;
       }
     }
 
