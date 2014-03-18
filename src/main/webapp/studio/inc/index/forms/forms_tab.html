@@ -407,11 +407,12 @@
     <div class="fontrow" data-name="{{ name }}">
         <div class='styleEleTitle'>Typography: </div>
         <div class='styleOptionsContainer'>
+            <div class="colorPickerContainer"><div class="colorPicker font_{{name}}" style="background-color:{{r.fontColour}};"></div></div>
+            <input class="colour" type='text' name='fontColour' value="{{r.fontColour}}" style="display:none;"/>
             <div class="size">{{ r.fontSize }}</div>
             <div class="family">{{ r.fontFamily }}</div>
             <div class="style">{{ r.fontStyle }}</div>
-            <div class="colorPickerContainer"><div class="colorPicker font_{{name}}" style="background-color:{{r.fontColour}};"></div></div>
-            <input class="colour" type='text' name='fontColour' value="{{r.fontColour}}" style="display:none;"/>
+
         </div>
     </div>
 </script>
@@ -420,6 +421,8 @@
     <div class="fontrow" data-name="{{ name }}">
         <div class='styleEleTitle'>Typography: </div>
         <div class='styleOptionsContainer'>
+            <div class="colorPickerContainer"><div class="colorPicker font_{{name}}" style="background-color:{{r.fontColour}};"></div></div>
+            <input class="colour" type='text' name='fontColour' value="{{r.fontColour}}"  style="display:none;"/>
             <select class="size" name="fontSize">
                 <option value="8pt">8pt</option>
                 <option value="9pt">9pt</option>
@@ -431,6 +434,7 @@
                 <option value="20pt">20pt</option>
                 <option value="24pt">24pt</option>
                 <option value="28pt">28pt</option>
+
             </select>
 
             <select class="family" name="fontFamily">
@@ -445,8 +449,7 @@
                 <option value="bold">Bold</option>
                 <option value="italic">Italic</option>
             </select>
-            <div class="colorPickerContainer"><div class="colorPicker font_{{name}}" style="background-color:{{r.fontColour}};"></div></div>
-            <input class="colour" type='text' name='fontColour' value="{{r.fontColour}}"  style="display:none;"/>
+
         </div>
     </div>
 </script>
@@ -460,10 +463,11 @@
     <div class="borderrow" data-name="{{ name }}">
         <div class='styleEleTitle'>Border: </div>
         <div class='styleOptionsContainer'>
-            <div class="thickness">{{ r.thickness }}</div>
-            <div class="style">{{ r.style }}</div>
             <div class="colorPickerContainer"><div class="colorPicker border_{{name}}" style="background-color:{{r.colour}};"></div></div>
             <input class="colour" type='text' name='colour' value="{{r.colour}}" style="display:none"/>
+            <div class="thickness">{{ r.thickness }}</div>
+            <div class="style">{{ r.style }}</div>
+
         </div>
     </div>
 </script>
@@ -472,6 +476,8 @@
     <div class="borderrow" data-name="{{ name }}">
         <div class='styleEleTitle'>Border: </div>
         <div class='styleOptionsContainer'>
+            <div class="colorPickerContainer"><div class="colorPicker border_{{name}}" style="background-color:{{r.colour}};"></div></div>
+            <input class="colour" type='text' name='colour' value="{{r.colour}}" style="display:none"/>
             <select class="thickness" name="thickness">
                 <option value="none">None</option>
                 <option value="hairline">Hairline</option>
@@ -486,11 +492,12 @@
                 <option value="dotted">Dotted</option>
                 <option value="double">Double</option>
             </select>
-            <div class="colorPickerContainer"><div class="colorPicker border_{{name}}" style="background-color:{{r.colour}};"></div></div>
-            <input class="colour" type='text' name='colour' value="{{r.colour}}" style="display:none"/>
+
         </div>
     </div>
 </script>
+
+
 
 <script id="themeName" type="text/x-handlebars-template">
     <div class="form form-inline pull-left">
