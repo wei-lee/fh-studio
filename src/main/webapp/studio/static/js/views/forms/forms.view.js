@@ -100,13 +100,18 @@ App.View.Forms = Backbone.View.extend({
     "EXCLUDED_SEARCH_FIELD_TYPES":["file","photo","signature"],
     "ALL_FIELD_TYPES":["text", "textarea", "number", "emailAddress", "dropdown", "radio", "checkboxes", "location", "locationMap", "photo", "signature", "file", "dateTime", "sectionBreak", "matrix"]
   },
+
+
+
   initialize: function(){
     this.compileTemplates();
-
     // For all forms views apply form builder field mappings
     _.each(this.CONSTANTS.FB, function(val, key){
       Formbuilder.options.mappings[key] = val;
     });
+
+   this.formsCollection = new App.Collection.Form();
+
   },
   breadcrumb : function(trail){
     var crumbs = [],
@@ -157,5 +162,26 @@ App.View.Forms = Backbone.View.extend({
         alertBox.remove();
       });
     }, 3000);
+  },
+
+  loadedTemplates : { },
+
+  loadTemplate : function (id, path,cb){
+
+    var self = this;
+    if(self.loadedTemplates[id]){
+      console.log("already have template ", id);
+      return cb(undefined,self.loadedTemplates[id]);
+    }
+    $.ajax({
+      "url":path,
+      "success":function (temp){
+
+        var t = Handlebars.compile(temp);
+        self.loadedTemplates[id] = t;
+        cb(undefined,t);
+      },
+      "dataType":"text"
+    });
   }
 });

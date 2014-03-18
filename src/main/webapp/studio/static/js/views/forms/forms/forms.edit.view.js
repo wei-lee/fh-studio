@@ -226,7 +226,6 @@ App.View.FormEdit = App.View.Forms.extend({
       for (var fi = 0; fi < fields.length; fi++) {
         resetRef[fields[fi]._id] = {"page":i,"field":fi};
       }
-      console.log("fieldRefs set to ", resetRef);
       self.form.set("fieldRef", resetRef);
     }
 

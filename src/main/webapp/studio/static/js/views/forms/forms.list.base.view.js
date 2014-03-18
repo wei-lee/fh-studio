@@ -172,13 +172,14 @@ App.View.FormListBase = App.View.Forms.extend({
     createView = new App.View.FormCreateClone({ collection : this.collection, mode : 'clone', cloneSource : cloneSource.toJSON(), singleId : this.singleId, singleTitle : this.singleTitle, pluralTitle : this.pluralTitle, viewingTemplates: this.viewingTemplates });
     this.$el.append(createView.render().$el);
   },
-  onDelete : function(){
+  onDelete : function(e){
+    var warning = $(e.target).data("warning");
     var self = this,
     model = this.collection.findWhere({_id : this._id}),
     nameAttr = (self.singleTitle.toLowerCase()==="form") ? this.CONSTANTS.FORM.NAME : this.CONSTANTS.THEME.NAME,
     modal = new App.View.Modal({
       title: 'Confirm Delete',
-      body: "Are you sure you want to delete " + self.singleTitle.toLowerCase() + " " + model.get(nameAttr) + "?",
+      body: "Are you sure you want to delete " + self.singleTitle.toLowerCase() + " " + model.get(nameAttr) + "? " + warning ||"",
       okText: 'Delete',
       cancelText : 'Cancel',
       ok: function (e) {

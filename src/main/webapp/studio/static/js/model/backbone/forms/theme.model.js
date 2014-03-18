@@ -29,7 +29,7 @@ App.Collection.FormThemes = App.Collection.FormBase.extend({
   model: App.Model.FormTheme,
   url: '/api/v2/forms/theme',
   urlUpdate: '/api/v2/forms/theme',
-  create: function (method, model, options) {
+  create : function(method, model, options){
     // Add in the default theme spec to this..
     var name = model.name;
     _.extend(model, App.forms.themeCSSGenerator().baseTheme);
