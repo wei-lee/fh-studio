@@ -27,7 +27,7 @@ App.View.FormAppsList = App.View.FormListBase.extend({
      "mDataProp": this.CONSTANTS.APP.VERSION
      },*/{
       "sTitle": 'Last Updated',
-      "mDataProp": "sysModified"
+      "mDataProp": "lastUpdated"
     },{
       "sTitle": '# Forms In This App',
       "mDataProp": this.CONSTANTS.FORMSAPP.FORMS + ".length"
