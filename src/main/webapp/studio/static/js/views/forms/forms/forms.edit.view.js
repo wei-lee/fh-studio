@@ -151,7 +151,7 @@ App.View.FormEdit = App.View.Forms.extend({
     configDesc.val(this.form.get(this.CONSTANTS.FORM.DESC));
     this.$el.find('.middle').append(this.templates.$formSaveCancel());
 
-    this.fb.mainView.$el.find('.response-field-page_break').first().hide();
+    //this.fb.mainView.$el.find('.response-field-page_break').first().hide();
 
     self.updatePreview();
 

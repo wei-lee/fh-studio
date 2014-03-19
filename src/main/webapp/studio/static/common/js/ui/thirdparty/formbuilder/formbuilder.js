@@ -38,6 +38,23 @@
     }
   });
 
+  rivets.formatters.number = {
+    read: function(value) {
+      if (value) {
+        return parseInt(value);
+      } else {
+        return "";
+      }
+    },
+    publish: function(value) {
+      if (value) {
+        return parseInt(value);
+      } else {
+        return "";
+      }
+    }
+  };
+
 }).call(this);
 
 (function() {
@@ -104,7 +121,8 @@
         SINGLE_CHECKED: 'field_options.checked',
         TIME_AUTOPOPULATE: 'field_options.time_autopopulate',
         VALUE_HEADER: 'Value',
-        TYPE_ALIASES: false
+        TYPE_ALIASES: false,
+        FIELD_ERROR: 'field_error'
       },
       unAliasType: function(type) {
         var $idx;
@@ -349,7 +367,9 @@
         SUBVIEWS: [],
         events: {
           'click .js-save-form': 'saveForm',
-          'click .fb-add-field-types a': 'addField'
+          'click .fb-add-field-types a': 'addField',
+          'blur input.minReps': 'checkReps',
+          'blur input.maxReps': 'checkReps'
         },
         initialize: function() {
           if (!this.options.eventFix) {
@@ -496,6 +516,7 @@
           this.$responseFields.sortable({
             forcePlaceholderSize: true,
             placeholder: 'sortable-placeholder',
+            cancel: '.fb-field-wrapper.response-field-page_break:first-of-type',
             stop: (function(_this) {
               return function(e, ui) {
                 var rf;
@@ -590,21 +611,31 @@
             this.$el.find(".fb-tabs a[data-target=\"#editField\"]").click();
           }
           this.scrollLeftWrapper($responseFieldEl);
-          this.$el.find('input.minReps').change(this.checkMinRep);
           return this;
         },
-        checkMinRep: function(e) {
-          var $maxRep, $maxVal, $minVal, $parent, $target;
-          console.log("checkmin rep");
+        checkReps: function(e) {
+          var $active, $maxRep, $maxVal, $minRep, $minVal, $parent, $target;
           $target = $(e.target);
+          $active = $target.hasClass('maxReps') === true ? 'max' : 'min';
           $parent = $target.parent();
           $maxRep = $target.parent().find('input.maxReps');
-          $minVal = Number($target.val());
+          $minRep = $target.parent().find('input.minReps');
+          $minVal = Number($minRep.val());
           $maxVal = Number($maxRep.val());
-          if ($minVal && $minVal < 0 || $minVal > $maxVal) {
-            return $target.css("background-color", "red");
+          if ($active === 'min') {
+            if ($minVal && $minVal < 0 || $minVal > $maxVal) {
+              $minRep.addClass('error');
+            } else {
+              $minRep.removeClass('error');
+            }
+            return $minRep.val(parseInt($minVal));
           } else {
-            return $target.css("background-color", "");
+            if ($maxVal && $maxVal < 0 || $minVal > $maxVal) {
+              $maxRep.addClass('error');
+            } else {
+              $maxRep.removeClass('error');
+            }
+            return $maxRep.val(parseInt($maxVal));
           }
         },
         ensureEditViewScrolled: function() {
@@ -723,7 +754,7 @@
     repeatable: true,
     valueField: false,
     view: "<% if (rf.get(Formbuilder.options.mappings.DATETIME_UNIT)===\"date\"){ %>\n  <input disabled value=\"YYYY-MM-DD\">\n  <span class='icon icon-calendar'></span>\n<% } else if (rf.get(Formbuilder.options.mappings.DATETIME_UNIT)===\"time\"){ %>\n  <input disabled value=\"HH:MM\">\n  <span class='icon icon-time'></span>\n<% }else{ %>\n  <input disabled value=\"YYYY-MM-DD HH:MM\">\n  <span class='icon icon-calendar'></span><span class='icon icon-time'></span>\n\n<% } %>",
-    edit: "<div class='fb-edit-section-header'>Date Stamp Options</div>\n<div class=\"inline-labels\">\n  <label>Field type:</label>\n  <select data-rv-value=\"model.<%= Formbuilder.options.mappings.DATETIME_UNIT %>\" style=\"width: auto;\">\n    <option value=\"datetime\">Date &amp; Time</option>\n    <option value=\"time\">Time Only</option>\n    <option value=\"date\">Date Only</option>\n  </select>\n  <label>Auto-populate:</label>\n  <input type='checkbox' data-rv-checked='model.<%= Formbuilder.options.mappings.TIME_AUTOPOPULATE  %>' />\n</div>",
+    edit: "<div class='fb-edit-section-header'>Date Stamp Options</div>\n<div class=\"inline-labels\">\n  <label>Field type:</label>\n  <select data-rv-value=\"model.<%= Formbuilder.options.mappings.DATETIME_UNIT %>\" style=\"width: auto;\">\n    <option value=\"datetime\">Date &amp; Time</option>\n    <option value=\"time\">Time Only</option>\n    <option value=\"date\">Date Only</option>\n  </select>\n  <!--<label>Auto-populate:</label>\n  <input type='checkbox' data-rv-checked='model.<%= Formbuilder.options.mappings.TIME_AUTOPOPULATE  %>' />-->\n</div>",
     addButton: "<span class='symbol'><span class='icon-calendar'></span></span> Datestamp",
     defaultAttributes: function(attrs) {
       attrs[Formbuilder.options.mappings.DATETIME_UNIT] = 'datetime';
@@ -1105,15 +1136,15 @@ this["Formbuilder"]["templates"]["edit/checkboxes"] = function(obj) {
         ((__t = ( disabled )) == null ? '' : __t) +
         ' data-rv-input="model.' +
         ((__t = ( Formbuilder.options.mappings.MINREPITIONS )) == null ? '' : __t) +
-        '" style="width: 30px" />\n    Max\n    <input class="maxReps" type="text" ' +
+        ' | number" style="width: 30px" />\n    Max\n    <input class="maxReps" type="text" ' +
         ((__t = ( disabled )) == null ? '' : __t) +
         ' data-rv-input="model.' +
         ((__t = ( Formbuilder.options.mappings.MAXREPITIONS)) == null ? '' : __t) +
-        '" style="width: 30px" />\n  </label>\n';
+        ' | number" style="width: 30px" />\n  </label>\n';
     } ;
     __p += '\n<label class="fb-adminonly">\n  <input type=\'checkbox\' data-rv-checked=\'model.' +
       ((__t = ( Formbuilder.options.mappings.ADMIN_ONLY )) == null ? '' : __t) +
-      '\' />\n  Admin only\n</label>';
+      '\' />\n  Admin only\n</label>\n';
 
   }
   return __p
@@ -1373,7 +1404,13 @@ this["Formbuilder"]["templates"]["view/base"] = function(obj) {
   var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
   function print() { __p += __j.call(arguments, '') }
   with (obj) {
-    __p += '<div class=\'subtemplate-wrapper\'>\n  <div class=\'cover\'></div>\n  ';
+    __p += '<div class=\'subtemplate-wrapper\'>\n  ';
+    if (rf.get(Formbuilder.options.mappings.FIELD_ERROR)){ ;
+      __p += '\n    <p class="text-error">\n      ' +
+        ((__t = ( rf.get(Formbuilder.options.mappings.FIELD_ERROR) )) == null ? '' : __t) +
+        '\n    </p>\n  ';
+    } ;
+    __p += '\n  <div class=\'cover\'></div>\n  ';
     if(editStructure){  ;
       __p += '\n  ' +
         ((__t = ( Formbuilder.templates['view/duplicate_remove']({rf: rf}) )) == null ? '' : __t) +
