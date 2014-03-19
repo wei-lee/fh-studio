@@ -3,27 +3,33 @@ App.View = App.View || {};
 
 App.View.FormCreateClone = App.View.Modal.extend({
   initialize: function(options){
-    this.CONSTANTS = App.View.Forms.prototype.CONSTANTS;
-    this.singleTitle = options.singleTitle;
-    this.singleId = options.singleId;
-    this.pluralTitle = options.pluralTitle;
-    this.viewingTemplates = options.viewingTemplates;
+    var self = this;
+    self.CONSTANTS = App.View.Forms.prototype.CONSTANTS;
+    self.singleTitle = options.singleTitle;
+    self.singleId = options.singleId;
+    self.pluralTitle = options.pluralTitle;
+    self.viewingTemplates = options.viewingTemplates;
     var autoHide = options.autoHide;
-    var tpl = Handlebars.compile($('#formCreateEdit' + this.singleId).html()),
-    body = $(tpl({ CONSTANTS : this.CONSTANTS })),
+    var tpl = Handlebars.compile($('#formCreateEdit' + self.singleId).html()),
+    body = $(tpl({ CONSTANTS : self.CONSTANTS })),
     mode = options.mode || 'create';
 
     var title;
     var okText;
 
     if (options.mode === 'clone') {
-      title = 'Clone ' + this.singleTitle;
-      okText = 'Clone';
+      if(self.viewingTemplates){
+        title = 'Import ' + self.singleTitle;
+        okText = 'Import';
+      } else {
+        title = 'Clone ' + self.singleTitle;
+        okText = 'Clone';
+      }
     } else if (options.mode === 'existing') {
-      title = 'Associate Forms with existing ' + this.singleTitle;
+      title = 'Associate Forms with existing ' + self.singleTitle;
       okText = 'Associate';      
     } else {
-      title = 'Create New ' + this.singleTitle;
+      title = 'Create New ' + self.singleTitle;
       okText = 'Create';
     }
 
@@ -38,7 +44,7 @@ App.View.FormCreateClone = App.View.Modal.extend({
       autoHide: autoHide
     };
 
-    return this.constructor.__super__.initialize.apply(this, [options]);
+    return self.constructor.__super__.initialize.apply(self, [options]);
   },
   baseform : function(vals){
     vals[App.View.Forms.prototype.CONSTANTS.FORM.UPDATED] = new Date().toString();

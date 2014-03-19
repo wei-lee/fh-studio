@@ -124,6 +124,11 @@ Handlebars.registerHelper("createFormField", function (options, editMode, contex
       case "url":
         template = (editMode) ? "<input data-index='{{idx}}' {{disabled}} type='text' name='{{_id}}' placeholder='No value present' value='{{val}}' class='formVal' data-_id='{{_id}}'  />" : "{{val}} <span class='help-inline' style='color: orange;'>{{missingText}}</span>";
         break;
+      case "url":
+        for(i=0; i < options.fieldValues.length; i++){
+          ret+="<div class='row-fluid'><a href='" + options.fieldValues[i] + "'>" + options.fieldValues[i] + "</a></div>";
+        }
+        break;
       case "textarea":
         template = (editMode) ? "<textarea data-index='{{idx}}' name='{{_id}}' placeholder='No value present' {{disabled}} class='formVal' data-_id='{{_id}}'  >{{val}}</textarea>" : "<p>{{val}}</p>";
         break;

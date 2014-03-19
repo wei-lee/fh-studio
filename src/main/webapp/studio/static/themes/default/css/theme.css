@@ -4280,3 +4280,54 @@ select.appSelect{
 #submissionDetails{
    border-right: dashed 1px #d3d3d3;
 }
+
+/* FORM COLOR PICKER */
+.ui-colorpicker {
+    border: 1px solid;
+    border-radius: 10px;
+}
+
+.ui-colorpicker .ui-dialog-titlebar {
+    background: linear-gradient(to bottom, #2e72ab 0%,#285f96 100%);
+}
+
+.ui-colorpicker .ui-dialog-title{
+    color: #fff;
+    font-weight: bold;
+}
+
+.ui-colorpicker .ui-colorpicker-preview{
+    margin-top: 5px;
+    margin-left: 5px;
+}
+
+.ui-colorpicker table td{
+    padding-left: 5px;
+}
+
+.ui-colorpicker .ui-colorpicker-hex-container,.ui-colorpicker .ui-colorpicker-alpha-container{
+    padding: 5px;
+}
+
+.ui-colorpicker .ui-colorpicker-a input{
+    padding: 0px 1px 0px 4px;
+}
+
+.ui-colorpicker .ui-colorpicker-hex input{
+    width:auto;
+}
+
+.ui-colorpicker .ui-colorpicker-hex label{
+    display:inline;
+    margin-right:5px;
+    font-weight:bold;
+}
+
+.ui-colorpicker .ui-colorpicker-buttonset.ui-buttonset{
+    display:none;
+}
+
+.ui-colorpicker .ui-colorpicker-mode{
+    display:none;
+}
+

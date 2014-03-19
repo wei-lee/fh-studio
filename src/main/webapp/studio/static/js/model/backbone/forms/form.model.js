@@ -89,7 +89,8 @@ App.Collection.Form = App.Collection.FormBase.extend({
   model: App.Model.Form,
   url: '/api/v2/forms/form/list',
   urlUpdate: '/api/v2/forms/form/',
-  urlDelete: '/api/v2/forms/form/'
+  urlDelete: '/api/v2/forms/form/',
+  fetchURL : '/api/v2/forms/form/{{id}}'
 });
 
 App.Collection.FormTemplate = App.Collection.FormBase.extend({
