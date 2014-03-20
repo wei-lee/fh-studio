@@ -4222,3 +4222,8 @@ h5.steps{
 .cleanstagearea input {
   margin-left: 10px;
 }
+
+.cordova_logo img {
+  padding-top: 20px;
+  width: 120px;
+}

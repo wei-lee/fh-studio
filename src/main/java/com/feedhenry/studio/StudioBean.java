@@ -803,4 +803,12 @@ public class StudioBean {
 
     return showStudioVersionOption;
   }
+
+  public boolean showCordovaVersionSelection(String pDest) throws Exception {
+    String propName = "destination." + pDest + ".cordova.version-selection";
+    if(!getProps().has(propName)){
+      propName = "destination." + "default" + ".cordova.version-selection";
+    }
+    return getProperty(propName).equals("true");
+  }
 }
