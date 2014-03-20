@@ -1,6 +1,10 @@
 
   <form id="blackberry_export_form">
     <div id="app_export_blackberry_versions" config-radio="build-options-blackberry"></div>
+
+    <% if(studio.showCordovaVersionSelection("blackberry")) {%>
+      <%@ include file="publish_wizards_cordova_version_step.html" %>
+    <%}%>
     
     <div id="app_export_blackberry_progress" class="progress-step"></div>
   </form>

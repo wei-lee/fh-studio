@@ -119,6 +119,10 @@ application.DestinationIos = application.DestinationGeneral.extend({
       version: version,
       deviceType: this.destination_id
     };
+    data = this.getCordovaVersion(wizard, data);
+    if(data.cordova_version && data.cordova_version === "2.2"){
+      data.version = "6.0";
+    }
     return data;
   },
 
@@ -136,7 +140,12 @@ application.DestinationIos = application.DestinationGeneral.extend({
       privateKeyPass: pk_pass,
       certPass: cert_pass
     };
-    return this.getMDMConfig(wizard, data);
+    data = this.getMDMConfig(wizard, data);
+    data = this.getCordovaVersion(wizard, data);
+    if(data.cordova_version && data.cordova_version === "2.2"){
+      data.version = "6.0";
+    }
+    return data;
   },
 
   getOTALink: function(download_url, cb) {

@@ -291,6 +291,41 @@ proto.Wizard = {
          wizards[val].splice(1, 0, 'app_publish_mdm_config');
       });
     }
+
+    var isCordovaVersionSelectionEnabled = function(dest){
+      var enabled = false;
+      var destConf = $fw.getClientProp('destination.'+dest+'.cordova.version-selection');
+      if( destConf === 'true' || (typeof destConf === "undefined" && $fw.getClientProp('destination.default.cordova.version-selection') === 'true')){
+        enabled = true;
+      }
+      return enabled;
+    };
+
+    var wizardsMap = {
+      "android":[{"name":"android_export_wizard", "index": 0, "mdm": false}, {"name":"android_publish_wizard", "index": 1, "mdm": true}],
+      "iphone":[{"name":"iphone_publish_wizard", "index": 1, "mdm": true}, 
+                {"name":"ipad_publish_wizard", "index": 1, "mdm": true}, 
+                {"name":"ios_publish_wizard", "index": 1, "mdm": true},
+                {"name":"iphone_export_wizard", "index": 0, "mdm": false},
+                {"name":"ipad_export_wizard", "index": 0, "mdm": false},
+                {"name":"ios_export_wizard", "index": 0, "mdm": false}],
+      "blackberry": [{"name":"blackberry_export_wizard", "index": 1, "mdm": false},{"name":"blackberry_publish_wizard", "index": 1, "mdm": true}],
+      "windowsphone7": [{"name":"windowsphone7_export_wizard", "index": 1, "mdm": false},{"name":"windowsphone7_publish_wizard", "index": 1, "mdm": true}],
+      "windowsphone": [{"name":"windowsphone_export_wizard", "index": 0, "mdm": false},{"name":"windowsphone_publish_wizard", "index": 1, "mdm": true}]
+    };
+
+    _.each(wizardsMap, function(wizardsArray, dest){
+      if(isCordovaVersionSelectionEnabled(dest)){
+        _.each(wizardsArray, function(val){
+          var index = val.index;
+          if(val.mdm && $fw.getClientProp('mdm.enabled') === 'true'){
+            index = index + 1;
+          }
+          wizards[val.name].splice(index, 0, "app_publish_cordova_versions_config");
+        });
+      }
+    });
+
     return wizards;
   }
 
