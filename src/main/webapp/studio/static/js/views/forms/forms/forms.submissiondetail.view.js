@@ -186,6 +186,7 @@ App.View.SubmissionDetail = App.View.Forms.extend({
               }
             }else{
               //allow for submissions that have not had pageid and name populated.
+              subField.matched = true;
               form.missing.push(subField.fieldId);
             }
             mcb0();
@@ -199,6 +200,7 @@ App.View.SubmissionDetail = App.View.Forms.extend({
                   "fields":[subField.fieldId]
                 });
               }else{
+                subField.matched = true;
                 form.missing.push(subField.fieldId);
               }
             }

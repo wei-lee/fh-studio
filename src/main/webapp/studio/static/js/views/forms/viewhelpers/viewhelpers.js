@@ -54,7 +54,7 @@ Handlebars.registerHelper("createFormField", function (options, editMode, contex
     data = {};
     data.val = val; // Could be a number of things - just a string, array of strings, object - all depends on options.type
     data._id = options._id;
-    data.missingText = (options.missing) ? "This field has been removed from the form":"";
+    data.missingText = (options.missing) ? "Field no longer in form":"";
     data.idx = i;
     data.disabled = editMode===true ? '' : 'disabled';
     if (definition && definition.options){
