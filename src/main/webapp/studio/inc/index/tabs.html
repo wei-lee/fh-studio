@@ -12,7 +12,11 @@ String pageName = studio.getPageName();
   <li class="dashboard-tab">
     <a id="dashboard_tab" href="#tabs-4">Dashboard</a>
   </li>
-
+    <% if(studio.getProperty("appforms-enabled").equals("true") && studio.hasFormsRole()){ %>
+    <li class="forms-tab">
+        <a id="forms_tab" href="#tabs-8">Forms</a>
+    </li>
+    <% } %>
   <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER)) { %>
     <li class="apps-tab">
       <a id="apps_tab" href="#tabs-1">Apps</a>
@@ -24,12 +28,6 @@ String pageName = studio.getPageName();
     </li>
     <% } %>
   <%}%>
-
-    <% if(studio.getProperty("appforms-enabled").equals("true") && studio.hasFormsRole()){ %>
-    <li class="forms-tab">
-        <a id="forms_tab" href="#tabs-8">Forms</a>
-    </li>
-    <% } %>
 
   <% if(studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_DEVADMIN)) {%>
     <% if(studio.getProperty("cloudEnvironmentEnabled").equals("true")){ %>
