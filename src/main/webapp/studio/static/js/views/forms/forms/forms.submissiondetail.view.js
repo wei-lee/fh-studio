@@ -53,7 +53,7 @@ App.View.SubmissionDetail = App.View.Forms.extend({
           self.submissionTemplate = temp;
           callback(err);
         });
-      },
+      }
       ],function doRender (){
         self.processForm(self.form, subData, function (err, viewData){
 
