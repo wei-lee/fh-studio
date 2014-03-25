@@ -18,6 +18,7 @@ application.DestinationBlackberry = application.DestinationGeneral.extend({
           return null;
       }
       var data = {generateSrc: true, config: 'debug', version: version};
+      data = this.getCordovaVersion(wizard, data);
       return data;
   },
   
@@ -62,6 +63,7 @@ application.DestinationBlackberry = application.DestinationGeneral.extend({
       var pk_pass = wizard.find('#app_publish_blackberry_pk_password').val();
       var cert_pass = "";
       var data = {config: config, generateSrc: false, version: version, privateKeyPass: pk_pass, certPass: cert_pass};
+      data = this.getCordovaVersion(wizard, data);
       return this.getMDMConfig(wizard, data);
   },
   
@@ -69,6 +71,9 @@ application.DestinationBlackberry = application.DestinationGeneral.extend({
     var stepId = 'app_publish_blackberry_info';
     if($fw.getClientProp('mdm.enabled') === 'true'){
       stepId = 'app_publish_mdm_config';
+    }
+    if(this.getCordovaSelectionEnabled()){
+      stepId = 'app_publish_cordova_versions_config';
     }
     if(config !== "debug"){
       wizard.find("#" + stepId).attr('next', 'app_publish_blackberry_password');

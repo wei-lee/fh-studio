@@ -64,8 +64,9 @@ App.View.SubmissionList = App.View.FormListBase.extend({
     this.formsCol =  this.options.forms;
     if(this.options.formId && this.formsCol ){
       this.form = this.formsCol.findWhere({"_id":this.options.formId});
+
       if(! this.form){
-        self.displayMessage("not form found!");
+        self.displayMessage("no form found!");
 
       }else{
         this.pages = this.form.get("pages");
@@ -144,6 +145,12 @@ App.View.SubmissionList = App.View.FormListBase.extend({
 
 
 
+  },
+
+  renderEmptyView : function(){
+    this.fullpagemessage = new App.View.FullPageMessageView({ message : 'No Submissions found', button:false});
+    this.$el.append(this.fullpagemessage.render().$el);
+    return this;
   },
 
   removeCrit : function (e){
@@ -291,7 +298,6 @@ App.View.SubmissionList = App.View.FormListBase.extend({
     // Move the loading to the bottom of this element's dom
     this.loading.remove();
     this.$el.append(this.loading);
-    console.log("found search input", $('.form-search:visible').html());
     if("singleForm" == this.options.listType){
       self.$el.find('.form-search').parent().append(self.templates.$advancedSearch());
     }

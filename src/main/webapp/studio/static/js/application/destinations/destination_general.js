@@ -40,7 +40,7 @@ application.DestinationGeneral = Class.extend({
     var that = this;
     var main_container = $('#manage_export_container');
     main_container.find(".dashboard-content").hide();
-    main_container.find("#app_export_wizard_container").show();
+    main_container.find("#app_export_wizard_container").show().empty();
     var wizard_name = this.destination_id + "_export_wizard";
     var progress_id = '#app_export_' + this.destination_id + '_progress';
     var export_version_id = '#app_export_' + this.destination_id + '_versions';
@@ -569,6 +569,26 @@ application.DestinationGeneral = Class.extend({
       var includeSDK = wizard.find('input.mdm_include_sdk').is(':checked');
       var pushBinary = wizard.find('input.mdm_push_binary').is(':checked');
       data.mdm = {"includesdk": includeSDK, "pushbinary": pushBinary};
+      return data;
+    } else {
+      return data;
+    }
+  },
+
+  getCordovaSelectionEnabled: function(){
+    var enabled = false;
+    var propName = 'destination.' + this.destination_id + '.cordova.version-selection';
+    var destConf = $fw.getClientProp(propName);
+    if( destConf === 'true' || (typeof destConf === "undefined" && $fw.getClientProp('destination.default.cordova.version-selection') === 'true')){
+      enabled = true;
+    }
+    return enabled;
+  },
+
+  getCordovaVersion: function(wizard, data){
+    if(this.getCordovaSelectionEnabled()){
+      var cordova_version = wizard.find('#app_publish_cordova_versions_config input:checked').val();
+      data.cordova_version = cordova_version;
       return data;
     } else {
       return data;

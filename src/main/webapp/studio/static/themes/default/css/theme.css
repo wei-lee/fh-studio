@@ -4331,3 +4331,11 @@ select.appSelect{
     display:none;
 }
 
+.file_name_cutoff {
+  overflow: hidden;
+  width: 80px;
+}
+.cordova_logo img {
+  padding-top: 20px;
+  width: 120px;
+}

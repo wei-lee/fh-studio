@@ -28,7 +28,6 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
     var self = this;
     this.formsCollection.fetch({"success":function (forms){
       self.jsonForms = forms.toJSON();
-      console.log("RENDER SUBMISSIONS TAB");
       self.$el.empty();
       self.$el.addClass('span10');
       self.$el.html(self.templates.$formsSubmissionsTab({forms:self.jsonForms,"formsCol":self.formsCollection}));
@@ -54,7 +53,6 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
   },
 
   perFormSubmissions : function (e){
-    console.log("PER FORM SUBMISSIONS ", this.options);
     var self = this;
     self.switchActive(e);
 
@@ -88,7 +86,6 @@ App.View.FormSubmissionsTabs = App.View.Forms.extend({
   },
 
   perAppSubmissions : function (e){
-    console.log("PER FORM SUBMISSIONS");
     var self = this;
     self.switchActive(e);
 

@@ -2,5 +2,9 @@
   <form id="windowsphone7_export_form">
     <div id="app_export_windowsphone7_versions" config-radio="build-options-wp7"></div>
     
+    <% if(studio.showCordovaVersionSelection("windowsphone7")) {%>
+      <%@ include file="publish_wizards_cordova_version_step.html" %>
+    <%}%>
+
     <div id="app_export_windowsphone7_progress" class="progress-step"></div>
   </form>
