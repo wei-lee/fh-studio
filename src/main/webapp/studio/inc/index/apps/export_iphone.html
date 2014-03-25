@@ -1,4 +1,6 @@
 <form id="iphone_export_form">
-    
+    <% if(studio.showCordovaVersionSelection("iphone")) {%>
+      <%@ include file="publish_wizards_cordova_version_step.html" %>
+    <%}%>
     <div id="app_export_iphone_progress" class="progress-step"></div>
   </form>

@@ -4227,3 +4227,7 @@ h5.steps{
   overflow: hidden;
   width: 80px;
 }
+.cordova_logo img {
+  padding-top: 20px;
+  width: 120px;
+}

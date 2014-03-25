@@ -6,12 +6,14 @@ application.DestinationWindowsphone = application.DestinationWindowsphone7.exten
   getExportData: function(wizard, export_version_id){
     var version = "8.0";
     var data = {generateSrc: true, config: 'debug', version: version};
+    data = this.getCordovaVersion(wizard, data);
     return data;
   },
   
   getPublishData: function(config, version_select, wizard) {
      var version = "8.0";
      var data = {config: config, generateSrc: false, version: version};
+     data = this.getCordovaVersion(wizard, data);
      return data;
   }
 });
