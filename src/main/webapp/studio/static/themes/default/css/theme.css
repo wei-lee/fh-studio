@@ -4237,6 +4237,7 @@ h5.steps{
   margin-left: 10px;
 }
 
+<<<<<<< HEAD
 
 .formsContainer{
     margin-left:10px;
@@ -4331,3 +4332,13 @@ select.appSelect{
     display:none;
 }
 
+=======
+.file_name_cutoff {
+  overflow: hidden;
+  width: 80px;
+}
+.cordova_logo img {
+  padding-top: 20px;
+  width: 120px;
+}
+>>>>>>> ad935c1e267ed6375da17e7e5269ee2871e1eee6

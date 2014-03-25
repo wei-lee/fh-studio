@@ -36,6 +36,10 @@
             </form>
         </div>
 
+        <% if(studio.showCordovaVersionSelection("windowsphone")) {%>
+          <%@ include file="publish_wizards_cordova_version_step.html" %>
+        <%}%>
+
       <div id="app_publish_windowsphone_progress" class="progress-step"></div>
     </form>
   </div>

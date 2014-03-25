@@ -21,12 +21,14 @@ application.DestinationWindowsphone7 = application.DestinationGeneral.extend({
   getExportData: function(wizard, export_version_id){
     var version = wizard.find( export_version_id + ' input:checked').val();
       var data = {generateSrc: true, config: 'debug', version: version};
+      data = this.getCordovaVersion(wizard, data);
       return data;
   },
   
   getPublishData: function(config, version_select, wizard) {
       var version = version_select.find("input:checked").val();
       var data = {config: config, generateSrc: false, version: version};
+      data = this.getCordovaVersion(wizard, data);
       return this.getMDMConfig(wizard, data);
   }
 });

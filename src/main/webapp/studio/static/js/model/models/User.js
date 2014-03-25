@@ -159,7 +159,6 @@ model.User = model.Model.extend({
         progress(data);
       }
     });
-
     // submit fileupload, with params in the formData too
     fileField.closest('form').data('import_users_file_data').submit();
 
