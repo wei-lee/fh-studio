@@ -1,5 +1,5 @@
 Handlebars.registerHelper("hasLength", function (options, context){
-  if(options.length > 0){
+  if(options && options.length > 0){
     return context.fn(this);
   }
   return false;
