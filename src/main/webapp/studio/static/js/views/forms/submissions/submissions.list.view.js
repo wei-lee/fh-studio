@@ -322,7 +322,11 @@ App.View.SubmissionList = App.View.FormListBase.extend({
       self.selectMessage.$el.hide();
 
     },"error":function (res){
-        console.log("submission error ", res);
+      console.log("submission error ", res);
+      self.$submissionContainer.hide();
+      self.selectMessage.options.message = "Error Loading Submission.";
+      self.selectMessage.render();
+      self.selectMessage.$el.show();
     }});
 
 
