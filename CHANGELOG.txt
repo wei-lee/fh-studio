@@ -2,6 +2,10 @@
 Component: fh-studio
 -------------------------------------------------------------------------------
 
+3.17.36 - 2014-02-27 - IR224 - John Frizelle
+-----------------------------------------------
+6485 - Plugins UI not rendering correctly for O2 UK theme.
+
 3.17.35 - 2014-02-13 - IR222 - James Kelly
 -----------------------------------------------
 * zendesk 3215 - Issue with user import invite emails
