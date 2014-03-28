@@ -6889,6 +6889,7 @@ var api_sync = _dereq_("./modules/sync-cli");
 var api_mbaas = _dereq_("./modules/api_mbaas");
 var fhparams = _dereq_("./modules/fhparams");
 var appProps = _dereq_("./modules/appProps");
+var device = _dereq_("./modules/device");
 
 var defaultFail = function(msg, error){
   console.log(msg + ":" + JSON.stringify(error));
@@ -6966,6 +6967,7 @@ fh.hash = api_hash;
 fh.sync = api_sync;
 fh.ajax = fh.__ajax = ajax;
 fh.mbaas = api_mbaas;
+fh._getDeviceId = device.getDeviceId;
 
 fh.getCloudURL = function(){
   return cloud.getCloudHostUrl();
@@ -7002,7 +7004,7 @@ module.exports = fh;
 
 
 
-},{"./modules/ajax":17,"./modules/api_act":18,"./modules/api_auth":19,"./modules/api_hash":20,"./modules/api_mbaas":21,"./modules/api_sec":22,"./modules/appProps":23,"./modules/constants":25,"./modules/events":28,"./modules/fhparams":29,"./modules/sync-cli":43,"./modules/waitForCloud":45,"console":8}],16:[function(_dereq_,module,exports){
+},{"./modules/ajax":17,"./modules/api_act":18,"./modules/api_auth":19,"./modules/api_hash":20,"./modules/api_mbaas":21,"./modules/api_sec":22,"./modules/appProps":23,"./modules/constants":25,"./modules/device":27,"./modules/events":28,"./modules/fhparams":29,"./modules/sync-cli":43,"./modules/waitForCloud":45,"console":8}],16:[function(_dereq_,module,exports){
 var XDomainRequestWrapper = function(xdr){
   this.xdr = xdr;
   this.isWrapper = true;
@@ -10500,14 +10502,20 @@ module.exports = {
   __bind_ready();
 
   // destination functions
-  var _mapScriptLoaded = (typeof google != "undefined") && (typeof google.maps != "undefined") && (typeof google.maps.Map != "undefined");
+  var _mapScriptLoaded =  (typeof google != "undefined") && (typeof google.maps != "undefined") && (typeof google.maps.Map != "undefined");
+  var mapFuncs = [];
+  var loadingScript = false;
   var _loadMapScript = function () {
+    if(loadingScript) return;
+    loadingScript = true;
     var script = document.createElement("script");
     script.type = "text/javascript";
     var protocol = document.location.protocol;
     protocol = (protocol === "http:" || protocol === "https:") ? protocol : "https:";
     script.src = protocol + "//maps.google.com/maps/api/js?sensor=true&callback=$fh._mapLoaded";
+
     document.body.appendChild(script);
+
   };
 
   var audio_obj = null;
@@ -10689,27 +10697,13 @@ module.exports = {
         f('map_nocontainer', {}, p);
         return;
       }
-
-      if (!_mapScriptLoaded) {
-        $fh._mapLoaded = function () {
-          _mapScriptLoaded = true;
-          var mapOptions = {};
-          mapOptions.zoom = p.zoom ? p.zoom : 8;
-          mapOptions.center = new google.maps.LatLng(p.lat, p.lon);
-          mapOptions.mapTypeId = google.maps.MapTypeId.ROADMAP;
-          var map = new google.maps.Map(target, mapOptions);
-          s({
-            map: map
-          });
-        };
-        _loadMapScript();
-        //after 20 secs, if the map script is still not loaded, run the fail function
-        setTimeout(function () {
-          if (!_mapScriptLoaded) {
-            f('map_timeout', {}, p);
-          }
-        }, 20000);
-      } else {
+      $fh._mapLoaded = function () {
+        var fMap;
+        while(fMap = mapFuncs.pop()){
+          fMap();
+        }
+      };
+      mapFuncs.push(function (){
         var mapOptions = {};
         mapOptions.zoom = p.zoom ? p.zoom : 8;
         mapOptions.center = new google.maps.LatLng(p.lat, p.lon);
@@ -10718,6 +10712,19 @@ module.exports = {
         s({
           map: map
         });
+      });
+      _mapScriptLoaded =  (typeof google != "undefined") && (typeof google.maps != "undefined") && (typeof google.maps.Map != "undefined");
+      if (!_mapScriptLoaded) {
+        _loadMapScript();
+        //after 20 secs, if the map script is still not loaded, run the fail function
+        setTimeout(function () {
+          _mapScriptLoaded =  (typeof google != "undefined") && (typeof google.maps != "undefined") && (typeof google.maps.Map != "undefined");
+          if (!_mapScriptLoaded) {
+            f('map_timeout', {}, p);
+          }
+        }, 20000);
+      }else{
+        $fh._mapLoaded();
       }
     }
 
@@ -12413,12 +12420,13 @@ appForm.models = function(module) {
     self.set('appId', appid);
     self.set('env', mode);
 
-
-    if ($fh && 'function' === typeof $fh.env) {
-      $fh.env(function(env) {
-        self.set('deviceId', env.uuid);
-      });
+    if($fh && $fh._getDeviceId){
+      self.set('deviceId', $fh._getDeviceId());
+    } else {
+      self.set('deviceId', "notset");
     }
+
+
     self._initMBaaS();
     //Setting default retry attempts if not set in the config
     if (!config) {
