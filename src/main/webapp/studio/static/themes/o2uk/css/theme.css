@@ -437,3 +437,7 @@ li.ui-state-active a {
 #environments_tab {
     width: 125px !important;
 }
+
+#plugins_dashboard_container .plugin h4.category {
+  font-size: 11px;
+}
