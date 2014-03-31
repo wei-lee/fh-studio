@@ -1,7 +1,7 @@
 var App = App || {};
 App.forms = App.forms || {};
 
-/*! fh-forms - v0.2.55 -  */
+/*! fh-forms - v0.3.00 -  */
 /*! 2014-03-31 */
 
 var themeCSSGenerator = function (themeJSON, styleStructure) {
