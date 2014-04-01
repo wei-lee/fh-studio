@@ -181,6 +181,7 @@ console.log('formsapps.createedit.view render - each form:', f.get(self.CONSTANT
       "timeout" : undefined,
       "log_line_limit": undefined,
       "log_email": undefined,
+      "log_level":undefined,
       "config_admin_user" : undefined
     },
     cloudConfig = {
@@ -191,7 +192,7 @@ console.log('formsapps.createedit.view render - each form:', f.get(self.CONSTANT
 
     // Iterate over every empty key in client config, finding the input with it's name in this view, as we've followed this convention.
     _.each(clientConfig, function(value, key){
-      var input = self.$el.find('input[name=' + key + ']'),
+      var input = self.$el.find('.configsetting[name=' + key + ']'),
       formVal;
 
       if (input.attr('type') === 'checkbox' ){
@@ -215,7 +216,6 @@ console.log('formsapps.createedit.view render - each form:', f.get(self.CONSTANT
     }
 
     this.model.set(this.CONSTANTS.FORMSAPP.APP_CONFIG, { client : clientConfig, cloud : cloudConfig});
-
 
     // We use model.save rather than our usual update on a collection - bit inconsistant..?
     var cacheKey;
