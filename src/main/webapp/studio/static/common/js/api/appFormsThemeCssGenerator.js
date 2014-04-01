@@ -1,6 +1,9 @@
 var App = App || {};
 App.forms = App.forms || {};
 
+/*! fh-forms - v0.3.00 -  */
+/*! 2014-03-31 */
+
 var themeCSSGenerator = function (themeJSON, styleStructure) {
   var FH_APPFORM_PREFIX = "fh_appform_";
   var FH_APPFORM_CONTAINER_CLASS_PREFIX = "." + FH_APPFORM_PREFIX + "container ";
@@ -287,10 +290,6 @@ var themeCSSGenerator = function (themeJSON, styleStructure) {
               {
                 "key": "padding",
                 "value": "5px"
-              },
-              {
-                "key": "border-bottom",
-                "value": "none"
               },
               {
                 "key": "border-radius",
@@ -1621,6 +1620,9 @@ var themeCSSGenerator = function (themeJSON, styleStructure) {
       });
     });
     generatedCSS += logoCSS;
+
+    generatedCSS += ".fh_appform_hidden{display:none;}";
+
     return {
       "generatedCSS": generatedCSS,
       "generationResult": generationFailed
