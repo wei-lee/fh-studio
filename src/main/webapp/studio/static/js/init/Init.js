@@ -48,4 +48,30 @@ $(document).ready(function() {
     return this.optional(element) || pub1.test(value) || (priv1.test(value) && value.split(':').length < 3) || priv2.test(value);
 
   }, Lang['scm_git_url_validate_fail']);
+
+  // Studio version switching
+  $('#switch_studio').click(function() {
+    var data = {
+      payload: {
+        key: "studio.version",
+        value: "beta"
+      }
+    };
+
+    $.ajax({
+      type: 'POST',
+      url: '/box/srv/1.1/ide/' + Constants.DOMAIN + '/user/setProp',
+      data: JSON.stringify(data),
+      dataType: 'json',
+      contentType: 'text/plain',
+      timeout: 20000,
+      success: function(res) {
+        console.log('successfully set studio version');
+        document.location = '/';
+      },
+      error: function(xhr, status) {
+        console.log('error saving user preference');
+      }
+    });
+  });
 });

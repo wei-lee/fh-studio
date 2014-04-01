@@ -212,6 +212,22 @@ public class StudioBean {
       }
       
       if (200 == statusCode) {
+        /**
+         * Support for multiple apps at / (e.g. fh-studio and fh-ngui)
+         * Both fh-studio and fh-ngui will set a "feedhenry_v" cookie with a value of either "2" or "3"
+         * 
+         * Apache will use this to decide whether to proxy pass down to fh-ngui or fh-studio
+         * 
+         * If no feedhenry_v cookie set in a request to fh-studio, set it's initial value to 2
+         */
+        Cookie feedhenry_v = getVersionCookie(pRequest);
+        if (feedhenry_v == null) {
+          log.info("No initial fh_v for 2 cookie set, setting");
+          setVersionCookie(pResponse, "2");         
+          pResponse.sendRedirect("/");
+          return false;
+        }
+        
         mCoreProps = JSONObject.fromObject(sb.toString());
         log.debug("mCoreProps: " + mCoreProps.toString(2));
         if (!"error".equals(mCoreProps.optString("status"))) {
@@ -280,13 +296,20 @@ public class StudioBean {
       
       // TODO: Alter these with new NGUI redirects
       if (!path.equals("/studio/activate.html") && !path.equals("/studio/reset.html")) {
-          String redirect = requiredProtocol + "://" + serverName + "/" + studioVersion;
+        
+        // User using wrong version, set cookie and redirect to /
+        if (studioVersion.equals("beta")) {
+          setVersionCookie(pResponse, "3");
+        } else if (studioVersion.isEmpty()) {
+          setVersionCookie(pResponse, "2");
+        }
+        String redirect = requiredProtocol + "://" + serverName + "/";
           
-          if (queryString != null) {
-        	  redirect = redirect + "/?" + queryString;
-          }
-          redirectUrl = redirect;
-          proceed = false;
+        if (queryString != null) {
+          redirect = redirect + "/?" + queryString;
+        }
+        redirectUrl = redirect;
+        proceed = false;
       }
     }
 
@@ -828,5 +851,17 @@ public class StudioBean {
       propName = "destination." + "default" + ".cordova.version-selection";
     }
     return getProperty(propName).equals("true");
+  }
+  
+  private void setVersionCookie(HttpServletResponse response, String version) {
+    log.info("Setting feedhenry_v to " + version);
+    int expires = (3600 * 1000 * 24 * 365 * 10);
+    Cookie versionCookie = new Cookie("feedhenry_v", version);
+    versionCookie.setMaxAge(expires);
+    response.addCookie(versionCookie);
+  }
+  
+  private Cookie getVersionCookie(HttpServletRequest request) {
+    return getCookie("feedhenry_v", request);
   }
 }
