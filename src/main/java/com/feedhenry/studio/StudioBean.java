@@ -223,9 +223,7 @@ public class StudioBean {
         Cookie feedhenry_v = getVersionCookie(pRequest);
         if (feedhenry_v == null) {
           log.info("No initial fh_v for 2 cookie set, setting");
-          setVersionCookie(pResponse, "2");         
-          pResponse.sendRedirect("/");
-          return false;
+          setVersionCookie(pResponse, "2");
         }
         
         mCoreProps = JSONObject.fromObject(sb.toString());
@@ -270,14 +268,6 @@ public class StudioBean {
       requiredProtocol = mStudioProps.getString(PROP_PROTOCOL);
     }
     if (proceed) {
-
-      // Allow for domain props being passed in request
-      // if( null == mStudioProps ) {
-      // // no user context available at this time, so use system user context
-      // mStudioProps =
-      // PropsManager.getDomainPropSet(JSONObject.SYSTEM_USERCONTEXT, mDomain);
-      // }
-
       String selectedProtocol = resolveScheme(pRequest);
 
       // Ensure that we are using the correct protocol (https by default);
