@@ -189,9 +189,9 @@ Handlebars.registerHelper("createFormField", function (options, editMode, contex
       case 'locationMap':
         if(options.fieldOptions && options.fieldOptions.definition && "eastnorth" === options.fieldOptions.definition.locationUnit){
           if (editMode){
-            template = "Eastings: <input class='formVal' data-_id='{{_id}}'  name='eastings' {{disabled}} type='text' placeholder='No value present' value='{{val.eastings}}' data-index={{idx}} /><br />" +
-            "Northings: <input class='formVal' data-_id='{{_id}}'  name='northings' {{disabled}} type='text' placeholder='No value present' value='{{val.northings}}' data-index={{idx}} /><br />" +
-            "Zone: <input name='zone' class='formVal' data-_id='{{_id}}'  {{disabled}} type='text' placeholder='No value present' value='{{val.zone}}' data-index={{idx}} /><br />";
+            template = "Eastings: <input class='formVal' data-_id='{{_id}}' data-subtype='location'  name='eastings' {{disabled}} type='text' placeholder='No value present' value='{{val.eastings}}' data-index={{idx}} /><br />" +
+            "Northings: <input class='formVal' data-_id='{{_id}}'  data-subtype='location' name='northings' {{disabled}} type='text' placeholder='No value present' value='{{val.northings}}' data-index={{idx}} /><br />" +
+            "Zone: <input name='zone' class='formVal' data-_id='{{_id}}' data-subtype='location'  {{disabled}} type='text' placeholder='No value present' value='{{val.zone}}' data-index={{idx}} /><br />";
           }else{
             template = "<label>Eastings:</label> {{val.eastings}}, <br />" +
             "<label>Northings:</label> {{val.northings}}, <br />" +
