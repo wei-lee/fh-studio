@@ -108,7 +108,6 @@ var themeCSSGenerator = function (themeJSON, styleStructure) {
                 "key": "display",
                 "value": "inline-block"
               },
-              ,
               {
                 "key": "margin-bottom",
                 "value": "5px"
