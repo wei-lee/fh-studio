@@ -148,17 +148,6 @@ App.View.SubmissionEdit = App.View.Forms.extend({
       }else{
         field.fieldValues[index] = _this.val();
       }
-    }else{
-      //not an existing field on the submission
-      field = self.getFormField(id);
-      var newField = {
-        "fieldId":field._id,
-        "fieldValues":[val]
-      };
-      if('checkbox' === type){
-        newField.fieldValues= {"selections":[val]};
-      }
-      self.submission.get('formFields').push(newField);
     }
     console.log("submssion updated" , self.submission);
   },

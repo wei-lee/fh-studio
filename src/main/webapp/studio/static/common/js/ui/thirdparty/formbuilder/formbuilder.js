@@ -40,17 +40,17 @@
 
   rivets.formatters.number = {
     read: function(value) {
-      if (value) {
+      if (value && value !== '') {
         return parseInt(value);
       } else {
-        return "";
+        return void 0;
       }
     },
     publish: function(value) {
-      if (value) {
+      if (value && value !== '') {
         return parseInt(value);
       } else {
-        return "";
+        return void 0;
       }
     }
   };
@@ -73,6 +73,7 @@
         attrs[Formbuilder.options.mappings.REPEATING] = false;
         attrs[Formbuilder.options.mappings.FIELD_TYPE] = field_type;
         attrs[Formbuilder.options.mappings.LABEL] = "Untitled";
+        attrs[Formbuilder.options.mappings.VALIDATE_IMMEDIATELY] = true;
         return (typeof (_base = Formbuilder.fields[field_type]).defaultAttributes === "function" ? _base.defaultAttributes(attrs) : void 0) || attrs;
       },
       simple_format: function(x) {
@@ -257,7 +258,8 @@
           'click .js-default-updated': 'defaultUpdated',
           'input .option-label-input': 'forceRender',
           'change .fb-repeating input[type=checkbox]': 'toggleRepititionsInputs',
-          'change .fieldFormatMode': 'changeFieldFormatHelpText'
+          'change .fieldFormatMode': 'changeFieldFormatHelpText',
+          'change .fb-required input[type=checkbox]': 'requiredChanged'
         },
         initialize: function() {
           this.listenTo(this.model, "destroy", this.remove);
@@ -359,6 +361,23 @@
           } else {
             this.$el.find('.simpleFormat').show();
             return this.$el.find('.advancedFormat').hide();
+          }
+        },
+        requiredChanged: function(e) {
+          var $checkboxType, $el;
+          $el = $(e.target);
+          $checkboxType = 'checkboxes';
+          if (Formbuilder.options.mappings.TYPE_ALIASES && Formbuilder.options.mappings.TYPE_ALIASES[$checkboxType]) {
+            $checkboxType = Formbuilder.options.mappings.TYPE_ALIASES['checkboxes'];
+          }
+          if (this.model.get(Formbuilder.options.mappings.FIELD_TYPE) === $checkboxType) {
+            this.render();
+            if ($el.prop('checked') === false) {
+              this.model.unset(Formbuilder.options.mappings.MIN);
+              return this.model.unset(Formbuilder.options.mappings.MAX);
+            } else {
+              return this.model.set(Formbuilder.options.mappings.MIN, 1);
+            }
           }
         }
       }),
@@ -775,9 +794,10 @@
 (function() {
   Formbuilder.registerField('checkboxes', {
     repeatable: false,
+    valueField: false,
     icon: 'icon-check',
     view: "<% for (i in (rf.get(Formbuilder.options.mappings.OPTIONS) || [])) { %>\n  <div>\n    <label class='fb-option'>\n      <input type='checkbox' <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].checked && 'checked' %> onclick=\"javascript: return false;\" />\n      <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>\n    </label>\n  </div>\n<% } %>\n\n<% if (rf.get(Formbuilder.options.mappings.INCLUDE_OTHER)) { %>\n  <div class='other-option'>\n    <label class='fb-option'>\n      <input type='checkbox' />\n      Other\n    </label>\n\n    <input type='text' />\n  </div>\n<% } %>",
-    edit: "<%= Formbuilder.templates['edit/options']({}) %>",
+    edit: "<%= Formbuilder.templates['edit/options']({}) %>\n<%= Formbuilder.templates['edit/min_max_options']({ rf : rf }) %>",
     addButton: "<span class=\"symbol\"><span class=\"icon-check\"></span></span> Checkboxes",
     defaultAttributes: function(attrs) {
       attrs = new Backbone.Model(attrs);
@@ -871,7 +891,7 @@
     icon: 'icon-cloud-upload',
     valueField: false,
     view: "<div class=\"file_container\" data-name=\"<%= rf.get(Formbuilder.options.mappings.LABEL) %>\"></div>\n<input type='file' name=\"<%= rf.get(Formbuilder.options.mappings.LABEL) %>\" data-name=\"<%= rf.get(Formbuilder.options.mappings.LABEL) %>\" data-cid='<%= rf.cid %>' data-_id='<%= rf.get('_id') %>'  />",
-    edit: "<div class='fb-edit-section-header'>File Settings</div>\nMax. File Size\n<input type=\"text\" data-rv-input=\"model.<%= Formbuilder.options.mappings.FILE_SIZE %>\" style=\"width: 60px\" /> KB",
+    edit: "<div class='fb-edit-section-header'>File Settings</div>\nMax. File Size\n<input type=\"text\" data-rv-input=\"model.<%= Formbuilder.options.mappings.FILE_SIZE %> | number\" style=\"width: 60px\" /> KB",
     addButton: "<span class=\"symbol\"><span class=\"icon-cloud-upload\"></span></span> File"
   });
 
@@ -951,7 +971,7 @@
     repeatable: true,
     valueField: false,
     view: "<h1><span class='icon-camera'></span></h1>",
-    edit: "<div class='fb-edit-section-header'>Photo Settings</div>\n<div class=\"inline-labels\">\n<label>Max Height</label>\n<input type=\"text\" data-rv-input=\"model.<%= Formbuilder.options.mappings.PHOTO_HEIGHT %>\" style=\"width: 60px\" /> px<br />\n<label>Max Width</label>\n<input type=\"text\" data-rv-input=\"model.<%= Formbuilder.options.mappings.PHOTO_WIDTH %>\" style=\"width: 60px\" /> px<br />\n<label>Quality</label>\n<input type=\"text\" data-rv-input=\"model.<%= Formbuilder.options.mappings.PHOTO_QUALITY %>\" style=\"width: 60px\" /> %<br />\n</div>",
+    edit: "<div class='fb-edit-section-header'>Photo Settings</div>\n<div class=\"inline-labels\">\n<label>Max Height</label>\n<input type=\"text\" data-rv-input=\"model.<%= Formbuilder.options.mappings.PHOTO_HEIGHT %> | number\" style=\"width: 60px\" /> px<br />\n<label>Max Width</label>\n<input type=\"text\" data-rv-input=\"model.<%= Formbuilder.options.mappings.PHOTO_WIDTH %> | number\" style=\"width: 60px\" /> px<br />\n<label>Quality</label>\n<input type=\"text\" data-rv-input=\"model.<%= Formbuilder.options.mappings.PHOTO_QUALITY %> | number\" style=\"width: 60px\" /> %<br />\n</div>",
     addButton: "<span class='symbol'><span class='icon-camera'></span></span> Photo Capture",
     defaultAttributes: function(attrs) {
       return attrs;
@@ -1067,9 +1087,9 @@ this["Formbuilder"]["templates"]["edit/base"] = function(obj) {
   with (obj) {
     __p +=
       ((__t = ( Formbuilder.templates['edit/base_header']() )) == null ? '' : __t) +
-        '\n<div class="well">\n  ' +
-        ((__t = ( Formbuilder.templates['edit/common']({ rf : rf, editStructure : editStructure, commonCheckboxes : commonCheckboxes, repeatable : repeatable, repeating : repeating }) )) == null ? '' : __t) +
-        '\n</div>\n';
+      '\n<div class="well">\n  ' +
+      ((__t = ( Formbuilder.templates['edit/common']({ rf : rf, editStructure : editStructure, commonCheckboxes : commonCheckboxes, repeatable : repeatable, repeating : repeating }) )) == null ? '' : __t) +
+      '\n</div>\n';
     if (Formbuilder.fields[rf.get(Formbuilder.options.mappings.FIELD_TYPE)].edit({rf: rf})){ ;
       __p += '\n  <div class="well">\n    ' +
         ((__t = ( Formbuilder.fields[rf.get(Formbuilder.options.mappings.FIELD_TYPE)].edit({rf: rf}) )) == null ? '' : __t) +
@@ -1099,9 +1119,9 @@ this["Formbuilder"]["templates"]["edit/base_non_input"] = function(obj) {
   with (obj) {
     __p +=
       ((__t = ( Formbuilder.templates['edit/base_header']() )) == null ? '' : __t) +
-        '\n' +
-        ((__t = ( Formbuilder.fields[rf.get(Formbuilder.options.mappings.FIELD_TYPE)].edit({rf: rf}) )) == null ? '' : __t) +
-        '\n';
+      '\n' +
+      ((__t = ( Formbuilder.fields[rf.get(Formbuilder.options.mappings.FIELD_TYPE)].edit({rf: rf}) )) == null ? '' : __t) +
+      '\n';
 
   }
   return __p
@@ -1234,6 +1254,25 @@ this["Formbuilder"]["templates"]["edit/min_max_length"] = function(obj) {
   return __p
 };
 
+this["Formbuilder"]["templates"]["edit/min_max_options"] = function(obj) {
+  obj || (obj = {});
+  var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+  function print() { __p += __j.call(arguments, '') }
+  with (obj) {
+
+    if (rf.get(Formbuilder.options.mappings.REQUIRED) === true){ ;
+      __p += '\n<div class="fb-configure-length">\n  <div class=\'fb-edit-section-header\'>Selected Options Limit</div>\n\n  Min\n  <input type="text" data-rv-input="model.' +
+        ((__t = ( Formbuilder.options.mappings.MIN )) == null ? '' : __t) +
+        ' | number" style="width: 30px" />\n\n  &nbsp;&nbsp;\n\n  Max\n  <input type="text" data-rv-input="model.' +
+        ((__t = ( Formbuilder.options.mappings.MAX)) == null ? '' : __t) +
+        ' | number" style="width: 30px" />\n</div>\n';
+    } ;
+    __p += '\n';
+
+  }
+  return __p
+};
+
 this["Formbuilder"]["templates"]["edit/options"] = function(obj) {
   obj || (obj = {});
   var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
@@ -1291,11 +1330,11 @@ this["Formbuilder"]["templates"]["page"] = function(obj) {
   with (obj) {
     __p +=
       ((__t = ( Formbuilder.templates['partials/save_button']() )) == null ? '' : __t) +
-        '\n' +
-        ((__t = ( Formbuilder.templates['partials/left_side']({ editStructure : editStructure }) )) == null ? '' : __t) +
-        '\n' +
-        ((__t = ( Formbuilder.templates['partials/right_side']({ editStructure : editStructure, fieldsEnabled : fieldsEnabled, fieldsEnabledNonInput : fieldsEnabledNonInput}) )) == null ? '' : __t) +
-        '\n<div class=\'fb-clear\'></div>';
+      '\n' +
+      ((__t = ( Formbuilder.templates['partials/left_side']({ editStructure : editStructure }) )) == null ? '' : __t) +
+      '\n' +
+      ((__t = ( Formbuilder.templates['partials/right_side']({ editStructure : editStructure, fieldsEnabled : fieldsEnabled, fieldsEnabledNonInput : fieldsEnabledNonInput}) )) == null ? '' : __t) +
+      '\n<div class=\'fb-clear\'></div>';
 
   }
   return __p
@@ -1413,10 +1452,10 @@ this["Formbuilder"]["templates"]["view/base"] = function(obj) {
       '</span>\n  ' +
       ((__t = ( Formbuilder.templates['view/label']({rf: rf}) )) == null ? '' : __t) +
       '\n\n  ' +
-      ((__t = ( Formbuilder.fields[rf.get(Formbuilder.options.mappings.FIELD_TYPE)].view({rf: rf}) )) == null ? '' : __t) +
-      '\n\n  ' +
       ((__t = ( Formbuilder.templates['view/description']({rf: rf}) )) == null ? '' : __t) +
-      '\n\n</div>\n';
+      '\n\n  ' +
+      ((__t = ( Formbuilder.fields[rf.get(Formbuilder.options.mappings.FIELD_TYPE)].view({rf: rf}) )) == null ? '' : __t) +
+      '  \n\n</div>\n';
 
   }
   return __p

@@ -577,14 +577,14 @@
               <label class="control-label" for="appFormQuality">Quality</label>
 
               <div class="controls">
-                <input type="number" id="appFormQuality" class="" name="quality" value="{{ config.client.quality }}"><span class="help-inline">%</span>
+                <input type="number" id="appFormQuality" class="configsetting" name="quality" value="{{ config.client.quality }}"><span class="help-inline">%</span>
               </div>
             </div>
             <div class="control-group">
               <label class="control-label" for="appFormTargetHeight">Target Height</label>
 
               <div class="controls">
-                <input type="number" id="appFormTargetHeight" class="" name="targetHeight" value="{{ config.client.targetHeight }}"><span class="help-inline">px</span>
+                <input type="number" id="appFormTargetHeight" class="configsetting" name="targetHeight" value="{{ config.client.targetHeight }}"><span class="help-inline">px</span>
               </div>
             </div>
 
@@ -592,7 +592,7 @@
               <label class="control-label" for="appFormTargetWidth">Target Width</label>
 
               <div class="controls">
-                <input type="number" id="appFormTargetWidth" class="" name="targetWidth" value="{{ config.client.targetWidth }}"><span class="help-inline">px</span>
+                <input type="number" id="appFormTargetWidth" class="configsetting" name="targetWidth" value="{{ config.client.targetWidth }}"><span class="help-inline">px</span>
               </div>
             </div>
           </fieldset>
@@ -602,7 +602,7 @@
               <label class="control-label" for="appFormMaxRetries">Max Retries</label>
 
               <div class="controls">
-                <input type="number" id="appFormMaxRetries" class="" name="max_retries" value="{{ config.client.max_retries}}">
+                <input type="number" id="appFormMaxRetries" class="configsetting" name="max_retries" value="{{ config.client.max_retries}}">
               </div>
             </div>
 
@@ -610,7 +610,7 @@
               <label class="control-label" for="appFormTimeout">Timeout</label>
 
               <div class="controls">
-                <input type="number" id="appFormTimeout" class="" name="timeout" value="{{ config.client.timeout}}"><span class="help-inline">seconds</span>
+                <input type="number" id="appFormTimeout" class="configsetting" name="timeout" value="{{ config.client.timeout}}"><span class="help-inline">seconds</span>
               </div>
             </div>
 
@@ -618,7 +618,7 @@
               <label class="control-label" for="appFormMinSentItems">Min. Sent Items To Save</label>
 
               <div class="controls">
-                <input type="number" id="appFormMinSentItems" class="" name="sent_save_min" value="{{ config.client.sent_save_min}}">
+                <input type="number" id="appFormMinSentItems" class="configsetting" name="sent_save_min" value="{{ config.client.sent_save_min}}">
               </div>
             </div>
 
@@ -626,7 +626,7 @@
               <label class="control-label" for="appFormMaxSentItems">Max. Sent Items To Save</label>
 
               <div class="controls">
-                <input type="number" id="appFormMaxSentItems" class="" name="sent_save_max" value="{{ config.client.sent_save_max}}">
+                <input type="number" id="appFormMaxSentItems" class="configsetting" name="sent_save_max" value="{{ config.client.sent_save_max}}">
               </div>
             </div>
 
@@ -637,28 +637,38 @@
             <div class="control-group">
               <label class="control-label" for="appFormLogging">Logging Enabled</label>
               <div class="controls">
-                <input type="checkbox" id="appFormLogging" class="" name="logger" {{#if config.client.logger}} checked {{/if}}>
+                <input type="checkbox" id="appFormLogging" class="configsetting" name="logger" {{#if config.client.logger}} checked {{/if}}>
               </div>
             </div>
+              <div class="control-group">
+                  <label class="control-label" for="appFormLoggingLevel">Logging Level</label>
+                  <div class="controls">
+                      <select id="appFormLoggingLevel" name="log_level" class="configsetting">
+                          {{#each config.client.log_levels}}
+                            <option value="{{@index}}" {{#compare @index ../../config.client.log_level }} selected {{/compare}}>{{this}}</option>
+                          {{/each}}
+                      </select>
+                  </div>
+              </div>
 
             <div class="control-group">
               <label class="control-label" for="appFormLogLineLimit">Log Limit</label>
               <div class="controls">
-                <input type="number" id="appFormLogLineLimit" class="" name="log_line_limit" value="{{ config.client.log_line_limit}}"><span class="help-inline"># lines</span>
+                <input type="number" id="appFormLogLineLimit" class="configsetting" name="log_line_limit" value="{{ config.client.log_line_limit}}"><span class="help-inline"># lines</span>
               </div>
             </div>
 
             <div class="control-group">
               <label class="control-label" for="appFormLogEmail">Log Email</label>
               <div class="controls">
-                <input type="email" id="appFormLogEmail" class="" name="log_email" value="{{ config.client.log_email}}">
+                <input type="email" id="appFormLogEmail" class="configsetting" name="log_email" value="{{ config.client.log_email}}">
               </div>
             </div>
 
             <div class="control-group">
               <label class="control-label" for="appFormDebug">Debug Mode Enabled</label>
               <div class="controls">
-                <input type="checkbox" id="appFormDebug" class="" name="debug_mode" {{#if config.client.debug_mode}} checked {{/if}}>
+                <input type="checkbox" id="appFormDebug" class="configsetting" name="debug_mode" {{#if config.client.debug_mode}} checked {{/if}}>
               </div>
             </div>
           </fieldset>
@@ -668,7 +678,7 @@
             <div class="control-group">
               <label class="control-label" for="appFormAdminUsers">Admin Users</label>
               <div class="controls">
-                <input id="appFormAdminUsers" type="hidden" class="span7" name="config_admin_user">
+                <input id="appFormAdminUsers" type="hidden" class="span7 configsetting" name="config_admin_user">
               </div>
             </div>
           </fieldset>
@@ -678,7 +688,7 @@
             <div class="control-group">
               <label class="control-label" for="appFormCloudLogging">Logging Enabled</label>
               <div class="controls">
-                <input type="checkbox" id="appFormCloudLogging" class="" name="cloud_logging" {{#if config.cloud.logging.enabled}} checked {{/if}}>
+                <input type="checkbox" id="appFormCloudLogging" class="configsetting" name="cloud_logging" {{#if config.cloud.logging.enabled}} checked {{/if}}>
               </div>
             </div>
           </fieldset>

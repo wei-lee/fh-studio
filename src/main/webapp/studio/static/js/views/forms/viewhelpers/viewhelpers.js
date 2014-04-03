@@ -1,3 +1,31 @@
+Handlebars.registerHelper('compare', function(lvalue, rvalue, options) {
+
+  var operator = options.hash.operator || "==";
+
+  var operators = {
+    '==':       function(l,r) { return l == r; },
+    '===':      function(l,r) { return l === r; },
+    '!=':       function(l,r) { return l != r; },
+    '<':        function(l,r) { return l < r; },
+    '>':        function(l,r) { return l > r; },
+    '<=':       function(l,r) { return l <= r; },
+    '>=':       function(l,r) { return l >= r; },
+    'typeof':   function(l,r) { return typeof l == r; }
+  };
+
+  if (!operators[operator])
+    throw new Error("Handlerbars Helper 'compare' doesn't know the operator "+operator);
+
+  var result = operators[operator](lvalue,rvalue);
+
+  if( result ) {
+    return options.fn(this);
+  } else {
+    return options.inverse(this);
+  }
+
+});
+
 Handlebars.registerHelper("hasLength", function (options, context){
   if(options && options.length > 0){
     return context.fn(this);
@@ -159,15 +187,15 @@ Handlebars.registerHelper("createFormField", function (options, editMode, contex
         break;
       case "location":
       case 'locationMap':
-        if(options.fieldOptions && options.fieldOptions.definition && "northEast" === options.fieldOptions.definition.locationUnit){
+        if(options.fieldOptions && options.fieldOptions.definition && "eastnorth" === options.fieldOptions.definition.locationUnit){
           if (editMode){
-            template = "Eastings: <input class='formVal' data-_id='{{_id}}'  name='eastings' {{disabled}} type='text' placeholder='No value present' value='{{eastings}}' data-index={{idx}} /><br />" +
-            "Northings: <input class='formVal' data-_id='{{_id}}'  name='northings' {{disabled}} type='text' placeholder='No value present' value='{{northings}}' data-index={{idx}} /><br />" +
-            "Zone: <input name='zone' class='formVal' data-_id='{{_id}}'  {{disabled}} type='text' placeholder='No value present' value='{{zone}}' data-index={{idx}} /><br />";
+            template = "Eastings: <input class='formVal' data-_id='{{_id}}' data-subtype='location'  name='eastings' {{disabled}} type='text' placeholder='No value present' value='{{val.eastings}}' data-index={{idx}} /><br />" +
+            "Northings: <input class='formVal' data-_id='{{_id}}'  data-subtype='location' name='northings' {{disabled}} type='text' placeholder='No value present' value='{{val.northings}}' data-index={{idx}} /><br />" +
+            "Zone: <input name='zone' class='formVal' data-_id='{{_id}}' data-subtype='location'  {{disabled}} type='text' placeholder='No value present' value='{{val.zone}}' data-index={{idx}} /><br />";
           }else{
-            template = "<label>Eastings:</label> {{eastings}}, <br />" +
-            "<label>Northings:</label> {{northings}}, <br />" +
-            "<label>Zone:</label> {{zone}}";
+            template = "<label>Eastings:</label> {{val.eastings}}, <br />" +
+            "<label>Northings:</label> {{val.northings}}, <br />" +
+            "<label>Zone:</label> {{val.zone}}";
           }
         }else{
           // Map link for non-northings eastings for convenience
@@ -203,6 +231,8 @@ Handlebars.registerHelper("createFormField", function (options, editMode, contex
   }
 
 });
+
+
 
 
 Handlebars.registerHelper("checkRole", function (req, options){
