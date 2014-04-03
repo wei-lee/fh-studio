@@ -8243,6 +8243,7 @@ var load = function(cb) {
     error: function(req, statusText, error) {
       //fh v2 only
       if(window.fh_app_props){
+        app_props = window.fh_app_props;
         return cb(null, window.fh_app_props);
       }
       logger.error(consts.config_js + " Not Found");
@@ -8804,14 +8805,21 @@ var loadCloudProps = function(app_props, callback) {
         }
       },
       "error": function(req, statusText, error) {
+        var errormsg = "unknown";
+        if(req){
+          errormsg = req.status + " - " + req.responseText;
+        }
+        logger.error("App init returned error : " + errormsg);
         //use the cached host if we have a copy
         if (savedHost) {
+          logger.info("Using cached host: " + JSON.stringify(savedHost));
           if (callback) {
             callback(null, {
               cloud: savedHost
             });
           }
         } else {
+          logger.error("No cached host found. Init failed.");
           handleError(function(msg, err) {
             if (callback) {
               callback({
@@ -14303,7 +14311,7 @@ appForm.models = function(module) {
       if (err) {
         cb(err);
       } else {
-        that.emit('submitted');
+        that.emit('submitted', that.get('submissionId'));
         cb(null, null);
       }
     });
@@ -15849,6 +15857,7 @@ appForm.models = function (module) {
    */
   UploadTask.prototype.success = function (cb) {
     var that = this;
+    var submissionId = that.get('submissionId', null);
     that.set('completed', true);
     that.saveLocal(function (err) {
       if (err) {
@@ -15857,6 +15866,7 @@ appForm.models = function (module) {
       }
     });
     that.submissionModel(function (_err, model) {
+      model.set('submissionId', submissionId);
       if (_err) {
         cb(_err);
       } else {
