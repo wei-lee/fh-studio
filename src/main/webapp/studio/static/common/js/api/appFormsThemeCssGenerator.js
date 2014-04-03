@@ -1,8 +1,8 @@
 var App = App || {};
 App.forms = App.forms || {};
 
-/*! fh-forms - v0.3.01 -  */
-/*! 2014-04-02 */
+/*! fh-forms - v0.4.1 -  */
+/*! 2014-04-03 */
 
 var themeCSSGenerator = function (themeJSON, styleStructure) {
   var FH_APPFORM_PREFIX = "fh_appform_";
@@ -1168,7 +1168,7 @@ var themeCSSGenerator = function (themeJSON, styleStructure) {
               "fontSize":"11pt",
               "fontFamily":"arial",
               "fontStyle":"normal",
-              "fontColour":"rgba(255,0,0,1)"
+              "fontColour":"rgba(0,0,0,1)"
             }
           },
           {
