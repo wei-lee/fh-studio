@@ -161,11 +161,7 @@ Handlebars.registerHelper("createFormField", function (options, editMode, contex
         template = (editMode) ? "<textarea data-index='{{idx}}' name='{{_id}}' placeholder='No value present' {{disabled}} class='formVal' data-_id='{{_id}}'  >{{val}}</textarea>" : "<p>{{val}}</p>";
         break;
       case "dropdown":
-        template = "<select class='formVal' data-_id='{{_id}}'  {{disabled}} name='{{_id}}' >" +
-          "{{#each options}}" +
-            "<option value='{{label}}' data-index='{{idx}}' {{selected}}>{{label}}</option>" +
-          "{{/each}}"+
-        "</select>";
+        template = (editMode)? "<select class='formVal' data-_id='{{_id}}'  {{disabled}} name='{{_id}}' >" +"{{#each options}}" +"<option value='{{label}}' data-index='{{idx}}' {{selected}}>{{label}}</option>" +"{{/each}}"+"</select>" :"{{#each options}} {{#if selected}}  {{label}} {{/if}} {{/each}}";
         break;
       case "photo":
       case "signature":

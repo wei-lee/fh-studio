@@ -256,24 +256,24 @@ ul.apps-using-form li.text {
     margin-top: 130px;
 }
 
-/*@media print {*/
-/*.ui-tabs {*/
-/*position: inherit;*/
-/*}*/
-/*.submission-buttons {*/
-/*display: none !important;*/
-/*}*/
-/*.submissionslist .databrowser, .submissionslist .databrowser.emptyContainer {*/
-/*position:absolute;*/
-/*top:0;*/
-/*left:0;*/
-/*background:white;*/
-/*z-index: 100;*/
-/*width:100%;*/
-/*margin:0;*/
-/*padding:0;*/
-/*}*/
-/*}*/
+@media print {
+.ui-tabs {
+position: inherit;
+}
+.submission-buttons {
+display: none !important;
+}
+.submissionslist .databrowser, .submissionslist .submissionContainer {
+position:absolute;
+top:0;
+left:0;
+background:white;
+z-index: 100;
+width:100%;
+margin:0;
+padding:0;
+}
+}
 
 /*
 Improved formbuilder.js styling - TODO: Should this be applied to CMS Also?
@@ -832,24 +832,24 @@ Improved formbuilder.js styling - TODO: Should this be applied to CMS Also?
     text-transform: capitalize;
 }
 
-/*@media print {*/
-/*.ui-tabs {*/
-/*position: inherit;*/
-/*}*/
-/*.submission-buttons {*/
-/*display: none !important;*/
-/*}*/
-/*.submissionslist .databrowser, .submissionslist .databrowser.emptyContainer {*/
-/*position:absolute;*/
-/*top:0;*/
-/*left:0;*/
-/*background:white;*/
-/*z-index: 100;*/
-/*width:100%;*/
-/*margin:0;*/
-/*padding:0;*/
-/*}*/
-/*}*/
+@media print {
+.ui-tabs {
+position: inherit;
+}
+.submission-buttons {
+display: none !important;
+}
+.submissionslist .databrowser, .submissionslist .databrowser.emptyContainer {
+position:absolute;
+top:0;
+left:0;
+background:white;
+z-index: 100;
+width:100%;
+margin:0;
+padding:0;
+}
+}
 
 /*
   Bootstrap overrides that may not be appropriate for nGUI:
