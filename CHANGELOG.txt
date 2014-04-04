@@ -3,7 +3,7 @@ Component: fh-studio
 -------------------------------------------------------------------------------
 3.17.37 - 2014-03-04- IR224 - James Kelly
 -----------------------------------------------
-#6493 - #zendesk-3043 Adding theme to separate Baystate and baystate innovation.
+* 6670 - QR codes not being added to builds 
 
 3.17.36 - 2014-02-27 - IR224 - James Kelly
 -----------------------------------------------
