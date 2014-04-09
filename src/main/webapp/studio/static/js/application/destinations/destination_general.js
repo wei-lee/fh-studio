@@ -509,13 +509,9 @@ application.DestinationGeneral = Class.extend({
       that.getOTALink(ota_url, function(otalink, shortened) {
         html += "<h4>-- or --</h4><p>Install directly onto a device with this OTA link</p>";
         html += "<h4><a class='otalink' target='_blank' href='" + otalink + "'>" + otalink + " </a></h4>";
-        if (shortened) {
-          // See http://dev.bitly.com/qr_codes.html
-          html += "<img src='" + otalink + ".qrcode' alt='qr'>";
-        } else {
-          // Generate our own
-          html += '<div id="qr_code" data-url="' + otalink + '"></div>';
-        }
+  
+        html += '<div id="qr_code" data-url="' + otalink + '"></div>';
+        
         showDownload(html);
       });
     } else {
