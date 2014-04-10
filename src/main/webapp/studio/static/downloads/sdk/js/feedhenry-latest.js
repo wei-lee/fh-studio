@@ -8232,7 +8232,12 @@ var load = function(cb) {
     success: function(data) {
       logger.debug("fhconfig = " + JSON.stringify(data));
       //when load the config file on device, because file:// protocol is used, it will never call fail call back. The success callback will be called but the data value will be null.
-      if (null === data) {
+      if (null == data) {
+        //fh v2 only
+        if(window.fh_app_props){
+          app_props = window.fh_app_props;
+          return cb(null, window.fh_app_props);
+        }
         return cb(new Error("app_config_missing"));
       } else {
         app_props = data;
@@ -8377,7 +8382,7 @@ module.exports = {
 module.exports = {
   "fh_timeout": 20000,
   "boxprefix": "/box/srv/1.1/",
-  "sdk_version": "2.0.1-alpha",
+  "sdk_version": "2.0.2-alpha",
   "config_js": "fhconfig.json",
   "INIT_EVENT": "fhinit"
 };

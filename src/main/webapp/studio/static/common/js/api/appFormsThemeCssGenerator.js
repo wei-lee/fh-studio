@@ -96,7 +96,22 @@ var themeCSSGenerator = function (themeJSON, styleStructure) {
               "background": false,
               "border": false
             },
-            "staticCSS": []
+            "staticCSS": [{
+              "key": "text-align",
+              "value": "center"
+            },
+              {
+                "key": "width",
+                "value": "100%"
+              },
+              {
+                "key": "display",
+                "value": "inline-block"
+              },
+              {
+                "key": "margin-bottom",
+                "value": "5px"
+              }]
           },
           {
             "id": "description",
@@ -302,6 +317,10 @@ var themeCSSGenerator = function (themeJSON, styleStructure) {
               {
                 "key": "margin-right",
                 "value": "5px"
+              },
+              {
+                "key": "margin-bottom",
+                "value": "5px"
               }
             ]
           },
@@ -411,7 +430,10 @@ var themeCSSGenerator = function (themeJSON, styleStructure) {
               "background": true,
               "border": true
             },
-            "staticCSS": []
+            "staticCSS": [{
+              "key": "padding",
+              "value": "5px"
+            }]
           },
           {
             "id": "numbering",
@@ -447,7 +469,11 @@ var themeCSSGenerator = function (themeJSON, styleStructure) {
             "staticCSS": [{
               "key": "content",
               "value": "\"*\""
-            }],
+            },
+              {
+                "key": "vertical-align",
+                "value": "top"
+              }],
             "class_name": "field_required:after"
           }
         ]
@@ -466,8 +492,8 @@ var themeCSSGenerator = function (themeJSON, styleStructure) {
             },
             "staticCSS": [
               {
-                "key": "padding",
-                "value": "18px 20px 18px 20px"
+                "key": "text-align",
+                "value": "center"
               }
             ]
           },
@@ -508,7 +534,11 @@ var themeCSSGenerator = function (themeJSON, styleStructure) {
                 "cssAdditions": [
                   {
                     "key": "width",
-                    "value": "33.3%"
+                    "value": "30%!important"
+                  },
+                  {
+                    "key": "margin-right",
+                    "value": "5px"
                   }
                 ]
               },
@@ -624,11 +654,15 @@ var themeCSSGenerator = function (themeJSON, styleStructure) {
               },
               {
                 "key": "padding",
-                "value": "12px 0px 12px 0px"
+                "value": "12px 10px 12px 10px!important"
               },
               {
                 "key": "margin-top",
                 "value": "10px"
+              },
+              {
+                "key": "margin-right",
+                "value": "5px"
               }
             ],
             "classAdditions": [
@@ -637,7 +671,15 @@ var themeCSSGenerator = function (themeJSON, styleStructure) {
                 "cssAdditions": [
                   {
                     "key": "width",
-                    "value": "50%"
+                    "value": "45%!important"
+                  },
+                  {
+                    "key": "margin-right",
+                    "value": "5px"
+                  },
+                  {
+                    "key": "margin-left",
+                    "value": "9px"
                   }
                 ]
               },
@@ -646,7 +688,11 @@ var themeCSSGenerator = function (themeJSON, styleStructure) {
                 "cssAdditions": [
                   {
                     "key": "width",
-                    "value": "33.3%"
+                    "value": "30%!important"
+                  },
+                  {
+                    "key": "margin-right",
+                    "value": "5px"
                   }
                 ]
               },
@@ -664,7 +710,7 @@ var themeCSSGenerator = function (themeJSON, styleStructure) {
                 "cssAdditions": [
                   {
                     "key": "width",
-                    "value": "50%"
+                    "value": "45%!important"
                   },
                   {
                     "key": "margin-top",
@@ -681,7 +727,7 @@ var themeCSSGenerator = function (themeJSON, styleStructure) {
                 "cssAdditions": [
                   {
                     "key": "width",
-                    "value": "50%"
+                    "value": "45%!important"
                   },
                   {
                     "key": "margin-top",
@@ -762,11 +808,15 @@ var themeCSSGenerator = function (themeJSON, styleStructure) {
               },
               {
                 "key": "padding",
-                "value": "12px 0px 12px 0px"
+                "value": "12px 10px 12px 10px!important"
               },
               {
                 "key": "margin-top",
                 "value": "10px"
+              },
+              {
+                "key": "margin-right",
+                "value": "5px"
               }
             ],
             "classAdditions": [
