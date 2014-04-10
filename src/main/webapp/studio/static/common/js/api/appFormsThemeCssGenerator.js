@@ -1515,7 +1515,7 @@ var themeCSSGenerator = function (themeJSON, styleStructure) {
       } else {
         return null;
       }
-    };
+    }
 
     function generateSpacingCSS(type, spacingJSON){
       spacingJSON = spacingJSON ? spacingJSON : {};
@@ -1537,7 +1537,7 @@ var themeCSSGenerator = function (themeJSON, styleStructure) {
         console.log("Error generating " + type + ". Invalid values: ", JSON.stringify(spacingJSON));
         return null;
       }
-    };
+    }
 
     function generateStyleType(styleType) {
       var styleFunctions = {
