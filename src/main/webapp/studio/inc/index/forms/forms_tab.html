@@ -1059,13 +1059,13 @@
 <script type="text/x-handlebars-template" id="submissionActions">
     <button class="btn btn-large btn-primary" id="downloadSubmissionPdf" data-subid="{{_id}}" type="button">Download PDF</button>
     <button class="btn btn-large btn-primary" id="printSubmission" type="button">Print Submission</button>
-    {{#checkRole "formsadmin,formseditor"}}
+    {{#checkRole "formsadmin,submissionseditor"}}
     <button class="hidden btn btn-large btn-warning" data-subid="{{_id}}" id="editSubmission" type="button">Edit Submission</button>
     {{/checkRole}}
-    {{#checkRole "formsadmin,formseditor"}}
+    {{#checkRole "formsadmin,formseditor,submissionseditor"}}
     <button class="btn btn-large btn-danger" id="deleteSubmission" data-subid="{{_id}}" type="button">Delete Submission</button>
     {{/checkRole}}
-    {{#checkRole "formsadmin,formseditor"}}
+    {{#checkRole "formsadmin,formseditor,submissionseditor"}}
     <button class="btn btn-large btn-danger" id="editSubmission" data-subid="{{_id}}" type="button">Edit Submission</button>
     {{/checkRole}}
 </script>
