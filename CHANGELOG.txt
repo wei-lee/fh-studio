@@ -1,6 +1,10 @@
 -------------------------------------------------------------------------------
 Component: fh-studio
 -------------------------------------------------------------------------------
+3.18.07 - 2014-04-10 - IR225 - Cbrookes
+----------------------------------------
+*6695 add property check to manage forms button 
+
 3.18.06 - 2014-03-25 - IR224 - Cbrookes
 -----------------------------------------
 * 6564 fix view submissions error
@@ -44,8 +48,15 @@ property added to cluster-common:
     studio-js-appforms-enabled = false
     
 Note: cms work is included in this as we needed to reuse the formbuilder etc
-   
 
+3.17.38 - 2014-03-04- IR224 - James Kelly
+-----------------------------------------------
+* 6670 - QR codes not being added to builds 
+
+3.17.37 - 2014-02-27 - IR224 - James Kelly
+-----------------------------------------------
+#6493 - #zendesk-3043 Adding theme to separate Baystate and baystate innovation.
+   
 3.17.36 - 2014-02-27 - IR224 - John Frizelle
 -----------------------------------------------
 6485 - Plugins UI not rendering correctly for O2 UK theme.
