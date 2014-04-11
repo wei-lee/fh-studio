@@ -1,6 +1,9 @@
 -------------------------------------------------------------------------------
 Component: fh-studio
 -------------------------------------------------------------------------------
+3.18.08 - 2014-04-11 - IR225 - Cbrookes
+* 6764 appforms 2 default check prop to see whether to show appforms 3 generators
+
 3.18.07 - 2014-04-10 - IR225 - Cbrookes
 ----------------------------------------
 *6695 add property check to manage forms button 
