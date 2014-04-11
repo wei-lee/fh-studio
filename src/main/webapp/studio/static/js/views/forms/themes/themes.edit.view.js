@@ -10,15 +10,20 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     themeBorderRow : '#themeBorderRow',
     themeBorderRowReadOnly : '#themeBorderRowReadOnly',
     themeFontRowReadOnly : '#themeFontRowReadOnly',
-    'themeLogo' : '#themeLogo',
+    themeLogo : '#themeLogo',
     previewOutline: '#preview_outline',
-    formselect:'#form_select'
+    formselect:'#form_select',
+    themeFunctionalAreasTable: '#themeFunctionalAreasTable',
+    sectionContainer: '#sectionContainer',
+    themeStyleSection: '#themeStyleSection',
+    styleSpacing: '#styleSpacing'
   },
   events : {
     'click .btn-form-save' : 'onThemeSave',
     'click .btn-form-cancel' : 'back',
     'click .btn-forms-back' : 'back',
-    'change #formSelect' : 'formSelect'
+    'change #formSelect' : 'formSelect',
+    'change #themeConfigurator input[type="number"]' : 'colorChanged'
   },
   colorChanged: function(e){
     var self = this;
@@ -79,8 +84,13 @@ App.View.FormThemesEdit = App.View.Forms.extend({
   },
 
   render : function(){
+    //this.options.help.set('body_template', '#help-forms-dashboard-template');
     var self = this,
-    classes = self.readOnly ? "span12 themeedit" : "span10 themeedit";
+      classes = (typeof $fw === 'undefined') ? "themeedit row-fluid" : "span9 themeedit";
+
+    if(self.readOnly){
+      classes = "span11 themeedit";
+    }
     self.$el.addClass(classes);
     self.breadcrumb(['Forms', 'Themes', 'Edit Theme']);
 
@@ -101,32 +111,62 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     }
 
     self.$themesInnerContainer = $('<div class="themesInnerContainer"></div>');
-    self.$left = $('<div id="leftThemeContainer" class=""></div>');
-    if(self.readOnly){
-      self.$left.addClass('span5');
-    } else {
-      self.$left.addClass('span7');
-    }
-    self.$preview = $('<div id="previewContainer" class="boxed-group Info" data-title="Preview"></div>');
-    if(self.readOnly){
-      self.$preview.addClass('span5');
-    } else {
-      self.$preview.addClass('span5');
-    }
-    self.$themesInnerContainer.append(self.$left, self.$preview);
+    self.$left = $('<div id="leftThemeContainer" class="span6"></div>');
+    self.$preview = $('<div id="previewContainer" class="span4 boxed-group Info" data-title="Preview" style="float:right;"></div>');
 
-    self.$themeFunctionalAreasTable= $('<div id="themeConfigurator" class="themeConfigContainer boxed-group Info" data-title="Theme Configuration"></div>');
+
+    self.$themesInnerContainer.append(self.$left, self.$preview);
+    if (!self.readOnly){
+      $(window).scroll(function(){
+        if(!self.scrolled){
+          var navBarHeight = $('.navbar-inner').outerHeight();
+          var headerHeight = $('#header').outerHeight();
+
+          var offsetTop = navBarHeight + headerHeight;
+
+          var rightElWidth = self.$preview.outerWidth();
+          self.previewOffset = self.$preview.offset();
+
+          self.$preview.css('width', rightElWidth);
+          self.$preview.affix({offset: {top: self.previewOffset.top, bottom:0}});
+          self.scrolled = true;
+        }
+      });
+
+      $(window).resize(function(){
+        self.$preview.css('width', "");
+        self.scrolled = false;
+        var currentlyAffixed = false;
+        if(self.$preview.hasClass("affix")){
+          currentlyAffixed = true;
+          self.$preview.removeClass("affix");
+        }
+
+        if(!self.previewOffset){
+          self.previewOffset = self.$preview.offset();
+        }
+
+        var rightElWidth = self.$preview.outerWidth();
+
+        self.$preview.css('width', rightElWidth);
+        self.$preview.affix({offset: {top: self.previewOffset.top, bottom:0}});
+
+        if(currentlyAffixed){
+          self.$preview.addClass("affix");
+        }
+      });
+    }
+
+    self.$themeFunctionalAreasTable= $(self.templates.$themeFunctionalAreasTable());
 
     var themeStructure = App.forms.themeCSSGenerator().styleStructure;
 
     _.each(themeStructure[self.CONSTANTS.THEME.SECTIONS], function(strThemeSection, strThemeSectionIdx){
-      var sectionContainer = $('<div class="configSectionContainer boxed-group Info" data-title="' + strThemeSection.label + '"></div>');
-      var sliderControl = $('<div class="sliderControl"><i class="icon-circle-arrow-up icon-4"></i></div>');
-      sectionContainer.append(sliderControl);
+      var sectionContainer = $(self.templates.$sectionContainer({strThemeSection: strThemeSection}));
+      var sliderControl = sectionContainer.find('.sliderControl');
       sliderControl.click(function(e){
         var icon = $(this).find('.icon-4');
         if(icon.hasClass('icon-circle-arrow-up')){
-
           icon.addClass('icon-circle-arrow-down');
           icon.removeClass('icon-circle-arrow-up');
         } else {
@@ -139,18 +179,15 @@ App.View.FormThemesEdit = App.View.Forms.extend({
 
       _.each(strThemeSection[self.CONSTANTS.THEME.SUBSECTIONS], function(strSubSection, strThemeSubSectionIdx){
         var fullSectionId = strThemeSection.id + "_" + strSubSection.id;
-        var functionAreasRow = $('<div class="configSubSectionContainer" id="' + fullSectionId + '"></div>');
+        var subSectionHeading = strSubSection.label;
+        var functionAreasRow = $(self.templates.$themeStyleSection({fullSectionId: fullSectionId, subSectionHeading: subSectionHeading}));
         var typographyElement = "";
         var backgroundElement = "";
         var borderElement = "";
-        var subSectionHeading = strSubSection.label;
-        functionAreasRow.append($('<div class="configSubSectionHeading">' + subSectionHeading + '</div>'));
-        var stylingContainer = $('<div class="stylingContainer"></div>');
-
+        var stylingContainer = functionAreasRow.find('.stylingContainer');
 
         //Adding sliders for styling
-        var sliderControl = $('<div class="sliderControlSubSection"><i class="icon-circle-arrow-up icon-2"></i></div>');
-        functionAreasRow.append(sliderControl);
+        var sliderControl = functionAreasRow.find('.sliderControlSubSection');
         sliderControl.click(function(e){
           var icon = $(this).find('.icon-2');
           if(icon.hasClass('icon-circle-arrow-up')){
@@ -163,8 +200,6 @@ App.View.FormThemesEdit = App.View.Forms.extend({
 
           $(functionAreasRow).find('.stylingContainer').slideToggle('slow');
         });
-
-        functionAreasRow.append(stylingContainer);
 
         if(strSubSection.style.background){
           var backgroundInfo = self.getThemeElementVal(strThemeSectionIdx, strThemeSubSectionIdx, self.CONSTANTS.THEME.BACKGROUND);
@@ -192,7 +227,22 @@ App.View.FormThemesEdit = App.View.Forms.extend({
           borderElement = "";
         }
 
+        var marginElement = null, paddingElement = null;
+
+        if(strSubSection.style.margin){
+          var marginInfo = self.getThemeElementVal(strThemeSectionIdx, strThemeSubSectionIdx, self.CONSTANTS.THEME.MARGIN);
+          marginElement = self.templates.$styleSpacing({spacingInfo: marginInfo, title: "Margin", readOnly: self.readOnly});
+          stylingContainer.append(marginElement);
+        }
+
+        if(strSubSection.style.padding){
+          var paddingInfo = self.getThemeElementVal(strThemeSectionIdx, strThemeSubSectionIdx, self.CONSTANTS.THEME.PADDING);
+          paddingElement = self.templates.$styleSpacing({spacingInfo: paddingInfo, title: "Padding", readOnly: self.readOnly});
+          stylingContainer.append(paddingElement);
+        }
+
         stylingContainer.append(borderElement);
+
         functionAreasRow.append(stylingContainer);
         sectionContainer.append(functionAreasRow);
 
@@ -212,7 +262,8 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     prevWrapper.append('<style id="themeStyle">'+this.theme.get("css")+'</style>');
     self.$el.find('.btn-preview-theme').trigger("click");
 
-//    self.$left.removeClass("span9").addClass("span6");
+    self.$el.find('#leftThemeContainer').removeClass("span9").addClass("span6");
+    //TODO: This doesn't belong here - form.preview.view.js should be capable of loading forms collection if none supplied..
     self.formCollection.fetch({"success":function (forms){
       var formData = [];
       forms.forEach(function (f){
@@ -344,6 +395,35 @@ App.View.FormThemesEdit = App.View.Forms.extend({
           };
         }
 
+        var marginObj = {top: 0, right: 0, bottom: 0, left: 0};
+        var paddingObj = {top: 0, right: 0, bottom: 0, left: 0};
+        var key;
+        var inputName;
+        var marginEle = sectionContainer.find('.styleMargin');
+        if(marginEle && marginEle.length > 0){
+          for(key in marginObj){
+            inputName = '.style' + key + 'Input input';
+            var marginInputEle =  marginEle.find(inputName);
+            if(marginInputEle && marginInputEle.length > 0){
+              marginObj[key] = marginInputEle.val();
+            }
+          }
+          subSectionObject[self.CONSTANTS.THEME.MARGIN] = marginObj;
+        }
+
+
+        var paddingEle = sectionContainer.find('.stylePadding');
+        if(paddingEle && paddingEle.length > 0){
+          for(key in paddingObj){
+            inputName = '.style' + key + 'Input input';
+            var paddingInputEle =  paddingEle.find(inputName);
+            if(paddingInputEle && paddingInputEle.length > 0){
+              paddingObj[key] = paddingInputEle.val();
+            }
+          }
+          subSectionObject[self.CONSTANTS.THEME.PADDING] = paddingObj;
+        }
+
         sectionObject.sub_sections.push(subSectionObject);
       });
 
@@ -351,6 +431,7 @@ App.View.FormThemesEdit = App.View.Forms.extend({
     });
 
     self.theme.set(self.CONSTANTS.THEME.SECTIONS, sectionVals);
+    self.theme.set(self.CONSTANTS.THEME.STRUCTURE, themeStructure);
     self.theme.set(self.CONSTANTS.THEME.NAME, themeName);
     var themeGenerationResult = App.forms.themeCSSGenerator(self.theme.toJSON()).generateThemeCSS();
 

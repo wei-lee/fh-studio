@@ -353,6 +353,57 @@
 
 <!-- Themes specific templates -->
 
+<script id="themeFunctionalAreasTable" type="text/x-handlebars-template">
+    <div id="themeConfigurator" class="themeConfigContainer span12" data-title="Theme Configuration">
+
+    </div>
+</script>
+
+<script id="sectionContainer" type="text/x-handlebars-template">
+    <div class="configSectionContainer boxed-group Info span12" data-title="{{strThemeSection.label}}">
+        <div class="sliderControl">
+            <i class="icon-circle-arrow-up icon-4"></i>
+        </div>
+    </div>
+</script>
+
+<script id="themeStyleSection" type="text/x-handlebars-template">
+    <div class="configSubSectionContainer" id="{{fullSectionId}}">
+        <div class="configSubSectionHeading">{{subSectionHeading}}</div>
+        <div class="sliderControlSubSection">
+            <i class="icon-circle-arrow-up icon-2"></i>
+        </div>
+        <div class="stylingContainer span12">
+
+        </div>
+    </div>
+</script>
+
+<script id="styleSpacing" type="text/x-handlebars-template">
+    <div class="style{{title}} span5">
+        <div class="style{{title}}Title span12">{{title}}</div>
+
+        {{#if readOnly}}
+            {{#each spacingInfo}}
+                <div class="style{{title}}{{@key}}Title span5" style="margin-right:2px;">{{@key}}</div>
+                <div class="style{{title}}{{@key}}Input span5" style="margin-right:2px;">
+                    {{this}}px
+                </div>
+            {{/each}}
+
+        {{else}}
+            {{#each spacingInfo}}
+                <div class="style{{title}}{{@key}}Title span5" style="margin-right:2px;">{{@key}}</div>
+                <div class="style{{title}}{{@key}}Input span5" style="margin-right:2px;">
+                    <input type="number" class="span12" value="{{this}}" min="0">
+                </div>
+            {{/each}}
+
+        {{/if}}
+
+    </div>
+</script>
+
 <script id="themesListMenu" type="text/x-handlebars-template">
   <div class="formsmenu span2">
 
