@@ -474,20 +474,22 @@ application.DestinationGeneral = Class.extend({
     }
 
     var showDownload = function(message) {
-      var dialog = $('#binary_download_dialog').clone();
       modal.find(".modal-body").html(message).end().appendTo($("body")).modal({
         "keyboard": false,
         "backdrop": "static"
       });
 
-      var url = $('#qr_code').data('url');
+      var url = modal.find('#qr_code').data('url');
       if (url) {
-        $('#qr_code').qrcode({
+        console.log('found url for qr code');
+        modal.find('#qr_code').qrcode({
           text: url
         });
         setTimeout(function(){
           $('.modal.fade.in:visible').css('top', '40%');
         }, 500);
+      } else {
+        console.log('Could NOT find url for qr code');
       }
     };
 
