@@ -927,7 +927,7 @@ Apps.Generate.Controller = GenerateApp.Controller = Class.extend({
 
   initGenerators: function() {
     var self = this;
-    if ("false" === $fw.getClientProp("appforms-enabled")){
+    if ("false" === $fw.getClientProp("appforms-enabled-feedhenry2")){
        $('.formsalt').hide();
     }
     self.all_generators = {
@@ -996,7 +996,7 @@ Apps.Generate.Controller = GenerateApp.Controller = Class.extend({
   },
 
   showGeneratorList: function() {
-    if ("true" === $fw.getClientProp("appforms-enabled")){
+    if ("true" === $fw.getClientProp("appforms-enabled-feedhenry2")){
       $('#appforms_generator_list').show();
       this.hideWufooList();
     }else{
