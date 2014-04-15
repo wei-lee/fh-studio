@@ -1,10 +1,17 @@
 -------------------------------------------------------------------------------
 Component: fh-studio
 -------------------------------------------------------------------------------
+
+3.18.10 - 2014-04-15 - IR225 - Jason Madigan
+--------------------------------------------
+* 6780 - Users who are not logged in should be directed to their appropriate login page based on feedhenry_v cookie
+
 3.18.09 - 2014-04-11 - IR225 - Cbrookes
+--------------------------------------------
 * 6764 change name of property that decides whether to show new appforms3 or old appforms : studio-js-appforms-enabled-feedhenry2 
 
 3.18.08 - 2014-04-11 - IR225 - Cbrookes
+--------------------------------------------
 * 6764 appforms 2 default check prop to see whether to show appforms 3 generators
 
 3.18.07 - 2014-04-10 - IR225 - Cbrookes
