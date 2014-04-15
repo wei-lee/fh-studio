@@ -19,6 +19,7 @@ App.View.SubmissionDetail = App.View.Forms.extend({
     var self = this;
     delete self.submission;
     if(self.options.submission){
+      self.form = this.options.submission.get('formSubmittedAgainst');
       self.submission = self.options.submission.toJSON();
     }
   },

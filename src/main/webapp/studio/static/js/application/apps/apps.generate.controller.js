@@ -817,7 +817,7 @@ GenerateApp.Controllers.AppForms3 = Controller.extend({
 
     self.parent_controller.hideGeneratorList();
 
-    // TODO BELOW FROM PREVIOUS UFOO CONTROLLER LOCATION
+    // TODO BELOW FROM PREVIOUS WUFOO CONTROLLER LOCATION
         //todo change to be some property
         this.collection = new App.Collection.FormApps();
         this.pluralTitle = 'Forms Apps';
@@ -927,7 +927,9 @@ Apps.Generate.Controller = GenerateApp.Controller = Class.extend({
 
   initGenerators: function() {
     var self = this;
-
+    if ("false" === $fw.getClientProp("appforms-enabled-feedhenry2")){
+       $('.formsalt').hide();
+    }
     self.all_generators = {
       wufoo_single: new GenerateApp.Controllers.WufooSingle({
         controller: this
@@ -979,6 +981,7 @@ Apps.Generate.Controller = GenerateApp.Controller = Class.extend({
   },
 
   show: function() {
+
     $('#generate_app').show();
 
     this.bind();
@@ -986,14 +989,20 @@ Apps.Generate.Controller = GenerateApp.Controller = Class.extend({
   },
 
   hideGeneratorList: function() {
+
     $('#appforms_generator_list').hide();
     this.hideWufooList();
     $('#generator_list').hide();
   },
 
   showGeneratorList: function() {
-    $('#appforms_generator_list').show();
-    this.hideWufooList();
+    if ("true" === $fw.getClientProp("appforms-enabled-feedhenry2")){
+      $('#appforms_generator_list').show();
+      this.hideWufooList();
+    }else{
+      $('#appforms_generator_list').hide();
+      this.showWufooList();
+    }
     $('.app_generator:visible').hide();
   }
 

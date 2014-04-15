@@ -3,7 +3,7 @@ App.View.SubmissionEdit = App.View.Forms.extend({
   initialize : function (){
     this.constructor.__super__.initialize.apply(this, arguments);
     this.submission = this.options.model;
-    this.form = this.options.form;
+    this.form =  this.options.form;
   },
 
 
@@ -81,11 +81,11 @@ App.View.SubmissionEdit = App.View.Forms.extend({
     var self = this;
     var field;
 
-    var pages = self.form.get("pages");
+    var pages = self.form.pages;
 
     for(var i=0; i < pages.length; i++){
-      var page = pages.at(i);
-      var fields = page.get("fields");
+      var page = pages[i];
+      var fields = page.fields;
       fields.forEach(function (f){
         if(f._id === id){
           field = f;

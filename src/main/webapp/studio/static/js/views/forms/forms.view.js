@@ -72,7 +72,9 @@ App.View.Forms = Backbone.View.extend({
       SUBSECTIONS: 'sub_sections',
       STRUCTURE: 'structure',
       LOGO : 'logo',
-      CSS: 'css'
+      CSS: 'css',
+      MARGIN: 'margin',
+      PADDING: 'padding'
     },
     FORMSAPP : {
       NAME : 'title',

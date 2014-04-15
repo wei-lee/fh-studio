@@ -2,9 +2,15 @@
 Component: fh-studio
 -------------------------------------------------------------------------------
 
-3.18.08 - 2014-04-15 - IR225 - Jason Madigan
+3.18.10 - 2014-04-15 - IR225 - Jason Madigan
 --------------------------------------------
 * 6780 - Users who are not logged in should be directed to their appropriate login page based on feedhenry_v cookie
+=======
+3.18.09 - 2014-04-11 - IR225 - Cbrookes
+* 6764 change name of property that decides whether to show new appforms3 or old appforms : studio-js-appforms-enabled-feedhenry2 
+
+3.18.08 - 2014-04-11 - IR225 - Cbrookes
+* 6764 appforms 2 default check prop to see whether to show appforms 3 generators
 
 3.18.07 - 2014-04-10 - IR225 - Cbrookes
 ----------------------------------------
@@ -54,7 +60,12 @@ property added to cluster-common:
     
 Note: cms work is included in this as we needed to reuse the formbuilder etc
 
-3.17.38 - 2014-03-04- IR224 - James Kelly
+
+3.17.38 - 2014-04-14 - IR225 - Martin Murphy
+-----------------------------------------------
+* 6791 - [Zendesk #3494] QR-code not always displayed in FeedHenry 2 Studio
+
+3.17.37 - 2014-03-04- IR224 - James Kelly
 -----------------------------------------------
 * 6670 - QR codes not being added to builds 
 
