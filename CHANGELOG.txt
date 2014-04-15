@@ -1,6 +1,11 @@
 -------------------------------------------------------------------------------
 Component: fh-studio
 -------------------------------------------------------------------------------
+
+3.18.08 - 2014-04-15 - IR225 - Jason Madigan
+--------------------------------------------
+* 6780 - Users who are not logged in should be directed to their appropriate login page based on feedhenry_v cookie
+
 3.18.07 - 2014-04-10 - IR225 - Cbrookes
 ----------------------------------------
 *6695 add property check to manage forms button 
