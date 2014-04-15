@@ -157,6 +157,9 @@ public class StudioBean {
     }
 
     String scheme = resolveScheme(pRequest);
+    
+    Cookie feedhenry_v = getVersionCookie(pRequest);
+    Cookie cookie = getCookie("feedhenry", pRequest);
 
     // Allow for domain being passed in request
     if (null == mDomain) {
@@ -181,7 +184,6 @@ public class StudioBean {
       post.setHeader("referer", referer);
 
       // Send requestor's cookie if available
-      Cookie cookie = getCookie("feedhenry", pRequest);
       if (null != cookie) {
         post.addHeader("Cookie", "feedhenry=" + cookie.getValue());
       }
@@ -220,12 +222,11 @@ public class StudioBean {
          * 
          * If no feedhenry_v cookie set in a request to fh-studio, set it's initial value to 2
          */
-        Cookie feedhenry_v = getVersionCookie(pRequest);
         if (feedhenry_v == null) {
           log.info("No initial fh_v for 2 cookie set, setting");
           setVersionCookie(pResponse, "2");
-        }
-        
+          }
+
         mCoreProps = JSONObject.fromObject(sb.toString());
         log.debug("mCoreProps: " + mCoreProps.toString(2));
         if (!"error".equals(mCoreProps.optString("status"))) {
@@ -287,19 +288,21 @@ public class StudioBean {
       // TODO: Alter these with new NGUI redirects
       if (!path.equals("/studio/activate.html") && !path.equals("/studio/reset.html") && !path.equals("/studio/store")) {
         
-        // User using wrong version, set cookie and redirect to /
-        if (studioVersion.equals("beta")) {
-          setVersionCookie(pResponse, "3");
-        } else if (studioVersion.isEmpty()) {
-          setVersionCookie(pResponse, "2");
+        // User using wrong version (and not logged in), set cookie and redirect to /
+        if (cookie != null) {
+          if (studioVersion.equals("beta")) {
+            setVersionCookie(pResponse, "3");
+          } else if (studioVersion.isEmpty()) {
+            setVersionCookie(pResponse, "2");
+          }
+          String redirect = requiredProtocol + "://" + serverName + "/";
+            
+          if (queryString != null) {
+            redirect = redirect + "/?" + queryString;
+          }
+          redirectUrl = redirect;
+          proceed = false;
         }
-        String redirect = requiredProtocol + "://" + serverName + "/";
-          
-        if (queryString != null) {
-          redirect = redirect + "/?" + queryString;
-        }
-        redirectUrl = redirect;
-        proceed = false;
       }
     }
 
