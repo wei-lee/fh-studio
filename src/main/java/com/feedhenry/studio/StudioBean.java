@@ -4,8 +4,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -13,6 +14,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -22,8 +24,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import org.apache.commons.codec.digest.DigestUtils;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpEntity;
@@ -158,8 +160,8 @@ public class StudioBean {
 
     String scheme = resolveScheme(pRequest);
     
-    Cookie feedhenry_v = getVersionCookie(pRequest);
-    Cookie cookie = getCookie("feedhenry", pRequest);
+    Cookie studioVersionCookie = getVersionCookie(pRequest);
+    Cookie loginCookie = getCookie("feedhenry", pRequest);
 
     // Allow for domain being passed in request
     if (null == mDomain) {
@@ -184,8 +186,8 @@ public class StudioBean {
       post.setHeader("referer", referer);
 
       // Send requestor's cookie if available
-      if (null != cookie) {
-        post.addHeader("Cookie", "feedhenry=" + cookie.getValue());
+      if (null != loginCookie) {
+        post.addHeader("Cookie", "feedhenry=" + loginCookie.getValue());
       }
 
       HttpResponse response = client.execute(post);
@@ -222,10 +224,10 @@ public class StudioBean {
          * 
          * If no feedhenry_v cookie set in a request to fh-studio, set it's initial value to 2
          */
-        if (feedhenry_v == null) {
+        if (studioVersionCookie == null) {
           log.info("No initial fh_v for 2 cookie set, setting");
-          setVersionCookie(pResponse, "2");
-          }
+          addVersionCookie(pResponse, "2");
+        }
 
         mCoreProps = JSONObject.fromObject(sb.toString());
         log.debug("mCoreProps: " + mCoreProps.toString(2));
@@ -288,21 +290,22 @@ public class StudioBean {
       // TODO: Alter these with new NGUI redirects
       if (!path.equals("/studio/activate.html") && !path.equals("/studio/reset.html") && !path.equals("/studio/store")) {
         
-        // User using wrong version (and not logged in), set cookie and redirect to /
-        if (cookie != null) {
+        if (studioVersionCookie == null || loginCookie != null) {
+          // User using wrong version (and not logged in), set cookie and redirect to /
           if (studioVersion.equals("beta")) {
-            setVersionCookie(pResponse, "3");
-          } else if (studioVersion.isEmpty()) {
-            setVersionCookie(pResponse, "2");
-          }
-          String redirect = requiredProtocol + "://" + serverName + "/";
+            addVersionCookie(pResponse, "3");
+            String redirect = requiredProtocol + "://" + serverName + "/";
             
-          if (queryString != null) {
-            redirect = redirect + "/?" + queryString;
+            if (queryString != null) {
+              redirect = redirect + "/?" + queryString;
+            }
+            redirectUrl = redirect;
+            proceed = false;
+          } else if (studioVersion.isEmpty()) {
+            addVersionCookie(pResponse, "2");
           }
-          redirectUrl = redirect;
-          proceed = false;
         }
+
       }
     }
 
@@ -313,9 +316,9 @@ public class StudioBean {
       pResponse.sendRedirect(redirectUrl);
     } else {
       setNoCacheHeaders(pResponse);
-      String csrfHash = generateCsrfHash(); 
-      pResponse.setHeader("SET-COOKIE", "scrf="+csrfHash+"; HttpOnly;");
-      if(null != mStudioProps){
+      String csrfHash = generateCsrfHash();
+      addCsrfCookie(pResponse, csrfHash);
+      if (null != mStudioProps) {
         mStudioProps.put("csrf", csrfHash);
       }
       pRequest.setAttribute("csrftoken", csrfHash);
@@ -846,12 +849,46 @@ public class StudioBean {
     return getProperty(propName).equals("true");
   }
   
-  private void setVersionCookie(HttpServletResponse response, String version) {
-    log.info("Setting feedhenry_v to " + version);
+  private void addVersionCookie(HttpServletResponse response, String value) {
     int expires = (3600 * 1000 * 24 * 365 * 10);
-    Cookie versionCookie = new Cookie("feedhenry_v", version);
-    versionCookie.setMaxAge(expires);
-    response.addCookie(versionCookie);
+    addCookie(response, "feedhenry_v", value, false, expires);
+  }
+  
+  private void addCsrfCookie(HttpServletResponse response, String value) {
+    addCookie(response, "scrf", value, true, 0);
+  }
+  
+  /**
+   * Why?
+   * 
+   * TLDR; Servlet API < 3.0 don't support HttpOnly cookie flag, so we need to setHeader() instead
+   * 
+   * This helper lets you safely add multiple cookies
+   * 
+   * @param response
+   * @param key
+   * @param value
+   * @param httpOnly
+   * @param expires
+   */
+  private void addCookie(HttpServletResponse response, String key, String value, boolean httpOnly, int expires) {
+    log.info("addCookie(). Key: " + key + ", value: " + value + ", httpOnly: " + httpOnly + ", expires: " + expires);
+
+    String cookieSet = key + "=" + value + ";";
+    if (expires > 0) {
+      Date expdate= new Date();
+      expdate.setTime (expdate.getTime() + expires);
+      DateFormat df = new SimpleDateFormat("dd MMM yyyy kk:mm:ss z");
+      df.setTimeZone(TimeZone.getTimeZone("GMT"));
+      String cookieExpires = " expires=" + df.format(expdate) + ";";
+      cookieSet += cookieExpires;
+    }
+    
+    if (httpOnly) {
+      cookieSet += " HttpOnly;";
+    }
+    
+    response.addHeader("Set-Cookie", cookieSet);
   }
   
   private Cookie getVersionCookie(HttpServletRequest request) {
