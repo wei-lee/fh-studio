@@ -2,6 +2,10 @@
 Component: fh-studio
 -------------------------------------------------------------------------------
 
+3.18.14 - 2014-04-24 - IR226 - Cbrookes
+-------------------------------------------------
+update to latest js-sdk
+
 3.18.13 - 2014-04-23 - IR226 - Jason Madigan
 ------------------------------------------------
 * 6959 - If setting studio.version to beta, you still land on old studio
