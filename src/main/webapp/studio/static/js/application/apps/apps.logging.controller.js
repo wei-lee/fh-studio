@@ -429,7 +429,8 @@ Apps.Logging.Controller = Apps.Cloud.Controller.extend({
     var logname = data[0];
     var instGuid = $fw.data.get('inst').guid;
     var cloudEnv = $fw.data.get('cloud_environment');
-    var url = Constants.LOGSTREAM_URL + "?guid=" + instGuid + "&deploytarget=" + cloudEnv + "&action=download&logname=" + logname;
+    var csrftoken = $('input[name="csrftoken"]').val();
+    var url = Constants.LOGSTREAM_URL + "?guid=" + instGuid + "&deploytarget=" + cloudEnv + "&action=download&logname=" + logname + "&csrftoken=" + csrftoken;
     document.location = url;
   },
 

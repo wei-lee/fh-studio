@@ -1,6 +1,11 @@
 -------------------------------------------------------------------------------
 Component: fh-studio
 -------------------------------------------------------------------------------
+
+3.18.20 - 2014-05-12 - IR227 - Martin Murphy
+------------------------------------------------------
+* 6973 - [Zendesk #3572] app logs download not working from studio due to csrf
+
 3.18.19 - 2014-05-08 - IR227 - Wei Li
 ------------------------------------------------------
 Bump android and ios sdks to the latest version
@@ -45,7 +50,7 @@ update to latest js-sdk
 
 3.18.09 - 2014-04-11 - IR225 - Cbrookes
 --------------------------------------------
-* 6764 change name of property that decides whether to show new appforms3 or old appforms : studio-js-appforms-enabled-feedhenry2 
+* 6764 change name of property that decides whether to show new appforms3 or old appforms : studio-js-appforms-enabled-feedhenry2
 
 3.18.08 - 2014-04-11 - IR225 - Cbrookes
 --------------------------------------------
@@ -53,7 +58,7 @@ update to latest js-sdk
 
 3.18.07 - 2014-04-10 - IR225 - Cbrookes
 ----------------------------------------
-*6695 add property check to manage forms button 
+*6695 add property check to manage forms button
 
 3.18.06 - 2014-03-25 - IR224 - Cbrookes
 -----------------------------------------
@@ -79,7 +84,7 @@ Note delete all submissions in beta before deploy
 
 3.18.01 - 2014-02-10 - IR221 - mmurphy
 -----------------------------------------------
-* 5961 - add forms to existing apps needs to filter apps by group 
+* 5961 - add forms to existing apps needs to filter apps by group
 
 3.18.00 - 2014-01-20 - IR219 - Craig Brookes
 -----------------------------------------------
@@ -96,7 +101,7 @@ src/main/webapp/studio/static/common/js/api/appFormsThemeCssGenerator.js
 
 property added to cluster-common:
     studio-js-appforms-enabled = false
-    
+
 Note: cms work is included in this as we needed to reuse the formbuilder etc
 
 
@@ -106,12 +111,12 @@ Note: cms work is included in this as we needed to reuse the formbuilder etc
 
 3.17.37 - 2014-03-04- IR224 - James Kelly
 -----------------------------------------------
-* 6670 - QR codes not being added to builds 
+* 6670 - QR codes not being added to builds
 
 3.17.37 - 2014-02-27 - IR224 - James Kelly
 -----------------------------------------------
 #6493 - #zendesk-3043 Adding theme to separate Baystate and baystate innovation.
-   
+
 3.17.36 - 2014-02-27 - IR224 - John Frizelle
 -----------------------------------------------
 6485 - Plugins UI not rendering correctly for O2 UK theme.
@@ -130,7 +135,7 @@ Note: cms work is included in this as we needed to reuse the formbuilder etc
 
 3.17.32 - 2014-02-13 - IR221 - James Kelly
 -----------------------------------------------
-* 3111 - zendesk fixed black spaces where this role should be    
+* 3111 - zendesk fixed black spaces where this role should be
 
 3.17.31 - 2014-02-03 - IR220 - Wei Li
 -----------------------------------------------
@@ -179,7 +184,7 @@ Note: cms work is included in this as we needed to reuse the formbuilder etc
 * 5056 - Improvements to autofocus with modals that have input elements
 * 5054 - Improvements to Databrowser migration steps to show more detailed info on initialisation errors
 * 5037 - Fixed Cloud Environment resources sorting alphanumerically (now just sorting numerically)
-* 4930 - Fixed rebinding of buttons in Deployment Targets UI 
+* 4930 - Fixed rebinding of buttons in Deployment Targets UI
 * 4647 - Using henr.ie shortend urls for builds
 
 3.17.21 - 2013-11-11 - IR214 - Wei Li
@@ -215,7 +220,7 @@ fh-api in replacement of fh-nodeapp.
 
 3.17.16 - 2013-10-16 - IR212 - Niall Donnelly
 -------------------------------------------------------------------------------
-* 2169 - Fix iOS Store Issue  
+* 2169 - Fix iOS Store Issue
 * 2434 - Fix O2 Cloud Environments Tab css.
 
 3.17.15 - 2013-10-10 - IR212 - Niall Donnelly & Jason Madigan
@@ -256,7 +261,7 @@ Both themes are updated to show a "Request an Account" form in place of the regi
 -------------------------------------------------------------------------------
 * 4417 - Cloud Environments
 * 4196-minor-security-fixes
-we now set a csrf cookie which is sent with each request and value of the cookie 
+we now set a csrf cookie which is sent with each request and value of the cookie
 is also sent as a param in post request to be checked by millicore
 
 NOTES:
@@ -270,10 +275,10 @@ studio.cloudenvironments.enabled = false
 
 * 4556 - Whitelabelling and landing page for Rackspace
 
-NOTES: 
+NOTES:
 
-This release is to be accompanied by Millicore. A number of property changes are noted 
-in the Millicore changelog, as well as a new property for white-labelling deploy 
+This release is to be accompanied by Millicore. A number of property changes are noted
+in the Millicore changelog, as well as a new property for white-labelling deploy
 target labels.
 
 
@@ -297,7 +302,7 @@ studio.plugins.enabled=true
 3.17.5 (NR) - 2013-07-10 - IR205 - Craig Brookes
 
 * 4196-minor-security-fixes
-we now set a csrf cookie which is sent with each request and value of the cookie 
+we now set a csrf cookie which is sent with each request and value of the cookie
 is also sent as a param in post request to be checked by millicore
 
 3.17.4 - 2013-07-08 - IR205 - Jason Madigan
@@ -494,7 +499,7 @@ the runtimes options for.
 ----------------------------------------------
 * 2718 - Removed the steps in iOS build process that prompts user to select SDK version
 * 2719 - Added new iPhone5 app preivew
-* 2720 - Added support for new configuration options for iOS 
+* 2720 - Added support for new configuration options for iOS
 
 
 3.14.0 - 2012-12-18 - IR191 - Wei Li
@@ -592,10 +597,10 @@ multi form swap select config.
 ###CHANGES
 * Added 'Resources' screen for monitoring an app's resources
 * Deprecated old build targets: Nokia WRT, Opera Widgets, W3C.
-* Added new Deployment area for deploying your Cloud App to a number of PaaS 
+* Added new Deployment area for deploying your Cloud App to a number of PaaS
   options including FeedHenry, Cloud Foundry, App Fog, Stackato and Iron Foundry
 * You can now view Cloud App logs for both Live and Dev environments
-* Update UI for 'Stats' screen 
+* Update UI for 'Stats' screen
 * Added App Endpoints stats to 'Stats' screen
 
 ===============================================================================
@@ -645,7 +650,7 @@ multi form swap select config.
   * Auth Policy UI updated with LDAP and FeedHenry login support, user to policy
     assignment, and authorisation checks
   * New App Store Admin UI - users can create and configure an App Store
-  * New Store Item UI - users can create Store Items to associate with 
+  * New Store Item UI - users can create Store Items to associate with
     their App Store. These store items can have multiple binaries uploaded
     for iOS, iPhone, Android & iPad
   * New Devices UI - shows list of devices/apps accessing $fh.auth API
@@ -694,7 +699,7 @@ multi form swap select config.
 * Added new auth policy section for the portal admin, allowing the configuration of third party oauth and authentication that ties back into ARM
 
 ###NOTES
-* 
+*
 
 
 3.2.0
