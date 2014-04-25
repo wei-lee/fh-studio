@@ -3915,19 +3915,6 @@
           return new Date()
         } // FIXME need to use better date fn
         // not entirely sure if this is needed...
-        if (!Function.prototype.bind) {
-          Function.prototype.bind = function(obj) {
-            var slice = [].slice,
-              args = slice.call(arguments, 1),
-              self = this,
-              nop = function() {}, bound = function() {
-                return self.apply(this instanceof nop ? this : (obj || {}), args.concat(slice.call(arguments)))
-              }
-            nop.prototype = self.prototype
-            bound.prototype = new nop()
-            return bound
-          }
-        }
 
         // public methods
         return {
@@ -4434,6 +4421,111 @@
           }
         };
       }(this)));
+      Lawnchair.adapter('memory', (function(){
+
+        var data = {}
+
+        return {
+          valid: function() { return true },
+
+          init: function (options, callback) {
+            data[this.name] = data[this.name] || {index:[],store:{}}
+            this.index = data[this.name].index
+            this.store = data[this.name].store
+            var cb = this.fn(this.name, callback)
+            if (cb) cb.call(this, this)
+            return this
+          },
+
+          keys: function (callback) {
+            this.fn('keys', callback).call(this, this.index)
+            return this
+          },
+
+          save: function(obj, cb) {
+            var key = obj.key || this.uuid()
+
+            this.exists(key, function(exists) {
+              if (!exists) {
+                if (obj.key) delete obj.key
+                this.index.push(key)
+              }
+
+              this.store[key] = obj
+
+              if (cb) {
+                obj.key = key
+                this.lambda(cb).call(this, obj)
+              }
+            })
+
+            return this
+          },
+
+          batch: function (objs, cb) {
+            var r = []
+            for (var i = 0, l = objs.length; i < l; i++) {
+              this.save(objs[i], function(record) {
+                r.push(record)
+              })
+            }
+            if (cb) this.lambda(cb).call(this, r)
+            return this
+          },
+
+          get: function (keyOrArray, cb) {
+            var r;
+            if (this.isArray(keyOrArray)) {
+              r = []
+              for (var i = 0, l = keyOrArray.length; i < l; i++) {
+                r.push(this.store[keyOrArray[i]])
+              }
+            } else {
+              r = this.store[keyOrArray]
+              if (r) r.key = keyOrArray
+            }
+            if (cb) this.lambda(cb).call(this, r)
+            return this
+          },
+
+          exists: function (key, cb) {
+            this.lambda(cb).call(this, !!(this.store[key]))
+            return this
+          },
+
+          all: function (cb) {
+            var r = []
+            for (var i = 0, l = this.index.length; i < l; i++) {
+              var obj = this.store[this.index[i]]
+              obj.key = this.index[i]
+              r.push(obj)
+            }
+            this.fn(this.name, cb).call(this, r)
+            return this
+          },
+
+          remove: function (keyOrArray, cb) {
+            var del = this.isArray(keyOrArray) ? keyOrArray : [keyOrArray]
+            for (var i = 0, l = del.length; i < l; i++) {
+              var key = del[i].key ? del[i].key : del[i]
+              var where = this.indexOf(this.index, key)
+              if (where < 0) continue /* key not present */
+              delete this.store[key]
+              this.index.splice(where, 1)
+            }
+            if (cb) this.lambda(cb).call(this)
+            return this
+          },
+
+          nuke: function (cb) {
+            this.store = data[this.name].store = {}
+            this.index = data[this.name].index = []
+            if (cb) this.lambda(cb).call(this)
+            return this
+          }
+        }
+/////
+      })());
       ; browserify_shim__define__module__export__(typeof Lawnchair != "undefined" ? Lawnchair : window.Lawnchair);
 
     }).call(global, undefined, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
@@ -6685,8 +6777,8 @@
       return Object.prototype.hasOwnProperty.call(obj, prop);
     }
 
-  }).call(this,_dereq_("/Users/kelly/work/fh-js-sdk/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/isBuffer":6,"/Users/kelly/work/fh-js-sdk/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":11,"inherits":10}],8:[function(_dereq_,module,exports){
+  }).call(this,_dereq_("/mnt/ebs1/workspace/fh-js-sdk_beta/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./support/isBuffer":6,"/mnt/ebs1/workspace/fh-js-sdk_beta/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":11,"inherits":10}],8:[function(_dereq_,module,exports){
   (function (global){
     /*global window, global*/
     var util = _dereq_("util")
@@ -7161,7 +7253,7 @@
   module.exports=_dereq_(6)
 },{}],13:[function(_dereq_,module,exports){
   module.exports=_dereq_(7)
-},{"./support/isBuffer":12,"/Users/kelly/work/fh-js-sdk/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":11,"inherits":10}],14:[function(_dereq_,module,exports){
+},{"./support/isBuffer":12,"/mnt/ebs1/workspace/fh-js-sdk_beta/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":11,"inherits":10}],14:[function(_dereq_,module,exports){
   /*
    * loglevel - https://github.com/pimterry/loglevel
    *
@@ -7503,7 +7595,7 @@
 
 
 
-},{"./modules/ajax":18,"./modules/api_act":19,"./modules/api_auth":20,"./modules/api_cloud":21,"./modules/api_hash":22,"./modules/api_mbaas":23,"./modules/api_sec":24,"./modules/appProps":25,"./modules/constants":27,"./modules/device":29,"./modules/events":30,"./modules/fhparams":31,"./modules/logger":38,"./modules/sync-cli":46,"./modules/waitForCloud":48}],17:[function(_dereq_,module,exports){
+},{"./modules/ajax":18,"./modules/api_act":19,"./modules/api_auth":20,"./modules/api_cloud":21,"./modules/api_hash":22,"./modules/api_mbaas":23,"./modules/api_sec":24,"./modules/appProps":25,"./modules/constants":27,"./modules/device":29,"./modules/events":30,"./modules/fhparams":31,"./modules/logger":37,"./modules/sync-cli":45,"./modules/waitForCloud":47}],17:[function(_dereq_,module,exports){
   var XDomainRequestWrapper = function(xdr){
     this.xdr = xdr;
     this.isWrapper = true;
@@ -7569,12 +7661,12 @@
   module.exports = XDomainRequestWrapper;
 
 },{}],18:[function(_dereq_,module,exports){
-//a shameless copy from https://github.com/ForbesLindesay/ajax/blob/master/index.js. 
+//a shameless copy from https://github.com/ForbesLindesay/ajax/blob/master/index.js.
 //it has the same methods and config options as jQuery/zeptojs but very light weight. see http://api.jquery.com/jQuery.ajax/
 //a few small changes are made for supporting IE 8 and other features:
 //1. use getXhr function to replace the default XMLHttpRequest implementation for supporting IE8
 //2. Integrate with events emitter. So to subscribe ajax events, you can do $fh.on("ajaxStart", handler). See http://api.jquery.com/Ajax_Events/ for full list of events
-//3. allow passing xhr factory method through options: e.g. $fh.ajax({xhr: function(){/*own implementation of xhr*/}}); 
+//3. allow passing xhr factory method through options: e.g. $fh.ajax({xhr: function(){/*own implementation of xhr*/}});
 //4. Use fh_timeout value as the default timeout
 //5. an extra option called "tryJSONP" to allow try the same call with JSONP if normal CORS failed - should only be used internally
 //6. for jsonp, allow to specify the callback query param name using the "jsonp" option
@@ -7646,9 +7738,21 @@
       baseHeaders['Content-Type'] = (settings.contentType || 'application/x-www-form-urlencoded')
     settings.headers = extend(baseHeaders, settings.headers || {})
 
+    if (typeof Titanium !== 'undefined') {
+      xhr.setOnerror(function(){
+        if (!abortTimeout){
+          return;
+        }
+        clearTimeout(abortTimeout);
+        ajaxError(null, 'error', xhr, settings);
+      });
+    }
+
     xhr.onreadystatechange = function () {
+
       if (xhr.readyState == 4) {
         clearTimeout(abortTimeout)
+        abortTimeout = undefined;
         var result, error = false
         if(settings.tryJSONP){
           //check if the request has fail. In some cases, we may want to try jsonp as well. Again, FH only...
@@ -7789,6 +7893,7 @@
 
     window[callbackName] = function (data) {
       clearTimeout(abortTimeout)
+      abortTimeout = undefined;
       //todo: remove script
       //$(script).remove()
       delete window[callbackName]
@@ -7828,6 +7933,13 @@
     if(isIE() && (crossDomain === true) && typeof window.XDomainRequest !== "undefined"){
       xhr = new XDomainRequestWrapper(new XDomainRequest());
     }
+    // For Titanium SDK
+    if (typeof Titanium !== 'undefined'){
+      xhr = Titanium.Network.createHTTPClient({
+        timeout: ajax.settings.timeout
+      });
+    }
+
     return xhr;
   }
 
@@ -7946,7 +8058,8 @@
     })
     return target
   }
-},{"./XDomainRequestWrapper":17,"./events":30,"./logger":38,"type-of":15}],19:[function(_dereq_,module,exports){
+
+},{"./XDomainRequestWrapper":17,"./events":30,"./logger":37,"type-of":15}],19:[function(_dereq_,module,exports){
   var logger =_dereq_("./logger");
   var cloud = _dereq_("./waitForCloud");
   var fhparams = _dereq_("./fhparams");
@@ -7996,7 +8109,8 @@
       }
     })
   }
-},{"./ajax":18,"./appProps":25,"./fhparams":31,"./handleError":33,"./logger":38,"./waitForCloud":48,"JSON":3}],20:[function(_dereq_,module,exports){
+
+},{"./ajax":18,"./appProps":25,"./fhparams":31,"./handleError":32,"./logger":37,"./waitForCloud":47,"JSON":3}],20:[function(_dereq_,module,exports){
   var logger =_dereq_("./logger");
   var cloud = _dereq_("./waitForCloud");
   var fhparams = _dereq_("./fhparams");
@@ -8062,7 +8176,7 @@
       }
     });
   }
-},{"./ajax":18,"./appProps":25,"./checkAuth":26,"./constants":27,"./device":29,"./fhparams":31,"./handleError":33,"./logger":38,"./waitForCloud":48,"JSON":3}],21:[function(_dereq_,module,exports){
+},{"./ajax":18,"./appProps":25,"./checkAuth":26,"./constants":27,"./device":29,"./fhparams":31,"./handleError":32,"./logger":37,"./waitForCloud":47,"JSON":3}],21:[function(_dereq_,module,exports){
   var logger =_dereq_("./logger");
   var cloud = _dereq_("./waitForCloud");
   var fhparams = _dereq_("./fhparams");
@@ -8107,7 +8221,7 @@
       }
     })
   }
-},{"./ajax":18,"./appProps":25,"./fhparams":31,"./handleError":33,"./logger":38,"./waitForCloud":48,"JSON":3}],22:[function(_dereq_,module,exports){
+},{"./ajax":18,"./appProps":25,"./fhparams":31,"./handleError":32,"./logger":37,"./waitForCloud":47,"JSON":3}],22:[function(_dereq_,module,exports){
   var hashImpl = _dereq_("./security/hash");
 
   module.exports = function(p, s, f){
@@ -8119,7 +8233,7 @@
     params.params = p;
     hashImpl(params, s, f);
   };
-},{"./security/hash":44}],23:[function(_dereq_,module,exports){
+},{"./security/hash":43}],23:[function(_dereq_,module,exports){
   var logger =_dereq_("./logger");
   var cloud = _dereq_("./waitForCloud");
   var fhparams = _dereq_("./fhparams");
@@ -8165,7 +8279,7 @@
     });
   }
 
-},{"./ajax":18,"./appProps":25,"./constants":27,"./fhparams":31,"./handleError":33,"./logger":38,"./waitForCloud":48,"JSON":3}],24:[function(_dereq_,module,exports){
+},{"./ajax":18,"./appProps":25,"./constants":27,"./fhparams":31,"./handleError":32,"./logger":37,"./waitForCloud":47,"JSON":3}],24:[function(_dereq_,module,exports){
   var keygen = _dereq_("./security/aes-keygen");
   var aes = _dereq_("./security/aes-node");
   var rsa = _dereq_("./security/rsa-node");
@@ -8209,7 +8323,7 @@
       }
     }
   }
-},{"./security/aes-keygen":42,"./security/aes-node":43,"./security/hash":44,"./security/rsa-node":45}],25:[function(_dereq_,module,exports){
+},{"./security/aes-keygen":41,"./security/aes-node":42,"./security/hash":43,"./security/rsa-node":44}],25:[function(_dereq_,module,exports){
   var consts = _dereq_("./constants");
   var ajax = _dereq_("./ajax");
   var logger = _dereq_("./logger");
@@ -8280,7 +8394,8 @@
     getAppProps: getAppProps,
     setAppProps: setAppProps
   };
-},{"./ajax":18,"./constants":27,"./logger":38,"./queryMap":40}],26:[function(_dereq_,module,exports){
+
+},{"./ajax":18,"./constants":27,"./logger":37,"./queryMap":39}],26:[function(_dereq_,module,exports){
   var logger = _dereq_("./logger");
   var queryMap = _dereq_("./queryMap");
   var JSON = _dereq_("JSON");
@@ -8378,7 +8493,7 @@
     window.addEventListener('load', function(){
       checkAuth(window.location.href);
     }, false); //W3C
-  } else {
+  } else if (window.attachEvent) {
     window.attachEvent('onload', function(){
       checkAuth(window.location.href);
     }); //IE
@@ -8388,13 +8503,14 @@
     "handleAuthResponse": handleAuthResponse
   };
 
-},{"./fhparams":31,"./logger":38,"./queryMap":40,"JSON":3}],27:[function(_dereq_,module,exports){
+},{"./fhparams":31,"./logger":37,"./queryMap":39,"JSON":3}],27:[function(_dereq_,module,exports){
   module.exports = {
     "boxprefix": "/box/srv/1.1/",
-    "sdk_version": "2.0.5-alpha",
+    "sdk_version": "2.0.9-alpha",
     "config_js": "fhconfig.json",
     "INIT_EVENT": "fhinit"
   };
+
 },{}],28:[function(_dereq_,module,exports){
   module.exports = {
     readCookieValue  : function (cookie_name) {
@@ -8491,7 +8607,7 @@
     }
   }
 
-},{"./cookies":28,"./logger":38,"./platformsMap":39,"./uuid":47}],30:[function(_dereq_,module,exports){
+},{"./cookies":28,"./logger":37,"./platformsMap":38,"./uuid":46}],30:[function(_dereq_,module,exports){
   var EventEmitter = _dereq_('events').EventEmitter;
 
   var emitter = new EventEmitter();
@@ -8568,28 +8684,7 @@
     "setAuthSessionToken":setAuthSessionToken
   }
 
-},{"./appProps":25,"./device":29,"./logger":38,"./sdkversion":41}],32:[function(_dereq_,module,exports){
-  module.exports = function(){
-    var path = null;
-    var scripts = document.getElementsByTagName('script');
-    var term = /(feedhenry.*?\.js)/;
-    for (var n = scripts.length-1; n>-1; n--) {
-      //trim query parameters
-      var src = scripts[n].src.replace(/\?.*$/, '');
-      //find feedhenry*.js file
-      var matches = src.match(term);
-      if(matches && matches.length === 2){
-        var fhjs = matches[1];
-        if (src.indexOf(fhjs) === (src.length - fhjs.length)) {
-          path = src.substring(0, src.length - fhjs.length);
-          break;
-        }
-      }
-    }
-    return path;
-  };
-
-},{}],33:[function(_dereq_,module,exports){
+},{"./appProps":25,"./device":29,"./logger":37,"./sdkversion":40}],32:[function(_dereq_,module,exports){
   var JSON = _dereq_("JSON");
 
   module.exports = function(fail, req, resStatus, error){
@@ -8616,7 +8711,7 @@
     }
   };
 
-},{"JSON":3}],34:[function(_dereq_,module,exports){
+},{"JSON":3}],33:[function(_dereq_,module,exports){
   var constants = _dereq_("./constants");
   var appProps = _dereq_("./appProps");
 
@@ -8706,8 +8801,7 @@
 
 
   module.exports = CloudHost;
-},{"./appProps":25,"./constants":27}],35:[function(_dereq_,module,exports){
-  var findFHPath = _dereq_("./findFHPath");
+},{"./appProps":25,"./constants":27}],34:[function(_dereq_,module,exports){
   var loadScript = _dereq_("./loadScript");
   var Lawnchair = _dereq_('../../libs/generated/lawnchair');
   var lawnchairext = _dereq_('./lawnchair-ext');
@@ -8769,6 +8863,10 @@
         return fail(error_message, {});
       }
     };
+
+    if(typeof Titanium !== "undefined"){
+      lcConf.adapter = ['titanium'];
+    }
 
     var doInit = function(path, appProps, savedHost, storage){
       var data = fhparams.buildFHParams();
@@ -8855,7 +8953,8 @@
     "init": init,
     "loadCloudProps": loadCloudProps
   }
-},{"../../libs/generated/lawnchair":2,"./ajax":18,"./appProps":25,"./constants":27,"./fhparams":31,"./findFHPath":32,"./handleError":33,"./lawnchair-ext":36,"./loadScript":37,"./logger":38,"./security/hash":44,"JSON":3}],36:[function(_dereq_,module,exports){
+
+},{"../../libs/generated/lawnchair":2,"./ajax":18,"./appProps":25,"./constants":27,"./fhparams":31,"./handleError":32,"./lawnchair-ext":35,"./loadScript":36,"./logger":37,"./security/hash":43,"JSON":3}],35:[function(_dereq_,module,exports){
   var Lawnchair = _dereq_('../../libs/generated/lawnchair');
 
   var fileStorageAdapter = function (app_props, hashFunc) {
@@ -9043,7 +9142,7 @@
   module.exports = {
     addAdapter: addAdapter
   }
-},{"../../libs/generated/lawnchair":2}],37:[function(_dereq_,module,exports){
+},{"../../libs/generated/lawnchair":2}],36:[function(_dereq_,module,exports){
   module.exports = function (url, callback) {
     var script;
     var head = document.head || document.getElementsByTagName("head")[0] || document.documentElement;
@@ -9066,7 +9165,7 @@
     head.insertBefore(script, head.firstChild);
   };
 
-},{}],38:[function(_dereq_,module,exports){
+},{}],37:[function(_dereq_,module,exports){
   var console = _dereq_('console');
   var log = _dereq_('loglevel');
 
@@ -9090,7 +9189,7 @@
    * Use either string or integer value
    */
   module.exports = log;
-},{"console":8,"loglevel":14}],39:[function(_dereq_,module,exports){
+},{"console":8,"loglevel":14}],38:[function(_dereq_,module,exports){
   module.exports = [
     {
       "destination" :"ipad",
@@ -9118,7 +9217,7 @@
     }
   ];
 
-},{}],40:[function(_dereq_,module,exports){
+},{}],39:[function(_dereq_,module,exports){
   module.exports = function(url) {
     var qmap = {};
     var i = url.split("?");
@@ -9134,7 +9233,7 @@
     }
     return qmap;
   };
-},{}],41:[function(_dereq_,module,exports){
+},{}],40:[function(_dereq_,module,exports){
   var constants = _dereq_("./constants");
 
   module.exports = function() {
@@ -9147,7 +9246,7 @@
     return type + "/" + constants.sdk_version;
   };
 
-},{"./constants":27}],42:[function(_dereq_,module,exports){
+},{"./constants":27}],41:[function(_dereq_,module,exports){
   var rsa = _dereq_("../../../libs/rsa");
   var SecureRandom = rsa.SecureRandom;
   var byte2Hex = rsa.byte2Hex;
@@ -9189,7 +9288,7 @@
   }
 
   module.exports = aes_keygen;
-},{"../../../libs/rsa":4}],43:[function(_dereq_,module,exports){
+},{"../../../libs/rsa":4}],42:[function(_dereq_,module,exports){
   var CryptoJS = _dereq_("../../../libs/generated/crypto");
 
   var encrypt = function(p, s, f){
@@ -9230,7 +9329,7 @@
     encrypt: encrypt,
     decrypt: decrypt
   }
-},{"../../../libs/generated/crypto":1}],44:[function(_dereq_,module,exports){
+},{"../../../libs/generated/crypto":1}],43:[function(_dereq_,module,exports){
   var CryptoJS = _dereq_("../../../libs/generated/crypto");
 
 
@@ -9255,7 +9354,7 @@
   }
 
   module.exports = hash;
-},{"../../../libs/generated/crypto":1}],45:[function(_dereq_,module,exports){
+},{"../../../libs/generated/crypto":1}],44:[function(_dereq_,module,exports){
   var rsa = _dereq_("../../../libs/rsa");
   var RSAKey = rsa.RSAKey;
 
@@ -9280,7 +9379,7 @@
   module.exports = {
     encrypt: encrypt
   }
-},{"../../../libs/rsa":4}],46:[function(_dereq_,module,exports){
+},{"../../../libs/rsa":4}],45:[function(_dereq_,module,exports){
   var JSON = _dereq_("JSON");
   var actAPI = _dereq_("./api_act");
   var cloudAPI = _dereq_("./api_cloud");
@@ -9327,8 +9426,11 @@
       // Is the background sync with the cloud currently active
       "storage_strategy" : "html5-filesystem",
       // Storage strategy to use for Lawnchair - supported strategies are 'html5-filesystem' and 'dom'
-      "file_system_quota" : 50 * 1024 * 1204
+      "file_system_quota" : 50 * 1024 * 1204,
       // Amount of space to request from the HTML5 filesystem API when running in browser
+      "has_custom_sync" : null
+      //If the app has custom cloud sync function, it should be set to true. If set to false, the default mbaas sync implementation will be used. When set to null or undefined, 
+      //a check will be performed to determine which implementation to use
     },
 
     notifications: {
@@ -9363,7 +9465,7 @@
 
     notify_callback: undefined,
 
-    hasCustomSync : undefined,
+    init_is_called: false,
 
     // PUBLIC FUNCTION IMPLEMENTATIONS
     init: function(options) {
@@ -9374,7 +9476,11 @@
         self.config[i] = options[i];
       }
 
-      self.datasetMonitor();
+      //prevent multiple monitors from created if init is called multiple times
+      if(!self.init_is_called){
+        self.init_is_called = true;
+        self.datasetMonitor();
+      }
     },
 
     notify: function(callback) {
@@ -9383,6 +9489,8 @@
 
     manage: function(dataset_id, options, query_params, meta_data, cb) {
       self.consoleLog('manage - START');
+
+      var options = options || {};
 
       var doManage = function(dataset) {
         self.consoleLog('doManage dataset :: initialised = ' + dataset.initialised + " :: " + dataset_id + ' :: ' + JSON.stringify(options));
@@ -9395,7 +9503,9 @@
         dataset.syncRunning = false;
         dataset.syncPending = true;
         dataset.initialised = true;
-        dataset.meta = {};
+        if(typeof dataset.meta === "undefined"){
+          dataset.meta = {};
+        }
 
         self.saveDataSet(dataset_id, function() {
 
@@ -9428,7 +9538,9 @@
             // No dataset in memory or local storage - create a new one and put it in memory
             self.consoleLog('manage - Creating new dataset for id ' + dataset_id);
             var dataset = {};
+            dataset.data = {};
             dataset.pending = {};
+            dataset.meta = {};
             self.datasets[dataset_id] = dataset;
             doManage(dataset);
           });
@@ -9465,6 +9577,11 @@
     },
 
     create: function(dataset_id, data, success, failure) {
+      if(data == null){
+        if(failure){
+          return failure("null_data");
+        }
+      }
       self.addPendingObj(dataset_id, null, data, "create", success, failure);
     },
 
@@ -9583,7 +9700,9 @@
       if (dataset) {
         success(dataset);
       } else {
-        failure('unknown_dataset ' + dataset_id, dataset_id);
+        if(failure){
+          failure('unknown_dataset ' + dataset_id, dataset_id);
+        }
       }
     },
 
@@ -9593,7 +9712,9 @@
       if (dataset) {
         success(dataset.query_params);
       } else {
-        failure('unknown_dataset ' + dataset_id, dataset_id);
+        if(failure){
+          failure('unknown_dataset ' + dataset_id, dataset_id);
+        }
       }
     },
 
@@ -9619,7 +9740,9 @@
       if (dataset) {
         success(dataset.meta_data);
       } else {
-        failure('unknown_dataset ' + dataset_id, dataset_id);
+        if(failure){
+          failure('unknown_dataset ' + dataset_id, dataset_id);
+        }
       }
     },
 
@@ -9645,7 +9768,9 @@
       if (dataset) {
         success(dataset.config);
       } else {
-        failure('unknown_dataset ' + dataset_id, dataset_id);
+        if(failure){
+          failure('unknown_dataset ' + dataset_id, dataset_id);
+        }
       }
     },
 
@@ -9793,7 +9918,9 @@
           pendingObj.preHash = self.generateHash(rec.data);
           storePendingObject(pendingObj);
         }, function(code, msg) {
-          failure(code, msg);
+          if(failure){
+            failure(code, msg);
+          }
         });
       }
     },
@@ -9868,6 +9995,9 @@
 
                   //Check to see if any delayed pending records can now be set to ready
                   self.updateDelayedFromNewData(dataset_id, dataSet, res);
+
+                  //Check meta data as well to make sure it contains the correct info
+                  self.updateMetaFromNewData(dataset_id, dataSet, res);
 
                   // Update the new dataset with details of any inflight updates which we have not received a response on
                   self.updateNewDataFromInFlight(dataset_id, dataSet, res);
@@ -9997,11 +10127,13 @@
         if( self.datasets.hasOwnProperty(dataset_id) ) {
           var dataset = self.datasets[dataset_id];
 
-          if( !dataset.syncRunning && dataset.config.sync_active) {
+          if( !dataset.syncRunning && (dataset.config.sync_active || dataset.syncForced)) {
             // Check to see if it is time for the sync loop to run again
             var lastSyncStart = dataset.syncLoopStart;
             var lastSyncCmp = dataset.syncLoopEnd;
-            if( lastSyncStart == null ) {
+            if(dataset.syncForced){
+              dataset.syncPending = true;
+            } else if( lastSyncStart == null ) {
               self.consoleLog(dataset_id +' - Performing initial sync');
               // Dataset has never been synced before - do initial sync
               dataset.syncPending = true;
@@ -10012,8 +10144,6 @@
                 // Time between sync loops has passed - do another sync
                 dataset.syncPending = true;
               }
-            } else if( dataset.syncForced ) {
-              dataset.syncPending = true;
             }
 
             if( dataset.syncPending ) {
@@ -10031,38 +10161,49 @@
     },
 
     checkHasCustomSync : function(dataset_id, cb) {
-      if(self.hasCustomSync != null) {
+      var dataset = self.datasets[dataset_id];
+      if(dataset && dataset.config){
+        self.consoleLog("dataset.config.has_custom_sync = " + dataset.config.has_custom_sync);
+        if(dataset.config.has_custom_sync != null) {
+          return cb();
+        }
+        self.consoleLog('starting check has custom sync');
+
+        actAPI({
+          'act' : dataset_id,
+          'req': {
+            'fn': 'sync'
+          }
+        }, function(res) {
+          //if the custom sync is defined in the cloud, this call should success.
+          //if failed, we think this the custom sync is not defined
+          self.consoleLog('check has_custom_sync - success - ', res);
+          dataset.config.has_custom_sync = true;
+          return cb();
+        }, function(msg,err) {
+          self.consoleLog('check has_custom_sync - failure - ', err);
+          if(err.status && err.status === 500){
+            //if we receive 500, it could be that there is an error occured due to missing parameters or similar,
+            //but the endpoint is defined.
+            self.consoleLog('check has_custom_sync - failed with 500, endpoint does exists');
+            dataset.config.has_custom_sync = true;
+          } else {
+            dataset.config.has_custom_sync = false;
+          }
+          return cb();
+        });
+      } else {
         return cb();
       }
-      self.consoleLog('starting check has custom sync');
-
-      actAPI({
-        'act' : dataset_id,
-        'req': {
-          'fn': 'sync'
-        }
-      }, function(res) {
-        //if the custom sync is defined in the cloud, this call should success.
-        //if failed, we think this the custom sync is not defined
-        self.consoleLog('checkHasCustomSync - success - ', res);
-        self.hasCustomSync = true;
-        return cb();
-      }, function(msg,err) {
-        self.consoleLog('checkHasCustomSync - failure - ', err);
-        if(err.status && err.status === 500){
-          //if we receive 500, it could be that there is an error occured due to missing parameters or similar,
-          //but the endpoint is defined.
-          self.consoleLog('checkHasCustomSync - failed with 500, endpoint does exists');
-          self.hasCustomSync = true;
-        } else {
-          self.hasCustomSync = false;
-        }
-        return cb();
-      });
     },
 
     doCloudCall: function(params, success, failure) {
-      if( self.hasCustomSync ) {
+      var hasCustomSync = false;
+      var dataset = self.datasets[params.dataset_id];
+      if(dataset && dataset.config){
+        hasCustomSync = dataset.config.has_custom_sync;
+      }
+      if( hasCustomSync == true ) {
         actAPI({
           'act' : params.dataset_id,
           'req' : params.req
@@ -10120,23 +10261,24 @@
         self.consoleLog(errMsg);
       };
 
-      Lawnchair({fail:onFail, adapter: self.config.storage_strategy, size:self.config.file_system_quota},function (){       this.get( "dataset_" + dataset_id, function (data){
-        if (data && data.val !== null) {
-          var dataset = data.val;
-          if(typeof dataset === "string"){
-            dataset = JSON.parse(dataset);
+      Lawnchair({fail:onFail, adapter: self.config.storage_strategy, size:self.config.file_system_quota},function (){
+        this.get( "dataset_" + dataset_id, function (data){
+          if (data && data.val) {
+            var dataset = data.val;
+            if(typeof dataset === "string"){
+              dataset = JSON.parse(dataset);
+            }
+            // Datasets should not be auto initialised when loaded - the mange function should be called for each dataset
+            // the user wants sync
+            dataset.initialised = false;
+            self.datasets[dataset_id] = dataset; // TODO: do we need to handle binary data?
+            self.consoleLog('load from local storage success for dataset_id :' + dataset_id);
+            if(success) return success(dataset);
+          } else {
+            // no data yet, probably first time. failure calback should handle this
+            if(failure) return failure();
           }
-          // Datasets should not be auto initialised when loaded - the mange function should be called for each dataset
-          // the user wants sync
-          dataset.initialised = false;
-          self.datasets[dataset_id] = dataset; // TODO: do we need to handle binary data?
-          self.consoleLog('load from local storage success for dataset_id :' + dataset_id);
-          if(success) return success(dataset);
-        } else {
-          // no data yet, probably first time. failure calback should handle this
-          if(failure) return failure();
-        }
-      });
+        });
       });
     },
 
@@ -10475,15 +10617,6 @@
                 }
               }
             }
-            else if (!pendingRec.inFlight && pendingRec.crashed ) {
-              self.consoleLog('updateCrashedInFlightFromNewData - Trying to resolve issues with crashed non in flight record - uid = ' + pendingRec.uid);
-              // Stalled pending record because a previous pending update on the same record crashed
-              var crashedRef = resolvedCrashes[pendingRec.uid];
-              if( crashedRef ) {
-                self.consoleLog('updateCrashedInFlightFromNewData - Found a stalled pending record backed up behind a resolved crash uid=' + pendingRec.uid + ' :: hash=' + pendingRec.hash);
-                pendingRec.crashed = false;
-              }
-            }
           }
         }
       }
@@ -10513,6 +10646,50 @@
       }
     },
 
+    updateMetaFromNewData: function(dataset_id, dataset, newData){
+      var meta = dataset.meta;
+      if(meta && newData && newData.updates && newData.updates.hashes){
+        for(var uid in meta){
+          if(meta.hasOwnProperty(uid)){
+            var metadata = meta[uid];
+            var pendingHash = metadata.pendingUid;
+            var previousPendingHash = metadata.previousPendingUid;
+            self.consoleLog("updateMetaFromNewData - Found metadata with uid = " + uid + " :: pendingHash = " + pendingHash + " :: previousPendingHash =" + previousPendingHash);
+            var previousPendingResolved = true;
+            var pendingResolved = true;
+            if(previousPendingHash){
+              //we have previous pending in meta data, see if it's resolved
+              previousPendingResolved = false;
+              var resolved = newData.updates.hashes[previousPendingHash];
+              if(resolved){
+                self.consoleLog("updateMetaFromNewData - Found previousPendingUid in meta data resolved - resolved = " + JSON.stringify(resolved));
+                //the previous pending is resolved in the cloud
+                metadata.previousPendingUid = undefined;
+                previousPendingResolved = true;
+              }
+            }
+            if(pendingHash){
+              //we have current pending in meta data, see if it's resolved
+              pendingResolved = false;
+              var resolved = newData.updates.hashes[pendingHash];
+              if(resolved){
+                self.consoleLog("updateMetaFromNewData - Found pendingUid in meta data resolved - resolved = " + JSON.stringify(resolved));
+                //the current pending is resolved in the cloud
+                metadata.pendingUid = undefined;
+                pendingResolved = true;
+              }
+            }
+
+            if(previousPendingResolved && pendingResolved){
+              self.consoleLog("updateMetaFromNewData - both previous and current pendings are resolved for meta data with uid " + uid + ". Delete it.");
+              //all pendings are resolved, the entry can be removed from meta data
+              delete meta[uid];
+            }
+          }
+        }
+      }
+    },
+
 
     markInFlightAsCrashed : function(dataset) {
       var pending = dataset.pending;
@@ -10532,21 +10709,6 @@
             }
           }
         }
-
-        // Check for any pending updates that would be modifying a crashed record. These can not go out until the
-        // status of the crashed record is determined
-        for( pendingHash in pending ) {
-          if( pending.hasOwnProperty(pendingHash) ) {
-            pendingRec = pending[pendingHash];
-
-            if( ! pendingRec.inFlight && ! pendingRec.delayed ) {
-              var crashedRef = crashedRecords[pendingRec.uid];
-              if( crashedRef ) {
-                pendingRec.crashed = true;
-              }
-            }
-          }
-        }
       }
     },
 
@@ -10560,7 +10722,7 @@
   (function() {
     self.config = self.defaults;
     //Initialse the sync service with default config
-    self.init({});
+    //self.init({});
   })();
 
   module.exports = {
@@ -10586,9 +10748,12 @@
     startSync: self.startSync,
     stopSync: self.stopSync,
     doSync: self.doSync,
-    forceSync: self.forceSync
+    forceSync: self.forceSync,
+    generateHash: self.generateHash,
+    loadDataSet: self.loadDataSet,
+    checkHasCustomSync: self.checkHasCustomSync
   };
-},{"../../libs/generated/crypto":1,"../../libs/generated/lawnchair":2,"./api_act":19,"./api_cloud":21,"JSON":3}],47:[function(_dereq_,module,exports){
+},{"../../libs/generated/crypto":1,"../../libs/generated/lawnchair":2,"./api_act":19,"./api_cloud":21,"JSON":3}],46:[function(_dereq_,module,exports){
   module.exports = {
     createUUID : function () {
       //from http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript
@@ -10605,7 +10770,7 @@
     }
   };
 
-},{}],48:[function(_dereq_,module,exports){
+},{}],47:[function(_dereq_,module,exports){
   var initializer = _dereq_("./initializer");
   var events = _dereq_("./events");
   var CloudHost = _dereq_("./hosts");
@@ -10698,7 +10863,7 @@
     getInitError: getInitError,
     reset: reset
   }
-},{"./appProps":25,"./constants":27,"./events":30,"./hosts":34,"./initializer":35,"./logger":38}]},{},[16])
+},{"./appProps":25,"./constants":27,"./events":30,"./hosts":33,"./initializer":34,"./logger":37}]},{},[16])
 (16)
 });
 ;
@@ -14498,6 +14663,13 @@
         this.pages.push(pageModel);
       }
     };
+    Form.prototype.getPageNumberByFieldId = function(fieldId){
+      if(fieldId){
+        return this.getFieldRef()[fieldId].page;
+      } else {
+        return null;
+      }
+    };
     Form.prototype.getPageModelList = function () {
       return this.pages;
     };
@@ -14543,7 +14715,7 @@
       $fh.forms.log.d("Form: getPageModelById: ", pageId);
       var index = this.getPageRef()[pageId];
       if (typeof index === 'undefined') {
-        throw 'page id is not found';
+        $fh.forms.log.e('page id is not found in pageRef: ' + pageId);
       } else {
         return this.pages[index];
       }
@@ -15926,6 +16098,21 @@
     Field.prototype.getHelpText = function () {
       return this.get('helpText', '');
     };
+
+
+    /**
+     * return default value for a field
+     *
+     */
+    Field.prototype.getDefaultValue = function () {
+      var def = this.getFieldDefinition();
+      if (def) {
+        return def.defaultValue;
+      }
+      return "";
+    };
+
+
     /**
      * Process an input value. convert to submission format. run field.validate before this
      * @param  {[type]} params {"value", "isStore":optional}
@@ -17873,24 +18060,22 @@
   if ($fh.forms === undefined) {
     $fh.forms = appForm.api;
   }
-  /*! fh-forms - v0.5.6 -  */
+  /*! fh-forms - v0.5.7 -  */
   /*! async - v0.2.9 -  */
-  /*! 2014-04-18 */
+  /*! 2014-04-24 */
   /* This is the prefix file */
-  if (appForm) {
-    appForm.RulesEngine = rulesEngine;
+  if(appForm){
+    appForm.RulesEngine=rulesEngine;
   }
 
-  function rulesEngine(formDef) {
+  function rulesEngine (formDef) {
     var define = {};
-    var module = {
-      exports: {}
-    }; // create a module.exports - async will load into it
+    var module = {exports:{}}; // create a module.exports - async will load into it
     /* jshint ignore:start */
     /* End of prefix file */
 
     /*global setImmediate: false, setTimeout: false, console: false */
-    (function() {
+    (function () {
 
       var async = {};
 
@@ -17902,7 +18087,7 @@
         previous_async = root.async;
       }
 
-      async.noConflict = function() {
+      async.noConflict = function () {
         root.async = previous_async;
         return async;
       };
@@ -17918,7 +18103,7 @@
 
       //// cross-browser compatiblity functions ////
 
-      var _each = function(arr, iterator) {
+      var _each = function (arr, iterator) {
         if (arr.forEach) {
           return arr.forEach(iterator);
         }
@@ -17927,28 +18112,28 @@
         }
       };
 
-      var _map = function(arr, iterator) {
+      var _map = function (arr, iterator) {
         if (arr.map) {
           return arr.map(iterator);
         }
         var results = [];
-        _each(arr, function(x, i, a) {
+        _each(arr, function (x, i, a) {
           results.push(iterator(x, i, a));
         });
         return results;
       };
 
-      var _reduce = function(arr, iterator, memo) {
+      var _reduce = function (arr, iterator, memo) {
         if (arr.reduce) {
           return arr.reduce(iterator, memo);
         }
-        _each(arr, function(x, i, a) {
+        _each(arr, function (x, i, a) {
           memo = iterator(memo, x, i, a);
         });
         return memo;
       };
 
-      var _keys = function(obj) {
+      var _keys = function (obj) {
         if (Object.keys) {
           return Object.keys(obj);
         }
@@ -17966,38 +18151,42 @@
       //// nextTick implementation with browser-compatible fallback ////
       if (typeof process === 'undefined' || !(process.nextTick)) {
         if (typeof setImmediate === 'function') {
-          async.nextTick = function(fn) {
+          async.nextTick = function (fn) {
             // not a direct alias for IE10 compatibility
             setImmediate(fn);
           };
           async.setImmediate = async.nextTick;
-        } else {
-          async.nextTick = function(fn) {
+        }
+        else {
+          async.nextTick = function (fn) {
             setTimeout(fn, 0);
           };
           async.setImmediate = async.nextTick;
         }
-      } else {
+      }
+      else {
         async.nextTick = process.nextTick;
         if (typeof setImmediate !== 'undefined') {
           async.setImmediate = setImmediate;
-        } else {
+        }
+        else {
           async.setImmediate = async.nextTick;
         }
       }
 
-      async.each = function(arr, iterator, callback) {
-        callback = callback || function() {};
+      async.each = function (arr, iterator, callback) {
+        callback = callback || function () {};
         if (!arr.length) {
           return callback();
         }
         var completed = 0;
-        _each(arr, function(x) {
-          iterator(x, only_once(function(err) {
+        _each(arr, function (x) {
+          iterator(x, only_once(function (err) {
             if (err) {
               callback(err);
-              callback = function() {};
-            } else {
+              callback = function () {};
+            }
+            else {
               completed += 1;
               if (completed >= arr.length) {
                 callback(null);
@@ -18008,22 +18197,24 @@
       };
       async.forEach = async.each;
 
-      async.eachSeries = function(arr, iterator, callback) {
-        callback = callback || function() {};
+      async.eachSeries = function (arr, iterator, callback) {
+        callback = callback || function () {};
         if (!arr.length) {
           return callback();
         }
         var completed = 0;
-        var iterate = function() {
-          iterator(arr[completed], function(err) {
+        var iterate = function () {
+          iterator(arr[completed], function (err) {
             if (err) {
               callback(err);
-              callback = function() {};
-            } else {
+              callback = function () {};
+            }
+            else {
               completed += 1;
               if (completed >= arr.length) {
                 callback(null);
-              } else {
+              }
+              else {
                 iterate();
               }
             }
@@ -18033,16 +18224,16 @@
       };
       async.forEachSeries = async.eachSeries;
 
-      async.eachLimit = function(arr, limit, iterator, callback) {
+      async.eachLimit = function (arr, limit, iterator, callback) {
         var fn = _eachLimit(limit);
         fn.apply(null, [arr, iterator, callback]);
       };
       async.forEachLimit = async.eachLimit;
 
-      var _eachLimit = function(limit) {
+      var _eachLimit = function (limit) {
 
-        return function(arr, iterator, callback) {
-          callback = callback || function() {};
+        return function (arr, iterator, callback) {
+          callback = callback || function () {};
           if (!arr.length || limit <= 0) {
             return callback();
           }
@@ -18050,7 +18241,7 @@
           var started = 0;
           var running = 0;
 
-          (function replenish() {
+          (function replenish () {
             if (completed >= arr.length) {
               return callback();
             }
@@ -18058,16 +18249,18 @@
             while (running < limit && started < arr.length) {
               started += 1;
               running += 1;
-              iterator(arr[started - 1], function(err) {
+              iterator(arr[started - 1], function (err) {
                 if (err) {
                   callback(err);
-                  callback = function() {};
-                } else {
+                  callback = function () {};
+                }
+                else {
                   completed += 1;
                   running -= 1;
                   if (completed >= arr.length) {
                     callback();
-                  } else {
+                  }
+                  else {
                     replenish();
                   }
                 }
@@ -18078,46 +18271,43 @@
       };
 
 
-      var doParallel = function(fn) {
-        return function() {
+      var doParallel = function (fn) {
+        return function () {
           var args = Array.prototype.slice.call(arguments);
           return fn.apply(null, [async.each].concat(args));
         };
       };
       var doParallelLimit = function(limit, fn) {
-        return function() {
+        return function () {
           var args = Array.prototype.slice.call(arguments);
           return fn.apply(null, [_eachLimit(limit)].concat(args));
         };
       };
-      var doSeries = function(fn) {
-        return function() {
+      var doSeries = function (fn) {
+        return function () {
           var args = Array.prototype.slice.call(arguments);
           return fn.apply(null, [async.eachSeries].concat(args));
         };
       };
 
 
-      var _asyncMap = function(eachfn, arr, iterator, callback) {
+      var _asyncMap = function (eachfn, arr, iterator, callback) {
         var results = [];
-        arr = _map(arr, function(x, i) {
-          return {
-            index: i,
-            value: x
-          };
+        arr = _map(arr, function (x, i) {
+          return {index: i, value: x};
         });
-        eachfn(arr, function(x, callback) {
-          iterator(x.value, function(err, v) {
+        eachfn(arr, function (x, callback) {
+          iterator(x.value, function (err, v) {
             results[x.index] = v;
             callback(err);
           });
-        }, function(err) {
+        }, function (err) {
           callback(err, results);
         });
       };
       async.map = doParallel(_asyncMap);
       async.mapSeries = doSeries(_asyncMap);
-      async.mapLimit = function(arr, limit, iterator, callback) {
+      async.mapLimit = function (arr, limit, iterator, callback) {
         return _mapLimit(limit)(arr, iterator, callback);
       };
 
@@ -18127,13 +18317,13 @@
 
       // reduce only has a series version, as doing reduce in parallel won't
       // work in many situations.
-      async.reduce = function(arr, memo, iterator, callback) {
-        async.eachSeries(arr, function(x, callback) {
-          iterator(memo, x, function(err, v) {
+      async.reduce = function (arr, memo, iterator, callback) {
+        async.eachSeries(arr, function (x, callback) {
+          iterator(memo, x, function (err, v) {
             memo = v;
             callback(err);
           });
-        }, function(err) {
+        }, function (err) {
           callback(err, memo);
         });
       };
@@ -18142,8 +18332,8 @@
       // foldl alias
       async.foldl = async.reduce;
 
-      async.reduceRight = function(arr, memo, iterator, callback) {
-        var reversed = _map(arr, function(x) {
+      async.reduceRight = function (arr, memo, iterator, callback) {
+        var reversed = _map(arr, function (x) {
           return x;
         }).reverse();
         async.reduce(reversed, memo, iterator, callback);
@@ -18151,25 +18341,22 @@
       // foldr alias
       async.foldr = async.reduceRight;
 
-      var _filter = function(eachfn, arr, iterator, callback) {
+      var _filter = function (eachfn, arr, iterator, callback) {
         var results = [];
-        arr = _map(arr, function(x, i) {
-          return {
-            index: i,
-            value: x
-          };
+        arr = _map(arr, function (x, i) {
+          return {index: i, value: x};
         });
-        eachfn(arr, function(x, callback) {
-          iterator(x.value, function(v) {
+        eachfn(arr, function (x, callback) {
+          iterator(x.value, function (v) {
             if (v) {
               results.push(x);
             }
             callback();
           });
-        }, function(err) {
-          callback(_map(results.sort(function(a, b) {
+        }, function (err) {
+          callback(_map(results.sort(function (a, b) {
             return a.index - b.index;
-          }), function(x) {
+          }), function (x) {
             return x.value;
           }));
         });
@@ -18180,25 +18367,22 @@
       async.select = async.filter;
       async.selectSeries = async.filterSeries;
 
-      var _reject = function(eachfn, arr, iterator, callback) {
+      var _reject = function (eachfn, arr, iterator, callback) {
         var results = [];
-        arr = _map(arr, function(x, i) {
-          return {
-            index: i,
-            value: x
-          };
+        arr = _map(arr, function (x, i) {
+          return {index: i, value: x};
         });
-        eachfn(arr, function(x, callback) {
-          iterator(x.value, function(v) {
+        eachfn(arr, function (x, callback) {
+          iterator(x.value, function (v) {
             if (!v) {
               results.push(x);
             }
             callback();
           });
-        }, function(err) {
-          callback(_map(results.sort(function(a, b) {
+        }, function (err) {
+          callback(_map(results.sort(function (a, b) {
             return a.index - b.index;
-          }), function(x) {
+          }), function (x) {
             return x.value;
           }));
         });
@@ -18206,85 +18390,84 @@
       async.reject = doParallel(_reject);
       async.rejectSeries = doSeries(_reject);
 
-      var _detect = function(eachfn, arr, iterator, main_callback) {
-        eachfn(arr, function(x, callback) {
-          iterator(x, function(result) {
+      var _detect = function (eachfn, arr, iterator, main_callback) {
+        eachfn(arr, function (x, callback) {
+          iterator(x, function (result) {
             if (result) {
               main_callback(x);
-              main_callback = function() {};
-            } else {
+              main_callback = function () {};
+            }
+            else {
               callback();
             }
           });
-        }, function(err) {
+        }, function (err) {
           main_callback();
         });
       };
       async.detect = doParallel(_detect);
       async.detectSeries = doSeries(_detect);
 
-      async.some = function(arr, iterator, main_callback) {
-        async.each(arr, function(x, callback) {
-          iterator(x, function(v) {
+      async.some = function (arr, iterator, main_callback) {
+        async.each(arr, function (x, callback) {
+          iterator(x, function (v) {
             if (v) {
               main_callback(true);
-              main_callback = function() {};
+              main_callback = function () {};
             }
             callback();
           });
-        }, function(err) {
+        }, function (err) {
           main_callback(false);
         });
       };
       // any alias
       async.any = async.some;
 
-      async.every = function(arr, iterator, main_callback) {
-        async.each(arr, function(x, callback) {
-          iterator(x, function(v) {
+      async.every = function (arr, iterator, main_callback) {
+        async.each(arr, function (x, callback) {
+          iterator(x, function (v) {
             if (!v) {
               main_callback(false);
-              main_callback = function() {};
+              main_callback = function () {};
             }
             callback();
           });
-        }, function(err) {
+        }, function (err) {
           main_callback(true);
         });
       };
       // all alias
       async.all = async.every;
 
-      async.sortBy = function(arr, iterator, callback) {
-        async.map(arr, function(x, callback) {
-          iterator(x, function(err, criteria) {
+      async.sortBy = function (arr, iterator, callback) {
+        async.map(arr, function (x, callback) {
+          iterator(x, function (err, criteria) {
             if (err) {
               callback(err);
-            } else {
-              callback(null, {
-                value: x,
-                criteria: criteria
-              });
+            }
+            else {
+              callback(null, {value: x, criteria: criteria});
             }
           });
-        }, function(err, results) {
+        }, function (err, results) {
           if (err) {
             return callback(err);
-          } else {
-            var fn = function(left, right) {
-              var a = left.criteria,
-                b = right.criteria;
+          }
+          else {
+            var fn = function (left, right) {
+              var a = left.criteria, b = right.criteria;
               return a < b ? -1 : a > b ? 1 : 0;
             };
-            callback(null, _map(results.sort(fn), function(x) {
+            callback(null, _map(results.sort(fn), function (x) {
               return x.value;
             }));
           }
         });
       };
 
-      async.auto = function(tasks, callback) {
-        callback = callback || function() {};
+      async.auto = function (tasks, callback) {
+        callback = callback || function () {};
         var keys = _keys(tasks);
         if (!keys.length) {
           return callback(null);
@@ -18293,10 +18476,10 @@
         var results = {};
 
         var listeners = [];
-        var addListener = function(fn) {
+        var addListener = function (fn) {
           listeners.unshift(fn);
         };
-        var removeListener = function(fn) {
+        var removeListener = function (fn) {
           for (var i = 0; i < listeners.length; i += 1) {
             if (listeners[i] === fn) {
               listeners.splice(i, 1);
@@ -18304,22 +18487,22 @@
             }
           }
         };
-        var taskComplete = function() {
-          _each(listeners.slice(0), function(fn) {
+        var taskComplete = function () {
+          _each(listeners.slice(0), function (fn) {
             fn();
           });
         };
 
-        addListener(function() {
+        addListener(function () {
           if (_keys(results).length === keys.length) {
             callback(null, results);
-            callback = function() {};
+            callback = function () {};
           }
         });
 
-        _each(keys, function(k) {
-          var task = (tasks[k] instanceof Function) ? [tasks[k]] : tasks[k];
-          var taskCallback = function(err) {
+        _each(keys, function (k) {
+          var task = (tasks[k] instanceof Function) ? [tasks[k]]: tasks[k];
+          var taskCallback = function (err) {
             var args = Array.prototype.slice.call(arguments, 1);
             if (args.length <= 1) {
               args = args[0];
@@ -18332,22 +18515,24 @@
               safeResults[k] = args;
               callback(err, safeResults);
               // stop subsequent errors hitting callback multiple times
-              callback = function() {};
-            } else {
+              callback = function () {};
+            }
+            else {
               results[k] = args;
               async.setImmediate(taskComplete);
             }
           };
           var requires = task.slice(0, Math.abs(task.length - 1)) || [];
-          var ready = function() {
-            return _reduce(requires, function(a, x) {
+          var ready = function () {
+            return _reduce(requires, function (a, x) {
               return (a && results.hasOwnProperty(x));
             }, true) && !results.hasOwnProperty(k);
           };
           if (ready()) {
             task[task.length - 1](taskCallback, results);
-          } else {
-            var listener = function() {
+          }
+          else {
+            var listener = function () {
               if (ready()) {
                 removeListener(listener);
                 task[task.length - 1](taskCallback, results);
@@ -18358,8 +18543,8 @@
         });
       };
 
-      async.waterfall = function(tasks, callback) {
-        callback = callback || function() {};
+      async.waterfall = function (tasks, callback) {
+        callback = callback || function () {};
         if (tasks.constructor !== Array) {
           var err = new Error('First argument to waterfall must be an array of functions');
           return callback(err);
@@ -18367,20 +18552,22 @@
         if (!tasks.length) {
           return callback();
         }
-        var wrapIterator = function(iterator) {
-          return function(err) {
+        var wrapIterator = function (iterator) {
+          return function (err) {
             if (err) {
               callback.apply(null, arguments);
-              callback = function() {};
-            } else {
+              callback = function () {};
+            }
+            else {
               var args = Array.prototype.slice.call(arguments, 1);
               var next = iterator.next();
               if (next) {
                 args.push(wrapIterator(next));
-              } else {
+              }
+              else {
                 args.push(callback);
               }
-              async.setImmediate(function() {
+              async.setImmediate(function () {
                 iterator.apply(null, args);
               });
             }
@@ -18390,11 +18577,11 @@
       };
 
       var _parallel = function(eachfn, tasks, callback) {
-        callback = callback || function() {};
+        callback = callback || function () {};
         if (tasks.constructor === Array) {
-          eachfn.map(tasks, function(fn, callback) {
+          eachfn.map(tasks, function (fn, callback) {
             if (fn) {
-              fn(function(err) {
+              fn(function (err) {
                 var args = Array.prototype.slice.call(arguments, 1);
                 if (args.length <= 1) {
                   args = args[0];
@@ -18403,10 +18590,11 @@
               });
             }
           }, callback);
-        } else {
+        }
+        else {
           var results = {};
-          eachfn.each(_keys(tasks), function(k, callback) {
-            tasks[k](function(err) {
+          eachfn.each(_keys(tasks), function (k, callback) {
+            tasks[k](function (err) {
               var args = Array.prototype.slice.call(arguments, 1);
               if (args.length <= 1) {
                 args = args[0];
@@ -18414,32 +18602,26 @@
               results[k] = args;
               callback(err);
             });
-          }, function(err) {
+          }, function (err) {
             callback(err, results);
           });
         }
       };
 
-      async.parallel = function(tasks, callback) {
-        _parallel({
-          map: async.map,
-          each: async.each
-        }, tasks, callback);
+      async.parallel = function (tasks, callback) {
+        _parallel({ map: async.map, each: async.each }, tasks, callback);
       };
 
       async.parallelLimit = function(tasks, limit, callback) {
-        _parallel({
-          map: _mapLimit(limit),
-          each: _eachLimit(limit)
-        }, tasks, callback);
+        _parallel({ map: _mapLimit(limit), each: _eachLimit(limit) }, tasks, callback);
       };
 
-      async.series = function(tasks, callback) {
-        callback = callback || function() {};
+      async.series = function (tasks, callback) {
+        callback = callback || function () {};
         if (tasks.constructor === Array) {
-          async.mapSeries(tasks, function(fn, callback) {
+          async.mapSeries(tasks, function (fn, callback) {
             if (fn) {
-              fn(function(err) {
+              fn(function (err) {
                 var args = Array.prototype.slice.call(arguments, 1);
                 if (args.length <= 1) {
                   args = args[0];
@@ -18448,10 +18630,11 @@
               });
             }
           }, callback);
-        } else {
+        }
+        else {
           var results = {};
-          async.eachSeries(_keys(tasks), function(k, callback) {
-            tasks[k](function(err) {
+          async.eachSeries(_keys(tasks), function (k, callback) {
+            tasks[k](function (err) {
               var args = Array.prototype.slice.call(arguments, 1);
               if (args.length <= 1) {
                 args = args[0];
@@ -18459,110 +18642,113 @@
               results[k] = args;
               callback(err);
             });
-          }, function(err) {
+          }, function (err) {
             callback(err, results);
           });
         }
       };
 
-      async.iterator = function(tasks) {
-        var makeCallback = function(index) {
-          var fn = function() {
+      async.iterator = function (tasks) {
+        var makeCallback = function (index) {
+          var fn = function () {
             if (tasks.length) {
               tasks[index].apply(null, arguments);
             }
             return fn.next();
           };
-          fn.next = function() {
-            return (index < tasks.length - 1) ? makeCallback(index + 1) : null;
+          fn.next = function () {
+            return (index < tasks.length - 1) ? makeCallback(index + 1): null;
           };
           return fn;
         };
         return makeCallback(0);
       };
 
-      async.apply = function(fn) {
+      async.apply = function (fn) {
         var args = Array.prototype.slice.call(arguments, 1);
-        return function() {
+        return function () {
           return fn.apply(
             null, args.concat(Array.prototype.slice.call(arguments))
           );
         };
       };
 
-      var _concat = function(eachfn, arr, fn, callback) {
+      var _concat = function (eachfn, arr, fn, callback) {
         var r = [];
-        eachfn(arr, function(x, cb) {
-          fn(x, function(err, y) {
+        eachfn(arr, function (x, cb) {
+          fn(x, function (err, y) {
             r = r.concat(y || []);
             cb(err);
           });
-        }, function(err) {
+        }, function (err) {
           callback(err, r);
         });
       };
       async.concat = doParallel(_concat);
       async.concatSeries = doSeries(_concat);
 
-      async.whilst = function(test, iterator, callback) {
+      async.whilst = function (test, iterator, callback) {
         if (test()) {
-          iterator(function(err) {
+          iterator(function (err) {
             if (err) {
               return callback(err);
             }
             async.whilst(test, iterator, callback);
           });
-        } else {
+        }
+        else {
           callback();
         }
       };
 
-      async.doWhilst = function(iterator, test, callback) {
-        iterator(function(err) {
+      async.doWhilst = function (iterator, test, callback) {
+        iterator(function (err) {
           if (err) {
             return callback(err);
           }
           if (test()) {
             async.doWhilst(iterator, test, callback);
-          } else {
+          }
+          else {
             callback();
           }
         });
       };
 
-      async.until = function(test, iterator, callback) {
+      async.until = function (test, iterator, callback) {
         if (!test()) {
-          iterator(function(err) {
+          iterator(function (err) {
             if (err) {
               return callback(err);
             }
             async.until(test, iterator, callback);
           });
-        } else {
+        }
+        else {
           callback();
         }
       };
 
-      async.doUntil = function(iterator, test, callback) {
-        iterator(function(err) {
+      async.doUntil = function (iterator, test, callback) {
+        iterator(function (err) {
           if (err) {
             return callback(err);
           }
           if (!test()) {
             async.doUntil(iterator, test, callback);
-          } else {
+          }
+          else {
             callback();
           }
         });
       };
 
-      async.queue = function(worker, concurrency) {
+      async.queue = function (worker, concurrency) {
         if (concurrency === undefined) {
           concurrency = 1;
         }
-
         function _insert(q, data, pos, callback) {
-          if (data.constructor !== Array) {
+          if(data.constructor !== Array) {
             data = [data];
           }
           _each(data, function(task) {
@@ -18591,20 +18777,20 @@
           saturated: null,
           empty: null,
           drain: null,
-          push: function(data, callback) {
+          push: function (data, callback) {
             _insert(q, data, false, callback);
           },
-          unshift: function(data, callback) {
+          unshift: function (data, callback) {
             _insert(q, data, true, callback);
           },
-          process: function() {
+          process: function () {
             if (workers < q.concurrency && q.tasks.length) {
               var task = q.tasks.shift();
               if (q.empty && q.tasks.length === 0) {
                 q.empty();
               }
               workers += 1;
-              var next = function() {
+              var next = function () {
                 workers -= 1;
                 if (task.callback) {
                   task.callback.apply(task, arguments);
@@ -18618,19 +18804,19 @@
               worker(task.data, cb);
             }
           },
-          length: function() {
+          length: function () {
             return q.tasks.length;
           },
-          running: function() {
+          running: function () {
             return workers;
           }
         };
         return q;
       };
 
-      async.cargo = function(worker, payload) {
-        var working = false,
-          tasks = [];
+      async.cargo = function (worker, payload) {
+        var working     = false,
+          tasks       = [];
 
         var cargo = {
           tasks: tasks,
@@ -18638,8 +18824,8 @@
           saturated: null,
           empty: null,
           drain: null,
-          push: function(data, callback) {
-            if (data.constructor !== Array) {
+          push: function (data, callback) {
+            if(data.constructor !== Array) {
               data = [data];
             }
             _each(data, function(task) {
@@ -18656,23 +18842,25 @@
           process: function process() {
             if (working) return;
             if (tasks.length === 0) {
-              if (cargo.drain) cargo.drain();
+              if(cargo.drain) cargo.drain();
               return;
             }
 
-            var ts = typeof payload === 'number' ? tasks.splice(0, payload) : tasks.splice(0);
+            var ts = typeof payload === 'number'
+              ? tasks.splice(0, payload)
+              : tasks.splice(0);
 
-            var ds = _map(ts, function(task) {
+            var ds = _map(ts, function (task) {
               return task.data;
             });
 
-            if (cargo.empty) cargo.empty();
+            if(cargo.empty) cargo.empty();
             working = true;
-            worker(ds, function() {
+            worker(ds, function () {
               working = false;
 
               var args = arguments;
-              _each(ts, function(data) {
+              _each(ts, function (data) {
                 if (data.callback) {
                   data.callback.apply(null, args);
                 }
@@ -18681,36 +18869,34 @@
               process();
             });
           },
-          length: function() {
+          length: function () {
             return tasks.length;
           },
-          running: function() {
+          running: function () {
             return working;
           }
         };
         return cargo;
       };
 
-      var _console_fn = function(name) {
-        return function(fn) {
+      var _console_fn = function (name) {
+        return function (fn) {
           var args = Array.prototype.slice.call(arguments, 1);
-          fn.apply(null, args.concat([
-
-            function(err) {
-              var args = Array.prototype.slice.call(arguments, 1);
-              if (typeof console !== 'undefined') {
-                if (err) {
-                  if (console.error) {
-                    console.error(err);
-                  }
-                } else if (console[name]) {
-                  _each(args, function(x) {
-                    console[name](x);
-                  });
+          fn.apply(null, args.concat([function (err) {
+            var args = Array.prototype.slice.call(arguments, 1);
+            if (typeof console !== 'undefined') {
+              if (err) {
+                if (console.error) {
+                  console.error(err);
                 }
               }
+              else if (console[name]) {
+                _each(args, function (x) {
+                  console[name](x);
+                });
+              }
             }
-          ]));
+          }]));
         };
       };
       async.log = _console_fn('log');
@@ -18719,33 +18905,32 @@
        async.warn = _console_fn('warn');
        async.error = _console_fn('error');*/
 
-      async.memoize = function(fn, hasher) {
+      async.memoize = function (fn, hasher) {
         var memo = {};
         var queues = {};
-        hasher = hasher || function(x) {
+        hasher = hasher || function (x) {
           return x;
         };
-        var memoized = function() {
+        var memoized = function () {
           var args = Array.prototype.slice.call(arguments);
           var callback = args.pop();
           var key = hasher.apply(null, args);
           if (key in memo) {
             callback.apply(null, memo[key]);
-          } else if (key in queues) {
+          }
+          else if (key in queues) {
             queues[key].push(callback);
-          } else {
+          }
+          else {
             queues[key] = [callback];
-            fn.apply(null, args.concat([
-
-              function() {
-                memo[key] = arguments;
-                var q = queues[key];
-                delete queues[key];
-                for (var i = 0, l = q.length; i < l; i++) {
-                  q[i].apply(null, arguments);
-                }
+            fn.apply(null, args.concat([function () {
+              memo[key] = arguments;
+              var q = queues[key];
+              delete queues[key];
+              for (var i = 0, l = q.length; i < l; i++) {
+                q[i].apply(null, arguments);
               }
-            ]));
+            }]));
           }
         };
         memoized.memo = memo;
@@ -18753,13 +18938,13 @@
         return memoized;
       };
 
-      async.unmemoize = function(fn) {
-        return function() {
+      async.unmemoize = function (fn) {
+        return function () {
           return (fn.unmemoized || fn).apply(null, arguments);
         };
       };
 
-      async.times = function(count, iterator, callback) {
+      async.times = function (count, iterator, callback) {
         var counter = [];
         for (var i = 0; i < count; i++) {
           counter.push(i);
@@ -18767,7 +18952,7 @@
         return async.map(counter, iterator, callback);
       };
 
-      async.timesSeries = function(count, iterator, callback) {
+      async.timesSeries = function (count, iterator, callback) {
         var counter = [];
         for (var i = 0; i < count; i++) {
           counter.push(i);
@@ -18775,34 +18960,31 @@
         return async.mapSeries(counter, iterator, callback);
       };
 
-      async.compose = function( /* functions... */ ) {
+      async.compose = function (/* functions... */) {
         var fns = Array.prototype.reverse.call(arguments);
-        return function() {
+        return function () {
           var that = this;
           var args = Array.prototype.slice.call(arguments);
           var callback = args.pop();
-          async.reduce(fns, args, function(newargs, fn, cb) {
-              fn.apply(that, newargs.concat([
-
-                function() {
-                  var err = arguments[0];
-                  var nextargs = Array.prototype.slice.call(arguments, 1);
-                  cb(err, nextargs);
-                }
-              ]))
+          async.reduce(fns, args, function (newargs, fn, cb) {
+              fn.apply(that, newargs.concat([function () {
+                var err = arguments[0];
+                var nextargs = Array.prototype.slice.call(arguments, 1);
+                cb(err, nextargs);
+              }]))
             },
-            function(err, results) {
+            function (err, results) {
               callback.apply(that, [err].concat(results));
             });
         };
       };
 
-      var _applyEach = function(eachfn, fns /*args...*/ ) {
-        var go = function() {
+      var _applyEach = function (eachfn, fns /*args...*/) {
+        var go = function () {
           var that = this;
           var args = Array.prototype.slice.call(arguments);
           var callback = args.pop();
-          return eachfn(fns, function(fn, cb) {
+          return eachfn(fns, function (fn, cb) {
               fn.apply(that, args.concat([cb]));
             },
             callback);
@@ -18810,14 +18992,15 @@
         if (arguments.length > 2) {
           var args = Array.prototype.slice.call(arguments, 2);
           return go.apply(this, args);
-        } else {
+        }
+        else {
           return go;
         }
       };
       async.applyEach = doParallel(_applyEach);
       async.applyEachSeries = doSeries(_applyEach);
 
-      async.forever = function(fn, callback) {
+      async.forever = function (fn, callback) {
         function next(err) {
           if (err) {
             if (callback) {
@@ -18832,7 +19015,7 @@
 
       // AMD / RequireJS
       if (typeof define !== 'undefined' && define.amd) {
-        define([], function() {
+        define([], function () {
           return async;
         });
       }
@@ -18849,14 +19032,14 @@
 
     /* This is the infix file */
     /* jshint ignore:end */
-    var asyncLoader = module.exports; // async has updated this, now save in our var, to that it can be returned from our dummy require
+    var asyncLoader = module.exports;  // async has updated this, now save in our var, to that it can be returned from our dummy require
     function require() {
       return asyncLoader;
     }
 
     /* End of infix file */
 
-    (function() {
+    (function () {
 
       var async = require('async');
 
@@ -18924,7 +19107,7 @@
       var FIELD_TYPE_DATETIME_DATETIMEUNIT_TIMEONLY = "time";
       var FIELD_TYPE_DATETIME_DATETIMEUNIT_DATETIME = "datetime";
 
-      var formsRulesEngine = function(formDef) {
+      var formsRulesEngine = function (formDef) {
         var initialised;
 
         var definition = formDef;
@@ -18974,18 +19157,18 @@
           "sectionBreak": validatorSection
         };
 
-        var isFieldRuleSubject = function(fieldId) {
+        var isFieldRuleSubject = function (fieldId) {
           return !!fieldRuleSubjectMap[fieldId];
         };
 
-        var isPageRuleSubject = function(pageId) {
+        var isPageRuleSubject = function (pageId) {
           return !!pageRuleSubjectMap[pageId];
         };
 
         function buildFieldMap(cb) {
           // Iterate over all fields in form definition & build fieldMap
-          async.each(definition.pages, function(page, cbPages) {
-            async.each(page.fields, function(field, cbFields) {
+          async.each(definition.pages, function (page, cbPages) {
+            async.each(page.fields, function (field, cbFields) {
               field.pageId = page._id;
 
               field.fieldOptions = field.fieldOptions ? field.fieldOptions : {};
@@ -19001,7 +19184,7 @@
                 };
               }
               return cbFields();
-            }, function(err) {
+            }, function (err) {
               return cbPages();
             });
           }, cb);
@@ -19009,13 +19192,13 @@
 
         function buildFieldRuleMaps(cb) {
           // Iterate over all rules in form definition & build ruleSubjectMap
-          async.each(definition.fieldRules, function(rule, cbRules) {
-            async.each(rule.ruleConditionalStatements, function(ruleConditionalStatement, cbRuleConditionalStatements) {
+          async.each(definition.fieldRules, function (rule, cbRules) {
+            async.each(rule.ruleConditionalStatements, function (ruleConditionalStatement, cbRuleConditionalStatements) {
               var fieldId = ruleConditionalStatement.sourceField;
               fieldRulePredicateMap[fieldId] = fieldRulePredicateMap[fieldId] || [];
               fieldRulePredicateMap[fieldId].push(rule);
               return cbRuleConditionalStatements();
-            }, function(err) {
+            }, function (err) {
               fieldRuleSubjectMap[rule.targetField] = fieldRuleSubjectMap[rule.targetField] || [];
               fieldRuleSubjectMap[rule.targetField].push(rule);
               return cbRules();
@@ -19025,14 +19208,14 @@
 
         function buildPageRuleMap(cb) {
           // Iterate over all rules in form definition & build ruleSubjectMap
-          async.each(definition.pageRules, function(rule, cbRules) {
+          async.each(definition.pageRules, function (rule, cbRules) {
             var rulesId = rule._id;
-            async.each(rule.ruleConditionalStatements, function(ruleConditionalStatement, cbRulePredicates) {
+            async.each(rule.ruleConditionalStatements, function (ruleConditionalStatement, cbRulePredicates) {
               var fieldId = ruleConditionalStatement.sourceField;
               pageRulePredicateMap[fieldId] = pageRulePredicateMap[fieldId] || [];
               pageRulePredicateMap[fieldId].push(rule);
               return cbRulePredicates();
-            }, function(err) {
+            }, function (err) {
               pageRuleSubjectMap[rule.targetPage] = pageRuleSubjectMap[rule.targetPage] || [];
               pageRuleSubjectMap[rule.targetPage].push(rule);
               return cbRules();
@@ -19045,7 +19228,7 @@
           submissionFieldsMap = {}; // start with empty map, rulesEngine can be called with multiple submissions
 
           // iterate over all the fields in the submissions and build a map for easier lookup
-          async.each(submission.formFields, function(formField, cb) {
+          async.each(submission.formFields, function (formField, cb) {
             if (!formField.fieldId) return cb(new Error("No fieldId in this submission entry: " + util.inspect(formField)));
 
             submissionFieldsMap[formField.fieldId] = formField;
@@ -19059,7 +19242,7 @@
             buildFieldMap,
             buildFieldRuleMaps,
             buildPageRuleMap
-          ], function(err) {
+          ], function (err) {
             if (err) return cb(err);
             initialised = true;
             return cb();
@@ -19067,7 +19250,7 @@
         }
 
         function initSubmission(formSubmission, cb) {
-          init(function(err) {
+          init(function (err) {
             if (err) return cb(err);
 
             submission = formSubmission;
@@ -19077,9 +19260,9 @@
 
         function getPreviousFieldValues(submittedField, previousSubmission, cb) {
           if (previousSubmission && previousSubmission.formFields) {
-            async.filter(previousSubmission.formFields, function(formField, cb) {
+            async.filter(previousSubmission.formFields, function (formField, cb) {
               return cb(formField.fieldId.toString() == submittedField.fieldId.toString());
-            }, function(results) {
+            }, function (results) {
               var previousFieldValues = null;
               if (results && results[0] && results[0].fieldValues) {
                 previousFieldValues = results[0].fieldValues;
@@ -19096,26 +19279,26 @@
             cb = previousSubmission;
             previousSubmission = null;
           }
-          init(function(err) {
+          init(function (err) {
             if (err) return cb(err);
 
-            initSubmission(submission, function(err) {
+            initSubmission(submission, function (err) {
               if (err) return cb(err);
 
               async.waterfall([
 
-                function(cb) {
+                function (cb) {
                   return cb(undefined, {
                     validation: {
                       valid: true
                     }
                   }); // any invalid fields will set this to false
                 },
-                function(res, cb) {
+                function (res, cb) {
                   validateSubmittedFields(res, previousSubmission, cb);
                 },
                 checkIfRequiredFieldsNotSubmitted
-              ], function(err, results) {
+              ], function (err, results) {
                 if (err) return cb(err);
 
                 return cb(undefined, results);
@@ -19126,13 +19309,13 @@
 
         function validateSubmittedFields(res, previousSubmission, cb) {
           // for each field, call validateField
-          async.each(submission.formFields, function(submittedField, callback) {
+          async.each(submission.formFields, function (submittedField, callback) {
             var fieldID = submittedField.fieldId;
             var fieldDef = fieldMap[fieldID];
 
-            getPreviousFieldValues(submittedField, previousSubmission, function(err, previousFieldValues) {
+            getPreviousFieldValues(submittedField, previousSubmission, function (err, previousFieldValues) {
               if (err) return callback(err);
-              getFieldValidationStatus(submittedField, fieldDef, previousFieldValues, function(err, fieldRes) {
+              getFieldValidationStatus(submittedField, fieldDef, previousFieldValues, function (err, fieldRes) {
                 if (err) return callback(err);
 
                 if (!fieldRes.valid) {
@@ -19144,7 +19327,7 @@
               });
 
             });
-          }, function(err) {
+          }, function (err) {
             if (err) {
               return cb(err);
             }
@@ -19153,10 +19336,10 @@
         }
 
         function checkIfRequiredFieldsNotSubmitted(res, cb) {
-          async.each(Object.keys(submissionRequiredFieldsMap), function(requiredFieldId, cb) {
+          async.each(Object.keys(submissionRequiredFieldsMap), function (requiredFieldId, cb) {
             var resField = {};
             if (!submissionRequiredFieldsMap[requiredFieldId].submitted) {
-              isFieldVisible(requiredFieldId, true, function(err, visible) {
+              isFieldVisible(requiredFieldId, true, function (err, visible) {
                 if (err) return cb(err);
                 if (visible) { // we only care about required fields if they are visible
                   resField.fieldId = requiredFieldId;
@@ -19170,7 +19353,7 @@
             } else { // was included in submission
               return cb();
             }
-          }, function(err) {
+          }, function (err) {
             if (err) return cb(err);
             return cb(undefined, res);
           });
@@ -19191,15 +19374,15 @@
          *         }
          */
         function validateField(fieldId, submission, cb) {
-          init(function(err) {
+          init(function (err) {
             if (err) return cb(err);
 
-            initSubmission(submission, function(err) {
+            initSubmission(submission, function (err) {
               if (err) return cb(err);
 
               var submissionField = submissionFieldsMap[fieldId];
               var fieldDef = fieldMap[fieldId];
-              getFieldValidationStatus(submissionField, fieldDef, null, function(err, res) {
+              getFieldValidationStatus(submissionField, fieldDef, null, function (err, res) {
                 if (err) return cb(err);
                 var ret = {
                   validation: {}
@@ -19232,7 +19415,7 @@
             valueIndex = 0;
           }
 
-          init(function(err) {
+          init(function (err) {
             if (err) return cb(err);
             var fieldDefinition = fieldMap[fieldId];
 
@@ -19267,10 +19450,10 @@
             }
 
             // not empty need to validate
-            getClientValidatorFunction(fieldDefinition.type, function(err, validator) {
+            getClientValidatorFunction(fieldDefinition.type, function (err, validator) {
               if (err) return cb(err);
 
-              validator(inputValue, fieldDefinition, undefined, function(err) {
+              validator(inputValue, fieldDefinition, undefined, function (err) {
                 var message;
                 if (err) {
                   if (err.message) {
@@ -19291,7 +19474,7 @@
             if (msg) {
               messages.errorMessages.push(msg);
             }
-            return createValidatorResponse(fieldId, messages, function(err, res) {
+            return createValidatorResponse(fieldId, messages, function (err, res) {
               if (err) return cb(err);
               var ret = {
                 validation: {}
@@ -19308,9 +19491,9 @@
           res.fieldId = fieldId;
           res.errorMessages = messages.errorMessages || [];
           res.fieldErrorMessage = messages.fieldErrorMessage || [];
-          async.some(res.errorMessages, function(item, cb) {
+          async.some(res.errorMessages, function (item, cb) {
             return cb(item !== null);
-          }, function(someErrors) {
+          }, function (someErrors) {
             res.valid = !someErrors && (res.fieldErrorMessage.length < 1);
 
             return cb(undefined, res);
@@ -19318,7 +19501,7 @@
         }
 
         function getFieldValidationStatus(submittedField, fieldDef, previousFieldValues, cb) {
-          validateFieldInternal(submittedField, fieldDef, previousFieldValues, function(err, messages) {
+          validateFieldInternal(submittedField, fieldDef, previousFieldValues, function (err, messages) {
             if (err) return cb(err);
             createValidatorResponse(submittedField.fieldId, messages, cb);
           });
@@ -19351,13 +19534,13 @@
             previousFieldValues = null;
           }
 
-          countSubmittedValues(submittedField, function(err, numSubmittedValues) {
+          countSubmittedValues(submittedField, function (err, numSubmittedValues) {
             if (err) return cb(err);
             async.series({
               valuesSubmitted: async.apply(checkValueSubmitted, submittedField, fieldDef),
               repeats: async.apply(checkRepeat, numSubmittedValues, fieldDef),
               values: async.apply(checkValues, submittedField, fieldDef, previousFieldValues)
-            }, function(err, results) {
+            }, function (err, results) {
               if (err) return cb(err);
 
               var fieldErrorMessages = [];
@@ -19421,13 +19604,13 @@
           }
 
           function checkValues(submittedField, fieldDefinition, previousFieldValues, cb) {
-            getValidatorFunction(fieldDefinition.type, function(err, validator) {
+            getValidatorFunction(fieldDefinition.type, function (err, validator) {
               if (err) return cb(err);
-              async.map(submittedField.fieldValues, function(fieldValue, cb) {
+              async.map(submittedField.fieldValues, function (fieldValue, cb) {
                 if (fieldEmpty(fieldValue)) {
                   return cb(undefined, null);
                 } else {
-                  validator(fieldValue, fieldDefinition, previousFieldValues, function(validationError) {
+                  validator(fieldValue, fieldDefinition, previousFieldValues, function (validationError) {
                     var errorMessage;
                     if (validationError) {
                       errorMessage = validationError.message || "Error during validation of field";
@@ -19442,7 +19625,7 @@
                     return cb(undefined, errorMessage);
                   });
                 }
-              }, function(err, results) {
+              }, function (err, results) {
                 if (err) return cb(err);
 
                 return cb(undefined, results);
@@ -19586,9 +19769,9 @@
             return cb(new Error("No options exist for field " + fieldDefinition.name));
           }
 
-          async.some(fieldDefinition.fieldOptions.definition.options, function(dropdownOption, cb) {
+          async.some(fieldDefinition.fieldOptions.definition.options, function (dropdownOption, cb) {
             return cb(dropdownOption.label === fieldValue);
-          }, function(found) {
+          }, function (found) {
             if (!found) {
               return cb(new Error("Invalid option specified: " + fieldValue));
             } else {
@@ -19627,13 +19810,13 @@
 
           var optionsInCheckbox = [];
 
-          async.eachSeries(fieldDefinition.fieldOptions.definition.options, function(choice, cb) {
+          async.eachSeries(fieldDefinition.fieldOptions.definition.options, function (choice, cb) {
             for (var choiceName in choice) {
               optionsInCheckbox.push(choice[choiceName]);
             }
             return cb();
-          }, function(err) {
-            async.eachSeries(fieldValue.selections, function(selection, cb) {
+          }, function (err) {
+            async.eachSeries(fieldValue.selections, function (selection, cb) {
               if (typeof(selection) !== "string") {
                 return cb(new Error("Expected checkbox submission to be string but got " + typeof(selection)));
               }
@@ -19701,15 +19884,15 @@
 
         function validatorAnyFile(fieldValue, fieldDefinition, previousFieldValues, cb) {
           // if any of the following validators return ok, then return ok.
-          validatorBase64(fieldValue, fieldDefinition, previousFieldValues, function(err) {
+          validatorBase64(fieldValue, fieldDefinition, previousFieldValues, function (err) {
             if (!err) {
               return cb();
             }
-            validatorFile(fieldValue, fieldDefinition, previousFieldValues, function(err) {
+            validatorFile(fieldValue, fieldDefinition, previousFieldValues, function (err) {
               if (!err) {
                 return cb();
               }
-              validatorFileObj(fieldValue, fieldDefinition, previousFieldValues, function(err) {
+              validatorFileObj(fieldValue, fieldDefinition, previousFieldValues, function (err) {
                 if (!err) {
                   return cb();
                 }
@@ -19747,24 +19930,30 @@
             return cb(new Error("Expected object but got " + typeof(fieldValue)));
           }
 
-          var keyTypes = [{
-            keyName: "fileName",
-            valueType: "string"
-          }, {
-            keyName: "fileSize",
-            valueType: "number"
-          }, {
-            keyName: "fileType",
-            valueType: "string"
-          }, {
-            keyName: "fileUpdateTime",
-            valueType: "number"
-          }, {
-            keyName: "hashName",
-            valueType: "string"
-          }];
+          var keyTypes = [
+            {
+              keyName: "fileName",
+              valueType: "string"
+            },
+            {
+              keyName: "fileSize",
+              valueType: "number"
+            },
+            {
+              keyName: "fileType",
+              valueType: "string"
+            },
+            {
+              keyName: "fileUpdateTime",
+              valueType: "number"
+            },
+            {
+              keyName: "hashName",
+              valueType: "string"
+            }
+          ];
 
-          async.each(keyTypes, function(keyType, cb) {
+          async.each(keyTypes, function (keyType, cb) {
             var actualType = typeof fieldValue[keyType.keyName];
             if (actualType !== keyType.valueType) {
               return cb(new Error("Expected " + keyType.valueType + " but got " + actualType));
@@ -19774,10 +19963,10 @@
             }
 
             return cb();
-          }, function(err) {
+          }, function (err) {
             if (err) return cb(err);
 
-            checkFileSize(fieldDefinition, fieldValue, "fileSize", function(err) {
+            checkFileSize(fieldDefinition, fieldValue, "fileSize", function (err) {
               if (err) {
                 return cb(err);
               }
@@ -19798,15 +19987,18 @@
             return cb(new Error("Expected File object but got " + typeof(fieldValue)));
           }
 
-          var keyTypes = [{
-            keyName: "name",
-            valueType: "string"
-          }, {
-            keyName: "size",
-            valueType: "number"
-          }];
+          var keyTypes = [
+            {
+              keyName: "name",
+              valueType: "string"
+            },
+            {
+              keyName: "size",
+              valueType: "number"
+            }
+          ];
 
-          async.each(keyTypes, function(keyType, cb) {
+          async.each(keyTypes, function (keyType, cb) {
             var actualType = typeof fieldValue[keyType.keyName];
             if (actualType !== keyType.valueType) {
               return cb(new Error("Expected " + keyType.valueType + " but got " + actualType));
@@ -19819,11 +20011,11 @@
             }
 
             return cb();
-          }, function(err) {
+          }, function (err) {
             if (err) return cb(err);
 
 
-            checkFileSize(fieldDefinition, fieldValue, "size", function(err) {
+            checkFileSize(fieldDefinition, fieldValue, "size", function (err) {
               if (err) {
                 return cb(err);
               }
@@ -19909,11 +20101,11 @@
           var visible = true;
 
           // Itterate over each rule that this field is a predicate of
-          async.each(rules, function(rule, cbRule) {
+          async.each(rules, function (rule, cbRule) {
             // For each rule, itterate over the predicate fields and evaluate the rule
             var predicateMapQueries = [];
             var predicateMapPassed = [];
-            async.each(rule.ruleConditionalStatements, function(ruleConditionalStatement, cbPredicates) {
+            async.each(rule.ruleConditionalStatements, function (ruleConditionalStatement, cbPredicates) {
               var field = fieldMap[ruleConditionalStatement.sourceField];
               var passed = false;
               var submissionValues = [];
@@ -19939,7 +20131,7 @@
                 predicateMapPassed.push(field);
               }
               return cbPredicates();
-            }, function(err) {
+            }, function (err) {
               if (err) cbRule(err);
 
               function rulesPassed(condition, passed, queries) {
@@ -19954,7 +20146,7 @@
               }
               return cbRule();
             });
-          }, function(err) {
+          }, function (err) {
             if (err) return cb(err);
 
             return cb(undefined, visible);
@@ -19962,7 +20154,7 @@
         }
 
         function isPageVisible(pageId, cb) {
-          init(function(err) {
+          init(function (err) {
             if (err) return cb(err);
 
             if (isPageRuleSubject(pageId)) { // if the page is the target of a rule
@@ -19978,7 +20170,7 @@
            * fieldId = Id of field to check for reule predeciate references
            * checkContainingPage = if true check page containing field, and return false if the page is hidden
            */
-          init(function(err) {
+          init(function (err) {
             if (err) return cb(err);
 
             // Fields are visable by default
@@ -20028,19 +20220,19 @@
          *      }
          */
         function checkRules(submissionJSON, cb) {
-          init(function(err) {
+          init(function (err) {
             if (err) return cb(err);
 
-            initSubmission(submissionJSON, function(err) {
+            initSubmission(submissionJSON, function (err) {
               if (err) return cb(err);
               var actions = {};
 
               async.parallel([
 
-                function(cb) {
+                function (cb) {
                   actions.fields = {};
-                  async.eachSeries(Object.keys(fieldRuleSubjectMap), function(fieldId, cb) {
-                    isFieldVisible(fieldId, false, function(err, fieldVisible) {
+                  async.eachSeries(Object.keys(fieldRuleSubjectMap), function (fieldId, cb) {
+                    isFieldVisible(fieldId, false, function (err, fieldVisible) {
                       if (err) return cb(err);
                       actions.fields[fieldId] = {
                         targetId: fieldId,
@@ -20050,10 +20242,10 @@
                     });
                   }, cb);
                 },
-                function(cb) {
+                function (cb) {
                   actions.pages = {};
-                  async.eachSeries(Object.keys(pageRuleSubjectMap), function(pageId, cb) {
-                    isPageVisible(pageId, function(err, pageVisible) {
+                  async.eachSeries(Object.keys(pageRuleSubjectMap), function (pageId, cb) {
+                    isPageVisible(pageId, function (err, pageVisible) {
                       if (err) return cb(err);
                       actions.pages[pageId] = {
                         targetId: pageId,
@@ -20063,7 +20255,7 @@
                     });
                   }, cb);
                 }
-              ], function(err) {
+              ], function (err) {
                 if (err) return cb(err);
 
                 return cb(undefined, {
@@ -20248,4 +20440,3 @@
 
 //this is partial file which define the end of closure
 })(window || module.exports);
-
