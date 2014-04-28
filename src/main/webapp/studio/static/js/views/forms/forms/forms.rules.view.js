@@ -367,7 +367,6 @@ App.View.Rules = App.View.Forms.extend({
         }
 
         self.$el.find('#rule'+self.ruleCount+'select.conditional option').each(function () {
-          console.log("setting conditional " , $(this).val(), rule.ruleConditionalOperator);
           if ($(this).val() == rule.ruleConditionalOperator) {
             $(this).attr("selected", true);
           }else{
@@ -381,7 +380,6 @@ App.View.Rules = App.View.Forms.extend({
 
 
       self.$el.find('.rulesForm').each(function (){
-        console.log("looking at visible rulesForm ", this);
         $(this).find('.btn-add-condition').hide().last().show();
         $(this).find('.btn-remove-condition').first().hide();
         $(this).find('.btn-add-rule').hide().first().show();
