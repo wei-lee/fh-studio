@@ -8506,7 +8506,7 @@
 },{"./fhparams":31,"./logger":37,"./queryMap":39,"JSON":3}],27:[function(_dereq_,module,exports){
   module.exports = {
     "boxprefix": "/box/srv/1.1/",
-    "sdk_version": "2.0.9-alpha",
+    "sdk_version": "2.0.10-alpha",
     "config_js": "fhconfig.json",
     "INIT_EVENT": "fhinit"
   };
@@ -12940,10 +12940,13 @@
 (function(_scope){
   //start module
 
-  var appForm = function (module) {
+  var appForm = function(module) {
     module.init = init;
+
     function init(params, cb) {
-      var def = { 'updateForms': true };
+      var def = {
+        'updateForms': true
+      };
       if (typeof cb === 'undefined') {
         cb = params;
       } else {
@@ -12956,36 +12959,41 @@
       //init config module
       var config = def.config || {};
       appForm.config = appForm.models.config;
-      appForm.config.init(config, function (err) {
-        if(err){
+      appForm.config.init(config, function(err) {
+        if (err) {
           $fh.forms.log.e("Form config loading error: ", err);
         }
-        //Loading the current state of the uploadManager for any upload tasks that are still in progress.
-        appForm.models.uploadManager.loadLocal(function (err) {
-          $fh.forms.log.d("Upload Manager loaded from memory.");
-          if (err) {
-            $fh.forms.log.e("Error loading upload manager from memory ", err);
+        appForm.models.log.loadLocal(function(err) {
+          if(err){
+            console.error("Error loading config from local storage");
           }
-          //init forms module
-          $fh.forms.log.l("Refreshing Theme.");
-          appForm.models.theme.refresh(true, function (err) {
+          //Loading the current state of the uploadManager for any upload tasks that are still in progress.
+          appForm.models.uploadManager.loadLocal(function(err) {
+            $fh.forms.log.d("Upload Manager loaded from memory.");
             if (err) {
-              $fh.forms.log.e("Error refreshing theme ", err);
+              $fh.forms.log.e("Error loading upload manager from memory ", err);
             }
-            if (def.updateForms === true) {
-              $fh.forms.log.l("Refreshing Forms.");
-              appForm.models.forms.refresh(true, function (err) {
-                if (err) {
-                  $fh.forms.log.e(err);
-                }
 
-                appForm.models.log.loadLocal(function(){
+            //Starting any uploads that are queued
+            appForm.models.uploadManager.start();
+            //init forms module
+            $fh.forms.log.l("Refreshing Theme.");
+            appForm.models.theme.refresh(true, function(err) {
+              if (err) {
+                $fh.forms.log.e("Error refreshing theme ", err);
+              }
+              if (def.updateForms === true) {
+                $fh.forms.log.l("Refreshing Forms.");
+                appForm.models.forms.refresh(true, function(err) {
+                  if (err) {
+                    $fh.forms.log.e("Error refreshing forms: ", err);
+                  }
                   cb();
                 });
-              });
-            } else {
-              cb();
-            }
+              } else {
+                cb();
+              }
+            });
           });
         });
       });
@@ -13536,6 +13544,11 @@
       $fh.forms.log.d("Phonegap uploadFile ", url, fileProps);
       var filePath = fileProps.fullPath;
 
+      if(!$fh.forms.config.isOnline()){
+        $fh.forms.log.e("Phonegap uploadFile. Not Online.", url, fileProps);
+        return cb("No Internet Connection Available.");
+      }
+
       var success = function (r) {
         $fh.forms.log.d("upload to url ", url, " sucessful");
         r.response = r.response || {};
@@ -13572,6 +13585,11 @@
     module.downloadFile = function(url, fileMetaData, cb){
       $fh.forms.log.d("Phonegap downloadFile ", url, fileMetaData);
       var ft = new FileTransfer();
+
+      if(!$fh.forms.config.isOnline()){
+        $fh.forms.log.e("Phonegap downloadFile. Not Online.", url, fileMetaData);
+        return cb("No Internet Connection Available.");
+      }
 
       appforms.utils.fileSystem.getBasePath(function(err, basePath){
         if(err){
@@ -14282,6 +14300,7 @@
   }(appForm.models || {});
   appForm.models = function(module) {
     var Model = appForm.models.Model;
+    var online = true;
 
     function Config() {
       Model.call(this, {
@@ -14428,6 +14447,15 @@
         "config": '/forms/:appid/config/:deviceId'
       });
     };
+    Config.prototype.setOnline = function(){
+      online = true;
+    };
+    Config.prototype.setOffline = function(){
+      online = false;
+    };
+    Config.prototype.isOnline = function(){
+      return online === true;
+    };
 
     module.config = new Config();
     return module;
@@ -14513,10 +14541,13 @@
         return cb('Cannot initialise a form object without an id. id:' + formId, null);
       }
 
-      Model.call(this, {
+
+      Model.call(that, {
         '_id': formId,
         '_type': 'form'
       });
+      that.set('_id', formId);
+      that.setLocalId(that.genLocalId(formId));
 
 
       function loadFromLocal(){
@@ -14546,6 +14577,9 @@
         function checkForUpdate(form){
           $fh.forms.log.d("Form: checkForUpdate", rawMode, rawData, formId, fromRemote);
           form.refresh(false, function (err, obj) {
+            if(err){
+              $fh.forms.log.e("Error refreshing form from local: ", err);
+            }
             if (appForm.models.forms.isFormUpdated(form)) {
               form.refresh(true, function (err, obj1) {
                 if(err){
@@ -14587,6 +14621,10 @@
     Form.prototype.getLastUpdate = function () {
       $fh.forms.log.d("Form: getLastUpdate");
       return this.get('lastUpdatedTimestamp');
+    };
+    Form.prototype.genLocalId = function (formId) {
+      formId = typeof(formId) === 'string' ? formId : this.get("_id", "");
+      return "form_" + formId;
     };
     /**
      * Initiliase form json to objects
@@ -16717,13 +16755,24 @@
                 //current task uploaded or aborted by error. shift it from queue
                 that.shift();
                 that.sending = false;
-                that.saveLocal(function () {
+                that.saveLocal(function (err) {
+                  if(err){
+                    $fh.forms.log.e("Error saving upload manager: ", err);
+                  }
                 });
               } else {
-                task.uploadTick(function (err) {
-                  //callback when finished. ready for next upload command
-                  that.sending = false;
-                });
+                if($fh.forms.config.isOnline()){
+                  task.uploadTick(function (err) {
+                    if(err){
+                      $fh.forms.log.e("Error on upload tick: ", err, task);
+                    }
+
+                    //callback when finished. ready for next upload command
+                    that.sending = false;
+                  });
+                } else {
+                  $fh.forms.log.d("Upload Manager: Tick: Not online.");
+                }
               }
             }
           });
@@ -17670,7 +17719,7 @@
     appForm.utils.extend(Log, Model);
 
     Log.prototype.info = function(logLevel, msgs) {
-      if ($fh.forms.config.get("logger") === "true") {
+      if ($fh.forms.config.get("logger") === true) {
         var levelString = "";
         var curLevel = $fh.forms.config.get("log_level");
         var log_levels = $fh.forms.config.get("log_levels");
@@ -17690,11 +17739,13 @@
           var args = Array.prototype.splice.call(arguments, 0);
           var logs = self.get("logs");
           args.shift();
+          var logStr = "";
           while (args.length > 0) {
-            logs.push(self.wrap(args.shift(), levelString));
-            if (logs.length > $fh.forms.config.get("log_line_limit")) {
-              logs.shift();
-            }
+            logStr += JSON.stringify(args.shift()) + " ";
+          }
+          logs.push(self.wrap(logStr, levelString));
+          if (logs.length > $fh.forms.config.get("log_line_limit")) {
+            logs.shift();
           }
           if (self.isWriting) {
             self.moreToWrite = true;
@@ -17889,6 +17940,15 @@
           }
 
         });
+      },
+      "offline": function(){
+        formConfig.setOffline();
+      },
+      "online": function(){
+        formConfig.setOnline();
+      },
+      "isOnline": function(){
+        return formConfig.isOnline();
       }
     };
 
