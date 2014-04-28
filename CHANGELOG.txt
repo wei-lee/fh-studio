@@ -6,6 +6,8 @@ Component: fh-studio
 --------------------------------------------------
 * 6879 make section break no longer a required field to fix form validation.
 * 7003 fix save field rules
+* 6946 marked email field as mandatory for creating users
+
 3.18.14 - 2014-04-24 - IR226 - Cbrookes
 -------------------------------------------------
 update to latest js-sdk
