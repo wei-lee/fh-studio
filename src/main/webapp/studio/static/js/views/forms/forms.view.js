@@ -57,7 +57,8 @@ App.View.Forms = Backbone.View.extend({
       SUBS: 'submissionsTotal',
       PAGES: 'pages',
       FIELDS: 'fields',
-      PAGE_BREAK: 'page_break'
+      PAGE_BREAK: 'page_break',
+      "SECTION_BREAK":'sectionBreak'
     },
     THEME : {
       NAME : 'name',

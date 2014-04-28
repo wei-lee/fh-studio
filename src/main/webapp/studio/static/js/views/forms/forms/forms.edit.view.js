@@ -186,6 +186,9 @@ App.View.FormEdit = App.View.Forms.extend({
     this.fb.collection.each(function (f, i, coll) {
       // For every page break - except the first, that's just a UI thing..
       var p;
+      if(f.get(self.CONSTANTS.FB.FIELD_TYPE) === self.CONSTANTS.FORM.SECTION_BREAK ){
+        f.set("required", false);
+      }
       if (f.get(self.CONSTANTS.FB.FIELD_TYPE) === self.CONSTANTS.FORM.PAGE_BREAK) {
         if (curPage) {
           pages.push(_.clone(curPage));
