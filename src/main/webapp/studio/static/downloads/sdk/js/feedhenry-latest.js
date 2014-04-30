@@ -8506,7 +8506,7 @@
 },{"./fhparams":31,"./logger":37,"./queryMap":39,"JSON":3}],27:[function(_dereq_,module,exports){
   module.exports = {
     "boxprefix": "/box/srv/1.1/",
-    "sdk_version": "2.0.10-alpha",
+    "sdk_version": "2.0.12-alpha",
     "config_js": "fhconfig.json",
     "INIT_EVENT": "fhinit"
   };
@@ -13203,7 +13203,6 @@
         create: true
       }, function(err, fileEntry) {
         if (err) {
-          console.error("_getFileEntry Error " + err);
           cb(err);
         } else {
           fileEntry.createWriter(function(writer) {
@@ -13234,7 +13233,6 @@
     function remove(fileName, cb) {
       _getFileEntry(fileName, 0, {}, function(err, fileEntry) {
         if (err) {
-          console.error("file remove _getFileEntry finished err: " + err + " " + err.name);
           if (!(err.name === 'NotFoundError' || err.code === 1)) {
             return cb(err);
           } else {
@@ -13258,7 +13256,6 @@
     function readAsText(fileName, cb) {
       _getFile(fileName, function(err, file) {
         if (err) {
-          console.error("readAsText _getFile failed: " + err);
           cb(err);
         } else {
           var reader = new FileReader();
@@ -13269,7 +13266,7 @@
             try {
               text = decodeURIComponent(text);
             } catch (e) {
-              console.error("readAsText trying decodeURIComponent exception: " + e);
+
             }
             return cb(null, text);
           };
@@ -13286,7 +13283,6 @@
     function readAsBase64Encoded(fileName, cb) {
       _getFile(fileName, function(err, file) {
         if (err) {
-          console.error("readAsBase64Encoded _getFile called err: " + err);
           return cb(err);
         }
         var reader = new FileReader();
@@ -13334,7 +13330,6 @@
     function _getFile(fileName, cb) {
       _getFileEntry(fileName, 0, {}, function(err, fe) {
         if (err) {
-          console.error("_getFile _getFileEntry failed: " + err);
           return cb(err);
         }
         fe.file(function(file) {
@@ -13352,7 +13347,6 @@
         fileSystem.root.getFile(fileName, params, function gotFileEntry(fileEntry) {
           cb(null, fileEntry);
         }, function(err) {
-          console.error("_getFileEntry _requestFileSystem called fail: " + err + " " + err.name);
           if (err.name === 'QuotaExceededError' || err.code === 10) {
             //this happens only on browser. request for 1 gb storage
             //TODO configurable from cloud
@@ -18120,9 +18114,9 @@
   if ($fh.forms === undefined) {
     $fh.forms = appForm.api;
   }
-  /*! fh-forms - v0.5.7 -  */
+  /*! fh-forms - v0.5.8 -  */
   /*! async - v0.2.9 -  */
-  /*! 2014-04-24 */
+  /*! 2014-04-30 */
   /* This is the prefix file */
   if(appForm){
     appForm.RulesEngine=rulesEngine;
@@ -20043,7 +20037,7 @@
         }
 
         function validatorFileObj(fieldValue, fieldDefinition, previousFieldValues, cb) {
-          if ((typeof File !== "function") || !(fieldValue instanceof File)) {
+          if ((typeof File !== "function")) {
             return cb(new Error("Expected File object but got " + typeof(fieldValue)));
           }
 
@@ -20098,6 +20092,8 @@
 
         function validatorDateTime(fieldValue, fieldDefinition, previousFieldValues, cb) {
           var testDate;
+          var valid = false;
+          var parts = [];
 
           if (typeof(fieldValue) !== "string") {
             return cb(new Error("Expected string but got " + typeof(fieldValue)));
@@ -20105,20 +20101,41 @@
 
           switch (fieldDefinition.fieldOptions.definition.datetimeUnit) {
             case FIELD_TYPE_DATETIME_DATETIMEUNIT_DATEONLY:
+
+              parts = fieldValue.split("/");
+              valid = parts.length === 3;
+
+              if(valid){
+                valid = isNumberBetween(parts[2], 1, 31);
+              }
+
+              if(valid){
+                valid = isNumberBetween(parts[1], 1, 12);
+              }
+
+              if(valid){
+                valid = isNumberBetween(parts[0], 1000, 9999);
+              }
+
               try {
-                testDate = new Date(fieldValue);
+                if(valid){
+                  testDate = new Date(parts[3], parts[1], parts[0]);
+                } else {
+                  testDate = new Date(fieldValue);
+                }
                 valid = (testDate.toString() !== "Invalid Date");
               } catch (e) {
                 valid = false;
               }
+
               if (valid) {
                 return cb();
               } else {
-                return cb(new Error("Invalid date value " + fieldValue));
+                return cb(new Error("Invalid date value " + fieldValue + ". Date format is YYYY/MM/DD"));
               }
               break;
             case FIELD_TYPE_DATETIME_DATETIMEUNIT_TIMEONLY:
-              var parts = fieldValue.split(':');
+              parts = fieldValue.split(':');
               valid = (parts.length === 2) || (parts.length === 3);
               if (valid) {
                 valid = isNumberBetween(parts[0], 0, 23);
@@ -20132,20 +20149,54 @@
               if (valid) {
                 return cb();
               } else {
-                return cb(new Error("Invalid date value " + fieldValue));
+                return cb(new Error("Invalid time value " + fieldValue + ". Time format is HH:MM:SS"));
               }
               break;
             case FIELD_TYPE_DATETIME_DATETIMEUNIT_DATETIME:
-              try {
-                testDate = new Date(fieldValue);
+              parts = fieldValue.split(/[- :]/);
 
-                if (testDate.toString() === "Invalid Date") {
-                  return cb(new Error("Invalid dateTime string " + fieldValue));
+              valid = (parts.length === 6) || (parts.length === 5);
+
+              if(valid){
+                valid = isNumberBetween(parts[2], 1, 31);
+              }
+
+              if(valid){
+                valid = isNumberBetween(parts[1], 1, 12);
+              }
+
+              if(valid){
+                valid = isNumberBetween(parts[0], 1000, 9999);
+              }
+
+              if (valid) {
+                valid = isNumberBetween(parts[3], 0, 23);
+              }
+              if (valid) {
+                valid = isNumberBetween(parts[4], 0, 59);
+              }
+              if (valid && parts.length === 6) {
+                valid = isNumberBetween(parts[5], 0, 59);
+              } else {
+                parts[5] = 0;
+              }
+
+              try {
+                if(valid){
+                  testDate = new Date(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5]);
                 } else {
-                  return cb();
+                  testDate = new Date(fieldValue);
                 }
+
+                valid = (testDate.toString() !== "Invalid Date")
               } catch (e) {
-                return cb(new Error("Invalid dateTime string " + fieldValue));
+                valid = false;
+              }
+
+              if(valid){
+                return cb();
+              } else {
+                return cb(new Error("Invalid dateTime string " + fieldValue + ". dateTime format is YYYY/MM/DD HH:MM:SS"));
               }
               break;
             default:
