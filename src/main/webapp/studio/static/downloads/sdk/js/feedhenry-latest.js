@@ -8506,7 +8506,7 @@ module.exports = {
 },{"./fhparams":31,"./logger":37,"./queryMap":39,"JSON":3}],27:[function(_dereq_,module,exports){
 module.exports = {
   "boxprefix": "/box/srv/1.1/",
-  "sdk_version": "2.0.14-alpha",
+  "sdk_version": "2.0.15-alpha",
   "config_js": "fhconfig.json",
   "INIT_EVENT": "fhinit"
 };
@@ -18117,9 +18117,9 @@ if (typeof $fh === 'undefined') {
 if ($fh.forms === undefined) {
   $fh.forms = appForm.api;
 }
-/*! fh-forms - v0.5.8 -  */
+/*! fh-forms - v0.5.10 -  */
 /*! async - v0.2.9 -  */
-/*! 2014-04-30 */
+/*! 2014-05-02 */
 /* This is the prefix file */
 if(appForm){
   appForm.RulesEngine=rulesEngine;
@@ -20191,7 +20191,7 @@ function rulesEngine (formDef) {
               testDate = new Date(fieldValue);
             }
 
-            valid = (testDate.toString() !== "Invalid Date");
+            valid = (testDate.toString() !== "Invalid Date")
           } catch (e) {
             valid = false;
           }
@@ -20425,15 +20425,32 @@ function rulesEngine (formDef) {
     var fieldType = field.type;
     var fieldOptions = field.fieldOptions ? field.fieldOptions : {};
 
+    function numericalComparison(condition, fieldValue, testValue){
+      var fieldValNum = parseInt(fieldValue, 10);
+      var testValNum = parseInt(testValue, 10);  
+
+      if(isNaN(fieldValNum) || isNaN(testValNum)){
+        return false;
+      }
+
+      if ("is equal to" === condition) {
+        return fieldValNum === testValNum;
+      } else if ("is less than" === condition) {
+        return fieldValNum < testValNum;
+      } else if ("is greater than" === condition) {
+        return fieldValNum > testValNum; 
+      } else {
+        return false;
+      }
+    }
+
     var valid = true;
     if ("is equal to" === condition) {
-      valid = fieldValue === testValue;
+      valid = numericalComparison("is equal to", fieldValue, testValue);
     } else if ("is greater than" === condition) {
-      // TODO - do numeric checking
-      valid = fieldValue > testValue;
+      valid = numericalComparison("is greater than", fieldValue, testValue);
     } else if ("is less than" === condition) {
-      // TODO - do numeric checking
-      valid = fieldValue < testValue;
+      valid = numericalComparison("is less than", fieldValue, testValue);
     } else if ("is at" === condition) {
       valid = false;
       if (fieldType === FIELD_TYPE_DATETIME) {
