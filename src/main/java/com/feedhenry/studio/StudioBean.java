@@ -270,18 +270,7 @@ public class StudioBean {
       studioVersion = mStudioProps.optString(PROP_STUDIOVERSION, null);
       requiredProtocol = mStudioProps.getString(PROP_PROTOCOL);
     }
-    if (proceed) {
-      String selectedProtocol = resolveScheme(pRequest);
-
-      // Ensure that we are using the correct protocol (https by default);
-      if (!requiredProtocol.equals(selectedProtocol)) {
-        String redirect = requiredProtocol + "://" + serverName;
-        redirectUrl = redirect;
-        log.info("requiredProtocol=" + requiredProtocol + ", selectedProtocol=" + selectedProtocol);
-        proceed = false;
-      }
-    }
-
+    
     // Check if user should be using a different version of studio
     if (mStudioProps != null && studioVersion != null && null == redirectUrl && studioVersion.length() > 0) {
       String path = pRequest.getRequestURI();
@@ -306,6 +295,18 @@ public class StudioBean {
           }
         }
 
+      }
+    }
+    
+    if (proceed) {
+      String selectedProtocol = resolveScheme(pRequest);
+
+      // Ensure that we are using the correct protocol (https by default);
+      if (!requiredProtocol.equals(selectedProtocol)) {
+        String redirect = requiredProtocol + "://" + serverName;
+        redirectUrl = redirect;
+        log.info("requiredProtocol=" + requiredProtocol + ", selectedProtocol=" + selectedProtocol);
+        proceed = false;
       }
     }
 
