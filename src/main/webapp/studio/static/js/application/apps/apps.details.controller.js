@@ -52,6 +52,14 @@ Apps.Details.Controller = Apps.Controller.extend({
       });
     });
 
+    // Migration bindings
+    var migrateButton = $('#manage_details_migrate_app_button');
+    migrateButton.on('click', function(e) {
+      e.preventDefault();
+      self.doMigrate();
+      return false;
+    });
+
     // also enable the scm trigger button
     var scmTriggerButton = $('#scm_trigger_button');
     scmTriggerButton.text(scmTriggerButtonText).bind('click', function(e) {
@@ -210,7 +218,7 @@ Apps.Details.Controller = Apps.Controller.extend({
       $fw.client.dialog.info.flash($fw.client.lang.getLangString('app_updated'));
       // TODO: overkill here by doing a second call to read the app
       // Run custom callback if its passed in, otherwise, do normal App reset (for now)
-      
+
       $fw.client.tab.apps.manageapps.show(inst.guid);
       if ($.isFunction(callback)) {
         callback();
@@ -261,6 +269,21 @@ Apps.Details.Controller = Apps.Controller.extend({
         });
       });
     }
-  }
+  },
 
+  doMigrate: function() {
+    var self = this;
+
+    var project_id = $fw.data.get('app').guid;
+    var app_id = $fw.data.get('inst').guid;
+
+    self.models.app.migrate({
+      project_id: project_id,
+      app_id: app_id
+    }, function(res) {
+      console.log('migrate success:' + res);
+    }, function(error) {
+      console.log('migrate failed:' + error);
+    });
+  }
 });

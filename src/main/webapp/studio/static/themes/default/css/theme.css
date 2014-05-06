@@ -4339,3 +4339,8 @@ select.appSelect{
   padding-top: 20px;
   width: 120px;
 }
+
+/* Migration */
+#manage_details_migrate_app_button {
+  margin-right: 10px;
+}

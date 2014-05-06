@@ -228,5 +228,10 @@ model.App = model.Model.extend({
       guid: guid
     };
     this.serverPost(url, params, success, fail, true);
+  },
+
+  migrate: function(params, success, failure) {
+    debugger;
+    return success("ok");
   }
 });
