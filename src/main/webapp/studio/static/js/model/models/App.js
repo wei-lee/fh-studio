@@ -231,7 +231,15 @@ model.App = model.Model.extend({
   },
 
   migrate: function(params, success, failure) {
-    debugger;
-    return success("ok");
+    var url = "/box/api/projects/" + params.projectguid + "/migrate";
+    $fw.server.put(url, params, function(res) {
+      if ($.isFunction(success)) {
+        success(res);
+      }
+    }, function(err) {
+      if ($.isFunction(failure)) {
+        fail(err);
+      }
+    });
   }
 });

@@ -275,11 +275,9 @@ Apps.Details.Controller = Apps.Controller.extend({
     var self = this;
 
     var project_id = $fw.data.get('app').guid;
-    var app_id = $fw.data.get('inst').guid;
 
     self.models.app.migrate({
-      project_id: project_id,
-      app_id: app_id
+      projectguid: project_id
     }, function(res) {
       console.log('migrate success:' + res);
     }, function(error) {
