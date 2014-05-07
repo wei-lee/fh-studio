@@ -196,6 +196,13 @@ var Controller = Class.extend({
     progress_bar.parent().removeClass('progress-striped');
   },
 
+  markCompleteFailure: function() {
+    var progress_bar = this.progressModal.find('.progress .bar');
+    progress_bar.css('width', 100 + '%');
+    progress_bar.addClass('bar-error');
+    progress_bar.parent().removeClass('progress-striped');
+  },
+
   getColumnIndexForField: function (aoColumns,field,value){
     var found = $.grep(aoColumns,function(item, i){return item[field] === value;});
     var col = $(aoColumns).index(found[0]);

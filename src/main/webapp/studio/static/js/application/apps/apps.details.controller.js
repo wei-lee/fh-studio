@@ -278,7 +278,7 @@ Apps.Details.Controller = Apps.Controller.extend({
 
     var import_progress = 10;
 
-    self.showProgressModal("migration", "migrating", function() {
+    self.showProgressModal("App Migration", "Migrating your App to FH3...", function() {
       self.clearProgressModal();
       self.appendProgressLog('Beginning FH2 to FH3 migration');
       self.updateProgressBar(import_progress);
@@ -297,6 +297,7 @@ Apps.Details.Controller = Apps.Controller.extend({
           maxRetries: Properties.cache_lookup_retries,
           timeout: function(res) {
             console.log('timeout > ' + JSON.stringify(res));
+            self.markCompleteFailure();
           },
           update: function(res) {
             console.log('update > ' + JSON.stringify(res));
@@ -314,16 +315,18 @@ Apps.Details.Controller = Apps.Controller.extend({
           },
           error: function(res) {
             console.log('error > ' + JSON.stringify(res));
+            self.markCompleteFailure();
           },
           retriesLimit: function() {
             console.log('retries limit!');
+            self.markCompleteFailure();
           },
           end: function() {
             // nothing to do here
           }
         });
         migrate_task.run();
-    });    
+      });
 
     }, function(error) {
       console.log('migrate failed:' + error);
