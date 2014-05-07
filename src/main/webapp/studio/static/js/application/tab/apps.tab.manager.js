@@ -221,7 +221,6 @@ ManageappsTabManager = Tab.Manager.extend({
       is_app_name = true;
     }
     $fw.client.model.App.read(guid, function(result) {
-      console.log('app read result > ' + JSON.stringify(result));
       if (result.app && result.inst) {
         var inst = result.inst;
         

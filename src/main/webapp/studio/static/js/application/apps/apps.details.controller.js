@@ -276,8 +276,10 @@ Apps.Details.Controller = Apps.Controller.extend({
     var project_id = $fw.data.get('app').guid;
     var import_progress = 10;
 
+    var modal = null;
+
     self.showBooleanModal("Are you sure you want to migrate this App to FH3? Once migrated, you won't be able to easily revert this app back to FH2", function() {
-      self.showProgressModal("App Migration", "Migrating your App to FH3...", function() {
+      modal = self.showProgressModal("App Migration", "Migrating your App to FH3...", function() {
         self.clearProgressModal();
         self.appendProgressLog('Beginning FH2 to FH3 migration');
         self.updateProgressBar(import_progress);
@@ -326,9 +328,13 @@ Apps.Details.Controller = Apps.Controller.extend({
           });
           migrate_task.run();
         });
-
       }, function(error) {
         console.log('migrate failed:' + error);
+      });
+
+
+      modal.on('hidden', function() {
+        $fw.client.tab.apps.listapps.show();
       });
     });
   }
