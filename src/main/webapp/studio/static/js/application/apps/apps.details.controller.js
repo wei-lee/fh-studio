@@ -273,63 +273,63 @@ Apps.Details.Controller = Apps.Controller.extend({
 
   doMigrate: function() {
     var self = this;
-
     var project_id = $fw.data.get('app').guid;
-
     var import_progress = 10;
 
-    self.showProgressModal("App Migration", "Migrating your App to FH3...", function() {
-      self.clearProgressModal();
-      self.appendProgressLog('Beginning FH2 to FH3 migration');
-      self.updateProgressBar(import_progress);
+    self.showBooleanModal("Are you sure you want to migrate this App to FH3? Once migrated, you won't be able to easily revert this app back to FH2", function() {
+      self.showProgressModal("App Migration", "Migrating your App to FH3...", function() {
+        self.clearProgressModal();
+        self.appendProgressLog('Beginning FH2 to FH3 migration');
+        self.updateProgressBar(import_progress);
 
-      self.models.app.migrate({
-        projectguid: project_id
-      }, function(res) {
-        console.log('migrate request success:' + res);
+        self.models.app.migrate({
+          projectguid: project_id
+        }, function(res) {
+          console.log('migrate request success:' + res);
 
-        var migrate_task = new ASyncServerTask({
-          cacheKey: res.result
-        }, {
-          updateInterval: Properties.cache_lookup_interval,
-          maxTime: Properties.cache_lookup_timeout,
-          // 5 minutes
-          maxRetries: Properties.cache_lookup_retries,
-          timeout: function(res) {
-            console.log('timeout > ' + JSON.stringify(res));
-            self.markCompleteFailure();
-          },
-          update: function(res) {
-            console.log('update > ' + JSON.stringify(res));
-            for (var i = 0; i < res.log.length; i++) {
-              console.log(res.log[i]);
-              self.appendProgressLog(res.log[i]);
-              console.log("Current progress> " + import_progress);
+          var migrate_task = new ASyncServerTask({
+            cacheKey: res.result
+          }, {
+            updateInterval: Properties.cache_lookup_interval,
+            maxTime: Properties.cache_lookup_timeout,
+            // 5 minutes
+            maxRetries: Properties.cache_lookup_retries,
+            timeout: function(res) {
+              console.log('timeout > ' + JSON.stringify(res));
+              self.markCompleteFailure();
+            },
+            update: function(res) {
+              console.log('update > ' + JSON.stringify(res));
+              for (var i = 0; i < res.log.length; i++) {
+                console.log(res.log[i]);
+                self.appendProgressLog(res.log[i]);
+                console.log("Current progress> " + import_progress);
+              }
+              import_progress = import_progress + 2;
+              self.updateProgressBar(import_progress);
+            },
+            complete: function(res) {
+              console.log('complete > ' + JSON.stringify(res));
+              self.markCompleteSuccess();
+            },
+            error: function(res) {
+              console.log('error > ' + JSON.stringify(res));
+              self.markCompleteFailure();
+            },
+            retriesLimit: function() {
+              console.log('retries limit!');
+              self.markCompleteFailure();
+            },
+            end: function() {
+              // nothing to do here
             }
-            import_progress = import_progress + 2;
-            self.updateProgressBar(import_progress);
-          },
-          complete: function(res) {
-            console.log('complete > ' + JSON.stringify(res));
-            self.markCompleteSuccess();
-          },
-          error: function(res) {
-            console.log('error > ' + JSON.stringify(res));
-            self.markCompleteFailure();
-          },
-          retriesLimit: function() {
-            console.log('retries limit!');
-            self.markCompleteFailure();
-          },
-          end: function() {
-            // nothing to do here
-          }
+          });
+          migrate_task.run();
         });
-        migrate_task.run();
-      });
 
-    }, function(error) {
-      console.log('migrate failed:' + error);
+      }, function(error) {
+        console.log('migrate failed:' + error);
+      });
     });
   }
 });
