@@ -238,7 +238,7 @@ model.App = model.Model.extend({
       }
     }, function(err) {
       if ($.isFunction(failure)) {
-        fail(err);
+        failure(err);
       }
     });
   }

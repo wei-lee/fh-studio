@@ -276,10 +276,55 @@ Apps.Details.Controller = Apps.Controller.extend({
 
     var project_id = $fw.data.get('app').guid;
 
-    self.models.app.migrate({
-      projectguid: project_id
-    }, function(res) {
-      console.log('migrate success:' + res);
+    var import_progress = 10;
+
+    self.showProgressModal("migration", "migrating", function() {
+      self.clearProgressModal();
+      self.appendProgressLog('Beginning FH2 to FH3 migration');
+      self.updateProgressBar(import_progress);
+
+      self.models.app.migrate({
+        projectguid: project_id
+      }, function(res) {
+        console.log('migrate request success:' + res);
+
+        var migrate_task = new ASyncServerTask({
+          cacheKey: res.result
+        }, {
+          updateInterval: Properties.cache_lookup_interval,
+          maxTime: Properties.cache_lookup_timeout,
+          // 5 minutes
+          maxRetries: Properties.cache_lookup_retries,
+          timeout: function(res) {
+            console.log('timeout > ' + JSON.stringify(res));
+          },
+          update: function(res) {
+            console.log('update > ' + JSON.stringify(res));
+            for (var i = 0; i < res.log.length; i++) {
+              console.log(res.log[i]);
+              self.appendProgressLog(res.log[i]);
+              console.log("Current progress> " + import_progress);
+            }
+            import_progress = import_progress + 2;
+            self.updateProgressBar(import_progress);
+          },
+          complete: function(res) {
+            console.log('complete > ' + JSON.stringify(res));
+            self.markCompleteSuccess();
+          },
+          error: function(res) {
+            console.log('error > ' + JSON.stringify(res));
+          },
+          retriesLimit: function() {
+            console.log('retries limit!');
+          },
+          end: function() {
+            // nothing to do here
+          }
+        });
+        migrate_task.run();
+    });    
+
     }, function(error) {
       console.log('migrate failed:' + error);
     });

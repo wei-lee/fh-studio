@@ -189,6 +189,13 @@ var Controller = Class.extend({
     this.progressModal.find('h3').text(title).end().find('h4').text(message).end().appendTo($("body")).one('shown', cb).modal();
   },
 
+  markCompleteSuccess: function() {
+    var progress_bar = this.progressModal.find('.progress .bar');
+    progress_bar.css('width', 100 + '%');
+    progress_bar.addClass('bar-success');
+    progress_bar.parent().removeClass('progress-striped');
+  },
+
   getColumnIndexForField: function (aoColumns,field,value){
     var found = $.grep(aoColumns,function(item, i){return item[field] === value;});
     var col = $(aoColumns).index(found[0]);
