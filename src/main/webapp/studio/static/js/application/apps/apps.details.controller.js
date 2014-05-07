@@ -334,7 +334,10 @@ Apps.Details.Controller = Apps.Controller.extend({
 
 
       modal.on('hidden', function() {
-        $fw.client.tab.apps.listapps.show();
+        self.showAlert('success', '<strong>App migrated successfully, redirecting you back to your Apps... </strong>');
+        setTimeout(function() {
+          $fw.client.tab.apps.listapps.show();
+        }, 3000);
       });
     });
   }
