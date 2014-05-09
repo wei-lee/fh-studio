@@ -6777,8 +6777,8 @@
       return Object.prototype.hasOwnProperty.call(obj, prop);
     }
 
-  }).call(this,_dereq_("/Users/weili/work/fh-sdks/fh-js-sdk/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/isBuffer":6,"/Users/weili/work/fh-sdks/fh-js-sdk/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":11,"inherits":10}],8:[function(_dereq_,module,exports){
+  }).call(this,_dereq_("/mnt/ebs1/workspace/fh-js-sdk_beta/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./support/isBuffer":6,"/mnt/ebs1/workspace/fh-js-sdk_beta/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":11,"inherits":10}],8:[function(_dereq_,module,exports){
   (function (global){
     /*global window, global*/
     var util = _dereq_("util")
@@ -7253,7 +7253,7 @@
   module.exports=_dereq_(6)
 },{}],13:[function(_dereq_,module,exports){
   module.exports=_dereq_(7)
-},{"./support/isBuffer":12,"/Users/weili/work/fh-sdks/fh-js-sdk/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":11,"inherits":10}],14:[function(_dereq_,module,exports){
+},{"./support/isBuffer":12,"/mnt/ebs1/workspace/fh-js-sdk_beta/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":11,"inherits":10}],14:[function(_dereq_,module,exports){
   /*
    * loglevel - https://github.com/pimterry/loglevel
    *
@@ -8507,7 +8507,7 @@
 },{"./fhparams":31,"./logger":37,"./queryMap":39,"JSON":3}],27:[function(_dereq_,module,exports){
   module.exports = {
     "boxprefix": "/box/srv/1.1/",
-    "sdk_version": "2.0.16-alpha",
+    "sdk_version": "2.0.17-alpha",
     "config_js": "fhconfig.json",
     "INIT_EVENT": "fhinit"
   };
@@ -13469,13 +13469,18 @@
       }
     }
     function takePhoto(params, cb) {
+      params = params || {};
       $fh.forms.log.d("Taking photo ", params, isPhoneGap);
       //use configuration
       var width =  params.targetWidth ? params.targetWidth : $fh.forms.config.get("targetWidth", 640);
       var height = params.targetHeight ? params.targetHeight : $fh.forms.config.get("targetHeight", 480);
       var quality= params.quality ? params.quality : $fh.forms.config.get("quality", 50);
 
-      if ("undefined" === typeof params.sourceType) {
+      params.targetWidth = width;
+      params.targetHeight = height;
+      params.quality = quality;
+
+      if ("undefined" === typeof(params.sourceType) && typeof(Camera) !== 'undefined') {
         params.sourceType = Camera.PictureSourceType.CAMERA;
       }
 
@@ -13516,7 +13521,7 @@
           cb(null, video);
         }, cb);
       } else {
-        console.error('Media device was not released.');
+        $fh.forms.log.e('Media device was not released by browser.');
         cb('Media device occupied.');
       }
     }
@@ -13557,7 +13562,7 @@
     function snapshot(params, cb) {
       $fh.forms.log.d("Snapshot ", params);
       if (localMediaStream) {
-        ctx.drawImage(video, 0, 0, params.width, params.height);
+        ctx.drawImage(video, 0, 0, params.targetWidth, params.targetHeight);
         // "image/webp" works in Chrome.
         // Other browsers will fall back to image/png.
         var base64 = canvas.toDataURL('image/png');
@@ -14351,7 +14356,7 @@
         cb();
       } else {
         //load hard coded static config first
-        this.staticConfig();
+        this.staticConfig(config);
         //attempt load config from mbaas then local storage.
         this.refresh(true, cb);
       }
@@ -14415,7 +14420,7 @@
       }
 
 
-      self._initMBaaS();
+      self._initMBaaS(config);
       //Setting default retry attempts if not set in the config
       if (!config) {
         config = {};
@@ -14450,7 +14455,8 @@
 
       self.fromJSON(defaultConfig);
     };
-    Config.prototype._initMBaaS = function() {
+    Config.prototype._initMBaaS = function(config) {
+      config = config || {};
       var cloud_props = $fh.cloud_props;
       var app_props = $fh.app_props;
       var cloudUrl;
@@ -14462,6 +14468,11 @@
       if (cloud_props && cloud_props.hosts) {
         cloudUrl = cloud_props.hosts.url;
       }
+
+      if(typeof(config.cloudHost) === 'string'){
+        cloudUrl = config.cloudHost;
+      }
+
       this.set('cloudHost', cloudUrl);
       this.set('mbaasBaseUrl', '/mbaas');
       var appId = this.get('appId');
