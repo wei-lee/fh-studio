@@ -13,6 +13,10 @@ App.Model.Progress = Backbone.Model.extend({
 App.View.ProgressView = Backbone.View.extend({
   template: '#migrate-app-progress-template',
 
+  events: {
+    'click #toggle_show_less': 'toggleLog'
+  },
+
   initialize: function() {
     this.listenTo(this.model, 'change:progress', this.updateProgress);
     this.listenTo(this.model, 'change:logs', this.updateLogs);
@@ -24,6 +28,7 @@ App.View.ProgressView = Backbone.View.extend({
 
     this.$progress_bar = this.$el.find('.progress .bar');
     this.$textarea = this.$el.find('textarea');
+    this.$toggle = this.$el.find('#toggle_show_less');
   },
 
   updateProgress: function() {
@@ -39,6 +44,16 @@ App.View.ProgressView = Backbone.View.extend({
     this.$textarea[0].scrollTop = this.$textarea[0].scrollHeight;
   },
 
+  toggleLog: function() {
+    if (this.$textarea.is(':visible')) {
+      this.$toggle.text('[Show More]');
+      this.$textarea.slideUp();
+    } else {
+      this.$toggle.text('[Show Less]');
+      this.$textarea.slideDown();
+    }
+  },
+
   fail: function() {
     // Mark as failed
   },
@@ -47,6 +62,7 @@ App.View.ProgressView = Backbone.View.extend({
     // Mark as done
     this.model.set('progress', 100);
     this.$el.find('.progress').removeClass('progress-striped').addClass('progress-success');
+    this.toggleLog();
   }
 });
 
