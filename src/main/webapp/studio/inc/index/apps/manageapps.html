@@ -20,6 +20,14 @@
           Details
         </a>
       </li>
+      <% if(studio.getProps().optBoolean("appmigratePerappEnabled", true)) {%>
+      <li>
+        <a href="#" data-controller="apps.migrate.controller">
+          <i class="icon-circle-arrow-up"></i>
+          Migrate to FH3
+        </a>
+      </li>      
+      <% } %>
       <li class="template-restriction">
         <a href="#" data-controller="apps.icons.controller">
           <i class="icon-picture"></i>
@@ -173,6 +181,8 @@
         <%@ include file="./logdetails.html"%>
 
         <%@ include file="./quickstart.html"%>
+
+        <%@ include file="./migrate_app.html"%>
 
         <%@ include file="./manage_details.html"%>
 
