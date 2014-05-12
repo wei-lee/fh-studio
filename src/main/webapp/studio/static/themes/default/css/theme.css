@@ -4368,4 +4368,5 @@ select.appSelect{
   width: 100%;
   box-sizing: border-box;
   height: 150px;
+  overflow-y: scroll !important;
 }
