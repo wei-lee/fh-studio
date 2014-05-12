@@ -5,7 +5,7 @@ App.Model.Progress = Backbone.Model.extend({
   defaults: {
     progress: 0,
     title: 'Progress Title',
-    logs: null,
+    logs: [],
     current_status: 'Current Status'
   }
 });
@@ -46,7 +46,8 @@ App.View.ProgressView = Backbone.View.extend({
     this.$textarea[0].scrollTop = this.$textarea[0].scrollHeight;
   },
 
-  toggleLog: function() {
+  toggleLog: function(e) {
+    if (e) e.preventDefault();
     if (this.$textarea.is(':visible')) {
       this.$toggle.text('[Show More]');
       this.$textarea.slideUp();
@@ -140,7 +141,7 @@ App.View.MigrateApp = Backbone.View.extend({
         update: function(res) {
           console.log('update > ' + JSON.stringify(res));
 
-          var logs = self.progress_model.get('logs');
+          var logs = _.clone(self.progress_model.get('logs'));
           if (!logs) logs = [];
           var progress = self.progress_model.get('progress');
 
@@ -158,7 +159,7 @@ App.View.MigrateApp = Backbone.View.extend({
 
         complete: function(res) {
           console.log('complete > ' + JSON.stringify(res));
-          var logs = self.progress_model.get('logs');
+          var logs = _.clone(self.progress_model.get('logs'));
           if (!logs) logs = [];
           var progress = self.progress_model.get('progress');
 
