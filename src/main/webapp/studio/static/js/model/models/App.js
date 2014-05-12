@@ -53,12 +53,15 @@ model.App = model.Model.extend({
   },
 
   listAll: function(success, fail, post_process) {
-    var params = {};
+    var params = {
+      "includeMigrated": true
+    };
     return this.list(success, fail, post_process, params);
   },
 
   listMyApps: function(success, fail, post_process) {
     var params = {
+      "includeMigrated": true,
       "myapps": true
     };
     return this.list(success, fail, post_process, params);
