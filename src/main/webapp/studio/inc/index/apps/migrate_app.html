@@ -11,15 +11,35 @@
   <div class="alerts"></div>
 
   <div class="migration_heading">
-    <p>This App can be migrated to FeedHenry3 to take advantage of the latest FeedHenry offering.</p>
-
-    <p>App migration is a one way (and safe) process - some of the things we'll do for you are outlined below</p>
+    <p>This App can be migrated to FeedHenry3 to take advantage of the latest FeedHenry offering. App migration is a safe, but one way process - we'll attempt to:</p>
 
     <ul>
-      <li>We will make a new FeedHenry 3 Project out of this App</li>
-    </ul>  
+      <li>Make a new FeedHenry 3 Project out of this App - splitting the Client and Cloud portions into their own Apps</li>
+      <li>Create FeedHenry Git respositories for these new Apps</li>
+      <li>Attempt to inject the latest FeedHenry SDK into your Client App</li>
+    </ul>
+
+    <p>Things worth noting:</p>
+    <ul>
+      <li>The app migration process is safe, but non-reversible</li>
+      <li>Your existing staged Cloud Apps will continue to run without any interuption during migration</li>
+      <li>If you encounter issues with migrated source, you will have time to fix these issues before your next App release - existing Binaries will continue to work as normal</li>
+    </ul>
 
     <button id="migrate_app" class="btn btn-primary">Migrate</button>
-  </div>
 
+    <div id="migration_progress"></div>
+  </div>
+</script>
+
+<script type="text/x-handlebars-template" id="migrate-app-progress-template">
+  <div class="progress-area">
+    <h4>{{title}}</h4>
+    <div class="progress progress-striped active">
+      <div class="bar" style="width: {{progress}}%;">
+        {{current_status}}
+      </div>
+    </div>
+    <textarea disabled></textarea>
+  </div>
 </script>

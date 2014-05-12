@@ -4356,6 +4356,16 @@ select.appSelect{
 }
 
 /* Migration */
+#migration_progress {
+  margin-top: 20px;
+}
+
 #manage_details_migrate_app_button {
   margin-right: 10px;
+}
+
+.progress-area textarea {
+  width: 100%;
+  box-sizing: border-box;
+  height: 150px;
 }
