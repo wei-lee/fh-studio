@@ -1,12 +1,25 @@
-<div id="migrate_app_container">
+<div id="migrate_app_container" class="no-reset">
   <div class="fh-box-outer">
     <h4 class="fh-box-header">
       Migrate App to FeedHenry 3
     </h4>
-    <div class="fh-box-inner">
-      <div class="alerts"></div>
-
-      <button id="migrate_app" class="btn btn-primary">Migrate</button>
-    </div>
+    <div class="fh-box-inner"></div>
   </div>
 </div>
+
+<script type="text/x-handlebars-template" id="migrate-app-template">
+  <div class="alerts"></div>
+
+  <div class="migration_heading">
+    <p>This App can be migrated to FeedHenry3 to take advantage of the latest FeedHenry offering.</p>
+
+    <p>App migration is a one way (and safe) process - some of the things we'll do for you are outlined below</p>
+
+    <ul>
+      <li>We will make a new FeedHenry 3 Project out of this App</li>
+    </ul>  
+
+    <button id="migrate_app" class="btn btn-primary">Migrate</button>
+  </div>
+
+</script>
