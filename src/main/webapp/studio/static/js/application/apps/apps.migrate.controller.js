@@ -40,6 +40,8 @@ App.View.ProgressView = Backbone.View.extend({
     this.$textarea.text(logs.join("\n"));
     this.$progress_bar.text(logs[logs.length - 1]);
 
+    console.log('*** logz', logs, logs.join("\n"));
+
     // Scroll to bottom
     this.$textarea[0].scrollTop = this.$textarea[0].scrollHeight;
   },
@@ -84,12 +86,13 @@ App.View.MigrateApp = Backbone.View.extend({
 
   renderProgress: function() {
     this.$progress = this.$el.find('#migration_progress');
+    this.progress_model = new App.Model.Progress({
+      progress: 10,
+      title: 'App Migration in progress...',
+      current_status: 'Beginning migrate'
+    });
     this.progress = new App.View.ProgressView({
-      model: new App.Model.Progress({
-        progress: 10,
-        title: 'App Migration in progress...',
-        current_status: 'Beginning migrate'
-      })
+      model: this.progress_model
     });
 
     this.progress.render();
@@ -111,11 +114,11 @@ App.View.MigrateApp = Backbone.View.extend({
   },
 
   migrate: function() {
-    var progress = this.renderProgress();
+    var self = this;
+    var progress_view = this.renderProgress();
     var project_id = $fw.data.get('app').guid;
     var app_model = new model.App();
-    var progress_model = progress.model;
-    window.p = progress_model;
+    window.p = this.progress_model;
 
     app_model.migrate({
       projectguid: project_id
@@ -131,15 +134,15 @@ App.View.MigrateApp = Backbone.View.extend({
 
         timeout: function(res) {
           console.log('timeout > ' + JSON.stringify(res));
-          progress.fail();
+          progress_view.fail();
         },
 
         update: function(res) {
           console.log('update > ' + JSON.stringify(res));
 
-          var logs = progress_model.get('logs');
+          var logs = self.progress_model.get('logs');
           if (!logs) logs = [];
-          var progress = progress_model.get('progress');
+          var progress = self.progress_model.get('progress');
 
           for (var i = 0; i < res.log.length; i++) {
             console.log(res.log[i]);
@@ -147,7 +150,7 @@ App.View.MigrateApp = Backbone.View.extend({
             progress = progress + 2;
           }
 
-          progress_model.set({
+          self.progress_model.set({
             progress: progress,
             logs: logs
           });
@@ -155,17 +158,34 @@ App.View.MigrateApp = Backbone.View.extend({
 
         complete: function(res) {
           console.log('complete > ' + JSON.stringify(res));
-          progress.done();
+          var logs = self.progress_model.get('logs');
+          if (!logs) logs = [];
+          var progress = self.progress_model.get('progress');
+
+          for (var i = 0; i < res.log.length; i++) {
+            console.log(res.log[i]);
+            logs.push(res.log[i]);
+            progress = progress + 2;
+          }
+
+          console.log(logs);
+
+          self.progress_model.set({
+            logs: logs,
+            progress: progress
+          });
+
+          progress_view.done();
         },
 
         error: function(res) {
           console.log('error > ' + JSON.stringify(res));
-          progress.fail();
+          progress_view.fail();
         },
 
         retriesLimit: function() {
           console.log('retries limit!');
-          progress.fail();
+          progress_view.fail();
         },
 
         end: function() {
@@ -176,69 +196,6 @@ App.View.MigrateApp = Backbone.View.extend({
       // Start
       migrate_task.run();
     });
-
-
-    // var self = this;
-    // var project_id = $fw.data.get('app').guid;
-    // var import_progress = 10;
-
-    // var modal = null;
-
-    // self.showBooleanModal("Are you sure you want to migrate this App to FH3? Once migrated, you won't be able to easily revert this app back to FH2",
-    //   function() {
-    //     modal = self.showProgressModal("App Migration", "Migrating your App to FH3...", function() {
-    //       self.clearProgressModal();
-    //       self.appendProgressLog('Beginning FH2 to FH3 migration');
-    //       self.updateProgressBar(import_progress);
-
-    //       self.models.app.migrate({
-    //         projectguid: project_id
-    //       }, function(res) {
-    //         console.log('migrate request success:' + res);
-
-    //         var migrate_task = new ASyncServerTask({
-    //           cacheKey: res.result
-    //         }, {
-    //           updateInterval: Properties.cache_lookup_interval,
-    //           maxTime: Properties.cache_lookup_timeout,
-    //           // 5 minutes
-    //           maxRetries: Properties.cache_lookup_retries,
-    //           timeout: function(res) {
-    //             console.log('timeout > ' + JSON.stringify(res));
-    //             self.markCompleteFailure();
-    //           },
-    //           update: function(res) {
-    //             console.log('update > ' + JSON.stringify(res));
-    //             for (var i = 0; i < res.log.length; i++) {
-    //               console.log(res.log[i]);
-    //               self.appendProgressLog(res.log[i]);
-    //               console.log("Current progress> " + import_progress);
-    //             }
-    //             import_progress = import_progress + 2;
-    //             self.updateProgressBar(import_progress);
-    //           },
-    //           complete: function(res) {
-    //             console.log('complete > ' + JSON.stringify(res));
-    //             self.markCompleteSuccess();
-    //           },
-    //           error: function(res) {
-    //             console.log('error > ' + JSON.stringify(res));
-    //             self.markCompleteFailure();
-    //           },
-    //           retriesLimit: function() {
-    //             console.log('retries limit!');
-    //             self.markCompleteFailure();
-    //           },
-    //           end: function() {
-    //             // nothing to do here
-    //           }
-    //         });
-    //         migrate_task.run();
-    //       });
-    //     }, function(error) {
-    //       console.log('migrate failed:' + error);
-    //     });
-
 
     //     modal.on('hidden', function() {
     //       self.showAlert('success', '<strong>App migrated successfully, redirecting you back to your Apps... </strong>');
