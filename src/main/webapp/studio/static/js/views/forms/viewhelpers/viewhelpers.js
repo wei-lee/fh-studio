@@ -264,7 +264,7 @@ Handlebars.registerHelper('is', function() {
 
 Handlebars.registerHelper('createFormLabel', function (fieldType, options){
 
-  var ret='<span class="symbol"><span class="icon {class}">{content}</span></span>';
+  var ret='<span class="symbol">{content}<span class="icon {class}"></span></span>';
 
   switch (fieldType){
     case "text":
@@ -297,11 +297,20 @@ Handlebars.registerHelper('createFormLabel', function (fieldType, options){
     case "dropdown":
       ret = ret.replace("{class}","icon-caret-down").replace("{content}","");
       break;
-    case "checkbox":
+    case "checkboxes":
       ret = ret.replace("{class}","icon-check").replace("{content}","");
+      break;
+    case "photo":
+      ret = ret.replace("{class}","icon-camera").replace("{content}","");
       break;
     case "textarea":
       ret = ret.replace("{class}","icon-align-justify").replace("{content}","");
+      break;
+    case "signature":
+      ret = ret.replace("{class}","icon-pencil").replace("{content}","");
+      break;
+    default :
+      ret = ret.replace("{content}","");
       break;
   }
 
