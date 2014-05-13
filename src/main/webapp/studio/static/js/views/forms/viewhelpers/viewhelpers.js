@@ -264,44 +264,44 @@ Handlebars.registerHelper('is', function() {
 
 Handlebars.registerHelper('createFormLabel', function (fieldType, options){
 
-  var ret='<span class="symbol"><span class="icon {class}"></span></span>';
+  var ret='<span class="symbol"><span class="icon {class}">{content}</span></span>';
 
   switch (fieldType){
     case "text":
-      ret = ret.replace("{class}","icon-font");
+      ret = ret.replace("{class}","icon-font").replace("{content}","");
       break;
     case "emailAddress":
-      ret = ret.replace("{class}","icon-envelope-alt");
+      ret = ret.replace("{class}","icon-envelope-alt").replace("{content}","");
       break;
     case "number":
-      ret = ret.replace("{class}","icon-number");
+      ret = ret.replace("{class}","icon-number").replace("{content}","123");
       break;
     case "url":
-      ret = ret.replace("{class}","icon-link");
+      ret = ret.replace("{class}","icon-link").replace("{content}","");
       break;
     case "radio":
-      ret = ret.replace("{class}","icon-circle-blank");
+      ret = ret.replace("{class}","icon-circle-blank").replace("{content}","");
       break;
     case 'locationMap':
-      ret = ret.replace("{class}","icon-map-marker");
+      ret = ret.replace("{class}","icon-map-marker").replace("{content}","");
       break;
     case "file":
-      ret = ret.replace("{class}","icon-cloud-upload");
+      ret = ret.replace("{class}","icon-cloud-upload").replace("{content}","");
       break;
     case "location":
-      ret = ret.replace("{class}","icon-location-arrow");
+      ret = ret.replace("{class}","icon-location-arrow").replace("{content}","");
       break;
     case "dateTime":
-      ret = ret.replace("{class}","icon-calendar");
+      ret = ret.replace("{class}","icon-calendar").replace("{content}","");
       break;
     case "dropdown":
-      ret = ret.replace("{class}","icon-caret-down");
+      ret = ret.replace("{class}","icon-caret-down").replace("{content}","");
       break;
     case "checkbox":
-      ret = ret.replace("{class}","icon-check");
+      ret = ret.replace("{class}","icon-check").replace("{content}","");
       break;
     case "textarea":
-      ret = ret.replace("{class}","icon-align-justify");
+      ret = ret.replace("{class}","icon-align-justify").replace("{content}","");
       break;
   }
 
