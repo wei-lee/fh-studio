@@ -8507,7 +8507,7 @@
 },{"./fhparams":31,"./logger":37,"./queryMap":39,"JSON":3}],27:[function(_dereq_,module,exports){
   module.exports = {
     "boxprefix": "/box/srv/1.1/",
-    "sdk_version": "2.0.18-alpha",
+    "sdk_version": "2.0.19-alpha",
     "config_js": "fhconfig.json",
     "INIT_EVENT": "fhinit"
   };
@@ -18183,9 +18183,9 @@
   if ($fh.forms === undefined) {
     $fh.forms = appForm.api;
   }
-  /*! fh-forms - v0.5.10 -  */
+  /*! fh-forms - v0.5.14 -  */
   /*! async - v0.2.9 -  */
-  /*! 2014-05-02 */
+  /*! 2014-05-13 */
   /* This is the prefix file */
   if(appForm){
     appForm.RulesEngine=rulesEngine;
@@ -20257,7 +20257,7 @@
                   testDate = new Date(fieldValue);
                 }
 
-                valid = (testDate.toString() !== "Invalid Date")
+                valid = (testDate.toString() !== "Invalid Date");
               } catch (e) {
                 valid = false;
               }
