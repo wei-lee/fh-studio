@@ -4370,3 +4370,7 @@ select.appSelect{
   height: 150px;
   overflow-y: scroll !important;
 }
+
+.display_none {
+  display: none !important;
+}
