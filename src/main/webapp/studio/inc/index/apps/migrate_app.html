@@ -10,6 +10,15 @@
 <script type="text/x-handlebars-template" id="migrate-app-template">
   <div class="alerts"></div>
 
+  {{#if migrated}}
+  <p>This App has been migrated to to an FH3 Project. You can view this app by clicking on the link below.</p>
+
+  <div class="well">
+    <p><strong>Note:</strong> This will redirect you to the FeedHenry 3 App Studio - you can switch back by clicking the "Old Studio" link in FeedHenry 3.</p>
+    <a href="{{migrated_url}}" class="fh3_link">{{migrated_url}}</a>
+  </div>
+
+  {{else}}
   <div class="migration_heading">
     <p>This App can be migrated to FeedHenry3 to take advantage of the latest FeedHenry offering. App migration is a safe, but one way process - we'll attempt to:</p>
 
@@ -27,9 +36,11 @@
     </ul>
 
     <button id="migrate_app" class="btn btn-primary">Migrate</button>
-
     <div id="migration_progress"></div>
   </div>
+  {{/if}}
+
+
 </script>
 
 <script type="text/x-handlebars-template" id="migrate-app-progress-template">

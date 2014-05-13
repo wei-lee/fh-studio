@@ -73,7 +73,8 @@ App.View.MigrateApp = Backbone.View.extend({
   template: '#migrate-app-template',
 
   events: {
-    'click #migrate_app': 'confirmMigrate'
+    'click #migrate_app': 'confirmMigrate',
+    'click .fh3_link': 'migratedLink'
   },
 
   initialize: function() {
@@ -82,7 +83,48 @@ App.View.MigrateApp = Backbone.View.extend({
 
   render: function() {
     var template = Handlebars.compile($(this.template).html());
-    this.$el.html(template());
+
+    this.$el.html(template({
+      migrated: $fw.data.get('app').migrated,
+      migrated_url: this.migratedUrl()
+    }));
+  },
+
+  migratedUrl: function() {
+    var project = $fw.data.get('app').guid;
+    return document.location.origin + "/#projects/" + project;
+  },
+
+  migratedLink: function(e) {
+    e.preventDefault();
+    var url = $(e.currentTarget).attr('href');
+
+    // Set property
+    var data = {
+      payload: {
+        key: "studio.version",
+        value: "beta"
+      }
+    };
+
+    $.ajax({
+      type: 'POST',
+      url: '/box/srv/1.1/ide/' + Constants.DOMAIN + '/user/setProp',
+      data: JSON.stringify(data),
+      dataType: 'json',
+      contentType: 'text/plain',
+      timeout: 20000,
+      success: function(res) {
+        console.log('successfully set studio version');
+        var project = $fw.data.get('app').guid;
+        window.location.href = "/#projects/" + project;
+        location.reload();
+      },
+      error: function(xhr, status) {
+        console.log('error saving user preference');
+      }
+    });
+    
   },
 
   renderProgress: function() {
@@ -119,7 +161,6 @@ App.View.MigrateApp = Backbone.View.extend({
     var progress_view = this.renderProgress();
     var project_id = $fw.data.get('app').guid;
     var app_model = new model.App();
-    window.p = this.progress_model;
 
     app_model.migrate({
       projectguid: project_id
