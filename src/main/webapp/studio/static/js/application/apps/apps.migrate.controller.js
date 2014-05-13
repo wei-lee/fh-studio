@@ -40,8 +40,6 @@ App.View.ProgressView = Backbone.View.extend({
     this.$textarea.text(logs.join("\n"));
     this.$progress_bar.text(logs[logs.length - 1]);
 
-    console.log('*** logz', logs, logs.join("\n"));
-
     // Scroll to bottom
     this.$textarea[0].scrollTop = this.$textarea[0].scrollHeight;
   },
@@ -124,7 +122,7 @@ App.View.MigrateApp = Backbone.View.extend({
         console.log('error saving user preference');
       }
     });
-    
+
   },
 
   renderProgress: function() {
@@ -218,11 +216,13 @@ App.View.MigrateApp = Backbone.View.extend({
           });
 
           progress_view.done();
+          self.migrationComplete();
         },
 
         error: function(res) {
           console.log('error > ' + JSON.stringify(res));
           progress_view.fail();
+          this.showAlert('error', '<strong>App migrate was unsuccessful - exampine the logs below for more details.</strong>', 10000);
         },
 
         retriesLimit: function() {
@@ -238,14 +238,33 @@ App.View.MigrateApp = Backbone.View.extend({
       // Start
       migrate_task.run();
     });
+  },
 
-    //     modal.on('hidden', function() {
-    //       self.showAlert('success', '<strong>App migrated successfully, redirecting you back to your Apps... </strong>');
-    //       setTimeout(function() {
-    //         $fw.client.tab.apps.listapps.show();
-    //       }, 3000);
-    //     });
-    //   });
+  showAlert: function(type, message, timeout) {
+    var timeout = timeout || 3000;
+    var self = this;
+    var alerts_area = this.$el.find('.alerts');
+    var alert = $('<div>').addClass('alert fade in alert-' + type).html(message);
+    var close_button = $('<button>').addClass('close').attr("data-dismiss", "alert").text("x");
+    alert.append(close_button);
+    alerts_area.append(alert);
+    // only automatically hide alert if it's not an error
+    if ('error' !== type) {
+      setTimeout(function() {
+        alert.slideUp(function() {
+          alert.remove();
+        });
+      }, timeout);
+    }
+  },
+
+  migrationComplete: function() {
+    var self = this;
+
+    this.showAlert('success', '<strong>App migrated successful - reloading... </strong>', 10000);
+    setTimeout(function() {
+      $fw.client.tab.apps.manageapps.show($fw.data.get('inst').guid);
+    }, 3000);
   },
 
   // TODO: Mixin?
