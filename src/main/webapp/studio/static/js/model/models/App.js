@@ -19,6 +19,10 @@ model.App = model.Model.extend({
     column_title: "Version",
     width: "60px"
   }, {
+    field_name: "migrated",
+    column_title: "FH3",
+    width: "30px"
+  }, {
     field_name: "modified",
     column_title: "Last Modified",
     width: "150px"

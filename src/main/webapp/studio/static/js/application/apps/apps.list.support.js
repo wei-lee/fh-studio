@@ -49,26 +49,32 @@ Apps.List.Support = Controller.extend({
   rowRender: function(row, data) {
     var self = this;
     var icon_cell = $('td:first', row);
+    var migrated_cell = $('td:eq(5)', row);
 
     // Render icons (can be called multiple times, e.g. after sorting)
-    if ( $('img', icon_cell).length === 0 ) {
+    if ($('img', icon_cell).length === 0) {
+      // Inject Icon
       icon_cell.addClass('app_icon_cell');
       var icon_path = icon_cell.text().trim();
       var icon = $('<img>').attr('src', icon_path).addClass('app_icon');
       icon_cell.empty().append(icon);
 
-      //self.model.app.configForField('icon');
+      // Inject FH3 Checkbox
+      if (migrated_cell.text() === 'true') {
+        migrated_cell.html('&#10003;');
+      } else if (migrated_cell.text() === 'false') {
+        migrated_cell.text('');
+      }
 
       // Bind row clicks to show Manage an app
-
-      var guid = data[6];
-      $('td:lt(6)', row).addClass('app_title').unbind().click(function(){
+      var guid = data[7];
+      $('td:lt(7)', row).addClass('app_title').unbind().click(function() {
         // GUID is last, TODO: Make this better
 
         $fw.data.set('template_mode', false);
         $fw.client.tab.apps.manageapps.show(guid);
       });
-      $('.edit_app', row).unbind().click(function(){
+      $('.edit_app', row).unbind().click(function() {
         $fw.data.set('template_mode', false);
         $fw.client.tab.apps.manageapps.show(guid);
       });
