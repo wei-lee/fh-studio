@@ -7930,8 +7930,8 @@
     if(window.XMLHttpRequest){
       xhr = new XMLHttpRequest();
     }
-    //for IE8
-    if(isIE() && (crossDomain === true) && typeof window.XDomainRequest !== "undefined"){
+    //for IE8 only. Need to make sure it's not used when running inside Cordova.
+    if(isIE() && (crossDomain === true) && typeof window.XDomainRequest !== "undefined" && typeof window.cordova === "undefined"){
       xhr = new XDomainRequestWrapper(new XDomainRequest());
     }
     // For Titanium SDK
@@ -8507,7 +8507,7 @@
 },{"./fhparams":31,"./logger":37,"./queryMap":39,"JSON":3}],27:[function(_dereq_,module,exports){
   module.exports = {
     "boxprefix": "/box/srv/1.1/",
-    "sdk_version": "2.0.17-alpha",
+    "sdk_version": "2.0.19-alpha",
     "config_js": "fhconfig.json",
     "INIT_EVENT": "fhinit"
   };
@@ -13965,7 +13965,7 @@
     MBaaS.prototype.create = function(model, cb) {
       var self = this;
       if (self.checkStudio()) {
-        cb("Studio mode not supported");
+        cb("Studio mode mbaas not supported");
       } else {
         var url = _getUrl(model);
         if(self.isFileAndPhoneGap(model)){
@@ -13988,7 +13988,7 @@
     MBaaS.prototype.read = function(model, cb) {
       var self = this;
       if (this.checkStudio()) {
-        cb("Studio mode not supported");
+        cb("Studio mode mbaas not supported");
       } else {
         if (model.get("_type") === "offlineTest") {
           cb("offlinetest. ignore");
@@ -14011,10 +14011,16 @@
     MBaaS.prototype["delete"] = function(model, cb) {};
     //@Deprecated use create instead
     MBaaS.prototype.completeSubmission = function(submissionToComplete, cb) {
+      if (this.checkStudio()) {
+        return cb("Studio mode mbaas not supported");
+      }
       var url = _getUrl(submissionToComplete);
       appForm.web.ajax.post(url, {}, cb);
     };
     MBaaS.prototype.submissionStatus = function(submission, cb) {
+      if (this.checkStudio()) {
+        return cb("Studio mode mbaas not supported");
+      }
       var url = _getUrl(submission);
       appForm.web.ajax.get(url, cb);
     };
@@ -14357,7 +14363,7 @@
       } else {
         //load hard coded static config first
         this.staticConfig(config);
-        //attempt load config from mbaas then local storage.
+        //attempt to load config from mbaas then local storage.
         this.refresh(true, cb);
       }
     };
@@ -14499,6 +14505,9 @@
     };
     Config.prototype.isOnline = function(){
       return online === true;
+    };
+    Config.prototype.isStudioMode = function(){
+      return this.get("studioMode", false);
     };
 
     module.config = new Config();
@@ -18000,6 +18009,9 @@
       },
       "isOnline": function(){
         return formConfig.isOnline();
+      },
+      "isStudioMode": function(){
+        return formConfig.isStudioMode();
       }
     };
 
@@ -18171,9 +18183,9 @@
   if ($fh.forms === undefined) {
     $fh.forms = appForm.api;
   }
-  /*! fh-forms - v0.5.10 -  */
+  /*! fh-forms - v0.5.14 -  */
   /*! async - v0.2.9 -  */
-  /*! 2014-05-02 */
+  /*! 2014-05-13 */
   /* This is the prefix file */
   if(appForm){
     appForm.RulesEngine=rulesEngine;
@@ -20245,7 +20257,7 @@
                   testDate = new Date(fieldValue);
                 }
 
-                valid = (testDate.toString() !== "Invalid Date")
+                valid = (testDate.toString() !== "Invalid Date");
               } catch (e) {
                 valid = false;
               }

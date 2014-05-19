@@ -4,7 +4,7 @@
       {{#form}}
         {{#each pages}}
             <h5 class="pageheading">
-                <icon class="icon-file"></i> {{name}}
+                <i class="icon-file"></i> {{name}}
             </h5>
 
           <table class="table table-striped">
@@ -30,22 +30,41 @@
 
 
       {{/form}}
-      {{#hasLength missing}}
-      <h5 class="missingheading"><i class="icon icon-question-sign"></i> Fields No Longer Present</h5>
-      <table class="table table-striped">
-        {{#each missing}}
-          <tr>
-            <td class="fieldlabel">
-              {{#createFormLabel type}}{{/createFormLabel}} {{name}}:
-            </td>
-            <td class="formfield">
-              {{#createFormField this true}}{{/createFormField}}
-            </td>
-          </tr>
-        {{/each}}
-      </table>
-      {{/hasLength}}
     </form>
+      <!-- Note subexport is used by supercore for generating pdf -->
+      {{#if subexport}}
+        {{#subexport}}
+            <br/>
+            <h5 class="submissionheading"><i class="icon-info-sign"></i> Submission Information</h5>
+            <table class="table table-striped">
+            <tr >
+                <td>Date/Time Received:</td>
+                <td>{{deviceFormTimestamp}}&nbsp;</td>
+            </tr>
+            <tr>
+                <td>Received From User:</td>
+                <td>{{userId}}&nbsp;</td>
+            </tr>
+            <tr>
+                <td>Received From App:</td>
+                <td>{{appCloudName}}&nbsp;</td>
+            </tr>
+            <tr>
+                <td>Received From Device:</td>
+                <td>{{deviceId}}&nbsp;</td>
+            </tr>
+            <tr>
+                <td>Received From Ip:</td>
+                <td>{{deviceIPAddress}}&nbsp;</td>
+            </tr>
+            <tr>
+                <td>Edited:</td>
+                <td>{{updatedTimestamp}}&nbsp;</td>
+
+            </tr>
+          </table>
+        {{/subexport}}
+      {{/if}}
     </div>
     <div class="span6">
       {{#if sub}}

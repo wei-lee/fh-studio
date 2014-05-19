@@ -5,6 +5,10 @@ Component: fh-studio
 ------------------------------------------------------
 * 7058 - Adding binary files for .NET SDKs
 
+3.18.21 - 2014-05-13 - IR227 - Cbrookes
+---------------------------------------------------------
+* 7119 forms pdf add in submission meta data
+
 3.18.20 - 2014-05-12 - IR227 - Martin Murphy
 ------------------------------------------------------
 * 6973 - [Zendesk #3572] app logs download not working from studio due to csrf
