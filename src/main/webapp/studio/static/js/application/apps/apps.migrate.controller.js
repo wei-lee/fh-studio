@@ -224,7 +224,7 @@ App.View.MigrateApp = Backbone.View.extend({
           if (!checkOnly) {
             self.migrationComplete();
           } else {
-            alert('migrate check complete');
+            // could alert maybe?
           }
         },
 
