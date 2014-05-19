@@ -74,6 +74,7 @@ App.View.MigrateApp = Backbone.View.extend({
 
   events: {
     'click #migrate_app': 'confirmMigrate',
+    'click #migratecheck_app': 'migrateCheck',
     'click .fh3_link': 'migratedLink'
   },
 
@@ -156,15 +157,17 @@ App.View.MigrateApp = Backbone.View.extend({
     return false;
   },
 
-  migrate: function() {
+  migrateCheck: function () {
+    this.migrate(true);
+  },
+
+  migrate: function(checkOnly) {
     var self = this;
     var progress_view = this.renderProgress();
     var project_id = $fw.data.get('app').guid;
     var app_model = new model.App();
 
-    app_model.migrate({
-      projectguid: project_id
-    }, function(res) {
+    var cb = function(res) {
       console.log('migrate request success:' + res);
 
       var migrate_task = new ASyncServerTask({
@@ -218,7 +221,11 @@ App.View.MigrateApp = Backbone.View.extend({
           });
 
           progress_view.done();
-          self.migrationComplete();
+          if (!checkOnly) {
+            self.migrationComplete();
+          } else {
+            // could alert maybe?
+          }
         },
 
         error: function(res) {
@@ -239,7 +246,18 @@ App.View.MigrateApp = Backbone.View.extend({
 
       // Start
       migrate_task.run();
-    });
+    };
+
+    if (checkOnly) {
+      app_model.migrateCheck({
+        projectguid: project_id
+      }, cb);
+    } else {
+      app_model.migrate({
+        projectguid: project_id
+      }, cb);
+    }
+
   },
 
   showAlert: function(type, message, timeout) {

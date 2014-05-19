@@ -248,5 +248,18 @@ model.App = model.Model.extend({
         failure(err);
       }
     });
+  },
+
+  migrateCheck: function(params, success, failure) {
+    var url = "/box/api/projects/" + params.projectguid + "/migratecheck";
+    $fw.server.get(url, {}, function(res) {
+      if ($.isFunction(success)) {
+        success(res);
+      }
+    }, function(err) {
+      if ($.isFunction(failure)) {
+        failure(err);
+      }
+    });
   }
 });
