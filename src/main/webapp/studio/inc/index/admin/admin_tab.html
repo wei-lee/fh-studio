@@ -68,8 +68,17 @@
                   Devices
               </a>
           </li>
-
         <% } %>
+
+<!--         <% if(studio.getProps().optBoolean("appmigratePerdomainEnabled", true)) {%>
+          <li class="nav-header">Migration</li>
+          <li>
+            <a href="#" data-controller="admin.migration.controller">
+              <i class="icon-globe"></i>
+              Bulk FH3 Migration
+            </a>
+          </li>
+        <% } %> -->
       </ul>
 
       <!-- Hide this initially and let javascript show it when its ready -->
@@ -721,6 +730,12 @@
                 </div>
             </div>
         </form>
+      </div>
+
+      <!-- AppStore template -->
+      <div id="admin_migration" class="hidden_template row-fluid">
+        <div class="alerts"></div>
+        Migration assistant
       </div>
 
       <!-- AppStore template -->

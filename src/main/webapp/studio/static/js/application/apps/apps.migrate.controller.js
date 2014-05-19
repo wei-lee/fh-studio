@@ -57,6 +57,8 @@ App.View.ProgressView = Backbone.View.extend({
 
   fail: function() {
     // Mark as failed
+    this.model.set('progress', 100);
+    this.$el.find('.progress').removeClass('progress-striped').addClass('progress-danger');
   },
 
   done: function() {
@@ -229,7 +231,7 @@ App.View.MigrateApp = Backbone.View.extend({
         error: function(res) {
           console.log('error > ' + JSON.stringify(res));
           progress_view.fail();
-          this.showAlert('error', '<strong>App migrate was unsuccessful - exampine the logs below for more details.</strong>', 10000);
+          self.showAlert('error', '<strong>App migrate was unsuccessful - exampine the logs below for more details.</strong>', 10000);
         },
 
         retriesLimit: function() {

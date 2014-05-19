@@ -253,6 +253,7 @@ js/application/account/account.apple.controller.js
 js/application/account/account.android.controller.js
 js/application/account/account.blackberry.controller.js
 js/application/admin/admin.storeitems.controller.js
+js/application/admin/admin.migration.controller.js
 js/application/admin/admin.users.controller.js
 js/application/admin/admin.storeitem.groups.controller.js
 js/application/admin/admin.auditlogs.controller.js
