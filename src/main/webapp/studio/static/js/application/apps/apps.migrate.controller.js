@@ -233,6 +233,7 @@ App.View.MigrateApp = Backbone.View.extend({
             self.migrationComplete();
           } else {
             // could alert maybe?
+            self.migrationCheckSuccess();
           }
         },
 
@@ -278,6 +279,13 @@ App.View.MigrateApp = Backbone.View.extend({
       }, cb);
     }
 
+  },
+
+  migrationCheckSuccess: function() {
+    var btn = $('#migratecheck_app');
+    btn.addClass('btn-success disabled');
+    btn.find('i').removeClass('display_none');
+    $('#migrate_app').removeClass('display_none');
   },
 
   showAlert: function(type, message, timeout) {
