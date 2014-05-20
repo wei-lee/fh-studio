@@ -29,6 +29,7 @@ App.View.ProgressView = Backbone.View.extend({
     this.$progress_bar = this.$el.find('.progress .bar');
     this.$textarea = this.$el.find('textarea');
     this.$toggle = this.$el.find('#toggle_show_less');
+    this.$report = this.$el.find('.migrate_report');
   },
 
   updateProgress: function() {
@@ -37,11 +38,41 @@ App.View.ProgressView = Backbone.View.extend({
 
   updateLogs: function() {
     var logs = this.model.get('logs');
-    this.$textarea.text(logs.join("\n"));
-    this.$progress_bar.text(logs[logs.length - 1]);
+    var messages = _.compact(_.pluck(logs, 'msg', 'ok', 'error'));
+
+    this.$textarea.text(messages.join("\n"));
+    this.$progress_bar.text(messages[messages.length - 1]);
 
     // Scroll to bottom
     this.$textarea[0].scrollTop = this.$textarea[0].scrollHeight;
+
+    this.updateStatusCategories();
+  },
+
+  updateStatusCategories: function() {
+    var logs = this.model.get('logs');
+
+    var oks = _.compact(_.pluck(logs, 'ok'));
+    var errors = _.compact(_.pluck(logs, 'error'));
+
+    this.$report.empty();
+
+    var tpl = Handlebars.compile($('#migrate-report-entry-template').html());
+    _.each(oks, function(ok) {
+      this.$report.append(tpl({
+        text: ok,
+        className: 'ok'
+      }));
+    }, this);
+
+    _.each(errors, function(error) {
+      this.$report.append(tpl({
+        text: error,
+        className: 'error'
+      }));
+    }, this);
+
+    console.log(oks, errors);
   },
 
   toggleLog: function(e) {
@@ -165,7 +196,7 @@ App.View.MigrateApp = Backbone.View.extend({
     return false;
   },
 
-  migrateCheck: function () {
+  migrateCheck: function() {
     this.migrate(true);
   },
 
@@ -282,10 +313,10 @@ App.View.MigrateApp = Backbone.View.extend({
   },
 
   migrationCheckSuccess: function() {
-    var btn = $('#migratecheck_app');
+    var btn = this.$el.find('#migratecheck_app');
     btn.addClass('btn-success disabled');
     btn.find('i').removeClass('display_none');
-    $('#migrate_app').removeClass('display_none');
+    this.$el.find('#migrate_app').removeClass('display_none');
   },
 
   showAlert: function(type, message, timeout) {

@@ -79,10 +79,6 @@ textarea { resize:none; }
 #vakata-contextmenu.jstree-classic-context li ul { margin-left:-4px; }
 /** hide copy function for now */
 
-#vakata-contextmenu .ui-helper-hidden {
- display: none; !important
-}
-
 /* Generic Classes */
 .right {
   float: right;
@@ -4439,4 +4435,12 @@ select.appSelect{
 
 .migration_heading .margin-bottom {
   margin-bottom: 20px;
+}
+
+.report_entry.ok {
+  color: green;
+}
+
+.report_entry.error {
+  color: red;
 }
