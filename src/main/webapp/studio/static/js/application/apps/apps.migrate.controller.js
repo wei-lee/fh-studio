@@ -229,7 +229,19 @@ App.View.MigrateApp = Backbone.View.extend({
         },
 
         error: function(res) {
-          console.log('error > ' + JSON.stringify(res));
+          console.error('error > ' + JSON.stringify(res));
+
+          if (res.error && res.error != '') {
+            var logs = _.clone(self.progress_model.get('logs'));
+            logs.push(res.error);
+
+            var progress = self.progress_model.get('progress');
+            self.progress_model.set({
+              logs: logs,
+              progress: progress
+            });
+          }
+
           progress_view.fail();
           self.showAlert('error', '<strong>App migrate was unsuccessful - exampine the logs below for more details.</strong>', 10000);
         },
