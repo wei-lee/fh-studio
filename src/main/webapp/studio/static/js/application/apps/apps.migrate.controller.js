@@ -128,12 +128,20 @@ App.View.MigrateApp = Backbone.View.extend({
 
   },
 
-  renderProgress: function() {
+  renderProgress: function(checkOnly) {
+    var title = 'App Migration in progress...';
+    var current = 'Beginning migrate...';
+
+    if (checkOnly) {
+      title = 'Validation in progress...';
+      current = 'Beginning validation...';
+    }
+
     this.$progress = this.$el.find('#migration_progress');
     this.progress_model = new App.Model.Progress({
       progress: 10,
-      title: 'App Migration in progress...',
-      current_status: 'Beginning migrate'
+      title: title,
+      current_status: current
     });
     this.progress = new App.View.ProgressView({
       model: this.progress_model
@@ -163,7 +171,7 @@ App.View.MigrateApp = Backbone.View.extend({
 
   migrate: function(checkOnly) {
     var self = this;
-    var progress_view = this.renderProgress();
+    var progress_view = this.renderProgress(checkOnly);
     var project_id = $fw.data.get('app').guid;
     var app_model = new model.App();
 
@@ -273,7 +281,7 @@ App.View.MigrateApp = Backbone.View.extend({
   },
 
   showAlert: function(type, message, timeout) {
-    var timeout = timeout || 3000;
+    timeout = timeout || 3000;
     var self = this;
     var alerts_area = this.$el.find('.alerts');
     var alert = $('<div>').addClass('alert fade in alert-' + type).html(message);

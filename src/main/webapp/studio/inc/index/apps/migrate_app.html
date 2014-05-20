@@ -21,6 +21,31 @@
 
   {{else}}
   <div class="migration_heading">
+    <div class="heading-icon">
+      <i class="icon-mobile-phone"></i>
+      <div class="fading-line"></div>
+    </div>
+
+    <h3>Migrate your App to FeedHenry 3</h3>
+    <p class="margin-top">Before we can move your App to FeedHenry 3, we need to validate some things. If everything checks out, you'll be free to migrate this App - we'll try our best to automate as much as possible, but you may need to make some changes yourself.</p>
+
+    <div class="row">
+      <div class="span12 text-center">
+        <button class="btn btn-primary btn-large margin-top" id="migratecheck_app">Validate FH3 Compatibility</button>
+      </div>
+    </div>
+
+    <div id="migration_progress"></div>
+
+    <div class="row">
+      <div class="span12 text-center">
+        <button class="btn btn-primary btn-large margin-top" id="migratecheck_app">Migrate</button>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="migration_heading hidden">
     <p>This App can be migrated to FeedHenry3 to take advantage of the latest FeedHenry offering. App migration is a safe, but one way process - we'll attempt to:</p>
 
     <ul>
@@ -38,7 +63,6 @@
 
     <button id="migratecheck_app" class="btn btn-primary">Check Migration Compatibility</button>
     <button id="migrate_app" class="btn btn-primary">Migrate</button>
-    <div id="migration_progress"></div>
   </div>
   {{/if}}
 

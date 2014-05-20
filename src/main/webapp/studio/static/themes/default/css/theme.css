@@ -4374,3 +4374,69 @@ select.appSelect{
 .display_none {
   display: none !important;
 }
+
+#migrate_app_container .fh-box-inner {
+  background: #f9f9f9;
+}
+
+#migrate_app_container .migration_heading {
+  font-family: "Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 14px;
+  border: 1px solid #dee3e7;
+  padding: 20px;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+  background: #fff;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+
+.migration_heading .heading-icon i {
+  display: block;
+  font-size: 66px;
+  text-align: center;
+  color: #e6e6e6;
+  position: relative;
+  z-index: 3;
+}
+
+.migration_heading h3 {
+  text-align: center;
+  color: #333333;
+}
+
+.migration_heading p {
+  color: #6e6e6e;
+}
+
+.heading-icon {
+  position: relative;
+}
+
+.fading-line {
+  height: 1px;
+  background: rgba(255,255,255,1);
+  background: -moz-linear-gradient(left, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 25%, rgba(230,230,230,1) 44%, rgba(255,255,255,1) 45%, rgba(255,255,255,1) 55%, rgba(230,230,230,1) 56%, rgba(255,255,255,1) 75%, rgba(255,255,255,1) 100%);
+  background: -webkit-gradient(left top, right top, color-stop(0%, rgba(255,255,255,1)), color-stop(25%, rgba(255,255,255,1)), color-stop(44%, rgba(230,230,230,1)), color-stop(45%, rgba(255,255,255,1)), color-stop(55%, rgba(255,255,255,1)), color-stop(56%, rgba(230,230,230,1)), color-stop(75%, rgba(255,255,255,1)), color-stop(100%, rgba(255,255,255,1)));
+  background: -webkit-linear-gradient(left, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 25%, rgba(230,230,230,1) 44%, rgba(255,255,255,1) 45%, rgba(255,255,255,1) 55%, rgba(230,230,230,1) 56%, rgba(255,255,255,1) 75%, rgba(255,255,255,1) 100%);
+  background: -o-linear-gradient(left, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 25%, rgba(230,230,230,1) 44%, rgba(255,255,255,1) 45%, rgba(255,255,255,1) 55%, rgba(230,230,230,1) 56%, rgba(255,255,255,1) 75%, rgba(255,255,255,1) 100%);
+  background: -ms-linear-gradient(left, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 25%, rgba(230,230,230,1) 44%, rgba(255,255,255,1) 45%, rgba(255,255,255,1) 55%, rgba(230,230,230,1) 56%, rgba(255,255,255,1) 75%, rgba(255,255,255,1) 100%);
+  background: linear-gradient(to right, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 25%, rgba(230,230,230,1) 44%, rgba(255,255,255,1) 45%, rgba(255,255,255,1) 55%, rgba(230,230,230,1) 56%, rgba(255,255,255,1) 75%, rgba(255,255,255,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff', GradientType=1 );
+  position: absolute;
+  top: 33px;
+  left: 0;
+  right: 0;
+  z-index: 2;
+}
+
+.migration_heading .margin-top {
+  margin-top: 20px;
+}
+
+.migration_heading .margin-bottom {
+  margin-bottom: 20px;
+}
