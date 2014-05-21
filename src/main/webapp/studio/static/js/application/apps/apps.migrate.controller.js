@@ -29,6 +29,7 @@ App.View.ProgressView = Backbone.View.extend({
     this.$progress_bar = this.$el.find('.progress .bar');
     this.$textarea = this.$el.find('textarea');
     this.$toggle = this.$el.find('#toggle_show_less');
+    this.$report = this.$el.find('.migrate_report');
   },
 
   updateProgress: function() {
@@ -37,11 +38,58 @@ App.View.ProgressView = Backbone.View.extend({
 
   updateLogs: function() {
     var logs = this.model.get('logs');
-    this.$textarea.text(logs.join("\n"));
-    this.$progress_bar.text(logs[logs.length - 1]);
+
+    var messages = [];
+    _.each(logs, function(log) {
+      if (typeof log === 'object') {
+        messages.push(_.flatten(log)[0]);
+      }
+    });
+
+    this.$textarea.text(messages.join("\n"));
+    this.$progress_bar.text(messages[messages.length - 1]);
 
     // Scroll to bottom
     this.$textarea[0].scrollTop = this.$textarea[0].scrollHeight;
+
+    this.updateStatusCategories();
+  },
+
+  updateStatusCategories: function() {
+    var logs = this.model.get('logs');
+
+    var oks = _.compact(_.pluck(logs, 'ok'));
+    var errors = _.compact(_.pluck(logs, 'error'));
+    var warns = _.compact(_.pluck(logs, 'warn'));
+
+    this.$report.find('li').remove();
+
+    var tpl = Handlebars.compile($('#migrate-report-entry-template').html());
+    _.each(oks, function(ok) {
+      this.$report.append(tpl({
+        text: ok,
+        className: 'ok',
+        iconClass: 'icon-ok-circle'
+      }));
+    }, this);
+
+    _.each(errors, function(error) {
+      this.$report.append(tpl({
+        text: error,
+        className: 'error',
+        iconClass: 'icon-ban-circle'
+      }));
+    }, this);
+
+    _.each(warns, function(warn) {
+      this.$report.append(tpl({
+        text: warn,
+        className: 'warn',
+        iconClass: 'icon-question-sign'
+      }));
+    }, this);
+
+    console.log(oks, errors, warns);
   },
 
   toggleLog: function(e) {
@@ -59,6 +107,7 @@ App.View.ProgressView = Backbone.View.extend({
     // Mark as failed
     this.model.set('progress', 100);
     this.$el.find('.progress').removeClass('progress-striped').addClass('progress-danger');
+    this.toggleLog();
   },
 
   done: function() {
@@ -165,7 +214,7 @@ App.View.MigrateApp = Backbone.View.extend({
     return false;
   },
 
-  migrateCheck: function () {
+  migrateCheck: function() {
     this.migrate(true);
   },
 
@@ -282,10 +331,10 @@ App.View.MigrateApp = Backbone.View.extend({
   },
 
   migrationCheckSuccess: function() {
-    var btn = $('#migratecheck_app');
+    var btn = this.$el.find('#migratecheck_app');
     btn.addClass('btn-success disabled');
     btn.find('i').removeClass('display_none');
-    $('#migrate_app').removeClass('display_none');
+    this.$el.find('#migrate_app').removeClass('display_none');
   },
 
   showAlert: function(type, message, timeout) {

@@ -72,7 +72,16 @@
         {{current_status}}
       </div>
     </div>
+
     <a href="#" id="toggle_show_less">[Show Less]</a>
     <textarea disabled></textarea>
+
+    <ul class="migrate_report">
+      <h5>Migration Report</h5>
+    </ul>
   </div>
+</script>
+
+<script type="text/x-handlebars-template" id="migrate-report-entry-template">
+  <li class="report_entry {{className}}"><i class="{{iconClass}}"></i> {{text}}</li>
 </script>
