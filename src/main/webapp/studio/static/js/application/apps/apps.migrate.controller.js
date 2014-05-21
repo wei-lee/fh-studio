@@ -114,7 +114,6 @@ App.View.ProgressView = Backbone.View.extend({
     // Mark as done
     this.model.set('progress', 100);
     this.$el.find('.progress').removeClass('progress-striped').addClass('progress-success');
-    this.toggleLog();
   }
 });
 

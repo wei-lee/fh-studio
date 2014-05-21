@@ -8,8 +8,6 @@
 </div>
 
 <script type="text/x-handlebars-template" id="migrate-app-template">
-  <div class="alerts"></div>
-
   {{#if migrated}}
   <div class="alert alert-block">
     <h5><i class="icon-info-sign"></i> Migrated App</h5>
@@ -36,28 +34,9 @@
       </div>
     </div>
 
+    <div class="alerts margin-top"></div>
+
     <div id="migration_progress"></div>
-  </div>
-
-
-  <div class="migration_heading hidden">
-    <p>This App can be migrated to FeedHenry3 to take advantage of the latest FeedHenry offering. App migration is a safe, but one way process - we'll attempt to:</p>
-
-    <ul>
-      <li>Make a new FeedHenry 3 Project out of this App - splitting the Client and Cloud portions into their own Apps</li>
-      <li>Create FeedHenry Git respositories for these new Apps</li>
-      <li>Attempt to inject the latest FeedHenry SDK into your Client App</li>
-    </ul>
-
-    <p>Things worth noting:</p>
-    <ul>
-      <li>The app migration process is safe, but non-reversible</li>
-      <li>Your existing staged Cloud Apps will continue to run without any interuption during migration</li>
-      <li>If you encounter issues with migrated source, you will have time to fix these issues before your next App release - existing Binaries will continue to work as normal</li>
-    </ul>
-
-    <button id="migratecheck_app" class="btn btn-primary">Check Migration Compatibility</button>
-    <button id="migrate_app" class="btn btn-primary">Migrate</button>
   </div>
   {{/if}}
 
@@ -79,8 +58,8 @@
     </div>
 
     <div class="log">
-      <a href="#" id="toggle_show_less">[Hide Full Log]</a>
-      <textarea disabled></textarea>
+      <a href="#" id="toggle_show_less">[Show Full Log]</a>
+      <textarea disabled style="display: none;"></textarea>
     </div>
   </div>
 </script>

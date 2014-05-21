@@ -4489,3 +4489,7 @@ select.appSelect{
 #migration_progress .log {
   margin-top: 20px;
 }
+
+#migration_progress .alerts {
+  margin-top: 10px;
+}
