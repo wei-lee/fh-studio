@@ -66,23 +66,27 @@
 
 <script type="text/x-handlebars-template" id="migrate-app-progress-template">
   <div class="progress-area">
-
-
-
-
-    <ul class="migrate_report">
-      <h5>{{title}}</h5>
+    <div class="migrate_report">
       <div class="progress progress-striped active">
         <div class="bar" style="width: {{progress}}%;">
           {{current_status}}
         </div>
       </div>
-      <a href="#" id="toggle_show_less">[Show Less]</a>
+
+      <div class="migration_reports">
+        <!-- .report_entry divs's injected here -->
+      </div>
+    </div>
+
+    <div class="log">
+      <a href="#" id="toggle_show_less">[Hide Full Log]</a>
       <textarea disabled></textarea>
-    </ul>
+    </div>
   </div>
 </script>
 
 <script type="text/x-handlebars-template" id="migrate-report-entry-template">
-  <li class="report_entry {{className}}"><i class="{{iconClass}}"></i> {{text}}</li>
+  <div class="report_entry alert alert-block {{className}}">
+    <i class="{{iconClass}}"></i> {{text}}
+  </div>
 </script>

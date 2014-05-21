@@ -29,7 +29,7 @@ App.View.ProgressView = Backbone.View.extend({
     this.$progress_bar = this.$el.find('.progress .bar');
     this.$textarea = this.$el.find('textarea');
     this.$toggle = this.$el.find('#toggle_show_less');
-    this.$report = this.$el.find('.migrate_report');
+    this.$reports = this.$el.find('.migration_reports');
   },
 
   updateProgress: function() {
@@ -62,29 +62,29 @@ App.View.ProgressView = Backbone.View.extend({
     var errors = _.compact(_.pluck(logs, 'error'));
     var warns = _.compact(_.pluck(logs, 'warn'));
 
-    this.$report.find('li').remove();
+    this.$reports.empty();
 
     var tpl = Handlebars.compile($('#migrate-report-entry-template').html());
     _.each(oks, function(ok) {
-      this.$report.append(tpl({
+      this.$reports.append(tpl({
         text: ok,
-        className: 'ok',
+        className: 'alert-success',
         iconClass: 'icon-ok-circle'
       }));
     }, this);
 
     _.each(errors, function(error) {
-      this.$report.append(tpl({
+      this.$reports.append(tpl({
         text: error,
-        className: 'error',
+        className: 'alert-error',
         iconClass: 'icon-ban-circle'
       }));
     }, this);
 
     _.each(warns, function(warn) {
-      this.$report.append(tpl({
+      this.$reports.append(tpl({
         text: warn,
-        className: 'warn',
+        className: '',
         iconClass: 'icon-question-sign'
       }));
     }, this);
@@ -95,10 +95,10 @@ App.View.ProgressView = Backbone.View.extend({
   toggleLog: function(e) {
     if (e) e.preventDefault();
     if (this.$textarea.is(':visible')) {
-      this.$toggle.text('[Show More]');
+      this.$toggle.text('[Show Full Log]');
       this.$textarea.slideUp();
     } else {
-      this.$toggle.text('[Show Less]');
+      this.$toggle.text('[Hide Full Log]');
       this.$textarea.slideDown();
     }
   },
