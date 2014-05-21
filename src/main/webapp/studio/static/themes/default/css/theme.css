@@ -4438,9 +4438,38 @@ select.appSelect{
 }
 
 .report_entry.ok {
-  color: green;
+  color: #5eb95e;
 }
 
 .report_entry.error {
-  color: red;
+  color: #dd514c;
+}
+
+.report_entry.warn {
+  color: #faa732;
+}
+
+.migrate_report {
+  border: 1px solid #d8d8d8;
+}
+
+.migrate_report h5 {
+  padding: 10px;
+  background-color: #E7E7E7;
+  margin-bottom: 0;
+  border-bottom: 1px solid #d8d8d8;
+}
+
+.migrate_report li {
+  list-style: none;
+  margin: 0;
+  font-size: 14px;
+  font-weight: bold;
+  background-color: #f9f9f9;
+  border-bottom: 1px solid #d8d8d8;
+  padding: 10px;
+}
+
+.migrate_report li:last-child {
+  border-bottom: none;
 }

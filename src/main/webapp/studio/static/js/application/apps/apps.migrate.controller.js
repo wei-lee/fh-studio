@@ -38,7 +38,13 @@ App.View.ProgressView = Backbone.View.extend({
 
   updateLogs: function() {
     var logs = this.model.get('logs');
-    var messages = _.compact(_.pluck(logs, 'msg', 'ok', 'error'));
+
+    var messages = [];
+    _.each(logs, function(log) {
+      if (typeof log === 'object') {
+        messages.push(_.flatten(log)[0]);
+      }
+    });
 
     this.$textarea.text(messages.join("\n"));
     this.$progress_bar.text(messages[messages.length - 1]);
@@ -54,25 +60,36 @@ App.View.ProgressView = Backbone.View.extend({
 
     var oks = _.compact(_.pluck(logs, 'ok'));
     var errors = _.compact(_.pluck(logs, 'error'));
+    var warns = _.compact(_.pluck(logs, 'warn'));
 
-    this.$report.empty();
+    this.$report.find('li').remove();
 
     var tpl = Handlebars.compile($('#migrate-report-entry-template').html());
     _.each(oks, function(ok) {
       this.$report.append(tpl({
         text: ok,
-        className: 'ok'
+        className: 'ok',
+        iconClass: 'icon-ok-circle'
       }));
     }, this);
 
     _.each(errors, function(error) {
       this.$report.append(tpl({
         text: error,
-        className: 'error'
+        className: 'error',
+        iconClass: 'icon-ban-circle'
       }));
     }, this);
 
-    console.log(oks, errors);
+    _.each(warns, function(warn) {
+      this.$report.append(tpl({
+        text: warn,
+        className: 'warn',
+        iconClass: 'icon-question-sign'
+      }));
+    }, this);
+
+    console.log(oks, errors, warns);
   },
 
   toggleLog: function(e) {
@@ -90,6 +107,7 @@ App.View.ProgressView = Backbone.View.extend({
     // Mark as failed
     this.model.set('progress', 100);
     this.$el.find('.progress').removeClass('progress-striped').addClass('progress-danger');
+    this.toggleLog();
   },
 
   done: function() {
