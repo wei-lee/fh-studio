@@ -260,28 +260,11 @@ App.View.MigrateApp = Backbone.View.extend({
 
         complete: function(res) {
           console.log('complete > ' + JSON.stringify(res));
-          var logs = _.clone(self.progress_model.get('logs'));
-          if (!logs) logs = [];
-          var progress = self.progress_model.get('progress');
-
-          for (var i = 0; i < res.log.length; i++) {
-            console.log(res.log[i]);
-            logs.push(res.log[i]);
-            progress = progress + 2;
-          }
-
-          console.log(logs);
-
-          self.progress_model.set({
-            logs: logs,
-            progress: progress
-          });
 
           progress_view.done();
           if (!checkOnly) {
             self.migrationComplete();
           } else {
-            // could alert maybe?
             self.migrationCheckSuccess();
           }
         },

@@ -66,18 +66,19 @@
 
 <script type="text/x-handlebars-template" id="migrate-app-progress-template">
   <div class="progress-area">
-    <h4>{{title}}</h4>
-    <div class="progress progress-striped active">
-      <div class="bar" style="width: {{progress}}%;">
-        {{current_status}}
-      </div>
-    </div>
 
-    <a href="#" id="toggle_show_less">[Show Less]</a>
-    <textarea disabled></textarea>
+
+
 
     <ul class="migrate_report">
-      <h5>Migration Report</h5>
+      <h5>{{title}}</h5>
+      <div class="progress progress-striped active">
+        <div class="bar" style="width: {{progress}}%;">
+          {{current_status}}
+        </div>
+      </div>
+      <a href="#" id="toggle_show_less">[Show Less]</a>
+      <textarea disabled></textarea>
     </ul>
   </div>
 </script>
