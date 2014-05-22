@@ -214,6 +214,13 @@ ManageappsTabManager = Tab.Manager.extend({
       nav_items.removeClass('display_none');
       sections.removeClass('display_none');
     }
+
+    // If preview visible, hide
+    var preview = $('#app_preview');
+    if (preview.is(':visible')) {
+      preview.remove();
+      $('#app_content').removeClass('span7').addClass('span10');
+    }
   },
 
   doShowManage: function(guid, success, fail, is_name, intermediate) {

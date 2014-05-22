@@ -89,7 +89,7 @@ App.View.ProgressView = Backbone.View.extend({
       }));
     }, this);
 
-    console.log(oks, errors, warns);
+    window.scrollTo(0, 1000000);
   },
 
   toggleLog: function(e) {
@@ -187,7 +187,7 @@ App.View.MigrateApp = Backbone.View.extend({
 
     this.$progress = this.$el.find('#migration_progress');
     this.progress_model = new App.Model.Progress({
-      progress: 10,
+      progress: 20,
       title: title,
       current_status: current
     });
@@ -203,8 +203,6 @@ App.View.MigrateApp = Backbone.View.extend({
 
   confirmMigrate: function() {
     var self = this;
-    console.log('confirm migrate!');
-
     var message = "Are you sure you want to migrate this App to FH3? Once migrated, you won't be able to easily revert this app back to FH2";
     this.showBooleanModal(message, function() {
       self.migrate();
@@ -224,8 +222,6 @@ App.View.MigrateApp = Backbone.View.extend({
     var app_model = new model.App();
 
     var cb = function(res) {
-      console.log('migrate request success:' + res);
-
       var migrate_task = new ASyncServerTask({
         cacheKey: res.result
       }, {
@@ -239,14 +235,11 @@ App.View.MigrateApp = Backbone.View.extend({
         },
 
         update: function(res) {
-          console.log('update > ' + JSON.stringify(res));
-
           var logs = _.clone(self.progress_model.get('logs'));
           if (!logs) logs = [];
           var progress = self.progress_model.get('progress');
 
           for (var i = 0; i < res.log.length; i++) {
-            console.log(res.log[i]);
             logs.push(res.log[i]);
             progress = progress + 2;
           }
@@ -258,8 +251,6 @@ App.View.MigrateApp = Backbone.View.extend({
         },
 
         complete: function(res) {
-          console.log('complete > ' + JSON.stringify(res));
-
           progress_view.done();
           if (!checkOnly) {
             self.migrationComplete();
@@ -340,10 +331,9 @@ App.View.MigrateApp = Backbone.View.extend({
   migrationComplete: function() {
     var self = this;
 
-    this.showAlert('success', '<strong>App migrated successful - reloading... </strong>', 10000);
-    setTimeout(function() {
-      $fw.client.tab.apps.manageapps.show($fw.data.get('inst').guid);
-    }, 3000);
+    this.showAlert('success', '<strong>App migrated successfully</strong>', 10000);
+    window.scrollTo(0, 0);
+    $fw.client.tab.apps.manageapps.toggleMigrationView(true);
   },
 
   // TODO: Mixin?
@@ -383,8 +373,6 @@ Apps.Migrate.Controller = Apps.Controller.extend({
 
   show: function() {
     this._super();
-
-    console.log('app migrate show');
 
     this.hide();
     this.container = this.views.migrate_app_container;
