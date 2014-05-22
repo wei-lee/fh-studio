@@ -30,13 +30,18 @@
     <div class="row">
       <div class="span12 text-center">
         <button class="btn btn-primary btn-large margin-top" id="migratecheck_app"><i class="icon-check-sign display_none"></i> Validate FH3 Compatibility</button>
-        <button class="btn btn-primary btn-large margin-top display_none" id="migrate_app">Migrate</button>
       </div>
     </div>
 
     <div class="alerts margin-top"></div>
 
     <div id="migration_progress"></div>
+
+    <div class="row">
+      <div class="span12 text-center">
+        <button class="btn btn-primary btn-large margin-top display_none" id="migrate_app"><i class="icon-circle-arrow-right"></i> Migrate this App</button>
+      </div>
+    </div>
   </div>
   {{/if}}
 
@@ -58,7 +63,7 @@
     </div>
 
     <div class="log">
-      <a href="#" id="toggle_show_less">[Show Full Log]</a>
+      <a href="#" id="toggle_show_less" class="pull-right">[Show Debug Log]</a>
       <textarea disabled style="display: none;"></textarea>
     </div>
   </div>

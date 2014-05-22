@@ -95,10 +95,10 @@ App.View.ProgressView = Backbone.View.extend({
   toggleLog: function(e) {
     if (e) e.preventDefault();
     if (this.$textarea.is(':visible')) {
-      this.$toggle.text('[Show Full Log]');
+      this.$toggle.text('[Show Debug Log]');
       this.$textarea.slideUp();
     } else {
-      this.$toggle.text('[Hide Full Log]');
+      this.$toggle.text('[Hide Debug Log]');
       this.$textarea.slideDown();
     }
   },
@@ -205,14 +205,37 @@ App.View.MigrateApp = Backbone.View.extend({
     var self = this;
     var message = "Are you sure you want to migrate this App to FH3? Once migrated, you won't be able to easily revert this app back to FH2";
     this.showBooleanModal(message, function() {
+      self.disableMigrateButton();
       self.migrate();
     });
 
     return false;
   },
 
+  disableMigrateButton: function() {
+    this.$el.find('#migrate_app').addClass('disabled');
+  },
+
+  disableMigrateCheckButton: function() {
+    this.$el.find('#migratecheck_app').addClass('disabled');
+  },
+
+  enableMigrateButton: function() {
+    this.$el.find('#migrate_app').removeClass('disabled');
+  },
+
+  enableMigrateCheckButton: function() {
+    this.$el.find('#migratecheck_app').removeClass('disabled');
+  },
+
   migrateCheck: function() {
+    this.disableMigrateCheckButton();
     this.migrate(true);
+  },
+
+  enableButtons: function(){
+    this.enableMigrateButton();
+    this.enableMigrateCheckButton();
   },
 
   migrate: function(checkOnly) {
@@ -232,6 +255,7 @@ App.View.MigrateApp = Backbone.View.extend({
         timeout: function(res) {
           console.log('timeout > ' + JSON.stringify(res));
           progress_view.fail();
+          self.enableButtons();
         },
 
         update: function(res) {
@@ -257,6 +281,7 @@ App.View.MigrateApp = Backbone.View.extend({
           } else {
             self.migrationCheckSuccess();
           }
+          self.enableButtons();
         },
 
         error: function(res) {
@@ -274,12 +299,14 @@ App.View.MigrateApp = Backbone.View.extend({
           }
 
           progress_view.fail();
+          self.enableButtons();
           self.showAlert('error', '<strong>App migrate was unsuccessful - exampine the logs below for more details.</strong>', 10000);
         },
 
         retriesLimit: function() {
           console.log('retries limit!');
           progress_view.fail();
+          self.enableButtons();
         },
 
         end: function() {
@@ -305,7 +332,7 @@ App.View.MigrateApp = Backbone.View.extend({
 
   migrationCheckSuccess: function() {
     var btn = this.$el.find('#migratecheck_app');
-    btn.addClass('btn-success disabled');
+    btn.addClass('btn-success');
     btn.find('i').removeClass('display_none');
     this.$el.find('#migrate_app').removeClass('display_none');
   },
@@ -332,7 +359,6 @@ App.View.MigrateApp = Backbone.View.extend({
     var self = this;
 
     this.showAlert('success', '<strong>App migrated successfully</strong>', 10000);
-    window.scrollTo(0, 0);
     $fw.client.tab.apps.manageapps.toggleMigrationView(true);
   },
 

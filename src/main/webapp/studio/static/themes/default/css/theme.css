@@ -4375,6 +4375,10 @@ select.appSelect{
   background: #f9f9f9;
 }
 
+#migrate_app_container #toggle_show_less {
+  font-size: 11px;
+}
+
 #migrate_app_container .migration_heading {
   font-family: "Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -4486,10 +4490,15 @@ select.appSelect{
   font-size: 15px;
 }
 
-#migration_progress .log {
-  margin-top: 20px;
-}
-
 #migration_progress .alerts {
   margin-top: 10px;
 }
+
+.btn-xlarge {
+  padding: 18px 28px;
+  font-size: 22px;
+  line-height: normal;
+  -webkit-border-radius: 8px;
+     -moz-border-radius: 8px;
+          border-radius: 8px;
+  }
