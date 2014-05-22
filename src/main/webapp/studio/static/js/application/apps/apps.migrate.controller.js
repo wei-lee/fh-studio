@@ -185,7 +185,11 @@ App.View.MigrateApp = Backbone.View.extend({
       current = 'Beginning validation...';
     }
 
-    this.$progress = this.$el.find('#migration_progress');
+    if (checkOnly) {
+      this.$progress = this.$el.find('#validation_progress');
+    } else {
+      this.$progress = this.$el.find('#migration_progress');
+    }
     this.progress_model = new App.Model.Progress({
       progress: 20,
       title: title,
