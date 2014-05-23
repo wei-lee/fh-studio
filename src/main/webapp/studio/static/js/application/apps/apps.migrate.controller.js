@@ -367,6 +367,9 @@ App.View.MigrateApp = Backbone.View.extend({
 
     this.showAlert('success', '<strong>App migrated successfully</strong>', 10000);
     $fw.client.tab.apps.manageapps.toggleMigrationView(true);
+
+    // Show URL
+    this.$el.find('.migrated_url').removeClass('hidden');
   },
 
   // TODO: Mixin?
