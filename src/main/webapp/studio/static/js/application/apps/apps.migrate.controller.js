@@ -23,6 +23,7 @@ App.View.ProgressView = Backbone.View.extend({
   },
 
   render: function() {
+    window.lol = this;
     var template = Handlebars.compile($(this.template).html());
     this.$el.html(template(this.model.toJSON()));
 
@@ -186,8 +187,10 @@ App.View.MigrateApp = Backbone.View.extend({
     }
 
     if (checkOnly) {
+      this.$el.find('#migration_progress').empty();
       this.$progress = this.$el.find('#validation_progress');
     } else {
+      this.$el.find('#validation_progress').empty();
       this.$progress = this.$el.find('#migration_progress');
     }
     this.progress_model = new App.Model.Progress({
