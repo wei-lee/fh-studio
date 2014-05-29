@@ -407,7 +407,7 @@ var store = {
         setTimeout(function() {
           ele.unbind().click(linkClick);
         }, 1500);
-        if (v.type === 'android') {
+        if (v.type === 'android' || v.type === 'windowsphone') {
           return true;
         } else {
           // iOS way
