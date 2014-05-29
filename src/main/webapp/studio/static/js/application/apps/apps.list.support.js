@@ -59,16 +59,21 @@ Apps.List.Support = Controller.extend({
       var icon = $('<img>').attr('src', icon_path).addClass('app_icon');
       icon_cell.empty().append(icon);
 
-      // Inject FH3 Checkbox
-      if (migrated_cell.text() === 'true') {
-        migrated_cell.html('&#10003;');
-      } else if (migrated_cell.text() === 'false') {
-        migrated_cell.text('');
+      var guid_offset = 6;
+      if ($fw.clientProps['appmigratePerappEnabled'] === 'true') {
+        guid_offset = 7;
+        // Inject FH3 Checkbox
+        if (migrated_cell.text() === 'true') {
+          migrated_cell.html('&#10003;');
+        } else if (migrated_cell.text() === 'false') {
+          migrated_cell.text('');
+        }
       }
 
+      var guid = data[guid_offset];
+
       // Bind row clicks to show Manage an app
-      var guid = data[7];
-      $('td:lt(7)', row).addClass('app_title').unbind().click(function() {
+      $('td:lt(' + guid_offset + ')', row).addClass('app_title').unbind().click(function() {
         // GUID is last, TODO: Make this better
 
         $fw.data.set('template_mode', false);

@@ -181,8 +181,10 @@
         <%@ include file="./logdetails.html"%>
 
         <%@ include file="./quickstart.html"%>
-
+        
+        <% if(studio.getProps().optBoolean("appmigratePerappEnabled", true)) {%>
         <%@ include file="./migrate_app.html"%>
+        <% } %>
 
         <%@ include file="./manage_details.html"%>
 
