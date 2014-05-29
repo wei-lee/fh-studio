@@ -56,7 +56,7 @@ model.App = model.Model.extend({
     if ($fw.clientProps['appmigratePerappEnabled'] !== 'true') {
       this.field_config = _.without(this.field_config, _.findWhere(this.field_config, {
         column_title: "FH3"
-      }));;
+      }));
     }
     this._super();
   },
