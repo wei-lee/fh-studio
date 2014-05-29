@@ -49,7 +49,6 @@ Apps.List.Support = Controller.extend({
   rowRender: function(row, data) {
     var self = this;
     var icon_cell = $('td:first', row);
-    var migrated_cell = $('td:eq(5)', row);
 
     // Render icons (can be called multiple times, e.g. after sorting)
     if ($('img', icon_cell).length === 0) {
@@ -59,9 +58,10 @@ Apps.List.Support = Controller.extend({
       var icon = $('<img>').attr('src', icon_path).addClass('app_icon');
       icon_cell.empty().append(icon);
 
-      var guid_offset = 6;
+      var guid_offset = data.length - 2;
       if ($fw.clientProps['appmigratePerappEnabled'] === 'true') {
-        guid_offset = 7;
+        var migrated_cell = $('td:eq(5)', row);
+
         // Inject FH3 Checkbox
         if (migrated_cell.text() === 'true') {
           migrated_cell.html('&#10003;');

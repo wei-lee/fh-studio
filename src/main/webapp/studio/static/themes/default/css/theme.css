@@ -3621,23 +3621,7 @@ a.docslink {
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.025);
 }
 
-/* Awesome nth item selector that works cross platform (including IE!)
-  http://reference.sitepoint.com/css/adjacentsiblingselector
-  Hides Email & App ID column (:nth(3)) (:nth(6))
-*/
-#myapps_grid td:first-child + td + td + td + td + td + td,
-#myapps_grid td:first-child + td + td + td,
-#allapps_grid td:first-child + td + td + td + td + td + td,
-#recentapps_grid td:first-child + td + td + td + td,
-#myapps_grid th:first-child + th + th + th + th + th + th,
-#myapps_grid th:first-child + th + th + th,
-#allapps_grid th:first-child + th + th + th + th + th + th,
-#recentapps_grid th:first-child + th + th + th + th {
-  display: none;
-}​
-
-
- /*
+/*
    resource styles
  */
  .reportdashboard {
