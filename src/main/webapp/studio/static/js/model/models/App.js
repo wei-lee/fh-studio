@@ -19,6 +19,10 @@ model.App = model.Model.extend({
     column_title: "Version",
     width: "60px"
   }, {
+    field_name: "migrated",
+    column_title: "FH3",
+    width: "30px"
+  }, {
     field_name: "modified",
     column_title: "Last Modified",
     width: "150px"
@@ -49,16 +53,24 @@ model.App = model.Model.extend({
   }],
 
   init: function() {
+    if ($fw.clientProps['appmigratePerappEnabled'] !== 'true') {
+      this.field_config = _.without(this.field_config, _.findWhere(this.field_config, {
+        column_title: "FH3"
+      }));
+    }
     this._super();
   },
 
   listAll: function(success, fail, post_process) {
-    var params = {};
+    var params = {
+      "includeMigrated": true
+    };
     return this.list(success, fail, post_process, params);
   },
 
   listMyApps: function(success, fail, post_process) {
     var params = {
+      "includeMigrated": true,
       "myapps": true
     };
     return this.list(success, fail, post_process, params);
@@ -228,5 +240,31 @@ model.App = model.Model.extend({
       guid: guid
     };
     this.serverPost(url, params, success, fail, true);
+  },
+
+  migrate: function(params, success, failure) {
+    var url = "/box/api/projects/" + params.projectguid + "/migrate";
+    $fw.server.put(url, params, function(res) {
+      if ($.isFunction(success)) {
+        success(res);
+      }
+    }, function(err) {
+      if ($.isFunction(failure)) {
+        failure(err);
+      }
+    });
+  },
+
+  migrateCheck: function(params, success, failure) {
+    var url = "/box/api/projects/" + params.projectguid + "/migratecheck";
+    $fw.server.get(url, {}, function(res) {
+      if ($.isFunction(success)) {
+        success(res);
+      }
+    }, function(err) {
+      if ($.isFunction(failure)) {
+        failure(err);
+      }
+    });
   }
 });

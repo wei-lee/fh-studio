@@ -210,7 +210,7 @@ Apps.Details.Controller = Apps.Controller.extend({
       $fw.client.dialog.info.flash($fw.client.lang.getLangString('app_updated'));
       // TODO: overkill here by doing a second call to read the app
       // Run custom callback if its passed in, otherwise, do normal App reset (for now)
-      
+
       $fw.client.tab.apps.manageapps.show(inst.guid);
       if ($.isFunction(callback)) {
         callback();
@@ -262,5 +262,4 @@ Apps.Details.Controller = Apps.Controller.extend({
       });
     }
   }
-
 });

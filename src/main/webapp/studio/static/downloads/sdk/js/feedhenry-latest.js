@@ -8634,7 +8634,7 @@ module.exports = {
 },{"./fhparams":31,"./logger":37,"./queryMap":39,"JSON":3}],27:[function(_dereq_,module,exports){
 module.exports = {
   "boxprefix": "/box/srv/1.1/",
-  "sdk_version": "2.0.23-alpha",
+  "sdk_version": "2.0.25-alpha",
   "config_js": "fhconfig.json",
   "INIT_EVENT": "fhinit",
   "INTERNAL_CONFIG_LOADED_EVENT": "internalfhconfigloaded",
@@ -13426,6 +13426,9 @@ appForm.utils = function(module) {
                 var reader = new FileReader();
                 reader.onloadend = function(evt) {
                     var text = evt.target.result;
+                    if (typeof text === "object") {
+                      text = JSON.stringify(text);
+                    }
                     // Check for URLencoded
                     // PG 2.2 bug in readAsText()
                     try {
@@ -13730,7 +13733,8 @@ appForm.web = function (module) {
     };
 
     var options = new FileUploadOptions();
-    options.fileName = fileProps.name;
+    //important - empty fileName will cause file upload fail on WP!!
+    options.fileName = (null == fileProps.name || "" === fileProps.name) ? "image.png" : fileProps.name;
     options.mimeType = fileProps.contentType ? fileProps.contentType : "application/octet-stream";
     options.httpMethod = "https";
     options.chunkedMode = true;
@@ -20829,6 +20833,10 @@ function rulesEngine (formDef) {
 
     var fieldType = field.type;
     var fieldOptions = field.fieldOptions ? field.fieldOptions : {};
+
+    if(typeof(fieldValue) === 'undefined' || fieldValue === null){
+      return false;
+    }
 
     function numericalComparison(condition, fieldValue, testValue){
       var fieldValNum = parseInt(fieldValue, 10);

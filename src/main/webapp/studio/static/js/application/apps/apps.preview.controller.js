@@ -182,12 +182,17 @@ Apps.Preview.Controller = Controller.extend({
     return device;
   },
 
-  showPost: function () {
-    $('#preview_toggle_open').hide();
-    $('#preview_toggle_close').show();
-    this.clearContent();
-    this.showContent();
-    this.showInPreviewFrame();
+  showPost: function() {
+    // Don't show for migrated apps
+    if (!$fw.data.get('app').migrated) {
+      $('#preview_toggle_open').hide();
+      $('#preview_toggle_close').show();
+      this.clearContent();
+      this.showContent();
+      this.showInPreviewFrame();
+    } else {
+      console.log('Not showing preview - migrated app.');
+    }
   },
 
   showInPreviewFrame: function () {
