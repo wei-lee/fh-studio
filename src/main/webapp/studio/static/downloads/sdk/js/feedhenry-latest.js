@@ -4526,119 +4526,6 @@ Lawnchair.adapter('memory', (function(){
     }
 /////
 })());
-Lawnchair.adapter('titanium', (function(global){
-
-    return {
-        // boolean; true if the adapter is valid for the current environment
-        valid: function() {
-            return typeof Titanium !== 'undefined';
-        },
-
-        // constructor call and callback. 'name' is the most common option
-        init: function( options, callback ) {
-          if (callback){
-            return this.fn('init', callback).call(this)
-          }
-        },
-
-        // returns all the keys in the store
-        keys: function( callback ) {
-          if (callback) {
-            return this.fn('keys', callback).call(this, Titanium.App.Properties.listProperties());
-          }
-          return this;
-        },
-
-        // save an object
-        save: function( obj, callback ) {
-            var saveRes = Titanium.App.Properties.setObject(obj.key, obj);
-            if (callback) {
-              return this.fn('save', callback).call(this, saveRes);
-            }
-            return this;
-        },
-
-        // batch save array of objs
-        batch: function( objs, callback ) {
-            var me = this;
-            var saved = [];
-            for ( var i = 0, il = objs.length; i < il; i++ ) {
-                me.save( objs[i], function( obj ) {
-                    saved.push( obj );
-                    if ( saved.length === il && callback ) {
-                        me.lambda( callback ).call( me, saved );
-                    }
-                });
-            }
-            return this;
-        },
-
-        // retrieve obj (or array of objs) and apply callback to each
-        get: function( key /* or array */, callback ) {
-            var me = this;
-            if ( this.isArray( key ) ) {
-                var values = [];
-                for ( var i = 0, il = key.length; i < il; i++ ) {
-                    me.get( key[i], function( result ) {
-                        if ( result ) values.push( result );
-                        if ( values.length === il && callback ) {
-                            me.lambda( callback ).call( me, values );
-                        }
-                    });
-                }
-            } else {
-                return this.fn('init', callback).call(this, Titanium.App.Properties.getObject(key));
-            }
-            return this;
-        },
-
-        // check if an obj exists in the collection
-        exists: function( key, callback ) {
-            if (callback){
-              if (Titanium.App.Properties.getObject(key)){
-                return callback(this, true);
-              }else{
-                return callback(this, false);
-              }
-            }
-
-            return this;
-        },
-
-        // returns all the objs to the callback as an array
-        all: function( callback ) {
-            var me = this;
-            if ( callback ) {
-                this.keys(function( keys ) {
-                    if ( !keys.length ) {
-                        me.fn( me.name, callback ).call( me, [] );
-                    } else {
-                        me.get( keys, function( values ) {
-                            me.fn( me.name, callback ).call( me, values );
-                        });
-                    }
-                });
-            }
-            return this;
-        },
-
-        // remove a doc or collection of em
-        remove: function( key /* or object */, callback ) {
-            var me = this;
-            Titanium.App.Properties.removeProperty(key);
-            if (callback) {
-              return this.fn('remove', callback).call(this);
-            }
-            return this;
-        },
-
-        // destroy everything
-        nuke: function( callback ) {
-            // nah, lets not do that
-        }
-    };
-}(this)));
-
 ; browserify_shim__define__module__export__(typeof Lawnchair != "undefined" ? Lawnchair : window.Lawnchair);
 
 }).call(global, undefined, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
@@ -8634,7 +8521,7 @@ module.exports = {
 },{"./fhparams":31,"./logger":37,"./queryMap":39,"JSON":3}],27:[function(_dereq_,module,exports){
 module.exports = {
   "boxprefix": "/box/srv/1.1/",
-  "sdk_version": "2.0.25-alpha",
+  "sdk_version": "2.0.26-alpha",
   "config_js": "fhconfig.json",
   "INIT_EVENT": "fhinit",
   "INTERNAL_CONFIG_LOADED_EVENT": "internalfhconfigloaded",
@@ -13139,34 +13026,42 @@ var appForm = function(module) {
         if(err){
           console.error("Error loading config from local storage");
         }
-        //Loading the current state of the uploadManager for any upload tasks that are still in progress.
-        appForm.models.uploadManager.loadLocal(function(err) {
-          $fh.forms.log.d("Upload Manager loaded from memory.");
-          if (err) {
-            $fh.forms.log.e("Error loading upload manager from memory ", err);
+
+        appForm.models.submissions.loadLocal(function(err){
+          if(err){
+            console.error("Error loading submissions");
           }
 
-          //Starting any uploads that are queued
-          appForm.models.uploadManager.start();
-          //init forms module
-          $fh.forms.log.l("Refreshing Theme.");
-          appForm.models.theme.refresh(true, function(err) {
+          //Loading the current state of the uploadManager for any upload tasks that are still in progress.
+          appForm.models.uploadManager.loadLocal(function(err) {
+            $fh.forms.log.d("Upload Manager loaded from memory.");
             if (err) {
-              $fh.forms.log.e("Error refreshing theme ", err);
+              $fh.forms.log.e("Error loading upload manager from memory ", err);
             }
-            if (def.updateForms === true) {
-              $fh.forms.log.l("Refreshing Forms.");
-              appForm.models.forms.refresh(true, function(err) {
-                if (err) {
-                  $fh.forms.log.e("Error refreshing forms: ", err);
-                }
+
+            //Starting any uploads that are queued
+            appForm.models.uploadManager.start();
+            //init forms module
+            $fh.forms.log.l("Refreshing Theme.");
+            appForm.models.theme.refresh(true, function(err) {
+              if (err) {
+                $fh.forms.log.e("Error refreshing theme ", err);
+              }
+              if (def.updateForms === true) {
+                $fh.forms.log.l("Refreshing Forms.");
+                appForm.models.forms.refresh(true, function(err) {
+                  if (err) {
+                    $fh.forms.log.e("Error refreshing forms: ", err);
+                  }
+                  cb();
+                });
+              } else {
                 cb();
-              });
-            } else {
-              cb();
-            }
+              }
+            });
           });
         });
+
       });
     });
   }
@@ -14685,7 +14580,7 @@ appForm.models = function(module) {
       'base64fileSubmission': '/forms/:appId/:submissionId/:fieldId/:hashName/submitFormFileBase64',
       'submissionStatus': '/forms/:appId/:submissionId/status',
       'formSubmissionDownload': '/forms/:appId/submission/:submissionId',
-      'fileSubmissionDownload': '/forms/:appId/submission/:submissionId/file/:fileId',
+      'fileSubmissionDownload': '/mbaas/forms/:appId/submission/:submissionId/file/:fileGroupId',
       'completeSubmission': '/forms/:appId/:submissionId/completeSubmission',
       'config': '/forms/:appid/config/:deviceId'
     });
@@ -15157,7 +15052,7 @@ appForm.models = function (module) {
         urlTemplate = urlTemplate.replace(":submissionId", submissionId);
         urlTemplate = urlTemplate.replace(":fileGroupId", fileGroupId);
         urlTemplate = urlTemplate.replace(":appId", appForm.config.get('appId', "notSet"));
-        return urlTemplate;
+        return appForm.models.config.get("cloudHost", "notset") + urlTemplate;
       } else {
         return  "notset";
       }
@@ -15580,8 +15475,12 @@ appForm.models = function(module) {
 
   function newInstance(form, params) {
     params = params ? params : {};
+    var sub = new Submission(form, params);
 
-    return new Submission(form, params);
+    if(params.submissionId){
+      appForm.models.submissions.updateSubmissionWithoutSaving(sub);
+    }
+    return sub;
   }
 
   function fromLocal(localId, cb) {
@@ -15601,16 +15500,21 @@ appForm.models = function(module) {
           cb(err);
         } else {
           $fh.forms.log.d("Submission fromLocal. Load from local sucessfull: ", localId);
-          submission.reloadForm(function(err, res) {
-            if (err) {
-              $fh.forms.log.e("Submission fromLocal. reloadForm. Error re-loading form: ", localId, err);
-              cb(err);
-            } else {
-              $fh.forms.log.d("Submission fromLocal. reloadForm. Re-loading form successfull: ", localId);
-              _submissions[localId] = submission;
-              cb(null, submission);
-            }
-          });
+          if(submission.isDownloadSubmission()){
+            return cb(null, submission);
+          } else {
+            submission.reloadForm(function(err, res) {
+              if (err) {
+                $fh.forms.log.e("Submission fromLocal. reloadForm. Error re-loading form: ", localId, err);
+                cb(err);
+              } else {
+                $fh.forms.log.d("Submission fromLocal. reloadForm. Re-loading form successfull: ", localId);
+                _submissions[localId] = submission;
+                cb(null, submission);
+              }
+            });
+          }
+
         }
       });
     }
@@ -15780,6 +15684,15 @@ appForm.models = function(module) {
   };
   Submission.prototype.setUploadTaskId = function(utId) {
     this.set('uploadTaskId', utId);
+  };
+  Submission.prototype.isInProgress = function(){
+    return this.get("status") === "inprogress";
+  };
+  Submission.prototype.isDownloaded = function(){
+    return this.get("status") === "downloaded";
+  };
+  Submission.prototype.isSubmitted = function(){
+    return this.get("status") === "submitted";
   };
   Submission.prototype.submitted = function(cb) {
     var self = this;
@@ -15981,7 +15894,7 @@ appForm.models = function(module) {
     $fh.forms.log.d("In getSubmissionFiles: " + self.getLocalId());
     var submissionFiles = [];
 
-    var formFields = self.get("formFields", []);
+    var formFields = self.getFormFields();
 
     for (var formFieldIndex = 0; formFieldIndex < formFields.length; formFieldIndex++) {
       var tmpFieldValues = formFields[formFieldIndex].fieldValues || [];
@@ -16203,7 +16116,7 @@ appForm.models = function(module) {
     }
   };
   Submission.prototype.getInputValueObjectById = function(fieldId) {
-    var formFields = this.get('formFields', []);
+    var formFields = this.getFormFields();
     for (var i = 0; i < formFields.length; i++) {
       var formField = formFields[i];
 
@@ -16244,6 +16157,7 @@ appForm.models = function(module) {
     }
   };
   Submission.prototype.reloadForm = function(cb) {
+    $fh.forms.log.d("Submission reload form");
     var Form = appForm.models.Form;
     var formId = this.get('formId');
     var self = this;
@@ -16277,13 +16191,17 @@ appForm.models = function(module) {
     });
   };
 
+  Submission.prototype.getFormFields = function(){
+    return this.get("formFields", []);
+  };
+
   Submission.prototype.getFileFieldsId = function(cb){
     var self = this;
     var formFieldIds = [];
 
     if(self.isDownloadSubmission()){
       //For Submission downloads, there needs to be a scan through the formFields param
-      var formFields = self.get("formFields", []);
+      var formFields = self.getFormFields();
 
       for(var formFieldIndex = 0; formFieldIndex < formFields.length; formFieldIndex++){
         var formFieldEntry = formFields[formFieldIndex].fieldId || {};
@@ -17721,6 +17639,7 @@ appForm.models = function (module) {
     function processDownloadFile(){
       $fh.forms.log.d("processDownloadFile called");
       fileSubmissionModel = new appForm.models.FileSubmissionDownload(fileTask);
+      fileSubmissionModel.setSubmissionId(submissionId);
       self.getRemoteStore().read(fileSubmissionModel, function (err, localFilePath) {
         if(err){
           $fh.forms.log.e("Error downloading a file from remote: " + err);
@@ -18256,6 +18175,7 @@ appForm.api = function (module) {
   module.init = appForm.init;
   module.log=appForm.models.log;
   var _submissions = null;
+  var waitOnSubmission = {};
   var formConfig = appForm.models.config;
   var defaultFunction = function(err){
     err = err ? err : "";
@@ -18482,35 +18402,68 @@ appForm.api = function (module) {
   function downloadSubmission(params, cb){
     params = params ? params : {};
     cb = cb ? cb : defaultFunction;
+    var submissionToDownload = null;
+
+
+
+    function finishSubmissionDownload(err){
+      err = typeof(err) === "string" && err.length === 24 ? null : err;
+      $fh.forms.log.d("finishSubmissionDownload ", err, submissionToDownload);
+      var subCBId = submissionToDownload.getRemoteSubmissionId();
+      var subsCbsWatiting = waitOnSubmission[subCBId];
+      if(subsCbsWatiting){
+        var subCB = subsCbsWatiting.pop();
+        while(typeof(subCB) === 'function'){
+          subCB(err, submissionToDownload);
+          subCB = subsCbsWatiting.pop();
+        }
+
+        if(submissionToDownload.clearEvents){
+          submissionToDownload.clearEvents();
+        }
+      } else {
+        submissionToDownload.clearEvents();
+        return cb(err, submissionToDownload);
+      }
+    }
+
+    $fh.forms.log.d("downloadSubmission called", params);
 
     if(params.submissionId){
-
+      $fh.forms.log.d("downloadSubmission SubmissionId exists" + params.submissionId);
       var submissionAlreadySaved = appForm.models.submissions.findMetaByRemoteId(params.submissionId);
 
       if(submissionAlreadySaved === null){
-        var submissionToDownload = new appForm.models.submission.newInstance(null, {submissionId: params.submissionId});
 
-        submissionToDownload.on('error', function(err){
-          $fh.forms.log.e("Error downloading submission with id " + params.submissionId);
-          submissionToDownload.clearEvents();
-          return cb(err);
-        });
+        $fh.forms.log.d("downloadSubmission submission does not exist, downloading", params);
+        submissionToDownload = new appForm.models.submission.newInstance(null, {submissionId: params.submissionId});
 
-        submissionToDownload.on('downloaded', function(){
-          $fh.forms.log.l("Download of submission with id " + params.submissionId + " completed successfully");
-          submissionToDownload.clearEvents();
-          return cb(null, submissionToDownload);
-        });
+        submissionToDownload.on('error', finishSubmissionDownload);
+
+        submissionToDownload.on('downloaded', finishSubmissionDownload);
+
+        if(typeof(params.updateFunction) === 'function'){
+          submissionToDownload.on('progress', params.updateFunction);
+        }
+
+        waitOnSubmission[params.submissionId] = waitOnSubmission[params.submissionId] ? waitOnSubmission[params.submissionId].push(cb) : [cb];
 
         submissionToDownload.download(function(err){
           if(err){
             $fh.forms.log.e("Error queueing submission for download " + err);
-            submissionToDownload.clearEvents();
             return cb(err);
           }
         });
       } else {
-        appForm.models.submissions.getSubmissionByMeta(submissionAlreadySaved, cb);
+        $fh.forms.log.d("downloadSubmission submission exists", params);
+
+        //Submission was created, but not finished downloading
+        if(submissionAlreadySaved.status !== "downloaded"){
+          waitOnSubmission[params.submissionId] = waitOnSubmission[params.submissionId] ? waitOnSubmission[params.submissionId].push(cb) : [cb];
+        } else {
+          appForm.models.submissions.getSubmissionByMeta(submissionAlreadySaved, cb);
+        }
+
       }
     } else {
       $fh.forms.log.e("No submissionId passed to download a submission");
