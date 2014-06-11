@@ -4526,6 +4526,119 @@ Lawnchair.adapter('memory', (function(){
     }
 /////
 })());
+Lawnchair.adapter('titanium', (function(global){
+
+    return {
+        // boolean; true if the adapter is valid for the current environment
+        valid: function() {
+            return typeof Titanium !== 'undefined';
+        },
+
+        // constructor call and callback. 'name' is the most common option
+        init: function( options, callback ) {
+          if (callback){
+            return this.fn('init', callback).call(this)
+          }
+        },
+
+        // returns all the keys in the store
+        keys: function( callback ) {
+          if (callback) {
+            return this.fn('keys', callback).call(this, Titanium.App.Properties.listProperties());
+          }
+          return this;
+        },
+
+        // save an object
+        save: function( obj, callback ) {
+            var saveRes = Titanium.App.Properties.setObject(obj.key, obj);
+            if (callback) {
+              return this.fn('save', callback).call(this, saveRes);
+            }
+            return this;
+        },
+
+        // batch save array of objs
+        batch: function( objs, callback ) {
+            var me = this;
+            var saved = [];
+            for ( var i = 0, il = objs.length; i < il; i++ ) {
+                me.save( objs[i], function( obj ) {
+                    saved.push( obj );
+                    if ( saved.length === il && callback ) {
+                        me.lambda( callback ).call( me, saved );
+                    }
+                });
+            }
+            return this;
+        },
+
+        // retrieve obj (or array of objs) and apply callback to each
+        get: function( key /* or array */, callback ) {
+            var me = this;
+            if ( this.isArray( key ) ) {
+                var values = [];
+                for ( var i = 0, il = key.length; i < il; i++ ) {
+                    me.get( key[i], function( result ) {
+                        if ( result ) values.push( result );
+                        if ( values.length === il && callback ) {
+                            me.lambda( callback ).call( me, values );
+                        }
+                    });
+                }
+            } else {
+                return this.fn('init', callback).call(this, Titanium.App.Properties.getObject(key));
+            }
+            return this;
+        },
+
+        // check if an obj exists in the collection
+        exists: function( key, callback ) {
+            if (callback){
+              if (Titanium.App.Properties.getObject(key)){
+                return callback(this, true);
+              }else{
+                return callback(this, false);
+              }
+            }
+
+            return this;
+        },
+
+        // returns all the objs to the callback as an array
+        all: function( callback ) {
+            var me = this;
+            if ( callback ) {
+                this.keys(function( keys ) {
+                    if ( !keys.length ) {
+                        me.fn( me.name, callback ).call( me, [] );
+                    } else {
+                        me.get( keys, function( values ) {
+                            me.fn( me.name, callback ).call( me, values );
+                        });
+                    }
+                });
+            }
+            return this;
+        },
+
+        // remove a doc or collection of em
+        remove: function( key /* or object */, callback ) {
+            var me = this;
+            Titanium.App.Properties.removeProperty(key);
+            if (callback) {
+              return this.fn('remove', callback).call(this);
+            }
+            return this;
+        },
+
+        // destroy everything
+        nuke: function( callback ) {
+            // nah, lets not do that
+        }
+    };
+}(this)));
+
 ; browserify_shim__define__module__export__(typeof Lawnchair != "undefined" ? Lawnchair : window.Lawnchair);
 
 }).call(global, undefined, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
@@ -8521,7 +8634,7 @@ module.exports = {
 },{"./fhparams":31,"./logger":37,"./queryMap":39,"JSON":3}],27:[function(_dereq_,module,exports){
 module.exports = {
   "boxprefix": "/box/srv/1.1/",
-  "sdk_version": "2.0.26-alpha",
+  "sdk_version": "2.0.27-alpha",
   "config_js": "fhconfig.json",
   "INIT_EVENT": "fhinit",
   "INTERNAL_CONFIG_LOADED_EVENT": "internalfhconfigloaded",
@@ -13159,7 +13272,8 @@ appForm.utils = function(module) {
         readAsBlob: readAsBlob,
         readAsBase64Encoded: readAsBase64Encoded,
         readAsFile: readAsFile,
-        fileToBase64: fileToBase64
+        fileToBase64: fileToBase64,
+        getBasePath: getBasePath
     };
     var fileSystemAvailable = false;
     var _requestFileSystem = function() {
@@ -13216,17 +13330,16 @@ appForm.utils = function(module) {
 
 
     function getBasePath(cb) {
-        _getFileEntry("dummy.html", size, {
-            create: true,
-            exclusive: false
-        }, function(err, fileEntry) {
+        save("dummy.txt", "TestContnet", function(err, fileEntry) {
             if (err) {
                 return cb(err);
             }
 
-            var sPath = fileEntry.fullPath.replace("dummy.html", "");
-            fileEntry.remove();
-            return cb(null, sPath);
+            _getFileEntry("dummy.txt",0, {}, function(err, fileEntry){
+              var sPath = fileEntry.fullPath.replace("dummy.txt", "");
+              fileEntry.remove();
+              return cb(null, sPath);
+            });
         });
     }
 
@@ -13654,7 +13767,7 @@ appForm.web = function (module) {
       return cb("No Internet Connection Available.");
     }
 
-    appforms.utils.fileSystem.getBasePath(function(err, basePath){
+    appForm.utils.fileSystem.getBasePath(function(err, basePath){
       if(err){
         $fh.forms.log.e("Error getting base path for file download: " + url);
         return cb(err);
@@ -13662,7 +13775,7 @@ appForm.web = function (module) {
 
       function success(fileEntry){
         $fh.forms.log.d("File Download Completed Successfully. FilePath: " + fileEntry.fullPath);
-        return cb(null, fileEntry.fullPath);
+        return cb(null, fileEntry.toURL());
       }
 
       function fail(error){
@@ -13673,7 +13786,7 @@ appForm.web = function (module) {
       if(fileMetaData.fileName){
         $fh.forms.log.d("File name for file " + fileMetaData.fileName + " found. Starting download");
         var fullPath = basePath + fileMetaData.fileName;
-        ft.download(encodeURI(url), fullPath, success, fail, {headers: {
+        ft.download(encodeURI(url), fullPath, success, fail, false, {headers: {
           "Connection": "close"
         }});
       } else {
@@ -14050,7 +14163,7 @@ appForm.stores = function(module) {
     appForm.web.ajax.get(url, cb);
   };
   MBaaS.prototype.isOnline = function(cb){
-    var host = appForm.config.get('cloudHost', "");
+    var host = appForm.config.getCloudHost();
     var url = host + appForm.config.get('statusUrl', "/sys/info/ping");
 
     appForm.web.ajax.get(url, function(err){
@@ -14067,7 +14180,7 @@ appForm.stores = function(module) {
   function _getUrl(model) {
     $fh.forms.log.d("_getUrl ", model);
     var type = model.get('_type');
-    var host = appForm.config.get('cloudHost');
+    var host = appForm.config.getCloudHost();
     var mBaaSBaseUrl = appForm.config.get('mbaasBaseUrl');
     var formUrls = appForm.config.get('formUrls');
     var relativeUrl = "";
@@ -14112,7 +14225,7 @@ appForm.stores = function(module) {
         break;
       case 'fileSubmissionDownload':
         props.submissionId = model.getSubmissionId();
-        props.submissionId = model.getFileGroupId();
+        props.fileGroupId = model.getFileGroupId();
         break;
       case 'offlineTest':
         return "http://127.0.0.1:8453";
@@ -14430,6 +14543,7 @@ appForm.models = function (module) {
 appForm.models = function(module) {
   var Model = appForm.models.Model;
   var online = true;
+  var cloudHost = "notset";
 
   function Config() {
     Model.call(this, {
@@ -14496,6 +14610,9 @@ appForm.models = function(module) {
       dataAgent.remoteStore.read(self, _handler);
     });
   };
+  Config.prototype.getCloudHost = function(){
+    return cloudHost;  
+  };
   Config.prototype.staticConfig = function(config) {
     var self = this;
     var defaultConfig = {"defaultConfigValues": {}, "userConfigValues": {}};
@@ -14555,20 +14672,19 @@ appForm.models = function(module) {
     config = config || {};
     var cloud_props = $fh.cloud_props;
     var app_props = $fh.app_props;
-    var cloudUrl;
     var mode = 'dev';
     if (app_props) {
-      cloudUrl = app_props.host;
+      cloudHost = app_props.host;
     }
     if (cloud_props && cloud_props.hosts) {
-      cloudUrl = cloud_props.hosts.url;
+      cloudHost = cloud_props.hosts.url;
     }
 
     if(typeof(config.cloudHost) === 'string'){
-      cloudUrl = config.cloudHost;
+      cloudHost = config.cloudHost;
     }
 
-    self.set('cloudHost', cloudUrl);
+    
     self.set('mbaasBaseUrl', '/mbaas');
     var appId = self.get('appId');
     self.set('formUrls', {
@@ -14580,7 +14696,7 @@ appForm.models = function(module) {
       'base64fileSubmission': '/forms/:appId/:submissionId/:fieldId/:hashName/submitFormFileBase64',
       'submissionStatus': '/forms/:appId/:submissionId/status',
       'formSubmissionDownload': '/forms/:appId/submission/:submissionId',
-      'fileSubmissionDownload': '/mbaas/forms/:appId/submission/:submissionId/file/:fileGroupId',
+      'fileSubmissionDownload': '/forms/:appId/submission/:submissionId/file/:fileGroupId',
       'completeSubmission': '/forms/:appId/:submissionId/completeSubmission',
       'config': '/forms/:appid/config/:deviceId'
     });
@@ -15052,7 +15168,7 @@ appForm.models = function (module) {
         urlTemplate = urlTemplate.replace(":submissionId", submissionId);
         urlTemplate = urlTemplate.replace(":fileGroupId", fileGroupId);
         urlTemplate = urlTemplate.replace(":appId", appForm.config.get('appId', "notSet"));
-        return appForm.models.config.get("cloudHost", "notset") + urlTemplate;
+        return appForm.models.config.getCloudHost() + "/mbaas" + urlTemplate;
       } else {
         return  "notset";
       }
@@ -16021,6 +16137,10 @@ appForm.models = function(module) {
   };
   Submission.prototype.isDownloadSubmission = function(){
     return this.get("downloadSubmission") === true;
+  };
+
+  Submission.prototype.getSubmissionFile = function(fileName, cb){
+    appForm.utils.fileSystem.readAsFile(fileName, cb);
   };
   Submission.prototype.clearLocalSubmissionFiles = function(cb) {
     $fh.forms.log.d("In clearLocalSubmissionFiles");
@@ -18394,82 +18514,101 @@ appForm.api = function (module) {
   }
 
   /*
-  * Function for downloading a submission stored on the remote server.
-  *
-  * @param params {}
-  * @param {function} cb (err, downloadTask)
-  * */
-  function downloadSubmission(params, cb){
-    params = params ? params : {};
-    cb = cb ? cb : defaultFunction;
-    var submissionToDownload = null;
+     * Function for downloading a submission stored on the remote server.
+     *
+     * @param params {}
+     * @param {function} cb (err, downloadTask)
+     * */
+    function downloadSubmission(params, cb) {
+      params = params ? params : {};
+      //cb = cb ? cb : defaultFunction;
+      var submissionToDownload = null;
 
-
-
-    function finishSubmissionDownload(err){
-      err = typeof(err) === "string" && err.length === 24 ? null : err;
-      $fh.forms.log.d("finishSubmissionDownload ", err, submissionToDownload);
-      var subCBId = submissionToDownload.getRemoteSubmissionId();
-      var subsCbsWatiting = waitOnSubmission[subCBId];
-      if(subsCbsWatiting){
-        var subCB = subsCbsWatiting.pop();
-        while(typeof(subCB) === 'function'){
-          subCB(err, submissionToDownload);
-          subCB = subsCbsWatiting.pop();
-        }
-
-        if(submissionToDownload.clearEvents){
-          submissionToDownload.clearEvents();
-        }
-      } else {
-        submissionToDownload.clearEvents();
-        return cb(err, submissionToDownload);
+      if(typeof(cb) !== 'function'){
+        return null;
       }
-    }
 
-    $fh.forms.log.d("downloadSubmission called", params);
-
-    if(params.submissionId){
-      $fh.forms.log.d("downloadSubmission SubmissionId exists" + params.submissionId);
-      var submissionAlreadySaved = appForm.models.submissions.findMetaByRemoteId(params.submissionId);
-
-      if(submissionAlreadySaved === null){
-
-        $fh.forms.log.d("downloadSubmission submission does not exist, downloading", params);
-        submissionToDownload = new appForm.models.submission.newInstance(null, {submissionId: params.submissionId});
-
-        submissionToDownload.on('error', finishSubmissionDownload);
-
-        submissionToDownload.on('downloaded', finishSubmissionDownload);
-
-        if(typeof(params.updateFunction) === 'function'){
-          submissionToDownload.on('progress', params.updateFunction);
-        }
-
-        waitOnSubmission[params.submissionId] = waitOnSubmission[params.submissionId] ? waitOnSubmission[params.submissionId].push(cb) : [cb];
-
-        submissionToDownload.download(function(err){
-          if(err){
-            $fh.forms.log.e("Error queueing submission for download " + err);
-            return cb(err);
+      function finishSubmissionDownload(err) {
+        err = typeof(err) === "string" && err.length === 24 ? null : err;
+        $fh.forms.log.d("finishSubmissionDownload ", err, submissionToDownload);
+        var subCBId = submissionToDownload.getRemoteSubmissionId();
+        var subsCbsWatiting = waitOnSubmission[subCBId];
+        if (subsCbsWatiting) {
+          var subCB = subsCbsWatiting.pop();
+          while (typeof(subCB) === 'function') {
+            subCB(err, submissionToDownload);
+            subCB = subsCbsWatiting.pop();
           }
-        });
-      } else {
-        $fh.forms.log.d("downloadSubmission submission exists", params);
 
-        //Submission was created, but not finished downloading
-        if(submissionAlreadySaved.status !== "downloaded"){
-          waitOnSubmission[params.submissionId] = waitOnSubmission[params.submissionId] ? waitOnSubmission[params.submissionId].push(cb) : [cb];
+          if (submissionToDownload.clearEvents) {
+            submissionToDownload.clearEvents();
+          }
         } else {
-          appForm.models.submissions.getSubmissionByMeta(submissionAlreadySaved, cb);
+          submissionToDownload.clearEvents();
+          return cb(err, submissionToDownload);
         }
-
       }
-    } else {
-      $fh.forms.log.e("No submissionId passed to download a submission");
-      return cb("No submissionId passed to download a submission");
+
+      $fh.forms.log.d("downloadSubmission called", params);
+
+      if (params.submissionId) {
+        $fh.forms.log.d("downloadSubmission SubmissionId exists" + params.submissionId);
+        var submissionAlreadySaved = appForm.models.submissions.findMetaByRemoteId(params.submissionId);
+
+        if (submissionAlreadySaved === null) {
+
+          $fh.forms.log.d("downloadSubmission submission does not exist, downloading", params);
+          submissionToDownload = new appForm.models.submission.newInstance(null, {
+            submissionId: params.submissionId
+          });
+
+          submissionToDownload.on('error', finishSubmissionDownload);
+
+          submissionToDownload.on('downloaded', finishSubmissionDownload);
+
+          if (typeof(params.updateFunction) === 'function') {
+            submissionToDownload.on('progress', params.updateFunction);
+          }
+
+          
+          if(typeof(cb) === "function"){
+            if(waitOnSubmission[params.submissionId]){
+              waitOnSubmission[params.submissionId].push(cb);  
+            } else {
+               waitOnSubmission[params.submissionId] = [];
+               waitOnSubmission[params.submissionId].push(cb);  
+            }  
+          }
+
+          submissionToDownload.download(function(err) {
+            if (err) {
+              $fh.forms.log.e("Error queueing submission for download " + err);
+              return cb(err);
+            }
+          });
+        } else {
+          $fh.forms.log.d("downloadSubmission submission exists", params);
+
+          //Submission was created, but not finished downloading
+          if (submissionAlreadySaved.status !== "downloaded") {
+            if(typeof(cb) === "function"){
+              if(waitOnSubmission[params.submissionId]){
+                waitOnSubmission[params.submissionId].push(cb);  
+              } else {
+                 waitOnSubmission[params.submissionId] = [];
+                 waitOnSubmission[params.submissionId].push(cb);  
+              }  
+            }
+          } else {
+            appForm.models.submissions.getSubmissionByMeta(submissionAlreadySaved, cb);
+          }
+
+        }
+      } else {
+        $fh.forms.log.e("No submissionId passed to download a submission");
+        return cb("No submissionId passed to download a submission");
+      }
     }
-  }
   return module;
 }(appForm.api || {});
 //mockup $fh apis for Addons.
