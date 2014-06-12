@@ -39,7 +39,8 @@ var store = {
       iphone: ['iphone', 'ios'],
       ipad: ['iphone', 'ipad', 'ios'],
       android: ['android'],
-      unknown: ['iphone', 'ipad', 'ios', 'android']
+      windowsphone: ['windowsphone'],
+      unknown: ['iphone', 'ipad', 'ios', 'android', 'windowsphone']
     };
 
     var deviceType = this.identifyDevice();
@@ -336,6 +337,8 @@ var store = {
       device = "iphone";
     } else if (navigator.userAgent.match(/iPad/i)) {
       device = "ipad";
+    } else if (navigator.userAgent.match(/Windows Phone/i)) {
+      device = "windowsphone";
     }
     return device;
   },
@@ -390,7 +393,7 @@ var store = {
 
     // console.log("Store Item: " + JSON.stringify(store_item));
     // iterate through store_item.targets and add a button for each iOS, iPhone, iPad...
-    $('.btn_device_install', show_item_view).hide();
+    $('.btn_device_install, .btn.aet_download', show_item_view).hide();
     $.each(store_item.binaries, function(i, v) {
       console.log(v);
       v.url += "&deviceId=" + self.deviceId;
@@ -404,7 +407,7 @@ var store = {
         setTimeout(function() {
           ele.unbind().click(linkClick);
         }, 1500);
-        if (v.type === 'android') {
+        if (v.type === 'android' || v.type === 'windowsphone') {
           return true;
         } else {
           // iOS way
@@ -416,6 +419,9 @@ var store = {
       };
 
       $('.btn_device_install', show_item_view).filter('.' + v.type).attr("href", v.url).show().unbind().click(linkClick);
+      if(v.aet && typeof v.aet === "string") {
+        $('.btn.aet_download', show_item_view).attr("href", v.aet).removeClass("hidden").show();
+      }
     });
 
     $('.install_store_item', show_item_view);

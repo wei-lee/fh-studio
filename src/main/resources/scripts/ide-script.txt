@@ -253,6 +253,7 @@ js/application/account/account.apple.controller.js
 js/application/account/account.android.controller.js
 js/application/account/account.blackberry.controller.js
 js/application/admin/admin.storeitems.controller.js
+js/application/admin/admin.migration.controller.js
 js/application/admin/admin.users.controller.js
 js/application/admin/admin.storeitem.groups.controller.js
 js/application/admin/admin.auditlogs.controller.js
@@ -271,6 +272,7 @@ js/application/apps/apps.import.controller.js
 js/application/apps/apps.generate.controller.js
 js/application/apps/apps.quickstart.controller.js
 js/application/apps/apps.details.controller.js
+js/application/apps/apps.migrate.controller.js
 js/application/apps/apps.icons.controller.js
 js/application/apps/apps.editor.controller.js
 js/application/apps/apps.libraries.controller.js

@@ -27,14 +27,14 @@ Apps.Tab.Manager = Tab.Manager.extend({
     this.initFn();
   },
 
-  enableRhinoDomain: function () {
+  enableRhinoDomain: function() {
     // disable nodejs stuff and enable rhino stuff at 'domain' level i.e. some apps be still be nodejs enabled inside a rhino domain
 
     // remove generate app from create app wizard
     $('#create_app_generator_container').hide().remove();
   },
 
-  enableNodejsDomain: function () {
+  enableNodejsDomain: function() {
     // disable rhino stuff and enable nodejs stuff at 'domain' level i.e. some apps be still be rhino enabled inside a nodejs domain
     var app_generation_enabled = $fw.getClientProp('app-generation-enabled') == "true";
     if (!app_generation_enabled) {
@@ -77,7 +77,7 @@ ListappsTabManager = Tab.Manager.extend({
     itemToClick.trigger('click');
   },
 
-  updateCrumbs: function (self) {
+  updateCrumbs: function(self) {
     var breadcrumbs = $('#' + self.breadcrumbId);
 
     var preview_buttons = breadcrumbs.find('.preview_buttons').detach(); // detach is important here
@@ -130,7 +130,7 @@ ManageappsTabManager = Tab.Manager.extend({
       crumbs.unshift(header.text());
     }
 
-    var addCrumbWithDivider = function (text) {
+    var addCrumbWithDivider = function(text) {
       crumb.append($('<li>').append($('<a>', {
         "href": "#",
         "text": text
@@ -188,7 +188,7 @@ ManageappsTabManager = Tab.Manager.extend({
     self.updateAppTitleInCrumbs();
   },
 
-  updateAppTitleInCrumbs: function () {
+  updateAppTitleInCrumbs: function() {
     var inst = $fw.data.get('inst');
     if (inst != null) {
       var appTitle = inst.title;
@@ -201,6 +201,26 @@ ManageappsTabManager = Tab.Manager.extend({
    */
   doManage: function(guid, success, fail, is_name, intermediate) {
     this.doShowManage(guid, success, fail, is_name, intermediate);
+  },
+
+  toggleMigrationView: function(hide) {
+    var nav_items = $("#manage_apps_layout .manageapps_nav_list li a:not([data-controller='apps.migrate.controller'])").parents('li');
+    var sections = $("#manage_apps_layout .manageapps_nav_list .nav-header").not(":contains('Overview')");
+    if (hide) {
+      // Hide sidenav items, except the migration one
+      nav_items.addClass('display_none');
+      sections.addClass('display_none');
+    } else {
+      nav_items.removeClass('display_none');
+      sections.removeClass('display_none');
+    }
+
+    // If preview visible, hide
+    var preview = $('#app_preview');
+    if (preview.is(':visible')) {
+      preview.remove();
+      $('#app_content').removeClass('span7').addClass('span10');
+    }
   },
 
   doShowManage: function(guid, success, fail, is_name, intermediate) {
@@ -221,19 +241,27 @@ ManageappsTabManager = Tab.Manager.extend({
       is_app_name = true;
     }
     $fw.client.model.App.read(guid, function(result) {
-      console.log('app read result > ' + JSON.stringify(result));
       if (result.app && result.inst) {
         var inst = result.inst;
-        
+
         // set current app details
         self.setSelectedApp(result.app, inst);
 
         // update breadcrumb with app title, and finally show it
         self.updateAppTitleInCrumbs();
 
+        var fh3_migrated = result.app.migrated;
+
+        // If FH3 Migrated App, hide
+        if (fh3_migrated) {
+          self.toggleMigrationView(true);
+        } else {
+          self.toggleMigrationView(false);
+        }
+
         // show manage apps layout
         $('#manage_apps_layout').show();
-        
+
         // necessary to update the details section with this apps details to ensure any 'udpate' calls outside of the
         // details screen work e.g. push notifications save, preview device save
         self.getController('apps.details.controller').updateDetails();
@@ -243,77 +271,77 @@ ManageappsTabManager = Tab.Manager.extend({
 
 
         var postFn = function() {
-            var template_mode = $fw.data.get('template_mode');
-            if (template_mode) {
-              // FIXME: breadcrumb when in template app should be 'Templates'
-              // make sure correct button is active on list apps layout
-              // $('#list_apps_buttons li').removeClass('ui-state-active');
-              // $('#list_apps_button_templates').addClass('ui-state-active');
-              // update state information
-              $fw.state.set('apps_tab_options', 'selected', 'template');
-              $fw.state.set('template', 'id', inst.guid);
-              $fw.client.tab.apps.listapps.getController('apps.templates.controller').applyPreRestrictions();
-            } else {
-              // make sure correct button is active on list apps layout
-              // $('#list_apps_buttons li').removeClass('ui-state-active');
-              // $('#list_apps_button_my_apps').addClass('ui-state-active');
-              // update state information
-              $fw.state.set('apps_tab_options', 'selected', 'app');
-              $fw.state.set('app', 'id', inst.guid);
-              $fw.client.tab.apps.listapps.getController('apps.templates.controller').removePreRestrictions();
-            }
+          var template_mode = $fw.data.get('template_mode');
+          if (template_mode) {
+            // FIXME: breadcrumb when in template app should be 'Templates'
+            // make sure correct button is active on list apps layout
+            // $('#list_apps_buttons li').removeClass('ui-state-active');
+            // $('#list_apps_button_templates').addClass('ui-state-active');
+            // update state information
+            $fw.state.set('apps_tab_options', 'selected', 'template');
+            $fw.state.set('template', 'id', inst.guid);
+            $fw.client.tab.apps.listapps.getController('apps.templates.controller').applyPreRestrictions();
+          } else {
+            // make sure correct button is active on list apps layout
+            // $('#list_apps_buttons li').removeClass('ui-state-active');
+            // $('#list_apps_button_my_apps').addClass('ui-state-active');
+            // update state information
+            $fw.state.set('apps_tab_options', 'selected', 'app');
+            $fw.state.set('app', 'id', inst.guid);
+            $fw.client.tab.apps.listapps.getController('apps.templates.controller').removePreRestrictions();
+          }
 
-            // reclick the currenlty active controller item, if it's visible,
-            // otherwise click the first visible item
-            var itemToClick = $('.manageapps_nav_list li.active:visible a');
-            if (itemToClick.length === 0) {
-              itemToClick = $('.manageapps_nav_list li:visible a:eq(0)');
-            }
-            itemToClick.trigger('click');
+          // reclick the currenlty active controller item, if it's visible,
+          // otherwise click the first visible item
+          var itemToClick = $('.manageapps_nav_list li.active:visible a');
+          if (itemToClick.length === 0) {
+            itemToClick = $('.manageapps_nav_list li:visible a:eq(0)');
+          }
+          itemToClick.trigger('click');
 
-            // Check if the current app is a scm based app, and if crud operations are allowed
-            var is_scm = self.isScmApp();
-            var scmCrudEnabled = $fw.getClientProp('scmCrudEnabled') == "true";
-            console.log('scmCrudEnabled = ' + scmCrudEnabled);
-            if (is_scm) {
-              console.log('scm based app, applying restrictions');
-              self.enableScmApp(scmCrudEnabled);
-            } else {
-              console.log('non-scm based app, removing restrictions');
-              self.disableScmApp();
-            }
+          // Check if the current app is a scm based app, and if crud operations are allowed
+          var is_scm = self.isScmApp();
+          var scmCrudEnabled = $fw.getClientProp('scmCrudEnabled') == "true";
+          console.log('scmCrudEnabled = ' + scmCrudEnabled);
+          if (is_scm) {
+            console.log('scm based app, applying restrictions');
+            self.enableScmApp(scmCrudEnabled);
+          } else {
+            console.log('non-scm based app, removing restrictions');
+            self.disableScmApp();
+          }
 
-            // Check if the current app is a Node.js one
-            if (self.isNodeJsApp()) {
-              console.log('Node.js based app, applying changes');
-              // TODO CHECK I can remove this call and method
-              self.enableNodejsAppMode();
+          // Check if the current app is a Node.js one
+          if (self.isNodeJsApp()) {
+            console.log('Node.js based app, applying changes');
+            // TODO CHECK I can remove this call and method
+            self.enableNodejsAppMode();
 
-              // Show Node cloud logo
-              $('#cloud_logo').removeClass().addClass('node').unbind().bind('click', function() {
-                window.open('http://nodejs.org/', '_blank');
-              });
-            } else {
-              console.log('Rhino based app, applying changes');
-              // TODO CHECK I can remove this call and method
-              self.enableRhinoAppMode();
+            // Show Node cloud logo
+            $('#cloud_logo').removeClass().addClass('node').unbind().bind('click', function() {
+              window.open('http://nodejs.org/', '_blank');
+            });
+          } else {
+            console.log('Rhino based app, applying changes');
+            // TODO CHECK I can remove this call and method
+            self.enableRhinoAppMode();
 
-              // Show Rhino cloud logo
-              $('#cloud_logo').removeClass().addClass('rhino').unbind().bind('click', function() {
-                window.open('http://www.mozilla.org/rhino/', '_blank');
-              });
-            }
+            // Show Rhino cloud logo
+            $('#cloud_logo').removeClass().addClass('rhino').unbind().bind('click', function() {
+              window.open('http://www.mozilla.org/rhino/', '_blank');
+            });
+          }
 
-            if (template_mode) {
-              $fw.client.tab.apps.listapps.getController('apps.templates.controller').applyPostRestrictions();
-            } else {
-              $fw.client.tab.apps.listapps.getController('apps.templates.controller').removePostRestrictions();
-            }
+          if (template_mode) {
+            $fw.client.tab.apps.listapps.getController('apps.templates.controller').applyPostRestrictions();
+          } else {
+            $fw.client.tab.apps.listapps.getController('apps.templates.controller').removePostRestrictions();
+          }
 
-            if ($.isFunction(success)) {
-              success();
-            }
-          };
+          if ($.isFunction(success)) {
+            success();
+          }
+        };
         if ($.isFunction(intermediate)) {
           intermediate(postFn);
         } else {
@@ -437,8 +465,11 @@ ManageappsTabManager = Tab.Manager.extend({
     url = this.getTriggerUrl();
     //$fw.client.dialog.info.flash($fw.client.lang.getLangString('scm_update_started'), 2500);
     var gitPullProgressContainer = progress_ui || $('.git_pull_progress').clone();
-    if(!progress_ui){
-      $(gitPullProgressContainer).modal({backdrop: "static", keyboard: false});
+    if (!progress_ui) {
+      $(gitPullProgressContainer).modal({
+        backdrop: "static",
+        keyboard: false
+      });
     }
     var progress = 0;
     var self = this;
@@ -473,7 +504,7 @@ ManageappsTabManager = Tab.Manager.extend({
             if (res.progress) {
               progress = res.progress;
             } else {
-              if(res.log && res.log.length > 0){
+              if (res.log && res.log.length > 0) {
                 progress += 2;
               }
             }
@@ -525,17 +556,17 @@ ManageappsTabManager = Tab.Manager.extend({
     });
   },
 
-  resetProgress: function(sub_container){
-    if($(sub_container).is(".progress-step")){
+  resetProgress: function(sub_container) {
+    if ($(sub_container).is(".progress-step")) {
       proto.ProgressDialog.resetBarAndLog(sub_container);
     } else {
       $('.progress', sub_container).removeClass('progress-danger progress-success').addClass('progress-striped');
     }
-    
+
   },
 
-  updateProgress: function (value, sub_container) {
-    if($(sub_container).is(".progress-step")){
+  updateProgress: function(value, sub_container) {
+    if ($(sub_container).is(".progress-step")) {
       proto.ProgressDialog.setProgress(sub_container, value);
     } else {
       var progress_el = $('.progress', sub_container);
@@ -544,11 +575,11 @@ ManageappsTabManager = Tab.Manager.extend({
     }
   },
 
-  updateProgressLog: function (log, sub_container) {
+  updateProgressLog: function(log, sub_container) {
     // allow for string or array of strings
     log = 'string' === typeof log ? [log] : log;
-    if($(sub_container).is(".progress-step")){
-      for(var i=0;i<log.length;i++){
+    if ($(sub_container).is(".progress-step")) {
+      for (var i = 0; i < log.length; i++) {
         proto.ProgressDialog.append(sub_container, log[i]);
       }
     } else {
@@ -566,23 +597,23 @@ ManageappsTabManager = Tab.Manager.extend({
         progress_log_el.scrollTop('10000000');
       }
     }
-    
+
   },
 
-  triggerScmFinished: function(sub_container){
-    if($(sub_container).is(".progress-step")){
+  triggerScmFinished: function(sub_container) {
+    if ($(sub_container).is(".progress-step")) {
       //do nothing
     } else {
       $('.progress', sub_container).removeClass('progress-striped').addClass('progress-success');
       this.showScmCloseBtn(sub_container);
-      setTimeout(function(){
+      setTimeout(function() {
         $('.close', sub_container).trigger("click");
       }, 1000);
     }
   },
 
-  triggerScmFailed: function(sub_container){
-    if($(sub_container).is(".progress-step")){
+  triggerScmFailed: function(sub_container) {
+    if ($(sub_container).is(".progress-step")) {
       //do nothing
     } else {
       $('.progress', sub_container).removeClass('progress-striped').addClass('progress-danger');
@@ -590,16 +621,16 @@ ManageappsTabManager = Tab.Manager.extend({
     }
   },
 
-  showScmCloseBtn: function(sub_container){
-    if($(sub_container).is(".progress-step")){
+  showScmCloseBtn: function(sub_container) {
+    if ($(sub_container).is(".progress-step")) {
       //do nothing
     } else {
-      $('.close', sub_container).removeClass("hidden").bind("click", function(e){
+      $('.close', sub_container).removeClass("hidden").bind("click", function(e) {
         e.preventDefault();
         //$(sub_container).on("hidden", $(sub_container).remove());
         $(sub_container).modal('hide');
-        $(sub_container).on("hidden", function(){
-          setTimeout(function(){
+        $(sub_container).on("hidden", function() {
+          setTimeout(function() {
             $(sub_container).remove();
           }, 1000);
         });

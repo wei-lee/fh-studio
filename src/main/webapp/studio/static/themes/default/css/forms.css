@@ -457,16 +457,6 @@ Improved formbuilder.js styling - TODO: Should this be applied to CMS Also?
 .appforms .apppreview {
 }
 
-/*
- Hide extra preview controls we don't want
- */
-.appforms .preview_area #scale,
-.appforms .preview_area #orientation,
-.appforms .preview_area #device,
-.appforms .preview_area .preview_actions {
-//  display: none;
-}
-
 .appforms .super_list_row .subitem {
     padding: 0px;
 }
@@ -706,12 +696,6 @@ Improved formbuilder.js styling - TODO: Should this be applied to CMS Also?
     height:25px;
 }
 
-.themeedit .colorRow {
-//  width: 25%;
-//  text-align: center;
-//  display: inline-block;
-}
-
 .themeedit .themesInnerContainer .fontrow label, .themeedit .themesInnerContainer .borderrow label {
     display: inline-block;
     width: 220px;
@@ -853,7 +837,7 @@ padding:0;
 
 /*
   Bootstrap overrides that may not be appropriate for nGUI:
-    //TODO: Button styles...
+  TODO: Button styles...
  */
 #forms_container .btn,
 #forms_container .btn-group .btn.btn-primary,
@@ -1174,7 +1158,6 @@ Improved formbuilder.js styling - TODO: Should this be applied to CMS Also?
     width: 100%;
     font-family: inherit;
     font-size: 1.2em;
-//  margin-left: 40px;
     vertical-align: middle;
 }
 
