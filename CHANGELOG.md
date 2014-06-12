@@ -1,5 +1,8 @@
 #Component: fh-studio
 
+## 3.19.2 - 2014-06-30 - IR229 - Niall Donnelly
+
+* 7366 - Updated js-sdk for ticket 7366_mbaasURL_saved_in_config
 
 ## 3.19.1 - 2014-05-30 - IR228 - Wei Li
 * 7259 - WP OTA Support
