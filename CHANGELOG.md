@@ -1,7 +1,10 @@
 #Component: fh-studio
 
-## 3.19.2 - 2014-06-30 - IR229 - Niall Donnelly
 
+## 3.19.3 - 2014-06-17 - IR230 - Wei Li
+* 7449 & 7457 - Update JS SDK and Android SDK to the latest version
+
+## 3.19.2 - 2014-06-30 - IR229 - Niall Donnelly
 * 7366 - Updated js-sdk for ticket 7366_mbaasURL_saved_in_config
 
 ## 3.19.1 - 2014-05-30 - IR228 - Wei Li
