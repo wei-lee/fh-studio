@@ -1,3 +1,4 @@
+nb-build.xml
 coverage-cobertura
 coverage.json
 coverage
@@ -25,3 +26,4 @@ TAGS
 hs_err_pid12896.log hs_err_pid2943.log
 _SpecRunner.html
 .ant-targets-build.xml
+nbproject

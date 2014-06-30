@@ -1,5 +1,7 @@
 #Component: fh-studio
 
+## 3.19.4 - 2014-06-30 - IR231 - Jason Madigan
+* 7468 - Updating JS SDK - Admin calls fail in the preview
 
 ## 3.19.3 - 2014-06-17 - IR230 - Wei Li
 * 7449 & 7457 - Update JS SDK and Android SDK to the latest version
