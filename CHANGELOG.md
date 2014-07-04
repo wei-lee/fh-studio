@@ -1,7 +1,10 @@
 #Component: fh-studio
 
-## 3.19.6 - 2014-07-04 - IR231 - Niall Donnelly
+## 3.20.1 - 2014-07-04 - IR231 - Niall Donnelly
 * 7569 update js-sdk related to ticket 7569
+
+## 3.20.0 - 2014-07-03 - IR231 - Jason Madigan
+* 7549 - Detect embed apps during FH2 migration
 
 ## 3.19.5 - 2014-07-02 - IR231 - Niall Donnelly
 * 7550 - fix signature download in js-sdk
