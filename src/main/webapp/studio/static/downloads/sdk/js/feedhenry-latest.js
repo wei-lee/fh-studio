@@ -8529,7 +8529,7 @@ module.exports = {
 },{"./fhparams":31,"./logger":37,"./queryMap":39,"JSON":3}],27:[function(_dereq_,module,exports){
 module.exports = {
   "boxprefix": "/box/srv/1.1/",
-  "sdk_version": "2.1.0-123",
+  "sdk_version": "2.1.1-129",
   "config_js": "fhconfig.json",
   "INIT_EVENT": "fhinit",
   "INTERNAL_CONFIG_LOADED_EVENT": "internalfhconfigloaded",
@@ -16228,7 +16228,7 @@ appForm.models = function(module) {
 
       for(var formFieldIndex = 0; formFieldIndex < formFields.length; formFieldIndex++){
         var formFieldEntry = formFields[formFieldIndex].fieldId || {};
-        if(formFieldEntry.type === 'file' || formFieldEntry.type === 'photo'){
+        if(formFieldEntry.type === 'file' || formFieldEntry.type === 'photo'  || formFieldEntry.type === 'signature'){
           if(formFieldEntry._id){
             formFieldIds.push(formFieldEntry._id);
           }
@@ -20979,4 +20979,3 @@ function rulesEngine (formDef) {
 
 //this is partial file which define the end of closure
 })(window || module.exports);
-
