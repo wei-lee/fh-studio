@@ -8529,7 +8529,7 @@ module.exports = {
 },{"./fhparams":31,"./logger":37,"./queryMap":39,"JSON":3}],27:[function(_dereq_,module,exports){
 module.exports = {
   "boxprefix": "/box/srv/1.1/",
-  "sdk_version": "2.1.2-133",
+  "sdk_version": "2.1.2-137",
   "config_js": "fhconfig.json",
   "INIT_EVENT": "fhinit",
   "INTERNAL_CONFIG_LOADED_EVENT": "internalfhconfigloaded",
@@ -15690,6 +15690,7 @@ appForm.models = function(module) {
           });
         } else {
           $fh.forms.log.d("Submission submit: validateForm. Completed Validation error", res);
+          that.emit('validationerror', validation);
           cb('Validation error');
         }
       }  
