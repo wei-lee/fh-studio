@@ -8529,7 +8529,7 @@ module.exports = {
 },{"./fhparams":31,"./logger":37,"./queryMap":39,"JSON":3}],27:[function(_dereq_,module,exports){
 module.exports = {
   "boxprefix": "/box/srv/1.1/",
-  "sdk_version": "2.1.1-129",
+  "sdk_version": "2.1.2-131",
   "config_js": "fhconfig.json",
   "INIT_EVENT": "fhinit",
   "INTERNAL_CONFIG_LOADED_EVENT": "internalfhconfigloaded",
@@ -15622,6 +15622,29 @@ appForm.models = function(module) {
         var ruleEngine = form.getRuleEngine();
         ruleEngine.checkRules(submission, cb);
       }
+    });
+  };
+
+  /**
+   * Validate the submission only.
+   */
+  Submission.prototype.validateSubmission = function(cb){
+    var self = this;
+    self.getForm(function(err, form) {
+      if (err) {
+        $fh.forms.log.e("Submission submit: Error getting form ", err);
+      }
+      var ruleEngine = form.getRuleEngine();
+      var submission = self.getProps();
+      ruleEngine.validateForm(submission, function(err, res) {
+        var validation = res.validation;
+        if (validation.valid) {
+          return cb(null, validation.valid);
+        } else {
+          cb(null, validation.valid);
+          self.emit('validationerror', validation);
+        }
+      });
     });
   };
   /**

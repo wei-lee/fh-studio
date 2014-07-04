@@ -1,5 +1,8 @@
 #Component: fh-studio
 
+## 3.19.6 - 2014-07-04 - IR231 - Niall Donnelly
+* 7569 update js-sdk related to ticket 7569
+
 ## 3.19.5 - 2014-07-02 - IR231 - Niall Donnelly
 * 7550 - fix signature download in js-sdk
 
