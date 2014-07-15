@@ -1,5 +1,8 @@
 #Component: fh-studio
 
+## 3.21.0 - 2014-07-15 - IR232 - Niall Donnelly
+* 7414 Updated js-sdk related to ticket 7414. Forms rendering.
+
 ## 3.20.1 - 2014-07-04 - IR231 - Niall Donnelly
 * 7569 update js-sdk related to ticket 7569
 
