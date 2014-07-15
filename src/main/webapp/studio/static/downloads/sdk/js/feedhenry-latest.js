@@ -6777,8 +6777,8 @@ function hasOwnProperty(obj, prop) {
   return Object.prototype.hasOwnProperty.call(obj, prop);
 }
 
-}).call(this,_dereq_("/mnt/ebs1/workspace/fh-js-sdk_release/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/isBuffer":6,"/mnt/ebs1/workspace/fh-js-sdk_release/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":11,"inherits":10}],8:[function(_dereq_,module,exports){
+}).call(this,_dereq_("/mnt/ebs1/workspace/fh-js-sdk_beta/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./support/isBuffer":6,"/mnt/ebs1/workspace/fh-js-sdk_beta/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":11,"inherits":10}],8:[function(_dereq_,module,exports){
 (function (global){
 /*global window, global*/
 var util = _dereq_("util")
@@ -7015,10 +7015,7 @@ EventEmitter.prototype.addListener = function(type, listener) {
                     'leak detected. %d listeners added. ' +
                     'Use emitter.setMaxListeners() to increase limit.',
                     this._events[type].length);
-      if (typeof console.trace === 'function') {
-        // not supported in IE 10
-        console.trace();
-      }
+      console.trace();
     }
   }
 
@@ -7256,7 +7253,7 @@ process.chdir = function (dir) {
 module.exports=_dereq_(6)
 },{}],13:[function(_dereq_,module,exports){
 module.exports=_dereq_(7)
-},{"./support/isBuffer":12,"/mnt/ebs1/workspace/fh-js-sdk_release/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":11,"inherits":10}],14:[function(_dereq_,module,exports){
+},{"./support/isBuffer":12,"/mnt/ebs1/workspace/fh-js-sdk_beta/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":11,"inherits":10}],14:[function(_dereq_,module,exports){
 /*
  * loglevel - https://github.com/pimterry/loglevel
  *
@@ -8529,7 +8526,7 @@ module.exports = {
 },{"./fhparams":31,"./logger":37,"./queryMap":39,"JSON":3}],27:[function(_dereq_,module,exports){
 module.exports = {
   "boxprefix": "/box/srv/1.1/",
-  "sdk_version": "2.1.2-137",
+  "sdk_version": "2.2.0-102",
   "config_js": "fhconfig.json",
   "INIT_EVENT": "fhinit",
   "INTERNAL_CONFIG_LOADED_EVENT": "internalfhconfigloaded",
@@ -15213,10 +15210,10 @@ appForm.models = function(module) {
         if (sentSubmissions.length > maxSent) {
             $fh.forms.log.d("Submissions clearSentSubmission pruning sentSubmissions.length>maxSent");
             sentSubmissions = sentSubmissions.sort(function(a, b) {
-                if (a.submittedDate < b.submittedDate) {
-                    return -1;
-                } else {
+                if (Date(a.submittedDate) < Date(b.submittedDate)) {
                     return 1;
+                } else {
+                    return -1;
                 }
             });
             var toBeRemoved = [];
@@ -15310,7 +15307,8 @@ appForm.models = function(module) {
             'submissionStartedTimestamp',
             'submittedDate',
             'submissionId',
-            'saveDate'
+            'saveDate',
+            'uploadStartDate'
         ];
         var data = submission.getProps();
         var rtn = {};
@@ -15398,11 +15396,12 @@ appForm.models = function(module) {
 
         var status = params.status;
         var formId = params.formId;
+        var sortField = params.sortField || "createDate";
 
-        var submissions = this.get("submissions");
+        var submissions = this.get("submissions", []);
         var rtn = [];
         for (var i = 0; i < submissions.length; i++) {
-            if (submissions[i].status === status) {
+            if (status.indexOf(submissions[i].status) > -1) {
                 if (formId != null) {
                     if (submissions[i].formId === formId) {
                         rtn.push(submissions[i]);
@@ -15413,6 +15412,15 @@ appForm.models = function(module) {
 
             }
         }
+
+        rtn = rtn.sort(function(a, b) {
+            if (Date(a[sortField]) < Date(b[sortField])) {
+                return -1;
+            } else {
+                return 1;
+            }
+        });
+
         return rtn;
     };
     /**
@@ -15473,23 +15481,24 @@ appForm.models = function(module) {
     ],
     'pending': [
       'inprogress',
-      'error'
+      'error',
+      'draft'
     ],
     'inprogress': [
-      'submitted',
       'pending',
       'error',
       'inprogress',
-      'downloaded'
+      'downloaded',
+      'queued'
     ],
     'submitted': [],
     'error': [
       'draft',
       'pending',
-      'inprogress',
       'error'
     ],
-    'downloaded' : []
+    'downloaded' : [],
+    'queued' : ['error', 'submitted']
   };
 
   function newInstance(form, params) {
@@ -15755,10 +15764,33 @@ appForm.models = function(module) {
     self.set('submittedDate', appForm.utils.getTime());
     self.changeStatus(targetStatus, function(err) {
       if (err) {
+        $fh.forms.log.e("Error setting submitted status " + err);
         cb(err);
       } else {
+        $fh.forms.log.d("Submitted status set for submission " + self.get('submissionId') + " with localId " + self.getLocalId());
         self.emit('submitted', self.get('submissionId'));
         cb(null, null);
+      }
+    });
+  };
+  Submission.prototype.queued = function(cb){
+    var self = this;
+    if(self.isDownloadSubmission()){
+      var errMsg = "Downloaded submissions should not call queued function.";
+      $fh.forms.log.e(errMsg);
+      return cb(errMsg);
+    }
+
+     var targetStatus = 'queued';
+     self.set('queuedDate', appForm.utils.getTime());
+     self.changeStatus(targetStatus, function(err) {
+      if (err) {
+        $fh.forms.log.e("Error setting queued status " + err);
+        cb(err);
+      } else {
+        $fh.forms.log.d("Queued status set for submission " + self.get('submissionId') + " with localId " + self.getLocalId());
+        self.emit('queued', self.get('submissionId'));
+        cb(null, self);
       }
     });
   };
@@ -15770,8 +15802,10 @@ appForm.models = function(module) {
     that.set('downloadedDate', appForm.utils.getTime());
     that.changeStatus(targetStatus, function(err) {
       if (err) {
+        $fh.forms.log.e("Error setting downloaded status " + err);
         cb(err);
       } else {
+        $fh.forms.log.d("Downloaded status set for submission " + self.get('submissionId') + " with localId " + self.getLocalId());
         that.emit('downloaded', that.get('submissionId'));
         cb(null, that);
       }
@@ -15827,7 +15861,6 @@ appForm.models = function(module) {
           cb(null, ut);
         }
       });
-
     } else {
       return cb("Invalid Status to upload a form submission.");
     }
@@ -16441,7 +16474,7 @@ appForm.models = function (module) {
     return this.get('_id', '');
   };
   Field.prototype.getName = function () {
-    return this.get('name', 'unknown name');
+    return this.get('name', 'unknown');
   };
   Field.prototype.getHelpText = function () {
     return this.get('helpText', '');
@@ -16869,17 +16902,19 @@ appForm.models = function (module) {
 
       if(insertSectionBreak && i === 0){ //Adding a first section.
         currentSection = "sectionBreak" + i;
-        sectionList[currentSection] = sectionList[currentSection] ? sectionList[currentSection] : [];
+        sectionList[currentSection] = sectionList[currentSection] ? sectionList[currentSection] : {fields: []};
+        sectionList[currentSection].title = "Section " + (i+1);
       }
 
       if(currentSection !== null && fieldModel.getType() !== "sectionBreak"){
-        sectionList[currentSection].push(fieldModel);
+        sectionList[currentSection].fields.push(fieldModel);
       }
 
       if(fieldModel.getType() === "sectionBreak"){
         currentSection = "sectionBreak" + i;
-        sectionList[currentSection] = sectionList[currentSection] ? sectionList[currentSection] : [];
-        sectionList[currentSection].push(fieldModel);
+        sectionList[currentSection] = sectionList[currentSection] ? sectionList[currentSection] : {fields: []};
+        sectionList[currentSection].title = fieldModel.get('name', "Section " + (i+1));
+        sectionList[currentSection].fields.push(fieldModel);
       }
     }
 
@@ -16944,37 +16979,44 @@ appForm.models = function (module) {
     var utId;
     var uploadTask = null;
     var self = this;
-    if (submissionModel.getUploadTaskId()) {
-      utId = submissionModel.getUploadTaskId();
-    } else {
-      uploadTask = appForm.models.uploadTask.newInstance(submissionModel);
-      utId = uploadTask.getLocalId();
-    }
-    self.push(utId);
-    if (!self.timer) {
-      $fh.forms.log.d("Starting timer for uploadManager");
-      self.start();
-    }
-    if (uploadTask) {
-      uploadTask.saveLocal(function (err) {
-        if (err) {
-          $fh.forms.log.e(err);
+
+    self.checkOnlineStatus(function(){
+      if($fh.forms.config.isOnline()){
+        if (submissionModel.getUploadTaskId()) {
+          utId = submissionModel.getUploadTaskId();
+        } else {
+          uploadTask = appForm.models.uploadTask.newInstance(submissionModel);
+          utId = uploadTask.getLocalId();
         }
-        self.saveLocal(function (err) {
-          if (err) {
-            $fh.forms.log.e("Error saving upload manager: " + err);
-          }
-          cb(null, uploadTask);
-        });
-      });
-    } else {
-      self.saveLocal(function (err) {
-        if (err) {
-          $fh.forms.log.e("Error saving upload manager: " + err);
+        self.push(utId);
+        if (!self.timer) {
+          $fh.forms.log.d("Starting timer for uploadManager");
+          self.start();
         }
-        self.getTaskById(utId, cb);
-      });
-    }
+        if (uploadTask) {
+          uploadTask.saveLocal(function (err) {
+            if (err) {
+              $fh.forms.log.e(err);
+            }
+            self.saveLocal(function (err) {
+              if (err) {
+                $fh.forms.log.e("Error saving upload manager: " + err);
+              }
+              cb(null, uploadTask);
+            });
+          });
+        } else {
+          self.saveLocal(function (err) {
+            if (err) {
+              $fh.forms.log.e("Error saving upload manager: " + err);
+            }
+            self.getTaskById(utId, cb);
+          });
+        }
+      } else {
+        return cb("Working offline cannot submit form.");
+      }
+    });
   };
 
   /**
@@ -17376,6 +17418,18 @@ appForm.models = function (module) {
   UploadTask.prototype.isStarted = function () {
     return this.getCurrentTask() === null ? false : true;
   };
+
+
+  UploadTask.prototype.setSubmissionQueued = function(cb){
+    var self = this;
+    self.submissionModel(function(err, submission){
+      if(err){
+        return cb(err);
+      }
+
+      submission.queued(cb);
+    });
+  };
   /**
    * upload/download form submission
    * @param  {Function} cb [description]
@@ -17395,14 +17449,17 @@ appForm.models = function (module) {
         // form data submitted successfully.
         formSub.lastUpdate = appForm.utils.getTime();
         self.set('submissionId', submissionId);
-        self.increProgress();
-        self.saveLocal(function (err) {
-          if (err) {
-            $fh.forms.log.e("Error saving uploadTask to local storage" + err);
-          }
+
+        self.setSubmissionQueued(function(err){
+          self.increProgress();
+          self.saveLocal(function (err) {
+            if (err) {
+              $fh.forms.log.e("Error saving uploadTask to local storage" + err);
+            }
+          });
+          self.emit('progress', self.getProgress());
+          return cb(null);
         });
-        self.emit('progress', self.getProgress());
-        return cb(null);
       }
     }
 
@@ -17785,7 +17842,7 @@ appForm.models = function (module) {
             cb(err);
           } else {
             var status = submission.get('status');
-            if (status !== 'inprogress' && status !== 'submitted' && status !== 'downloaded') {
+            if (status !== 'inprogress' && status !== 'submitted' && status !== 'downloaded' && status !== 'queued') {
               $fh.forms.log.e('Submission status is incorrect. Upload task should be started by submission object\'s upload method.' + status);
               cb('Submission status is incorrect. Upload task should be started by submission object\'s upload method.');
             } else {
@@ -18127,37 +18184,7 @@ appForm.models = (function(module) {
     var finalMsg = dateStr + " " + levelString.toUpperCase() + " " + msg;
     return finalMsg;
   };
-  Log.prototype.getPolishedLogs = function() {
-    var arr = [];
-    var logs = this.getLogs();
-    var patterns = [{
-      reg: /^.+\sERROR\s.*/,
-      color: $fh.forms.config.get('color_error') || "#FF0000"
-    }, {
-      reg: /^.+\sWARNING\s.*/,
-      color: $fh.forms.config.get('color_warning') || "#FF9933"
-    }, {
-      reg: /^.+\sLOG\s.*/,
-      color: $fh.forms.config.get('color_log') || "#009900"
-    }, {
-      reg: /^.+\sDEBUG\s.*/,
-      color: $fh.forms.config.get('color_debug') || "#3366FF"
-    }, {
-      reg: /^.+\sUNKNOWN\s.*/,
-      color: $fh.forms.config.get('color_unknown') || "#000000"
-    }];
-    for (var i = 0; i < logs.length; i++) {
-      var log = logs[i];
-      for (var j = 0; j < patterns.length; j++) {
-        var p = patterns[j];
-        if (p.reg.test(log)) {
-          arr.unshift("<div style='color:" + p.color + ";'>" + log + "</div>");
-          break;
-        }
-      }
-    }
-    return arr;
-  };
+  
   Log.prototype.write = function(cb) {
     var self = this;
     self.isWriting = true;
@@ -18261,7 +18288,7 @@ appForm.api = function (module) {
     },
     "set" : function(key, val){
       var self = this;
-      if(!key || !val){
+      if(typeof(key) !== "string" || typeof(val) === "undefined" || val === null){
         return;
       }
 
@@ -18326,6 +18353,9 @@ appForm.api = function (module) {
     },
     "isStudioMode": function(){
       return formConfig.isStudioMode();
+    },
+    refresh: function(cb){
+      formConfig.refresh(true, cb);
     }
   };
 
