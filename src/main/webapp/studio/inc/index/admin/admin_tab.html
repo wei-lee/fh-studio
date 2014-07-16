@@ -15,7 +15,8 @@
               Users
             </a>
           </li>
-          <% if(studio.getProps().optBoolean("arm-auth-policy-enabled", false)) { %>
+
+          <% if(studio.getProps().optBoolean("arm-auth-policy-enabled", false) && studio.getProperty("nodejsEnabled").equals("true")) { %>
             <li>
               <a href="#" data-controller="admin.authpolicy.controller">
                 <i class="icon-key"></i>
@@ -25,7 +26,7 @@
           <% } %>
         <% } %>
 
-        <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER) && studio.getProps().optBoolean("deployment-targets-enabled", true) ) { %>
+        <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER) && studio.getProps().optBoolean("deployment-targets-enabled", true) && studio.getProperty("nodejsEnabled").equals("true")) { %>
           <li>
             <a href="#" data-controller="admin.deploytarget.controller" class="deploy_targets">
               <i class="icon-road"></i>
@@ -34,7 +35,7 @@
           </li>
         <%}%>
 
-        <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_ARM) || studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_USER_ADMIN)) { %>
+        <% if (studio.getProperty("nodejsEnabled").equals("true") && (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_ARM) || studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_USER_ADMIN)) ) { %>
           <li class="nav-header">Mobile App Management</li>
           <li>
             <a href="#" data-controller="admin.stores.controller">
@@ -49,10 +50,10 @@
             </a>
           </li>
           <li>
-              <a href="#" data-controller="admin.auditlogs.controller">
-                  <i class="icon-book"></i>
-                  Audit Log
-              </a>
+            <a href="#" data-controller="admin.auditlogs.controller">
+                <i class="icon-book"></i>
+                Audit Log
+            </a>
           </li>
 
           <li>
