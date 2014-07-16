@@ -43,9 +43,13 @@ String pageName = studio.getPageName();
     </li>
   <% } %>
 
+  <% if ( studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_ARM) || 
+          studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_USER_ADMIN) || 
+          (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER) && studio.getProps().optBoolean("deployment-targets-enabled", true) && studio.getProperty("nodejsEnabled").equals("true")) ) { %>
   <li class="admin-tab">
     <a id="admin_tab" href="#tabs-6">Admin</a>
   </li>
+  <% } %>
 
   <li class="account-tab">
     <a id="account_tab" href="#tabs-3">My Account</a>
@@ -76,7 +80,11 @@ String pageName = studio.getPageName();
     <%}%>
   <%}%>
 
-  <%@ include file="./admin/admin_tab.html" %>
+  <% if ( studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_ARM) || 
+          studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_USER_ADMIN) || 
+          (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER) && studio.getProps().optBoolean("deployment-targets-enabled", true) && studio.getProperty("nodejsEnabled").equals("true")) ) { %>
+    <%@ include file="./admin/admin_tab.html" %>
+  <% } %>
 
   <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_REPORTING)) { %>
     <%@ include file="./reporting/reporting_tab.html" %>
