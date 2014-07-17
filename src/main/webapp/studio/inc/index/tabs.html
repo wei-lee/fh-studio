@@ -29,25 +29,26 @@ String pageName = studio.getPageName();
     <% } %>
   <%}%>
 
-  <% if(studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_DEVADMIN)) {%>
+  <% if(studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_DEVADMIN) && studio.getProperty("nodejsEnabled").equals("true")) {%>
     <% if(studio.getProperty("cloudEnvironmentEnabled").equals("true")){ %>
     <li class="environments-tab">
         <a id="environments_tab" href="#tabs-7">Cloud Environments</a>
     </li>
     <%}%>
   <%}%>
-  
-
-  <% if(studio.getProperty("nodejsEnabled").equals("true")){ %>
-  <li class="admin-tab">
-    <a id="admin_tab" href="#tabs-6">Admin</a>
-  </li>
-  <%}%>
 
   <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_REPORTING)) { %>
     <li class="reporting-tab">
       <a id="reporting_tab" href="#tabs-5">Reporting</a>
     </li>
+  <% } %>
+
+  <% if ( studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_ARM) || 
+          studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_USER_ADMIN) || 
+          (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER) && studio.getProps().optBoolean("deployment-targets-enabled", true) && studio.getProperty("nodejsEnabled").equals("true")) ) { %>
+  <li class="admin-tab">
+    <a id="admin_tab" href="#tabs-6">Admin</a>
+  </li>
   <% } %>
 
   <li class="account-tab">
@@ -79,9 +80,11 @@ String pageName = studio.getPageName();
     <%}%>
   <%}%>
 
-  <% if(studio.getProperty("nodejsEnabled").equals("true")){ %>
+  <% if ( studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_ARM) || 
+          studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_USER_ADMIN) || 
+          (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER) && studio.getProps().optBoolean("deployment-targets-enabled", true) && studio.getProperty("nodejsEnabled").equals("true")) ) { %>
     <%@ include file="./admin/admin_tab.html" %>
-  <%}%>
+  <% } %>
 
   <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_REPORTING)) { %>
     <%@ include file="./reporting/reporting_tab.html" %>

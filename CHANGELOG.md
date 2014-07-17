@@ -1,8 +1,10 @@
 #Component: fh-studio
 
-## 3.20.2 - IR232 - 2014-07-17 - Niall Donnelly
-
+## 3.21.1 - IR232 - 2014-07-17 - Niall Donnelly
 * 7637 Updated js-sdk related to ticket 7637
+
+## 3.21.0 - 2014-07-16 - IR232 - Jason Madigan
+* 7628 - Show Admin tab for Rhino domains
 
 ## 3.20.1 - 2014-07-04 - IR231 - Niall Donnelly
 * 7569 update js-sdk related to ticket 7569
