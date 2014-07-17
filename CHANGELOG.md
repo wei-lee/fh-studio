@@ -1,5 +1,9 @@
 #Component: fh-studio
 
+## 3.20.2 - IR232 - 2014-07-17 - Niall Donnelly
+
+* 7637 Updated js-sdk related to ticket 7637
+
 ## 3.20.1 - 2014-07-04 - IR231 - Niall Donnelly
 * 7569 update js-sdk related to ticket 7569
 
