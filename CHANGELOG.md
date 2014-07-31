@@ -1,5 +1,8 @@
 #Component: fh-studio
 
+## 3.21.2 - IR233 - 2014-07-31 - Niall Donnelly
+* 7656 Updated js-sdk related to ticket 7656_fix_phonegap_app_crashing
+
 ## 3.21.1 - IR232 - 2014-07-17 - Niall Donnelly
 * 7637 Updated js-sdk related to ticket 7637
 
