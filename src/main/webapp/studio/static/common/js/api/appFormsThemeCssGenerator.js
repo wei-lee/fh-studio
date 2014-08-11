@@ -1492,8 +1492,5 @@ var themeCSSGenerator = function (themeJSON, styleStructure) {
   };
 };
 
-module.exports.themeCSSGenerator = themeCSSGenerator;
-
-
 
 App.forms.themeCSSGenerator = themeCSSGenerator;
