@@ -14705,7 +14705,8 @@ appForm.models = function(module) {
       "config_admin_user": true,
       "picture_source": "both",
       "saveToPhotoAlbum": true,
-      "encodingType": "jpeg"
+      "encodingType": "jpeg",
+      "sent_items_to_keep_list": [5, 10, 20, 30, 40, 50, 100]
     };
 
     for(var key in staticConfig){
@@ -14750,12 +14751,20 @@ appForm.models = function(module) {
     self.set('statusUrl', '/sys/info/ping');
   };
   Config.prototype.setOnline = function(){
+    var wasOnline = online;
     online = true;
-    this.emit('online');
+
+    if(!wasOnline){
+      this.emit('online');
+    }
   };
   Config.prototype.setOffline = function(){
+    var wasOnline = online;
     online = false;
-    this.emit('offline');
+
+    if(wasOnline){
+      this.emit('offline');  
+    }
   };
   Config.prototype.isOnline = function(){
     var self = this;
@@ -16053,7 +16062,7 @@ appForm.models = function(module) {
     this.set('errorMessage', errorMsg);
     var targetStatus = 'error';
     this.changeStatus(targetStatus, cb);
-    this.emit('submitted', errorMsg);
+    this.emit('error', errorMsg);
   };
   Submission.prototype.getStatus = function() {
     return this.get('status');
@@ -18175,11 +18184,7 @@ appForm.models = function (module) {
     var self = this;
     var submissionId = self.get('submissionId', null);
     self.set('completed', true);
-    self.saveLocal(function (err) {
-      if (err) {
-        $fh.forms.log.e("Error Clearing Upload Task");
-      }
-    });
+    
 
     function processUploadSuccess(cb){
       $fh.forms.log.d("processUploadSuccess Called");
@@ -18204,15 +18209,21 @@ appForm.models = function (module) {
       });
     }
 
-    if(self.isDownloadTask()){
-      processDownloadSuccess(function(err){
-        self.clearLocal(cb);
-      });
-    } else {
-      processUploadSuccess(function(err){
-        self.clearLocal(cb);
-      });
-    }
+    self.saveLocal(function (err) {
+      if (err) {
+        $fh.forms.log.e("Error Clearing Upload Task");
+      }
+
+      if(self.isDownloadTask()){
+        processDownloadSuccess(function(err){
+          self.clearLocal(cb);
+        });
+      } else {
+        processUploadSuccess(function(err){
+          self.clearLocal(cb);
+        });
+      }
+    });
   };
   /**
    * the upload task is failed. It will not complete the task but will set error with error returned.
@@ -18220,30 +18231,33 @@ appForm.models = function (module) {
    * @param  {Function} cb  [description]
    * @return {[type]}       [description]
    */
-  UploadTask.prototype.error = function (err, cb) {
+  UploadTask.prototype.error = function (uploadErrorMessage, cb) {
     var self = this;
-    this.set('error', err);
-    this.saveLocal(function (err) {
+    $fh.forms.log.e("Error uploading submission: ", uploadErrorMessage);
+    self.set('error', uploadErrorMessage);
+    self.saveLocal(function (err) {
       if (err) {
         $fh.forms.log.e('Upload task save failed: ' + err);
       }
-    });
-    this.submissionModel(function (_err, model) {
-      if (_err) {
-        cb(_err);
-      } else {
-        model.error(err, function (err) {
-          if(err){
-            $fh.forms.log.e("Error updating submission model to error status ", err);
-          }
-        });
-        self.clearLocal(function(err){
-          if(err){
-            $fh.forms.log.e("Error clearing upload task local storage: ", err);
-          }      
-        });
-        cb(err);
-      }
+
+      self.submissionModel(function (_err, model) {
+        if (_err) {
+          cb(_err);
+        } else {
+          model.setUploadTaskId(null);
+          model.error(uploadErrorMessage, function (err) {
+            if(err){
+              $fh.forms.log.e("Error updating submission model to error status ", err);
+            } 
+            self.clearLocal(function(err){
+              if(err){
+                $fh.forms.log.e("Error clearing upload task local storage: ", err);
+              }  
+              cb(err);    
+            });
+          });
+        }
+      });
     });
   };
   UploadTask.prototype.isFormCompleted = function () {
