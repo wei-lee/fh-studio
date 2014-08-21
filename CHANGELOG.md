@@ -1,5 +1,8 @@
 #Component: fh-studio
 
+## 3.23.0 - 2014-08-21 - IR234 - Niall Donnelly
+* 7821 Updated js-sdk related to multiple rule targets.
+
 ## 3.22.1 - 2014-08-18 - IR234 - Niall Donnelly
 * 7824 - Updated js-sdk related to ticket. 
 
