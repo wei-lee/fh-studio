@@ -8,7 +8,7 @@
     <div class="row-fluid">
       <ul class="nav nav-list span2 well admin_nav_list">
         <li class="nav-header">Administration</li>
-        <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_ARM) || studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_USER_ADMIN)) { %>
+        <% if (studio.hasPermission(com.feedhenry.studio.StudioBean.DOMAIN_USERS_WRITE)) { %>
           <li>
             <a href="#" data-controller="admin.users.controller">
               <i class="icon-user"></i>
@@ -26,7 +26,7 @@
           <% } %>
         <% } %>
 
-        <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER) && studio.getProps().optBoolean("deployment-targets-enabled", true) && studio.getProperty("nodejsEnabled").equals("true")) { %>
+        <% if (studio.hasPermission(com.feedhenry.studio.StudioBean.DEPLOY_POLICY_WRITE) && studio.getProps().optBoolean("deployment-targets-enabled", true) && studio.getProperty("nodejsEnabled").equals("true")) { %>
           <li>
             <a href="#" data-controller="admin.deploytarget.controller" class="deploy_targets">
               <i class="icon-road"></i>
@@ -35,7 +35,7 @@
           </li>
         <%}%>
 
-        <% if (studio.getProperty("nodejsEnabled").equals("true") && (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_ARM) || studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_USER_ADMIN)) ) { %>
+        <% if (studio.getProperty("nodejsEnabled").equals("true") && studio.hasPermission(com.feedhenry.studio.StudioBean.APP_STORE_WRITE)) { %>
           <li class="nav-header">Mobile App Management</li>
           <li>
             <a href="#" data-controller="admin.stores.controller">
@@ -130,7 +130,7 @@
                       </div>
                   </div>
 
-                  <% if(studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_CUSTOMERADMIN) || studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_RESELLERADMIN)) {%>
+                  <% if(studio.hasPermission(com.feedhenry.studio.StudioBean.CUSTOMER_ROLES_WRITE) || studio.hasPermission(com.feedhenry.studio.StudioBean.RESELLER_ROLES_WRITE)) {%>
                   <div class="control-group">
                       <label class="control-label">All Domains</label>
                       <div class="controls swap-select" id="create_user_customer_role_swap">
@@ -139,7 +139,7 @@
                   </div>
                   <%}%>
 
-                  <% if(studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_RESELLERADMIN)) {%>
+                  <% if(studio.hasPermission(com.feedhenry.studio.StudioBean.RESELLER_ROLES_WRITE)) {%>
                   <div class="control-group">
                       <label class="control-label">All Customers</label>
                       <div class="controls swap-select" id="create_user_reseller_role_swap">
@@ -216,7 +216,7 @@
                       </div>
                   </div>
 
-                  <% if(studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_CUSTOMERADMIN) || studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_RESELLERADMIN)) {%>
+                  <% if(studio.hasPermission(com.feedhenry.studio.StudioBean.CUSTOMER_ROLES_WRITE) || studio.hasPermission(com.feedhenry.studio.StudioBean.RESELLER_ROLES_WRITE)) {%>
                   <div class="control-group">
                       <label class="control-label">All Domains</label>
                       <div class="controls swap-select" id="update_user_customer_role_swap">
@@ -225,7 +225,7 @@
                   </div>
                   <%}%>
 
-                  <% if(studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_RESELLERADMIN)) {%>
+                  <% if(studio.hasPermission(com.feedhenry.studio.StudioBean.RESELLER_ROLES_WRITE)) {%>
                   <div class="control-group">
                       <label class="control-label">All Customers</label>
                       <div class="controls swap-select" id="update_user_reseller_role_swap">
@@ -300,7 +300,7 @@
                       </div>
                   </div>
 
-                  <% if(studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_CUSTOMERADMIN) || studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_RESELLERADMIN)) {%>
+                  <% if(studio.hasPermission(com.feedhenry.studio.StudioBean.CUSTOMER_ROLES_WRITE) || studio.hasPermission(com.feedhenry.studio.StudioBean.RESELLER_ROLES_WRITE)) {%>
                   <div class="control-group">
                       <label class="control-label">All Domains</label>
                       <div class="controls swap-select" id="import_user_customer_role_swap">
@@ -309,7 +309,7 @@
                   </div>
                   <%}%>
 
-                  <% if(studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_RESELLERADMIN)) {%>
+                  <% if(studio.hasPermission(com.feedhenry.studio.StudioBean.RESELLER_ROLES_WRITE)) {%>
                   <div class="control-group">
                       <label class="control-label">All Customers</label>
                       <div class="controls swap-select" id="import_user_reseller_role_swap">

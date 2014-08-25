@@ -12,12 +12,12 @@ String pageName = studio.getPageName();
   <li class="dashboard-tab">
     <a id="dashboard_tab" href="#tabs-4">Dashboard</a>
   </li>
-    <% if(studio.getProperty("appforms-enabled-feedhenry2").equals("true") && studio.hasFormsRole()){ %>
+    <% if(studio.getProperty("appforms-enabled-feedhenry2").equals("true") && studio.hasPermission(com.feedhenry.studio.StudioBean.FORM_READ)){ %>
     <li class="forms-tab">
         <a id="forms_tab" href="#tabs-8">Forms</a>
     </li>
     <% } %>
-  <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER)) { %>
+  <% if (studio.hasPermission(com.feedhenry.studio.StudioBean.PROJECT_WRITE)) { %>
     <li class="apps-tab">
       <a id="apps_tab" href="#tabs-1">Apps</a>
     </li>
@@ -29,7 +29,7 @@ String pageName = studio.getPageName();
     <% } %>
   <%}%>
 
-  <% if(studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_DEVADMIN) && studio.getProperty("nodejsEnabled").equals("true")) {%>
+  <% if(studio.hasPermission(com.feedhenry.studio.StudioBean.CLOUD_RESOURCE_WRITE) && studio.getProperty("nodejsEnabled").equals("true")) {%>
     <% if(studio.getProperty("cloudEnvironmentEnabled").equals("true")){ %>
     <li class="environments-tab">
         <a id="environments_tab" href="#tabs-7">Cloud Environments</a>
@@ -37,15 +37,14 @@ String pageName = studio.getPageName();
     <%}%>
   <%}%>
 
-  <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_REPORTING)) { %>
+  <% if (studio.hasPermission(com.feedhenry.studio.StudioBean.DOMAIN_ANALYTICS_READ)) { %>
     <li class="reporting-tab">
       <a id="reporting_tab" href="#tabs-5">Reporting</a>
     </li>
   <% } %>
 
-  <% if ( studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_ARM) || 
-          studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_USER_ADMIN) || 
-          (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER) && studio.getProps().optBoolean("deployment-targets-enabled", true) && studio.getProperty("nodejsEnabled").equals("true")) ) { %>
+  <% if ( studio.hasPermission(com.feedhenry.studio.StudioBean.DOMAIN_USERS_WRITE) || 
+          (studio.hasPermission(com.feedhenry.studio.StudioBean.PROJECT_WRITE) && studio.getProps().optBoolean("deployment-targets-enabled", true) && studio.getProperty("nodejsEnabled").equals("true")) ) { %>
   <li class="admin-tab">
     <a id="admin_tab" href="#tabs-6">Admin</a>
   </li>
@@ -59,11 +58,11 @@ String pageName = studio.getPageName();
 <div id="main_tabs_panels" class="ui-layout-content">
   <%@ include file="./dashboard/dashboard_tab.html" %>
 
-    <% if(studio.getProperty("appforms-enabled-feedhenry2").equals("true") && studio.hasFormsRole()){ %>
+    <% if(studio.getProperty("appforms-enabled-feedhenry2").equals("true") && studio.hasPermission(com.feedhenry.studio.StudioBean.FORM_READ)){ %>
         <jsp:include page="./forms/forms_tab.html" />
     <% } %>
 
-  <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER)) { %>
+  <% if (studio.hasPermission(com.feedhenry.studio.StudioBean.PROJECT_WRITE)) { %>
     <jsp:include page="./apps/apps_tab.html" />
 
 
@@ -73,20 +72,18 @@ String pageName = studio.getPageName();
     <% } %>
     
   <%}%>
-
-  <% if(studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_DEVADMIN)) {%>
+  <% if(studio.hasPermission(com.feedhenry.studio.StudioBean.CLOUD_RESOURCE_WRITE) {%>
     <% if(studio.getProperty("cloudEnvironmentEnabled").equals("true")){ %>
     <%@ include file="./cloud_environment/cloud_environment_tab.html" %>
     <%}%>
   <%}%>
 
-  <% if ( studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_ARM) || 
-          studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_USER_ADMIN) || 
-          (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER) && studio.getProps().optBoolean("deployment-targets-enabled", true) && studio.getProperty("nodejsEnabled").equals("true")) ) { %>
+  <% if ( studio.hasPermission(com.feedhenry.studio.StudioBean.DOMAIN_USERS_WRITE) || 
+          (studio.hasPermission(com.feedhenry.studio.StudioBean.PROJECT_WRITE) && studio.getProps().optBoolean("deployment-targets-enabled", true) && studio.getProperty("nodejsEnabled").equals("true")) ) { %>
     <%@ include file="./admin/admin_tab.html" %>
   <% } %>
 
-  <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_REPORTING)) { %>
+  <% if (studio.hasPermission(com.feedhenry.studio.StudioBean.DOMAIN_ANALYTICS_READ)) { %>
     <%@ include file="./reporting/reporting_tab.html" %>
   <% } %>
 
