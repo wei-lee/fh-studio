@@ -76,6 +76,17 @@ public class StudioBean {
   public static final String PROP_STUDIOVERSIONOPTION = "studioVersionOptionEnabled";
   public static final String PROP_STUDIOVERSION = "studioVersion";
   public static final String PROP_PLUGINS_ENABLED = "pluginsEnabled";
+  public static final String APP_STORE_WRITE = "cluster/reseller/customer/domain/app-store:write";
+  public static final String CLOUD_RESOURCE_WRITE = "cluster/reseller/customer/domain/cloud-resources:write";
+  public static final String CREDENTIAL_WRITE = "cluster/reseller/customer/domain/project/client-apps/credentials:write";
+  public static final String CUSTOMER_ROLES_WRITE = "cluster/reseller/customer/admin:write";
+  public static final String DEPLOY_POLICY_WRITE = "cluster/reseller/customer/domain/deploy-target:write";
+  public static final String DOMAIN_ANALYTICS_READ = "cluster/reseller/customer/domain/analytics:read";
+  public static final String DOMAIN_USERS_WRITE = "cluster/reseller/customer/domain/admin/user:write";
+  public static final String FORM_READ = "cluster/reseller/customer/domain/drag-and-drop-app/form:read";
+  public static final String PROJECT_READ = "cluster/reseller/customer/domain/project:read";
+  public static final String PROJECT_WRITE = "cluster/reseller/customer/domain/project:write";
+  public static final String RESELLER_ROLES_WRITE = "cluster/reseller/admin:write";
 
   public static final List<String> mAllowedActionRequest = new ArrayList<String>();
   private static ArrayList<String> sSchemeHeaders = new ArrayList<String>();

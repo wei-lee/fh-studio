@@ -72,7 +72,7 @@ String pageName = studio.getPageName();
     <% } %>
     
   <%}%>
-  <% if(studio.hasPermission(com.feedhenry.studio.StudioBean.CLOUD_RESOURCE_WRITE) {%>
+  <% if(studio.hasPermission(com.feedhenry.studio.StudioBean.CLOUD_RESOURCE_WRITE)) {%>
     <% if(studio.getProperty("cloudEnvironmentEnabled").equals("true")){ %>
     <%@ include file="./cloud_environment/cloud_environment_tab.html" %>
     <%}%>
