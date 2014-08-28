@@ -262,6 +262,10 @@ Handlebars.registerHelper('is', function() {
   }
 });
 
+Handlebars.registerHelper('createAdminFieldClass', function(adminOnly, options) {
+  return adminOnly ? "admin-field" : "user-field";
+});
+
 Handlebars.registerHelper('createFormLabel', function (fieldType, options){
 
   var ret='<span class="symbol">{content}<span class="icon {class}"></span></span>';

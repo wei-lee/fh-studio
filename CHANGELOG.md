@@ -1,5 +1,8 @@
 #Component: fh-studio
 
+## 3.24.0 - 2014-08-28 - IR235 - Niall Donnelly
+* 7822 - Updated submission handlebars template to include admin fields.
+
 ## 3.23.0 - 2014-08-21 - IR234 - Niall Donnelly
 * 7821 Updated js-sdk related to multiple rule targets.
 

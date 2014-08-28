@@ -9,7 +9,7 @@
 
           <table class="table table-striped">
             {{#each fields}}
-              <tr>
+              <tr class="{{#createAdminFieldClass adminOnly}}{{/createAdminFieldClass}}">
                 <td class="fieldlabel">{{#createFormLabel type}}{{/createFormLabel}} {{name}}:</td>
 
                 <td class="formfield">
