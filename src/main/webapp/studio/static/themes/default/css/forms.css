@@ -562,6 +562,10 @@ Improved formbuilder.js styling - TODO: Should this be applied to CMS Also?
     list-style: decimal;
 }
 
+.admin-field td.fieldlabel{
+  color: #ff191c;
+}
+
 
 /* FORM COLOR PICKER */
 .ui-colorpicker, .ui-dialog.ui-colorpicker {

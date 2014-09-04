@@ -1,7 +1,10 @@
 #Component: fh-studio
 
-## 3.23.1 - 2014-09-01 - IR235 - Jason Madigan
+## 3.24.1 - 2014-09-01 - IR235 - Jason Madigan
 * 7920 - Updating iOS SDK
+
+## 3.24.0 - 2014-08-28 - IR235 - Niall Donnelly
+* 7822 - Updated submission handlebars template to include admin fields.
 
 ## 3.23.0 - 2014-08-21 - IR234 - Niall Donnelly
 * 7821 - Updated js-sdk related to multiple rule targets.
