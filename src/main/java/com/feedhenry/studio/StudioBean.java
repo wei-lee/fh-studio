@@ -331,6 +331,30 @@ public class StudioBean {
     return proceed;
   }
 
+
+  /**
+   * Used by App Store to re-direct to https
+   * @param  pRequest  [description]
+   * @param  pResponse [description]
+   * @return           [description]
+   * @throws Exception [description]
+   */
+  public boolean checkStoreProtocol(HttpServletRequest pRequest, HttpServletResponse pResponse) throws Exception {
+    log.info("check store protocol");
+    String serverName = pRequest.getServerName();
+    String selectedProtocol = resolveScheme(pRequest);
+    String requiredProtocol = "https";
+
+    // Ensure that we are using the correct protocol (https by default);
+    if (!requiredProtocol.equals(selectedProtocol)) {
+      String redirect = requiredProtocol + "://" + serverName + "/store/";
+      log.info("requiredProtocol=" + requiredProtocol + ", selectedProtocol=" + selectedProtocol);
+      pResponse.sendRedirect(redirect);
+      return false;
+    }
+    return true;
+  }
+
   public String getPageName() {
     return mPageName;
   }
