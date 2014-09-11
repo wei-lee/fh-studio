@@ -2,6 +2,7 @@
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -30,6 +31,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -165,11 +167,6 @@ public class StudioBean {
 
     // Allow for domain being passed in request
     if (null == mDomain) {
-
-      // TODO: if studio is deployed to separate box than millicore, need to look at this logic again
-      String host = "127.0.0.1";// pRequest.getLocalName();
-      String endpoint = PROPS_ENDPOINT;
-      int port = pRequest.getLocalPort();
       String referer = scheme + "://" + pRequest.getServerName();
 
       // TODO: allow self-signed cert in development
@@ -178,44 +175,10 @@ public class StudioBean {
       // /usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/security/cacerts -storepass
       // changeit
 
-      String uri = scheme + "://" + host + ((port < 0 || port == 80 || port == 443) ? "" : ":" + port) + endpoint;
+      JSONObject myCoreProps = getCoreProps(pRequest, pResponse, scheme, loginCookie, referer);
 
-      // call studio props endpoint to get all properties
-      HttpClient client = new DefaultHttpClient();
-      HttpPost post = new HttpPost(uri);
-      post.setHeader("referer", referer);
-
-      // Send requestor's cookie if available
-      if (null != loginCookie) {
-        post.addHeader("Cookie", "feedhenry=" + loginCookie.getValue());
-      }
-
-      HttpResponse response = client.execute(post);
-      int statusCode = response.getStatusLine().getStatusCode();
-      
-      HttpEntity resEntity = response.getEntity();
-      StringBuilder sb = new StringBuilder();
-
-      if (resEntity != null) {
-        InputStreamReader iSR = new InputStreamReader(resEntity.getContent());
-        BufferedReader br = new BufferedReader(iSR);
-        String read = br.readLine();
-        try {
-          while (read != null) {
-            sb.append(read);
-            read = br.readLine();
-          }
-        } catch (Throwable e) {
-          proceed = false;
-          log.error("Got exception parsing data from props endpoint", e);
-            pResponse.sendError(500, "Error connecting to server. Please try again later.");
-        } finally {
-          br.close();
-          iSR.close();
-        }
-      }
-      
-      if (200 == statusCode) {
+      if (null != myCoreProps) {
+        mCoreProps = myCoreProps;
         /**
          * Support for multiple apps at / (e.g. fh-studio and fh-ngui)
          * Both fh-studio and fh-ngui will set a "feedhenry_v" cookie with a value of either "2" or "3"
@@ -224,13 +187,12 @@ public class StudioBean {
          * 
          * If no feedhenry_v cookie set in a request to fh-studio, set it's initial value to 2
          */
+
         if (studioVersionCookie == null) {
           log.info("No initial fh_v for 2 cookie set, setting");
           addVersionCookie(pResponse, "2");
         }
 
-        mCoreProps = JSONObject.fromObject(sb.toString());
-        log.debug("mCoreProps: " + mCoreProps.toString(2));
         if (!"error".equals(mCoreProps.optString("status"))) {
           mStudioProps = mCoreProps.getJSONObject("clientProps");
           mDomain = mStudioProps.getString("domain");
@@ -254,10 +216,10 @@ public class StudioBean {
           log.error("Got error from props endpoint (" + mCoreProps.optString("message") + "), sending 500");
           pResponse.sendError(500);
         }
+
       } else {
         // redirect to corporate site
         proceed = false;
-        log.error("Got Exception from props endpoint (" + statusCode + ")\nResponse Body:\n" + sb.toString());
         pResponse.sendError(500);
       }
     }
@@ -331,6 +293,59 @@ public class StudioBean {
     return proceed;
   }
 
+  private JSONObject getCoreProps(HttpServletRequest pRequest, HttpServletResponse pResponse, String scheme, Cookie loginCookie,
+          String referer) throws IOException, ClientProtocolException {
+    boolean proceed;
+    JSONObject myCoreProps = null;
+    // TODO: if studio is deployed to separate box than millicore, need to look at this logic again
+    String host = "127.0.0.1";// pRequest.getLocalName();
+    String endpoint = PROPS_ENDPOINT;
+    int port = pRequest.getLocalPort();
+    String uri = scheme + "://" + host + ((port < 0 || port == 80 || port == 443) ? "" : ":" + port) + endpoint;
+
+    // call studio props endpoint to get all properties
+    HttpClient client = new DefaultHttpClient();
+    HttpPost post = new HttpPost(uri);
+    post.setHeader("referer", referer);
+
+    // Send requestor's cookie if available
+    if (null != loginCookie) {
+      post.addHeader("Cookie", "feedhenry=" + loginCookie.getValue());
+    }
+
+    HttpResponse response = client.execute(post);
+    int statusCode = response.getStatusLine().getStatusCode();
+
+    HttpEntity resEntity = response.getEntity();
+    StringBuilder sb = new StringBuilder();
+
+    if (resEntity != null) {
+      InputStreamReader iSR = new InputStreamReader(resEntity.getContent());
+      BufferedReader br = new BufferedReader(iSR);
+      String read = br.readLine();
+      try {
+        while (read != null) {
+          sb.append(read);
+          read = br.readLine();
+        }
+      } catch (Throwable e) {
+        proceed = false;
+        log.error("Got exception parsing data from props endpoint", e);
+          pResponse.sendError(500, "Error connecting to server. Please try again later.");
+      } finally {
+        br.close();
+        iSR.close();
+      }
+    }
+
+    if (200 == statusCode) {
+      myCoreProps = JSONObject.fromObject(sb.toString());
+      log.debug("mCoreProps: " + myCoreProps.toString(2));
+    } else {
+      log.error("Got Exception from props endpoint (" + statusCode + ")\nResponse Body:\n" + sb.toString());
+    }
+    return myCoreProps;
+  }
 
   /**
    * Used by App Store to re-direct to https
@@ -343,7 +358,9 @@ public class StudioBean {
     log.info("check store protocol");
     String serverName = pRequest.getServerName();
     String selectedProtocol = resolveScheme(pRequest);
-    String requiredProtocol = "https";
+    String referer = selectedProtocol + "://" + serverName;
+
+    String requiredProtocol = getRequiredProtocol(pRequest, pResponse, "http", referer);
 
     // Ensure that we are using the correct protocol (https by default);
     if (!requiredProtocol.equals(selectedProtocol)) {
@@ -353,6 +370,22 @@ public class StudioBean {
       return false;
     }
     return true;
+  }
+
+  private String getRequiredProtocol(HttpServletRequest pRequest, HttpServletResponse pResponse, String scheme, String referer) throws ClientProtocolException, IOException {
+    String requiredProtocol = "https"; // default to secure
+
+    JSONObject myCoreProps = getCoreProps(pRequest, pResponse, scheme, null, referer);
+    if (null != myCoreProps) {
+      if (!"error".equals(myCoreProps.optString("status"))) {
+        JSONObject studioProps = myCoreProps.getJSONObject("clientProps");
+        if (studioProps != null) {
+          requiredProtocol = studioProps.getString(PROP_PROTOCOL);
+          log.info("requiredProtocol=" + requiredProtocol + " - set by sutdio property: " + PROP_PROTOCOL);
+        }
+      }
+    }
+    return requiredProtocol;
   }
 
   public String getPageName() {
