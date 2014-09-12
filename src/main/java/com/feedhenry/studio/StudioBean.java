@@ -355,7 +355,7 @@ public class StudioBean {
    * @throws Exception [description]
    */
   public boolean checkStoreProtocol(HttpServletRequest pRequest, HttpServletResponse pResponse) throws Exception {
-    log.info("check store protocol");
+    log.debug("check store protocol");
     String serverName = pRequest.getServerName();
     String selectedProtocol = resolveScheme(pRequest);
     String referer = selectedProtocol + "://" + serverName;
@@ -365,7 +365,7 @@ public class StudioBean {
     // Ensure that we are using the correct protocol (https by default);
     if (!requiredProtocol.equals(selectedProtocol)) {
       String redirect = requiredProtocol + "://" + serverName + "/store/";
-      log.info("requiredProtocol=" + requiredProtocol + ", selectedProtocol=" + selectedProtocol);
+      log.info("requiredProtocol=" + requiredProtocol + ", selectedProtocol=" + selectedProtocol + " - redirecting to: " + redirect);
       pResponse.sendRedirect(redirect);
       return false;
     }
@@ -381,7 +381,7 @@ public class StudioBean {
         JSONObject studioProps = myCoreProps.getJSONObject("clientProps");
         if (studioProps != null) {
           requiredProtocol = studioProps.getString(PROP_PROTOCOL);
-          log.info("requiredProtocol=" + requiredProtocol + " - set by sutdio property: " + PROP_PROTOCOL);
+          log.debug("requiredProtocol=" + requiredProtocol + " - set by sutdio property: " + PROP_PROTOCOL);
         }
       }
     }
