@@ -1,5 +1,8 @@
 #Component: fh-studio
 
+## 3.24.2 - 2014-09-12 - IR236 - Martin Murphy
+* 7947 - redirect appstore to use scheme (http/https) specified by studio-protocol property, if accessed on a different one
+
 ## 3.24.1 - 2014-09-01 - IR235 - Jason Madigan
 * 7920 - Updating iOS SDK
 
