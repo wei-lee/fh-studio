@@ -410,6 +410,10 @@ var store = {
         if (v.type === 'android' || v.type === 'windowsphone') {
           return true;
         } else {
+        } else {
+          if (navigator.userAgent.match(/OS 8/i)) {
+            return true;
+          }
           // iOS way
           $('iframe').remove();
           var iframe = $('<iframe>').attr('src', '_blank').attr('src', v.url).hide();
