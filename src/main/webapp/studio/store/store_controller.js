@@ -410,7 +410,6 @@ var store = {
         if (v.type === 'android' || v.type === 'windowsphone') {
           return true;
         } else {
-        } else {
           if (navigator.userAgent.match(/OS 8/i)) {
             return true;
           }
