@@ -6794,8 +6794,8 @@ function hasOwnProperty(obj, prop) {
   return Object.prototype.hasOwnProperty.call(obj, prop);
 }
 
-}).call(this,_dereq_("/mnt/ebs1/workspace/fh-js-sdk_release/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/isBuffer":6,"/mnt/ebs1/workspace/fh-js-sdk_release/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":11,"inherits":10}],8:[function(_dereq_,module,exports){
+}).call(this,_dereq_("/Users/ndonnelly/program_source_for_dev/fh-js-sdk/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./support/isBuffer":6,"/Users/ndonnelly/program_source_for_dev/fh-js-sdk/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":11,"inherits":10}],8:[function(_dereq_,module,exports){
 (function (global){
 /*global window, global*/
 var util = _dereq_("util")
@@ -7273,7 +7273,7 @@ process.chdir = function (dir) {
 module.exports=_dereq_(6)
 },{}],13:[function(_dereq_,module,exports){
 module.exports=_dereq_(7)
-},{"./support/isBuffer":12,"/mnt/ebs1/workspace/fh-js-sdk_release/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":11,"inherits":10}],14:[function(_dereq_,module,exports){
+},{"./support/isBuffer":12,"/Users/ndonnelly/program_source_for_dev/fh-js-sdk/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":11,"inherits":10}],14:[function(_dereq_,module,exports){
 /*
  * loglevel - https://github.com/pimterry/loglevel
  *
@@ -8548,7 +8548,7 @@ module.exports = {
 },{"./fhparams":31,"./logger":37,"./queryMap":39,"JSON":3}],27:[function(_dereq_,module,exports){
 module.exports = {
   "boxprefix": "/box/srv/1.1/",
-  "sdk_version": "2.4.1-150",
+  "sdk_version": "2.4.2-BUILD-NUMBER",
   "config_js": "fhconfig.json",
   "INIT_EVENT": "fhinit",
   "INTERNAL_CONFIG_LOADED_EVENT": "internalfhconfigloaded",
@@ -14912,6 +14912,17 @@ appForm.models = function (module) {
 
       if(rawData){
         return processRawFormJSON();
+      } else {
+        that.refresh(false, function(err, form){
+          if(err){
+            return cb(err);
+          }
+
+          form.initialise();
+
+          _forms[formId] = form;
+          return cb(null, form);
+        });
       }
     }
 
@@ -15919,6 +15930,12 @@ appForm.models = function(module) {
       cb(null, null);
     }
   };
+  Submission.prototype.getFormId = function(){
+    return this.get("formId");
+  };
+  Submission.prototype.getFormSubmittedAgainst = function(){
+    return this.get("formSubmittedAgainst");
+  };
   Submission.prototype.getDownloadTask = function(cb){
     var self = this;
     $fh.forms.log.d("getDownloadTask");
@@ -16289,6 +16306,7 @@ appForm.models = function(module) {
     }
   };
   Submission.prototype.getInputValueByFieldId = function(fieldId, cb) {
+    var self = this;
     var values = this.getInputValueObjectById(fieldId).fieldValues;
     this.getForm(function(err, form) {
       var fieldModel = form.getFieldModelById(fieldId);
@@ -16482,6 +16500,16 @@ appForm.models = function(module) {
   };
 
   Submission.prototype.getFormFields = function(){
+    var formFields = this.get("formFields", []);
+
+    //Removing null values
+    for(var formFieldIndex = 0; formFieldIndex < formFields.length; formFieldIndex++){
+      formFields[formFieldIndex].fieldValues = formFields[formFieldIndex].fieldValues || [];
+      formFields[formFieldIndex].fieldValues = formFields[formFieldIndex].fieldValues.filter(function(fieldValue){
+        return fieldValue !== null && typeof(fieldValue) !== "undefined";
+      });
+    }
+
     return this.get("formFields", []);
   };
 
@@ -17109,6 +17137,13 @@ appForm.models.Field = function (module) {
   //If binary, just need to load the file uri.
   function _loadImage(meta, cb) {
     if (meta) {
+
+      /**
+       * If the file already contains a local uri, then no need to load it.
+       */
+      if(meta.localURI){
+        return cb(null, meta);
+      }
 
       var name = meta.hashName;
       if(meta.contentType === "base64"){
@@ -17743,6 +17778,10 @@ appForm.models = function (module) {
     self.submissionModel(function(err, submission){
       if(err){
         return cb(err);
+      }
+
+      if(self.get("submissionId")){
+        submission.setRemoteSubmissionId(self.get("submissionId"));
       }
 
       submission.queued(cb);
@@ -18872,7 +18911,7 @@ appForm.api = function (module) {
           $fh.forms.log.d("downloadSubmission submission exists", params);
 
           //Submission was created, but not finished downloading
-          if (submissionAlreadySaved.status !== "downloaded") {
+          if (submissionAlreadySaved.status !== "downloaded" && submissionAlreadySaved.status !== "submitted") {
             if(typeof(cb) === "function"){
               if(waitOnSubmission[params.submissionId]){
                 waitOnSubmission[params.submissionId].push(cb);  
@@ -21421,4 +21460,3 @@ function rulesEngine (formDef) {
 
 //this is partial file which define the end of closure
 })(window || module.exports);
-

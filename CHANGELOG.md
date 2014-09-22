@@ -1,5 +1,8 @@
 #Component: fh-studio
 
+## 3.24.3 - 2014-09-22 - IR237 - Niall Donnelly
+* 7972 - don't use iframe for ios8 appstore install
+
 ## 3.24.2 - 2014-09-19 - IR236 - Martin Murphy
 * 7972 - don't use iframe for ios8 appstore install
 
