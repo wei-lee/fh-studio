@@ -1,7 +1,10 @@
 #Component: fh-studio
 
+## 3.25.0 - 2014-09-23 - IR237 - Niall Donnelly
+* 7986 - Updated JS-SDK related to Field Codes.
+
 ## 3.24.4 - 2014-09-22 - IR237 - Niall Donnelly
-* 7972 - don't use iframe for ios8 appstore install
+* 7823 - Updated JS-SDK related to custom forms app.
 
 ## 3.24.3 - 2014-09-19 - IR236 - Martin Murphy
 * 7972 - don't use iframe for ios8 appstore install
