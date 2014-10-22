@@ -1,5 +1,8 @@
 #Component: fh-studio
 
+## 3.25.1 - 2014-10-22 - IR239 - Martin Murphy
+* 8186 - Updated JS-SDK to 2.4.4 fo fix cloud api for get requests
+
 ## 3.25.0 - 2014-09-23 - IR237 - Niall Donnelly
 * 7986 - Updated JS-SDK related to Field Codes.
 
