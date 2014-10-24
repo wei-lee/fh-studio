@@ -1,5 +1,8 @@
 #Component: fh-studio
 
+## 3.25.2 - 2014-10-24 - IR239 - Niall Donnelly
+* 8109 - Added field codes to submission pdf template
+
 ## 3.25.1 - 2014-10-22 - IR239 - Martin Murphy
 * 8186 - Updated JS-SDK to 2.4.4 fo fix cloud api for get requests
 
