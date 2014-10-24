@@ -1,5 +1,5 @@
 <div class="row-fluid submissionDetail {{#if editMode}}editMode{{/if}}">
-    <div class="span6">
+    <div class="span12">
     <form class="" id="submissionForm">
       {{#form}}
         {{#each pages}}
@@ -10,7 +10,7 @@
           <table class="table table-striped">
             {{#each fields}}
               <tr class="{{#createAdminFieldClass adminOnly}}{{/createAdminFieldClass}}">
-                <td class="fieldlabel">{{#createFormLabel type}}{{/createFormLabel}} {{name}}:</td>
+                <td class="fieldlabel" style="text-align:left;">{{#createFormLabel type}}{{/createFormLabel}} {{#createFieldCode fieldCode}}{{/createFieldCode}} {{name}}:</td>
 
                 <td class="formfield">
                   {{#if ../../../editMode}}
@@ -66,7 +66,7 @@
         {{/subexport}}
       {{/if}}
     </div>
-    <div class="span6">
+    <div class="span12">
       {{#if sub}}
         {{#sub}}
           <h5 class="submissionheading"><i class="icon-info-sign"></i> Submission Information</h5>
