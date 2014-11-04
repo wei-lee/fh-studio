@@ -1,5 +1,9 @@
 #Component: fh-studio
 
+## 3.26.0 - 2014-11-04 - IR240 - Niall Donnelly
+
+* 7890 - Updated js-sdk related to adding barcode and slider field to forms.
+
 ## 3.25.2 - 2014-10-24 - IR239 - Niall Donnelly
 * 8109 - Added field codes to submission pdf template
 
