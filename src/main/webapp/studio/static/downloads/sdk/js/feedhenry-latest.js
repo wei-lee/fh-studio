@@ -8557,7 +8557,7 @@ module.exports = {
 },{"./fhparams":31,"./logger":37,"./queryMap":39,"JSON":3}],27:[function(_dereq_,module,exports){
 module.exports = {
   "boxprefix": "/box/srv/1.1/",
-  "sdk_version": "2.4.4-153",
+  "sdk_version": "2.5.0-154",
   "config_js": "fhconfig.json",
   "INIT_EVENT": "fhinit",
   "INTERNAL_CONFIG_LOADED_EVENT": "internalfhconfigloaded",
@@ -13585,6 +13585,8 @@ appForm.utils = function (module) {
   module.isHtml5CamAvailable = isHtml5CamAvailable;
   module.initHtml5Camera = initHtml5Camera;
   module.cancelHtml5Camera = cancelHtml5Camera;
+  module.captureBarcode = captureBarcode;
+
   var isPhoneGap = false;
   var isHtml5 = false;
   var video = null;
@@ -13631,23 +13633,26 @@ appForm.utils = function (module) {
     }
 
     if (isPhoneGap) {
-      params.encodingType = params.encodingType === 'jpeg' ? Camera.EncodingType.JPEG : Camera.EncodingType.PNG;
-      navigator.camera.getPicture(_phoneGapSuccess(cb), cb, {
-        quality: quality,
-        targetWidth: width,
-        targetHeight: height,
-        sourceType: params.sourceType,
-        saveToPhotoAlbum: params.saveToPhotoAlbum,
-        destinationType: Camera.DestinationType.FILE_URI,
-        encodingType: params.encodingType
-      });
+      _phoneGapPhoto(params, cb);
     } else if (isHtml5) {
       snapshot(params, cb);
     } else {
       cb('Your device does not support camera.');
     }
   }
-  function _phoneGapSuccess(cb) {
+  function _phoneGapPhoto(params, cb){
+    params.encodingType = params.encodingType === 'jpeg' ? Camera.EncodingType.JPEG : Camera.EncodingType.PNG;
+    navigator.camera.getPicture(_phoneGapPhotoSuccess(cb), cb, {
+      quality: params.quality,
+      targetWidth: params.targetWidth,
+      targetHeight: params.targetHeight,
+      sourceType: params.sourceType,
+      saveToPhotoAlbum: params.saveToPhotoAlbum,
+      destinationType: Camera.DestinationType.FILE_URI,
+      encodingType: params.encodingType
+    });
+  }
+  function _phoneGapPhotoSuccess(cb) {
     return function (imageData) {
       var imageURI = imageData;
       cb(null, imageURI);
@@ -13662,7 +13667,7 @@ appForm.utils = function (module) {
     canvas.width = width;
     canvas.height = height;
     if (!localMediaStream) {
-      navigator.getUserMedia({ video: true }, function (stream) {
+      navigator.getUserMedia({ video: true, audio:false }, function (stream) {
         video.src = window.URL.createObjectURL(stream);
         localMediaStream = stream;
         cb(null, video);
@@ -13670,6 +13675,48 @@ appForm.utils = function (module) {
     } else {
       $fh.forms.log.e('Media device was not released by browser.');
       cb('Media device occupied.');
+    }
+  }
+
+  /**
+   * Capturing a barcode using the PhoneGap barcode plugin
+   */
+  function _phoneGapBarcode(params, cb){
+    //Checking for a cordova barcodeScanner plugin.
+    if(window.cordova && window.cordova.plugins && window.cordova.plugins.barcodeScanner){
+      cordova.plugins.barcodeScanner.scan(
+        function (result) {
+          $fh.forms.log.d("Barcode Found: " + JSON.stringify(result));
+          return cb(null, result);
+        },
+        function (error) {
+          $fh.forms.log.e("Scanning failed: " + error);
+          cb("Scanning failed: " + error);
+        }
+      );
+    } else {
+      return cb("Barcode plugin not installed");
+    }
+  }
+
+  /**
+   * Capturing a barcode using a webcam and image processors.
+   * TODO Not complete yet.
+   * @param params
+   * @param cb
+   * @private
+   */
+  function _webBarcode(params, cb){
+    //TODO Web barcode decoding not supported yet.
+    $fh.forms.log.e("Web Barcode Decoding not supported yet.");
+    return cb("Web Barcode Decoding not supported yet.");
+  }
+
+  function captureBarcode(params, cb){
+    if(isPhoneGapAvailable()){
+      _phoneGapBarcode(params,cb);
+    } else {
+      _webBarcode(params, cb);
     }
   }
   function checkEnv() {
@@ -13713,8 +13760,20 @@ appForm.utils = function (module) {
       // "image/webp" works in Chrome.
       // Other browsers will fall back to image/png.
       var base64 = canvas.toDataURL('image/png');
-      cancelHtml5Camera();
-      cb(null, base64);
+      console.log("base64", base64);
+      var imageData = ctx.getImageData(0, 0, params.targetWidth, params.targetHeight);
+
+      if(params.cancelHtml5Camera){
+        cancelHtml5Camera();
+      }
+
+      //Deciding whether to return raw image data or a base64 image.
+      //rawData is mainly used for scanning for barcodes.
+      if(params.rawData){
+        return cb(null, {imageData: imageData, width: params.targetWidth, height: params.targetHeight, base64: base64});
+      } else {
+        return cb(null, base64);
+      }
     } else {
       $fh.forms.log.e('Media resource is not available');
       cb('Resource not available');
@@ -14405,8 +14464,8 @@ appForm.stores = function (module) {
     var self=this;
 
     if(appForm.utils.isPhoneGap()){
-      if(navigator.connection.type){
-        if(navigator.connection.type === Connection.NONE){
+      if(navigator.connection){
+        if(navigator.connection.type && navigator.connection.type === Connection.NONE){
           //No connection availabile, no need to ping.
           $fh.forms.config.offline();
           return cb(false);
@@ -14796,7 +14855,7 @@ appForm.models = function(module) {
   Config.prototype.isOnline = function(){
     var self = this;
     if(appForm.utils.isPhoneGap()){
-      if(navigator.connection.type){
+      if(navigator.connection && navigator.connection.type){
         return online === true && navigator.connection.type !== Connection.NONE;
       } else {
         return online === true;
@@ -16853,6 +16912,33 @@ appForm.models = function (module) {
 }(appForm.models || {});
 
 /**
+ * extension of Field class to support barcode field
+ */
+appForm.models.Field = function (module) {
+
+  //Processing barcode values to the submission format
+  //
+  module.prototype.process_barcode = function (params, cb) {
+    var inputValue = params.value || {};
+
+    /**
+     * Barcode value:
+     *
+     * {
+     *   text: "<<Value of the scanned barcode>>",
+     *   format: "<<Format of the scanned barcode>>"
+     * }
+     */
+    if(typeof(inputValue.text) === "string" && typeof(inputValue.format) === "string"){
+      return cb(null, {text: inputValue.text, format: inputValue.format});
+    } else {
+      return cb("Invalid barcode parameters.");
+    }
+  };
+  return module;
+}(appForm.models.Field || {});
+
+/**
  * extension of Field class to support checkbox field
  */
 appForm.models.Field = function (module) {
@@ -17225,6 +17311,7 @@ appForm.models.Field = function (module) {
   module.prototype.convert_photo = convertImage;
   return module;
 }(appForm.models.Field || {});
+
 /**
  * One form contains multiple pages
  */
@@ -18983,9 +19070,9 @@ if (typeof $fh === 'undefined') {
 if ($fh.forms === undefined) {
   $fh.forms = appForm.api;
 }
-/*! fh-forms - v0.8.00 -  */
+/*! fh-forms - v0.10.0 -  */
 /*! async - v0.2.9 -  */
-/*! 2014-08-27 */
+/*! 2014-11-03 */
 /* This is the prefix file */
 if(appForm){
   appForm.RulesEngine=rulesEngine;
@@ -20024,8 +20111,6 @@ function rulesEngine (formDef) {
      *
      */
 
-    var FIELD_TYPE_CHECKBOX = "checkboxes";
-    var FIELD_TYPE_DATETIME = "dateTime";
     var FIELD_TYPE_DATETIME_DATETIMEUNIT_DATEONLY = "date";
     var FIELD_TYPE_DATETIME_DATETIMEUNIT_TIMEONLY = "time";
     var FIELD_TYPE_DATETIME_DATETIMEUNIT_DATETIME = "datetime";
@@ -20060,7 +20145,9 @@ function rulesEngine (formDef) {
         "file": validatorFile,
         "dateTime": validatorDateTime,
         "url": validatorString,
-        "sectionBreak": validatorSection
+        "sectionBreak": validatorSection,
+        "barcode": validatorBarcode,
+        "sliderNumber": validatorNumericString
       };
 
       var validatorsClientMap = {
@@ -20078,8 +20165,191 @@ function rulesEngine (formDef) {
         "file": validatorAnyFile,
         "dateTime": validatorDateTime,
         "url": validatorString,
-        "sectionBreak": validatorSection
+        "sectionBreak": validatorSection,
+        "barcode": validatorBarcode,
+        "sliderNumber": validatorNumericString
       };
+
+      var fieldValueComparison = {
+        "text": function(fieldValue, testValue, condition){
+          return this.comparisonString(fieldValue, testValue, condition);
+        },
+        "textarea": function(fieldValue, testValue, condition){
+          return this.comparisonString(fieldValue, testValue, condition);
+        },
+        "number": function(fieldValue, testValue, condition){
+          return this.numericalComparison(fieldValue, testValue, condition);
+        },
+        "emailAddress": function(fieldValue, testValue, condition){
+          return this.comparisonString(fieldValue, testValue, condition);
+        },
+        "dropdown": function(fieldValue, testValue, condition){
+          return this.comparisonString(fieldValue, testValue, condition);
+        },
+        "radio": function(fieldValue, testValue, condition){
+          return this.comparisonString(fieldValue, testValue, condition);
+        },
+        "checkboxes": function(fieldValue, testValue, condition){
+          fieldValue = fieldValue || {};
+          var valueFound = false;
+
+          if(!(fieldValue.selections instanceof Array)){
+            return false;
+          }
+
+          //Check if the testValue is contained in the selections
+          for(var selectionIndex = 0; selectionIndex < fieldValue.selections.length; selectionIndex++ ){
+            var selectionValue = fieldValue.selections[selectionIndex];
+            //Note, here we are using the "is" string comparator to check if the testValue matches the current selectionValue
+            if(this.comparisonString(selectionValue, testValue, "is")){
+              valueFound = true;
+            }
+          }
+
+          if(condition === "is"){
+            return valueFound;
+          } else {
+            return !valueFound;
+          }
+
+        },
+        "dateTime": function(fieldValue, testValue, condition, fieldOptions){
+          var valid = false;
+
+          fieldOptions = fieldOptions || {definition: {}};
+
+          //dateNumVal is assigned an easily comparible number depending on the type of units used.
+          var dateNumVal = null;
+          var testNumVal = null;
+
+          switch (fieldOptions.definition.datetimeUnit) {
+            case FIELD_TYPE_DATETIME_DATETIMEUNIT_DATEONLY:
+              try {
+                dateNumVal = new Date(new Date(fieldValue).toDateString()).getTime();
+                testNumVal = new Date(new Date(testValue).toDateString()).getTime();
+                valid = true;
+              } catch (e) {
+                dateNumVal = null;
+                testNumVal = null;
+                valid = false;
+              }
+              break;
+            case FIELD_TYPE_DATETIME_DATETIMEUNIT_TIMEONLY:
+              var cvtTime = this.cvtTimeToSeconds(fieldValue);
+              var cvtTestVal = this.cvtTimeToSeconds(testValue);
+              dateNumVal = cvtTime.seconds;
+              testNumVal = cvtTestVal.seconds;
+              valid = cvtTime.valid && cvtTestVal.valid;
+              break;
+            case FIELD_TYPE_DATETIME_DATETIMEUNIT_DATETIME:
+              try {
+                dateNumVal = (new Date(fieldValue).getTime());
+                testNumVal = (new Date(testValue).getTime());
+                valid = true;
+              } catch (e) {
+                valid = false;
+              }
+              break;
+            default:
+              valid = false;
+              break;
+          }
+
+          //The value is not valid, no point in comparing.
+          if(!valid){
+            return false;
+          }
+
+          if ("is at" === condition) {
+            valid = dateNumVal === testNumVal;
+          } else if ("is before" === condition) {
+            valid = dateNumVal < testNumVal;
+          } else if ("is after" === condition) {
+            valid = dateNumVal > testNumVal;
+          } else {
+            valid = false;
+          }
+
+          return valid;
+        },
+        "url": function(fieldValue, testValue, condition){
+          return this.comparisonString(fieldValue, testValue, condition);
+        },
+        "barcode": function(fieldValue, testValue, condition){
+          fieldValue = fieldValue || {};
+
+          if(typeof(fieldValue.text) !== "string"){
+            return false;
+          }
+
+          return this.comparisonString(fieldValue.text, testValue, condition);
+        },
+        "sliderNumber": function(fieldValue, testValue, condition){
+          return this.numericalComparison(fieldValue, testValue, condition);
+        },
+        "comparisonString": function(fieldValue, testValue, condition){
+          var valid = true;
+
+          if ("is" === condition) {
+            valid = fieldValue === testValue;
+          } else if ("is not" === condition) {
+            valid = fieldValue !== testValue;
+          } else if ("contains" === condition) {
+            valid = fieldValue.indexOf(testValue) !== -1;
+          } else if ("does not contain" === condition) {
+            valid = fieldValue.indexOf(testValue) === -1;
+          } else if ("begins with" === condition) {
+            valid = fieldValue.substring(0, testValue.length) === testValue;
+          } else if ("ends with" === condition) {
+            valid = fieldValue.substring(Math.max(0, (fieldValue.length - testValue.length)), fieldValue.length) === testValue;
+          } else {
+            valid = false;
+          }
+
+          return valid;
+        },
+        "numericalComparison": function(fieldValue, testValue, condition){
+          var fieldValNum = parseInt(fieldValue, 10);
+          var testValNum = parseInt(testValue, 10);
+
+          if(isNaN(fieldValNum) || isNaN(testValNum)){
+            return false;
+          }
+
+          if ("is equal to" === condition) {
+            return fieldValNum === testValNum;
+          } else if ("is less than" === condition) {
+            return fieldValNum < testValNum;
+          } else if ("is greater than" === condition) {
+            return fieldValNum > testValNum;
+          } else {
+            return false;
+          }
+        },
+        "cvtTimeToSeconds": function(fieldValue) {
+          var valid = false;
+          var seconds = 0;
+          if (typeof fieldValue === "string") {
+            var parts = fieldValue.split(':');
+            valid = (parts.length === 2) || (parts.length === 3);
+            if (valid) {
+              valid = isNumberBetween(parts[0], 0, 23);
+              seconds += (parseInt(parts[0], 10) * 60 * 60);
+            }
+            if (valid) {
+              valid = isNumberBetween(parts[1], 0, 59);
+              seconds += (parseInt(parts[1], 10) * 60);
+            }
+            if (valid && (parts.length === 3)) {
+              valid = isNumberBetween(parts[2], 0, 59);
+              seconds += parseInt(parts[2], 10);
+            }
+          }
+          return {valid: valid, seconds: seconds};
+        }
+      };
+
+
 
       var isFieldRuleSubject = function (fieldId) {
         return !!fieldRuleSubjectMap[fieldId];
@@ -20878,6 +21148,37 @@ function rulesEngine (formDef) {
         });
       }
 
+      /**
+       * Function to validate a barcode submission
+       *
+       * Must be an object with the following contents
+       *
+       * {
+     *   text: "<<content of barcode>>",
+     *   format: "<<barcode content format>>"
+     * }
+       *
+       * @param fieldValue
+       * @param fieldDefinition
+       * @param previousFieldValues
+       * @param cb
+       */
+      function validatorBarcode(fieldValue, fieldDefinition, previousFieldValues, cb){
+        if(typeof(fieldValue) !== "object" || fieldValue === null){
+          return cb(new Error("Expected object but got " + typeof(fieldValue)));
+        }
+
+        if(typeof(fieldValue.text) !== "string" || fieldValue.text.length === 0){
+          return cb(new Error("Expected text parameter."));
+        }
+
+        if(typeof(fieldValue.format) !== "string" || fieldValue.format.length === 0){
+          return cb(new Error("Expected format parameter."));
+        }
+
+        return cb();
+      }
+
       function checkFileSize(fieldDefinition, fieldValue, sizeKey, cb) {
         fieldDefinition = fieldDefinition || {};
         var fieldOptions = fieldDefinition.fieldOptions || {};
@@ -21309,6 +21610,28 @@ function rulesEngine (formDef) {
         });
       }
 
+      function isConditionActive(field, fieldValue, testValue, condition) {
+
+        var fieldType = field.type;
+        var fieldOptions = field.fieldOptions ? field.fieldOptions : {};
+
+        if(typeof(fieldValue) === 'undefined' || fieldValue === null){
+          return false;
+        }
+
+        if(typeof(fieldValueComparison[fieldType]) === "function"){
+          return fieldValueComparison[fieldType](fieldValue, testValue, condition, fieldOptions);
+        } else {
+          return false;
+        }
+
+      }
+
+      function isNumberBetween(num, min, max) {
+        var numVal = parseInt(num, 10);
+        return (!isNaN(numVal) && (numVal >= min) && (numVal <= max));
+      }
+
       return {
         validateForm: validateForm,
         validateField: validateField,
@@ -21322,172 +21645,6 @@ function rulesEngine (formDef) {
         isConditionActive: isConditionActive
       };
     };
-
-    function isNumberBetween(num, min, max) {
-      var numVal = parseInt(num, 10);
-      return (!isNaN(numVal) && (numVal >= min) && (numVal <= max));
-    }
-
-    function cvtTimeToSeconds(fieldValue) {
-      var seconds = 0;
-      if (typeof fieldValue === "string") {
-        var parts = fieldValue.split(':');
-        valid = (parts.length === 2) || (parts.length === 3);
-        if (valid) {
-          valid = isNumberBetween(parts[0], 0, 23);
-          seconds += (parseInt(parts[0], 10) * 60 * 60);
-        }
-        if (valid) {
-          valid = isNumberBetween(parts[1], 0, 59);
-          seconds += (parseInt(parts[1], 10) * 60);
-        }
-        if (valid && (parts.length === 3)) {
-          valid = isNumberBetween(parts[2], 0, 59);
-          seconds += parseInt(parts[2], 10);
-        }
-      }
-      return seconds;
-    }
-
-    function isConditionActive(field, fieldValue, testValue, condition) {
-
-      var fieldType = field.type;
-      var fieldOptions = field.fieldOptions ? field.fieldOptions : {};
-
-      if(typeof(fieldValue) === 'undefined' || fieldValue === null){
-        return false;
-      }
-
-      function numericalComparison(condition, fieldValue, testValue){
-        var fieldValNum = parseInt(fieldValue, 10);
-        var testValNum = parseInt(testValue, 10);
-
-        if(isNaN(fieldValNum) || isNaN(testValNum)){
-          return false;
-        }
-
-        if ("is equal to" === condition) {
-          return fieldValNum === testValNum;
-        } else if ("is less than" === condition) {
-          return fieldValNum < testValNum;
-        } else if ("is greater than" === condition) {
-          return fieldValNum > testValNum;
-        } else {
-          return false;
-        }
-      }
-
-      var valid = true;
-      if ("is equal to" === condition) {
-        valid = numericalComparison("is equal to", fieldValue, testValue);
-      } else if ("is greater than" === condition) {
-        valid = numericalComparison("is greater than", fieldValue, testValue);
-      } else if ("is less than" === condition) {
-        valid = numericalComparison("is less than", fieldValue, testValue);
-      } else if ("is at" === condition) {
-        valid = false;
-        if (fieldType === FIELD_TYPE_DATETIME) {
-          switch (fieldOptions.definition.datetimeUnit) {
-            case FIELD_TYPE_DATETIME_DATETIMEUNIT_DATEONLY:
-              try {
-                valid = (new Date(new Date(fieldValue).toDateString()).getTime() === new Date(new Date(testValue).toDateString()).getTime());
-              } catch (e) {
-                valid = false;
-              }
-              break;
-            case FIELD_TYPE_DATETIME_DATETIMEUNIT_TIMEONLY:
-              valid = cvtTimeToSeconds(fieldValue) === cvtTimeToSeconds(testValue);
-              break;
-            case FIELD_TYPE_DATETIME_DATETIMEUNIT_DATETIME:
-              try {
-                valid = (new Date(fieldValue).getTime() === new Date(testValue).getTime());
-              } catch (e) {
-                valid = false;
-              }
-              break;
-            default:
-              valid = false; // TODO should raise error here?
-              break;
-          }
-        }
-      } else if ("is before" === condition) {
-        valid = false;
-        if (fieldType === FIELD_TYPE_DATETIME) {
-          switch (fieldOptions.definition.datetimeUnit) {
-            case FIELD_TYPE_DATETIME_DATETIMEUNIT_DATEONLY:
-              try {
-                valid = (new Date(new Date(fieldValue).toDateString()).getTime() < new Date(new Date(testValue).toDateString()).getTime());
-              } catch (e) {
-                valid = false;
-              }
-              break;
-            case FIELD_TYPE_DATETIME_DATETIMEUNIT_TIMEONLY:
-              valid = cvtTimeToSeconds(fieldValue) < cvtTimeToSeconds(testValue);
-              break;
-            case FIELD_TYPE_DATETIME_DATETIMEUNIT_DATETIME:
-              try {
-                valid = (new Date(fieldValue).getTime() < new Date(testValue).getTime());
-              } catch (e) {
-                valid = false;
-              }
-              break;
-            default:
-              valid = false; // TODO should raise error here?
-              break;
-          }
-        }
-      } else if ("is after" === condition) {
-        valid = false;
-        if (fieldType === FIELD_TYPE_DATETIME) {
-          switch (fieldOptions.definition.datetimeUnit) {
-            case FIELD_TYPE_DATETIME_DATETIMEUNIT_DATEONLY:
-              try {
-                valid = (new Date(new Date(fieldValue).toDateString()).getTime() > new Date(new Date(testValue).toDateString()).getTime());
-              } catch (e) {
-                valid = false;
-              }
-              break;
-            case FIELD_TYPE_DATETIME_DATETIMEUNIT_TIMEONLY:
-              valid = cvtTimeToSeconds(fieldValue) > cvtTimeToSeconds(testValue);
-              break;
-            case FIELD_TYPE_DATETIME_DATETIMEUNIT_DATETIME:
-              try {
-                valid = (new Date(fieldValue).getTime() > new Date(testValue).getTime());
-              } catch (e) {
-                valid = false;
-              }
-              break;
-            default:
-              valid = false; // TODO should raise error here?
-              break;
-          }
-        }
-      } else if ("is" === condition) {
-        if (fieldType === FIELD_TYPE_CHECKBOX) {
-          valid = fieldValue && fieldValue.selections && fieldValue.selections.indexOf(testValue) !== -1;
-        } else {
-          valid = fieldValue === testValue;
-        }
-      } else if ("is not" === condition) {
-        if (fieldType === FIELD_TYPE_CHECKBOX) {
-          valid = fieldValue && fieldValue.selections && fieldValue.selections.indexOf(testValue) === -1;
-        } else {
-          valid = fieldValue !== testValue;
-        }
-      } else if ("contains" === condition) {
-        valid = fieldValue.indexOf(testValue) !== -1;
-      } else if ("does not contain" === condition) {
-        valid = fieldValue.indexOf(testValue) === -1;
-      } else if ("begins with" === condition) {
-        valid = fieldValue.substring(0, testValue.length) === testValue;
-      } else if ("ends with" === condition) {
-        valid = fieldValue.substring(Math.max(0, (fieldValue.length - testValue.length)), fieldValue.length) === testValue;
-      } else {
-        valid = false;
-      }
-
-      return valid;
-    }
 
     if (typeof module !== 'undefined' && module.exports) {
       module.exports = formsRulesEngine;
@@ -21504,4 +21661,3 @@ function rulesEngine (formDef) {
 
 //this is partial file which define the end of closure
 })(window || module.exports);
-
