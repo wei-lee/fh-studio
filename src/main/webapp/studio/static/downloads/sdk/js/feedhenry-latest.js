@@ -8557,7 +8557,7 @@ module.exports = {
 },{"./fhparams":31,"./logger":37,"./queryMap":39,"JSON":3}],27:[function(_dereq_,module,exports){
 module.exports = {
   "boxprefix": "/box/srv/1.1/",
-  "sdk_version": "2.5.0-154",
+  "sdk_version": "2.5.0-155",
   "config_js": "fhconfig.json",
   "INIT_EVENT": "fhinit",
   "INTERNAL_CONFIG_LOADED_EVENT": "internalfhconfigloaded",
@@ -13760,7 +13760,6 @@ appForm.utils = function (module) {
       // "image/webp" works in Chrome.
       // Other browsers will fall back to image/png.
       var base64 = canvas.toDataURL('image/png');
-      console.log("base64", base64);
       var imageData = ctx.getImageData(0, 0, params.targetWidth, params.targetHeight);
 
       if(params.cancelHtml5Camera){
