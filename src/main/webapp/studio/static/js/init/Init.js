@@ -57,6 +57,7 @@ $(document).ready(function() {
         value: "beta"
       }
     };
+    data['payload']["csrftoken"] =  $('input[name="csrftoken"]').val();
 
     $.ajax({
       type: 'POST',
