@@ -153,6 +153,7 @@ public class StudioBean {
     
     Cookie studioVersionCookie = getVersionCookie(pRequest);
     Cookie loginCookie = getCookie("feedhenry", pRequest);
+    Cookie csrfCookie = getCookie("csrf", pRequest);
 
     // Allow for domain being passed in request
     if (null == mDomain) {
@@ -268,12 +269,13 @@ public class StudioBean {
       pResponse.sendRedirect(redirectUrl);
     } else {
       setNoCacheHeaders(pResponse);
-      String csrfHash = generateCsrfHash();
-      addCsrfCookie(pResponse, csrfHash);
-      if (null != mStudioProps) {
-        mStudioProps.put("csrf", csrfHash);
+
+      if (null != csrfCookie) {
+        if (null != mStudioProps) {
+          mStudioProps.put("csrf", csrfCookie.getValue());
+        }
+        pRequest.setAttribute("csrftoken", csrfCookie.getValue());
       }
-      pRequest.setAttribute("csrftoken", csrfHash);
       setXFrameOptionHeaders(pResponse);
       mInput = JSONObject.fromObject(pRequest.getParameterMap());
       log.debug(mInput.toString(2));
@@ -381,11 +383,6 @@ public class StudioBean {
     return mPageName;
   }
 
-  private String generateCsrfHash(){
-    String salt = "UhwwE5p-d7ssOpcmq";
-    return DigestUtils.md5Hex(new Date().toString() + salt);
-  }
-  
   public boolean canProceed(HttpServletRequest pRequest, HttpServletResponse pResponse, String pPageName) throws Exception {
     boolean canProceed = false;
 
