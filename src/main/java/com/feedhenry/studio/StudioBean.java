@@ -802,9 +802,7 @@ public class StudioBean {
    */
   
   public boolean hasPermission(String permission) {
-  System.out.println("user perm check : " + permission );
     if(null != mUserProps && mUserProps.has("permissions")){
-      //System.out.println("user perms" + mUserProps.getJSONArray("permissions"));
       return mUserProps.getJSONArray("permissions").contains(permission);
     }
     return false;
