@@ -130,7 +130,7 @@
                       </div>
                   </div>
 
-                  <% if(studio.hasPermission(com.feedhenry.studio.StudioBean.CUSTOMER_ROLES_WRITE) || studio.hasPermission(com.feedhenry.studio.StudioBean.RESELLER_ROLES_WRITE)) {%>
+                  <% if(studio.hasPermission("cluster/reseller/customer:read") || studio.hasPermission("cluster/reseller:read")) {%>
                   <div class="control-group">
                       <label class="control-label">All Domains</label>
                       <div class="controls swap-select" id="create_user_customer_role_swap">
@@ -139,7 +139,7 @@
                   </div>
                   <%}%>
 
-                  <% if(studio.hasPermission(com.feedhenry.studio.StudioBean.RESELLER_ROLES_WRITE)) {%>
+                  <% if(studio.hasPermission("cluster/reseller:read")) {%>
                   <div class="control-group">
                       <label class="control-label">All Customers</label>
                       <div class="controls swap-select" id="create_user_reseller_role_swap">
