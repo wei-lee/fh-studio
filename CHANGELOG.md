@@ -1,5 +1,8 @@
 #Component: fh-studio
 
+## 3.26.1 - 2014-12-01 - IR242 - Martin Murphy
+* 8319 - Updated js-sdk to fix appforms location button
+
 ## 3.26.0 - 2014-11-04 - IR240 - Niall Donnelly
 
 * 7890 - Updated js-sdk related to adding barcode and slider field to forms.
