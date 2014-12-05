@@ -8557,7 +8557,7 @@ module.exports = {
 },{"./fhparams":31,"./logger":37,"./queryMap":39,"JSON":3}],27:[function(_dereq_,module,exports){
 module.exports = {
   "boxprefix": "/box/srv/1.1/",
-  "sdk_version": "2.5.0-155",
+  "sdk_version": "2.5.1-158",
   "config_js": "fhconfig.json",
   "INIT_EVENT": "fhinit",
   "INTERNAL_CONFIG_LOADED_EVENT": "internalfhconfigloaded",
@@ -21660,3 +21660,4 @@ function rulesEngine (formDef) {
 
 //this is partial file which define the end of closure
 })(window || module.exports);
+
