@@ -1,21 +1,10 @@
  package com.feedhenry.studio;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.TimeZone;
+import java.util.*;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -55,20 +44,8 @@ public class StudioBean {
 
   public static final String STUDIO_PAGES_GROUP_COOKIE = "feedhenry-studio-pages-group";
 
-  // Ok to have these here instead of in millicore as the endpoints used
-  // by the studio would dictate which role is required for particular
-  // features i.e. reporting endpoints require 'analytics' role
-  // User's role is returned from millicore anyways, which is the important part
-  // If perms for a particular endpoint/s change, we need to update these
   public static final String ROLE_CUSTOMERADMIN = "customeradmin";
   public static final String ROLE_RESELLERADMIN = "reselleradmin";
-  public static final String ROLE_FORMSADMIN = "formsadmin";
-
-  public static final String ROLE_DEVADMIN = "devadmin";
-  public static final String[] GROUP_REPORTING = new String[] { "analytics" };
-  public static final String[] GROUP_ARM = new String[] { "portaladmin" };
-  public static final String[] GROUP_USER_ADMIN = new String[] { ROLE_CUSTOMERADMIN, ROLE_RESELLERADMIN};
-  public static final String[] GROUP_DEVELOPER = new String[] { "dev", "devadmin" };
 
   public static final String THEME_DEFAULT = "default";
   public static final String THEME_ENTERPRISE = "enterprise";
@@ -99,6 +76,18 @@ public class StudioBean {
   public static final String PROP_STUDIOVERSIONOPTION = "studioVersionOptionEnabled";
   public static final String PROP_STUDIOVERSION = "studioVersion";
   public static final String PROP_PLUGINS_ENABLED = "pluginsEnabled";
+
+  public static final String APP_STORE_WRITE = "cluster/reseller/customer/domain/admin/app-store:write";
+  public static final String CLOUD_RESOURCE_WRITE = "cluster/reseller/customer/domain/cloud-resources:write";
+  public static final String CREDENTIAL_WRITE = "cluster/reseller/customer/domain/project/client-apps/credentials:write";
+  public static final String CUSTOMER_ROLES_WRITE = "cluster/reseller/customer:write";
+  public static final String DEPLOY_POLICY_WRITE = "cluster/reseller/customer/domain/admin/deploy-target:write";
+  public static final String DOMAIN_ANALYTICS_READ = "cluster/reseller/customer/domain/analytics:read";
+  public static final String DOMAIN_USERS_WRITE = "cluster/reseller/customer/domain/admin/user:write";
+  public static final String FORM_READ = "cluster/reseller/customer/domain/drag-and-drop-app/form:read";
+  public static final String PROJECT_READ = "cluster/reseller/customer/domain/project:read";
+  public static final String PROJECT_WRITE = "cluster/reseller/customer/domain/project:write";
+  public static final String RESELLER_ROLES_WRITE = "cluster/reseller:write";
 
   public static final List<String> mAllowedActionRequest = new ArrayList<String>();
   private static ArrayList<String> sSchemeHeaders = new ArrayList<String>();
@@ -807,60 +796,20 @@ public class StudioBean {
   private String convertToCssTag(String pPath){
     return "<link rel=\"stylesheet\" href=\""+pPath+"\"/>";
   }
-
+  
   /**
-   * Check if the currently logged in user is in the specified group
+   * Check if the currently logged in user has a specified permission
    */
-  public boolean inGroup(String[] groups) throws Exception {
-    boolean inGroup = false;
-    // Make sure we're logged in
-    if (null != mUserProps) {
-
-      for (int pI = 0; pI < groups.length; pI++) {
-        String group = groups[pI];
-        if (mUserProps.getJSONArray("roles").contains(group)) {
-          inGroup = true;
-          break;
-        }
-      }
-
+  
+  public boolean hasPermission(String permission) {
+    if(null != mUserProps && mUserProps.has("permissions")){
+      return mUserProps.getJSONArray("permissions").contains(permission);
     }
-    return inGroup;
-  }
-
-  /**
-   * Check if the currently logged in user has a specified role
-   */
-
-  public boolean hasRole(String pRole) throws Exception {
-    boolean hasRole = false;
-    if(null != mUserProps){
-      if(mUserProps.getJSONArray("roles").contains(pRole)){
-        hasRole = true;
-      }
-    }
-    return hasRole;
-  }
-
-  public boolean hasFormsRole() throws Exception{
-    boolean has = false;
-    String[] formRoles = {"formsadmin","submissionseditor","formseditor","submissionsviewer"};
-    if(null == mUserProps) return has;
-
-    for(String r : formRoles){
-      if(mUserProps.getJSONArray("roles").contains(r)){
-        has = true;
-        break;
-      }
-    }
-    return has;
+    return false;
   }
 
   public void error(Exception pException) throws Exception {
     log.error("error called", pException);
-    if (null != pException) {
-      throw pException;
-    }
   }
 
   private Cookie getCookie(String pName, HttpServletRequest pRequest) {

@@ -7,7 +7,7 @@
 
     <div class="row-fluid">
       <div class="dashboard-header span12">
-        <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER)) { %>
+        <% if (studio.hasPermission(com.feedhenry.studio.StudioBean.PROJECT_WRITE)) { %>
           <div class="dashboard-create-container">
             <div id="dashboard_create_new_app_btn" class="dashboard-create"></div>
           </div>
@@ -28,7 +28,7 @@
         </div>
       </div>
 
-      <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER)) { %>
+      <% if (studio.hasPermission(com.feedhenry.studio.StudioBean.PROJECT_READ)) { %>
         <div class="span6">
           <h2>Most Recent Apps</h2>
           <div class="row-fluid">

@@ -1,5 +1,8 @@
 #Component: fh-studio
 
+## 3.27.0 - 2014-11-14 - IR240 - David Martin
+* 7871 - Replaced all usages of roles & groups in jsps with permission checks
+
 ## 3.26.1 - 2014-12-01 - IR242 - Martin Murphy
 * 8319 - Updated js-sdk to fix appforms location button
 

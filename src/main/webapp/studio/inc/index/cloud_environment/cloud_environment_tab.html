@@ -1,4 +1,4 @@
-<% if(studio.hasRole(com.feedhenry.studio.StudioBean.ROLE_DEVADMIN) && studio.getProperty("nodejsEnabled").equals("true")) {%>
+<% if(studio.hasPermission(com.feedhenry.studio.StudioBean.CLOUD_RESOURCE_WRITE) && studio.getProperty("nodejsEnabled").equals("true")) {%>
 <div id="tabs-7">
   <div id="cloud_environments_layout">
 

@@ -20,7 +20,7 @@
             API Keys
           </a>
         </li>
-        <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER)) { %>
+        <% if (studio.hasPermission(com.feedhenry.studio.StudioBean.CREDENTIAL_WRITE)) { %>
         <li class="nav-header">Destinations</li>
         <li>
           <a href="#" data-controller="account.apple.controller" id="appleResource">
@@ -50,7 +50,7 @@
 
         <%@ include file="./api_keys.html" %>
 
-        <% if (studio.inGroup(com.feedhenry.studio.StudioBean.GROUP_DEVELOPER)) { %>
+        <% if (studio.hasPermission(com.feedhenry.studio.StudioBean.CREDENTIAL_WRITE)) { %>
           <%@ include file="./destinations_apple_content.html" %>
           
           <%@ include file="./destinations_android_content.html" %>
