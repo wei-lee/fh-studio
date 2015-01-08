@@ -30,11 +30,9 @@ String pageName = studio.getPageName();
   <%}%>
 
   <% if(studio.hasPermission(com.feedhenry.studio.StudioBean.CLOUD_RESOURCE_WRITE) && studio.getProperty("nodejsEnabled").equals("true")) {%>
-    <% if(studio.getProperty("cloudEnvironmentEnabled").equals("true")){ %>
     <li class="environments-tab">
         <a id="environments_tab" href="#tabs-7">Cloud Environments</a>
     </li>
-    <%}%>
   <%}%>
 
   <% if (studio.hasPermission(com.feedhenry.studio.StudioBean.DOMAIN_ANALYTICS_READ)) { %>
@@ -73,9 +71,7 @@ String pageName = studio.getPageName();
     
   <%}%>
   <% if(studio.hasPermission(com.feedhenry.studio.StudioBean.CLOUD_RESOURCE_WRITE)) {%>
-    <% if(studio.getProperty("cloudEnvironmentEnabled").equals("true")){ %>
     <%@ include file="./cloud_environment/cloud_environment_tab.html" %>
-    <%}%>
   <%}%>
 
   <% if ( studio.hasPermission(com.feedhenry.studio.StudioBean.DOMAIN_USERS_WRITE) || 
