@@ -59,7 +59,7 @@ App.View.DataBrowserMigrateView = App.View.DataBrowserView.extend({
       data: JSON.stringify(params),
       timeout: 20000,
       success: function(res){
-        if (res.status === "ok") {
+        if (res.result && res.result.cacheKey && res.result.cacheKey.length > 0) {
           self.migrateStarted(res.result.cacheKey);
         } else {
           console.log('Migrate failed:' + res);
