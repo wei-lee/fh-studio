@@ -75,4 +75,20 @@ $(document).ready(function() {
       }
     });
   });
+
+  function addFHHeaders(xhr, settings){
+    var csrfToken = $('input[name="csrftoken"]').val();
+    if(csrfToken && csrfToken.length > 0){
+      xhr.setRequestHeader("X-CSRF-Token", csrfToken);
+    }
+  }
+
+  $.ajaxSetup({
+    beforeSend: function (xhr, settings) {
+      if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+        //Local request, add FH headers!
+        addFHHeaders(xhr, settings);
+      }
+    }
+  });
 });
