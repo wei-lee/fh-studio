@@ -49,14 +49,17 @@ App.View.DataBrowserMigrateView = App.View.DataBrowserView.extend({
 
     this.message.$el.hide();
     this.$el.append(this.templates.$dataMigratingView());
+    //#8615 - once LCM is deployed, the app db migration will always to through fh-supercore no matter if LCM is enabled or not
+    var clientProps = $fw.getClientProps();
+    var migrateUrl = '/api/v2/mbaas/' + clientProps.domain + '/' + this.options.mode + '/' + 'apps/' + this.options.guid + '/upgradedb';
     $.ajax({
       type: 'POST',
-      url: this.url,
+      url: migrateUrl,
       contentType : 'application/json',
       data: JSON.stringify(params),
       timeout: 20000,
       success: function(res){
-        if (res.status === "ok") {
+        if (res.result && res.result.cacheKey && res.result.cacheKey.length > 0) {
           self.migrateStarted(res.result.cacheKey);
         } else {
           console.log('Migrate failed:' + res);

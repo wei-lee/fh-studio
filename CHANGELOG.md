@@ -1,5 +1,8 @@
 #Component: fh-studio
 
+## 4.0.0 - 2015-01-21 - IR245 - Wei Li
+* 8329 - Added support for Life Cycle Management
+
 ## 3.27.0 - 2014-11-14 - IR240 - David Martin
 * 7871 - Replaced all usages of roles & groups in jsps with permission checks
 

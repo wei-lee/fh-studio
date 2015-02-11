@@ -57,6 +57,7 @@ $(document).ready(function() {
         value: "beta"
       }
     };
+    data['payload']["csrftoken"] =  $('input[name="csrftoken"]').val();
 
     $.ajax({
       type: 'POST',
@@ -73,5 +74,21 @@ $(document).ready(function() {
         console.log('error saving user preference');
       }
     });
+  });
+
+  function addFHHeaders(xhr, settings){
+    var csrfToken = $('input[name="csrftoken"]').val();
+    if(csrfToken && csrfToken.length > 0){
+      xhr.setRequestHeader("X-CSRF-Token", csrfToken);
+    }
+  }
+
+  $.ajaxSetup({
+    beforeSend: function (xhr, settings) {
+      if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+        //Local request, add FH headers!
+        addFHHeaders(xhr, settings);
+      }
+    }
   });
 });
