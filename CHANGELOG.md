@@ -1,5 +1,8 @@
 #Component: fh-studio
 
+## 4.0.1 - 2015-03-20 - Wei Li
+* FHMAP-175 : Remove the static files of the sdks
+
 ## 4.0.0 - 2015-01-21 - IR245 - Wei Li
 * 8329 - Added support for Life Cycle Management
 
