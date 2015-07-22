@@ -1,7 +1,7 @@
 #Component: fh-studio
 
-## x.x.x - 2015-05-22 - Martin Murphy
-* FHMAP-448 - Add autocomplete=false to username field on login screen
+## 4.0.2 - 2015-07-22 - Martin Murphy
+* FH-1133 - Add autocomplete=false to username field on login screen
 
 ## 4.0.1 - 2015-03-20 - Wei Li
 * FHMAP-175 : Remove the static files of the sdks
