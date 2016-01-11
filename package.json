@@ -1,7 +1,7 @@
 {
   "name": "fh-studio",
   "description": "FeedHenry App Studio",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "author": "David Martin <david.martin@feedhenry.com>",
   "engines": {
     "node": ">= 0.6.17"
